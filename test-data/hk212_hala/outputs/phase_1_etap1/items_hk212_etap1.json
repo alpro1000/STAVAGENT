@@ -13,24 +13,29 @@
       "kap_psv71x (4 items)",
       "kap_psv76x (12 items)",
       "kap_psv77x (6 items)",
-      "kap_psv78x (12 items)"
+      "kap_psv78x (12 items)",
+      "kap_m (7 items)",
+      "kap_vrn (22 items)"
     ],
-    "total_items": 97,
+    "total_items": 126,
     "status_counts": {
-      "matched_medium": 22,
-      "needs_review": 71,
-      "matched_high": 4
+      "matched_medium": 33,
+      "needs_review": 82,
+      "matched_high": 4,
+      "custom_item": 7
     },
-    "match_rate_high_plus_medium": 0.268,
+    "match_rate_high_plus_medium": 0.294,
     "vyjasneni_ref_distribution": {
       "ABMV_17": 22,
       "ABMV_11": 5,
       "ABMV_15": 1,
       "ABMV_2": 1,
       "ABMV_10": 2,
-      "ABMV_3": 1,
-      "ABMV_16": 1,
-      "ABMV_20": 2
+      "ABMV_3": 8,
+      "ABMV_16": 8,
+      "ABMV_20": 2,
+      "ABMV_8": 2,
+      "ABMV_1": 1
     }
   },
   "items": [
@@ -219,9 +224,9 @@
           "tokens": "kotoc medi mm pasy pruh ve"
         },
         {
-          "code": "54925015",
+          "code": "60515111",
           "score": 0.333,
-          "tokens": "hloubk mm zadlb zamk"
+          "tokens": "cm krajn krajnv neoprcvn"
         }
       ],
       "urs_status": "needs_review",
@@ -1143,19 +1148,19 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "59373786",
+          "code": "59345676",
           "score": 0.333,
-          "tokens": "hzs podest prvk ramen"
+          "tokens": "betonv desk prefbrkt zelezbtnv"
         },
         {
-          "code": "59373789",
+          "code": "59381001",
           "score": 0.333,
-          "tokens": "hzs podest prvk ramen"
+          "tokens": "betonv izd prefbrkt zelezbtnv"
         },
         {
-          "code": "59373792",
+          "code": "59381004",
           "score": 0.333,
-          "tokens": "hzs podest prvk ramen"
+          "tokens": "betonv izd prefbrkt zelezbtnv"
         }
       ],
       "urs_status": "needs_review",
@@ -1260,17 +1265,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "59381001",
-          "score": 0.333,
-          "tokens": "betonv izd prefbrkt zelezbtnv"
-        },
-        {
           "code": "59381338",
           "score": 0.333,
           "tokens": "betonv izd prefbrkt zelezbtnv"
         },
         {
           "code": "59383630",
+          "score": 0.333,
+          "tokens": "beton lp most predpjth pro"
+        },
+        {
+          "code": "59383631",
           "score": 0.333,
           "tokens": "beton lp most predpjth pro"
         }
@@ -1382,14 +1387,14 @@
           "tokens": "koncvch mezilhlch podprnch rozmstn vcetn"
         },
         {
-          "code": "62836110",
+          "code": "59341217",
           "score": 0.333,
-          "tokens": "foalbt kovov pasy proflvn"
+          "tokens": "betonv cm prefbrkt zelezbtnv"
         },
         {
-          "code": "220110926",
+          "code": "59342075",
           "score": 0.333,
-          "tokens": "betonvh usazn vcetn"
+          "tokens": "betonv desk prefbrkt zelezbtnv"
         }
       ],
       "urs_status": "needs_review",
@@ -1455,17 +1460,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
+          "code": "59311454",
+          "score": 0.333,
+          "tokens": "patkzb zelezbtnv zzp"
+        },
+        {
           "code": "28355020",
           "score": 0.333,
           "tokens": "bal pasy plast"
         },
         {
           "code": "28355021",
-          "score": 0.333,
-          "tokens": "bal pasy plast"
-        },
-        {
-          "code": "28355022",
           "score": 0.333,
           "tokens": "bal pasy plast"
         }
@@ -2565,9 +2570,9 @@
           "tokens": "fort hlink jilovnv kg malirsk nater penetrc penetrl"
         },
         {
-          "code": "24551390",
+          "code": "24613620",
           "score": 0.5,
-          "tokens": "bal concrsv hydrfbzcn chemck kg materl nater obor"
+          "tokens": "barv bez cern hydrzlcn kg laky nater olej"
         }
       ],
       "urs_status": "matched_high",
@@ -2638,9 +2643,9 @@
           "tokens": "bal kb kotoc l meden medi pask pasy"
         },
         {
-          "code": "62832272",
+          "code": "724211221",
           "score": 0.333,
-          "tokens": "bitubtgt design pasy rohoz sklenn vlozk"
+          "tokens": "grundfs hydrjt jp5 t"
         },
         {
           "code": "62836110",
@@ -3025,19 +3030,19 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "34343120",
+          "code": "210921018",
           "score": 0.333,
-          "tokens": "hadic izolcn smrsttln"
+          "tokens": "aykc izolvnch vodic"
         },
         {
-          "code": "34343122",
+          "code": "210921045",
           "score": 0.333,
-          "tokens": "hadic izolcn smrsttln"
+          "tokens": "aykc izolvnch vodic"
         },
         {
-          "code": "34343124",
+          "code": "210921048",
           "score": 0.333,
-          "tokens": "hadic izolcn smrsttln"
+          "tokens": "aykc izolvnch vodic"
         }
       ],
       "urs_status": "needs_review",
@@ -3463,17 +3468,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
+          "code": "59040085",
+          "score": 0.4,
+          "tokens": "durels fasadn kotevn l materl mm novabrk suchh"
+        },
+        {
           "code": "59623540",
           "score": 0.4,
           "tokens": "a4 ciheln fasad hk4 klinkr kotvn"
         },
         {
           "code": "59623541",
-          "score": 0.4,
-          "tokens": "ciheln fasad hk4 klinkr kotvn zdiv"
-        },
-        {
-          "code": "59623542",
           "score": 0.4,
           "tokens": "ciheln fasad hk4 klinkr kotvn zdiv"
         }
@@ -3592,9 +3597,9 @@
           "tokens": "lyra plus typ"
         },
         {
-          "code": "59244472",
+          "code": "59055100",
           "score": 0.333,
-          "tokens": "bramc classc plus protctr"
+          "tokens": "fasad kovov mm odvetrn"
         }
       ],
       "urs_status": "needs_review",
@@ -3631,9 +3636,9 @@
           "tokens": "lyra plus typ"
         },
         {
-          "code": "327711211",
+          "code": "42281266",
           "score": 0.333,
-          "tokens": "s pohldv tw1 z betnvch"
+          "tokens": "eurostp klapk osazn pro"
         }
       ],
       "urs_status": "needs_review",
@@ -3877,6 +3882,1049 @@
       "raw_description": "doprava klempířiny",
       "confidence": 0.85,
       "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-001",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "Chemická kotva M20 × 200 mm pro anchorage strojů (DRIFT_E1, DEFRAME, filtrační)",
+      "mj": "ks",
+      "mnozstvi": 48.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "A107 INSERT kotvící body — typ + počet UPŘESNIT (ABMV_3, ABMV_16)",
+      "raw_description": "kotvící body strojů — chem.kotva M20",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.4,
+      "_qty_formula": "3 stroje × ~16 kotev/stroj = 48 ks (placeholder)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-002",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "Lokální výztuž desky pod stroji — B500B vázaná, dopl. nad rámec KARI",
+      "mj": "kg",
+      "mnozstvi": 80.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + standardní dodatečná výztuž v anchorage zónách",
+      "raw_description": "lokální dodatečná výztuž pod stroji",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.45,
+      "_qty_formula": "placeholder ~80 kg (3 anchorage zóny × ~25 kg každá)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-003",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "Beton lokálního zesílení podlahy pod stroji C25/30 XC4",
+      "mj": "m³",
+      "mnozstvi": 4.5,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "standardní detail zesílení podlahy pod technologií",
+      "raw_description": "beton zesílení pod stroji",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.45,
+      "_qty_formula": "3 stroje × 1.5 m³ (zesílená podloží zóna ~10 m² × 0.15 m)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-004",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "Bezpečnostní oplocení strojů — Troax-type, výška 2.2 m, mřížová síť, panely modulární",
+      "mj": "bm",
+      "mnozstvi": 80.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "A106 MTEXT 'BUDE UPŘESNĚNO' × 3 + RE-RUN §3.9",
+      "raw_description": "bezp. oplocení strojů 2.2 m",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16",
+        "ABMV_8"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.35,
+      "_qty_formula": "placeholder ~80 bm (perimetr 3 strojů × ~25 m každý)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-005",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "Montáž bezp. oplocení + sloupky kotvené do podlahy + branka pro přístup",
+      "mj": "bm",
+      "mnozstvi": 80.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "standardní pár",
+      "raw_description": "montáž bezp. oplocení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16",
+        "ABMV_8"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.35,
+      "_qty_formula": "= dodávka oplocení",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-006",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "Bezpečnostní tabulky + značení — výstrahy, zákazy, BOZP piktogramy",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN ISO 7010 + BOZP požadavek",
+      "raw_description": "bezp. tabulky + značení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.45,
+      "_qty_formula": "1 kpl (komplet značení pro 3 stroje)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "Rpol-007",
+      "kapitola": "M",
+      "SO": "SO-10",
+      "popis": "El. připojení strojů — kabel CYKY × přívody + průchodky podlahou",
+      "mj": "kpl",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "custom_item",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "A107 + ABMV_1 (80 kW per stroj) + ABMV_3 specifikace",
+      "raw_description": "el. přívody strojů",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "specialista_anchorage_strojaru",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16",
+        "ABMV_1"
+      ],
+      "_status_flag": "specifikace_pending_strojaru",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.4,
+      "_qty_formula": "3 ks (jedno na každý stroj)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-001",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Zařízení staveniště — buňka kancelář stavbyvedoucího + technika",
+      "mj": "měsíc",
+      "mnozstvi": 4,
+      "urs_code": "032103000",
+      "urs_alternatives": [
+        {
+          "code": "032103000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        },
+        {
+          "code": "032303000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        },
+        {
+          "code": "032403000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "Rožmitál precedent + standardní VRN",
+      "raw_description": "ZS buňka kancelář",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 měsíců × 1 ks",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-002",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Zařízení staveniště — buňka sociální / šatna / WC",
+      "mj": "měsíc",
+      "mnozstvi": 4,
+      "urs_code": "032103000",
+      "urs_alternatives": [
+        {
+          "code": "032103000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        },
+        {
+          "code": "032303000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        },
+        {
+          "code": "032403000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní VRN BOZP",
+      "raw_description": "ZS sociální buňka",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 měsíců × 1 ks",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-003",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Zařízení staveniště — buňka sklad materiálu + nářadí",
+      "mj": "měsíc",
+      "mnozstvi": 4,
+      "urs_code": "032103000",
+      "urs_alternatives": [
+        {
+          "code": "032103000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        },
+        {
+          "code": "032303000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        },
+        {
+          "code": "032403000",
+          "score": 0.667,
+          "tokens": "stavnst vybavn zarizn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní VRN",
+      "raw_description": "ZS skladovací buňka",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 měsíců × 1 ks",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-004",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Oplocení staveniště — provizorní, výška 2 m, vstupní brána",
+      "mj": "bm",
+      "mnozstvi": 150.0,
+      "urs_code": "59244057",
+      "urs_alternatives": [
+        {
+          "code": "59244057",
+          "score": 0.667,
+          "tokens": "bramc classc star"
+        },
+        {
+          "code": "59244058",
+          "score": 0.667,
+          "tokens": "bramc classc star"
+        },
+        {
+          "code": "59244059",
+          "score": 0.667,
+          "tokens": "bramc classc star"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "ČSN požadavek na ohraničení stavby",
+      "raw_description": "oplocení staveniště provizorní",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "placeholder ~150 bm (perimetr staveniště + pomocné plochy)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-005",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Vodovodní přípojka pro stavbu — vytvoření + měření spotřeby",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": "033103000",
+      "urs_alternatives": [
+        {
+          "code": "033103000",
+          "score": 0.667,
+          "tokens": "pro spotrb stavnst zarizn"
+        },
+        {
+          "code": "346271129",
+          "score": 0.4,
+          "tokens": "az izolcn izolcnm mc nepalnch ohyb ochrnn omitk"
+        },
+        {
+          "code": "63482230",
+          "score": 0.4,
+          "tokens": "foamgls penov sklo stavbn t4 tepeln vodivst w/mk"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní VRN",
+      "raw_description": "vodovodní přípojka stavby",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-006",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Elektrická přípojka pro stavbu — staveništní rozvaděč + měření",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220370061",
+          "score": 0.5,
+          "tokens": "citlvst harm charktrstk chod impendnc izolcnh kabelvh kmit"
+        },
+        {
+          "code": "220370062",
+          "score": 0.5,
+          "tokens": "citlvst harm charktrstk chod impendnc izolcnh kabelvh kmit"
+        },
+        {
+          "code": "220370063",
+          "score": 0.5,
+          "tokens": "citlvst harm charktrstk chod impendnc izolcnh kabelvh kmit"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní VRN",
+      "raw_description": "el. přípojka stavby",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-007",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "WC mobilní pro pracovníky — 2 ks",
+      "mj": "měsíc",
+      "mnozstvi": 8,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "011103000",
+          "score": 0.333,
+          "tokens": "geodtck geotchnck prac projktv pruzkmn"
+        },
+        {
+          "code": "011114000",
+          "score": 0.333,
+          "tokens": "geodtck geotchnck prac projktv pruzkmn"
+        },
+        {
+          "code": "011124000",
+          "score": 0.333,
+          "tokens": "geodtck geotchnck prac projktv pruzkmn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní BOZP",
+      "raw_description": "WC mobilní",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 ks × 4 měsíců",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-008",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "BOZP koordinace na stavbě — koordinátor BOZP průběžně",
+      "mj": "měsíc",
+      "mnozstvi": 4,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "011544000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkmn stavbn"
+        },
+        {
+          "code": "011603000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkm pruzkmn stavbn"
+        },
+        {
+          "code": "013224000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkmn stavb textv vykrsv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "zákon 309/2006 Sb. + zákon 591/2006 Sb.",
+      "raw_description": "BOZP koordinace",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 měsíců",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-009",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Plán BOZP + dokumentace bezpečnosti práce",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": "28410249",
+      "urs_alternatives": [
+        {
+          "code": "28410249",
+          "score": 0.667,
+          "tokens": "bez podkld podlhvn polyvnlchlrd praktk"
+        },
+        {
+          "code": "28410250",
+          "score": 0.667,
+          "tokens": "bez podkld podlhvn polyvnlchlrd praktk"
+        },
+        {
+          "code": "31319114",
+          "score": 0.4,
+          "tokens": "and bez coatd dr dratn matn nettng neuslchtlch"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "zákon 309/2006 Sb.",
+      "raw_description": "plán BOZP",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-010",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Pojištění stavby + odpovědnostní pojistka",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": "55161722",
+      "urs_alternatives": [
+        {
+          "code": "55161722",
+          "score": 0.767,
+          "tokens": "dn50 hl80 odpad plastv se sifon sifonm stavtln"
+        },
+        {
+          "code": "220890041",
+          "score": 0.767,
+          "tokens": "automtckh cinnst klic kolejvh kotv na navestdl navestnh"
+        },
+        {
+          "code": "55350150",
+          "score": 0.767,
+          "tokens": "cast klemprsk lindb mst odpad odskk okapv stavbn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.767,
+      "skladba_ref": null,
+      "source": "standardní VRN",
+      "raw_description": "pojištění stavby",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-011",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Likvidace odpadů kategorie O (běžný) — kontejner + odvoz + skládkovné",
+      "mj": "m³",
+      "mnozstvi": 30.0,
+      "urs_code": "94620270",
+      "urs_alternatives": [
+        {
+          "code": "94620270",
+          "score": 0.6,
+          "tokens": "bez kod obsah odpad odpadn skladkvn"
+        },
+        {
+          "code": "94620260",
+          "score": 0.5,
+          "tokens": "kod obsahm odpad odpadn skladkvn"
+        },
+        {
+          "code": "59055100",
+          "score": 0.333,
+          "tokens": "fasad kovov mm odvetrn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.6,
+      "skladba_ref": null,
+      "source": "zákon 541/2020 Sb. odpady",
+      "raw_description": "odpady kategorie O",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~30 m³ stavebního odpadu kat. O",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-012",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Likvidace odpadů kategorie N (nebezpečné — barvy, oleje, tmely)",
+      "mj": "m³",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "24592753",
+          "score": 0.429,
+          "tokens": "bal barev fixovch chemck jind kg lak leskl"
+        },
+        {
+          "code": "24643410",
+          "score": 0.333,
+          "tokens": "bez do kg olej synttckch"
+        },
+        {
+          "code": "24643610",
+          "score": 0.333,
+          "tokens": "bal bez kg olej"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.429,
+      "skladba_ref": null,
+      "source": "zákon 541/2020 Sb. + ČSN",
+      "raw_description": "odpady kategorie N",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~2 m³ kat. N",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-013",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Doprava materiálu na stavbu vodorovně — paušál pro veškerou montáž",
+      "mj": "t·km",
+      "mnozstvi": 1500.0,
+      "urs_code": "34571150",
+      "urs_alternatives": [
+        {
+          "code": "34571150",
+          "score": 0.667,
+          "tokens": "materl monoflx ulozn"
+        },
+        {
+          "code": "34571152",
+          "score": 0.667,
+          "tokens": "materl monoflx ulozn"
+        },
+        {
+          "code": "34571154",
+          "score": 0.667,
+          "tokens": "materl monoflx ulozn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní VRN doprava",
+      "raw_description": "doprava materiálu paušál",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~1500 t·km (30 t materiálů × 50 km)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-014",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Geodetické zaměření před zahájením stavby — vytýčení",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": "54964110",
+      "urs_alternatives": [
+        {
+          "code": "54964110",
+          "score": 0.667,
+          "tokens": "do fab stavbn zamk"
+        },
+        {
+          "code": "011544000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkmn stavbn"
+        },
+        {
+          "code": "011603000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkm pruzkmn stavbn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "Rožmitál precedent 00511 R + standardní VRN",
+      "raw_description": "geodetické zaměření vytýčení",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál (Rožmitál URS 00511 R)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-015",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Geodetické zaměření skutečného provedení (DSPS) — po dokončení stavby",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": "54964110",
+      "urs_alternatives": [
+        {
+          "code": "54964110",
+          "score": 0.667,
+          "tokens": "do fab stavbn zamk"
+        },
+        {
+          "code": "011544000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkmn stavbn"
+        },
+        {
+          "code": "011603000",
+          "score": 0.5,
+          "tokens": "geodtck prac projktv pruzkm pruzkmn stavbn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní VRN DSPS",
+      "raw_description": "geodetické zaměření DSPS",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-016",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Vyjádření správců sítí — komplet pro 8-12 sítí (RWE/CETIN/ČEZ/Opatovice/Pošta/atd.)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "113106211",
+          "score": 0.333,
+          "tokens": "komunkc pesi pro v pls"
+        },
+        {
+          "code": "113106212",
+          "score": 0.333,
+          "tokens": "komunkc pesi pro v pls"
+        },
+        {
+          "code": "113106221",
+          "score": 0.333,
+          "tokens": "komunkc pesi pro v pls"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "C3 situace + RE-RUN §6 externí sítě (10 sítí přes pozemek)",
+      "raw_description": "vyjádření správců sítí",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "1 kpl pro všech 8-12 správců sítí (per RE-RUN §6)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-017",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Vytýčení stávajících sítí na povrchu před zahájením výkopů",
+      "mj": "bm",
+      "mnozstvi": 200.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "013264000",
+          "score": 0.4,
+          "tokens": "geodtck projktv pruzkmn stavb textv vykrsv"
+        },
+        {
+          "code": "013224000",
+          "score": 0.333,
+          "tokens": "geodtck prac projktv pruzkmn stavb textv vykrsv"
+        },
+        {
+          "code": "59389160",
+          "score": 0.333,
+          "tokens": "inzenrsk phs prefbrkt pro stavb"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "RE-RUN §6 externí sítě + povinné vytýčení",
+      "raw_description": "vytýčení stávajících sítí",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "placeholder ~200 bm trasování sítí na pozemku",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-018",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Předávací protokoly + dokumentace skutečného provedení (DSPS)",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "73534535",
+          "score": 0.333,
+          "tokens": "dokumntc informc mm obchdn pro propgc technck tiskvn"
+        },
+        {
+          "code": "64221041",
+          "score": 0.333,
+          "tokens": "ecco skupn stenv stenvtp v200"
+        },
+        {
+          "code": "59761290",
+          "score": 0.333,
+          "tokens": "brick cen cm i obkldck podlh rako skup"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní VRN DSPS",
+      "raw_description": "předávací protokoly DSPS",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-019",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Kolaudační řízení — příprava + účast na jednání + revize dokumentace",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220850006",
+          "score": 0.333,
+          "tokens": "do elektrnk jedntkm kolejnc na nastvnm osazn otvor"
+        },
+        {
+          "code": "220850007",
+          "score": 0.333,
+          "tokens": "do elektrnk jedntkm kolejnc na nastvnm osazn otvor"
+        },
+        {
+          "code": "220850008",
+          "score": 0.333,
+          "tokens": "do elektrnk jedntkm kolejnc na nastvnm osazn otvor"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "zákon 183/2006 Sb. stavební + RE-RUN",
+      "raw_description": "kolaudační řízení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-020",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Revize elektroinstalace + protokol",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "28661880",
+          "score": 0.5,
+          "tokens": "dvorn kanalzcn kg revizn sacht systm tegr vpust"
+        },
+        {
+          "code": "28661881",
+          "score": 0.5,
+          "tokens": "dvorn kanalzcn revizn sacht systm tegr vpust wavin"
+        },
+        {
+          "code": "28661882",
+          "score": 0.5,
+          "tokens": "dvorn kanalzcn kg revizn sacht systm tegr typ"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "Rožmitál 00523 R + ČSN 33 1500",
+      "raw_description": "revize elektro",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál (Rožmitál 00523 R precedent)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-021",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Revize hydrantového systému + tlaková zkouška",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59882428",
+          "score": 0.4,
+          "tokens": "cgc1 ciko dvirk gas kominv netypck reviznm systm"
+        },
+        {
+          "code": "59893697",
+          "score": 0.4,
+          "tokens": "netypck revt schidl systm uni univrsln vyrobk zarovzdrn"
+        },
+        {
+          "code": "69334004",
+          "score": 0.4,
+          "tokens": "baudr dse hydrkmlcn systm vegetcn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "ČSN 73 0873 + PBŘ §1",
+      "raw_description": "revize hydrant",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VRN-022",
+      "kapitola": "VRN",
+      "SO": "SO-11",
+      "popis": "Revize hromosvodu / LPS — měření ekvipotenciality, zemniče, svody",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "35442050",
+          "score": 0.4,
+          "tokens": "hromsvd pro soucst uzemnvn zd01 zemn"
+        },
+        {
+          "code": "35442060",
+          "score": 0.4,
+          "tokens": "hromsvd pro soucst uzemnvn zd02 zemn"
+        },
+        {
+          "code": "043194000",
+          "score": 0.333,
+          "tokens": "cinnst inzenrsk meren"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "ČSN EN 62305 + PBŘ",
+      "raw_description": "revize LPS",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_provoz",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF",
