@@ -44,3 +44,23 @@ goes live referencing the SaaS product.
 
 **Risk if not fixed:** GDPR fine + trust collapse if any real user
 data is exposed cross-tenant.
+
+## register-route-redirect
+
+**Severity:** P2 — minor UX, workaround in place
+
+**Symptom:**
+Direct navigation to /register redirects unauthenticated users to /.
+
+**Current workaround (applied):**
+LandingPage.tsx goCta() routes unauthenticated users to /login.
+Login page has working "Nemáte účet? Zaregistrujte se" link to
+functional registration form.
+
+**Future fix scope:**
+1. Investigate why /register redirects (likely auth guard logic 
+   inversion or missing route in App.tsx)
+2. Fix the route directly
+3. Optionally restore goCta to /register for cleaner UX
+
+**Trigger:** Optional. Current /login flow is functional.

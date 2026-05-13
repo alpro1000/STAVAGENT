@@ -282,7 +282,7 @@ export default function LandingPage() {
     },
   });
 
-  const goCta = () => navigate(isAuthenticated ? '/portal' : '/register');
+  const goCta = () => navigate(isAuthenticated ? '/portal' : '/login');
   const goLogin = () => navigate(isAuthenticated ? '/cabinet' : '/login');
 
   return (
