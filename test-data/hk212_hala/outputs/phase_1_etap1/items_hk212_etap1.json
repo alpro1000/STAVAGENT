@@ -15,16 +15,17 @@
       "kap_psv77x (6 items)",
       "kap_psv78x (12 items)",
       "kap_m (7 items)",
-      "kap_vrn (22 items)"
+      "kap_vrn (22 items)",
+      "kap_vzt (15 items)"
     ],
-    "total_items": 126,
+    "total_items": 141,
     "status_counts": {
-      "matched_medium": 33,
-      "needs_review": 82,
+      "matched_medium": 38,
+      "needs_review": 92,
       "matched_high": 4,
       "custom_item": 7
     },
-    "match_rate_high_plus_medium": 0.294,
+    "match_rate_high_plus_medium": 0.298,
     "vyjasneni_ref_distribution": {
       "ABMV_17": 22,
       "ABMV_11": 5,
@@ -1265,19 +1266,19 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "59381338",
+          "code": "59381001",
           "score": 0.333,
           "tokens": "betonv izd prefbrkt zelezbtnv"
         },
         {
-          "code": "59383630",
+          "code": "59381004",
           "score": 0.333,
-          "tokens": "beton lp most predpjth pro"
+          "tokens": "betonv izd prefbrkt zelezbtnv"
         },
         {
-          "code": "59383631",
+          "code": "59381005",
           "score": 0.333,
-          "tokens": "beton lp most predpjth pro"
+          "tokens": "betonv izd prefbrkt zelezbtnv"
         }
       ],
       "urs_status": "needs_review",
@@ -1460,17 +1461,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "59311454",
-          "score": 0.333,
-          "tokens": "patkzb zelezbtnv zzp"
-        },
-        {
           "code": "28355020",
           "score": 0.333,
           "tokens": "bal pasy plast"
         },
         {
           "code": "28355021",
+          "score": 0.333,
+          "tokens": "bal pasy plast"
+        },
+        {
+          "code": "28355022",
           "score": 0.333,
           "tokens": "bal pasy plast"
         }
@@ -1581,19 +1582,19 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "44981020",
+          "code": "48467181",
           "score": 0.333,
-          "tokens": "prof strojrnsk tajfn vyzbrj"
+          "tokens": "cerpdlv typ varimt"
         },
         {
-          "code": "44981011",
+          "code": "48467182",
           "score": 0.333,
-          "tokens": "d25 strojrnsk vyzbrj"
+          "tokens": "cerpdlv typ varimt"
         },
         {
-          "code": "44981015",
+          "code": "48467183",
           "score": 0.333,
-          "tokens": "d25 strojrnsk vyzbrj"
+          "tokens": "cerpdlv typ varimt"
         }
       ],
       "urs_status": "needs_review",
@@ -2092,17 +2093,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "13021037",
+          "code": "13021033",
           "score": 0.433,
           "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
         },
         {
-          "code": "13021035",
+          "code": "13021039",
           "score": 0.433,
           "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
         },
         {
-          "code": "13021038",
+          "code": "13021034",
           "score": 0.433,
           "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
         }
@@ -2570,9 +2571,9 @@
           "tokens": "fort hlink jilovnv kg malirsk nater penetrc penetrl"
         },
         {
-          "code": "24613620",
+          "code": "24552576",
           "score": 0.5,
-          "tokens": "barv bez cern hydrzlcn kg laky nater olej"
+          "tokens": "akrylt axilt bal fasadnch hmot chemck kg materl"
         }
       ],
       "urs_status": "matched_high",
@@ -2643,14 +2644,14 @@
           "tokens": "bal kb kotoc l meden medi pask pasy"
         },
         {
-          "code": "724211221",
+          "code": "61731051",
           "score": 0.333,
-          "tokens": "grundfs hydrjt jp5 t"
+          "tokens": "krytn list podlhv saturn"
         },
         {
-          "code": "62836110",
+          "code": "61731054",
           "score": 0.333,
-          "tokens": "foalbt kovov pasy proflvn"
+          "tokens": "krytn list neptn podlhv"
         }
       ],
       "urs_status": "needs_review",
@@ -3030,19 +3031,19 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "210921018",
+          "code": "34343116",
           "score": 0.333,
-          "tokens": "aykc izolvnch vodic"
+          "tokens": "hadic izolcn smrsttln"
         },
         {
-          "code": "210921045",
+          "code": "34343118",
           "score": 0.333,
-          "tokens": "aykc izolvnch vodic"
+          "tokens": "hadic izolcn smrsttln"
         },
         {
-          "code": "210921048",
+          "code": "34343120",
           "score": 0.333,
-          "tokens": "aykc izolvnch vodic"
+          "tokens": "hadic izolcn smrsttln"
         }
       ],
       "urs_status": "needs_review",
@@ -3597,9 +3598,9 @@
           "tokens": "lyra plus typ"
         },
         {
-          "code": "59055100",
+          "code": "59244472",
           "score": 0.333,
-          "tokens": "fasad kovov mm odvetrn"
+          "tokens": "bramc classc plus protctr"
         }
       ],
       "urs_status": "needs_review",
@@ -3636,9 +3637,9 @@
           "tokens": "lyra plus typ"
         },
         {
-          "code": "42281266",
+          "code": "42223620",
           "score": 0.333,
-          "tokens": "eurostp klapk osazn pro"
+          "tokens": "do iko plus sl ze"
         }
       ],
       "urs_status": "needs_review",
@@ -4279,19 +4280,19 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "220370061",
+          "code": "28614956",
           "score": 0.5,
-          "tokens": "citlvst harm charktrstk chod impendnc izolcnh kabelvh kmit"
+          "tokens": "elektr kanalzc kombnvn plyn polyprpln pro rozvd trubk"
         },
         {
-          "code": "220370062",
+          "code": "28614958",
           "score": 0.5,
-          "tokens": "citlvst harm charktrstk chod impendnc izolcnh kabelvh kmit"
+          "tokens": "elektr kanalzc kombnvn plyn polyprpln pro rozvd trubk"
         },
         {
-          "code": "220370063",
+          "code": "28614968",
           "score": 0.5,
-          "tokens": "citlvst harm charktrstk chod impendnc izolcnh kabelvh kmit"
+          "tokens": "elektr kanalzc kombnvn plyn polyprpln pro rozvd trubk"
         }
       ],
       "urs_status": "needs_review",
@@ -4747,6 +4748,11 @@
       "urs_code": null,
       "urs_alternatives": [
         {
+          "code": "59818122",
+          "score": 0.333,
+          "tokens": "dokumntc normlzvn podl samotv tvarvk uni vlozk vykrsv"
+        },
+        {
           "code": "73534535",
           "score": 0.333,
           "tokens": "dokumntc informc mm obchdn pro propgc technck tiskvn"
@@ -4755,11 +4761,6 @@
           "code": "64221041",
           "score": 0.333,
           "tokens": "ecco skupn stenv stenvtp v200"
-        },
-        {
-          "code": "59761290",
-          "score": 0.333,
-          "tokens": "brick cen cm i obkldck podlh rako skup"
         }
       ],
       "urs_status": "needs_review",
@@ -4929,6 +4930,591 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-001",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Rekuperační jednotka venkovní 4000 m³/h s deskovým rekuperátorem + el. ohřev + přímý výparník",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": "42914443",
+      "urs_alternatives": [
+        {
+          "code": "42914443",
+          "score": 0.6,
+          "tokens": "cmt/ jednclv m3/h prumslv"
+        },
+        {
+          "code": "42914444",
+          "score": 0.6,
+          "tokens": "cmt/ jednclv m3/h prumslv"
+        },
+        {
+          "code": "42914445",
+          "score": 0.6,
+          "tokens": "cmt/ jednclv m3/h prumslv"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.6,
+      "skladba_ref": null,
+      "source": "TZ B kap. B.3.5 §1 — koncepční specifikace",
+      "raw_description": "rekuperační jednotka 4000 m³/h",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "1 ks (TZ B B.3.5 §1)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-002",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Venkovní kondenzační jednotka chlazení 15 kW pro přímý výparník",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "734261402",
+          "score": 0.433,
+          "tokens": "giacmn kompkt st ventl"
+        },
+        {
+          "code": "734261403",
+          "score": 0.433,
+          "tokens": "giacmn kompkt st ventl"
+        },
+        {
+          "code": "734261406",
+          "score": 0.433,
+          "tokens": "giacmn kompkt st ventl"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "TZ B kap. B.3.5 §1",
+      "raw_description": "kondenzační jednotka 15 kW",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "1 ks (TZ B B.3.5 §1)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-003",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Dveřní clona horizontální 4700 m³/h, š. 2 m, s el. ohřevem",
+      "mj": "ks",
+      "mnozstvi": 8.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "42616036",
+          "score": 0.386,
+          "tokens": "dopr elektrmtr em horizntln hydrdnmck jednstpnv jet kolem"
+        },
+        {
+          "code": "42914360",
+          "score": 0.35,
+          "tokens": "csb jednclv m3/h mm prumslv"
+        },
+        {
+          "code": "42914361",
+          "score": 0.35,
+          "tokens": "cbb jednclv m3/h mm prumslv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.386,
+      "skladba_ref": null,
+      "source": "TZ B B.3.5 §1 + 4 sekční vrata",
+      "raw_description": "dveřní clona 4700 m³/h š. 2m",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "2 ks/vrata × 4 vrata = 8 ks",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-004",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Potrubí SPIRO pozink Ø 315 mm — hlavní rozvod",
+      "mj": "bm",
+      "mnozstvi": 60.0,
+      "urs_code": "735511039",
+      "urs_alternatives": [
+        {
+          "code": "735511039",
+          "score": 0.767,
+          "tokens": "potrb reha rozvdn"
+        },
+        {
+          "code": "735511061",
+          "score": 0.767,
+          "tokens": "potrb reha rozvdn"
+        },
+        {
+          "code": "735511062",
+          "score": 0.767,
+          "tokens": "potrb reha rozvdn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.767,
+      "skladba_ref": null,
+      "source": "TZ B B.3.5 §1 koncepčně + standardní dimensioning",
+      "raw_description": "SPIRO Ø 315",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "placeholder 60 bm (hlavní páteř haly)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-005",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Potrubí SPIRO pozink Ø 250 mm — větve",
+      "mj": "bm",
+      "mnozstvi": 80.0,
+      "urs_code": "42981040",
+      "urs_alternatives": [
+        {
+          "code": "42981040",
+          "score": 0.7,
+          "tokens": "cast d1 mm potrb pozinkvn spirln troub vinut"
+        },
+        {
+          "code": "42981050",
+          "score": 0.7,
+          "tokens": "cast d1 mm potrb pozinkvn spirln troub vinut"
+        },
+        {
+          "code": "42981054",
+          "score": 0.7,
+          "tokens": "cast d1 mm potrb pozinkvn spirln troub vinut"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.7,
+      "skladba_ref": null,
+      "source": "standardní dimensioning",
+      "raw_description": "SPIRO Ø 250",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "placeholder 80 bm (boční větve)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-006",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Potrubí SPIRO pozink Ø 160 mm — koncové úseky + napojení clon",
+      "mj": "bm",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "42981010",
+          "score": 0.5,
+          "tokens": "cast mm potrb pozinkvn vzduchtchnckh"
+        },
+        {
+          "code": "42981015",
+          "score": 0.5,
+          "tokens": "cast mm potrb pozinkvn vzduchtchnckh"
+        },
+        {
+          "code": "42981019",
+          "score": 0.5,
+          "tokens": "cast mm potrb pozinkvn vzduchtchnckh"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní dimensioning",
+      "raw_description": "SPIRO Ø 160",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "placeholder 120 bm (přívody k 8 clonám)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-007",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Tlumiče hluku v potrubí — kruhové, vč. připojovacích manžet",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "735511039",
+          "score": 0.433,
+          "tokens": "potrb reha rozvdn"
+        },
+        {
+          "code": "735511061",
+          "score": 0.433,
+          "tokens": "potrb reha rozvdn"
+        },
+        {
+          "code": "735511062",
+          "score": 0.433,
+          "tokens": "potrb reha rozvdn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "ČSN hlukové limity + standardní design",
+      "raw_description": "tlumiče hluku potrubí",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "placeholder 4 ks (na hlavním rozvodu)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-008",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Tepelná izolace VZT potrubí — kaučuková tl. 13 mm, parotěsná",
+      "mj": "m²",
+      "mnozstvi": 180.0,
+      "urs_code": "312342111",
+      "urs_alternatives": [
+        {
+          "code": "312342111",
+          "score": 0.667,
+          "tokens": "izolcnh lehcnh tepeln"
+        },
+        {
+          "code": "312342112",
+          "score": 0.667,
+          "tokens": "izolcnh lehcnh tepeln"
+        },
+        {
+          "code": "312342113",
+          "score": 0.667,
+          "tokens": "izolcnh lehcnh tepeln"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "ČSN tepelná izolace VZT + TZ B",
+      "raw_description": "tepelná izolace VZT 13 mm",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "placeholder 180 m² (~70 % povrchu potrubí — venkovní úseky)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-009",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Antivibrační pružná uložení rekuperace + manžety na přípojkách",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "741410074",
+          "score": 0.5,
+          "tokens": "do mm2 prurz uloznm vodicm"
+        },
+        {
+          "code": "741410075",
+          "score": 0.5,
+          "tokens": "do mm2 prurz uloznm vodicm"
+        },
+        {
+          "code": "55128010",
+          "score": 0.4,
+          "tokens": "armatr armatrm bar ivar manomtr mr prislsnstv pro"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní detail",
+      "raw_description": "antivibrační uložení rekuperace",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "1 kpl (rekuperační jednotka)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-010",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Automatická regulace VZT s MaR (měření a regulace) — řízení rekuperace + clon",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "043194000",
+          "score": 0.333,
+          "tokens": "cinnst inzenrsk meren"
+        },
+        {
+          "code": "55346534",
+          "score": 0.333,
+          "tokens": "kovov markz prislsnstv stavbn"
+        },
+        {
+          "code": "043103000",
+          "score": 0.25,
+          "tokens": "cinnst inzenrsk meren ostatn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní vybavení rekuperační jednotky",
+      "raw_description": "MaR VZT",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "1 kpl",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-011",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Dálkové ovládání + napojení na centrální řízení haly",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "082103000",
+          "score": 0.333,
+          "tokens": "dals na nakld pracvnk"
+        },
+        {
+          "code": "082203000",
+          "score": 0.333,
+          "tokens": "dals na nakld pracvnk"
+        },
+        {
+          "code": "220860205",
+          "score": 0.333,
+          "tokens": "bednch brevn fixnm jamy kabel napajn ovladch pripjn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní vybavení",
+      "raw_description": "dálkové ovládání VZT",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "1 kpl",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-012",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Závěsy + příchytky potrubí SPIRO — komplet pro celý rozvod",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": "735511039",
+      "urs_alternatives": [
+        {
+          "code": "735511039",
+          "score": 0.767,
+          "tokens": "potrb reha rozvdn"
+        },
+        {
+          "code": "735511061",
+          "score": 0.767,
+          "tokens": "potrb reha rozvdn"
+        },
+        {
+          "code": "735511062",
+          "score": 0.767,
+          "tokens": "potrb reha rozvdn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.767,
+      "skladba_ref": null,
+      "source": "standardní detail",
+      "raw_description": "závěsy + příchytky SPIRO",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "1 kpl (komplet pro 260 bm rozvodů)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-013",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Spuštění + zaregulování VZT systému + měření hlučnosti a vzduchových výkonů",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "733322211",
+          "score": 0.433,
+          "tokens": "has reha systm"
+        },
+        {
+          "code": "733322212",
+          "score": 0.433,
+          "tokens": "has reha systm"
+        },
+        {
+          "code": "733322213",
+          "score": 0.433,
+          "tokens": "has reha systm"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "standardní VRN VZT",
+      "raw_description": "spuštění + měření VZT",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-014",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Doprava VZT komponentů — paušál pro veškeré jednotky a potrubí",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "113106191",
+          "score": 0.5,
+          "tokens": "jedntlv komunkc pesi plos pro"
+        },
+        {
+          "code": "113106192",
+          "score": 0.5,
+          "tokens": "jedntlv komunkc pesi plos pro"
+        },
+        {
+          "code": "28617245",
+          "score": 0.5,
+          "tokens": "kombnvn podzmn polyprpln potrb trubk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní VRN doprava",
+      "raw_description": "doprava VZT",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "VZT-015",
+      "kapitola": "VZT",
+      "SO": "SO-05",
+      "popis": "Revize VZT + protokol o předání + zapojení do BMS",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "28661880",
+          "score": 0.25,
+          "tokens": "dvorn kanalzcn kg revizn sacht systm tegr vpust"
+        },
+        {
+          "code": "28661881",
+          "score": 0.25,
+          "tokens": "dvorn kanalzcn revizn sacht systm tegr vpust wavin"
+        },
+        {
+          "code": "28661882",
+          "score": 0.25,
+          "tokens": "dvorn kanalzcn kg revizn sacht systm tegr typ"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.25,
+      "skladba_ref": null,
+      "source": "ČSN VZT + standardní revize",
+      "raw_description": "revize VZT + protokol",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "VZT_dodavatel",
+      "_vyjasneni_ref": [],
+      "_status_flag": "concept_pending_vzt_drawings",
+      "_data_source": "TZ_only",
+      "_completeness": 0.5,
       "_qty_formula": "paušál",
       "_export_wrapper_hint": null
     }
