@@ -9,19 +9,28 @@
       "kap_hsv1 (27 items)",
       "kap_hsv2 (18 items)",
       "kap_hsv3 (14 items)",
-      "kap_hsv9 (4 items)"
+      "kap_hsv9 (4 items)",
+      "kap_psv71x (4 items)",
+      "kap_psv76x (12 items)",
+      "kap_psv77x (6 items)",
+      "kap_psv78x (12 items)"
     ],
-    "total_items": 63,
+    "total_items": 97,
     "status_counts": {
-      "matched_medium": 14,
-      "needs_review": 48,
-      "matched_high": 1
+      "matched_medium": 22,
+      "needs_review": 71,
+      "matched_high": 4
     },
-    "match_rate_high_plus_medium": 0.238,
+    "match_rate_high_plus_medium": 0.268,
     "vyjasneni_ref_distribution": {
       "ABMV_17": 22,
       "ABMV_11": 5,
-      "ABMV_15": 1
+      "ABMV_15": 1,
+      "ABMV_2": 1,
+      "ABMV_10": 2,
+      "ABMV_3": 1,
+      "ABMV_16": 1,
+      "ABMV_20": 2
     }
   },
   "items": [
@@ -210,9 +219,9 @@
           "tokens": "kotoc medi mm pasy pruh ve"
         },
         {
-          "code": "60515111",
+          "code": "54925015",
           "score": 0.333,
-          "tokens": "cm krajn krajnv neoprcvn"
+          "tokens": "hloubk mm zadlb zamk"
         }
       ],
       "urs_status": "needs_review",
@@ -860,12 +869,12 @@
           "tokens": "drobn kg mogul obal"
         },
         {
-          "code": "02650312",
+          "code": "60627047",
           "score": 0.333,
-          "tokens": "drevn listnt okrasn"
+          "tokens": "drevn jak pn tp"
         },
         {
-          "code": "02650327",
+          "code": "02650312",
           "score": 0.333,
           "tokens": "drevn listnt okrasn"
         }
@@ -1251,17 +1260,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
+          "code": "59381001",
+          "score": 0.333,
+          "tokens": "betonv izd prefbrkt zelezbtnv"
+        },
+        {
           "code": "59381338",
           "score": 0.333,
           "tokens": "betonv izd prefbrkt zelezbtnv"
         },
         {
           "code": "59383630",
-          "score": 0.333,
-          "tokens": "beton lp most predpjth pro"
-        },
-        {
-          "code": "59383631",
           "score": 0.333,
           "tokens": "beton lp most predpjth pro"
         }
@@ -1373,14 +1382,14 @@
           "tokens": "koncvch mezilhlch podprnch rozmstn vcetn"
         },
         {
-          "code": "59341217",
+          "code": "62836110",
           "score": 0.333,
-          "tokens": "betonv cm prefbrkt zelezbtnv"
+          "tokens": "foalbt kovov pasy proflvn"
         },
         {
-          "code": "59342075",
+          "code": "220110926",
           "score": 0.333,
-          "tokens": "betonv desk prefbrkt zelezbtnv"
+          "tokens": "betonvh usazn vcetn"
         }
       ],
       "urs_status": "needs_review",
@@ -1446,17 +1455,17 @@
       "urs_code": null,
       "urs_alternatives": [
         {
-          "code": "59311454",
-          "score": 0.333,
-          "tokens": "patkzb zelezbtnv zzp"
-        },
-        {
           "code": "28355020",
           "score": 0.333,
           "tokens": "bal pasy plast"
         },
         {
           "code": "28355021",
+          "score": 0.333,
+          "tokens": "bal pasy plast"
+        },
+        {
+          "code": "28355022",
           "score": 0.333,
           "tokens": "bal pasy plast"
         }
@@ -2534,6 +2543,1345 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~120 m³ pojízdné lešení pro obvodový plášť",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-71x-001",
+      "kapitola": "PSV-71x",
+      "SO": "SO-01",
+      "popis": "Penetrace soklu — penetrační nátěr pod hydroizolaci",
+      "mj": "m²",
+      "mnozstvi": 28.5,
+      "urs_code": "24618218",
+      "urs_alternatives": [
+        {
+          "code": "24618218",
+          "score": 0.85,
+          "tokens": "austs hydrzlcn izolcn kg laky nater peny pro"
+        },
+        {
+          "code": "58124181",
+          "score": 0.5,
+          "tokens": "fort hlink jilovnv kg malirsk nater penetrc penetrl"
+        },
+        {
+          "code": "24551390",
+          "score": 0.5,
+          "tokens": "bal concrsv hydrfbzcn chemck kg materl nater obor"
+        }
+      ],
+      "urs_status": "matched_high",
+      "urs_match_score": 0.85,
+      "skladba_ref": null,
+      "source": "ČSN skladba hydroizolace + RE-RUN §3.2",
+      "raw_description": "penetrace soklu",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "izolace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "95.0 bm × 0.3 m = 28.5 m²",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-71x-002",
+      "kapitola": "PSV-71x",
+      "SO": "SO-01",
+      "popis": "Hydroizolace svislá soklu — SBS modifikovaný asfaltový pás, natavený",
+      "mj": "m²",
+      "mnozstvi": 28.5,
+      "urs_code": "62852674",
+      "urs_alternatives": [
+        {
+          "code": "62852674",
+          "score": 0.933,
+          "tokens": "asfaltv bitulst hydrzlcn modifkvn pas sbs"
+        },
+        {
+          "code": "62852015",
+          "score": 0.814,
+          "tokens": "asfaltvn extr hydrzlcn modifkvn pas sbs sklolst"
+        },
+        {
+          "code": "62852673",
+          "score": 0.814,
+          "tokens": "asfaltv bitulst design hydrzlcn modifkvn pas sbs"
+        }
+      ],
+      "urs_status": "matched_high",
+      "urs_match_score": 0.933,
+      "skladba_ref": null,
+      "source": "TZ B + ČSN skladba hydroizolace soklu",
+      "raw_description": "hydroizolace svislá soklu",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "izolace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "95.0 bm × 0.3 m = 28.5 m²",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-71x-003",
+      "kapitola": "PSV-71x",
+      "SO": "SO-01",
+      "popis": "Hydroizolační lišty rohové + napojení svislé na vodorovnou pásku",
+      "mj": "bm",
+      "mnozstvi": 95.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "19620200",
+          "score": 0.429,
+          "tokens": "bal kb kotoc l meden medi pask pasy"
+        },
+        {
+          "code": "62832272",
+          "score": 0.333,
+          "tokens": "bitubtgt design pasy rohoz sklenn vlozk"
+        },
+        {
+          "code": "62836110",
+          "score": 0.333,
+          "tokens": "foalbt kovov pasy proflvn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.429,
+      "skladba_ref": null,
+      "source": "standardní detail napojení izolace",
+      "raw_description": "lišty hydroizolace",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "izolace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "obvod 95.0 bm",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-71x-004",
+      "kapitola": "PSV-71x",
+      "SO": "SO-01",
+      "popis": "Ochranná vrstva hydroizolace — nopová folie HDPE, š. 0.5 m",
+      "mj": "m²",
+      "mnozstvi": 47.5,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "28343124",
+          "score": 0.5,
+          "tokens": "foli foliv hydrzlcn mekcnh polyvnlchlrd profl protctn rs"
+        },
+        {
+          "code": "55483000",
+          "score": 0.333,
+          "tokens": "cm eco hydr"
+        },
+        {
+          "code": "712363311",
+          "score": 0.333,
+          "tokens": "foliv plech st viplnl"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "ČSN ochrana hydroizolace před zásypem",
+      "raw_description": "nopová folie ochrana izolace",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "izolace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.85,
+      "_qty_formula": "95.0 bm × 0.5 m",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-001",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Dodávka okno plastové 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá",
+      "mj": "ks",
+      "mnozstvi": 21.0,
+      "urs_code": "68536770",
+      "urs_alternatives": [
+        {
+          "code": "68536770",
+          "score": 0.667,
+          "tokens": "izochrn sedy vapn"
+        },
+        {
+          "code": "68536771",
+          "score": 0.667,
+          "tokens": "izochrn mm sedy vapn"
+        },
+        {
+          "code": "61140027",
+          "score": 0.5,
+          "tokens": "balknv dver okna plast"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "DXF A101 INSERT OKNO_1k × 21 + RE-RUN §3.5 otvory",
+      "raw_description": "okno plast 1000x1000 šedá",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-002",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Montáž okna plastového do osazovacího otvoru, vč. kotvení a pěny",
+      "mj": "ks",
+      "mnozstvi": 21.0,
+      "urs_code": "48477262",
+      "urs_alternatives": [
+        {
+          "code": "48477262",
+          "score": 0.6,
+          "tokens": "kotl mm otvor plast prislsnstv pro ustrdn vytapn"
+        },
+        {
+          "code": "61140027",
+          "score": 0.5,
+          "tokens": "balknv dver okna plast"
+        },
+        {
+          "code": "61140028",
+          "score": 0.5,
+          "tokens": "balknv dver okna plast"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.6,
+      "skladba_ref": null,
+      "source": "standardní pár dodávka+montáž",
+      "raw_description": "montáž okna plast",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= dodávka okna",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-003",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Vnější parapet pozinkovaný plech, š. 200 mm, s krytkami",
+      "mj": "bm",
+      "mnozstvi": 22.05,
+      "urs_code": "916232122",
+      "urs_alternatives": [
+        {
+          "code": "916232122",
+          "score": 0.667,
+          "tokens": "best parkn s pozdr"
+        },
+        {
+          "code": "59660699",
+          "score": 0.4,
+          "tokens": "krytn mm palen pozinkvn stresn tondch"
+        },
+        {
+          "code": "59660700",
+          "score": 0.4,
+          "tokens": "krytn mm palen pozinkvn stresn tondch"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní vnější parapet pod okno",
+      "raw_description": "parapet pozink vnější",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "21 ks × 1.05 m (šířka okna + přesah)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-004",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Vnější okenní lemy plastové — rohové + nadokenní",
+      "mj": "bm",
+      "mnozstvi": 63.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "31319114",
+          "score": 0.4,
+          "tokens": "and bez coatd dr dratn matn nettng neuslchtlch"
+        },
+        {
+          "code": "31319115",
+          "score": 0.4,
+          "tokens": "and bal coatd dr dratn matn nettng neuslchtlch"
+        },
+        {
+          "code": "31319116",
+          "score": 0.4,
+          "tokens": "and bal coatd dr dratn matn nettng neuslchtlch"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "standardní detail osazení",
+      "raw_description": "okenní lemy plast",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-005",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Dodávka sekční vrata 3000 × 4000 mm (š × v) s tepelněizolační výplní, motorická",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55345887",
+          "score": 0.375,
+          "tokens": "garazv hloubk hormnn kovov lpu rozmr sekcn stavb"
+        },
+        {
+          "code": "55271100",
+          "score": 0.333,
+          "tokens": "ocelv pip provdn tepeln"
+        },
+        {
+          "code": "55271101",
+          "score": 0.333,
+          "tokens": "ocelv pip provdn tepeln"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.375,
+      "skladba_ref": null,
+      "source": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2",
+      "raw_description": "vrata sekční 3000×4000 výsuvná",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [
+        "ABMV_2"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks (DXF A101 INSERT 'Vrata sekční' = 4)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-006",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Elektrický pohon vrat sekčních s dálkovým ovládáním + nouzové odblokování",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "082103000",
+          "score": 0.333,
+          "tokens": "dals na nakld pracvnk"
+        },
+        {
+          "code": "082203000",
+          "score": 0.333,
+          "tokens": "dals na nakld pracvnk"
+        },
+        {
+          "code": "55145632",
+          "score": 0.333,
+          "tokens": "armatr auz bezdtkvm elektrnckm ovladnm souprv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní vybavení sekčních vrat",
+      "raw_description": "el. pohon vrat + dálkové ovl.",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks pohon (jeden na každá vrata)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-007",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Nouzové ruční odblokování vrat sekčních — pro výpadek el.",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55345887",
+          "score": 0.429,
+          "tokens": "garazv hloubk hormnn kovov lpu rozmr sekcn stavb"
+        },
+        {
+          "code": "35822592",
+          "score": 0.333,
+          "tokens": "bc16nt do moden vypinc"
+        },
+        {
+          "code": "35822593",
+          "score": 0.333,
+          "tokens": "bc16nt do moden vypinc"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.429,
+      "skladba_ref": null,
+      "source": "BOZP požadavek ČSN",
+      "raw_description": "nouzové odblok vrat",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks ruční odblok",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-008",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Montáž sekčních vrat — osazení do otvoru, ukotvení, nastavení",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220850006",
+          "score": 0.429,
+          "tokens": "do elektrnk jedntkm kolejnc na nastvnm osazn otvor"
+        },
+        {
+          "code": "220850007",
+          "score": 0.429,
+          "tokens": "do elektrnk jedntkm kolejnc na nastvnm osazn otvor"
+        },
+        {
+          "code": "220850008",
+          "score": 0.429,
+          "tokens": "do elektrnk jedntkm kolejnc na nastvnm osazn otvor"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.429,
+      "skladba_ref": null,
+      "source": "standardní pár dodávka+montáž",
+      "raw_description": "montáž vrat sekčních",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= dodávka vrat",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-009",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Dodávka vnější dvoukřídlé dveře 1050 × 2100 mm, izol. plnostěnné, klika a zámek",
+      "mj": "ks",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "34343120",
+          "score": 0.333,
+          "tokens": "hadic izolcn smrsttln"
+        },
+        {
+          "code": "34343122",
+          "score": 0.333,
+          "tokens": "hadic izolcn smrsttln"
+        },
+        {
+          "code": "34343124",
+          "score": 0.333,
+          "tokens": "hadic izolcn smrsttln"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "DXF A101 + RE-RUN §3.5",
+      "raw_description": "vnější dveře 2-křídlé 1050x2100",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-010",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Montáž vnějších 2-křídlých dveří — osazení, kotvení, pěna",
+      "mj": "ks",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "34571150",
+          "score": 0.333,
+          "tokens": "materl monoflx ulozn"
+        },
+        {
+          "code": "34571152",
+          "score": 0.333,
+          "tokens": "materl monoflx ulozn"
+        },
+        {
+          "code": "34571154",
+          "score": 0.333,
+          "tokens": "materl monoflx ulozn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní pár",
+      "raw_description": "montáž vnějších dveří",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= dodávka dveří",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-011",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Kompletní zámkový systém + klika pro vnější 2-křídlé dveře",
+      "mj": "kpl",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "61143901",
+          "score": 0.429,
+          "tokens": "balknv dimex dver komfrt okna os1a plast profl"
+        },
+        {
+          "code": "61143902",
+          "score": 0.429,
+          "tokens": "balknv dimex dver komfrt okna os1a plast profl"
+        },
+        {
+          "code": "61143903",
+          "score": 0.429,
+          "tokens": "balknv dimex dver komfrt okna os1a plast profl"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.429,
+      "skladba_ref": null,
+      "source": "standardní vybavení dveří",
+      "raw_description": "zámek + klika vnější dveře",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 kpl",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-76x-012",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Práh + lemování ostění vnějších dveří — pozink plech",
+      "mj": "kpl",
+      "mnozstvi": 2.0,
+      "urs_code": "54916350",
+      "urs_alternatives": [
+        {
+          "code": "54916350",
+          "score": 0.667,
+          "tokens": "dvern okenn ostatn"
+        },
+        {
+          "code": "54916354",
+          "score": 0.667,
+          "tokens": "dvern okenn ostatn"
+        },
+        {
+          "code": "54916355",
+          "score": 0.667,
+          "tokens": "dvern okenn ostatn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní detail ostění",
+      "raw_description": "práh + lemování dveří",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 kpl",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-77x-001",
+      "kapitola": "PSV-77x",
+      "SO": "SO-01",
+      "popis": "Penetrace + primer pod průmyslovou stěrku podlahy",
+      "mj": "m²",
+      "mnozstvi": 495.0,
+      "urs_code": "23531111",
+      "urs_alternatives": [
+        {
+          "code": "23531111",
+          "score": 0.767,
+          "tokens": "bal bb epoxdvch lita litych materl odstn os"
+        },
+        {
+          "code": "24618218",
+          "score": 0.767,
+          "tokens": "austs hydrzlcn izolcn kg laky nater peny pro"
+        },
+        {
+          "code": "58594503",
+          "score": 0.767,
+          "tokens": "bal boxit hmot hydrzlcn izolcn kg lita pevn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.767,
+      "skladba_ref": null,
+      "source": "standardní skladba pod stěrku",
+      "raw_description": "penetrace + primer pod stěrku",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "podlahy_specialista",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495.0 m² (celá plocha podlahy)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-77x-002",
+      "kapitola": "PSV-77x",
+      "SO": "SO-01",
+      "popis": "Průmyslová epoxidová / PU stěrka podlahy tl. 4-5 mm, zatížení 1600 kg/m²",
+      "mj": "m²",
+      "mnozstvi": 495.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59051392",
+          "score": 0.5,
+          "tokens": "kontktn kontktnch mm prislsnstv prumr systm zateplvc zateplvcch"
+        },
+        {
+          "code": "776144111",
+          "score": 0.433,
+          "tokens": "mm podstpnc pres sterk tloustk vysk"
+        },
+        {
+          "code": "011103000",
+          "score": 0.333,
+          "tokens": "geodtck geotchnck prac projktv pruzkmn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "TZ B m.podlaha + statika užitné zatížení 16 kN/m²",
+      "raw_description": "EP / PU stěrka 4-5 mm",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "podlahy_specialista",
+      "_vyjasneni_ref": [
+        "ABMV_10"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495.0 m²",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-77x-003",
+      "kapitola": "PSV-77x",
+      "SO": "SO-01",
+      "popis": "Lokální zesílení podlahy v anchorage zónách strojů — vyšší tl. stěrky 8 mm",
+      "mj": "m²",
+      "mnozstvi": 30.0,
+      "urs_code": "776144111",
+      "urs_alternatives": [
+        {
+          "code": "776144111",
+          "score": 0.767,
+          "tokens": "mm podstpnc pres sterk tloustk vysk"
+        },
+        {
+          "code": "28618120",
+          "score": 0.5,
+          "tokens": "mm podlhv polytln univrs vysok zesitvnh"
+        },
+        {
+          "code": "28618121",
+          "score": 0.5,
+          "tokens": "mm podlhv polytln univrs vysok zesitvnh"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.767,
+      "skladba_ref": null,
+      "source": "A107 kotvící body × cca 10 m² každý + ABMV_3+16 stroje",
+      "raw_description": "lokální zesílení podlahy pod stroji",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "podlahy_specialista",
+      "_vyjasneni_ref": [
+        "ABMV_3",
+        "ABMV_16"
+      ],
+      "_status_flag": "placeholder_engineering_estimate",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.55,
+      "_qty_formula": "placeholder ~30 m² (3 stroje × ~10 m² každé anchorage zóna)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-77x-004",
+      "kapitola": "PSV-77x",
+      "SO": "SO-01",
+      "popis": "Dilatační lišty podlahy — kovové, řezané spáry á 6 m",
+      "mj": "bm",
+      "mnozstvi": 60.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55350997",
+          "score": 0.5,
+          "tokens": "diln kovov m2 ondustlndtch ondutch st t"
+        },
+        {
+          "code": "55391550",
+          "score": 0.5,
+          "tokens": "castm dily kovovm mm prefbrktm sestv"
+        },
+        {
+          "code": "55391552",
+          "score": 0.5,
+          "tokens": "castm dily kovovm mm prefbrktm sestv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "ČSN podlahové dilatace ve velkoplošných podlahách",
+      "raw_description": "dilatační lišty podlahy",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "podlahy_specialista",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.8,
+      "_qty_formula": "placeholder ~60 bm (pole dilatace á 6 m na 495 m² ploše)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-77x-005",
+      "kapitola": "PSV-77x",
+      "SO": "SO-01",
+      "popis": "Lemovací úhelníky podlahy — pozink po obvodu stěrky",
+      "mj": "bm",
+      "mnozstvi": 95.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "776144111",
+          "score": 0.433,
+          "tokens": "mm podstpnc pres sterk tloustk vysk"
+        },
+        {
+          "code": "63141410",
+          "score": 0.4,
+          "tokens": "cedicv fkd izolc kontktnch mm ni nobasl obvodv"
+        },
+        {
+          "code": "63141411",
+          "score": 0.4,
+          "tokens": "cedicv fkd izolc kontktnch mm ni nobasl obvodv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "standardní detail lemu stěrky",
+      "raw_description": "lemovací úhelníky stěrky",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "podlahy_specialista",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "obvod desky 95 bm",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-77x-006",
+      "kapitola": "PSV-77x",
+      "SO": "SO-01",
+      "popis": "Protiskluzový posyp křemičitým pískem — pro PU variantu",
+      "mj": "m²",
+      "mnozstvi": 495.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "58156562",
+          "score": 0.5,
+          "tokens": "bal cemix kg kremct mm pisk"
+        },
+        {
+          "code": "59591320",
+          "score": 0.4,
+          "tokens": "dekortvn delap desk kremct nepaln ostatn pisek zdic"
+        },
+        {
+          "code": "58154300",
+          "score": 0.4,
+          "tokens": "epoxdv i kremn malt pisek pisk pro smes"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní úprava skluznosti R10/R11",
+      "raw_description": "protiskluzový posyp",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "podlahy_specialista",
+      "_vyjasneni_ref": [
+        "ABMV_10"
+      ],
+      "_status_flag": "working_assumption",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "495.0 m² (pokud zvolena PU varianta)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-001",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Dodávka Lindab Round Downpipe 150/100 Antique White, vč. kolen a spojek",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": "34551140",
+      "urs_alternatives": [
+        {
+          "code": "34551140",
+          "score": 0.667,
+          "tokens": "kolikm spoj zasuvkv"
+        },
+        {
+          "code": "54171141",
+          "score": 0.4,
+          "tokens": "mm prislsnstv rour spork topnm varnm zariznm"
+        },
+        {
+          "code": "54171142",
+          "score": 0.4,
+          "tokens": "mm prislsnstv rour spork topnm varnm zariznm"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "DXF A104 Lindab × 4 + RE-RUN §3.7 klempíř",
+      "raw_description": "Lindab Round Downpipe 150/100",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [
+        "ABMV_20"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks (A104 DXF count working, ABMV_20: A101=3 vs A104=4)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-002",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Montáž svodů Lindab — příchytky, kotvení do fasády",
+      "mj": "kpl",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59623540",
+          "score": 0.4,
+          "tokens": "a4 ciheln fasad hk4 klinkr kotvn"
+        },
+        {
+          "code": "59623541",
+          "score": 0.4,
+          "tokens": "ciheln fasad hk4 klinkr kotvn zdiv"
+        },
+        {
+          "code": "59623542",
+          "score": 0.4,
+          "tokens": "ciheln fasad hk4 klinkr kotvn zdiv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "standardní pár dodávka+montáž",
+      "raw_description": "montáž Lindab svodů",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [
+        "ABMV_20"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 kpl (jeden na každý svod)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-003",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Wavin Tegra střešní vpust Round Iron Cover + Concrete Ring DN300",
+      "mj": "ks",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "28661413",
+          "score": 0.444,
+          "tokens": "dvorn kanalzcn revizn sacht strem systm tegr vpust"
+        },
+        {
+          "code": "28661415",
+          "score": 0.444,
+          "tokens": "dvorn kanalzcn revizn sacht strem systm tegr vpust"
+        },
+        {
+          "code": "28661417",
+          "score": 0.444,
+          "tokens": "dvorn kanalzcn revizn sacht strem systm tegr vpust"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.444,
+      "skladba_ref": null,
+      "source": "DXF A101 INSERT Wavin Tegra × 3 + RE-RUN §3.7",
+      "raw_description": "Wavin Tegra střešní vpust",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "3 ks (A101 INSERT Wavin × 3 dle DXF parse)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-004",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Montáž střešních vpustí Wavin Tegra — osazení, napojení na svody",
+      "mj": "ks",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "28661413",
+          "score": 0.5,
+          "tokens": "dvorn kanalzcn revizn sacht strem systm tegr vpust"
+        },
+        {
+          "code": "28661415",
+          "score": 0.5,
+          "tokens": "dvorn kanalzcn revizn sacht strem systm tegr vpust"
+        },
+        {
+          "code": "28661417",
+          "score": 0.5,
+          "tokens": "dvorn kanalzcn revizn sacht strem systm tegr vpust"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní pár",
+      "raw_description": "montáž střešních vpustí",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= dodávka",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-005",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "MEA Mearin Plus 3000 NW300 liniový žlab — podél JZ a SZ fasády",
+      "mj": "bm",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "24711110",
+          "score": 0.333,
+          "tokens": "bal km plus"
+        },
+        {
+          "code": "64241631",
+          "score": 0.333,
+          "tokens": "lyra plus typ"
+        },
+        {
+          "code": "59244472",
+          "score": 0.333,
+          "tokens": "bramc classc plus protctr"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "DXF A105 INSERT MEA Mearin + RE-RUN §3.7",
+      "raw_description": "MEA Mearin Plus 3000 NW300",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.85,
+      "_qty_formula": "~30.0 bm podél JZ + SZ fasády (RE-RUN §3.7)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-006",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Mřížka MEA Mearin Plus 3000 + osazovací rám — pochozí provedení",
+      "mj": "bm",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "24711110",
+          "score": 0.333,
+          "tokens": "bal km plus"
+        },
+        {
+          "code": "64241631",
+          "score": 0.333,
+          "tokens": "lyra plus typ"
+        },
+        {
+          "code": "327711211",
+          "score": 0.333,
+          "tokens": "s pohldv tw1 z betnvch"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní vybavení liniového žlabu",
+      "raw_description": "mřížka MEA + rám",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.85,
+      "_qty_formula": "= liniový žlab",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-007",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Atikové oplechování titanzinek tl. 0.7 mm, rš 500 mm — po obvodu střechy",
+      "mj": "bm",
+      "mnozstvi": 95.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "764111471",
+          "score": 0.333,
+          "tokens": "drazkvnm oble strech"
+        },
+        {
+          "code": "764111671",
+          "score": 0.333,
+          "tokens": "drazkvnm oble strech"
+        },
+        {
+          "code": "764131471",
+          "score": 0.333,
+          "tokens": "drazkvnm oble strech"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "TZ B + standardní detail atiky",
+      "raw_description": "atikové oplechování TiZn",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "obvod střechy 95.0 bm",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-008",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Lemování úžlabí střechy titanzinek — diagonální linie",
+      "mj": "bm",
+      "mnozstvi": 15.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55350173",
+          "score": 0.4,
+          "tokens": "kovov lindb stresn systm upp/fpp"
+        },
+        {
+          "code": "764111471",
+          "score": 0.333,
+          "tokens": "drazkvnm oble strech"
+        },
+        {
+          "code": "764111671",
+          "score": 0.333,
+          "tokens": "drazkvnm oble strech"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "standardní detail úžlabí",
+      "raw_description": "lemování úžlabí",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "placeholder ~15 bm (úžlabí pultové střechy 5.25°)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-009",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Lemování nároží titanzinek — vertikální rohy fasády",
+      "mj": "bm",
+      "mnozstvi": 25.2,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59055100",
+          "score": 0.333,
+          "tokens": "fasad kovov mm odvetrn"
+        },
+        {
+          "code": "62865015",
+          "score": 0.333,
+          "tokens": "bitumnv stresn verzch"
+        },
+        {
+          "code": "62865016",
+          "score": 0.333,
+          "tokens": "bitumnv stresn verzch"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní detail nároží",
+      "raw_description": "lemování nároží",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "4 nároží × 6.3 m výška",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-010",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Krytí spár klempířských konstrukcí — silikonový tmel",
+      "mj": "bm",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "783573201",
+          "score": 0.433,
+          "tokens": "nosn siliknkrltv st vlozk"
+        },
+        {
+          "code": "59660684",
+          "score": 0.4,
+          "tokens": "koncrn krytn palen stresn tondch"
+        },
+        {
+          "code": "59660685",
+          "score": 0.4,
+          "tokens": "koncrn krytn palen stresn tondch"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "standardní detail",
+      "raw_description": "krytí spár klempířských",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~120 bm (spáry mezi všemi klempířskými prvky)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-011",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Ostatní oplechování — parapety střešních vpustí, lemy prostupů",
+      "mj": "bm",
+      "mnozstvi": 25.0,
+      "urs_code": "55161810",
+      "urs_alternatives": [
+        {
+          "code": "55161810",
+          "score": 0.667,
+          "tokens": "ostatn sifon t vpust"
+        },
+        {
+          "code": "55161835",
+          "score": 0.5,
+          "tokens": "hl13 ostatn sifon vpust"
+        },
+        {
+          "code": "55161836",
+          "score": 0.5,
+          "tokens": "hl13 ostatn sifon vpust"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní detail",
+      "raw_description": "ostatní oplechování",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~25 bm (vpusti + prostupy)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "PSV-78x-012",
+      "kapitola": "PSV-78x",
+      "SO": "SO-01",
+      "popis": "Doprava klempířiny + materiálu na stavbu — paušál",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": "55349383",
+      "urs_alternatives": [
+        {
+          "code": "55349383",
+          "score": 0.9,
+          "tokens": "cast doplnt klemprsk materl mm nutn odvodnn predzvtrl"
+        },
+        {
+          "code": "55349384",
+          "score": 0.9,
+          "tokens": "cast doplnt klemprsk materl mm nutn odvodnn predzvtrl"
+        },
+        {
+          "code": "55349385",
+          "score": 0.9,
+          "tokens": "cast doplnt klemprsk materl mm nutn odvodnn predzvtrl"
+        }
+      ],
+      "urs_status": "matched_high",
+      "urs_match_score": 0.9,
+      "skladba_ref": null,
+      "source": "standardní VRN klempíř",
+      "raw_description": "doprava klempířiny",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "klempir",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
       "_export_wrapper_hint": null
     }
   ]
