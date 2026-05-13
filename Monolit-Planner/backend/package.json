@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@stavagent/monolit-shared": "file:../shared",
-    "axios": "^1.15.0",
+    "axios": "^1.16.0",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^9.2.2",
     "cors": "^2.8.5",
@@ -35,7 +35,7 @@
     "multer": "^1.4.5-lts.1",
     "pg": "^8.16.3",
     "string-similarity": "^4.0.4",
-    "uuid": "^9.0.1",
+    "uuid": "^14.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
