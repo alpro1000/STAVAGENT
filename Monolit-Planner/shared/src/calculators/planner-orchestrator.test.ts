@@ -513,6 +513,50 @@ describe('Planner Orchestrator', () => {
       });
       expect(plan.warnings.some(w => w.includes('Obrátkovost'))).toBe(true);
     });
+
+    // ── P0 BUG #5/#6 mutex (2026-05-14, SO-250 audit) ──
+    // When user fills BOTH num_dilatation_sections > 1 AND
+    // num_identical_elements > 1 (the SO-250 case: 42 / 42), the obrátkovost
+    // block must NOT multiply duration a second time. dilatation_sections is
+    // the single source of obrátkovost for one continuous structure.
+    it('mutex: dilatation cells suppress identical_elements multiplication', () => {
+      const oneCellPlan = planElement({
+        ...patkaInput,
+        // No dilatation cells: obrátkovost block fires normally.
+        num_identical_elements: 42,
+        formwork_sets_count: 6,
+      });
+      const dilatationPlan = planElement({
+        ...patkaInput,
+        // Same identical_elements + sets, but now ALSO 42 dilatation cells.
+        // The mutex must skip the obrátkovost duration multiplication.
+        num_dilatation_sections: 42,
+        num_identical_elements: 42,
+        formwork_sets_count: 6,
+      });
+
+      expect(oneCellPlan.obratkovost).toBeDefined();
+      // Mutex case: obrátkovost block did NOT populate the result object
+      // (would otherwise emit total_duration_days = 7× schedule).
+      expect(dilatationPlan.obratkovost).toBeUndefined();
+      // And a warning surfaces the suppression to the user.
+      expect(
+        dilatationPlan.warnings.some(w => w.includes('ignorováno') && w.includes('dilatačních celků')),
+      ).toBe(true);
+    });
+
+    it('mutex: dilatation cells alone (without identical_elements) leave obratkovost untouched', () => {
+      const plan = planElement({
+        ...patkaInput,
+        num_dilatation_sections: 5,
+        // num_identical_elements not set → defaults to 1 → no obratkovost block
+      });
+      // Plan still runs; obrátkovost block stays inactive.
+      expect(plan.obratkovost).toBeUndefined();
+      expect(
+        plan.warnings.some(w => w.includes('ignorováno') && w.includes('dilatačních celků')),
+      ).toBe(false);
+    });
   });
 
   // ──────────────────────────────────────────────────────────────────────

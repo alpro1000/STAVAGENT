@@ -5,13 +5,13 @@
   "scenarios": {
     "user_replay": {
       "label": "user_replay (BUG #1 + #5/#6)",
-      "runtime_ms": 181,
+      "runtime_ms": 26,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
-        "total_days_critical_path": 520.8,
+        "total_days_critical_path": 132.2,
         "total_days_sequential": 605.2,
-        "savings_pct": 14,
+        "savings_pct": 78,
         "formwork_assembly_days_per_tact": 7,
         "formwork_disassembly_days_per_tact": 2.43,
         "formwork_curing_days": 5,
@@ -34,21 +34,13 @@
         "pour_labor_czk": 75222,
         "pour_night_premium_czk": 0,
         "total_labor_czk": 9646263.92,
-        "formwork_rental_czk": 5497736.92,
+        "formwork_rental_czk": 8467440.26,
         "props_labor_czk": 0,
         "props_rental_czk": 0,
         "is_mss_path": false,
         "mss_mobilization_czk": 0,
         "mss_demobilization_czk": 0,
         "mss_rental_czk": 0
-      },
-      "obratkovost": {
-        "num_identical_elements": 42,
-        "formwork_sets_count": 6,
-        "obratkovost": 7,
-        "rental_per_element_czk": 130898.5,
-        "total_duration_days": 3649.1,
-        "transfer_time_days": 0.5
       },
       "resource_ceiling": {
         "source": "auto_derived",
@@ -68,15 +60,16 @@
         "Rebar: 2718kg/tact, 1.98d/tact (user, 3 čet×2 prac.=6 železářů, RCPSP parallel=3)",
         "Pour: 40m³/h, 1.5h/tact (bottleneck: element)",
         "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.5h pour",
-        "Schedule: 520.8d (sequential 605.2d, savings 14%)",
-        "Obrátkovost: 42 identických × 6 sad → 7× obrátka, doba 3649.1 dní (vč. přesunu 0.5d)",
+        "Schedule: 132.2d (sequential 605.2d, savings 78%)",
+        "Obrátkovost: SKIPPED — num_dilatation_sections=42 je už zdrojem obrátkovosti, num_identical_elements=42 ignorováno (P0 BUG #5/#6 mutex).",
         "T-window: 5h (season=normal, retarder=false)",
         "Dilatační spáry: NE, pracovní spáry: unknown → sekční režim po pracovních spárách",
         "Working joints: 7 záběrů × 119.6 m³ (max 120 m³/okno)"
       ],
       "warnings": [
         "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
-        "Obrátkovost: 42 identických elementů, 6 sad bednění → 7× obrátka. Pronájem na element: 130 898,5 Kč. Celková doba: 3649.1 dní."
+        "Četa výztuže nevytížena 80% — úzké hrdlo je četa bednění",
+        "⚠️ Pole \"Počet identických elementů\" (42) je ignorováno, protože konstrukce má 42 dilatačních celků (ty už pokrývají obrátkovost bednění). Pokud máte ve skutečnosti 42 samostatných objektů, vypněte dilatační spáry a zadejte délku/objem jednoho objektu."
       ],
       "input": {
         "element_type": "zaklady_piliru",
@@ -92,7 +85,7 @@
         "crew_size": 6,
         "num_rebar_crews": 3,
         "crew_size_rebar": 2,
-        "num_sets": 1,
+        "num_sets": 6,
         "shift_h": 12,
         "wage_czk_h": 398,
         "concrete_class": "C25/30",
@@ -108,13 +101,13 @@
     },
     "corrected": {
       "label": "corrected (operne_zdi, no double-count)",
-      "runtime_ms": 113,
+      "runtime_ms": 31,
       "headlines": {
         "formwork_system": "TRIO",
         "formwork_manufacturer": "PERI",
-        "total_days_critical_path": 457.8,
+        "total_days_critical_path": 118.2,
         "total_days_sequential": 561.5,
-        "savings_pct": 18,
+        "savings_pct": 79,
         "formwork_assembly_days_per_tact": 6.48,
         "formwork_disassembly_days_per_tact": 1.94,
         "formwork_curing_days": 5,
@@ -137,7 +130,7 @@
         "pour_labor_czk": 78732.36,
         "pour_night_premium_czk": 0,
         "total_labor_czk": 8843967.19,
-        "formwork_rental_czk": 7016425.39,
+        "formwork_rental_czk": 11005319.68,
         "props_labor_czk": 0,
         "props_rental_czk": 0,
         "is_mss_path": false,
@@ -192,6 +185,13 @@
           "available": 12,
           "severity": "critical",
           "message": "⛔ KRITICKÉ: celkem lidí potřeba 18, strop 12"
+        },
+        {
+          "field": "num_formwork_sets",
+          "required": 6,
+          "available": 2,
+          "severity": "critical",
+          "message": "⛔ KRITICKÉ: souprav bednění potřeba 6, dostupných 2"
         }
       ],
       "decision_log": [
@@ -211,7 +211,7 @@
         "Rebar: 2718kg/tact, 2.45d/tact (user, 3 čet×2 prac.=6 železářů, RCPSP parallel=3)",
         "Pour: 35m³/h, 1.57h/tact (bottleneck: element)",
         "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.6h pour",
-        "Schedule: 457.8d (sequential 561.5d, savings 18%)",
+        "Schedule: 118.2d (sequential 561.5d, savings 79%)",
         "T-window: 5h (season=normal, retarder=false)",
         "Dilatační spáry: NE, pracovní spáry: unknown → sekční režim po pracovních spárách",
         "Working joints: 7 záběrů × 119.6 m³ (max 120 m³/okno)"
@@ -220,12 +220,15 @@
         "TRIO vyžaduje jeřáb (panel 230 kg) — zajistěte jeřáb na stavbě pro celou dobu montáže.",
         "Bednění výška 3.2m > 1.2m → nutné stabilizační vzpěry IB (započítány v sestavě).",
         "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+        "Četa výztuže nevytížena 70% — úzké hrdlo je četa bednění",
         "⛔ KRITICKÉ: tesařů potřeba 18, dostupných 4 — práce na bednění poběží pomaleji",
         "⛔ KRITICKÉ: železářů potřeba 6, dostupných 4",
         "⛔ KRITICKÉ: celkem lidí potřeba 18, strop 12",
+        "⛔ KRITICKÉ: souprav bednění potřeba 6, dostupných 2",
         "ℹ️ Doporučení: Snížit počet souprav bednění (méně paralelních záběrů), nebo zvýšit strop tesařů",
         "ℹ️ Doporučení: Prodloužit dobu vázání výztuže nebo navýšit počet železářů",
-        "ℹ️ Doporučení: Rozdělit element do více záběrů — menší souběh profesí"
+        "ℹ️ Doporučení: Rozdělit element do více záběrů — menší souběh profesí",
+        "ℹ️ Doporučení: Snížit obrátkovost — záběry pojedou sekvenčně místo paralelně"
       ],
       "input": {
         "element_type": "operne_zdi",
@@ -240,7 +243,7 @@
         "crew_size": 6,
         "num_rebar_crews": 3,
         "crew_size_rebar": 2,
-        "num_sets": 1,
+        "num_sets": 6,
         "shift_h": 12,
         "wage_czk_h": 398,
         "concrete_class": "C25/30",
@@ -258,10 +261,9 @@
   "diff": {
     "cost_per_m3_user": 0,
     "cost_per_m3_corrected": 0,
-    "total_days_user": 3649.1,
-    "total_days_corrected": 457.8,
-    "rental_user": 5497736.92,
-    "rental_corrected": 7016425.39,
-    "rental_per_element_user": 130898.5
+    "total_days_user": 132.2,
+    "total_days_corrected": 118.2,
+    "rental_user": 8467440.26,
+    "rental_corrected": 11005319.68
   }
 }

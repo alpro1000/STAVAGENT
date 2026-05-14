@@ -67,7 +67,14 @@ const user_replay = {
   crew_size: 6,                 // → 18 tesařů (S4)
   num_rebar_crews: 3,
   crew_size_rebar: 2,           // → 6 železářů (S18)
-  num_sets: 1,                  // J2 default
+  // num_sets vs formwork_sets_count: the calculator's `useCalculator.buildInput`
+  // hook routes the J2 (visible) / J3 (worksheet value 6) into BOTH PlannerInput
+  // slots — `num_sets` drives parallelism of the per-tact chess scheduler
+  // (savings vs sequential), `formwork_sets_count` drives the obrátkovost
+  // rotation. Setting num_sets=1 here would force 1× parallelism (which is
+  // why an earlier draft of this probe got 520d instead of the worksheet's
+  // 132d). Use 6 to match the user's UI state.
+  num_sets: 6,
 
   shift_h: 12,                  // M1
   wage_czk_h: 398,              // M2

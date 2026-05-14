@@ -2196,14 +2196,49 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const totalLaborCZK = roundTo(formworkLaborCZK + rebarLaborCZK + pourLaborCZK + propsLaborCZK, 2);
 
   // ─── 8b. Obrátkovost (repetitive elements) ────────────────────────────
+  //
+  // Semantic guard (P0 BUG #5/#6 fix, 2026-05-14):
+  //   `num_identical_elements` describes N SEPARATE structures (e.g. 20 pad
+  //   foundations on a building site) rotating through `formwork_sets_count`
+  //   sets — duration is multiplied accordingly.
+  //
+  //   `num_dilatation_sections` describes N CELLS of ONE continuous
+  //   structure (e.g. 42 dilatation cells of a single 515 m retaining
+  //   wall) — these are ALREADY scheduled in `scheduleResult.total_days`
+  //   via the per-tact rotation through `formwork_sets_count`.
+  //
+  // When the user fills BOTH (which the SO-250 worksheet showed is easy
+  // to do — both fields accept the same `42` value and the labels look
+  // semantically similar), the legacy code multiplied a second time and
+  // produced a 928d / 3649d Frankenstein total. Now we treat dilatation
+  // cells as the single source of obrátkovost: when `num_dilatation_sections
+  // > 1`, the obrátkovost block uses the schedule as-is, emits a warning
+  // that `num_identical_elements` was ignored, and lets the user decide
+  // whether they actually meant separate structures (in which case they
+  // disable dilatation joints).
 
   const numIdentical = input.num_identical_elements ?? 1;
   const fwSetsCount = input.formwork_sets_count ?? numSets;
   const TRANSFER_TIME_DAYS = 0.5; // demontáž + přesun + montáž na novém místě
+  const hasDilatationCells = (input.num_dilatation_sections ?? 1) > 1;
 
   let obratkovostResult: PlannerOutput['obratkovost'] = undefined;
 
-  if (numIdentical > 1) {
+  if (numIdentical > 1 && hasDilatationCells) {
+    // Mutex case: dilatation cells already provide the rotation. Don't
+    // multiply duration a second time. Surface the conflict so the user
+    // chooses one model or the other.
+    log.push(
+      `Obrátkovost: SKIPPED — num_dilatation_sections=${input.num_dilatation_sections} ` +
+      `je už zdrojem obrátkovosti, num_identical_elements=${numIdentical} ignorováno (P0 BUG #5/#6 mutex).`
+    );
+    warnings.push(
+      `⚠️ Pole "Počet identických elementů" (${numIdentical}) je ignorováno, protože konstrukce má ` +
+      `${input.num_dilatation_sections} dilatačních celků (ty už pokrývají obrátkovost bednění). ` +
+      `Pokud máte ve skutečnosti ${numIdentical} samostatných objektů, vypněte dilatační spáry a zadejte ` +
+      ``+`délku/objem jednoho objektu.`
+    );
+  } else if (numIdentical > 1) {
     const obratkovost = Math.ceil(numIdentical / fwSetsCount);
     const totalDuration = obratkovost * (scheduleResult.total_days + TRANSFER_TIME_DAYS);
     const rentalPerElement = formworkRentalCZK > 0
