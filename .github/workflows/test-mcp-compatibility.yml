@@ -4,11 +4,17 @@ on:
   push:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
+      - 'concrete-agent/packages/core-backend/migrations/007_mcp_api_keys.sql'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_compatibility.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_auth_postgres.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_endpoints.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
+      - 'concrete-agent/packages/core-backend/migrations/007_mcp_api_keys.sql'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_compatibility.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_auth_postgres.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_endpoints.py'
 
 jobs:
   mcp-compatibility:
@@ -17,6 +23,24 @@ jobs:
     defaults:
       run:
         working-directory: concrete-agent/packages/core-backend
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: mcp_test
+          POSTGRES_PASSWORD: mcp_test
+          POSTGRES_DB: mcp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U mcp_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgresql://mcp_test:mcp_test@localhost:5432/mcp_test
 
     steps:
       - name: Checkout code
@@ -31,7 +55,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install fastmcp pytest pytest-asyncio pdfplumber openpyxl pandas httpx pydantic pydantic-settings python-dotenv
+          # test_mcp_endpoints.py imports `app.main`, which pulls in the full
+          # FastAPI app dep tree (anthropic, sqlalchemy[asyncio], google-cloud,
+          # aiofiles, …). Install the production requirements so the import
+          # chain resolves cleanly. test_mcp_{compatibility,auth_postgres}.py
+          # don't strictly need it, but a single install keeps the matrix simple.
+          pip install -r requirements.txt
+          pip install fastmcp pytest pytest-asyncio fastapi httpx
+
+      - name: Apply MCP Postgres migration
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -yqq postgresql-client >/dev/null
+          psql "$DATABASE_URL" -f migrations/007_mcp_api_keys.sql
 
       - name: Run MCP compatibility tests
-        run: python -m pytest tests/test_mcp_compatibility.py -v --tb=short
+        run: python -m pytest tests/test_mcp_compatibility.py tests/test_mcp_auth_postgres.py tests/test_mcp_endpoints.py -v --tb=short
