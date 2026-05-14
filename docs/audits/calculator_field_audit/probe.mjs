@@ -109,6 +109,22 @@ const corrected = {
   formwork_sets_count: undefined,     // not relevant when N=1
 };
 
+// Scenario 3 — BUG #7 verification: identical to user_replay BUT WITHOUT
+// the 622 m² user-supplied per-tact area. The new length-aware estimate
+// should derive per-cell area from total_length_m + numTacts + height_m.
+// total_length_m = 515.2 (worksheet F4), numTacts = 42, height_m = 0.56
+// → L_per_cell = 12.27 m, W = 19.93 / (12.27 × 0.56) = 2.90 m,
+// → area = 2(12.27 + 2.90) × 0.56 = 17 m² per cell (engineer-realistic).
+const realistic_estimate = {
+  ...user_replay,
+  element_type: 'zaklady_oper',       // BUG #1 fix consumed
+  num_identical_elements: 1,          // BUG #5/#6 fix consumed
+  formwork_sets_count: undefined,
+  formwork_area_m2: undefined,        // ← BUG #7: let estimate fire
+  height_m: 0.56,                     // SO-250 base block height (not 3.20)
+  total_length_m: 515.2,              // total wall length
+};
+
 // ─── Run both ──────────────────────────────────────────────────────────────
 
 function summarise(label, input) {
@@ -176,8 +192,9 @@ const result = {
     ]),
   ),
   scenarios: {
-    user_replay: summarise('user_replay (BUG #1 + #5/#6)', user_replay),
+    user_replay: summarise('user_replay (BUG #1 + #5/#6 + #7-user-622)', user_replay),
     corrected:   summarise('corrected (operne_zdi, no double-count)', corrected),
+    realistic_estimate: summarise('realistic_estimate (BUG #7 length-aware)', realistic_estimate),
   },
 };
 
@@ -233,3 +250,17 @@ console.log('  cost_per_m3   user:', result.diff.cost_per_m3_user, 'Kč/m³');
 console.log('  cost_per_m3   fix :', result.diff.cost_per_m3_corrected, 'Kč/m³');
 console.log('  total_days    user:', result.diff.total_days_user, 'd');
 console.log('  total_days    fix :', result.diff.total_days_corrected, 'd');
+
+// BUG #7 verification block
+const ur = result.scenarios.user_replay;
+const re = result.scenarios.realistic_estimate;
+const totUser = (ur.costs?.total_labor_czk ?? 0) + (ur.costs?.formwork_rental_czk ?? 0);
+const totReal = (re.costs?.total_labor_czk ?? 0) + (re.costs?.formwork_rental_czk ?? 0);
+const fwLine = re.decision_log?.find((l) => l.startsWith('Formwork area:'));
+const sanityFired = ur.warnings?.some((w) => w.includes('vysoko nad realistickým rozsahem'));
+console.log('\n--- BUG #7 verification ---');
+console.log('  user-supplied 622 m² (per tact)        →', totUser.toLocaleString('cs'), 'Kč total');
+console.log('  length-aware estimate (realistic 17 m²)→', totReal.toLocaleString('cs'), 'Kč total');
+console.log('  Ratio reduction                        →', (totUser / Math.max(totReal, 1)).toFixed(1) + '×');
+console.log('  Estimate log line                      →', fwLine ?? '(not found)');
+console.log('  Sanity warning fired on user_replay    →', sanityFired ? '✓ YES' : '✗ NO');

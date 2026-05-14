@@ -31,8 +31,8 @@
   },
   "scenarios": {
     "user_replay": {
-      "label": "user_replay (BUG #1 + #5/#6)",
-      "runtime_ms": 27,
+      "label": "user_replay (BUG #1 + #5/#6 + #7-user-622)",
+      "runtime_ms": 28,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
@@ -95,6 +95,7 @@
       ],
       "warnings": [
         "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+        "⚠️ Zadaná plocha bednění (622 m²) odpovídá 31.2 m²/m³ na záběr — to je vysoko nad realistickým rozsahem (0,4–12 m²/m³ podle typu prvku). Není to omylem celková plocha napříč všemi 42 záběry? Pole \"Plocha bednění\" očekává plochu na JEDEN záběr.",
         "Četa výztuže nevytížena 80% — úzké hrdlo je četa bednění",
         "⚠️ Pole \"Počet identických elementů\" (42) je ignorováno, protože konstrukce má 42 dilatačních celků (ty už pokrývají obrátkovost bednění). Pokud máte ve skutečnosti 42 samostatných objektů, vypněte dilatační spáry a zadejte délku/objem jednoho objektu."
       ],
@@ -128,7 +129,7 @@
     },
     "corrected": {
       "label": "corrected (operne_zdi, no double-count)",
-      "runtime_ms": 35,
+      "runtime_ms": 33,
       "headlines": {
         "formwork_system": "TRIO",
         "formwork_manufacturer": "PERI",
@@ -247,6 +248,7 @@
         "TRIO vyžaduje jeřáb (panel 230 kg) — zajistěte jeřáb na stavbě pro celou dobu montáže.",
         "Bednění výška 3.2m > 1.2m → nutné stabilizační vzpěry IB (započítány v sestavě).",
         "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+        "⚠️ Zadaná plocha bednění (622 m²) odpovídá 31.2 m²/m³ na záběr — to je vysoko nad realistickým rozsahem (0,4–12 m²/m³ podle typu prvku). Není to omylem celková plocha napříč všemi 42 záběry? Pole \"Plocha bednění\" očekává plochu na JEDEN záběr.",
         "Četa výztuže nevytížena 70% — úzké hrdlo je četa bednění",
         "⛔ KRITICKÉ: tesařů potřeba 18, dostupných 4 — práce na bednění poběží pomaleji",
         "⛔ KRITICKÉ: železářů potřeba 6, dostupných 4",
@@ -282,6 +284,98 @@
         "working_joints_allowed": "unknown",
         "rebar_norm_kg_m3": 134,
         "rebar_mass_kg": 114156
+      }
+    },
+    "realistic_estimate": {
+      "label": "realistic_estimate (BUG #7 length-aware)",
+      "runtime_ms": 31,
+      "headlines": {
+        "formwork_system": "Frami Xlife",
+        "formwork_manufacturer": "DOKA",
+        "total_days_critical_path": 38.4,
+        "total_days_sequential": 220.1,
+        "savings_pct": 83,
+        "formwork_assembly_days_per_tact": 0.19,
+        "formwork_disassembly_days_per_tact": 0.07,
+        "formwork_curing_days": 5,
+        "rebar_mass_kg": 2718,
+        "rebar_duration_days": 1.98,
+        "rebar_norm_h_per_t": 14,
+        "pour_crew_total": {
+          "ukladani": 2,
+          "vibrace": 1,
+          "finiseri": 0,
+          "rizeni": 0,
+          "total": 3,
+          "pumps_used": 1
+        },
+        "num_pumps": 1
+      },
+      "costs": {
+        "formwork_labor_czk": 244203.29,
+        "rebar_labor_czk": 636077.4,
+        "pour_labor_czk": 75222,
+        "pour_night_premium_czk": 0,
+        "total_labor_czk": 955502.69,
+        "formwork_rental_czk": 69668.99,
+        "props_labor_czk": 0,
+        "props_rental_czk": 0,
+        "is_mss_path": false,
+        "mss_mobilization_czk": 0,
+        "mss_demobilization_czk": 0,
+        "mss_rental_czk": 0
+      },
+      "resource_ceiling": {
+        "source": "auto_derived",
+        "confidence": 1
+      },
+      "resource_violations": [],
+      "decision_log": [
+        "Element: zaklady_oper (explicit)",
+        "Formwork: Frami Xlife (0.648 h/m², df=0.9)",
+        "Block A: 42 sekcí × 1 záběrů/sekce = 42 celkem",
+        "Tacts: MANUAL override → 42 tacts × 19.933333333333334m³",
+        "Override rebuild: pour/tact=1.66h, pumps=1, sub_mode=manual_override",
+        "Scheduling mode: MANUAL → chess",
+        "Pour: sectional/manual_override, 42 tacts × 19.933333333333334m³",
+        "Formwork area: 17 m² per tact (estimated)",
+        "Maturity strip: 5.0d (50% f_ck, 15°C, CEM_I)",
+        "Rebar: 2718kg/tact, 1.98d/tact (user, 3 čet×2 prac.=6 železářů, RCPSP parallel=3)",
+        "Pour: 40m³/h, 1.5h/tact (bottleneck: element)",
+        "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.5h pour",
+        "Schedule: 38.4d (sequential 220.1d, savings 83%)",
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown → sekční režim po pracovních spárách",
+        "Working joints: 7 záběrů × 119.6 m³ (max 120 m³/okno)"
+      ],
+      "warnings": [
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky."
+      ],
+      "input": {
+        "element_type": "zaklady_oper",
+        "volume_m3": 837.2,
+        "height_m": 0.56,
+        "has_dilatation_joints": true,
+        "num_dilatation_sections": 42,
+        "tacts_per_section": 1,
+        "num_identical_elements": 1,
+        "num_formwork_crews": 3,
+        "crew_size": 6,
+        "num_rebar_crews": 3,
+        "crew_size_rebar": 2,
+        "num_sets": 6,
+        "shift_h": 12,
+        "wage_czk_h": 398,
+        "concrete_class": "C25/30",
+        "cement_type": "CEM_I",
+        "temperature_c": 15,
+        "season": "normal",
+        "curing_class": "3",
+        "scheduling_mode_override": "chess",
+        "working_joints_allowed": "unknown",
+        "rebar_norm_kg_m3": 134,
+        "rebar_mass_kg": 114156,
+        "total_length_m": 515.2
       }
     }
   },
