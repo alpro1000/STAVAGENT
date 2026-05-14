@@ -4,6 +4,7 @@ Czech Building Audit System
 """
 import logging
 import os
+import time
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -216,6 +217,21 @@ app.include_router(api_router)
 # Universal Parser API (v5.0 — independent of old SmartParser pipeline)
 from app.api.routes_parser import router as parser_router
 app.include_router(parser_router)
+
+# Public MCP health endpoint (Cloud Run uptime checks). Must be declared BEFORE
+# `app.mount("/mcp", …)` so Starlette matches the explicit route before the
+# mounted FastMCP ASGI app swallows the path.
+@app.get("/mcp/health")
+@app.head("/mcp/health")
+async def mcp_health():
+    return {
+        "status": "ok",
+        "version": app.version,
+        "tools": 9,
+        "mcp_available": _mcp_http_app is not None,
+        "timestamp": int(time.time()),
+    }
+
 
 # Mount MCP server (its lifespan is already wired into the FastAPI lifespan above)
 if _mcp_http_app is not None:
