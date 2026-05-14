@@ -626,4 +626,32 @@ Celkový objem 605 m³ dle rozpočtu.
       expect((plural as any).alternatives).toBeUndefined();
     });
   });
+
+  // ─── Fix #0 (2026-05-14, SO-250 audit) — element-type chain order ───────
+  describe('element_type if/else ordering (SO-250 Fix #0)', () => {
+    it('SO-250 Block D OCR: "OPĚRNÁ ZEĎ ŘÍMSA …" classifies as operne_zdi (not rimsa)', () => {
+      // Block D transcript mixes both keywords on different lines.
+      // Pre-fix, the 1-word `rimsa` test fired first (norm() strips
+      // diacritics → "rimsa" substring). Now the more specific 2-word
+      // `opern\w* + zd|zed|sten` pattern is checked first.
+      const text =
+        'PODKLADNÍ BETON  C12/15 — X0\n' +
+        'OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4\n' +
+        'OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2\n' +
+        'OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4';
+      const r = extractFromText(text);
+      const p = findParam(r, 'element_type');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('operne_zdi');
+    });
+
+    it('plain "ŘÍMSOVÁ DESKA" still classifies as rimsa (fallback preserved)', () => {
+      // Regression-pin: when no opern + zd/zed/sten compound match is
+      // present, the chain falls through to the rimsa branch.
+      const r = extractFromText('ŘÍMSOVÁ DESKA z C30/37 XF4');
+      const p = findParam(r, 'element_type');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('rimsa');
+    });
+  });
 });

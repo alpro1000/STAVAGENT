@@ -601,10 +601,10 @@
         },
         {
           "name": "element_type",
-          "value": "rimsa",
+          "value": "operne_zdi",
           "source": "keyword",
           "confidence": 0.9,
-          "matched_text": "římsa"
+          "matched_text": "opěrná zeď / stěna"
         },
         {
           "name": "concrete_class",

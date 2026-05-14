@@ -565,7 +565,18 @@ export function extractFromText(
     });
   }
 
-  // Element type keywords
+  // Element type keywords.
+  //
+  // Fix #0 (2026-05-14, SO-250 audit follow-up): the previous if/else
+  // ordering tested `rimsa` before `operne_zdi`. Because `norm()` strips
+  // diacritics, "ŘÍMSA" inside a retaining-wall transcript (e.g. SO-250
+  // Block D — "OPĚRNÁ ZEĎ ŘÍMSA  C30/37 ...") matched first and the
+  // dominant element family (the wall itself) never got a chance. The
+  // 2-word `opern\w* + zd|zed|sten` pattern is strictly more specific
+  // than a 1-word `rimsa` substring, so reorder it ahead and let `rimsa`
+  // remain as the fallback for genuine římsa-only transcripts. Plain
+  // "ŘÍMSOVÁ DESKA" (existing classifier test fixture) still routes to
+  // `rimsa` because the opern pattern needs both words.
   if (/mostovk|nosna\s*konstrukc|nosnou\s*konstrukc/i.test(normalized)) {
     results.push({
       name: 'element_type', value: 'mostovkova_deska', label_cs: 'Typ: mostovková deska',
@@ -576,17 +587,17 @@ export function extractFromText(
       name: 'element_type', value: 'pilota', label_cs: 'Typ: pilota',
       confidence: 0.9, source: 'keyword', matched_text: 'pilota',
     });
-  } else if (/rimsa|rimsy|rimsov/i.test(normalized)) {
-    results.push({
-      name: 'element_type', value: 'rimsa', label_cs: 'Typ: římsa',
-      confidence: 0.9, source: 'keyword', matched_text: 'římsa',
-    });
   } else if (/opern\w*\s+(zd|zed|sten)/i.test(normalized)) {
     // "opěrná zeď", "opěrné zdi", "opěrných stěn" — bridge abutment wall /
     // civil retaining wall. Diacritics already stripped by `norm()`.
     results.push({
       name: 'element_type', value: 'operne_zdi', label_cs: 'Typ: opěrná zeď',
       confidence: 0.9, source: 'keyword', matched_text: 'opěrná zeď / stěna',
+    });
+  } else if (/rimsa|rimsy|rimsov/i.test(normalized)) {
+    results.push({
+      name: 'element_type', value: 'rimsa', label_cs: 'Typ: římsa',
+      confidence: 0.9, source: 'keyword', matched_text: 'římsa',
     });
   }
 
