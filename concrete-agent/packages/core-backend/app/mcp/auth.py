@@ -81,8 +81,21 @@ def _resolve_dsn() -> str:
 
     Priority: MCP_DATABASE_URL → DATABASE_URL. The asyncpg dialect prefix
     (`+asyncpg`) is stripped because psycopg2 reads the standard libpq URI.
+
+    Hardening for the 2026-05-14 Cloud SQL connection bug
+    (docs/audits/mcp_status/2026-05-14_cloudsql_connection_bug.md):
+
+    - `.strip()` so a trailing newline accidentally pasted into a GCP Secret
+      Manager value doesn't end up as part of the socket path. Portal's
+      `pg` adapter already does this (`postgres.js:27`); MCP previously did
+      not.
+    - The `MCP_DATABASE_URL` env var lets ops point this service at a
+      sync-compatible DSN (no `+asyncpg`, explicit password if needed)
+      without disturbing the async `DATABASE_URL` used by Alembic /
+      SQLAlchemy elsewhere in the codebase. Code already supported it
+      via the priority order above — this docstring just spells it out.
     """
-    url = os.getenv("MCP_DATABASE_URL") or os.getenv("DATABASE_URL", "")
+    url = (os.getenv("MCP_DATABASE_URL") or os.getenv("DATABASE_URL", "")).strip()
     if not url:
         raise RuntimeError(
             "DATABASE_URL (or MCP_DATABASE_URL) not set — MCP auth needs Cloud SQL Postgres. "
@@ -90,6 +103,18 @@ def _resolve_dsn() -> str:
         )
     # Strip async dialect prefix used by SQLAlchemy elsewhere in the codebase.
     return url.replace("postgresql+asyncpg://", "postgresql://", 1)
+
+
+def _sanitize_dsn_for_log(dsn: str) -> str:
+    """Redact password from a DSN before logging.
+
+    `postgresql://user:secret@/db?host=/cloudsql/...`
+                       ^^^^^^ replaced with ***. Query string + host left
+    intact so we can verify Cloud SQL socket path in production logs.
+    """
+    # Match user:password@ where password is anything except @ and /
+    import re
+    return re.sub(r"(://[^:@/]+:)[^@/]*(@)", r"\1***\2", dsn)
 
 
 def _get_db() -> psycopg2.extensions.connection:
@@ -110,12 +135,34 @@ def _get_db() -> psycopg2.extensions.connection:
             # dead entries as threads churn (Cloud Run worker recycle, etc.).
             del _db_pool[tid]
 
-    conn = psycopg2.connect(_resolve_dsn(), cursor_factory=psycopg2.extras.RealDictCursor)
+    dsn = _resolve_dsn()
+    try:
+        conn = psycopg2.connect(dsn, cursor_factory=psycopg2.extras.RealDictCursor)
+    except psycopg2.OperationalError as exc:
+        # Cloud Run + Cloud SQL: when the `--add-cloudsql-instances`
+        # annotation is missing OR the Cloud SQL Auth Proxy sidecar fails
+        # to start, the socket file `/cloudsql/INSTANCE/.s.PGSQL.5432` is
+        # absent and libpq returns ENOENT. Surface the most likely cause
+        # so the failure mode is obvious in Cloud Run logs.
+        msg = str(exc)
+        if "No such file or directory" in msg and "/cloudsql/" in msg:
+            logger.error(
+                "[MCP/Auth] Cloud SQL socket missing (%s). Likely cause: "
+                "Cloud Run service deployed without `--set-cloudsql-instances=PROJECT:REGION:INSTANCE` "
+                "OR the Cloud SQL Auth Proxy sidecar failed to start. "
+                "DSN (sanitized): %s",
+                msg.splitlines()[0] if msg else "unknown",
+                _sanitize_dsn_for_log(dsn),
+            )
+        raise
     conn.set_session(autocommit=False)
 
     with _pool_lock:
         _db_pool[tid] = conn
-    logger.info(f"[MCP/Auth] Postgres connection for thread {tid}")
+    logger.info(
+        "[MCP/Auth] Postgres connection for thread %s (DSN sanitized: %s)",
+        tid, _sanitize_dsn_for_log(dsn),
+    )
     return conn
 
 
