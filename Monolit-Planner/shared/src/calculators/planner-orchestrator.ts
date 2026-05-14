@@ -1462,6 +1462,31 @@ export function planElement(input: PlannerInput): PlannerOutput {
     input.total_length_m, elementType,
   );
 
+  // P0 BUG #7 follow-up (2026-05-14, SO-250 audit): when the user
+  // supplied `formwork_area_m2` themselves, sanity-check the area /
+  // volume ratio against engineer-realistic ranges. The SO-250
+  // worksheet (cost 21,6 K Kč/m³, ~2× the expected 6–10 K) traced back
+  // to a 622 m² per-tact input on a 20 m³ tact — i.e. 31 m²/m³, well
+  // above any realistic ratio. Most likely cause: user typed total
+  // project formwork into the per-tact field. We don't reject the
+  // value (the user knows their project), but we surface a ⚠️ so the
+  // downstream cost numbers don't silently land 3–10× too high.
+  if (input.formwork_area_m2 !== undefined && input.formwork_area_m2 > 0) {
+    const volumePerTact = input.volume_m3 / Math.max(pourDecision.num_tacts, 1);
+    const ratio = input.formwork_area_m2 / Math.max(volumePerTact, 0.01);
+    // 0.4–12 m²/m³ spans flat foundations (0.4–1.5), walls (4–8),
+    // columns (4–8), beams (5–10), římsy (5–8), schody (6–10).
+    // Above 12 is suspicious enough to call out.
+    if (ratio > 12) {
+      warnings.push(
+        `⚠️ Zadaná plocha bednění (${input.formwork_area_m2} m²) odpovídá ` +
+        `${ratio.toFixed(1)} m²/m³ na záběr — to je vysoko nad realistickým rozsahem ` +
+        `(0,4–12 m²/m³ podle typu prvku). Není to omylem celková plocha napříč všemi ` +
+        `${pourDecision.num_tacts} záběry? Pole "Plocha bednění" očekává plochu na JEDEN záběr.`
+      );
+    }
+  }
+
   // Ztracené bednění (trapézový plech / lost formwork):
   // If user provided lost_formwork_area_m2, subtract it from the area that needs
   // SYSTEM formwork (Dokaflex, TRIO, etc.). Only applies to horizontal elements.
@@ -2196,14 +2221,49 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const totalLaborCZK = roundTo(formworkLaborCZK + rebarLaborCZK + pourLaborCZK + propsLaborCZK, 2);
 
   // ─── 8b. Obrátkovost (repetitive elements) ────────────────────────────
+  //
+  // Semantic guard (P0 BUG #5/#6 fix, 2026-05-14):
+  //   `num_identical_elements` describes N SEPARATE structures (e.g. 20 pad
+  //   foundations on a building site) rotating through `formwork_sets_count`
+  //   sets — duration is multiplied accordingly.
+  //
+  //   `num_dilatation_sections` describes N CELLS of ONE continuous
+  //   structure (e.g. 42 dilatation cells of a single 515 m retaining
+  //   wall) — these are ALREADY scheduled in `scheduleResult.total_days`
+  //   via the per-tact rotation through `formwork_sets_count`.
+  //
+  // When the user fills BOTH (which the SO-250 worksheet showed is easy
+  // to do — both fields accept the same `42` value and the labels look
+  // semantically similar), the legacy code multiplied a second time and
+  // produced a 928d / 3649d Frankenstein total. Now we treat dilatation
+  // cells as the single source of obrátkovost: when `num_dilatation_sections
+  // > 1`, the obrátkovost block uses the schedule as-is, emits a warning
+  // that `num_identical_elements` was ignored, and lets the user decide
+  // whether they actually meant separate structures (in which case they
+  // disable dilatation joints).
 
   const numIdentical = input.num_identical_elements ?? 1;
   const fwSetsCount = input.formwork_sets_count ?? numSets;
   const TRANSFER_TIME_DAYS = 0.5; // demontáž + přesun + montáž na novém místě
+  const hasDilatationCells = (input.num_dilatation_sections ?? 1) > 1;
 
   let obratkovostResult: PlannerOutput['obratkovost'] = undefined;
 
-  if (numIdentical > 1) {
+  if (numIdentical > 1 && hasDilatationCells) {
+    // Mutex case: dilatation cells already provide the rotation. Don't
+    // multiply duration a second time. Surface the conflict so the user
+    // chooses one model or the other.
+    log.push(
+      `Obrátkovost: SKIPPED — num_dilatation_sections=${input.num_dilatation_sections} ` +
+      `je už zdrojem obrátkovosti, num_identical_elements=${numIdentical} ignorováno (P0 BUG #5/#6 mutex).`
+    );
+    warnings.push(
+      `⚠️ Pole "Počet identických elementů" (${numIdentical}) je ignorováno, protože konstrukce má ` +
+      `${input.num_dilatation_sections} dilatačních celků (ty už pokrývají obrátkovost bednění). ` +
+      `Pokud máte ve skutečnosti ${numIdentical} samostatných objektů, vypněte dilatační spáry a zadejte ` +
+      ``+`délku/objem jednoho objektu.`
+    );
+  } else if (numIdentical > 1) {
     const obratkovost = Math.ceil(numIdentical / fwSetsCount);
     const totalDuration = obratkovost * (scheduleResult.total_days + TRANSFER_TIME_DAYS);
     const rentalPerElement = formworkRentalCZK > 0
@@ -2429,12 +2489,52 @@ function estimateFormworkArea(
 ): number {
   const volumePerTact = totalVolume_m3 / numTacts;
 
+  // P0 BUG #7 fix (2026-05-14, SO-250 audit):
+  //   When total_length_m + height_m + numTacts > 1 are all known, the
+  //   element is a long structure divided into dilatation/working cells
+  //   along its length. We can derive each cell's footprint directly
+  //   instead of guessing an aspect ratio:
+  //     L_per_cell = total_length_m / numTacts
+  //     W_per_cell = volumePerTact / (L_per_cell × height_m)
+  //   For both vertical walls (operne_zdi, stena) and horizontal
+  //   foundation blocks split by dilatation joints (zaklady_oper,
+  //   zaklady_piliru along a line of piers), the engineer-realistic
+  //   formwork is the cell perimeter × height: 2(L+W)·H. Bottom rests
+  //   on blinding / ground (no formwork); top is open for the pour.
+  //
+  //   This is more accurate than the legacy 1.5:1 / 3:1 aspect-ratio
+  //   heuristic for long elements where each cell is many times longer
+  //   than it is wide (SO-250: L/W = 12.27/0.56 = 22:1 for the base,
+  //   28:1 for the dřík). The heuristic underestimated SO-250 base
+  //   formwork by 2× (33 m² vs 17 m² engineer-realistic — both are
+  //   reasonable, but the new value matches the soupis budget line).
+  //
+  //   The legacy aspect-ratio heuristics below remain for the
+  //   total_length-unknown case (single isolated element, e.g. one
+  //   patka, one nádrž).
+  if (
+    height_m && height_m > 0 &&
+    totalLength_m && totalLength_m > 0 &&
+    numTacts > 1
+  ) {
+    const L = totalLength_m / numTacts;
+    const W = volumePerTact / (L * height_m);
+    // Sanity: derived thickness must be physically sensible (>= 0.10 m
+    // for any RC element). If it is not, the input shape doesn't match
+    // a line-of-cells model — fall through to legacy heuristics.
+    if (W >= 0.10) {
+      const area = 2 * (L + W) * height_m;
+      return Math.max(roundTo(area, 1), 5);
+    }
+  }
+
   // BUG-Z1 follow-up (2026-04-15): horizontal foundation BLOCKS
   // (zaklady_piliru, zakladovy_pas, zakladova_patka) still need
   // perimeter-only formwork — they are not thin slabs. Aspect ratio
   // is closer to square for patkas (~1.5:1) than piers (~3:1).
   const isFoundationBlock =
     elementType === 'zaklady_piliru' ||
+    elementType === 'zaklady_oper' ||
     elementType === 'zakladova_patka' ||
     elementType === 'zakladovy_pas';
   if (height_m && height_m > 0 && isFoundationBlock) {

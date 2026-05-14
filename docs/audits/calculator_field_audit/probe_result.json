@@ -1,0 +1,395 @@
+{
+  "generated_at": "2026-05-14",
+  "branch": "claude/calculator-field-audit",
+  "driver": "test-data/SO_250/tz/SO-250.md",
+  "classifier_replay": {
+    "so250_full_context": {
+      "element_type": "zaklady_oper",
+      "confidence": 0.92,
+      "classification_source": "keywords"
+    },
+    "so250_opera_variant": {
+      "element_type": "zaklady_oper",
+      "confidence": 0.92,
+      "classification_source": "keywords"
+    },
+    "so250_kotvena_variant": {
+      "element_type": "zaklady_oper",
+      "confidence": 0.92,
+      "classification_source": "keywords"
+    },
+    "plain_zaklady": {
+      "element_type": "zaklady_piliru",
+      "confidence": 1,
+      "classification_source": "keywords"
+    },
+    "real_piliru": {
+      "element_type": "zaklady_piliru",
+      "confidence": 1,
+      "classification_source": "keywords"
+    }
+  },
+  "scenarios": {
+    "user_replay": {
+      "label": "user_replay (BUG #1 + #5/#6 + #7-user-622)",
+      "runtime_ms": 61,
+      "headlines": {
+        "formwork_system": "Frami Xlife",
+        "formwork_manufacturer": "DOKA",
+        "total_days_critical_path": 132.2,
+        "total_days_sequential": 605.2,
+        "savings_pct": 78,
+        "formwork_assembly_days_per_tact": 7,
+        "formwork_disassembly_days_per_tact": 2.43,
+        "formwork_curing_days": 5,
+        "rebar_mass_kg": 2718,
+        "rebar_duration_days": 1.98,
+        "rebar_norm_h_per_t": 14,
+        "pour_crew_total": {
+          "ukladani": 2,
+          "vibrace": 1,
+          "finiseri": 0,
+          "rizeni": 0,
+          "total": 3,
+          "pumps_used": 1
+        },
+        "num_pumps": 1
+      },
+      "costs": {
+        "formwork_labor_czk": 8934964.52,
+        "rebar_labor_czk": 636077.4,
+        "pour_labor_czk": 75222,
+        "pour_night_premium_czk": 0,
+        "total_labor_czk": 9646263.92,
+        "formwork_rental_czk": 8467440.26,
+        "props_labor_czk": 0,
+        "props_rental_czk": 0,
+        "is_mss_path": false,
+        "mss_mobilization_czk": 0,
+        "mss_demobilization_czk": 0,
+        "mss_rental_czk": 0
+      },
+      "resource_ceiling": {
+        "source": "auto_derived",
+        "confidence": 1
+      },
+      "resource_violations": [],
+      "decision_log": [
+        "Element: zaklady_piliru (explicit)",
+        "Formwork: Frami Xlife (0.648 h/m², df=0.9)",
+        "Block A: 42 sekcí × 1 záběrů/sekce = 42 celkem",
+        "Tacts: MANUAL override → 42 tacts × 19.933333333333334m³",
+        "Override rebuild: pour/tact=1.66h, pumps=1, sub_mode=manual_override",
+        "Scheduling mode: MANUAL → chess",
+        "Pour: sectional/manual_override, 42 tacts × 19.933333333333334m³",
+        "Formwork area: 622 m² per tact",
+        "Maturity strip: 5.0d (50% f_ck, 15°C, CEM_I)",
+        "Rebar: 2718kg/tact, 1.98d/tact (user, 3 čet×2 prac.=6 železářů, RCPSP parallel=3)",
+        "Pour: 40m³/h, 1.5h/tact (bottleneck: element)",
+        "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.5h pour",
+        "Schedule: 132.2d (sequential 605.2d, savings 78%)",
+        "Obrátkovost: SKIPPED — num_dilatation_sections=42 je už zdrojem obrátkovosti, num_identical_elements=42 ignorováno (P0 BUG #5/#6 mutex).",
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown → sekční režim po pracovních spárách",
+        "Working joints: 7 záběrů × 119.6 m³ (max 120 m³/okno)"
+      ],
+      "warnings": [
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+        "⚠️ Zadaná plocha bednění (622 m²) odpovídá 31.2 m²/m³ na záběr — to je vysoko nad realistickým rozsahem (0,4–12 m²/m³ podle typu prvku). Není to omylem celková plocha napříč všemi 42 záběry? Pole \"Plocha bednění\" očekává plochu na JEDEN záběr.",
+        "Četa výztuže nevytížena 80% — úzké hrdlo je četa bednění",
+        "⚠️ Pole \"Počet identických elementů\" (42) je ignorováno, protože konstrukce má 42 dilatačních celků (ty už pokrývají obrátkovost bednění). Pokud máte ve skutečnosti 42 samostatných objektů, vypněte dilatační spáry a zadejte délku/objem jednoho objektu."
+      ],
+      "input": {
+        "element_type": "zaklady_piliru",
+        "volume_m3": 837.2,
+        "height_m": 3.2,
+        "formwork_area_m2": 622,
+        "has_dilatation_joints": true,
+        "num_dilatation_sections": 42,
+        "tacts_per_section": 1,
+        "num_identical_elements": 42,
+        "formwork_sets_count": 6,
+        "num_formwork_crews": 3,
+        "crew_size": 6,
+        "num_rebar_crews": 3,
+        "crew_size_rebar": 2,
+        "num_sets": 6,
+        "shift_h": 12,
+        "wage_czk_h": 398,
+        "concrete_class": "C25/30",
+        "cement_type": "CEM_I",
+        "temperature_c": 15,
+        "season": "normal",
+        "curing_class": "3",
+        "scheduling_mode_override": "chess",
+        "working_joints_allowed": "unknown",
+        "rebar_norm_kg_m3": 134,
+        "rebar_mass_kg": 114156
+      }
+    },
+    "corrected": {
+      "label": "corrected (operne_zdi, no double-count)",
+      "runtime_ms": 39,
+      "headlines": {
+        "formwork_system": "TRIO",
+        "formwork_manufacturer": "PERI",
+        "total_days_critical_path": 118.2,
+        "total_days_sequential": 561.5,
+        "savings_pct": 79,
+        "formwork_assembly_days_per_tact": 6.48,
+        "formwork_disassembly_days_per_tact": 1.94,
+        "formwork_curing_days": 5,
+        "rebar_mass_kg": 2718,
+        "rebar_duration_days": 2.45,
+        "rebar_norm_h_per_t": 17.3,
+        "pour_crew_total": {
+          "ukladani": 2,
+          "vibrace": 1,
+          "finiseri": 0,
+          "rizeni": 0,
+          "total": 3,
+          "pumps_used": 1
+        },
+        "num_pumps": 1
+      },
+      "costs": {
+        "formwork_labor_czk": 7979224.99,
+        "rebar_labor_czk": 786009.84,
+        "pour_labor_czk": 78732.36,
+        "pour_night_premium_czk": 0,
+        "total_labor_czk": 8843967.19,
+        "formwork_rental_czk": 11005319.68,
+        "props_labor_czk": 0,
+        "props_rental_czk": 0,
+        "is_mss_path": false,
+        "mss_mobilization_czk": 0,
+        "mss_demobilization_czk": 0,
+        "mss_rental_czk": 0
+      },
+      "resource_ceiling": {
+        "workforce": {
+          "num_workers_total": 12,
+          "num_carpenters": 4,
+          "num_rebar_workers": 4,
+          "num_concrete_workers": 3,
+          "num_vibrators": 2
+        },
+        "formwork": {
+          "num_formwork_sets": 2
+        },
+        "equipment": {
+          "num_pumps": 1,
+          "plant_rate_m3_h": 60,
+          "mixer_delivery_m3_h": 40,
+          "num_cranes": 1,
+          "crane_max_load_kg": 4000
+        },
+        "time": {
+          "shifts_per_day": 1,
+          "shift_h": 10,
+          "allow_night_shift": false
+        },
+        "confidence": 0.85,
+        "source": "kb_default"
+      },
+      "resource_violations": [
+        {
+          "field": "num_carpenters",
+          "required": 18,
+          "available": 4,
+          "severity": "critical",
+          "message": "⛔ KRITICKÉ: tesařů potřeba 18, dostupných 4 — práce na bednění poběží pomaleji"
+        },
+        {
+          "field": "num_rebar_workers",
+          "required": 6,
+          "available": 4,
+          "severity": "critical",
+          "message": "⛔ KRITICKÉ: železářů potřeba 6, dostupných 4"
+        },
+        {
+          "field": "num_workers_total_sum",
+          "required": 18,
+          "available": 12,
+          "severity": "critical",
+          "message": "⛔ KRITICKÉ: celkem lidí potřeba 18, strop 12"
+        },
+        {
+          "field": "num_formwork_sets",
+          "required": 6,
+          "available": 2,
+          "severity": "critical",
+          "message": "⛔ KRITICKÉ: souprav bednění potřeba 6, dostupných 2"
+        }
+      ],
+      "decision_log": [
+        "Element: operne_zdi (explicit)",
+        "Lateral pressure: 64 kN/m² (h=3.2m, k=0.85, consistency=standard)",
+        "Formwork: TRIO (0.6 h/m², df=1.2)",
+        "Block A: 42 sekcí × 1 záběrů/sekce = 42 celkem",
+        "Tacts: MANUAL override → 42 tacts × 19.933333333333334m³",
+        "Override rebuild: pour/tact=1.66h, pumps=1, sub_mode=manual_override",
+        "Scheduling mode: MANUAL → chess",
+        "  [staging] Max system pressure: 120 kN/m² (from 10 systems)",
+        "  [staging] Full height 3.2m: 64 kN/m² (k=0.85)",
+        "  [staging] No staging needed: 64 ≤ 120 kN/m²",
+        "Pour: sectional/manual_override, 42 tacts × 19.933333333333334m³",
+        "Formwork area: 622 m² per tact",
+        "Maturity strip: 5.0d (50% f_ck, 15°C, CEM_I)",
+        "Rebar: 2718kg/tact, 2.45d/tact (user, 3 čet×2 prac.=6 železářů, RCPSP parallel=3)",
+        "Pour: 35m³/h, 1.57h/tact (bottleneck: element)",
+        "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.6h pour",
+        "Schedule: 118.2d (sequential 561.5d, savings 79%)",
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown → sekční režim po pracovních spárách",
+        "Working joints: 7 záběrů × 119.6 m³ (max 120 m³/okno)"
+      ],
+      "warnings": [
+        "TRIO vyžaduje jeřáb (panel 230 kg) — zajistěte jeřáb na stavbě pro celou dobu montáže.",
+        "Bednění výška 3.2m > 1.2m → nutné stabilizační vzpěry IB (započítány v sestavě).",
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+        "⚠️ Zadaná plocha bednění (622 m²) odpovídá 31.2 m²/m³ na záběr — to je vysoko nad realistickým rozsahem (0,4–12 m²/m³ podle typu prvku). Není to omylem celková plocha napříč všemi 42 záběry? Pole \"Plocha bednění\" očekává plochu na JEDEN záběr.",
+        "Četa výztuže nevytížena 70% — úzké hrdlo je četa bednění",
+        "⛔ KRITICKÉ: tesařů potřeba 18, dostupných 4 — práce na bednění poběží pomaleji",
+        "⛔ KRITICKÉ: železářů potřeba 6, dostupných 4",
+        "⛔ KRITICKÉ: celkem lidí potřeba 18, strop 12",
+        "⛔ KRITICKÉ: souprav bednění potřeba 6, dostupných 2",
+        "ℹ️ Doporučení: Snížit počet souprav bednění (méně paralelních záběrů), nebo zvýšit strop tesařů",
+        "ℹ️ Doporučení: Prodloužit dobu vázání výztuže nebo navýšit počet železářů",
+        "ℹ️ Doporučení: Rozdělit element do více záběrů — menší souběh profesí",
+        "ℹ️ Doporučení: Snížit obrátkovost — záběry pojedou sekvenčně místo paralelně"
+      ],
+      "input": {
+        "element_type": "operne_zdi",
+        "volume_m3": 837.2,
+        "height_m": 3.2,
+        "formwork_area_m2": 622,
+        "has_dilatation_joints": true,
+        "num_dilatation_sections": 42,
+        "tacts_per_section": 1,
+        "num_identical_elements": 1,
+        "num_formwork_crews": 3,
+        "crew_size": 6,
+        "num_rebar_crews": 3,
+        "crew_size_rebar": 2,
+        "num_sets": 6,
+        "shift_h": 12,
+        "wage_czk_h": 398,
+        "concrete_class": "C25/30",
+        "cement_type": "CEM_I",
+        "temperature_c": 15,
+        "season": "normal",
+        "curing_class": "3",
+        "scheduling_mode_override": "chess",
+        "working_joints_allowed": "unknown",
+        "rebar_norm_kg_m3": 134,
+        "rebar_mass_kg": 114156
+      }
+    },
+    "realistic_estimate": {
+      "label": "realistic_estimate (BUG #7 length-aware)",
+      "runtime_ms": 44,
+      "headlines": {
+        "formwork_system": "Frami Xlife",
+        "formwork_manufacturer": "DOKA",
+        "total_days_critical_path": 38.4,
+        "total_days_sequential": 220.1,
+        "savings_pct": 83,
+        "formwork_assembly_days_per_tact": 0.19,
+        "formwork_disassembly_days_per_tact": 0.07,
+        "formwork_curing_days": 5,
+        "rebar_mass_kg": 2718,
+        "rebar_duration_days": 1.98,
+        "rebar_norm_h_per_t": 14,
+        "pour_crew_total": {
+          "ukladani": 2,
+          "vibrace": 1,
+          "finiseri": 0,
+          "rizeni": 0,
+          "total": 3,
+          "pumps_used": 1
+        },
+        "num_pumps": 1
+      },
+      "costs": {
+        "formwork_labor_czk": 244203.29,
+        "rebar_labor_czk": 636077.4,
+        "pour_labor_czk": 75222,
+        "pour_night_premium_czk": 0,
+        "total_labor_czk": 955502.69,
+        "formwork_rental_czk": 69668.99,
+        "props_labor_czk": 0,
+        "props_rental_czk": 0,
+        "is_mss_path": false,
+        "mss_mobilization_czk": 0,
+        "mss_demobilization_czk": 0,
+        "mss_rental_czk": 0
+      },
+      "resource_ceiling": {
+        "source": "auto_derived",
+        "confidence": 1
+      },
+      "resource_violations": [],
+      "decision_log": [
+        "Element: zaklady_oper (explicit)",
+        "Formwork: Frami Xlife (0.648 h/m², df=0.9)",
+        "Block A: 42 sekcí × 1 záběrů/sekce = 42 celkem",
+        "Tacts: MANUAL override → 42 tacts × 19.933333333333334m³",
+        "Override rebuild: pour/tact=1.66h, pumps=1, sub_mode=manual_override",
+        "Scheduling mode: MANUAL → chess",
+        "Pour: sectional/manual_override, 42 tacts × 19.933333333333334m³",
+        "Formwork area: 17 m² per tact (estimated)",
+        "Maturity strip: 5.0d (50% f_ck, 15°C, CEM_I)",
+        "Rebar: 2718kg/tact, 1.98d/tact (user, 3 čet×2 prac.=6 železářů, RCPSP parallel=3)",
+        "Pour: 40m³/h, 1.5h/tact (bottleneck: element)",
+        "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.5h pour",
+        "Schedule: 38.4d (sequential 220.1d, savings 83%)",
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown → sekční režim po pracovních spárách",
+        "Working joints: 7 záběrů × 119.6 m³ (max 120 m³/okno)"
+      ],
+      "warnings": [
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky."
+      ],
+      "input": {
+        "element_type": "zaklady_oper",
+        "volume_m3": 837.2,
+        "height_m": 0.56,
+        "has_dilatation_joints": true,
+        "num_dilatation_sections": 42,
+        "tacts_per_section": 1,
+        "num_identical_elements": 1,
+        "num_formwork_crews": 3,
+        "crew_size": 6,
+        "num_rebar_crews": 3,
+        "crew_size_rebar": 2,
+        "num_sets": 6,
+        "shift_h": 12,
+        "wage_czk_h": 398,
+        "concrete_class": "C25/30",
+        "cement_type": "CEM_I",
+        "temperature_c": 15,
+        "season": "normal",
+        "curing_class": "3",
+        "scheduling_mode_override": "chess",
+        "working_joints_allowed": "unknown",
+        "rebar_norm_kg_m3": 134,
+        "rebar_mass_kg": 114156,
+        "total_length_m": 515.2
+      }
+    }
+  },
+  "diff": {
+    "total_cost_czk_user": 18113704.18,
+    "total_cost_czk_corrected": 19849286.869999997,
+    "total_cost_czk_realistic_estimate": 1025171.6799999999,
+    "cost_per_m3_user": 21636,
+    "cost_per_m3_corrected": 23709,
+    "cost_per_m3_realistic_estimate": 1225,
+    "total_days_user": 132.2,
+    "total_days_corrected": 118.2,
+    "total_days_realistic_estimate": 38.4,
+    "rental_user": 8467440.26,
+    "rental_corrected": 11005319.68
+  }
+}

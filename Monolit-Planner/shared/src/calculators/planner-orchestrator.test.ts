@@ -513,6 +513,149 @@ describe('Planner Orchestrator', () => {
       });
       expect(plan.warnings.some(w => w.includes('Obrátkovost'))).toBe(true);
     });
+
+    // ── P0 BUG #5/#6 mutex (2026-05-14, SO-250 audit) ──
+    // When user fills BOTH num_dilatation_sections > 1 AND
+    // num_identical_elements > 1 (the SO-250 case: 42 / 42), the obrátkovost
+    // block must NOT multiply duration a second time. dilatation_sections is
+    // the single source of obrátkovost for one continuous structure.
+    it('mutex: dilatation cells suppress identical_elements multiplication', () => {
+      const oneCellPlan = planElement({
+        ...patkaInput,
+        // No dilatation cells: obrátkovost block fires normally.
+        num_identical_elements: 42,
+        formwork_sets_count: 6,
+      });
+      const dilatationPlan = planElement({
+        ...patkaInput,
+        // Same identical_elements + sets, but now ALSO 42 dilatation cells.
+        // The mutex must skip the obrátkovost duration multiplication.
+        num_dilatation_sections: 42,
+        num_identical_elements: 42,
+        formwork_sets_count: 6,
+      });
+
+      expect(oneCellPlan.obratkovost).toBeDefined();
+      // Mutex case: obrátkovost block did NOT populate the result object
+      // (would otherwise emit total_duration_days = 7× schedule).
+      expect(dilatationPlan.obratkovost).toBeUndefined();
+      // And a warning surfaces the suppression to the user.
+      expect(
+        dilatationPlan.warnings.some(w => w.includes('ignorováno') && w.includes('dilatačních celků')),
+      ).toBe(true);
+    });
+
+    it('mutex: dilatation cells alone (without identical_elements) leave obratkovost untouched', () => {
+      const plan = planElement({
+        ...patkaInput,
+        num_dilatation_sections: 5,
+        // num_identical_elements not set → defaults to 1 → no obratkovost block
+      });
+      // Plan still runs; obrátkovost block stays inactive.
+      expect(plan.obratkovost).toBeUndefined();
+      expect(
+        plan.warnings.some(w => w.includes('ignorováno') && w.includes('dilatačních celků')),
+      ).toBe(false);
+    });
+  });
+
+  // ─── BUG #7 — estimateFormworkArea length-aware geometry ──────────────
+  //
+  // When total_length_m + numTacts + height_m are all known, the
+  // estimator derives per-cell footprint directly (L = total/N, W = volume
+  // / (L×H), formwork = 2(L+W)H) instead of guessing an aspect ratio.
+  // The legacy aspect-ratio heuristic underestimated long dilatation-celled
+  // walls (SO-250: 28:1 cell aspect, heuristic assumes 3:1). This block
+  // pins the new behavior + the sanity warning for over-supplied per-tact
+  // values.
+
+  describe('planElement — formwork area estimation (BUG #7)', () => {
+    const so250Base: PlannerInput = {
+      // SO-250 "Základy ze ŽB do C25/30" position — base block of zárubní
+      // zeď divided into 42 dilatation cells along 515,20 m.
+      element_type: 'zaklady_oper',
+      volume_m3: 837.2,
+      height_m: 0.56,                  // base block height
+      total_length_m: 515.2,
+      has_dilatation_joints: true,
+      num_dilatation_sections: 42,
+      tacts_per_section: 1,
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'yes',
+    };
+
+    it('SO-250 base: derived per-tact area is 2(L+W)H ≈ 17 m², not aspect-ratio guess', () => {
+      const plan = planElement(so250Base);
+      // L = 515.2 / 42 = 12.27 m, W = 19.93 / (12.27 × 0.56) = 2.90 m
+      // area = 2 × (12.27 + 2.90) × 0.56 = 16.99 m² ≈ 17 m²
+      // The number lands in the decision log line "Formwork area: X m² per tact".
+      const logLine = plan.decision_log.find((l) => l.startsWith('Formwork area:'));
+      expect(logLine).toBeDefined();
+      const m = logLine!.match(/Formwork area:\s*([\d.]+)\s*m²/);
+      expect(m).not.toBeNull();
+      const area = parseFloat(m![1]);
+      expect(area).toBeGreaterThan(13);
+      expect(area).toBeLessThan(22);
+    });
+
+    it('SO-250 base: cost falls into engineer-realistic range (NOT 18 M Kč)', () => {
+      const plan = planElement(so250Base);
+      // Engineer expectation: formwork labor + rental for 837 m³ of plain
+      // RC foundation blocks ≈ 0.2–1.0 M Kč (formwork is a tiny share of
+      // labor for foundations; rebar dominates). The legacy estimate of
+      // 622 m² per tact produced 9.6 M labor + 8.4 M rental = 18 M total
+      // (cost / m³ = 21.6 K, way above the 6–10 K typical for monolith
+      // bridge foundations). Pin the upper bound at 3 M Kč to catch
+      // regression to the old behavior.
+      expect(plan.costs.formwork_labor_czk).toBeLessThan(3_000_000);
+      expect(plan.costs.formwork_rental_czk).toBeLessThan(3_000_000);
+    });
+
+    it('isolated patka (no total_length_m): legacy aspect-ratio heuristic still used', () => {
+      // When total_length_m is missing or numTacts === 1, the new branch
+      // doesn't fire — the legacy isFoundationBlock 1.5:1 aspect-ratio
+      // heuristic computes the area. Regression-pin so we don't break
+      // the existing single-patka path.
+      const plan = planElement({
+        element_type: 'zakladova_patka',
+        volume_m3: 4,
+        height_m: 1.2,
+        has_dilatacni_spary: false,
+      });
+      // 4 / 1.2 = 3.33 m² footprint, W = sqrt(3.33/1.5) = 1.49, L = 2.23,
+      // perimeter 7.44, × 1.2 = 8.93 m² ≈ 9 m².
+      const logLine = plan.decision_log.find((l) => l.startsWith('Formwork area:'));
+      expect(logLine).toBeDefined();
+      const m = logLine!.match(/Formwork area:\s*([\d.]+)\s*m²/);
+      const area = parseFloat(m![1]);
+      expect(area).toBeGreaterThan(7);
+      expect(area).toBeLessThan(12);
+    });
+
+    it('user-supplied formwork_area_m2 > 12 m²/m³ ratio triggers sanity warning', () => {
+      const plan = planElement({
+        ...so250Base,
+        // 622 m² per tact for 20 m³ tact = 31 m²/m³ — way out of range.
+        // This is the SO-250 worksheet's bad input; the engine should
+        // not silently accept it.
+        formwork_area_m2: 622,
+      });
+      expect(
+        plan.warnings.some(
+          w => w.includes('vysoko nad realistickým rozsahem') && w.includes('na JEDEN záběr'),
+        ),
+      ).toBe(true);
+    });
+
+    it('user-supplied formwork_area_m2 in realistic range emits NO sanity warning', () => {
+      const plan = planElement({
+        ...so250Base,
+        formwork_area_m2: 17, // engineer-realistic per-tact value
+      });
+      expect(
+        plan.warnings.some(w => w.includes('vysoko nad realistickým rozsahem')),
+      ).toBe(false);
+    });
   });
 
   // ──────────────────────────────────────────────────────────────────────

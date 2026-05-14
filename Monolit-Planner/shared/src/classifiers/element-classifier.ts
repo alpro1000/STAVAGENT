@@ -721,6 +721,15 @@ const KEYWORD_RULES: KeywordRule[] = [
   { element_type: 'operne_zdi', keywords: [
     'opern', 'opěrn', 'operna zed', 'opěrná zeď',
     'operne zdi most', 'opěrné zdi most',
+    // P0 BUG #1 fix (2026-05-14, SO-250 audit): zárubní zeď (cut/anchored
+    // retaining wall) is structurally the same family as opěrná zeď —
+    // engine should reach for the same vertical-wall formwork systems
+    // (TRIO/Framax) and difficulty_factor. Without these keywords the
+    // dřík of a zárubní zeď fell through to 'other' on a part_name that
+    // lacked the word "opěrná".
+    'zarubn', 'zárubn',
+    'zarubni zed', 'zárubní zeď',
+    'kotven zed', 'kotvená zeď',
     'gabionov', 'gabion',
     'retaining wall',
     'подпорн стен',
@@ -872,6 +881,38 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   // MONOLITICKÁ VOZOVKA = road surface, not structural element
   if (/monolitick\S*\s*vozovk|betonov\S*\s*vozovk|betonový\s*kryt/.test(normalized)) {
     return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  }
+
+  // P0 BUG #1 disambiguation (2026-05-14, SO-250 audit):
+  //   "Základy ze ŽB ... pro zárubní/opěrnou zeď"  →  zaklady_oper
+  //
+  // Without this rule, the keyword-scoring fallback below ties on the
+  // generic "zaklady" substring and picks zaklady_piliru (bridge pier
+  // foundation) — the wrong element family. Engine then loads Frami Xlife
+  // vertical-wall formwork, foundation difficulty_factor 0.9, and the
+  // slabs_foundations rebar matrix branch — all the symptoms documented in
+  // docs/audits/calculator_field_audit/2026-05-14_full_ui_walkthrough.md.
+  //
+  // The disambiguation needs BOTH signals: a foundation word ("základ" /
+  // "zaklad") AND a retaining-wall word ("opěrná" / "zárubní" / "kotvená").
+  // When only the foundation word is present (e.g. plain OTSKP line
+  // "Základy ze ŽB do C25/30" with no project context), we leave the
+  // existing classifier flow alone — that case is part_name-context-free
+  // and only a TZ-text upgrade will fix it; out of scope here.
+  if (
+    /(^|[^a-z])(zaklad|základ)/i.test(normalized) &&
+    /(opern|opěrn|zarubn|zárubn|kotven)/i.test(normalized)
+  ) {
+    const catalog = ELEMENT_CATALOG.zaklady_oper;
+    const meta = extractOtskpMetadata(name);
+    return {
+      element_type: 'zaklady_oper',
+      confidence: 0.92,
+      ...catalog,
+      classification_source: 'keywords',
+      ...(meta.concrete_class ? { concrete_class_detected: meta.concrete_class } : {}),
+      ...(meta.is_prestressed !== undefined ? { is_prestressed_detected: meta.is_prestressed } : {}),
+    };
   }
 
   // ─── OTSKP catalog match (confidence=1.0, highest priority) ───
