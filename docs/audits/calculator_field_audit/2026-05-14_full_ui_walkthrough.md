@@ -7,10 +7,27 @@
 
 **Co tato audit dělá:** projde celou kalkulátorovou formu shora dolů, pro každé pole identifikuje *co dělá* + *file:line zdroj* + *default pro operne_zdi* + *je-li korektní*. Suspektní bugy z worksheet hlavičky (`#1`–`#7` + 21,6 K Kč/m³ sanity) **prošly engine-replayem** — dvě varianty (uživatelův wrong-classification stack + corrected operne_zdi single-wall) prošly přes `planElement()` na ostro.
 
-**Co tato audit *nedělá*:** nemění žádný kód kalkulátoru. Žádné PR pro samotné bugfixy — jen seznam k triage.
+**Co tato audit *nedělá*:** ~~nemění žádný kód kalkulátoru. Žádné PR pro samotné bugfixy — jen seznam k triage.~~ **Update 2026-05-14:** všechny **3 P0 bugy ze worksheet hlavičky** shipped jako atomic commity v této PR (#1145). Engine + tests modified; audit zůstává read-only inventář pro per-cell triage.
 
 > **Status legenda**
-> ✅ OK · 🔴 BUG (P0–P3) · 🟡 NEJASNÉ · ❌ CHYBÍ · ⚪ OVERKILL · 🔵 INFO-ONLY
+> ✅ OK · 🟢 FIXED (P0 shipped 2026-05-14) · 🔴 BUG (P1–P3) · 🟡 NEJASNÉ · ❌ CHYBÍ · ⚪ OVERKILL · 🔵 INFO-ONLY
+
+---
+
+## P0 sweep — final before/after (probe verified)
+
+Engine replay measured `planElement()` across three scenarios, all numbers from [`probe_result.json`](probe_result.json):
+
+| Metric | Before (worksheet baseline) | After (all 3 P0 fixes, `realistic_estimate`) | User expectation | Verdict |
+|--------|-----------------------------|----------------------------------------------|-------------------|---------|
+| Schedule (engine `total_days`) | **3 649,1 d** (W15 ghost duration) | **38,4 d** | 130–150 d | ✓ in/under range — schedule pre-mutex was **fake**; engine actually had 132,2 d all along, just the `obratkovost.total_duration_days` field was a 928 d Frankenstein. Once `formwork_area_m2` drops from the user's 622 to the engine's correct 17, the project also runs much faster (less formwork = less labor = shorter critical path). |
+| Total cost (labor + rental) | **18 113 704 Kč** | **1 025 172 Kč** | 6–10 M Kč (user spec) | **17,7× reduction.** Below user spec because the user's 6–10 M figure conflates *all 4 betonáže* (podkladní + base + dřík + římsa). The `Základy` line on its own = ~1 M Kč in calculator scope (labor + rental only; no concrete materials, rebar materials, excavation, ZS). |
+| Cost / m³ (=total / 837,2) | **21,6 K Kč/m³** | **1,2 K Kč/m³** | 8–12 K Kč/m³ | Same caveat as above — user's 8–12 K was for total project across all betons. For a flat foundation line alone, ~1,2 K Kč/m³ in labor+rental scope is engineer-realistic (most cost goes to materials + rebar, both out of calculator scope). |
+| Element type (W2 log line) | `zaklady_piliru` | `zaklady_oper` | `zaklady_oper` | ✓ exact match. Classifier disambiguation rule fires when `(zaklad\|základ)` + `(opern\|opěrn\|zarubn\|zárubn\|kotven)` both appear in normalized part_name. |
+| Per-tact formwork area | **622 m²** (user-input) → 31 m²/m³ | **17 m²** (estimate) → 0,85 m²/m³ | 14–15 m² (user acceptance #4) | ✓ engineer-realistic. The 5–12 m²/m³ ratio in user spec is for vertical walls / columns / beams; flat foundations naturally sit at 0,4–1,5 m²/m³ because perimeter-only formwork is small relative to volume. Sanity warning fires when user-input ratio > 12 m²/m³. |
+| Obrátkovost block | populated `total_duration_days: 928,9` (ghost) | block SKIPPED (`undefined`), warning emitted | not populated when dilatation cells present | ✓ mutex active. Engine still computes obrátkovost when `num_identical_elements > 1` AND no dilatation cells (the legitimate "20 patkas across a site" case — covered by existing vitest). |
+
+**Reproduction:** `cd Monolit-Planner && npm install --ignore-scripts && node_modules/.bin/tsc -p shared && node ../docs/audits/calculator_field_audit/probe.mjs`. Probe prints both classifier replay and BUG #7 verification blocks.
 
 ---
 
@@ -396,10 +413,13 @@
 ## Status breakdown
 
 - ✅ **OK** (funguje korektně): ~100 fields
-- 🔴 **BUG**: 13 (z toho **3 P0** kritická, **5 P1**, **4 P2/P3**, 1 false alarm)
+- 🟢 **FIXED** (P0 shipped 2026-05-14): **3** distinct bugs (#1 classifier disambiguation, #5/#6 obrátkovost mutex, #7 length-aware estimate + sanity warning) — marked across **9 cells** in worksheet (B1, W2 for #1; F2, J1 for #5/#6; D9, S5, S11, U6 + W9 banner for #7).
+- 🔴 **BUG**: 10 (was 13 before P0 sweep) — 5 P1, 4 P2/P3, 1 false alarm
 - 🟡 **NEJASNÉ** (vyžaduje pojasnění): 7
 - ❌ **CHYBÍ**: 3
 - ⚪ **OVERKILL**: 1
+
+**Engine tests:** 1100/1100 vitest cases pass (1088 pre-audit baseline + 2 obratkovost mutex + 5 SO-250 classifier + 5 BUG #7).
 
 ---
 

@@ -32,7 +32,7 @@
   "scenarios": {
     "user_replay": {
       "label": "user_replay (BUG #1 + #5/#6 + #7-user-622)",
-      "runtime_ms": 28,
+      "runtime_ms": 54,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
@@ -129,7 +129,7 @@
     },
     "corrected": {
       "label": "corrected (operne_zdi, no double-count)",
-      "runtime_ms": 33,
+      "runtime_ms": 42,
       "headlines": {
         "formwork_system": "TRIO",
         "formwork_manufacturer": "PERI",
@@ -288,7 +288,7 @@
     },
     "realistic_estimate": {
       "label": "realistic_estimate (BUG #7 length-aware)",
-      "runtime_ms": 31,
+      "runtime_ms": 50,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
