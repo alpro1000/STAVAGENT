@@ -102,8 +102,13 @@ def _get_db() -> psycopg2.extensions.connection:
     """
     tid = threading.get_ident()
     with _pool_lock:
-        if tid in _db_pool and not _db_pool[tid].closed:
-            return _db_pool[tid]
+        existing = _db_pool.get(tid)
+        if existing is not None:
+            if not existing.closed:
+                return existing
+            # Closed connection — drop it so the dict doesn't accumulate
+            # dead entries as threads churn (Cloud Run worker recycle, etc.).
+            del _db_pool[tid]
 
     conn = psycopg2.connect(_resolve_dsn(), cursor_factory=psycopg2.extras.RealDictCursor)
     conn.set_session(autocommit=False)
