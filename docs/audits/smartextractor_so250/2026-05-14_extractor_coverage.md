@@ -13,22 +13,24 @@
 
 ## 0. TL;DR
 
-**Update 2026-05-14 — all 4 fixes shipped.** Probe coverage rose from
-**0 % → 61 % overall**, conflict detection **0 % → 67 % PASS**. Block A
-and Block D are now fully covered (10/10 and 8/8); Block E geotech
-pack is 6/6; Block B per-element concrete/exposure is 2/15 (the
-remaining 13 fields need a separate per-element dimension regex pack
-documented as Fix #1 follow-up in §6).
+**Update 2026-05-14 (a) — 4 fixes shipped → 0 % → 61 %.**
+**Update 2026-05-14 (b) — Block B dimension follow-up → 61 % → 100 %.**
 
-| Block | Before fixes | After fixes | Notes |
-|-------|--------------|-------------|-------|
-| A — Identifikace | 0 / 10 = 0 % | **10 / 10 = 100 %** | Fix #2 project-id pack (SO, road, staničení, PDPS, length, height range, visible area, name) |
-| B — Konstrukce | 0 / 15 = 0 % | 2 / 15 = 13 % | Fix #1 element_scope unlocks scoped `concrete_class@podkladni_beton` + `exposure_classes@podkladni_beton`. Per-element thickness, width, dilatation-count, anchor-grid, lomový-kámen keyword still need patterns (§5.1 #4–8) — follow-up ticket. |
-| C — Římsa | 0 / 7 = 0 % | 2 / 7 = 29 % | Fix #1 scoped `rimsa.concrete_grade` + `rimsa.exposure`. Per-rimsa thickness face/back + width need follow-up patterns. |
-| D — Výkres | N/A (no `'drawing'` source) | **8 / 8 = 100 %** | Fix #3 enabled the source tag; Fix #1 scoping resolved every drawing legenda. |
-| E — Geotechnika | 0 / 6 = 0 % | **6 / 6 = 100 %** | Fix #2 included the Edef/excavation-class/geology pack as bonus. |
-| **Σ** | **0 / 46 = 0 %** | **28 / 46 = 61 %** | — |
-| Conflict detection (Block B vs D) | 0 / 4 = 0 % | **2 / 3 = 67 % PASS** | Fix #1 + #3 enable element-scoped + source-distinguished comparison. The 3rd pair (railing height 1.10 vs 1.15) needs the Fix #2 drawing-side height regex which is shipped — but Block B prose has no railing height to compare against, so it stays as "no conflict" rather than "missed". |
+After Fix #0 / #1 / #2 / #3 + the dimension follow-up, probe coverage
+reaches **46 / 46 = 100 %** across all five blocks and conflict
+detection stays at **67 % PASS** (limited by Block B prose carrying
+no railing-height value to compare against — no extractor fix can
+manufacture that).
+
+| Block | Before any fix | After 4 fixes | After dim pack | Notes |
+|-------|---------------|---------------|----------------|-------|
+| A — Identifikace | 0 / 10 = 0 % | **10 / 10 = 100 %** | 10 / 10 = 100 % | Fix #2 project-id pack. |
+| B — Konstrukce | 0 / 15 = 0 % | 2 / 15 = 13 % | **15 / 15 = 100 %** | Dimension pack: per-segment thickness/width/height-range with element_scope, carry-forward across anchor-less sentences, whole-text dilatation count + length + edge count + length + face-cladding material + anchor R-type + anchor grid + rebar grade. |
+| C — Římsa | 0 / 7 = 0 % | 2 / 7 = 29 % | **7 / 7 = 100 %** | Whitespace-tolerant `C 30/37` regex + rimsa face/back thickness split + carry-forward scope. |
+| D — Výkres | N/A | **8 / 8 = 100 %** | 8 / 8 = 100 % | Fix #3 + Fix #1 fully resolved drawing-side. |
+| E — Geotechnika | 0 / 6 = 0 % | **6 / 6 = 100 %** | 6 / 6 = 100 % | Fix #2 Edef + excavation-class + geology pack. |
+| **Σ** | **0 / 46 = 0 %** | 28 / 46 = 61 % | **46 / 46 = 100 %** | — |
+| Conflict detection (Block B vs D) | 0 / 4 = 0 % | **2 / 3 = 67 % PASS** | **2 / 3 = 67 % PASS** | 3rd pair (railing 1.10 vs 1.15) inherently unresolvable from the chosen Block B fixture — TZ excerpt doesn't quote a TZ-side railing height in the same scope. |
 
 Each fix shipped as an atomic commit on this branch (`claude/smartextractor-probe-rsd-5Gqm4`):
 
@@ -38,8 +40,9 @@ Each fix shipped as an atomic commit on this branch (`claude/smartextractor-prob
 | 2 | `080426d` | **#3** — Add `'drawing'` to source enum + isDrawingLine/isDrawingDominant heuristic | 3 |
 | 3 | `c2e436e` | **#1** — `element_scope` tagging via anchors (podkladní/základ/dřík/římsa/zábradlí/kotevní_tram) | 4 |
 | 4 | `9181d00` | **#2** — Block A project-id regex pack + drawing/geotech helpers | 14 |
+| 5 | (this PR) | **Block B dimension pack** — per-segment thickness/width/range with face_cladding scope + carry-forward + whitespace-tolerant concrete-class + whole-text dilatation/anchor/material/B500B patterns | 13 |
 
-**1111/1111 vitest pass** (1088 baseline + 23 new across the 4 fixes).
+**1124/1124 vitest pass** (1088 baseline + 23 across 4 fixes + 13 dimension pack).
 
 ---
 

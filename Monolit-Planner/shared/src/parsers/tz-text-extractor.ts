@@ -65,7 +65,7 @@ export interface ExtractedParam {
    * `element_scope === 'drik'`. When intent is unknown, fall back to the
    * unscoped primary.
    */
-  element_scope?: 'podkladni_beton' | 'zaklad' | 'drik' | 'rimsa' | 'zabradli' | 'kotevni_tram';
+  element_scope?: 'podkladni_beton' | 'zaklad' | 'drik' | 'rimsa' | 'zabradli' | 'kotevni_tram' | 'face_cladding';
   /** Catalog type when value originated from a budget/smeta line */
   catalog?: CatalogType;
   /** OTSKP/URS code that produced this value (smeta_line source only) */
@@ -169,6 +169,14 @@ const ELEMENT_ANCHORS: Array<{
   scope: NonNullable<ExtractedParam['element_scope']>;
 }> = [
   { re: /\bpodkladn\w*\s+beton|podkladn\w*\s+vrstv/, scope: 'podkladni_beton' },
+  // Follow-up to Fix #1 (2026-05-14, Block B dimension pack): face_cladding
+  // wins over `drik` when the sentence mentions either the cladding act
+  // ("obložen lomovým kamenem"), the cladding noun ("lícový obklad"), or
+  // a typed cladding anchor ("kotvami R8"). The sentence "Dřík konstrukce
+  // je na líci obložen lomovým kamenem tloušťky 0,30 m" carries BOTH
+  // anchors but the 0,30 m thickness belongs to the kámen, not the dřík
+  // — so we route to face_cladding first.
+  { re: /\boblo[žz]en\w*|lomov\w+\s+kamen|licov\w+\s+obklad|kotv\w*\s+R\d/, scope: 'face_cladding' },
   { re: /\bdrik\b|\bdriku\b|\bdriky\b/,              scope: 'drik' },
   { re: /\brims\w*\b/,                               scope: 'rimsa' },
   { re: /\bkotevn\w*\s+tram\b/,                      scope: 'kotevni_tram' },
@@ -546,67 +554,104 @@ export function extractFromText(
   // "what's the concrete class for the dřík specifically?" and get the
   // right answer.
   //
-  // The split granularity is per-line for drawing-dominant inputs (Block
-  // D legendas, each line = one element) and per-sentence for prose (TZ
-  // paragraph mentions multiple elements separated by periods). We use
-  // both passes — the per-line pass catches the drawing case, the
-  // per-sentence pass catches the prose case; same scope is emitted only
-  // once per unique value.
+  // Block B dimension follow-up (2026-05-14): segments are walked in
+  // document order; when a segment lacks its own anchor the scope from
+  // the previous segment is INHERITED. This unblocks Block C where
+  // "Šířka 0,85 m, tloušťka 0,4 m na líci a 0,36 m na rubu" follows the
+  // "Římsy-kotevní trámy …" line and otherwise lacks an anchor of its
+  // own. Per-segment thickness/width/range regex emit dimension fields
+  // (`thickness_m`, `width_m`, `height_min_m`, `height_max_m`,
+  // `thickness_face_m`, `thickness_back_m`) with the right element_scope.
   const seenScopeValue = new Set<string>(); // "name|scope|value"
   const segments: Array<{ raw: string; norm: string }> = [];
   for (const line of text.split(/\r?\n/)) {
-    if (line.trim()) segments.push({ raw: line, norm: norm(line) });
-  }
-  // Per-sentence pass: split each line on ". " into sub-segments.
-  for (const line of text.split(/\r?\n/)) {
     if (!line.trim()) continue;
-    for (const sentence of line.split(/(?<=[.;])\s+/)) {
-      if (sentence.trim().length > 0 && !segments.some(s => s.raw === sentence)) {
-        segments.push({ raw: sentence, norm: norm(sentence) });
-      }
+    // Per-sentence split on period/semicolon — preserves order so a
+    // following sentence can inherit scope from the previous one.
+    const subs = line.split(/(?<=[.;])\s+/).filter((s) => s.trim().length > 0);
+    if (subs.length > 1) {
+      // Include both the parent line (so legenda-style single-line items
+      // still get the scope) AND each sub-sentence in source order.
+      segments.push({ raw: line, norm: norm(line) });
+      for (const sub of subs) segments.push({ raw: sub, norm: norm(sub) });
+    } else {
+      segments.push({ raw: line, norm: norm(line) });
     }
   }
+  let lastScope: NonNullable<ExtractedParam['element_scope']> | undefined;
   for (const seg of segments) {
-    const scope = detectElementScope(seg.norm);
+    const detected = detectElementScope(seg.norm);
+    const scope = detected ?? lastScope;
+    if (detected) lastScope = detected;
     if (!scope) continue;
     const isSegDrawing = isDrawingLine(seg.raw);
     const segRegexSource: ExtractedParam['source'] = isSegDrawing ? 'drawing' : 'regex';
     const segRegexConf = isSegDrawing ? 0.85 : 1.0;
-    // Concrete class in this segment.
-    const segConcreteMatches = [...seg.raw.matchAll(/C(\d{2})\/(\d{2,3})/g)].map(mm => mm[0]);
+    const emit = (name: string, value: ExtractedParam['value'], label: string, matched: string) => {
+      const key = `${name}|${scope}|${JSON.stringify(value)}`;
+      if (seenScopeValue.has(key)) return;
+      seenScopeValue.add(key);
+      results.push({
+        name, value, label_cs: label,
+        confidence: segRegexConf, source: segRegexSource,
+        matched_text: matched.trim(),
+        element_scope: scope,
+      });
+    };
+    // Concrete class in this segment. Allow optional whitespace between
+    // "C" and the two digit-pairs ("C 30/37" — common in TZ prose) and
+    // normalize to the canonical no-space form before emit so equality
+    // checks (probe / consumer UI) work uniformly.
+    const segConcreteMatches = [...seg.raw.matchAll(/C\s*(\d{2})\s*\/\s*(\d{2,3})/g)]
+      .map((mm) => `C${mm[1]}/${mm[2]}`);
     if (segConcreteMatches.length > 0) {
-      // For drawing legendas, the single class on the line is the canonical
-      // one for that element. For prose, multiple classes can appear in
-      // one sentence — emit the first (line-order) since prose typically
-      // names the element first then its class.
       const cls = segConcreteMatches[0];
-      const key = `concrete_class|${scope}|${cls}`;
-      if (!seenScopeValue.has(key)) {
-        seenScopeValue.add(key);
-        results.push({
-          name: 'concrete_class', value: cls,
-          label_cs: `Třída betonu (${scope}): ${cls}`,
-          confidence: segRegexConf, source: segRegexSource,
-          matched_text: seg.raw.trim(),
-          element_scope: scope,
-        });
-      }
+      emit('concrete_class', cls, `Třída betonu (${scope}): ${cls}`, seg.raw);
     }
     // Exposure classes in this segment.
-    const segExposures = [...seg.raw.matchAll(/\bX(?:0|C[1-4]|D[1-3]|F[1-4]|A[1-3]|M[1-3]|S[1-3])\b/g)].map(mm => mm[0]);
+    const segExposures = [...seg.raw.matchAll(/\bX(?:0|C[1-4]|D[1-3]|F[1-4]|A[1-3]|M[1-3]|S[1-3])\b/g)].map((mm) => mm[0]);
     if (segExposures.length > 0) {
       const uniq = [...new Set(segExposures)];
-      const key = `exposure_classes|${scope}|${uniq.join(',')}`;
-      if (!seenScopeValue.has(key)) {
-        seenScopeValue.add(key);
-        results.push({
-          name: 'exposure_classes', value: uniq,
-          label_cs: `Třídy prostředí (${scope}): ${uniq.join(', ')}`,
-          confidence: segRegexConf, source: segRegexSource,
-          matched_text: seg.raw.trim(),
-          element_scope: scope,
-        });
+      emit('exposure_classes', uniq, `Třídy prostředí (${scope}): ${uniq.join(', ')}`, seg.raw);
+    }
+    // ── Block B dimension pack (per-segment) ──
+    //
+    // Rímsa face+back thickness is a 2-value compound: "tloušťka 0,4 m
+    // na líci a 0,36 m na rubu". Detect that pattern first and emit
+    // BOTH thickness_face_m + thickness_back_m; skip the generic
+    // single-value pattern for the same segment so we don't double-emit
+    // the first value as `thickness_m`.
+    const rimsaTwoSidedMatch = seg.raw.match(
+      /tlou[šs][ťt]k\w*\s+(\d+[,.]\d+)\s*m\s+na\s+l[íi]ci(?:\s+a\s+|\s*,\s*)(\d+[,.]\d+)\s*m\s+na\s+rubu/i,
+    );
+    if (rimsaTwoSidedMatch) {
+      const tFace = parseFloat(rimsaTwoSidedMatch[1].replace(',', '.'));
+      const tBack = parseFloat(rimsaTwoSidedMatch[2].replace(',', '.'));
+      emit('thickness_face_m', tFace, `Tloušťka líce (${scope}): ${rimsaTwoSidedMatch[1]} m`, rimsaTwoSidedMatch[0]);
+      emit('thickness_back_m', tBack, `Tloušťka rubu (${scope}): ${rimsaTwoSidedMatch[2]} m`, rimsaTwoSidedMatch[0]);
+    } else {
+      // Generic thickness in this segment: "tloušťky 0,15 m", "tloušťka 0,56 m".
+      const segThicknessMatch = seg.raw.match(/tlou[šs][ťt]k\w*\s+(\d+[,.]\d+)\s*m\b/i);
+      if (segThicknessMatch) {
+        const t = parseFloat(segThicknessMatch[1].replace(',', '.'));
+        emit('thickness_m', t, `Tloušťka (${scope}): ${segThicknessMatch[1]} m`, segThicknessMatch[0]);
       }
+    }
+    // Generic width: "šířky 2,75 m", "Šířka 0,85 m".
+    const segWidthMatch = seg.raw.match(/[šs][ií][řr]k\w*\s+(\d+[,.]\d+)\s*m\b/i);
+    if (segWidthMatch) {
+      const w = parseFloat(segWidthMatch[1].replace(',', '.'));
+      emit('width_m', w, `Šířka (${scope}): ${segWidthMatch[1]} m`, segWidthMatch[0]);
+    }
+    // Variable-height range: "proměnné výšky 1,65 – 3,50 m". Anchored on
+    // a v[ýy]šk\w+ keyword so it doesn't fire on the Block A "od X do Y m"
+    // pattern (which already emits height_above_terrain_*).
+    const segHeightRangeMatch = seg.raw.match(/v[ýy][šs]k\w*\s+(\d+[,.]\d+)\s*[–\-]\s*(\d+[,.]\d+)\s*m\b/i);
+    if (segHeightRangeMatch) {
+      const lo = parseFloat(segHeightRangeMatch[1].replace(',', '.'));
+      const hi = parseFloat(segHeightRangeMatch[2].replace(',', '.'));
+      emit('height_min_m', lo, `Min. výška (${scope}): ${segHeightRangeMatch[1]} m`, segHeightRangeMatch[0]);
+      emit('height_max_m', hi, `Max. výška (${scope}): ${segHeightRangeMatch[2]} m`, segHeightRangeMatch[0]);
     }
   }
 
@@ -731,6 +776,106 @@ export function extractFromText(
       value: ratio,
       label_cs: `Norma výztuže: ${ratio} kg/m³`,
       confidence: 1.0, source: 'regex', matched_text: rebarRatioMatch[0],
+    });
+  }
+
+  // ─── Block B dimension pack (follow-up to Fix #1, 2026-05-14) ──────────
+  //
+  // Whole-text patterns that don't fit the per-segment scoped sweep
+  // because they describe global project structure (dilatation cells) or
+  // attach to the implicit face_cladding context regardless of where the
+  // anchor word appears in the document.
+
+  // "na 40 dilatačních celků konstantní délky 12,50 m" — main cell count
+  // + main cell length captured in one go. Note: `\w` in JS regex is
+  // ASCII-only ([A-Za-z0-9_]), which excludes Czech diacritics — "celků"
+  // ends in "ů" so `celk\w+` fails. Use `\S+` for the noun-suffix tail.
+  const mainDilatMatch = text.match(/na\s+(\d+)\s+dilata\S+\s+celk\S*\s+konstantn\S+\s+d[ée]lk\S+\s+(\d+[,.]\d+)\s*m\b/i);
+  if (mainDilatMatch) {
+    results.push({
+      name: 'dilatation_main_count', value: parseInt(mainDilatMatch[1], 10),
+      label_cs: `Hlavní dilatačních celků: ${mainDilatMatch[1]}`,
+      confidence: 1.0, source: 'regex', matched_text: mainDilatMatch[0],
+    });
+    results.push({
+      name: 'dilatation_main_length_m', value: parseFloat(mainDilatMatch[2].replace(',', '.')),
+      label_cs: `Délka hlavního celku: ${mainDilatMatch[2]} m`,
+      confidence: 1.0, source: 'regex', matched_text: mainDilatMatch[0],
+    });
+  }
+
+  // "dva krajní dilatační celky … konstantní délky 7,60 m" — edge count
+  // via Czech word-numeral (dva/tři/čtyři) + edge length.
+  const edgeDilatMatch = text.match(
+    /\b(dva|tři|čtyři|tri|ctyri)\s+krajn\S+\s+dilata\S+\s+celk\S*[^.]*?d[ée]lk\S+\s+(\d+[,.]\d+)\s*m\b/i,
+  );
+  if (edgeDilatMatch) {
+    const numerals: Record<string, number> = { dva: 2, tři: 3, tri: 3, čtyři: 4, ctyri: 4 };
+    const count = numerals[edgeDilatMatch[1].toLowerCase()] ?? NaN;
+    if (Number.isFinite(count)) {
+      results.push({
+        name: 'dilatation_edge_count', value: count,
+        label_cs: `Krajních dilatačních celků: ${count}`,
+        confidence: 0.9, source: 'regex', matched_text: edgeDilatMatch[0],
+      });
+    }
+    results.push({
+      name: 'dilatation_edge_length_m', value: parseFloat(edgeDilatMatch[2].replace(',', '.')),
+      label_cs: `Délka krajního celku: ${edgeDilatMatch[2]} m`,
+      confidence: 1.0, source: 'regex', matched_text: edgeDilatMatch[0],
+    });
+  }
+
+  // Face-cladding material keyword: "lomovým kamenem" / "lomový kámen".
+  // `\S+` instead of `\w+` because Czech diacritics (ý/ě/á) aren't in
+  // ASCII `\w` (no /u flag).
+  if (/lomov\S+\s+k[áa]men\S*/i.test(text)) {
+    results.push({
+      name: 'face_cladding_material', value: 'lomový kámen',
+      label_cs: 'Lícový obklad: lomový kámen',
+      confidence: 0.9, source: 'keyword', matched_text: 'lomový kámen',
+      element_scope: 'face_cladding',
+    });
+  }
+
+  // Anchor type: "vlepenými kotvami R8" / "kotvy R8". The numeric suffix
+  // is the bar diameter in mm — emit canonical "R<n>".
+  const anchorTypeMatch = text.match(/kotv\w*[^A-Za-z]*R\s*(\d+)\b/i);
+  if (anchorTypeMatch) {
+    results.push({
+      name: 'face_cladding_anchor_type', value: `R${anchorTypeMatch[1]}`,
+      label_cs: `Kotvy: R${anchorTypeMatch[1]}`,
+      confidence: 0.95, source: 'regex', matched_text: anchorTypeMatch[0],
+      element_scope: 'face_cladding',
+    });
+  }
+
+  // Anchor grid: "v rastru minimálně 0,75 x 0,75 m" — emit a [W, H] array.
+  // `\S+` for "minimálně" (non-ASCII letters).
+  const anchorGridMatch = text.match(/v\s+rastru\s+(?:minim\S+\s+)?(\d+[,.]\d+)\s*[x×]\s*(\d+[,.]\d+)\s*m\b/i);
+  if (anchorGridMatch) {
+    // ExtractedParam.value is string|number|boolean|string[] — emit the
+    // two dimensions as numeric strings so the consumer can JSON.parse
+    // them and the probe's `.map(String)` equality check matches an
+    // expected `[0.75, 0.75]`.
+    const w = parseFloat(anchorGridMatch[1].replace(',', '.'));
+    const h = parseFloat(anchorGridMatch[2].replace(',', '.'));
+    results.push({
+      name: 'face_cladding_anchor_grid_m', value: [String(w), String(h)],
+      label_cs: `Rastr kotev: ${anchorGridMatch[1]} × ${anchorGridMatch[2]} m`,
+      confidence: 1.0, source: 'regex', matched_text: anchorGridMatch[0],
+      element_scope: 'face_cladding',
+    });
+  }
+
+  // Rebar grade: "B 500 B" / "B500B". The trailing letter (A/B/C)
+  // designates the bond class per ČSN EN 10080. Emit canonical "B500B".
+  const rebarGradeMatch = text.match(/\bB\s*(\d{3})\s*([ABCabc])?\b/);
+  if (rebarGradeMatch) {
+    const grade = `B${rebarGradeMatch[1]}${(rebarGradeMatch[2] ?? '').toUpperCase()}`;
+    results.push({
+      name: 'rebar_grade', value: grade, label_cs: `Třída výztuže: ${grade}`,
+      confidence: 1.0, source: 'regex', matched_text: rebarGradeMatch[0],
     });
   }
 

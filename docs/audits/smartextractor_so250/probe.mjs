@@ -152,6 +152,7 @@ function valueMatches(expected, actual) {
 // `element_scope` set. This map bridges the two so the probe accepts
 // scoped extractor entries as fulfilling scope-prefixed expected fields.
 const SCOPED_FIELD_MAP = {
+  // Concrete + exposure (Fix #1)
   podkladni_beton_grade:           { name: 'concrete_class',    scope: 'podkladni_beton' },
   podkladni_beton_exposure:        { name: 'exposure_classes',  scope: 'podkladni_beton' },
   rimsa_concrete_grade:            { name: 'concrete_class',    scope: 'rimsa' },
@@ -163,10 +164,23 @@ const SCOPED_FIELD_MAP = {
   zaklad_grade_drawing:            { name: 'concrete_class',    scope: 'zaklad',          source: 'drawing' },
   zaklad_exposure_drawing:         { name: 'exposure_classes',  scope: 'zaklad',          source: 'drawing' },
   rimsa_grade_drawing:             { name: 'concrete_class',    scope: 'rimsa',           source: 'drawing' },
+
+  // Block B dimension pack (follow-up #1, 2026-05-14): per-element
+  // thickness/width/range bridge to scoped generic names.
+  podkladni_beton_thickness_m:     { name: 'thickness_m',       scope: 'podkladni_beton' },
+  base_thickness_m:                { name: 'thickness_m',       scope: 'zaklad' },
+  base_width_m:                    { name: 'width_m',           scope: 'zaklad' },
+  wall_thickness_m:                { name: 'thickness_m',       scope: 'drik' },
+  wall_height_min_m:               { name: 'height_min_m',      scope: 'drik' },
+  wall_height_max_m:               { name: 'height_max_m',      scope: 'drik' },
+  face_cladding_thickness_m:       { name: 'thickness_m',       scope: 'face_cladding' },
+  rimsa_width_m:                   { name: 'width_m',           scope: 'rimsa' },
+  rimsa_thickness_face_m:          { name: 'thickness_face_m',  scope: 'rimsa' },
+  rimsa_thickness_back_m:          { name: 'thickness_back_m',  scope: 'rimsa' },
 };
 
 function classify(extracted, expectedField) {
-  // 1. Try direct name match first (legacy / flat fields).
+  // 1. Try direct name match first (legacy / flat fields, no scope).
   let hit = extracted.find((p) => p.name === expectedField.name && !p.element_scope);
   // 2. Then try scope-prefixed expected field via SCOPED_FIELD_MAP.
   if (!hit && SCOPED_FIELD_MAP[expectedField.name]) {
@@ -176,6 +190,13 @@ function classify(extracted, expectedField) {
       p.element_scope === m.scope &&
       (!m.source || p.source === m.source)
     );
+  }
+  // 3. Final fallback: name match regardless of scope (covers entries
+  // emitted with element_scope set but whose canonical field name already
+  // bakes the scope in — e.g. `face_cladding_material@face_cladding`,
+  // `face_cladding_anchor_grid_m@face_cladding`).
+  if (!hit) {
+    hit = extracted.find((p) => p.name === expectedField.name);
   }
   if (!hit) return { status: 'MISSING', actual: null, conf_actual: null };
   const valOk = valueMatches(expectedField.value, hit.value);

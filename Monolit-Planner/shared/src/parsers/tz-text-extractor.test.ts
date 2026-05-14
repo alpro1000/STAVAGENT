@@ -700,6 +700,95 @@ Celkový objem 605 m³ dle rozpočtu.
     });
   });
 
+  // ─── Block B dimension pack (2026-05-14, follow-up #1) ────────────────
+  describe('Block B per-element dimensions (follow-up #1)', () => {
+    const blockB =
+      'Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.\n' +
+      'Základ opěrné zdi je konstantní tloušťky 0,56 m a šířky 2,75 m.\n' +
+      'V podélném směru je základ členěn na 40 dilatačních celků konstantní délky 12,50 m\n' +
+      'a dva krajní dilatační celky DC01 a DC42 konstantní délky 7,60 m.\n' +
+      'Dřík konstrukce je konstantní tloušťky 0,45 m a proměnné výšky 1,65 – 3,50 m.\n' +
+      'Dřík konstrukce je na líci obložen lomovým kamenem tloušťky 0,30 m.\n' +
+      'Kotvy jsou v rastru minimálně 0,75 x 0,75 m.';
+
+    function scoped(r, name, scope) {
+      return r.find((p) => p.name === name && p.element_scope === scope);
+    }
+
+    it('thickness_m @podkladni_beton = 0.15', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'podkladni_beton')?.value).toBeCloseTo(0.15, 2);
+    });
+    it('thickness_m @zaklad = 0.56 + width_m @zaklad = 2.75', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'zaklad')?.value).toBeCloseTo(0.56, 2);
+      expect(scoped(r, 'width_m', 'zaklad')?.value).toBeCloseTo(2.75, 2);
+    });
+    it('thickness_m @drik = 0.45 + height_min/max @drik = 1.65/3.50', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'drik')?.value).toBeCloseTo(0.45, 2);
+      expect(scoped(r, 'height_min_m', 'drik')?.value).toBeCloseTo(1.65, 2);
+      expect(scoped(r, 'height_max_m', 'drik')?.value).toBeCloseTo(3.5, 2);
+    });
+    it('face_cladding overrides drik when "obložen … kamenem" present (thickness 0.30)', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'face_cladding')?.value).toBeCloseTo(0.3, 2);
+    });
+    it('dilatation_main_count = 40 + dilatation_main_length_m = 12.5', () => {
+      const r = extractFromText(blockB);
+      expect(findParam(r, 'dilatation_main_count')?.value).toBe(40);
+      expect(findParam(r, 'dilatation_main_length_m')?.value).toBeCloseTo(12.5, 2);
+    });
+    it('dilatation_edge_count = 2 + dilatation_edge_length_m = 7.6', () => {
+      const r = extractFromText(blockB);
+      expect(findParam(r, 'dilatation_edge_count')?.value).toBe(2);
+      expect(findParam(r, 'dilatation_edge_length_m')?.value).toBeCloseTo(7.6, 2);
+    });
+    it('face_cladding_material = "lomový kámen"', () => {
+      const r = extractFromText(blockB);
+      expect(findParam(r, 'face_cladding_material')?.value).toBe('lomový kámen');
+    });
+    it('face_cladding_anchor_grid_m = ["0.75", "0.75"]', () => {
+      const r = extractFromText(blockB);
+      const grid = findParam(r, 'face_cladding_anchor_grid_m')?.value;
+      expect(grid).toEqual(['0.75', '0.75']);
+    });
+    it('face_cladding_anchor_type = "R8"', () => {
+      const r = extractFromText('Lícový obklad je kotven do dříku opěrné zdi vlepenými kotvami R8.');
+      expect(findParam(r, 'face_cladding_anchor_type')?.value).toBe('R8');
+    });
+  });
+
+  describe('Block C per-element dimensions (follow-up #1)', () => {
+    const blockC =
+      'Římsy-kotevní trámy jsou navrženy z betonu C 30/37 XF4, XD3, XC4\n' +
+      'a vyztuženy betonářskou výztuží B 500 B.\n' +
+      'Šířka 0,85 m, tloušťka 0,4 m na líci a 0,36 m na rubu.\n' +
+      'Na horním kotevním trámu je navrženo silniční zábradlí výška 1,10 m.';
+
+    function scoped(r, name, scope) {
+      return r.find((p) => p.name === name && p.element_scope === scope);
+    }
+
+    it('concrete_class @rimsa = C30/37 (whitespace-tolerant)', () => {
+      const r = extractFromText(blockC);
+      expect(scoped(r, 'concrete_class', 'rimsa')?.value).toBe('C30/37');
+    });
+    it('width_m @rimsa = 0.85 (carry-forward scope from sentence 1)', () => {
+      const r = extractFromText(blockC);
+      expect(scoped(r, 'width_m', 'rimsa')?.value).toBeCloseTo(0.85, 2);
+    });
+    it('thickness_face_m @rimsa = 0.40 + thickness_back_m @rimsa = 0.36', () => {
+      const r = extractFromText(blockC);
+      expect(scoped(r, 'thickness_face_m', 'rimsa')?.value).toBeCloseTo(0.4, 2);
+      expect(scoped(r, 'thickness_back_m', 'rimsa')?.value).toBeCloseTo(0.36, 2);
+    });
+    it('rebar_grade = "B500B"', () => {
+      const r = extractFromText(blockC);
+      expect(findParam(r, 'rebar_grade')?.value).toBe('B500B');
+    });
+  });
+
   // ─── Fix #1 (2026-05-14, SO-250 audit) — element_scope tagging ─────────
   describe('element_scope tagging (SO-250 Fix #1)', () => {
     const drawingBlock =
