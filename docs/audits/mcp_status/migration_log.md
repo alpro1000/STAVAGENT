@@ -180,3 +180,83 @@ curl -X POST ".../auth/login" -d '{"email":"smoke-test@stavagent.cz","password":
 
 **Migration completed in code.** Production verification waits on PR
 merge + Cloud Build run + the smoke test above.
+
+---
+
+## Production verification + post-merge post-mortem (added 2026-05-14)
+
+**Status after PR #1147 merged:** the cloudbuild `psql` migration step
+**silently no-op'd** and the production tables ended up hand-crafted with
+a schema that didn't match `migrations/007_mcp_api_keys.sql`. The first
+`POST /api/v1/mcp/auth/register` call after deploy returned HTTP 500 from
+`psycopg2.errors.UndefinedColumn: column "user_email" does not exist`.
+
+### Why the cloudbuild migration step was a no-op
+
+Lines 86–104 of `cloudbuild-concrete.yaml` run
+`psql "$$CONCRETE_DATABASE_URL" -f migrations/007_mcp_api_keys.sql` from
+**inside a Cloud Build VM**. The DSN points at
+`host=/cloudsql/PROJECT:REGION:INSTANCE` — a Unix socket path that only
+exists *inside a Cloud Run container with the cloudsql-instances
+annotation*. The Cloud Build VM has no such mount, so `psql` always
+fails on socket ENOENT and the step's `… || echo "MCP api_keys migration
+skipped"` fallback hides the failure with exit code 0.
+
+**Every previous deploy since PR #1147 merge has reported "migration
+OK"-ish output in Cloud Build logs while doing nothing.** The schema
+that ran in production was whatever was already there — in this case, a
+hand-applied table with `email` (not `user_email`) and a companion
+`mcp_credit_transactions` table instead of `mcp_credit_log`.
+
+### How it was actually fixed
+
+User connected directly to Cloud SQL via `cloud-sql-proxy` on
+`localhost:9470` and applied the canonical schema from
+`migrations/007_mcp_api_keys.sql` manually (`DROP+CREATE`, since the
+decision from PR #1147 was *"Zero prod users — safe to wipe"*). Full
+SQL captured in
+`docs/audits/mcp_status/2026-05-14_cloudsql_connection_bug.md` §0.
+
+Smoke test passed immediately after:
+
+```
+$ curl -X POST .../api/v1/mcp/auth/register -d '{"email":"…","password":"…"}'
+{"api_key":"sk-stavagent-…","credits":200,"status":"created"}
+```
+
+### Carry-over: replace the cloudbuild psql step
+
+The next PR on this branch family should replace lines 86–104 of
+`cloudbuild-concrete.yaml` with one of:
+
+- **Option 1 — Cloud Run job.** A separate job resource using the same
+  container image + same `cloudsql-instances` annotation; cloudbuild
+  triggers it via `gcloud run jobs execute mcp-migrate`. Cleanest
+  separation; reuses image; respects the socket mount.
+- **Option 2 — App-side startup migration.** Hook Alembic
+  `upgrade head` into the FastAPI lifespan startup (`app/main.py`). Runs
+  in-process every cold start, idempotent, hits the same Cloud SQL
+  socket the app uses. Subtle gotcha: traffic-split races across
+  concurrent revisions during rollout.
+- **Option 3 — drift-check startup probe.** Lighter than full migration:
+  at startup, `SELECT column_name FROM information_schema.columns
+  WHERE table_name = 'mcp_api_keys'` and fail fast with a clear log if
+  `user_email` / `total_credits_used` are absent. Doesn't *fix* drift,
+  but makes the failure deterministic instead of waiting for the first
+  request.
+
+**Recommendation: Option 1 + Option 3 together.** Option 1 is the
+durable fix; Option 3 catches future hand-edits to prod.
+
+### PR #1148 was the diagnostic vehicle that found the bug
+
+PR #1148 fixed *none of the five hypotheses it originally targeted*
+(socket-ENOENT / DSN parse / auth / cold-start), but its sanitized-DSN
+log + ENOENT-specific ERROR line caused the **real** error
+(`UndefinedColumn`) to surface immediately and unambiguously. Without
+those diagnostic improvements, the on-call rotation would have stayed
+stuck on the wrong cause for hours.
+
+The `.strip()` + `--set-cloudsql-instances` defensive changes from PR
+#1148 remain value-adds for unrelated future failure modes; they
+weren't wasted even though they didn't fix the actual bug.
