@@ -498,9 +498,21 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 || elemType === 'zakladovy_pas'
                 || elemType === 'zakladova_patka';
 
+              // D7 vs E1 consolidation (2026-05-14, audit Top-10 #9): the
+              // "Rozměry bloku" L×W×H widget above (gated by `geomTypes`)
+              // already renders a "Výška V (m)" input that writes to
+              // form.height_m. Showing the generic "Výška (m)" field below
+              // the same FormState slot would mean two side-by-side widgets
+              // labelled "Výška", confusing the user even though they are
+              // synchronized. Hide this one when the geom block owns the
+              // height widget.
+              const heightOwnedByGeomBlock = [
+                'zaklady_piliru', 'zaklady_oper', 'zakladova_patka',
+                'zakladovy_pas', 'opery_ulozne_prahy', 'driky_piliru',
+              ].includes(elemType);
               return (
                 <>
-                  {hint.has_height && (
+                  {hint.has_height && !heightOwnedByGeomBlock && (
                     <Field
                       // Mostovka A1 (2026-04-16): relabel so the user sees
                       // "Výška nad terénem" (prop height) and not just
