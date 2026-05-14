@@ -1,8 +1,8 @@
 # Audit: Knowledge inventory with GCS bucket — 2026-05-14
 
-**Branch:** `claude/cherry-pick-mcp-endpoints-Rhpb2`
+**Branch:** `claude/knowledge-audit-2026-05-14`
 **Mode:** read-only inventory + integration roadmap (no calculator/classifier changes)
-**Scope:** GCS `gs://stavagent-cenik-norms/` + local `knowledge_base/B0–B9` + `docs/normy/` + runtime data files (`otskp.db`, `URS201801.csv`).
+**Scope:** GCS `gs://stavagent-cenik-norms/` + local `knowledge_base/B0–B9` + `docs/normy/` + runtime data files (`2025_03_otskp.xml`, `URS201801.csv`).
 **Trigger:** Týden 3-4 CSC demo roadmap — need a single map of "what we have, who reads it, what's the gap" before scoping top-5 integrations.
 **Prior audit:** `2026-05-06_b2_and_docs_bridge_ingest_audit.md` covered B2 + docs/normy/ bridge ingest. This audit picks up the GCS half plus a calculator-readers map.
 
