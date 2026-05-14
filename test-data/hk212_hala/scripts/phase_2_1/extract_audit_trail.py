@@ -119,22 +119,94 @@ KAPITOLA_LOKALIZACE: dict[str, str] = {
 RE_OPERATORS = re.compile(r"[×x*·•]")
 # Czech decimal: 1,5 → 1.5  (but only when followed by digit, not "stupně")
 RE_CZECH_DECIMAL = re.compile(r"(\d),(\d)")
+# Czech thousands separator: "10 263" → "10263" (digit + space + 3-digit group at word boundary)
+RE_CZECH_THOUSANDS = re.compile(r"(\d)\s(\d{3})(?!\d)")
 # Em-dash separator (annotation suffix)
 EM_DASHES = ["—", "–", " - "]
+# Result/approximation indicators — split formula, treat RIGHT side as stated result
+RE_RESULT_SPLIT = re.compile(r"\s*(?:=|≈|≅|≅)\s*")
 # Placeholder / approximate markers
 PLACEHOLDER_MARKERS = re.compile(r"\b(placeholder|paušál|pausal|estimate|~|cca)\b", re.IGNORECASE)
+# Approximate-result markers (use RIGHT side of split as authoritative)
+APPROX_MARKERS = re.compile(r"[≈≅]|~")
 # Verbal-only marker: starts with "=" then mostly text
 RE_VERBAL = re.compile(r"^\s*=\s*[a-zA-Zá-žÁ-Ž]")
 # A token-like number
 RE_NUMBER = re.compile(r"\b\d+(?:\.\d+)?\b")
+# §-prefixed standard reference ("§3.4", "§116") — strip to avoid parsing as math
+RE_SECTION_REF = re.compile(r"§\s*\d+(?:\.\d+)*")
+# "Count-only" formula start: "<N> <unit> <Czech word>" with no immediate ×.
+# E.g. "1 ks pilota Ø800 × 8 m délka" — the trailing "×" is a unit/spec separator,
+# not a multiplication operator. Take only N.
+# IMPORTANT: must NOT match "14 ks × 4 × ..." — explicit math-op exclusion needed
+# because '×' (U+00D7) is technically within the Latin "Á-Ž" Unicode range.
+# Pattern: <N> <unit> <whitespace> <Czech letter (NOT operator)>
+RE_COUNT_ONLY_START = re.compile(
+    r"^\s*(\d+(?:\.\d+)?)\s+"
+    r"(?:ks|kpl|kus|t|hod|paušál|bm)"
+    r"\s+"
+    r"[^\d\s×x*+\-=≈≅·•./()]",  # next must be a real letter, not math/digit/whitespace
+    re.IGNORECASE,
+)
+# Ø<num> spec marker — diameter callout, not a multiplicand
+RE_DIAMETER_SPEC = re.compile(r"Ø\s*\d+(?:\.\d+)?")
+
+
+def _strip_annotation_parens(text: str) -> str:
+    """Drop paren content that's clearly annotation, keep math sub-products.
+
+    Heuristic: paren content is MATH only if its first non-whitespace char is a
+    digit (or '.', or unary minus before digit). Otherwise it's a Czech word
+    annotation like "(KARI Ø8 100×100)" / "(deska 0.20 + lože 0.25)" /
+    "(náběh)" / "(od úr. figury -0.45 do -1.45)" — drop entirely (including
+    any numbers inside, which would be wire diameters / mesh spec / depth
+    callouts, not multiplicands).
+    """
+    out: list[str] = []
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if ch == "(":
+            depth = 1
+            j = i + 1
+            while j < len(text) and depth > 0:
+                if text[j] == "(":
+                    depth += 1
+                elif text[j] == ")":
+                    depth -= 1
+                j += 1
+            content = text[i + 1:j - 1]
+            stripped = content.lstrip()
+            starts_with_digit = (
+                bool(stripped) and (
+                    stripped[0].isdigit() or stripped[0] == "."
+                    or (stripped[0] == "-" and len(stripped) > 1 and stripped[1].isdigit())
+                )
+            )
+            if starts_with_digit:
+                # Recurse for nested parens, then strip non-math chars (keep nums + ops)
+                inner = _strip_annotation_parens(content)
+                inner_clean = re.sub(r"[^\d.\s+\-*/()]", " ", inner)
+                out.append(" (" + inner_clean + ") ")
+            # else: pure annotation — drop entire paren including any numerics
+            i = j
+        else:
+            out.append(ch)
+            i += 1
+    return "".join(out)
 
 
 def parse_formula(formula: str) -> dict[str, Any]:
     """Return {computed, method, operands, is_placeholder, is_verbal, raw}.
 
-    method ∈ {'product', 'verbal', 'placeholder', 'unparseable'}.
-    computed is float or None.
-    operands is list of floats actually used in the multiplication.
+    Pipeline:
+      1. Strip Czech thousands ("10 263" → "10263") + Czech decimals.
+      2. Split on em-dash (annotation suffix dropped).
+      3. Split on '='/'≈'/'≅'. If formula is placeholder/approximation,
+         take RIGHT side as authoritative stated result (a single number).
+         Otherwise take LEFT side and compute its arithmetic.
+      4. Strip annotation parens (those not starting with a digit).
+      5. Extract numbers, multiply (or sum if '+' present).
     """
     if not formula:
         return {"computed": None, "method": "unparseable", "operands": [],
@@ -144,79 +216,117 @@ def parse_formula(formula: str) -> dict[str, Any]:
     s = formula.strip()
 
     is_placeholder = bool(PLACEHOLDER_MARKERS.search(s))
+    has_approx = bool(APPROX_MARKERS.search(s))
     is_verbal = bool(RE_VERBAL.match(s))
 
-    # Strip annotation suffix after em-dash
+    # FIX 1: Czech thousands ("10 263" → "10263"). Apply twice for "1 234 567".
+    s = RE_CZECH_THOUSANDS.sub(r"\1\2", s)
+    s = RE_CZECH_THOUSANDS.sub(r"\1\2", s)
+    # Czech decimal "1,5" → "1.5"
+    s = RE_CZECH_DECIMAL.sub(r"\1.\2", s)
+    # FIX 4: strip §<num> standard refs (§3.4 = ČSN section, not a multiplier)
+    s = RE_SECTION_REF.sub(" ", s)
+    # FIX 5: strip Ø<num> diameter specs (Ø800 = 800 mm rebar diameter, not multiplier)
+    s = RE_DIAMETER_SPEC.sub(" ", s)
+
+    # FIX 6: count-only-start pattern ("1 ks pilota..." — × after is unit separator).
+    # Only kicks in when there is NO '=' or '≈' (those go through the normal split).
+    if not RE_RESULT_SPLIT.search(s):
+        m = RE_COUNT_ONLY_START.match(s)
+        if m:
+            value = float(m.group(1))
+            return {"computed": value, "method": "count_only_leading",
+                    "operands": [value],
+                    "is_placeholder": is_placeholder, "is_verbal": False, "raw": raw}
+
+    # Strip em-dash annotations
     for em in EM_DASHES:
         if em in s:
             s = s.split(em)[0]
             break
 
-    # Czech decimal
-    s = RE_CZECH_DECIMAL.sub(r"\1.\2", s)
-    # Normalize multiplication operators
-    s = RE_OPERATORS.sub("*", s)
-
-    # Walk balanced parens, decide keep/drop per content
-    def strip_annotation_parens(text: str) -> str:
-        out: list[str] = []
-        i = 0
-        while i < len(text):
-            ch = text[i]
-            if ch == "(":
-                # Find matching ')'
-                depth = 1
-                j = i + 1
-                while j < len(text) and depth > 0:
-                    if text[j] == "(":
-                        depth += 1
-                    elif text[j] == ")":
-                        depth -= 1
-                    j += 1
-                content = text[i + 1:j - 1]
-                # Math paren if it contains "*"
-                if "*" in content:
-                    inner = strip_annotation_parens(content)
-                    # Strip non-math chars inside, keep numbers + operators
-                    inner_clean = re.sub(r"[^\d.\s+\-*()]", " ", inner)
-                    out.append(" (" + inner_clean + ") ")
-                # else: annotation, drop entirely
-                i = j
-            else:
-                out.append(ch)
-                i += 1
-        return "".join(out)
-
-    s = strip_annotation_parens(s)
-
-    # Verbal or all-text formula → no numbers worth multiplying
-    if is_verbal:
+    # FIX 2: Split on result indicator (=, ≈, ≅). Right side = stated result; left = computation.
+    parts = RE_RESULT_SPLIT.split(s)
+    if len(parts) >= 2:
+        left = parts[0].strip()
+        right = " ".join(parts[1:]).strip()
+        # Verbal "= something_textual" → no math at all
+        if not left and right and not re.search(r"\d", right):
+            return {"computed": None, "method": "verbal", "operands": [],
+                    "is_placeholder": is_placeholder, "is_verbal": True, "raw": raw}
+        # If is_placeholder / approximation marker: trust right side (stated answer)
+        if (is_placeholder or has_approx) and re.search(r"\d", right):
+            right_nums = [float(n) for n in RE_NUMBER.findall(right)]
+            if right_nums:
+                # First numeric on the right is the stated result
+                return {"computed": right_nums[0],
+                        "method": "placeholder_stated_result",
+                        "operands": right_nums[:1],
+                        "is_placeholder": is_placeholder, "is_verbal": False, "raw": raw}
+        # Else use left for arithmetic computation
+        s = left if left else right
+    elif is_verbal:
         return {"computed": None, "method": "verbal", "operands": [],
                 "is_placeholder": is_placeholder, "is_verbal": True, "raw": raw}
+
+    # Normalize multiplication operators (after the splitter has run)
+    s = RE_OPERATORS.sub("*", s)
+
+    # FIX 3: Strip annotation parens (those not starting with a digit)
+    s = _strip_annotation_parens(s)
+
+    # FIX 7: placeholder/approx formula with no '=' / '≈'. Discriminate stated-value
+    # from real multiplication chain by checking what sits between the first two
+    # numbers in the OUTSIDE-paren slice:
+    #   * presence of '*' or '+' → real chain, keep normal product path
+    #     e.g. "~30 bm × 0.4 m × 0.6 m"  ("bm * " between 30 and 0.4)
+    #   * only words/units between → trailing numbers are descriptive context
+    #     e.g. "placeholder ~200 m³ ... halu 28×19×6 m" (no operator between 200 and 28)
+    #     e.g. "paušál (Rožmitál 00523 R)" (paren dropped, no outside number → unparseable)
+    if is_placeholder or has_approx:
+        s_no_math_parens = re.sub(r"\([^()]*\)", " ", s)
+        outside_matches = list(RE_NUMBER.finditer(s_no_math_parens))
+        use_first_only = False
+        if len(outside_matches) <= 1:
+            use_first_only = True
+        else:
+            between = s_no_math_parens[outside_matches[0].end():outside_matches[1].start()]
+            if not re.search(r"[*+]", between):
+                use_first_only = True
+        if use_first_only:
+            value: float | None = None
+            if outside_matches:
+                value = float(outside_matches[0].group())
+            else:
+                all_nums = RE_NUMBER.findall(s)
+                value = float(all_nums[0]) if all_nums else None
+            if value is not None:
+                return {"computed": value,
+                        "method": "placeholder_first_value",
+                        "operands": [value],
+                        "is_placeholder": is_placeholder, "is_verbal": False, "raw": raw}
 
     nums = [float(n) for n in RE_NUMBER.findall(s)]
     if not nums:
         return {"computed": None, "method": "unparseable", "operands": [],
                 "is_placeholder": is_placeholder, "is_verbal": False, "raw": raw}
 
-    # Single-number paušál/placeholder
+    # Single-number paušál/placeholder/single_value
     if len(nums) == 1:
         return {"computed": nums[0],
                 "method": "placeholder" if is_placeholder else "single_value",
                 "operands": nums,
                 "is_placeholder": is_placeholder, "is_verbal": False, "raw": raw}
 
-    # Multi-number formula: simple product (default) unless + dominates
+    # Multi-number arithmetic
     if "+" in s and "*" not in s:
-        # Sum-only formula
         computed = sum(nums)
         method = "sum"
     elif "+" in s and "*" in s:
-        # Mixed — best-effort safe eval on the math-only string
-        math_only = re.sub(r"[^\d.+\-*/()\s]", " ", s)
+        math_only = re.sub(r"[^\d.+\-*()\s]", " ", s)
         math_only = re.sub(r"\s+", " ", math_only).strip()
         try:
-            if re.fullmatch(r"[\d.+\-*/()\s]+", math_only):
+            if re.fullmatch(r"[\d.+\-*()\s]+", math_only):
                 computed = float(eval(math_only, {"__builtins__": {}}, {}))
                 method = "mixed_eval"
             else:

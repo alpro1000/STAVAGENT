@@ -597,7 +597,48 @@ def write_audit_review_sheet(ws: Worksheet, items: list[dict]) -> int:
 # Driver
 # ----------------------------------------------------------------------------
 
+def save_wb_with_lock_fallback(wb, target: Path, logger: logging.Logger,
+                                 run_started_at: float) -> Path:
+    """Write workbook to `target` or `<stem>_v2.xlsx` if locked.
+
+    Windows + Excel keeps a lock on opened xlsx; openpyxl.save() then raises
+    PermissionError. Fall back to `_v2.xlsx` with a loud warning rather than
+    silently failing or crashing the whole run.
+
+    Verifies post-write mtime is fresh (≥ run start) — if not, the underlying
+    filesystem swallowed the write, also fall back.
+    """
+    import os, time
+
+    def is_fresh(p: Path) -> bool:
+        return p.exists() and os.path.getmtime(p) >= run_started_at - 1.0
+
+    try:
+        wb.save(target)
+        if is_fresh(target):
+            logger.info(f"  → wrote {target} ({target.stat().st_size:,} bytes)")
+            return target
+        logger.warning(f"  ⚠ {target} mtime not refreshed — falling back to _v2.xlsx")
+    except (PermissionError, OSError) as e:
+        logger.warning(f"  ⚠ cannot write {target.name} ({type(e).__name__}: {e}); "
+                       f"likely open in Excel — falling back to _v2.xlsx")
+
+    fallback = target.with_name(f"{target.stem}_v2{target.suffix}")
+    try:
+        wb.save(fallback)
+        if is_fresh(fallback):
+            logger.warning(f"  → fallback OK: {fallback}  (close original in Excel + rename)")
+            return fallback
+        logger.error(f"  ✗ fallback also failed mtime check: {fallback}")
+    except Exception as e:
+        logger.error(f"  ✗ fallback save also failed: {e}")
+    return target  # may not exist; caller can detect via .exists()
+
+
 def run(args, logger: logging.Logger) -> int:
+    import time
+    run_started_at = time.time()
+
     items_path: Path = args.items
     out_dir: Path = args.output_dir
 
@@ -627,6 +668,14 @@ def run(args, logger: logging.Logger) -> int:
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # Log intended output paths up front so the user sees them even if a save fails
+    logger.info(f"Planned outputs (in {out_dir}/):")
+    logger.info(f"  - HK212_Soupis_praci.xlsx       (main, 18 cols incl. audit trail)")
+    logger.info(f"  - HK212_needs_review.xlsx       (companion, needs_review items)")
+    if any(it.get("audit_trail") for it in items):
+        logger.info(f"  - HK212_audit_trail_review.xlsx (companion, yellow+red audit rows)")
+    logger.info(f"  - HK212_summary.md")
+
     # Main xlsx
     main_path = out_dir / "HK212_Soupis_praci.xlsx"
     wb = openpyxl.Workbook()
@@ -634,33 +683,32 @@ def run(args, logger: logging.Logger) -> int:
     if ws is None:
         ws = wb.create_sheet()
     per_kap = write_soupis_sheet(ws, items)
-    wb.save(main_path)
-    logger.info(f"Wrote {main_path}")
+    main_path = save_wb_with_lock_fallback(wb, main_path, logger, run_started_at)
     logger.info(f"  per kapitola: {dict(sorted(per_kap.items(), key=lambda x: KAPITOLA_ORDER.index(x[0]) if x[0] in KAPITOLA_ORDER else 99))}")
 
     # Companion: needs_review
     needs_path: Path | None = None
     if not args.no_companion:
-        needs_path = out_dir / "HK212_needs_review.xlsx"
+        needs_path_target = out_dir / "HK212_needs_review.xlsx"
         wb2 = openpyxl.Workbook()
         ws2 = wb2.active
         if ws2 is None:
             ws2 = wb2.create_sheet()
         n_needs = write_needs_review_sheet(ws2, items)
-        wb2.save(needs_path)
-        logger.info(f"Wrote {needs_path} ({n_needs} needs_review items)")
+        needs_path = save_wb_with_lock_fallback(wb2, needs_path_target, logger, run_started_at)
+        logger.info(f"    ({n_needs} needs_review items)")
 
     # Companion (Phase 2.1): audit_trail_review.xlsx — only yellow + red rows
     has_audit = any(it.get("audit_trail") for it in items)
     if has_audit and not args.no_companion:
-        audit_review_path = out_dir / "HK212_audit_trail_review.xlsx"
+        audit_review_target = out_dir / "HK212_audit_trail_review.xlsx"
         wb3 = openpyxl.Workbook()
         ws3 = wb3.active
         if ws3 is None:
             ws3 = wb3.create_sheet()
         n_audit = write_audit_review_sheet(ws3, items)
-        wb3.save(audit_review_path)
-        logger.info(f"Wrote {audit_review_path} ({n_audit} yellow + red audit-trail rows)")
+        audit_review_path = save_wb_with_lock_fallback(wb3, audit_review_target, logger, run_started_at)
+        logger.info(f"    ({n_audit} yellow + red audit-trail rows)")
 
     # Companion: summary.md
     if not args.no_companion:

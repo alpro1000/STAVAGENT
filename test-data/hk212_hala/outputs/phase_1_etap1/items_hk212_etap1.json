@@ -120,7 +120,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -204,7 +204,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -288,7 +288,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -335,16 +335,11 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder 12 m³ (vrt + zaplnění; variantní řešení per A105 mtext)",
-        "formula_parsed_method": "product_fallback_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 12.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 105.0,
             "unit": ""
           }
         ],
@@ -356,14 +351,14 @@
           }
         ],
         "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD MOŽNO VYMĚNIT ZA PILOTU Ø800 / L=8,0m' · (atypický základ — pilota variant) · [sub: zemni_prace]",
-        "computed_quantity": 1260.0,
+        "computed_quantity": 12.0,
         "declared_quantity": 12.0,
-        "match_delta_pct": 10400.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -446,7 +441,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -535,7 +530,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -592,7 +587,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -639,7 +634,7 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder 20 m² (perimetr atypického základu × hloubka)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -665,7 +660,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -711,26 +706,11 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder ~5 m³ (úsek 5 m × tlouš. 0.3 m × š. 0.8 m + ofset)",
-        "formula_parsed_method": "product_fallback_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 5.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 5.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.3,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 0.8,
             "unit": ""
           }
         ],
@@ -747,14 +727,14 @@
           }
         ],
         "poznamka": "A201 stávající splašková kan DN300 + TZ B m.10.g obetonování · (obetonování splaškové DN300) · [sub: zemni_prace]",
-        "computed_quantity": 6.0,
+        "computed_quantity": 5.0,
         "declared_quantity": 5.0,
-        "match_delta_pct": 20.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -800,26 +780,11 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder ~5 m³ (úsek 5 m × 0.3 × 0.8 + ofset)",
-        "formula_parsed_method": "product_fallback_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 5.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 5.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.3,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 0.8,
             "unit": ""
           }
         ],
@@ -836,14 +801,14 @@
           }
         ],
         "poznamka": "A201 stávající dešťová kan DN300 + TZ B m.10.g · (obetonování dešťové DN300) · [sub: zemni_prace]",
-        "computed_quantity": 6.0,
+        "computed_quantity": 5.0,
         "declared_quantity": 5.0,
-        "match_delta_pct": 20.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -916,7 +881,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -989,7 +954,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1063,7 +1028,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1126,7 +1091,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1172,7 +1137,7 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder ~30 m³ (zásypy okolo patek + nad obetonovanými sítěmi)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -1194,7 +1159,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1240,8 +1205,14 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "= celkový objem výkopu 350 m³ (Phase 0b baseline)",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
+        "formula_parsed_method": "single_value",
+        "inputs": [
+          {
+            "label": "operand_1",
+            "value": 350.0,
+            "unit": ""
+          }
+        ],
         "reference": [
           {
             "type": "phase_ref",
@@ -1249,14 +1220,14 @@
           }
         ],
         "poznamka": "Phase 0b RE-RUN §3.10 total výkop 341.8 m³ rounded 350 m³ · (nakládání zeminy) · [sub: zemni_prace]",
-        "computed_quantity": null,
+        "computed_quantity": 350.0,
         "declared_quantity": 350.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1324,7 +1295,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1387,7 +1358,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1455,7 +1426,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1527,7 +1498,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1571,7 +1542,7 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder 5 ks (TZ B m.7.b)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -1599,7 +1570,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1654,23 +1625,18 @@
             "label": "operand_2",
             "value": 5.0,
             "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 7.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "ČSN postup likvidace pařezů · (frézování pařezů) · [sub: zemni_prace]",
-        "computed_quantity": 14.0,
+        "computed_quantity": 7.0,
         "declared_quantity": 7.0,
-        "match_delta_pct": 100.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1714,7 +1680,7 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder ~6 m³ dřevní hmoty",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -1731,7 +1697,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1798,7 +1764,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1844,7 +1810,7 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder ~540 m² (z C3 situace + plocha pod halou)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -1871,7 +1837,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -1917,44 +1883,24 @@
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
         "formula": "placeholder 540 m² × 0.25 m × 2 t/m³ × 30% = ~80 t",
-        "formula_parsed_method": "product_placeholder",
+        "formula_parsed_method": "placeholder_stated_result",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 540.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.25,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
             "value": 80.0,
             "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "estimate na základě plochy bouraného povrchu · (nakládání suti) · [sub: zemni_prace]",
-        "computed_quantity": 648000.0,
+        "computed_quantity": 80.0,
         "declared_quantity": 80.0,
-        "match_delta_pct": 809900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2011,7 +1957,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2076,11 +2022,6 @@
             "label": "operand_4",
             "value": 0.6,
             "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 18.9,
-            "unit": ""
           }
         ],
         "reference": [
@@ -2091,14 +2032,14 @@
           }
         ],
         "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4 · (patky rámové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 357.21,
+        "computed_quantity": 18.9,
         "declared_quantity": 18.9,
-        "match_delta_pct": 1790.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2185,7 +2126,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2240,7 +2181,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2305,11 +2246,6 @@
             "label": "operand_4",
             "value": 0.8,
             "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 4.1,
-            "unit": ""
           }
         ],
         "reference": [
@@ -2320,14 +2256,14 @@
           }
         ],
         "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 16.7936,
+        "computed_quantity": 4.096,
         "declared_quantity": 4.096,
-        "match_delta_pct": 310.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2414,7 +2350,7 @@
         "confidence": 0.7,
         "extraction_method": "qty_formula_mismatch",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2469,7 +2405,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2513,25 +2449,10 @@
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
         "formula": "~30 bm × 0.4 × 0.6 m = 7.2 m³",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "placeholder_stated_result",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.4,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.6,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
             "value": 7.2,
             "unit": ""
           }
@@ -2544,14 +2465,14 @@
           }
         ],
         "poznamka": "A105 layout estimate · (pasy C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 51.84,
+        "computed_quantity": 7.2,
         "declared_quantity": 7.2,
-        "match_delta_pct": 620.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2595,25 +2516,10 @@
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
         "formula": "~30 bm × 2 × 0.6 m boční plocha = 36 m²",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "placeholder_stated_result",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.6,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
             "value": 36.0,
             "unit": ""
           }
@@ -2626,14 +2532,14 @@
           }
         ],
         "poznamka": "A105 layout · (bednění pasů zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 1296.0,
+        "computed_quantity": 36.0,
         "declared_quantity": 36.0,
-        "match_delta_pct": 3500.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2677,29 +2583,24 @@
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
         "formula": "placeholder 600 kg per RE-RUN §3.4 statika dimensioning",
-        "formula_parsed_method": "product_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 600.0,
             "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 3.4,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "statika D.1.2 + RE-RUN §3.4 B500B · (výztuž patek + pasů B500B) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 2040.0,
+        "computed_quantity": 600.0,
         "declared_quantity": 600.0,
-        "match_delta_pct": 240.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2745,16 +2646,11 @@
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
         "formula": "1 ks pilota Ø800 × 8 m délka",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "count_only_leading",
         "inputs": [
           {
             "label": "operand_1",
             "value": 1.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 8.0,
             "unit": ""
           }
         ],
@@ -2766,14 +2662,14 @@
           }
         ],
         "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 8.0,
+        "computed_quantity": 1.0,
         "declared_quantity": 1.0,
-        "match_delta_pct": 700.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2847,7 +2743,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2926,7 +2822,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -2981,11 +2877,6 @@
             "label": "operand_2",
             "value": 0.2,
             "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 99.0,
-            "unit": ""
           }
         ],
         "reference": [
@@ -2996,14 +2887,14 @@
           }
         ],
         "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 9801.0,
+        "computed_quantity": 99.0,
         "declared_quantity": 99.0,
-        "match_delta_pct": 9800.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3047,7 +2938,7 @@
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
         "formula": "obvod desky ~95 bm",
-        "formula_parsed_method": "single_value",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -3070,7 +2961,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3125,33 +3016,18 @@
             "label": "operand_2",
             "value": 3.95,
             "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 100.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 100.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 156420000.0,
+        "computed_quantity": 1955.25,
         "declared_quantity": 1955.25,
-        "match_delta_pct": 7999900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3206,7 +3082,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3272,7 +3148,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3333,7 +3209,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3393,16 +3269,6 @@
             "label": "operand_3",
             "value": 66.3,
             "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 10.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 263.0,
-            "unit": ""
           }
         ],
         "reference": [
@@ -3413,14 +3279,14 @@
           }
         ],
         "poznamka": "DXF A101 INSERT 'Sloup IPE' × 36 + RE-RUN §3.3 + statika D.1.2 · (Sloup IPE 400 S235 — A101 INSERT block name) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 26992321.2,
+        "computed_quantity": 10263.24,
         "declared_quantity": 10263.24,
-        "match_delta_pct": 262900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3480,16 +3346,6 @@
             "label": "operand_3",
             "value": 42.3,
             "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 1.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 455.0,
-            "unit": ""
           }
         ],
         "reference": [
@@ -3500,14 +3356,14 @@
           }
         ],
         "poznamka": "DXF A101 INSERT 'M_S profily_ sloup' × 8 + statika D.1.2 · (M_S profily HEA 200 — A101 INSERT) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 662079.6,
+        "computed_quantity": 1455.12,
         "declared_quantity": 1455.12,
-        "match_delta_pct": 45400.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3572,28 +3428,18 @@
             "label": "operand_4",
             "value": 1.1,
             "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 9.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_6",
-            "value": 478.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "statika D.1.2 + geom. rozpon 18.5 m + sklon 5.25° (NE 5.65° per RE-RUN §9.2) · (Příčle IPE 450 + náběh) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 40761277.92,
+        "computed_quantity": 9474.96,
         "declared_quantity": 9474.96,
-        "match_delta_pct": 430100.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3653,28 +3499,18 @@
             "label": "operand_3",
             "value": 15.8,
             "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 5.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 195.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 5065164.0,
+        "computed_quantity": 5195.04,
         "declared_quantity": 5195.04,
-        "match_delta_pct": 97400.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3736,28 +3572,18 @@
             "label": "operand_3",
             "value": 18.8,
             "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 1.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 30.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "statika D.1.2 (UPE 160 — NE C150×19.3 per RE-RUN §9.4) · (vaznice krajní UPE 160) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 30907.2,
+        "computed_quantity": 1030.24,
         "declared_quantity": 1030.24,
-        "match_delta_pct": 2900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3817,23 +3643,18 @@
             "label": "operand_3",
             "value": 6.4,
             "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 328.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "statika D.1.2 L70/70/6 stěnová ztužidla · (ztužidla stěnová L 70/70/6) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 107479.04,
+        "computed_quantity": 327.68,
         "declared_quantity": 327.68,
-        "match_delta_pct": 32700.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3893,11 +3714,6 @@
             "label": "operand_3",
             "value": 2.47,
             "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 237.0,
-            "unit": ""
           }
         ],
         "reference": [
@@ -3908,14 +3724,14 @@
           }
         ],
         "poznamka": "DXF A101 INSERT 'Kruhové tyče' × 8 + statika D.1.2 · (ztužidla střešní Ø20) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 56197.44,
+        "computed_quantity": 237.12,
         "declared_quantity": 237.12,
-        "match_delta_pct": 23600.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -3959,31 +3775,11 @@
       "audit_trail": {
         "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
         "formula": "~6% × součet OK 27 985 kg ≈ 1 450 kg",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "placeholder_stated_result",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 6.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 27.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 985.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 1.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 450.0,
+            "value": 1450.0,
             "unit": ""
           }
         ],
@@ -3994,14 +3790,14 @@
           }
         ],
         "poznamka": "ČSN EN 1090-2 + standardní podíl spojovacího materiálu · (spojovací materiál grade 8.8) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 71806500.0,
+        "computed_quantity": 1450.0,
         "declared_quantity": 1450.0,
-        "match_delta_pct": 4952072.41,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4045,16 +3841,21 @@
       "audit_trail": {
         "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
         "formula": "(36 + 8) sloupů × 4 kotvy/sloup = 176 ks",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "mixed_eval",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 4.0,
+            "value": 36.0,
             "unit": ""
           },
           {
             "label": "operand_2",
-            "value": 176.0,
+            "value": 8.0,
+            "unit": ""
+          },
+          {
+            "label": "operand_3",
+            "value": 4.0,
             "unit": ""
           }
         ],
@@ -4066,14 +3867,14 @@
           }
         ],
         "poznamka": "A105 sokly patek + statika D.1.2 kotevní detail · (kotvení sloupů M20) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 704.0,
+        "computed_quantity": 176.0,
         "declared_quantity": 176.0,
-        "match_delta_pct": 300.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4117,7 +3918,7 @@
       "audit_trail": {
         "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
         "formula": "součet OK profilů + kotev = ~28 t",
-        "formula_parsed_method": "single_value",
+        "formula_parsed_method": "placeholder_stated_result",
         "inputs": [
           {
             "label": "operand_1",
@@ -4134,7 +3935,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4200,7 +4001,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4244,20 +4045,10 @@
       "audit_trail": {
         "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
         "formula": "celk. povrch profilů ~30 m²/t × 28 t = 850 m²",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "placeholder_stated_result",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 28.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
             "value": 850.0,
             "unit": ""
           }
@@ -4270,14 +4061,14 @@
           }
         ],
         "poznamka": "statika D.1.2 C2 P1 životnost 15 + ISO 12944 · (antikor 2-vrstvý ISO 12944 C2 P1) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 714000.0,
+        "computed_quantity": 850.0,
         "declared_quantity": 850.0,
-        "match_delta_pct": 83900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4332,7 +4123,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4392,7 +4183,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4436,7 +4227,7 @@
       "audit_trail": {
         "lokalizace": "ostatní stavební práce — celý objekt",
         "formula": "placeholder 200 t·km (in-site přesuny, default)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -4453,7 +4244,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4497,39 +4288,24 @@
       "audit_trail": {
         "lokalizace": "ostatní stavební práce — celý objekt",
         "formula": "placeholder ~200 m³ prostorové lešení pro halu 28×19×6 m",
-        "formula_parsed_method": "product_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 200.0,
             "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 28.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 19.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 6.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "standardní lešení pro montáž OK · (pomocné lešení OK) · [sub: GD_vodorovne_dopravy]",
-        "computed_quantity": 638400.0,
+        "computed_quantity": 200.0,
         "declared_quantity": 200.0,
-        "match_delta_pct": 319100.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4584,7 +4360,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4628,7 +4404,7 @@
       "audit_trail": {
         "lokalizace": "ostatní stavební práce — celý objekt",
         "formula": "placeholder ~120 m³ pojízdné lešení pro obvodový plášť",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -4645,7 +4421,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4700,23 +4476,18 @@
             "label": "operand_2",
             "value": 0.3,
             "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 28.5,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "ČSN skladba hydroizolace + RE-RUN §3.2 · (penetrace soklu) · [sub: izolace]",
-        "computed_quantity": 812.25,
+        "computed_quantity": 28.5,
         "declared_quantity": 28.5,
-        "match_delta_pct": 2750.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4771,11 +4542,6 @@
             "label": "operand_2",
             "value": 0.3,
             "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 28.5,
-            "unit": ""
           }
         ],
         "reference": [
@@ -4786,14 +4552,14 @@
           }
         ],
         "poznamka": "TZ B + ČSN skladba hydroizolace soklu · (hydroizolace svislá soklu) · [sub: izolace]",
-        "computed_quantity": 812.25,
+        "computed_quantity": 28.5,
         "declared_quantity": 28.5,
-        "match_delta_pct": 2750.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4854,7 +4620,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4920,7 +4686,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -4987,7 +4753,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5042,7 +4808,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5108,7 +4874,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5174,7 +4940,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5248,7 +5014,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5292,7 +5058,7 @@
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
         "formula": "4 ks pohon (jeden na každá vrata)",
-        "formula_parsed_method": "single_value",
+        "formula_parsed_method": "count_only_leading",
         "inputs": [
           {
             "label": "operand_1",
@@ -5309,7 +5075,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5353,7 +5119,7 @@
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
         "formula": "4 ks ruční odblok",
-        "formula_parsed_method": "single_value",
+        "formula_parsed_method": "count_only_leading",
         "inputs": [
           {
             "label": "operand_1",
@@ -5370,7 +5136,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5425,7 +5191,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5492,7 +5258,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5547,7 +5313,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5608,7 +5374,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5669,7 +5435,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5730,7 +5496,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5799,7 +5565,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5846,21 +5612,11 @@
       "audit_trail": {
         "lokalizace": "podlahy — A101 plocha haly",
         "formula": "placeholder ~30 m² (3 stroje × ~10 m² každé anchorage zóna)",
-        "formula_parsed_method": "product_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 3.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 10.0,
             "unit": ""
           }
         ],
@@ -5872,14 +5628,14 @@
           }
         ],
         "poznamka": "A107 kotvící body × cca 10 m² každý + ABMV_3+16 stroje · (lokální zesílení podlahy pod stroji) · [sub: podlahy_specialista]",
-        "computed_quantity": 900.0,
+        "computed_quantity": 30.0,
         "declared_quantity": 30.0,
-        "match_delta_pct": 2900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -5923,7 +5679,7 @@
       "audit_trail": {
         "lokalizace": "podlahy — A101 plocha haly",
         "formula": "placeholder ~60 bm (pole dilatace á 6 m na 495 m² ploše)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -5940,7 +5696,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6001,7 +5757,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6064,7 +5820,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6133,7 +5889,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6196,7 +5952,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6240,20 +5996,10 @@
       "audit_trail": {
         "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
         "formula": "3 ks (A101 INSERT Wavin × 3 dle DXF parse)",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "single_value",
         "inputs": [
           {
             "label": "operand_1",
-            "value": 3.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 101.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
             "value": 3.0,
             "unit": ""
           }
@@ -6266,14 +6012,14 @@
           }
         ],
         "poznamka": "DXF A101 INSERT Wavin Tegra × 3 + RE-RUN §3.7 · (Wavin Tegra střešní vpust) · [sub: klempir]",
-        "computed_quantity": 909.0,
+        "computed_quantity": 3.0,
         "declared_quantity": 3.0,
-        "match_delta_pct": 30200.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6328,7 +6074,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6372,7 +6118,7 @@
       "audit_trail": {
         "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
         "formula": "~30.0 bm podél JZ + SZ fasády (RE-RUN §3.7)",
-        "formula_parsed_method": "single_value",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -6395,7 +6141,7 @@
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6450,7 +6196,7 @@
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6517,7 +6263,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6561,7 +6307,7 @@
       "audit_trail": {
         "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
         "formula": "placeholder ~15 bm (úžlabí pultové střechy 5.25°)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -6578,7 +6324,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6644,7 +6390,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6688,7 +6434,7 @@
       "audit_trail": {
         "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
         "formula": "placeholder ~120 bm (spáry mezi všemi klempířskými prvky)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -6705,7 +6451,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6749,7 +6495,7 @@
       "audit_trail": {
         "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
         "formula": "placeholder ~25 bm (vpusti + prostupy)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -6766,7 +6512,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -6821,7 +6567,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7072,7 +6818,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7138,7 +6884,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7204,7 +6950,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7248,7 +6994,7 @@
       "audit_trail": {
         "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
         "formula": "placeholder ~150 bm (perimetr staveniště + pomocné plochy)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -7265,7 +7011,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7320,7 +7066,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7375,7 +7121,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7441,7 +7187,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7502,7 +7248,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7557,7 +7303,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7612,7 +7358,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7656,7 +7402,7 @@
       "audit_trail": {
         "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
         "formula": "placeholder ~30 m³ stavebního odpadu kat. O",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -7673,7 +7419,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7717,7 +7463,7 @@
       "audit_trail": {
         "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
         "formula": "placeholder ~2 m³ kat. N",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -7734,7 +7480,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7778,34 +7524,24 @@
       "audit_trail": {
         "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
         "formula": "placeholder ~1500 t·km (30 t materiálů × 50 km)",
-        "formula_parsed_method": "product_placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
             "value": 1500.0,
             "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 50.0,
-            "unit": ""
           }
         ],
         "reference": [],
         "poznamka": "standardní VRN doprava · (doprava materiálu paušál) · [sub: GD_provoz]",
-        "computed_quantity": 2250000.0,
+        "computed_quantity": 1500.0,
         "declared_quantity": 1500.0,
-        "match_delta_pct": 149900.0,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.6,
+        "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7860,7 +7596,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7915,7 +7651,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -7959,21 +7695,11 @@
       "audit_trail": {
         "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
         "formula": "1 kpl pro všech 8-12 správců sítí (per RE-RUN §6)",
-        "formula_parsed_method": "product",
+        "formula_parsed_method": "count_only_leading",
         "inputs": [
           {
             "label": "operand_1",
             "value": 1.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 12.0,
             "unit": ""
           }
         ],
@@ -7985,14 +7711,14 @@
           }
         ],
         "poznamka": "C3 situace + RE-RUN §6 externí sítě (10 sítí přes pozemek) · (vyjádření správců sítí) · [sub: GD_provoz]",
-        "computed_quantity": 96.0,
+        "computed_quantity": 1.0,
         "declared_quantity": 1.0,
-        "match_delta_pct": 9500.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8036,7 +7762,7 @@
       "audit_trail": {
         "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
         "formula": "placeholder ~200 bm trasování sítí na pozemku",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -8053,7 +7779,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8108,7 +7834,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8163,7 +7889,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8223,7 +7949,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8283,7 +8009,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8343,7 +8069,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8410,7 +8136,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8477,7 +8203,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8532,11 +8258,6 @@
             "label": "operand_2",
             "value": 4.0,
             "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 8.0,
-            "unit": ""
           }
         ],
         "reference": [
@@ -8547,14 +8268,14 @@
           }
         ],
         "poznamka": "TZ B B.3.5 §1 + 4 sekční vrata · (dveřní clona 4700 m³/h š. 2m) · [sub: VZT_dodavatel]",
-        "computed_quantity": 64.0,
+        "computed_quantity": 8.0,
         "declared_quantity": 8.0,
-        "match_delta_pct": 700.0,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8598,7 +8319,7 @@
       "audit_trail": {
         "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
         "formula": "placeholder 60 bm (hlavní páteř haly)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -8621,7 +8342,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8665,7 +8386,7 @@
       "audit_trail": {
         "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
         "formula": "placeholder 80 bm (boční větve)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -8682,7 +8403,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8726,7 +8447,7 @@
       "audit_trail": {
         "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
         "formula": "placeholder 120 bm (přívody k 8 clonám)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -8743,7 +8464,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8787,7 +8508,7 @@
       "audit_trail": {
         "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
         "formula": "placeholder 4 ks (na hlavním rozvodu)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -8804,7 +8525,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8848,7 +8569,7 @@
       "audit_trail": {
         "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
         "formula": "placeholder 180 m² (~70 % povrchu potrubí — venkovní úseky)",
-        "formula_parsed_method": "placeholder",
+        "formula_parsed_method": "placeholder_first_value",
         "inputs": [
           {
             "label": "operand_1",
@@ -8871,7 +8592,7 @@
         "confidence": 0.6,
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8932,7 +8653,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -8993,7 +8714,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -9054,7 +8775,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -9115,7 +8836,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -9170,7 +8891,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -9225,7 +8946,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
     {
@@ -9280,7 +9001,7 @@
         "confidence": 0.4,
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:11:34.088222+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     }
   ]
