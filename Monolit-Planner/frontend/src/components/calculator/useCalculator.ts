@@ -220,6 +220,37 @@ export default function useCalculator() {
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // BUG #11 fix (2026-05-14, audit Top-10 #8): wire getSmartDefaults() into
+  // form state. The helper was imported and exported but no useEffect was
+  // applying it on element_type change — so the curing class, exposure
+  // class set, and "typical concrete" defaults per element family never
+  // reached the UI. Only empty/auto fields are filled; user-typed values
+  // are preserved (this is the "user override wins" rule of the audit).
+  // First-mount is skipped — initialForm already carries the right
+  // element_type via auto-classify + LS restore path.
+  const smartDefaultsAppliedFor = useRef<string>(form.element_type);
+  useEffect(() => {
+    if (form.element_type === smartDefaultsAppliedFor.current) return;
+    smartDefaultsAppliedFor.current = form.element_type;
+    const d = getSmartDefaults(form.element_type);
+    setForm(prev => ({
+      ...prev,
+      // Apply only if user didn't already pick something.
+      curing_class:     prev.curing_class === ''           ? d.curing_class       : prev.curing_class,
+      exposure_class:   prev.exposure_class === ''         ? d.exposure_class     : prev.exposure_class,
+      exposure_classes: prev.exposure_classes.length === 0 ? [...d.exposure_classes] : prev.exposure_classes,
+      // typical_concrete is the *suggestion*; never overwrite an explicit
+      // class (DEFAULT_FORM seeds 'C30/37'). Only apply for fresh forms
+      // where concrete_class still matches the global default and the
+      // smart default disagrees.
+      concrete_class:
+        prev.concrete_class === 'C30/37' && d.typical_concrete !== 'C30/37'
+          ? d.typical_concrete
+          : prev.concrete_class,
+      is_prestressed: prev.is_prestressed || d.is_prestressed,
+    }));
+  }, [form.element_type]);
+
   // Křídla: compute separate formwork recommendation when composite enabled
   const kridlaFormwork = useMemo(() => {
     if (!result || !form.include_kridla || !form.kridla_height_m) return null;
