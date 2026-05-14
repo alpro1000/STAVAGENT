@@ -17,6 +17,7 @@
  */
 
 import { planElement } from '../../../Monolit-Planner/shared/dist/calculators/planner-orchestrator.js';
+import { classifyElement } from '../../../Monolit-Planner/shared/dist/classifiers/element-classifier.js';
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -152,10 +153,28 @@ function summarise(label, input) {
   };
 }
 
+// ─── P0 BUG #1 classifier replay (2026-05-14) ──────────────────────────────
+// Verifies the disambiguation rule: "Základy ze ŽB ... pro zárubní zeď"
+// must classify as zaklady_oper, not zaklady_piliru. Compares 3 part_name
+// variants the user might see in a real ŘSD soupis položek.
+const classifier_replay = {
+  so250_full_context: classifyElement('Základy ze ŽB do C25/30 pro zárubní zeď SO 250'),
+  so250_opera_variant: classifyElement('Základy pro opěrnou zeď'),
+  so250_kotvena_variant: classifyElement('Základy kotvené zdi'),
+  plain_zaklady: classifyElement('Základy ze ŽB do C25/30'), // no wall context — falls back
+  real_piliru: classifyElement('Základy pilířů P1-P4'),       // must stay zaklady_piliru
+};
+
 const result = {
   generated_at: '2026-05-14',
   branch: 'claude/calculator-field-audit',
   driver: 'test-data/SO_250/tz/SO-250.md',
+  classifier_replay: Object.fromEntries(
+    Object.entries(classifier_replay).map(([k, v]) => [
+      k,
+      { element_type: v.element_type, confidence: v.confidence, classification_source: v.classification_source },
+    ]),
+  ),
   scenarios: {
     user_replay: summarise('user_replay (BUG #1 + #5/#6)', user_replay),
     corrected:   summarise('corrected (operne_zdi, no double-count)', corrected),
@@ -182,6 +201,17 @@ writeFileSync(path, JSON.stringify(result, null, 2) + '\n');
 console.log('Wrote', path);
 
 // Console summary
+console.log('\n=== SO-250 classifier replay (P0 BUG #1) ===');
+for (const [k, v] of Object.entries(result.classifier_replay)) {
+  const marker =
+    (k.startsWith('so250_') && v.element_type === 'zaklady_oper') ||
+    (k === 'plain_zaklady' && v.element_type === 'zaklady_piliru') ||
+    (k === 'real_piliru' && v.element_type === 'zaklady_piliru')
+      ? '✓'
+      : '✗';
+  console.log(`  ${marker} ${k.padEnd(22)} → ${v.element_type.padEnd(20)} (conf ${v.confidence.toFixed(2)}, src ${v.classification_source})`);
+}
+
 console.log('\n=== SO-250 calculator engine probe ===\n');
 for (const [k, s] of Object.entries(result.scenarios)) {
   console.log(`--- ${k} ---`);

@@ -121,6 +121,52 @@ describe('Element Classifier', () => {
       const result = classifyElement('Bridge deck / пролетное строение');
       expect(result.element_type).toBe('mostovkova_deska');
     });
+
+    // ── P0 BUG #1 fix (2026-05-14, SO-250 audit) ──
+    // Disambiguation: "Základy ... pro zárubní/opěrnou zeď" must classify
+    // as zaklady_oper (foundation of retaining wall), not zaklady_piliru
+    // (bridge pier foundation). The two share the generic "zaklady"
+    // keyword; the disambiguation reads the retaining-wall context to win.
+
+    it('SO-250: classifies "Základy ze ŽB do C25/30 pro zárubní zeď" as zaklady_oper', () => {
+      const result = classifyElement('Základy ze ŽB do C25/30 pro zárubní zeď SO 250');
+      expect(result.element_type).toBe('zaklady_oper');
+      expect(result.confidence).toBeGreaterThanOrEqual(0.9);
+    });
+
+    it('SO-250: classifies "Základy pro opěrnou zeď" as zaklady_oper', () => {
+      const result = classifyElement('Základy pro opěrnou zeď');
+      expect(result.element_type).toBe('zaklady_oper');
+    });
+
+    it('SO-250: classifies "Základy kotvené zdi" as zaklady_oper', () => {
+      const result = classifyElement('Základy kotvené zdi');
+      expect(result.element_type).toBe('zaklady_oper');
+    });
+
+    it('SO-250: plain "Základy ze ŽB do C25/30" without wall context stays zaklady_piliru', () => {
+      // Out of scope of this fix: when part_name carries no retaining-wall
+      // context, the classifier still has no signal to pick zaklady_oper
+      // over zaklady_piliru. TZ-text upgrade is the proper fix; here we
+      // pin the regression behavior so the disambiguation rule isn't too
+      // greedy.
+      const result = classifyElement('Základy ze ŽB do C25/30');
+      expect(result.element_type).toBe('zaklady_piliru');
+    });
+
+    // Note: "Dřík zárubní zdi" (wall body, no foundation word) still matches
+    // driky_piliru because the "dřík" keyword fires there at the same
+    // priority as the new "zarubn" keyword on operne_zdi. That's a real
+    // ambiguity (dřík = stem; dřík of a retaining wall vs dřík of a bridge
+    // pier share the word) and out of scope for the BUG #1 disambiguation,
+    // which addresses the foundation line specifically (the inflated W2
+    // log line in the SO-250 worksheet). Follow-up needed for the dřík
+    // case via TZ-text context, not part_name regex.
+
+    it('SO-250: real piliře still classify as zaklady_piliru / driky_piliru', () => {
+      expect(classifyElement('Základy pilířů P1-P4').element_type).toBe('zaklady_piliru');
+      expect(classifyElement('Dříky pilířů mostu').element_type).toBe('driky_piliru');
+    });
   });
 
   // ─── getElementProfile ───────────────────────────────────────────────

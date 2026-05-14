@@ -2,10 +2,37 @@
   "generated_at": "2026-05-14",
   "branch": "claude/calculator-field-audit",
   "driver": "test-data/SO_250/tz/SO-250.md",
+  "classifier_replay": {
+    "so250_full_context": {
+      "element_type": "zaklady_oper",
+      "confidence": 0.92,
+      "classification_source": "keywords"
+    },
+    "so250_opera_variant": {
+      "element_type": "zaklady_oper",
+      "confidence": 0.92,
+      "classification_source": "keywords"
+    },
+    "so250_kotvena_variant": {
+      "element_type": "zaklady_oper",
+      "confidence": 0.92,
+      "classification_source": "keywords"
+    },
+    "plain_zaklady": {
+      "element_type": "zaklady_piliru",
+      "confidence": 1,
+      "classification_source": "keywords"
+    },
+    "real_piliru": {
+      "element_type": "zaklady_piliru",
+      "confidence": 1,
+      "classification_source": "keywords"
+    }
+  },
   "scenarios": {
     "user_replay": {
       "label": "user_replay (BUG #1 + #5/#6)",
-      "runtime_ms": 26,
+      "runtime_ms": 27,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
@@ -101,7 +128,7 @@
     },
     "corrected": {
       "label": "corrected (operne_zdi, no double-count)",
-      "runtime_ms": 31,
+      "runtime_ms": 35,
       "headlines": {
         "formwork_system": "TRIO",
         "formwork_manufacturer": "PERI",
