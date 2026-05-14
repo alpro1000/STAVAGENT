@@ -21,6 +21,7 @@ Paid tools require a valid API key with sufficient credits.
 
 import logging
 import os
+import re
 import secrets
 import threading
 import time
@@ -111,9 +112,12 @@ def _sanitize_dsn_for_log(dsn: str) -> str:
     `postgresql://user:secret@/db?host=/cloudsql/...`
                        ^^^^^^ replaced with ***. Query string + host left
     intact so we can verify Cloud SQL socket path in production logs.
+
+    `re` is imported at module level — this helper runs on every successful
+    `_get_db()` connect, so the import-inside-function form would re-do a
+    `sys.modules` lookup per call (Amazon Q review on PR #1148).
     """
     # Match user:password@ where password is anything except @ and /
-    import re
     return re.sub(r"(://[^:@/]+:)[^@/]*(@)", r"\1***\2", dsn)
 
 
