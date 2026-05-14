@@ -35,8 +35,21 @@ export interface ExtractedParam {
   label_cs: string;
   /** Source confidence: 1.0 for regex, 0.7-0.9 for heuristic */
   confidence: number;
-  /** Source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line' */
-  source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line';
+  /**
+   * Source:
+   *   - 'regex'      — full regex match against TZ prose
+   *   - 'keyword'    — substring keyword detection (element_type, prestressed, …)
+   *   - 'heuristic'  — collapse of multi-match into a single primary
+   *   - 'smeta_line' — parsed OTSKP/ÚRS code + qty + unit line
+   *   - 'drawing'    — match originated inside a drawing transcript line
+   *                    (ALL-CAPS prefix + TKP/ČSN parenthetical heuristic).
+   *                    Lower trust than TZ prose because OCR noise is more
+   *                    likely; the reconciliation rule in
+   *                    `docs/audits/smartextractor_so250/2026-05-14_extractor_coverage.md`
+   *                    §5.5 says "drawing wins on conflict but confidence
+   *                    drops to 0.85 from the regex 1.0".
+   */
+  source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line' | 'drawing';
   /** Original matched text snippet */
   matched_text: string;
   /** Catalog type when value originated from a budget/smeta line */
@@ -83,6 +96,48 @@ export interface ExtractOptions {
 
 function norm(text: string): string {
   return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+// ─── Drawing-transcript detection (Fix #3, 2026-05-14) ─────────────────────
+
+/**
+ * Heuristic: is this line copy-pasted from a drawing/výkres legenda?
+ *
+ * Drawing legends in ŘSD / CZ-TKP projects are formatted distinctly from
+ * TZ prose:
+ *   - ALL-CAPS prefix names the element ("PODKLADNÍ BETON", "OPĚRNÁ ZEĎ DŘÍK")
+ *   - parenthetical with TKP / ČSN / TP norm reference ("(CZ-TKP 18PK)")
+ *   - dash-separated parameter chain ("-Cl 0,4-Dmax22-S3")
+ *
+ * The two strong signals together (≥ 60 % alphabetic-uppercase share AND a
+ * TKP / ČSN / TP parenthetical) reliably distinguish drawing from prose.
+ * Either signal alone is not enough — TZ tables sometimes include all-caps
+ * headers, and prose can mention "dle ČSN 73 6133" without being a legenda.
+ */
+export function isDrawingLine(line: string): boolean {
+  const trimmed = line.trim();
+  if (trimmed.length < 10) return false;
+  const letters = trimmed.match(/[A-Za-zÁ-Žá-ž]/g) ?? [];
+  if (letters.length === 0) return false;
+  const upperLetters = trimmed.match(/[A-ZÁ-Ž]/g) ?? [];
+  const capsRatio = upperLetters.length / letters.length;
+  const hasNormRef = /\((?:CZ-)?TKP[\s-]?\d|ČSN[\s ]?\d|TP[\s ]?\d/i.test(trimmed);
+  return capsRatio >= 0.6 && hasNormRef;
+}
+
+/**
+ * Classify the full input as drawing-dominant when ≥ 60 % of its non-empty
+ * lines are drawing legends. Used by `extractFromText` to flip the source
+ * tag of regex/heuristic matches to `'drawing'` and reduce their confidence
+ * to 0.85 (the conflict-ladder slot per audit §5.5). Per-line tagging is a
+ * cleaner extension and is left as a follow-up; this whole-input switch
+ * already unlocks Block D probe coverage which is the main user need.
+ */
+export function isDrawingDominant(text: string): boolean {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length === 0) return false;
+  const drawingLines = lines.filter(isDrawingLine).length;
+  return drawingLines / lines.length >= 0.6;
 }
 
 // ─── Czech number parsing ───────────────────────────────────────────────────
@@ -329,6 +384,19 @@ export function extractFromText(
   const results: ExtractedParam[] = [];
   const normalized = norm(text);
 
+  // Fix #3 (2026-05-14, SO-250 audit): when the whole input looks like a
+  // drawing-legenda block (ALL-CAPS prefix + TKP/ČSN/TP parenthetical on
+  // ≥ 60 % of lines), tag downstream regex/heuristic matches with
+  // `source: 'drawing'` and downgrade confidence to 0.85 — the conflict-
+  // ladder slot from audit §5.5. The smeta-line + keyword extractor
+  // branches keep their original sources because those don't fire on
+  // drawing inputs in practice (no OTSKP codes, no Czech prose verbs).
+  const drawingMode = isDrawingDominant(text);
+  const regexSource: ExtractedParam['source'] = drawingMode ? 'drawing' : 'regex';
+  const heuristicSource: ExtractedParam['source'] = drawingMode ? 'drawing' : 'heuristic';
+  const regexConf = drawingMode ? 0.85 : 1.0;
+  const heuristicConf = drawingMode ? 0.6 : 0.8;
+
   // ─── Smeta-line extraction (deterministic, catalog-aware) ────────────────
   const smetaLines = extractSmetaLines(text);
   const smetaParams = smetaLinesToParams(smetaLines, options.element_type);
@@ -346,7 +414,7 @@ export function extractFromText(
     const cls = [...concreteClasses][0];
     results.push({
       name: 'concrete_class', value: cls, label_cs: `Třída betonu: ${cls}`,
-      confidence: 1.0, source: 'regex', matched_text: cls,
+      confidence: regexConf, source: regexSource, matched_text: cls,
     });
   } else if (concreteClasses.size > 1) {
     // Multiple classes found — primary = highest (most likely NK).
@@ -360,7 +428,7 @@ export function extractFromText(
     results.push({
       name: 'concrete_class', value: sorted[0],
       label_cs: `Třída betonu: ${sorted[0]} (nejvyšší z ${concreteClasses.size})`,
-      confidence: 0.8, source: 'heuristic', matched_text: sorted.join(', '),
+      confidence: heuristicConf, source: heuristicSource, matched_text: sorted.join(', '),
       alternatives: sorted.slice(1),
     });
   }
@@ -398,7 +466,7 @@ export function extractFromText(
     results.push({
       name: 'exposure_classes', value: all,
       label_cs: `Třídy prostředí: ${all.join(', ')}`,
-      confidence: 1.0, source: 'regex', matched_text: all.join(', '),
+      confidence: regexConf, source: regexSource, matched_text: all.join(', '),
     });
     // Emit the singular — legacy API. Older code (advisor prompt, Task 1
     // compat map) reads this. When more than one class is present the
@@ -411,8 +479,8 @@ export function extractFromText(
       label_cs: exposures.size === 1
         ? `Třída prostředí: ${primary}`
         : `Třída prostředí: ${primary} (nejpřísnější z ${exposures.size}: ${sorted.join(', ')})`,
-      confidence: exposures.size === 1 ? 1.0 : 0.8,
-      source: exposures.size === 1 ? 'regex' : 'heuristic',
+      confidence: exposures.size === 1 ? regexConf : heuristicConf,
+      source: exposures.size === 1 ? regexSource : heuristicSource,
       matched_text: sorted.join(', '),
       alternatives: exposures.size > 1 ? sorted.slice(1) : undefined,
     });

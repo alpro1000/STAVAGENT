@@ -585,6 +585,13 @@
       ],
       "extracted_raw": [
         {
+          "name": "element_type",
+          "value": "operne_zdi",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "opěrná zeď / stěna"
+        },
+        {
           "name": "exposure_classes",
           "value": [
             "X0",
@@ -595,22 +602,15 @@
             "XA2",
             "XD3"
           ],
-          "source": "regex",
-          "confidence": 1,
+          "source": "drawing",
+          "confidence": 0.85,
           "matched_text": "X0, XF4, XC4, XF3, XC2, XA2, XD3"
-        },
-        {
-          "name": "element_type",
-          "value": "operne_zdi",
-          "source": "keyword",
-          "confidence": 0.9,
-          "matched_text": "opěrná zeď / stěna"
         },
         {
           "name": "concrete_class",
           "value": "C30/37",
-          "source": "heuristic",
-          "confidence": 0.8,
+          "source": "drawing",
+          "confidence": 0.6,
           "matched_text": "C30/37, C25/30, C12/15",
           "alternatives": [
             "C25/30",
@@ -620,8 +620,8 @@
         {
           "name": "exposure_class",
           "value": "XF4",
-          "source": "heuristic",
-          "confidence": 0.8,
+          "source": "drawing",
+          "confidence": 0.6,
           "matched_text": "XF4, XF3, XD3, XA2, XC4, XC2, X0",
           "alternatives": [
             "XF3",

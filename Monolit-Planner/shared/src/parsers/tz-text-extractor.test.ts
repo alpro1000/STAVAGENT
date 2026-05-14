@@ -627,6 +627,39 @@ Celkový objem 605 m³ dle rozpočtu.
     });
   });
 
+  // ─── Fix #3 (2026-05-14, SO-250 audit) — drawing source enum ───────────
+  describe("source: 'drawing' on drawing-dominant inputs (SO-250 Fix #3)", () => {
+    const drawingBlock =
+      'PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2\n' +
+      'OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3';
+
+    it('SO-250 Block D drawing transcript tags concrete_class with source=drawing', () => {
+      const r = extractFromText(drawingBlock);
+      const cc = findParam(r, 'concrete_class');
+      expect(cc).toBeDefined();
+      expect(cc!.source).toBe('drawing');
+      expect(cc!.confidence).toBeLessThanOrEqual(0.85);
+    });
+
+    it('SO-250 Block D drawing transcript tags exposure_classes with source=drawing', () => {
+      const r = extractFromText(drawingBlock);
+      const ec = findParam(r, 'exposure_classes');
+      expect(ec).toBeDefined();
+      expect(ec!.source).toBe('drawing');
+    });
+
+    it('TZ prose stays on source=regex (regression-pin)', () => {
+      // Block B prose excerpt — no ALL-CAPS + TKP signal.
+      const prose = 'Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.';
+      const r = extractFromText(prose);
+      const cc = findParam(r, 'concrete_class');
+      expect(cc!.source).toBe('regex');
+      expect(cc!.confidence).toBe(1.0);
+    });
+  });
+
   // ─── Fix #0 (2026-05-14, SO-250 audit) — element-type chain order ───────
   describe('element_type if/else ordering (SO-250 Fix #0)', () => {
     it('SO-250 Block D OCR: "OPĚRNÁ ZEĎ ŘÍMSA …" classifies as operne_zdi (not rimsa)', () => {
