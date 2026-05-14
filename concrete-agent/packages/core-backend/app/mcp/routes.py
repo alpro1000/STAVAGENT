@@ -1,11 +1,17 @@
 """
 MCP Auth & Billing API Routes
 
-POST /api/v1/mcp/auth/register  — create account + get API key
-POST /api/v1/mcp/auth/login     — retrieve existing API key
-GET  /api/v1/mcp/auth/credits   — check credit balance
-POST /api/v1/mcp/oauth/token    — OAuth 2.0 client_credentials (ChatGPT)
-POST /api/v1/mcp/billing/webhook — Lemon Squeezy webhook
+POST /api/v1/mcp/auth/register     — create account + get API key
+POST /api/v1/mcp/auth/login        — retrieve existing API key
+GET  /api/v1/mcp/auth/credits      — check credit balance
+GET  /api/v1/mcp/oauth/authorize   — OAuth 2.0 authorization_code + PKCE start
+POST /api/v1/mcp/oauth/token       — OAuth 2.0 token endpoint
+                                     (client_credentials + authorization_code)
+POST /api/v1/mcp/billing/webhook   — Lemon Squeezy webhook
+
+Discovery (`/.well-known/oauth-authorization-server` +
+`/.well-known/openid-configuration`) lives in `app/main.py` because
+well-known URIs must resolve at the application root.
 
 Also: REST wrappers for GPT Actions (OpenAPI schema auto-generated).
 """
@@ -16,11 +22,14 @@ import json
 import logging
 import os
 from typing import Optional
+from urllib.parse import urlencode
 
-from fastapi import APIRouter, Form, Header, HTTPException, Request
+from fastapi import APIRouter, Form, Header, HTTPException, Query, Request
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, EmailStr
 
 from app.mcp import auth as mcp_auth
+from app.mcp import oauth_codes as mcp_oauth_codes
 
 logger = logging.getLogger(__name__)
 
@@ -144,29 +153,148 @@ async def get_credits(authorization: Optional[str] = Header(None)):
     return result
 
 
-# ── OAuth 2.0 endpoint (for ChatGPT) ────────────────────────────────────────
+# ── OAuth 2.0 endpoints ─────────────────────────────────────────────────────
+
+@router.get("/oauth/authorize")
+async def oauth_authorize(
+    response_type: str = Query(...),
+    client_id: str = Query(...),
+    redirect_uri: str = Query(...),
+    state: Optional[str] = Query(None),
+    code_challenge: str = Query(...),
+    code_challenge_method: str = Query("S256"),
+    scope: Optional[str] = Query(None),  # accepted, ignored — single-user MCP
+):
+    """RFC 6749 §4.1 authorization_code start + RFC 7636 PKCE.
+
+    Single-user MCP — no consent screen. The endpoint validates the
+    request, mints a 10-min one-time code, and 302-redirects the browser
+    to `redirect_uri?code=...&state=...`.
+
+    `client_id` is the user's MCP API key (`sk-stavagent-...`). The
+    user pastes it into the ChatGPT / Claude.ai connector config UI;
+    the third party then calls this endpoint with it.
+    """
+    # ── Parameter validation (return user-visible errors, not redirects,
+    #    so the misconfiguration is obvious in the browser tab). RFC 6749
+    #    §4.1.2.1 says to redirect with `error=` only when redirect_uri
+    #    itself is valid; otherwise show the error to the user.
+    if response_type != "code":
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "unsupported_response_type",
+                    "error_description": "Only response_type=code is supported"},
+        )
+    if code_challenge_method != "S256":
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_request",
+                    "error_description": "code_challenge_method must be S256"},
+        )
+    if not code_challenge:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_request",
+                    "error_description": "code_challenge required (PKCE mandatory)"},
+        )
+    if not mcp_oauth_codes.is_allowed_redirect_uri(redirect_uri):
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_request",
+                    "error_description": "redirect_uri not in allowlist"},
+        )
+
+    # `client_id` must be a known API key. We piggy-back on `get_credits`
+    # which already does `SELECT … WHERE api_key=…` — returns
+    # `{"error": "..."}` on unknown key.
+    credit_check = mcp_auth.get_credits(client_id)
+    if "error" in credit_check:
+        # redirect_uri is allow-listed; per RFC §4.1.2.1 return the error
+        # via redirect so the third-party sees a clean failure.
+        params = {"error": "unauthorized_client",
+                  "error_description": "Invalid client_id"}
+        if state:
+            params["state"] = state
+        return RedirectResponse(
+            url=f"{redirect_uri}?{urlencode(params)}",
+            status_code=302,
+        )
+
+    code = mcp_oauth_codes.generate_code(
+        client_id=client_id,
+        redirect_uri=redirect_uri,
+        code_challenge=code_challenge,
+        state=state,
+        code_challenge_method=code_challenge_method,
+    )
+    params = {"code": code}
+    if state:
+        params["state"] = state
+    return RedirectResponse(
+        url=f"{redirect_uri}?{urlencode(params)}",
+        status_code=302,
+    )
+
 
 @router.post("/oauth/token")
 async def oauth_token(
     grant_type: str = Form(...),
+    # client_credentials grant
     client_id: str = Form(""),
     client_secret: str = Form(""),
+    # authorization_code grant
+    code: str = Form(""),
+    redirect_uri: str = Form(""),
+    code_verifier: str = Form(""),
 ):
-    """OAuth 2.0 client_credentials grant for ChatGPT MCP integration.
+    """OAuth 2.0 token endpoint.
 
-    ChatGPT sends API key as client_id → receives bearer token.
-    Token = the API key itself (stateless, no DB lookup on each MCP call).
+    Supports two grant types:
+
+    - `client_credentials` (ChatGPT legacy connectors): API key as
+      `client_id` → bearer token = the same API key.
+    - `authorization_code` (ChatGPT custom connectors, Claude.ai MCP):
+      code + PKCE `code_verifier` → bearer token = the API key tied
+      to the code at `/oauth/authorize` time.
+
+    Bearer token is the API key string itself — stateless, no JWT lookup
+    on each MCP call. Future enhancement: swap for short-lived JWT
+    + refresh_token.
     """
-    if grant_type != "client_credentials":
-        raise HTTPException(
-            status_code=400,
-            detail={"error": "unsupported_grant_type", "error_description": "Only client_credentials supported"},
-        )
+    if grant_type == "client_credentials":
+        result = mcp_auth.oauth_token(client_id, client_secret)
+        if "error" in result:
+            raise HTTPException(status_code=401, detail=result)
+        return result
 
-    result = mcp_auth.oauth_token(client_id, client_secret)
-    if "error" in result:
-        raise HTTPException(status_code=401, detail=result)
-    return result
+    if grant_type == "authorization_code":
+        result = mcp_oauth_codes.consume_code(
+            code=code,
+            code_verifier=code_verifier,
+            redirect_uri=redirect_uri,
+        )
+        if not result["ok"]:
+            # invalid_request → 400, everything else → 400 per RFC 6749 §5.2
+            raise HTTPException(
+                status_code=400,
+                detail={"error": result["error"],
+                        "error_description": result.get("error_description", "")},
+            )
+        # The "bearer token" is the API key tied to the code. Reuse the
+        # client_credentials shape so consumers see one response schema.
+        api_key = result["client_id"]
+        return {
+            "access_token": api_key,
+            "token_type": "bearer",
+            "scope": "mcp",
+        }
+
+    raise HTTPException(
+        status_code=400,
+        detail={"error": "unsupported_grant_type",
+                "error_description":
+                    "Supported: client_credentials, authorization_code"},
+    )
 
 
 # ── Billing webhook (Lemon Squeezy) ─────────────────────────────────────────
