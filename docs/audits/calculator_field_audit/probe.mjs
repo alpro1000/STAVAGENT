@@ -198,19 +198,46 @@ const result = {
   },
 };
 
-// Compute the two headline diffs the user asked about
+// Compute the headline diffs the user asked about.
+//
+// IMPORTANT — `PlannerOutput.costs` has NO aggregate `total_all_czk` field
+// (Amazon Q review caught the original probe using it and getting NaN/0).
+// The engine exposes a labor breakdown (`total_labor_czk` aggregates the
+// four labor lines) and separate rental fields per layer (formwork, props,
+// MSS). The frontend's "Celkem vše" U6 line is computed in
+// `CalculatorResult.tsx` as the sum below; the audit itself flagged the
+// missing `total_all_czk` as Anomálie #1, but my own diff math regressed
+// to relying on it. This helper makes the probe self-contained.
+function totalAllCzk(costs) {
+  if (!costs) return null;
+  return (
+    (costs.total_labor_czk      ?? 0) +
+    (costs.formwork_rental_czk  ?? 0) +
+    (costs.props_rental_czk     ?? 0) +
+    (costs.mss_rental_czk       ?? 0)
+  );
+}
+
 const u = result.scenarios.user_replay;
 const c = result.scenarios.corrected;
+const r = result.scenarios.realistic_estimate;
+const VOLUME_M3 = 837.2;
+const uTotal = totalAllCzk(u.costs);
+const cTotal = totalAllCzk(c.costs);
+const rTotal = totalAllCzk(r.costs);
 result.diff = {
-  total_cost_czk_user:      u.costs?.total_all_czk,
-  total_cost_czk_corrected: c.costs?.total_all_czk,
-  cost_per_m3_user:         u.costs ? Math.round((u.costs.total_all_czk ?? 0) / 837.2) : null,
-  cost_per_m3_corrected:    c.costs ? Math.round((c.costs.total_all_czk ?? 0) / 837.2) : null,
-  total_days_user:          u.obratkovost?.total_duration_days ?? u.headlines.total_days_critical_path,
-  total_days_corrected:     c.obratkovost?.total_duration_days ?? c.headlines.total_days_critical_path,
-  rental_user:              u.costs?.formwork_rental_czk,
-  rental_corrected:         c.costs?.formwork_rental_czk,
-  rental_per_element_user:  u.obratkovost?.rental_per_element_czk,
+  total_cost_czk_user:               uTotal,
+  total_cost_czk_corrected:          cTotal,
+  total_cost_czk_realistic_estimate: rTotal,
+  cost_per_m3_user:                  uTotal !== null ? Math.round(uTotal / VOLUME_M3) : null,
+  cost_per_m3_corrected:             cTotal !== null ? Math.round(cTotal / VOLUME_M3) : null,
+  cost_per_m3_realistic_estimate:    rTotal !== null ? Math.round(rTotal / VOLUME_M3) : null,
+  total_days_user:                   u.obratkovost?.total_duration_days ?? u.headlines.total_days_critical_path,
+  total_days_corrected:              c.obratkovost?.total_duration_days ?? c.headlines.total_days_critical_path,
+  total_days_realistic_estimate:     r.obratkovost?.total_duration_days ?? r.headlines.total_days_critical_path,
+  rental_user:                       u.costs?.formwork_rental_czk,
+  rental_corrected:                  c.costs?.formwork_rental_czk,
+  rental_per_element_user:           u.obratkovost?.rental_per_element_czk,
 };
 
 const path = resolve(HERE, 'probe_result.json');
@@ -240,16 +267,18 @@ for (const [k, s] of Object.entries(result.scenarios)) {
   console.log('  rebar h/t      :', s.headlines.rebar_norm_h_per_t, '(D' + s.headlines.rebar_used_diameter_mm + ')');
   console.log('  cost labor     :', s.costs?.total_labor_czk?.toLocaleString('cs'), 'Kč');
   console.log('  cost rental    :', s.costs?.formwork_rental_czk?.toLocaleString('cs'), 'Kč');
-  console.log('  cost total     :', s.costs?.total_all_czk?.toLocaleString('cs'), 'Kč');
+  console.log('  cost total     :', totalAllCzk(s.costs)?.toLocaleString('cs'), 'Kč  (labor + all rentals; no aggregate field on PlannerOutput.costs — computed here)');
   if (s.obratkovost) {
     console.log('  obratkovost    :', s.obratkovost.obratkovost + '×, total', s.obratkovost.total_duration_days, 'd');
   }
 }
 console.log('\n--- Headline diff ---');
-console.log('  cost_per_m3   user:', result.diff.cost_per_m3_user, 'Kč/m³');
-console.log('  cost_per_m3   fix :', result.diff.cost_per_m3_corrected, 'Kč/m³');
-console.log('  total_days    user:', result.diff.total_days_user, 'd');
-console.log('  total_days    fix :', result.diff.total_days_corrected, 'd');
+console.log('  cost_per_m3   user_replay        :', result.diff.cost_per_m3_user, 'Kč/m³');
+console.log('  cost_per_m3   corrected          :', result.diff.cost_per_m3_corrected, 'Kč/m³');
+console.log('  cost_per_m3   realistic_estimate :', result.diff.cost_per_m3_realistic_estimate, 'Kč/m³');
+console.log('  total_days    user_replay        :', result.diff.total_days_user, 'd');
+console.log('  total_days    corrected          :', result.diff.total_days_corrected, 'd');
+console.log('  total_days    realistic_estimate :', result.diff.total_days_realistic_estimate, 'd');
 
 // BUG #7 verification block
 const ur = result.scenarios.user_replay;

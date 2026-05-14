@@ -32,7 +32,7 @@
   "scenarios": {
     "user_replay": {
       "label": "user_replay (BUG #1 + #5/#6 + #7-user-622)",
-      "runtime_ms": 54,
+      "runtime_ms": 61,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
@@ -129,7 +129,7 @@
     },
     "corrected": {
       "label": "corrected (operne_zdi, no double-count)",
-      "runtime_ms": 42,
+      "runtime_ms": 39,
       "headlines": {
         "formwork_system": "TRIO",
         "formwork_manufacturer": "PERI",
@@ -288,7 +288,7 @@
     },
     "realistic_estimate": {
       "label": "realistic_estimate (BUG #7 length-aware)",
-      "runtime_ms": 50,
+      "runtime_ms": 44,
       "headlines": {
         "formwork_system": "Frami Xlife",
         "formwork_manufacturer": "DOKA",
@@ -380,10 +380,15 @@
     }
   },
   "diff": {
-    "cost_per_m3_user": 0,
-    "cost_per_m3_corrected": 0,
+    "total_cost_czk_user": 18113704.18,
+    "total_cost_czk_corrected": 19849286.869999997,
+    "total_cost_czk_realistic_estimate": 1025171.6799999999,
+    "cost_per_m3_user": 21636,
+    "cost_per_m3_corrected": 23709,
+    "cost_per_m3_realistic_estimate": 1225,
     "total_days_user": 132.2,
     "total_days_corrected": 118.2,
+    "total_days_realistic_estimate": 38.4,
     "rental_user": 8467440.26,
     "rental_corrected": 11005319.68
   }
