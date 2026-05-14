@@ -95,10 +95,13 @@ steps:
         apt-get update -qq && apt-get install -yqq postgresql-client >/dev/null 2>&1
         # Convert async URL to psql format
         DB_URL=$$(echo "$$CONCRETE_DATABASE_URL" | sed 's/+asyncpg//')
-        # Run migration (IF NOT EXISTS — safe to re-run)
+        # Run migrations (IF NOT EXISTS — safe to re-run)
         psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/004_nkb_tables.sql \
           && echo "NKB migration OK" \
           || echo "NKB migration skipped (DB may be unavailable)"
+        psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/007_mcp_api_keys.sql \
+          && echo "MCP api_keys migration OK" \
+          || echo "MCP api_keys migration skipped (DB may be unavailable)"
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
