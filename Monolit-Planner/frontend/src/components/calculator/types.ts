@@ -162,7 +162,6 @@ export interface FormState {
   manual_zabery: Array<{ name: string; volume_m3: string; formwork_area_m2: string }>;
   scheduling_mode_override: '' | 'linear' | 'chess';
   season: SeasonMode;
-  use_retarder: boolean;
   concrete_class: ConcreteClass;
   cement_type: CementType;
   temperature_c: number;
@@ -402,7 +401,6 @@ export const DEFAULT_FORM: FormState = {
   manual_zabery: [],
   scheduling_mode_override: '',
   season: 'normal',
-  use_retarder: false,
   concrete_class: 'C30/37',
   cement_type: 'CEM_I',
   temperature_c: 15,

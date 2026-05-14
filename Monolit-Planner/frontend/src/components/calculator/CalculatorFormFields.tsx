@@ -122,6 +122,42 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   🔒 Objem převzat z pozice{positionContext?.otskp_code ? ` ${positionContext.otskp_code}` : ''}.
                 </div>
               )}
+              {/* BUG #3 fix (2026-05-14, audit Top-10 #5): "↶ Vrátit původní"
+                  link when the user has manually overwritten volume_m3 away
+                  from the value brought in from the source position. Visible
+                  only when:
+                    - we have a positionContext.volume_m3 to revert to,
+                    - the field is NOT locked (locked path is already
+                      read-only, no undo needed),
+                    - the current value differs from the original by more
+                      than a 0.01 m³ rounding margin.
+                  Click resets form.volume_m3 + flips volume_mode back to
+                  'manual' so the L×W×H useEffect doesn't immediately
+                  re-overwrite it. */}
+              {!isPile && !isFieldLocked('volume_m3') && positionContext?.volume_m3 != null &&
+                Math.abs(Number(form.volume_m3) - Number(positionContext.volume_m3)) > 0.01 && (
+                <div style={{ marginTop: 3, fontSize: 10 }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      update('volume_m3', Number(positionContext.volume_m3));
+                      update('volume_mode', 'manual');
+                    }}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: 0,
+                      cursor: 'pointer',
+                      color: 'var(--r0-blue-text, #2563eb)',
+                      fontSize: 10,
+                      textDecoration: 'underline',
+                    }}
+                    title={`Vrátí pole na hodnotu z pozice (${positionContext.volume_m3} m³).`}
+                  >
+                    ↶ Vrátit původní hodnotu ({positionContext.volume_m3} m³)
+                  </button>
+                </div>
+              )}
             </Field>
             {/* Wizard hint: maturity calculation */}
             {wizardMode && wizardStep === 2 && wizardHint2 && (
@@ -498,9 +534,21 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 || elemType === 'zakladovy_pas'
                 || elemType === 'zakladova_patka';
 
+              // D7 vs E1 consolidation (2026-05-14, audit Top-10 #9): the
+              // "Rozměry bloku" L×W×H widget above (gated by `geomTypes`)
+              // already renders a "Výška V (m)" input that writes to
+              // form.height_m. Showing the generic "Výška (m)" field below
+              // the same FormState slot would mean two side-by-side widgets
+              // labelled "Výška", confusing the user even though they are
+              // synchronized. Hide this one when the geom block owns the
+              // height widget.
+              const heightOwnedByGeomBlock = [
+                'zaklady_piliru', 'zaklady_oper', 'zakladova_patka',
+                'zakladovy_pas', 'opery_ulozne_prahy', 'driky_piliru',
+              ].includes(elemType);
               return (
                 <>
-                  {hint.has_height && (
+                  {hint.has_height && !heightOwnedByGeomBlock && (
                     <Field
                       // Mostovka A1 (2026-04-16): relabel so the user sees
                       // "Výška nad terénem" (prop height) and not just
@@ -637,15 +685,21 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               return (
                 <label style={{
                   ...labelStyle,
-                  opacity: isMssLock ? 0.5 : 1,
-                  cursor: isMssLock ? 'not-allowed' : 'pointer',
-                }} title={isMssLock ? 'Pro MSS jsou dilatační celky irelevantní — každé pole = jeden takt.' : undefined}>
+                  opacity: (isMssLock || form.use_manual_zabery) ? 0.5 : 1,
+                  cursor: (isMssLock || form.use_manual_zabery) ? 'not-allowed' : 'pointer',
+                }} title={
+                  isMssLock
+                    ? 'Pro MSS jsou dilatační celky irelevantní — každé pole = jeden takt.'
+                    : form.use_manual_zabery
+                      ? 'Ruční rozdělení záběrů (níže) je zapnuté — dilatační celky se ignorují.'
+                      : undefined
+                }>
                   <input
                     type="checkbox"
-                    disabled={isMssLock}
-                    checked={isMssLock ? false : form.has_dilatation_joints}
+                    disabled={isMssLock || form.use_manual_zabery}
+                    checked={(isMssLock || form.use_manual_zabery) ? false : form.has_dilatation_joints}
                     onChange={e => {
-                      if (isMssLock) return;
+                      if (isMssLock || form.use_manual_zabery) return;
                       update('has_dilatation_joints', e.target.checked);
                       if (!e.target.checked) update('num_dilatation_sections', 1);
                     }}
@@ -656,7 +710,8 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             })()}
 
             {form.has_dilatation_joints
-             && !(form.element_type === 'mostovkova_deska' && form.construction_technology === 'mss') && (
+             && !(form.element_type === 'mostovkova_deska' && form.construction_technology === 'mss')
+             && !form.use_manual_zabery && (
               <>
                 <Field label="Počet dilatačních celků" hint="z TZ / projektu">
                   <NumInput
@@ -760,6 +815,19 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               borderRadius: 4, fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
             }}>
               {(() => {
+                // BUG #6 fix (2026-05-14, audit Top-10 #6): when manual_zabery
+                // is on, the engine ignores `num_dilatation_sections` /
+                // `tacts_per_section_*` and consumes `manual_zabery.length` +
+                // each row's volume directly (orchestrator num_tacts_override
+                // path). The Členění info previously kept showing the
+                // dilatation × tact-per-section product, so the user got
+                // mismatching numbers in F7 (this label) vs the manual table.
+                if (form.use_manual_zabery) {
+                  const n = form.manual_zabery.length;
+                  return (
+                    <>Členění: <strong>{n} ručních záběr{n === 1 ? '' : n < 5 ? 'y' : 'ů'}</strong> (engine použije přesné objemy z tabulky níže)</>
+                  );
+                }
                 const nSec = form.has_dilatation_joints ? Math.max(1, form.num_dilatation_sections || 1) : 1;
                 const tps = form.tacts_per_section_mode === 'manual'
                   ? Math.max(1, parseInt(form.tacts_per_section_manual || '0', 10) || 0)
@@ -1128,17 +1196,37 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               </Section>
               )}
               <Section title="Zdroje">
-                {/* Obrátkovost (repetitive elements) — logically belongs with resources */}
-                <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů — ovlivňuje obrátkovost bednění">
+                {/* Obrátkovost (repetitive elements) — logically belongs with resources.
+                    J1/J2/J3 rename (2026-05-14, audit Top-10 #10): clarify that
+                    "identický" here means "separate physical object" (e.g. 6 piers,
+                    20 pad footings — each is its own pour cycle), NOT dilatation
+                    cells of one continuous element. The P0 BUG #5/#6 engine mutex
+                    already ignores this field when num_dilatation_sections > 1, but
+                    the UI label + tooltip + visibility guard make that intent obvious
+                    to the user before they hit "Vypočítat plán". */}
+                <Field
+                  label="Počet samostatných objektů"
+                  hint="Použij jen pro několik separátních prvků (např. 2 mosty, 6 pilířů, 20 patek). NE pro dilatační celky jedné stěny — ty zadej do 'Počet dilatačních celků' výše."
+                >
                   <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
                     onChange={v => update('num_identical_elements', Math.max(1, Math.round(Number(v))))} placeholder="1" />
                 </Field>
-                {form.num_identical_elements > 1 && (
-                  <Field label="Sad bednění pro obrátky" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost (${Math.ceil(form.num_identical_elements / (parseInt(form.formwork_sets_count) || form.num_sets))}×)`}>
+                {form.num_identical_elements > 1 && form.num_dilatation_sections <= 1 && (
+                  <Field label="Sad bednění pro obrátky" hint={`${form.num_identical_elements} objektů ÷ sady = obrátkovost (${Math.ceil(form.num_identical_elements / (parseInt(form.formwork_sets_count) || form.num_sets))}×)`}>
                     <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
                       onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(Number(v)))))}
                       placeholder={String(form.num_sets)} />
                   </Field>
+                )}
+                {form.num_identical_elements > 1 && form.num_dilatation_sections > 1 && (
+                  <div style={{
+                    fontSize: 11, color: 'var(--r0-slate-600, #475569)',
+                    background: 'var(--r0-amber-50, #fffbeb)',
+                    border: '1px solid var(--r0-amber-200, #fde68a)',
+                    borderRadius: 6, padding: '6px 10px', marginTop: -4, marginBottom: 8,
+                  }}>
+                    ⚠️ Pole „Počet samostatných objektů" bude engine ignorovat — konstrukce už má {form.num_dilatation_sections} dilatačních celků, ty samy pokrývají obrátkovost bednění. Pokud máte ve skutečnosti {form.num_identical_elements} samostatných objektů, vypněte dilatační spáry výše.
+                  </div>
                 )}
 
                 {/* A1 (2026-04-15): default num_sets = 1. Hint suggests 2 only when

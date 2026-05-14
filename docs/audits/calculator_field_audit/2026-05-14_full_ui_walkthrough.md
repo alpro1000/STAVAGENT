@@ -118,7 +118,7 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 
 | # | Field | Type | Default | Co dělá | Status | Notes |
 |---|-------|------|---------|---------|--------|-------|
-| D1 | Objem betonu (m³) | input number | z pozice | Hlavní volume | 🔴 **BUG #3 — P1** | Po loadu z pozice se `volume_m3` initialiyem z `partsArray[0].count_per_section`; po ručním přepisu user **nemá undo**, jen "vyplnit znovu z pozice". CSV-like nebo "obnovit původní" tlačítko chybí. `useCalculator.ts:150–203` overwrite logika neeviduje historii. |
+| D1 | Objem betonu (m³) | input number | z pozice | Hlavní volume | 🟢 **FIXED (P1 BUG #3, 2026-05-14)** | "↶ Vrátit původní hodnotu (X)" link rendered v `CalculatorFormFields.tsx:124` pod inputem když `form.volume_m3 ≠ positionContext.volume_m3` (tolerance 0,01 m³). Klik resetuje hodnotu + flipuje `volume_mode='manual'` aby L×W×H useEffect nepřepsal zpět. Link nehidden v locked path (read-only) ani na pile path (volume derivován z geometrie). |
 | D2 | Indikátor "📐 vypočítáno z geometrie" | display | — | Source flag | ✅ OK | Visible jen v `volume_mode='from_geometry'`. |
 | D3 | Indikátor "🔒 Objem převzat z pozice X" | display | — | Lock flag | ✅ OK | |
 | D4 | Rozměry bloku (volitelné) — collapsible | section | — | Manual geom input | ✅ OK | Visible jen pro `zaklady_piliru | zakladova_patka | zakladovy_pas | opery_ulozne_prahy` (helpers `geomTypes`). |
@@ -138,7 +138,7 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 
 | # | Field | Type | Default | Co dělá | Status | Notes |
 |---|-------|------|---------|---------|--------|-------|
-| E1 | Výška (m) | input | — | "(typicky 1–3 m)" | 🔴 **BUG — DUPLICITNÍ s D7 — P1** | **`height_m`** (types:110). Pro **vertikální** elementy: výška dříku → driver pro DIN 18218 lateral pressure + props selector. Pro **horizontální** (základ, deska): výška bloku (vč. side formwork). Pro SO-250 (operne_zdi, vertikální): drží 3,20 m průměrná výška. Současně user mohl zadat D7 (rozměry bloku) `H=2,99 m` (typically v aglu zárubní zdi). Engine si bere pouze `height_m`; D7 je čistě UI computer pro auto-derive volume. Problém: dva fields ve dvou nezávislých sekcích → confusion + neviditelná chyba pokud user mění jen jeden. |
+| E1 | Výška (m) | input | — | "(typicky 1–3 m)" | 🟢 **FIXED (P2 D7/E1, 2026-05-14)** | E1 je teď skrytý když `geomTypes` (zaklady_piliru / zaklady_oper / zakladova_patka / zakladovy_pas / opery_ulozne_prahy / driky_piliru) — pro tyto typy ovládá `form.height_m` jediný widget "Výška V (m)" uvnitř L×W×H bloku (D7). Pro vertikální typy (operne_zdi, stena, mostovkova_deska, ...) zůstává E1 jediný Výška widget. Žádné duplicitní pole už uživatel neuvidí. `CalculatorFormFields.tsx:500–510`. |
 | E2 | Tvar průřezu | dropdown | "Přímý — rovné plochy (×1.0)" | Korekce pracnosti bednění | ✅ OK | `formwork_shape_correction` 1.0/1.3/1.5/1.8 → multiplikuje `assembly_h_m2` a `disassembly_h_m2`. |
 | E3 | Pojasnění tvaru | display | "Výška základu (bednění pouze boční). Podpěry nepotřeba." | 🟡 NEJASNÉ | Text předpokládá `zaklady_piliru` (pro SO-250 ano), ale po BUG #1 fix (operne_zdi) text musí ukazovat "Výška dříku. Skruž / stojky potřebné nad H ≥ 4 m". Text adapter podle `element_type` chybí. |
 
@@ -158,7 +158,7 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 | F6 | Záběry v jednom celku | dropdown | "Automaticky (dle kapacity)" | — | ✅ OK | `tacts_per_section_mode='auto' | 'manual'`. |
 | F7 | Členění info | display | "42 celků × auto záběry (engine spočítá)" | ✅ OK | Live preview. |
 | F8 | Pracovní spáry | dropdown | "Povoleny (sekční)" | Bez dilatačních: jak dělit záběry | ✅ OK | `working_joints_allowed`. `'unknown'` (Q2 warning) když user nevyplní. |
-| F9 | "Ruční rozdělení záběrů" checkbox | checkbox | — | Manual override | 🔴 **BUG #6 — P1** | `use_manual_zabery` + `manual_zabery: Array<{name, volume_m3, formwork_area_m2}>` (types:161–162). Když user zaškrtne, vytvoří se tabulka N×3 polí, ale **engine pak ignoruje computed `num_dilatation_sections × tacts_per_section`** a místo nich vezme `manual_zabery.length` + `Math.max(volumes)` jako `num_tacts_override / tact_volume_m3_override`. Bug "naslaivá se": form má `has_dilatation_joints=true` (F1) + `num_dilatation_sections=42` (F2) + `use_manual_zabery=true` (F9) + manual_zabery=[5 záběrů] → engine vezme 5 (manual wins), ale UI v F7 stále ukazuje "42 celků × auto záběry". Inconsistency. |
+| F9 | "Ruční rozdělení záběrů" checkbox | checkbox | — | Manual override | 🟢 **FIXED (P1 BUG #6, 2026-05-14)** | UI nyní zrcadlí engine mutex: když je F9 zaškrtnuté, F1 checkbox se vizuálně tlumí + disabled (tooltip *„Ruční rozdělení záběrů je zapnuté — dilatační celky se ignorují."*), F2 + F3 + Celková délka inputy se schovají (žádný efekt na engine), a F7 hint short-circuit přepne na `N ručních záběrů (engine použije přesné objemy z tabulky níže)`. Inconsistency mezi F7 a manual table odstraněna. `CalculatorFormFields.tsx:650–700, 775–795`. |
 
 ---
 
@@ -178,7 +178,7 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 | # | Field | Type | Default | Co dělá | Status | Notes |
 |---|-------|------|---------|---------|--------|-------|
 | H1 | Třída betonu | dropdown | C25/30 | Beton class | ✅ OK | `concrete_class` (types:166). Pre-filled z `getSmartDefaults(operne_zdi).typical_concrete = 'C25/30'`. |
-| H2 | Ošetřování info | display | "třída 2 (auto) · změnit ▸" | 🔴 **BUG #11 — P2 smart defaults dead code** | `helpers.ts:104 getSmartDefaults(elementType)` vrací pro operne_zdi `curing_class='3'` (substructure). **Ale žádný `useEffect`** v `useCalculator.ts` na něj NEnavažuje. Funkce je definovaná ale nikdy nezapisuje do FormState při změně `element_type`. Display "třída 2 (auto)" pochází z fallback chain v `maturity.ts:getDefaultCuringClass()` (která je v engine, ne v form). UI a engine si nevyměňují smart defaults. |
+| H2 | Ošetřování info | display | "třída 2 (auto) · změnit ▸" | 🟢 **FIXED (P2 BUG #11, 2026-05-14)** | `useCalculator.ts:225` nová useEffect (sentinel přes `useRef`) na change `form.element_type` aplikuje `getSmartDefaults(element_type)` na FormState — vyplní jen empty/auto pole (preserves user override): `curing_class`, `exposure_class`, `exposure_classes`, `concrete_class` (jen pokud aktuální == DEFAULT 'C30/37'), `is_prestressed` (logical OR). Pro operne_zdi: defaults z helpers.ts:81 = `XC4` + `XF1` + curing class 3 + typical_concrete `C25/30` se teď reálně dostane do form. |
 
 ---
 
@@ -196,12 +196,12 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 | I6 | XA1-3 | checkbox | — | Chemická | ✅ OK | |
 | I7 | XM1-3 | checkbox | — | Obrus | ✅ OK | |
 | I8 | Warning "Žádná třída prostředí nevybrána" | display | — | Required check | ✅ OK | |
-| I9 | Třída ošetřování | dropdown | "2 — základy" | TKP18 §7.8.3 | 🔴 **BUG #11 — souvisí s H2** | Pro operne_zdi smart-default je `'3'`, ne `'2'`. Default by se měl měnit per element_type, ale dead-code. |
+| I9 | Třída ošetřování | dropdown | "2 — základy" | TKP18 §7.8.3 | 🟢 **FIXED (návazně BUG #11, 2026-05-14)** | Pro operne_zdi smart-default `'3'` se teď reálně aplikuje (viz H2). |
 | I10 | Typ cementu | dropdown | "CEM I (OPC - rychlé)" | Vliv na zrání | ✅ OK | `cement_type` (types:167). |
 
-**CHYBÍ I.X:** `use_retarder` (types:165) je ve FormState ale **nikdy se nerenderuje** v UI → 🔴 **BUG #9 — P3 orphaned field**. Pouze AI advisor prompt vidí. Buď přidat checkbox do I.1, nebo odstranit z FormState.
+**CHYBÍ I.X:** ~~`use_retarder` orphaned~~ — 🟢 **FIXED (P3 BUG #9, 2026-05-14)** — odstraněno z `FormState` + `DEFAULT_FORM` + `useCalculator.buildInput`. Engine `pour-decision.ts:328` defaultuje na `false` přes `?? false` — beze změny chování. Per-user-discretion: pokud bude v budoucnu potřeba toggle, přidat do Expertního panelu InlineResourcePanel.
 
-**CHYBÍ I.Y:** `concrete_consistency` (types:209) je ve FormState ale **nikdy se nerenderuje** → 🔴 **BUG #10 — P3 hidden field**. Driver pro DIN 18218 k-factor (standard=0.85 / plastic=1.0 / scc=1.5). Pro SO-250 standardní beton OK default, ale SCC by měl být user-volitelný (mění tlak 1,76×). Přidat radio group: Standard / Plastický / SCC.
+**~~CHYBÍ I.Y~~ false alarm (audit oprava 2026-05-14):** ~~`concrete_consistency` hidden field~~ — BUG #10 **byl mylný claim**. Field SE rendeuje v `InlineResourcePanel.tsx:233` jako `<select>` v Expert panelu s options "Standard (k=0.85) / Plastický S3–S4 (k=1.0) / SCC (k=1.5)". User to může nastavit. Worksheet sekce I.1 zde řádek nepřidává duplicitně. ✅ OK as-is.
 
 ---
 
@@ -209,7 +209,7 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 
 | # | Field | Type | Default | Co dělá | Status | Notes |
 |---|-------|------|---------|---------|--------|-------|
-| J1 | Počet identických elementů | input | 42 | "ovlivňuje obrátkovost bednění" | 🟢 **FIXED (P0 BUG #5/#6 mutex, 2026-05-14)** — engine guard | `num_identical_elements` (types:189). Engine teď v `planner-orchestrator.ts:2206` ignoruje toto pole když `num_dilatation_sections > 1` a zobrazí warning *"Pole je ignorováno, protože konstrukce má N dilatačních celků (ty už pokrývají obrátkovost bednění)"*. **Engine side mutex = done; UI side cleanup deferred**: doporučení pořád ale platí pro UX — rename "Počet identických **objektů**" + tooltip "Použij jen pro několik separátních stěn (např. 2 mosty), ne pro dilatační celky jedné stěny". Engine warning user navádí ke správnému řešení dnes; UI relabel + visibility guard zlepší discoverability budoucí. |
+| J1 | Počet samostatných objektů | input | 1 | "Použij jen pro několik separátních prvků..." | 🟢 **FIXED (P0 BUG #5/#6 mutex + UX rename, 2026-05-14)** | Engine mutex shipped v PR #1145 (`planner-orchestrator.ts:2206`). Tato PR doplnila **UX část**: label "Počet identických elementů" → **"Počet samostatných objektů"**, tooltip "Použij jen pro několik separátních prvků (např. 2 mosty, 6 pilířů, 20 patek). NE pro dilatační celky jedné stěny — ty zadej do 'Počet dilatačních celků' výše.". J2 (Sad bednění pro obrátky) viditelný jen pokud `J1 > 1 && num_dilatation_sections ≤ 1` (mirror engine mutex scope). Když user vyplní obě > 1, amber banner pod J1 vysvětlí, že field bude ignorován. |
 | J2 | Sad bednění pro obrátky | input | 6 | "(42 ÷ sady = obrátkovost)" | 🔴 **BUG #5 návazný — P1** | `formwork_sets_count` (types:190). Visible jen když J1>1 (CalculatorFormFields:1138). User vidí "6" → engine spočítá `ceil(42/6)=7` rotací. Po opravě BUG #5 J1=1, pole zmizí, J3 přepne na J2 (num_sets=1). |
 | J3 | Sady bednění (kompletní soupravy) | input | 6 | "Pro 42 zvažte 2 sady (rotace)" | 🟡 **NEJASNÉ — překryv s J2** | `num_sets` (types:169). Default v `DEFAULT_FORM=1` (types:414), proč pro SO-250 user vidí 6 — buď přišlo z position context nebo z `num_identical_elements > 1` auto-fill (CalculatorFormFields:1140 *Doporučeno 2 sady pro N=42*). Doporučení v UI hlásí "2 sady", ale field má 6 — opět nesouběžně. **J2 vs J3 jsou dva fields se stejnou jednotkou ("sady bednění") a překryvným využitím** — sjednotit. |
 
@@ -282,7 +282,7 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 |---|-------|------|--------------|--------|-------|
 | Q1 | Tabulka Element/Objem/Výška/Výztuž/Čety | display | Recap | ✅ OK | |
 | Q2 | Warning ⚠️ Pracovní spáry | display | "neurčeno (ověřit v RDS)" | ✅ OK | Když `working_joints_allowed=''`. |
-| Q3 | Warning ⚠️ k-factor | display | "standard beton (k=0.85)" | ✅ OK | Reflektuje `concrete_consistency='standard'` (default, but BUG #10 — field hidden). |
+| Q3 | Warning ⚠️ k-factor | display | "standard beton (k=0.85)" | ✅ OK | Reflektuje `concrete_consistency` value z form (default `'standard'`). Field rendeuje v InlineResourcePanel Expert panel jako `<select>` (audit's BUG #10 claim "hidden" byl mylný — false alarm). |
 
 ---
 
@@ -412,14 +412,16 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 
 ## Status breakdown
 
-- ✅ **OK** (funguje korektně): ~100 fields
-- 🟢 **FIXED** (P0 shipped 2026-05-14): **3** distinct bugs (#1 classifier disambiguation, #5/#6 obrátkovost mutex, #7 length-aware estimate + sanity warning) — marked across **9 cells** in worksheet (B1, W2 for #1; F2, J1 for #5/#6; D9, S5, S11, U6 + W9 banner for #7).
-- 🔴 **BUG**: 10 (was 13 before P0 sweep) — 5 P1, 4 P2/P3, 1 false alarm
+- ✅ **OK** (funguje korektně): ~102 fields
+- 🟢 **FIXED**: **9 distinct bugs** total
+  - **P0 shipped 2026-05-14 in PR #1145** (3 bugs): #1 classifier disambiguation, #5/#6 obrátkovost mutex, #7 length-aware estimate + sanity warning
+  - **P1/P2/P3 shipped 2026-05-14 in PR #<TBD>** (6 bugs): #3 volume_m3 undo link, #6 manual_zabery UI mutex, #11 wire getSmartDefaults, D7/E1 consolidate Výška, J1/J2/J3 rename + visibility guard, #9 use_retarder removed from FormState
+- 🔴 **BUG remaining**: 3 (was 13 pre-sweep) — 2 P3 follow-ups + 1 BUG #4 false alarm. BUG #10 (concrete_consistency hidden) was reclassified as false alarm — field IS rendered in InlineResourcePanel Expert panel.
 - 🟡 **NEJASNÉ** (vyžaduje pojasnění): 7
-- ❌ **CHYBÍ**: 3
-- ⚪ **OVERKILL**: 1
+- ❌ **CHYBÍ**: 1 (concrete materials price; original #2 use_retarder UI moot — removed; #3 concrete_consistency UI moot — already rendered)
+- ⚪ **OVERKILL**: 1 (ASCII Gantt toggle)
 
-**Engine tests:** 1100/1100 vitest cases pass (1088 pre-audit baseline + 2 obratkovost mutex + 5 SO-250 classifier + 5 BUG #7).
+**Engine tests:** 1100/1100 vitest cases pass (1088 pre-audit baseline + 2 obrátkovost mutex + 5 SO-250 classifier + 5 BUG #7). The 6 P1/P2/P3 fixes are UI-only — no shared/engine changes — and the test suite stayed at 1100 across all 6 commits.
 
 ---
 
@@ -429,15 +431,12 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 2. 🟢 **P0 — BUG #1 — wrong classification zaklady_piliru místo zaklady_oper** — **SHIPPED 2026-05-14**. `element-classifier.ts` (a) early-exit disambiguation rule pro `(zaklad|základ) + (opern|zarubn|kotven)` → `zaklady_oper`; (b) `zarubn`/`kotven` keywords na `operne_zdi`. 6 nových vitest tests (5 SO-250 fixtures + regression-pin pro plain "Základy" → zaklady_piliru). 1095/1095 vitest cases pass. Probe `classifier_replay` block potvrzuje. **Known limitation:** "Dřík zárubní zdi" bez "základ" — out of scope (real ambiguity).
 3. 🟢 **P0 — BUG #7 — estimateFormworkArea + sanity warning** — **SHIPPED 2026-05-14**. Dvojí fix v `planner-orchestrator.ts`: (a) nová branche v `estimateFormworkArea` používající `total_length_m + numTacts + height_m` → per-cell area 2(L+W)·H (length-aware geometry, nahrazuje legacy aspect-ratio heuristics pro dlouhé dilatované elementy); (b) sanity warning při user-input ratio > 12 m²/m³ navádí na "Není to omylem celková plocha napříč všemi záběry?". Probe verifikuje: SO-250 base 837 m³ → 1,0 M Kč realistic (vs 18,1 M Kč při 622 m² user input = **17,7× reduction**). Sanity warning fires na user_replay scenario. 5 nových vitest cases. **Update:** původní claim "estimate vrátil 622" byl mylný — 622 byl user-input. Funkce vracela ~33 m² (mírně pod realitou); nová branche vrací **17 m²** (engineer-realistic, matches user acceptance "14–15 m²").
 4. 🔴 **P1 — BUG #12 / N2 — formwork system selector dovoluje vertical-only system pro horizontal element**. Frami Xlife (vertical wall) byl vybrán pro `zaklady_piliru` (horizontal foundation). `formwork-selector.ts` chybí `applicable_element_types` allow-list (existuje pro některé položky v `FormworkSystemSpec.applicable_element_types` per v4.21, ale ne všechny). **Fix:** doplnit allow-list pro Frami/TRIO/Framax (vertical-only), Dokaflex/MULTIFLEX (horizontal-only). Effort: 1 h.
-5. 🔴 **P1 — BUG #3 / D1 — manual override má neexistující undo**. Po user-edit `volume_m3` neexistuje "obnov z pozice" tlačítko. `useCalculator.ts` nemá history stack pro form fields. **Fix:** přidat tooltip/button "↶ Vrátit původní hodnotu (X)" pokud `form.volume_m3 !== initialVolumeFromPosition`. Effort: 1 h.
-6. 🔴 **P1 — BUG #6 / F9 — manual_zabery layering bez konzistentní UI**. Když user zaškrtne F9 + má F1/F2 vyplněné, UI ukazuje obojí (F7 hlásí "42 celků × auto záběry"), ale engine vezme manual_zabery. **Fix:** F9 toggle should disable F1/F2 v UI, nebo F1/F2 should hide když F9=true. Engine logic je správná, je to UI bug. Effort: 30 min.
+5. 🟢 **P1 — BUG #3 — volume_m3 undo (D1)** — **SHIPPED 2026-05-14 (P1/P2 sprint PR)**. "↶ Vrátit původní hodnotu (X)" underline link pod inputem, viditelný když `|form.volume_m3 − positionContext.volume_m3| > 0,01`. Klik resetuje + flipuje `volume_mode='manual'`.
+6. 🟢 **P1 — BUG #6 — manual_zabery UI mutex (F9)** — **SHIPPED 2026-05-14 (P1/P2 sprint PR)**. F1 checkbox dimmed + disabled když F9=true; F2/F3 + Celková délka skryté; F7 hint short-circuits na `N ručních záběrů` místo dilatation × tact produktu.
 7. 🔴 **P1 — BUG #2 / B10 — TZ extractor 0/46 coverage pro SO-250**. Out of scope této audit (řešeno v paralelní [smartextractor_so250 audit](../smartextractor_so250/2026-05-14_extractor_coverage.md) PR #1143). **Top-3 fixy ~2 dny.**
-8. 🔴 **P2 — BUG #11 / H2+I9 — smart defaults dead code**. `getSmartDefaults(elementType)` v `helpers.ts:104` vrací správné defaults per element_type ale **žádný useEffect** je aplikuje na FormState při change. UI ukazuje "třída 2 (auto)" když pro operne_zdi má být `'3'`. **Fix:** `useEffect(() => { if (!form.curing_class && !form.exposure_classes.length) applyDefaults(getSmartDefaults(form.element_type)); }, [form.element_type])`. Effort: 1 h + tests.
-9. 🔴 **P2 — D7 vs E1 — duplicate "Výška" fields**. Dva fields se stejným labelem v různých sekcích. Context-dependent rendering chybí. **Fix:** Show D7 jen pro horizontální typy (zaklady, deska), Show E1 jen pro vertikální (stěna, dřík, pilíř). Effort: 30 min.
-10. 🔴 **P2 — J1 / J2 / J3 — three sads-of-formwork fields**. `num_identical_elements`, `num_sets`, `formwork_sets_count` — tři podobně pojmenovaná pole s overlapping účelem. **Fix:** rename + tooltip:
-    - J1 → "Počet **samostatných** elementů (např. 2 mosty)" — *not* dilatation cells
-    - J2 → "Sady bednění (komplet)" — visible vždy
-    - J3 → smazat (duplicate of J2 with conditional visibility)
+8. 🟢 **P2 — BUG #11 — wire getSmartDefaults (H2+I9)** — **SHIPPED 2026-05-14 (P1/P2 sprint PR)**. `useCalculator.ts` nová useEffect (useRef sentinel) na element_type change aplikuje `getSmartDefaults` — vyplní jen empty/auto pole; preserves user override.
+9. 🟢 **P2 — D7 vs E1 — Výška consolidate** — **SHIPPED 2026-05-14 (P1/P2 sprint PR)**. Generic Výška skrytý když element_type ∈ geomTypes (L×W×H block ovládá `form.height_m`). Vertikální typy keep generic widget.
+10. 🟢 **P2 — J1 / J2 / J3 — rename + visibility guard** — **SHIPPED 2026-05-14 (P1/P2 sprint PR)**. J1 relabel + tooltip; J2 visibility guard `num_identical_elements > 1 && num_dilatation_sections ≤ 1`; amber banner když oba > 1. J3 (num_sets) zachován — má distinct engine role v chess parallelism (audit původní claim "duplicate" byl mylný).
 
 ## Top 5 NEJASNÉ — vyžaduje pojasnění UX
 
@@ -456,8 +455,8 @@ Engine replay measured `planElement()` across three scenarios, all numbers from 
 ## Top 5 CHYBÍ — měl by být přidán
 
 1. ❌ **Concrete materials price** — Kč/m³ override. Engine počítá jen labor+rental. Pro tendrovou kalkulaci je materiál 2–3 K Kč/m³ — bez něj cost není srovnatelný s reálným rozpočtem. Add: input `concrete_unit_cost_czk_m3` (default empty = nezahrnuto, banner při empty).
-2. ❌ **`use_retarder` UI** (BUG #9) — FormState field exists, UI render neexistuje. Pro SO-250 nepotřebné, ale pro letní betonáže důležitý parametr maturity.
-3. ❌ **`concrete_consistency` UI** (BUG #10) — FormState field exists, driver pro DIN 18218. Add radio: Standard / Plastic / SCC.
+2. 🟢 ~~**`use_retarder` UI** (BUG #9)~~ — **REMOVED 2026-05-14**. Field byl orphaned ve FormState (engine vidí default `false` přes `?? false`). Odstraněno z `FormState`, `DEFAULT_FORM`, `useCalculator.buildInput`. Žádné UI nepotřebuje doplnit.
+3. ✅ ~~**`concrete_consistency` UI** (BUG #10)~~ — **false alarm**. Field SE rendeuje v `InlineResourcePanel.tsx:233` (Expert panel `<select>`). Audit's "hidden" claim byl mylný.
 4. ❌ **Drawing source** v TZ extractor (out of scope; viz [PR #1143](https://github.com/alpro1000/STAVAGENT/pull/1143)).
 5. ❌ **Element-context-aware Výška label** — Show "Výška bloku" vs "Výška dříku" vs "Výška desky" podle element_type. Existing E3 text adapter je správný směr, rozšířit.
 
