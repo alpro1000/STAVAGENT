@@ -1,0 +1,809 @@
+{
+  "generated_at": "2026-05-14",
+  "branch": "claude/smartextractor-probe-rsd-5Gqm4",
+  "extractor_path": "Monolit-Planner/shared/src/parsers/tz-text-extractor.ts",
+  "extractor_loc": 604,
+  "source_enum": [
+    "regex",
+    "keyword",
+    "heuristic",
+    "smeta_line"
+  ],
+  "blocks": {
+    "A": {
+      "title": "Block A — Identifikace (TZ str. 5)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 0,
+      "counts": {
+        "ok": 0,
+        "missing": 10,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 10
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "object_id",
+            "value": "SO 250",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "object_name",
+            "value": "Zárubní zeď v km 6,500 – 7,000 vpravo",
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "road",
+            "value": "D6",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "stationing_from",
+            "value": "6+492.40",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "stationing_to",
+            "value": "7+007.60",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "documentation_stage",
+            "value": "PDPS",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "length_m",
+            "value": 515.2,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "height_above_terrain_min_m",
+            "value": 1.55,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "height_above_terrain_max_m",
+            "value": 3.4,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "visible_area_m2",
+            "value": 1737.44,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        }
+      ],
+      "extracted_raw": []
+    },
+    "B": {
+      "title": "Block B — Konstrukce (TZ str. 7-8)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 0,
+      "counts": {
+        "ok": 0,
+        "missing": 15,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 15
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "podkladni_beton_thickness_m",
+            "value": 0.15,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "podkladni_beton_grade",
+            "value": "C25/30",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "podkladni_beton_exposure",
+            "value": [
+              "XF3",
+              "XA2",
+              "XC2"
+            ],
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "base_thickness_m",
+            "value": 0.56,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "base_width_m",
+            "value": 2.75,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "dilatation_main_count",
+            "value": 40,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "dilatation_main_length_m",
+            "value": 12.5,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "dilatation_edge_count",
+            "value": 2,
+            "conf": 0.9
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "dilatation_edge_length_m",
+            "value": 7.6,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "wall_thickness_m",
+            "value": 0.45,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "wall_height_min_m",
+            "value": 1.65,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "wall_height_max_m",
+            "value": 3.5,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "face_cladding_material",
+            "value": "lomový kámen",
+            "conf": 0.9
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "face_cladding_thickness_m",
+            "value": 0.3,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "face_cladding_anchor_grid_m",
+            "value": [
+              0.75,
+              0.75
+            ],
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "concrete_class",
+          "value": "C25/30",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "C25/30"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF3",
+            "XA2",
+            "XC2"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "XF3, XA2, XC2"
+        },
+        {
+          "name": "nk_width_m",
+          "value": 2.75,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "sirky 2,75 m"
+        },
+        {
+          "name": "total_length_m",
+          "value": 12.5,
+          "source": "regex",
+          "confidence": 0.9,
+          "matched_text": "delky 12,50 m"
+        },
+        {
+          "name": "element_type",
+          "value": "operne_zdi",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "opěrná zeď / stěna"
+        },
+        {
+          "name": "exposure_class",
+          "value": "XF3",
+          "source": "heuristic",
+          "confidence": 0.8,
+          "matched_text": "XF3, XA2, XC2",
+          "alternatives": [
+            "XA2",
+            "XC2"
+          ]
+        }
+      ]
+    },
+    "C": {
+      "title": "Block C — Římsa a zábradlí (TZ str. 8-9)",
+      "element_type": "rimsa",
+      "coverage_pct": 0,
+      "counts": {
+        "ok": 0,
+        "missing": 7,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 7
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "rimsa_concrete_grade",
+            "value": "C30/37",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "rimsa_exposure",
+            "value": [
+              "XF4",
+              "XD3",
+              "XC4"
+            ],
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "rebar_grade",
+            "value": "B500B",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "rimsa_width_m",
+            "value": 0.85,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "rimsa_thickness_face_m",
+            "value": 0.4,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "rimsa_thickness_back_m",
+            "value": 0.36,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "railing_height_m",
+            "value": 1.1,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "XF4, XD3, XC4"
+        },
+        {
+          "name": "nk_width_m",
+          "value": 0.85,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "sirka 0,85 m"
+        },
+        {
+          "name": "height_m",
+          "value": 1.1,
+          "source": "regex",
+          "confidence": 0.9,
+          "matched_text": "výška 1,10 m"
+        },
+        {
+          "name": "element_type",
+          "value": "rimsa",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "římsa"
+        },
+        {
+          "name": "exposure_class",
+          "value": "XF4",
+          "source": "heuristic",
+          "confidence": 0.8,
+          "matched_text": "XF4, XD3, XC4",
+          "alternatives": [
+            "XD3",
+            "XC4"
+          ]
+        }
+      ]
+    },
+    "D": {
+      "title": "Block D — Výkres (Vzorový příčný řez, OCR transcript)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 0,
+      "counts": {
+        "ok": 0,
+        "missing": 8,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 8
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "podkladni_beton_grade_drawing",
+            "value": "C12/15",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "podkladni_beton_exposure_drawing",
+            "value": [
+              "X0"
+            ],
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "drik_grade_drawing",
+            "value": "C30/37",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "drik_exposure_drawing",
+            "value": [
+              "XF4",
+              "XC4"
+            ],
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "zaklad_grade_drawing",
+            "value": "C25/30",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "zaklad_exposure_drawing",
+            "value": [
+              "XF3",
+              "XC2",
+              "XA2"
+            ],
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "rimsa_grade_drawing",
+            "value": "C30/37",
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "railing_height_drawing_m",
+            "value": 1.15,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "exposure_classes",
+          "value": [
+            "X0",
+            "XF4",
+            "XC4",
+            "XF3",
+            "XC2",
+            "XA2",
+            "XD3"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "X0, XF4, XC4, XF3, XC2, XA2, XD3"
+        },
+        {
+          "name": "element_type",
+          "value": "rimsa",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "římsa"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "heuristic",
+          "confidence": 0.8,
+          "matched_text": "C30/37, C25/30, C12/15",
+          "alternatives": [
+            "C25/30",
+            "C12/15"
+          ]
+        },
+        {
+          "name": "exposure_class",
+          "value": "XF4",
+          "source": "heuristic",
+          "confidence": 0.8,
+          "matched_text": "XF4, XF3, XD3, XA2, XC4, XC2, X0",
+          "alternatives": [
+            "XF3",
+            "XD3",
+            "XA2",
+            "XC4",
+            "XC2",
+            "X0"
+          ]
+        }
+      ]
+    },
+    "E": {
+      "title": "Block E — Geotechnika (TZ str. 5-6)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 0,
+      "counts": {
+        "ok": 0,
+        "missing": 6,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 6
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "geology_main",
+            "value": "granit karlovarského plutonu",
+            "conf": 0.85
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "excavation_class_main",
+            "value": "I-III",
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "excavation_class_local_max",
+            "value": "IV",
+            "conf": 0.85
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "edef2_base_MPa",
+            "value": 60,
+            "conf": 1
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "edef_ratio_max",
+            "value": 2.5,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        },
+        {
+          "expected": {
+            "name": "stray_currents_grade",
+            "value": 3,
+            "conf": 0.95
+          },
+          "status": "MISSING",
+          "actual": null,
+          "conf_actual": null
+        }
+      ],
+      "extracted_raw": []
+    }
+  },
+  "totals": {
+    "ok": 0,
+    "missing": 46,
+    "wrong_value": 0,
+    "wrong_confidence": 0,
+    "expected": 46,
+    "coverage_pct": 0
+  },
+  "conflict_test": {
+    "expected_conflicts": [
+      {
+        "field": "podkladni_beton_grade",
+        "tz": "C25/30",
+        "drawing": "C12/15",
+        "expected_behavior": "DETEKOVÁNO + alternatives, max conf 0.6"
+      },
+      {
+        "field": "podkladni_beton_exposure",
+        "tz": [
+          "XF3",
+          "XA2",
+          "XC2"
+        ],
+        "drawing": [
+          "X0"
+        ],
+        "expected_behavior": "DETEKOVÁNO, drawing wins"
+      },
+      {
+        "field": "drik_exposure_xf",
+        "tz": "XF3",
+        "drawing": "XF4",
+        "expected_behavior": "DETEKOVÁNO, drawing wins"
+      },
+      {
+        "field": "railing_height_m",
+        "tz": 1.1,
+        "drawing": 1.15,
+        "expected_behavior": "DETEKOVÁNO, \"compatible variants\""
+      }
+    ],
+    "combined_input_chars": 797,
+    "picks_concrete_class": [
+      {
+        "name": "concrete_class",
+        "value": "C30/37",
+        "label_cs": "Třída betonu: C30/37 (nejvyšší z 3)",
+        "confidence": 0.8,
+        "source": "heuristic",
+        "matched_text": "C30/37, C25/30, C12/15",
+        "alternatives": [
+          "C25/30",
+          "C12/15"
+        ]
+      }
+    ],
+    "picks_exposure_class": [
+      {
+        "name": "exposure_classes",
+        "value": [
+          "XF3",
+          "XA2",
+          "XC2",
+          "X0",
+          "XF4",
+          "XC4",
+          "XD3"
+        ],
+        "label_cs": "Třídy prostředí: XF3, XA2, XC2, X0, XF4, XC4, XD3",
+        "confidence": 1,
+        "source": "regex",
+        "matched_text": "XF3, XA2, XC2, X0, XF4, XC4, XD3"
+      },
+      {
+        "name": "exposure_class",
+        "value": "XF4",
+        "label_cs": "Třída prostředí: XF4 (nejpřísnější z 7: XF4, XF3, XD3, XA2, XC4, XC2, X0)",
+        "confidence": 0.8,
+        "source": "heuristic",
+        "matched_text": "XF4, XF3, XD3, XA2, XC4, XC2, X0",
+        "alternatives": [
+          "XF3",
+          "XD3",
+          "XA2",
+          "XC4",
+          "XC2",
+          "X0"
+        ]
+      }
+    ],
+    "detected_alternatives_concrete": true,
+    "detected_alternatives_exposure": true,
+    "conflict_detection_rate_pct": 0,
+    "conflict_detection_pass": false,
+    "conflict_detection_reason": "extractor has no element-scope (podkladní/základ/dřík/římsa) — all concrete classes collapse to one param via \"highest\" rule, all exposures collapse to one param via \"most-restrictive\" rule. The four element-scoped conflicts (Block B vs Block D) are silently lost."
+  }
+}
