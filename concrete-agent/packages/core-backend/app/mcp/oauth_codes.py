@@ -165,11 +165,6 @@ def consume_code(
             return {"ok": False, "error": "invalid_grant",
                     "error_description": "Authorization code not found"}
 
-        if row["used_at"] is not None:
-            conn.rollback()
-            return {"ok": False, "error": "invalid_grant",
-                    "error_description": "Authorization code already used"}
-
         # `expires_at` is timezone-aware (TIMESTAMPTZ); compare against UTC now.
         if row["expires_at"] <= datetime.now(timezone.utc):
             conn.rollback()
@@ -181,7 +176,12 @@ def consume_code(
             return {"ok": False, "error": "invalid_request",
                     "error_description": "redirect_uri mismatch"}
 
-        # PKCE — only S256 supported (plain is RFC-allowed but weak)
+        # PKCE — only S256 supported (plain is RFC-allowed but weak).
+        # PKCE verification runs BEFORE the `used_at` replay check so a
+        # stolen code without the verifier cannot probe code state via
+        # response-timing differences (amazon-q review on PR #1151).
+        # The SHA-256 cost is microsecond-level so the latency hit on
+        # legitimate-but-replayed requests is negligible.
         if row["code_challenge_method"] != "S256":
             conn.rollback()
             return {"ok": False, "error": "invalid_grant",
@@ -191,6 +191,13 @@ def consume_code(
             conn.rollback()
             return {"ok": False, "error": "invalid_grant",
                     "error_description": "code_verifier mismatch"}
+
+        # Replay check — runs after PKCE so used + unused codes consume
+        # the same wall-clock budget for an attacker without the verifier.
+        if row["used_at"] is not None:
+            conn.rollback()
+            return {"ok": False, "error": "invalid_grant",
+                    "error_description": "Authorization code already used"}
 
         # Mark used → release the row lock via commit
         cur.execute(
