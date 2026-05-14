@@ -1062,7 +1062,6 @@ export default function useCalculator() {
       num_dilatation_sections: numSections,
       ...(tactsPerSectionManual > 0 ? { tacts_per_section: tactsPerSectionManual } : {}),
       season: form.season,
-      use_retarder: form.use_retarder,
       concrete_class: form.concrete_class,
       cement_type: form.cement_type,
       temperature_c: form.temperature_c,
