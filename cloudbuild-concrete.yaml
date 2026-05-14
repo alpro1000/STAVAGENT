@@ -111,6 +111,15 @@ steps:
         psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/007_mcp_api_keys.sql \
           && echo "MCP api_keys migration OK" \
           || echo "MCP api_keys migration skipped (DB may be unavailable)"
+        # NOTE 2026-05-14: this psql step has silently no-op'd ever since
+        # PR #1147 — Cloud Build VM has no Cloud SQL Unix socket mount.
+        # Migration 008 is queued here for the day the step is fixed
+        # (Option 1 in docs/audits/mcp_status/migration_log.md). Until
+        # then, apply 008 manually via cloud-sql-proxy + psql before
+        # rolling traffic to a revision that uses /oauth/authorize.
+        psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/008_mcp_oauth_codes.sql \
+          && echo "MCP oauth_codes migration OK" \
+          || echo "MCP oauth_codes migration skipped (DB may be unavailable)"
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}

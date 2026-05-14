@@ -233,6 +233,45 @@ async def mcp_health():
     }
 
 
+# RFC 8414 / OpenID Connect Discovery — required by ChatGPT custom
+# connectors and Claude.ai MCP integration to learn the authorize +
+# token endpoints. Public, no auth. Mounted at root so well-known URIs
+# resolve at `/.well-known/oauth-authorization-server` and
+# `/.well-known/openid-configuration` (not under `/api/v1/mcp/`).
+def _oauth_discovery_payload(request) -> dict:
+    """Build the discovery JSON. Issuer is derived from the incoming
+    request so the same code works in dev (`http://localhost:8000`),
+    Cloud Run preview revisions, and the production custom domain."""
+    base = str(request.base_url).rstrip("/")
+    return {
+        "issuer": base,
+        "authorization_endpoint": f"{base}/api/v1/mcp/oauth/authorize",
+        "token_endpoint": f"{base}/api/v1/mcp/oauth/token",
+        "grant_types_supported": ["authorization_code", "client_credentials"],
+        "response_types_supported": ["code"],
+        "code_challenge_methods_supported": ["S256"],
+        "token_endpoint_auth_methods_supported": [
+            "client_secret_post",
+            "client_secret_basic",
+            "none",
+        ],
+    }
+
+
+@app.get("/.well-known/oauth-authorization-server")
+async def oauth_authorization_server_metadata(request: Request):
+    return _oauth_discovery_payload(request)
+
+
+@app.get("/.well-known/openid-configuration")
+async def openid_configuration(request: Request):
+    # Same payload — ChatGPT / Claude.ai probe both URIs depending on
+    # the connector implementation. We don't actually implement OIDC
+    # (no id_token, no userinfo), but exposing the same OAuth-2.0
+    # metadata under the OIDC well-known is enough for client discovery.
+    return _oauth_discovery_payload(request)
+
+
 # Mount MCP server (its lifespan is already wired into the FastAPI lifespan above)
 if _mcp_http_app is not None:
     app.mount("/mcp", MCPOriginMiddleware(_mcp_http_app))
