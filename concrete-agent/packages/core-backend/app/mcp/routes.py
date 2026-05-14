@@ -217,6 +217,96 @@ async def billing_webhook(request: Request):
     return {"status": "ok", "credits_added": credits_to_add, **result}
 
 
+# ── Tool listing ─────────────────────────────────────────────────────────────
+
+# Short human-readable descriptions for each MCP tool. Kept here (not derived
+# from FastMCP introspection) so the API response is stable and independent of
+# whether the MCP server boots — `/health` already covers MCP availability.
+TOOL_DESCRIPTIONS = {
+    "find_otskp_code": (
+        "Vyhledá kódy z katalogu OTSKP (17 904 položek dopravních a inženýrských "
+        "staveb). Hledá v reálné databázi — AI modely tyto kódy neznají."
+    ),
+    "find_urs_code": (
+        "Vyhledá kódy ÚRS/RTS (39 000+ položek) přes Perplexity web search a "
+        "URS Matcher službu."
+    ),
+    "classify_construction_element": (
+        "Klasifikuje konstrukční prvek do jednoho z 22+ typů (pilíř, opěra, "
+        "mostovka, římsa, …) s difficulty factor, doporučeným bedněním a "
+        "vyztužením."
+    ),
+    "calculate_concrete_works": (
+        "Spočítá betonářské práce pro jeden ŽB prvek (7engine pipeline): "
+        "bednění, výztuž, zrání, podpěry, harmonogram, CZK/m³."
+    ),
+    "parse_construction_budget": (
+        "Parsuje Excel rozpočet / soupis prací. Podporuje 4 formáty (Komplet/"
+        "FORESTINA, OTSKP D6, AspeEsticon/SŽ, RTS)."
+    ),
+    "analyze_construction_document": (
+        "Analyzuje PDF technické zprávy a další dokumentaci. Extrahuje třídy "
+        "betonu, výztuže, expozice, normy, speciální požadavky."
+    ),
+    "create_work_breakdown": (
+        "Z listu konstrukčních prvků vytvoří kompletní výkaz výměr / soupis "
+        "prací s OTSKP/ÚRS kódy."
+    ),
+    "get_construction_advisor": (
+        "Expertní doporučení pro ŽB prvek: postup, výběr bednění s "
+        "odůvodněním, počet záběrů, plán čet, relevantní ČSN EN, rizika."
+    ),
+    "search_czech_construction_norms": (
+        "Vyhledá české stavební normy (ČSN, TP, TKP, VL) — 3vrstvé hledání: "
+        "lokální NKB + Perplexity web search + regex extrakce ID."
+    ),
+}
+
+# Canonical tool order (matches app/mcp/server.py registration order).
+TOOL_ORDER = [
+    "find_otskp_code",
+    "find_urs_code",
+    "classify_construction_element",
+    "calculate_concrete_works",
+    "parse_construction_budget",
+    "analyze_construction_document",
+    "create_work_breakdown",
+    "get_construction_advisor",
+    "search_czech_construction_norms",
+]
+
+
+@router.get("/tools")
+async def list_tools(authorization: Optional[str] = Header(None)):
+    """List all MCP tools with name, description, and credit cost.
+
+    Requires a valid API key (same auth as /auth/credits). Free tools cost 0
+    credits but are still listed for discoverability.
+    """
+    api_key = _extract_bearer(authorization)
+    if not api_key:
+        raise HTTPException(
+            status_code=401,
+            detail="Authorization: Bearer <api_key> required",
+        )
+
+    # Verify the key exists (and is active) — reuses the same lookup as
+    # `/auth/credits`. `get_credits` returns {"error": …} on unknown key.
+    credit_check = mcp_auth.get_credits(api_key)
+    if "error" in credit_check:
+        raise HTTPException(status_code=401, detail=credit_check["error"])
+
+    tools = [
+        {
+            "name": name,
+            "description": TOOL_DESCRIPTIONS[name],
+            "cost_credits": mcp_auth.TOOL_COSTS.get(name, 0),
+        }
+        for name in TOOL_ORDER
+    ]
+    return {"tools": tools, "total": len(tools)}
+
+
 # ── Pricing info ─────────────────────────────────────────────────────────────
 
 @router.get("/pricing")
