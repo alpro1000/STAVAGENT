@@ -13,10 +13,10 @@
     "A": {
       "title": "Block A — Identifikace (TZ str. 5)",
       "element_type": "operne_zdi",
-      "coverage_pct": 0,
+      "coverage_pct": 100,
       "counts": {
-        "ok": 0,
-        "missing": 10,
+        "ok": 10,
+        "missing": 0,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 10
@@ -28,9 +28,10 @@
             "value": "SO 250",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "SO 250",
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -38,9 +39,10 @@
             "value": "Zárubní zeď v km 6,500 – 7,000 vpravo",
             "conf": 0.95
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "Zárubní zeď v km 6,500 – 7,000 vpravo",
+          "conf_actual": 0.95,
+          "source": "regex"
         },
         {
           "expected": {
@@ -48,9 +50,10 @@
             "value": "D6",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "D6",
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -58,9 +61,10 @@
             "value": "6+492.40",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "6+492.40",
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -68,9 +72,10 @@
             "value": "7+007.60",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "7+007.60",
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -78,9 +83,10 @@
             "value": "PDPS",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "PDPS",
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -88,9 +94,10 @@
             "value": 515.2,
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 515.2,
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -98,9 +105,10 @@
             "value": 1.55,
             "conf": 0.95
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 1.55,
+          "conf_actual": 0.95,
+          "source": "regex"
         },
         {
           "expected": {
@@ -108,9 +116,10 @@
             "value": 3.4,
             "conf": 0.95
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 3.4,
+          "conf_actual": 0.95,
+          "source": "regex"
         },
         {
           "expected": {
@@ -118,12 +127,91 @@
             "value": 1737.44,
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 1737.44,
+          "conf_actual": 1,
+          "source": "regex"
         }
       ],
-      "extracted_raw": []
+      "extracted_raw": [
+        {
+          "name": "object_id",
+          "value": "SO 250",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "SO 250"
+        },
+        {
+          "name": "road",
+          "value": "D6",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "dálnice D6"
+        },
+        {
+          "name": "stationing_from",
+          "value": "6+492.40",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "km 6,492 40 – 7,007 60"
+        },
+        {
+          "name": "stationing_to",
+          "value": "7+007.60",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "km 6,492 40 – 7,007 60"
+        },
+        {
+          "name": "documentation_stage",
+          "value": "PDPS",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "PDPS"
+        },
+        {
+          "name": "total_length_m",
+          "value": 515.2,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Délka zdi 515,20 m"
+        },
+        {
+          "name": "length_m",
+          "value": 515.2,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Délka zdi 515,20 m"
+        },
+        {
+          "name": "visible_area_m2",
+          "value": 1737.44,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Pohledová plocha zdi 1737,44 m2"
+        },
+        {
+          "name": "height_above_terrain_min_m",
+          "value": 1.55,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "od 1,550 do 3,400 m"
+        },
+        {
+          "name": "height_above_terrain_max_m",
+          "value": 3.4,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "od 1,550 do 3,400 m"
+        },
+        {
+          "name": "object_name",
+          "value": "Zárubní zeď v km 6,500 – 7,000 vpravo",
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "Název objektu Zárubní zeď v km 6,500 – 7,000 vpravo"
+        }
+      ]
     },
     "B": {
       "title": "Block B — Konstrukce (TZ str. 7-8)",
@@ -377,10 +465,10 @@
     "C": {
       "title": "Block C — Římsa a zábradlí (TZ str. 8-9)",
       "element_type": "rimsa",
-      "coverage_pct": 14,
+      "coverage_pct": 29,
       "counts": {
-        "ok": 1,
-        "missing": 6,
+        "ok": 2,
+        "missing": 5,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 7
@@ -461,9 +549,10 @@
             "value": 1.1,
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 1.1,
+          "conf_actual": 1,
+          "source": "regex"
         }
       ],
       "extracted_raw": [
@@ -498,6 +587,13 @@
           "matched_text": "sirka 0,85 m"
         },
         {
+          "name": "railing_height_m",
+          "value": 1.1,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "zábradlí výška 1,10 m"
+        },
+        {
           "name": "height_m",
           "value": 1.1,
           "source": "regex",
@@ -527,10 +623,10 @@
     "D": {
       "title": "Block D — Výkres (Vzorový příčný řez, OCR transcript)",
       "element_type": "operne_zdi",
-      "coverage_pct": 88,
+      "coverage_pct": 100,
       "counts": {
-        "ok": 7,
-        "missing": 1,
+        "ok": 8,
+        "missing": 0,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 8
@@ -637,9 +733,10 @@
             "value": 1.15,
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 1.15,
+          "conf_actual": 0.85,
+          "source": "drawing"
         }
       ],
       "extracted_raw": [
@@ -743,6 +840,13 @@
           "element_scope": "rimsa"
         },
         {
+          "name": "railing_height_drawing_m",
+          "value": 1.15,
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "ZÁBRADLÍ, H=1,15 m"
+        },
+        {
           "name": "concrete_class",
           "value": "C30/37",
           "source": "drawing",
@@ -773,10 +877,10 @@
     "E": {
       "title": "Block E — Geotechnika (TZ str. 5-6)",
       "element_type": "operne_zdi",
-      "coverage_pct": 0,
+      "coverage_pct": 100,
       "counts": {
-        "ok": 0,
-        "missing": 6,
+        "ok": 6,
+        "missing": 0,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 6
@@ -788,9 +892,10 @@
             "value": "granit karlovarského plutonu",
             "conf": 0.85
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "granit karlovarského plutonu",
+          "conf_actual": 0.85,
+          "source": "keyword"
         },
         {
           "expected": {
@@ -798,9 +903,10 @@
             "value": "I-III",
             "conf": 0.95
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "I-III",
+          "conf_actual": 0.95,
+          "source": "regex"
         },
         {
           "expected": {
@@ -808,9 +914,10 @@
             "value": "IV",
             "conf": 0.85
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "IV",
+          "conf_actual": 0.85,
+          "source": "regex"
         },
         {
           "expected": {
@@ -818,9 +925,10 @@
             "value": 60,
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 60,
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -828,9 +936,10 @@
             "value": 2.5,
             "conf": 0.95
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 2.5,
+          "conf_actual": 0.95,
+          "source": "regex"
         },
         {
           "expected": {
@@ -838,21 +947,65 @@
             "value": 3,
             "conf": 0.95
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": 3,
+          "conf_actual": 0.95,
+          "source": "regex"
         }
       ],
-      "extracted_raw": []
+      "extracted_raw": [
+        {
+          "name": "edef2_base_MPa",
+          "value": 60,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Edef,2 ≥ 60 MPa"
+        },
+        {
+          "name": "edef_ratio_max",
+          "value": 2.5,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "Edef,2/Edef,1 ≤ 2,5"
+        },
+        {
+          "name": "stray_currents_grade",
+          "value": 3,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "bludným proudům: 3"
+        },
+        {
+          "name": "excavation_class_main",
+          "value": "I-III",
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "těžitelnosti I.-III"
+        },
+        {
+          "name": "excavation_class_local_max",
+          "value": "IV",
+          "source": "regex",
+          "confidence": 0.85,
+          "matched_text": "lokálně IV"
+        },
+        {
+          "name": "geology_main",
+          "value": "granit karlovarského plutonu",
+          "source": "keyword",
+          "confidence": 0.85,
+          "matched_text": "Geologie: granit karlovarského plutonu"
+        }
+      ]
     }
   },
   "totals": {
-    "ok": 10,
-    "missing": 36,
+    "ok": 28,
+    "missing": 18,
     "wrong_value": 0,
     "wrong_confidence": 0,
     "expected": 46,
-    "coverage_pct": 22
+    "coverage_pct": 61
   },
   "conflict_test": {
     "expected_conflicts": [

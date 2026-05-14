@@ -632,6 +632,74 @@ Celkový objem 605 m³ dle rozpočtu.
     });
   });
 
+  // ─── Fix #2 (2026-05-14, SO-250 audit) — project-id regex pack ─────────
+  describe('Block A project-identification pack (SO-250 Fix #2)', () => {
+    const blockA =
+      'Číslo objektu SO 250\n' +
+      'Název objektu Zárubní zeď v km 6,500 – 7,000 vpravo\n' +
+      'Druh převáděné komunikace dálnice D6\n' +
+      'Staničení zdi km 6,492 40 – 7,007 60\n' +
+      'Stupeň dokumentace Projektová dokumentace pro provádění stavby (PDPS)\n' +
+      'Charakteristika zdi Úhlová železobetonová zeď.\n' +
+      'Délka zdi 515,20 m\n' +
+      'Výška zdi nad terénem Proměnná, od 1,550 do 3,400 m\n' +
+      'Pohledová plocha zdi 1737,44 m2';
+
+    it('object_id = "SO 250"', () => {
+      expect(findParam(extractFromText(blockA), 'object_id')?.value).toBe('SO 250');
+    });
+    it('road = "D6"', () => {
+      expect(findParam(extractFromText(blockA), 'road')?.value).toBe('D6');
+    });
+    it('stationing_from = "6+492.40"', () => {
+      expect(findParam(extractFromText(blockA), 'stationing_from')?.value).toBe('6+492.40');
+    });
+    it('stationing_to = "7+007.60"', () => {
+      expect(findParam(extractFromText(blockA), 'stationing_to')?.value).toBe('7+007.60');
+    });
+    it('documentation_stage = "PDPS"', () => {
+      expect(findParam(extractFromText(blockA), 'documentation_stage')?.value).toBe('PDPS');
+    });
+    it('length_m = 515.20', () => {
+      expect(findParam(extractFromText(blockA), 'length_m')?.value).toBeCloseTo(515.2, 2);
+    });
+    it('height_above_terrain_min_m = 1.55', () => {
+      expect(findParam(extractFromText(blockA), 'height_above_terrain_min_m')?.value).toBeCloseTo(1.55, 2);
+    });
+    it('height_above_terrain_max_m = 3.40', () => {
+      expect(findParam(extractFromText(blockA), 'height_above_terrain_max_m')?.value).toBeCloseTo(3.4, 2);
+    });
+    it('visible_area_m2 = 1737.44', () => {
+      expect(findParam(extractFromText(blockA), 'visible_area_m2')?.value).toBeCloseTo(1737.44, 2);
+    });
+    it('object_name carries the Czech title text', () => {
+      const n = findParam(extractFromText(blockA), 'object_name')?.value;
+      expect(typeof n).toBe('string');
+      expect(String(n)).toContain('Zárubní zeď');
+    });
+  });
+
+  describe('Drawing + geotech helpers (SO-250 Fix #2)', () => {
+    it('railing_height_drawing_m = 1.15 from "ZÁBRADLÍ … H=1,15 m"', () => {
+      const r = extractFromText('KOMPOZITNÍ 3-LANKOVÉ ZÁBRADLÍ, H=1,15 m');
+      expect(findParam(r, 'railing_height_drawing_m')?.value).toBeCloseTo(1.15, 2);
+    });
+    it('edef2_base_MPa = 60 from "Edef,2 ≥ 60 MPa"', () => {
+      const r = extractFromText('Edef,2 ≥ 60 MPa, Edef,2/Edef,1 ≤ 2,5.');
+      expect(findParam(r, 'edef2_base_MPa')?.value).toBe(60);
+      expect(findParam(r, 'edef_ratio_max')?.value).toBeCloseTo(2.5, 2);
+    });
+    it('excavation_class_main = "I-III" from Czech Roman-numeral phrasing', () => {
+      const r = extractFromText('Třída těžitelnosti I.-III, lokálně IV.');
+      expect(findParam(r, 'excavation_class_main')?.value).toBe('I-III');
+      expect(findParam(r, 'excavation_class_local_max')?.value).toBe('IV');
+    });
+    it('stray_currents_grade = 3', () => {
+      const r = extractFromText('Stupeň ochranných opatření proti bludným proudům: 3.');
+      expect(findParam(r, 'stray_currents_grade')?.value).toBe(3);
+    });
+  });
+
   // ─── Fix #1 (2026-05-14, SO-250 audit) — element_scope tagging ─────────
   describe('element_scope tagging (SO-250 Fix #1)', () => {
     const drawingBlock =

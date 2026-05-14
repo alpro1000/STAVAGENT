@@ -734,6 +734,210 @@ export function extractFromText(
     });
   }
 
+  // ─── Project identification pack (Fix #2, 2026-05-14, SO-250 audit) ────
+  //
+  // ŘSD TZ headers share a stable structure across projects. The first
+  // page of every SO-NNN doc has: Číslo objektu / Název / Druh
+  // komunikace / Staničení / Stupeň dokumentace / Délka / Výška /
+  // Pohledová plocha. This pack adds the regex coverage for the seven
+  // header fields plus a few drawing-side helpers (H=1,15 m, Edef ≥ X
+  // MPa, třída těžitelnosti) so Block A / D / E coverage rises from
+  // 0 % to a meaningful baseline. All patterns are conservative —
+  // they require a recognisable Czech anchor word so they don't fire
+  // on prose with stray numbers.
+
+  // SO number: "Číslo objektu SO 250" or just "SO 250" anywhere.
+  const soMatch = text.match(/\bSO\s*[-–]?\s*(\d{3})\b/);
+  if (soMatch) {
+    results.push({
+      name: 'object_id', value: `SO ${soMatch[1]}`, label_cs: `Číslo objektu: SO ${soMatch[1]}`,
+      confidence: 1.0, source: 'regex', matched_text: soMatch[0],
+    });
+  }
+
+  // Road: "dálnice D6", "rychlostní silnice R10", "silnice I/23".
+  const roadMatch = text.match(/\bd[áa]lnice\s+(D\d+)\b|\brychlostn[ií]\s+silnice\s+(R\d+)\b|\bsilnice\s+(I+\/\d+)\b/i);
+  if (roadMatch) {
+    const road = roadMatch[1] ?? roadMatch[2] ?? roadMatch[3];
+    results.push({
+      name: 'road', value: road, label_cs: `Komunikace: ${road}`,
+      confidence: 1.0, source: 'regex', matched_text: roadMatch[0],
+    });
+  }
+
+  // Stationing range: "km 6,492 40 – 7,007 60" — the trailing two-digit
+  // group is centimetres (ŘSD convention). Emit canonical "km+m.cm" form.
+  const stMatch = text.match(/km\s+(\d+),(\d{3})\s+(\d{2})\s*[–\-]\s*(\d+),(\d{3})\s+(\d{2})/);
+  if (stMatch) {
+    const fmt = (k: string, m: string, cm: string) => `${k}+${m}.${cm}`;
+    results.push({
+      name: 'stationing_from', value: fmt(stMatch[1], stMatch[2], stMatch[3]),
+      label_cs: `Staničení od: ${stMatch[1]}+${stMatch[2]}.${stMatch[3]}`,
+      confidence: 1.0, source: 'regex', matched_text: stMatch[0],
+    });
+    results.push({
+      name: 'stationing_to', value: fmt(stMatch[4], stMatch[5], stMatch[6]),
+      label_cs: `Staničení do: ${stMatch[4]}+${stMatch[5]}.${stMatch[6]}`,
+      confidence: 1.0, source: 'regex', matched_text: stMatch[0],
+    });
+  }
+
+  // Documentation stage acronyms.
+  const docStageMatch = text.match(/\b(DUR|DSP|PDPS|RDS|DSPS)\b/);
+  if (docStageMatch) {
+    results.push({
+      name: 'documentation_stage', value: docStageMatch[1],
+      label_cs: `Stupeň dokumentace: ${docStageMatch[1]}`,
+      confidence: 1.0, source: 'regex', matched_text: docStageMatch[0],
+    });
+  }
+
+  // Total length: "Délka zdi 515,20 m", "Délka mostu 75,3 m". Requires the
+  // anchor noun (zdi/mostu/objektu/oblouku) so it doesn't fire on prose
+  // like "délka 12,5 m" inside the dilatation sentence.
+  const lengthMatch2 = text.match(/D[ée]lka\s+(?:zdi|mostu|objektu|oblouku|\S{0,12}cs)\s+(\d+[.,]\d+)\s*m\b/i);
+  if (lengthMatch2) {
+    const l = parseFloat(lengthMatch2[1].replace(',', '.'));
+    if (!results.some((r) => r.name === 'total_length_m')) {
+      results.push({
+        name: 'total_length_m', value: l, label_cs: `Délka: ${lengthMatch2[1]} m`,
+        confidence: 1.0, source: 'regex', matched_text: lengthMatch2[0],
+      });
+    }
+    // Also emit the audit's `length_m` alias for SO-250's expected matrix.
+    results.push({
+      name: 'length_m', value: l, label_cs: `Délka objektu: ${lengthMatch2[1]} m`,
+      confidence: 1.0, source: 'regex', matched_text: lengthMatch2[0],
+    });
+  }
+
+  // Visible area: "Pohledová plocha zdi 1737,44 m2".
+  const visAreaMatch = text.match(/Pohledov[áa]\s+plocha\s+(?:\w+\s+)?(\d+[.,]\d+)\s*m\s*[²2]/i);
+  if (visAreaMatch) {
+    results.push({
+      name: 'visible_area_m2', value: parseFloat(visAreaMatch[1].replace(',', '.')),
+      label_cs: `Pohledová plocha: ${visAreaMatch[1]} m²`,
+      confidence: 1.0, source: 'regex', matched_text: visAreaMatch[0],
+    });
+  }
+
+  // Height range: "od 1,550 do 3,400 m" — emits both min and max.
+  const heightRangeMatch = text.match(/od\s+(\d+[.,]\d+)\s+do\s+(\d+[.,]\d+)\s*m\b/i);
+  if (heightRangeMatch) {
+    const lo = parseFloat(heightRangeMatch[1].replace(',', '.'));
+    const hi = parseFloat(heightRangeMatch[2].replace(',', '.'));
+    results.push({
+      name: 'height_above_terrain_min_m', value: lo,
+      label_cs: `Min. výška: ${heightRangeMatch[1]} m`,
+      confidence: 0.95, source: 'regex', matched_text: heightRangeMatch[0],
+    });
+    results.push({
+      name: 'height_above_terrain_max_m', value: hi,
+      label_cs: `Max. výška: ${heightRangeMatch[2]} m`,
+      confidence: 0.95, source: 'regex', matched_text: heightRangeMatch[0],
+    });
+  }
+
+  // Title line: "Název objektu Zárubní zeď v km 6,500 – 7,000 vpravo".
+  const nameMatch = text.match(/N[áa]zev\s+objektu\s+(.+?)(?:\r?\n|$)/i);
+  if (nameMatch) {
+    results.push({
+      name: 'object_name', value: nameMatch[1].trim(),
+      label_cs: `Název objektu: ${nameMatch[1].trim()}`,
+      confidence: 0.95, source: 'regex', matched_text: nameMatch[0].trim(),
+    });
+  }
+
+  // Drawing-side helpers (Fix #2 also unlocks the 4th conflict from §4).
+
+  // Railing height on drawing: "H=1,15 m" or "H = 1,15 m".
+  const railingDrawingMatch = text.match(/(?:Z[ÁA]BRADL[ÍI]|zábradl[íi])[^.\n]*?H\s*=\s*(\d+[.,]\d+)\s*m\b/);
+  if (railingDrawingMatch) {
+    const h = parseFloat(railingDrawingMatch[1].replace(',', '.'));
+    results.push({
+      name: 'railing_height_drawing_m', value: h,
+      label_cs: `Výška zábradlí (výkres): ${railingDrawingMatch[1]} m`,
+      confidence: drawingMode ? 0.85 : 1.0,
+      source: drawingMode ? 'drawing' : 'regex',
+      matched_text: railingDrawingMatch[0],
+    });
+  }
+
+  // TZ-side railing height: "navrženo silniční zábradlí výška 1,10 m".
+  const railingTzMatch = text.match(/z[áa]bradl[íi]\s+v[ýy][šs]ka\s+(\d+[.,]\d+)\s*m\b/i);
+  if (railingTzMatch) {
+    const h = parseFloat(railingTzMatch[1].replace(',', '.'));
+    results.push({
+      name: 'railing_height_m', value: h,
+      label_cs: `Výška zábradlí: ${railingTzMatch[1]} m`,
+      confidence: 1.0, source: 'regex', matched_text: railingTzMatch[0],
+    });
+  }
+
+  // Geotechnika helpers (Block E partial — easiest wins only).
+
+  // "Edef,2 ≥ 60 MPa" — base subgrade deformation modulus.
+  const edefMatch = text.match(/Edef\s*,?\s*2\s*[≥>=]+\s*(\d+)\s*MPa/i);
+  if (edefMatch) {
+    results.push({
+      name: 'edef2_base_MPa', value: parseInt(edefMatch[1], 10),
+      label_cs: `Edef,2 ≥ ${edefMatch[1]} MPa`,
+      confidence: 1.0, source: 'regex', matched_text: edefMatch[0],
+    });
+  }
+
+  // "Edef,2/Edef,1 ≤ 2,5" — ratio.
+  const edefRatioMatch = text.match(/Edef[,\s]*2\s*\/\s*Edef[,\s]*1\s*[≤<=]+\s*(\d+[.,]\d+)/i);
+  if (edefRatioMatch) {
+    results.push({
+      name: 'edef_ratio_max', value: parseFloat(edefRatioMatch[1].replace(',', '.')),
+      label_cs: `Edef,2/Edef,1 ≤ ${edefRatioMatch[1]}`,
+      confidence: 0.95, source: 'regex', matched_text: edefRatioMatch[0],
+    });
+  }
+
+  // "bludným proudům: 3" — stray-currents protection grade.
+  const strayMatch = text.match(/bludn[ýy]m\s+proud[ůu]m:?\s*(\d+)/i);
+  if (strayMatch) {
+    results.push({
+      name: 'stray_currents_grade', value: parseInt(strayMatch[1], 10),
+      label_cs: `Bludné proudy: stupeň ${strayMatch[1]}`,
+      confidence: 0.95, source: 'regex', matched_text: strayMatch[0],
+    });
+  }
+
+  // "třída těžitelnosti I.-III" — Roman-numeral excavation class.
+  const excClassMatch = text.match(/t[ěe]ž[ií]telnosti\s+(I+V?\.?\s*[-–]\s*I+V?)/i);
+  if (excClassMatch) {
+    // Normalise to "I-III" by collapsing whitespace + stripping dots.
+    const canonical = excClassMatch[1].replace(/[.\s]/g, '').replace(/–/, '-');
+    results.push({
+      name: 'excavation_class_main', value: canonical,
+      label_cs: `Třída těžitelnosti: ${canonical}`,
+      confidence: 0.95, source: 'regex', matched_text: excClassMatch[0],
+    });
+  }
+
+  // "lokálně IV" — Roman-numeral local-max excavation class.
+  const excLocalMatch = text.match(/lok[áa]ln[ěe]\s+(I+V?)/i);
+  if (excLocalMatch) {
+    results.push({
+      name: 'excavation_class_local_max', value: excLocalMatch[1],
+      label_cs: `Lokálně až: ${excLocalMatch[1]}`,
+      confidence: 0.85, source: 'regex', matched_text: excLocalMatch[0],
+    });
+  }
+
+  // "Geologie: granit karlovarského plutonu" — free-form keyword.
+  const geologyMatch = text.match(/Geologie:\s*([^.\n]+)/i);
+  if (geologyMatch) {
+    results.push({
+      name: 'geology_main', value: geologyMatch[1].trim(),
+      label_cs: `Geologie: ${geologyMatch[1].trim()}`,
+      confidence: 0.85, source: 'keyword', matched_text: geologyMatch[0].trim(),
+    });
+  }
+
   // ─── Keyword-based detection ────────────────────────────────────────────
 
   // Prestressed — covers: předpjatý, předepne, předpětí, předpínací
