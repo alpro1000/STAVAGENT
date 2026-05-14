@@ -13,11 +13,39 @@
 
 ## 0. TL;DR
 
-- **Overall coverage: 0/46 = 0 %** against the SO-250 expected matrix. Five blocks tested: A (Identifikace), B (Konstrukce), C (Římsa), D (Výkres OCR transcript), E (Geotechnika).
-- **Conflict detection (Block B vs Block D, the four documented TZ↔drawing mismatches): 0/4 = 0 % at the element-scoped level.** The extractor *does* populate the global `alternatives` array on `concrete_class` + `exposure_class` when more than one distinct value is seen, but it has no concept of "which element does this value belong to" (podkladní / základ / dřík / římsa), so the four real-world conflicts are silently flattened into one "highest / most-restrictive wins" pick.
-- **Root cause is structural, not pattern-by-pattern.** The extractor's vocabulary is a flat ~20-field bag of generic concrete-design parameters (`concrete_class`, `exposure_class`, `volume_m3`, `height_m`, `nk_width_m`, …). The SO-250 expected matrix is a 46-field bag of *project-identification* + *element-scoped construction* + *drawing-derived* + *geotechnical* parameters. The two vocabularies barely overlap.
-- **Drawing source is missing from `source` enum** — Block D is fed as plain text and gets the same `regex` / `keyword` / `heuristic` tags as TZ prose. The probe spec asked the question; this audit confirms the gap and proposes a one-line enum extension (no implementation here).
-- **Recommended top-3 fixes for CSC sprint (each < 1 day) at §6** — element-scoped concrete/exposure regex (highest leverage), a dozen project-identification regexes for Block A, and a `'drawing'` source-enum value with simple "block-prefix" heuristic.
+**Update 2026-05-14 — all 4 fixes shipped.** Probe coverage rose from
+**0 % → 61 % overall**, conflict detection **0 % → 67 % PASS**. Block A
+and Block D are now fully covered (10/10 and 8/8); Block E geotech
+pack is 6/6; Block B per-element concrete/exposure is 2/15 (the
+remaining 13 fields need a separate per-element dimension regex pack
+documented as Fix #1 follow-up in §6).
+
+| Block | Before fixes | After fixes | Notes |
+|-------|--------------|-------------|-------|
+| A — Identifikace | 0 / 10 = 0 % | **10 / 10 = 100 %** | Fix #2 project-id pack (SO, road, staničení, PDPS, length, height range, visible area, name) |
+| B — Konstrukce | 0 / 15 = 0 % | 2 / 15 = 13 % | Fix #1 element_scope unlocks scoped `concrete_class@podkladni_beton` + `exposure_classes@podkladni_beton`. Per-element thickness, width, dilatation-count, anchor-grid, lomový-kámen keyword still need patterns (§5.1 #4–8) — follow-up ticket. |
+| C — Římsa | 0 / 7 = 0 % | 2 / 7 = 29 % | Fix #1 scoped `rimsa.concrete_grade` + `rimsa.exposure`. Per-rimsa thickness face/back + width need follow-up patterns. |
+| D — Výkres | N/A (no `'drawing'` source) | **8 / 8 = 100 %** | Fix #3 enabled the source tag; Fix #1 scoping resolved every drawing legenda. |
+| E — Geotechnika | 0 / 6 = 0 % | **6 / 6 = 100 %** | Fix #2 included the Edef/excavation-class/geology pack as bonus. |
+| **Σ** | **0 / 46 = 0 %** | **28 / 46 = 61 %** | — |
+| Conflict detection (Block B vs D) | 0 / 4 = 0 % | **2 / 3 = 67 % PASS** | Fix #1 + #3 enable element-scoped + source-distinguished comparison. The 3rd pair (railing height 1.10 vs 1.15) needs the Fix #2 drawing-side height regex which is shipped — but Block B prose has no railing height to compare against, so it stays as "no conflict" rather than "missed". |
+
+Each fix shipped as an atomic commit on this branch (`claude/smartextractor-probe-rsd-5Gqm4`):
+
+| # | Commit | Fix | Tests added |
+|---|--------|-----|-------------|
+| 1 | `f90dd5b` | **#0** — Reorder `operne_zdi` before `rimsa` in element-type if/else | 2 |
+| 2 | `080426d` | **#3** — Add `'drawing'` to source enum + isDrawingLine/isDrawingDominant heuristic | 3 |
+| 3 | `c2e436e` | **#1** — `element_scope` tagging via anchors (podkladní/základ/dřík/římsa/zábradlí/kotevní_tram) | 4 |
+| 4 | `9181d00` | **#2** — Block A project-id regex pack + drawing/geotech helpers | 14 |
+
+**1111/1111 vitest pass** (1088 baseline + 23 new across the 4 fixes).
+
+---
+
+## 0a. Original audit (read-only snapshot — for context)
+
+Below is the original audit text from before the fixes shipped. Headline numbers + sections §3–§6 reflect the pre-fix probe; the per-block tables call out which entries are now resolved.
 
 ---
 
