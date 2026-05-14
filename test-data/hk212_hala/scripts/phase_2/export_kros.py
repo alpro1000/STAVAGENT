@@ -52,7 +52,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3].parent
 DEFAULT_ITEMS = REPO_ROOT / "test-data/hk212_hala/outputs/phase_1_etap1/items_hk212_etap1.json"
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "test-data/hk212_hala/outputs/phase_2"
 
-# 12 KROS-procurement columns + 1 audit (Confidence). Header, width.
+# 12 KROS-procurement columns + 1 audit (Confidence) + 5 audit-trail (Phase 2.1)
+# = 18 cols total. KROS import strips columns past L, the extras are for audit only.
 COLUMNS: list[tuple[str, int]] = [
     ("O", 4),                  # A — checkbox/marker, blank
     ("Ceník", 8),              # B — KROS ceník (mapped from kapitola)
@@ -67,7 +68,15 @@ COLUMNS: list[tuple[str, int]] = [
     ("Množství", 12),          # K — quantity from mnozstvi
     ("Celkem", 14),            # L — =H{row}*K{row}
     ("Confidence", 10),        # M — urs_match_score (audit-only, KROS ignores extras)
+    # Phase 2.1 audit-trail columns — populated only when items[].audit_trail exists
+    ("Lokalizace", 30),        # N — audit_trail.lokalizace
+    ("Výpočet", 50),           # O — audit_trail.formula
+    ("Vstupy", 25),            # P — audit_trail.inputs (comma-sep operands)
+    ("Reference", 30),         # Q — audit_trail.reference (flat string)
+    ("Poznámka", 40),          # R — audit_trail.poznamka
 ]
+# Index (1-based) of the first audit-trail column (so per-cell fills can branch)
+AUDIT_TRAIL_FIRST_COL = 14  # N
 
 # kapitola → Ceník (KROS convention). Authoritative fallback per task §2.
 KAPITOLA_CENIK_MAP: dict[str, str] = {
@@ -103,6 +112,11 @@ SECTION_FILL = PatternFill(start_color="A6A6A6", end_color="A6A6A6", fill_type="
 SECTION_FONT = Font(bold=True, size=11, color="FFFFFF")
 SUBTOTAL_FILL = PatternFill(start_color="EBEBEB", end_color="EBEBEB", fill_type="solid")
 SUBTOTAL_FONT = Font(bold=True, size=10, italic=True)
+
+# Phase 2.1 audit-trail tier fills (override status fill on cols N-R only)
+AUDIT_FILL_GREEN  = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+AUDIT_FILL_YELLOW = PatternFill(start_color="FFEB9C", end_color="FFEB9C", fill_type="solid")
+AUDIT_FILL_RED    = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
 THIN_BORDER = Border(
     left=Side(style="thin", color="BFBFBF"),
     right=Side(style="thin", color="BFBFBF"),
@@ -191,9 +205,61 @@ def write_section_row(ws: Worksheet, row: int, kapitola: str, count: int) -> Non
     cell.alignment = Alignment(horizontal="left", vertical="center")
 
 
+def audit_tier(at: dict | None, tolerance: float = 0.05) -> str:
+    """Map audit_trail block → tier label for fill colour.
+
+    green:  match within tolerance AND confidence ≥ 0.85
+    yellow: match within 2× tolerance OR confidence in [0.60, 0.85)
+    red:    otherwise (or no audit_trail)
+    """
+    if not at:
+        return "none"
+    delta = at.get("match_delta_pct")
+    conf = at.get("confidence") or 0.0
+    if delta is not None and delta <= tolerance * 100 and conf >= 0.85:
+        return "green"
+    if (delta is not None and delta <= 2 * tolerance * 100) or 0.60 <= conf < 0.85:
+        return "yellow"
+    return "red"
+
+
+AUDIT_FILLS = {
+    "green": AUDIT_FILL_GREEN,
+    "yellow": AUDIT_FILL_YELLOW,
+    "red": AUDIT_FILL_RED,
+}
+
+
+def format_inputs(inputs: list[dict]) -> str:
+    if not inputs:
+        return ""
+    return ", ".join(str(i.get("value", "")) for i in inputs)
+
+
+def format_references(refs: list[dict]) -> str:
+    if not refs:
+        return ""
+    bits: list[str] = []
+    for r in refs:
+        t = r.get("type")
+        if t == "drawing":
+            bits.append(r.get("code", ""))
+        elif t == "tz_section":
+            bits.append(f"TZ {r.get('section', '')}")
+        elif t == "csn":
+            bits.append(r.get("standard", ""))
+        elif t == "phase_ref":
+            bits.append(r.get("section", ""))
+    return " · ".join(b for b in bits if b)[:200]
+
+
 def write_item_row(ws: Worksheet, row: int, item: dict, ceník: str) -> None:
     status = item.get("urs_status", "")
     fill = STATUS_FILLS.get(status)
+    at = item.get("audit_trail") or {}
+    tier = audit_tier(at) if at else "none"
+    audit_fill = AUDIT_FILLS.get(tier)
+
     values = [
         "",                              # A — O (checkbox)
         ceník,                           # B — Ceník
@@ -207,16 +273,24 @@ def write_item_row(ws: Worksheet, row: int, item: dict, ceník: str) -> None:
         "",                              # J — Dodávka
         item.get("mnozstvi") or 0,       # K — Množství
         f"=H{row}*K{row}",               # L — Celkem (formula)
-        item.get("urs_match_score") or "",  # M — Confidence
+        item.get("urs_match_score") or "",  # M — Confidence (URS match)
+        at.get("lokalizace") or "",      # N — Lokalizace (audit_trail)
+        safe_text(at.get("formula")) or "",  # O — Výpočet
+        format_inputs(at.get("inputs") or []),  # P — Vstupy
+        format_references(at.get("reference") or []),  # Q — Reference
+        safe_text(at.get("poznamka")) or "",  # R — Poznámka
     ]
     for col_idx, val in enumerate(values, start=1):
         cell = ws.cell(row=row, column=col_idx, value=val)
-        if fill:
+        # Status fill for cols 1..M (1..13). Audit-tier fill for cols N..R (14..18).
+        if col_idx >= AUDIT_TRAIL_FIRST_COL and audit_fill is not None:
+            cell.fill = audit_fill
+        elif fill:
             cell.fill = fill
         cell.border = THIN_BORDER
         cell.alignment = Alignment(
             vertical="top",
-            wrap_text=(col_idx == 5),  # wrap Popis
+            wrap_text=(col_idx in (5, 15, 17, 18)),  # wrap Popis, Výpočet, Reference, Poznámka
             horizontal=("right" if col_idx in (COL_QUANTITY, COL_PRICE, COL_TOTAL, COL_CONFIDENCE)
                         else "left"),
         )
@@ -434,6 +508,92 @@ def write_summary_md(path: Path, items: list[dict], main_path: Path,
 
 
 # ----------------------------------------------------------------------------
+# Companion 3 (Phase 2.1): audit_trail_review.xlsx — only yellow + red rows
+# ----------------------------------------------------------------------------
+
+AUDIT_REVIEW_COLUMNS: list[tuple[str, int]] = [
+    ("id", 14),
+    ("kapitola", 10),
+    ("popis", 60),
+    ("mj", 8),
+    ("declared", 12),
+    ("computed", 12),
+    ("Δ%", 8),
+    ("confidence", 11),
+    ("method", 28),
+    ("lokalizace", 30),
+    ("formula", 50),
+    ("reference", 30),
+    ("tier", 8),
+]
+
+
+def write_audit_review_sheet(ws: Worksheet, items: list[dict]) -> int:
+    ws.title = "Audit trail review"
+    for col_idx, (header, width) in enumerate(AUDIT_REVIEW_COLUMNS, start=1):
+        cell = ws.cell(row=1, column=col_idx, value=header)
+        cell.fill = HEADER_FILL
+        cell.font = HEADER_FONT
+        cell.border = THIN_BORDER
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        ws.column_dimensions[get_column_letter(col_idx)].width = width
+
+    review_items: list[tuple[str, dict]] = []
+    for it in items:
+        at = it.get("audit_trail")
+        if not at:
+            continue
+        tier = audit_tier(at)
+        if tier in ("yellow", "red"):
+            review_items.append((tier, it))
+
+    # Sort: red first, then yellow; within each, sort by absolute Δ%
+    review_items.sort(key=lambda t: (
+        0 if t[0] == "red" else 1,
+        -(t[1]["audit_trail"].get("match_delta_pct") or 0),
+    ))
+
+    row = 2
+    for tier, it in review_items:
+        at = it["audit_trail"]
+        fill = AUDIT_FILLS.get(tier)
+        values = [
+            it.get("id", ""),
+            it.get("kapitola", ""),
+            safe_text(it.get("popis")),
+            normalize_mj(it.get("mj")),
+            at.get("declared_quantity"),
+            at.get("computed_quantity"),
+            at.get("match_delta_pct"),
+            at.get("confidence"),
+            at.get("extraction_method", ""),
+            at.get("lokalizace", ""),
+            safe_text(at.get("formula")),
+            format_references(at.get("reference") or []),
+            tier,
+        ]
+        for col_idx, val in enumerate(values, start=1):
+            cell = ws.cell(row=row, column=col_idx, value=val)
+            cell.fill = fill
+            cell.border = THIN_BORDER
+            cell.alignment = Alignment(
+                vertical="top",
+                wrap_text=(col_idx in (3, 10, 11, 12)),
+                horizontal=("right" if col_idx in (5, 6, 7, 8) else "left"),
+            )
+        # Number formats
+        for c in (5, 6):
+            ws.cell(row=row, column=c).number_format = "#,##0.00"
+        ws.cell(row=row, column=7).number_format = "0.0\"%\""
+        ws.cell(row=row, column=8).number_format = "0.00"
+        row += 1
+
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = f"A1:{get_column_letter(len(AUDIT_REVIEW_COLUMNS))}{row - 1}"
+    return len(review_items)
+
+
+# ----------------------------------------------------------------------------
 # Driver
 # ----------------------------------------------------------------------------
 
@@ -489,6 +649,18 @@ def run(args, logger: logging.Logger) -> int:
         n_needs = write_needs_review_sheet(ws2, items)
         wb2.save(needs_path)
         logger.info(f"Wrote {needs_path} ({n_needs} needs_review items)")
+
+    # Companion (Phase 2.1): audit_trail_review.xlsx — only yellow + red rows
+    has_audit = any(it.get("audit_trail") for it in items)
+    if has_audit and not args.no_companion:
+        audit_review_path = out_dir / "HK212_audit_trail_review.xlsx"
+        wb3 = openpyxl.Workbook()
+        ws3 = wb3.active
+        if ws3 is None:
+            ws3 = wb3.create_sheet()
+        n_audit = write_audit_review_sheet(ws3, items)
+        wb3.save(audit_review_path)
+        logger.info(f"Wrote {audit_review_path} ({n_audit} yellow + red audit-trail rows)")
 
     # Companion: summary.md
     if not args.no_companion:
