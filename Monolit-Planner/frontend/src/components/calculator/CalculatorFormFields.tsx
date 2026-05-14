@@ -649,15 +649,21 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               return (
                 <label style={{
                   ...labelStyle,
-                  opacity: isMssLock ? 0.5 : 1,
-                  cursor: isMssLock ? 'not-allowed' : 'pointer',
-                }} title={isMssLock ? 'Pro MSS jsou dilatační celky irelevantní — každé pole = jeden takt.' : undefined}>
+                  opacity: (isMssLock || form.use_manual_zabery) ? 0.5 : 1,
+                  cursor: (isMssLock || form.use_manual_zabery) ? 'not-allowed' : 'pointer',
+                }} title={
+                  isMssLock
+                    ? 'Pro MSS jsou dilatační celky irelevantní — každé pole = jeden takt.'
+                    : form.use_manual_zabery
+                      ? 'Ruční rozdělení záběrů (níže) je zapnuté — dilatační celky se ignorují.'
+                      : undefined
+                }>
                   <input
                     type="checkbox"
-                    disabled={isMssLock}
-                    checked={isMssLock ? false : form.has_dilatation_joints}
+                    disabled={isMssLock || form.use_manual_zabery}
+                    checked={(isMssLock || form.use_manual_zabery) ? false : form.has_dilatation_joints}
                     onChange={e => {
-                      if (isMssLock) return;
+                      if (isMssLock || form.use_manual_zabery) return;
                       update('has_dilatation_joints', e.target.checked);
                       if (!e.target.checked) update('num_dilatation_sections', 1);
                     }}
@@ -668,7 +674,8 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             })()}
 
             {form.has_dilatation_joints
-             && !(form.element_type === 'mostovkova_deska' && form.construction_technology === 'mss') && (
+             && !(form.element_type === 'mostovkova_deska' && form.construction_technology === 'mss')
+             && !form.use_manual_zabery && (
               <>
                 <Field label="Počet dilatačních celků" hint="z TZ / projektu">
                   <NumInput
@@ -772,6 +779,19 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               borderRadius: 4, fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
             }}>
               {(() => {
+                // BUG #6 fix (2026-05-14, audit Top-10 #6): when manual_zabery
+                // is on, the engine ignores `num_dilatation_sections` /
+                // `tacts_per_section_*` and consumes `manual_zabery.length` +
+                // each row's volume directly (orchestrator num_tacts_override
+                // path). The Členění info previously kept showing the
+                // dilatation × tact-per-section product, so the user got
+                // mismatching numbers in F7 (this label) vs the manual table.
+                if (form.use_manual_zabery) {
+                  const n = form.manual_zabery.length;
+                  return (
+                    <>Členění: <strong>{n} ručních záběr{n === 1 ? '' : n < 5 ? 'y' : 'ů'}</strong> (engine použije přesné objemy z tabulky níže)</>
+                  );
+                }
                 const nSec = form.has_dilatation_joints ? Math.max(1, form.num_dilatation_sections || 1) : 1;
                 const tps = form.tacts_per_section_mode === 'manual'
                   ? Math.max(1, parseInt(form.tacts_per_section_manual || '0', 10) || 0)
