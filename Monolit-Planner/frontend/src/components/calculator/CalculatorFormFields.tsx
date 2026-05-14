@@ -1128,17 +1128,37 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               </Section>
               )}
               <Section title="Zdroje">
-                {/* Obrátkovost (repetitive elements) — logically belongs with resources */}
-                <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů — ovlivňuje obrátkovost bednění">
+                {/* Obrátkovost (repetitive elements) — logically belongs with resources.
+                    J1/J2/J3 rename (2026-05-14, audit Top-10 #10): clarify that
+                    "identický" here means "separate physical object" (e.g. 6 piers,
+                    20 pad footings — each is its own pour cycle), NOT dilatation
+                    cells of one continuous element. The P0 BUG #5/#6 engine mutex
+                    already ignores this field when num_dilatation_sections > 1, but
+                    the UI label + tooltip + visibility guard make that intent obvious
+                    to the user before they hit "Vypočítat plán". */}
+                <Field
+                  label="Počet samostatných objektů"
+                  hint="Použij jen pro několik separátních prvků (např. 2 mosty, 6 pilířů, 20 patek). NE pro dilatační celky jedné stěny — ty zadej do 'Počet dilatačních celků' výše."
+                >
                   <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
                     onChange={v => update('num_identical_elements', Math.max(1, Math.round(Number(v))))} placeholder="1" />
                 </Field>
-                {form.num_identical_elements > 1 && (
-                  <Field label="Sad bednění pro obrátky" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost (${Math.ceil(form.num_identical_elements / (parseInt(form.formwork_sets_count) || form.num_sets))}×)`}>
+                {form.num_identical_elements > 1 && form.num_dilatation_sections <= 1 && (
+                  <Field label="Sad bednění pro obrátky" hint={`${form.num_identical_elements} objektů ÷ sady = obrátkovost (${Math.ceil(form.num_identical_elements / (parseInt(form.formwork_sets_count) || form.num_sets))}×)`}>
                     <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
                       onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(Number(v)))))}
                       placeholder={String(form.num_sets)} />
                   </Field>
+                )}
+                {form.num_identical_elements > 1 && form.num_dilatation_sections > 1 && (
+                  <div style={{
+                    fontSize: 11, color: 'var(--r0-slate-600, #475569)',
+                    background: 'var(--r0-amber-50, #fffbeb)',
+                    border: '1px solid var(--r0-amber-200, #fde68a)',
+                    borderRadius: 6, padding: '6px 10px', marginTop: -4, marginBottom: 8,
+                  }}>
+                    ⚠️ Pole „Počet samostatných objektů" bude engine ignorovat — konstrukce už má {form.num_dilatation_sections} dilatačních celků, ty samy pokrývají obrátkovost bednění. Pokud máte ve skutečnosti {form.num_identical_elements} samostatných objektů, vypněte dilatační spáry výše.
+                  </div>
                 )}
 
                 {/* A1 (2026-04-15): default num_sets = 1. Hint suggests 2 only when
