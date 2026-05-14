@@ -122,6 +122,42 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   🔒 Objem převzat z pozice{positionContext?.otskp_code ? ` ${positionContext.otskp_code}` : ''}.
                 </div>
               )}
+              {/* BUG #3 fix (2026-05-14, audit Top-10 #5): "↶ Vrátit původní"
+                  link when the user has manually overwritten volume_m3 away
+                  from the value brought in from the source position. Visible
+                  only when:
+                    - we have a positionContext.volume_m3 to revert to,
+                    - the field is NOT locked (locked path is already
+                      read-only, no undo needed),
+                    - the current value differs from the original by more
+                      than a 0.01 m³ rounding margin.
+                  Click resets form.volume_m3 + flips volume_mode back to
+                  'manual' so the L×W×H useEffect doesn't immediately
+                  re-overwrite it. */}
+              {!isPile && !isFieldLocked('volume_m3') && positionContext?.volume_m3 != null &&
+                Math.abs(Number(form.volume_m3) - Number(positionContext.volume_m3)) > 0.01 && (
+                <div style={{ marginTop: 3, fontSize: 10 }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      update('volume_m3', Number(positionContext.volume_m3));
+                      update('volume_mode', 'manual');
+                    }}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: 0,
+                      cursor: 'pointer',
+                      color: 'var(--r0-blue-text, #2563eb)',
+                      fontSize: 10,
+                      textDecoration: 'underline',
+                    }}
+                    title={`Vrátí pole na hodnotu z pozice (${positionContext.volume_m3} m³).`}
+                  >
+                    ↶ Vrátit původní hodnotu ({positionContext.volume_m3} m³)
+                  </button>
+                </div>
+              )}
             </Field>
             {/* Wizard hint: maturity calculation */}
             {wizardMode && wizardStep === 2 && wizardHint2 && (
