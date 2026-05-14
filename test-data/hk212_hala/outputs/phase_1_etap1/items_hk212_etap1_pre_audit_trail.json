@@ -79,49 +79,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.45,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A102",
-            "document": "vykresy_dxf/A102_pudorys_strechy.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "10.g",
-            "raw": "TZ B m.10.g"
-          },
-          {
-            "type": "phase_ref",
-            "section": "Phase 0b RE-RUN §3.10"
-          }
-        ],
-        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace]",
-        "computed_quantity": 222.75,
-        "declared_quantity": 222.75,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-002",
@@ -162,50 +120,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "14 ks × 1.5 m × 1.5 m × 1.0 m (od úr. figury -0.45 do -1.45/-1.90)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "14 ks × 1.5 m × 1.5 m × 1.0 m (od úr. figury -0.45 do -1.45/-1.90)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 14.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 1.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 ZÁKLADY DIM 1500 mm × 15 + RE-RUN §3.3 sloupy IPE 400 = 36 ks (14 rámových pos) · (dohloubky patek rámových) · [sub: zemni_prace]",
-        "computed_quantity": 31.5,
-        "declared_quantity": 31.5,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-003",
@@ -246,50 +161,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "8 ks × 0.8 × 0.8 × 0.25 m (od figury -0.45 do -0.70)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "8 ks × 0.8 × 0.8 × 0.25 m (od figury -0.45 do -0.70)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 0.25,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 DIM 800 mm × 8 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (dohloubky patek štítových) · [sub: zemni_prace]",
-        "computed_quantity": 1.28,
-        "declared_quantity": 1.28,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-004",
@@ -331,35 +203,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.6,
       "_qty_formula": "placeholder 12 m³ (vrt + zaplnění; variantní řešení per A105 mtext)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder 12 m³ (vrt + zaplnění; variantní řešení per A105 mtext)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 12.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD MOŽNO VYMĚNIT ZA PILOTU Ø800 / L=8,0m' · (atypický základ — pilota variant) · [sub: zemni_prace]",
-        "computed_quantity": 12.0,
-        "declared_quantity": 12.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-005",
@@ -400,49 +244,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "~30 bm × 0.4 m × 0.6 m (krátké propojovací pasy)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "~30 bm × 0.4 m × 0.6 m (krátké propojovací pasy)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.4,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.6,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "phase_ref",
-            "section": "Phase 0b RE-RUN §3.10"
-          }
-        ],
-        "poznamka": "A105 layout estimate (Phase 0b RE-RUN §3.10 pasy_mezi_patkami) · (pasy mezi patkami) · [sub: zemni_prace]",
-        "computed_quantity": 7.2,
-        "declared_quantity": 7.2,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-006",
@@ -483,55 +285,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 křížení × 5 m délka × 1.5 m š × 2.0 m h",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "2 křížení × 5 m délka × 1.5 m š × 2.0 m h",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 5.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 1.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A201",
-            "document": "vykresy_dxf/A201_vykopy.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "10.g",
-            "raw": "TZ B m.10.g"
-          }
-        ],
-        "poznamka": "A201 layer Stávající_kan + TZ B m.10.g + RE-RUN §6 splašková+dešťová DN300 · (ruční výkop u sítí) · [sub: zemni_prace]",
-        "computed_quantity": 30.0,
-        "declared_quantity": 30.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-007",
@@ -572,23 +326,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= ruční výkop u sítí (m³)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "= ruční výkop u sítí (m³)",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "ČSN požadavek na opatrný výkop v ochranných pásmech · (příplatek ruční výkop) · [sub: zemni_prace]",
-        "computed_quantity": null,
-        "declared_quantity": 30.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-008",
@@ -630,38 +368,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder 20 m² (perimetr atypického základu × hloubka)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder 20 m² (perimetr atypického základu × hloubka)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 20.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "csn",
-            "standard": "ČSN 73 3050"
-          },
-          {
-            "type": "phase_ref",
-            "section": "Phase 0b RE-RUN §3.10"
-          }
-        ],
-        "poznamka": "ČSN 73 3050 + Phase 0b RE-RUN §3.10 hloubka -1.90 · (pažení výkopu) · [sub: zemni_prace]",
-        "computed_quantity": 20.0,
-        "declared_quantity": 20.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-009",
@@ -702,40 +409,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~5 m³ (úsek 5 m × tlouš. 0.3 m × š. 0.8 m + ofset)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder ~5 m³ (úsek 5 m × tlouš. 0.3 m × š. 0.8 m + ofset)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 5.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A201",
-            "document": "vykresy_dxf/A201_vykopy.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "10.g",
-            "raw": "TZ B m.10.g"
-          }
-        ],
-        "poznamka": "A201 stávající splašková kan DN300 + TZ B m.10.g obetonování · (obetonování splaškové DN300) · [sub: zemni_prace]",
-        "computed_quantity": 5.0,
-        "declared_quantity": 5.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-010",
@@ -776,40 +450,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~5 m³ (úsek 5 m × 0.3 × 0.8 + ofset)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder ~5 m³ (úsek 5 m × 0.3 × 0.8 + ofset)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 5.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A201",
-            "document": "vykresy_dxf/A201_vykopy.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "10.g",
-            "raw": "TZ B m.10.g"
-          }
-        ],
-        "poznamka": "A201 stávající dešťová kan DN300 + TZ B m.10.g · (obetonování dešťové DN300) · [sub: zemni_prace]",
-        "computed_quantity": 5.0,
-        "declared_quantity": 5.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-011",
@@ -850,39 +491,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "cca 16 m × 0.5 m š × 1.0 m h (TZ B m.10.g + RE-RUN §6)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "cca 16 m × 0.5 m š × 1.0 m h (TZ B m.10.g + RE-RUN §6)",
-        "formula_parsed_method": "product_placeholder",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 16.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "RE-RUN §6 externí sítě — vodovod LT DN150 · (pomocný výkop vodovod) · [sub: zemni_prace]",
-        "computed_quantity": 8.0,
-        "declared_quantity": 8.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-012",
@@ -923,39 +532,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "82 m gravitační × 0.5 m š × 1.2 m h",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "82 m gravitační × 0.5 m š × 1.2 m h",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 82.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 1.2,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "RE-RUN §6 — Areálová kanalizace DN200 SN12 (82 m grav. + 3 m tlak.) · (pomocný výkop kanalizace nová) · [sub: zemni_prace]",
-        "computed_quantity": 49.2,
-        "declared_quantity": 49.2,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-013",
@@ -996,40 +573,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495 m² × 0.25 m",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "495 m² × 0.25 m",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.25,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + statika D.1.2 + §1 invariant · (štěrkové lože tl. 250 mm) · [sub: zemni_prace]",
-        "computed_quantity": 123.75,
-        "declared_quantity": 123.75,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-014",
@@ -1070,29 +614,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= plocha desky",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "= plocha desky",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + statika D.1.2 § ground bearing · (zhutnění lože pod deskou) · [sub: zemni_prace]",
-        "computed_quantity": null,
-        "declared_quantity": 495.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-015",
@@ -1133,34 +655,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~30 m³ (zásypy okolo patek + nad obetonovanými sítěmi)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder ~30 m³ (zásypy okolo patek + nad obetonovanými sítěmi)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "phase_ref",
-            "section": "Phase 0b RE-RUN §3.10"
-          }
-        ],
-        "poznamka": "Phase 0b RE-RUN §3.10 zásypy · (zásyp výkopů zhutněný) · [sub: zemni_prace]",
-        "computed_quantity": 30.0,
-        "declared_quantity": 30.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-016",
@@ -1201,34 +696,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= celkový objem výkopu 350 m³ (Phase 0b baseline)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "= celkový objem výkopu 350 m³ (Phase 0b baseline)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 350.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "phase_ref",
-            "section": "Phase 0b RE-RUN §3.10"
-          }
-        ],
-        "poznamka": "Phase 0b RE-RUN §3.10 total výkop 341.8 m³ rounded 350 m³ · (nakládání zeminy) · [sub: zemni_prace]",
-        "computed_quantity": 350.0,
-        "declared_quantity": 350.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-017",
@@ -1269,34 +737,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.8,
       "_qty_formula": "= 350 m³ × 1 (default 5 km deponie)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "= 350 m³ × 1 (default 5 km deponie)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 350.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "RE-RUN — deponie default 5 km · (vodorovné přemístění zeminy) · [sub: zemni_prace]",
-        "computed_quantity": 350.0,
-        "declared_quantity": 350.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-018",
@@ -1337,29 +778,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= 350 m³",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "= 350 m³",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 350.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "Phase 0b RE-RUN baseline + ABMV_17 · (odvoz výkopu) · [sub: zemni_prace]",
-        "computed_quantity": 350.0,
-        "declared_quantity": 350.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-019",
@@ -1400,34 +819,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "350 m³ × 1.8 t/m³ (zhutněná zemina)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "350 m³ × 1.8 t/m³ (zhutněná zemina)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 350.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.8,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN výpočet objem→hmotnost · (skládkovné zemina) · [sub: zemni_prace]",
-        "computed_quantity": 630.0,
-        "declared_quantity": 630.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-020",
@@ -1466,40 +858,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 ks (TZ B m.7.b)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "2 ks (TZ B m.7.b)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "C3",
-            "document": "situace/C3_situace_kaceni.pdf"
-          },
-          {
-            "type": "tz_section",
-            "section": "chapter",
-            "raw": "TZ B chapter"
-          }
-        ],
-        "poznamka": "TZ B chapter m.7.b chráněné porosty + C3 situace kácení · (kácení vzrostlé dřeviny) · [sub: zemni_prace]",
-        "computed_quantity": 2.0,
-        "declared_quantity": 2.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-021",
@@ -1538,40 +897,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "placeholder 5 ks (TZ B m.7.b)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder 5 ks (TZ B m.7.b)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 5.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "C3",
-            "document": "situace/C3_situace_kaceni.pdf"
-          },
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + C3 situace kácení · (kácení drobné dřeviny) · [sub: zemni_prace]",
-        "computed_quantity": 5.0,
-        "declared_quantity": 5.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-022",
@@ -1610,34 +936,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 vzrostlé + 5 drobné = 7 pařezů",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "2 vzrostlé + 5 drobné = 7 pařezů",
-        "formula_parsed_method": "sum",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 5.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN postup likvidace pařezů · (frézování pařezů) · [sub: zemni_prace]",
-        "computed_quantity": 7.0,
-        "declared_quantity": 7.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-023",
@@ -1676,29 +975,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~6 m³ dřevní hmoty",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder ~6 m³ dřevní hmoty",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 6.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "estimate na základě počtu stromů · (odvoz dřevní hmoty) · [sub: zemni_prace]",
-        "computed_quantity": 6.0,
-        "declared_quantity": 6.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-024",
@@ -1737,35 +1014,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 ks (per TZ B m.7.b náhradní výsadba)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "2 ks (per TZ B m.7.b náhradní výsadba)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "7.b",
-            "raw": "TZ B m.7.b"
-          }
-        ],
-        "poznamka": "TZ B m.7.b · (náhradní výsadba) · [sub: zemni_prace]",
-        "computed_quantity": 2.0,
-        "declared_quantity": 2.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-025",
@@ -1806,39 +1055,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~540 m² (z C3 situace + plocha pod halou)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder ~540 m² (z C3 situace + plocha pod halou)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 540.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "C3",
-            "document": "situace/C3_situace_kaceni.pdf"
-          },
-          {
-            "type": "phase_ref",
-            "section": "Phase 0b RE-RUN §3.10"
-          }
-        ],
-        "poznamka": "C3 situace + Phase 0b RE-RUN §3.10 · (odstranění asfaltu + podkladu) · [sub: zemni_prace]",
-        "computed_quantity": 540.0,
-        "declared_quantity": 540.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-026",
@@ -1879,29 +1096,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder 540 m² × 0.25 m × 2 t/m³ × 30% = ~80 t",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "placeholder 540 m² × 0.25 m × 2 t/m³ × 30% = ~80 t",
-        "formula_parsed_method": "placeholder_stated_result",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 80.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "estimate na základě plochy bouraného povrchu · (nakládání suti) · [sub: zemni_prace]",
-        "computed_quantity": 80.0,
-        "declared_quantity": 80.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-1-027",
@@ -1942,23 +1137,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "= nakládání suti",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "= nakládání suti",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "zákon o odpadech 541/2020 Sb. recyklace · (odvoz suti recyklace) · [sub: zemni_prace]",
-        "computed_quantity": null,
-        "declared_quantity": 80.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-001",
@@ -1997,50 +1176,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 14.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 1.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 0.6,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4 · (patky rámové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 18.9,
-        "declared_quantity": 18.9,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-002",
@@ -2079,55 +1215,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 14.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 4.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 1.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 0.6,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 100.8,
-        "declared_quantity": 100.8,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-003",
@@ -2166,23 +1254,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= bednění zřízení",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "= bednění zřízení",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 100.8,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-004",
@@ -2221,50 +1293,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 0.8,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 4.096,
-        "declared_quantity": 4.096,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-005",
@@ -2303,55 +1332,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 3.2,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 32.768,
-        "declared_quantity": 20.8,
-        "match_delta_pct": 57.54,
-        "match_within_tolerance": false,
-        "confidence": 0.7,
-        "extraction_method": "qty_formula_mismatch",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-006",
@@ -2390,23 +1371,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= bednění zřízení",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "= bednění zřízení",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 20.8,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-007",
@@ -2445,35 +1410,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.8,
       "_qty_formula": "~30 bm × 0.4 × 0.6 m = 7.2 m³",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "~30 bm × 0.4 × 0.6 m = 7.2 m³",
-        "formula_parsed_method": "placeholder_stated_result",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 7.2,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 layout estimate · (pasy C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 7.2,
-        "declared_quantity": 7.2,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-008",
@@ -2512,35 +1449,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.8,
       "_qty_formula": "~30 bm × 2 × 0.6 m boční plocha = 36 m²",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "~30 bm × 2 × 0.6 m boční plocha = 36 m²",
-        "formula_parsed_method": "placeholder_stated_result",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 36.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 layout · (bednění pasů zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 36.0,
-        "declared_quantity": 36.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-009",
@@ -2579,29 +1488,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "placeholder 600 kg per RE-RUN §3.4 statika dimensioning",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "placeholder 600 kg per RE-RUN §3.4 statika dimensioning",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 600.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 B500B · (výztuž patek + pasů B500B) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 600.0,
-        "declared_quantity": 600.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-010",
@@ -2642,35 +1529,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks pilota Ø800 × 8 m délka",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "1 ks pilota Ø800 × 8 m délka",
-        "formula_parsed_method": "count_only_leading",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-011",
@@ -2711,40 +1570,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks × 8 m délka",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "1 ks × 8 m délka",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 8.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 8.0,
-        "declared_quantity": 8.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-012",
@@ -2785,45 +1611,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder",
-        "formula_parsed_method": "product_fallback_placeholder",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 3.86,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 8.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 247.04,
-        "declared_quantity": 380.0,
-        "match_delta_pct": 34.99,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-013",
@@ -2862,40 +1650,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495 m² × 0.2 m = 99 m³",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 0.2 m = 99 m³",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.2,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 99.0,
-        "declared_quantity": 99.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-014",
@@ -2934,35 +1689,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "obvod desky ~95 bm",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "obvod desky ~95 bm",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "A101 půdorys + RE-RUN §3.2 · (bednění desky obvodové) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 95.0,
-        "declared_quantity": 95.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-015",
@@ -3001,34 +1728,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 3.95,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 1955.25,
-        "declared_quantity": 1955.25,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-016",
@@ -3067,23 +1767,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= horní vrstva",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "= horní vrstva",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 1955.25,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-017",
@@ -3122,34 +1806,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495 m² × 5 ks/m² (typická hustota)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 5 ks/m² (typická hustota)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 5.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN krytí 30 mm dle XC4 · (distanční podložky KARI) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 2475.0,
-        "declared_quantity": 2475.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-2-018",
@@ -3188,29 +1845,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= plocha desky",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "základové konstrukce — A105",
-        "formula": "= plocha desky",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + standardní skladba pod desku · (hydroizolace pod desku) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 495.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-001",
@@ -3249,45 +1884,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "36 ks × 4.3 m × 66.3 kg/m = 10 263 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "36 ks × 4.3 m × 66.3 kg/m = 10 263 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 36.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 4.3,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 66.3,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "DXF A101 INSERT 'Sloup IPE' × 36 + RE-RUN §3.3 + statika D.1.2 · (Sloup IPE 400 S235 — A101 INSERT block name) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 10263.24,
-        "declared_quantity": 10263.24,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-002",
@@ -3326,45 +1923,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "8 ks × 4.3 m × 42.3 kg/m = 1 455 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "8 ks × 4.3 m × 42.3 kg/m = 1 455 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 4.3,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 42.3,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "DXF A101 INSERT 'M_S profily_ sloup' × 8 + statika D.1.2 · (M_S profily HEA 200 — A101 INSERT) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 1455.12,
-        "declared_quantity": 1455.12,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-003",
@@ -3403,44 +1962,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.85,
       "_qty_formula": "6 rámů × 18.5 m × 77.6 kg/m × 1.1 (náběh) = 9 478 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "6 rámů × 18.5 m × 77.6 kg/m × 1.1 (náběh) = 9 478 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 6.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 18.5,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 77.6,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 1.1,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + geom. rozpon 18.5 m + sklon 5.25° (NE 5.65° per RE-RUN §9.2) · (Příčle IPE 450 + náběh) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 9474.96,
-        "declared_quantity": 9474.96,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-004",
@@ -3479,39 +2001,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.8,
       "_qty_formula": "12 řad × 27.4 m × 15.8 kg/m = 5 195 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "12 řad × 27.4 m × 15.8 kg/m = 5 195 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 12.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 27.4,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 15.8,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 5195.04,
-        "declared_quantity": 5195.04,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-005",
@@ -3552,39 +2042,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 ks × 27.4 m × 18.8 kg/m = 1 030 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "2 ks × 27.4 m × 18.8 kg/m = 1 030 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 27.4,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 18.8,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 (UPE 160 — NE C150×19.3 per RE-RUN §9.4) · (vaznice krajní UPE 160) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 1030.24,
-        "declared_quantity": 1030.24,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-006",
@@ -3623,39 +2081,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.8,
       "_qty_formula": "8 ks × 6.4 m × 6.4 kg/m = 328 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "8 ks × 6.4 m × 6.4 kg/m = 328 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 6.4,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 6.4,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 L70/70/6 stěnová ztužidla · (ztužidla stěnová L 70/70/6) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 327.68,
-        "declared_quantity": 327.68,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-007",
@@ -3694,45 +2120,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "8 ks × 12 m × 2.47 kg/m = 237 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "8 ks × 12 m × 2.47 kg/m = 237 kg",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 12.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 2.47,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "DXF A101 INSERT 'Kruhové tyče' × 8 + statika D.1.2 · (ztužidla střešní Ø20) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 237.12,
-        "declared_quantity": 237.12,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-008",
@@ -3771,34 +2159,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "~6% × součet OK 27 985 kg ≈ 1 450 kg",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "~6% × součet OK 27 985 kg ≈ 1 450 kg",
-        "formula_parsed_method": "placeholder_stated_result",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1450.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "csn",
-            "standard": "ČSN EN 1090"
-          }
-        ],
-        "poznamka": "ČSN EN 1090-2 + standardní podíl spojovacího materiálu · (spojovací materiál grade 8.8) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 1450.0,
-        "declared_quantity": 1450.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-009",
@@ -3837,45 +2198,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "(36 + 8) sloupů × 4 kotvy/sloup = 176 ks",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "(36 + 8) sloupů × 4 kotvy/sloup = 176 ks",
-        "formula_parsed_method": "mixed_eval",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 36.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 8.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "A105 sokly patek + statika D.1.2 kotevní detail · (kotvení sloupů M20) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 176.0,
-        "declared_quantity": 176.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-010",
@@ -3914,29 +2237,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "součet OK profilů + kotev = ~28 t",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "součet OK profilů + kotev = ~28 t",
-        "formula_parsed_method": "placeholder_stated_result",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 28.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + standardní montážní normohodiny · (montáž OK kompletní) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 28.0,
-        "declared_quantity": 28.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-011",
@@ -3975,34 +2276,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "28 t × 50 km",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "28 t × 50 km",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 28.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 50.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "default 50 km výrobna → stavba · (doprava OK 50 km) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 1400.0,
-        "declared_quantity": 1400.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-012",
@@ -4041,35 +2315,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "celk. povrch profilů ~30 m²/t × 28 t = 850 m²",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "celk. povrch profilů ~30 m²/t × 28 t = 850 m²",
-        "formula_parsed_method": "placeholder_stated_result",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 850.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "C2",
-            "document": "situace/C2_katastr.pdf"
-          }
-        ],
-        "poznamka": "statika D.1.2 C2 P1 životnost 15 + ISO 12944 · (antikor 2-vrstvý ISO 12944 C2 P1) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": 850.0,
-        "declared_quantity": 850.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-013",
@@ -4108,23 +2354,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= antikor plocha (interiérové prvky stejně)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "= antikor plocha (interiérové prvky stejně)",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "PBŘ §1 nosné konstrukce R 15 DP1 · (protipožární nátěr R 15) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": null,
-        "declared_quantity": 850.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-3-014",
@@ -4163,28 +2393,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ocelová konstrukce nadzemí — A103 řez + A105 detail",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "csn",
-            "standard": "ČSN EN 1090"
-          }
-        ],
-        "poznamka": "ČSN EN 1090-2 + autorský dozor · (revize OK + protokol) · [sub: OK_dodavka_montaz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-9-001",
@@ -4223,29 +2432,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "placeholder 200 t·km (in-site přesuny, default)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ostatní stavební práce — celý objekt",
-        "formula": "placeholder 200 t·km (in-site přesuny, default)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 200.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN přesun hmot HSV · (přesun hmot HSV vodorovně) · [sub: GD_vodorovne_dopravy]",
-        "computed_quantity": 200.0,
-        "declared_quantity": 200.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-9-002",
@@ -4284,29 +2471,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~200 m³ prostorové lešení pro halu 28×19×6 m",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ostatní stavební práce — celý objekt",
-        "formula": "placeholder ~200 m³ prostorové lešení pro halu 28×19×6 m",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 200.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní lešení pro montáž OK · (pomocné lešení OK) · [sub: GD_vodorovne_dopravy]",
-        "computed_quantity": 200.0,
-        "declared_quantity": 200.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-9-003",
@@ -4345,23 +2510,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "= pomocné lešení",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ostatní stavební práce — celý objekt",
-        "formula": "= pomocné lešení",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (demontáž pomocného lešení) · [sub: GD_vodorovne_dopravy]",
-        "computed_quantity": null,
-        "declared_quantity": 200.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "HSV-9-004",
@@ -4400,29 +2549,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~120 m³ pojízdné lešení pro obvodový plášť",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "ostatní stavební práce — celý objekt",
-        "formula": "placeholder ~120 m³ pojízdné lešení pro obvodový plášť",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 120.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní lešení pro fasádu · (pomocné lešení fasáda) · [sub: GD_vodorovne_dopravy]",
-        "computed_quantity": 120.0,
-        "declared_quantity": 120.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-71x-001",
@@ -4461,34 +2588,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "95.0 bm × 0.3 m = 28.5 m²",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "izolace proti vodě — pod základovou deskou + obvod",
-        "formula": "95.0 bm × 0.3 m = 28.5 m²",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.3,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN skladba hydroizolace + RE-RUN §3.2 · (penetrace soklu) · [sub: izolace]",
-        "computed_quantity": 28.5,
-        "declared_quantity": 28.5,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-71x-002",
@@ -4527,40 +2627,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "95.0 bm × 0.3 m = 28.5 m²",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "izolace proti vodě — pod základovou deskou + obvod",
-        "formula": "95.0 bm × 0.3 m = 28.5 m²",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.3,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + ČSN skladba hydroizolace soklu · (hydroizolace svislá soklu) · [sub: izolace]",
-        "computed_quantity": 28.5,
-        "declared_quantity": 28.5,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-71x-003",
@@ -4599,29 +2666,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "obvod 95.0 bm",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "izolace proti vodě — pod základovou deskou + obvod",
-        "formula": "obvod 95.0 bm",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail napojení izolace · (lišty hydroizolace) · [sub: izolace]",
-        "computed_quantity": 95.0,
-        "declared_quantity": 95.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-71x-004",
@@ -4660,34 +2705,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.85,
       "_qty_formula": "95.0 bm × 0.5 m",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "izolace proti vodě — pod základovou deskou + obvod",
-        "formula": "95.0 bm × 0.5 m",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 0.5,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN ochrana hydroizolace před zásypem · (nopová folie ochrana izolace) · [sub: izolace]",
-        "computed_quantity": 47.5,
-        "declared_quantity": 47.5,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-001",
@@ -4726,35 +2744,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 21.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "DXF A101 INSERT OKNO_1k × 21 + RE-RUN §3.5 otvory · (okno plast 1000x1000 šedá) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 21.0,
-        "declared_quantity": 21.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-002",
@@ -4793,23 +2783,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= dodávka okna",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "= dodávka okna",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár dodávka+montáž · (montáž okna plast) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": null,
-        "declared_quantity": 21.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-003",
@@ -4848,34 +2822,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "21 ks × 1.05 m (šířka okna + přesah)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks × 1.05 m (šířka okna + přesah)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 21.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.05,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní vnější parapet pod okno · (parapet pozink vnější) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 22.05,
-        "declared_quantity": 22.05,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-004",
@@ -4914,34 +2861,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 21.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 3.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail osazení · (okenní lemy plast) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 63.0,
-        "declared_quantity": 63.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-005",
@@ -4982,40 +2902,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 ks (DXF A101 INSERT 'Vrata sekční' = 4)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "4 ks (DXF A101 INSERT 'Vrata sekční' = 4)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "3.2",
-            "raw": "TZ B m.3.2"
-          }
-        ],
-        "poznamka": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2 · (vrata sekční 3000×4000 výsuvná) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-006",
@@ -5054,29 +2941,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 ks pohon (jeden na každá vrata)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "4 ks pohon (jeden na každá vrata)",
-        "formula_parsed_method": "count_only_leading",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní vybavení sekčních vrat · (el. pohon vrat + dálkové ovl.) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-007",
@@ -5115,29 +2980,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 ks ruční odblok",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "4 ks ruční odblok",
-        "formula_parsed_method": "count_only_leading",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "BOZP požadavek ČSN · (nouzové odblok vrat) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-008",
@@ -5176,23 +3019,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= dodávka vrat",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "= dodávka vrat",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár dodávka+montáž · (montáž vrat sekčních) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": null,
-        "declared_quantity": 4.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-009",
@@ -5231,35 +3058,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "DXF A101 + RE-RUN §3.5 · (vnější dveře 2-křídlé 1050x2100) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 2.0,
-        "declared_quantity": 2.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-010",
@@ -5298,23 +3097,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= dodávka dveří",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "= dodávka dveří",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (montáž vnějších dveří) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": null,
-        "declared_quantity": 2.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-011",
@@ -5353,29 +3136,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 kpl",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "2 kpl",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní vybavení dveří · (zámek + klika vnější dveře) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 2.0,
-        "declared_quantity": 2.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-76x-012",
@@ -5414,29 +3175,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 kpl",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "2 kpl",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail ostění · (práh + lemování dveří) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 2.0,
-        "declared_quantity": 2.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-77x-001",
@@ -5475,29 +3214,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495.0 m² (celá plocha podlahy)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "podlahy — A101 plocha haly",
-        "formula": "495.0 m² (celá plocha podlahy)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní skladba pod stěrku · (penetrace + primer pod stěrku) · [sub: podlahy_specialista]",
-        "computed_quantity": 495.0,
-        "declared_quantity": 495.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-77x-002",
@@ -5538,35 +3255,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "495.0 m²",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "podlahy — A101 plocha haly",
-        "formula": "495.0 m²",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "podlaha",
-            "raw": "TZ B m.podlaha"
-          }
-        ],
-        "poznamka": "TZ B m.podlaha + statika užitné zatížení 16 kN/m² · (EP / PU stěrka 4-5 mm) · [sub: podlahy_specialista]",
-        "computed_quantity": 495.0,
-        "declared_quantity": 495.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-77x-003",
@@ -5608,35 +3297,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.55,
       "_qty_formula": "placeholder ~30 m² (3 stroje × ~10 m² každé anchorage zóna)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "podlahy — A101 plocha haly",
-        "formula": "placeholder ~30 m² (3 stroje × ~10 m² každé anchorage zóna)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A107",
-            "document": "vykresy_dxf/A107_stroje_kotvici_body.dxf"
-          }
-        ],
-        "poznamka": "A107 kotvící body × cca 10 m² každý + ABMV_3+16 stroje · (lokální zesílení podlahy pod stroji) · [sub: podlahy_specialista]",
-        "computed_quantity": 30.0,
-        "declared_quantity": 30.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-77x-004",
@@ -5675,29 +3336,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.8,
       "_qty_formula": "placeholder ~60 bm (pole dilatace á 6 m na 495 m² ploše)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "podlahy — A101 plocha haly",
-        "formula": "placeholder ~60 bm (pole dilatace á 6 m na 495 m² ploše)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 60.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN podlahové dilatace ve velkoplošných podlahách · (dilatační lišty podlahy) · [sub: podlahy_specialista]",
-        "computed_quantity": 60.0,
-        "declared_quantity": 60.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-77x-005",
@@ -5736,29 +3375,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "obvod desky 95 bm",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "podlahy — A101 plocha haly",
-        "formula": "obvod desky 95 bm",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail lemu stěrky · (lemovací úhelníky stěrky) · [sub: podlahy_specialista]",
-        "computed_quantity": 95.0,
-        "declared_quantity": 95.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-77x-006",
@@ -5799,29 +3416,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "495.0 m² (pokud zvolena PU varianta)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "podlahy — A101 plocha haly",
-        "formula": "495.0 m² (pokud zvolena PU varianta)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní úprava skluznosti R10/R11 · (protiskluzový posyp) · [sub: podlahy_specialista]",
-        "computed_quantity": 495.0,
-        "declared_quantity": 495.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-001",
@@ -5862,35 +3457,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 ks (A104 DXF count working, ABMV_20: A101=3 vs A104=4)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "4 ks (A104 DXF count working, ABMV_20: A101=3 vs A104=4)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A104",
-            "document": "vykresy_dxf/A104_pohledy.dxf"
-          }
-        ],
-        "poznamka": "DXF A104 Lindab × 4 + RE-RUN §3.7 klempíř · (Lindab Round Downpipe 150/100) · [sub: klempir]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-002",
@@ -5931,29 +3498,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 kpl (jeden na každý svod)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "4 kpl (jeden na každý svod)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní pár dodávka+montáž · (montáž Lindab svodů) · [sub: klempir]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-003",
@@ -5992,35 +3537,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "3 ks (A101 INSERT Wavin × 3 dle DXF parse)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "3 ks (A101 INSERT Wavin × 3 dle DXF parse)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 3.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A101",
-            "document": "vykresy_dxf/A101_pudorys_1np.dxf"
-          }
-        ],
-        "poznamka": "DXF A101 INSERT Wavin Tegra × 3 + RE-RUN §3.7 · (Wavin Tegra střešní vpust) · [sub: klempir]",
-        "computed_quantity": 3.0,
-        "declared_quantity": 3.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-004",
@@ -6059,23 +3576,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "= dodávka",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "= dodávka",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (montáž střešních vpustí) · [sub: klempir]",
-        "computed_quantity": null,
-        "declared_quantity": 3.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-005",
@@ -6114,35 +3615,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.85,
       "_qty_formula": "~30.0 bm podél JZ + SZ fasády (RE-RUN §3.7)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "~30.0 bm podél JZ + SZ fasády (RE-RUN §3.7)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "A105",
-            "document": "vykresy_dxf/A105_zaklady.dxf"
-          }
-        ],
-        "poznamka": "DXF A105 INSERT MEA Mearin + RE-RUN §3.7 · (MEA Mearin Plus 3000 NW300) · [sub: klempir]",
-        "computed_quantity": 30.0,
-        "declared_quantity": 30.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-006",
@@ -6181,23 +3654,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.85,
       "_qty_formula": "= liniový žlab",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "= liniový žlab",
-        "formula_parsed_method": "verbal",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní vybavení liniového žlabu · (mřížka MEA + rám) · [sub: klempir]",
-        "computed_quantity": null,
-        "declared_quantity": 30.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.6,
-        "extraction_method": "verbal_only",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-007",
@@ -6236,35 +3693,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "obvod střechy 95.0 bm",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "obvod střechy 95.0 bm",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 95.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "TZ B + standardní detail atiky · (atikové oplechování TiZn) · [sub: klempir]",
-        "computed_quantity": 95.0,
-        "declared_quantity": 95.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-008",
@@ -6303,29 +3732,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "placeholder ~15 bm (úžlabí pultové střechy 5.25°)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "placeholder ~15 bm (úžlabí pultové střechy 5.25°)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 15.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail úžlabí · (lemování úžlabí) · [sub: klempir]",
-        "computed_quantity": 15.0,
-        "declared_quantity": 15.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-009",
@@ -6364,34 +3771,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 nároží × 6.3 m výška",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "4 nároží × 6.3 m výška",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 6.3,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail nároží · (lemování nároží) · [sub: klempir]",
-        "computed_quantity": 25.2,
-        "declared_quantity": 25.2,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-010",
@@ -6430,29 +3810,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~120 bm (spáry mezi všemi klempířskými prvky)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "placeholder ~120 bm (spáry mezi všemi klempířskými prvky)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 120.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail · (krytí spár klempířských) · [sub: klempir]",
-        "computed_quantity": 120.0,
-        "declared_quantity": 120.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-011",
@@ -6491,29 +3849,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~25 bm (vpusti + prostupy)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "placeholder ~25 bm (vpusti + prostupy)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 25.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail · (ostatní oplechování) · [sub: klempir]",
-        "computed_quantity": 25.0,
-        "declared_quantity": 25.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "PSV-78x-012",
@@ -6552,23 +3888,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "klempířské + krytina — A102 střecha + A104 atika",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN klempíř · (doprava klempířiny) · [sub: klempir]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "Rpol-001",
@@ -6792,34 +4112,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 měsíců × 1 ks",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "4 měsíců × 1 ks",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "Rožmitál precedent + standardní VRN · (ZS buňka kancelář) · [sub: GD_provoz]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-002",
@@ -6858,34 +4151,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 měsíců × 1 ks",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "4 měsíců × 1 ks",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní VRN BOZP · (ZS sociální buňka) · [sub: GD_provoz]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-003",
@@ -6924,34 +4190,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 měsíců × 1 ks",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "4 měsíců × 1 ks",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní VRN · (ZS skladovací buňka) · [sub: GD_provoz]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-004",
@@ -6990,29 +4229,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "placeholder ~150 bm (perimetr staveniště + pomocné plochy)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "placeholder ~150 bm (perimetr staveniště + pomocné plochy)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 150.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN požadavek na ohraničení stavby · (oplocení staveniště provizorní) · [sub: GD_provoz]",
-        "computed_quantity": 150.0,
-        "declared_quantity": 150.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-005",
@@ -7051,23 +4268,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN · (vodovodní přípojka stavby) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-006",
@@ -7106,23 +4307,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN · (el. přípojka stavby) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-007",
@@ -7161,34 +4346,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "2 ks × 4 měsíců",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "2 ks × 4 měsíců",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní BOZP · (WC mobilní) · [sub: GD_provoz]",
-        "computed_quantity": 8.0,
-        "declared_quantity": 8.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-008",
@@ -7227,29 +4385,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "4 měsíců",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "4 měsíců",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "zákon 309/2006 Sb. + zákon 591/2006 Sb. · (BOZP koordinace) · [sub: GD_provoz]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-009",
@@ -7288,23 +4424,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "zákon 309/2006 Sb. · (plán BOZP) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-010",
@@ -7343,23 +4463,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN · (pojištění stavby) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-011",
@@ -7398,29 +4502,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~30 m³ stavebního odpadu kat. O",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "placeholder ~30 m³ stavebního odpadu kat. O",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 30.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "zákon 541/2020 Sb. odpady · (odpady kategorie O) · [sub: GD_provoz]",
-        "computed_quantity": 30.0,
-        "declared_quantity": 30.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-012",
@@ -7459,29 +4541,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~2 m³ kat. N",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "placeholder ~2 m³ kat. N",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "zákon 541/2020 Sb. + ČSN · (odpady kategorie N) · [sub: GD_provoz]",
-        "computed_quantity": 2.0,
-        "declared_quantity": 2.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-013",
@@ -7520,29 +4580,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "placeholder ~1500 t·km (30 t materiálů × 50 km)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "placeholder ~1500 t·km (30 t materiálů × 50 km)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1500.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní VRN doprava · (doprava materiálu paušál) · [sub: GD_provoz]",
-        "computed_quantity": 1500.0,
-        "declared_quantity": 1500.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-014",
@@ -7581,23 +4619,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál (Rožmitál URS 00511 R)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál (Rožmitál URS 00511 R)",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "Rožmitál precedent 00511 R + standardní VRN · (geodetické zaměření vytýčení) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-015",
@@ -7636,23 +4658,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN DSPS · (geodetické zaměření DSPS) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-016",
@@ -7691,35 +4697,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "1 kpl pro všech 8-12 správců sítí (per RE-RUN §6)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "1 kpl pro všech 8-12 správců sítí (per RE-RUN §6)",
-        "formula_parsed_method": "count_only_leading",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "drawing",
-            "code": "C3",
-            "document": "situace/C3_situace_kaceni.pdf"
-          }
-        ],
-        "poznamka": "C3 situace + RE-RUN §6 externí sítě (10 sítí přes pozemek) · (vyjádření správců sítí) · [sub: GD_provoz]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-017",
@@ -7758,29 +4736,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 0.75,
       "_qty_formula": "placeholder ~200 bm trasování sítí na pozemku",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "placeholder ~200 bm trasování sítí na pozemku",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 200.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "RE-RUN §6 externí sítě + povinné vytýčení · (vytýčení stávajících sítí) · [sub: GD_provoz]",
-        "computed_quantity": 200.0,
-        "declared_quantity": 200.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-018",
@@ -7819,23 +4775,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN DSPS · (předávací protokoly DSPS) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-019",
@@ -7874,23 +4814,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "zákon 183/2006 Sb. stavební + RE-RUN · (kolaudační řízení) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-020",
@@ -7929,28 +4853,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál (Rožmitál 00523 R precedent)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál (Rožmitál 00523 R precedent)",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "csn",
-            "standard": "ČSN 33 1500"
-          }
-        ],
-        "poznamka": "Rožmitál 00523 R + ČSN 33 1500 · (revize elektro) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-021",
@@ -7989,28 +4892,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "csn",
-            "standard": "ČSN 73 0873"
-          }
-        ],
-        "poznamka": "ČSN 73 0873 + PBŘ §1 · (revize hydrant) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-022",
@@ -8049,28 +4931,7 @@
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vedlejší rozpočtové náklady — celá stavba  ·  SO-11",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "csn",
-            "standard": "ČSN EN 62305"
-          }
-        ],
-        "poznamka": "ČSN EN 62305 + PBŘ · (revize LPS) · [sub: GD_provoz]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-001",
@@ -8109,35 +4970,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "1 ks (TZ B B.3.5 §1)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 ks (TZ B B.3.5 §1)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "kap.",
-            "raw": "TZ B kap."
-          }
-        ],
-        "poznamka": "TZ B kap. B.3.5 §1 — koncepční specifikace · (rekuperační jednotka 4000 m³/h) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-002",
@@ -8176,35 +5009,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "1 ks (TZ B B.3.5 §1)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 ks (TZ B B.3.5 §1)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "kap.",
-            "raw": "TZ B kap."
-          }
-        ],
-        "poznamka": "TZ B kap. B.3.5 §1 · (kondenzační jednotka 15 kW) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-003",
@@ -8243,40 +5048,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "2 ks/vrata × 4 vrata = 8 ks",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "2 ks/vrata × 4 vrata = 8 ks",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_2",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B.3.5",
-            "raw": "TZ B B.3.5"
-          }
-        ],
-        "poznamka": "TZ B B.3.5 §1 + 4 sekční vrata · (dveřní clona 4700 m³/h š. 2m) · [sub: VZT_dodavatel]",
-        "computed_quantity": 8.0,
-        "declared_quantity": 8.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-004",
@@ -8315,35 +5087,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "placeholder 60 bm (hlavní páteř haly)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 60 bm (hlavní páteř haly)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 60.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B.3.5",
-            "raw": "TZ B B.3.5"
-          }
-        ],
-        "poznamka": "TZ B B.3.5 §1 koncepčně + standardní dimensioning · (SPIRO Ø 315) · [sub: VZT_dodavatel]",
-        "computed_quantity": 60.0,
-        "declared_quantity": 60.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-005",
@@ -8382,29 +5126,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "placeholder 80 bm (boční větve)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 80 bm (boční větve)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 80.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní dimensioning · (SPIRO Ø 250) · [sub: VZT_dodavatel]",
-        "computed_quantity": 80.0,
-        "declared_quantity": 80.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-006",
@@ -8443,29 +5165,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "placeholder 120 bm (přívody k 8 clonám)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 120 bm (přívody k 8 clonám)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 120.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní dimensioning · (SPIRO Ø 160) · [sub: VZT_dodavatel]",
-        "computed_quantity": 120.0,
-        "declared_quantity": 120.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-007",
@@ -8504,29 +5204,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "placeholder 4 ks (na hlavním rozvodu)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 4 ks (na hlavním rozvodu)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "ČSN hlukové limity + standardní design · (tlumiče hluku potrubí) · [sub: VZT_dodavatel]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-008",
@@ -8565,35 +5243,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "placeholder 180 m² (~70 % povrchu potrubí — venkovní úseky)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 180 m² (~70 % povrchu potrubí — venkovní úseky)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 180.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
-          }
-        ],
-        "poznamka": "ČSN tepelná izolace VZT + TZ B · (tepelná izolace VZT 13 mm) · [sub: VZT_dodavatel]",
-        "computed_quantity": 180.0,
-        "declared_quantity": 180.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-009",
@@ -8632,29 +5282,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "1 kpl (rekuperační jednotka)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl (rekuperační jednotka)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail · (antivibrační uložení rekuperace) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-010",
@@ -8693,29 +5321,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "1 kpl",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní vybavení rekuperační jednotky · (MaR VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-011",
@@ -8754,29 +5360,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "1 kpl",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní vybavení · (dálkové ovládání VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-012",
@@ -8815,29 +5399,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "1 kpl (komplet pro 260 bm rozvodů)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl (komplet pro 260 bm rozvodů)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní detail · (závěsy + příchytky SPIRO) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-013",
@@ -8876,23 +5438,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN VZT · (spuštění + měření VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-014",
@@ -8931,23 +5477,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN doprava · (doprava VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     },
     {
       "id": "VZT-015",
@@ -8986,23 +5516,7 @@
       "_data_source": "TZ_only",
       "_completeness": 0.5,
       "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [],
-        "poznamka": "ČSN VZT + standardní revize · (revize VZT + protokol) · [sub: VZT_dodavatel]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      "_export_wrapper_hint": null
     }
   ]
 }
