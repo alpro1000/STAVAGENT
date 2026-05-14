@@ -260,3 +260,101 @@ stuck on the wrong cause for hours.
 The `.strip()` + `--set-cloudsql-instances` defensive changes from PR
 #1148 remain value-adds for unrelated future failure modes; they
 weren't wasted even though they didn't fix the actual bug.
+
+---
+
+## Migration 008: OAuth `authorization_code` + PKCE (added 2026-05-14)
+
+**Branch:** `claude/mcp-oauth-pkce`
+**Trigger:** ChatGPT custom connector and Claude.ai MCP integration both
+require `authorization_code` grant (RFC 6749 §4.1) with PKCE (RFC 7636).
+The existing `/api/v1/mcp/oauth/token` only supported `client_credentials`,
+and `/authorize` / `.well-known/oauth-authorization-server` didn't exist.
+
+### Schema
+
+`migrations/008_mcp_oauth_codes.sql` adds one table:
+
+```sql
+CREATE TABLE mcp_oauth_codes (
+    code                  TEXT PRIMARY KEY,
+    client_id             TEXT NOT NULL REFERENCES mcp_api_keys(api_key) ON DELETE CASCADE,
+    redirect_uri          TEXT NOT NULL,
+    code_challenge        TEXT NOT NULL,
+    code_challenge_method TEXT NOT NULL DEFAULT 'S256',
+    state                 TEXT,
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    expires_at            TIMESTAMPTZ NOT NULL,
+    used_at               TIMESTAMPTZ
+);
+```
+
+Conventions match migration 007 verbatim: `TIMESTAMPTZ`, `TEXT` columns,
+`IF NOT EXISTS` on table + indexes, `idx_<table>_<column>` index names.
+
+### Deploy workflow
+
+Queued through the same `cloudbuild-concrete.yaml` psql step that
+silently no-op'd for 007 (see "Carry-over" above). Expect to apply
+**manually** via `cloud-sql-proxy` until the cloudbuild step is replaced
+(Option 1 — Cloud Run job).
+
+Manual fallback (same recipe as the 007 hand-fix in
+`2026-05-14_cloudsql_connection_bug.md` §0):
+
+```bash
+cloud-sql-proxy --port 9470 PROJECT:REGION:INSTANCE &
+PGPASSWORD=$PASS psql -h 127.0.0.1 -p 9470 -U $USER -d concrete \
+  -f concrete-agent/packages/core-backend/migrations/008_mcp_oauth_codes.sql
+```
+
+### Verify after deploy (DON'T trust cloudbuild log output)
+
+```bash
+# 1. discovery endpoint
+curl -s https://concrete-agent-.../.well-known/oauth-authorization-server | jq .
+
+# 2. table exists (via cloud-sql-proxy psql session)
+psql ... -c "\d mcp_oauth_codes"
+
+# 3. /authorize round-trip (replace KEY + CHALLENGE with real values)
+curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" \
+  "https://concrete-agent-.../api/v1/mcp/oauth/authorize?\
+response_type=code&client_id=$KEY&\
+redirect_uri=https://chatgpt.com/connector/oauth/test&\
+code_challenge=$CHALLENGE&code_challenge_method=S256"
+# Expect: "302 https://chatgpt.com/connector/oauth/test?code=..."
+```
+
+### Public API surface added
+
+| Endpoint | Method | Auth | Purpose |
+|---|---|---|---|
+| `/.well-known/oauth-authorization-server` | GET | none | RFC 8414 discovery |
+| `/.well-known/openid-configuration` | GET | none | Same payload (some clients probe this URI instead) |
+| `/api/v1/mcp/oauth/authorize` | GET | client_id (API key) | Mints `code`, 302 → `redirect_uri?code=...` |
+| `/api/v1/mcp/oauth/token` (extended) | POST | code+verifier | `grant_type=authorization_code` |
+
+`client_credentials` grant on `/oauth/token` is **unchanged** —
+backward-compat test covers this explicitly.
+
+### Allowed redirect_uri prefixes (single-user MCP, no consent UI)
+
+- `https://chatgpt.com/connector/oauth/*`
+- `https://claude.ai/api/mcp/auth_callback*`
+- `http://localhost:*` — **only** when `MCP_OAUTH_ALLOW_LOCALHOST_REDIRECT=1`
+  (dev/CI escape hatch; **not** set on the production Cloud Run service)
+
+### Tests
+
+`tests/test_mcp_oauth_pkce.py` — 22 cases:
+- Discovery JSON shape (3)
+- `/authorize` parameter validation (5)
+- `/authorize` happy path + state passthrough + unknown-client redirect (3)
+- `/token` PKCE happy path, wrong verifier, code reuse, redirect_uri
+  mismatch, expired code, unknown code (6)
+- `client_credentials` backward-compat + unsupported grant_type (2)
+- Allowlist helper unit tests (3)
+
+GitHub Actions `MCP Tools Compatibility` workflow applies migration 008
+and runs all four MCP test files (17 + 10 + 10 + 22 = 59 cases).
