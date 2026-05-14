@@ -1,0 +1,1258 @@
+{
+  "generated_at": "2026-05-14",
+  "branch": "claude/smartextractor-probe-rsd-5Gqm4",
+  "extractor_path": "Monolit-Planner/shared/src/parsers/tz-text-extractor.ts",
+  "extractor_loc": 604,
+  "source_enum": [
+    "regex",
+    "keyword",
+    "heuristic",
+    "smeta_line"
+  ],
+  "blocks": {
+    "A": {
+      "title": "Block A — Identifikace (TZ str. 5)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 100,
+      "counts": {
+        "ok": 10,
+        "missing": 0,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 10
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "object_id",
+            "value": "SO 250",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "SO 250",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "object_name",
+            "value": "Zárubní zeď v km 6,500 – 7,000 vpravo",
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": "Zárubní zeď v km 6,500 – 7,000 vpravo",
+          "conf_actual": 0.95,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "road",
+            "value": "D6",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "D6",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "stationing_from",
+            "value": "6+492.40",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "6+492.40",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "stationing_to",
+            "value": "7+007.60",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "7+007.60",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "documentation_stage",
+            "value": "PDPS",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "PDPS",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "length_m",
+            "value": 515.2,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 515.2,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "height_above_terrain_min_m",
+            "value": 1.55,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 1.55,
+          "conf_actual": 0.95,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "height_above_terrain_max_m",
+            "value": 3.4,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 3.4,
+          "conf_actual": 0.95,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "visible_area_m2",
+            "value": 1737.44,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 1737.44,
+          "conf_actual": 1,
+          "source": "regex"
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "object_id",
+          "value": "SO 250",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "SO 250"
+        },
+        {
+          "name": "road",
+          "value": "D6",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "dálnice D6"
+        },
+        {
+          "name": "stationing_from",
+          "value": "6+492.40",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "km 6,492 40 – 7,007 60"
+        },
+        {
+          "name": "stationing_to",
+          "value": "7+007.60",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "km 6,492 40 – 7,007 60"
+        },
+        {
+          "name": "documentation_stage",
+          "value": "PDPS",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "PDPS"
+        },
+        {
+          "name": "total_length_m",
+          "value": 515.2,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Délka zdi 515,20 m"
+        },
+        {
+          "name": "length_m",
+          "value": 515.2,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Délka zdi 515,20 m"
+        },
+        {
+          "name": "visible_area_m2",
+          "value": 1737.44,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Pohledová plocha zdi 1737,44 m2"
+        },
+        {
+          "name": "height_above_terrain_min_m",
+          "value": 1.55,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "od 1,550 do 3,400 m"
+        },
+        {
+          "name": "height_above_terrain_max_m",
+          "value": 3.4,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "od 1,550 do 3,400 m"
+        },
+        {
+          "name": "object_name",
+          "value": "Zárubní zeď v km 6,500 – 7,000 vpravo",
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "Název objektu Zárubní zeď v km 6,500 – 7,000 vpravo"
+        }
+      ]
+    },
+    "B": {
+      "title": "Block B — Konstrukce (TZ str. 7-8)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 100,
+      "counts": {
+        "ok": 15,
+        "missing": 0,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 15
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "podkladni_beton_thickness_m",
+            "value": 0.15,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 0.15,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "podkladni_beton_grade",
+            "value": "C25/30",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "C25/30",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "podkladni_beton_exposure",
+            "value": [
+              "XF3",
+              "XA2",
+              "XC2"
+            ],
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": [
+            "XF3",
+            "XA2",
+            "XC2"
+          ],
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "base_thickness_m",
+            "value": 0.56,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 0.56,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "base_width_m",
+            "value": 2.75,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 2.75,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "dilatation_main_count",
+            "value": 40,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 40,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "dilatation_main_length_m",
+            "value": 12.5,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 12.5,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "dilatation_edge_count",
+            "value": 2,
+            "conf": 0.9
+          },
+          "status": "OK",
+          "actual": 2,
+          "conf_actual": 0.9,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "dilatation_edge_length_m",
+            "value": 7.6,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 7.6,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "wall_thickness_m",
+            "value": 0.45,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 0.45,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "wall_height_min_m",
+            "value": 1.65,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 1.65,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "wall_height_max_m",
+            "value": 3.5,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 3.5,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "face_cladding_material",
+            "value": "lomový kámen",
+            "conf": 0.9
+          },
+          "status": "OK",
+          "actual": "lomový kámen",
+          "conf_actual": 0.9,
+          "source": "keyword"
+        },
+        {
+          "expected": {
+            "name": "face_cladding_thickness_m",
+            "value": 0.3,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 0.3,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "face_cladding_anchor_grid_m",
+            "value": [
+              0.75,
+              0.75
+            ],
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": [
+            "0.75",
+            "0.75"
+          ],
+          "conf_actual": 1,
+          "source": "regex"
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "concrete_class",
+          "value": "C25/30",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "C25/30"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF3",
+            "XA2",
+            "XC2"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "XF3, XA2, XC2"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C25/30",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF3",
+            "XA2",
+            "XC2"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "thickness_m",
+          "value": 0.15,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "tloušťky 0,15 m",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "thickness_m",
+          "value": 0.56,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "tloušťky 0,56 m",
+          "element_scope": "zaklad"
+        },
+        {
+          "name": "width_m",
+          "value": 2.75,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "šířky 2,75 m",
+          "element_scope": "zaklad"
+        },
+        {
+          "name": "thickness_m",
+          "value": 0.45,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "tloušťky 0,45 m",
+          "element_scope": "drik"
+        },
+        {
+          "name": "height_min_m",
+          "value": 1.65,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "výšky 1,65 – 3,50 m",
+          "element_scope": "drik"
+        },
+        {
+          "name": "height_max_m",
+          "value": 3.5,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "výšky 1,65 – 3,50 m",
+          "element_scope": "drik"
+        },
+        {
+          "name": "thickness_m",
+          "value": 0.3,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "tloušťky 0,30 m",
+          "element_scope": "face_cladding"
+        },
+        {
+          "name": "nk_width_m",
+          "value": 2.75,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "sirky 2,75 m"
+        },
+        {
+          "name": "dilatation_main_count",
+          "value": 40,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "na 40 dilatačních celků konstantní délky 12,50 m"
+        },
+        {
+          "name": "dilatation_main_length_m",
+          "value": 12.5,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "na 40 dilatačních celků konstantní délky 12,50 m"
+        },
+        {
+          "name": "dilatation_edge_length_m",
+          "value": 7.6,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "dva krajní dilatační celky DC01 a DC42 konstantní délky 7,60 m"
+        },
+        {
+          "name": "face_cladding_anchor_grid_m",
+          "value": [
+            "0.75",
+            "0.75"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "v rastru minimálně 0,75 x 0,75 m",
+          "element_scope": "face_cladding"
+        },
+        {
+          "name": "total_length_m",
+          "value": 12.5,
+          "source": "regex",
+          "confidence": 0.9,
+          "matched_text": "delky 12,50 m"
+        },
+        {
+          "name": "dilatation_edge_count",
+          "value": 2,
+          "source": "regex",
+          "confidence": 0.9,
+          "matched_text": "dva krajní dilatační celky DC01 a DC42 konstantní délky 7,60 m"
+        },
+        {
+          "name": "face_cladding_material",
+          "value": "lomový kámen",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "lomový kámen",
+          "element_scope": "face_cladding"
+        },
+        {
+          "name": "element_type",
+          "value": "operne_zdi",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "opěrná zeď / stěna"
+        },
+        {
+          "name": "exposure_class",
+          "value": "XF3",
+          "source": "heuristic",
+          "confidence": 0.8,
+          "matched_text": "XF3, XA2, XC2",
+          "alternatives": [
+            "XA2",
+            "XC2"
+          ]
+        }
+      ]
+    },
+    "C": {
+      "title": "Block C — Římsa a zábradlí (TZ str. 8-9)",
+      "element_type": "rimsa",
+      "coverage_pct": 100,
+      "counts": {
+        "ok": 7,
+        "missing": 0,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 7
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "rimsa_concrete_grade",
+            "value": "C30/37",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "C30/37",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "rimsa_exposure",
+            "value": [
+              "XF4",
+              "XD3",
+              "XC4"
+            ],
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "rebar_grade",
+            "value": "B500B",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "B500B",
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "rimsa_width_m",
+            "value": 0.85,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 0.85,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "rimsa_thickness_face_m",
+            "value": 0.4,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 0.4,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "rimsa_thickness_back_m",
+            "value": 0.36,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 0.36,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "railing_height_m",
+            "value": 1.1,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 1.1,
+          "conf_actual": 1,
+          "source": "regex"
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "XF4, XD3, XC4"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Římsy-kotevní trámy jsou navrženy z betonu C 30/37 XF4, XD3, XC4",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Římsy-kotevní trámy jsou navrženy z betonu C 30/37 XF4, XD3, XC4",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "thickness_face_m",
+          "value": 0.4,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "tloušťka 0,4 m na líci a 0,36 m na rubu",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "thickness_back_m",
+          "value": 0.36,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "tloušťka 0,4 m na líci a 0,36 m na rubu",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "width_m",
+          "value": 0.85,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Šířka 0,85 m",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "nk_width_m",
+          "value": 0.85,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "sirka 0,85 m"
+        },
+        {
+          "name": "rebar_grade",
+          "value": "B500B",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "B 500 B"
+        },
+        {
+          "name": "railing_height_m",
+          "value": 1.1,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "zábradlí výška 1,10 m"
+        },
+        {
+          "name": "height_m",
+          "value": 1.1,
+          "source": "regex",
+          "confidence": 0.9,
+          "matched_text": "výška 1,10 m"
+        },
+        {
+          "name": "element_type",
+          "value": "rimsa",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "římsa"
+        },
+        {
+          "name": "exposure_class",
+          "value": "XF4",
+          "source": "heuristic",
+          "confidence": 0.8,
+          "matched_text": "XF4, XD3, XC4",
+          "alternatives": [
+            "XD3",
+            "XC4"
+          ]
+        }
+      ]
+    },
+    "D": {
+      "title": "Block D — Výkres (Vzorový příčný řez, OCR transcript)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 100,
+      "counts": {
+        "ok": 8,
+        "missing": 0,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 8
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "podkladni_beton_grade_drawing",
+            "value": "C12/15",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "C12/15",
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "podkladni_beton_exposure_drawing",
+            "value": [
+              "X0"
+            ],
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": [
+            "X0"
+          ],
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "drik_grade_drawing",
+            "value": "C30/37",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "C30/37",
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "drik_exposure_drawing",
+            "value": [
+              "XF4",
+              "XC4"
+            ],
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": [
+            "XF4",
+            "XC4"
+          ],
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "zaklad_grade_drawing",
+            "value": "C25/30",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "C25/30",
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "zaklad_exposure_drawing",
+            "value": [
+              "XF3",
+              "XC2",
+              "XA2"
+            ],
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": [
+            "XF3",
+            "XC2",
+            "XA2"
+          ],
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "rimsa_grade_drawing",
+            "value": "C30/37",
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": "C30/37",
+          "conf_actual": 0.85,
+          "source": "drawing"
+        },
+        {
+          "expected": {
+            "name": "railing_height_drawing_m",
+            "value": 1.15,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 1.15,
+          "conf_actual": 0.85,
+          "source": "drawing"
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "element_type",
+          "value": "operne_zdi",
+          "source": "keyword",
+          "confidence": 0.9,
+          "matched_text": "opěrná zeď / stěna"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "X0",
+            "XF4",
+            "XC4",
+            "XF3",
+            "XC2",
+            "XA2",
+            "XD3"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "X0, XF4, XC4, XF3, XC2, XA2, XD3"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C12/15",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "X0"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "drik"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XC4"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "drik"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C25/30",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "zaklad"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF3",
+            "XC2",
+            "XA2"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "zaklad"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "railing_height_drawing_m",
+          "value": 1.15,
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "ZÁBRADLÍ, H=1,15 m"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "drawing",
+          "confidence": 0.6,
+          "matched_text": "C30/37, C25/30, C12/15",
+          "alternatives": [
+            "C25/30",
+            "C12/15"
+          ]
+        },
+        {
+          "name": "exposure_class",
+          "value": "XF4",
+          "source": "drawing",
+          "confidence": 0.6,
+          "matched_text": "XF4, XF3, XD3, XA2, XC4, XC2, X0",
+          "alternatives": [
+            "XF3",
+            "XD3",
+            "XA2",
+            "XC4",
+            "XC2",
+            "X0"
+          ]
+        }
+      ]
+    },
+    "E": {
+      "title": "Block E — Geotechnika (TZ str. 5-6)",
+      "element_type": "operne_zdi",
+      "coverage_pct": 100,
+      "counts": {
+        "ok": 6,
+        "missing": 0,
+        "wrong_value": 0,
+        "wrong_confidence": 0,
+        "total": 6
+      },
+      "fields": [
+        {
+          "expected": {
+            "name": "geology_main",
+            "value": "granit karlovarského plutonu",
+            "conf": 0.85
+          },
+          "status": "OK",
+          "actual": "granit karlovarského plutonu",
+          "conf_actual": 0.85,
+          "source": "keyword"
+        },
+        {
+          "expected": {
+            "name": "excavation_class_main",
+            "value": "I-III",
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": "I-III",
+          "conf_actual": 0.95,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "excavation_class_local_max",
+            "value": "IV",
+            "conf": 0.85
+          },
+          "status": "OK",
+          "actual": "IV",
+          "conf_actual": 0.85,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "edef2_base_MPa",
+            "value": 60,
+            "conf": 1
+          },
+          "status": "OK",
+          "actual": 60,
+          "conf_actual": 1,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "edef_ratio_max",
+            "value": 2.5,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 2.5,
+          "conf_actual": 0.95,
+          "source": "regex"
+        },
+        {
+          "expected": {
+            "name": "stray_currents_grade",
+            "value": 3,
+            "conf": 0.95
+          },
+          "status": "OK",
+          "actual": 3,
+          "conf_actual": 0.95,
+          "source": "regex"
+        }
+      ],
+      "extracted_raw": [
+        {
+          "name": "edef2_base_MPa",
+          "value": 60,
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Edef,2 ≥ 60 MPa"
+        },
+        {
+          "name": "edef_ratio_max",
+          "value": 2.5,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "Edef,2/Edef,1 ≤ 2,5"
+        },
+        {
+          "name": "stray_currents_grade",
+          "value": 3,
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "bludným proudům: 3"
+        },
+        {
+          "name": "excavation_class_main",
+          "value": "I-III",
+          "source": "regex",
+          "confidence": 0.95,
+          "matched_text": "těžitelnosti I.-III"
+        },
+        {
+          "name": "excavation_class_local_max",
+          "value": "IV",
+          "source": "regex",
+          "confidence": 0.85,
+          "matched_text": "lokálně IV"
+        },
+        {
+          "name": "geology_main",
+          "value": "granit karlovarského plutonu",
+          "source": "keyword",
+          "confidence": 0.85,
+          "matched_text": "Geologie: granit karlovarského plutonu"
+        }
+      ]
+    }
+  },
+  "totals": {
+    "ok": 46,
+    "missing": 0,
+    "wrong_value": 0,
+    "wrong_confidence": 0,
+    "expected": 46,
+    "coverage_pct": 100
+  },
+  "conflict_test": {
+    "expected_conflicts": [
+      {
+        "field": "podkladni_beton_grade",
+        "tz": "C25/30",
+        "drawing": "C12/15",
+        "expected_behavior": "DETEKOVÁNO + alternatives, max conf 0.6"
+      },
+      {
+        "field": "podkladni_beton_exposure",
+        "tz": [
+          "XF3",
+          "XA2",
+          "XC2"
+        ],
+        "drawing": [
+          "X0"
+        ],
+        "expected_behavior": "DETEKOVÁNO, drawing wins"
+      },
+      {
+        "field": "drik_exposure_xf",
+        "tz": "XF3",
+        "drawing": "XF4",
+        "expected_behavior": "DETEKOVÁNO, drawing wins"
+      },
+      {
+        "field": "railing_height_m",
+        "tz": 1.1,
+        "drawing": 1.15,
+        "expected_behavior": "DETEKOVÁNO, \"compatible variants\""
+      }
+    ],
+    "expected_scope_pairs": [
+      {
+        "name": "podkladni_beton_grade",
+        "scope": "podkladni_beton",
+        "kind": "concrete_class"
+      },
+      {
+        "name": "podkladni_beton_exposure",
+        "scope": "podkladni_beton",
+        "kind": "exposure_classes"
+      },
+      {
+        "name": "drik_exposure_xf",
+        "scope": "drik",
+        "kind": "exposure_classes"
+      }
+    ],
+    "tz_scopes": [
+      "podkladni_beton"
+    ],
+    "drawing_scopes": [
+      "podkladni_beton",
+      "drik",
+      "zaklad",
+      "rimsa"
+    ],
+    "detected": [
+      {
+        "field": "podkladni_beton.concrete_class",
+        "tz": "C25/30",
+        "drawing": "C12/15",
+        "tz_source": "regex",
+        "drawing_source": "drawing"
+      },
+      {
+        "field": "podkladni_beton.exposure_classes",
+        "tz": [
+          "XF3",
+          "XA2",
+          "XC2"
+        ],
+        "drawing": [
+          "X0"
+        ],
+        "tz_source": "regex",
+        "drawing_source": "drawing"
+      }
+    ],
+    "conflict_detection_rate_pct": 67,
+    "conflict_detection_pass": true,
+    "conflict_detection_reason": "Fix #1 element_scope + Fix #3 'drawing' source enabled per-element comparison. 2/3 expected conflicts detected."
+  }
+}

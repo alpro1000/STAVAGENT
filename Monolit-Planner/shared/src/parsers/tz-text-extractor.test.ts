@@ -12,7 +12,12 @@ import {
 } from './tz-text-extractor';
 
 function findParam(results: ExtractedParam[], name: string): ExtractedParam | undefined {
-  return results.find(r => r.name === name);
+  // Fix #1 (2026-05-14): scoped entries (element_scope set) are a strict
+  // ADDITION to the flat primary — prefer the flat one when both exist so
+  // legacy tests + consumers that don't care about scoping see the same
+  // shape as before.
+  return results.find(r => r.name === name && !r.element_scope)
+      ?? results.find(r => r.name === name);
 }
 
 describe('TZ Text Extractor', () => {
@@ -624,6 +629,276 @@ Celkový objem 605 m³ dle rozpočtu.
       const plural = findParam(r, 'exposure_classes');
       expect(plural).toBeDefined();
       expect((plural as any).alternatives).toBeUndefined();
+    });
+  });
+
+  // ─── Fix #2 (2026-05-14, SO-250 audit) — project-id regex pack ─────────
+  describe('Block A project-identification pack (SO-250 Fix #2)', () => {
+    const blockA =
+      'Číslo objektu SO 250\n' +
+      'Název objektu Zárubní zeď v km 6,500 – 7,000 vpravo\n' +
+      'Druh převáděné komunikace dálnice D6\n' +
+      'Staničení zdi km 6,492 40 – 7,007 60\n' +
+      'Stupeň dokumentace Projektová dokumentace pro provádění stavby (PDPS)\n' +
+      'Charakteristika zdi Úhlová železobetonová zeď.\n' +
+      'Délka zdi 515,20 m\n' +
+      'Výška zdi nad terénem Proměnná, od 1,550 do 3,400 m\n' +
+      'Pohledová plocha zdi 1737,44 m2';
+
+    it('object_id = "SO 250"', () => {
+      expect(findParam(extractFromText(blockA), 'object_id')?.value).toBe('SO 250');
+    });
+    it('road = "D6"', () => {
+      expect(findParam(extractFromText(blockA), 'road')?.value).toBe('D6');
+    });
+    it('stationing_from = "6+492.40"', () => {
+      expect(findParam(extractFromText(blockA), 'stationing_from')?.value).toBe('6+492.40');
+    });
+    it('stationing_to = "7+007.60"', () => {
+      expect(findParam(extractFromText(blockA), 'stationing_to')?.value).toBe('7+007.60');
+    });
+    it('documentation_stage = "PDPS"', () => {
+      expect(findParam(extractFromText(blockA), 'documentation_stage')?.value).toBe('PDPS');
+    });
+    it('length_m = 515.20', () => {
+      expect(findParam(extractFromText(blockA), 'length_m')?.value).toBeCloseTo(515.2, 2);
+    });
+    it('height_above_terrain_min_m = 1.55', () => {
+      expect(findParam(extractFromText(blockA), 'height_above_terrain_min_m')?.value).toBeCloseTo(1.55, 2);
+    });
+    it('height_above_terrain_max_m = 3.40', () => {
+      expect(findParam(extractFromText(blockA), 'height_above_terrain_max_m')?.value).toBeCloseTo(3.4, 2);
+    });
+    it('visible_area_m2 = 1737.44', () => {
+      expect(findParam(extractFromText(blockA), 'visible_area_m2')?.value).toBeCloseTo(1737.44, 2);
+    });
+    it('object_name carries the Czech title text', () => {
+      const n = findParam(extractFromText(blockA), 'object_name')?.value;
+      expect(typeof n).toBe('string');
+      expect(String(n)).toContain('Zárubní zeď');
+    });
+  });
+
+  describe('Drawing + geotech helpers (SO-250 Fix #2)', () => {
+    it('railing_height_drawing_m = 1.15 from "ZÁBRADLÍ … H=1,15 m"', () => {
+      const r = extractFromText('KOMPOZITNÍ 3-LANKOVÉ ZÁBRADLÍ, H=1,15 m');
+      expect(findParam(r, 'railing_height_drawing_m')?.value).toBeCloseTo(1.15, 2);
+    });
+    it('edef2_base_MPa = 60 from "Edef,2 ≥ 60 MPa"', () => {
+      const r = extractFromText('Edef,2 ≥ 60 MPa, Edef,2/Edef,1 ≤ 2,5.');
+      expect(findParam(r, 'edef2_base_MPa')?.value).toBe(60);
+      expect(findParam(r, 'edef_ratio_max')?.value).toBeCloseTo(2.5, 2);
+    });
+    it('excavation_class_main = "I-III" from Czech Roman-numeral phrasing', () => {
+      const r = extractFromText('Třída těžitelnosti I.-III, lokálně IV.');
+      expect(findParam(r, 'excavation_class_main')?.value).toBe('I-III');
+      expect(findParam(r, 'excavation_class_local_max')?.value).toBe('IV');
+    });
+    it('stray_currents_grade = 3', () => {
+      const r = extractFromText('Stupeň ochranných opatření proti bludným proudům: 3.');
+      expect(findParam(r, 'stray_currents_grade')?.value).toBe(3);
+    });
+  });
+
+  // ─── Block B dimension pack (2026-05-14, follow-up #1) ────────────────
+  describe('Block B per-element dimensions (follow-up #1)', () => {
+    const blockB =
+      'Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.\n' +
+      'Základ opěrné zdi je konstantní tloušťky 0,56 m a šířky 2,75 m.\n' +
+      'V podélném směru je základ členěn na 40 dilatačních celků konstantní délky 12,50 m\n' +
+      'a dva krajní dilatační celky DC01 a DC42 konstantní délky 7,60 m.\n' +
+      'Dřík konstrukce je konstantní tloušťky 0,45 m a proměnné výšky 1,65 – 3,50 m.\n' +
+      'Dřík konstrukce je na líci obložen lomovým kamenem tloušťky 0,30 m.\n' +
+      'Kotvy jsou v rastru minimálně 0,75 x 0,75 m.';
+
+    function scoped(r, name, scope) {
+      return r.find((p) => p.name === name && p.element_scope === scope);
+    }
+
+    it('thickness_m @podkladni_beton = 0.15', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'podkladni_beton')?.value).toBeCloseTo(0.15, 2);
+    });
+    it('thickness_m @zaklad = 0.56 + width_m @zaklad = 2.75', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'zaklad')?.value).toBeCloseTo(0.56, 2);
+      expect(scoped(r, 'width_m', 'zaklad')?.value).toBeCloseTo(2.75, 2);
+    });
+    it('thickness_m @drik = 0.45 + height_min/max @drik = 1.65/3.50', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'drik')?.value).toBeCloseTo(0.45, 2);
+      expect(scoped(r, 'height_min_m', 'drik')?.value).toBeCloseTo(1.65, 2);
+      expect(scoped(r, 'height_max_m', 'drik')?.value).toBeCloseTo(3.5, 2);
+    });
+    it('face_cladding overrides drik when "obložen … kamenem" present (thickness 0.30)', () => {
+      const r = extractFromText(blockB);
+      expect(scoped(r, 'thickness_m', 'face_cladding')?.value).toBeCloseTo(0.3, 2);
+    });
+    it('dilatation_main_count = 40 + dilatation_main_length_m = 12.5', () => {
+      const r = extractFromText(blockB);
+      expect(findParam(r, 'dilatation_main_count')?.value).toBe(40);
+      expect(findParam(r, 'dilatation_main_length_m')?.value).toBeCloseTo(12.5, 2);
+    });
+    it('dilatation_edge_count = 2 + dilatation_edge_length_m = 7.6', () => {
+      const r = extractFromText(blockB);
+      expect(findParam(r, 'dilatation_edge_count')?.value).toBe(2);
+      expect(findParam(r, 'dilatation_edge_length_m')?.value).toBeCloseTo(7.6, 2);
+    });
+    it('face_cladding_material = "lomový kámen"', () => {
+      const r = extractFromText(blockB);
+      expect(findParam(r, 'face_cladding_material')?.value).toBe('lomový kámen');
+    });
+    it('face_cladding_anchor_grid_m = ["0.75", "0.75"]', () => {
+      const r = extractFromText(blockB);
+      const grid = findParam(r, 'face_cladding_anchor_grid_m')?.value;
+      expect(grid).toEqual(['0.75', '0.75']);
+    });
+    it('face_cladding_anchor_type = "R8"', () => {
+      const r = extractFromText('Lícový obklad je kotven do dříku opěrné zdi vlepenými kotvami R8.');
+      expect(findParam(r, 'face_cladding_anchor_type')?.value).toBe('R8');
+    });
+  });
+
+  describe('Block C per-element dimensions (follow-up #1)', () => {
+    const blockC =
+      'Římsy-kotevní trámy jsou navrženy z betonu C 30/37 XF4, XD3, XC4\n' +
+      'a vyztuženy betonářskou výztuží B 500 B.\n' +
+      'Šířka 0,85 m, tloušťka 0,4 m na líci a 0,36 m na rubu.\n' +
+      'Na horním kotevním trámu je navrženo silniční zábradlí výška 1,10 m.';
+
+    function scoped(r, name, scope) {
+      return r.find((p) => p.name === name && p.element_scope === scope);
+    }
+
+    it('concrete_class @rimsa = C30/37 (whitespace-tolerant)', () => {
+      const r = extractFromText(blockC);
+      expect(scoped(r, 'concrete_class', 'rimsa')?.value).toBe('C30/37');
+    });
+    it('width_m @rimsa = 0.85 (carry-forward scope from sentence 1)', () => {
+      const r = extractFromText(blockC);
+      expect(scoped(r, 'width_m', 'rimsa')?.value).toBeCloseTo(0.85, 2);
+    });
+    it('thickness_face_m @rimsa = 0.40 + thickness_back_m @rimsa = 0.36', () => {
+      const r = extractFromText(blockC);
+      expect(scoped(r, 'thickness_face_m', 'rimsa')?.value).toBeCloseTo(0.4, 2);
+      expect(scoped(r, 'thickness_back_m', 'rimsa')?.value).toBeCloseTo(0.36, 2);
+    });
+    it('rebar_grade = "B500B"', () => {
+      const r = extractFromText(blockC);
+      expect(findParam(r, 'rebar_grade')?.value).toBe('B500B');
+    });
+  });
+
+  // ─── Fix #1 (2026-05-14, SO-250 audit) — element_scope tagging ─────────
+  describe('element_scope tagging (SO-250 Fix #1)', () => {
+    const drawingBlock =
+      'PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2\n' +
+      'OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3';
+
+    it('SO-250 Block D: 4 scoped concrete_class entries (one per element)', () => {
+      const r = extractFromText(drawingBlock);
+      const scoped = r.filter(p => p.name === 'concrete_class' && p.element_scope);
+      // Expect podkladni_beton=C12/15, drik=C30/37, zaklad=C25/30, rimsa=C30/37
+      const byScope = Object.fromEntries(scoped.map(p => [p.element_scope, p.value]));
+      expect(byScope.podkladni_beton).toBe('C12/15');
+      expect(byScope.drik).toBe('C30/37');
+      expect(byScope.zaklad).toBe('C25/30');
+      expect(byScope.rimsa).toBe('C30/37');
+    });
+
+    it('SO-250 Block D: scoped exposure_classes per element', () => {
+      const r = extractFromText(drawingBlock);
+      const byScope = Object.fromEntries(
+        r.filter(p => p.name === 'exposure_classes' && p.element_scope)
+         .map(p => [p.element_scope, p.value as string[]]),
+      );
+      expect(byScope.podkladni_beton).toEqual(['X0']);
+      expect(byScope.zaklad?.sort()).toEqual(['XA2', 'XC2', 'XF3']);
+      expect(byScope.rimsa?.sort()).toEqual(['XC4', 'XD3', 'XF4']);
+    });
+
+    it('flat concrete_class + exposure_classes entries still emitted (backward compat)', () => {
+      const r = extractFromText(drawingBlock);
+      const flatCC = r.find(p => p.name === 'concrete_class' && !p.element_scope);
+      const flatEC = r.find(p => p.name === 'exposure_classes' && !p.element_scope);
+      expect(flatCC).toBeDefined();
+      expect(flatEC).toBeDefined();
+    });
+
+    it('TZ prose with mixed elements: per-sentence scoping works', () => {
+      const prose =
+        'Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2. ' +
+        'Dřík konstrukce je z betonu C30/37 XF4, XD3.';
+      const r = extractFromText(prose);
+      const byScope = Object.fromEntries(
+        r.filter(p => p.name === 'concrete_class' && p.element_scope)
+         .map(p => [p.element_scope, p.value]),
+      );
+      expect(byScope.podkladni_beton).toBe('C25/30');
+      expect(byScope.drik).toBe('C30/37');
+    });
+  });
+
+  // ─── Fix #3 (2026-05-14, SO-250 audit) — drawing source enum ───────────
+  describe("source: 'drawing' on drawing-dominant inputs (SO-250 Fix #3)", () => {
+    const drawingBlock =
+      'PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2\n' +
+      'OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3';
+
+    it('SO-250 Block D drawing transcript tags concrete_class with source=drawing', () => {
+      const r = extractFromText(drawingBlock);
+      const cc = findParam(r, 'concrete_class');
+      expect(cc).toBeDefined();
+      expect(cc!.source).toBe('drawing');
+      expect(cc!.confidence).toBeLessThanOrEqual(0.85);
+    });
+
+    it('SO-250 Block D drawing transcript tags exposure_classes with source=drawing', () => {
+      const r = extractFromText(drawingBlock);
+      const ec = findParam(r, 'exposure_classes');
+      expect(ec).toBeDefined();
+      expect(ec!.source).toBe('drawing');
+    });
+
+    it('TZ prose stays on source=regex (regression-pin)', () => {
+      // Block B prose excerpt — no ALL-CAPS + TKP signal.
+      const prose = 'Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.';
+      const r = extractFromText(prose);
+      const cc = findParam(r, 'concrete_class');
+      expect(cc!.source).toBe('regex');
+      expect(cc!.confidence).toBe(1.0);
+    });
+  });
+
+  // ─── Fix #0 (2026-05-14, SO-250 audit) — element-type chain order ───────
+  describe('element_type if/else ordering (SO-250 Fix #0)', () => {
+    it('SO-250 Block D OCR: "OPĚRNÁ ZEĎ ŘÍMSA …" classifies as operne_zdi (not rimsa)', () => {
+      // Block D transcript mixes both keywords on different lines.
+      // Pre-fix, the 1-word `rimsa` test fired first (norm() strips
+      // diacritics → "rimsa" substring). Now the more specific 2-word
+      // `opern\w* + zd|zed|sten` pattern is checked first.
+      const text =
+        'PODKLADNÍ BETON  C12/15 — X0\n' +
+        'OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4\n' +
+        'OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2\n' +
+        'OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4';
+      const r = extractFromText(text);
+      const p = findParam(r, 'element_type');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('operne_zdi');
+    });
+
+    it('plain "ŘÍMSOVÁ DESKA" still classifies as rimsa (fallback preserved)', () => {
+      // Regression-pin: when no opern + zd/zed/sten compound match is
+      // present, the chain falls through to the rimsa branch.
+      const r = extractFromText('ŘÍMSOVÁ DESKA z C30/37 XF4');
+      const p = findParam(r, 'element_type');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('rimsa');
     });
   });
 });
