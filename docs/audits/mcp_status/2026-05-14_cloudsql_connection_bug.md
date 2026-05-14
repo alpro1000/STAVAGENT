@@ -5,9 +5,157 @@
 **Status:** P1 bug — `/api/v1/mcp/auth/register` returns 500 in prod.
 **Tracked separately from CSC; not a CSC blocker.**
 
+**Status:** ✅ **RESOLVED 2026-05-14 17:50 UTC.** Root cause was none of the
+five hypotheses below — it was a **schema mismatch** between the
+manually-applied production tables and the canonical migration
+(`007_mcp_api_keys.sql`). See §0 below for the post-mortem.
+
 ---
 
-## 1. Symptom
+## 0. Post-mortem (added 2026-05-14, after fix)
+
+### What actually was the bug
+
+The error log surfaced by the diagnostic added in PR #1148 (commit
+`a5d4150`) was:
+
+```
+psycopg2.errors.UndefinedColumn: column "user_email" does not exist
+  at /app/app/mcp/auth.py:213  (INSERT INTO mcp_api_keys (user_email, …))
+```
+
+i.e. **the Cloud SQL connection worked perfectly all along** — psycopg2
+reached the database, ran the `INSERT`, and PostgreSQL rejected it
+because the `mcp_api_keys` table in production had a column named
+**`email`**, not `user_email` as the migration file and Python code both
+expected.
+
+The production tables had been hand-created earlier (per
+`migration_log.md` §1: *"Tables manually created via psql"*) with a
+schema that diverged from `migrations/007_mcp_api_keys.sql`:
+
+| Component | Migration file (`007_mcp_api_keys.sql`) | Production reality (pre-fix) |
+|---|---|---|
+| `mcp_api_keys.email_column` | `user_email TEXT NOT NULL UNIQUE` | `email TEXT NOT NULL UNIQUE` |
+| Credit log table name | `mcp_credit_log` | `mcp_credit_transactions` |
+| Credit log FK | `api_key_id INTEGER REFERENCES mcp_api_keys(id)` | `api_key TEXT REFERENCES mcp_api_keys(api_key)` |
+| `total_credits_used` / `total_credits_purchased` | present | absent |
+
+### Why the misleading ENOENT symptom never appeared
+
+The initial bug report cited a different stack trace —
+`psycopg2.OperationalError: connection to server on socket … No such
+file or directory` — which is what triggered the entire five-hypothesis
+infra investigation in §2. By the time PR #1148 deployed (after a fresh
+revision picked up `--set-cloudsql-instances` from `cloudbuild-concrete.yaml`),
+the socket-level issue had cleared on its own (likely a transient Cloud
+SQL Auth Proxy sidecar restart) and the *real, code-level* schema-mismatch
+exception became visible.
+
+**The diagnostic added in PR #1148 worked exactly as designed.** Without
+the structured ERROR log + sanitized DSN line, we would have stayed
+stuck on the wrong cause. The new diagnostic surfaced the schema error
+*at the first request after deploy*; the resolution path took ~30 minutes
+from "hypothesis tree didn't match" to "production endpoint returns 200".
+
+### Resolution applied (manual, via Cloud SQL Proxy)
+
+User connected to `stavagent-db` through `cloud-sql-proxy` on localhost
+port 9470, then ran:
+
+```sql
+BEGIN;
+DROP TABLE IF EXISTS mcp_credit_log CASCADE;
+DROP TABLE IF EXISTS mcp_credit_transactions CASCADE;
+DROP TABLE IF EXISTS mcp_api_keys CASCADE;
+
+-- Apply the canonical schema from migrations/007_mcp_api_keys.sql
+CREATE TABLE mcp_api_keys (
+    id SERIAL PRIMARY KEY,
+    user_email TEXT NOT NULL UNIQUE,
+    api_key TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    credits INTEGER NOT NULL DEFAULT 200,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    last_used_at TIMESTAMPTZ,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    total_credits_used INTEGER NOT NULL DEFAULT 0,
+    total_credits_purchased INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX idx_mcp_api_keys_key ON mcp_api_keys(api_key);
+CREATE INDEX idx_mcp_api_keys_email ON mcp_api_keys(user_email);
+
+CREATE TABLE mcp_credit_log (
+    id SERIAL PRIMARY KEY,
+    api_key_id INTEGER NOT NULL REFERENCES mcp_api_keys(id) ON DELETE CASCADE,
+    tool_name TEXT NOT NULL,
+    credits_used INTEGER NOT NULL,
+    credits_remaining INTEGER NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_mcp_credit_log_key_id ON mcp_credit_log(api_key_id);
+CREATE INDEX idx_mcp_credit_log_created ON mcp_credit_log(created_at);
+COMMIT;
+```
+
+Smoke-test immediately after:
+
+```
+$ curl -X POST .../api/v1/mcp/auth/register \
+       -d '{"email":"test5@stavagent.cz","password":"…"}'
+{"api_key":"sk-stavagent-…","credits":200,"email":"test5@stavagent.cz","status":"created"}
+```
+
+### Five hypotheses retro-mapped against the actual cause
+
+| # | Hypothesis (§2) | Was it the actual cause? |
+|---|-----------------|--------------------------|
+| 1 | `+asyncpg` prefix | No — code already strips it; the connection succeeded. |
+| 2 | Empty password (auth) | No — auth never failed; psycopg2 connected and ran the query. |
+| 3 | Cloud SQL Auth Proxy sidecar not starting | No — the socket was present at request time. |
+| 4 | Trailing-newline in Secret Manager | No — DSN was clean. |
+| 5 | Cold-start race | No — even warm requests failed deterministically. |
+| — | **Schema mismatch (production table vs migration file)** | **Yes.** Not in the original hypothesis tree because the symptom (ENOENT) pointed exclusively at the socket layer. |
+
+### What still needs fixing (carry-over for next PR)
+
+1. **The cloudbuild migration step is a no-op.** Lines 86–104 of
+   `cloudbuild-concrete.yaml` run `psql -f migrations/007_…sql` from a
+   Cloud Build VM that has **no `/cloudsql/` socket mount** — the psql
+   invocation always falls through to `|| echo "skipped"` and returns
+   green. That's why the original hand-crafted schema was never
+   replaced. Replace with either:
+   - A **Cloud Run job** that uses the same image + Cloud SQL annotation
+     as the running service (so `/cloudsql/INSTANCE/.s.PGSQL.5432` is
+     mounted), invoked from cloudbuild via `gcloud run jobs execute`.
+   - An **app-side startup migration** (Alembic `upgrade head` in the
+     FastAPI lifespan) that runs once per cold-start; idempotent, hits
+     the same Cloud SQL socket the app itself uses.
+
+2. **Drift detection.** Add a startup health check that compares the
+   live `information_schema.columns` for `mcp_api_keys` against an
+   expected column-name list. Fail fast with a clear message if the
+   table is missing `user_email` or `total_credits_used` — instead of
+   waiting for the first `register()` request to surface it.
+
+3. **The mismatched original schema is gone** — no rollback path
+   needed. `migration_log.md` user decision from PR #1147 was *"Zero
+   prod users — safe to wipe"*, which still holds.
+
+### Validation that PR #1148 was worth shipping
+
+Even though PR #1148 fixed *none of the hypotheses it targeted* (because
+none was the actual cause), its **diagnostic improvements were the only
+reason we identified the real bug within minutes** instead of hours.
+Without the sanitized-DSN log + ENOENT-specific ERROR line, the failure
+mode would have changed from socket-level to schema-level with no
+visible signal, and the next on-call would have re-read the same
+hypothesis tree. The `.strip()` and `--set-cloudsql-instances` changes
+remain defensive value-adds for unrelated future failure modes.
+
+---
+
+
 
 `POST /api/v1/mcp/auth/register` (and any other endpoint that calls into
 `mcp_auth`) returns HTTP 500. Cloud Run logs:
