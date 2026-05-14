@@ -233,6 +233,45 @@ async def mcp_health():
     }
 
 
+# ── OAuth 2.0 Authorization Server Metadata (RFC 8414 + OIDC Discovery) ────
+#
+# ChatGPT custom connectors refuse to register MCP servers that don't expose
+# discovery, and Claude.ai probes the same well-known paths. We advertise the
+# already-existing `client_credentials` token endpoint at three URLs that
+# different clients are known to probe:
+#
+#   1. /.well-known/oauth-authorization-server   — RFC 8414 standard
+#   2. /.well-known/openid-configuration         — OIDC Discovery (ChatGPT
+#                                                  fallback per spec)
+#   3. /mcp/.well-known/oauth-authorization-server — path-under-mount form
+#                                                    that some clients try
+#
+# All three return the same payload. Issuer + token_endpoint are computed
+# from `request.base_url` so the handler works in dev/staging/prod without
+# any env coupling. The `/mcp/.well-known/...` route MUST come before
+# `app.mount("/mcp", …)` below — same Starlette ordering rule as `/mcp/health`.
+#
+# Public endpoints (no auth) — discovery is by definition pre-authentication.
+# This task does NOT add `authorization_code` / PKCE flows; those are
+# separate tasks. See `app/api/oauth_discovery.py` for the metadata builder.
+from app.api.oauth_discovery import build_oauth_metadata  # noqa: E402
+
+
+@app.get("/.well-known/oauth-authorization-server")
+async def oauth_authorization_server_metadata(request: Request):
+    return build_oauth_metadata(request)
+
+
+@app.get("/.well-known/openid-configuration")
+async def openid_configuration(request: Request):
+    return build_oauth_metadata(request)
+
+
+@app.get("/mcp/.well-known/oauth-authorization-server")
+async def mcp_oauth_authorization_server_metadata(request: Request):
+    return build_oauth_metadata(request)
+
+
 # Mount MCP server (its lifespan is already wired into the FastAPI lifespan above)
 if _mcp_http_app is not None:
     app.mount("/mcp", MCPOriginMiddleware(_mcp_http_app))
