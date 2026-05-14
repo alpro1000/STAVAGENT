@@ -12,7 +12,12 @@ import {
 } from './tz-text-extractor';
 
 function findParam(results: ExtractedParam[], name: string): ExtractedParam | undefined {
-  return results.find(r => r.name === name);
+  // Fix #1 (2026-05-14): scoped entries (element_scope set) are a strict
+  // ADDITION to the flat primary — prefer the flat one when both exist so
+  // legacy tests + consumers that don't care about scoping see the same
+  // shape as before.
+  return results.find(r => r.name === name && !r.element_scope)
+      ?? results.find(r => r.name === name);
 }
 
 describe('TZ Text Extractor', () => {
@@ -624,6 +629,58 @@ Celkový objem 605 m³ dle rozpočtu.
       const plural = findParam(r, 'exposure_classes');
       expect(plural).toBeDefined();
       expect((plural as any).alternatives).toBeUndefined();
+    });
+  });
+
+  // ─── Fix #1 (2026-05-14, SO-250 audit) — element_scope tagging ─────────
+  describe('element_scope tagging (SO-250 Fix #1)', () => {
+    const drawingBlock =
+      'PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2\n' +
+      'OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3\n' +
+      'OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3';
+
+    it('SO-250 Block D: 4 scoped concrete_class entries (one per element)', () => {
+      const r = extractFromText(drawingBlock);
+      const scoped = r.filter(p => p.name === 'concrete_class' && p.element_scope);
+      // Expect podkladni_beton=C12/15, drik=C30/37, zaklad=C25/30, rimsa=C30/37
+      const byScope = Object.fromEntries(scoped.map(p => [p.element_scope, p.value]));
+      expect(byScope.podkladni_beton).toBe('C12/15');
+      expect(byScope.drik).toBe('C30/37');
+      expect(byScope.zaklad).toBe('C25/30');
+      expect(byScope.rimsa).toBe('C30/37');
+    });
+
+    it('SO-250 Block D: scoped exposure_classes per element', () => {
+      const r = extractFromText(drawingBlock);
+      const byScope = Object.fromEntries(
+        r.filter(p => p.name === 'exposure_classes' && p.element_scope)
+         .map(p => [p.element_scope, p.value as string[]]),
+      );
+      expect(byScope.podkladni_beton).toEqual(['X0']);
+      expect(byScope.zaklad?.sort()).toEqual(['XA2', 'XC2', 'XF3']);
+      expect(byScope.rimsa?.sort()).toEqual(['XC4', 'XD3', 'XF4']);
+    });
+
+    it('flat concrete_class + exposure_classes entries still emitted (backward compat)', () => {
+      const r = extractFromText(drawingBlock);
+      const flatCC = r.find(p => p.name === 'concrete_class' && !p.element_scope);
+      const flatEC = r.find(p => p.name === 'exposure_classes' && !p.element_scope);
+      expect(flatCC).toBeDefined();
+      expect(flatEC).toBeDefined();
+    });
+
+    it('TZ prose with mixed elements: per-sentence scoping works', () => {
+      const prose =
+        'Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2. ' +
+        'Dřík konstrukce je z betonu C30/37 XF4, XD3.';
+      const r = extractFromText(prose);
+      const byScope = Object.fromEntries(
+        r.filter(p => p.name === 'concrete_class' && p.element_scope)
+         .map(p => [p.element_scope, p.value]),
+      );
+      expect(byScope.podkladni_beton).toBe('C25/30');
+      expect(byScope.drik).toBe('C30/37');
     });
   });
 

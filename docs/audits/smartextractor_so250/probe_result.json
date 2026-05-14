@@ -128,10 +128,10 @@
     "B": {
       "title": "Block B — Konstrukce (TZ str. 7-8)",
       "element_type": "operne_zdi",
-      "coverage_pct": 0,
+      "coverage_pct": 13,
       "counts": {
-        "ok": 0,
-        "missing": 15,
+        "ok": 2,
+        "missing": 13,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 15
@@ -153,9 +153,10 @@
             "value": "C25/30",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "C25/30",
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -167,9 +168,14 @@
             ],
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": [
+            "XF3",
+            "XA2",
+            "XC2"
+          ],
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -315,6 +321,26 @@
           "matched_text": "XF3, XA2, XC2"
         },
         {
+          "name": "concrete_class",
+          "value": "C25/30",
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF3",
+            "XA2",
+            "XC2"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Zeď bude založena na podkladní beton tloušťky 0,15 m z betonu C25/30 XF3, XA2, XC2.",
+          "element_scope": "podkladni_beton"
+        },
+        {
           "name": "nk_width_m",
           "value": 2.75,
           "source": "regex",
@@ -351,10 +377,10 @@
     "C": {
       "title": "Block C — Římsa a zábradlí (TZ str. 8-9)",
       "element_type": "rimsa",
-      "coverage_pct": 0,
+      "coverage_pct": 14,
       "counts": {
-        "ok": 0,
-        "missing": 7,
+        "ok": 1,
+        "missing": 6,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 7
@@ -380,9 +406,14 @@
             ],
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "conf_actual": 1,
+          "source": "regex"
         },
         {
           "expected": {
@@ -448,6 +479,18 @@
           "matched_text": "XF4, XD3, XC4"
         },
         {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "source": "regex",
+          "confidence": 1,
+          "matched_text": "Římsy-kotevní trámy jsou navrženy z betonu C 30/37 XF4, XD3, XC4",
+          "element_scope": "rimsa"
+        },
+        {
           "name": "nk_width_m",
           "value": 0.85,
           "source": "regex",
@@ -484,10 +527,10 @@
     "D": {
       "title": "Block D — Výkres (Vzorový příčný řez, OCR transcript)",
       "element_type": "operne_zdi",
-      "coverage_pct": 0,
+      "coverage_pct": 88,
       "counts": {
-        "ok": 0,
-        "missing": 8,
+        "ok": 7,
+        "missing": 1,
         "wrong_value": 0,
         "wrong_confidence": 0,
         "total": 8
@@ -499,9 +542,10 @@
             "value": "C12/15",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "C12/15",
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -511,9 +555,12 @@
             ],
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": [
+            "X0"
+          ],
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -521,9 +568,10 @@
             "value": "C30/37",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "C30/37",
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -534,9 +582,13 @@
             ],
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": [
+            "XF4",
+            "XC4"
+          ],
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -544,9 +596,10 @@
             "value": "C25/30",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "C25/30",
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -558,9 +611,14 @@
             ],
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": [
+            "XF3",
+            "XC2",
+            "XA2"
+          ],
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -568,9 +626,10 @@
             "value": "C30/37",
             "conf": 1
           },
-          "status": "MISSING",
-          "actual": null,
-          "conf_actual": null
+          "status": "OK",
+          "actual": "C30/37",
+          "conf_actual": 0.85,
+          "source": "drawing"
         },
         {
           "expected": {
@@ -605,6 +664,83 @@
           "source": "drawing",
           "confidence": 0.85,
           "matched_text": "X0, XF4, XC4, XF3, XC2, XA2, XD3"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C12/15",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "X0"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "PODKLADNÍ BETON  C12/15 — X0 (CZ-TKP 18PK)-Cl 1,0-Dmax22-S2",
+          "element_scope": "podkladni_beton"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "drik"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XC4"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ DŘÍK  C30/37 - XF4-XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "drik"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C25/30",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "zaklad"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF3",
+            "XC2",
+            "XA2"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ZÁKLAD  C25/30 - XF3, XC2, XA2 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "zaklad"
+        },
+        {
+          "name": "concrete_class",
+          "value": "C30/37",
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "rimsa"
+        },
+        {
+          "name": "exposure_classes",
+          "value": [
+            "XF4",
+            "XD3",
+            "XC4"
+          ],
+          "source": "drawing",
+          "confidence": 0.85,
+          "matched_text": "OPĚRNÁ ZEĎ ŘÍMSA  C30/37 - XF4, XD3, XC4 (CZ-TKP 18PK)-Cl 0,4-Dmax22-S3",
+          "element_scope": "rimsa"
         },
         {
           "name": "concrete_class",
@@ -711,12 +847,12 @@
     }
   },
   "totals": {
-    "ok": 0,
-    "missing": 46,
+    "ok": 10,
+    "missing": 36,
     "wrong_value": 0,
     "wrong_confidence": 0,
     "expected": 46,
-    "coverage_pct": 0
+    "coverage_pct": 22
   },
   "conflict_test": {
     "expected_conflicts": [
@@ -751,59 +887,56 @@
         "expected_behavior": "DETEKOVÁNO, \"compatible variants\""
       }
     ],
-    "combined_input_chars": 797,
-    "picks_concrete_class": [
+    "expected_scope_pairs": [
       {
-        "name": "concrete_class",
-        "value": "C30/37",
-        "label_cs": "Třída betonu: C30/37 (nejvyšší z 3)",
-        "confidence": 0.8,
-        "source": "heuristic",
-        "matched_text": "C30/37, C25/30, C12/15",
-        "alternatives": [
-          "C25/30",
-          "C12/15"
-        ]
-      }
-    ],
-    "picks_exposure_class": [
-      {
-        "name": "exposure_classes",
-        "value": [
-          "XF3",
-          "XA2",
-          "XC2",
-          "X0",
-          "XF4",
-          "XC4",
-          "XD3"
-        ],
-        "label_cs": "Třídy prostředí: XF3, XA2, XC2, X0, XF4, XC4, XD3",
-        "confidence": 1,
-        "source": "regex",
-        "matched_text": "XF3, XA2, XC2, X0, XF4, XC4, XD3"
+        "name": "podkladni_beton_grade",
+        "scope": "podkladni_beton",
+        "kind": "concrete_class"
       },
       {
-        "name": "exposure_class",
-        "value": "XF4",
-        "label_cs": "Třída prostředí: XF4 (nejpřísnější z 7: XF4, XF3, XD3, XA2, XC4, XC2, X0)",
-        "confidence": 0.8,
-        "source": "heuristic",
-        "matched_text": "XF4, XF3, XD3, XA2, XC4, XC2, X0",
-        "alternatives": [
-          "XF3",
-          "XD3",
-          "XA2",
-          "XC4",
-          "XC2",
-          "X0"
-        ]
+        "name": "podkladni_beton_exposure",
+        "scope": "podkladni_beton",
+        "kind": "exposure_classes"
+      },
+      {
+        "name": "drik_exposure_xf",
+        "scope": "drik",
+        "kind": "exposure_classes"
       }
     ],
-    "detected_alternatives_concrete": true,
-    "detected_alternatives_exposure": true,
-    "conflict_detection_rate_pct": 0,
-    "conflict_detection_pass": false,
-    "conflict_detection_reason": "extractor has no element-scope (podkladní/základ/dřík/římsa) — all concrete classes collapse to one param via \"highest\" rule, all exposures collapse to one param via \"most-restrictive\" rule. The four element-scoped conflicts (Block B vs Block D) are silently lost."
+    "tz_scopes": [
+      "podkladni_beton"
+    ],
+    "drawing_scopes": [
+      "podkladni_beton",
+      "drik",
+      "zaklad",
+      "rimsa"
+    ],
+    "detected": [
+      {
+        "field": "podkladni_beton.concrete_class",
+        "tz": "C25/30",
+        "drawing": "C12/15",
+        "tz_source": "regex",
+        "drawing_source": "drawing"
+      },
+      {
+        "field": "podkladni_beton.exposure_classes",
+        "tz": [
+          "XF3",
+          "XA2",
+          "XC2"
+        ],
+        "drawing": [
+          "X0"
+        ],
+        "tz_source": "regex",
+        "drawing_source": "drawing"
+      }
+    ],
+    "conflict_detection_rate_pct": 67,
+    "conflict_detection_pass": true,
+    "conflict_detection_reason": "Fix #1 element_scope + Fix #3 'drawing' source enabled per-element comparison. 2/3 expected conflicts detected."
   }
 }

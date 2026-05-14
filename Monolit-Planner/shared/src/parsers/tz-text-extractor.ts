@@ -52,6 +52,20 @@ export interface ExtractedParam {
   source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line' | 'drawing';
   /** Original matched text snippet */
   matched_text: string;
+  /**
+   * Fix #1 (2026-05-14, SO-250 audit): which element the value belongs to
+   * inside the source document. Filled when the line/sentence containing
+   * the match has a recognized anchor keyword (podkladní beton / základ /
+   * dřík / římsa / kotevní trám / zábradlí). The global flat
+   * `concrete_class` / `exposure_classes` entries stay (backward compat
+   * for existing consumers); scoped entries are emitted in addition.
+   *
+   * Consumer rule: when an UI knows the user's intent (e.g. they clicked
+   * "fill from TZ" while editing the dřík row), pick the entry with
+   * `element_scope === 'drik'`. When intent is unknown, fall back to the
+   * unscoped primary.
+   */
+  element_scope?: 'podkladni_beton' | 'zaklad' | 'drik' | 'rimsa' | 'zabradli' | 'kotevni_tram';
   /** Catalog type when value originated from a budget/smeta line */
   catalog?: CatalogType;
   /** OTSKP/URS code that produced this value (smeta_line source only) */
@@ -138,6 +152,41 @@ export function isDrawingDominant(text: string): boolean {
   if (lines.length === 0) return false;
   const drawingLines = lines.filter(isDrawingLine).length;
   return drawingLines / lines.length >= 0.6;
+}
+
+// ─── Element-scope anchors (Fix #1, 2026-05-14) ────────────────────────────
+
+/**
+ * Anchor keywords for per-element scoping. Order matters: more specific
+ * anchors (`podkladn`, `drik`, `rimsa`, `kotevni tram`, `zabradl`) are
+ * tested before the generic `zaklad`, so a line like "Základy ze ŽB do
+ * C25/30 pro podkladní beton tloušťky 0,15 m" snaps to `podkladni_beton`,
+ * not to `zaklad`. The whole match operates on `norm()`-ed text so
+ * diacritics don't matter.
+ */
+const ELEMENT_ANCHORS: Array<{
+  re: RegExp;
+  scope: NonNullable<ExtractedParam['element_scope']>;
+}> = [
+  { re: /\bpodkladn\w*\s+beton|podkladn\w*\s+vrstv/, scope: 'podkladni_beton' },
+  { re: /\bdrik\b|\bdriku\b|\bdriky\b/,              scope: 'drik' },
+  { re: /\brims\w*\b/,                               scope: 'rimsa' },
+  { re: /\bkotevn\w*\s+tram\b/,                      scope: 'kotevni_tram' },
+  { re: /\bzabradl\w*\b/,                            scope: 'zabradli' },
+  // Generic "základ" must come LAST — many sentences mention "základ" in
+  // passing ("zeď bude založena na podkladní beton") but the dominant
+  // anchor there is podkladn, not zaklad.
+  { re: /\bzaklad\w*\b/,                             scope: 'zaklad' },
+];
+
+/** Find the strongest element anchor in a normalized text segment. */
+export function detectElementScope(
+  normalized: string,
+): NonNullable<ExtractedParam['element_scope']> | undefined {
+  for (const { re, scope } of ELEMENT_ANCHORS) {
+    if (re.test(normalized)) return scope;
+  }
+  return undefined;
 }
 
 // ─── Czech number parsing ───────────────────────────────────────────────────
@@ -484,6 +533,81 @@ export function extractFromText(
       matched_text: sorted.join(', '),
       alternatives: exposures.size > 1 ? sorted.slice(1) : undefined,
     });
+  }
+
+  // 2b. Per-element scoping (Fix #1, 2026-05-14, SO-250 audit).
+  //
+  // The flat `concrete_class` + `exposure_classes` entries above collapse
+  // multi-element documents (Block D with 4 separate betonáže legendas,
+  // Block B prose mentioning podkladní + base + dřík in one paragraph)
+  // down to one "highest" pick — silently losing the per-element breakdown
+  // a rozpočtář needs. This sweep emits ADDITIONAL scoped entries (the
+  // flat primary stays for backward compat) so the consumer UI can ask
+  // "what's the concrete class for the dřík specifically?" and get the
+  // right answer.
+  //
+  // The split granularity is per-line for drawing-dominant inputs (Block
+  // D legendas, each line = one element) and per-sentence for prose (TZ
+  // paragraph mentions multiple elements separated by periods). We use
+  // both passes — the per-line pass catches the drawing case, the
+  // per-sentence pass catches the prose case; same scope is emitted only
+  // once per unique value.
+  const seenScopeValue = new Set<string>(); // "name|scope|value"
+  const segments: Array<{ raw: string; norm: string }> = [];
+  for (const line of text.split(/\r?\n/)) {
+    if (line.trim()) segments.push({ raw: line, norm: norm(line) });
+  }
+  // Per-sentence pass: split each line on ". " into sub-segments.
+  for (const line of text.split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    for (const sentence of line.split(/(?<=[.;])\s+/)) {
+      if (sentence.trim().length > 0 && !segments.some(s => s.raw === sentence)) {
+        segments.push({ raw: sentence, norm: norm(sentence) });
+      }
+    }
+  }
+  for (const seg of segments) {
+    const scope = detectElementScope(seg.norm);
+    if (!scope) continue;
+    const isSegDrawing = isDrawingLine(seg.raw);
+    const segRegexSource: ExtractedParam['source'] = isSegDrawing ? 'drawing' : 'regex';
+    const segRegexConf = isSegDrawing ? 0.85 : 1.0;
+    // Concrete class in this segment.
+    const segConcreteMatches = [...seg.raw.matchAll(/C(\d{2})\/(\d{2,3})/g)].map(mm => mm[0]);
+    if (segConcreteMatches.length > 0) {
+      // For drawing legendas, the single class on the line is the canonical
+      // one for that element. For prose, multiple classes can appear in
+      // one sentence — emit the first (line-order) since prose typically
+      // names the element first then its class.
+      const cls = segConcreteMatches[0];
+      const key = `concrete_class|${scope}|${cls}`;
+      if (!seenScopeValue.has(key)) {
+        seenScopeValue.add(key);
+        results.push({
+          name: 'concrete_class', value: cls,
+          label_cs: `Třída betonu (${scope}): ${cls}`,
+          confidence: segRegexConf, source: segRegexSource,
+          matched_text: seg.raw.trim(),
+          element_scope: scope,
+        });
+      }
+    }
+    // Exposure classes in this segment.
+    const segExposures = [...seg.raw.matchAll(/\bX(?:0|C[1-4]|D[1-3]|F[1-4]|A[1-3]|M[1-3]|S[1-3])\b/g)].map(mm => mm[0]);
+    if (segExposures.length > 0) {
+      const uniq = [...new Set(segExposures)];
+      const key = `exposure_classes|${scope}|${uniq.join(',')}`;
+      if (!seenScopeValue.has(key)) {
+        seenScopeValue.add(key);
+        results.push({
+          name: 'exposure_classes', value: uniq,
+          label_cs: `Třídy prostředí (${scope}): ${uniq.join(', ')}`,
+          confidence: segRegexConf, source: segRegexSource,
+          matched_text: seg.raw.trim(),
+          element_scope: scope,
+        });
+      }
+    }
   }
 
   // 3. Span pattern: "15 + 4 × 20 + 15 m" or "15.000 + 4 x 20.000 + 15.000"
