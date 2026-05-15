@@ -411,3 +411,66 @@ def test_allowlist_helper_localhost_gated_by_env(monkeypatch):
     assert not mcp_oauth_codes.is_allowed_redirect_uri("http://localhost:9999/cb")
     monkeypatch.setenv("MCP_OAUTH_ALLOW_LOCALHOST_REDIRECT", "1")
     assert mcp_oauth_codes.is_allowed_redirect_uri("http://localhost:9999/cb")
+
+
+# ── PKCE input hardening (CWE-20 / CWE-755 from amazon-q PR review) ─────────
+
+def test_pkce_s256_helper_rejects_non_ascii_verifier():
+    """Non-ASCII code_verifier violates RFC 7636 §4.1 — helper must
+    raise ValueError so the caller can map it to invalid_grant instead
+    of leaking a UnicodeEncodeError 500."""
+    with pytest.raises(ValueError):
+        mcp_oauth_codes._pkce_s256("verifier-with-emoji-🚀")
+
+
+@requires_db
+def test_token_non_ascii_verifier_returns_invalid_grant(client, api_key):
+    """End-to-end: non-ASCII verifier on /token produces a 400
+    invalid_grant indistinguishable from a genuine digest mismatch
+    (CWE-20). No 500, no traceback in the response."""
+    _, challenge = _make_pkce_pair()
+    auth = client.get("/api/v1/mcp/oauth/authorize", params={
+        "response_type": "code",
+        "client_id": api_key,
+        "redirect_uri": REDIRECT,
+        "code_challenge": challenge,
+        "code_challenge_method": "S256",
+    })
+    code = parse_qs(urlparse(auth.headers["location"]).query)["code"][0]
+
+    r = client.post("/api/v1/mcp/oauth/token", data={
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": REDIRECT,
+        "code_verifier": "verifier-with-emoji-🚀",
+    })
+    assert r.status_code == 400
+    body = r.json()
+    assert body["detail"]["error"] == "invalid_grant"
+    assert body["detail"]["error_description"] == "code_verifier mismatch"
+
+
+# ── /authorize rate limiting (CWE-307 from amazon-q PR review) ──────────────
+
+def test_authorize_rate_limit_after_burst(client):
+    """11th /authorize call from the same IP within 60 s returns 429
+    so an attacker can't enumerate API keys by spraying random
+    client_id values."""
+    _, challenge = _make_pkce_pair()
+    params = {
+        "response_type": "code",
+        "client_id": "sk-stavagent-doesnotexist",
+        "redirect_uri": "https://chatgpt.com/connector/oauth/probe",
+        "code_challenge": challenge,
+        "code_challenge_method": "S256",
+    }
+    # First RATE_LIMIT_MAX (10) requests pass the bucket. The
+    # in-memory store is reset by the autouse fixture so we start at 0.
+    for _ in range(mcp_auth.RATE_LIMIT_MAX):
+        # Each may 302 (allowlisted redirect_uri + missing client_id →
+        # error redirect) or 400 — what matters is that the bucket fills.
+        client.get("/api/v1/mcp/oauth/authorize", params=params)
+
+    r = client.get("/api/v1/mcp/oauth/authorize", params=params)
+    assert r.status_code == 429
+    assert r.json()["detail"]["error"] == "temporarily_unavailable"

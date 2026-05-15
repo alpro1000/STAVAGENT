@@ -157,6 +157,7 @@ async def get_credits(authorization: Optional[str] = Header(None)):
 
 @router.get("/oauth/authorize")
 async def oauth_authorize(
+    request: Request,
     response_type: str = Query(...),
     client_id: str = Query(...),
     redirect_uri: str = Query(...),
@@ -175,6 +176,20 @@ async def oauth_authorize(
     user pastes it into the ChatGPT / Claude.ai connector config UI;
     the third party then calls this endpoint with it.
     """
+    # ── Per-IP rate limit (CWE-307: prevents API-key enumeration via
+    #    spraying random client_id values). Reuses the same in-memory
+    #    bucket as register/login (10 req / 60 s). Rejected BEFORE
+    #    parameter parsing so a malformed-by-design probe still counts
+    #    against the budget.
+    client_ip = request.client.host if request.client else "unknown"
+    if not mcp_auth._check_rate_limit(f"authorize:{client_ip}"):
+        raise HTTPException(
+            status_code=429,
+            detail={"error": "temporarily_unavailable",
+                    "error_description":
+                        "Too many authorization requests. Try again later."},
+        )
+
     # ── Parameter validation (return user-visible errors, not redirects,
     #    so the misconfiguration is obvious in the browser tab). RFC 6749
     #    §4.1.2.1 says to redirect with `error=` only when redirect_uri

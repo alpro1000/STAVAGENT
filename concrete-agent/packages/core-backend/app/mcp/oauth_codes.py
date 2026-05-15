@@ -75,8 +75,19 @@ def is_allowed_redirect_uri(redirect_uri: str) -> bool:
 # ── PKCE ────────────────────────────────────────────────────────────────────
 
 def _pkce_s256(code_verifier: str) -> str:
-    """RFC 7636 §4.2: BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))."""
-    digest = hashlib.sha256(code_verifier.encode("ascii")).digest()
+    """RFC 7636 §4.2: BASE64URL-ENCODE(SHA256(ASCII(code_verifier))).
+
+    `code_verifier` per §4.1 is restricted to `[A-Z][a-z][0-9]-._~` (ASCII).
+    Non-ASCII input is a malformed request — raise ValueError so the
+    caller can map it to an OAuth `invalid_grant` response instead of
+    bubbling a 500 with a `UnicodeEncodeError` traceback.
+    """
+    try:
+        digest = hashlib.sha256(code_verifier.encode("ascii")).digest()
+    except UnicodeEncodeError as exc:
+        raise ValueError(
+            "code_verifier must contain only ASCII characters per RFC 7636 §4.1"
+        ) from exc
     return base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")
 
 
@@ -187,7 +198,19 @@ def consume_code(
             return {"ok": False, "error": "invalid_grant",
                     "error_description": "Unsupported code_challenge_method"}
 
-        if _pkce_s256(code_verifier) != row["code_challenge"]:
+        # Catch ASCII-encoding error from `_pkce_s256` and collapse it
+        # into the same `invalid_grant` / "code_verifier mismatch" path
+        # so an attacker can't distinguish "non-ASCII rejected" from
+        # "digest didn't match" via response shape (preserves the same
+        # constant-time-ish guarantee the timing-attack reorder gave us).
+        try:
+            verifier_digest = _pkce_s256(code_verifier)
+        except ValueError:
+            conn.rollback()
+            return {"ok": False, "error": "invalid_grant",
+                    "error_description": "code_verifier mismatch"}
+
+        if verifier_digest != row["code_challenge"]:
             conn.rollback()
             return {"ok": False, "error": "invalid_grant",
                     "error_description": "code_verifier mismatch"}
