@@ -22,7 +22,7 @@ The hackathon (Google for Startups AI Agents Challenge, deadline **June 5, 2026 
 
 **Recommended track: Track 1 (Build Net-New)** — build a thin ADK + Gemini Flash agent layer that uses the existing 9 MCP tools to autonomously process a Czech construction tender. Track 2 fails the "existing prototype" gate (no agent exists to optimize). Track 3 needs Marketplace + Gemini Enterprise certification (4-step process, weeks of paperwork) which is unrealistic in 21 days alongside Cemex CSC pitch (Jun 28) and Žihle tender (Jul 2).
 
-**Key risk to surface up front:** the strategic source documents Alexander cited in the brief — `STAVAGENT_Master_Brief.md`, `STAVAGENT_Competitive_Landscape_Cemex_CSC.md`, `STAVAGENT_DACH_Addendum.md`, `TASK_MCP_*.md` — **do not exist in the repository under those names**. Either they live outside the repo (chat/Drive) or use different filenames. This document proceeds on what was verifiable; open question §10 asks where to find them.
+**Note on source documents:** the strategic docs cited in the brief (`STAVAGENT_Competitive_Landscape_Cemex_CSC.md`, `STAVAGENT_DACH_Addendum.md`) were not in the repo at initial inventory but were subsequently provided directly. They are now reflected in §3 (competitive analysis), §6 (submission positioning) and §9 (Cemex synergy). The MCP task docs (`TASK_MCP_*.md`) and `Master_Brief` / `Project_Knowledge_Snapshot` remain unprovided — open question O-1 narrowed accordingly.
 
 **Decision recommended to Alexander:** register for $500 credits regardless; commit to Track 1 only if you can protect 30h/week without breaking Cemex/Žihle critical path; otherwise treat hackathon as forcing function to ship ADK agent layer that doubles as Cemex demo asset.
 
@@ -71,19 +71,37 @@ Per Google Cloud Blog 1 (canonical track descriptions, exact wording):
 
 ---
 
-## 4. Competitive Analysis (Gemini Enterprise launch partners)
+## 4. Competitive Analysis
 
-Across all 40+ named Gemini Enterprise launch partners [Source 3], **zero are in construction, AEC, civil engineering, preconstruction, or cost-estimation**. Closest adjacencies:
-- Watershed — sustainability/ESG (not estimating)
-- Industrility — manufacturing aftersales (not construction)
-- Stord — logistics/supply chain
-- Manhattan, Pluto7, Devoteam — supply chain
+### 4.1 Gemini Enterprise launch partners (40+ named) [Source 3]
 
-Verticals saturated: cybersecurity (5 partners), sales/CRM (4), HR (2), IT ops (4), marketing (4), financial services (4), supply chain (6), healthcare (4), dev tools (3).
+**Zero are in construction, AEC, civil engineering, preconstruction, or cost-estimation.** Closest adjacencies: Watershed (sustainability/ESG), Industrility (manufacturing aftersales), Stord/Manhattan/Pluto7 (supply chain). Saturated verticals: cybersecurity (5), sales/CRM (4), HR (2), IT ops (4), marketing (4), financial services (4), supply chain (6), healthcare (4), dev tools (3).
 
-**Implication:** STAVAGENT, as a Czech/Slovak civil-construction tender agent built on the existing MCP tool ecosystem, would be the **first AEC agent in the Gemini Enterprise ecosystem**. This is a defensible Innovation 20% angle even with a relatively thin agentic layer — judges are pattern-matching against repetitive verticals.
+**Implication:** STAVAGENT would be the **first AEC agent in the Gemini Enterprise ecosystem** — a defensible Innovation 20% angle even with a relatively thin agentic layer because judges pattern-match against repetitive verticals.
 
-**Caveat on competitive intel:** The Devpost public registry of submitted entries is gated by login (goo.gle/486nbl4 returned 403 to anonymous fetch). Density of construction submissions inside the hackathon itself is unverifiable until Alexander registers and inspects the submission gallery. Expected outcome: very few or none, given the broader market gap.
+**Caveat:** Devpost public registry of submissions is gated (goo.gle/486nbl4 → 403 anonymous). Density of construction entries inside the hackathon itself is unverifiable until registration; expected outcome: very few or none.
+
+### 4.2 Broader preconstruction-tech competitive structure (from `STAVAGENT_Competitive_Landscape_Cemex_CSC.md`)
+
+The hackathon submission lives inside a 5-tier market structure. None of the five tiers occupies STAVAGENT's exact slot (multi-vendor AI co-pilot, CZ/SK regulatory compliance, end-to-end document→bid→schedule):
+
+| Tier | Examples | What they do | What they don't do — STAVAGENT's wedge |
+|---|---|---|---|
+| 1 — Vendor calculators | Rigips Profikalkulátor, DOKA Tipos 9 / Easy Formwork Planner, PERI CAD + apps, Hilti PROFIS | Free, polished, single-catalog leadgen tools | Single vendor only; user re-keys output into KROS by hand |
+| 2 — AI tender/bid-response | AItenders (FR), mytender.io (UK), AI TENDERINGMANAGER (DE), Brainial, Document Crunch | Read RFP, extract requirements, draft proposal | Stop at proposal — no priced BoQ in ÚRS/OTSKP, no crew, no schedule |
+| 3 — Regional BoQ incumbents | **KROS 4 (~13,500 CZ licenses)**, Callida euroCALC, RTSrozp; BKI / STLB-Bau / SIRADOS / NPK in DACH | Catalog-bound položkový rozpočet, ZZVZ-compliant | Zero AI extraction; manual item picking; no production engineering |
+| 4 — 5D BIM enterprise | RIB iTWO 4.0 / iTWO costX (Schneider Electric €1.4B), Kreo (UK), Trimble | Model-based 5D BoQ, BIM-driven | Requires BIM-mature workflow; enterprise pricing; SMB inaccessible |
+| 5 — AI field execution | **Trunk Tools ($70M Ser A+B)**, Procore, Buildots | Post-tender field AI: RFI / submittal / schedule Q&A | Post-tender only; not the estimator workflow |
+
+**Two competitor references the submission MUST cite for credibility:**
+- **Trunk Tools** — $70M raised on the "vertical AI for construction" thesis (post-tender side). Validates investor conviction in the category. STAVAGENT positions as **same thesis applied to the preconstruction side** — the slot Trunk Tools deliberately doesn't fill.
+- **KROS 4** — the incumbent STAVAGENT must coexist with. ~13,500 paid CZ licenses; the submission must explicitly say "we feed KROS, we do not replace KROS" to be credible to construction-industry judges.
+
+**Implication for Innovation 20% scoring:** the agent narrative isn't just "construction is unserved in Gemini Enterprise" — it's also "the closest analog (Trunk Tools at $70M) operates the opposite phase of the same workflow; this submission completes the picture." Two-step credibility frame.
+
+### 4.3 DACH adjacency note (from `STAVAGENT_DACH_Addendum.md`)
+
+The DACH market is structurally different (GAEB X81–X86 mandatory data exchange, STLB-Bau gov-mandated since 1998, BKI/SIRADOS catalogs, DIN 276 cost groups) and entry is a 6–12 month investment in catalog/format adaptation. **This is explicitly out of scope for the 3-week hackathon runway** — the submission proposes a CZ/SK-grounded agent with DACH as a roadmap slide, not implemented surface. Mentioned because if Cemex CSC follow-up surfaces a Cemex Deutschland angle (Cemex is a large DE ready-mix player), the agent's MCP-tool architecture is the right substrate for adding GAEB intake/emit as additional tools later.
 
 ---
 
@@ -116,8 +134,9 @@ Czech and Slovak D&B contractor's **přípravář (preparation engineer) / rozpo
 
 ### Business problem solved
 - **Žihle Most 2062-1 evidence (pilot):** 154 položek across 6 SO, 10.59M Kč without VAT, 100% audit-trail coverage, 16 reconciliation flags vs user manual SO_201_JŠ.xls, 4 explicit ZD §4.4.l exclusions, completed in 4 phases — equivalent manual work is ~40–80 person-hours. [Source: `test-data/most-2062-1-zihle/00_PROJECT_SUMMARY.md`]
-- **Market opportunity:** Czech/Slovak public construction tenders ~250B Kč/year. ~3,000 D&B contractor estimators. Currently served by KROS (~50% market share), Kalkulus, RTS BUILDpower — none of which are AI-native.
-- **Why an agent (not a feature in an existing tool):** existing tools are deterministic spreadsheet GUIs. An agent that *autonomously decides what to extract, classify, calculate, cross-check, and flag* is a category move that incumbents cannot replicate in a sprint.
+- **Market opportunity:** Czech/Slovak public construction tenders. KROS alone has **~13,500 active commercial licenses + ~3,700 educational** in CZ — i.e., the de facto national standard [Source: `STAVAGENT_Competitive_Landscape_Cemex_CSC.md` §3.1]. Currently served by KROS, Callida euroCALC, RTSrozp — **none AI-native**.
+- **Why an agent (not a feature in an existing tool):** the closest precedent is Trunk Tools, which raised $70M on the "vertical AI for construction" thesis but deliberately operates the *post-tender field* side. AItenders (FR) and mytender.io (UK) read tender documents but stop at proposal text. **No tool in the market today decides autonomously, end-to-end, what to extract → classify → price in ÚRS/OTSKP → cross-validate against soupis → flag reconciliation gaps.** KROS prices what the user types; this agent decides what to type.
+- **Positioning frame the submission must hold (per `STAVAGENT_Competitive_Landscape_Cemex_CSC.md`):** "AI layer on top of regional incumbents, multi-vendor neutral." STAVAGENT feeds KROS via XLS / uniXML export — it does not displace it. This frame survives Czech construction-industry scrutiny *and* the Cemex CSC pitch 23 days later.
 
 ### Agentic behavior (this is the Technical 30% story)
 The agent, when given a tender package, autonomously:
@@ -181,25 +200,31 @@ The demo's narrative weight is the **comparison: 40 hours manual → 8 minutes a
 
 ## 9. Cemex CSC Synergy / Conflict Analysis
 
-The Cemex CSC pitch deadline is **June 28, 2026** — 23 days after the hackathon submission. The hackathon work directly **strengthens** the Cemex pitch under three conditions, and creates a manageable conflict under one.
+The Cemex CSC pitch deadline is **June 28, 2026** — 23 days after the hackathon submission. The hackathon work directly **strengthens** all three positioning angles already proposed in `STAVAGENT_Competitive_Landscape_Cemex_CSC.md` §"Implications for the Cemex CSC pitch", and creates one manageable conflict.
 
-**Synergies:**
-1. **Same demo, two audiences.** The Žihle live-replay video produced for Devpost is the same artifact Cemex needs to see "what STAVAGENT actually does on a real tender". Save 5–8 hours of Cemex deck demo-prep.
-2. **Validated MCP + ADK story.** If Cemex's procurement / IT side asks "does this integrate with our existing systems?", an MCP-native agent answers that question structurally. Cemex's own systems (concrete dispatch, SAP, fleet) can expose MCP tools the agent can call alongside STAVAGENT's — this is the "agent-as-integration-layer" pitch, much stronger than "we are an AI tool".
-3. **Innovation-narrative reinforcement.** "First AEC agent in the Gemini Enterprise ecosystem" is a defensible Innovation claim for both audiences.
+### 9.1 Map of three positioning angles ↔ hackathon submission
 
-**Potential conflict (manageable):**
-- **Vertical positioning.** Devpost submission must claim a clear single-vertical (civil construction estimating). Cemex CSC may want to be positioned as a foundational customer in a broader platform play (cement supply integration → estimation → procurement). These are not contradictory but require careful language: the **Devpost narrative** is "agent for tender estimation"; the **Cemex deck** says "STAVAGENT is the estimation layer, Cemex CSC is the concrete-supply layer, both share the same agent-friendly MCP foundation". Same product, different slices for different audiences.
+| Cemex CSC angle (from competitive landscape doc) | How the Google submission reinforces it |
+|---|---|
+| **Angle 1 — "Neutral aggregator."** Cemex's CSC partner watchlist (Ferrovial, VINCI Leonard, Hilti, Trimble) favors partners who distribute producer catalogs without locking customers in. | The agent's MCP architecture is *natively* multi-vendor: it can call `find_otskp_code`, `find_urs_code`, and (future) `cemex_catalog_lookup` interchangeably. The submission demo can include Cemex's concrete-grade catalog as a tool the agent picks autonomously when classifying ready-mix items — proves the neutrality claim with a live workflow, not a slide. |
+| **Angle 2 — "AI layer on top of regional incumbents."** STAVAGENT feeds KROS / BKI / BEDEC, doesn't replace them. | The agent's final step in the Žihle demo is **XLS / uniXML export to KROS format**. Showing the agent autonomously producing a KROS-ingestible artifact closes the "but how does my team actually use this" objection from both judges and Cemex's GC audience. |
+| **Angle 3 — "SMB AI vs. enterprise BIM."** Trunk Tools at $70M validated vertical AI; RIB iTWO at €1.4B validated enterprise; the SMB segment is uncovered. | The agent is deliberately designed for the 5- to 50-person přípravář shop that cannot afford iTWO and cannot wait for a BIM model. The Žihle case (a real SÚSPK D&B tender) is precisely this user. One demo serves both narratives. |
 
-**Direct reusable assets from Google submission for Cemex deck:**
-- Demo video (1:1 reuse)
-- Žihle 10.59M Kč master soupis + reconciliation report (1:1 reuse — both audiences want to see real numbers)
-- Agent decision-log visualization (Cemex IT will value seeing the "brain" not just the output)
-- Architecture diagram (agent → MCP server → 9 tools → KB)
-- Market-gap slide (zero AEC partners in Gemini Enterprise launch)
+### 9.2 Direct reusable assets from Google submission for Cemex deck
 
-**Direct conflict items to neutralize:**
-- Any wording in Devpost suggesting "general construction platform" should be moderated to "tender estimation agent" — keeps Cemex deck free to expand the scope.
+- Demo video (1:1 reuse — same Žihle workflow, same artifact)
+- Žihle 10.59M Kč master soupis + 16-flag reconciliation report (both audiences want real numbers)
+- Agent decision-log visualization (Cemex IT will value seeing the "brain" structure, not just the output table)
+- Architecture diagram (agent → MCP server → 9 tools → Czech KB → KROS-compatible export)
+- Two slides in the Google submission write-up are 1:1 reusable as Cemex deck slides:
+  - **"The estimator's day today vs with STAVAGENT"** (already in §"Implications for Cemex CSC pitch")
+  - **"Trunk Tools at $70M validates vertical AI — STAVAGENT does the same for preconstruction"**
+- Market-gap slide (zero AEC partners in Gemini Enterprise launch — fresh data point not in the existing Cemex competitive landscape doc)
+
+### 9.3 Conflict items to neutralize
+
+- **Vertical width.** Devpost submission claims a single vertical (civil construction estimating); Cemex pitch wants STAVAGENT positioned as a broader concrete-supply integration partner. Resolve by saying in Devpost: "tender estimation agent for civil construction"; saying in Cemex deck: "STAVAGENT is the estimation layer; Cemex CSC concrete catalog is the supply layer; both share the same MCP-native agent foundation." Same product, different audience slice.
+- **DACH expansion timing.** The `STAVAGENT_DACH_Addendum.md` notes Cemex Deutschland is a major DE ready-mix player and that DACH adaptation is 6–12 months of GAEB/STLB/DIN work. Do NOT promise DACH in the Devpost submission (out of scope, out of timeline). DO mention it in the Cemex deck as a 12-month roadmap item conditioned on partnership.
 
 ---
 
@@ -209,7 +234,7 @@ Decisions required before starting Week 1:
 
 | # | Question | Why it blocks start | Who answers |
 |---|---|---|---|
-| **O-1** | Where are the strategic source documents named in the brief (`STAVAGENT_Master_Brief.md`, `STAVAGENT_Competitive_Landscape_Cemex_CSC.md` + `_RU.md`, `STAVAGENT_DACH_Addendum.md`, `TASK_MCP_Server_AllModules.md` and three siblings)? None exist in the repository under those names. | Without them, the Cemex synergy analysis (§9) is inferred not grounded, and DACH expansion angle for the submission narrative is unverified. | Alexander — provide path or attach |
+| **O-1** | ~~Strategic source documents not in repo.~~ **PARTIALLY RESOLVED**: `STAVAGENT_Competitive_Landscape_Cemex_CSC.md` and `STAVAGENT_DACH_Addendum.md` provided directly and integrated into §3 / §6 / §9. Still missing: `STAVAGENT_Master_Brief.md`, `STAVAGENT_Project_Knowledge_Snapshot.md`, four `TASK_MCP_*.md` documents. Confirm whether these exist elsewhere (Drive / chat / older repo branch) or whether `MASTER_PLAN.md` + the MCP context inside CLAUDE.md are the authoritative substitutes. | Affects only completeness of provenance trail, not the analysis conclusions. | Alexander — confirm or attach |
 | **O-2** | What is STAVAGENT's legal entity status for Google for Startups eligibility? Incorporated (s.r.o. / Ltd.)? Sole proprietor (OSVČ)? Pre-incorporation? | Risk R2. If ineligible, the entire submission strategy collapses to "claim $500 credits, reuse work for Cemex". | Alexander |
 | **O-3** | Agent name — "StavAgent Přípravář" (Czech-native) or "BidScout for Civil Construction" (English-native)? Or other? | Affects branding consistency between hackathon and Cemex deck. | Alexander |
 | **O-4** | Demo video language — Czech with English subtitles, or English with Czech subtitles, or fully English? Judges are global; primary user is Czech. | Affects video production time (Wk 3 budget). | Alexander |
@@ -227,6 +252,8 @@ Decisions required before starting Week 1:
 3. Google Cloud Blog — "Partner-built agents available in Gemini Enterprise" — <https://cloud.google.com/blog/products/ai-machine-learning/partner-built-agents-available-in-gemini-enterprise>
 4. Devpost registration — <https://goo.gle/486nbl4> (gated, requires registration for per-track rules and eligibility specifics)
 5. STAVAGENT repo — `CLAUDE.md`, `concrete-agent/packages/core-backend/app/mcp/`, `Monolit-Planner/shared/src/calculators/`, `test-data/most-2062-1-zihle/`, `.github/workflows/`, `cloudbuild-*.yaml` (verified 2026-05-15)
+6. `STAVAGENT_Competitive_Landscape_Cemex_CSC.md` — 5-tier preconstruction-tech landscape; KROS license count; Trunk Tools / iTWO / Kreo / AItenders profiles; three Cemex positioning angles (provided directly, dated 2026-05-15)
+7. `STAVAGENT_DACH_Addendum.md` — DACH catalog stack (BKI / STLB-Bau / SIRADOS / Heinze); AVA software tier (SIDOUN / AVA.relax / NEVARIS); AT (ÖNORM) and CH (NPK) specifics; GAEB X81–X86 entry requirement (provided directly, dated 2026-05-15)
 
 ---
 
