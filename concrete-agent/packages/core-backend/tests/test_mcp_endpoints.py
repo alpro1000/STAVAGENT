@@ -254,3 +254,76 @@ def test_cors_exposes_www_authenticate_on_401_mcp_response(client):
     assert "www-authenticate" in exposed, (
         f"401 from /mcp/ omits `WWW-Authenticate` from expose-headers (got: {expose!r})"
     )
+
+
+# ── /mcp/ mount-level CORS (defensive double-wrap) ──────────────────────────
+#
+# Added 2026-05-14: the /mcp/ ASGI sub-app gets its OWN CORSMiddleware
+# instance wrapped around MCPAuthChallengeMiddleware + MCPOriginMiddleware
+# in app/main.py, in addition to the outer app-level CORSMiddleware. The
+# motivation isn't that outer middlewares fail to wrap mounts — Starlette
+# does wrap them — it's defence-in-depth: if a future middleware insertion
+# order change or a FastMCP upgrade ever caused a missed pass at the outer
+# layer, the mount-level wrap still guarantees the OAuth discovery
+# headers reach the browser. Tests below pin both behaviours:
+#
+#   1. POST /mcp/ from claude.ai / chatgpt.com gets Access-Control-Allow-Origin
+#      echoed back AND WWW-Authenticate exposed via expose-headers.
+#   2. OPTIONS preflight for POST /mcp/ from those origins returns 200.
+
+def test_mount_cors_post_mcp_with_claude_origin(client):
+    """Anonymous POST /mcp/ from claude.ai must reply 401 (RFC 9728) with
+    BOTH `Access-Control-Allow-Origin: https://claude.ai` AND
+    `Access-Control-Expose-Headers` naming `WWW-Authenticate`. Browser JS
+    in the connector pop-up depends on the combination to read the
+    challenge."""
+    r = client.post(
+        "/mcp/",
+        json={"jsonrpc": "2.0", "method": "ping", "id": 1},
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 401, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+    expose = r.headers.get("access-control-expose-headers", "")
+    assert "www-authenticate" in {h.strip().lower() for h in expose.split(",")}
+    assert "Bearer" in r.headers.get("www-authenticate", "")
+
+
+def test_mount_cors_post_mcp_with_chatgpt_origin(client):
+    """Same check for chatgpt.com origin."""
+    r = client.post(
+        "/mcp/",
+        json={"jsonrpc": "2.0", "method": "ping", "id": 1},
+        headers={"origin": "https://chatgpt.com"},
+    )
+    assert r.status_code == 401, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://chatgpt.com"
+
+
+def test_mount_cors_preflight_options_mcp(client):
+    """Browser CORS preflight before POST /mcp/ must succeed (200) and
+    carry the matching Access-Control-Allow-Origin so the actual POST is
+    permitted to fire."""
+    r = client.options(
+        "/mcp/",
+        headers={
+            "origin": "https://claude.ai",
+            "access-control-request-method": "POST",
+            "access-control-request-headers": "authorization, content-type",
+        },
+    )
+    assert r.status_code == 200, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+
+
+def test_mount_cors_rejects_unknown_origin_on_mcp(client):
+    """The mount-level CORS isn't a wildcard — random origins get no
+    matching `Access-Control-Allow-Origin` echo, so browser JS will
+    refuse to expose the response. Server still returns the 401 + body
+    (curl tests can read it), but the CORS gate stays closed."""
+    r = client.post(
+        "/mcp/",
+        json={"jsonrpc": "2.0", "method": "ping", "id": 1},
+        headers={"origin": "https://evil.example"},
+    )
+    assert r.headers.get("access-control-allow-origin") != "https://evil.example"
