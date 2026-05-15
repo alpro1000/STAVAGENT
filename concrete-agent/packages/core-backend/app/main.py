@@ -270,8 +270,26 @@ async def mcp_health():
 def _oauth_discovery_payload(request) -> dict:
     """Build the discovery JSON. Issuer is derived from the incoming
     request so the same code works in dev (`http://localhost:8000`),
-    Cloud Run preview revisions, and the production custom domain."""
-    base = str(request.base_url).rstrip("/")
+    Cloud Run preview revisions, and the production custom domain.
+
+    Cloud Run terminates TLS at the edge load balancer and forwards
+    plain HTTP to the container, so `request.url.scheme == "http"`
+    even when the public URL is `https://...`. ChatGPT and Claude.ai
+    refuse to register a connector whose OAuth metadata advertises
+    `http://` endpoints, so we honour the standard `X-Forwarded-Proto`
+    hop header (set by Google's front-end) before falling back to
+    Starlette's view of the scheme. Local dev without a proxy keeps
+    `http://localhost:8000` because the header isn't present there.
+    """
+    forwarded_proto = (
+        request.headers.get("x-forwarded-proto", "").split(",")[0].strip().lower()
+    )
+    if forwarded_proto in ("http", "https"):
+        scheme = forwarded_proto
+    else:
+        scheme = request.url.scheme
+    base_url = request.base_url.replace(scheme=scheme)
+    base = str(base_url).rstrip("/")
     return {
         "issuer": base,
         "authorization_endpoint": f"{base}/api/v1/mcp/oauth/authorize",

@@ -118,6 +118,59 @@ def test_discovery_issuer_uses_request_origin(client):
     assert body["issuer"].endswith("example.test") or "example.test" in body["issuer"]
 
 
+def test_discovery_honours_x_forwarded_proto_https(client):
+    """Cloud Run terminates TLS at the edge — forwards plain HTTP to the
+    container with X-Forwarded-Proto: https. ChatGPT + Claude.ai reject
+    connectors whose discovery JSON advertises http:// endpoints, so the
+    handler must rewrite the scheme from the hop header."""
+    r = client.get(
+        "/.well-known/oauth-authorization-server",
+        headers={"x-forwarded-proto": "https",
+                 "host": "concrete-agent.example.com"},
+    )
+    body = r.json()
+    assert body["issuer"].startswith("https://"), body["issuer"]
+    assert body["authorization_endpoint"].startswith("https://"), \
+        body["authorization_endpoint"]
+    assert body["token_endpoint"].startswith("https://"), body["token_endpoint"]
+
+
+def test_discovery_x_forwarded_proto_chain_picks_first():
+    """A multi-hop chain like `https,http` (uncommon, but possible behind
+    nested proxies) must use the first entry — that's the client-facing
+    scheme per RFC 7239 / the de-facto X-Forwarded-Proto convention."""
+    from fastapi.testclient import TestClient
+    from app.main import app
+    c = TestClient(app, follow_redirects=False)
+    r = c.get(
+        "/.well-known/oauth-authorization-server",
+        headers={"x-forwarded-proto": "https, http",
+                 "host": "concrete-agent.example.com"},
+    )
+    assert r.json()["issuer"].startswith("https://")
+
+
+def test_discovery_falls_back_to_request_scheme_without_header(client):
+    """Local dev (uvicorn directly, no proxy) sends no X-Forwarded-Proto,
+    so the handler must keep working with the request's own scheme."""
+    r = client.get("/.well-known/oauth-authorization-server")
+    body = r.json()
+    # TestClient defaults to http://testserver; no proxy header → http
+    assert body["issuer"].startswith("http://"), body["issuer"]
+
+
+def test_discovery_ignores_garbage_x_forwarded_proto(client):
+    """Defence-in-depth: if a compromised intermediary or a misconfigured
+    proxy sends `X-Forwarded-Proto: gopher` we must NOT advertise that.
+    Fall back to the request's own scheme."""
+    r = client.get(
+        "/.well-known/oauth-authorization-server",
+        headers={"x-forwarded-proto": "gopher"},
+    )
+    body = r.json()
+    assert body["issuer"].startswith("http://"), body["issuer"]
+
+
 # ── /authorize parameter validation ─────────────────────────────────────────
 
 def test_authorize_rejects_wrong_response_type(client):
