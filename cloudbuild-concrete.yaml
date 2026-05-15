@@ -107,10 +107,21 @@ steps:
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
 
-availableSecrets:
-  secretManager:
-    - versionName: projects/$PROJECT_ID/secrets/CONCRETE_DATABASE_URL/versions/latest
-      env: CONCRETE_DATABASE_URL
+# NOTE 2026-05-14 — the previous `availableSecrets.CONCRETE_DATABASE_URL`
+# binding was consumed by the now-removed psql migration step (see the
+# block comment above, and PR #1154). With that step gone, no remaining
+# step uses `secretEnv: CONCRETE_DATABASE_URL` or `$$CONCRETE_DATABASE_URL`,
+# so Cloud Build rejects the build with
+# `invalid secrets: secretEnv CONCRETE_DATABASE_URL is defined without being used`.
+#
+# The Cloud Run-side binding on line 92 (`--update-secrets=...,DATABASE_URL=
+# CONCRETE_DATABASE_URL:latest,...`) is *not* a Cloud Build secretEnv — it's
+# a `gcloud run deploy` flag that reads the Secret Manager secret directly
+# at runtime. That continues to work without `availableSecrets:`.
+#
+# Future migration approach (Cloud Run Job or app-side runner) is a
+# separate backlog item — see docs/audits/mcp_status/migration_log.md
+# "Carry-over: replace the cloudbuild psql step" §2-3.
 
 timeout: 3600s
 options:
