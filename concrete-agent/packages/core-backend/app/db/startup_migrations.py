@@ -47,6 +47,7 @@ from __future__ import annotations
 import logging
 import os
 import re
+import time
 from pathlib import Path
 from typing import Iterable
 
@@ -59,6 +60,18 @@ logger = logging.getLogger(__name__)
 # "stavagent.mcp.startup_migrations" and trimming to 63 bits to fit in a
 # signed bigint (Postgres advisory-lock keys are bigints).
 _MIGRATION_LOCK_KEY = 8479_3162_5045_1287
+
+# ── Connect / statement timeouts (added 2026-05-14 after revision
+#    concrete-agent-00324 failed the Cloud Run port-bind probe because
+#    psycopg2.connect hung forever waiting on the cloudsql-proxy sidecar
+#    socket to appear). Both budgets are tight enough that worst-case
+#    startup (3 retries × 10 s + 30 s statements) still fits inside the
+#    240 s Cloud Run startup deadline with margin for KB load + MCP init.
+
+_CONNECT_TIMEOUT_S = 10
+_STATEMENT_TIMEOUT_MS = 30_000  # 30 s — generous for migrations + drift check
+_CONNECT_RETRIES = 3
+_CONNECT_RETRY_DELAY_S = 5
 
 # Critical columns the code unconditionally references; drift-check fails
 # fast if any are absent. Sourced from `app/mcp/auth.py` SQL strings.
@@ -86,6 +99,72 @@ def _resolve_dsn() -> str:
             "need Cloud SQL Postgres."
         )
     return url.replace("postgresql+asyncpg://", "postgresql://", 1)
+
+
+# ─── Connection helper with bounded timeouts + retry ───────────────────────
+
+def _open_connection(dsn: str) -> psycopg2.extensions.connection:
+    """Connect to Postgres with bounded `connect_timeout` + retry-on-transient.
+
+    Cloud Run's `cloudsql-proxy` sidecar may not be fully mounted when
+    the application container starts its FastAPI lifespan. The Unix
+    socket at `/cloudsql/INSTANCE/.s.PGSQL.5432` typically appears a few
+    seconds after the container, so an immediate connect raises
+    `psycopg2.OperationalError: ... No such file or directory`. The
+    original code passed no `connect_timeout`, so a flaky sidecar could
+    block the connect call indefinitely — past the 240 s Cloud Run
+    startup probe deadline — and the port never bound.
+
+    Strategy:
+      1. `connect_timeout=10` — fail individual attempts fast.
+      2. Retry up to `_CONNECT_RETRIES` times on transient OperationalError
+         (ENOENT on the socket, "Connection refused", or libpq's
+         "timeout expired"). Total budget ≈ 30 s.
+      3. Server-side `SET statement_timeout` so a stuck
+         `pg_advisory_lock()` or any single migration statement can't
+         hang the lifespan indefinitely either.
+    """
+    last_exc: Exception | None = None
+    for attempt in range(1, _CONNECT_RETRIES + 1):
+        try:
+            conn = psycopg2.connect(dsn, connect_timeout=_CONNECT_TIMEOUT_S)
+        except psycopg2.OperationalError as exc:
+            last_exc = exc
+            msg = str(exc)
+            transient = (
+                "No such file or directory" in msg
+                or "Connection refused" in msg
+                or "timeout expired" in msg
+            )
+            if attempt < _CONNECT_RETRIES and transient:
+                logger.warning(
+                    "[startup-migrations] Cloud SQL connect attempt %d/%d "
+                    "failed (transient: %s) — retrying in %ds",
+                    attempt, _CONNECT_RETRIES,
+                    (msg.splitlines()[0] if msg else "?")[:160],
+                    _CONNECT_RETRY_DELAY_S,
+                )
+                time.sleep(_CONNECT_RETRY_DELAY_S)
+                continue
+            # Non-transient OR final attempt — surface clearly.
+            logger.error(
+                "[startup-migrations] Cloud SQL connect failed after %d "
+                "attempt(s): %s",
+                attempt, (msg.splitlines()[0] if msg else "?")[:160],
+            )
+            raise
+        else:
+            # Bound every subsequent query so a stuck lock can't outlive
+            # the Cloud Run startup probe. SET at session level
+            # (autocommit is flipped on later in `apply_pending_migrations`).
+            with conn.cursor() as cur:
+                cur.execute(f"SET statement_timeout = {_STATEMENT_TIMEOUT_MS}")
+            conn.commit()
+            return conn
+
+    # Defensive: loop must have raised or returned. If it didn't, surface
+    # the last seen exception so the caller knows what happened.
+    raise last_exc or RuntimeError("startup migrations: connect failed without exception")
 
 
 # ─── Migration runner ──────────────────────────────────────────────────────
@@ -168,13 +247,14 @@ def apply_pending_migrations(
         logger.info("[startup-migrations] no migration files found at %s", migrations_dir)
         return []
 
-    conn = psycopg2.connect(dsn or _resolve_dsn())
+    conn = _open_connection(dsn or _resolve_dsn())
     try:
         # Autocommit so the session-level advisory lock isn't bound to an
         # implicit transaction (and so each migration in `_apply_one` can
         # manage its own BEGIN/COMMIT — some files may include statements
         # like `CREATE INDEX CONCURRENTLY` that can't run inside an outer
-        # transaction).
+        # transaction). `statement_timeout` set by `_open_connection`
+        # survives the autocommit flip because it's a session-level GUC.
         conn.autocommit = True
 
         # Session-level advisory lock — released only by pg_advisory_unlock
@@ -233,7 +313,7 @@ def assert_critical_schema(*, dsn: str | None = None) -> None:
     pairs if the check fails. The FastAPI lifespan will propagate this
     and Cloud Run will roll back to the previous revision.
     """
-    conn = psycopg2.connect(dsn or _resolve_dsn())
+    conn = _open_connection(dsn or _resolve_dsn())
     try:
         missing: list[str] = []
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
