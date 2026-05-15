@@ -205,3 +205,52 @@ def test_cors_unknown_origin_still_rejected(client):
     )
     # Starlette returns 400 for a rejected preflight.
     assert r.headers.get("access-control-allow-origin") != "https://evil.example"
+
+
+# ── Expose-Headers for WWW-Authenticate (RFC 9728 browser-discovery) ────────
+#
+# Added 2026-05-14: ChatGPT's OAuth pop-up and Claude.ai's connector iframe
+# both need to *read* the `WWW-Authenticate` response header from the 401 on
+# /mcp/ to extract the `resource_metadata=<URL>` hint. Browser CORS hides
+# response headers from JS by default — only the safe-listed set is
+# exposed. Without `expose_headers=["WWW-Authenticate"]` in the
+# CORSMiddleware config, the discovery chain breaks even though curl sees
+# the header just fine (curl is not subject to the CORS expose-list rule).
+
+def test_cors_exposes_www_authenticate_header(client):
+    """Preflight + actual response must advertise `WWW-Authenticate` in
+    `Access-Control-Expose-Headers` so claude.ai / chatgpt.com browser
+    contexts can read it off the 401 from /mcp/."""
+    # Hit a discovery endpoint with an Origin from the allowlist; the
+    # Expose-Headers value is emitted on every CORS-eligible response,
+    # regardless of which endpoint produced it.
+    r = client.get(
+        "/.well-known/oauth-authorization-server",
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 200, r.text
+    expose = r.headers.get("access-control-expose-headers", "")
+    # Header names in this list are comma-separated, case-insensitive.
+    exposed = {h.strip().lower() for h in expose.split(",")}
+    assert "www-authenticate" in exposed, (
+        f"`WWW-Authenticate` not in Access-Control-Expose-Headers (got: {expose!r}) — "
+        "browser-side discovery for ChatGPT/Claude.ai will fail."
+    )
+
+
+def test_cors_exposes_www_authenticate_on_401_mcp_response(client):
+    """End-to-end: an anonymous POST to /mcp/ from a CORS-eligible
+    origin must return both the `WWW-Authenticate` challenge AND the
+    Expose-Headers list naming it, so a browser pop-up can read it."""
+    r = client.post(
+        "/mcp/",
+        json={"jsonrpc": "2.0", "method": "ping", "id": 1},
+        headers={"origin": "https://chatgpt.com"},
+    )
+    assert r.status_code == 401, r.text
+    assert "Bearer" in r.headers.get("www-authenticate", "")
+    expose = r.headers.get("access-control-expose-headers", "")
+    exposed = {h.strip().lower() for h in expose.split(",")}
+    assert "www-authenticate" in exposed, (
+        f"401 from /mcp/ omits `WWW-Authenticate` from expose-headers (got: {expose!r})"
+    )
