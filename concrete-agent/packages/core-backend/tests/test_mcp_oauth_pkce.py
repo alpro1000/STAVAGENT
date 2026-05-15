@@ -497,3 +497,98 @@ def test_allowlist_helper_localhost_gated_by_env(monkeypatch):
     assert not mcp_oauth_codes.is_allowed_redirect_uri("http://localhost:9999/cb")
     monkeypatch.setenv("MCP_OAUTH_ALLOW_LOCALHOST_REDIRECT", "1")
     assert mcp_oauth_codes.is_allowed_redirect_uri("http://localhost:9999/cb")
+
+
+# ── RFC 9728 protected-resource metadata + WWW-Authenticate ────────────────
+#
+# Added 2026-05-14: ChatGPT and Claude.ai both refuse to complete connector
+# setup unless the MCP server advertises its authorization server via the
+# RFC 9728 `oauth-protected-resource` document AND replies to anonymous
+# MCP requests with a `WWW-Authenticate` challenge pointing back at that
+# document. Without these, the clients fall back to a PKCE-less legacy
+# flow, hit `/authorize` without `code_challenge`, and 400-out (no
+# security regression, but the connector save UX fails).
+#
+# All four tests below are no-auth / no-DB and run unconditionally.
+
+
+def test_protected_resource_metadata_returns_200(client):
+    r = client.get("/.well-known/oauth-protected-resource")
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["resource"].endswith("/mcp/"), body["resource"]
+    assert isinstance(body["authorization_servers"], list)
+    assert len(body["authorization_servers"]) >= 1
+    assert body["bearer_methods_supported"] == ["header"]
+    assert "mcp:tools" in body["scopes_supported"]
+
+
+def test_protected_resource_honours_x_forwarded_proto(client):
+    r = client.get(
+        "/.well-known/oauth-protected-resource",
+        headers={"x-forwarded-proto": "https", "host": "concrete.example.com"},
+    )
+    body = r.json()
+    assert body["resource"].startswith("https://"), body["resource"]
+    assert all(s.startswith("https://") for s in body["authorization_servers"])
+
+
+def test_oauth_discovery_advertises_resource_indicators_supported(client):
+    """RFC 8707 — the auth-server metadata must signal that the
+    `resource` parameter is honoured. ChatGPT inspects this flag before
+    sending `resource=<MCP URL>` on /authorize."""
+    body = client.get("/.well-known/oauth-authorization-server").json()
+    assert body.get("resource_indicators_supported") is True
+
+
+def test_mcp_endpoint_anonymous_post_returns_401_with_challenge(client):
+    """Anonymous POST to /mcp/ must 401 with a WWW-Authenticate header
+    pointing at /.well-known/oauth-protected-resource. RFC 9728 §5.3
+    + RFC 6750 §3."""
+    r = client.post("/mcp/", json={"jsonrpc": "2.0", "method": "ping", "id": 1})
+    assert r.status_code == 401, r.text
+    challenge = r.headers.get("www-authenticate", "")
+    assert challenge.startswith("Bearer"), challenge
+    assert 'realm="STAVAGENT MCP"' in challenge
+    assert "resource_metadata=" in challenge
+    assert "/.well-known/oauth-protected-resource" in challenge
+    body = r.json()
+    assert body["error"] == "invalid_token"
+
+
+def test_mcp_endpoint_post_with_authorization_header_skips_challenge_gate(client):
+    """A request with ANY non-empty Authorization header bypasses the
+    middleware's active gate — the inner FastMCP app validates the
+    token. We don't assert the inner response code (it depends on
+    whether the bearer is a valid API key); we only assert the
+    middleware didn't 401 before reaching FastMCP.
+    """
+    r = client.post(
+        "/mcp/",
+        json={"jsonrpc": "2.0", "method": "ping", "id": 1},
+        headers={"authorization": "Bearer sk-stavagent-not-a-real-key"},
+    )
+    # If the middleware short-circuited, we'd see the SAME shape as
+    # `test_mcp_endpoint_anonymous_post_returns_401_with_challenge`
+    # (body.error == "invalid_token"). The pass-through path may still
+    # 401 from the inner app, but the body shape differs OR the body
+    # is empty (FastMCP often returns no JSON envelope). Either way,
+    # we treat "didn't hit our gate" as the asserted property.
+    if r.status_code == 401:
+        body_text = r.text or ""
+        # Our gate's body contains this exact error_description.
+        assert "MCP endpoint requires an OAuth 2.0 bearer token" not in body_text, (
+            "Middleware gate fired despite Authorization header being present"
+        )
+
+
+def test_mcp_endpoint_get_passes_through_no_gate(client):
+    """The active gate only applies to write methods. GET (e.g. SSE
+    handshake probes) must pass through to FastMCP unmodified."""
+    r = client.get("/mcp/")
+    # FastMCP may 200, 404, 405, or 406 depending on its routing —
+    # what we care about is that the request was NOT intercepted by
+    # our 401 gate with the invalid_token body.
+    if r.status_code == 401:
+        body_text = r.text or ""
+        assert "MCP endpoint requires an OAuth 2.0 bearer token" not in body_text
