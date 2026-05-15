@@ -55,7 +55,7 @@ import psycopg2.extras
 
 logger = logging.getLogger(__name__)
 
-# Stable 64-bit key for `pg_advisory_xact_lock`. Chosen by hashing
+# Stable 64-bit key for `pg_advisory_lock`. Chosen by hashing
 # "stavagent.mcp.startup_migrations" and trimming to 63 bits to fit in a
 # signed bigint (Postgres advisory-lock keys are bigints).
 _MIGRATION_LOCK_KEY = 8479_3162_5045_1287
@@ -170,33 +170,40 @@ def apply_pending_migrations(
 
     conn = psycopg2.connect(dsn or _resolve_dsn())
     try:
-        conn.autocommit = False
-        _ensure_tracking_table(conn)
+        # Autocommit so the session-level advisory lock isn't bound to an
+        # implicit transaction (and so each migration in `_apply_one` can
+        # manage its own BEGIN/COMMIT — some files may include statements
+        # like `CREATE INDEX CONCURRENTLY` that can't run inside an outer
+        # transaction).
+        conn.autocommit = True
 
-        # Hold the advisory lock for the whole apply phase so two
-        # simultaneously-starting instances serialise on it.
+        # Session-level advisory lock — released only by pg_advisory_unlock
+        # or by the session ending. We hold it across BOTH the
+        # `_already_applied` check AND the `_apply_one` call for every
+        # file so two simultaneously-starting Cloud Run instances cannot
+        # both decide to apply the same migration. (The earlier xact-scoped
+        # `pg_advisory_xact_lock` was released by every per-iteration
+        # COMMIT, which left a window where instance B could read
+        # `_already_applied=False` while instance A's `_apply_one` was
+        # still mid-flight — INSERTing a duplicate `filename` PK or
+        # re-running `CREATE TABLE` and failing.)
         with conn.cursor() as cur:
-            cur.execute("BEGIN")
-            cur.execute("SELECT pg_advisory_xact_lock(%s)", (_MIGRATION_LOCK_KEY,))
+            cur.execute("SELECT pg_advisory_lock(%s)", (_MIGRATION_LOCK_KEY,))
+        try:
+            # Tracking table creation also runs under the lock so two
+            # instances can't race on `CREATE TABLE IF NOT EXISTS`.
+            _ensure_tracking_table(conn)
 
             applied: list[str] = []
             for path in files:
                 if _already_applied(conn, path.name):
                     continue
                 logger.info("[startup-migrations] applying %s", path.name)
-                # Release+commit the lock-only txn so each migration runs
-                # in its own transaction (some migrations may include
-                # `CREATE TABLE` + `CREATE INDEX CONCURRENTLY` which can't
-                # run inside a holding transaction). The advisory lock is
-                # already released by COMMIT here, but we re-take it for
-                # the next iteration.
-                cur.execute("COMMIT")
                 _apply_one(conn, path)
                 applied.append(path.name)
-                cur.execute("BEGIN")
-                cur.execute("SELECT pg_advisory_xact_lock(%s)", (_MIGRATION_LOCK_KEY,))
-
-            cur.execute("COMMIT")
+        finally:
+            with conn.cursor() as cur:
+                cur.execute("SELECT pg_advisory_unlock(%s)", (_MIGRATION_LOCK_KEY,))
 
         if applied:
             logger.info("[startup-migrations] applied %d migration(s): %s",
