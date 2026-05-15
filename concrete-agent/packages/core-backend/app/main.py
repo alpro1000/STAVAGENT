@@ -300,35 +300,50 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware - Allow all STAVAGENT services + third-party MCP clients.
-# `claude.ai` and `chatgpt.com` need explicit allow-list entries here because
-# the regex below only covers our own Vercel/Cloud Run/custom-domain origins.
-# Without them, the browser-side OAuth pop-up from these clients hits a
-# CORS_ERROR on the `/.well-known/oauth-*` and `/api/v1/mcp/oauth/*` probes
-# and the connector save flow silently aborts. The matching list of
-# allowed origins for the MCP transport endpoint itself lives in
-# `_MCP_ALLOWED_ORIGIN_PREFIXES` above — keep these two in sync.
+# CORS configuration — applied at TWO layers so a stale browser cache or a
+# future ASGI quirk in the FastMCP mount can't strip the headers:
+#
+#   1. `app.add_middleware(CORSMiddleware, ...)` wraps every request,
+#      including ones routed to the `/mcp/*` mount. This is the
+#      outer/canonical layer.
+#   2. An explicit `CORSMiddleware(...)` instance is also wrapped *around
+#      the /mcp/ mount* below — defensive belt-and-braces so the
+#      `Access-Control-Allow-Origin` + `WWW-Authenticate` headers are
+#      always present on responses from the mounted ASGI sub-app, even
+#      if a third-party middleware were inserted between them and
+#      somehow ate the outer CORS pass.
+#
+# The two layers share the same config via the `_CORS_*` constants below
+# (DRY — origins and expose-headers can't drift between layers).
+
+_CORS_ALLOW_ORIGINS = [
+    "https://claude.ai",
+    "https://chatgpt.com",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8000",
+]
+_CORS_ALLOW_ORIGIN_REGEX = (
+    r"https://.*\.(vercel\.app|run\.app)|https://(www\.)?stavagent\.cz"
+)
+# Browser CORS hides response headers from JavaScript by default — only a
+# small CORS-safelist is exposed. ChatGPT's OAuth pop-up and Claude.ai's
+# connector iframe both read `WWW-Authenticate` off the 401 from /mcp/ to
+# discover the protected-resource metadata URL (RFC 9728 §5.3). Without
+# this allow-list entry the discovery chain breaks at the browser layer
+# even though the server is correctly emitting the header (curl sees it,
+# JS doesn't).
+_CORS_EXPOSE_HEADERS = ["WWW-Authenticate"]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://.*\.(vercel\.app|run\.app)|https://(www\.)?stavagent\.cz",
-    allow_origins=[
-        "https://claude.ai",
-        "https://chatgpt.com",
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://localhost:8000",
-    ],
+    allow_origin_regex=_CORS_ALLOW_ORIGIN_REGEX,
+    allow_origins=_CORS_ALLOW_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    # Browser CORS hides response headers from JavaScript by default —
-    # only a small CORS-safelist is exposed. ChatGPT's OAuth pop-up and
-    # Claude.ai's connector iframe both read `WWW-Authenticate` off the
-    # 401 from /mcp/ to discover the protected-resource metadata URL
-    # (RFC 9728 §5.3). Without this allow-list entry the discovery
-    # chain breaks at the browser layer even though the server is
-    # correctly emitting the header (curl sees it, JS doesn't).
-    expose_headers=["WWW-Authenticate"],
+    expose_headers=_CORS_EXPOSE_HEADERS,
 )
 
 # Middleware to exclude /healthcheck from access logs
@@ -490,12 +505,46 @@ async def oauth_protected_resource(request: Request):
 
 
 # Mount MCP server (its lifespan is already wired into the FastAPI lifespan above)
+#
+# The stack from outside-in:
+#
+#   CORSMiddleware  (outer, app-level — already wraps every request)
+#       │
+#       └── CORSMiddleware  (this mount only — defensive duplicate so
+#               │            response headers are guaranteed present
+#               │            even if the outer pass is bypassed by a
+#               │            future middleware insertion order change)
+#               │
+#               └── MCPAuthChallengeMiddleware  (emits WWW-Authenticate
+#                       │                        on 401 for anonymous
+#                       │                        writes; injects header
+#                       │                        onto any inner 401)
+#                       │
+#                       └── MCPOriginMiddleware  (logs/blocks
+#                               │                 non-allowlisted Origin
+#                               │                 per Anthropic spec)
+#                               │
+#                               └── _mcp_http_app  (FastMCP — 9 tools)
+#
+# Both CORSMiddleware layers use `_CORS_ALLOW_ORIGINS` /
+# `_CORS_EXPOSE_HEADERS` so config can't drift. CORSMiddleware.send()
+# is idempotent on `Access-Control-Allow-Origin` for matched origins
+# (both layers compute the same value), so the double-wrap is safe.
 if _mcp_http_app is not None:
-    app.mount(
-        "/mcp",
-        MCPAuthChallengeMiddleware(MCPOriginMiddleware(_mcp_http_app)),
+    mcp_inner = MCPAuthChallengeMiddleware(MCPOriginMiddleware(_mcp_http_app))
+    mcp_with_cors = CORSMiddleware(
+        app=mcp_inner,
+        allow_origin_regex=_CORS_ALLOW_ORIGIN_REGEX,
+        allow_origins=_CORS_ALLOW_ORIGINS,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=_CORS_EXPOSE_HEADERS,
     )
-    logger.info("🔌 MCP server mounted at /mcp (9 tools, RFC 9728 challenge)")
+    app.mount("/mcp", mcp_with_cors)
+    logger.info(
+        "🔌 MCP server mounted at /mcp (9 tools, CORS + RFC 9728 challenge)"
+    )
 
 # MCP Auth + Billing + REST API (for GPT Actions)
 try:
