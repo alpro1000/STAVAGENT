@@ -20,9 +20,13 @@ The hackathon (Google for Startups AI Agents Challenge, deadline **June 5, 2026 
 
 **Per Google's own definition** (Gemini Enterprise blog 3): agents "execute complex, end-to-end tasks" with "deep context and memory, intelligent orchestration, and safe tool use" — explicitly NOT rigid workflows. **STAVAGENT today is a tool provider for agents, not an agent.**
 
-**Recommended track: Track 1 (Build Net-New)** — build a thin ADK + Gemini Flash agent layer that uses the existing 9 MCP tools to autonomously process a Czech construction tender. Track 2 fails the "existing prototype" gate (no agent exists to optimize). Track 3 needs Marketplace + Gemini Enterprise certification (4-step process, weeks of paperwork) which is unrealistic in 21 days alongside Cemex CSC pitch (Jun 28) and Žihle tender (Jul 2).
+**Recommended track: Track 1 (Build Net-New)** — Track 2 fails the "existing prototype" gate (no agent exists to optimize); Track 3 needs Marketplace + Gemini Enterprise certification (4-step process, weeks of paperwork), unrealistic in 21 days alongside Cemex CSC pitch (Jun 28) and Žihle tender (Jul 2).
 
-**Note on source documents:** the strategic docs cited in the brief (`STAVAGENT_Competitive_Landscape_Cemex_CSC.md`, `STAVAGENT_DACH_Addendum.md`) were not in the repo at initial inventory but were subsequently provided directly. They are now reflected in §3 (competitive analysis), §6 (submission positioning) and §9 (Cemex synergy). The MCP task docs (`TASK_MCP_*.md`) and `Master_Brief` / `Project_Knowledge_Snapshot` remain unprovided — open question O-1 narrowed accordingly.
+**Two submission variants explored:**
+- **Variant A (baseline):** thin ADK + Gemini Flash agent that autonomously processes a Czech tender via the 9 MCP tools. Safe, ~90–120h. §6 spec applies as written.
+- **Variant B (creative, recommended):** reframe the submission so that the **MCP server itself is the hero** — "engineering ground truth infrastructure for any AI agent in construction" — and the ADK agent is the demonstration that the infrastructure works. Adds a multi-client demo (Claude Desktop + Custom GPT + new ADK Gemini Flash agent all calling the same MCP server simultaneously) and a "hallucination vs ground truth" contrast. ~100–130h. Full spec in §11. This variant maps 1:1 onto the Master Brief Layer 2 narrative ("AI agents need engineering ground truth; LLMs hallucinate construction calculations; STAVAGENT is the deterministic layer agents call") and onto all three Cemex CSC positioning angles simultaneously. Recommended as the primary submission story.
+
+**Note on source documents:** strategic docs cited in the brief (`STAVAGENT_Competitive_Landscape_Cemex_CSC.md`, `STAVAGENT_DACH_Addendum.md`, `STAVAGENT_Master_Brief.md`) were not in the repo at initial inventory but were subsequently provided directly. They are now reflected in §3 (competitive analysis), §6 (Variant A submission positioning), §9 (Cemex synergy), and §11 (Variant B creative alternative). The Master Brief in particular surfaced STAVAGENT's **triple-access architecture** (UI + MCP + REST API) and the **Layer 2 narrative** ("AI agents need engineering ground truth; LLMs hallucinate construction calculations; STAVAGENT is the deterministic layer agents call") — both of which power Variant B. Four `TASK_MCP_*.md` documents and `STAVAGENT_Project_Knowledge_Snapshot.md` remain unprovided — see O-1.
 
 **Decision recommended to Alexander:** register for $500 credits regardless; commit to Track 1 only if you can protect 30h/week without breaking Cemex/Žihle critical path; otherwise treat hackathon as forcing function to ship ADK agent layer that doubles as Cemex demo asset.
 
@@ -254,7 +258,102 @@ Decisions required before starting Week 1:
 5. STAVAGENT repo — `CLAUDE.md`, `concrete-agent/packages/core-backend/app/mcp/`, `Monolit-Planner/shared/src/calculators/`, `test-data/most-2062-1-zihle/`, `.github/workflows/`, `cloudbuild-*.yaml` (verified 2026-05-15)
 6. `STAVAGENT_Competitive_Landscape_Cemex_CSC.md` — 5-tier preconstruction-tech landscape; KROS license count; Trunk Tools / iTWO / Kreo / AItenders profiles; three Cemex positioning angles (provided directly, dated 2026-05-15)
 7. `STAVAGENT_DACH_Addendum.md` — DACH catalog stack (BKI / STLB-Bau / SIRADOS / Heinze); AVA software tier (SIDOUN / AVA.relax / NEVARIS); AT (ÖNORM) and CH (NPK) specifics; GAEB X81–X86 entry requirement (provided directly, dated 2026-05-15)
+8. `STAVAGENT_Master_Brief.md` — triple-access architecture (UI + MCP + REST API); 7-engine pipeline depth (DIN 18218, Saul, RCPSP, PERT); Cemex Top 50 Contech 2026 direct competitors (Aitenders, Togal.AI, Buildcheck, ConCntric, Datagrid, SmartPM); Alice Technologies complementary positioning; Layer 2 narrative for the "engineering ground truth" framing in §11 Variant B (provided directly, dated 2026-05-04)
 
 ---
 
-*End of analysis. No code was written. Implementation begins only on Alexander's explicit go-decision against §10 open questions.*
+---
+
+## 11. Variant B — Creative Alternative: "Engineering Ground Truth Infrastructure"
+
+This section is an alternative to §6 (Submission Theme Spec) for Track 1. It was added after the `STAVAGENT_Master_Brief.md` confirmed STAVAGENT's triple-access architecture (UI + MCP + REST API) and crystallized the "agents need engineering ground truth, LLMs hallucinate construction" framing. Variant A (§6) and Variant B share runway, risks, and Cemex synergy — they differ only in narrative center of gravity and the depth of the demo.
+
+### 11.1 Re-framing
+
+**Variant A** says: "I built an agent that processes Czech tenders."
+**Variant B** says: "I built the MCP infrastructure every construction-AI agent will need. Here is one agent using it as a demonstration; here are three more clients using it in parallel; here is what happens when an LLM does not use it."
+
+The shift is from *"agent as product"* to *"infrastructure as product, agent as demonstration"*. This is the same architectural move Anthropic and Google have been advocating in 2026: build the substrate, not yet another wrapper. Judges from the Google Cloud agentic team will recognize this framing.
+
+### 11.2 Agent name and one-line
+
+Working name: **"STAVAGENT — Engineering Ground Truth for AI Agents in Construction"**.
+
+One-line: *"The MCP server that prevents construction AI hallucination — 9 deterministic engineering tools (DIN 18218 formwork pressure, Saul concrete maturity, RCPSP scheduling, multi-vendor catalog lookup) callable by Claude, GPT, Gemini, or any MCP-aware agent, demonstrated on a real €420k Czech bridge tender."*
+
+### 11.3 Agentic behavior in the demo
+
+The demo has **four parallel agent clients** consuming the same MCP server, plus **one control case without it**:
+
+1. **Claude Desktop** (existing OAuth wiring) — asks a Czech-language question about Žihle deck design; Claude routes to STAVAGENT MCP and returns engineering-grounded answer
+2. **Custom GPT** in the GPT Store (existing — already submitted per Master Brief §1.5) — same question, same correct answer via MCP
+3. **ADK + Gemini Flash agent** (the net-new build for this hackathon) — autonomously processes the full Žihle tender end-to-end, like Variant A but framed as one client of the infrastructure
+4. **LangChain agent** (optional, 1 day of work) — same question, same correct answer — proves the MCP server is framework-neutral
+5. **Control: GPT-4o standalone, no MCP** — same question — returns hallucinated DIN 18218 pressure value, mis-identifies element type, recommends wrong formwork system
+
+This is the technical 30% story: not "one agent doing autonomous reasoning" but "an infrastructure layer that makes *every* agent doing autonomous reasoning correct in this vertical". Judges have not seen this framing.
+
+### 11.4 Demo scenario (revised from §6)
+
+Three parts, ~3 minutes total:
+
+**Part 1 — The infrastructure (30 seconds).** Architecture diagram: MCP server in the middle, 9 tools spokes, 4 different LLM clients connected on the outside, deterministic engineering KB underneath. One sentence: *"This already exists in production. Czech tax-paying, OAuth-certified for Claude.ai and ChatGPT, billing live."*
+
+**Part 2 — The contrast (60 seconds).** Side-by-side terminal: GPT-4o vanilla vs GPT-4o through STAVAGENT MCP, same prompt about Žihle mostovková deska. Vanilla hallucinates pressure / class / formwork. MCP-enabled returns DIN 18218 + 7-engine output. The visual is the take-away: *"This is what 'engineering ground truth' looks like."*
+
+**Part 3 — The agent on top (90 seconds).** ADK agent processes Žihle autonomously — split screen, agent decision log on right (which MCP tool it picks and why), business outputs on left (extracted SOs, calculated quantities, 10.59M Kč master soupis, reconciliation flags). End on the final XLS / uniXML export to KROS format. *"This agent is one of many. The infrastructure is the product."*
+
+### 11.5 Tech stack
+
+- **Reused unchanged from STAVAGENT:** 9 MCP tools, OAuth + PKCE, Cloud Run deployment, billing, calculator engines, Czech KB, Žihle case data
+- **Net-new for hackathon:** ADK agent service (single Cloud Run service); Gemini 2.5 Flash as reasoning LLM; minimal HTML page rendering the "split-screen decision log + outputs" for the demo video; the "hallucination vs ground truth" comparison script (~30 LOC)
+- **Optional flourishes (only if Week 2 ends with buffer):** LangChain client; one or two A2A-style sub-agents (a Statik validator and an Adversarial auditor) talking to the main ADK agent — but **gated behind a "stretch goal" flag**, not in the critical path
+
+### 11.6 Innovation 20% — three explicit hooks
+
+1. **Vertical gap:** zero AEC partners in Gemini Enterprise launch (§4.1)
+2. **Architectural inversion:** MCP server as the hero, not the agent — submission embodies the "infrastructure for agents" thesis Google itself has been advocating
+3. **Framework neutrality demo:** same MCP server serving Claude + GPT + Gemini + LangChain in one video — concrete proof that the infrastructure is not bound to one vendor; this is also the Cemex "neutral aggregator" angle (§9.1) visualized
+
+### 11.7 Effort delta vs Variant A
+
+| Item | Variant A | Variant B |
+|---|---|---|
+| ADK agent (core) | 50–70h | 50–70h (same) |
+| Audit-trail UI / split-screen demo page | 15–20h | 20–25h (slightly richer for demo) |
+| Hallucination-contrast script | — | 5h |
+| Wiring Claude Desktop + Custom GPT for demo (already done in production — just need to script the demo) | — | 5h |
+| LangChain client (optional) | — | 8h |
+| A2A sub-agents (stretch, not committed) | — | 15–25h if attempted |
+| Demo video + written submission | 20h | 25h (one more part to film) |
+| **Total committed** | **~90–120h** | **~105–130h** |
+| **Total with stretch** | n/a | **up to 155h** |
+
+Variant B's committed scope is ~15h more than Variant A. With 30–40h/week × 3 weeks = 90–120h budget, Variant B fits with no buffer at the high end of Alexander's commitment. Stretch goals are explicitly cuttable.
+
+### 11.8 Why Variant B is the recommendation
+
+1. **It matches the Master Brief's own Layer 2 narrative verbatim.** Section 3.1 of the brief says: *"AI agents need engineering ground truth. LLMs hallucinate construction calculations. STAVAGENT is the deterministic layer agents call when they need formwork pressure or pour cycle, not when they need text generation."* The submission writes itself from this paragraph.
+2. **All three Cemex CSC positioning angles (§9.1) become visual demonstrations**, not slide claims:
+   - Neutrality → 4 different LLM clients in one video
+   - AI layer over incumbents → KROS-format export at the end of the ADK demo
+   - SMB AI vs enterprise BIM → Žihle as a real €420k mid-size case
+3. **Track 3 future is unlocked.** If Alexander later submits STAVAGENT MCP to Google Cloud Marketplace + Gemini Enterprise (the natural next step), Variant B is the prerequisite narrative — "production MCP infrastructure with multi-client validation." Variant A as "I built an agent" does not naturally transition to Marketplace listing.
+4. **Defensible against the "is this really an agent" challenge.** The ADK agent embedded in Part 3 of the demo *is* an autonomous reasoning agent by Google's own definition; the surrounding infrastructure narrative does not weaken that, only amplifies it.
+5. **The hallucination-vs-ground-truth contrast is memorable.** Judges watch dozens of submissions; "GPT-4o hallucinated, MCP fixed it" is the kind of 30-second beat that survives the watch pile.
+
+### 11.9 Risks specific to Variant B (delta on §8)
+
+- **R9 — Live LLM contrast may not show clean hallucination on the day.** GPT-4o occasionally guesses right by luck. *Mitigation:* pick the engineering query carefully (DIN 18218 lateral pressure for a tall column is a near-100% miss for vanilla LLMs); record multiple takes; have a fallback prompt list of 5 known-miss queries.
+- **R10 — Framework-neutrality claim creates more surface area to maintain.** LangChain client is optional and explicitly stretch. *Mitigation:* if Wk 2 ends behind schedule, drop LangChain — Claude Desktop + Custom GPT + ADK agent is already three clients and proves the claim.
+- **R11 — "Infrastructure is the product" framing may confuse judges who pattern-match against agent-as-product submissions.** *Mitigation:* lead the written submission and the video opening with the agent (Part 3 first, then re-frame). Tell the agent story first, infrastructure story second.
+
+### 11.10 Decision for Alexander
+
+Variant A is the safe play. Variant B is the recommended play because it crystallizes the narrative Alexander already wants to use for Cemex CSC and future investor pitches; the hackathon becomes a forcing function that produces three reusable assets (positioning crystallization, multi-client demo video, "ground truth vs hallucination" contrast clip) regardless of whether the submission places. Variant B's additional 15h fits the 30–40h × 3-week budget; the stretch goals (LangChain, A2A sub-agents) are honestly optional and explicitly cuttable.
+
+If Alexander chooses Variant B, §6 stays in the document as the contingency fallback — Variant B can degrade gracefully into Variant A at any point during Week 2 or Week 3 without rework, by simply not filming Parts 1 and 2 of the demo.
+
+---
+
+*End of analysis. No code was written. Implementation begins only on Alexander's explicit go-decision against §10 open questions and §11.10 variant choice.*
