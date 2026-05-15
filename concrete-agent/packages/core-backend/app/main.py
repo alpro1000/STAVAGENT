@@ -306,16 +306,21 @@ def _oauth_discovery_payload(request) -> dict:
 
 
 @app.get("/.well-known/oauth-authorization-server")
-async def oauth_authorization_server_metadata(request: Request):
-    return _oauth_discovery_payload(request)
-
-
 @app.get("/.well-known/openid-configuration")
-async def openid_configuration(request: Request):
-    # Same payload — ChatGPT / Claude.ai probe both URIs depending on
-    # the connector implementation. We don't actually implement OIDC
-    # (no id_token, no userinfo), but exposing the same OAuth-2.0
-    # metadata under the OIDC well-known is enough for client discovery.
+async def oauth_discovery(request: Request):
+    """RFC 8414 OAuth-2.0 authorization-server metadata.
+
+    Both well-known URIs return the same payload — ChatGPT custom
+    connectors and Claude.ai MCP integration probe one or the other
+    depending on the client implementation. The OIDC URI is included
+    for compatibility; we don't actually implement OIDC (no id_token,
+    no userinfo), but the same OAuth-2.0 metadata is enough for both
+    clients to discover the authorize + token endpoints with PKCE.
+
+    Two `@app.get(...)` decorators on one handler so the two routes
+    cannot drift apart on future edits — a single source of truth for
+    issuer, scheme rewriting, and the supported-grant list.
+    """
     return _oauth_discovery_payload(request)
 
 
