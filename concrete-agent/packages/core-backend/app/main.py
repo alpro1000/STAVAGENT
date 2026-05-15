@@ -213,11 +213,20 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware - Allow all STAVAGENT services
+# CORS middleware - Allow all STAVAGENT services + third-party MCP clients.
+# `claude.ai` and `chatgpt.com` need explicit allow-list entries here because
+# the regex below only covers our own Vercel/Cloud Run/custom-domain origins.
+# Without them, the browser-side OAuth pop-up from these clients hits a
+# CORS_ERROR on the `/.well-known/oauth-*` and `/api/v1/mcp/oauth/*` probes
+# and the connector save flow silently aborts. The matching list of
+# allowed origins for the MCP transport endpoint itself lives in
+# `_MCP_ALLOWED_ORIGIN_PREFIXES` above — keep these two in sync.
 app.add_middleware(
     CORSMiddleware,
     allow_origin_regex=r"https://.*\.(vercel\.app|run\.app)|https://(www\.)?stavagent\.cz",
     allow_origins=[
+        "https://claude.ai",
+        "https://chatgpt.com",
         "http://localhost:3000",
         "http://localhost:5173",
         "http://localhost:8000",

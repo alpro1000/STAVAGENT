@@ -142,3 +142,66 @@ def test_tools_listing_does_not_consume_credits(client, api_key):
     )
     after = mcp_auth.get_credits(api_key)["credits"]
     assert before == after
+
+
+# ── CORS allow-list for third-party MCP clients ─────────────────────────────
+#
+# Added 2026-05-14: ChatGPT and Claude.ai initiate the OAuth flow from a
+# browser pop-up served by their own origin. Without an explicit
+# `Access-Control-Allow-Origin` reply from our `/.well-known/oauth-*` and
+# `/api/v1/mcp/oauth/*` probes, the browser raises CORS_ERROR and the
+# connector save flow aborts silently. The Origin allow-list lives in
+# `app/main.py` next to the `CORSMiddleware` registration.
+
+def test_cors_preflight_allows_claude_ai_origin(client):
+    """Browser-issued CORS preflight from claude.ai must succeed."""
+    r = client.options(
+        "/.well-known/oauth-authorization-server",
+        headers={
+            "origin": "https://claude.ai",
+            "access-control-request-method": "GET",
+        },
+    )
+    # Starlette's CORSMiddleware returns 200 on a matched preflight.
+    assert r.status_code == 200, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+
+
+def test_cors_preflight_allows_chatgpt_com_origin(client):
+    """Same gate but for ChatGPT custom-connector pop-up."""
+    r = client.options(
+        "/.well-known/oauth-authorization-server",
+        headers={
+            "origin": "https://chatgpt.com",
+            "access-control-request-method": "GET",
+        },
+    )
+    assert r.status_code == 200, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://chatgpt.com"
+
+
+def test_cors_get_with_claude_origin_echoes_allow_origin(client):
+    """Actual GET with `Origin: https://claude.ai` must carry the
+    `Access-Control-Allow-Origin: https://claude.ai` response header so
+    the browser exposes the JSON body to JavaScript."""
+    r = client.get(
+        "/.well-known/oauth-authorization-server",
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 200, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+
+
+def test_cors_unknown_origin_still_rejected(client):
+    """The allow-list isn't a wildcard. A random origin must NOT get
+    its value echoed back (the response either omits the header or
+    sets it to a non-matching value)."""
+    r = client.options(
+        "/.well-known/oauth-authorization-server",
+        headers={
+            "origin": "https://evil.example",
+            "access-control-request-method": "GET",
+        },
+    )
+    # Starlette returns 400 for a rejected preflight.
+    assert r.headers.get("access-control-allow-origin") != "https://evil.example"
