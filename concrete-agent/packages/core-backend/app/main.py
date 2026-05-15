@@ -95,6 +95,93 @@ class MCPOriginMiddleware:
         await self.app(scope, receive, send)
 
 
+class MCPAuthChallengeMiddleware:
+    """RFC 9728 §5.3 — emit `WWW-Authenticate` on every 401 from /mcp/,
+    pointing clients at the protected-resource metadata.
+
+    Two responsibilities:
+
+    1. **Active 401 gate** — a write request (POST/PUT/PATCH/DELETE)
+       without an `Authorization` header is rejected immediately with
+       a 401 carrying the challenge. ChatGPT and Claude.ai use this
+       challenge to discover where to find the OAuth metadata.
+
+    2. **Passive 401 augmentation** — if the wrapped FastMCP app
+       itself responds 401 (because the bearer token failed an
+       internal validation), inject the same `WWW-Authenticate`
+       header into the response on its way out.
+
+    Read-only methods (GET, HEAD, OPTIONS) pass through unmodified so
+    SSE handshakes and CORS preflights aren't broken.
+    """
+
+    _GATE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
+
+    def __init__(self, app):
+        self.app = app
+
+    def _challenge_header(self, scope) -> str:
+        base = _external_base_url_from_scope(scope)
+        resource_metadata = f"{base}/.well-known/oauth-protected-resource"
+        # RFC 6750 §3 + RFC 9728 §5.3 — quote attribute values, comma-
+        # separated. `error="invalid_token"` per RFC 6750 §3.1 when an
+        # invalid/absent token is the reason for the 401.
+        return (
+            f'Bearer realm="STAVAGENT MCP", '
+            f'resource_metadata="{resource_metadata}", '
+            f'error="invalid_token"'
+        )
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        method = scope.get("method", "").upper()
+        headers = {k.decode("latin-1").lower(): v.decode("latin-1")
+                   for k, v in scope.get("headers", [])}
+        has_auth = "authorization" in headers and bool(headers["authorization"].strip())
+
+        # Active gate — unauthenticated write requests get the 401
+        # challenge directly. Skip the wrapped FastMCP app entirely.
+        if method in self._GATE_METHODS and not has_auth:
+            from starlette.responses import JSONResponse
+            challenge = self._challenge_header(scope)
+            response = JSONResponse(
+                {
+                    "error": "invalid_token",
+                    "error_description": (
+                        "MCP endpoint requires an OAuth 2.0 bearer token. "
+                        "See /.well-known/oauth-protected-resource for the "
+                        "authorization server."
+                    ),
+                },
+                status_code=401,
+                headers={"WWW-Authenticate": challenge},
+            )
+            await response(scope, receive, send)
+            return
+
+        # Passive augmentation — wrap `send` so we can inject the
+        # challenge header onto any 401 the inner app produces.
+        async def send_with_challenge(message):
+            if message["type"] == "http.response.start" and message.get("status") == 401:
+                headers_list = list(message.get("headers", []))
+                # Don't duplicate if the inner app already set one.
+                has_www_auth = any(
+                    k.lower() == b"www-authenticate" for k, _ in headers_list
+                )
+                if not has_www_auth:
+                    challenge = self._challenge_header(scope)
+                    headers_list.append(
+                        (b"www-authenticate", challenge.encode("latin-1"))
+                    )
+                    message = {**message, "headers": headers_list}
+            await send(message)
+
+        await self.app(scope, receive, send_with_challenge)
+
+
 # ── Application lifespan (replaces deprecated @app.on_event decorators) ──────
 
 async def _run_startup() -> None:
@@ -265,12 +352,13 @@ async def mcp_health():
 # RFC 8414 / OpenID Connect Discovery — required by ChatGPT custom
 # connectors and Claude.ai MCP integration to learn the authorize +
 # token endpoints. Public, no auth. Mounted at root so well-known URIs
-# resolve at `/.well-known/oauth-authorization-server` and
-# `/.well-known/openid-configuration` (not under `/api/v1/mcp/`).
-def _oauth_discovery_payload(request) -> dict:
-    """Build the discovery JSON. Issuer is derived from the incoming
-    request so the same code works in dev (`http://localhost:8000`),
-    Cloud Run preview revisions, and the production custom domain.
+# resolve at `/.well-known/oauth-authorization-server`,
+# `/.well-known/openid-configuration`, and (RFC 9728)
+# `/.well-known/oauth-protected-resource` — not under `/api/v1/mcp/`.
+
+def _external_base_url(request) -> str:
+    """Build the externally-visible base URL (`https://host`) for issuer
+    + discovery URL construction.
 
     Cloud Run terminates TLS at the edge load balancer and forwards
     plain HTTP to the container, so `request.url.scheme == "http"`
@@ -289,7 +377,30 @@ def _oauth_discovery_payload(request) -> dict:
     else:
         scheme = request.url.scheme
     base_url = request.base_url.replace(scheme=scheme)
-    base = str(base_url).rstrip("/")
+    return str(base_url).rstrip("/")
+
+
+def _external_base_url_from_scope(scope) -> str:
+    """ASGI-scope variant of `_external_base_url` for use inside
+    middleware where no Starlette `Request` object is constructed.
+
+    Reads `x-forwarded-proto` + `host` from the raw header list
+    (`scope["headers"]` is `list[tuple[bytes, bytes]]`).
+    """
+    headers = {k.decode("latin-1").lower(): v.decode("latin-1")
+               for k, v in scope.get("headers", [])}
+    forwarded_proto = headers.get("x-forwarded-proto", "").split(",")[0].strip().lower()
+    if forwarded_proto in ("http", "https"):
+        scheme = forwarded_proto
+    else:
+        scheme = scope.get("scheme") or "http"
+    host = headers.get("host") or "localhost"
+    return f"{scheme}://{host}"
+
+
+def _oauth_discovery_payload(request) -> dict:
+    """RFC 8414 authorization-server metadata payload."""
+    base = _external_base_url(request)
     return {
         "issuer": base,
         "authorization_endpoint": f"{base}/api/v1/mcp/oauth/authorize",
@@ -297,11 +408,33 @@ def _oauth_discovery_payload(request) -> dict:
         "grant_types_supported": ["authorization_code", "client_credentials"],
         "response_types_supported": ["code"],
         "code_challenge_methods_supported": ["S256"],
+        # RFC 8707 — clients SHOULD include `resource` parameter to bind
+        # the issued token to a specific MCP resource. We accept the
+        # parameter today; advertising support tells ChatGPT/Claude.ai
+        # to send it so future per-resource token scoping is wire-ready.
+        "resource_indicators_supported": True,
         "token_endpoint_auth_methods_supported": [
             "client_secret_post",
             "client_secret_basic",
             "none",
         ],
+    }
+
+
+def _protected_resource_payload(request) -> dict:
+    """RFC 9728 protected-resource metadata payload.
+
+    Points clients at the MCP resource (`/mcp/`) and the
+    authorization server that issues tokens for it (this same host's
+    OAuth 2.0 endpoints).
+    """
+    base = _external_base_url(request)
+    return {
+        "resource": f"{base}/mcp/",
+        "authorization_servers": [base],
+        "bearer_methods_supported": ["header"],
+        "scopes_supported": ["mcp:tools", "mcp:read"],
+        "resource_documentation": f"{base}/docs",
     }
 
 
@@ -324,10 +457,28 @@ async def oauth_discovery(request: Request):
     return _oauth_discovery_payload(request)
 
 
+@app.get("/.well-known/oauth-protected-resource")
+async def oauth_protected_resource(request: Request):
+    """RFC 9728 protected-resource metadata.
+
+    Returned in the `WWW-Authenticate: Bearer ..., resource_metadata=<URL>`
+    challenge on the MCP endpoint so unauthenticated clients can
+    discover the auth_server that issues tokens for the resource.
+    ChatGPT and Claude.ai both follow the RFC 9728 → RFC 8414 chain;
+    without the protected-resource hop they fall back to a legacy
+    OAuth flow that omits PKCE — which the `/authorize` handler then
+    (correctly) rejects with 400 `invalid_request`.
+    """
+    return _protected_resource_payload(request)
+
+
 # Mount MCP server (its lifespan is already wired into the FastAPI lifespan above)
 if _mcp_http_app is not None:
-    app.mount("/mcp", MCPOriginMiddleware(_mcp_http_app))
-    logger.info("🔌 MCP server mounted at /mcp (9 tools)")
+    app.mount(
+        "/mcp",
+        MCPAuthChallengeMiddleware(MCPOriginMiddleware(_mcp_http_app)),
+    )
+    logger.info("🔌 MCP server mounted at /mcp (9 tools, RFC 9728 challenge)")
 
 # MCP Auth + Billing + REST API (for GPT Actions)
 try:
