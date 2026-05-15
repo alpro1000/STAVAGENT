@@ -321,6 +321,14 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # Browser CORS hides response headers from JavaScript by default —
+    # only a small CORS-safelist is exposed. ChatGPT's OAuth pop-up and
+    # Claude.ai's connector iframe both read `WWW-Authenticate` off the
+    # 401 from /mcp/ to discover the protected-resource metadata URL
+    # (RFC 9728 §5.3). Without this allow-list entry the discovery
+    # chain breaks at the browser layer even though the server is
+    # correctly emitting the header (curl sees it, JS doesn't).
+    expose_headers=["WWW-Authenticate"],
 )
 
 # Middleware to exclude /healthcheck from access logs
