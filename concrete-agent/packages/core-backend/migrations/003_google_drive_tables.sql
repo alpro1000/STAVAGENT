@@ -48,11 +48,11 @@ CREATE TABLE IF NOT EXISTS google_webhooks (
     expiration INTEGER NOT NULL,  -- Unix timestamp (milliseconds)
 
     -- Timestamps
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    -- Foreign key constraints (optional, depends on your schema)
-    -- FOREIGN KEY (user_id) REFERENCES google_credentials(user_id) ON DELETE CASCADE,
-    -- FOREIGN KEY (project_id) REFERENCES projects(project_id) ON DELETE CASCADE
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- Foreign key constraints intentionally omitted: `google_credentials` is
+    -- created above, but `projects(project_id)` is owned by a different
+    -- subsystem and may not exist at the time this migration runs. Leave
+    -- referential integrity to application code.
 );
 
 -- Index for project lookups
