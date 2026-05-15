@@ -154,6 +154,35 @@ async def _run_startup() -> None:
     except Exception as e:  # noqa: BLE001
         logger.warning(f"⚠️  Calculator suggestions seed failed: {e}")
 
+    # Apply pending DB migrations + drift check
+    # ────────────────────────────────────────────
+    # Replaces the cloudbuild `psql -f migrations/*.sql` step that has
+    # silently no-op'd since PR #1147 (Cloud Build VM has no /cloudsql/
+    # socket mount). Runs in-container where /cloudsql/ IS mounted.
+    # On failure: exception propagates → lifespan fails → Cloud Run
+    # health check goes red → traffic stays on previous revision.
+    # See docs/audits/mcp_status/2026-05-14_cloudsql_connection_bug.md §5.
+    if os.getenv("DATABASE_URL") or os.getenv("MCP_DATABASE_URL"):
+        try:
+            from app.db.startup_migrations import (
+                apply_pending_migrations, assert_critical_schema,
+            )
+            applied = apply_pending_migrations()
+            if applied:
+                logger.info(f"✅ DB migrations applied: {len(applied)} file(s)")
+            else:
+                logger.info("✅ DB schema up to date")
+            assert_critical_schema()
+            logger.info("✅ DB schema drift check passed")
+        except Exception as e:  # noqa: BLE001 — fail loudly so traffic doesn't shift
+            logger.error(f"🛑 DB migration / drift check failed: {e}")
+            raise
+    else:
+        logger.warning(
+            "⚠️  DATABASE_URL not set — skipping startup migrations "
+            "(local dev without Postgres)"
+        )
+
     if _mcp_init_error is not None:
         logger.warning(f"⚠️  MCP server not available: {_mcp_init_error}")
 

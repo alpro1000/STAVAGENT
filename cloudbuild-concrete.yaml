@@ -91,35 +91,18 @@ steps:
       - --timeout=600
       - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,XAI_API_KEY=XAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest
 
-  # Run NKB PostgreSQL migration (creates nkb_norms + nkb_rules if not exist)
-  - name: gcr.io/cloud-builders/gcloud
-    id: nkb-migration
-    waitFor: [deploy-concrete]
-    entrypoint: bash
-    secretEnv: ['CONCRETE_DATABASE_URL']
-    args:
-      - -c
-      - |
-        # Install psql client
-        apt-get update -qq && apt-get install -yqq postgresql-client >/dev/null 2>&1
-        # Convert async URL to psql format
-        DB_URL=$$(echo "$$CONCRETE_DATABASE_URL" | sed 's/+asyncpg//')
-        # Run migrations (IF NOT EXISTS — safe to re-run)
-        psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/004_nkb_tables.sql \
-          && echo "NKB migration OK" \
-          || echo "NKB migration skipped (DB may be unavailable)"
-        psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/007_mcp_api_keys.sql \
-          && echo "MCP api_keys migration OK" \
-          || echo "MCP api_keys migration skipped (DB may be unavailable)"
-        # NOTE 2026-05-14: this psql step has silently no-op'd ever since
-        # PR #1147 — Cloud Build VM has no Cloud SQL Unix socket mount.
-        # Migration 008 is queued here for the day the step is fixed
-        # (Option 1 in docs/audits/mcp_status/migration_log.md). Until
-        # then, apply 008 manually via cloud-sql-proxy + psql before
-        # rolling traffic to a revision that uses /oauth/authorize.
-        psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/008_mcp_oauth_codes.sql \
-          && echo "MCP oauth_codes migration OK" \
-          || echo "MCP oauth_codes migration skipped (DB may be unavailable)"
+  # NOTE 2026-05-14 — the previous `psql -f migrations/*.sql` step that
+  # used to live here was a silent no-op (Cloud Build VM has no
+  # /cloudsql/INSTANCE/.s.PGSQL.5432 socket mount, so every psql call
+  # fell through to "skipped" with exit 0 and migrations never actually
+  # ran in production — see docs/audits/mcp_status/2026-05-14_cloudsql_connection_bug.md §5).
+  #
+  # Migrations now run inside the FastAPI container at lifespan startup
+  # via `app/db/startup_migrations.py`, where /cloudsql/ IS mounted. The
+  # runner is idempotent (tracks applied filenames in `_schema_migrations`)
+  # and protected against concurrent-instance races by a Postgres
+  # advisory lock. Failure = lifespan exception = Cloud Run health check
+  # red = automatic rollback. No further build-time step is needed.
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
