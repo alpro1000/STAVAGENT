@@ -108,6 +108,39 @@ def test_discovery_openid_configuration_mirrors_oauth_payload(client):
     assert a == b
 
 
+def test_discovery_oauth_authorization_server_route_registered(client):
+    """RFC 8414 alias must respond 200, NOT 404. Regression test:
+    ChatGPT custom connectors and Claude.ai check this URI first; if it
+    404s they fall back to a legacy OAuth flow without PKCE that this
+    server (correctly) rejects with 422 missing code_challenge. Both
+    routes are wired through one handler with two `@app.get(...)`
+    decorators precisely to prevent this from happening again."""
+    r = client.get("/.well-known/oauth-authorization-server")
+    assert r.status_code == 200, (
+        f"RFC 8414 alias missing — ChatGPT/Claude.ai will fall through to "
+        f"PKCE-less legacy flow. Status: {r.status_code}"
+    )
+
+
+def test_discovery_both_routes_honour_x_forwarded_proto(client):
+    """X-Forwarded-Proto rewriting must apply to both well-known URIs —
+    a previous version had separate handler functions and only the
+    refactor on this branch guarantees they share the same code path."""
+    a = client.get(
+        "/.well-known/oauth-authorization-server",
+        headers={"x-forwarded-proto": "https", "host": "x.example"},
+    ).json()
+    b = client.get(
+        "/.well-known/openid-configuration",
+        headers={"x-forwarded-proto": "https", "host": "x.example"},
+    ).json()
+    assert a == b
+    for body in (a, b):
+        assert body["issuer"].startswith("https://"), body["issuer"]
+        assert body["authorization_endpoint"].startswith("https://")
+        assert body["token_endpoint"].startswith("https://")
+
+
 def test_discovery_issuer_uses_request_origin(client):
     r = client.get(
         "/.well-known/oauth-authorization-server",
