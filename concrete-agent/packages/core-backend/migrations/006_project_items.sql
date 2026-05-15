@@ -32,12 +32,16 @@ CREATE TABLE IF NOT EXISTS project_items (
     deleted_in_reimport BOOLEAN DEFAULT FALSE,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    -- Identity triple must be unique within a project + code_system
-    -- For RTS, oddil_code is part of the identity (codes can repeat across sections)
-    UNIQUE(project_id, code_system, kod, mj, COALESCE(oddil_code, ''))
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Identity triple must be unique within a project + code_system.
+-- For RTS, `oddil_code` is part of the identity because codes can repeat
+-- across sections. Postgres rejects expressions (e.g. COALESCE) inside an
+-- inline `UNIQUE(...)` table constraint, so we enforce uniqueness via a
+-- unique expression index instead.
+CREATE UNIQUE INDEX IF NOT EXISTS uq_project_items_identity_triple
+    ON project_items (project_id, code_system, kod, mj, COALESCE(oddil_code, ''));
 
 -- Version history (changes to estimate data on reimport)
 CREATE TABLE IF NOT EXISTS item_versions (
