@@ -1,0 +1,412 @@
+{
+  "_schema_version": "1.0",
+  "_generated_by": "tools/phase0b_validator.py",
+  "_generated_at": "2026-05-16",
+  "_branch": "claude/rd-jachymov-phase-0b-foundation",
+  "_inputs": {
+    "B_common": {
+      "path": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "pages": 19,
+      "chars_extracted": 45749
+    },
+    "ARS_dum": {
+      "path": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "pages": 8,
+      "chars_extracted": 20101
+    },
+    "statika_dum": {
+      "path": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "pages": 12,
+      "chars_extracted": 28507
+    },
+    "PBR_dum": {
+      "path": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "pages": 13,
+      "chars_extracted": 35952
+    },
+    "ARS_sklad": {
+      "path": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "pages": 3,
+      "chars_extracted": 5423
+    },
+    "statika_sklad": {
+      "path": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "pages": 10,
+      "chars_extracted": 20435
+    }
+  },
+  "_summary": {
+    "claims_checked": 69,
+    "verified": 67,
+    "drift": 0,
+    "missing": 2,
+    "verified_pct": 97.1,
+    "drift_threshold_exceeded": false,
+    "phase1_gate": "OPEN"
+  },
+  "validated_claims": [
+    {
+      "claim_path": "identifikacni_udaje.nazev_stavby",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.lokace.parc_st_1022",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.lokace.parc_1094_16",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.lokace.ku_jachymov",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.investor.volny",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.projektant.smash_arch_smolka",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.projektant.teanau_tvardik",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.projektant.teanau_ckait",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.projektant.tuspo_kirschbaum",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "identifikacni_udaje.projektant.tuspo_ckait",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "objekty.260219_dum.geometrie.zastavena_104_4_m2",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "objekty.260219_dum.geometrie.obestaveny_987_m3",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "objekty.260219_dum.geometrie.podlahova_219_3_m2",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "objekty.260219_dum.geometrie.vyska_13m",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "objekty.260219_dum.geometrie.pozarni_vyska_6_565",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.beton_C25_30_pritomny",
+      "source": "statika_dum",
+      "evidence": "matched=C25/30"
+    },
+    {
+      "claim_path": "materialy.beton_C16_20_v_skladu",
+      "source": "statika_sklad",
+      "evidence": "matched=C16/20"
+    },
+    {
+      "claim_path": "materialy.expozice_XC1",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.expozice_XC3",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.expozice_XC0",
+      "source": "statika_sklad",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.expozice_XF1",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.expozice_XA1",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.cl_class_0_4",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.dmax_22",
+      "source": "statika_dum",
+      "evidence": "matched=Dmax.22"
+    },
+    {
+      "claim_path": "materialy.consistency_S3",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.ocel_S235",
+      "source": "statika_dum",
+      "evidence": "matched=S235"
+    },
+    {
+      "claim_path": "materialy.ipe180_pritomny",
+      "source": "statika_dum",
+      "evidence": "matched=IPE180"
+    },
+    {
+      "claim_path": "materialy.hea160_vaznice",
+      "source": "statika_dum",
+      "evidence": "matched=HEA160"
+    },
+    {
+      "claim_path": "materialy.hea180_vyztuhy",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.hea200_vyztuhy_dvorni",
+      "source": "statika_dum",
+      "evidence": "matched=HEA200"
+    },
+    {
+      "claim_path": "materialy.ipn160_preklady",
+      "source": "statika_dum",
+      "evidence": "matched=IPN160"
+    },
+    {
+      "claim_path": "materialy.upe200_schodnice",
+      "source": "statika_dum",
+      "evidence": "matched=UPE200"
+    },
+    {
+      "claim_path": "materialy.jkl_100_4_sloupky",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.trapez_40S_160",
+      "source": "statika_dum",
+      "evidence": "hits=['40S/160']"
+    },
+    {
+      "claim_path": "materialy.spojovaci_8_8",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.zdivo_porotherm_30",
+      "source": "statika_dum",
+      "evidence": "hits=['Porotherm 30 Profi P10']"
+    },
+    {
+      "claim_path": "materialy.cihla_p10",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.etics_eps_70F_grey",
+      "source": "ARS_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "materialy.lambda_eps_0_032",
+      "source": "ARS_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "sklad.h_blok_herkul",
+      "source": "ARS_sklad",
+      "evidence": "hits=['h blok', 'h blok']"
+    },
+    {
+      "claim_path": "sklad.h_blok_v_statice",
+      "source": "statika_sklad",
+      "evidence": "hits=['H-BLOK']"
+    },
+    {
+      "claim_path": "geologie.Rdt_dum_350",
+      "source": "statika_dum",
+      "evidence": "matched=Rdt=350 kPa"
+    },
+    {
+      "claim_path": "geologie.Rdt_sklad_300",
+      "source": "statika_sklad",
+      "evidence": "matched=Rdt=300 kPa"
+    },
+    {
+      "claim_path": "geologie.svor_R5_R6",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "geologie.zemina_F4_CS",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "geologie.IGP_neproveden",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "klima.snow_VII",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "klima.wind_III",
+      "source": "statika_dum",
+      "evidence": "hits=['větrové oblasti a kategorie terénu III']"
+    },
+    {
+      "claim_path": "opera.bila_vana_terminology",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "opera.cbs_02_norma",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "opera.trida_A1",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "opera.vyska_2050_mm",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "opera.smrstovaci_usek_8m",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "opera.bentonit_pasek",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "pbr.pv_45_75",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "pbr.SPB_II",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "pbr.pozarni_usek_P1_01",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "pbr.OB1_skupina",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "pbr.etics_max_200mm",
+      "source": "PBR_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "stupen.DSP_aktualni",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "stupen.SU_sklad_podano_17_02_external_only",
+      "source": "B_common",
+      "evidence": "external_source_only:email_cesta_Volny_2026-04-10:not_in_PDF_TZ_corpus"
+    },
+    {
+      "claim_path": "tzb.elektrokotel_3NP",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "tzb.multisplit_TC",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "tzb.kamna_tuha_paliva",
+      "source": "B_common",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "krov.krokve_100_180",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "krov.klestiny_60_180",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    },
+    {
+      "claim_path": "krov.rezivo_C24",
+      "source": "statika_dum",
+      "evidence": "substring_match"
+    }
+  ],
+  "silent_drifts": [],
+  "missing_evidence": [
+    {
+      "claim_path": "objekty.260217_sklad.geometrie.lichobeznik_6_35_x_3_34",
+      "source": "ARS_sklad",
+      "evidence": "not_found: '6,35'"
+    },
+    {
+      "claim_path": "objekty.260217_sklad.geometrie.parking_delka_7m",
+      "source": "ARS_sklad",
+      "evidence": "not_found: '7,0 m'"
+    }
+  ],
+  "new_findings": [
+    {
+      "category": "normy",
+      "finding": "ČSN references found across all TZ (25 unique): ['ČSN  73', 'ČSN 06', 'ČSN 33', 'ČSN 73', 'ČSN 732604', 'ČSN 732810', 'ČSN EN 1090-1', 'ČSN EN 1090-2', 'ČSN EN 13670', 'ČSN EN 1443', 'ČSN EN 14604', 'ČSN EN 1922-1', 'ČSN EN 1990', 'ČSN EN 1991-1', 'ČSN EN 1992-1', 'ČSN EN 1993-1', 'ČSN EN 1995-1', 'ČSN EN 1996', 'ČSN EN 1996-1', 'ČSN EN 1996-2', 'ČSN EN 1997-1', 'ČSN EN 1999-1', 'ČSN EN 206', 'ČSN EN ISO 12944', 'ČSN EN ISO 5817']",
+      "action": "Use for normy traceability in Phase 1 audit_trail.",
+      "_count": 25
+    }
+  ],
+  "recommended_vyjasneni": [],
+  "_notes": [
+    "Cross-check policy per Phase 0b interview 2026-05-16: independent re-parse wins over pre-baked project_header.json.",
+    "Regex confidence = 1.0; substring/normalized = 0.85; missing = 0.30 hard-fail.",
+    "If silent_drifts.length > 5 OR any confidence < 0.30 → STOP before Phase 1 (§3.6).",
+    "Vyjasnění #13/#14/#15 (sklad-missing-drawings / D.2.2-scope / C.01-dual-name) ARE added to inputs/meta/vyjasneni_queue.json in the same commit — not duplicated here."
+  ]
+}

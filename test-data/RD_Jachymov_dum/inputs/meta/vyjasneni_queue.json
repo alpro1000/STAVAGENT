@@ -129,6 +129,66 @@
       "blocks": [],
       "working_assumption": "Realizace 2026-2027 dle TZ B m.1.m. Rozpočet připravit, čekat na rozhodnutí SU.",
       "next_action": "Informativní — neblokuje rozpočet."
+    },
+    {
+      "id": 13,
+      "severity": "medium",
+      "category": "drawings_missing",
+      "title": "Sklad/parking — chybí ARS řezy, pohledy, návrhové půdorysy",
+      "context": "Phase 0b §3.1 audit (2026-05-16) zjistil že sklad má pouze 1 ARS výkres (D.1.1.02.R1 Půdorys suterénu/skladu). Bez řezů a pohledů. Existuje pro sklad/parking samostatná architektonická dokumentace nebo je celý objekt pokryt jen půdorysem suterénu + statickou TZ? Sklad je utilitární objekt (6,35×3,34 m lichoběžník) → patrně nikdy nebyla projektantem vyhotovena, považuje se za 'jednoduchý technický prostor'.",
+      "blocks": [],
+      "working_assumption": "Použít TZ geometrii s confidence 0.70 max pro sklad. Pro variantu A (agregovaný) je acceptable. Pro variantu B (položkový) přijmout odhad m² fasády/krytiny z půdorysu + DXF situace.",
+      "next_action": "Karel — ověřit u Bc. Šmída zda existuje další ARS dokumentace skladu. Pokud NE → akceptovat odhad."
+    },
+    {
+      "id": 14,
+      "severity": "medium",
+      "category": "statika",
+      "title": "D.2.2 statický výpočet — pokrývá oba objekty nebo jen dům?",
+      "context": "Phase 0b §3.1 audit (2026-05-16) přesunul D.2.2 (19.8 MB plné znění s přílohami) do vykresy_pdf/260219_dum/. Filename neobsahuje objektový sufix. Sklad má samostatnou statickou TZ (D.2.1_TZ_statika_sklad_TeAnau.pdf) → výpočet D.2.2 patrně dům-only. K potvrzení od TeAnau (Tvardík).",
+      "blocks": [],
+      "working_assumption": "D.2.2 pokrývá pouze dům (260219). Sklad statika je samostatná v menším výpočtu uvnitř D.2.1_TZ_statika_sklad.",
+      "next_action": "Karel — krátký dotaz u TeAnau k potvrzení rozsahu D.2.2."
+    },
+    {
+      "id": 15,
+      "severity": "low",
+      "category": "drawings_revisions",
+      "title": "C.01 Situace širších vztahů — dvojice paralelních názvů",
+      "context": "Phase 0b §3.1 audit (2026-05-16) našel dvě paralelní verze: 'C.01 - Situace širších vztahů' (721 KB) a 'C.01 - Situační výkres širších vztahů' (724 KB). Téměř identická velikost, lišící se jen pojmenováním (kratší vs. formálnější název). Keeper = ten s formálnějším názvem (situace/C.01 - Situační výkres širších vztahů _ EAR.pdf); druhá verze v _superseded/. Možná to jsou jen dvě úvodní verze pojmenování, ne dvě paralelní revize.",
+      "blocks": [],
+      "working_assumption": "Verze s 'Situační výkres' je finální (vyhláška 499/2006 Sb. canonical naming).",
+      "next_action": "Karel — informativní, neblokuje rozpočet."
+    },
+    {
+      "id": 16,
+      "severity": "high",
+      "category": "data_quality",
+      "title": "Statika TZ dům/sklad byly VYMĚNĚNY ve výchozí struktuře (Phase 0b §3.2 finding, již opraveno)",
+      "context": "Phase 0b §3.2 independent re-parse (2026-05-16) zjistil že soubor canonical tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf obsahoval ve skutečnosti SKLAD content (header 'Zahradní sklad...') a opačně. Konsekvence: pre-baked project_header.json měl Rdt_dum=350 a Rdt_sklad=300 (správné HODNOTY pro správné objekty) ale tagované špatnými SOURCE soubory. Také bílá vana / HEA / IPN / Porotherm spáry mapovány na nesprávný soubor. Po SWAP files (sha256 verified) re-parse OK: 67/69 claims verified (97.1 %), 0 drifts.",
+      "blocks": [],
+      "working_assumption": "SWAP již proveden v commitu Phase 0b §3.2 (branch claude/rd-jachymov-phase-0b-foundation). Po SWAP je layout konzistentní s obsahem. Validation_report.json toto dokumentuje.",
+      "next_action": "Informativní záznam pro audit trail. Žádná akce směrem k projektantovi není třeba (chyba vznikla při zpracování chat session, ne v PD od TeAnau)."
+    },
+    {
+      "id": 17,
+      "severity": "low",
+      "category": "terminologie",
+      "title": "Sloupky krovu — pre-baked 'JKL 100/4', actual TZ 'jakl/jekl 100/4'",
+      "context": "Phase 0b §3.2 (2026-05-16) zjistil že statika_dum TZ používá termín 'jakl' (ARS) nebo 'jeklu' (statika genitiv) pro průřez 100/4, nikoli JKL. Jedná se o německý výrobní název pro uzavřený obdélníkový profil (Jäckl). Funkčně shodné, ale pro normativní rozpočet je vhodné použít terminologii ČSN EN 10219-2 (uzavřený profil za studena tvarovaný, typicky RHS/SHS).",
+      "blocks": [],
+      "working_assumption": "Aplikovat ÚRS/OTSKP položku pro RHS/SHS profil 100×100×4 mm (S235JR, ČSN EN 10219-2) v Phase 1 generator místo neexistující 'JKL' nomenklatury.",
+      "next_action": "Žádná, jen drobná korekce nomenklatury v project_header.json materialy.krov_dum.sloupky_JKL → sloupky_uzavreny_profil_100x4."
+    },
+    {
+      "id": 18,
+      "severity": "medium",
+      "category": "drawings_dependent",
+      "title": "Sklad geometrie 6,35×3,34 m + parking 7,0 m není v TZ — vyžaduje DXF/PDF výkres parse",
+      "context": "Phase 0b §3.2 (2026-05-16) zjistil že rozměry 'lichoběžník 6,35×3,34 m' a 'parkovací stání délky 7,0 m' nejsou v žádné z 6 TZ PDF tělech. Pre-baked extraction je získala patrně z architektonického výkresu D.1.1.02.R1 nebo z DXF (RD Ja_chymov vjezd _ situace 04.dxf, RD Ja_chymov vjezd _ DPZ _ 02.dxf). Phase 1 generator MUSÍ načíst tyto rozměry z DXF/PDF výkresů (ne z TZ) pro správný výpočet ploch / objemů sklad+parking.",
+      "blocks": ["Phase 1 generator pro 260217_sklad"],
+      "working_assumption": "V Phase 1 použít existující ezdxf wrapper pro extrakci DIMENSION objektů z 4 sklad+parking DXF souborů. Confidence 0.95 (DXF dimension). Pokud DXF nelze parsovat → pdfplumber + manuální OCR z D.1.1.02.R1.",
+      "next_action": "Phase 1 generator pro 260217_sklad — první krok extrakce z inputs/vykresy_dxf/260217_sklad/*.dxf."
     }
   ]
 }

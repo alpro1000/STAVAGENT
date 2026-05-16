@@ -2,8 +2,9 @@
 
 **Datum prvotního auditu:** 2026-05-16
 **Datum UNSORTED auditu:** 2026-05-16 (Phase 0b §3.1, branch `claude/rd-jachymov-phase-0b-foundation`)
+**Datum re-parse:** 2026-05-16 (Phase 0b §3.2 — `tools/phase0b_validator.py`, 67/69 = 97.1 % verified, 0 drifts, gate OPEN)
 **Sběr:** Email cesta Volný → Jiří Šmíd → Karel Šmíd → Alexander; OneDrive linky 2× (sklad+parking + dům)
-**Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). UNSORTED audit hotov 2026-05-16, 65 souborů roztříděno, UNSORTED/ smazán.
+**Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). Phase 0b §3.1 + §3.2 dokončeny.
 
 ---
 
@@ -161,8 +162,30 @@ PBŘ pro sklad/parking SAMOSTATNÉ NENÍ — sklad spadá do volné stavby k byd
 
 `UNSORTED/` smazán.
 
-### 5.4 Otevřené otázky (přidat do `vyjasneni_queue.json` v Phase 0b §3.2)
+### 5.4 Otevřené otázky → zapsány do `vyjasneni_queue.json` v Phase 0b §3.2 (commit s re-parse)
 
-1. **Sklad — chybí řezy + pohledy + návrh PDF.** Existuje pro sklad/parking samostatná architektonická dokumentace nebo je celý objekt pokryt jen půdorysem suterénu + statickou TZ?
-2. **D.2.2 statický výpočet 19.8 MB** je značeno bez objektového sufixu — pokrývá oba objekty (dům + sklad) nebo jen dům? (Statické TZ jsou samostatné per objekt — výpočet patrně též jen dům, sklad má vlastní v `tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf`.)
-3. **C.01** rozdíl mezi "Situace širších vztahů" a "Situační výkres širších vztahů" — formální revize nebo dvě paralelní verze pro různé účely? Keeper má v názvu "Situační výkres" — formálnější.
+Viz `vyjasneni_queue.json` items #13–#18 — všechny nové vyjasnění z §3.1 audit + §3.2 re-parse jsou v jedné queue.
+
+## 6. Phase 0b §3.2 — independent TZ re-parse (2026-05-16)
+
+**Tool:** `tools/phase0b_validator.py` (pypdf-based extraction + 69 cross-checks + regex/substring matchers).
+
+**Vstup:** 6 TZ PDF (B common + 3 dum + 2 sklad) — 65 stran celkem, 156 077 znaků extrahovaného textu.
+
+**Výstup:** `outputs/validation_report.json` (67/69 verified = 97.1 %, 0 drifts, 2 missing).
+
+### 6.1 Klíčové nálezy
+
+| Severity | Finding | Akce |
+|---|---|---|
+| **HIGH** | `D_2_1_TZ_statika_dum_TeAnau.pdf` a `D_2_1_TZ_statika_sklad_TeAnau.pdf` byly v canonical layoutu **PROHOZENÉ** (soubor `_dum_` obsahoval "Zahradní sklad" content, opačně). Příčina: chat session author mis-attribute při uploadu zip souboru. | Fixed inline: SWAP files in commit, SHA-256 verified post-swap. Vyjasnění #16. |
+| **MEDIUM** | Sklad geometric dimensions (6,35×3,34 m lichoběžník, parking 7,0 m délka) NEJSOU v TZ tělech — patrně z architektonického výkresu D.1.1.02.R1 nebo z DXF. | Vyjasnění #18: Phase 1 musí extract z DXF (ezdxf wrapper). |
+| **LOW** | Sloupky krovu pre-baked 'JKL 100/4', actual TZ 'jakl' (ARS) / 'jeklu 100/4' (statika). Cyklický německý termín místo ČSN EN 10219-2 (RHS/SHS). | Vyjasnění #17: korekce v project_header.json + použít RHS/SHS v Phase 1 položkách. |
+
+### 6.2 Drift threshold check
+
+Per §3.6: pokud silent_drifts > 5 → STOP před Phase 1. Po opravě file-swap je drifts = 0, gate **OPEN**.
+
+### 6.3 New findings z re-parse
+
+- **25 unique ČSN references** napříč 6 TZ (`ČSN 06`, `ČSN 33`, `ČSN 73`, `ČSN EN 1090-1/2`, `ČSN EN 1990`, `ČSN EN 1991-1`, `ČSN EN 1992-1`, `ČSN EN 1993-1`, `ČSN EN 1995-1`, `ČSN EN 1996-1/2`, `ČSN EN 1997-1`, `ČSN EN 1999-1`, `ČSN EN 206`, `ČSN EN 13670`, `ČSN EN 1443`, `ČSN EN 14604`, `ČSN EN 1922-1`, `ČSN EN ISO 5817`, `ČSN EN ISO 12944`, `ČSN 732604`, `ČSN 732810`). Použít pro normy traceability v Phase 1 audit_trail.
