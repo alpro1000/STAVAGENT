@@ -1,0 +1,134 @@
+{
+  "_schema": "STAVAGENT vyjasneni_queue v1.1 (hk212 pattern + Libuše PROBE 17 ABMV pattern)",
+  "_project": "RD Jáchymov Fibichova 733",
+  "_recipient": {
+    "primary": "Bc. Jiří Šmíd DiS. (jiri-smid@email.cz, ČKAIT 0310261)",
+    "via": "Karel Šmíd (smid.karell@gmail.com, +420 608 930 914)",
+    "investor_cc": "Mgr. Jindřich Volný (JindraVolny@seznam.cz, +49 170 330 1785)"
+  },
+  "_created": "2026-05-16",
+  "_status": "draft — odeslat až po dohodě s Karlem o variantě CN",
+
+  "items": [
+    {
+      "id": 1,
+      "severity": "critical",
+      "category": "scope",
+      "title": "Potvrzení rozsahu rozpočtu — agregovaný / položkový / hybrid",
+      "context": "Investor (Volný) v emailu zmiňuje 'rozpočtář by dokázal nějaký agregovaný udělat z stavebka'. Pro definitivní cenovou nabídku potřebujeme potvrzení které varianty rozpočtu (A/B/C dle CN_draft_3_varianty) si přejí.",
+      "blocks": ["CN finalizace", "Phase 1 generator"],
+      "working_assumption": "Varianta A — agregovaný — dokud klient explicitně nepotvrdí jinak.",
+      "next_action": "Otázka Karlovi → e-mail Volnému"
+    },
+    {
+      "id": 2,
+      "severity": "important",
+      "category": "scope",
+      "title": "Třetí objekt — vjezd a parkování ul. Dvořákova",
+      "context": "B kap. m.5 uvádí samostatně povolovanou akci 'parkovacích stání a vjezdu na pozemek ze severní strany z ulice Dvořákova'. Rozhodnutí o vjezdu vydáno 17.09.2025, Sp.zn.: 0003300/25/Pne. Ale zda samotná parkovací stání jsou součástí akce 260217 (sklad+parking), nebo jsou TŘETÍM samostatným SO, není jasné.",
+      "blocks": ["Členění rozpočtu do objektů"],
+      "working_assumption": "Parkovací stání = součást 260217 (sklad+parking) podle D.1.1.00 §1.3 Provozní řešení.",
+      "next_action": "Ověřit u Bc. Šmída"
+    },
+    {
+      "id": 3,
+      "severity": "important",
+      "category": "drawings_missing",
+      "title": "Dostupnost DXF/DWG půdorysů, řezů, pohledů, situace",
+      "context": "Bez půdorysů nelze přesně určit výměry obvodových stěn, fasády ETICS, pošubských konstrukcí, počet vikýřů, m² střechy. Z DSP TZ máme jen sumární údaje (zastavěná 104,4 m², podlahová 219,3 m², obestavěný prostor 987 m³).",
+      "blocks": ["Plochy ETICS", "m² krytiny", "kg ocelových prvků", "počet překladů"],
+      "working_assumption": "Použít agregované hodnoty z TZ a odhady m² fasády podle geometrie 104,4 m² × výška + obvod 3×etáže.",
+      "next_action": "Požádat o PDF nebo DXF půdorysů, řezu, pohledů, situace C.3"
+    },
+    {
+      "id": 4,
+      "severity": "important",
+      "category": "skladby",
+      "title": "Přesné skladby podlah (1.NP terén, 1.NP-2.NP suchá, 2.NP-3.NP mokrá s EPS)",
+      "context": "TZ udává materiály a tloušťky (EPS 150 tl. 120 mm, betonový potěr s kari, samonivelační stěrka, vinyl/dlažba), ale jednotlivé vrstvy nutno potvrdit dodavatelem systému (např. Knauf/Rigips/Fermacell).",
+      "blocks": ["PSV-77x suché podlahy", "HSV-63 mokré podlahy"],
+      "working_assumption": "Použít skladbu navrženou v TZ jako referenční.",
+      "next_action": "Vyžádat tab. skladeb (pokud byla architektem vypracována) nebo akceptovat agregaci."
+    },
+    {
+      "id": 5,
+      "severity": "important",
+      "category": "vypisy_prvku",
+      "title": "Výpis oken, vstupních dveří, vnitřních dveří, klempířských, zámečnických, truhlářských prvků",
+      "context": "TZ uvádí pouze obecně: 'plastová okna trojsklem Uw=0,85, barva dle investora; venkovní žaluzie v kastlíku s purenitovou izolací; vnitřní dveře DTD laminované; truhlářské stupně schodiště; ocelové zábradlí svařované z jeklů'. Bez ks a rozměrů.",
+      "blocks": ["PSV-76x výplně otvorů", "PSV-76x zámečnictví", "PSV-76x truhlářství", "PSV-76x klempířina"],
+      "working_assumption": "Odhad podle plochy fasády a počtu místností v půdoryse (cca 8-10 oken, 12-15 vnitřních dveří, 1-2 vstupní). Klempířina dle obvodu střechy.",
+      "next_action": "Vyžádat výpisy (nepravděpodobné — DSP-only)"
+    },
+    {
+      "id": 6,
+      "severity": "important",
+      "category": "tzb",
+      "title": "Specifikace zdroje vytápění a multisplit TČ",
+      "context": "TZ uvádí: sporáková kamna na tuhá paliva s akumul. zásobníkem TUV v suterénu, elektrokotel pro 3.NP, krb na tuhá paliva, multisplit TČ vzduch-vzduch s vnitřními jednotkami v obytných místnostech. Bez specifikace kW, výrobce, modelu, počtu vnitřních jednotek TČ.",
+      "blocks": ["PSV-78x vytápění", "PSV-78x TUV", "PSV-72x ZTI", "PSV-71x VZT"],
+      "working_assumption": "Odhad podle ploch a běžných výrobků v segmentu RD: kamna ~10 kW, elektrokotel ~8 kW, TČ multisplit 4-5 vnitřních jednotek (jeden venkovní), bojler v koupelně 3.NP ~80 l.",
+      "next_action": "Vyžádat upřesnění od TZB (D.1.4 nebude, takže zůstane odhad)"
+    },
+    {
+      "id": 7,
+      "severity": "important",
+      "category": "elektro",
+      "title": "Rozsah ELI — počet zásuvek/svítidel/okruhů; FVE příprava",
+      "context": "TZ uvádí 'kompletně nová elektroinstalace v celém domě, nová pojistková skříň s podružným měřením pro každé patro, příprava na osazení FVE'. Bez bilance kW, počtu zásuvek/svítidel, m kabeláže.",
+      "blocks": ["M-21 ELI silnoproudá"],
+      "working_assumption": "Standard RD 220 m² s 3 byt. jednotkami: cca 60-80 zásuvek, 30-40 svítidel, 8-12 silových okruhů, 600-900 m vodičů.",
+      "next_action": "Vyžádat nebo akceptovat odhad."
+    },
+    {
+      "id": 8,
+      "severity": "medium",
+      "category": "statika",
+      "title": "Bilance výztuže ŽB konstrukcí — věnec, opěrná stěna bílá vana, deska na terénu",
+      "context": "Statická TZ uvádí třídy výztuže (B500B implicitně, P10 keramika, S235 ocel) a rozměry konstrukcí, ale bez kg/m³ bilance. Pro položkový rozpočet B by bylo třeba výztužné výkresy z DPS.",
+      "blocks": ["HSV-2 železobeton"],
+      "working_assumption": "Použít empirické sazby Methvin.org / STAVAGENT B4_productivity: opěrná stěna bílá vana ~120 kg/m³, věnec ~100 kg/m³, deska podlahy ~75 kg/m³.",
+      "next_action": "Akceptovat empirické sazby pro agregovaný rozpočet."
+    },
+    {
+      "id": 9,
+      "severity": "medium",
+      "category": "demolice",
+      "title": "Přesný objem bouracích prací (m³ klenby zásyp, m² podlah, kg krovu)",
+      "context": "TZ B m.10.e dává sumární tonáže odpadů (beton/cihly/keramika 46 t, dřevo 9 t, kovy 0,1 t, EPS 0,1 t, sádra 0,2 t, směsné 1,0 t). To je dobrý odhad pro VRN, ale ne pro položkový bourací rozpočet.",
+      "blocks": ["HSV-9 bourací práce"],
+      "working_assumption": "Z TZ B sumární tonáže přepočítat na m³ / m² podle objemových hmotností; rozdělit do položek bourací krov, bourací střecha, bourací strop, bourací podlahy, bourací omítky, bourací výplně.",
+      "next_action": "Akceptovat empirický rozklad sumárních tonáží."
+    },
+    {
+      "id": 10,
+      "severity": "low",
+      "category": "vrn",
+      "title": "Zařízení staveniště — umístění, rozsah, zábory",
+      "context": "TZ B kap. m.10 udává 'staveniště bude zřízeno přímo v budově a na pozemcích investora'. Pozemek malý, řadová zástavba, ulice úzká. Bude třeba krátkodobé zábor ul. Fibichova pro materiál.",
+      "blocks": ["VRN"],
+      "working_assumption": "VRN ~5-7% z přímých nákladů (typicky pro RD rekonstrukci v městské zástavbě), z toho zábor + WC + buňka + el. odběr + likvidace odpadu + BOZP koordinace.",
+      "next_action": "Akceptovat empirický koeficient."
+    },
+    {
+      "id": 11,
+      "severity": "low",
+      "category": "informativni",
+      "title": "Lokální cenová hladina Karlovarský kraj 2026",
+      "context": "Jáchymov leží v Krušnohoří, sněhová oblast VII., obtížnější dostupnost, vyšší výrobní cena (~+5 až +10% oproti pražské hladině).",
+      "blocks": ["Finální cenování"],
+      "working_assumption": "Aplikovat regionální koeficient z ÚRS/RTS pro Karlovarský kraj nebo +5% k republikovému průměru.",
+      "next_action": "Použít ÚRS regional pricing pokud dostupné, jinak +5%."
+    },
+    {
+      "id": 12,
+      "severity": "info",
+      "category": "scope",
+      "title": "Status žádosti o stavební povolení",
+      "context": "260217 sklad+parking — podáno 17.02.2026, projektant 10.04.2026 píše 'jsou po termínu, čeká na rozhodnutí, zaurguje'. 260219 dům — podáno 23.03.2026, čeká.",
+      "blocks": [],
+      "working_assumption": "Realizace 2026-2027 dle TZ B m.1.m. Rozpočet připravit, čekat na rozhodnutí SU.",
+      "next_action": "Informativní — neblokuje rozpočet."
+    }
+  ]
+}

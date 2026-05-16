@@ -1,0 +1,393 @@
+{
+  "_schema": "STAVAGENT work_candidates v1.0 (skeleton before Phase 1 generator)",
+  "_project": "RD Jáchymov Fibichova 733",
+  "_purpose": "Předběžný caркас rozpočtu po kapitolách. NE finální položky — to vygeneruje Phase 1.",
+  "_created": "2026-05-16",
+  "_methodology": "Extrahováno z 6 TZ PDF v inputs/tz/. Použít jako vstup pro hk212-style Phase 1 generator s URS/OTSKP matchingem.",
+
+  "objekty": {
+    "260219_dum": {
+      "nazev": "Stavební úpravy a nástavba RD Fibichova 733",
+      "merna_jednotka_souhrn": "kpl",
+      "vymery_souhrnne": {
+        "zastavena_plocha_m2": 104.4,
+        "podlahova_plocha_m2": 219.3,
+        "obestaveny_prostor_m3": 987.0,
+        "vyska_stavby_m": 13.0
+      },
+      "kapitoly": [
+        {
+          "kapitola": "HSV-1 Zemní práce",
+          "cilovy_pocet_polozek": "3-5",
+          "polozky_skeleton": [
+            "Hloubení rýh pro opěrnou stěnu v zahradě (m³)",
+            "Hloubení pro nový vstup do 1.PP ze zahrady (m³)",
+            "Odvoz výkopu na deponii (m³ × km + skládkovné)",
+            "Zhutněný štěrkový zásyp + lože pro deska 1.NP na terénu (m³)",
+            "Hutnění násypu Edef2 ≥ 30 / 45 MPa (m²)"
+          ],
+          "vyjasneni_ref": [3, 8]
+        },
+        {
+          "kapitola": "HSV-2 Základové a ŽB konstrukce",
+          "cilovy_pocet_polozek": "6-10",
+          "polozky_skeleton": [
+            "ŽB úhlová opěrná stěna bílá vana — pata 250×1200 mm (m³ + kg výztuže)",
+            "ŽB úhlová opěrná stěna bílá vana — stěna 250×2050 mm (m³ + kg výztuže)",
+            "Beton C25/30 XC3 XF1 XA1 dodávka + ukládání + ošetření (m³)",
+            "Výztuž B500B opěrné stěny ~120 kg/m³ (kg)",
+            "Bednění opěrné stěny systémové + těsnění pracovních spár bobtnavý pásek bentonit (m²)",
+            "Separační fólie pod základ (m²)",
+            "ŽB pozední věnec 300×250 mm po obvodu nadezdívky 3.NP (m³ + kg)",
+            "ŽB monolitická nabetonávka stropu 2.NP/3.NP nad trapéz 60 mm (m³ + kg kari)",
+            "ŽB deska podlahy 1.NP na terénu vyztužení (m³ + kg)"
+          ],
+          "vyjasneni_ref": [3, 4, 8]
+        },
+        {
+          "kapitola": "HSV-3 Svislé konstrukce — dozdívky, nové zdivo",
+          "cilovy_pocet_polozek": "4-6",
+          "polozky_skeleton": [
+            "Lokální dozdívky a přizdívky z cihel plných pálených P10 na MVC M10 (m³)",
+            "Nové nosné stěny 3.NP a čela vikýřů Porotherm 30 Profi P10 (m²)",
+            "Ocelové překlady IPN160 ve dvojici v 1.NP a 2.NP (ks + kg)",
+            "Zesílení ostění L100/10 dvojicí ocelových úhelníků u komínu (ks + kg)",
+            "Podstojkování přiléhajících stropů při osazování překladů (kpl)",
+            "Přezdění komínového tělesa pokud zasáhne uložení překladu (kpl)"
+          ],
+          "vyjasneni_ref": [3, 8]
+        },
+        {
+          "kapitola": "HSV-4 Vodorovné konstrukce — ocelové a ocelobetonové stropy",
+          "cilovy_pocet_polozek": "8-12",
+          "polozky_skeleton": [
+            "Ocelová stropnice IPE180 1.NP v pozici nové příčky (ks × bm × kg)",
+            "Ocelobetonový strop 2.NP/3.NP — stropnice IPE180 á 1000 mm (ks × bm × kg)",
+            "Ocelobetonový strop — výztuhy 2×HEA180 trakt ulice (bm × kg)",
+            "Ocelobetonový strop — výztuha HEA200 dvorní trakt (bm × kg)",
+            "Trapézový plech 40S/160 tl. 0,75 mm — dodávka + montáž (m²)",
+            "Nabetonávka 60 mm nad vlnu (m³, viz HSV-2)",
+            "Zachování klenby 1.PP/1.NP — vyvezení původního zásypu (m³)",
+            "Nový zásyp klenby — perlitbeton (m³)",
+            "Plastická perlitbetonová roznášecí vrstva nad klenbou (m²)",
+            "Zachování trámového stropu 1.NP/2.NP — odstranění vrstev zespodu a shora (m²)",
+            "Minerální vata mezi trámy (m²)",
+            "Protipožární SDK podhled zespodu trámového stropu (m²)"
+          ],
+          "vyjasneni_ref": [3, 4]
+        },
+        {
+          "kapitola": "HSV-5 Krov a střecha",
+          "cilovy_pocet_polozek": "10-14",
+          "polozky_skeleton": [
+            "Tesařský krov — krokve 100/180 (bm)",
+            "Tesařský krov — kleštiny dvojfošny 60/180 (bm)",
+            "Tesařský krov — pozednice kotvené do věnce (bm)",
+            "Tesařský krov — námětky pro přesah střechy (bm)",
+            "Ocelová středová vaznice HEA160 (bm × kg)",
+            "Ocelové sloupky JKL 100/4 pod vaznice (ks × bm × kg)",
+            "Bednění z prken pod nadkrokevní izolaci tl. 20 mm (m²)",
+            "Parotěsná vrstva (m²)",
+            "Nadkrokevní tepelná izolace PIR (m² podle tl.)",
+            "Doplňková hydroizolace pod kontralatě (m²)",
+            "Distanční kontralatě + vzduchová mezera (m²)",
+            "Bednění z prken pod krytinu (m²)",
+            "Plechová falcovaná hliníková krytina (m²)",
+            "Hydroizolační folie s tlumící funkcí pod hliník (m²)",
+            "Patro pro přespání z biodesky nad kleštinami (m²)",
+            "Vikýře — zděná čela + provětrávaná fasáda z minerální vaty + falcovaný plech (m²)"
+          ],
+          "vyjasneni_ref": [3, 5]
+        },
+        {
+          "kapitola": "HSV-6 Bourací práce a demontáže",
+          "cilovy_pocet_polozek": "8-12",
+          "polozky_skeleton": [
+            "Bourání kompletního stávajícího krovu (m³ dřeva)",
+            "Bourání střešní krytiny plech (m²)",
+            "Bourání stropu 2.NP/podkroví trámový (m²)",
+            "Bourání zděných částí nad stropem 2.NP (m³)",
+            "Bourání lehkých příček (m²)",
+            "Bourání otvorů pro nové dveře/okna v nosných stěnách (ks)",
+            "Bourání obkladů v koupelnách (m²)",
+            "Bourání podlah 1.NP a 2.NP (m²)",
+            "Bourání záklopu a zásypů (m³)",
+            "Demontáž oken a dveří (ks)",
+            "Demontáž zařizovacích předmětů (ks)",
+            "Odvoz suti a likvidace (t podle TZ B m.10.e)"
+          ],
+          "vyjasneni_ref": [9]
+        },
+        {
+          "kapitola": "HSV-7 Fasáda ETICS",
+          "cilovy_pocet_polozek": "4-6",
+          "polozky_skeleton": [
+            "Příprava podkladu — očištění, vyspravení omítky, fungicidní nátěr (m²)",
+            "ETICS s EPS 70F grey λ=0,032 max tl. 200 mm — kompletní souvrství (m²)",
+            "ETICS sokl XPS + cihelný obklad spárovaný (m²)",
+            "Špalety oken — EPS přesah 35-40 mm (bm)",
+            "Profilace fasády z různých tlouštěk EPS (m² nebo paušál)",
+            "Omítka tenkovrstvá pastovitá probarvená lomená bílá (m²)"
+          ],
+          "vyjasneni_ref": [3]
+        },
+        {
+          "kapitola": "PSV-71 Izolace proti vodě a radonu",
+          "cilovy_pocet_polozek": "3-5",
+          "polozky_skeleton": [
+            "Hydroizolace pod ŽB deskou 1.NP modifikovanými asfaltovými pásy (m²)",
+            "Odvětrání radonu z podloží (bm + ks)",
+            "Hydroizolační vana koupelny a sprchového koutu (m²)",
+            "Hydroizolační folie pod plechovou krytinou (m²)"
+          ],
+          "vyjasneni_ref": [3, 4]
+        },
+        {
+          "kapitola": "PSV-71 Izolace tepelné",
+          "cilovy_pocet_polozek": "3-4",
+          "polozky_skeleton": [
+            "Podlahový EPS 150 λ=0,035 tl. 120 mm (m²)",
+            "Kročejová EPS izolace nad ocelobetonovým stropem (m²)",
+            "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP (m²)",
+            "Nadkrokevní PIR (viz HSV-5)"
+          ],
+          "vyjasneni_ref": [4]
+        },
+        {
+          "kapitola": "PSV-72 ZTI — Vodovod a kanalizace",
+          "cilovy_pocet_polozek": "4-6",
+          "polozky_skeleton": [
+            "Revize stávajícího napojení vodovodu (kpl)",
+            "Revize stávajícího napojení kanalizace (kpl)",
+            "Nové rozvody vody k novým koupelnám a kuchyním (bm)",
+            "Nové rozvody kanalizace k novým koupelnám (bm)",
+            "Sanitární keramika v nových koupelnách 3.NP a rekonstruovaných v 1.NP/2.NP (ks)",
+            "Akumulační zásobník TUV v suterénu napojený na topný systém (ks)",
+            "Elektrický bojler v koupelně 3.NP (ks)",
+            "Vodovodní baterie + WC + sprcha + umývadla (ks)"
+          ],
+          "vyjasneni_ref": [6]
+        },
+        {
+          "kapitola": "PSV-73 Vytápění",
+          "cilovy_pocet_polozek": "3-5",
+          "polozky_skeleton": [
+            "Sporáková kamna na tuhá paliva (ks + kpl montáž)",
+            "Elektrokotel pro 3.NP (ks + kpl montáž)",
+            "Krb na tuhá paliva v 3.NP (ks + kpl)",
+            "Multisplit tepelné čerpadlo vzduch-vzduch (venkovní jednotka + 4-5 vnitřních) — odhad",
+            "Komín — revize a úpravy stávajícího (kpl)",
+            "Rozvody otopné soustavy (bm + ks ventilů)"
+          ],
+          "vyjasneni_ref": [6]
+        },
+        {
+          "kapitola": "PSV-76 Výplně otvorů — okna a dveře",
+          "cilovy_pocet_polozek": "3-5",
+          "polozky_skeleton": [
+            "Plastová okna izolačním trojsklem Uw=0,85 — odhad ~10 ks (ks + m²)",
+            "Venkovní žaluzie v kastlíku s purenitovou izolací — okna do ulice (ks)",
+            "Plastové vstupní dveře (ks)",
+            "Vnitřní dveře DTD laminované — odhad ~12 ks (ks)"
+          ],
+          "vyjasneni_ref": [3, 5]
+        },
+        {
+          "kapitola": "PSV-76 Klempířina",
+          "cilovy_pocet_polozek": "3-4",
+          "polozky_skeleton": [
+            "Oplechování střechy (bm)",
+            "Venkovní parapety oken Pzn plech lak (bm)",
+            "Dešťové svody Pzn (bm)",
+            "Klempířské doplňky okolo vikýřů (bm)"
+          ],
+          "vyjasneni_ref": [5]
+        },
+        {
+          "kapitola": "PSV-77 Podlahy",
+          "cilovy_pocet_polozek": "4-6",
+          "polozky_skeleton": [
+            "ŽB deska podlahy 1.NP — viz HSV-2",
+            "Suchá podlahová skladba 1.NP/2.NP — zásyp liapor + min. deska + Fermacell (m²)",
+            "Mokrá podlahová skladba 3.NP — kročejová EPS + betonový potěr s kari + nivelace (m²)",
+            "Nášlapná vrstva vinyl (m² — odhad obytné místnosti)",
+            "Nášlapná vrstva keramická dlažba (m² — koupelny, kuchyně)"
+          ],
+          "vyjasneni_ref": [4]
+        },
+        {
+          "kapitola": "PSV-78 Povrchové úpravy",
+          "cilovy_pocet_polozek": "4-5",
+          "polozky_skeleton": [
+            "Vyspravení stávajících stěn cementová stěrka + výztuž + tenkovrstvá štuková omítka (m²)",
+            "Nové zděné stěny — omítka jádro + štuk (m²)",
+            "SDK podhledy a předstěny — tmelení + výmalba (m²)",
+            "Keramický obklad za kuchyňskou linkou + WC + koupelny (m²)",
+            "Interiérová výmalba (m²)"
+          ],
+          "vyjasneni_ref": [3]
+        },
+        {
+          "kapitola": "PSV-76 Truhlářské, zámečnické",
+          "cilovy_pocet_polozek": "4-6",
+          "polozky_skeleton": [
+            "Ocelové schodiště UPE200 ze zahrady na mezipodestu — dřevěné nášlapy (kpl)",
+            "Ocelové schodiště do spacího patra v 3.NP — dřevěné stupně (kpl)",
+            "Stříšky nad vstupy z ocelové konstrukce, Cetris desky, falcovaná krytina (ks)",
+            "Ocelové zábradlí svařované z jeklů + nerez výplň pZn antracit (bm)",
+            "Terasa za opěrnou stěnou — prkna garapa na hliníkový rošt na rektifik. terčích (m²)"
+          ],
+          "vyjasneni_ref": [5]
+        },
+        {
+          "kapitola": "M-21 Elektroinstalace silnoproudá",
+          "cilovy_pocet_polozek": "3-5",
+          "polozky_skeleton": [
+            "Demontáž stávající ELI (kpl)",
+            "Nová pojistková skříň s podružným měřením pro každé patro (kpl)",
+            "Nové rozvody silnoproud — vodiče, krabice, instalační trubky (bm × dle typu)",
+            "Zásuvky a vypínače (ks)",
+            "Svítidla — dodávka i montáž (ks)",
+            "Příprava na FVE — rezerva v rozvaděči + trasy (kpl)"
+          ],
+          "vyjasneni_ref": [7]
+        },
+        {
+          "kapitola": "PSV-95 Detekce požární",
+          "cilovy_pocet_polozek": "1-2",
+          "polozky_skeleton": [
+            "Autonomní hlásič kouře dle ČSN EN 14604 — 4 ks (místnosti 1.01, 1.02, 2.04, 3.03)",
+            "Přenosný hasicí přístroj 34A — min. 1 ks na společné chodbě"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "VRN Vedlejší rozpočtové náklady",
+          "cilovy_pocet_polozek": "10-15",
+          "polozky_skeleton": [
+            "Zařízení staveniště — buňky kancelář + sociální (kpl × měsíce)",
+            "Mobilní WC (ks × měsíce)",
+            "El. odběr pro stavbu",
+            "Vodovodní odběr pro stavbu",
+            "Kontejnery na suť a tříděný odpad",
+            "BOZP koordinace (kpl)",
+            "Pojištění stavby (paušál)",
+            "Krátkodobé zábory ul. Fibichova (kpl)",
+            "Mykologický průzkum dřeva při bourání (kpl)",
+            "Geodetické zaměření před a po (kpl)",
+            "Předávací protokoly + dokumentace skutečného provedení",
+            "Revize ELI, hydrant, komín",
+            "Kolaudační řízení (paušál)",
+            "Doprava materiálu na stavbu",
+            "Likvidace odpadů dle vyhl. 8/2021 Sb. (t podle TZ B m.10.e)"
+          ],
+          "vyjasneni_ref": [10, 11]
+        }
+      ]
+    },
+
+    "260217_sklad": {
+      "nazev": "Zahradní sklad, parking a přístupové schodiště",
+      "merna_jednotka_souhrn": "kpl",
+      "vymery_souhrnne": {
+        "pudorys_lichobeznik_m": "6,35 × 3,34",
+        "delka_parkovani_m": 7.0
+      },
+      "kapitoly": [
+        {
+          "kapitola": "HSV-1 Zemní práce",
+          "cilovy_pocet_polozek": "4-5",
+          "polozky_skeleton": [
+            "Sejmutí ornice a kamenné zídky + schodiště (m³)",
+            "Hloubení figury pro objekt skladu (m³)",
+            "Hloubení rýh pro základové pasy (m³)",
+            "Zhutněný štěrkový násyp pod desku skladu (m³)",
+            "Odvoz výkopu na deponii"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "HSV-2 Základy",
+          "cilovy_pocet_polozek": "5-7",
+          "polozky_skeleton": [
+            "Základové pasy prostý beton C16/20 XC0 — 500×500 mm (m³)",
+            "Dvoustupňové patky pro IPE — spodní C16/20 500×500 (ks × m³)",
+            "Dvoustupňové patky pro IPE — horní z tvarovek ztraceného bednění 300 mm (ks × m³)",
+            "Štěrkopískové lože pod podlahu skladu (m³)",
+            "Zídky lemující parkovací stání z tvarovek ztraceného bednění (bm × m³)"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "HSV-3 Svislé konstrukce",
+          "cilovy_pocet_polozek": "3-4",
+          "polozky_skeleton": [
+            "Zadní opěrná stěna — prefabrikované betonové bloky 'lego' Herkul H-BLOK (ks + montáž autem s hyd. rukou)",
+            "Obvodové stěny skladu — tvarovky ztraceného bednění tl. 250 mm (m² + zalití C25/30)",
+            "Výztuž tvarovek ztraceného bednění (kg)"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "HSV-4 Vodorovné konstrukce — primární zastřešení skladu + parking",
+          "cilovy_pocet_polozek": "5-7",
+          "polozky_skeleton": [
+            "Dřevěné stropnice 100/160 á 625 mm primární zastřešení (bm)",
+            "Prkenný záklop tl. 20 mm (m²)",
+            "Hydroizolační střešní souvrství (m²)",
+            "Ocelové IPE180 pro parkovací plochu — 7 ks v rozteči 1000 mm × 7 m (bm × kg)",
+            "Pojezdové ocelové pororošty demontovatelné (m²)",
+            "Žárový zinek nebo lak ČSN EN ISO 12944 (m² nebo paušál)"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "HSV-5 Schodiště v objektu",
+          "cilovy_pocet_polozek": "2-3",
+          "polozky_skeleton": [
+            "Prefa betonové schodové dílce do zavlhlého betonu (ks)",
+            "ŽB schodišťová deska ve sklonu + základový pas (m³)",
+            "Schody v opěrné zdi z betonových dílců do betonového lože (ks)"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "PSV-77 Podlaha skladu",
+          "cilovy_pocet_polozek": "2",
+          "polozky_skeleton": [
+            "Betonová dlažba do pískového lože (m²)",
+            "Štěrkopísek frakce pod dlažbu (m³)"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "PSV-76 Výplně otvorů + zámečnictví",
+          "cilovy_pocet_polozek": "2",
+          "polozky_skeleton": [
+            "Bezpečnostní dveře RC3 v ocelové zárubni (ks)",
+            "Zámečnické úpravy bočních prvků (kpl)"
+          ],
+          "vyjasneni_ref": []
+        },
+        {
+          "kapitola": "VRN sklad",
+          "cilovy_pocet_polozek": "3-4",
+          "polozky_skeleton": [
+            "Doprava prefa bloků auto s hydraulickou rukou (kpl)",
+            "Likvidace odpadu (t)",
+            "Geodetické vytýčení (kpl)",
+            "Podíl na obecných VRN domu (paušál nebo % z domu)"
+          ],
+          "vyjasneni_ref": [2]
+        }
+      ]
+    }
+  },
+
+  "souhrn_predbezny": {
+    "dum_celkem_polozek_odhad": "85-115",
+    "sklad_celkem_polozek_odhad": "25-35",
+    "total_polozek_odhad": "110-150",
+    "_pozn": "Pro položkový rozpočet (B). Pro agregovaný (A) snížit na 20-30 + 10-15. Pro hybrid (C) HSV-1 až HSV-7 položkově + ostatní agregovaně, cca 60-80 položek."
+  }
+}
