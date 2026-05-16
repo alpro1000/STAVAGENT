@@ -1,0 +1,499 @@
+{
+  "_schema_version": "1.0",
+  "_schema_source": "STAVAGENT hk212_hala pattern (adapted for malý RD)",
+  "_extraction_session": {
+    "timestamp": "2026-05-16",
+    "session_type": "chat_initial_extraction",
+    "agent": "Claude Opus 4.7",
+    "source_documents": [
+      "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf"
+    ],
+    "warning": "Initial pass. NOT ground truth. Phase 0b must independently re-parse and cross-check."
+  },
+
+  "identifikacni_udaje": {
+    "nazev_stavby": {
+      "value": "Řadový rodinný dům Fibichova č.p. 733",
+      "confidence": 1.0,
+      "source": "D_2_1_TZ_statika_dum_TeAnau.pdf §1.1"
+    },
+    "lokace": {
+      "obec": "Jáchymov",
+      "ulice": "Fibichova 733",
+      "ku": "Jáchymov [656437]",
+      "parcely": ["1094/16", "st. 1022"],
+      "konfidence": 1.0,
+      "source": "vícekrát napříč TZ"
+    },
+    "investor": {
+      "jmeno": "Mgr. Jindřich Volný",
+      "adresa": "Fibichova 733, 362 51 Jáchymov",
+      "kontakt": "JindraVolny@seznam.cz, +49 170 330 1785 (žije v Německu)",
+      "confidence": 1.0,
+      "source": "D_2_1_TZ_statika_dum_TeAnau.pdf §1.1 + email cesta"
+    },
+    "projektanti": [
+      {
+        "role": "Architektonicko-stavební řešení (ARS)",
+        "firma": "SMASH architekti s.r.o.",
+        "osoba": "Ing. arch. Marek Smolka",
+        "ckait": "ČKA 05394",
+        "adresa": "Vodňanského 1008/2, Břevnov, 169 00 Praha 6",
+        "ico": "17666902",
+        "stupen": "DSP (dokumentace pro povolení stavby)",
+        "datum": "12/2025 - 02/2026",
+        "confidence": 1.0
+      },
+      {
+        "role": "Stavebně-konstrukční řešení (statika)",
+        "firma": "TeAnau s.r.o.",
+        "osoba": "Ing. Jan Tvardík",
+        "ckait": "ČKAIT 0012219",
+        "adresa": "Čerčanská 624/8, 140 00 Praha 4",
+        "ico": "01828894",
+        "stupen": "DSP",
+        "datum_dum": "09.02.2026",
+        "datum_sklad": "06.02.2026",
+        "spoluautor": "Ing. Václav Bendík",
+        "confidence": 1.0
+      },
+      {
+        "role": "Požárně bezpečnostní řešení (PBŘ)",
+        "firma": "TUSPO",
+        "zpracoval": "Ing. Jan Kirschbaum",
+        "autorizoval": "Bc. Zbyněk Tuček",
+        "ckait": "ČKAIT 0013446",
+        "zakazka": "2026-028",
+        "datum": "leden 2026",
+        "digitalni_podpis": "06.01.2026",
+        "confidence": 1.0
+      }
+    ],
+    "zhotovitel_rozpoctu": {
+      "kontakt_zadavatele": "Ing. Karel Šmíd",
+      "telefon": "608930914",
+      "email": "smid.karell@gmail.com",
+      "firma": "smidstavitelstvi.cz",
+      "vztah": "denní zaměstnavatel Alexandr — sideline freelance",
+      "confidence": 1.0,
+      "note": "Cena za CN poptávána. Klient (Volný) chce orientace pro realizaci 2026-2027."
+    },
+    "zprostredkovatel_projektove_dokumentace": {
+      "jmeno": "Bc. Jiří Šmíd DiS.",
+      "ckait": "ČKAIT 0310261",
+      "telefon": "774416413",
+      "email": "jiri-smid@email.cz",
+      "adresa": "Kfely 80, 363 01 Ostrov",
+      "vztah": "otec Karla; přeposlal dokumentaci, není projektantem této PD",
+      "confidence": 1.0
+    }
+  },
+
+  "stupen_dokumentace": {
+    "aktualni": "DSP",
+    "popis": "Dokumentace pro povolení stavby (vyhláška č. 131/2024 Sb. o dokumentaci staveb)",
+    "DPS_status": "Neexistuje. Architekt v emailu uvádí že prováděcí PD na stavařinu pravděpodobně nebude vyhotovována.",
+    "implikace_pro_rozpocet": [
+      "Položkový rozpočet ÚRS do detailu lze udělat jen částečně — některé skladby a výpisy prvků chybí.",
+      "Agregovaný rozpočet (po HSV/PSV/profesích) lze sestavit kompletně.",
+      "Klempířské, zámečnické a truhlářské prvky vyžadují odhad — projektant píše že výrobní dokumentaci zpracuje odborná firma.",
+      "Bilance výztuže ŽB konstrukcí — pouze indikativní (statický výpočet RFEM existuje, ale výztužné výkresy nejsou součástí DSP).",
+      "Výpisy oken/dveří/skladeb — nejsou v DSP"
+    ],
+    "podavani_na_su": {
+      "260217_sklad_parking": {
+        "podano": "17.02.2026",
+        "stav": "čeká na rozhodnutí, projektant zmiňuje že je po termínu"
+      },
+      "260219_dum": {
+        "podano": "23.03.2026",
+        "stav": "čeká na rozhodnutí"
+      },
+      "vjezd_dvořakova": {
+        "rozhodnuti": "17.09.2025",
+        "spis": "0003300/25/Pne",
+        "vydalo": "Město Jáchymov",
+        "stav": "povolen"
+      }
+    },
+    "confidence": 1.0,
+    "source": "email Volný 10.04.2026 + B kap. m.5 + TeAnau kap. 7"
+  },
+
+  "objekty": {
+    "_count": 2,
+    "_note": "Dva samostatné stavební akce s odlišnými parc.č. budou na SU jako dvě řízení, ale realizují se souběžně.",
+
+    "260219_dum": {
+      "akce_kod": "260219",
+      "nazev": "Stavební úpravy a nástavba rodinného domu Fibichova 733",
+      "typ": "rekonstrukce + nástavba 3.NP",
+      "kategorie_460_2021": "I",
+      "obytna_funkce": "3 bytové jednotky pro rodinu investora",
+
+      "geometrie": {
+        "zastavena_plocha_m2": {"value": 104.4, "confidence": 1.0, "source": "B kap. m.1.j"},
+        "obestaveny_prostor_m3": {"value": 987.0, "confidence": 1.0, "source": "B kap. m.1.j"},
+        "podlahova_plocha_m2": {
+          "stavajici": 217.8,
+          "navrhovany": 219.3,
+          "confidence": 1.0,
+          "source": "B kap. m.5 dopravní řešení"
+        },
+        "pocet_podlazi": {
+          "podzemni": 1,
+          "nadzemni": 3,
+          "z_toho_nove_3NP": "nástavba (zobytnění podkroví)",
+          "confidence": 1.0
+        },
+        "vyska_stavby_m": {"value": 13.0, "confidence": 1.0, "source": "B m.1.j"},
+        "pozarni_vyska_m": {"value": 6.565, "confidence": 1.0, "source": "PBŘ + B kap. m.3.6"},
+        "hloubka_stavby_m": {"value": 2.8, "confidence": 1.0, "source": "B m.1.j"}
+      },
+
+      "stavajici_stav": {
+        "konstrukce": "Zděný řadový dům, společné štítové stěny se sousedy. Plné pálené cihly P10 na MVC MC5,0 a MC1,0. Sedlová střecha s plechovou krytinou, vikýře, dřevěný tesařský krov (vaznicový s ležatou stolicí). Stropy dřevěné trámové, klenba mezi 1.PP a 1.NP. Schodišťový strop monolitický. Plynová přípojka zaslepená. Vytápění plyn + el. přímotopy, TUV lokální bojlery.",
+        "podsklepeni": "částečně podsklepený dům (1.PP)",
+        "stav": "stavebně-technický stav dobrý, energeticky nevyhovující, střecha a krov na hraně životnosti",
+        "azbest": "průzkum nebyl proveden, výskyt se nepředpokládá",
+        "mykologie": "při bourání bude proveden mykologický průzkum dřev. trámů (zhlaví)",
+        "confidence": 0.95,
+        "source": "B kap. m.3.4.a + D_1_1_01 + D_2_1 §3"
+      },
+
+      "navrhovany_stav_konstrukce": {
+        "obvodove_steny": "stávající zděné, lokální dozdívky a přizdívky, ETICS",
+        "vnitrni_nosne_steny": "stávající, pouze nové otvory s ocelovými překlady IPN160 ve dvojici + L100/10 zesílení ostění u komínu",
+        "novostavba_3NP": "Porotherm 30 Profi P10 na maltu pro tenké spáry + ŽB věnec 300×250mm; čela vikýřů zděná",
+        "pricky": "část stávající zachována, nové z porobetonu nebo keramických příčkovek, dilatovány od stropu, kotveny do nosných",
+        "stropy": [
+          {
+            "umisteni": "1.PP nad — 1.NP klenba",
+            "stavajici": "cihelná klenba se zásypem",
+            "navrh": "zachována; vyvezení původního zásypu, nový zásyp perlitbeton + plastická perlitbeton hmota jako roznášecí deska"
+          },
+          {
+            "umisteni": "1.NP — 2.NP",
+            "stavajici": "dřevěný trámový se záklopem + zásyp škvára + rákos zespodu",
+            "navrh": "trámy zachovány; nová minerální izolace mezi trámy + protipožární SDK zespodu; nová ocelová stropnice IPE180 v pozici nové příčky 2.NP; suchá podlahová skladba shora (zásyp liapor/keramzit + tuhá min. deska + sádrovláknité dílce Fermacell/Rigistabil)"
+          },
+          {
+            "umisteni": "2.NP — 3.NP (nový)",
+            "stavajici": "trámový — kompletně se BOURÁ",
+            "navrh": "OCELOBETONOVÝ: stropnice IPE180 á 1000 mm + výztuhy 2×HEA180 (trakt do ulice) + HEA200 (dvorní); trapézový plech 40S/160 tl. 0,75 mm; nabetonávka 60 mm nad vlnu (C25/30 XC1); protipožární SDK podhled; shora kročejová EPS + potěr s kari; vrchní vrstva s nivelací"
+          },
+          {
+            "umisteni": "podlaha na terénu v 1.NP",
+            "navrh": "zhutněné štěrkové lože + ŽB deska C25/30 (vyztužení dle statiky) + asfaltová HI + EPS 150 λ=0,035 tl. 120 mm + betonový potěr s kari + samonivelační stěrka + nášlap"
+          }
+        ],
+        "krov": {
+          "typ": "kompletně nový tesařský",
+          "stredni_vaznice": "ocelové HEA160",
+          "sloupky": "ocelové JKL 100/4",
+          "klestiny": "dřevěné dvojfošny 60/180 (probíhající v oblasti spací části)",
+          "krokve": "dřevěné 100/180, osově ~800 mm; v místech vikýřů jiný úhel",
+          "pozednice": "kotvené do ŽB věnce",
+          "skladba": "nadkrokevní izolace PIR — biodeska/palubka tl.≥20 mm + parotěs + PIR + doplň. HI + kontralatě + vzduch. mezera + bednění prkna + plechová falcovaná HLINÍKOVÁ krytina + tlumící podložka",
+          "namětky": "v dolní koncové části pro přesah",
+          "vikyre": "vystupují ze střechy; čela zděná, fasáda provětrávaná s min. vatou + plech falcovaný",
+          "vyrub_pro_spani": "patro nad kleštinami z biodesky pro přespání",
+          "tepelne_odolnost_oceli": "krov navržen na požár 15 min, dodatečná protipož. ochrana opláštěním dle PBŘ"
+        },
+        "fasada": {
+          "system": "ETICS kontaktní",
+          "izolant": "fasádní EPS 70F grey λ=0,032 W/mK",
+          "tloustka_max": "200 mm (PBŘ omezení pro h≤12m)",
+          "kotveni": "zapuštěné",
+          "omitka": "tenkovrstvá pastovitá probarvená, lomená bílá, NCS NZÚ, profilovaná různými tl. EPS",
+          "sokl": "XPS + cihelný obklad spárovaný",
+          "vikyre_fasada": "provětrávaná s plechem falcovaným",
+          "okenní_špalety": "EPS přesah min. 35-40 mm"
+        },
+        "vyplne_otvoru": {
+          "okna": "plastová s izolačními trojskly, Uw = 0,85 W/m²K, barva dle investora; do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací",
+          "vstupni_dvere": "plastové"
+        },
+        "schodiste": {
+          "objektove_hlavni": "stávající zachované",
+          "z_1PP_na_zahradu": "stávající prodlouženo do nového otvoru ve stěně, po sondách",
+          "do_spaciho_patra_v_3NP": "ocelové s dřevěnými stupni (truhlářské)",
+          "ze_zahrady_na_mezipodestu": "ocelové z UPE200 schodnice + dřevěné nášlapy, kotvené do koruny opěrné stěny a do zdiva; podrobné prvky UPE100",
+          "v_opěrné_zdi": "schody na terénu z betonových dílců do betonového lože"
+        },
+        "operna_stena_zahrada": {
+          "typ": "monolitická úhlová ŽB",
+          "technologie": "BÍLÁ VANA dle ČBS 02 / RL Wasserundurchlässige Betonbauwerke",
+          "trida_pozadavku": "A1 (z větší části suché), W0 (vodní sloupec 0-1 m), Kon 1",
+          "beton": "C25/30 XC3, XF1, XA1 — CL0.4 — Dmax.22 — S3",
+          "rozmery": {
+            "pata_tl_mm": 250,
+            "pata_sirka_mm": 1200,
+            "stena_tl_mm": 250,
+            "vyska_celkem_mm": 2050,
+            "max_prevyseni_mm": 1400,
+            "smrstovaci_usek_max_m": 8.0
+          },
+          "tesneni_pracovnich_spar": "bobtnavý pásek bentonit nebo těsnící plech (i pro svislé spáry střídaných záběrů betonáže); separační fólie povinné",
+          "umisteni": "pata směrem k objektu RD pod nižší terén — optimalizace výkopů",
+          "vyztuz_trhliny_max_mm": 0.20,
+          "confidence": 1.0,
+          "source": "D_2_1_TZ_statika_dum_TeAnau.pdf §4 + §5.5"
+        }
+      },
+
+      "tzb": {
+        "vytapeni": {
+          "primarni_zdroj_1NP_2NP": "sporáková kamna na tuhá paliva s akumulačním zásobníkem TUV v suterénu",
+          "primarni_zdroj_3NP": "elektrokotel + krb na tuhá paliva",
+          "doplnek": "multisplit tepelné čerpadlo vzduch-vzduch s vnitřními jednotkami v obytných místnostech (chlazení i vytápění)",
+          "TUV": "akumulační zásobník v suterénu napojený na topný systém + elektrický bojler v koupelně 3.NP",
+          "akustika_TC": "hl. tlaku ≤49 dBA chlazení/vytápění, NV 272/2011 dodržen, silent mode pro noc"
+        },
+        "zti": {
+          "vodovod": "stávající přípojka, bez změny",
+          "kanalizace": "stávající přípojka, bez změny",
+          "dest_voda": "stávající jímka na pozemku, využití pro zálivku",
+          "koupelny": "stávající polohy + nově 1× koupelna + WC v 3.NP",
+          "kuchyne": "v 1.NP samostatný byt rodičů (obytná místnost + kuchyně); ve 2.NP a 3.NP další"
+        },
+        "elektroinstalace": {
+          "stavajici_pripojka": "zachována, na fasádě",
+          "novostavba": "kompletně nová silnoproudá ELI v celém domě",
+          "rozvadec": "nová pojistková skříň s podružným měřením pro každé patro",
+          "osvetleni": "nové",
+          "fve_priprava": "ano — příprava na osazení FVE",
+          "plyn": "přípojka zaslepena, neuvažuje se obnovení"
+        },
+        "vzt": "samostatná VZT není navržena. Obytné místnosti — přirozené větrání okny. Kuchyně — lokální digestoř s odtahem par."
+      },
+
+      "vnitrni_dispozice_nove": {
+        "1NP": "samostatný byt pro rodiče — obytná místnost s kuchyní, ložnice, koupelna, chodba",
+        "2NP": "pokoje a společenská místnost pro děti + koupelna",
+        "3NP": "nový samostatný byt (1× koupelna + WC)",
+        "1PP": "technická místnost + sušárna + příležitostný sklad; nový vstup ze zahrady",
+        "zahrada": "anglický dvorek za domem (vydlážděný) + terasa za opěrnou stěnou ze dřevěné prkna garapa na rektifikovatelných terčích"
+      },
+
+      "pozar": {
+        "kategorie_460_2021": "I",
+        "tri_da_vyuziti_dle_7": 3,
+        "podlezi_SPD": false,
+        "skupina_OB1_clanek_336_CSN_730833": true,
+        "pozarni_useky": [
+          {"id": "P1.01/N3", "ucel": "Rodinný dům", "pv_kg_m2": 45.75, "SPB": "II", "mez_m2": 600.0}
+        ],
+        "automaticka_detekce_signalizace_ANO": true,
+        "umisteni_hlasicu": ["1.01", "1.02", "2.04", "3.03"],
+        "phP_min_pocet": 1,
+        "phP_hasici_schopnost": "34A",
+        "pozarni_vyska_m": 6.565,
+        "etics_max_tl_mm": 200,
+        "etics_pozadavek": "Trida_E_izolant + Trida_B_system + is=0",
+        "odstupy_m": [
+          {"pohled": "JV_3NP", "POP_pct": 91.5, "d_stred": 2.85, "d_kraj": 1.65},
+          {"pohled": "SZ", "POP_pct": 40.0, "d_stred": 5.00, "d_kraj": 2.65}
+        ],
+        "odstupy_zasahuji_na_cizi_pozemky": ["parc. st. 1016 (SZ)", "parc. st. 1043 (V)", "parc. 5145 ul. Fibichova (J)"],
+        "vnejsi_hydrant": {"vzdalenost_m": 100, "DN": "min. 80", "stav": "stávající"},
+        "vnitrni_odberove_misto": "nepožadováno (OB1)",
+        "ZOKT": "nepožadováno",
+        "SHZ": "nepožadováno",
+        "EPS": "nepožadováno",
+        "confidence": 1.0,
+        "source": "D_3_PBR_dum_TUSPO.pdf"
+      }
+    },
+
+    "260217_sklad": {
+      "akce_kod": "260217",
+      "nazev": "Zahradní sklad, přístupové schodiště a parkovací stání k RD Fibichova č.p. 733",
+      "typ": "novostavba — utilitární objekt ve svahu, přístup z ulice Dvořákova",
+
+      "geometrie": {
+        "tvar_pudoryS": "lichoběžník",
+        "rozmery_m": "6,35 × 3,34",
+        "parkovaci_stani_delka_m": 7.0,
+        "kategorie_objektu_460_2021": "ne-rezidenční, zemědělského typu CC1 (zahradní sklad)",
+        "confidence": 1.0,
+        "source": "D_1_1_00 + D_2_1_TZ_statika_sklad_TeAnau"
+      },
+
+      "konstrukce": {
+        "zadni_opera_stena": {
+          "typ": "gravitační opěrná stěna",
+          "prvky": "prefabrikované betonové bloky H-BLOK Standard tvaru 'lego kostek'",
+          "vyrobce": "Herkul a.s., Průmyslová 228, 435 21 Obrnice",
+          "vazba": "běhounová s posunem o půl bloku",
+          "osazeni": "auto s hydraulickou rukou"
+        },
+        "obvodove_steny": "tvarovky ztraceného bednění tl. 250 mm",
+        "zaklady": "pasy z prostého betonu C16/20 XC0, 500×500 mm v nezámrzné hloubce",
+        "primarni_zastreseni": "dřevěné stropnice 100/160 á 625 mm, rozpon ~3,1 m, prkenný záklop tl. 20 mm + hydroizolační střešní souvrství",
+        "sekundarni_zastreseni_parkovani": "ocelové válcované IPE180 v rozteči 1000 mm + pojezdové pororošty (demontovatelné)",
+        "patky_pro_IPE": "dvoustupňové — spodní prostý beton 500×500, horní tvarovky ztraceného bednění 300 mm",
+        "schodiste_v_objektu": "prefa betonové schodové dílce do zavlhlého betonu + ŽB schodišťová deska se základovým pasem",
+        "podlaha_skladu": "betonová dlažba do pískového lože + štěrkopísek příslušné frakce",
+        "vrata_dvere": "RC3 bezpečnostní v ocelové zárubni; okna nejsou"
+      },
+
+      "stavebne_konstrukcni_specifika": {
+        "trida_objektu_CSN_EN_1990": "3 (zemědělské a obdobné stavby)",
+        "trida_nasledku_CC1": true,
+        "smrstovaci_usek_max_m": null,
+        "expozice_betonu_vyz_konstr": "C25/30 XC3, XF1, XA1 — CL0.4 — Dmax.22 — S3",
+        "beton_prosty": "C16/20 XC0",
+        "ocel": "S235",
+        "spojovaci_prvky": "tř. 8.8 galvanický pozink",
+        "rezivo": "C24, fungicidní + protihmyzí nátěr",
+        "vyrobni_skupina_oceli": "EXC2 dle ČSN EN 1090-2, kvalita svárů C dle ČSN EN ISO 5817",
+        "pozarni_ochrana_ocel_pojezd": "žárový zinek nebo nátěr dle ČSN EN ISO 12944"
+      }
+    }
+  },
+
+  "geologie_zakladovi_pomery": {
+    "vrt_referencni": ["S-5 (ID 112349)", "HV-1 (ID 726695)"],
+    "podlozi_charakter": "krušnohorské krystalinikum, metamorfované horniny proterozoik až spod. paleozoik",
+    "litologie": [
+      {"hloubka_m": "0-4.80", "popis": "navážka ulehlý", "stratigrafie": "Kvartér"},
+      {"hloubka_m": "4.80-7.00", "popis": "rula pevný slabě rozpukaný", "stratigrafie": "Proterozoikum"},
+      {"hloubka_m": "0-0.50", "popis": "hlína humózní šedo-hnědá", "stratigrafie": "Kvartér"},
+      {"hloubka_m": "0.50-5.00", "popis": "svor silně zvětralý", "stratigrafie": "Kambrium"},
+      {"hloubka_m": "5.00-30.00", "popis": "svor dvojslídný, postupně grafitický zel.-šedý", "stratigrafie": "Kambrium"},
+      {"hloubka_m": "23-30", "popis": "svorová rula jemnozrnná šedá", "stratigrafie": "Kambrium"}
+    ],
+    "podzemni_voda": {"hladina_ustalena_m": 24.10, "hladina_narazena_m": 26.00},
+    "klasifikace_zeminy": {
+      "trida": "R5-R6 (svor), při zvětrání F4-CS pevné až tvrdé konzistence",
+      "gamma_kN_m3": 18.5,
+      "phi_ef_deg": 26,
+      "c_ef_kPa": 10
+    },
+    "Rdt_kPa": {
+      "dum": 350,
+      "sklad": 300
+    },
+    "agresivita_XA": "XA1 (slabě agresivní prostředí)",
+    "IGP_proveden": false,
+    "verifikace_pri_realizaci": "základové spáry převezme statik nebo geolog",
+    "poddolovane_uzemi": true,
+    "nutnost_radonoveho_pruzkumu": false,
+    "ochrana_proti_radonu": "modifikované asfaltové pásy + odvětrání radonu v nových podlahách",
+    "confidence": 1.0,
+    "source": "D_2_1_TZ_statika_dum_TeAnau §2 + D_2_1_TZ_statika_sklad_TeAnau §2"
+  },
+
+  "klimaticke_zatizeni": {
+    "snehova_oblast": "VII.",
+    "vetrova_oblast": "III.",
+    "kategorie_terenu": "III",
+    "max_dynamicky_tlak_vetru_Pa": {"dum": 885, "sklad": 605},
+    "seizmicke_zatizeni": "neuvažováno",
+    "mimoradne_zatizeni": "neuvažováno (CC2a pro dům, CC1 pro sklad)",
+    "confidence": 1.0,
+    "source": "D_2_1 §6.3 + §5.3"
+  },
+
+  "materialy_souhrnny_seznam_z_TZ": {
+    "_note": "Z TZ extrahované normativní specifikace. Použít pro normativní validation v Phase 0b.",
+    "betony_dum": {
+      "chranenych_konstrukci": "C25/30 XC1 — CL0.4 — Dmax.22 — S3",
+      "operna_stena_bila_vana": "C25/30 XC3, XF1, XA1 — CL0.4 — Dmax.22 — S3"
+    },
+    "betony_sklad": {
+      "prosty": "C16/20 XC0",
+      "vyztuzenych": "C25/30 XC3, XF1, XA1 — CL0.4 — Dmax.22 — S3"
+    },
+    "zdivo_dozdivek": "Cihla plná pálená P10 na MVC M10",
+    "zdivo_nastavby_3NP": "Porotherm 30 Profi P10 na maltu pro tenké spáry",
+    "konstrukcni_ocel": "S235",
+    "ocelove_preklady_pred_dvojici": "IPN160 (uložení min. 200 mm do maltového lože 50 mm s kari 5/100/100)",
+    "ocelove_uhelniky_zesileni": "L100/10 dvojice",
+    "ocelobetonovy_strop_2NP_3NP": {
+      "stropnice": "IPE180 á 1000 mm",
+      "vyztuhy": "2×HEA180 (trakt ulice) / HEA200 (dvorní trakt)",
+      "trapez": "40S/160 tl. 0,75 mm",
+      "nabetonavka": "60 mm nad vlnu, C25/30 XC1"
+    },
+    "krov_dum": {
+      "vaznice_HEA": 160,
+      "sloupky_JKL": "100/4",
+      "krokve": "100/180 mm",
+      "klestiny": "2× 60/180 mm",
+      "rezivo": "C24, fungicid"
+    },
+    "schodiste_zahrada": {
+      "schodnice": "UPE200",
+      "podruzne_prvky": "UPE100",
+      "povrch": "žárový zinek"
+    },
+    "krov_sklad": {
+      "stropnice_drevena": "100/160 á 625 mm",
+      "zaklad_prkna": "tl. 20 mm",
+      "parking_ocel": "IPE180 á 1000 mm"
+    },
+    "etics_dum": {
+      "izolant": "fasádní EPS 70F grey",
+      "lambda": 0.032,
+      "max_tloustka_mm": 200,
+      "sokl": "XPS + cihelný obklad",
+      "vikyre": "minerální vata + plechový falcovaný obklad"
+    },
+    "podlahy_dum_EPS": {"typ": "podlahový EPS 150", "lambda": 0.035, "tl_mm": 120},
+    "spojovaci_prvky": "8.8 galvanický pozink"
+  },
+
+  "bourani_demontaze_souhrn_dum": {
+    "strecha_a_krov": "KOMPLETNĚ bourán (vč. nadezdívek nad stropem 2.NP, mimo štítových stěn)",
+    "strop_2NP_3NP": "KOMPLETNĚ bourán (s výjimkou zajištění schodiště)",
+    "stitove_steny": "ZACHOVÁNY (sousedé)",
+    "pricky_2NP_1NP": "lehké příčky bourány, část otvorů pro dveře/okna otevírána",
+    "obklady_koupelny_zarizovaci_predmety": "kompletně bourány",
+    "schodiste_1PP": "část bourána pro nové uspořádání",
+    "vstupni_dvere_na_zahradu": "bourány",
+    "novy_otvor_do_obvodove_steny_zahrada": "vybouráno",
+    "podlahy_1NP_2NP": "sejmuty a bourány, demontáž záklopu a zásypů (prkenný záklop na trámech zachován)",
+    "klenba_1PP_1NP": "ZACHOVÁNA, otevřena shora, odstraněn zásyp",
+    "stropy_zespodu_zaklop_s_rakosem": "demontován",
+    "okenni_vyplne_a_dvere": "VŠECHNY demontovány",
+    "zarizovaci_predmety": "VŠECHNY demontovány",
+    "stavajici_kamenne_zidky_v_zahrade": "odstraneny",
+    "stavajici_zpevnene_plochy": "lokální bourání"
+  },
+
+  "bilance_zemnich_praci_predbezne": {
+    "dum": "Lokální výkopy pro opěrnou stěnu v zahradě + úpravy terénu. Bilance předpokládána neutrální (vyrovnaná). Hloubení rýh pažovat dle BOZP.",
+    "sklad": "Standardní výkopy pro betonové základové pasy v nezámrzné hloubce. Bilance neutrální, zemina pro dotvarování terénu.",
+    "pripustny_sklon_docasnych_vykopu": "1:0,5 v soudržných zeminách F4",
+    "hutnění_nasypu_pod_deskou": "Edef2 ≥ 30 MPa na zemní pláni / 45 MPa na štěrkovém násypu, poměr Edef2/Edef1 ≤ 2,2",
+    "confidence": 0.9,
+    "source": "D_2_1 §5.3"
+  },
+
+  "odpady_predbezne_dum_kg_t": {
+    "_pozn": "Odhad pro celý dům podle TZ B kap. m.10.e",
+    "obaly": {"katalog": "15 01", "mnozstvi_t": 0.5},
+    "beton_cihly_tasky_keramika": {"katalog": "17 01", "mnozstvi_t": 46.0},
+    "drevo": {"katalog": "17 02 01", "mnozstvi_t": 9.0},
+    "asfaltove_smesi": {"katalog": "17 03 02", "mnozstvi_t": 0.1},
+    "kovy": {"katalog": "17 04", "mnozstvi_t": 0.1},
+    "izolacni_materialy_EPS": {"katalog": "17 06 04 02", "mnozstvi_t": 0.1},
+    "sadrove_materialy": {"katalog": "17 08 02", "mnozstvi_t": 0.2},
+    "smesne_stavebni": {"katalog": "17 09 04", "mnozstvi_t": 1.0}
+  },
+
+  "harmonogram_predbezny": {
+    "realizace_obdobi": "2026-2027",
+    "etapizace": "jedna etapa, bez členění",
+    "kontrolni_prohlidky": ["před zahájením", "hrubá stavba", "kolaudace"],
+    "confidence": 1.0,
+    "source": "B kap. m.1.m"
+  }
+}
