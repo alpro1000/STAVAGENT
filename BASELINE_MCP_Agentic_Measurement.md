@@ -131,9 +131,26 @@ For **each** of the 9 [case × query] pairs, do exactly these eight steps. Allow
 | **% output from MCP** | 0–100% | Fraction of factual values classified as **MCP** or **MIXED** in step 7. |
 | **% output from LLM imagination** | 0–100% | Fraction classified as **HALLUCINATION** or **DOC**. (DOC ≠ hallucination but ≠ MCP either — for the agentic-behavior question both belong to "LLM did the work, not MCP.") |
 
----
+### 3.6 Gemini Enterprise Agent Platform — component tracking dimension
 
-## 4. Raw Measurements
+In addition to tool-call counts and value classification, **each measurement run also tracks which Gemini Enterprise Agent Platform components were physically engaged** during execution. This serves the submission's Technical 30% rubric — Google scores submissions on visible use of the Agent Platform.
+
+The Agent Platform diagram has four layers; the following are the named components per layer Alexander tracks per run:
+
+| Layer | Components |
+|---|---|
+| **Build** | ADK · 3P Agent Framework · Agent Studio · Agent Garden · Gemini Models · 3P Models · Open Models · A2A · **MCP** · A2UI · Grounding · Search · AP2/UCP · RAG · APIs and Connectors · Cloud Marketplace |
+| **Scale [GA]** | Agent Runtime · Agent Sessions · Agent Sandbox · Agent Memory Bank |
+| **Govern** | Agent Gateway · Agent Identity · Agent Registry · Agent Anomaly Detection · Model Armor · Agent Policy · Agent Security · Agent Compliance |
+| **Optimize** | Agent Evaluation · Agent Simulation · Agent Observability · Agent Optimizer |
+
+Per run, each component receives one of three labels:
+
+- **USED** — physically engaged during this run. Evidence: tool call log line, UI element, backend trace, OAuth token in transit, etc. Be specific about evidence.
+- **APPLICABLE-BUT-UNUSED** — STAVAGENT *could* engage this component on a future query of this shape, but did not this time. Wk1/Wk2 candidate for inclusion.
+- **NOT-APPLICABLE** — STAVAGENT's vertical / architecture / scope fundamentally has no use for this component (e.g., AP2/UCP for agent commerce — STAVAGENT doesn't transact). Recording this defends against the judge question *"why did you skip X?"*
+
+Component tracking does **not** require extra measurement runs — the same 9 runs produce this data as a side observation. Add ~10 minutes per run for honest categorization.
 
 **This section is for Alexander to fill during execution.** One row per [case × query]. Nine rows total.
 
@@ -170,6 +187,29 @@ METRICS:
   Tools used (unique):            ___
   % output from MCP:              ___
   % output from LLM imagination:  ___
+
+AGENT PLATFORM COMPONENTS (per §3.6 — one label per component, evidence required on USED):
+  Build / ADK:                    [USED with evidence ___ / APPLICABLE-BUT-UNUSED / NOT-APPLICABLE reason ___]
+  Build / MCP:                    [___]
+  Build / Gemini Models:          [___]
+  Build / APIs and Connectors:    [___]
+  Build / Grounding:              [___]
+  Build / RAG:                    [___]
+  Build / Search:                 [___]
+  Build / A2A:                    [___]
+  Build / Cloud Marketplace:      [___]
+  Build / (others — note only if USED): _____________________________
+  Scale / Agent Runtime:          [___]
+  Scale / Agent Sessions:         [___]
+  Scale / Agent Memory Bank:      [___]
+  Scale / Agent Sandbox:          [___]
+  Govern / Agent Gateway:         [___]
+  Govern / Agent Identity:        [___]
+  Govern / Agent Registry:        [___]
+  Govern / (others — note only if USED): __________________________
+  Optimize / Agent Evaluation:    [___]
+  Optimize / Agent Observability: [___]
+  Optimize / (others — note only if USED): ________________________
 ```
 
 #### Run Z-DEC-B (declarative broad)
@@ -319,6 +359,51 @@ The demo video for the Google submission needs one chosen scenario. Pick along f
 
 > *"Demo Variant B Part 3 uses **VP4 Forestina**. Query is **declarative-focused** ("for this retaining wall, do the complete formwork + schedule + cost"), framed in the video as a declarative-broad goal because the agent layer auto-decomposes. Primary client is **Claude Desktop** (measured 12-tool chain on F-DEC-F vs Custom GPT's 4-tool chain). Custom GPT appears for 5 seconds in the multi-client montage. The agent will explicitly say 'výztuž jsem nepočítal — vstup z TZ neúplný' if the rebar density does not appear in the attached docs — measured behavior, kept in the demo for credibility."*
 
+### 8.1 Demo storyboard with Agent Platform component mapping (0:00–3:00)
+
+**[TO BE FILLED. Required for AC8 / AC9.]**
+
+The recommended demo scenario from §8 above expands into a second-by-second timeline. Each demo segment must name **which Agent Platform components are physically visible on screen** (tool-call panels, terminal logs, architecture diagrams, OAuth flows, etc.). Goal: **≥5 components visibly engaged** across the 3-minute video, per AC9.
+
+Template (fill after §8 selection is made):
+
+| Time | What appears on screen | Voiceover (≤2 sentences) | Agent Platform components visibly engaged | Evidence type |
+|---|---|---|---|---|
+| 0:00–0:15 | Problem framing card: "estimator spends 40h on one tender → can an agent do it in 8 min?" | Problem statement, no components yet | n/a (business context) | n/a |
+| 0:15–0:30 | Architecture diagram: agent → MCP server → 9 tools → KB | "STAVAGENT MCP server, already in production. OAuth-certified for Claude.ai and ChatGPT." | **MCP**, **APIs and Connectors**, **Agent Gateway**, **Agent Identity**, **Cloud Run = Agent Runtime** | Architecture diagram in frame |
+| 0:30–1:00 | Split-screen contrast: GPT-4o vanilla vs GPT-4o via STAVAGENT MCP on same prompt | "Vanilla LLM hallucinates DIN 18218 pressure. Same prompt through MCP returns ground truth from the 7-engine pipeline." | **MCP**, **Gemini Models** (or 3P models in vanilla case), **Grounding** | Two terminals side-by-side |
+| 1:00–1:30 | ADK agent decision log streaming on right; business outputs growing on left | "The agent autonomously decides which MCP tool to call next, based on what the previous tool returned." | **ADK**, **MCP**, **Gemini Models**, **Agent Runtime**, **Agent Sessions**, **Agent Memory Bank** | Agent log panel + Cloud Run logs ticker |
+| 1:30–2:00 | Multi-client montage: Claude Desktop, Custom GPT, ADK agent — same MCP server | "Framework-neutral. The infrastructure works under any agent that speaks MCP." | **MCP**, **ADK**, **3P Agent Framework** (Claude / ChatGPT clients), optionally **A2A** if multi-agent stretch is included | 3 windows visible, one MCP server log feed |
+| 2:00–2:30 | Final outputs: master soupis table + Gantt + KROS-format XLS export downloading | "Output: 154 položek, 10.59 M Kč, KROS-ready, audit-trail per item." | **MCP**, **Cloud Marketplace** (roadmap callout for Track 3), **Agent Observability** (Cloud Logging panel) | XLS download visible + logs panel |
+| 2:30–2:55 | Honesty marker: agent says *"X jsem nedopočítal — chybí vstup Y"* | "Safe agent behavior. When data is missing, the agent flags it instead of inventing." | **Agent Evaluation** (validates output against golden), **Grounding** (refuses to fabricate) | On-screen agent message in Czech |
+| 2:55–3:00 | Tagline + URL: "Engineering ground truth for AI agents in construction. stavagent.cz/mcp" | Closing line | — | — |
+
+**Component coverage check (auto-counted from the table above):** the storyboard skeleton above already names ≥10 visibly-engaged components — comfortably above the AC9 floor of 5. The actual coverage depends on which scenario §8 picks; if the chosen scenario can only naturally surface 3–4 components, Wk1 build adds whatever's missing (typically Agent Evaluation, Agent Observability, or Agent Memory Bank — all low-cost to expose visibly even when they were already running invisibly).
+
+### 8.2 Components fundamentally not applicable to STAVAGENT (defensive)
+
+**[TO BE FILLED. Required for AC10. Defends against the judge question *"why did your submission skip X?"*]**
+
+For each Agent Platform component STAVAGENT does **not** engage and has no near-term plan to engage, record the reason. Pre-populated candidates Alexander confirms or corrects:
+
+| Component | Reason for non-applicability | Confidence |
+|---|---|---|
+| **Agent Garden** | Pre-built agent templates marketplace. STAVAGENT is a custom vertical agent for Czech construction — there is no template to start from. Garden is for horizontal use cases (sales / support / IT helpdesk). | High |
+| **Agent Studio** | Low-code visual agent builder for non-engineering teams. STAVAGENT is built in code (ADK Python) by an engineering-trained founder; visual builder is solving a different problem. | High |
+| **AP2 / UCP (Agent Payments / Universal Commerce Protocol)** | For agent-mediated commerce (agents buying / selling). STAVAGENT estimates costs, does not transact. Future: if `request_supplier_quote` MCP tool is added and Cemex pays through it, AP2 becomes applicable — currently roadmap, not Wk1. | High |
+| **A2UI (Agent-to-UI handoff)** | Standard for agents handing control back to UI surfaces. STAVAGENT's UI surfaces (Monolit-Planner, Portal) already run separately and accept agent output via standard REST. A2UI overhead doesn't add value yet at single-user scale. | Medium — revisit when multi-user agent sessions launch |
+| **Open Models** (Llama / Mistral / Qwen self-hosted) | Gemini-centric per Google preference + cost. Gemini Flash is cheaper than self-hosting at STAVAGENT's volume. | Medium — re-evaluate if EU AI Act compliance forces on-prem |
+| **3P Models** (Anthropic Claude via API) | Already engaged via Claude Desktop as MCP client (consumer side). For the **agent reasoning loop** (ADK orchestrator), staying Gemini-centric matches Track 1 framework expectations. | High |
+| **Model Armor** | Content-safety filtering layer. Construction estimation queries don't carry the toxicity / PII / harmful-content risk profile this component addresses. Cemex enterprise sale may revisit. | High |
+| **Agent Anomaly Detection** | Production telemetry for unusual agent behavior at scale. STAVAGENT is single-tenant at submission time; anomaly detection becomes meaningful at 100+ concurrent sessions. | Medium — Wk2 enterprise stretch |
+| **Agent Policy** | Fine-grained per-user / per-org policy controls. Premature at solo-founder + first paying customer scale. | Medium |
+| **Agent Compliance** | SOC2 / ISO27001 / HIPAA-style certified compliance attestation pack. Premature at current stage. Cemex enterprise sale will surface this in 2027. | High |
+| **Agent Sandbox** | Isolated execution environment for testing agents before production. STAVAGENT uses Cloud Run staging + pytest as functional equivalent. Sandbox-as-a-service is for teams of multiple agent developers, not solo founder. | Medium |
+| **Agent Simulation** | Large-scale eval across synthetic scenarios. Wk1 baseline measurement (this document) is the artisanal equivalent; Simulation becomes useful once the agent is locked and being optimized. | High — explicitly Wk3+ |
+| **Agent Optimizer** | Automated reinforcement-style tuning of agent prompts and tool-call patterns. Useful AFTER §5 measurements identify the gaps; not as the first move. | High — Wk2 candidate if measurements show prompt-tuning is the bottleneck |
+
+This list **counts as evidence of architectural maturity** — the submission write-up cites it briefly to demonstrate that components were deliberately excluded after evaluation, not unknown.
+
 ---
 
 ## 9. Open Questions
@@ -335,6 +420,8 @@ The demo video for the Google submission needs one chosen scenario. Pick along f
 | **M-6** | Should `most-litovel` (unmentioned but exists at `test-data/most-litovel/`) be added to scope? | No — would be a fourth bridge case. Out of typological balance. Reserve for post-Wk1 follow-up if Žihle baseline is inconclusive. |
 | **M-7** | Custom GPT vs Claude Desktop — should the conclusion of this measurement commit to one client, or recommend a re-measurement on Claude Desktop in Wk1? | Default recommendation: re-measure on Claude Desktop in Wk1 Day 4 if Custom GPT under-performs on declarative-broad (<5 tool calls average). Cheap insurance against shipping a demo on the wrong client. |
 | **M-8** | What about the LLM seeing the same PDF text and just transcribing values (DOC category)? Is that hallucination or correct behavior? | Per §3.4 step 7: DOC values are *not* hallucinations but they are *also not* MCP-driven. For Q1 ("who does the work"), DOC counts toward "LLM did the work, MCP did not." This is the honest read — extraction-from-attachment is a built-in LLM capability, not a STAVAGENT capability. |
+| **M-9** | The Agent Platform component list in §3.6 contains 30+ named components. Tracking each per run is heavy. What's the minimum honest tracking? | Track only components for which evidence is **clearly visible** during measurement (Build/MCP, Build/Gemini Models, Build/APIs and Connectors, Scale/Agent Runtime, Govern/Agent Identity, Govern/Agent Gateway — the always-on subset for any MCP-based run). Mark the rest as APPLICABLE-BUT-UNUSED or NOT-APPLICABLE in §8.2 once, not per run. This makes the per-run table populated honestly without ballooning execution time. |
+| **M-10** | AC9 requires ≥5 Agent Platform components visibly engaged in the demo. The baseline measurement may surface only 2–3 visibly engaged (MCP + Gemini Models + Agent Runtime) for typical Custom-GPT runs. How does this not block AC9? | Three-stage answer: (1) the baseline measures *current state* — the recommendation in §7 may explicitly include "Wk1 builds add ADK + Agent Sessions + Agent Memory Bank + Agent Observability surfaces" precisely to reach ≥5; (2) some always-on components (Cloud Run = Agent Runtime, OAuth = Agent Identity + Agent Gateway) are "engaged" even if not visually showcased — Wk1 demo polish adds the visible chrome; (3) AC9 applies to the *demo storyboard* (§8.1), not the baseline runs themselves. Baseline can show 3, demo can show 8+ if Wk1 build adds the visualization. |
 
 ---
 
