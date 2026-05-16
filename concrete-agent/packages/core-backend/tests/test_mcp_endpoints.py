@@ -327,3 +327,71 @@ def test_mount_cors_rejects_unknown_origin_on_mcp(client):
         headers={"origin": "https://evil.example"},
     )
     assert r.headers.get("access-control-allow-origin") != "https://evil.example"
+
+
+# ── Proxy-headers / scheme rewrite on auto-redirects ────────────────────────
+#
+# Added 2026-05-14: Cloud Run terminates TLS at the edge LB and forwards
+# plain HTTP. Without `ProxyHeadersMiddleware` honouring
+# `X-Forwarded-Proto: https`, FastAPI's `redirect_slashes` generates
+# `Location: http://…/mcp/` for GET /mcp, which browsers refuse to
+# follow as a mixed-content redirect from an https page. Claude.ai
+# surfaces this as "Couldn't reach MCP server".
+#
+# `client_no_redirect` follows = False so we can inspect the 307 Location.
+
+@pytest.fixture
+def client_no_redirect():
+    from fastapi.testclient import TestClient
+    from app.main import app as fastapi_app
+    return TestClient(fastapi_app, follow_redirects=False)
+
+
+def test_mcp_redirect_honours_x_forwarded_proto_https(client_no_redirect):
+    """GET /mcp (no trailing slash) with `X-Forwarded-Proto: https`
+    must 307 to `https://…/mcp/`, not `http://`. This is the canonical
+    Cloud Run scenario: TLS terminates at the edge LB, the container
+    sees plain HTTP, but the public URL is https."""
+    r = client_no_redirect.get(
+        "/mcp",
+        headers={
+            "x-forwarded-proto": "https",
+            "host": "concrete-agent.example.com",
+        },
+    )
+    # FastAPI's redirect_slashes emits 307.
+    assert r.status_code in (307, 308), r.status_code
+    location = r.headers.get("location", "")
+    assert location.startswith("https://"), (
+        f"Redirect Location leaked plain http:// (got: {location!r}) — "
+        "ProxyHeadersMiddleware is not honouring X-Forwarded-Proto. "
+        "Browsers refuse to follow mixed-content redirects."
+    )
+    assert location.endswith("/mcp/"), location
+
+
+def test_mcp_redirect_falls_back_to_request_scheme_without_header(client_no_redirect):
+    """Local dev (uvicorn directly, no proxy) sends no
+    `X-Forwarded-Proto`. The middleware must keep the request's own
+    scheme — TestClient defaults to `http://testserver`."""
+    r = client_no_redirect.get("/mcp")
+    assert r.status_code in (307, 308)
+    location = r.headers.get("location", "")
+    assert location.startswith("http://"), location
+
+
+def test_well_known_oauth_authorization_server_https_via_proxy_headers(client_no_redirect):
+    """Sanity: PR #1156's per-handler X-Forwarded-Proto read still
+    works under the global middleware (the two paths to the same
+    result must not interfere). The discovery payload must continue
+    advertising `https://` issuer when the header is present."""
+    body = client_no_redirect.get(
+        "/.well-known/oauth-authorization-server",
+        headers={
+            "x-forwarded-proto": "https",
+            "host": "concrete-agent.example.com",
+        },
+    ).json()
+    assert body["issuer"].startswith("https://"), body["issuer"]
+    assert body["authorization_endpoint"].startswith("https://")
+    assert body["token_endpoint"].startswith("https://")

@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 from pathlib import Path
 
 from app.core.config import settings
@@ -345,6 +346,34 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=_CORS_EXPOSE_HEADERS,
 )
+
+# Trust X-Forwarded-Proto / X-Forwarded-For from the upstream proxy.
+#
+# Cloud Run terminates TLS at the edge load balancer and forwards plain
+# HTTP to the container. Without this middleware, FastAPI's
+# `redirect_slashes` (and any other URL builder that consults
+# `request.url.scheme`) generates `http://` redirect Location headers,
+# which browsers refuse to follow from an `https://` page as mixed-content.
+# The symptom was `GET /mcp` → 307 with `Location: http://…/mcp/`, which
+# Claude.ai blocked → "Couldn't reach MCP server".
+#
+# `trusted_hosts="*"` is correct for Cloud Run because the only network
+# path into the container goes through Google's edge LB — there is no
+# direct internet route that could spoof these headers. The same fix is
+# applied at the uvicorn process level in the Dockerfile CMD
+# (`--proxy-headers --forwarded-allow-ips=*`); the in-app middleware
+# is the canonical defence and the only one that works with
+# `python -m app.main` / `uvicorn.run(...)` local-dev paths.
+#
+# Same class of bug as PR #1156 (OAuth discovery http→https leaking
+# into issuer URLs); that fix used a per-handler read of the header,
+# this fix rewrites `scope["scheme"]` globally so every URL builder
+# sees the correct scheme without needing to know about the header.
+#
+# Added LAST so it ends up first in the Starlette middleware stack
+# (user_middleware is `insert(0, ...)`-prepended, then wrapped in
+# reverse, so the last add_middleware call runs first on requests).
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 # Middleware to exclude /healthcheck from access logs
 @app.middleware("http")
