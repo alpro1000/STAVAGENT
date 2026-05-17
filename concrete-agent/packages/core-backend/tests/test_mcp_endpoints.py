@@ -395,3 +395,121 @@ def test_well_known_oauth_authorization_server_https_via_proxy_headers(client_no
     assert body["issuer"].startswith("https://"), body["issuer"]
     assert body["authorization_endpoint"].startswith("https://")
     assert body["token_endpoint"].startswith("https://")
+
+
+# ── Bare OPTIONS (no Access-Control-Request-Method) returns 204 ─────────────
+#
+# Added 2026-05-17: Starlette's CORSMiddleware only handles OPTIONS as
+# preflight when `Access-Control-Request-Method` is present. Without it
+# the request falls through to the router (well-known + oauth endpoints)
+# or the FastMCP mount (/mcp/), which 405 because no OPTIONS handler is
+# registered. Browsers see "405 + no CORS headers" → CORS_ERROR →
+# "Couldn't reach the MCP server".
+#
+# `BareOptionsAllowMiddleware` short-circuits bare OPTIONS from
+# allow-listed origins with 204 + the same CORS headers that a real
+# preflight would have set.
+
+def test_bare_options_well_known_oauth_protected_resource_returns_204(client):
+    """`OPTIONS /.well-known/oauth-protected-resource` with just an
+    Origin header (no Access-Control-Request-Method) must 204, not 405.
+    """
+    r = client.options(
+        "/.well-known/oauth-protected-resource",
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 204, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+    assert "OPTIONS" in r.headers.get("access-control-allow-methods", "")
+
+
+def test_bare_options_well_known_oauth_authorization_server_returns_204(client):
+    r = client.options(
+        "/.well-known/oauth-authorization-server",
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 204, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+
+
+def test_bare_options_mcp_mount_returns_204(client):
+    """`OPTIONS /mcp/` previously fell through to FastMCP → 405. Now
+    short-circuits with 204 + CORS headers."""
+    r = client.options(
+        "/mcp/",
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 204, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
+
+
+def test_bare_options_oauth_authorize_returns_204(client):
+    """`OPTIONS /api/v1/mcp/oauth/authorize` previously 405; now 204."""
+    r = client.options(
+        "/api/v1/mcp/oauth/authorize",
+        headers={"origin": "https://chatgpt.com"},
+    )
+    assert r.status_code == 204, r.text
+    assert r.headers.get("access-control-allow-origin") == "https://chatgpt.com"
+
+
+def test_bare_options_includes_credentials_methods_headers_max_age(client):
+    """The 204 response must carry the full set of CORS headers
+    Claude.ai and ChatGPT's connector flows expect."""
+    r = client.options(
+        "/mcp/",
+        headers={"origin": "https://claude.ai"},
+    )
+    assert r.status_code == 204
+    assert r.headers.get("access-control-allow-credentials") == "true"
+    methods = r.headers.get("access-control-allow-methods", "")
+    for m in ("GET", "POST", "OPTIONS"):
+        assert m in methods, methods
+    allowed = r.headers.get("access-control-allow-headers", "").lower()
+    assert "authorization" in allowed
+    assert "content-type" in allowed
+    assert "mcp-session-id" in allowed
+    assert r.headers.get("access-control-max-age") == "86400"
+
+
+def test_bare_options_unknown_origin_does_not_short_circuit(client):
+    """Allow-list isn't a wildcard — bare OPTIONS from a random origin
+    still flows through to whatever the route would have returned
+    (typically 405). The middleware MUST NOT echo unknown origins."""
+    r = client.options(
+        "/.well-known/oauth-protected-resource",
+        headers={"origin": "https://evil.example"},
+    )
+    # Whatever the underlying behaviour is, the allow-origin header
+    # must not echo the evil origin.
+    assert r.headers.get("access-control-allow-origin") != "https://evil.example"
+
+
+def test_bare_options_without_origin_does_not_short_circuit(client):
+    """Non-CORS OPTIONS (e.g. plain `curl -X OPTIONS …`) without an
+    Origin header should pass through. Returning 204 for those would
+    be technically valid but misleading — keep the router's natural
+    405 behaviour for the non-CORS case."""
+    r = client.options("/.well-known/oauth-protected-resource")
+    # Specifically: the middleware did NOT inject the CORS allow-origin
+    # echo (since there was no Origin to echo).
+    assert "access-control-allow-origin" not in {
+        k.lower() for k in r.headers
+    }
+
+
+def test_real_preflight_still_returns_200_via_corsmiddleware(client):
+    """The Starlette `CORSMiddleware` preflight path is still in
+    charge of REAL preflights (with `Access-Control-Request-Method`).
+    Regression assertion that the new middleware doesn't steal those
+    — they should keep returning 200, not the new 204."""
+    r = client.options(
+        "/mcp/",
+        headers={
+            "origin": "https://claude.ai",
+            "access-control-request-method": "POST",
+            "access-control-request-headers": "authorization, content-type",
+        },
+    )
+    assert r.status_code == 200, r.text  # CORSMiddleware's preflight response
+    assert r.headers.get("access-control-allow-origin") == "https://claude.ai"
