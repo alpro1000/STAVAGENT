@@ -45,6 +45,13 @@ META = PROJ / "inputs" / "meta"
 OUT.mkdir(exist_ok=True)
 TARGET = OUT / "items_rd_jachymov_complete.json"
 
+# Canonical subdodavatel mapping — set of trade keys known to subdodavatel_mapping.json
+_SUBDOD_FILE = META / "subdodavatel_mapping.json"
+KNOWN_TRADES: set[str] = (
+    set(json.loads(_SUBDOD_FILE.read_text())["trades"].keys()) if _SUBDOD_FILE.exists() else set()
+)
+KNOWN_TRADES.discard("needs_mapping")  # placeholder sentinel — never count as mapped
+
 # ───────────────────────────────────────────────────────────────────────────
 # Constants from §3.2 / §3.3 deterministic findings
 
@@ -80,12 +87,25 @@ SKLAD = {
     "parking_zastreseni_m2": 7.0 * 3.0,              # 21 m² odhad
 }
 
-# DXF-derived (per §3.3 outputs/dxf_extract_report.json)
+# DXF-derived (per §3.3 outputs/dxf_extract_report.json + Phase 1 PSV probes)
 DXF_FINDINGS = {
     "dum_KR_block_count": 111,            # dum_DPZ INSERT 'KR' (krokve) — partial; full = krokve+sloupky
-    "dum_PLOT_DREVENY_04_count": 133,     # dum_DPZ INSERT timber hatch blocks
+    "dum_PLOT_DREVENY_04_count": 133,     # all DXFs combined (19 sklad_DPZ + 57 sklad_situace + 57 dum_situace)
+    "dum_PLOT_DREVENY_04_in_dum_DPZ": 0,  # NONE in dum_DPZ — block represents terasa garapa, not 3.NP biodeska
+    "dum_PLOT_DREVENY_04_in_dum_situace": 57,  # → dřevěná terasa garapa za opěrnou stěnou
     "dum_HATCH_total_m2": 936.3,          # dum_DPZ HATCH polygonal area (mm² → m²)
     "sklad_HATCH_total_m2": 97.5,         # sklad_DPZ HATCH polygonal area
+    # Okna count (DXF dum_DPZ INSERT blocks, Phase 1 PSV probe 2026-05-16):
+    "dum_okna_total": 16,                  # 4+3+3+2+2+1+1
+    "dum_okna_front_zaluzie": 9,           # uliční fasáda Fibichova (TZ: integrované žaluzie v kastlíku s purenitem)
+    "dum_okna_back_no_zaluzie": 7,         # dvorní fasáda zahrada
+    # Room types (DXF dum_DPZ MTEXT labels):
+    "dum_rooms_koupelna": 3,               # 1.NP master + 2.NP děti + 3.NP nový byt
+    "dum_rooms_kuchyne": 2,                # 1.NP samostatný byt rodičů + 2.NP/3.NP
+    # HATCH per-layer (informational — generic layer names, no per-floor split possible):
+    "dum_HATCH_km_srafy_m2": 313.7,
+    "dum_HATCH_km_R_navrh_srafa_m2": 302.2,
+    "dum_HATCH_SM_navrh_srafa_m2": 188.6,
 }
 
 # ───────────────────────────────────────────────────────────────────────────
@@ -121,6 +141,8 @@ def mk(
     notes: str | None = None,
 ) -> dict:
     """Build a single item dict with all mandatory fields."""
+    # subdodavatel_status: "mapped" if trade is in canonical mapping json, else "needs_mapping"
+    sub_status = "mapped" if subdodavatel in KNOWN_TRADES else "needs_mapping"
     return {
         "objekt": objekt,
         "kapitola_group": kapitola.split("-")[0].split(" ")[0],   # HSV / PSV / M / VRN
@@ -137,7 +159,7 @@ def mk(
         "urs_confidence": C_AI_GUESS,
         "source": source,
         "subdodavatel": subdodavatel,
-        "subdodavatel_status": "needs_mapping" if subdodavatel == "needs_mapping" else "mapped",
+        "subdodavatel_status": sub_status,
         "vyjasneni_ref": vyjasneni_ref or [],
         "status_flag": status_flag,
         "notes": notes,
@@ -753,7 +775,269 @@ def gen_HSV_7():
 
 def gen_PSV():
     """PSV-71 izolace, PSV-76 výplně/klempíř/zámečník, PSV-77 podlahy, PSV-78 omítky, PSV-95 detekce."""
-    return []  # filled in PSV gate
+    items = []
+    O = "260219_dum"
+
+    # ── PSV-71 Izolace (HI + TI) ─────────────────────────────────────
+    items += [
+        mk(O, "PSV-71 Izolace HI", "HI pod ŽB deskou 1.NP",
+           "Hydroizolace pod ŽB deskou 1.NP — modifikované asfaltové pásy SBS 2× (zároveň protiradonová bariéra)",
+           "m²", round(DUM["zastavena_m2"] * 0.7 * 1.10, 1),
+           "(zastavena × 0.7 rozsah 1.NP) × 1.10 přesah = 80.4", C_GEOM_FROM_TZ,
+           "712311101", ["712331101", "711332101"],
+           "TZ ARS dům §4 + statika §5.5 — asfaltové pásy mod. proti radonu", "izolater_HI", [3]),
+        mk(O, "PSV-71 Izolace HI", "Odvětrání radonu z podloží",
+           "Odvětrání radonu z podloží — perforované DN50 trubky v štěrkovém loži + výdech nad střechu",
+           "bm", 12.0,
+           "podsanační síť ~12 bm (3 řady × 4 m pod podlahou 1.NP)", C_GEOM_FROM_TZ,
+           "712381111", ["713381111"],
+           "TZ statika §5.5 'ochrana proti radonu — modifikované asf. pásy + odvětrání'", "izolater_HI", []),
+        mk(O, "PSV-71 Izolace HI", "HI koupelny 1.NP + 2.NP + 3.NP",
+           "Hydroizolační stěrka koupelen 3 ks — podlaha + sokl 200 mm + sprchový kout výška 2.0 m",
+           "m²", round(3 * (5.5 + 8.0), 1),
+           "3 koupelny × (~5.5 m² podlaha + ~8 m² stěny v okolí sprchy) = 40.5", C_DXF_INSERT,
+           "711132101", ["711121101", "771274102"],
+           "DXF dum_DPZ MTEXT labels: 3× koupelna; TZ ARS — HI vana koupelny", "izolater_HI", [4]),
+        mk(O, "PSV-71 Izolace TI", "Podlahový EPS 150",
+           "Podlahový EPS 150 λ=0.035 tl. 120 mm — pod betonový potěr 1.NP a 3.NP",
+           "m²", round(DUM["zastavena_m2"] * 0.7 + DUM["zastavena_m2"], 1),
+           "(rozsah 1.NP 73 m²) + (3.NP nadstavba 104 m²) = ~177 m²", C_GEOM_FROM_TZ,
+           "713141121", ["713141111", "713121121"],
+           "TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm", "izolater_TI", [4]),
+        mk(O, "PSV-71 Izolace TI", "Kročejová EPS nad ocelobeton",
+           "Kročejová EPS 150 / 30 dB tl. 30 mm nad ocelobetonovým stropem 2.NP/3.NP",
+           "m²", DUM["zastavena_m2"],
+           "= zastavěna plocha 104.4 m² (strop 2.NP/3.NP)", C_REGEX_TZ,
+           "713141111", ["713141121"],
+           "TZ ARS dům §4 — kročejová EPS shora ocelobeton", "izolater_TI", []),
+    ]
+
+    # ── PSV-76 Výplně otvorů — okna ──────────────────────────────────
+    okna_front = DXF_FINDINGS["dum_okna_front_zaluzie"]
+    okna_back  = DXF_FINDINGS["dum_okna_back_no_zaluzie"]
+    items += [
+        mk(O, "PSV-76 Výplně otvorů", "Plastová okna trojsklo — uliční",
+           f"Plastová okna izolačním trojsklem Uw=0.85 W/m²K — uliční fasáda Fibichova ({okna_front} ks)",
+           "ks", okna_front,
+           f"DXF dum_DPZ INSERT block count: okno 1.NP (2) + okno 2.NP (4) + okno 3.NP (3) = {okna_front}", C_DXF_INSERT,
+           "766621011", ["766629011", "766629111"],
+           "DXF dum_DPZ INSERT blocks 'okno 1.NP'/'okno 2.NP'/'okno 3.NP' + TZ ARS Uw=0.85", "okennar", [5]),
+        mk(O, "PSV-76 Výplně otvorů", "Plastová okna trojsklo — dvorní",
+           f"Plastová okna trojsklo Uw=0.85 — dvorní fasáda zahrada ({okna_back} ks bez žaluzií)",
+           "ks", okna_back,
+           f"DXF dum_DPZ INSERT block count: okno 1.NP vzadu (3) + okno malé vzadu (2) + okno 3.NP vzadu (1) + okno male 3.NP vzadu (1) = {okna_back}", C_DXF_INSERT,
+           "766621011", ["766629011", "766629111"],
+           "DXF dum_DPZ INSERT blocks '... vzadu' + TZ ARS — okna bez žaluzií na dvorní fasádě", "okennar", [5]),
+        mk(O, "PSV-76 Výplně otvorů", "Žaluzie kastlík purenit",
+           f"Integrované stínící venkovní žaluzie v kastlíku pod omítkou s purenitovou izolací — uliční fasáda Fibichova ({okna_front} ks)",
+           "ks", okna_front,
+           f"= počet uličních oken {okna_front}", C_DXF_INSERT,
+           "766631211", ["766632111", "767531111"],
+           "TZ ARS dům §4 — 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'",
+           "okenni_zaluzie_kastlik_purenit", [5],
+           status_flag="needs_subdod_mapping",
+           notes="Subdod 'okenni_zaluzie_kastlik_purenit' není v Libuše schema ani v current mapping. Hybrid trade: okenář + ETICS specialista + purenit dodávka. FLAG pro batch mapping update po Phase 1."),
+        mk(O, "PSV-76 Výplně otvorů", "Vstupní plastové dveře",
+           "Plastové vstupní dveře (ulice + zahrada) — 2 ks",
+           "ks", 2,
+           "TZ ARS — vstupní plastové dveře", C_GEOM_FROM_TZ,
+           "766682111", ["766682112", "766681111"],
+           "TZ ARS dům §4 — plastové vstupní dveře", "okennar", []),
+        mk(O, "PSV-76 Výplně otvorů", "Vnitřní dveře DTD laminované",
+           "Vnitřní dveře DTD laminované s obložkovou zárubní — odhad 15 ks",
+           "ks", 15,
+           "3 patra × ~5 dveří (4 pokoje + chodba): 1.NP byt + 2.NP děti + 3.NP nový byt", C_GEOM_FROM_TZ,
+           "766660035", ["766660036", "766660031"],
+           "TZ ARS dům §4 + DXF MTEXT room labels", "truhlar", [5]),
+    ]
+
+    # ── PSV-76 Klempíř ───────────────────────────────────────────────
+    krytina_obvod_strechy = round(DUM["obvod_pudorysu_m_odhad"] * 0.55, 1)  # 2 dlouhé strany + vikýře cca
+    items += [
+        mk(O, "PSV-76 Klempíř", "Oplechování krytiny",
+           "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Pzn lakovaný 0.55 mm)",
+           "bm", round(krytina_obvod_strechy + 4 * 6.0, 1),
+           "obvod střechy ~22 + 4 vikýře × 6 m okrajových lemů = 46", C_GEOM_FROM_TZ,
+           "764312235", ["764315235", "764312245"],
+           "TZ ARS dům §4 + DXF (obvod střechy z LWPOLYLINE situace, vikýře 4 ks)", "klempir", [5]),
+        mk(O, "PSV-76 Klempíř", "Venkovní parapety oken",
+           "Venkovní parapety oken — Pzn plech lakovaný 250 mm × tl. 0.55 mm",
+           "bm", round(DXF_FINDINGS["dum_okna_total"] * 1.3, 1),
+           f"= {DXF_FINDINGS['dum_okna_total']} oken × průměrná šíře 1.3 m parapetu", C_DXF_INSERT,
+           "764218201", ["764218205", "764218210"],
+           "DXF okna count 16 + TZ ARS — venkovní parapety", "klempir", []),
+        mk(O, "PSV-76 Klempíř", "Dešťové svody Pzn",
+           "Dešťové svody Pzn 100 mm + žlaby — 4 svody × ~14 m výška",
+           "bm", 56.0,
+           "4 svody × 14 m (do úrovně okapu + svislé do gajgru) = 56", C_GEOM_FROM_TZ,
+           "764454802", ["764451802", "764454805"],
+           "TZ ARS + odhad standard RD", "klempir", []),
+        mk(O, "PSV-76 Klempíř", "Vikýře — klempířské doplňky",
+           "Klempířské doplňky kolem vikýřů — atika, okapnice, závěrné lemy (4 vikýře)",
+           "ks", 4,
+           "4 vikýře (TZ ARS)", C_GEOM_FROM_TZ,
+           "764315235", ["764312235"],
+           "TZ ARS dům §4 — 4 vikýře", "klempir", []),
+    ]
+
+    # ── PSV-76 Zámečník (interiér) ───────────────────────────────────
+    items += [
+        mk(O, "PSV-76 Zámečnictví", "Ocelové schodiště UPE200 ze zahrady",
+           "Ocelové schodiště ze zahrady na mezipodestu — UPE200 schodnice + dřevěné nášlapy, kotvené do koruny opěrné stěny a zdiva (TZ statika §4)",
+           "kpl", 1,
+           "1 schodiště (~8 stupňů × ~3 m výška)", C_REGEX_TZ,
+           "767531111", ["767542111"],
+           "TZ statika dům §4 — schodiště UPE200 + UPE100 podružné prvky", "zamecnik_PSV", [5]),
+        mk(O, "PSV-76 Zámečnictví", "Ocelové schodiště do spacího patra 3.NP",
+           "Interní ocelové schodiště do spacího patra v 3.NP s dřevěnými stupni (truhlářské)",
+           "kpl", 1,
+           "1 schodiště do podkroví (TZ ARS)", C_REGEX_TZ,
+           "767531111", ["767542111"],
+           "TZ ARS dům §4 — ocelové schodiště s dřevěnými stupni", "zamecnik_PSV", []),
+        mk(O, "PSV-76 Zámečnictví", "Stříšky nad vstupy",
+           "Stříšky nad vstupy z ocelové konstrukce + Cetris desky + falcovaná krytina — 2 ks (ulice + zahrada)",
+           "ks", 2,
+           "2 vstupy", C_GEOM_FROM_TZ,
+           "767532111", ["767531111"],
+           "TZ ARS dům §4 — stříšky nad vstupy ocel+Cetris+plech", "zamecnik_PSV", []),
+        mk(O, "PSV-76 Zámečnictví", "Zábradlí z jeklů + nerez výplň",
+           "Ocelové zábradlí svařované z jeklů + nerez výplň pZn antracit — schodiště interier + venkovní terasa",
+           "bm", 18.0,
+           "odhad 12 m interier (2 schodiště × 6 m) + 6 m terasa", C_GEOM_FROM_TZ,
+           "767163115", ["767161115"],
+           "TZ ARS dům §4 — zábradlí svařované z jeklů + nerez výplň", "zamecnik_PSV", []),
+    ]
+
+    # ── PSV-76 Truhlář (mimo dveře) ──────────────────────────────────
+    items += [
+        mk(O, "PSV-76 Truhlář", "Dřevěné stupně schodišť",
+           "Dřevěné stupně ocelových schodišť (truhlářské, dub masiv tl. 40 mm)",
+           "ks", 16,
+           "2 schodiště × ~8 stupňů = 16", C_GEOM_FROM_TZ,
+           "766811111", ["766812111"],
+           "TZ ARS dům §4 — ocelové schodiště s dřevěnými stupni truhlářské", "truhlar", []),
+        mk(O, "PSV-76 Truhlář", "Terasa garapa za opěrnou stěnou",
+           "Dřevěná terasa za opěrnou stěnou — prkna garapa 145×25 mm na hliníkový rošt na rektifikovatelných terčích",
+           "m²", 30.0,
+           f"DXF dum_situace PLOT_DREVENY_04 = 57 INSERTs (timber pattern blocks) → odhad terasa ~30 m². NEPOUŽITELNÉ pro 3.NP biodeska (PLOT_DREVENY_04 v dum_DPZ = 0).", C_GEOM_FROM_TZ,
+           "771474112", ["766811111"],
+           "TZ ARS dům §4 + DXF dum_situace PLOT_DREVENY_04 (terasa, ne 3.NP)", "truhlar", []),
+    ]
+
+    # ── PSV-77 Podlahy ───────────────────────────────────────────────
+    # Distribution per typický RD 219.3 m² podlahova:
+    # mokré (koupelny + WC + kuchyně + spíž + technic 1.PP) ~30%, suché obytné ~70%
+    items += [
+        mk(O, "PSV-77 Podlahy", "Nášlap vinyl obytné místnosti",
+           "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, obývák, chodby)",
+           "m²", round(DUM["podlahova_m2"] * 0.55, 1),
+           "podlahova_plocha × 0.55 (obytné po odečtení mokrých + 3.NP biodeska) = 121", C_GEOM_FROM_TZ,
+           "776511820", ["776521820"],
+           "TZ ARS dům §4 + DXF MTEXT room labels (2× kuchyně, 3× koupelna, 7× chodba)", "podlahar", [4]),
+        mk(O, "PSV-77 Podlahy", "Nášlap keramická dlažba",
+           "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + kuchyně + spíž + technic 1.PP",
+           "m²", round(DUM["podlahova_m2"] * 0.25, 1),
+           "podlahova × 0.25 mokré (3 koupelny + 2 kuchyně + spíž + 1.PP technic) = 55", C_GEOM_FROM_TZ,
+           "771274102", ["771274107"],
+           "TZ ARS dům §4 + DXF MTEXT room labels", "podlahar", [4]),
+        mk(O, "PSV-77 Podlahy", "Nášlap biodeska 3.NP spací patro",
+           "Nášlapná vrstva biodeska (smrk masiv) nebo OSB v 3.NP spací části nad krovem",
+           "m²", 25.0,
+           "TZ ARS — patro nad kleštinami z biodesky ~5×5m. NEPOUŽITELNÉ DXF (PLOT_DREVENY_04=0 v dum_DPZ)", C_GEOM_FROM_TZ,
+           "766411111", ["766421111"],
+           "TZ ARS dům §4 — patro pro přespání z biodesky",
+           "biodeska_konstrukcni", [3],
+           status_flag="needs_subdod_mapping",
+           notes="Subdod 'biodeska_konstrukcni' není v current mapping. Pseudo-hybrid mezi truhlář a krov_tesarsky_kompletni. FLAG pro batch mapping update."),
+        mk(O, "PSV-77 Podlahy", "Betonový potěr s kari nad EPS",
+           "Mokrá podlahová skladba — betonový potěr s kari síťkou 4/100/100 tl. 50 mm + samonivelační stěrka",
+           "m²", round(DUM["zastavena_m2"] * 0.7 + DUM["zastavena_m2"], 1),
+           "(rozsah 1.NP + 3.NP) ~177 m²", C_GEOM_FROM_TZ,
+           "631321311", ["631321411"],
+           "TZ ARS dům §4 — betonový potěr s kari + samonivelační stěrka", "podlahar", [4]),
+        mk(O, "PSV-77 Podlahy", "Soklíky podlah",
+           "Soklíky podlahové laminátové (dub) v obytných místnostech",
+           "bm", round(DUM["podlahova_m2"] * 0.55 * 0.4, 1),
+           "obvod místností 121 m² × 0.4 m/m² (typ. RD soklík poměr) = 48", C_GEOM_FROM_TZ,
+           "776511831", ["776511820"],
+           "TZ ARS — laminátové soklíky standard RD", "podlahar", []),
+    ]
+
+    # ── PSV-78 Povrchové úpravy ──────────────────────────────────────
+    fasada_interier_m2 = round(DUM["podlahova_m2"] * 2.5, 1)  # interier walls = 2.5× floor (typický RD koeficient)
+    items += [
+        mk(O, "PSV-78 Povrchové úpravy", "Vyspravení stávajících stěn",
+           "Vyspravení stávajících cihelných stěn — cementová stěrka + výztužná síťka + tenkovrstvá štuková omítka",
+           "m²", round(fasada_interier_m2 * 0.6, 1),
+           f"interier_celkem ({fasada_interier_m2}) × 0.6 (stávající stěny po bourání) = ~329", C_GEOM_FROM_TZ,
+           "612301351", ["612311311"],
+           "TZ ARS dům §3 — vyspravení stávajícího zdiva po nových otvorech", "zednik", [3]),
+        mk(O, "PSV-78 Povrchové úpravy", "Nové zděné stěny — omítka",
+           "Nové zděné stěny (Porotherm 30, nadezdívka 3.NP) — vápenocementová jádrová omítka tl. 15 mm + štuk",
+           "m²", round(fasada_interier_m2 * 0.4, 1),
+           f"interier × 0.4 (nové zdivo 3.NP + příčky) = ~219", C_GEOM_FROM_TZ,
+           "612311311", ["612301351"],
+           "TZ ARS dům §4 — nové zděné stěny", "zednik", []),
+        mk(O, "PSV-78 Povrchové úpravy", "SDK podhledy + předstěny — tmelení",
+           "SDK podhledy a předstěny — tmelení spojů + povrchová úprava před výmalbou (Q3 standard)",
+           "m²", round(DUM["zastavena_m2"] * 1.5, 1),
+           "= cca 1.5× zastavěná pro celý SDK (podhledy + některé předstěny)", C_GEOM_FROM_TZ,
+           "612471141", ["763121521"],
+           "TZ ARS + PBŘ — SDK podhledy ocelobeton + trámový strop", "sadrokartonar", []),
+        mk(O, "PSV-78 Povrchové úpravy", "Keramický obklad koupelny + WC",
+           "Keramický obklad koupelny + WC + sprchové kouty — 3 koupelny, výška 2.0 m",
+           "m²", round(3 * 20.0, 1),
+           "3 koupelny × ~20 m² obkladu (obvod 10 m × 2 m výška) = 60", C_DXF_INSERT,
+           "781447001", ["781447003"],
+           "DXF dum_DPZ 3× koupelna MTEXT + TZ ARS", "obkladac", []),
+        mk(O, "PSV-78 Povrchové úpravy", "Obklad za kuchyňskou linkou",
+           "Keramický obklad za kuchyňskou linkou — 2 kuchyně × ~5 m² obklad nad pracovní deskou",
+           "m²", 10.0,
+           "DXF dum_DPZ 2× kuchyně MTEXT × 5 m² obklad za linkou", C_DXF_INSERT,
+           "781447001", ["781447003"],
+           "DXF dum_DPZ 2× kuchyně MTEXT + TZ ARS", "obkladac", []),
+        mk(O, "PSV-78 Povrchové úpravy", "Interiérová výmalba",
+           "Interiérová výmalba akrylátová bílá 2× — všechny stěny + podhledy mimo obklad",
+           "m²", round(fasada_interier_m2 - 70.0 + DUM["zastavena_m2"] * 1.5, 1),
+           "interier_stěny ~548 − obklady 70 + SDK podhledy 157 = ~635", C_GEOM_FROM_TZ,
+           "784121011", ["784181101"],
+           "TZ ARS — interiérová výmalba", "malir", []),
+    ]
+
+    # ── PSV-95 Detekce požární ───────────────────────────────────────
+    items += [
+        mk(O, "PSV-95 Detekce požární", "Autonomní hlásič kouře",
+           "Autonomní hlásič kouře dle ČSN EN 14604 — 4 ks v místnostech 1.01, 1.02, 2.04, 3.03 dle PBŘ",
+           "ks", 4,
+           "TZ PBŘ — 4 hlásiče v daných místnostech", C_REGEX_TZ,
+           "375211101", ["375211102"],
+           "TZ PBŘ dům — ČSN EN 14604 autonomní hlásič kouře 4 ks", "elektroinstalater", []),
+        mk(O, "PSV-95 Detekce požární", "Přenosný hasicí přístroj 34A",
+           "Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné chodbě",
+           "ks", 1,
+           "TZ PBŘ — min. 1 ks 34A", C_REGEX_TZ,
+           "966067121", ["966067112"],
+           "TZ PBŘ dům — PHP 34A 1 ks minimum", "VRN_management", []),
+    ]
+
+    # ──── SKLAD ────
+    O = "260217_sklad"
+    items += [
+        mk(O, "PSV-76 Výplně otvorů", "Bezpečnostní dveře RC3 sklad",
+           "Bezpečnostní dveře RC3 v ocelové zárubni — vrata skladu (TZ statika §1.4 RC3 certifikované)",
+           "ks", 1,
+           "1 ks vstupní dveře skladu", C_REGEX_TZ,
+           "766682111", ["767311111", "766682112"],
+           "TZ statika sklad §1.4 — RC3 bezpečnostní dveře v ocelové zárubni", "specialista_RC3_dvere", []),
+        mk(O, "PSV-77 Podlahy", "Betonová dlažba sklad",
+           "Betonová dlažba do pískového lože — povrch podlahy skladu (~21 m²)",
+           "m²", SKLAD["podlaha_m2"],
+           f"DXF DIMENSION 6.35 × 3.34 = 21.2 m²", C_DXF_DIM,
+           "771121011", ["771274102"],
+           "TZ statika sklad §4 + DXF DIMENSION", "podlahar", []),
+    ]
+
+    return items
 
 
 def gen_TZB_M():
