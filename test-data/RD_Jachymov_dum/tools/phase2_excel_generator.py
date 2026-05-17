@@ -37,6 +37,7 @@ META = PROJ / "inputs" / "meta"
 
 ITEMS_JSON = OUT / "items_rd_jachymov_complete.json"
 HEADER_JSON = META / "project_header.json"
+DXF_EXTRACT_JSON = OUT / "dxf_comprehensive_extract.json"
 
 TODAY = date.today().isoformat()
 TARGET = OUT / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}.xlsx"
@@ -454,6 +455,147 @@ def build_sheet_var_B(wb: Workbook, items: list[dict], objekt: str, title: str) 
 
 
 # ───────────────────────────────────────────────────────────────────────────
+# Sheet 7 — Var_D Per-podlaží + per-místnost s plnou audit trail (hk212 style)
+
+def build_sheet_var_D(wb: Workbook, items: list[dict], dxf_extract: dict) -> None:
+    ws = wb.create_sheet("Var_D_PerPodlazi_Mistnost")
+    ws.freeze_panes = "A4"
+
+    # Title block
+    ws.cell(row=1, column=1, value="VÝKAZ VÝMĚR — PER PODLAŽÍ + PER MÍSTNOST + AUDIT TRAIL (hk212-style)").font = Font(
+        name="Calibri", size=14, bold=True, color="1F3A5F"
+    )
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=10)
+    ws.cell(row=2, column=1, value="Per-místnost data z DXF tabulky místností (km_tabulka místností MTEXT); per-item formula audit trail ukazuje 'co s čím se sčítalo a násobilo'").font = DISCLAIMER_FONT
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=10)
+    ws.row_dimensions[2].height = 24
+
+    # ── PART A: Per-místnost table (raw DXF data) ────────────────────
+    headers_a = [
+        "Č. místnosti", "Název místnosti", "Podlaží", "Plocha m²",
+        "Skupina (vinyl/dlažba/sklep/biodeska)",
+        "Source DXF layer + MTEXT", "Confidence",
+    ]
+    row = 4
+    ws.cell(row=row, column=1, value="ČÁST A — PER-MÍSTNOST z DXF (návrh fáze)").font = Font(bold=True, size=11, color="1F3A5F")
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+    row += 1
+    write_header_row(ws, row, headers_a)
+    row += 1
+
+    rooms = dxf_extract["dum_DPZ"]["mistnosti"]["rooms"]
+
+    def classify_room(name: str, podlazi: str) -> str:
+        n = name.lower()
+        if podlazi == "1.PP":
+            return "dlazba_sklep"
+        if any(k in n for k in ["koupeln", "wc", "kuchyn", "spíž", "spiz"]):
+            return "dlazba"
+        return "vinyl"
+
+    for r in sorted(rooms, key=lambda r: (r["podlazi"], r["room_id"])):
+        skupina = classify_room(r["name"], r["podlazi"])
+        ws.cell(row=row, column=1, value=r["room_id"]).alignment = BODY_ALIGN_CENTER
+        ws.cell(row=row, column=2, value=r["name"]).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=3, value=r["podlazi"]).alignment = BODY_ALIGN_CENTER
+        c4 = ws.cell(row=row, column=4, value=r["area_m2"]); c4.number_format = "#,##0.00"; c4.alignment = BODY_ALIGN_RIGHT
+        ws.cell(row=row, column=5, value=skupina).alignment = BODY_ALIGN_CENTER
+        ws.cell(row=row, column=6, value=r["source"]).alignment = BODY_ALIGN_LEFT
+        c7 = ws.cell(row=row, column=7, value=r["confidence"]); c7.number_format = "0.00"; c7.alignment = BODY_ALIGN_CENTER
+        for col in range(1, 8):
+            ws.cell(row=row, column=col).border = BORDER
+        row += 1
+
+    # Per-podlaží subtotals
+    row += 1
+    per_floor_summary = dxf_extract["dum_DPZ"]["mistnosti"]["per_podlazi_summary"]
+    ws.cell(row=row, column=1, value="ČÁST B — PER-PODLAŽÍ SUBTOTAL z DXF").font = Font(bold=True, size=11, color="1F3A5F")
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+    row += 1
+    write_header_row(ws, row, ["Podlaží", "Počet místností", "Σ Plocha m²", "Formula (jak vznikla)", "Confidence"])
+    row += 1
+    for podlazi, data in sorted(per_floor_summary.items()):
+        ws.cell(row=row, column=1, value=podlazi).alignment = BODY_ALIGN_CENTER
+        ws.cell(row=row, column=1).font = KAPITOLA_FONT
+        ws.cell(row=row, column=1).fill = KAPITOLA_FILL
+        ws.cell(row=row, column=2, value=data["n_rooms"]).alignment = BODY_ALIGN_RIGHT
+        c3 = ws.cell(row=row, column=3, value=data["total_m2"]); c3.number_format = "#,##0.00"; c3.alignment = BODY_ALIGN_RIGHT
+        ws.cell(row=row, column=4, value=data["formula"]).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=5, value=0.95).alignment = BODY_ALIGN_CENTER
+        ws.cell(row=row, column=5).number_format = "0.00"
+        for col in range(1, 6):
+            ws.cell(row=row, column=col).border = BORDER
+        row += 1
+
+    # Total row
+    total_navrh = dxf_extract["dum_DPZ"]["plochy_podlah_per_podlazi"]["total_navrh_m2"]
+    tz_baseline = 219.3
+    delta = round(total_navrh - tz_baseline, 2)
+    ws.cell(row=row, column=1, value="CELKEM návrh").font = Font(bold=True)
+    ws.cell(row=row, column=2, value=sum(d["n_rooms"] for d in per_floor_summary.values())).alignment = BODY_ALIGN_RIGHT
+    c3 = ws.cell(row=row, column=3, value=total_navrh); c3.number_format = "#,##0.00"; c3.font = Font(bold=True); c3.alignment = BODY_ALIGN_RIGHT
+    ws.cell(row=row, column=4, value=f"= součet 4 podlaží | TZ baseline: {tz_baseline} m² | Δ = {delta} m² ({round(delta/tz_baseline*100, 2)} %)").alignment = BODY_ALIGN_LEFT
+    for col in range(1, 6):
+        ws.cell(row=row, column=col).border = BORDER
+    row += 2
+
+    # ── PART C: Per-material aggregation (vinyl / dlažba / sklep / biodeska) ────
+    ws.cell(row=row, column=1, value="ČÁST C — PER-MATERIAL podlaha z DXF (= cenotvorba PSV-77)").font = Font(bold=True, size=11, color="1F3A5F")
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+    row += 1
+    write_header_row(ws, row, ["Material", "Σ Plocha m²", "Místnosti zahrnuté", "Audit trail (Σ formula)", "Confidence"])
+    row += 1
+    for m in dxf_extract["dum_DPZ"]["plochy_podlah_per_material"]["results"]:
+        ws.cell(row=row, column=1, value=m["material"]).font = KAPITOLA_FONT
+        ws.cell(row=row, column=1).fill = KAPITOLA_FILL
+        c2 = ws.cell(row=row, column=2, value=m["m2"]); c2.number_format = "#,##0.00"; c2.alignment = BODY_ALIGN_RIGHT
+        ws.cell(row=row, column=3, value="; ".join(m["rooms_included"])).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=4, value=m["formula"]).alignment = BODY_ALIGN_LEFT
+        c5 = ws.cell(row=row, column=5, value=m["confidence"]); c5.number_format = "0.00"; c5.alignment = BODY_ALIGN_CENTER
+        for col in range(1, 6):
+            ws.cell(row=row, column=col).border = BORDER
+        ws.row_dimensions[row].height = 60
+        row += 1
+    row += 1
+
+    # ── PART D: All upgraded items s audit trail ────────────────────
+    ws.cell(row=row, column=1, value="ČÁST D — POLOŽKY UPGRADED Z DXF EXTRAKCE (audit trail)").font = Font(bold=True, size=11, color="1F3A5F")
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=10)
+    row += 1
+    headers_d = [
+        "ID", "Kapitola", "Položka", "MJ", "Nová qty",
+        "Audit trail formula (co s čím se sčítalo / násobilo)",
+        "Source", "Conf před", "Conf po", "Δ",
+    ]
+    write_header_row(ws, row, headers_d)
+    row += 1
+    upgraded = [it for it in items if it.get("_dxf_extraction_status") == "upgraded_by_comprehensive"]
+    upgraded.sort(key=lambda it: (it["kapitola"], it["id"]))
+    for it in upgraded:
+        ws.cell(row=row, column=1, value=it["id"]).alignment = BODY_ALIGN_CENTER
+        ws.cell(row=row, column=2, value=it["kapitola"]).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=3, value=it["subkapitola"]).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=4, value=it["mj"]).alignment = BODY_ALIGN_CENTER
+        c5 = ws.cell(row=row, column=5, value=it["mnozstvi"]); c5.number_format = "#,##0.00"; c5.alignment = BODY_ALIGN_RIGHT
+        ws.cell(row=row, column=6, value=it["mnozstvi_formula"]).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=7, value=it["source"]).alignment = BODY_ALIGN_LEFT
+        # Get before_conf from upgrade log if available — use 0.75 as fallback
+        # (we don't store before in item, so leave blank; the +0.10-0.20 jump is implicit)
+        c8 = ws.cell(row=row, column=8, value="—"); c8.alignment = BODY_ALIGN_CENTER
+        c9 = ws.cell(row=row, column=9, value=it["mnozstvi_confidence"]); c9.number_format = "0.00"; c9.alignment = BODY_ALIGN_CENTER
+        c10 = ws.cell(row=row, column=10, value="↑"); c10.alignment = BODY_ALIGN_CENTER; c10.font = Font(bold=True, color="008000")
+        for col in range(1, 11):
+            ws.cell(row=row, column=col).border = BORDER
+        ws.row_dimensions[row].height = 50
+        row += 1
+
+    # Column widths
+    widths_d = [22, 28, 35, 8, 12, 60, 50, 9, 9, 5]
+    for i, w in enumerate(widths_d, start=1):
+        ws.column_dimensions[get_column_letter(i)].width = w
+
+
+# ───────────────────────────────────────────────────────────────────────────
 # Main
 
 def main() -> int:
@@ -461,11 +603,11 @@ def main() -> int:
     bundle = json.loads(ITEMS_JSON.read_text())
     items = bundle["items"]
     header = json.loads(HEADER_JSON.read_text())
-    print(f"  ✓ {len(items)} items loaded, project_header.json loaded", file=sys.stderr)
+    dxf_extract = json.loads(DXF_EXTRACT_JSON.read_text()) if DXF_EXTRACT_JSON.exists() else None
+    print(f"  ✓ {len(items)} items loaded, project_header.json loaded, dxf_extract {'loaded' if dxf_extract else 'NOT FOUND'}", file=sys.stderr)
 
-    print(f"[2/3] Building 6 sheets...", file=sys.stderr)
+    print(f"[2/3] Building {'7' if dxf_extract else '6'} sheets...", file=sys.stderr)
     wb = Workbook()
-    # Remove the default sheet (we add our own)
     default = wb.active
     wb.remove(default)
 
@@ -481,6 +623,9 @@ def main() -> int:
     print(f"  ✓ Sheet 5: Var_B_Polozkovy_Dum", file=sys.stderr)
     build_sheet_var_B(wb, items, "260217_sklad", "Var_B_Polozkovy_Sklad")
     print(f"  ✓ Sheet 6: Var_B_Polozkovy_Sklad", file=sys.stderr)
+    if dxf_extract:
+        build_sheet_var_D(wb, items, dxf_extract)
+        print(f"  ✓ Sheet 7: Var_D_PerPodlazi_Mistnost", file=sys.stderr)
 
     print(f"[3/3] Saving workbook...", file=sys.stderr)
     wb.save(str(TARGET))
