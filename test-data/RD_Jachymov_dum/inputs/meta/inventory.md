@@ -2,8 +2,15 @@
 
 **Datum prvotního auditu:** 2026-05-16
 **Datum UNSORTED auditu:** 2026-05-16 (Phase 0b §3.1, branch `claude/rd-jachymov-phase-0b-foundation`)
+**Datum re-parse:** 2026-05-16 (Phase 0b §3.2 — `tools/phase0b_validator.py`, 67/69 = 97.1 % verified, 0 drifts, gate OPEN)
+**Datum DXF parse:** 2026-05-16 (Phase 0b §3.3 — `tools/phase0b_dxf_extractor.py`, 4/4 DXF parsed OK, vyjasnění #18 partially_resolved)
+**Datum Phase 1 HSV gate:** 2026-05-16 (Phase 1 §HSV — `tools/phase1_items_generator.py --group HSV`, 95 položek (74 dum + 21 sklad), 0 sub mapping fail, 0 mnozstvi confidence pod 0.70; vyjasnění #18 fully_resolved via LWPOLYLINE probe)
+**Datum Phase 1 PSV gate:** 2026-05-16 (Phase 1 §PSV — 35 položek (33 dum + 2 sklad), 2 needs_mapping flags: okenni_zaluzie_kastlik_purenit + biodeska_konstrukcni)
+**Datum Phase 1 TZB+M gate:** 2026-05-16 (Phase 1 §TZB — 22 položek dum, 1 needs_mapping flag: instalater_TUV_akumulacni_zasobnik. Architectural bugfix: `_gate` field oddělený od `kapitola_group`)
+**Datum Phase 1 VRN gate:** 2026-05-16 (Phase 1 §VRN — 19 položek (15 dum + 4 sklad), 2 needs_mapping flags: mykolog + azbestovy_specialista. Phase 1 COMPLETE)
+**Datum Phase 1 complete:** 2026-05-16 — **171 položek celkem** (144 dum + 27 sklad), všechna 4 STOP gates uzavřena, 5 needs_mapping flags akumulovaných pro batch update.
 **Sběr:** Email cesta Volný → Jiří Šmíd → Karel Šmíd → Alexander; OneDrive linky 2× (sklad+parking + dům)
-**Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). UNSORTED audit hotov 2026-05-16, 65 souborů roztříděno, UNSORTED/ smazán.
+**Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). Phase 0b §3.1 + §3.2 dokončeny.
 
 ---
 
@@ -161,8 +168,137 @@ PBŘ pro sklad/parking SAMOSTATNÉ NENÍ — sklad spadá do volné stavby k byd
 
 `UNSORTED/` smazán.
 
-### 5.4 Otevřené otázky (přidat do `vyjasneni_queue.json` v Phase 0b §3.2)
+### 5.4 Otevřené otázky → zapsány do `vyjasneni_queue.json` v Phase 0b §3.2 (commit s re-parse)
 
-1. **Sklad — chybí řezy + pohledy + návrh PDF.** Existuje pro sklad/parking samostatná architektonická dokumentace nebo je celý objekt pokryt jen půdorysem suterénu + statickou TZ?
-2. **D.2.2 statický výpočet 19.8 MB** je značeno bez objektového sufixu — pokrývá oba objekty (dům + sklad) nebo jen dům? (Statické TZ jsou samostatné per objekt — výpočet patrně též jen dům, sklad má vlastní v `tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf`.)
-3. **C.01** rozdíl mezi "Situace širších vztahů" a "Situační výkres širších vztahů" — formální revize nebo dvě paralelní verze pro různé účely? Keeper má v názvu "Situační výkres" — formálnější.
+Viz `vyjasneni_queue.json` items #13–#18 — všechny nové vyjasnění z §3.1 audit + §3.2 re-parse jsou v jedné queue.
+
+## 6. Phase 0b §3.2 — independent TZ re-parse (2026-05-16)
+
+**Tool:** `tools/phase0b_validator.py` (pypdf-based extraction + 69 cross-checks + regex/substring matchers).
+
+**Vstup:** 6 TZ PDF (B common + 3 dum + 2 sklad) — 65 stran celkem, 156 077 znaků extrahovaného textu.
+
+**Výstup:** `outputs/validation_report.json` (67/69 verified = 97.1 %, 0 drifts, 2 missing).
+
+### 6.1 Klíčové nálezy
+
+| Severity | Finding | Akce |
+|---|---|---|
+| **HIGH** | `D_2_1_TZ_statika_dum_TeAnau.pdf` a `D_2_1_TZ_statika_sklad_TeAnau.pdf` byly v canonical layoutu **PROHOZENÉ** (soubor `_dum_` obsahoval "Zahradní sklad" content, opačně). Příčina: chat session author mis-attribute při uploadu zip souboru. | Fixed inline: SWAP files in commit, SHA-256 verified post-swap. Vyjasnění #16. |
+| **MEDIUM** | Sklad geometric dimensions (6,35×3,34 m lichoběžník, parking 7,0 m délka) NEJSOU v TZ tělech — patrně z architektonického výkresu D.1.1.02.R1 nebo z DXF. | Vyjasnění #18: Phase 1 musí extract z DXF (ezdxf wrapper). |
+| **LOW** | Sloupky krovu pre-baked 'JKL 100/4', actual TZ 'jakl' (ARS) / 'jeklu 100/4' (statika). Cyklický německý termín místo ČSN EN 10219-2 (RHS/SHS). | Vyjasnění #17: korekce v project_header.json + použít RHS/SHS v Phase 1 položkách. |
+
+### 6.2 Drift threshold check
+
+Per §3.6: pokud silent_drifts > 5 → STOP před Phase 1. Po opravě file-swap je drifts = 0, gate **OPEN**.
+
+### 6.3 New findings z re-parse
+
+- **25 unique ČSN references** napříč 6 TZ (`ČSN 06`, `ČSN 33`, `ČSN 73`, `ČSN EN 1090-1/2`, `ČSN EN 1990`, `ČSN EN 1991-1`, `ČSN EN 1992-1`, `ČSN EN 1993-1`, `ČSN EN 1995-1`, `ČSN EN 1996-1/2`, `ČSN EN 1997-1`, `ČSN EN 1999-1`, `ČSN EN 206`, `ČSN EN 13670`, `ČSN EN 1443`, `ČSN EN 14604`, `ČSN EN 1922-1`, `ČSN EN ISO 5817`, `ČSN EN ISO 12944`, `ČSN 732604`, `ČSN 732810`). Použít pro normy traceability v Phase 1 audit_trail.
+
+## 7. Phase 0b §3.3 — DXF independent parse (2026-05-16)
+
+**Tool:** `tools/phase0b_dxf_extractor.py` (ezdxf 1.4.4 — INSERT block counts, DIMENSION extraction, MTEXT/TEXT per layer, HATCH polygonal areas).
+
+**Vstup:** 4 DXF (sklad DPZ + sklad situace + dum DPZ + dum situace), všechny AutoCAD 2010 (AC1024). Žádný `_blocked_old_format`.
+
+**Výstup:** `outputs/dxf_extract_report.json` (~39 KB).
+
+### 7.1 Per-file přehled
+
+| DXF | Entities | Layers | INSERTs (unique) | DIMENSIONs | HATCHes | Σ HATCH plochy (m² za předpokladu mm units) |
+|---|--:|--:|--:|--:|--:|--:|
+| sklad_DPZ | 1 029 | 39 | 90 (21) | 65 | 147 | 97,5 |
+| sklad_situace | 4 388 | 35 | 345 (23) | 12 | 6 | 0,0 (drobné survey polygony) |
+| dum_DPZ | 7 195 | 53 | 535 (59) | 686 | 281 | 936,3 |
+| dum_situace | 4 372 | 43 | 336 (25) | 22 | 8 | 0,0 (jen kontury) |
+
+### 7.2 Vyjasnění #18 (sklad geometrie) — partially_resolved
+
+| Cíl | Status | Důkaz |
+|---|---|---|
+| 6,35 m sklad šířka | ✅ RESOLVED | `6350,06 mm` v sklad_DPZ + `6350,0 mm` v dum_DPZ (DIMENSION objekty, confidence 0,95) |
+| 3,34 m sklad hloubka | ✅ RESOLVED | `3340,0 mm` exactly v dum_DPZ (sklad zobrazený adjacentně k objektu domu) |
+| 7,0 m parking délka | ✗ NOT FOUND | žádný DIMENSION objekt v 4 DXF v rozmezí ±50 mm; bude třeba derivovat z LWPOLYLINE extents v Phase 1 nebo akceptovat TZ value s conf 0,75 |
+| (alt) 3,085 m interior | ✅ corroborating | `3085,0 mm` v sklad_DPZ — odpovídá interior dim = 3340 − 2×127,5 wall thickness |
+
+### 7.3 Top INSERT bloky napříč všemi DXFs (Phase 1 hint)
+
+| Block name | Count | Význam |
+|---|--:|---|
+| `bod_000` | 461 | Geodetický bod (zaměření) — sklad_situace + dum_situace |
+| `PLOT_DREVENY_04` | 133 | Šrafa dřevěné plochy (krov, podlaha terasa) — užitečné pro Phase 1 derivaci m² dřeva |
+| `KR` | 111 | Krokve (sklad DPZ + dum DPZ) — počet krokví derivovatelný |
+| `řezová značka`, `název`, `investor`, `projektant`, `datum`, `část`, `razítko`, atd. | 32 × ~8 = ~256 | Standard razítka výkresů (vyfiltrovat při Phase 1 INSERT analytice) |
+| `severka` | 16 | Standardní orientační značka — vyfiltrovat |
+
+## 8. Phase 1 final — items_rd_jachymov_complete.json totals
+
+**Generator:** `tools/phase1_items_generator.py` (886 LOC + 4 STOP gates: HSV / PSV / TZB / VRN)
+**Output:** `outputs/items_rd_jachymov_complete.json` (~171 items, ~4 800 řádků JSON)
+**Variant target:** B (max detail položkový), realized 171 items vs cíl 140 — slightly over per user-explicit item-level guidance per gate.
+
+### 8.1 Items by gate
+
+| Gate | Items | Objekt split |
+|---|--:|---|
+| HSV (HSV-1..HSV-7) | 95 | 74 dum + 21 sklad |
+| PSV (PSV-71/76/77/78/95) | 35 | 33 dum + 2 sklad |
+| TZB+M (PSV-72/73 + M-21) | 22 | 22 dum + 0 sklad |
+| VRN | 19 | 15 dum + 4 sklad |
+| **Total** | **171** | **144 dum + 27 sklad** |
+
+### 8.2 Confidence ladder distribution
+
+| Confidence | n items | % |
+|---|--:|--:|
+| 0.99 (manual judgement) | 5 | 2.9 % |
+| 0.95 (DXF DIMENSION/INSERT, regex 1.0 ekvivalent) | 21 | 12.3 % |
+| 0.90 (DXF LWPOLYLINE bbox / HATCH) | 5 | 2.9 % |
+| 0.85 (regex z TZ) | 36 | 21.1 % |
+| 0.80 (empirické Methvin/B4) | 16 | 9.4 % |
+| 0.75 (geometry-from-TZ) | 88 | 51.5 % |
+| < 0.70 (hard-fail per §3.6) | **0** | **0 %** |
+
+### 8.3 URS lookup status
+
+| Status | n items | Note |
+|---|--:|---|
+| needs_production_lookup | **171** *(100 %)* | sandbox bez Cloud Run URS_MATCHER + OTSKP DB; všech 171 položek čeká na produkční 2-stage match (catalog + Perplexity rerank) |
+
+### 8.4 Subdodavatel needs_mapping flags (5 — pre batch update)
+
+| Flag | Gate | Item | Důvod |
+|---|---|---|---|
+| `okenni_zaluzie_kastlik_purenit` | PSV | 9 ks žaluzie kastlík purenit ulice | Hybrid trade (okenář + ETICS + purenit dodávka) |
+| `biodeska_konstrukcni` | PSV | 25 m² biodeska 3.NP spací patro | Pseudo-hybrid truhlář + krov_tesarsky_kompletni |
+| `instalater_TUV_akumulacni_zasobnik` | TZB | Akumulační zásobník TUV v 1.PP | Specialty subset vytápěč+vodař hybrid pro multivariantní topný systém |
+| `mykolog` | VRN | Mykologický průzkum dřeva | Specialty surveyor (autorizovaný mykolog dřeva) |
+| `azbestovy_specialista` | VRN | Azbestový průzkum podrobný | Specialty surveyor (autorizovaný technik azbestu + lab. posudek) |
+
+## 9. Corpus patterns — extracted from this pilot
+
+Tento RD Jáchymov pilot přinesl 4 distinct corpus patterns pro budoucí STAVAGENT pipeline:
+
+### 9.1 Pattern 1: UNSORTED audit + SHA-based dedup (Phase 0b §3.1)
+**Problem:** Chat session výstupy obsahují UNSORTED/ adresář s míchanými dokumenty, často s duplicity (různé revize, "(1)" copy, _EAR vs no_EAR).
+**Solution:** `mkdir -p _superseded/<datum>_unsorted_audit/`, then SHA-256 verification before any hard-delete. Files canonical → vykresy_pdf/dxf/situace/tz/dokladova_cast per type. Older revisions → _superseded/ (audit trail preserved).
+**Repository precedent extension:** Žádný předchozí STAVAGENT pilot neměl `inputs/dokladova_cast/` ani `inputs/_superseded/`. Nově zavedeno per Vyhláška 499/2006 Sb. příloha E nomenclature.
+
+### 9.2 Pattern 2: Pre-baked drift detection via independent re-parse (Phase 0b §3.2)
+**Problem:** Pre-baked extraction (chat session) může mít systematic error neviditelný bez nezávislé verifikace. Konkrétní instance: dvě statika TZ files byly v canonical layoutu SWAPPED (soubor `_dum_` obsahoval "Zahradní sklad" header per page, opačně).
+**Solution:** `tools/phase0b_validator.py` (pypdf-based extraction) + 69 cross-checks. Re-parse confidence ladder per task §5 (regex 1.0 > DXF 0.95 > substring 0.85 > AI 0.70). Re-parse VŽDY vyhrává nad pre-baked (per user policy 2026-05-16).
+**Discovery:** Rdt drift (300↔350 mezi dum/sklad) byl smoking gun pro file swap. Post-swap re-parse jumped z 36/69 (52 %) → 67/69 (97.1 %), 3 drifts → 0.
+
+### 9.3 Pattern 3: Multi-modal geometry extraction (Phase 0b §3.3 + Phase 1 PSV)
+**Problem:** Stavební rozměry nejsou vždy v TZ tělech — některé existují jen v DXF/výkresech (např. sklad lichoběžník 6,35×3,34 m, parking 7,0 m).
+**Solution:** Three extraction layers per ezdxf:
+1. **DIMENSION objects** (`.get_measurement()`) → confidence 0.95
+2. **LWPOLYLINE bbox extents** → confidence 0.90 (when no direct DIMENSION present)
+3. **INSERT block counts** by name → confidence 0.95 (např. okna count = ks z INSERT 'okno 1.NP' / 'okno 2.NP' atd.)
+**Live application:** Vyjasnění #18 sklad geometrie fully_resolved via Pattern 3 (6350.06 mm DIMENSION + 3340.0 mm DIMENSION + 7000 mm LWPOLYLINE bbox). DXF INSERT 'okno *' = 16 ks oken (replaces TZ-derived odhad ~10).
+
+### 9.4 Pattern 4: Workflow gate ≠ classification kapitola_group (Phase 1 TZB)
+**Problem:** Catalog classification (HSV/PSV/M/VRN per Czech ÚRS 800) NE vždy odpovídá workflow gates user definuje (např. user-spec "TZB+M gate" obsahuje PSV-72/73 + M-21). Naivní `kapitola_group` filter v merge logic vede k duplikacím or accidental deletes.
+**Solution:** Parallel `_gate` field on each item, populated via `KAPITOLA_TO_GATE` table mapping kapitola prefix → user-workflow gate. `kapitola_group` stays as classification (HSV/PSV/M/VRN per catalog). Merge filter uses `_gate` exclusively.
+**Lesson:** Workflow concerns (review gates, batch commits) and classification concerns (ÚRS hierarchy, catalog) are orthogonal — separate fields, don't conflate.

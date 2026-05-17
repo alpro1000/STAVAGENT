@@ -1,0 +1,255 @@
+{
+  "_schema": "STAVAGENT subdodavatel mapping v1.2 — DSP-residential extension + Phase 1 RD Jáchymov flags",
+  "_project": "RD Jáchymov Fibichova 733",
+  "_created": "2026-05-16",
+  "_revised": "2026-05-16 — v1.1 → v1.2 batch mapping update after Phase 1 completion",
+  "_basis": "Libuše D mapping + DSP-residential extension (v1.1) + 5 RD Jáchymov needs_mapping flags (v1.2)",
+  "_v1_2_additions_from_RD_Jachymov_pilot": [
+    "okenni_zaluzie_kastlik_purenit (PSV-76, hybrid okenář)",
+    "biodeska_konstrukcni (PSV-77, hybrid truhlář)",
+    "instalater_TUV_akumulacni_zasobnik (PSV-72, hybrid topenář)",
+    "mykolog (VRN, single specialty surveyor)",
+    "azbestovy_specialista (VRN, single specialty surveyor)"
+  ],
+  "_extensions_for_residential": [
+    "krov_tesarsky_kompletni — full tesařský dodavatel: krokve + kleštiny + pozednice + bednění + nadkrokevní PIR + kontralatě",
+    "bila_vana_csb02 — specialista bílá vana ČBS 02 (těsnění bobtnavé pásky, plech pro pracovní spáry, dohled betonáže)",
+    "ocelobeton_strop_IPE_trapez — hybrid dodavatel: ocel IPE/HEA dodávka + trapéz montáž + ŽB nabetonávka (typicky střechař/zámečník+ŽB betonář komplet)",
+    "plech_falcovany_hlinik — specialista hliníkové falcované krytiny (typicky klempíř s certifikací PREFA / Lindab)"
+  ],
+
+  "trades": {
+    "zemni_prace": {
+      "label_cz": "Zemní práce",
+      "typical_orgs": "lokální zemních firma, výkopové práce",
+      "kapitoly": ["HSV-1"]
+    },
+    "zelezobetonarsky_specialny": {
+      "label_cz": "ŽB práce — komplexní (bednění + výztuž + betonáž + ošetření)",
+      "typical_orgs": "ŽB specialista, sub-dodavatel HSV firmy",
+      "kapitoly": ["HSV-2"]
+    },
+    "bila_vana_csb02": {
+      "label_cz": "Bílá vana ČBS 02 — specialista (těsnění + dohled betonáže)",
+      "typical_orgs": "specialista BV (DOKA, Sika, ULMA — service), sub-dodavatel ŽB",
+      "kapitoly": ["HSV-2"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension — Libuše D nepokrývá. ČBS 02 metodika je standard pro úhlové opěrné stěny s vodním sloupcem W0-W2."
+    },
+    "bednici_tesar": {
+      "label_cz": "Bednící tesař (systémové bednění + odbednění)",
+      "typical_orgs": "subdodavatel HSV, často propojen se ŽB betonářem",
+      "kapitoly": ["HSV-2", "HSV-5"]
+    },
+    "zednik": {
+      "label_cz": "Zedník",
+      "typical_orgs": "lokální zednická firma (dozdívky, příčky, omítky)",
+      "kapitoly": ["HSV-3", "PSV-78"]
+    },
+    "ocel_zamecnik_konstrukce": {
+      "label_cz": "Zámečník ocelových konstrukcí — IPE/HEA/UPE/L (dodávka + montáž)",
+      "typical_orgs": "specialista ocelové výroby (např. KS Ocel, Ferona, lokální zámečnictví)",
+      "kapitoly": ["HSV-3", "HSV-4", "HSV-5", "PSV-76"]
+    },
+    "ocelobeton_strop_IPE_trapez": {
+      "label_cz": "Ocelobetonový strop hybridní (IPE + trapéz + nabetonávka) — komplexní dodavatel",
+      "typical_orgs": "kombinace zámečník + ŽB betonář, často generální dodavatel",
+      "kapitoly": ["HSV-4"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension. Hybridní strop má 3 dodavatele souběžně (ocel + trapéz + ŽB) — užitečné mít jako sjednocenou položku pro koordinaci."
+    },
+    "krov_tesarsky_kompletni": {
+      "label_cz": "Tesařský krov — komplexní (krokve + kleštiny + pozednice + bednění + PIR + kontralatě)",
+      "typical_orgs": "tesařská firma s vlastní pilou nebo prefabrikovaný krov (např. Hampl, Plzeňský tesař)",
+      "kapitoly": ["HSV-5"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension. Komplexní krov dodavatel zahrnuje vše od konstrukce po nadkrokevní izolaci, oddělené od krytiny."
+    },
+    "plech_falcovany_hlinik": {
+      "label_cz": "Klempíř — falcovaná hliníková krytina (specialista)",
+      "typical_orgs": "specialista hliníkové krytiny (PREFA, Lindab, Rheinzink přes klempíře s certifikací)",
+      "kapitoly": ["HSV-5"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension. Hliníková falcovaná krytina vyžaduje specializovanou klempířskou firmu odlišnou od plechu Pzn standard."
+    },
+    "klempir": {
+      "label_cz": "Klempíř (plech Pzn lakovaný + falcování + svody)",
+      "typical_orgs": "klempířská firma (oplechování, parapety, svody)",
+      "kapitoly": ["HSV-4", "PSV-76"]
+    },
+    "bourani_demolice": {
+      "label_cz": "Demoliční práce (manuální + odvoz + likvidace)",
+      "typical_orgs": "specialista demolice s vlastními kontejnery",
+      "kapitoly": ["HSV-6"]
+    },
+    "fasadnik_etics": {
+      "label_cz": "Fasádník ETICS (kontaktní zateplení + omítka)",
+      "typical_orgs": "specialista fasád (Baumit, Weber, Stomix přes certifikované montéry)",
+      "kapitoly": ["HSV-7"]
+    },
+    "izolater_HI": {
+      "label_cz": "Izolatér hydroizolace (asfaltové pásy + folie)",
+      "typical_orgs": "izolatérská firma",
+      "kapitoly": ["PSV-71"]
+    },
+    "izolater_TI": {
+      "label_cz": "Izolatér tepelná izolace (EPS, MW, PIR)",
+      "typical_orgs": "izolatérská firma, často propojen s HI nebo s fasádníkem",
+      "kapitoly": ["PSV-71"]
+    },
+    "vodar": {
+      "label_cz": "Instalatér ZTI (vodovod + kanalizace + sanita)",
+      "typical_orgs": "instalatérská firma (vodaři)",
+      "kapitoly": ["PSV-72"]
+    },
+    "topenar": {
+      "label_cz": "Topenář (ÚT rozvody + kotle + radiátory + TUV)",
+      "typical_orgs": "topenářská firma (často propojen s vodaři)",
+      "kapitoly": ["PSV-73"]
+    },
+    "specialista_TC_multisplit": {
+      "label_cz": "Specialista tepelné čerpadlo + chlazení (multisplit)",
+      "typical_orgs": "autorizovaný technik TČ (např. Daikin, LG, Mitsubishi přes certifikované techniky s F-plynem)",
+      "kapitoly": ["PSV-73"]
+    },
+    "kominik": {
+      "label_cz": "Kominík — revize a údržba komínů",
+      "typical_orgs": "autorizovaný kominík",
+      "kapitoly": ["PSV-73"]
+    },
+    "okennar": {
+      "label_cz": "Okenář (plastová okna + venkovní žaluzie)",
+      "typical_orgs": "specialista oken (Vekra, Otherm, lokální výrobce)",
+      "kapitoly": ["PSV-76"]
+    },
+    "truhlar": {
+      "label_cz": "Truhlář (vnitřní dveře, dřevěné stupně schodiště, vestavby)",
+      "typical_orgs": "truhlářská dílna",
+      "kapitoly": ["PSV-76"]
+    },
+    "zamecnik_PSV": {
+      "label_cz": "Zámečník PSV (zábradlí, schodiště ocel, stříšky)",
+      "typical_orgs": "zámečnická dílna",
+      "kapitoly": ["PSV-76"]
+    },
+    "podlahar": {
+      "label_cz": "Podlahář (suchá + mokrá skladba + nášlap)",
+      "typical_orgs": "podlahářská firma",
+      "kapitoly": ["PSV-77"]
+    },
+    "malir": {
+      "label_cz": "Malíř (interiérová výmalba + tmely)",
+      "typical_orgs": "malířská firma",
+      "kapitoly": ["PSV-78"]
+    },
+    "obkladac": {
+      "label_cz": "Obkladač (keramický obklad koupelny, kuchyně)",
+      "typical_orgs": "obkladačská firma",
+      "kapitoly": ["PSV-78"]
+    },
+    "sadrokartonar": {
+      "label_cz": "Sádrokartonář (SDK podhledy, předstěny, suché podlahy)",
+      "typical_orgs": "SDK firma (Knauf, Rigips certifikovaní)",
+      "kapitoly": ["HSV-4", "PSV-77", "PSV-78"]
+    },
+    "elektroinstalater": {
+      "label_cz": "Elektroinstalatér silnoproud (kompletní ELI + příprava FVE)",
+      "typical_orgs": "elektroinstalační firma s ČKAIT M-elektrotechnika",
+      "kapitoly": ["M-21"]
+    },
+    "revize_specialista": {
+      "label_cz": "Revize (ELI, hydrant, komín, plyn)",
+      "typical_orgs": "autorizovaní revizní technici",
+      "kapitoly": ["M-21", "VRN"]
+    },
+    "VRN_management": {
+      "label_cz": "VRN — generální dodavatel (zařízení staveniště, BOZP, doprava, likvidace)",
+      "typical_orgs": "hlavní zhotovitel (Karel Šmíd)",
+      "kapitoly": ["VRN"]
+    },
+    "geodet": {
+      "label_cz": "Geodet (vytýčení, polohopis, výškopis)",
+      "typical_orgs": "autorizovaný geodet (úředně oprávněný)",
+      "kapitoly": ["VRN"]
+    },
+    "specialista_RC3_dvere": {
+      "label_cz": "Specialista bezpečnostní dveře RC3 (sklad)",
+      "typical_orgs": "specialista bezpečnostních dveří (např. Sherlock, NEXT, Vincent — RC3 certifikované)",
+      "kapitoly": ["PSV-76"]
+    },
+    "prefa_bloky_specialista": {
+      "label_cz": "Specialista prefa bloků s autem s hydraulickou rukou (Herkul H-BLOK)",
+      "typical_orgs": "Herkul a.s. nebo distributor s hyd. rukou",
+      "kapitoly": ["HSV-3"]
+    },
+    "okenni_zaluzie_kastlik_purenit": {
+      "trade_id": "okenni_zaluzie_kastlik_purenit",
+      "label_cz": "Okenář + venkovní žaluzie v kastlíku s purenitovou izolací",
+      "popis_cs": "Okenář + venkovní žaluzie v kastlíku s purenitovou izolací",
+      "subdodavatel_type": "hybrid",
+      "parent_trade": "okennar",
+      "urs_kategorie_hint": "767+ (zámečnictví výplně otvorů s integrovaným stíněním)",
+      "typical_unit": "ks",
+      "typical_orgs": "okenář s ETICS-kompatibilním kastlíkem (Vekra, Otherm, Internorm) + purenit dodávka (Puren GmbH / lokální distributor)",
+      "kapitoly": ["PSV-76"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "TZ ARS § 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'. Komplexní subkomponenty: okno + žaluzie + purenit nadokenní izolace + napojení na ETICS, vyžaduje koordinaci 3 dodavatelů. Parent okennar typicky kompletuje."
+    },
+    "biodeska_konstrukcni": {
+      "trade_id": "biodeska_konstrukcni",
+      "label_cz": "Konstrukční biodeska (smrk masiv / OSB / X-LAM) pro půdní vestavby a nášlapy",
+      "popis_cs": "Konstrukční biodeska (smrk masiv / OSB / X-LAM) pro půdní vestavby a nášlapy",
+      "subdodavatel_type": "hybrid",
+      "parent_trade": "truhlar",
+      "urs_kategorie_hint": "762+ (truhlářské konstrukce, OSB/MDF/biodeska desky)",
+      "typical_unit": "m²",
+      "typical_orgs": "truhlář s napojením na krov_tesarsky_kompletni (lokální pila Hampl, KVH dodavatelé)",
+      "kapitoly": ["PSV-77", "HSV-5"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "Biodeska = ekologická alternativa OSB pro půdní vestavby (smrk masiv s lepidlem bez formaldehydu). Pseudo-hybrid mezi truhlářem (nášlap) a krov_tesarsky_kompletni (podkladní deska pod krytinu). Pilot RD Jáchymov používá pro patro pro přespání nad kleštinami (TZ ARS §4)."
+    },
+    "instalater_TUV_akumulacni_zasobnik": {
+      "trade_id": "instalater_TUV_akumulacni_zasobnik",
+      "label_cz": "Instalatér akumulačního zásobníku TUV pro multivariantní topný systém",
+      "popis_cs": "Instalatér akumulačního zásobníku TUV pro multivariantní topný systém",
+      "subdodavatel_type": "hybrid",
+      "parent_trade": "topenar",
+      "urs_kategorie_hint": "731+ (ÚT zařízení, akumulační zásobníky napojené na multivariantní zdroj)",
+      "typical_unit": "ks + kpl",
+      "typical_orgs": "topenář s vodařskou aprobací pro koordinaci kamna + krb + elektrokotel + bojler napojení (Atmos, Dakon, Viadrus servis)",
+      "kapitoly": ["PSV-72", "PSV-73"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "Akumulační zásobník TUV (~300 l) napojený na 3 zdroje současně (sporáková kamna + krb + elektrokotel) + bojler 80 l 3.NP samostatný. Standard topenář typicky neumí komplexní hydraulické zapojení; vyžaduje specializaci na multivariantní systémy (Atmos, Regulus, Reflex)."
+    },
+    "mykolog": {
+      "trade_id": "mykolog",
+      "label_cz": "Autorizovaný mykolog dřeva (specialty surveyor)",
+      "popis_cs": "Autorizovaný mykolog dřeva (specialty surveyor)",
+      "subdodavatel_type": "single",
+      "parent_trade": null,
+      "urs_kategorie_hint": "NA — průzkumný subjekt, není v ÚRS sortimentu; VRN kategorie (paušál nebo hodina expertízy)",
+      "typical_unit": "kpl",
+      "typical_orgs": "autorizovaný mykolog (Mykologická společnost ČR, lokální experti)",
+      "kapitoly": ["VRN"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "TZ ARS §3.2.3 explicitně 'při bourání bude proveden mykologický průzkum dřev. trámů (zhlaví)'. Specialty surveyor — výjezd na stavbu při demolici, odběr vzorků zhlaví, mikroskopická analýza, posudek pro statistickou bezpečnost zachovaných trámů. Cenová hladina v RD: 8-15k Kč paušál."
+    },
+    "azbestovy_specialista": {
+      "trade_id": "azbestovy_specialista",
+      "label_cz": "Autorizovaný technik azbestu (odběr + laboratorní posudek)",
+      "popis_cs": "Autorizovaný technik azbestu (odběr + laboratorní posudek)",
+      "subdodavatel_type": "single",
+      "parent_trade": null,
+      "urs_kategorie_hint": "NA — průzkumný subjekt, není v ÚRS sortimentu; VRN kategorie",
+      "typical_unit": "kpl",
+      "typical_orgs": "autorizovaný technik azbestu (odběr vzorků dle vyhlášky 432/2003 Sb. + akreditovaná laboratoř — Eurofins, ALS, ZÚ Ústí n. L.)",
+      "kapitoly": ["VRN"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "TZ B m.7.a — předběžné ohledání negativní, podrobný průzkum před bouráním povinný dle zákona 258/2000 Sb. (ochrana veřejného zdraví). Cenová hladina v RD: 10-20k Kč paušál vč. lab. analýzy 5-10 vzorků."
+    },
+    "needs_mapping": {
+      "label_cz": "[PLACEHOLDER] — fallback pro budoucí flagy v post-v1.2 stavu",
+      "_pozn": "Pokud Phase 1 generator narazí na trade bez mapování, použít tento string + zalogovat do warnings. Pro RD Jáchymov v1.2: všechny trades z N=5 pilotu mapovány."
+    }
+  }
+}
