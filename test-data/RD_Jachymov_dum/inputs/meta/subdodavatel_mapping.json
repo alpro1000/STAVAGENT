@@ -1,0 +1,182 @@
+{
+  "_schema": "STAVAGENT subdodavatel mapping v1.1 — DSP-residential extension",
+  "_project": "RD Jáchymov Fibichova 733",
+  "_created": "2026-05-16",
+  "_basis": "Libuše D mapping + extension for residential DSP scope (RD rekonstrukce + nástavba)",
+  "_extensions_for_residential": [
+    "krov_tesarsky_kompletni — full tesařský dodavatel: krokve + kleštiny + pozednice + bednění + nadkrokevní PIR + kontralatě",
+    "bila_vana_csb02 — specialista bílá vana ČBS 02 (těsnění bobtnavé pásky, plech pro pracovní spáry, dohled betonáže)",
+    "ocelobeton_strop_IPE_trapez — hybrid dodavatel: ocel IPE/HEA dodávka + trapéz montáž + ŽB nabetonávka (typicky střechař/zámečník+ŽB betonář komplet)",
+    "plech_falcovany_hlinik — specialista hliníkové falcované krytiny (typicky klempíř s certifikací PREFA / Lindab)"
+  ],
+
+  "trades": {
+    "zemni_prace": {
+      "label_cz": "Zemní práce",
+      "typical_orgs": "lokální zemních firma, výkopové práce",
+      "kapitoly": ["HSV-1"]
+    },
+    "zelezobetonarsky_specialny": {
+      "label_cz": "ŽB práce — komplexní (bednění + výztuž + betonáž + ošetření)",
+      "typical_orgs": "ŽB specialista, sub-dodavatel HSV firmy",
+      "kapitoly": ["HSV-2"]
+    },
+    "bila_vana_csb02": {
+      "label_cz": "Bílá vana ČBS 02 — specialista (těsnění + dohled betonáže)",
+      "typical_orgs": "specialista BV (DOKA, Sika, ULMA — service), sub-dodavatel ŽB",
+      "kapitoly": ["HSV-2"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension — Libuše D nepokrývá. ČBS 02 metodika je standard pro úhlové opěrné stěny s vodním sloupcem W0-W2."
+    },
+    "bednici_tesar": {
+      "label_cz": "Bednící tesař (systémové bednění + odbednění)",
+      "typical_orgs": "subdodavatel HSV, často propojen se ŽB betonářem",
+      "kapitoly": ["HSV-2", "HSV-5"]
+    },
+    "zednik": {
+      "label_cz": "Zedník",
+      "typical_orgs": "lokální zednická firma (dozdívky, příčky, omítky)",
+      "kapitoly": ["HSV-3", "PSV-78"]
+    },
+    "ocel_zamecnik_konstrukce": {
+      "label_cz": "Zámečník ocelových konstrukcí — IPE/HEA/UPE/L (dodávka + montáž)",
+      "typical_orgs": "specialista ocelové výroby (např. KS Ocel, Ferona, lokální zámečnictví)",
+      "kapitoly": ["HSV-3", "HSV-4", "HSV-5", "PSV-76"]
+    },
+    "ocelobeton_strop_IPE_trapez": {
+      "label_cz": "Ocelobetonový strop hybridní (IPE + trapéz + nabetonávka) — komplexní dodavatel",
+      "typical_orgs": "kombinace zámečník + ŽB betonář, často generální dodavatel",
+      "kapitoly": ["HSV-4"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension. Hybridní strop má 3 dodavatele souběžně (ocel + trapéz + ŽB) — užitečné mít jako sjednocenou položku pro koordinaci."
+    },
+    "krov_tesarsky_kompletni": {
+      "label_cz": "Tesařský krov — komplexní (krokve + kleštiny + pozednice + bednění + PIR + kontralatě)",
+      "typical_orgs": "tesařská firma s vlastní pilou nebo prefabrikovaný krov (např. Hampl, Plzeňský tesař)",
+      "kapitoly": ["HSV-5"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension. Komplexní krov dodavatel zahrnuje vše od konstrukce po nadkrokevní izolaci, oddělené od krytiny."
+    },
+    "plech_falcovany_hlinik": {
+      "label_cz": "Klempíř — falcovaná hliníková krytina (specialista)",
+      "typical_orgs": "specialista hliníkové krytiny (PREFA, Lindab, Rheinzink přes klempíře s certifikací)",
+      "kapitoly": ["HSV-5"],
+      "_extension": true,
+      "_note": "RESIDENTIAL extension. Hliníková falcovaná krytina vyžaduje specializovanou klempířskou firmu odlišnou od plechu Pzn standard."
+    },
+    "klempir": {
+      "label_cz": "Klempíř (plech Pzn lakovaný + falcování + svody)",
+      "typical_orgs": "klempířská firma (oplechování, parapety, svody)",
+      "kapitoly": ["HSV-4", "PSV-76"]
+    },
+    "bourani_demolice": {
+      "label_cz": "Demoliční práce (manuální + odvoz + likvidace)",
+      "typical_orgs": "specialista demolice s vlastními kontejnery",
+      "kapitoly": ["HSV-6"]
+    },
+    "fasadnik_etics": {
+      "label_cz": "Fasádník ETICS (kontaktní zateplení + omítka)",
+      "typical_orgs": "specialista fasád (Baumit, Weber, Stomix přes certifikované montéry)",
+      "kapitoly": ["HSV-7"]
+    },
+    "izolater_HI": {
+      "label_cz": "Izolatér hydroizolace (asfaltové pásy + folie)",
+      "typical_orgs": "izolatérská firma",
+      "kapitoly": ["PSV-71"]
+    },
+    "izolater_TI": {
+      "label_cz": "Izolatér tepelná izolace (EPS, MW, PIR)",
+      "typical_orgs": "izolatérská firma, často propojen s HI nebo s fasádníkem",
+      "kapitoly": ["PSV-71"]
+    },
+    "vodar": {
+      "label_cz": "Instalatér ZTI (vodovod + kanalizace + sanita)",
+      "typical_orgs": "instalatérská firma (vodaři)",
+      "kapitoly": ["PSV-72"]
+    },
+    "topenar": {
+      "label_cz": "Topenář (ÚT rozvody + kotle + radiátory + TUV)",
+      "typical_orgs": "topenářská firma (často propojen s vodaři)",
+      "kapitoly": ["PSV-73"]
+    },
+    "specialista_TC_multisplit": {
+      "label_cz": "Specialista tepelné čerpadlo + chlazení (multisplit)",
+      "typical_orgs": "autorizovaný technik TČ (např. Daikin, LG, Mitsubishi přes certifikované techniky s F-plynem)",
+      "kapitoly": ["PSV-73"]
+    },
+    "kominik": {
+      "label_cz": "Kominík — revize a údržba komínů",
+      "typical_orgs": "autorizovaný kominík",
+      "kapitoly": ["PSV-73"]
+    },
+    "okennar": {
+      "label_cz": "Okenář (plastová okna + venkovní žaluzie)",
+      "typical_orgs": "specialista oken (Vekra, Otherm, lokální výrobce)",
+      "kapitoly": ["PSV-76"]
+    },
+    "truhlar": {
+      "label_cz": "Truhlář (vnitřní dveře, dřevěné stupně schodiště, vestavby)",
+      "typical_orgs": "truhlářská dílna",
+      "kapitoly": ["PSV-76"]
+    },
+    "zamecnik_PSV": {
+      "label_cz": "Zámečník PSV (zábradlí, schodiště ocel, stříšky)",
+      "typical_orgs": "zámečnická dílna",
+      "kapitoly": ["PSV-76"]
+    },
+    "podlahar": {
+      "label_cz": "Podlahář (suchá + mokrá skladba + nášlap)",
+      "typical_orgs": "podlahářská firma",
+      "kapitoly": ["PSV-77"]
+    },
+    "malir": {
+      "label_cz": "Malíř (interiérová výmalba + tmely)",
+      "typical_orgs": "malířská firma",
+      "kapitoly": ["PSV-78"]
+    },
+    "obkladac": {
+      "label_cz": "Obkladač (keramický obklad koupelny, kuchyně)",
+      "typical_orgs": "obkladačská firma",
+      "kapitoly": ["PSV-78"]
+    },
+    "sadrokartonar": {
+      "label_cz": "Sádrokartonář (SDK podhledy, předstěny, suché podlahy)",
+      "typical_orgs": "SDK firma (Knauf, Rigips certifikovaní)",
+      "kapitoly": ["HSV-4", "PSV-77", "PSV-78"]
+    },
+    "elektroinstalater": {
+      "label_cz": "Elektroinstalatér silnoproud (kompletní ELI + příprava FVE)",
+      "typical_orgs": "elektroinstalační firma s ČKAIT M-elektrotechnika",
+      "kapitoly": ["M-21"]
+    },
+    "revize_specialista": {
+      "label_cz": "Revize (ELI, hydrant, komín, plyn)",
+      "typical_orgs": "autorizovaní revizní technici",
+      "kapitoly": ["M-21", "VRN"]
+    },
+    "VRN_management": {
+      "label_cz": "VRN — generální dodavatel (zařízení staveniště, BOZP, doprava, likvidace)",
+      "typical_orgs": "hlavní zhotovitel (Karel Šmíd)",
+      "kapitoly": ["VRN"]
+    },
+    "geodet": {
+      "label_cz": "Geodet (vytýčení, polohopis, výškopis)",
+      "typical_orgs": "autorizovaný geodet (úředně oprávněný)",
+      "kapitoly": ["VRN"]
+    },
+    "specialista_RC3_dvere": {
+      "label_cz": "Specialista bezpečnostní dveře RC3 (sklad)",
+      "typical_orgs": "specialista bezpečnostních dveří (např. Sherlock, NEXT, Vincent — RC3 certifikované)",
+      "kapitoly": ["PSV-76"]
+    },
+    "prefa_bloky_specialista": {
+      "label_cz": "Specialista prefa bloků s autem s hydraulickou rukou (Herkul H-BLOK)",
+      "typical_orgs": "Herkul a.s. nebo distributor s hyd. rukou",
+      "kapitoly": ["HSV-3"]
+    },
+    "needs_mapping": {
+      "label_cz": "[PLACEHOLDER] — pro RD Jáchymov všechny trades mapovány. Tento placeholder se nepoužívá.",
+      "_pozn": "Pokud Phase 1 generator narazí na trade bez mapování, použít tento string + zalogovat do warnings."
+    }
+  }
+}

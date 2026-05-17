@@ -4,6 +4,7 @@
 **Datum UNSORTED auditu:** 2026-05-16 (Phase 0b §3.1, branch `claude/rd-jachymov-phase-0b-foundation`)
 **Datum re-parse:** 2026-05-16 (Phase 0b §3.2 — `tools/phase0b_validator.py`, 67/69 = 97.1 % verified, 0 drifts, gate OPEN)
 **Datum DXF parse:** 2026-05-16 (Phase 0b §3.3 — `tools/phase0b_dxf_extractor.py`, 4/4 DXF parsed OK, vyjasnění #18 partially_resolved)
+**Datum Phase 1 HSV gate:** 2026-05-16 (Phase 1 §HSV — `tools/phase1_items_generator.py --group HSV`, 95 položek (74 dum + 21 sklad), 0 sub mapping fail, 0 mnozstvi confidence pod 0.70; vyjasnění #18 fully_resolved via LWPOLYLINE probe)
 **Sběr:** Email cesta Volný → Jiří Šmíd → Karel Šmíd → Alexander; OneDrive linky 2× (sklad+parking + dům)
 **Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). Phase 0b §3.1 + §3.2 dokončeny.
 

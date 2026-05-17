@@ -1,0 +1,2451 @@
+{
+  "_schema_version": "1.0",
+  "_generated_by": "tools/phase1_items_generator.py",
+  "_generated_at": "2026-05-17",
+  "_branch": "claude/rd-jachymov-phase-0b-foundation",
+  "_project": "RD Jáchymov Fibichova 733",
+  "_target_variant": "B (max detail položkový, ~140 items)",
+  "_urs_caveat": "Sandbox without production URS_MATCHER access. urs_code_proposed values are best-guess from ÚRS 800 catalog knowledge with urs_confidence 0.65 (below AI threshold per §5 ladder). Production STAVAGENT must re-run the 2-stage match (online catalog + Perplexity rerank) before final pricing.",
+  "_groups_completed": [
+    "HSV"
+  ],
+  "items": [
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Sejmutí ornice",
+      "popis": "Sejmutí ornice tl. 100 mm na ploše budoucí opěrné stěny a anglického dvorku",
+      "mj": "m²",
+      "mnozstvi": 35.0,
+      "mnozstvi_formula": "L=10 × W=3.5 (zahrada zóna pro BV + dvorek)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "121101101",
+      "urs_alternatives": [
+        "121101102",
+        "121301101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §3 + ARS dispozice zahrada",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Hloubení rýh BV",
+      "popis": "Hloubení rýh š. do 60 cm pro pas opěrné stěny bílé vany v zemině třídy 3 (F4-CS)",
+      "mj": "m³",
+      "mnozstvi": 12.6,
+      "mnozstvi_formula": "L=10 × W=1.2 × H=1.05 (pata BV 1200 mm × hloubka pod základovou spárou)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "132201101",
+      "urs_alternatives": [
+        "132211101",
+        "131201101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §5.5 + geologie F4-CS Rdt 350 kPa",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3,
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Hloubení figury anglický dvorek",
+      "popis": "Hloubení figury pro anglický dvorek a nový vstup do 1.PP ze zahrady",
+      "mj": "m³",
+      "mnozstvi": 6.0,
+      "mnozstvi_formula": "L=2.5 × W=2.0 × H=1.2 (dvorek odkop)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "132211101",
+      "urs_alternatives": [
+        "132201101",
+        "131211101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §6.2 zahrada — nový vstup do 1.PP",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Pažení rýh",
+      "popis": "Pažení a rozepření dočasných výkopů příložné, hl. do 2 m, v zemině třídy 3",
+      "mj": "m²",
+      "mnozstvi": 36.0,
+      "mnozstvi_formula": "obvod rýh BV 2×(10+1.2) × hloubka 1.6",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "151101101",
+      "urs_alternatives": [
+        "151101102",
+        "151201101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §5.3 'pažovat dle BOZP, sklon dočasných výkopů 1:0,5'",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Odvoz výkopu",
+      "popis": "Vodorovné přemístění výkopku — odvoz na deponii do 8 km vč. skládkovného (zemina F4)",
+      "mj": "m³",
+      "mnozstvi": 18.6,
+      "mnozstvi_formula": "= V hloubení rýh BV + figura dvorek (12.6 + 6.0)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "162701105",
+      "urs_alternatives": [
+        "162301101",
+        "997013501"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "= součet HSV-1 hloubení dům",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Zhutněný štěrkový zásyp pod desku 1.NP",
+      "popis": "Zhutněný štěrkopískový zásyp + lože pod ŽB deskou 1.NP, Edef2 ≥ 30 MPa na pláni / 45 MPa na štěrku",
+      "mj": "m³",
+      "mnozstvi": 12.5,
+      "mnozstvi_formula": "podlahova_plocha_1NP × 0.15 m štěrkové lože (uvažovat 83 m² × 0.15)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "174101101",
+      "urs_alternatives": [
+        "174201101",
+        "171101101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §5.3 — Edef2 limity + zásyp pod deska 1.NP",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.006"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Sejmutí stávající zídky + schodiště",
+      "popis": "Sejmutí ornice a demolice stávajících kamenných zídek a schodiště v místě nového skladu+parkingu",
+      "mj": "m³",
+      "mnozstvi": 8.0,
+      "mnozstvi_formula": "TZ ARS sklad §3 — odstranění stávajících kamenných prvků (odhad)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962031132",
+      "urs_alternatives": [
+        "962081141",
+        "121101101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS sklad §3 + Demolice stávající kamenné zídky",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.001"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Hloubení figury skladu",
+      "popis": "Hloubení figury pro objekt skladu v lichoběžníku 6.35 × 3.34 m, hl. do 1.2 m",
+      "mj": "m³",
+      "mnozstvi": 25.5,
+      "mnozstvi_formula": "DXF: L=6.350 × W=3.340 × H=1.2 (DXF DIMENSION ověřeno)",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "132211101",
+      "urs_alternatives": [
+        "132201101",
+        "131211101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF sklad_DPZ DIMENSION 6350.06 + 3340.0 mm (vyjasnění #18 resolved)",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        18
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.002"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Hloubení rýh pro pasy",
+      "popis": "Hloubení rýh pro betonové základové pasy 500×500 mm po obvodu skladu (nezámrzná hl. 1.0 m)",
+      "mj": "m³",
+      "mnozstvi": 4.85,
+      "mnozstvi_formula": "obvod 2×(6.35+3.34) × W=0.5 × H=0.5",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "132201101",
+      "urs_alternatives": [
+        "132211101",
+        "131201101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF + TZ statika sklad §3",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.003"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Hloubení parkingových patek",
+      "popis": "Hloubení patek pro stojky IPE180 zastřešení parkingu, 500×500 mm × 1.0 m hl. × 7 ks",
+      "mj": "m³",
+      "mnozstvi": 1.75,
+      "mnozstvi_formula": "DXF: 7 patek × 0.5 × 0.5 × 1.0 (TZ rozteč 1000 mm × 7 m parking)",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": "132211101",
+      "urs_alternatives": [
+        "132201101",
+        "131211101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF sklad_DPZ LWPOLYLINE 7000 mm parking + TZ rozteč 1000 mm = 7 patek",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        18
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.004"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Štěrkový násyp pod desku skladu",
+      "popis": "Zhutněný štěrkopískový násyp pod podlahu skladu + štěrkopísek pro IPE patky",
+      "mj": "m³",
+      "mnozstvi": 3.2,
+      "mnozstvi_formula": "podlaha sklad 21.2 m² × 0.15 m štěrku",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "174101101",
+      "urs_alternatives": [
+        "174201101",
+        "171101101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF podlaha skladu 6.35×3.34 = 21.2 m²",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.005"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Odvoz výkopu sklad",
+      "popis": "Odvoz výkopku z hloubení skladu + figur + patek na deponii do 8 km",
+      "mj": "m³",
+      "mnozstvi": 32.1,
+      "mnozstvi_formula": "= součet hloubení sklad + figura + patky (25.5+4.85+1.75)",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "162701105",
+      "urs_alternatives": [
+        "162301101",
+        "997013501"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "= součet HSV-1 sklad hloubení",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bílá vana — pata",
+      "popis": "Bílá vana ČBS 02 — pata úhlové opěrné stěny 250×1200 mm × L=10 m, C25/30 XC3 XF1 XA1 CL0.4 Dmax22 S3",
+      "mj": "m³",
+      "mnozstvi": 3.0,
+      "mnozstvi_formula": "0.25 × 1.20 × 10 = 3.0",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "274321321",
+      "urs_alternatives": [
+        "274321111",
+        "273321321"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §4 + §5.5 (bílá vana, ČBS 02 metodika)",
+      "subdodavatel": "bila_vana_csb02",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3,
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bílá vana — stěna",
+      "popis": "Bílá vana ČBS 02 — stěna úhlová tl. 250 mm × výška 2050 mm × L=10 m, beton C25/30 XC3 XF1 XA1 (trhliny max 0.20 mm)",
+      "mj": "m³",
+      "mnozstvi": 5.12,
+      "mnozstvi_formula": "0.25 × 2.05 × 10 = 5.13",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "274321321",
+      "urs_alternatives": [
+        "273321321",
+        "274311111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §5.5 — bílá vana A1 W0 Kon 1",
+      "subdodavatel": "bila_vana_csb02",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3,
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bílá vana — bednění systémové",
+      "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění pracovních spár bobtnavý pásek bentonit (TZ §5.5)",
+      "mj": "m²",
+      "mnozstvi": 65.0,
+      "mnozstvi_formula": "2×2.05×10 (svislé) + 2×1.20×10 (pata) = 41 + 24 = 65",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "631311115",
+      "urs_alternatives": [
+        "631311111",
+        "634111111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §5.5 + ČBS 02 — bobtnavý pásek + těsnící plech pracovní spáry",
+      "subdodavatel": "bila_vana_csb02",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bílá vana — výztuž B500B",
+      "popis": "Výztuž bílé vany B500B 120 kg/m³ (empirická sazba Methvin pro úhlové opěrné stěny W0)",
+      "mj": "kg",
+      "mnozstvi": 975,
+      "mnozstvi_formula": "(3.0+5.13) × 120 = 976",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273361821",
+      "urs_alternatives": [
+        "272361821",
+        "273361801"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §5.5 + B4_productivity Methvin sazba 120 kg/m³ pro BV W0",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bílá vana — separační fólie",
+      "popis": "Separační PE fólie pod základovou patou bílé vany (povinná dle ČBS 02)",
+      "mj": "m²",
+      "mnozstvi": 13.2,
+      "mnozstvi_formula": "1.20 × 10 × 1.10 přesah = 13.2",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "711132101",
+      "urs_alternatives": [
+        "711121101",
+        "711111001"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §5.5 — separační fólie povinné pod základ BV",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bílá vana — ošetřování",
+      "popis": "Mokré ošetřování betonu bílé vany min. 7 dní dle ČSN EN 13670 + ČBS 02 (kontrola trhlin max 0.20 mm)",
+      "mj": "m²",
+      "mnozstvi": 53.0,
+      "mnozstvi_formula": "viditelná plocha BV pro ošetřování ~53",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "279351102",
+      "urs_alternatives": [
+        "279351101",
+        "999999001"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "ČSN EN 13670 + TZ §5.5 — trhliny max 0.20 mm",
+      "subdodavatel": "bila_vana_csb02",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Pozední věnec 3.NP",
+      "popis": "ŽB pozední věnec 300×250 mm po obvodu nadezdívky 3.NP, beton C25/30 XC1 + výztuž 100 kg/m³",
+      "mj": "m³",
+      "mnozstvi": 3.07,
+      "mnozstvi_formula": "0.30 × 0.25 × ~41 m obvod = 3.1",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "274321311",
+      "urs_alternatives": [
+        "274321111",
+        "273321311"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 + ARS pozední věnec po obvodu nadezdívky 3.NP",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3,
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.007"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Pozední věnec — bednění",
+      "popis": "Bednění pozedního věnce systémové oboustranné",
+      "mj": "m²",
+      "mnozstvi": 20.4,
+      "mnozstvi_formula": "2 × 0.25 × ~41 = 20.5",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "631311115",
+      "urs_alternatives": [
+        "631311111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4",
+      "subdodavatel": "bednici_tesar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.008"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Pozední věnec — výztuž",
+      "popis": "Výztuž B500B věnce 100 kg/m³ (Methvin sazba pro pozední věnce)",
+      "mj": "kg",
+      "mnozstvi": 310,
+      "mnozstvi_formula": "3.1 × 100 = 310",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273361821",
+      "urs_alternatives": [
+        "272361821"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "B4_productivity Methvin pozední věnec ~100 kg/m³",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.009"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Nabetonávka stropu 2.NP/3.NP",
+      "popis": "Nabetonávka stropu 2.NP/3.NP — beton C25/30 XC1 tl. 60 mm nad vlnu trapézového plechu 40S/160",
+      "mj": "m³",
+      "mnozstvi": 6.26,
+      "mnozstvi_formula": "104.4 m² × 0.06 m = 6.26",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "274321111",
+      "urs_alternatives": [
+        "411321414"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §4 — ocelobetonový strop, nabetonávka 60 mm C25/30 XC1",
+      "subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.010"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Nabetonávka — výztuž kari síť",
+      "popis": "Výztuž nabetonávky kari síť 5/100/100 (cca 4.4 kg/m²)",
+      "mj": "kg",
+      "mnozstvi": 459,
+      "mnozstvi_formula": "104.4 m² × 4.4 kg/m² = 459",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273362441",
+      "urs_alternatives": [
+        "273362442"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "ČSN EN 1992-1 + B4_productivity kari pro nabetonávku 60 mm",
+      "subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.011"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Deska 1.NP na terénu",
+      "popis": "ŽB deska podlahy 1.NP na terénu tl. 150 mm, C25/30 XC2 + vyztužení kari 6/150/150 + okrajové pruty",
+      "mj": "m³",
+      "mnozstvi": 10.96,
+      "mnozstvi_formula": "104.4 × 0.7 (rozsah 1.NP) × 0.15 = ~11.0",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "273321311",
+      "urs_alternatives": [
+        "273321321",
+        "274321311"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 + ARS § podlaha 1.NP zhutněné lože + ŽB deska + EPS 150 + potěr",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.012"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Deska 1.NP — výztuž",
+      "popis": "Výztuž ŽB desky 1.NP — kari 6/150/150 + B500B okrajové pruty (~75 kg/m³ Methvin)",
+      "mj": "kg",
+      "mnozstvi": 825,
+      "mnozstvi_formula": "11.0 × 75 = 825",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273361821",
+      "urs_alternatives": [
+        "273362441"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "B4_productivity Methvin deska na terénu ~75 kg/m³",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV2.013"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Základové pasy sklad",
+      "popis": "Základové pasy z prostého betonu C16/20 XC0, 500×500 mm po obvodu skladu (nezámrzná hl.)",
+      "mj": "m³",
+      "mnozstvi": 4.84,
+      "mnozstvi_formula": "0.5 × 0.5 × 19.4 obvod = 4.85",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "273313811",
+      "urs_alternatives": [
+        "273313611",
+        "274313811"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF sklad_DPZ + TZ statika sklad §4 — C16/20 XC0 pasy 500×500",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.001"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Patky parking — spodní",
+      "popis": "Dvoustupňové patky pro IPE180 zastřešení parkingu — spodní část prostý beton C16/20 500×500×500 mm × 7 ks",
+      "mj": "ks",
+      "mnozstvi": 7,
+      "mnozstvi_formula": "DXF: 7 ks (rozteč 1000 mm × 7000 mm parking délka)",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": "273313811",
+      "urs_alternatives": [
+        "273313611"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF sklad_DPZ LWPOLYLINE 7000 mm + rozteč 1000 mm = 7 patek",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        18
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.002"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Patky parking — horní",
+      "popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300 mm × 7 ks",
+      "mj": "ks",
+      "mnozstvi": 7,
+      "mnozstvi_formula": "7 ks (= spodní)",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": "311233812",
+      "urs_alternatives": [
+        "311233811"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 — dvoustupňová konstrukce",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.003"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Beton patek + zídek — zalití",
+      "popis": "Beton C25/30 XC3 XF1 XA1 pro zalití tvarovek ZB patek + lemujících zídek parkingu",
+      "mj": "m³",
+      "mnozstvi": 1.8,
+      "mnozstvi_formula": "patky horní (0.3×0.3×0.5×7) + zídka (odhad ~1 m³)",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273321321",
+      "urs_alternatives": [
+        "274321321"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 — C25/30 XC3 XF1 XA1 pro vyztužené konstrukce",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.004"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Štěrkopískové lože",
+      "popis": "Štěrkopískové lože pod podlahu skladu + pod schodišťovou desku",
+      "mj": "m³",
+      "mnozstvi": 2.12,
+      "mnozstvi_formula": "21.2 × 0.10 = 2.12",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "174101101",
+      "urs_alternatives": [
+        "174201101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF + TZ statika sklad",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.005"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Schodišťová deska + pas",
+      "popis": "ŽB schodišťová deska ve sklonu + základový pas — beton C25/30 XC3 (terén ke skladu)",
+      "mj": "m³",
+      "mnozstvi": 0.8,
+      "mnozstvi_formula": "odhad 3 m schodů × 0.8 × 0.30 = 0.72 (ručně)",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273361821",
+      "urs_alternatives": [
+        "273321321"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 — prefa schodové dílce + ŽB pas",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Dozdívky cihla pálená",
+      "popis": "Lokální dozdívky a přizdívky z cihel plných pálených P10 na MVC M10 (uvedeno v TZ statika §4)",
+      "mj": "m³",
+      "mnozstvi": 4.0,
+      "mnozstvi_formula": "odhad — drobné dozdívky kolem nových otvorů 1.NP/2.NP",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "311232511",
+      "urs_alternatives": [
+        "311232411"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — P10 na MVC M10 dozdívky",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Nadezdívka 3.NP Porotherm",
+      "popis": "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry, výška 2.65 m",
+      "mj": "m²",
+      "mnozstvi": 75.8,
+      "mnozstvi_formula": "41 m obvod × 2.65 m výška × 0.7 (sníženo o štíty zachované) = ~76",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "311321411",
+      "urs_alternatives": [
+        "311321321"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 + ARS — nástavba 3.NP",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Překlady IPN160 ve dvojici",
+      "popis": "Ocelové překlady IPN160 ve dvojici nad otvory pro nové dveře/okna v 1.NP a 2.NP (8 otvorů odhad)",
+      "mj": "ks",
+      "mnozstvi": 8,
+      "mnozstvi_formula": "odhad 8 nových otvorů × 2 IPN160 (dvojice)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "317143112",
+      "urs_alternatives": [
+        "317131111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — IPN160 dvojice s uložením 200 mm do maltového lože 50 mm s kari 5/100/100",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Překlady — uložení malta + kari",
+      "popis": "Maltové uložení překladů IPN160 — MC25 tl. 50 mm + kari 5/100/100 (po obou stranách otvoru)",
+      "mj": "kpl",
+      "mnozstvi": 16,
+      "mnozstvi_formula": "8 otvorů × 2 strany = 16 uložení",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "317242421",
+      "urs_alternatives": [
+        "317141111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — detail uložení IPN160",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Zesílení ostění L100/10 u komínu",
+      "popis": "Zesílení ostění úhelníky L100/10 dvojicí u otvoru u komínového tělesa (statická limitace)",
+      "mj": "ks",
+      "mnozstvi": 4,
+      "mnozstvi_formula": "TZ statika §4 — 2× L100/10 (dvojice) na 2 strany otvoru = 4 ks",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "767131120",
+      "urs_alternatives": [
+        "767141111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — zesílení ostění u komínu",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Podstojkování přiléhajících stropů",
+      "popis": "Dočasné podstojkování stávajících přiléhajících stropů při osazování IPN překladů (8 otvorů)",
+      "mj": "kpl",
+      "mnozstvi": 8,
+      "mnozstvi_formula": "= počet překladů (po jednom podstojkování per otvor)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962081120",
+      "urs_alternatives": [
+        "962031132"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "BOZP + technologický postup výměny překladů ve zděné stavbě",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Příčky nové porobeton",
+      "popis": "Nové příčky z pórobetonových tvárnic 150 mm na lepidlo + dilatovány od stropu",
+      "mj": "m²",
+      "mnozstvi": 87.7,
+      "mnozstvi_formula": "podlahova_plocha × 0.4 (typický rozsah příček 30-50%)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "342241211",
+      "urs_alternatives": [
+        "342341111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS — příčky pórobetonové dilatované od stropu",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3,
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV3.007"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "H-BLOK opěrná stěna",
+      "popis": "Zadní opěrná stěna — prefabrikované betonové bloky Herkul H-BLOK Standard, vazba běhounová s posunem 0.5",
+      "mj": "ks",
+      "mnozstvi": 60,
+      "mnozstvi_formula": "odhad — výška ~1.6 m × šíře 6.35 m / blok 0.8×0.4 = ~32 bloků × 2 řady = 64; round 60",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "311233815",
+      "urs_alternatives": [
+        "317143811"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 + ARS — Herkul H-BLOK, montáž auto s hyd. rukou",
+      "subdodavatel": "prefa_bloky_specialista",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV3.001"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Tvarovky ZB obvod skladu",
+      "popis": "Obvodové stěny skladu — tvarovky ztraceného bednění tl. 250 mm × výška 2.4 m + zalití C25/30",
+      "mj": "m²",
+      "mnozstvi": 46.5,
+      "mnozstvi_formula": "obvod 19.4 m × výška 2.4 m = 46.6",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "311233811",
+      "urs_alternatives": [
+        "311233821"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 + DXF DIMENSION obvod",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV3.002"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Výztuž ZB tvarovek",
+      "popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
+      "mj": "kg",
+      "mnozstvi": 1398,
+      "mnozstvi_formula": "46.6 × 30 kg/m² = 1398",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "273361821",
+      "urs_alternatives": [
+        "272361821"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "B4_productivity Methvin — výztuž do ZB tvarovek tl. 250 mm",
+      "subdodavatel": "zelezobetonarsky_specialny",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV3.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "IPE180 stropnice 1.NP",
+      "popis": "Ocelová stropnice IPE180 1.NP v pozici nové příčky 2.NP — dodávka + montáž (1 ks × ~5 m)",
+      "mj": "kg",
+      "mnozstvi": 94,
+      "mnozstvi_formula": "1 ks × 5 m × 18.8 kg/m (IPE180 hmotnost) = 94",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — IPE180 v 1.NP pod novou příčkou 2.NP",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Ocelobeton — IPE180 stropnice 2.NP/3.NP",
+      "popis": "Ocelobetonový strop 2.NP/3.NP — stropnice IPE180 á 1000 mm × rozpon ~8 m × ~8 ks",
+      "mj": "kg",
+      "mnozstvi": 1203,
+      "mnozstvi_formula": "8 ks × 8 m × 18.8 kg/m = 1203",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika §4 — IPE180 stropnice á 1000 mm + zastavěna 104.4 m² → ~8 stropnic",
+      "subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Ocelobeton — HEA180 výztuha trakt ulice",
+      "popis": "Ocelobetonový strop — výztuha 2×HEA180 trakt do ulice (Fibichova), dl. ~10 m",
+      "mj": "kg",
+      "mnozstvi": 710,
+      "mnozstvi_formula": "2 ks × 10 m × 35.5 kg/m (HEA180) = 710",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — 2×HEA180 trakt ulice",
+      "subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Ocelobeton — HEA200 výztuha dvorní",
+      "popis": "Ocelobetonový strop — výztuha HEA200 dvorní trakt, dl. ~10 m",
+      "mj": "kg",
+      "mnozstvi": 423,
+      "mnozstvi_formula": "1 ks × 10 m × 42.3 kg/m (HEA200) = 423",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — HEA200 dvorní trakt",
+      "subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Trapéz 40S/160 dodávka",
+      "popis": "Trapézový plech 40S/160 tl. 0.75 mm — dodávka + montáž na stropnice IPE180",
+      "mj": "m²",
+      "mnozstvi": 104.4,
+      "mnozstvi_formula": "= zastavěna plocha 104.4 m² (celý strop 2.NP/3.NP)",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "764121511"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — trapéz 40S/160 nad IPE180",
+      "subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Protipožární SDK podhled trapéz",
+      "popis": "Protipožární SDK podhled pod trapézovým plechem (EI 30 dle PBŘ — ocelobeton + SDK)",
+      "mj": "m²",
+      "mnozstvi": 104.4,
+      "mnozstvi_formula": "= plocha trapézu 104.4 m²",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "342213131",
+      "urs_alternatives": [
+        "763121521"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ PBŘ + statika §4 — ochrana ocelobetonu",
+      "subdodavatel": "sadrokartonar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Klenba 1.PP/1.NP — vyvezení zásypu",
+      "popis": "Vyvezení původního zásypu z cihelné klenby 1.PP/1.NP — manuálně + odvoz",
+      "mj": "m³",
+      "mnozstvi": 8.0,
+      "mnozstvi_formula": "klenba ~50 m² × tl. zásypu 0.15 m = 7.5 (round 8)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "974031150",
+      "urs_alternatives": [
+        "974031132"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — klenba zachována, zásyp vyměnit",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.007"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Klenba — nový zásyp perlitbeton",
+      "popis": "Nový zásyp klenby 1.PP/1.NP — perlitbeton (lehký zásyp) tl. 100 mm",
+      "mj": "m³",
+      "mnozstvi": 5.0,
+      "mnozstvi_formula": "klenba 50 m² × 0.10 m perlitbeton = 5.0",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "271223111",
+      "urs_alternatives": [
+        "272223111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — perlitbeton + plastická roznášecí vrstva",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.008"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Klenba — plastická perlitbeton roznášecí",
+      "popis": "Plastická perlitbetonová roznášecí vrstva tl. 50 mm nad zásypem klenby",
+      "mj": "m²",
+      "mnozstvi": 50.0,
+      "mnozstvi_formula": "klenba 1.PP/1.NP plocha ~50 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "631321311",
+      "urs_alternatives": [
+        "631321411"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — roznášecí vrstva pod podlahou 1.NP nad klenbou",
+      "subdodavatel": "podlahar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.009"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Strop 1.NP/2.NP — odstranění shora",
+      "popis": "Strop trámový 1.NP/2.NP — sejmutí podlah, demontáž záklopu a zásypu shora (zachovat prkenný záklop na trámech)",
+      "mj": "m²",
+      "mnozstvi": 100.0,
+      "mnozstvi_formula": "podlahova_plocha_1NP+2NP ~100 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "974041141",
+      "urs_alternatives": [
+        "974041151"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — strop trámový zachován, vrstvy nahradit",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.010"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Strop 1.NP/2.NP — minerální vata mezi trámy",
+      "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 60/180)",
+      "mj": "m²",
+      "mnozstvi": 100.0,
+      "mnozstvi_formula": "= plocha stropu",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "713121121",
+      "urs_alternatives": [
+        "713141121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — minerální vata mezi trámy + protipož. SDK zespodu",
+      "subdodavatel": "izolater_TI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        4
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.011"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Strop 1.NP/2.NP — protipož. SDK zespodu",
+      "popis": "Protipožární SDK podhled zespodu trámového stropu (EI 30 dle PBŘ)",
+      "mj": "m²",
+      "mnozstvi": 100.0,
+      "mnozstvi_formula": "= plocha stropu",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "342213131",
+      "urs_alternatives": [
+        "763121521"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS + PBŘ — SDK protipožární RF",
+      "subdodavatel": "sadrokartonar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.012"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Suchá podlaha 1.NP/2.NP — zásyp liapor",
+      "popis": "Suchá podlahová skladba 1.NP/2.NP — zásyp Liapor pro vyrovnání tl. 50 mm",
+      "mj": "m³",
+      "mnozstvi": 5.0,
+      "mnozstvi_formula": "100 m² × 0.05 m = 5",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "631311114",
+      "urs_alternatives": [
+        "631311115"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — suchá podlahová skladba shora",
+      "subdodavatel": "podlahar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        4
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.013"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Suchá podlaha — Fermacell desky",
+      "popis": "Suchá podlahová skladba — sádrovláknité dílce Fermacell tl. 25 mm (dva 12.5 mm vrstvy)",
+      "mj": "m²",
+      "mnozstvi": 100.0,
+      "mnozstvi_formula": "= plocha stropu",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "771421111",
+      "urs_alternatives": [
+        "771474111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — Fermacell / Rigistabil",
+      "subdodavatel": "podlahar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        4
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV4.014"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Dřevěné stropnice skladu",
+      "popis": "Dřevěné stropnice 100/160 mm á 625 mm primární zastřešení skladu — rezivo C24 fungicidní",
+      "mj": "bm",
+      "mnozstvi": 33.9,
+      "mnozstvi_formula": "rozpon 3.34 × počet stropnic (6.35/0.625 = 10) = ~10 ks × 3.34 = 33.4",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "762341110",
+      "urs_alternatives": [
+        "762341210"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 + DXF DIMENSION",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV4.001"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Prkenný záklop stropu skladu",
+      "popis": "Prkenný záklop stropnic skladu tl. 20 mm + impregnace",
+      "mj": "m²",
+      "mnozstvi": 21.209,
+      "mnozstvi_formula": "= 21.2 m² strop skladu",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "762331110",
+      "urs_alternatives": [
+        "762341711"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 + DXF",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV4.002"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Hydroizolační střešní souvrství skladu",
+      "popis": "Hydroizolační střešní souvrství skladu (modifikovaný asfaltový pás SBS + ochranná vrstva)",
+      "mj": "m²",
+      "mnozstvi": 22.26945,
+      "mnozstvi_formula": "21.2 × 1.05 přesah",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "712331101",
+      "urs_alternatives": [
+        "712311101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 — HI souvrství",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV4.003"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "IPE180 parking — sekundární",
+      "popis": "Sekundární zastřešení parkingu — IPE180 v rozteči 1000 mm × délka 7 m × 7 ks",
+      "mj": "kg",
+      "mnozstvi": 921,
+      "mnozstvi_formula": "7 ks × 7 m × 18.8 kg/m = 921",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §1.4 + DXF LWPOLYLINE 7000 mm + rozteč 1000 mm",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        18
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV4.004"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Pojezdové ocelové pororošty",
+      "popis": "Pojezdové ocelové pororošty demontovatelné — povrch parkingu (žárově zinkováno)",
+      "mj": "m²",
+      "mnozstvi": 21.0,
+      "mnozstvi_formula": "= 7×3 m parking = 21 m²",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": "411321515",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §1.4 — pojezdové pororošty",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV4.005"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-4 Vodorovné",
+      "subkapitola": "Žárový zinek IPE + pororošty",
+      "popis": "Žárově zinková povrchová úprava IPE180 + pororoštů dle ČSN EN ISO 12944 (C3 prostředí)",
+      "mj": "kg",
+      "mnozstvi": 1551,
+      "mnozstvi_formula": "= hmotnost IPE180 (921 kg) + odhad pororoštů (21 m² × 30 kg/m²) = ~1551",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "783201001",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §1.4 + ČSN EN ISO 12944 — žárový zinek pro pojezdové ocel",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV4.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Krokve 100/180 á 800 mm",
+      "popis": "Tesařský krov — krokve 100/180 mm á 800 mm, rezivo C24 fungicidní + protihmyzí (cca 2×12 krokví × ~6.5 m)",
+      "mj": "bm",
+      "mnozstvi": 156.0,
+      "mnozstvi_formula": "(2 sklony × 12 krokví × 6.5 m délka) = 156",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762331911",
+      "urs_alternatives": [
+        "762341110"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 + statika §4 — krokve 100/180; DXF KR=111 INSERTs corroborates (krokve+sloupky+námětky combined)",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": "DXF INSERT 'KR' count 111 includes krokve + sloupky + námětky; geometric calc used as primary",
+      "id": "260219_dum.HSV5.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Kleštiny 2×60/180",
+      "popis": "Tesařský krov — kleštiny dvojfošny 60/180 mm probíhající v oblasti spací části",
+      "mj": "bm",
+      "mnozstvi": 110.0,
+      "mnozstvi_formula": "11 pozic × 2 ks × ~5 m délka = 110",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762331912",
+      "urs_alternatives": [
+        "762341110"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — 2× 60/180 kleštiny",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Pozednice 140/160",
+      "popis": "Tesařský krov — pozednice 140/160 mm kotvená do ŽB věnce 3.NP",
+      "mj": "bm",
+      "mnozstvi": 20.4,
+      "mnozstvi_formula": "polovina obvodu (2 dlouhé strany) = ~20",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762331923",
+      "urs_alternatives": [
+        "762341110"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS + statika — pozednice kotvené do věnce",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Námětky pro přesah",
+      "popis": "Tesařský krov — námětky 60/100 v dolní koncové části pro přesah střechy ~500 mm",
+      "mj": "bm",
+      "mnozstvi": 19.2,
+      "mnozstvi_formula": "24 krokví × 0.8 m námětek = 19.2",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762331911",
+      "urs_alternatives": [
+        "762341110"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — námětky v dolní části pro přesah",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Středová vaznice HEA160",
+      "popis": "Ocelová středová vaznice HEA160 — 2 ks × cca 10 m délka",
+      "mj": "kg",
+      "mnozstvi": 608,
+      "mnozstvi_formula": "2 × 10 × 30.4 kg/m (HEA160) = 608",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — HEA160 vaznice",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Sloupky pod vaznice — jekl 100/4",
+      "popis": "Ocelové sloupky uzavřený profil 100×100×4 mm pod vaznice HEA160 (~6 ks × ~2.5 m výška)",
+      "mj": "kg",
+      "mnozstvi": 176,
+      "mnozstvi_formula": "6 × 2.5 × 11.7 kg/m (RHS 100×100×4) = 176",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "411321414",
+      "urs_alternatives": [
+        "767131120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika dům §4 — 'sloupky z jeklu 100/4'; korekce nomenklatury (vyjasnění #17)",
+      "subdodavatel": "ocel_zamecnik_konstrukce",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        17
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": "Pre-baked říká 'JKL 100/4'; actual TZ použ. termín 'jakl/jekl' — RHS 100×100×4 dle ČSN EN 10219-2",
+      "id": "260219_dum.HSV5.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Bednění z prken pod nadkrokevní izolaci",
+      "popis": "Bednění z prken tl. 20 mm pod nadkrokevní PIR (biodeska/palubka)",
+      "mj": "m²",
+      "mnozstvi": 140.94000000000003,
+      "mnozstvi_formula": "= 141 m² (plocha střechy včetně sklonu + přesahy)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762341711",
+      "urs_alternatives": [
+        "762331911"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — biodeska/palubka tl.≥20 pod parotěs",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.007"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Parotěsná vrstva",
+      "popis": "Parotěsná folie nad bedněním pod nadkrokevní PIR (např. Isover Vario nebo Tyvek Air guard)",
+      "mj": "m²",
+      "mnozstvi": 155.03400000000005,
+      "mnozstvi_formula": "141 × 1.1 přesah = 155",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "712311101",
+      "urs_alternatives": [
+        "711132101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — skladba nadkrokevní s parotěsem",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.008"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Nadkrokevní PIR izolace",
+      "popis": "Nadkrokevní tepelná izolace PIR (polyisokyanurát) tl. 180 mm (λ = 0.022 W/mK)",
+      "mj": "m²",
+      "mnozstvi": 140.94000000000003,
+      "mnozstvi_formula": "= 141 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "713131811",
+      "urs_alternatives": [
+        "713141121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — nadkrokevní PIR (rušení tepelných mostů)",
+      "subdodavatel": "izolater_TI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.009"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Doplňková HI pod kontralatě",
+      "popis": "Doplňková hydroizolační difuzně otevřená folie nad PIR pod kontralatě",
+      "mj": "m²",
+      "mnozstvi": 155.03400000000005,
+      "mnozstvi_formula": "141 × 1.1 přesah = 155",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "712311111",
+      "urs_alternatives": [
+        "712311101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — doplň. HI",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.010"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Kontralatě + vzduchová mezera",
+      "popis": "Distanční kontralatě 40×60 mm pro vzduchovou mezeru nad PIR",
+      "mj": "m²",
+      "mnozstvi": 140.94000000000003,
+      "mnozstvi_formula": "= 141 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762331923",
+      "urs_alternatives": [
+        "762341110"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — kontralatě + vzduchová mezera",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.011"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Bednění prken pod hliníkovou krytinu",
+      "popis": "Bednění z prken tl. 25 mm pod plechovou hliníkovou krytinu (rozsah dle technologie krytiny)",
+      "mj": "m²",
+      "mnozstvi": 140.94000000000003,
+      "mnozstvi_formula": "= 141 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762341711",
+      "urs_alternatives": [
+        "762331911"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — bednění pod krytinu",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.012"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Plechová falcovaná Al krytina",
+      "popis": "Plechová falcovaná HLINÍKOVÁ krytina (např. PREFA, Rheinzink, Lindab) + tlumící podložka",
+      "mj": "m²",
+      "mnozstvi": 140.94000000000003,
+      "mnozstvi_formula": "= 141 m² (vč. vikýřů přidat ~10%)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "765791121",
+      "urs_alternatives": [
+        "765761121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — plechová falcovaná hliníková krytina",
+      "subdodavatel": "plech_falcovany_hlinik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.013"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Patro pro přespání z biodesky",
+      "popis": "Patro pro přespání v krovu — biodeska / OSB desky tl. 22 mm nad kleštinami",
+      "mj": "m²",
+      "mnozstvi": 25.0,
+      "mnozstvi_formula": "odhad — spací patro ~5 × 5 m",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "762341711",
+      "urs_alternatives": [
+        "766691111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — patro nad kleštinami z biodesky pro přespání",
+      "subdodavatel": "krov_tesarsky_kompletni",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.014"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Vikýře — zděná čela",
+      "popis": "Vikýře — zděná čela z Porotherm 30 (odhad 4 ks × ~3 m² stěna)",
+      "mj": "m²",
+      "mnozstvi": 12.0,
+      "mnozstvi_formula": "4 vikýře × ~3 m² zděných čel = 12",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "311321411",
+      "urs_alternatives": [
+        "311321321"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — vikýře vystupují ze střechy, čela zděná",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.015"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Vikýře — provětrávaná fasáda + plech",
+      "popis": "Vikýře — provětrávaná fasáda min. vata + plech falcovaný hliník (4 vikýře × ~6 m² fasády)",
+      "mj": "m²",
+      "mnozstvi": 24.0,
+      "mnozstvi_formula": "4 vikýře × 2 strany × ~3 m² = 24",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "765791121",
+      "urs_alternatives": [
+        "765761121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — vikýře fasáda provětrávaná + min. vata + plech falc.",
+      "subdodavatel": "plech_falcovany_hlinik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV5.016"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání kompletního stávajícího krovu",
+      "popis": "Bourání kompletního stávajícího krovu vč. vikýřů — vaznicový s ležatou stolicí — manuálně, odvoz",
+      "mj": "m³",
+      "mnozstvi": 12.0,
+      "mnozstvi_formula": "TZ B m.10.e: 9 t dřeva × 0.75 t/m³ = 12 m³ dřeva",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962041141",
+      "urs_alternatives": [
+        "962041151"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.10.e — 9 t dřeva celkem; krov hlavní zdroj",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání plechové střešní krytiny",
+      "popis": "Bourání stávající plechové krytiny (manuálně, recyklace plechu)",
+      "mj": "m²",
+      "mnozstvi": 140.9,
+      "mnozstvi_formula": "= plocha krytiny ~141",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962081141",
+      "urs_alternatives": [
+        "962081132"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.10.e — 0.1 t kovů; stávající plech krytina",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání nadezdívek nad stropem 2.NP",
+      "popis": "Bourání zděných nadezdívek nad stropem 2.NP (mimo štítových stěn) — cihla pálená",
+      "mj": "m³",
+      "mnozstvi": 6.0,
+      "mnozstvi_formula": "odhad — 3.NP nadezdívka půdy ~104 m² × 0.45 m výška ~6",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962031132",
+      "urs_alternatives": [
+        "962081141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — bourání nadezdívek mimo štítů",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání trámového stropu 2.NP/podkroví",
+      "popis": "Bourání trámového stropu 2.NP/podkroví — kompletně (vč. zajištění schodiště)",
+      "mj": "m²",
+      "mnozstvi": 104.4,
+      "mnozstvi_formula": "= zastavěna 104.4 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962041141",
+      "urs_alternatives": [
+        "962041151"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — strop 2.NP/3.NP KOMPLETNĚ bourán",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání lehkých příček",
+      "popis": "Bourání stávajících lehkých příček (cihla, sádrokarton, dřevo)",
+      "mj": "m²",
+      "mnozstvi": 80.0,
+      "mnozstvi_formula": "odhad — interier 2 patra × ~40 m² příček = 80",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962031132",
+      "urs_alternatives": [
+        "962081141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — lehké příčky bourány",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání otvorů pro nové dveře/okna",
+      "popis": "Bourání 8 nových otvorů v nosných cihelných zdech pro dveře/okna (~1.0 × 2.1 m)",
+      "mj": "ks",
+      "mnozstvi": 8,
+      "mnozstvi_formula": "odhad počtu nových otvorů (= počet IPN160 překladů)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962031132",
+      "urs_alternatives": [
+        "962081141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS + statika — nové otvory s IPN160 překlady",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání obkladů v koupelnách",
+      "popis": "Bourání keramických obkladů a zařizovacích předmětů v koupelnách 1.NP + 2.NP",
+      "mj": "m²",
+      "mnozstvi": 60.0,
+      "mnozstvi_formula": "2 koupelny × ~30 m² obkladů = 60",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962081141",
+      "urs_alternatives": [
+        "971033211"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — koupelny kompletně bourány",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.007"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání podlah 1.NP + 2.NP",
+      "popis": "Sejmutí podlah 1.NP a 2.NP — vč. nášlapů, podkladních vrstev",
+      "mj": "m²",
+      "mnozstvi": 153.51,
+      "mnozstvi_formula": "podlahova × 0.7 = ~154 m² (bez 3.NP nového)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "974031132",
+      "urs_alternatives": [
+        "974031141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — podlahy 1.NP+2.NP sejmuty",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.008"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Záklop + zásyp — demontáž",
+      "popis": "Demontáž záklopu a zásypů stropu 1.NP (prkenný záklop na trámech zachován)",
+      "mj": "m³",
+      "mnozstvi": 5.0,
+      "mnozstvi_formula": "100 m² × 0.05 m tl. zásypu = 5",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "974041151",
+      "urs_alternatives": [
+        "974031150"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — záklop+zásyp demontován; trámy zachovány",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.009"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Demontáž oken a dveří",
+      "popis": "Demontáž všech oken a dveří stávajících (recyklace)",
+      "mj": "ks",
+      "mnozstvi": 25,
+      "mnozstvi_formula": "odhad — ~10 oken + ~15 dveří (vstupní + vnitřní)",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "968071120",
+      "urs_alternatives": [
+        "968061120"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — VŠECHNY okna a dveře demontovány",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.010"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Demontáž zařizovacích předmětů",
+      "popis": "Demontáž všech sanitárních zařizovacích předmětů (WC, umyvadla, baterie, sprcha)",
+      "mj": "ks",
+      "mnozstvi": 12,
+      "mnozstvi_formula": "odhad — 2 koupelny × ~5 ks + WC + dřez = ~12",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "725900001",
+      "urs_alternatives": [
+        "971033211"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3 — zařizovací předměty kompletně demontovány",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.011"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Odvoz suti a likvidace",
+      "popis": "Odvoz a likvidace stavební suti dle vyhl. 8/2021 Sb. — celková tonáž odpadů",
+      "mj": "t",
+      "mnozstvi": 56.5,
+      "mnozstvi_formula": "TZ B m.10.e: 46 (beton/cihly) + 9 (dřevo) + 0.1 (kov) + 0.1 (EPS) + 0.2 (sádra) + 1.0 (směs) = 56.4",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "997013501",
+      "urs_alternatives": [
+        "997013211"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.10.e bilance odpadů",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.012"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "Příprava podkladu",
+      "popis": "Příprava fasádního podkladu — očištění tlakovou vodou, vyspravení omítek, fungicidní nátěr",
+      "mj": "m²",
+      "mnozstvi": 265.65842730845185,
+      "mnozstvi_formula": "fasada_volna 2×L × výška = ~265",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "622401110",
+      "urs_alternatives": [
+        "622201001"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — ETICS kontaktní, podklad existující omítka",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV7.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "ETICS EPS 70F grey 200 mm",
+      "popis": "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 max tl. 200 mm + síťka + lepidlo + zatírací stěrka",
+      "mj": "m²",
+      "mnozstvi": 265.65842730845185,
+      "mnozstvi_formula": "= 265 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "622221121",
+      "urs_alternatives": [
+        "622221001"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 + PBŘ — EPS 70F grey 200 mm (h≤12m povoleno)",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV7.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "ETICS sokl XPS",
+      "popis": "ETICS sokl — XPS λ=0.034 tl. 120 mm + soklový profil + cihelný obklad spárovaný",
+      "mj": "m²",
+      "mnozstvi": 14.3,
+      "mnozstvi_formula": "obvod × 0.5 m výška sokl × 0.7 (řadovka) = 14.4",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "622223111",
+      "urs_alternatives": [
+        "622223121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — sokl XPS + cihelný obklad",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV7.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "Špalety EPS",
+      "popis": "Špalety oken — EPS přesah 35-40 mm + síťka + omítka (cca 10 oken × obvod ~5 m špalety)",
+      "mj": "bm",
+      "mnozstvi": 50.0,
+      "mnozstvi_formula": "10 oken × 5 m obvod špaletu = 50",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "622221221",
+      "urs_alternatives": [
+        "622221111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — EPS přesah na špaletách 35-40 mm",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV7.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "Profilace fasády",
+      "popis": "Profilace fasády — různé tloušťky EPS (kordony, šambrány, rámování oken) — paušál podle pohledů",
+      "mj": "soubor",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "paušál — dle pohledů NCS NZÚ",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "622221221",
+      "urs_alternatives": [
+        "622221121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — profilace různými tl. EPS",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV7.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "Tenkovrstvá omítka pastovitá",
+      "popis": "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ — finální vrstva ETICS",
+      "mj": "m²",
+      "mnozstvi": 280.0584273084518,
+      "mnozstvi_formula": "fasada + sokl + profilace ~280 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "622521111",
+      "urs_alternatives": [
+        "622511111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §4 — pastovitá probarvená lomená bílá",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV7.006"
+    }
+  ],
+  "_summary_total": {
+    "items_total": 95,
+    "by_kapitola": {
+      "HSV-1 Zemní práce": 12,
+      "HSV-2 Základové a ŽB": 19,
+      "HSV-3 Svislé konstrukce": 10,
+      "HSV-4 Vodorovné": 20,
+      "HSV-5 Krov + střecha": 16,
+      "HSV-6 Bourací práce": 12,
+      "HSV-7 Fasáda ETICS": 6
+    },
+    "by_objekt": {
+      "260219_dum": 74,
+      "260217_sklad": 21
+    },
+    "urs_status_distribution": {
+      "needs_production_lookup": 95
+    },
+    "items_below_conf_0_70_mnozstvi": 0,
+    "subdodavatel_needs_mapping": 0,
+    "urs_match_rate_pct": 0.0
+  },
+  "_summary_last_group": {
+    "group": "HSV",
+    "items_total": 95,
+    "by_kapitola": {
+      "HSV-1 Zemní práce": 12,
+      "HSV-2 Základové a ŽB": 19,
+      "HSV-3 Svislé konstrukce": 10,
+      "HSV-4 Vodorovné": 20,
+      "HSV-5 Krov + střecha": 16,
+      "HSV-6 Bourací práce": 12,
+      "HSV-7 Fasáda ETICS": 6
+    },
+    "by_objekt": {
+      "260219_dum": 74,
+      "260217_sklad": 21
+    },
+    "urs_status_distribution": {
+      "needs_production_lookup": 95
+    },
+    "items_below_conf_0_70_mnozstvi": 0,
+    "subdodavatel_needs_mapping": 0,
+    "urs_match_rate_pct": 0.0
+  }
+}

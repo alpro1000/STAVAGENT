@@ -182,14 +182,14 @@
     },
     {
       "id": 18,
-      "severity": "low",
-      "status": "partially_resolved",
+      "severity": "info",
+      "status": "fully_resolved",
       "category": "drawings_dependent",
-      "title": "Sklad geometrie 6,35×3,34 m + parking 7,0 m není v TZ — vyžaduje DXF/PDF výkres parse",
-      "context": "Phase 0b §3.2 (2026-05-16) zjistil že rozměry 'lichoběžník 6,35×3,34 m' a 'parkovací stání délky 7,0 m' nejsou v žádné z 6 TZ PDF tělech. Pre-baked extraction je získala patrně z architektonického výkresu D.1.1.02.R1 nebo z DXF (RD Ja_chymov vjezd _ situace 04.dxf, RD Ja_chymov vjezd _ DPZ _ 02.dxf). Phase 1 generator MUSÍ načíst tyto rozměry z DXF/PDF výkresů (ne z TZ) pro správný výpočet ploch / objemů sklad+parking.",
+      "title": "Sklad geometrie 6,35×3,34 m + parking 7,0 m — RESOLVED via DXF v Phase 0b §3.3 + Phase 1 LWPOLYLINE probe",
+      "context": "Phase 0b §3.2 (2026-05-16) zjistil že rozměry 'lichoběžník 6,35×3,34 m' a 'parkovací stání délky 7,0 m' nejsou v žádné z 6 TZ PDF tělech. Phase 0b §3.3 DXF parse + Phase 1 LWPOLYLINE bbox probe vyřešily všechny 3 cíle.",
       "blocks": [],
-      "working_assumption": "Phase 0b §3.3 DXF parse (2026-05-16) RESOLVED 2/3 cílů via ezdxf DIMENSION extraction (confidence 0.95): (a) 6,35 m sklad width = 6350.06 mm v sklad_DPZ + 6350.0 mm v dum_DPZ; (b) 3,34 m sklad depth = exactly 3340.0 mm v dum_DPZ (sklad zobrazený adjacentně). (c) 7,0 m parking length není v žádném ze 4 DXF jako DIMENSION objekt — pravděpodobně jen na printed sheet annotation nebo derivovatelné z LWPOLYLINE bounding-box parking shelter v sklad_DPZ. Pro Phase 1: použít confidence 0.75 (TZ derived) pro 7,0 m do upřesnění; lze později vylepšit LWPOLYLINE extent výpočtem na confidence 0.85.",
-      "next_action": "Phase 1: použít 6,35 × 3,34 m s confidence 0.95 (DXF DIMENSION verified), pro 7,0 m parking délka použít TZ value s confidence 0.75 + flag pro pozdější DXF geometrie computation."
+      "working_assumption": "FULLY RESOLVED: (a) 6,35 m sklad width = 6350.06 mm v sklad_DPZ + 6350.0 mm v dum_DPZ DIMENSION (conf 0.95); (b) 3,34 m sklad depth = exactly 3340.0 mm v dum_DPZ DIMENSION (conf 0.95); (c) 7,0 m parking length = LWPOLYLINE bbox 7000.0 mm na layer 'km__03_velmi tlustá' v sklad_DPZ (4 polylines corroborating: 7722.7×7000.0 footprint, 50×7000 IPE strip, 7000×100 IPE strip, plus 6722.7×6950.0 parking platform) — confidence 0.90.",
+      "next_action": "Žádná — všechny rozměry verifikovány z DXF s confidence ≥ 0.90. Phase 1 items_rd_jachymov_complete.json item 'IPE180 parking — sekundární' (HSV-4) používá 7×7 m s confidence 0.90 + cituje DXF zdroj."
     }
   ]
 }
