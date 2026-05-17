@@ -5,6 +5,10 @@
 **Datum re-parse:** 2026-05-16 (Phase 0b §3.2 — `tools/phase0b_validator.py`, 67/69 = 97.1 % verified, 0 drifts, gate OPEN)
 **Datum DXF parse:** 2026-05-16 (Phase 0b §3.3 — `tools/phase0b_dxf_extractor.py`, 4/4 DXF parsed OK, vyjasnění #18 partially_resolved)
 **Datum Phase 1 HSV gate:** 2026-05-16 (Phase 1 §HSV — `tools/phase1_items_generator.py --group HSV`, 95 položek (74 dum + 21 sklad), 0 sub mapping fail, 0 mnozstvi confidence pod 0.70; vyjasnění #18 fully_resolved via LWPOLYLINE probe)
+**Datum Phase 1 PSV gate:** 2026-05-16 (Phase 1 §PSV — 35 položek (33 dum + 2 sklad), 2 needs_mapping flags: okenni_zaluzie_kastlik_purenit + biodeska_konstrukcni)
+**Datum Phase 1 TZB+M gate:** 2026-05-16 (Phase 1 §TZB — 22 položek dum, 1 needs_mapping flag: instalater_TUV_akumulacni_zasobnik. Architectural bugfix: `_gate` field oddělený od `kapitola_group`)
+**Datum Phase 1 VRN gate:** 2026-05-16 (Phase 1 §VRN — 19 položek (15 dum + 4 sklad), 2 needs_mapping flags: mykolog + azbestovy_specialista. Phase 1 COMPLETE)
+**Datum Phase 1 complete:** 2026-05-16 — **171 položek celkem** (144 dum + 27 sklad), všechna 4 STOP gates uzavřena, 5 needs_mapping flags akumulovaných pro batch update.
 **Sběr:** Email cesta Volný → Jiří Šmíd → Karel Šmíd → Alexander; OneDrive linky 2× (sklad+parking + dům)
 **Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). Phase 0b §3.1 + §3.2 dokončeny.
 
@@ -227,3 +231,74 @@ Per §3.6: pokud silent_drifts > 5 → STOP před Phase 1. Po opravě file-swap 
 | `KR` | 111 | Krokve (sklad DPZ + dum DPZ) — počet krokví derivovatelný |
 | `řezová značka`, `název`, `investor`, `projektant`, `datum`, `část`, `razítko`, atd. | 32 × ~8 = ~256 | Standard razítka výkresů (vyfiltrovat při Phase 1 INSERT analytice) |
 | `severka` | 16 | Standardní orientační značka — vyfiltrovat |
+
+## 8. Phase 1 final — items_rd_jachymov_complete.json totals
+
+**Generator:** `tools/phase1_items_generator.py` (886 LOC + 4 STOP gates: HSV / PSV / TZB / VRN)
+**Output:** `outputs/items_rd_jachymov_complete.json` (~171 items, ~4 800 řádků JSON)
+**Variant target:** B (max detail položkový), realized 171 items vs cíl 140 — slightly over per user-explicit item-level guidance per gate.
+
+### 8.1 Items by gate
+
+| Gate | Items | Objekt split |
+|---|--:|---|
+| HSV (HSV-1..HSV-7) | 95 | 74 dum + 21 sklad |
+| PSV (PSV-71/76/77/78/95) | 35 | 33 dum + 2 sklad |
+| TZB+M (PSV-72/73 + M-21) | 22 | 22 dum + 0 sklad |
+| VRN | 19 | 15 dum + 4 sklad |
+| **Total** | **171** | **144 dum + 27 sklad** |
+
+### 8.2 Confidence ladder distribution
+
+| Confidence | n items | % |
+|---|--:|--:|
+| 0.99 (manual judgement) | 5 | 2.9 % |
+| 0.95 (DXF DIMENSION/INSERT, regex 1.0 ekvivalent) | 21 | 12.3 % |
+| 0.90 (DXF LWPOLYLINE bbox / HATCH) | 5 | 2.9 % |
+| 0.85 (regex z TZ) | 36 | 21.1 % |
+| 0.80 (empirické Methvin/B4) | 16 | 9.4 % |
+| 0.75 (geometry-from-TZ) | 88 | 51.5 % |
+| < 0.70 (hard-fail per §3.6) | **0** | **0 %** |
+
+### 8.3 URS lookup status
+
+| Status | n items | Note |
+|---|--:|---|
+| needs_production_lookup | **171** *(100 %)* | sandbox bez Cloud Run URS_MATCHER + OTSKP DB; všech 171 položek čeká na produkční 2-stage match (catalog + Perplexity rerank) |
+
+### 8.4 Subdodavatel needs_mapping flags (5 — pre batch update)
+
+| Flag | Gate | Item | Důvod |
+|---|---|---|---|
+| `okenni_zaluzie_kastlik_purenit` | PSV | 9 ks žaluzie kastlík purenit ulice | Hybrid trade (okenář + ETICS + purenit dodávka) |
+| `biodeska_konstrukcni` | PSV | 25 m² biodeska 3.NP spací patro | Pseudo-hybrid truhlář + krov_tesarsky_kompletni |
+| `instalater_TUV_akumulacni_zasobnik` | TZB | Akumulační zásobník TUV v 1.PP | Specialty subset vytápěč+vodař hybrid pro multivariantní topný systém |
+| `mykolog` | VRN | Mykologický průzkum dřeva | Specialty surveyor (autorizovaný mykolog dřeva) |
+| `azbestovy_specialista` | VRN | Azbestový průzkum podrobný | Specialty surveyor (autorizovaný technik azbestu + lab. posudek) |
+
+## 9. Corpus patterns — extracted from this pilot
+
+Tento RD Jáchymov pilot přinesl 4 distinct corpus patterns pro budoucí STAVAGENT pipeline:
+
+### 9.1 Pattern 1: UNSORTED audit + SHA-based dedup (Phase 0b §3.1)
+**Problem:** Chat session výstupy obsahují UNSORTED/ adresář s míchanými dokumenty, často s duplicity (různé revize, "(1)" copy, _EAR vs no_EAR).
+**Solution:** `mkdir -p _superseded/<datum>_unsorted_audit/`, then SHA-256 verification before any hard-delete. Files canonical → vykresy_pdf/dxf/situace/tz/dokladova_cast per type. Older revisions → _superseded/ (audit trail preserved).
+**Repository precedent extension:** Žádný předchozí STAVAGENT pilot neměl `inputs/dokladova_cast/` ani `inputs/_superseded/`. Nově zavedeno per Vyhláška 499/2006 Sb. příloha E nomenclature.
+
+### 9.2 Pattern 2: Pre-baked drift detection via independent re-parse (Phase 0b §3.2)
+**Problem:** Pre-baked extraction (chat session) může mít systematic error neviditelný bez nezávislé verifikace. Konkrétní instance: dvě statika TZ files byly v canonical layoutu SWAPPED (soubor `_dum_` obsahoval "Zahradní sklad" header per page, opačně).
+**Solution:** `tools/phase0b_validator.py` (pypdf-based extraction) + 69 cross-checks. Re-parse confidence ladder per task §5 (regex 1.0 > DXF 0.95 > substring 0.85 > AI 0.70). Re-parse VŽDY vyhrává nad pre-baked (per user policy 2026-05-16).
+**Discovery:** Rdt drift (300↔350 mezi dum/sklad) byl smoking gun pro file swap. Post-swap re-parse jumped z 36/69 (52 %) → 67/69 (97.1 %), 3 drifts → 0.
+
+### 9.3 Pattern 3: Multi-modal geometry extraction (Phase 0b §3.3 + Phase 1 PSV)
+**Problem:** Stavební rozměry nejsou vždy v TZ tělech — některé existují jen v DXF/výkresech (např. sklad lichoběžník 6,35×3,34 m, parking 7,0 m).
+**Solution:** Three extraction layers per ezdxf:
+1. **DIMENSION objects** (`.get_measurement()`) → confidence 0.95
+2. **LWPOLYLINE bbox extents** → confidence 0.90 (when no direct DIMENSION present)
+3. **INSERT block counts** by name → confidence 0.95 (např. okna count = ks z INSERT 'okno 1.NP' / 'okno 2.NP' atd.)
+**Live application:** Vyjasnění #18 sklad geometrie fully_resolved via Pattern 3 (6350.06 mm DIMENSION + 3340.0 mm DIMENSION + 7000 mm LWPOLYLINE bbox). DXF INSERT 'okno *' = 16 ks oken (replaces TZ-derived odhad ~10).
+
+### 9.4 Pattern 4: Workflow gate ≠ classification kapitola_group (Phase 1 TZB)
+**Problem:** Catalog classification (HSV/PSV/M/VRN per Czech ÚRS 800) NE vždy odpovídá workflow gates user definuje (např. user-spec "TZB+M gate" obsahuje PSV-72/73 + M-21). Naivní `kapitola_group` filter v merge logic vede k duplikacím or accidental deletes.
+**Solution:** Parallel `_gate` field on each item, populated via `KAPITOLA_TO_GATE` table mapping kapitola prefix → user-workflow gate. `kapitola_group` stays as classification (HSV/PSV/M/VRN per catalog). Merge filter uses `_gate` exclusively.
+**Lesson:** Workflow concerns (review gates, batch commits) and classification concerns (ÚRS hierarchy, catalog) are orthogonal — separate fields, don't conflate.

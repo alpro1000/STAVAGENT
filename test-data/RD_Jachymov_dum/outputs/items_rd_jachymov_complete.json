@@ -9,7 +9,8 @@
   "_groups_completed": [
     "HSV",
     "PSV",
-    "TZB"
+    "TZB",
+    "VRN"
   ],
   "items": [
     {
@@ -4005,10 +4006,509 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.M21.007"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Zařízení staveniště",
+      "subkapitola": "Buňky kancelář + sociální",
+      "popis": "Zařízení staveniště — buňka kancelář + sociální buňka (WC + šatna), pronájem ~8 měsíců",
+      "mj": "kpl-měs",
+      "mnozstvi": 8,
+      "mnozstvi_formula": "realizace odhad 8 měs (demolice 1.5 + hrubá 2.5 + dokončování 4)",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "030011000",
+      "urs_alternatives": [
+        "030001000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.1.m realizace 2026-2027 + standard staveniště RD městská zástavba",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Zařízení staveniště",
+      "subkapitola": "Mobilní WC",
+      "popis": "Mobilní chemické WC TOI TOI pro pracovníky — pronájem ~8 měsíců",
+      "mj": "ks-měs",
+      "mnozstvi": 8,
+      "mnozstvi_formula": "1 ks × 8 měs realizace",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "030013000",
+      "urs_alternatives": [
+        "030014000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "BOZP — mobilní WC povinné pro stavbu RD",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Zařízení staveniště",
+      "subkapitola": "El. odběr + vodovodní odběr stavby",
+      "popis": "El. odběr stavby (zřízení staveništního rozvaděče + měřič) + vodovodní odběr (zřízení staveništní přípojky + vodoměr) — ~8 měsíců",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Komplexní zřízení + provoz po dobu stavby",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "031011000",
+      "urs_alternatives": [
+        "031021000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Standard staveniště — el. + voda zřízení a odběr po dobu stavby",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Kontejnery suti tříděné",
+      "popis": "Kontejnery na suť tříděnou velkoobjemové (beton/cihly, dřevo, kovy, EPS, sádra, směs) — pronájem + svozy",
+      "mj": "ks",
+      "mnozstvi": 7,
+      "mnozstvi_formula": "TZ B m.10.e: 56.9 t celkem → ~7 kontejnerů 8 m³ (beton/cihly hlavní hmota)",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "997013211",
+      "urs_alternatives": [
+        "997013501"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.10.e: beton/cihly 46 t + dřevo 9 t + kovy 0.1 + EPS 0.1 + sádra 0.2 + směs 1.0",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9,
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — BOZP",
+      "subkapitola": "Koordinace BOZP",
+      "popis": "Koordinátor BOZP na staveništi dle zákona 309/2006 Sb. — pro stavbu s více než jedním zhotovitelem",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "realizace ~8 měs",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "030091000",
+      "urs_alternatives": [
+        "030092000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Zákon 309/2006 Sb. — povinný BOZP koordinátor pro vícezhotovitelskou stavbu",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Pojištění + zábory",
+      "subkapitola": "Pojištění stavby (montážní + odpovědnostní)",
+      "popis": "Montážní pojištění stavby (CAR) + pojištění odpovědnosti za škodu (zhotovitel) — paušál cca 0.3-0.5 % z PN",
+      "mj": "paušál",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard pojistná sazba 0.3-0.5 % z přímých nákladů",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "030081000",
+      "urs_alternatives": [
+        "030082000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Standard zhotovitel — pojistná povinnost",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Pojištění + zábory",
+      "subkapitola": "Krátkodobé zábory ul. Fibichova",
+      "popis": "Krátkodobé zábory ulice Fibichova pro materiál a kontejnery (povolení MU Jáchymov + DI) — odhad 30 dnů kumulativně",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Řadová zástavba úzká ulice — opakované krátkodobé zábory cumulative ~30 dnů",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "030083000",
+      "urs_alternatives": [
+        "030084000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.10 + situace — řadovka ul. Fibichova",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Průzkumy",
+      "subkapitola": "Mykologický průzkum dřeva při bourání",
+      "popis": "Mykologický průzkum stávajícího krovu a dřevěných trámů zhlaví — provádí autorizovaný mykolog při bourání",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "TZ ARS §3.2.3 — 'při bourání bude proveden mykologický průzkum dřev. trámů (zhlaví)'",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "030131000",
+      "urs_alternatives": [
+        "030132000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum",
+      "subdodavatel": "mykolog",
+      "subdodavatel_status": "needs_mapping",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "needs_subdod_mapping",
+      "notes": "Subdod 'mykolog' (autorizovaný mykolog dřeva) není v current mapping. Specialty surveyor; FLAG pro batch update.",
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Průzkumy",
+      "subkapitola": "Azbestový průzkum podrobný před demolicí",
+      "popis": "Azbestový průzkum podrobný před demolicí — laboratorní vzorky a posudek (B kap. m.7.a předběžně negativní, ale podrobný před bouráním povinný)",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "TZ B m.7.a — 'předběžné ohledání negativní, podrobný průzkum před bouráním'",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "030133000",
+      "urs_alternatives": [
+        "030134000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.7.a + ARS §3.2 — azbestový průzkum povinný před demolicí",
+      "subdodavatel": "azbestovy_specialista",
+      "subdodavatel_status": "needs_mapping",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "needs_subdod_mapping",
+      "notes": "Subdod 'azbestovy_specialista' (autorizovaný technik azbestu, odběr vzorků + laboratorní posudek) není v current mapping. Specialty surveyor; FLAG pro batch update.",
+      "id": "260219_dum.VRN.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Geodet",
+      "subkapitola": "Geodetické zaměření před + po realizaci",
+      "popis": "Geodetické zaměření před realizací (verifikace polohopis + výškopis) + po dokončení (zaměření skutečného provedení pro kolaudaci)",
+      "mj": "kpl",
+      "mnozstvi": 2,
+      "mnozstvi_formula": "2 etapy geodet × 1 kpl",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "030141000",
+      "urs_alternatives": [
+        "030142000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Standard — geodet před+po pro každou stavbu",
+      "subdodavatel": "geodet",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Dokumentace",
+      "subkapitola": "Předávací protokoly + DSP",
+      "popis": "Předávací protokoly + Dokumentace skutečného provedení (DSP) — sestavení, vázání, dodávka 2× tiskem + elektronická verze",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard — DSP pro kolaudaci",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "030151000",
+      "urs_alternatives": [
+        "030152000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Vyhláška 499/2006 Sb. + ČKAIT — DSP povinná pro kolaudaci",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Revize",
+      "subkapitola": "Revize hydrantu vnějšího",
+      "popis": "Revize vnějšího hydrantu pro požární zabezpečení (DN min. 80, vzdálenost 100 m dle TZ PBŘ) — periodická kontrola",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "TZ PBŘ dům — vnější hydrant DN min. 80, vzdálenost 100 m",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "030161000",
+      "urs_alternatives": [
+        "030162000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ PBŘ dům — vnější odběrné místo požární vody, revize před kolaudací",
+      "subdodavatel": "revize_specialista",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Kolaudace",
+      "subkapitola": "Kolaudační řízení",
+      "popis": "Kolaudační řízení — paušál (správní poplatky + součinnost) dle zákona 183/2006 Sb.",
+      "mj": "paušál",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard — paušál kolaudace",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "030171000",
+      "urs_alternatives": [
+        "030172000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Zákon 183/2006 Sb. + vyhl. 499/2006 Sb.",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Doprava materiálu",
+      "popis": "Doprava materiálu na stavbu (centrální koordinace) — paušál ~2-3 % z PN materiál",
+      "mj": "paušál",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard paušální koeficient pro RD městská zástavba 2-3 % z PN",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "031031000",
+      "urs_alternatives": [
+        "031032000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "B4_productivity — standard doprava RD městská zástavba",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Likvidace odpadů 56.9 t",
+      "popis": "Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné + recyklace + třídění (56.9 t celkem per TZ B m.10.e)",
+      "mj": "t",
+      "mnozstvi": 56.9,
+      "mnozstvi_formula": "TZ B m.10.e bilance: 46+9+0.1+0.1+0.2+1.0 = 56.4 t (round 56.9 vč. drobných)",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "997013211",
+      "urs_alternatives": [
+        "997013501"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ B m.10.e bilance odpadů celkem dům",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9,
+        10
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.VRN.003"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Doprava prefa H-BLOK auto s hyd. rukou",
+      "popis": "Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) auto s hydraulickou rukou — celkem ~60 ks bloků",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard doprava prefa Herkul autem s hyd. rukou pro lokální distribuci",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "031032000",
+      "urs_alternatives": [
+        "031031000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ statika sklad §4 + ARS — auto s hyd. rukou pro osazení H-BLOK",
+      "subdodavatel": "prefa_bloky_specialista",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.VRN.001"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Likvidace odpadu sklad",
+      "popis": "Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (drobné množství)",
+      "mj": "t",
+      "mnozstvi": 8.0,
+      "mnozstvi_formula": "Odhad: kamenné zídky ~6 t + dřevo+výkop ~2 t = 8 t",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "997013211",
+      "urs_alternatives": [
+        "997013501"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "TZ ARS sklad §3 — kamenné zídky + schodiště odstraneny",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.VRN.002"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Geodet",
+      "subkapitola": "Geodetické vytýčení sklad",
+      "popis": "Geodetické vytýčení sklad+parking+schodiště ze situace (před realizací)",
+      "mj": "kpl",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard geodet vytýčení pro nový objekt",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "030141000",
+      "urs_alternatives": [
+        "030142000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Standard — geodet vytýčení pro každý nový objekt",
+      "subdodavatel": "geodet",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.VRN.001"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Společné",
+      "subkapitola": "Podíl na obecných VRN dům",
+      "popis": "Podíl na obecných VRN domu (buňky, BOZP, pojištění, kolaudace) — paušál ~10 % nákladů sklad nebo % alokace",
+      "mj": "paušál",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "Standard paušální alokace VRN pro paralelně realizovaný menší objekt",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "030001000",
+      "urs_alternatives": [
+        "030002000"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "Standard zhotovitel — alokace VRN pro paralelně realizovaný sklad",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.VRN.001"
     }
   ],
   "_summary_total": {
-    "items_total": 152,
+    "items_total": 171,
     "by_kapitola": {
       "HSV-1 Zemní práce": 12,
       "HSV-2 Základové a ŽB": 19,
@@ -4028,35 +4528,53 @@
       "PSV-95 Detekce požární": 2,
       "PSV-72 ZTI": 7,
       "PSV-73 Vytápění": 8,
-      "M-21 ELI silnoproud": 7
+      "M-21 ELI silnoproud": 7,
+      "VRN — Zařízení staveniště": 3,
+      "VRN — Doprava + odpad": 5,
+      "VRN — BOZP": 1,
+      "VRN — Pojištění + zábory": 2,
+      "VRN — Průzkumy": 2,
+      "VRN — Geodet": 2,
+      "VRN — Dokumentace": 1,
+      "VRN — Revize": 1,
+      "VRN — Kolaudace": 1,
+      "VRN — Společné": 1
     },
     "by_objekt": {
-      "260219_dum": 129,
-      "260217_sklad": 23
+      "260219_dum": 144,
+      "260217_sklad": 27
     },
     "urs_status_distribution": {
-      "needs_production_lookup": 152
+      "needs_production_lookup": 171
     },
     "items_below_conf_0_70_mnozstvi": 0,
-    "subdodavatel_needs_mapping": 3,
+    "subdodavatel_needs_mapping": 5,
     "urs_match_rate_pct": 0.0
   },
   "_summary_last_group": {
-    "group": "TZB",
-    "items_total": 22,
+    "group": "VRN",
+    "items_total": 19,
     "by_kapitola": {
-      "PSV-72 ZTI": 7,
-      "PSV-73 Vytápění": 8,
-      "M-21 ELI silnoproud": 7
+      "VRN — Zařízení staveniště": 3,
+      "VRN — Doprava + odpad": 5,
+      "VRN — BOZP": 1,
+      "VRN — Pojištění + zábory": 2,
+      "VRN — Průzkumy": 2,
+      "VRN — Geodet": 2,
+      "VRN — Dokumentace": 1,
+      "VRN — Revize": 1,
+      "VRN — Kolaudace": 1,
+      "VRN — Společné": 1
     },
     "by_objekt": {
-      "260219_dum": 22
+      "260219_dum": 15,
+      "260217_sklad": 4
     },
     "urs_status_distribution": {
-      "needs_production_lookup": 22
+      "needs_production_lookup": 19
     },
     "items_below_conf_0_70_mnozstvi": 0,
-    "subdodavatel_needs_mapping": 1,
+    "subdodavatel_needs_mapping": 2,
     "urs_match_rate_pct": 0.0
   }
 }
