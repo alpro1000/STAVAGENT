@@ -123,6 +123,24 @@ C_MANUAL        = 0.99
 C_AI_GUESS      = 0.65   # ÚRS proposal from catalog knowledge (no production lookup)
 
 
+# Gate ↔ kapitola mapping (per task spec — 4 STOP gates, not 19)
+# Used by merge to know which existing items to clear when re-running --group X
+KAPITOLA_TO_GATE: dict[str, str] = {
+    "HSV-1":  "HSV", "HSV-2":  "HSV", "HSV-3":  "HSV", "HSV-4":  "HSV",
+    "HSV-5":  "HSV", "HSV-6":  "HSV", "HSV-7":  "HSV",
+    "PSV-71": "PSV", "PSV-76": "PSV", "PSV-77": "PSV", "PSV-78": "PSV", "PSV-95": "PSV",
+    "PSV-72": "TZB", "PSV-73": "TZB",   # ZTI + vytápění belong to TZB+M gate, not PSV
+    "M-21":   "TZB",                     # ELI silnoproud belongs to TZB+M gate
+    "VRN":    "VRN",
+}
+
+
+def _gate_for(kapitola: str) -> str:
+    """Map kapitola prefix (e.g. 'HSV-1 Zemní práce') to gate name (HSV/PSV/TZB/VRN)."""
+    prefix = kapitola.split(" ")[0]
+    return KAPITOLA_TO_GATE.get(prefix, "OTHER")
+
+
 def mk(
     objekt: str,
     kapitola: str,
@@ -145,7 +163,8 @@ def mk(
     sub_status = "mapped" if subdodavatel in KNOWN_TRADES else "needs_mapping"
     return {
         "objekt": objekt,
-        "kapitola_group": kapitola.split("-")[0].split(" ")[0],   # HSV / PSV / M / VRN
+        "kapitola_group": kapitola.split("-")[0].split(" ")[0],   # HSV / PSV / M / VRN — classification view
+        "_gate": _gate_for(kapitola),                              # HSV / PSV / TZB / VRN — workflow gate
         "kapitola": kapitola,
         "subkapitola": subkapitola,
         "popis": popis,
@@ -1041,8 +1060,160 @@ def gen_PSV():
 
 
 def gen_TZB_M():
-    """PSV-72 ZTI, PSV-73 vytápění, M-21 elektro."""
-    return []  # filled in TZB gate
+    """PSV-72 ZTI, PSV-73 vytápění, M-21 elektro. DSP scope — vyjasnění #6 + #7 working assumptions."""
+    items = []
+    O = "260219_dum"
+
+    # ── PSV-72 ZTI (vodovod + kanalizace + sanita) ───────────────────
+    items += [
+        mk(O, "PSV-72 ZTI", "Revize stávajících přípojek",
+           "Revize stávajícího napojení vodovodu + kanalizace na pozemku — kontrola stavu, čištění, tlaková zkouška",
+           "kpl", 1,
+           "TZ ARS dům §4 — stávající přípojka zachována bez změny", C_REGEX_TZ,
+           "722290515", ["722290521"],
+           "TZ ARS dům §4 — vodovod + kanalizace stávající, bez změny", "vodar", [6]),
+        mk(O, "PSV-72 ZTI", "Nové rozvody vody do 3.NP",
+           "Nové rozvody studené + teplé vody do koupelen 1.NP + 2.NP + 3.NP a kuchyní (PEX/Cu, dimenze DN15-25)",
+           "bm", 80.0,
+           "3 patra × ~25 bm rozvodů (koupelny + kuchyně + bojler 3.NP) = 75 (round 80)", C_GEOM_FROM_TZ,
+           "722172011", ["722172021", "722262111"],
+           "TZ ARS dům §4 — nové koupelny + kuchyně, vyjasnění #6 working assumption", "vodar", [6]),
+        mk(O, "PSV-72 ZTI", "Nové odpadní rozvody",
+           "Nové odpadní rozvody PVC-HT DN40-DN110 ke koupelnám 1.NP, 2.NP, 3.NP a kuchyním + napojení na stávající",
+           "bm", 60.0,
+           "3 patra × ~20 bm odpadní + svislé propojení = 60", C_GEOM_FROM_TZ,
+           "721174021", ["721174022"],
+           "TZ ARS dům §4 — nové koupelny + kuchyně, odpad do stávající kanalizace", "vodar", [6]),
+        mk(O, "PSV-72 ZTI", "Sanitární keramika — kompletní set",
+           "Sanitární keramika dodávka + montáž — 3× WC + 4× umyvadlo + 2× sprchový kout + 1× vana + 2× kuchyňský dřez",
+           "ks", 12,
+           "DXF dum_DPZ MTEXT: 3 koupelny + 2 kuchyně. 3 WC + 4 umyvadlo + 2 sprcha + 1 vana + 2 dřez = 12 ks", C_DXF_INSERT,
+           "725291131", ["725211213", "725331111"],
+           "DXF dum_DPZ MTEXT room labels 3× koupelna + 2× kuchyně; TZ ARS §4 — koupelny 1.NP/2.NP + nová 3.NP", "vodar", [6]),
+        mk(O, "PSV-72 ZTI", "Vodovodní baterie + drobnosti",
+           "Vodovodní baterie (WC ventil + páková umyvadlová + sprchové + dřezové + termostat sprchové) — ~15 ks + drobné instalační materiály",
+           "ks", 15,
+           "12 sanit. zařízení × 1 baterie + 3 drobnosti (rohové ventily, sifony) = 15", C_GEOM_FROM_TZ,
+           "725822611", ["725822612"],
+           "TZ ARS — kompletní baterie nové", "vodar", [6]),
+        mk(O, "PSV-72 ZTI", "Akumulační zásobník TUV v suterénu",
+           "Akumulační zásobník TUV ~300 l v 1.PP napojený na topný systém (sporáková kamna + krb + elektrokotel) — nepřímotop",
+           "ks", 1,
+           "TZ ARS — 'akumulační zásobník TUV v suterénu napojený na topný systém'", C_REGEX_TZ,
+           "732419411", ["732431111"],
+           "TZ ARS dům §4 — kombi akumulační zásobník napojený na multivariantní topný systém",
+           "instalater_TUV_akumulacni_zasobnik", [6],
+           status_flag="needs_subdod_mapping",
+           notes="Subdod 'instalater_TUV_akumulacni_zasobnik' — specialty subset vytápěč+vodař hybrid pro multivariantní topný systém (kamna+krb+kotel). Není v current mapping. FLAG pro batch update."),
+        mk(O, "PSV-72 ZTI", "Elektrický bojler 3.NP",
+           "Elektrický bojler ~80 l v koupelně 3.NP (nezávislý zdroj pro samostatný byt)",
+           "ks", 1,
+           "TZ ARS — 'elektrický bojler v koupelně 3.NP'", C_REGEX_TZ,
+           "732429211", ["732431111"],
+           "TZ ARS dům §4 — elektrický bojler v 3.NP koupelně, vyjasnění #6 odhad 80 l", "vodar", [6]),
+    ]
+
+    # ── PSV-73 Vytápění ──────────────────────────────────────────────
+    items += [
+        mk(O, "PSV-73 Vytápění", "Sporáková kamna na tuhá paliva",
+           "Sporáková kamna na tuhá paliva ~10 kW s akumulačním zásobníkem TUV — dodávka",
+           "ks", 1,
+           "TZ ARS dům §4 — sporáková kamna v 1.PP/1.NP zóně", C_REGEX_TZ,
+           "733241011", ["733241012"],
+           "TZ ARS dům §4 — primární zdroj 1.NP/2.NP, ~10 kW odhad standard RD", "topenar", [6]),
+        mk(O, "PSV-73 Vytápění", "Sporáková kamna — montáž",
+           "Sporáková kamna — montáž vč. napojení na komín + akumulační zásobník (cca 8 Nh)",
+           "kpl", 1,
+           "= ks kamen", C_GEOM_FROM_TZ,
+           "733281011", ["733281012"],
+           "Standard montáž kamen s napojením na zásobník", "topenar", []),
+        mk(O, "PSV-73 Vytápění", "Elektrokotel 3.NP",
+           "Elektrokotel ~8 kW pro 3.NP samostatný byt — dodávka + montáž + napojení",
+           "ks", 1,
+           "TZ ARS — elektrokotel pro 3.NP samostatný byt", C_REGEX_TZ,
+           "733131221", ["733131222"],
+           "TZ ARS dům §4 — 'Nově navržené 3.NP bude vytápěno elektrokotlem'; ~8 kW odhad", "topenar", [6]),
+        mk(O, "PSV-73 Vytápění", "Krb na tuhá paliva 3.NP",
+           "Krb na tuhá paliva v 3.NP ~6 kW — dodávka + montáž s napojením na samostatný komín",
+           "ks", 1,
+           "TZ ARS — 'krbem na tuhá paliva' v 3.NP", C_REGEX_TZ,
+           "733241011", ["734221101"],
+           "TZ ARS dům §4 — krb v 3.NP, ~6 kW odhad", "topenar", [6]),
+        mk(O, "PSV-73 Vytápění", "Multisplit TČ — venkovní jednotka",
+           "Multisplit tepelné čerpadlo vzduch-vzduch — 1× venkovní jednotka ~10 kW (silent mode hl. tlaku ≤49 dBA)",
+           "ks", 1,
+           "TZ ARS — multisplit TČ vzduch-vzduch", C_REGEX_TZ,
+           "733425211", ["733425212"],
+           "TZ ARS dům §4 — multisplit TČ s akustikou hl. tlaku ≤49 dBA, NV 272/2011",
+           "specialista_TC_multisplit", [6]),
+        mk(O, "PSV-73 Vytápění", "Multisplit TČ — vnitřní jednotky",
+           "Multisplit TČ — 5× vnitřní jednotka v obytných místnostech (1.NP, 2.NP, 3.NP — chlazení + vytápění)",
+           "ks", 5,
+           "TZ ARS — 'vnitřní jednotky v obytných místnostech', odhad 5 ks (3 patra × ~1.7 j/patro)", C_GEOM_FROM_TZ,
+           "733425221", ["733425222"],
+           "TZ ARS dům §4 — vnitřní jednotky multisplit, vyjasnění #6 odhad 5 ks",
+           "specialista_TC_multisplit", [6]),
+        mk(O, "PSV-73 Vytápění", "Revize komínu",
+           "Revize stávajícího komínu — kontrola, čištění, vystrojení vložkou nerez DN160 pro kamna + krb 3.NP",
+           "kpl", 1,
+           "TZ ARS — komín revize a úpravy stávajícího", C_REGEX_TZ,
+           "734262122", ["734291111"],
+           "TZ ARS dům §4 — komín stávající, vystrojení vložkou pro kamna + krb", "kominik", [6]),
+        mk(O, "PSV-73 Vytápění", "Rozvody otopné soustavy",
+           "Rozvody otopné soustavy Cu/PEX k vnitřním jednotkám TČ + radiátorům pro doplňkové (cca 100 bm odhad)",
+           "bm", 100.0,
+           "TZ ARS — vyjasnění #6 working assumption, multisplit + doplň. radiátory", C_GEOM_FROM_TZ,
+           "733111021", ["733122031"],
+           "TZ ARS dům §4 — rozvody otopné soustavy", "topenar", [6]),
+    ]
+
+    # ── M-21 Elektroinstalace silnoproudá ────────────────────────────
+    items += [
+        mk(O, "M-21 ELI silnoproud", "Demontáž stávající ELI",
+           "Demontáž stávající elektroinstalace v celém domě (vodiče, rozvaděč, zásuvky, svítidla) — recyklace mědi",
+           "kpl", 1,
+           "TZ ARS — stávající ELI plně bourána; B m.10.e — 0.1 t kovů celkem", C_REGEX_TZ,
+           "210010011", ["210010021"],
+           "TZ ARS dům §4 — kompletně nová ELI", "elektroinstalater", [7]),
+        mk(O, "M-21 ELI silnoproud", "Pojistková skříň + 3× podružný rozvaděč",
+           "Nová pojistková skříň + 3× podružný rozvaděč pro každé patro (1.NP, 2.NP, 3.NP) s podružným měřením",
+           "ks", 4,
+           "1 hlavní + 3 podružné = 4 rozvaděče", C_REGEX_TZ,
+           "210110023", ["210110024"],
+           "TZ ARS dům §4 — 'nová pojistková skříň s podružným měřením pro každé patro'", "elektroinstalater", [7]),
+        mk(O, "M-21 ELI silnoproud", "Rozvody silnoproud",
+           "Nové silnoproudé rozvody — vodiče CYKY 3×1.5 / 3×2.5 / 5×2.5 / 5×6 + krabice + instalační trubky",
+           "bm", 700.0,
+           "RD 219 m² × ~3.2 bm/m² standard ELI = 700 bm; vyjasnění #7 working assumption", C_EMPIRICAL,
+           "210800012", ["210800013"],
+           "TZ ARS + B4_productivity standard RD 3-byt. dispozice", "elektroinstalater", [7]),
+        mk(O, "M-21 ELI silnoproud", "Zásuvky a vypínače",
+           "Zásuvky a vypínače dodávka + montáž — ~70 ks (60-80 dle vyjasnění #7)",
+           "ks", 70,
+           "RD 219 m² × ~0.3 ks/m² standard 3-byt. dispozice = 70 ks", C_EMPIRICAL,
+           "210810050", ["210810052"],
+           "TZ ARS + B4_productivity standard RD 220 m² 3-byt.", "elektroinstalater", [7]),
+        mk(O, "M-21 ELI silnoproud", "Svítidla",
+           "Svítidla dodávka + montáž — ~35 ks (30-40 dle vyjasnění #7) interiér + venkovní u vstupů",
+           "ks", 35,
+           "standard RD 220 m² = ~35 ks svítidel", C_EMPIRICAL,
+           "210820002", ["210820012"],
+           "TZ ARS + B4_productivity standard RD", "elektroinstalater", [7]),
+        mk(O, "M-21 ELI silnoproud", "Příprava FVE",
+           "Příprava na osazení FVE — rezerva v rozvaděči (jistič + zásuvka pro střídač) + trasy do střechy",
+           "kpl", 1,
+           "TZ ARS — 'příprava na osazení FVE'", C_REGEX_TZ,
+           "210800099", ["210910011"],
+           "TZ ARS dům §4 — FVE příprava (bez panelů samotných)", "elektroinstalater", [7]),
+        mk(O, "M-21 ELI silnoproud", "Revize ELI při kolaudaci",
+           "Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revizní zpráva pro kolaudaci",
+           "kpl", 1,
+           "ČSN 33 2000-6 — povinná revize před kolaudací", C_MANUAL,
+           "996019011", ["210910021"],
+           "Povinná revize ELI dle ČSN 33 2000-6 + kolaudace", "revize_specialista", []),
+    ]
+
+    return items
 
 
 def gen_VRN():
@@ -1143,8 +1314,10 @@ def main() -> int:
 
     new_items = assign_ids(new_items)
 
-    # Merge: drop existing entries of this group, keep the rest, add new
-    kept = [it for it in bundle["items"] if it.get("kapitola_group") != args.group]
+    # Merge: drop existing entries of this gate, keep the rest, add new.
+    # Filter on _gate (workflow group) not kapitola_group (classification) — PSV-72/73 + M-21
+    # belong to TZB gate per task spec, but their kapitola_group stays PSV/M for catalog view.
+    kept = [it for it in bundle["items"] if it.get("_gate") != args.group]
     merged = kept + new_items
     bundle["items"] = merged
     if args.group not in bundle["_groups_completed"]:
