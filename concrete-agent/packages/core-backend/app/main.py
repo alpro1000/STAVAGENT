@@ -102,21 +102,37 @@ class MCPAuthChallengeMiddleware:
 
     Two responsibilities:
 
-    1. **Active 401 gate** — a write request (POST/PUT/PATCH/DELETE)
-       without an `Authorization` header is rejected immediately with
-       a 401 carrying the challenge. ChatGPT and Claude.ai use this
+    1. **Active 401 gate** — any non-OPTIONS request without an
+       `Authorization` header is rejected immediately with a 401
+       carrying the challenge. ChatGPT and Claude.ai use this
        challenge to discover where to find the OAuth metadata.
+
+       This INCLUDES anonymous `GET /mcp/`. Claude.ai's connector
+       probe does an unauthenticated GET before running OAuth and
+       expects to see `401 + WWW-Authenticate` as the signal that
+       auth is required. Without the GET gate, FastMCP itself
+       responds 406 ("Not Acceptable: Client must accept
+       text/event-stream") because the probe doesn't send the
+       SSE `Accept` header — and 406 makes Claude.ai treat the
+       server as unreachable instead of starting the OAuth flow.
 
     2. **Passive 401 augmentation** — if the wrapped FastMCP app
        itself responds 401 (because the bearer token failed an
        internal validation), inject the same `WWW-Authenticate`
        header into the response on its way out.
 
-    Read-only methods (GET, HEAD, OPTIONS) pass through unmodified so
-    SSE handshakes and CORS preflights aren't broken.
+    `OPTIONS` is the one method that bypasses the gate, so browser
+    CORS preflights still succeed without an `Authorization` header
+    (the actual POST/GET that follows will be gated).
     """
 
-    _GATE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
+    # Everything except OPTIONS is gated. The auth check runs BEFORE
+    # the request reaches FastMCP — so for an anonymous GET, the 401
+    # fires here and the Accept-header check inside FastMCP never
+    # runs. Once a real client adds `Authorization`, the request flows
+    # through to FastMCP and FastMCP's own Accept negotiation kicks
+    # in (which is correct for authenticated MCP traffic).
+    _GATE_METHODS = {"GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"}
 
     def __init__(self, app):
         self.app = app
