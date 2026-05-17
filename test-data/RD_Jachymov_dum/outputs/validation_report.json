@@ -1,7 +1,7 @@
 {
   "_schema_version": "1.0",
   "_generated_by": "tools/phase0b_validator.py",
-  "_generated_at": "2026-05-16",
+  "_generated_at": "2026-05-17",
   "_branch": "claude/rd-jachymov-phase-0b-foundation",
   "_inputs": {
     "B_common": {
