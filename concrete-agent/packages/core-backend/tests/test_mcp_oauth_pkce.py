@@ -582,13 +582,41 @@ def test_mcp_endpoint_post_with_authorization_header_skips_challenge_gate(client
         )
 
 
-def test_mcp_endpoint_get_passes_through_no_gate(client):
-    """The active gate only applies to write methods. GET (e.g. SSE
-    handshake probes) must pass through to FastMCP unmodified."""
+def test_mcp_endpoint_anonymous_get_returns_401_with_challenge(client):
+    """Anonymous GET /mcp/ must 401 with the RFC 9728
+    `WWW-Authenticate` challenge — NOT 406. Claude.ai's connector
+    probe is an unauthenticated GET (no `Accept: text/event-stream`)
+    and treats 406 as "server unreachable" instead of "auth required",
+    so the gate has to fire BEFORE the FastMCP Accept-header check.
+    Auth check first, transport negotiation second.
+    """
     r = client.get("/mcp/")
-    # FastMCP may 200, 404, 405, or 406 depending on its routing —
-    # what we care about is that the request was NOT intercepted by
-    # our 401 gate with the invalid_token body.
+    assert r.status_code == 401, (
+        f"Expected 401 from anonymous GET /mcp/, got {r.status_code}. "
+        f"Body: {r.text[:200]!r}"
+    )
+    challenge = r.headers.get("www-authenticate", "")
+    assert challenge.startswith("Bearer"), challenge
+    assert "resource_metadata=" in challenge
+    assert "/.well-known/oauth-protected-resource" in challenge
+    body = r.json()
+    assert body["error"] == "invalid_token"
+
+
+def test_mcp_endpoint_get_with_authorization_header_skips_challenge_gate(client):
+    """GET with ANY non-empty Authorization header bypasses the
+    middleware gate — FastMCP's own transport negotiation (which may
+    legitimately 406 on missing `Accept: text/event-stream`) takes
+    over. We only assert the gate did NOT fire — the inner response
+    code depends on FastMCP and the Accept header we sent.
+    """
+    r = client.get(
+        "/mcp/",
+        headers={"authorization": "Bearer sk-stavagent-not-a-real-key"},
+    )
     if r.status_code == 401:
         body_text = r.text or ""
-        assert "MCP endpoint requires an OAuth 2.0 bearer token" not in body_text
+        # Our gate's body contains this exact error_description.
+        assert "MCP endpoint requires an OAuth 2.0 bearer token" not in body_text, (
+            "Middleware gate fired despite Authorization header being present"
+        )
