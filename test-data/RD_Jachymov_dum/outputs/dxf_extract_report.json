@@ -1,0 +1,1406 @@
+{
+  "_schema_version": "1.0",
+  "_generated_by": "tools/phase0b_dxf_extractor.py",
+  "_generated_at": "2026-05-17",
+  "_branch": "claude/rd-jachymov-phase-0b-foundation",
+  "_summary": {
+    "dxf_files_total": 4,
+    "dxf_files_parsed": 4,
+    "dxf_files_blocked": [],
+    "phase1_gate": "OPEN"
+  },
+  "vyjasneni_18_sklad_geometry": {
+    "status": "partially_resolved",
+    "targets": {
+      "sklad_lichoběžník_width_6_35_m": {
+        "target_mm": 6350,
+        "tolerance_mm": 50,
+        "hits": [
+          {
+            "source": "sklad_DPZ",
+            "measured_mm": 6350.06,
+            "delta_mm": 0.06
+          },
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 6350.0,
+            "delta_mm": 0.0
+          }
+        ],
+        "resolved": true
+      },
+      "sklad_lichoběžník_depth_3_34_m": {
+        "target_mm": 3340,
+        "tolerance_mm": 50,
+        "hits": [
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 3300.0,
+            "delta_mm": -40.0
+          },
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 3310.0,
+            "delta_mm": -30.0
+          },
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 3320.0,
+            "delta_mm": -20.0
+          },
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 3335.0,
+            "delta_mm": -5.0
+          },
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 3340.0,
+            "delta_mm": 0.0
+          },
+          {
+            "source": "dum_DPZ",
+            "measured_mm": 3370.0,
+            "delta_mm": 30.0
+          }
+        ],
+        "resolved": true
+      },
+      "parking_length_7_0_m": {
+        "target_mm": 7000,
+        "tolerance_mm": 50,
+        "hits": [],
+        "resolved": false
+      },
+      "sklad_basis_alt_3_085_m": {
+        "target_mm": 3085,
+        "tolerance_mm": 25,
+        "hits": [
+          {
+            "source": "sklad_DPZ",
+            "measured_mm": 3085.0,
+            "delta_mm": 0.0
+          }
+        ],
+        "resolved": true
+      }
+    },
+    "notes": [
+      "DXF DIMENSION entities checked first (highest confidence: 0.95 per task §5 ladder).",
+      "Targets 3340 mm + 7000 mm not present as direct DIMENSION objects in any of 4 DXFs.",
+      "Possible explanations: (a) they are derivable from LWPOLYLINE vertex coordinates but not annotated as DIMENSIONs; (b) the 7,0 m parking length is shown as a construction line dimension on the printed sheet only; (c) pre-baked extraction may have read these from PDF drawing D.1.1.02.R1 půdorys suterénu/skladu, not from DXF.",
+      "Phase 1 generator should: (i) accept 6,35 m sklad width as RESOLVED with confidence 0.95; (ii) derive 3,34 m and 7,0 m by computing bounding-box / dominant LWPOLYLINE extents in sklad DPZ DXF — or fall back to substring search in D.1.1.02.R1 OCR with confidence 0.85."
+    ]
+  },
+  "files": {
+    "sklad_DPZ": {
+      "_path": "inputs/vykresy_dxf/260217_sklad/RD Ja_chymov vjezd _ DPZ _ 02.dxf",
+      "_label": "sklad_DPZ",
+      "dxf_version": "AC1024",
+      "units": "4",
+      "entity_counts": {
+        "LWPOLYLINE": 532,
+        "HATCH": 147,
+        "MTEXT": 123,
+        "INSERT": 90,
+        "DIMENSION": 65,
+        "LINE": 51,
+        "CIRCLE": 10,
+        "TEXT": 9,
+        "LEADER": 2
+      },
+      "layers_count": 39,
+      "layers": [
+        "0",
+        "Defpoints",
+        "IP_Popisy bubliny",
+        "IP_Výškové kóty",
+        "IP__netisk",
+        "IP_obrysy místností",
+        "IP_rozpiska",
+        "MA_kóty",
+        "OCEL HEB sloupky rez",
+        "PDF3_Solid Fills",
+        "PDF_Tenká",
+        "SM _ Bourání",
+        "SM _ Popisy",
+        "SM _ oplocení",
+        "SMA_rozpiska",
+        "SM_ Návrh šrafa",
+        "SM_Popisy",
+        "SM__02d_tenka další",
+        "SM__05_čerchovaná",
+        "SM__06_dvojčerchovaná",
+        "SM__dveře",
+        "SM_kóty",
+        "Textové bloky",
+        "Vnější zdi",
+        "Z _ KATASTR",
+        "Z _ MERENI",
+        "Z _ POPIS",
+        "_ geometrie",
+        "_ poznamka draft",
+        "km_ hydroizolace",
+        "km__02_tlustá",
+        "km__03_velmi tlustá",
+        "km__netisk",
+        "km__tenká",
+        "km_kóty",
+        "km_rozpiska",
+        "km_tabulka místností",
+        "km_čísla místností",
+        "km_šrafy"
+      ],
+      "insert_blocks_count": 90,
+      "insert_blocks_unique": 21,
+      "insert_blocks_top20": {
+        "PLOT_DREVENY_04": 19,
+        "KR": 8,
+        "řezová značka": 8,
+        "název": 4,
+        "investor": 4,
+        "projektový stupeň": 4,
+        "projektant": 4,
+        "datum": 4,
+        "část": 4,
+        "razítko a podpis": 4,
+        "hlavní projektant": 4,
+        "výškový systém": 4,
+        "severka": 3,
+        "legenda materiálu": 3,
+        "legenda skladeb": 3,
+        "BMW": 2,
+        "BMW_2d": 2,
+        "hlavní vstup": 2,
+        "vstup": 2,
+        "PSR_Prázdný_dveřní_otvor": 1
+      },
+      "dimensions_total": 65,
+      "dimensions_measured": 65,
+      "dimensions_unique_values": [
+        0.0,
+        50.0,
+        50.26,
+        160.0,
+        180.0,
+        230.0,
+        250.0,
+        300.0,
+        435.07,
+        500.0,
+        600.0,
+        615.0,
+        624.99,
+        625.0,
+        758.51,
+        786.38,
+        997.5,
+        1000.0,
+        1500.0,
+        2273.58,
+        2682.14,
+        2736.11,
+        2842.24,
+        3000.0,
+        3085.0,
+        3935.0,
+        4000.0,
+        5848.77,
+        6000.0,
+        6010.94,
+        6350.06,
+        7350.06,
+        7773.58
+      ],
+      "dimensions_by_layer": {
+        "SM_kóty": {
+          "count": 65,
+          "min": 0.0,
+          "max": 7773.58,
+          "sample_sorted": [
+            0.0,
+            50.0,
+            50.26,
+            160.0,
+            180.0,
+            230.0,
+            250.0,
+            300.0,
+            435.07,
+            500.0,
+            600.0,
+            615.0,
+            624.99,
+            625.0,
+            758.51,
+            786.38,
+            997.5,
+            1000.0,
+            1500.0,
+            2273.58
+          ]
+        }
+      },
+      "text_total": 132,
+      "text_by_layer_summary": {
+        "Z _ KATASTR": {
+          "count": 4,
+          "samples": [
+            "1094/16",
+            "1660",
+            "1094/16",
+            "1660"
+          ]
+        },
+        "SM _ Popisy": {
+          "count": 3,
+          "samples": [
+            "9x179,5x250",
+            "9x179,5x250",
+            "9x179,5x250"
+          ]
+        },
+        "km_rozpiska": {
+          "count": 49,
+          "samples": [
+            "číslo výkresu",
+            "měřítko",
+            "1:50",
+            "\\fCentury Gothic|b1|i0|c238|p34;D.1.1.02",
+            "název výkresu"
+          ]
+        },
+        "Z _ MERENI": {
+          "count": 8,
+          "samples": [
+            "zelený travnatý pásmezi pozemky a komunikací",
+            "asfaltová komunikace",
+            "vydlážděná plocha ",
+            "asfaltová komunikace",
+            "odvodnění"
+          ]
+        },
+        "km_kóty": {
+          "count": 20,
+          "samples": [
+            "%%p0,000",
+            "%%p0,000",
+            "-1,615",
+            "-3,230",
+            "-3,230"
+          ]
+        },
+        "km_tabulka místností": {
+          "count": 3,
+          "samples": [
+            "\\pxa0.66667,sm1.07917t8,28,40,48,56;č. m.^Inázev místnosti^Ipodlaha^Istrop^Istěny^Iplocha [m²]\\P\\pa0.25,s*,t8,28;0.01^Isklad zahradní technicky^Ibeton. dlažba^I^I^I^I^I17,60\\P\\P",
+            "\\pxa0.66667,sm1.07917t8,28,40,48,56;č. m.^Inázev místnosti^Ipodlaha^Istrop^Istěny^Iplocha [m²]\\P\\pa0.25,s*,t8,28;1.01^Istání^Ipororošt^I^I^I^I^I^I44,60\\P1.02^Ischodiště^Ibeton^I^I^I^I^I^I5,50\\P",
+            "\\pxa0.66667,sm1.07917t8,28,40,48,56;č. m.^Inázev místnosti^Ipodlaha^Istrop^Istěny^Iplocha [m²]\\P\\pa0.25,s*,t8,28;0.01^Isklad zahradní technicky^Ibeton. dlažba^I^I^I^I^I17,60\\P\\P"
+          ]
+        },
+        "IP_rozpiska": {
+          "count": 3,
+          "samples": [
+            "LEGENDA MÍSTNOSTÍ:",
+            "LEGENDA MÍSTNOSTÍ:",
+            "LEGENDA MÍSTNOSTÍ:"
+          ]
+        },
+        "km_čísla místností": {
+          "count": 24,
+          "samples": [
+            "\\fArial|b1|i0|c238|p38;1.01",
+            "\\pxql;stání",
+            "\\fArial|b1|i0|c238|p38;1.02",
+            "schodiště",
+            "\\fArial|b1|i0|c238|p38;0.01"
+          ]
+        },
+        "SM_Popisy": {
+          "count": 2,
+          "samples": [
+            "2°",
+            "2°"
+          ]
+        },
+        "MA_kóty": {
+          "count": 8,
+          "samples": [
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "\\fCentury Gothic|b1|i0|c238|p34;B"
+          ]
+        },
+        "_ poznamka draft": {
+          "count": 4,
+          "samples": [
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P"
+          ]
+        },
+        "IP_Popisy bubliny": {
+          "count": 4,
+          "samples": [
+            "POZN 01",
+            "7,7%",
+            "7,7%",
+            "POZN 01"
+          ]
+        }
+      },
+      "hatch_total": 147,
+      "hatch_areas_raw_units_squared_by_layer": {
+        "SM_ Návrh šrafa": {
+          "count": 52,
+          "total_raw_sq_units": 85300847.7,
+          "total_assuming_mm_units_m2": 85.3
+        },
+        "km_šrafy": {
+          "count": 13,
+          "total_raw_sq_units": 12157628.3,
+          "total_assuming_mm_units_m2": 12.16
+        }
+      }
+    },
+    "sklad_situace": {
+      "_path": "inputs/vykresy_dxf/260217_sklad/RD Ja_chymov vjezd _ situace 04.dxf",
+      "_label": "sklad_situace",
+      "dxf_version": "AC1024",
+      "units": "0",
+      "entity_counts": {
+        "LINE": 3099,
+        "TEXT": 607,
+        "INSERT": 345,
+        "LWPOLYLINE": 161,
+        "CIRCLE": 90,
+        "MTEXT": 67,
+        "DIMENSION": 12,
+        "HATCH": 6,
+        "IMAGE": 1
+      },
+      "layers_count": 35,
+      "layers": [
+        "0",
+        "Defpoints",
+        "IP_ Návrh šrafa",
+        "Km_koty ZPF",
+        "SM _ Bourání",
+        "SM _ Popisy",
+        "SM _ oplocení",
+        "SM _ výrazná červená",
+        "Z _ BODPOL",
+        "Z _ BOD__SLO",
+        "Z _ KATASTR",
+        "Z _ MERENI",
+        "Z _ POPIS",
+        "Z _ STROM",
+        "Z _ VRSTEV",
+        "Z _ V__KA",
+        "Z _ mapa-KN",
+        "_ geometrie",
+        "_ poznamka draft",
+        "_ značky hranice",
+        "km__ rozhedlové trojuhelniky a doprava",
+        "km__ rozhedlové trojuhelniky a doprava 02",
+        "km__02_tlustá",
+        "km__03_velmi tlustá",
+        "km__netisk",
+        "km_kóty",
+        "km_rozpiska",
+        "sítě_CETIN_stávající_podzemní",
+        "sítě_ELE_návrh",
+        "sítě_ELE_stávající_NN_nadzemní",
+        "sítě_ELE_stávající_NN_podzemní",
+        "sítě_KANALIZACE_dešťová_stav",
+        "sítě_KANALIZACE_splašková_návrh",
+        "sítě_PLYN_stávající",
+        "sítě_VODA_stávající"
+      ],
+      "insert_blocks_count": 345,
+      "insert_blocks_unique": 23,
+      "insert_blocks_top20": {
+        "bod_000": 236,
+        "PLOT_DREVENY_04": 57,
+        "PLOT_DROTENY_04": 8,
+        "hlavní vstup": 3,
+        "projektant": 3,
+        "datum": 3,
+        "část": 3,
+        "název": 3,
+        "investor": 3,
+        "projektový stupeň": 3,
+        "razítko a podpis": 3,
+        "hlavní projektant": 3,
+        "výškový systém": 3,
+        "SVIET__NA_STOZIARI_04": 2,
+        "STOZIAR_DREVENY_04": 2,
+        "BMW_2d": 2,
+        "vstup": 2,
+        "STROM_LISTNATY_05": 1,
+        "STOZIAR_DREVENY_01": 1,
+        "el_sloup": 1
+      },
+      "dimensions_total": 12,
+      "dimensions_measured": 12,
+      "dimensions_unique_values": [
+        0.2,
+        0.39,
+        0.5,
+        0.75,
+        1.0,
+        1.48,
+        2.27,
+        2.35,
+        4.0,
+        6.01,
+        7.77
+      ],
+      "dimensions_by_layer": {
+        "Km_koty ZPF": {
+          "count": 10,
+          "min": 0.2,
+          "max": 7.77,
+          "sample_sorted": [
+            0.2,
+            0.39,
+            0.5,
+            1.0,
+            2.27,
+            2.35,
+            4.0,
+            6.01,
+            7.77
+          ]
+        },
+        "km__ rozhedlové trojuhelniky a doprava 02": {
+          "count": 2,
+          "min": 0.75,
+          "max": 1.48,
+          "sample_sorted": [
+            0.75,
+            1.48
+          ]
+        }
+      },
+      "text_total": 674,
+      "text_by_layer_summary": {
+        "Z _ BOD__SLO": {
+          "count": 232,
+          "samples": [
+            "101",
+            "4",
+            "3",
+            "5",
+            "6"
+          ]
+        },
+        "Z _ V__KA": {
+          "count": 233,
+          "samples": [
+            "66.30",
+            "61.80",
+            "61.80",
+            "61.80",
+            "61.80"
+          ]
+        },
+        "Z _ VRSTEV": {
+          "count": 40,
+          "samples": [
+            "672.00",
+            "662.00",
+            "670.00",
+            "669.50",
+            "669.00"
+          ]
+        },
+        "Z _ KATASTR": {
+          "count": 93,
+          "samples": [
+            "5284/11",
+            "1372",
+            "1855/3",
+            "2201",
+            "1311"
+          ]
+        },
+        "Z _ POPIS": {
+          "count": 9,
+          "samples": [
+            "beton",
+            "asfalt",
+            "zeď",
+            "zeď",
+            "schody"
+          ]
+        },
+        "km_rozpiska": {
+          "count": 56,
+          "samples": [
+            "\\pxa0.25;legenda",
+            "navrhovaný objekt parkovacího stání",
+            "dotčený pozemek",
+            "katastrální mapa",
+            "Ploty"
+          ]
+        },
+        "sítě_ELE_návrh": {
+          "count": 2,
+          "samples": [
+            "EP",
+            "RE"
+          ]
+        },
+        "SM _ Popisy": {
+          "count": 2,
+          "samples": [
+            "9x179,5x250",
+            "9x179,5x250"
+          ]
+        },
+        "km__ rozhedlové trojuhelniky a doprava 02": {
+          "count": 3,
+          "samples": [
+            "Dz=25m pro Vn=40km/h",
+            "osa komunikace",
+            "hrana vozovky"
+          ]
+        },
+        "_ poznamka draft": {
+          "count": 3,
+          "samples": [
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P"
+          ]
+        },
+        "km__ rozhedlové trojuhelniky a doprava": {
+          "count": 1,
+          "samples": [
+            "Dz=35m pro Vn=50km/h"
+          ]
+        }
+      },
+      "hatch_total": 6,
+      "hatch_areas_raw_units_squared_by_layer": {
+        "IP_ Návrh šrafa": {
+          "count": 3,
+          "total_raw_sq_units": 4.5,
+          "total_assuming_mm_units_m2": 0.0
+        },
+        "km__ rozhedlové trojuhelniky a doprava 02": {
+          "count": 2,
+          "total_raw_sq_units": 104.3,
+          "total_assuming_mm_units_m2": 0.0
+        },
+        "km__ rozhedlové trojuhelniky a doprava": {
+          "count": 1,
+          "total_raw_sq_units": 116.7,
+          "total_assuming_mm_units_m2": 0.0
+        }
+      }
+    },
+    "dum_DPZ": {
+      "_path": "inputs/vykresy_dxf/260219_dum/RD Jachymov dum _ DPZ _ 10.dxf",
+      "_label": "dum_DPZ",
+      "dxf_version": "AC1024",
+      "units": "4",
+      "entity_counts": {
+        "LWPOLYLINE": 4162,
+        "MTEXT": 779,
+        "DIMENSION": 686,
+        "INSERT": 535,
+        "LINE": 477,
+        "HATCH": 281,
+        "CIRCLE": 179,
+        "ARC": 55,
+        "LEADER": 26,
+        "TEXT": 15
+      },
+      "layers_count": 53,
+      "layers": [
+        "0",
+        "Defpoints",
+        "IP_Výškové kóty",
+        "IP__netisk",
+        "IP_obrysy místností",
+        "IP_zařizováky",
+        "MA_klempíř",
+        "MA_kóty",
+        "Oblouky a kružnice.2D",
+        "PDF3_Solid Fills",
+        "PDF_Tenká",
+        "SM _ Popisy",
+        "SMA_okna",
+        "SMA_popisy",
+        "SMA_rozpiska",
+        "SMA_šrafy",
+        "SM_ Návrh šrafa",
+        "SM_Popisy",
+        "SM__ klempířina",
+        "SM__02b_tenka okna 1",
+        "SM__02d_tenka další",
+        "SM__02e_tenka schody",
+        "SM__03b_tlustá nosné stěny",
+        "SM__04_čárkovaná",
+        "SM__06_dvojčerchovaná",
+        "SM__Popisy bubliny",
+        "SM__dveře",
+        "SM__návrh_nábytek",
+        "SM_koty nepouzite",
+        "SM_kóty",
+        "SM_kóty bourání",
+        "SM_rozpiska",
+        "Textové bloky",
+        "Vnější zdi",
+        "Zdi.model",
+        "_ geometrie",
+        "_ poznamka draft",
+        "km Obklady",
+        "km_ hydroizolace",
+        "km_R_návrh_ zateplení",
+        "km_R_návrh_tlustá",
+        "km_R_návrh_tlustá 2",
+        "km_R_návrh_velmi tlustá",
+        "km_R_návrh_velmi tlustá 2",
+        "km_R_návrh_šrafa",
+        "km_R_návrh_šrafa 2",
+        "km__netisk",
+        "km_kóty",
+        "km_rozpiska",
+        "km_tabulka místností",
+        "km_čísla místností",
+        "km_šrafy",
+        "stafaz"
+      ],
+      "insert_blocks_count": 535,
+      "insert_blocks_unique": 59,
+      "insert_blocks_top20": {
+        "KR": 103,
+        "řezová značka": 36,
+        "název": 22,
+        "investor": 22,
+        "projektant": 22,
+        "část": 22,
+        "razítko a podpis": 22,
+        "hlavní projektant": 22,
+        "projektový stupeň": 22,
+        "datum": 22,
+        "výškový systém": 22,
+        "poznámka DSP": 22,
+        "legenda stav": 16,
+        "židle_jídelní": 14,
+        "severka": 13,
+        "legenda návrh": 6,
+        "poznámky návrh": 6,
+        "legenda konstrukcí návrh": 6,
+        "legenda skladby": 5,
+        "poznámky_návrh": 5
+      },
+      "dimensions_total": 686,
+      "dimensions_measured": 686,
+      "dimensions_unique_values": [
+        50.0,
+        75.0,
+        90.0,
+        100.0,
+        130.0,
+        130.53,
+        150.0,
+        160.0,
+        200.0,
+        249.99,
+        250.0,
+        280.0,
+        300.0,
+        350.0,
+        360.0,
+        370.0,
+        400.0,
+        405.0,
+        420.0,
+        450.0,
+        460.0,
+        470.0,
+        480.0,
+        485.0,
+        493.33,
+        500.0,
+        540.0,
+        580.0,
+        583.33,
+        600.0,
+        605.0,
+        610.0,
+        620.0,
+        630.0,
+        636.27,
+        650.0,
+        670.0,
+        685.0,
+        698.73,
+        700.0,
+        725.0,
+        745.18,
+        750.0,
+        800.0,
+        810.0,
+        825.0,
+        830.0,
+        836.27,
+        900.0,
+        920.0,
+        925.0,
+        950.0,
+        959.35,
+        960.0,
+        975.0,
+        986.67,
+        1000.0,
+        1010.0,
+        1016.67,
+        1025.0,
+        1035.0,
+        1050.0,
+        1060.0,
+        1075.0,
+        1079.56,
+        1090.0,
+        1120.0,
+        1140.0,
+        1150.0,
+        1160.0,
+        1165.0,
+        1175.0,
+        1185.0,
+        1200.0,
+        1225.0,
+        1240.54,
+        1250.0,
+        1285.0,
+        1300.0,
+        1305.0,
+        1350.0,
+        1375.0,
+        1400.0,
+        1450.0,
+        1480.0,
+        1500.0,
+        1503.18,
+        1550.0,
+        1600.0,
+        1680.0,
+        1700.0,
+        1710.0,
+        1740.0,
+        1750.0,
+        1760.0,
+        1780.0,
+        1785.0,
+        1800.0,
+        1825.0,
+        1865.0,
+        1875.0,
+        1925.0,
+        1960.0,
+        2060.0,
+        2075.0,
+        2100.0,
+        2149.35,
+        2150.0,
+        2280.0,
+        2285.0,
+        2350.0,
+        2435.0,
+        2487.47,
+        2520.0,
+        2525.0,
+        2600.0,
+        2600.54,
+        2620.0,
+        2625.0,
+        2630.0,
+        2630.54,
+        2650.0,
+        2675.0,
+        2675.01,
+        2750.0,
+        2795.0,
+        2840.0,
+        2865.0,
+        2900.0,
+        3125.0,
+        3170.0,
+        3200.0,
+        3250.0,
+        3300.0,
+        3310.0,
+        3320.0,
+        3335.0,
+        3340.0,
+        3370.0,
+        3450.0,
+        3600.0,
+        3675.0,
+        3700.0,
+        3750.0,
+        3900.0,
+        4000.0,
+        4075.0,
+        4100.0,
+        4200.0,
+        4300.0,
+        4325.0,
+        4350.0,
+        4400.0,
+        4500.0,
+        4654.82,
+        4685.83,
+        4810.0,
+        4815.0,
+        4850.0,
+        4865.0,
+        4950.0,
+        4960.0,
+        5250.65,
+        5565.0,
+        5615.0,
+        5750.0,
+        5865.0,
+        5970.0,
+        6350.0,
+        8150.0,
+        9500.0,
+        9600.0,
+        9820.0,
+        9920.0,
+        10030.0,
+        10240.0
+      ],
+      "dimensions_by_layer": {
+        "SM_kóty": {
+          "count": 609,
+          "min": 50.0,
+          "max": 10240.0,
+          "sample_sorted": [
+            50.0,
+            75.0,
+            90.0,
+            100.0,
+            130.0,
+            130.53,
+            150.0,
+            160.0,
+            200.0,
+            249.99,
+            250.0,
+            280.0,
+            300.0,
+            350.0,
+            360.0,
+            370.0,
+            400.0,
+            405.0,
+            420.0,
+            450.0
+          ]
+        },
+        "SM_koty nepouzite": {
+          "count": 63,
+          "min": 130.0,
+          "max": 4300.0,
+          "sample_sorted": [
+            130.0,
+            300.0,
+            460.0,
+            493.33,
+            583.33,
+            600.0,
+            620.0,
+            700.0,
+            750.0,
+            800.0,
+            900.0,
+            920.0,
+            986.67,
+            1000.0,
+            1016.67,
+            1050.0,
+            1120.0,
+            1140.0,
+            1150.0,
+            1160.0
+          ]
+        },
+        "SM_kóty bourání": {
+          "count": 13,
+          "min": 150.0,
+          "max": 4200.0,
+          "sample_sorted": [
+            150.0,
+            350.0,
+            700.0,
+            900.0,
+            1000.0,
+            1700.0,
+            1825.0,
+            2350.0,
+            2750.0,
+            4200.0
+          ]
+        },
+        "_ geometrie": {
+          "count": 1,
+          "min": 1000.0,
+          "max": 1000.0,
+          "sample_sorted": [
+            1000.0
+          ]
+        }
+      },
+      "text_total": 794,
+      "text_by_layer_summary": {
+        "_ poznamka draft": {
+          "count": 1,
+          "samples": [
+            "{\\c11777023;DRAFT}\\P"
+          ]
+        },
+        "km_čísla místností": {
+          "count": 89,
+          "samples": [
+            "\\fArial|b1|i0|c238|p38;1.01",
+            "\\fArial|b1|i0|c238|p38;1.03",
+            "\\fArial|b1|i0|c238|p38;1.02",
+            "\\fArial|b1|i0|c238|p38;1.04",
+            "\\fArial|b1|i0|c238|p38;1.05"
+          ]
+        },
+        "MA_kóty": {
+          "count": 37,
+          "samples": [
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+            "{\\fCentury Gothic|b1|i0|c238|p34;A}"
+          ]
+        },
+        "SM_rozpiska": {
+          "count": 192,
+          "samples": [
+            "číslo výkresu",
+            "měřítko",
+            "1:50",
+            "\\fCentury Gothic|b1|i0|c238|p34;D.1.1.2.1.01",
+            "název výkresu"
+          ]
+        },
+        "km_tabulka místností": {
+          "count": 14,
+          "samples": [
+            "\\pxa0.66667,sm1.07917;č. m.^I^Inázev místnosti^I^Ipodlaha^Istrop^I^I^Istěny^I^I^Iplocha {\\H0.91667x;[\\H1.09091x;m²\\H0.91667x;]}\\P\\pa0.25,s*;{\\fCentury Gothic|b0|i0;1.01^I^Ivstup a chodba^I^I^I^I^I^I^I^I^I^I12,40\\P1.02^I^Ichodba na zahradu\\fCentury Gothic|b0|i0|c238;^I^I^I^I^I^I^I\\fCentury Gothic|b0|i0;^I^I3,60\\P1.03^I^Ikomora^I^I^I^I^I^I^I^I^I^I^I0,70\\P1.04^I^IWC^I^I^I^I^I^I^I^I^I^I^I^I1,50\\P1.05^I^Ikoupelna^I^I^I^I^I^I^I^I^I^I^I4,10\\P1.06^I^I}obývací místnost + kuchyně{\\fCentury Gothic|b0|i0;^I^I^I^I^I^I^I^I24,00\\P1.07^I^Ipokoj^I^I^I^I^I^I^I^I^I^I^I^I9,40\\P1.08^I^Ischodišt\\fCentury Gothic|b0|i0|c238;ě do sklepa^I^I^I^I^I^I^I^I^I3,80\\fCentury Gothic|b0|i0;\\P}\\P\\pa*;{\\fCentury Gothic|b0|i0;celkem^I^I^I^I^I^I^I^I^I^I^I^I^I59,50\\P}\\P\\fCentury Gothic|b0|i0;\\P\\pxa0.66667,sm1.07917;",
+            "\\pxa0.66667,sm1.07917;č. m.^I^Inázev místnosti^I^Ipodlaha^Istrop^I^I^Istěny^I^I^Iplocha {\\H0.91667x;[\\H1.09091x;m²\\H0.91667x;]}\\P\\pa0.25,s*;{\\fCentury Gothic|b0|i0;3.01^I^Ischodišt\\fCentury Gothic|b0|i0|c238;ě^I\\fCentury Gothic|b0|i0;^I^I^I^I^I^I^I^I^I^I7,50\\P3.02^I^Ip\\fCentury Gothic|b0|i0|c238;ůdní prostor^I^I^I^I^I^I\\fCentury Gothic|b0|i0;^I^I^I^I57,40\\P}\\P\\pa*;{\\fCentury Gothic|b0|i0;celkem^I^I^I^I^I^I^I^I^I^I^I^I^I64,90\\P}\\P\\fCentury Gothic|b0|i0;\\P\\pxa0.66667,sm1.07917;",
+            "\\pxa0.66667,sm1.07917;č. m.^I^Inázev místnosti^I^Ipodlaha^Istrop^I^I^Istěny^I^I^Iplocha {\\H0.91667x;[\\H1.09091x;m²\\H0.91667x;]}\\P\\pa0.25,s*;{\\fCentury Gothic|b0|i0;0.01^I^Ischodišt\\fCentury Gothic|b0|i0|c238;ě\\fCentury Gothic|b0|i0;^I^I^I^I^I^I^I^I^I^I^I3,50\\P0.02^I^Ichodba\\fCentury Gothic|b0|i0|c238;^I^I^I^I^I^I^I\\fCentury Gothic|b0|i0;^I^I^I^I4,40\\P0.03^I^Isklep 1^I^I^I^I^I^I^I^I^I^I^I22,20\\P0.04^I^Isklep 2^I^I^I^I^I^I^I^I^I^I^I2,30\\P}\\P\\pa*;{\\fCentury Gothic|b0|i0;celkem^I^I^I^I^I^I^I^I^I^I^I^I^I32,40\\P}\\P\\fCentury Gothic|b0|i0;\\P\\pxa0.66667,sm1.07917;",
+            "\\pxa0.66667,sm1.07917;č. m.^I^Inázev místnosti^I^Ipodlaha^Istrop^I^I^Istěny^I^I^Iplocha {\\H0.91667x;[\\H1.09091x;m²\\H0.91667x;]}\\P\\pa0.25,s*;{\\fCentury Gothic|b0|i0;1.01^I^Ivstup a chodba^I^I^I^I^I^I^I^I^I^I12,4\\P1.02^I^Ichodba na zahradu\\fCentury Gothic|b0|i0|c238;^I^I^I^I^I^I^I\\fCentury Gothic|b0|i0;^I^I3,6\\P1.03^I^Ikomora^I^I^I^I^I^I^I^I^I^I^I0,70\\P1.04^I^IWC^I^I^I^I^I^I^I^I^I^I^I^I1,5\\P1.05^I^Ikoupelna^I^I^I^I^I^I^I^I^I^I^I4,10\\P1.06^I^I}obývací místnost + kuchyně{\\fCentury Gothic|b0|i0;^I^I^I^I^I^I^I^I24,00\\P1.07^I^Ipokoj^I^I^I^I^I^I^I^I^I^I^I^I9,40\\P1.08^I^Ischodišt\\fCentury Gothic|b0|i0|c238;ě do sklepa^I^I^I^I^I^I^I^I^I3,80\\fCentury Gothic|b0|i0;\\P}\\P\\pa*;{\\fCentury Gothic|b0|i0;celkem^I^I^I^I^I^I^I^I^I^I^I^I^I59,40\\P}\\P\\fCentury Gothic|b0|i0;\\P\\pxa0.66667,sm1.07917;",
+            "\\pxa0.66667,sm1.07917;č. m.^I^Inázev místnosti^I^Ipodlaha^Istrop^I^I^Istěny^I^I^Iplocha {\\H0.91667x;[\\H1.09091x;m²\\H0.91667x;]}\\P\\pa0.25,s*;{\\fCentury Gothic|b0|i0;1.01^I^Ivstup a chodba^I^I^I^I^I^I^I^I^I^I12,4\\P1.02^I^Ichodba na zahradu\\fCentury Gothic|b0|i0|c238;^I^I^I^I^I^I^I\\fCentury Gothic|b0|i0;^I^I3,6\\P1.03^I^Ikomora^I^I^I^I^I^I^I^I^I^I^I0,70\\P1.04^I^IWC^I^I^I^I^I^I^I^I^I^I^I^I1,5\\P1.05^I^Ikoupelna^I^I^I^I^I^I^I^I^I^I^I4,10\\P1.06^I^I}obývací místnost + kuchyně{\\fCentury Gothic|b0|i0;^I^I^I^I^I^I^I^I24,00\\P1.07^I^Ipokoj^I^I^I^I^I^I^I^I^I^I^I^I9,40\\P1.08^I^Ischodišt\\fCentury Gothic|b0|i0|c238;ě do sklepa^I^I^I^I^I^I^I^I^I3,80\\fCentury Gothic|b0|i0;\\P}\\P\\pa*;{\\fCentury Gothic|b0|i0;celkem^I^I^I^I^I^I^I^I^I^I^I^I^I59,50\\P}\\P\\fCentury Gothic|b0|i0;\\P\\pxa0.66667,sm1.07917;"
+          ]
+        },
+        "SM_Popisy": {
+          "count": 62,
+          "samples": [
+            "\\pxql;\\fCentury Gothic|b0|i0;20x160x300",
+            "\\pxql;\\fCentury Gothic|b0|i0;20x160x300",
+            "\\pxql;\\fCentury Gothic|b0|i0;15x163,3x250",
+            "\\pxql;\\fCentury Gothic|b0|i0;1",
+            "\\pxql;\\fCentury Gothic|b0|i0;9"
+          ]
+        },
+        "SM__Popisy bubliny": {
+          "count": 92,
+          "samples": [
+            "POZN.1.02",
+            "POZN 1.1",
+            "POZN 1.1",
+            "POZN.1.01",
+            "POZN 1.1"
+          ]
+        },
+        "km_kóty": {
+          "count": 94,
+          "samples": [
+            "-0,200",
+            "\\fCentury Gothic|b0|i0;%%p0,000",
+            "\\fCentury Gothic|b0|i0;-0,170",
+            "\\fCentury Gothic|b0|i0;-1,075",
+            "\\fCentury Gothic|b0|i0;-0,800"
+          ]
+        },
+        "km_R_návrh_šrafa": {
+          "count": 15,
+          "samples": [
+            "PRAČKA",
+            "SUŠIČKA",
+            "KRB",
+            "OSTRŮVEK",
+            "DŘEVNÍK"
+          ]
+        },
+        "SMA_popisy": {
+          "count": 151,
+          "samples": [
+            "\\fCentury Gothic|b0|i0|c238;ŘEZ A-A",
+            "\\fCentury Gothic|b0|i0|c238;ŘEZ B-B",
+            "{\\H0.91667x;A}",
+            "\\H0.91667x;B",
+            "\\H0.91667x;B"
+          ]
+        },
+        "SM_koty nepouzite": {
+          "count": 28,
+          "samples": [
+            "\\pxql;\\fCentury Gothic|b0|i0;3.NP",
+            "\\pxql;\\fCentury Gothic|b0|i0;2.NP",
+            "\\pxql;\\fCentury Gothic|b0|i0;1.NP",
+            "\\pxql;\\fCentury Gothic|b0|i0;1.PP",
+            "\\pxql;\\fCentury Gothic|b0|i0;1180/660"
+          ]
+        },
+        "km_R_návrh_ zateplení": {
+          "count": 3,
+          "samples": [
+            "\\pxql;\\fCentury Gothic|b0|i0;8x175x280",
+            "\\pxql;\\fCentury Gothic|b0|i0;5x176x280",
+            "\\pxql;\\fCentury Gothic|b0|i0;8x175x280"
+          ]
+        },
+        "SM _ Popisy": {
+          "count": 4,
+          "samples": [
+            "Bourání stávajících opěrných stěn dvora",
+            "skladba přiléhající vozovky",
+            "skladba přiléhající vozovky",
+            "skladba přiléhající vozovky"
+          ]
+        },
+        "km_R_návrh_tlustá": {
+          "count": 3,
+          "samples": [
+            "\\fCentury Gothic|b1|i0|c238|p34;S06",
+            "\\fCentury Gothic|b1|i0|c238|p34;S06",
+            "\\fCentury Gothic|b1|i0|c238|p34;S06"
+          ]
+        },
+        "km_šrafy": {
+          "count": 9,
+          "samples": [
+            "\\pi-150,l150,xt1;\\fCentury Gothic|b0|i0|c238;ocelové schodiště s dřevěnými stupni^I^I^I^I^I",
+            "\\pi-150,l150,xt1;\\fCentury Gothic|b0|i0|c238;betonová dlažba anglického dvorku^I^I^I^I",
+            "\\pi-150,l150,xt1;\\fCentury Gothic|b0|i0|c238;opěrná zeď zahrady / terasy^I^I^I",
+            "\\pi-150,l150,xt1;\\fCentury Gothic|b0|i0|c238;drenáž s odkapem do anglického dvorku^I^I^I",
+            "\\pi-150,l150,xt1;\\fCentury Gothic|b0|i0|c238;opěrná zeď zahrady / terasy^I^I^I"
+          ]
+        }
+      },
+      "hatch_total": 281,
+      "hatch_areas_raw_units_squared_by_layer": {
+        "km_šrafy": {
+          "count": 62,
+          "total_raw_sq_units": 313675873.3,
+          "total_assuming_mm_units_m2": 313.68
+        },
+        "SM_ Návrh šrafa": {
+          "count": 10,
+          "total_raw_sq_units": 188579252.1,
+          "total_assuming_mm_units_m2": 188.58
+        },
+        "km_R_návrh_šrafa 2": {
+          "count": 41,
+          "total_raw_sq_units": 131758980.3,
+          "total_assuming_mm_units_m2": 131.76
+        },
+        "km_R_návrh_šrafa": {
+          "count": 86,
+          "total_raw_sq_units": 302242120.7,
+          "total_assuming_mm_units_m2": 302.24
+        }
+      }
+    },
+    "dum_situace": {
+      "_path": "inputs/vykresy_dxf/260219_dum/RD Jachymov dum _ situace 02.dxf",
+      "_label": "dum_situace",
+      "dxf_version": "AC1024",
+      "units": "0",
+      "entity_counts": {
+        "LINE": 3079,
+        "TEXT": 591,
+        "INSERT": 336,
+        "LWPOLYLINE": 164,
+        "CIRCLE": 90,
+        "MTEXT": 77,
+        "DIMENSION": 22,
+        "HATCH": 8,
+        "ARC": 4,
+        "IMAGE": 1
+      },
+      "layers_count": 43,
+      "layers": [
+        "0",
+        "Defpoints",
+        "IP_ Návrh šrafa",
+        "Km_koty ZPF",
+        "Obrysy situace další",
+        "SM _ Bourání",
+        "SM _ Popisy",
+        "SM _ oplocení",
+        "SM _ výrazná červená",
+        "SM_sit srafa",
+        "Z _ BODPOL",
+        "Z _ BOD__SLO",
+        "Z _ KATASTR",
+        "Z _ MERENI",
+        "Z _ POPIS",
+        "Z _ STROM",
+        "Z _ VRSTEV",
+        "Z _ V__KA",
+        "Z _ mapa-KN",
+        "_ geometrie",
+        "_ poznamka draft",
+        "_ značky hranice",
+        "_Popis",
+        "km_R_návrh_ zateplení",
+        "km_R_návrh_tlustá",
+        "km__ rozhedlové trojuhelniky a doprava",
+        "km__ rozhedlové trojuhelniky a doprava 02",
+        "km__02_tlustá",
+        "km__netisk",
+        "km_kóty",
+        "km_požárně nebezpečný prostor",
+        "km_rozpiska",
+        "pbs odstupy",
+        "sítě_CETIN_stávající_podzemní",
+        "sítě_ELE_návrh",
+        "sítě_ELE_stávající_NN_podzemní",
+        "sítě_KANALIZACE_dešťová_návrh",
+        "sítě_KANALIZACE_dešťová_stav",
+        "sítě_KANALIZACE_splašková_návrh",
+        "sítě_KANALIZACE_splašková_stav",
+        "sítě_PLYN_stávající",
+        "sítě_VODA_návrh",
+        "sítě_VODA_stávající"
+      ],
+      "insert_blocks_count": 336,
+      "insert_blocks_unique": 25,
+      "insert_blocks_top20": {
+        "bod_000": 225,
+        "PLOT_DREVENY_04": 57,
+        "PLOT_DROTENY_04": 8,
+        "hlavní vstup": 3,
+        "projektant": 3,
+        "datum": 3,
+        "část": 3,
+        "název": 3,
+        "investor": 3,
+        "projektový stupeň": 3,
+        "razítko a podpis": 3,
+        "hlavní projektant": 3,
+        "výškový systém": 3,
+        "SVIET__NA_STOZIARI_04": 2,
+        "STOZIAR_DREVENY_04": 2,
+        "BMW_2d": 2,
+        "vstup": 2,
+        "STROM_LISTNATY_05": 1,
+        "STOZIAR_DREVENY_01": 1,
+        "vo_soupe": 1
+      },
+      "dimensions_total": 22,
+      "dimensions_measured": 22,
+      "dimensions_unique_values": [
+        0.2,
+        0.39,
+        0.5,
+        0.75,
+        1.0,
+        1.48,
+        2.27,
+        2.35,
+        4.0,
+        6.01,
+        7.77
+      ],
+      "dimensions_by_layer": {
+        "Km_koty ZPF": {
+          "count": 20,
+          "min": 0.2,
+          "max": 7.77,
+          "sample_sorted": [
+            0.2,
+            0.39,
+            0.5,
+            1.0,
+            2.27,
+            2.35,
+            4.0,
+            6.01,
+            7.77
+          ]
+        },
+        "km__ rozhedlové trojuhelniky a doprava 02": {
+          "count": 2,
+          "min": 0.75,
+          "max": 1.48,
+          "sample_sorted": [
+            0.75,
+            1.48
+          ]
+        }
+      },
+      "text_total": 668,
+      "text_by_layer_summary": {
+        "Z _ BOD__SLO": {
+          "count": 232,
+          "samples": [
+            "101",
+            "4",
+            "3",
+            "5",
+            "6"
+          ]
+        },
+        "Z _ V__KA": {
+          "count": 221,
+          "samples": [
+            "66.30",
+            "61.80",
+            "61.80",
+            "61.80",
+            "61.80"
+          ]
+        },
+        "Z _ VRSTEV": {
+          "count": 40,
+          "samples": [
+            "672.00",
+            "662.00",
+            "670.00",
+            "669.50",
+            "669.00"
+          ]
+        },
+        "Z _ KATASTR": {
+          "count": 93,
+          "samples": [
+            "5284/11",
+            "1372",
+            "1855/3",
+            "2201",
+            "1311"
+          ]
+        },
+        "Z _ POPIS": {
+          "count": 5,
+          "samples": [
+            "asfalt",
+            "schody",
+            "schody",
+            "zeď",
+            "zeď"
+          ]
+        },
+        "km_rozpiska": {
+          "count": 61,
+          "samples": [
+            "\\pxa0.25;legenda",
+            "dotčený pozemek",
+            "katastrální mapa",
+            "Ploty",
+            "vstup / vjezd"
+          ]
+        },
+        "km__ rozhedlové trojuhelniky a doprava 02": {
+          "count": 3,
+          "samples": [
+            "Dz=25m pro Vn=40km/h",
+            "osa komunikace",
+            "hrana vozovky"
+          ]
+        },
+        "_ poznamka draft": {
+          "count": 3,
+          "samples": [
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P",
+            "{\\c11777023;DRAFT}\\P"
+          ]
+        },
+        "km__ rozhedlové trojuhelniky a doprava": {
+          "count": 1,
+          "samples": [
+            "Dz=35m pro Vn=50km/h"
+          ]
+        },
+        "_Popis": {
+          "count": 1,
+          "samples": [
+            "\\fArial|b1|i0|c238|p34;\\W1;\\A1;SOUHLASÍM SE STAVEBNÍM ZÁMĚREM \\P\\Pna pozemku parc. č. 1094/16 a 1022 v k.ú. Jáchymov [656437]]\\P\\fArial|b0|i0|c238|p34;\\PJméno:^I^I................................................\\P{\\H0.2909090909x; }\\PPříjmení:^I^I................................................\\P{\\H0.2909090909x; }\\PDatum narození:^I................................................\\P\\P\\PPodpis:^I^I................................................"
+          ]
+        },
+        "sítě_ELE_návrh": {
+          "count": 3,
+          "samples": [
+            "EP",
+            "RE",
+            "PS"
+          ]
+        },
+        "sítě_KANALIZACE_dešťová_návrh": {
+          "count": 2,
+          "samples": [
+            "AK",
+            "Š"
+          ]
+        },
+        "sítě_KANALIZACE_splašková_návrh": {
+          "count": 2,
+          "samples": [
+            "AK",
+            "Š"
+          ]
+        },
+        "sítě_VODA_návrh": {
+          "count": 1,
+          "samples": [
+            "VŠ"
+          ]
+        }
+      },
+      "hatch_total": 8,
+      "hatch_areas_raw_units_squared_by_layer": {
+        "IP_ Návrh šrafa": {
+          "count": 1,
+          "total_raw_sq_units": 1.5,
+          "total_assuming_mm_units_m2": 0.0
+        },
+        "km__ rozhedlové trojuhelniky a doprava 02": {
+          "count": 2,
+          "total_raw_sq_units": 104.3,
+          "total_assuming_mm_units_m2": 0.0
+        },
+        "km__ rozhedlové trojuhelniky a doprava": {
+          "count": 1,
+          "total_raw_sq_units": 116.7,
+          "total_assuming_mm_units_m2": 0.0
+        },
+        "SM_sit srafa": {
+          "count": 4,
+          "total_raw_sq_units": 83.3,
+          "total_assuming_mm_units_m2": 0.0
+        }
+      }
+    }
+  }
+}

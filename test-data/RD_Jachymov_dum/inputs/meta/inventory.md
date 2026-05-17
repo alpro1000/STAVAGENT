@@ -3,6 +3,7 @@
 **Datum prvotního auditu:** 2026-05-16
 **Datum UNSORTED auditu:** 2026-05-16 (Phase 0b §3.1, branch `claude/rd-jachymov-phase-0b-foundation`)
 **Datum re-parse:** 2026-05-16 (Phase 0b §3.2 — `tools/phase0b_validator.py`, 67/69 = 97.1 % verified, 0 drifts, gate OPEN)
+**Datum DXF parse:** 2026-05-16 (Phase 0b §3.3 — `tools/phase0b_dxf_extractor.py`, 4/4 DXF parsed OK, vyjasnění #18 partially_resolved)
 **Sběr:** Email cesta Volný → Jiří Šmíd → Karel Šmíd → Alexander; OneDrive linky 2× (sklad+parking + dům)
 **Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). Phase 0b §3.1 + §3.2 dokončeny.
 
@@ -189,3 +190,39 @@ Per §3.6: pokud silent_drifts > 5 → STOP před Phase 1. Po opravě file-swap 
 ### 6.3 New findings z re-parse
 
 - **25 unique ČSN references** napříč 6 TZ (`ČSN 06`, `ČSN 33`, `ČSN 73`, `ČSN EN 1090-1/2`, `ČSN EN 1990`, `ČSN EN 1991-1`, `ČSN EN 1992-1`, `ČSN EN 1993-1`, `ČSN EN 1995-1`, `ČSN EN 1996-1/2`, `ČSN EN 1997-1`, `ČSN EN 1999-1`, `ČSN EN 206`, `ČSN EN 13670`, `ČSN EN 1443`, `ČSN EN 14604`, `ČSN EN 1922-1`, `ČSN EN ISO 5817`, `ČSN EN ISO 12944`, `ČSN 732604`, `ČSN 732810`). Použít pro normy traceability v Phase 1 audit_trail.
+
+## 7. Phase 0b §3.3 — DXF independent parse (2026-05-16)
+
+**Tool:** `tools/phase0b_dxf_extractor.py` (ezdxf 1.4.4 — INSERT block counts, DIMENSION extraction, MTEXT/TEXT per layer, HATCH polygonal areas).
+
+**Vstup:** 4 DXF (sklad DPZ + sklad situace + dum DPZ + dum situace), všechny AutoCAD 2010 (AC1024). Žádný `_blocked_old_format`.
+
+**Výstup:** `outputs/dxf_extract_report.json` (~39 KB).
+
+### 7.1 Per-file přehled
+
+| DXF | Entities | Layers | INSERTs (unique) | DIMENSIONs | HATCHes | Σ HATCH plochy (m² za předpokladu mm units) |
+|---|--:|--:|--:|--:|--:|--:|
+| sklad_DPZ | 1 029 | 39 | 90 (21) | 65 | 147 | 97,5 |
+| sklad_situace | 4 388 | 35 | 345 (23) | 12 | 6 | 0,0 (drobné survey polygony) |
+| dum_DPZ | 7 195 | 53 | 535 (59) | 686 | 281 | 936,3 |
+| dum_situace | 4 372 | 43 | 336 (25) | 22 | 8 | 0,0 (jen kontury) |
+
+### 7.2 Vyjasnění #18 (sklad geometrie) — partially_resolved
+
+| Cíl | Status | Důkaz |
+|---|---|---|
+| 6,35 m sklad šířka | ✅ RESOLVED | `6350,06 mm` v sklad_DPZ + `6350,0 mm` v dum_DPZ (DIMENSION objekty, confidence 0,95) |
+| 3,34 m sklad hloubka | ✅ RESOLVED | `3340,0 mm` exactly v dum_DPZ (sklad zobrazený adjacentně k objektu domu) |
+| 7,0 m parking délka | ✗ NOT FOUND | žádný DIMENSION objekt v 4 DXF v rozmezí ±50 mm; bude třeba derivovat z LWPOLYLINE extents v Phase 1 nebo akceptovat TZ value s conf 0,75 |
+| (alt) 3,085 m interior | ✅ corroborating | `3085,0 mm` v sklad_DPZ — odpovídá interior dim = 3340 − 2×127,5 wall thickness |
+
+### 7.3 Top INSERT bloky napříč všemi DXFs (Phase 1 hint)
+
+| Block name | Count | Význam |
+|---|--:|---|
+| `bod_000` | 461 | Geodetický bod (zaměření) — sklad_situace + dum_situace |
+| `PLOT_DREVENY_04` | 133 | Šrafa dřevěné plochy (krov, podlaha terasa) — užitečné pro Phase 1 derivaci m² dřeva |
+| `KR` | 111 | Krokve (sklad DPZ + dum DPZ) — počet krokví derivovatelný |
+| `řezová značka`, `název`, `investor`, `projektant`, `datum`, `část`, `razítko`, atd. | 32 × ~8 = ~256 | Standard razítka výkresů (vyfiltrovat při Phase 1 INSERT analytice) |
+| `severka` | 16 | Standardní orientační značka — vyfiltrovat |
