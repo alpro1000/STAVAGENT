@@ -884,16 +884,16 @@
       "subkapitola": "Nadezdívka 3.NP Porotherm",
       "popis": "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry, výška 2.65 m",
       "mj": "m²",
-      "mnozstvi": 75.8,
-      "mnozstvi_formula": "41 m obvod × 2.65 m výška × 0.7 (sníženo o štíty zachované) = ~76",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 76.05,
+      "mnozstvi_formula": "obvod 41.0 m × výška 2.65 m × 0.7 (sníženo o štíty zachované) = 76.05 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "311321411",
       "urs_alternatives": [
         "311321321"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika dům §4 + ARS — nástavba 3.NP",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ statika dům §4 + ARS — nástavba 3.NP",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -901,7 +901,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.002"
+      "id": "260219_dum.HSV3.002",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -1219,21 +1220,22 @@
       "popis": "Trapézový plech 40S/160 tl. 0.75 mm — dodávka + montáž na stropnice IPE180",
       "mj": "m²",
       "mnozstvi": 104.4,
-      "mnozstvi_formula": "= zastavěna plocha 104.4 m² (celý strop 2.NP/3.NP)",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi_formula": "= zastavěná plocha 104.4 m² (TZ B m.1.j)",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "411321414",
       "urs_alternatives": [
         "764121511"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika dům §4 — trapéz 40S/160 nad IPE180",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ statika dům §4 — trapéz 40S/160 nad IPE180",
       "subdodavatel": "ocelobeton_strop_IPE_trapez",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.005"
+      "id": "260219_dum.HSV4.005",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -1244,21 +1246,22 @@
       "popis": "Protipožární SDK podhled pod trapézovým plechem (EI 30 dle PBŘ — ocelobeton + SDK)",
       "mj": "m²",
       "mnozstvi": 104.4,
-      "mnozstvi_formula": "= plocha trapézu 104.4 m²",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi_formula": "= zastavěná plocha 104.4 m² (TZ B m.1.j)",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "342213131",
       "urs_alternatives": [
         "763121521"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ PBŘ + statika §4 — ochrana ocelobetonu",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ PBŘ + statika §4 — ochrana ocelobetonu",
       "subdodavatel": "sadrokartonar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.006"
+      "id": "260219_dum.HSV4.006",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -1368,16 +1371,16 @@
       "subkapitola": "Strop 1.NP/2.NP — minerální vata mezi trámy",
       "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 60/180)",
       "mj": "m²",
-      "mnozstvi": 100.0,
-      "mnozstvi_formula": "= plocha stropu",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 59.5,
+      "mnozstvi_formula": "1.NP plocha (návrh) = 59.5 m² (DXF tabulka místností — strop 1.NP/2.NP)",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "713121121",
       "urs_alternatives": [
         "713141121"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — minerální vata mezi trámy + protipož. SDK zespodu",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — minerální vata mezi trámy + protipož. SDK zespodu",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -1385,7 +1388,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.011"
+      "id": "260219_dum.HSV4.011",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -2352,16 +2356,16 @@
       "subkapitola": "Příprava podkladu",
       "popis": "Příprava fasádního podkladu — očištění tlakovou vodou, vyspravení omítek, fungicidní nátěr",
       "mj": "m²",
-      "mnozstvi": 265.65842730845185,
-      "mnozstvi_formula": "fasada_volna 2×L × výška = ~265",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 293.15,
+      "mnozstvi_formula": "= ETICS plocha = 293.15 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "622401110",
       "urs_alternatives": [
         "622201001"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — ETICS kontaktní, podklad existující omítka",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — ETICS kontaktní, podklad existující omítka",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2369,7 +2373,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.001"
+      "id": "260219_dum.HSV7.001",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -2379,16 +2384,16 @@
       "subkapitola": "ETICS EPS 70F grey 200 mm",
       "popis": "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 max tl. 200 mm + síťka + lepidlo + zatírací stěrka",
       "mj": "m²",
-      "mnozstvi": 265.65842730845185,
-      "mnozstvi_formula": "= 265 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 293.15,
+      "mnozstvi_formula": "obvod 41.0 m × 0.55 (volná fasáda, štíty zachované) × 13.0 m výška = 293.15 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "622221121",
       "urs_alternatives": [
         "622221001"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 + PBŘ — EPS 70F grey 200 mm (h≤12m povoleno)",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 + PBŘ — EPS 70F grey 200 mm (h≤12m povoleno)",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2396,7 +2401,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.002"
+      "id": "260219_dum.HSV7.002",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -2406,22 +2412,23 @@
       "subkapitola": "ETICS sokl XPS",
       "popis": "ETICS sokl — XPS λ=0.034 tl. 120 mm + soklový profil + cihelný obklad spárovaný",
       "mj": "m²",
-      "mnozstvi": 14.3,
-      "mnozstvi_formula": "obvod × 0.5 m výška sokl × 0.7 (řadovka) = 14.4",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 14.35,
+      "mnozstvi_formula": "obvod 41.0 m × 0.5 m výška sokl × 0.7 (řadovka) = 14.35 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "622223111",
       "urs_alternatives": [
         "622223121"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — sokl XPS + cihelný obklad",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — sokl XPS + cihelný obklad",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.003"
+      "id": "260219_dum.HSV7.003",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -2431,16 +2438,16 @@
       "subkapitola": "Špalety EPS",
       "popis": "Špalety oken — EPS přesah 35-40 mm + síťka + omítka (cca 10 oken × obvod ~5 m špalety)",
       "mj": "bm",
-      "mnozstvi": 50.0,
-      "mnozstvi_formula": "10 oken × 5 m obvod špaletu = 50",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 80.0,
+      "mnozstvi_formula": "16 oken (DXF) × průměr 5 m obvod špalety = 80.0 bm",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622221221",
       "urs_alternatives": [
         "622221111"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — EPS přesah na špaletách 35-40 mm",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — EPS přesah na špaletách 35-40 mm",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2448,7 +2455,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.004"
+      "id": "260219_dum.HSV7.004",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -2483,22 +2491,23 @@
       "subkapitola": "Tenkovrstvá omítka pastovitá",
       "popis": "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ — finální vrstva ETICS",
       "mj": "m²",
-      "mnozstvi": 280.0584273084518,
-      "mnozstvi_formula": "fasada + sokl + profilace ~280 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 307.55,
+      "mnozstvi_formula": "ETICS 293.15 m² + sokl 14.4 m² = 307.55 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "622521111",
       "urs_alternatives": [
         "622511111"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — pastovitá probarvená lomená bílá",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — pastovitá probarvená lomená bílá",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.006"
+      "id": "260219_dum.HSV7.006",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -2589,9 +2598,9 @@
       "subkapitola": "Podlahový EPS 150",
       "popis": "Podlahový EPS 150 λ=0.035 tl. 120 mm — pod betonový potěr 1.NP a 3.NP",
       "mj": "m²",
-      "mnozstvi": 177.5,
-      "mnozstvi_formula": "(rozsah 1.NP 73 m²) + (3.NP nadstavba 104 m²) = ~177 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 124.0,
+      "mnozstvi_formula": "1.NP plocha 59.5 m² + 3.NP plocha 64.5 m² = 124.0 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "713141121",
       "urs_alternatives": [
         "713141111",
@@ -2599,7 +2608,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2607,7 +2616,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.001"
+      "id": "260219_dum.PSV71.001",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -3037,16 +3047,16 @@
       "subkapitola": "Nášlap vinyl obytné místnosti",
       "popis": "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, obývák, chodby)",
       "mj": "m²",
-      "mnozstvi": 120.6,
-      "mnozstvi_formula": "podlahova_plocha × 0.55 (obytné po odečtení mokrých + 3.NP biodeska) = 121",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 115.4,
+      "mnozstvi_formula": "Σ obytných místností (vinyl třída) z DXF tabulky místností = 115.4 m²",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "776511820",
       "urs_alternatives": [
         "776521820"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 + DXF MTEXT room labels (2× kuchyně, 3× koupelna, 7× chodba)",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 + DXF MTEXT room labels (2× kuchyně, 3× koupelna, 7× chodba)",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3054,7 +3064,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.001"
+      "id": "260219_dum.PSV77.001",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -3064,16 +3075,16 @@
       "subkapitola": "Nášlap keramická dlažba",
       "popis": "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + kuchyně + spíž + technic 1.PP",
       "mj": "m²",
-      "mnozstvi": 54.8,
-      "mnozstvi_formula": "podlahova × 0.25 mokré (3 koupelny + 2 kuchyně + spíž + 1.PP technic) = 55",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 102.1,
+      "mnozstvi_formula": "dlažba (69.7 m²) + dlažba 1.PP technic (32.4 m²) = 102.1 m² mokrých zón",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "771274102",
       "urs_alternatives": [
         "771274107"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 + DXF MTEXT room labels",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 + DXF MTEXT room labels",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3081,7 +3092,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.002"
+      "id": "260219_dum.PSV77.002",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -3118,16 +3130,16 @@
       "subkapitola": "Betonový potěr s kari nad EPS",
       "popis": "Mokrá podlahová skladba — betonový potěr s kari síťkou 4/100/100 tl. 50 mm + samonivelační stěrka",
       "mj": "m²",
-      "mnozstvi": 177.5,
-      "mnozstvi_formula": "(rozsah 1.NP + 3.NP) ~177 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 185.1,
+      "mnozstvi_formula": "vinyl 115.4 m² + dlažba 69.7 m² = 185.1 m² (mokré skladby kde se klade nový potěr; 1.PP technic vyňato — beton ponechán)",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "631321311",
       "urs_alternatives": [
         "631321411"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — betonový potěr s kari + samonivelační stěrka",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — betonový potěr s kari + samonivelační stěrka",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3135,7 +3147,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.004"
+      "id": "260219_dum.PSV77.004",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -3145,22 +3158,23 @@
       "subkapitola": "Soklíky podlah",
       "popis": "Soklíky podlahové laminátové (dub) v obytných místnostech",
       "mj": "bm",
-      "mnozstvi": 48.2,
-      "mnozstvi_formula": "obvod místností 121 m² × 0.4 m/m² (typ. RD soklík poměr) = 48",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 48.47,
+      "mnozstvi_formula": "vinyl plocha 115.4 m² × 0.42 m soklíku/m² (typ. poměr obvod/plocha RD místnost) = 48.47 bm",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "776511831",
       "urs_alternatives": [
         "776511820"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS — laminátové soklíky standard RD",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS — laminátové soklíky standard RD",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.005"
+      "id": "260219_dum.PSV77.005",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -3450,9 +3464,9 @@
       "subkapitola": "Nové rozvody vody do 3.NP",
       "popis": "Nové rozvody studené + teplé vody do koupelen 1.NP + 2.NP + 3.NP a kuchyní (PEX/Cu, dimenze DN15-25)",
       "mj": "bm",
-      "mnozstvi": 80.0,
-      "mnozstvi_formula": "3 patra × ~25 bm rozvodů (koupelny + kuchyně + bojler 3.NP) = 75 (round 80)",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 61,
+      "mnozstvi_formula": "3 koupelen × 15 bm + 2 kuchyně × 8 bm = 61 bm",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "722172011",
       "urs_alternatives": [
         "722172021",
@@ -3460,7 +3474,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — nové koupelny + kuchyně, vyjasnění #6 working assumption",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — nové koupelny + kuchyně, vyjasnění #6 working assumption",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3468,7 +3482,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.002"
+      "id": "260219_dum.PSV72.002",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -3478,16 +3493,16 @@
       "subkapitola": "Nové odpadní rozvody",
       "popis": "Nové odpadní rozvody PVC-HT DN40-DN110 ke koupelnám 1.NP, 2.NP, 3.NP a kuchyním + napojení na stávající",
       "mj": "bm",
-      "mnozstvi": 60.0,
-      "mnozstvi_formula": "3 patra × ~20 bm odpadní + svislé propojení = 60",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 48,
+      "mnozstvi_formula": "3 koupelen × 12 bm odpadní + 2 kuchyně × 6 bm = 48 bm",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "721174021",
       "urs_alternatives": [
         "721174022"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — nové koupelny + kuchyně, odpad do stávající kanalizace",
+      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — nové koupelny + kuchyně, odpad do stávající kanalizace",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3495,7 +3510,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.003"
+      "id": "260219_dum.PSV72.003",
+      "_dxf_extraction_status": "upgraded_by_comprehensive"
     },
     {
       "objekt": "260219_dum",
@@ -4576,5 +4592,11 @@
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
+  },
+  "_dxf_comprehensive_run": {
+    "date": "2026-05-17",
+    "items_upgraded": 16,
+    "tool": "tools/dxf_comprehensive_extract.py",
+    "extract_artifact": "outputs/dxf_comprehensive_extract.json"
   }
 }

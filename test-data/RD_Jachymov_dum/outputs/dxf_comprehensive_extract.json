@@ -1,0 +1,606 @@
+{
+  "_schema_version": "1.0",
+  "_generated_by": "tools/dxf_comprehensive_extract.py",
+  "_generated_at": "2026-05-17",
+  "_extraction_summary": {
+    "dum_files": 2,
+    "sklad_files": 2,
+    "primary_source": "dum_DPZ (richest semantic layers)"
+  },
+  "dum_DPZ": {
+    "mistnosti": {
+      "_source_layer": "km_tabulka místností",
+      "_extraction_method": "MTEXT formatted-string parsing (id + name + plocha m²)",
+      "_phase_filter": "návrh (selected table with max n_rooms per podlaží)",
+      "n_tables_found": 14,
+      "n_tables_parsed": 14,
+      "n_rooms_total": 25,
+      "per_podlazi_summary": {
+        "1.NP": {
+          "n_rooms": 8,
+          "total_m2": 59.5,
+          "formula": "12.4 + 3.6 + 0.7 + 1.5 + 4.1 + 24.0 + 9.4 + 3.8 = 59.5 m²"
+        },
+        "3.NP": {
+          "n_rooms": 6,
+          "total_m2": 64.5,
+          "formula": "7.6 + 4.1 + 2.4 + 4.8 + 32.8 + 12.8 = 64.5 m²"
+        },
+        "1.PP": {
+          "n_rooms": 4,
+          "total_m2": 32.4,
+          "formula": "3.5 + 4.4 + 22.2 + 2.3 = 32.4 m²"
+        },
+        "2.NP": {
+          "n_rooms": 7,
+          "total_m2": 61.1,
+          "formula": "7.3 + 4.2 + 2.5 + 1.6 + 22.1 + 9.0 + 14.4 = 61.1 m²"
+        }
+      },
+      "rooms": [
+        {
+          "room_id": "1.01",
+          "name": "vstup a chodba",
+          "area_m2": 12.4,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.02",
+          "name": "chodba na zahradu",
+          "area_m2": 3.6,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.03",
+          "name": "komora",
+          "area_m2": 0.7,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.04",
+          "name": "WC",
+          "area_m2": 1.5,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.05",
+          "name": "koupelna",
+          "area_m2": 4.1,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.06",
+          "name": "obývací místnost + kuchyně",
+          "area_m2": 24.0,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.07",
+          "name": "pokoj",
+          "area_m2": 9.4,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "1.08",
+          "name": "schodiště do sklepa",
+          "area_m2": 3.8,
+          "podlazi": "1.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "3.01",
+          "name": "schodiště",
+          "area_m2": 7.6,
+          "podlazi": "3.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "3.02",
+          "name": "chodba",
+          "area_m2": 4.1,
+          "podlazi": "3.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "3.03",
+          "name": "chodba",
+          "area_m2": 2.4,
+          "podlazi": "3.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "3.04",
+          "name": "koupelna",
+          "area_m2": 4.8,
+          "podlazi": "3.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "3.05",
+          "name": "obývací místnost a kuchyně",
+          "area_m2": 32.8,
+          "podlazi": "3.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "3.06",
+          "name": "ložnice",
+          "area_m2": 12.8,
+          "podlazi": "3.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "0.01",
+          "name": "schodiště",
+          "area_m2": 3.5,
+          "podlazi": "1.PP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "0.02",
+          "name": "chodba",
+          "area_m2": 4.4,
+          "podlazi": "1.PP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "0.03",
+          "name": "sklep 1",
+          "area_m2": 22.2,
+          "podlazi": "1.PP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "0.04",
+          "name": "sklep 2",
+          "area_m2": 2.3,
+          "podlazi": "1.PP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.01",
+          "name": "schodiště",
+          "area_m2": 7.3,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.02",
+          "name": "chodba",
+          "area_m2": 4.2,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.03",
+          "name": "koupelna",
+          "area_m2": 2.5,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.04",
+          "name": "chodba",
+          "area_m2": 1.6,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.05",
+          "name": "společný pokoj",
+          "area_m2": 22.1,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.06",
+          "name": "pokoj",
+          "area_m2": 9.0,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        },
+        {
+          "room_id": "2.07",
+          "name": "pokoj",
+          "area_m2": 14.4,
+          "podlazi": "2.NP",
+          "source": "DXF km_tabulka místností MTEXT (embedded room table — návrh phase)",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "sanitarni": [
+      {
+        "prvek": "WC",
+        "matched_block_names": [
+          "WC s nádržkou 1_4",
+          "WC s nádržkou 1_7",
+          "WC_ZAVES_DURAVIT STARCK3"
+        ],
+        "raw_insert_count": 7,
+        "deduplicated_count": 7,
+        "per_podlazi_count": {
+          "1.NP": 3,
+          "2.NP": 3,
+          "3.NP": 1
+        },
+        "formula": "2×WC s nádržkou 1_4 + 2×WC s nádržkou 1_7 + 3×WC_ZAVES_DURAVIT STARCK3 = 7 raw → 7 after dedup (variant blocks for same fixture position)",
+        "source": "DXF INSERT block name matching + position deduplication",
+        "confidence": 0.9
+      },
+      {
+        "prvek": "umyvadlo",
+        "matched_block_names": [
+          "Umyvadlo 01_8",
+          "Umyvadlo 01_9",
+          "umyvadlo"
+        ],
+        "raw_insert_count": 7,
+        "deduplicated_count": 7,
+        "per_podlazi_count": {
+          "1.NP": 3,
+          "2.NP": 3,
+          "3.NP": 1
+        },
+        "formula": "2×Umyvadlo 01_8 + 3×Umyvadlo 01_9 + 2×umyvadlo = 7 raw → 7 after dedup (variant blocks for same fixture position)",
+        "source": "DXF INSERT block name matching + position deduplication",
+        "confidence": 0.9
+      },
+      {
+        "prvek": "vana",
+        "matched_block_names": [
+          "Vana 01_5"
+        ],
+        "raw_insert_count": 2,
+        "deduplicated_count": 2,
+        "per_podlazi_count": {
+          "1.NP": 2
+        },
+        "formula": "2×Vana 01_5 = 2 raw → 2 after dedup (variant blocks for same fixture position)",
+        "source": "DXF INSERT block name matching + position deduplication",
+        "confidence": 0.9
+      },
+      {
+        "prvek": "sprcha",
+        "matched_block_names": [
+          "Sprch vana_6"
+        ],
+        "raw_insert_count": 2,
+        "deduplicated_count": 2,
+        "per_podlazi_count": {
+          "2.NP": 2
+        },
+        "formula": "2×Sprch vana_6 = 2 raw → 2 after dedup (variant blocks for same fixture position)",
+        "source": "DXF INSERT block name matching + position deduplication",
+        "confidence": 0.9
+      },
+      {
+        "prvek": "drez_kuchyne",
+        "matched_block_names": [
+          "drez_2"
+        ],
+        "raw_insert_count": 3,
+        "deduplicated_count": 3,
+        "per_podlazi_count": {
+          "1.NP": 1,
+          "2.NP": 1,
+          "3.NP": 1
+        },
+        "formula": "3×drez_2 = 3 raw → 3 after dedup (variant blocks for same fixture position)",
+        "source": "DXF INSERT block name matching + position deduplication",
+        "confidence": 0.9
+      }
+    ],
+    "kuchyne": [
+      {
+        "prvek": "sporak_indukce",
+        "matched_block_names": [
+          "Elektrický sporák 01_42",
+          "indukce"
+        ],
+        "raw_insert_count": 5,
+        "deduplicated_count": 5,
+        "formula": "2×Elektrický sporák 01_42 + 3×indukce",
+        "source": "DXF INSERT block name matching",
+        "confidence": 0.85
+      },
+      {
+        "prvek": "trouba",
+        "matched_block_names": [
+          "trouba_mikrovlnka"
+        ],
+        "raw_insert_count": 3,
+        "deduplicated_count": 3,
+        "formula": "3×trouba_mikrovlnka",
+        "source": "DXF INSERT block name matching",
+        "confidence": 0.85
+      },
+      {
+        "prvek": "lednice",
+        "matched_block_names": [
+          "lednice"
+        ],
+        "raw_insert_count": 3,
+        "deduplicated_count": 3,
+        "formula": "3×lednice",
+        "source": "DXF INSERT block name matching",
+        "confidence": 0.85
+      },
+      {
+        "prvek": "mycka",
+        "matched_block_names": [
+          "mycka_nadobi"
+        ],
+        "raw_insert_count": 3,
+        "deduplicated_count": 3,
+        "formula": "3×mycka_nadobi",
+        "source": "DXF INSERT block name matching",
+        "confidence": 0.85
+      }
+    ],
+    "otvory": {
+      "okna": {
+        "matched_block_names": {
+          "okno 1.NP vzadu": 3,
+          "okno malé vzadu": 2,
+          "okno male 3.NP vzadu": 1,
+          "okno 3.NP vzadu": 1,
+          "okno 2.NP": 4,
+          "okno 3.NP": 3,
+          "okno 1.NP": 2
+        },
+        "total_count": 16,
+        "front_count_ulice_Fibichova": 9,
+        "back_count_zahrada": 7,
+        "formula": "3×okno 1.NP vzadu + 2×okno malé vzadu + 1×okno male 3.NP vzadu + 1×okno 3.NP vzadu + 4×okno 2.NP + 3×okno 3.NP + 2×okno 1.NP = 16 ks",
+        "split_logic": "front (ulice, integrované žaluzie kastlík) = sum of blocks without 'vzadu' = 9; back (zahrada) = sum with 'vzadu' = 7",
+        "source": "DXF INSERT block name matching (okno*)",
+        "confidence": 0.95
+      },
+      "dvere_vnitrni": {
+        "_note": "Vnitřní dveře = LWPOLYLINEs on layer 'SM__dveře' (102 entities). Includes ALL doors and all phases (stav/bourání/návrh) → count is overcounted ~3× per door.",
+        "raw_polyline_count": 102,
+        "estimated_actual_count": 15,
+        "formula": "102 polylines / ~3 phases / ~2.3 (door symbols per door = leaf + frame + arc) ≈ 15 ks návrh",
+        "source": "DXF SM__dveře LWPOLYLINE count with phase + symbol deduplication estimate",
+        "confidence": 0.65
+      },
+      "vstupni_dvere": {
+        "matched_block_names": {
+          "dveře": 2
+        },
+        "estimated_count": 2,
+        "formula": "INSERT 'dveře' = 2 (1 ulice + 1 zahrada per TZ)",
+        "source": "DXF INSERT 'dveře' + TZ ARS — 'plastové vstupní dveře' x 2",
+        "confidence": 0.8
+      }
+    },
+    "konstrukce": {
+      "krokve_KR_blocks": {
+        "block_name": "KR",
+        "insert_count": 103,
+        "_note": "KR INSERT count is gross — includes krokve + sloupky + námětky combined per HSV-5 analysis. Geometric calc (24 krokví × 6.5 m = 156 bm) used as primary in items.json.",
+        "formula": "DXF INSERT 'KR' count = 103 ks (gross)",
+        "source": "DXF dum_DPZ INSERT 'KR' raw count",
+        "confidence": 0.85
+      },
+      "vikyre": {
+        "_note": "Vikýře not directly counted in DXF; TZ ARS implies 4 ks based on pohledy.",
+        "estimated_count": 4,
+        "source": "TZ ARS dům §4 + count of vikýře references in MTEXT (not implemented exhaustively)",
+        "confidence": 0.75
+      }
+    },
+    "steny": {
+      "_extraction_method": "Sum of LINE + LWPOLYLINE lengths per layer (math.hypot for segments)",
+      "categories": {
+        "load_bearing_all_phases": {
+          "layer": "SM__03b_tlustá nosné stěny",
+          "entities_summed": 371,
+          "total_length_m": 1640.9,
+          "_note": "Raw sum across all entities on layer. For load-bearing/partitions, includes ALL phases combined (stav + bourání + návrh) — divide by ~3 to estimate single-phase. 'navrh_only_*' layers are návrh-pure."
+        },
+        "partitions_all_phases": {
+          "layer": "SM__02d_tenka další",
+          "entities_summed": 295,
+          "total_length_m": 672.95,
+          "_note": "Raw sum across all entities on layer. For load-bearing/partitions, includes ALL phases combined (stav + bourání + návrh) — divide by ~3 to estimate single-phase. 'navrh_only_*' layers are návrh-pure."
+        },
+        "navrh_only_thick": {
+          "layer": "km_R_návrh_tlustá",
+          "entities_summed": 741,
+          "total_length_m": 1861.23,
+          "_note": "Raw sum across all entities on layer. For load-bearing/partitions, includes ALL phases combined (stav + bourání + návrh) — divide by ~3 to estimate single-phase. 'navrh_only_*' layers are návrh-pure."
+        },
+        "navrh_only_very_thick": {
+          "layer": "km_R_návrh_velmi tlustá",
+          "entities_summed": 205,
+          "total_length_m": 479.99,
+          "_note": "Raw sum across all entities on layer. For load-bearing/partitions, includes ALL phases combined (stav + bourání + návrh) — divide by ~3 to estimate single-phase. 'navrh_only_*' layers are návrh-pure."
+        }
+      },
+      "derived_navrh_estimate": {
+        "load_bearing_m_estimate": 546.97,
+        "formula": "1640.9 m total (all phases) / 3 phases ≈ návrh estimate",
+        "confidence": 0.7
+      }
+    },
+    "plochy_podlah_per_podlazi": {
+      "1.PP": 32.4,
+      "1.NP": 59.5,
+      "2.NP": 61.1,
+      "3.NP": 64.5,
+      "total_navrh_m2": 217.5,
+      "formula": "1.NP=59.5 + 3.NP=64.5 + 1.PP=32.4 + 2.NP=61.1 = 217.5 m²",
+      "tz_baseline_m2": 219.3,
+      "delta_vs_tz_m2": -1.8,
+      "source": "DXF km_tabulka místností MTEXTs (návrh tables)",
+      "confidence": 0.95
+    },
+    "plochy_podlah_per_material": {
+      "_classification_logic": "Heuristic per Czech RD: koupelna/WC/kuchyně→dlazba, obyt+chodba+pokoj→vinyl, 1.PP→dlazba_sklep, půdní/spací patro→biodeska",
+      "results": [
+        {
+          "material": "vinyl",
+          "m2": 115.4,
+          "rooms_included": [
+            "1.01 vstup a chodba (12.4 m²)",
+            "1.02 chodba na zahradu (3.6 m²)",
+            "1.03 komora (0.7 m²)",
+            "1.07 pokoj (9.4 m²)",
+            "1.08 schodiště do sklepa (3.8 m²)",
+            "3.01 schodiště (7.6 m²)",
+            "3.02 chodba (4.1 m²)",
+            "3.03 chodba (2.4 m²)",
+            "3.06 ložnice (12.8 m²)",
+            "2.01 schodiště (7.3 m²)",
+            "2.02 chodba (4.2 m²)",
+            "2.04 chodba (1.6 m²)",
+            "2.05 společný pokoj (22.1 m²)",
+            "2.06 pokoj (9.0 m²)",
+            "2.07 pokoj (14.4 m²)"
+          ],
+          "formula": "12.4 + 3.6 + 0.7 + 9.4 + 3.8 + 7.6 + 4.1 + 2.4 + 12.8 + 7.3 + 4.2 + 1.6 + 22.1 + 9.0 + 14.4 = 115.4 m²",
+          "confidence": 0.85,
+          "source": "DXF room table m² × heuristic material classification"
+        },
+        {
+          "material": "dlazba",
+          "m2": 69.7,
+          "rooms_included": [
+            "1.04 WC (1.5 m²)",
+            "1.05 koupelna (4.1 m²)",
+            "1.06 obývací místnost + kuchyně (24.0 m²)",
+            "3.04 koupelna (4.8 m²)",
+            "3.05 obývací místnost a kuchyně (32.8 m²)",
+            "2.03 koupelna (2.5 m²)"
+          ],
+          "formula": "1.5 + 4.1 + 24.0 + 4.8 + 32.8 + 2.5 = 69.7 m²",
+          "confidence": 0.85,
+          "source": "DXF room table m² × heuristic material classification"
+        },
+        {
+          "material": "dlazba_sklep",
+          "m2": 32.4,
+          "rooms_included": [
+            "0.01 schodiště (3.5 m²)",
+            "0.02 chodba (4.4 m²)",
+            "0.03 sklep 1 (22.2 m²)",
+            "0.04 sklep 2 (2.3 m²)"
+          ],
+          "formula": "3.5 + 4.4 + 22.2 + 2.3 = 32.4 m²",
+          "confidence": 0.85,
+          "source": "DXF room table m² × heuristic material classification"
+        }
+      ]
+    },
+    "obvod_objektu": {
+      "candidates_load_bearing_layer": [],
+      "_note": "Closed polygons on SM__03b_tlustá nosné stěny matching zastavěná 80-130 m² + perimeter 30-60 m. May include all 3 phase variants.",
+      "selected_perimeter_m": null,
+      "formula": "(none — fallback to TZ-derived 41 m)",
+      "tz_derived_baseline_m": 41.0,
+      "source": "DXF SM__03b_tlustá nosné stěny closed LWPOLYLINEs",
+      "confidence": 0.65
+    },
+    "strecha": {
+      "pudorysna_plocha_m2": 104.4,
+      "sklon_deg": 35.0,
+      "plocha_krytiny_m2": 146.57,
+      "formula": "104.4 m² zastavěná / cos(35.0°) = 127.45 m² sklonový rozvin × 1.15 (přesahy + vikýře) = 146.57 m²",
+      "source": "TZ zastavěná 104.4 m² + geometric sklon přepočet",
+      "confidence": 0.8
+    }
+  },
+  "sklad_DPZ": {
+    "dimensions_summary": {
+      "total": 65,
+      "unique_values_mm": [
+        0.0,
+        50.0,
+        50.26,
+        160.0,
+        180.0,
+        230.0,
+        250.0,
+        300.0,
+        435.07,
+        500.0,
+        600.0,
+        615.0,
+        624.99,
+        625.0,
+        758.51,
+        786.38,
+        997.5,
+        1000.0,
+        1500.0,
+        2273.58,
+        2682.14,
+        2736.11,
+        2842.24,
+        3000.0,
+        3085.0,
+        3935.0,
+        4000.0,
+        5848.77,
+        6000.0,
+        6010.94
+      ],
+      "key_findings": {
+        "sklad_width_6_35_m": true,
+        "sklad_depth_3_34_m": false,
+        "sklad_interior_3_085_m": true,
+        "parking_7_0_m_via_LWPOLYLINE": "yes (layer 'km__03_velmi tlustá', bbox 7000.0 mm)"
+      },
+      "source": "DXF sklad_DPZ DIMENSION entities + LWPOLYLINE bbox probe",
+      "confidence": 0.95
+    },
+    "geometry_sklad": {
+      "lichobeznik_width_m": 6.35,
+      "lichobeznik_depth_m": 3.34,
+      "podlaha_m2": 21.21,
+      "obvod_pasu_m": 19.38,
+      "formula_podlaha": "6.35 × 3.34 = 21.21 m²",
+      "formula_obvod": "2 × (6.35 + 3.34) = 19.38 m",
+      "parking_length_m": 7.0,
+      "parking_width_m_estimated": 3.0,
+      "parking_area_m2": 21.0,
+      "n_IPE180_parking": 7,
+      "formula_IPE180": "7.0 m parking length / 1.0 m rozteč = 7 ks IPE180",
+      "source": "DXF DIMENSION + LWPOLYLINE bbox + TZ rozteč 1000 mm",
+      "confidence": 0.95
+    }
+  }
+}
