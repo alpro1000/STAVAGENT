@@ -1,8 +1,16 @@
 {
-  "_schema": "STAVAGENT subdodavatel mapping v1.1 — DSP-residential extension",
+  "_schema": "STAVAGENT subdodavatel mapping v1.2 — DSP-residential extension + Phase 1 RD Jáchymov flags",
   "_project": "RD Jáchymov Fibichova 733",
   "_created": "2026-05-16",
-  "_basis": "Libuše D mapping + extension for residential DSP scope (RD rekonstrukce + nástavba)",
+  "_revised": "2026-05-16 — v1.1 → v1.2 batch mapping update after Phase 1 completion",
+  "_basis": "Libuše D mapping + DSP-residential extension (v1.1) + 5 RD Jáchymov needs_mapping flags (v1.2)",
+  "_v1_2_additions_from_RD_Jachymov_pilot": [
+    "okenni_zaluzie_kastlik_purenit (PSV-76, hybrid okenář)",
+    "biodeska_konstrukcni (PSV-77, hybrid truhlář)",
+    "instalater_TUV_akumulacni_zasobnik (PSV-72, hybrid topenář)",
+    "mykolog (VRN, single specialty surveyor)",
+    "azbestovy_specialista (VRN, single specialty surveyor)"
+  ],
   "_extensions_for_residential": [
     "krov_tesarsky_kompletni — full tesařský dodavatel: krokve + kleštiny + pozednice + bednění + nadkrokevní PIR + kontralatě",
     "bila_vana_csb02 — specialista bílá vana ČBS 02 (těsnění bobtnavé pásky, plech pro pracovní spáry, dohled betonáže)",
@@ -174,9 +182,74 @@
       "typical_orgs": "Herkul a.s. nebo distributor s hyd. rukou",
       "kapitoly": ["HSV-3"]
     },
+    "okenni_zaluzie_kastlik_purenit": {
+      "trade_id": "okenni_zaluzie_kastlik_purenit",
+      "label_cz": "Okenář + venkovní žaluzie v kastlíku s purenitovou izolací",
+      "popis_cs": "Okenář + venkovní žaluzie v kastlíku s purenitovou izolací",
+      "subdodavatel_type": "hybrid",
+      "parent_trade": "okennar",
+      "urs_kategorie_hint": "767+ (zámečnictví výplně otvorů s integrovaným stíněním)",
+      "typical_unit": "ks",
+      "typical_orgs": "okenář s ETICS-kompatibilním kastlíkem (Vekra, Otherm, Internorm) + purenit dodávka (Puren GmbH / lokální distributor)",
+      "kapitoly": ["PSV-76"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "TZ ARS § 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'. Komplexní subkomponenty: okno + žaluzie + purenit nadokenní izolace + napojení na ETICS, vyžaduje koordinaci 3 dodavatelů. Parent okennar typicky kompletuje."
+    },
+    "biodeska_konstrukcni": {
+      "trade_id": "biodeska_konstrukcni",
+      "label_cz": "Konstrukční biodeska (smrk masiv / OSB / X-LAM) pro půdní vestavby a nášlapy",
+      "popis_cs": "Konstrukční biodeska (smrk masiv / OSB / X-LAM) pro půdní vestavby a nášlapy",
+      "subdodavatel_type": "hybrid",
+      "parent_trade": "truhlar",
+      "urs_kategorie_hint": "762+ (truhlářské konstrukce, OSB/MDF/biodeska desky)",
+      "typical_unit": "m²",
+      "typical_orgs": "truhlář s napojením na krov_tesarsky_kompletni (lokální pila Hampl, KVH dodavatelé)",
+      "kapitoly": ["PSV-77", "HSV-5"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "Biodeska = ekologická alternativa OSB pro půdní vestavby (smrk masiv s lepidlem bez formaldehydu). Pseudo-hybrid mezi truhlářem (nášlap) a krov_tesarsky_kompletni (podkladní deska pod krytinu). Pilot RD Jáchymov používá pro patro pro přespání nad kleštinami (TZ ARS §4)."
+    },
+    "instalater_TUV_akumulacni_zasobnik": {
+      "trade_id": "instalater_TUV_akumulacni_zasobnik",
+      "label_cz": "Instalatér akumulačního zásobníku TUV pro multivariantní topný systém",
+      "popis_cs": "Instalatér akumulačního zásobníku TUV pro multivariantní topný systém",
+      "subdodavatel_type": "hybrid",
+      "parent_trade": "topenar",
+      "urs_kategorie_hint": "731+ (ÚT zařízení, akumulační zásobníky napojené na multivariantní zdroj)",
+      "typical_unit": "ks + kpl",
+      "typical_orgs": "topenář s vodařskou aprobací pro koordinaci kamna + krb + elektrokotel + bojler napojení (Atmos, Dakon, Viadrus servis)",
+      "kapitoly": ["PSV-72", "PSV-73"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "Akumulační zásobník TUV (~300 l) napojený na 3 zdroje současně (sporáková kamna + krb + elektrokotel) + bojler 80 l 3.NP samostatný. Standard topenář typicky neumí komplexní hydraulické zapojení; vyžaduje specializaci na multivariantní systémy (Atmos, Regulus, Reflex)."
+    },
+    "mykolog": {
+      "trade_id": "mykolog",
+      "label_cz": "Autorizovaný mykolog dřeva (specialty surveyor)",
+      "popis_cs": "Autorizovaný mykolog dřeva (specialty surveyor)",
+      "subdodavatel_type": "single",
+      "parent_trade": null,
+      "urs_kategorie_hint": "NA — průzkumný subjekt, není v ÚRS sortimentu; VRN kategorie (paušál nebo hodina expertízy)",
+      "typical_unit": "kpl",
+      "typical_orgs": "autorizovaný mykolog (Mykologická společnost ČR, lokální experti)",
+      "kapitoly": ["VRN"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "TZ ARS §3.2.3 explicitně 'při bourání bude proveden mykologický průzkum dřev. trámů (zhlaví)'. Specialty surveyor — výjezd na stavbu při demolici, odběr vzorků zhlaví, mikroskopická analýza, posudek pro statistickou bezpečnost zachovaných trámů. Cenová hladina v RD: 8-15k Kč paušál."
+    },
+    "azbestovy_specialista": {
+      "trade_id": "azbestovy_specialista",
+      "label_cz": "Autorizovaný technik azbestu (odběr + laboratorní posudek)",
+      "popis_cs": "Autorizovaný technik azbestu (odběr + laboratorní posudek)",
+      "subdodavatel_type": "single",
+      "parent_trade": null,
+      "urs_kategorie_hint": "NA — průzkumný subjekt, není v ÚRS sortimentu; VRN kategorie",
+      "typical_unit": "kpl",
+      "typical_orgs": "autorizovaný technik azbestu (odběr vzorků dle vyhlášky 432/2003 Sb. + akreditovaná laboratoř — Eurofins, ALS, ZÚ Ústí n. L.)",
+      "kapitoly": ["VRN"],
+      "added_in_pilot": "N=5 RD Jáchymov 2026-05",
+      "_pozn": "TZ B m.7.a — předběžné ohledání negativní, podrobný průzkum před bouráním povinný dle zákona 258/2000 Sb. (ochrana veřejného zdraví). Cenová hladina v RD: 10-20k Kč paušál vč. lab. analýzy 5-10 vzorků."
+    },
     "needs_mapping": {
-      "label_cz": "[PLACEHOLDER] — pro RD Jáchymov všechny trades mapovány. Tento placeholder se nepoužívá.",
-      "_pozn": "Pokud Phase 1 generator narazí na trade bez mapování, použít tento string + zalogovat do warnings."
+      "label_cz": "[PLACEHOLDER] — fallback pro budoucí flagy v post-v1.2 stavu",
+      "_pozn": "Pokud Phase 1 generator narazí na trade bez mapování, použít tento string + zalogovat do warnings. Pro RD Jáchymov v1.2: všechny trades z N=5 pilotu mapovány."
     }
   }
 }

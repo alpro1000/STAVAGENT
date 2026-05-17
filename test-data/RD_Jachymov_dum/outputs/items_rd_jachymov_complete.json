@@ -2710,7 +2710,7 @@
       "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'",
       "subdodavatel": "okenni_zaluzie_kastlik_purenit",
-      "subdodavatel_status": "needs_mapping",
+      "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         5
       ],
@@ -3102,7 +3102,7 @@
       "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — patro pro přespání z biodesky",
       "subdodavatel": "biodeska_konstrukcni",
-      "subdodavatel_status": "needs_mapping",
+      "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         3
       ],
@@ -3571,7 +3571,7 @@
       "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — kombi akumulační zásobník napojený na multivariantní topný systém",
       "subdodavatel": "instalater_TUV_akumulacni_zasobnik",
-      "subdodavatel_status": "needs_mapping",
+      "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         6
       ],
@@ -4216,7 +4216,7 @@
       "urs_confidence": 0.65,
       "source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum",
       "subdodavatel": "mykolog",
-      "subdodavatel_status": "needs_mapping",
+      "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         10
       ],
@@ -4243,7 +4243,7 @@
       "urs_confidence": 0.65,
       "source": "TZ B m.7.a + ARS §3.2 — azbestový průzkum povinný před demolicí",
       "subdodavatel": "azbestovy_specialista",
-      "subdodavatel_status": "needs_mapping",
+      "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         10
       ],
@@ -4548,7 +4548,7 @@
       "needs_production_lookup": 171
     },
     "items_below_conf_0_70_mnozstvi": 0,
-    "subdodavatel_needs_mapping": 5,
+    "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
   },
   "_summary_last_group": {
@@ -4574,7 +4574,7 @@
       "needs_production_lookup": 19
     },
     "items_below_conf_0_70_mnozstvi": 0,
-    "subdodavatel_needs_mapping": 2,
+    "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
   }
 }
