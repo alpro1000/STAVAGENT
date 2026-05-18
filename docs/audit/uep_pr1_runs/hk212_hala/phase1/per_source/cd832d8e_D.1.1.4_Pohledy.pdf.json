@@ -1,0 +1,132 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.4 Pohledy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 7861,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 5.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "n n 8 0 0 u u 0 0 0 0 m m m m m m E D P\nV\nR V l\nr\nč o e\na\ne z c\nt\nt m\na\nh n o ě ě\np\nv r\no\ni : ý n\ns\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 18.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "r R o í , v ř o p s e k a ž š á rc m e 8 . n 1 č i í / . t 1 1 á 1 3 l , 7 1 p 1 5 , o 0 1 d 3 2 6 1",
+        "source_section": null
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 3919,
+    "text_per_page_truncated": [
+      "Pohled východní\nE\n+7,610\n+7,515\nC\nA B A\n+3,800\n+3,400\nRozvaděč EI\n-0,200\nPohled severní E +7,610 Pohled jižní E +7,610\nB B B B\nA\nA A\n+3,800 +3,800\n+3,400 +3,400\n+2,035\n-0,200\nPohled západní\nE\n+7,610\n+7,515\nC\nA B A\n+3,800 +3,800\n+3,400 +3,400\n-0,200\nLEGENDA POZNÁMKY:\nS B\nR\ne k\no\nl t\nz\ná o\nm\nd n a\ně\nC n\nr:\n3 é\n1\n0 b\n6\n/3 l\n0\no 7\n0\nk y\nx\nz\n8\np\n0\nr\n0\no\nm\nst\nm\néh\n,\no\nv ý\nb\nš\ne\nk\nt\na\no n\n8\nu\n00mm\nA\nB\nO\nO Vč k\np\ne a\nlá\nt p n\nš\no ě\ntě\nv u\nn\né c\ní\ns h\ns\nv y\nk\no c\nlá\nd e\nd\ny n\na\ní -\nn\nd p\né\no r o\nz\ns f i "
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "n n 8 0 0 u u 0 0 0 0 m m m m m m E D P\nV\nR V l\nr\nč o e\na\ne z c\nt\nt m\na\nh n o ě ě\np\nv r\no\ni : ý n\ns\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 5.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "r R o í , v ř o p s e k a ž š á rc m e 8 . n 1 č i í / . t 1 1 á 1 3 l , 7 1 p 1 5 , o 0 1 d 3 2 6 1",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 18.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

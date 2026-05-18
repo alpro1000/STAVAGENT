@@ -1,0 +1,255 @@
+{
+  "provenance": {
+    "source_file": "A - průvodní list _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 158,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 850.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "ejné infrastruktury\nA.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\nstávající: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 987.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "A.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\nstávající: 850 m3\nnavrhovaný: 9",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 78.8,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "y budov\na) obestavěný prostor,\nstávající: 850 m3\nnavrhovaný: 987 m3\nb) zastavěná plocha,\nstávající: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 104.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ý prostor,\nstávající: 850 m3\nnavrhovaný: 987 m3\nb) zastavěná plocha,\nstávající: 78,8 m2\nnavrhovaný: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 217.8,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "987 m3\nb) zastavěná plocha,\nstávající: 78,8 m2\nnavrhovaný: 104,4 m2\nc) podlahová plocha,\nstávající: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 219.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "locha,\nstávající: 78,8 m2\nnavrhovaný: 104,4 m2\nc) podlahová plocha,\nstávající: 217,8 m2\nnavrhovaný: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "nebo změna dokončené stavby, trvalá nebo dočasná",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "-",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "kraj",
+      "value": "katastrální území: Jáchymov [656437]",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 4,
+    "char_count_total": 4473,
+    "text_per_page_truncated": [
+      "A P\nRŮVODNÍ LIST\nPodle vyhlášky č.131/2024, příloha č.1 – dokumentace pro povolení stavby\nTato dokumentace nenahrazuje realizační dokumentaci stavby\nA.1 Identifikační údaje\nA.1.1 Údaje o stavbě\na) název stavby,\nStavební úpravy Řadový rodinný dům Fibichova č.p. 733č.p., na parcele č. 1094/16, st.1022,\nk.ú. Jáchymov [656437]\nb) místo stavby - kraj, katastrální území, parcelní čísla pozemků, u budov adresa a čísla popisná,\nvýčet pozemků s právem zákonné služebnosti, parcelní čísla pozemků zařízení ",
+      "c) jména a příjmení projektantů jednotlivých částí dokumentace včetně čísla, pod kterým jsou\nzapsáni v evidenci autorizovaných nebo registrovaných osob vedené Českou komorou architektů\nnebo Českou komorou autorizovaných inženýrů a techniků činných ve výstavbě, s vyznačeným\noborem, popřípadě specializací jejich autorizace, d) jméno, popřípadě jména a příjmení\nautorizovaného zeměměřického inženýra včetně čísla položky, pod kterým je veden v rejstříku\nautorizovaných zeměměřických inženýrů u České k",
+      "e) počet nadzemních podlaží,\nstávající: 3\nnavrhovaný: beze změny\nf) způsob využití,\nstávající: rodinný dům\nnavrhovaný: beze změny\ng) druh konstrukce,\nstávající: zděné\nnavrhovaný: beze změny\nh) způsob vytápění,\nstávající: kotel na plyn + elektrické přímotopy\nnavrhovaný: Krb s výměníkem + elektrokotel + tepelné čerpadlo vzduch/vzduch\ni) přípojka vodovodu,\nstávající: přípojka veřejného vodovodu\nnavrhovaný: beze změny\nj) přípojka kanalizační sítě,\nstávající: přípojka veřejné kanalizace\nnavrhovaný: b",
+      "A.4 Atributy stavby pro stanovení\npodmínek napojení a provádění\nčinností v ochranných a\nbezpečnostních pásmech dopravní\na technické infrastruktury\na) hloubka stavby,\nstávající: 2,8 m\nnavrhovaný: beze změny\nb) výška stavby,\nstávající: 11,10 m\nnavrhovaný: 12,75 m\nc) předpokládaná kapacita počtu osob ve stavbě,\nstávající: 8\nnavrhovaný: beze změny\nd) plánovaný začátek a konec realizace stavby.\nzačátek: II.Q 2026\nkonec: IV.Q 2027"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "ejné infrastruktury\nA.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\nstávající: ",
+          "volume_m3": 850.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "A.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\nstávající: 850 m3\nnavrhovaný: 9",
+          "volume_m3": 987.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "y budov\na) obestavěný prostor,\nstávající: 850 m3\nnavrhovaný: 987 m3\nb) zastavěná plocha,\nstávající: ",
+          "volume_m3": null,
+          "area_m2": 78.8,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ý prostor,\nstávající: 850 m3\nnavrhovaný: 987 m3\nb) zastavěná plocha,\nstávající: 78,8 m2\nnavrhovaný: ",
+          "volume_m3": null,
+          "area_m2": 104.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "987 m3\nb) zastavěná plocha,\nstávající: 78,8 m2\nnavrhovaný: 104,4 m2\nc) podlahová plocha,\nstávající: ",
+          "volume_m3": null,
+          "area_m2": 217.8,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "locha,\nstávající: 78,8 m2\nnavrhovaný: 104,4 m2\nc) podlahová plocha,\nstávající: 217,8 m2\nnavrhovaný: ",
+          "volume_m3": null,
+          "area_m2": 219.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "stavba": "nebo změna dokončené stavby, trvalá nebo dočasná",
+        "misto": "-",
+        "kraj": "katastrální území: Jáchymov [656437]"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

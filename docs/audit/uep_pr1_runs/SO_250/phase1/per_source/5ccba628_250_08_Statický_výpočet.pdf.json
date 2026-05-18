@@ -1,0 +1,459 @@
+{
+  "provenance": {
+    "source_file": "250_08_Statický výpočet.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 4757,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C30/37",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C 30/37",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 7.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "jejich hlinitopísčitými až písčitými zvětralinami, se průtočnost T pohybuje v řádu okolo 10-4\naž 10-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "30 3,95\n7 -0,45 3,95\n8 -0,45 0,00\nPočátek [0,0] je v nejhořejším pravém bodu zdi.\nPlocha řezu zdi = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0031",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 1000",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1536",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1537",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0037",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 6101",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 13670",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 730037",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "TKP 30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "D6 Olšová vrata - Žalmanov",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "D6 Olšová Vrata - Žalmanov",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "SO: PROGEOCONT s.r.o",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stupen_pd",
+      "value": "PDPS",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 23,
+    "char_count_total": 33329,
+    "text_per_page_truncated": [
+      "ČÁST D.2\nSO 250\nSTATICKÝ VÝPOČET 9",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nObsah\n1. Všeobecná část ................................................................................................................................ 2\n2. Úvod ................................................................................................................................................ 5\n3. Zatížení ................................................................",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\n1. Všeobecná část\nZákladní údaje\nStavba: D6 Olšová vrata - Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nMísto stavby: D6 Olšová Vrata - Žalmanov\nProjektový stupeň: PDPS\nObjednatel: ŘEDITELSTVÍ SILNIC A DÁLNIC s.p.\nProjektant SO: PROGEOCONT s.r.o.\nHlavní inženýr projektu: Ing. Pavel Šlapa\nOdpovědný projektant SO: Ing. Ladislav Terš\nČíslo zakázky: 015_PGC_2025\nAdr",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nPodklady\na) Doplňující GTP (GeoTec GS, 02/2024)\nb) Dokumentace DSP (PRAGOPROJEKT, a.s., 09/2024)\nc) Prohlídka místa stavby\nAdresa: Kontakt: IČO: 06943608\nVernéřov 248 tel. 774 297 778\nAš 352 01 mail: ters@progeocont.cz DIČ: CZ06943608\nČeská Republika",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nLiteratura, normy, předpisy\n1) ČSN EN 1997-1 Navrhování geotechnických konstrukcí Část 1: Obecná pravidla\n2) ČSN EN 1997-2 Navrhování geotechnických konstrukcí Část 2: Obecná pravidla\n3) ČSN 73 0031 Spolehlivost stavebních konstrukcí a základových půd\n4) ČSN 73 1000 Zakládání stavebních objektů\n5) ČSN EN 1536 Provádění speciálních geotechnických prací – vrtané piloty\n6) ČSN EN 1537 P",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\n2. Úvod\nPředmětem projektové dokumentace k územnímu rozhodnutí je přestavba stávající silnice I/6\nna dálnici D6 v úseku mezi Bochovem a Olšovými Vraty a propojuje stavby „D6 Žalmanov – Knínice”\na „D6 Karlovy Vary – Olšová Vrata”. Přeložka hlavní trasy je navržena jako 4 pruhová směrově\nrozdělená komunikace v kategorii D25,5/130 dle ČSN 73 6101 se středním dělícím pásem v šířce\n3,5 m.",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\ncca 0,5 m. Navážky představují především zeminy stávajícího tělesa silnice, které lze zatřídit jako hlíny\naž jíly písčité (F3 MSY až F4 CSY), jíly štěrkovité (F2 CGY) nebo štěrky s příměsí jemnozrnné zeminy\n(G3 G-FY). Maximální mocnost zastižených navážek byla 1,0 m s průměrnou hodnotou cca 0,6 m.\nPůvodní kvartérní pokryv tvoří zeminy, které vznikají zvětráváním skalního podloží. Del",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nnepropustná vrstva – geomembrána je zatažena až pod drenážní potrubí. Drenážní potrubí bude pro\nzajištění jeho dlouhodobé funkce obaleno separačně filtrační geotextílií.\nPro bednění neviditelných částí opěrné zdi je stanovena kategorie povrchové úpravy C1d dle\nTKP PK, kap. 18. Bednění pohledových ploch bude provedeno celoplošnými vícevrstvými deskami se\nstrukturou dřeva, povrchově zp",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\n- Kruhová smyková plocha\nVšechny metody mezní rovnováhy předpokládají rozdělení zemního tělesa nad kruhovou\nsmykovou plochou na bloky (dělící roviny mezi bloky jsou vždy svislé). Statické schéma působících\nsil na blok je na následujícím obrázku.\nObr. 2 Statické schéma – Bishopova metoda\nZde Xi a Ei jsou smykové a normálové síly mezi bloky, Ti a Ni jsou smykové a normálové\nsíly na úse",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nNejčastěji bývají voleny polohy působišť jednotlivých sil nebo sklony sil mezi bloky. Řešení\nrovnováhy pak vede k iteračním postupům, kdy dopředu zvolené hodnoty musí jednak umožňovat\nsplnění rovnováhy sil a jednak zajišťovat kinematickou přípustnost získaného řešení.\nKonstrukce zdi byla posouzena s ohledem na zastižené geotechnické podmínky podle ČSN\nEN 1997-1, při které se postupuj",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\n6.2 Únosnost základové půdy\nPosouzení únosnosti základové půdy se provádí na síly získané ze všech podle vztahů:\nObr. 8.2.1 Napětí v základové spáře s konstantním průběhem\nStandardně je napětí v základové spáře uvažováno s konstantním průběhem na redukované\ndélce základu. Některé normy vyžadují pro posouzení napětí lichoběžníkový průběh. V tomto případě\nje posouzení provedeno pro nej",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\n7. Samotný výpočet\nPro výpočet opěrné stěny a celkové stability zářezu byly použity programy GEO5 – Úhlová\nzeď a GEO5 – Stabilita svahu od firmy FINE. Program GEO5 – Úhlová zeď je určen k návrhu a\nposouzení úhlových zdí na překlopení, posunutí a na únosnost základové spáry podle EN nebo\nklasickými způsoby (stupeň bezpečnosti, mezní stavy).\nProgram GEO5 - Stabilita svahu je určen k vý",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nKombinační součinitele pro proměnná zatížení\nTrvalá návrhová situace\nSoučinitel kvazistálé hodnoty : ψ = 0,30 [–]\n2\nMateriál konstrukce\nObjemová tíha γ = 23,00 kN/m3\nVýpočet betonových konstrukcí proveden podle normy EN 1992-1-1 (EC2).\nBeton: C 30/37\nVálcová pevnost v tlaku f = 30,00 MPa\nck\nPevnost v tahu f = 2,90 MPa\nctm\nModul pružnosti E = 33000,00 MPa\ncm\nVýztuž podélná: B500B\nMez ",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nTyp φ ef ν OCR K r\nČíslo Název Vzorek\nvýpočtu [°] [–] [–] [–]\n3 Ca2 soudržná - 0,30 - -\n4 Ca3 soudržná - 0,25 - -\nGeologický profil a přiřazení zemin\nMocnost vrstvy Hloubka\nČíslo Přiřazená zemina Vzorek\nt [m] z [m]\n1 4,65 0,00 .. 4,65 zásyp\n2 1,60 4,65 .. 6,25 Ca1d\n3 2,10 6,25 .. 8,35 Ca2\n4 - 8,35 ..  Ca3\nZaložení\nTyp založení : zemina - geologický profil\nTvar terénu\nTerén za konstr",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nNázev F hor Působiště F vert Působiště Koef. Koef. Koef.\n[kN/m] z [m] [kN/m] x [m] překl. posun. napětí\nTíh.- zeď 0,00 -1,49 75,90 1,22 1,000 1,000 1,350\nTíh.- zemina 0,00 -0,83 9,12 0,43 1,000 1,000 1,350\nTíh.- zemní klín 0,00 -1,22 27,60 1,79 1,000 1,000 1,350\nAktivní tlak 49,28 -1,50 69,31 2,11 1,350 1,350 1,350\nTlak vody 0,00 -4,50 0,00 1,30 1,000 1,000 1,350\núdržba 4,02 -2,35 3,",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nDimenzace čís. 1\nPosouzení dříku - přední výztuž\nSpočtené síly působící na konstrukci\nNázev F hor Působiště F vert Působiště Koef. Koef. Koef.\n[kN/m] z [m] [kN/m] x [m] moment norm.sila pos.sila\nTíh.- zeď 0,00 -1,97 41,05 0,23 1,000 1,350 1,000\nTlak v klidu 66,74 -1,32 0,00 0,45 1,350 1,000 1,350\nTlak vody 0,00 -3,95 0,00 0,45 1,000 1,000 1,000\núdržba 6,86 -2,22 0,00 0,45 1,500 0,000",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nZadaná plocha výztuže = 1407,4 mm2\nNutná plocha výztuže = 741,9 mm2\nŠířka průřezu = 1,00 m\nV ýška průřezu = 0,55 m\nStupeň vyztužení ρ = 0,29 % > 0,15 % = ρ\nmin\nPoloha neutrálné osy x = 0,04 m < 0,30 m = x\nmax\nPosouvající síla na mezi únosnosti V = 197,94 kN > 92,44 kN = V\nRd Ed\nMoment na mezi únosnosti M = 291,71 kNm > 64,44 kNm = M\nRd Ed\nPrůřez VYHOVUJE.\nPosouzení paty\nSpočtené síly",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nSoučinitele redukce zatížení (F)\nTrvalá návrhová situace\nStálé zatížení : γ = 1,35 [–] 1,00 [–]\nG\nProměnné zatížení : γ = 1,50 [–] 0,00 [–]\nQ\nZatížení vodou : γ = 1,35 [–]\nw\nSoučinitele redukce odporu (R)\nTrvalá návrhová situace\nSoučinitel redukce odporu na smyk. ploše : γ = 1,10 [–]\nRs\nKotvy\nM etodika posouzení : mezní stavy\nSoučinitele redukce\nSoučinitel spolehlivosti oceli : γ = 1",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nSouřadnice bodů rozhraní [m]\nČíslo Umístění rozhraní\nx z x z x z\n5 -11,25 -4,65 13,50 -4,65\n6 -11,25 -6,25 13,50 -6,25\n7 -11,25 -8,35 13,50 -8,35\nParametry zemin - efektivní napjatost\nφ ef c ef γ\nČíslo Název Vzorek\n[°] [kPa] [kN/m3]\n1 zásyp 30,00 0,00 19,00\n2 Ca1d 25,00 8,00 19,50\n3 Ca2 28,00 50,00 24,00\n4 Ca3 35,00 100,00 24,50\nParametry zemin - vztlak\nγ sat γ s n\nČíslo Název Vzorek",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nγ sat γ s n\nČíslo Název Vzorek\n[kN/m3] [kN/m3] [–]\n3 Ca2 24,00\n4 Ca3 24,50\nParametry zemin\nzásyp\nObjemová tíha : γ = 19,00 kN/m3\nNapjatost : efektivní\nSmyková pevnost : Mohr-Coulomb\nÚhel vnitřního tření : φ = 30,00 °\nef\nSoudržnost zeminy : c = 0,00 kPa\nef\nObj.tíha sat.zeminy : γ = 19,00 kN/m3\nsat\nCa1d\nObjemová tíha : γ = 19,50 kN/m3\nNapjatost : efektivní\nSmyková pevnost : Mohr-Coulom",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nSouřadnice bodů plochy [m] Přiřazená\nČíslo Umístění plochy\nx z x z zemina\n1 13,50 -3,95 13,50 -1,62 zásyp\n8,10 -1,62 0,00 0,00\n0,00 -3,95 1,45 -3,95\n2 1,45 -4,50 1,45 -3,95 Materiál konstrukce\n0,00 -3,95 0,00 0,00\n-0,45 0,00 -0,45 -3,40\n-0,45 -3,95 -1,30 -3,95\n-1,30 -4,50\n3 -1,30 -4,50 -1,30 -3,95 Ca1d\n-0,45 -3,95 -0,45 -3,40\n-11,25 -3,40 -11,25 -4,50\n4 13,50 -4,65 13,50 -3,95 zásyp\n",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nSouřadnice bodů plochy [m] Přiřazená\nČíslo Umístění plochy\nx z x z zemina\n7 -11,25 -8,35 -11,25 -13,35 Ca3\n13,50 -13,35 13,50 -8,35\nPřitížení\nUmístění Počátek Délka Šířka Sklon Velikost\nČíslo Typ Působení\nz [m] x [m] l [m] b [m] α [°] q, q 1 , f, F, x q 2 , z jednotka\n1 pásové proměnné na povrchu x = 0,50 l = 3,00 0,00 5,00 kN/m2\nNázvy přitížení\nČíslo Název\n1 údržba\nVoda\nT yp vody : ",
+      "Název akce: D6 Olšová Vrata – Žalmanov\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo\nStatický výpočet\nParametry smykové plochy\nPoloměr : R = 4,90 [m]\nSmyková plocha po optimalizaci.\nCelková tíha zeminy nad smykovou plochou: 496,56 kN/m\nPosouzení stability svahu (Bishop)\nSumace aktivních sil : F = 172,64 kN/m\na\nSumace pasivních sil : F = 341,21 kN/m\np\nMoment sesouvající : M = 845,95 kNm/m\na\nM oment vzdorující : M\np\n= 1519,96 kNm/m\nVyužití : 55,7 %\nStabilita svahu VYHOVUJE\n8. Závěr\nVýp"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C30/37",
+          "characteristic_strength": 30,
+          "cube_strength": 37,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C 30/37",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "jejich hlinitopísčitými až písčitými zvětralinami, se průtočnost T pohybuje v řádu okolo 10-4\naž 10-",
+          "volume_m3": null,
+          "area_m2": 7.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "30 3,95\n7 -0,45 3,95\n8 -0,45 0,00\nPočátek [0,0] je v nejhořejším pravém bodu zdi.\nPlocha řezu zdi = ",
+          "volume_m3": null,
+          "area_m2": 3.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 1997-1",
+        "ČSN EN 1997-2",
+        "ČSN 73 0031",
+        "ČSN 73 1000",
+        "ČSN EN 1536",
+        "ČSN EN 1537",
+        "ČSN 73 0037",
+        "ČSN EN 1990",
+        "ČSN EN 1992",
+        "ČSN EN 1997",
+        "ČSN 73 6101",
+        "ČSN EN 13670",
+        "ČSN 730037",
+        "TKP 30",
+        "EN 1997-1",
+        "EN 1997-2",
+        "EN 1990",
+        "EN 1992",
+        "EN 1997",
+        "EN 1992-1-1"
+      ],
+      "identification": {
+        "stavba": "D6 Olšová vrata - Žalmanov",
+        "misto": "D6 Olšová Vrata - Žalmanov",
+        "projektant": "SO: PROGEOCONT s.r.o",
+        "stupen_pd": "PDPS"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [
+          {
+            "element": "BETON",
+            "concrete_class": "C30/37",
+            "exposure_classes": [],
+            "max_wc_ratio": null,
+            "dmax_mm": null,
+            "consistency_class": null,
+            "scc": false,
+            "cover_min_mm": null,
+            "cover_nom_mm": null,
+            "max_penetration_mm": null,
+            "raw_text": "Beton: C 30/37",
+            "confidence": 1.0
+          }
+        ],
+        "notes": [],
+        "title_block": {
+          "stavba": "D6 Olšová Vrata – Žalmanov",
+          "objekt": "SO 250 – Zárubní zeď v km 6,500 – 7,000 D6 vpravo",
+          "obsah": null,
+          "stupen_pd": "PDPS",
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": null,
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": [
+          {
+            "element": "BETON",
+            "status": "warning",
+            "rule": "CSN_EN_206_EXPOSURE_MISSING",
+            "message": "BETON: chybí stupeň vlivu prostředí (XC/XD/XF/XA/XS)",
+            "norm": "ČSN EN 206"
+          }
+        ]
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

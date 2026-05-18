@@ -1,0 +1,104 @@
+{
+  "provenance": {
+    "source_file": "C2_katastr.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 616,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "1475/17 SOLAR DISPOREC s.r.o",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "260/8 Ing.arch. Jakub Volka, ČKA 03947",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 955,
+    "text_per_page_truncated": [
+      "1475/7\nLEGENDA HALA\nHRADEC KRÁLOVÉ\nNAVRHOVANÝ OBJEKT\nSTÁVAJÍCÍ OBJEKTY\nVážní 857, 50003 Hradec Králové - Slezské\nHRANICE ŘEŠENÉHO POZEMKU Předměstí\n1475/13\nSTUPEŇ PROJEKTU +0,000 = 234,69 mnm Bpv\nDOKUMENTACE PRO POVOLENÍ ZÁMĚRU\n(DPZ)\n5\n7\n7,\n3\nODPOVĚDNÝ PROJEKTANT\n260/8 Ing.arch. Jakub Volka, ČKA 03947\n12,59\n733 575 363, jakub.volka@basepoint.cz\n2659\n19,31\n260/12 8\n9\n2\n7, 11,75\nVYPRACOVAL\nAnna Abrahámová\nINVESTOR\n1475/17 SOLAR DISPOREC s.r.o.\nMalostranské náměstí 5/28, Malá Strana\n118 00 Praha 1\n"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "1475/17 SOLAR DISPOREC s.r.o",
+        "projektant": "260/8 Ing.arch. Jakub Volka, ČKA 03947"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

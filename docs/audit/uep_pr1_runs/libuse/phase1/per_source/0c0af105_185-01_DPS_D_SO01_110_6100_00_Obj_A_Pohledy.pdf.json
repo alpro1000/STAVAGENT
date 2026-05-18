@@ -1,0 +1,153 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 2388,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 0.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "00 Praha 8\n8 W 1 8 W 1 8 W 1 8 W 1 8 W 1 +9,169 tel.: +420 731 441 125\nprojektant / designer\nTP TP\n0",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 5223,
+    "text_per_page_truncated": [
+      "A\n+14,425\nA-\nSTŘECHA +14,425\nA-\nSTŘECHA\nTP\n28 +12,490\nF\n12\nF\nTP TP TP 08\n03a F 03a F 03a F\n13 13 13 W\nW 05\n03 +9,750 W\n04\n0 C 4 W a L 3 P 0 8 W 1 0 C 4 W a L 3 P 0 8 W 1 0 C 4 W a +9,750 L 3 P 0 +9,169\n+7,350\nA-3NP +8,750 LP\n60 +7,350\nF F +8,250 W A-3NP\n16 16 W 05\n03 +6,600\nW W TP\n83 83\nLP LP LP 01a\nCW 30 CW 30 CW 30\n04a 04a 04a +5,515 LP +6,600\nC 1 W 4 30 +5,200\nTP TP TP TP\n01a LP 01a 01a LP 01a +4,200\n62 62 A-2NP +5,600\n+4,200\nF F +5,100 A-2NP\n16 16\nF LEGENDA TAGŮ\nF +3,200 16\n08\n+3,650\n+2,000 "
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "00 Praha 8\n8 W 1 8 W 1 8 W 1 8 W 1 8 W 1 +9,169 tel.: +420 731 441 125\nprojektant / designer\nTP TP\n0",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 0.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

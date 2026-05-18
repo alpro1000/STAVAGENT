@@ -1,0 +1,95 @@
+{
+  "provenance": {
+    "source_file": "C.01 - Situační výkres širších vztahů _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 434,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "revize datum popis",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 163,
+    "text_per_page_truncated": [
+      "legenda\nnavrhovaná stavba\nrevize datum popis\n02\n01\n00 09/2025 vydání dokumentace\nparé\nnázev výkresu\nSituační výkres širších vztahů\nměřítko číslo výkresu\n1:5000 C.1"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "stavba": "revize datum popis"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

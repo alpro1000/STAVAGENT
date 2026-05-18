@@ -1,0 +1,2858 @@
+{
+  "provenance": {
+    "source_file": "A105_zaklady.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 772,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 785,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 40,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "0",
+          "A-ANNO-DIMS",
+          "A-ANNO-DIMS-150",
+          "A-ANNO-NOTE",
+          "A-DETL",
+          "A-DETL-1",
+          "A-DETL-2",
+          "A-DETL-3",
+          "A-DETL-4",
+          "A-DETL-5",
+          "A-DETL-THIN",
+          "A-DETL-THIN-1",
+          "A-FLOR",
+          "A-GENM",
+          "A-GENM-1",
+          "A-GENM-2",
+          "A-WALL",
+          "A-WALL-1",
+          "A-WALL-PATT",
+          "A-WALL-PATT-1",
+          "Defpoints",
+          "G-ANNO-DIMS",
+          "G-ANNO-DIMS-1",
+          "G-ANNO-NPLT",
+          "G-ANNO-SYMB",
+          "G-ANNO-SYMB-1",
+          "G-ANNO-SYMB-2",
+          "G-ANNO-TEXT",
+          "G-ANNO-TEXT-1",
+          "G-ANNO-TTLB",
+          "G-ANNO-TTLB-WIDE",
+          "Nedefinovaný_Trubky-tvarovka",
+          "S-FNDN",
+          "S-GRID",
+          "S-GRID-1",
+          "S-GRID-IDEN",
+          "S-GRID-IDEN-1",
+          "Trubky-tvarovka",
+          "Trubky-tvarovka-1",
+          "Vlastní 1_A-DETL-GENF"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 92,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-ZÁKLADY",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy",
+          "DIMBLOCK1-základy",
+          "DIMBLOCK10-základy",
+          "DIMBLOCK11-základy",
+          "DIMBLOCK12-základy",
+          "DIMBLOCK13-základy",
+          "DIMBLOCK14-základy",
+          "DIMBLOCK15-základy",
+          "DIMBLOCK16-základy",
+          "DIMBLOCK17-základy",
+          "DIMBLOCK18-základy",
+          "DIMBLOCK19-základy",
+          "DIMBLOCK2-základy",
+          "DIMBLOCK20-základy",
+          "DIMBLOCK21-základy",
+          "DIMBLOCK22-základy",
+          "DIMBLOCK23-základy",
+          "DIMBLOCK24-základy",
+          "DIMBLOCK25-základy",
+          "DIMBLOCK26-základy",
+          "DIMBLOCK27-základy",
+          "DIMBLOCK28-základy",
+          "DIMBLOCK29-základy",
+          "DIMBLOCK3-základy",
+          "DIMBLOCK30-základy",
+          "DIMBLOCK31-základy",
+          "DIMBLOCK32-základy",
+          "DIMBLOCK33-základy",
+          "DIMBLOCK34-základy",
+          "DIMBLOCK35-základy",
+          "DIMBLOCK36-základy",
+          "DIMBLOCK37-základy",
+          "DIMBLOCK38-základy",
+          "DIMBLOCK39-základy",
+          "DIMBLOCK4-základy",
+          "DIMBLOCK40-základy",
+          "DIMBLOCK41-základy",
+          "DIMBLOCK42-základy",
+          "DIMBLOCK43-základy",
+          "DIMBLOCK44-základy",
+          "DIMBLOCK45-základy",
+          "DIMBLOCK46-základy",
+          "DIMBLOCK47-základy",
+          "DIMBLOCK48-základy",
+          "DIMBLOCK49-základy",
+          "DIMBLOCK5-základy",
+          "DIMBLOCK50-základy"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": -204.1837564750862,
+        "y_min_m": -75.21783184668571,
+        "x_max_m": 212.60783521291822,
+        "y_max_m": 159.3428470565122,
+        "width_m": 416.7915916880044,
+        "height_m": 234.56067890319792
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-DIMS",
+      "value": {
+        "DIMENSION": 79
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 79
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-1",
+      "value": {
+        "LINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-2",
+      "value": {
+        "LINE": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-3",
+      "value": {
+        "LINE": 5
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 5
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-4",
+      "value": {
+        "LINE": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-5",
+      "value": {
+        "LINE": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN",
+      "value": {
+        "LINE": 98
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 98
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN-1",
+      "value": {
+        "LINE": 16
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 16
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR",
+      "value": {
+        "LINE": 9
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 9
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-1",
+      "value": {
+        "ARC": 4,
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 7
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-1",
+      "value": {
+        "LINE": 8
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 8
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-PATT-1",
+      "value": {
+        "HATCH": 4,
+        "HATCH_paths=1": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 8
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "INSERT": 32
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 32
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "CIRCLE": 32,
+        "HATCH": 32,
+        "HATCH_paths=1": 32,
+        "LINE": 64,
+        "MTEXT": 32
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 192
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB",
+      "value": {
+        "INSERT": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "LINE": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "MTEXT": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "MTEXT": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "MTEXT": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Nedefinovaný_Trubky-tvarovka",
+      "value": {
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-FNDN",
+      "value": {
+        "LINE": 201
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 201
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-1",
+      "value": {
+        "LINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN",
+      "value": {
+        "INSERT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "MTEXT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Trubky-tvarovka",
+      "value": {
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF",
+      "value": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-1",
+      "value": {
+        "count": 4,
+        "sum_m": 88.903
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-2",
+      "value": {
+        "count": 3,
+        "sum_m": 101.404
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-3",
+      "value": {
+        "count": 5,
+        "sum_m": 11.264
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-4",
+      "value": {
+        "count": 2,
+        "sum_m": 2.0
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-5",
+      "value": {
+        "count": 2,
+        "sum_m": 2.0
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN",
+      "value": {
+        "count": 98,
+        "sum_m": 101.694
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN-1",
+      "value": {
+        "count": 16,
+        "sum_m": 6.358
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-FLOR",
+      "value": {
+        "count": 9,
+        "sum_m": 47.191
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-WALL-1",
+      "value": {
+        "count": 8,
+        "sum_m": 183.73
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 64,
+        "sum_m": 89.58
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "count": 10,
+        "sum_m": 29.891
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "S-FNDN",
+      "value": {
+        "count": 201,
+        "sum_m": 113.189
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "S-GRID-1",
+      "value": {
+        "count": 12,
+        "sum_m": 384.929
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-základy",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Osnova - 6mm-307864-základy",
+      "value": {
+        "count": 24,
+        "by_layer": {
+          "S-GRID-IDEN": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Výšková kóta - Základová-780896-základy",
+      "value": {
+        "count": 32,
+        "by_layer": {
+          "G-ANNO-DIMS": 32
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-776420-základy",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-V1-základy",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-776681-základy",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "Trubky-tvarovka": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-777689-základy",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Řez - Velká značka-308779-základy",
+      "value": {
+        "count": 10,
+        "by_layer": {
+          "G-ANNO-SYMB": 10
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 32,
+        "by_type": {
+          "MTEXT": 32
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "-1.300\n-1.900"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "count": 10,
+        "by_type": {
+          "MTEXT": 10
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "count": 6,
+        "by_type": {
+          "MTEXT": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "ATYPICKÝ ZÁKLAD MOŽNO "
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "count": 12,
+        "by_type": {
+          "MTEXT": 12
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "LEGENDA MATERIÁL"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "count": 24,
+        "by_type": {
+          "MTEXT": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "count",
+      "value": 79,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "0",
+      "A-ANNO-DIMS",
+      "A-ANNO-DIMS-150",
+      "A-ANNO-NOTE",
+      "A-DETL",
+      "A-DETL-1",
+      "A-DETL-2",
+      "A-DETL-3",
+      "A-DETL-4",
+      "A-DETL-5",
+      "A-DETL-THIN",
+      "A-DETL-THIN-1",
+      "A-FLOR",
+      "A-GENM",
+      "A-GENM-1",
+      "A-GENM-2",
+      "A-WALL",
+      "A-WALL-1",
+      "A-WALL-PATT",
+      "A-WALL-PATT-1",
+      "Defpoints",
+      "G-ANNO-DIMS",
+      "G-ANNO-DIMS-1",
+      "G-ANNO-NPLT",
+      "G-ANNO-SYMB",
+      "G-ANNO-SYMB-1",
+      "G-ANNO-SYMB-2",
+      "G-ANNO-TEXT",
+      "G-ANNO-TEXT-1",
+      "G-ANNO-TTLB",
+      "G-ANNO-TTLB-WIDE",
+      "Nedefinovaný_Trubky-tvarovka",
+      "S-FNDN",
+      "S-GRID",
+      "S-GRID-1",
+      "S-GRID-IDEN",
+      "S-GRID-IDEN-1",
+      "Trubky-tvarovka",
+      "Trubky-tvarovka-1",
+      "Vlastní 1_A-DETL-GENF"
+    ],
+    "block_definitions": [
+      "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-ZÁKLADY",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy",
+      "DIMBLOCK1-základy",
+      "DIMBLOCK10-základy",
+      "DIMBLOCK11-základy",
+      "DIMBLOCK12-základy",
+      "DIMBLOCK13-základy",
+      "DIMBLOCK14-základy",
+      "DIMBLOCK15-základy",
+      "DIMBLOCK16-základy",
+      "DIMBLOCK17-základy",
+      "DIMBLOCK18-základy",
+      "DIMBLOCK19-základy",
+      "DIMBLOCK2-základy",
+      "DIMBLOCK20-základy",
+      "DIMBLOCK21-základy",
+      "DIMBLOCK22-základy",
+      "DIMBLOCK23-základy",
+      "DIMBLOCK24-základy",
+      "DIMBLOCK25-základy",
+      "DIMBLOCK26-základy",
+      "DIMBLOCK27-základy",
+      "DIMBLOCK28-základy",
+      "DIMBLOCK29-základy",
+      "DIMBLOCK3-základy",
+      "DIMBLOCK30-základy",
+      "DIMBLOCK31-základy",
+      "DIMBLOCK32-základy",
+      "DIMBLOCK33-základy",
+      "DIMBLOCK34-základy",
+      "DIMBLOCK35-základy",
+      "DIMBLOCK36-základy",
+      "DIMBLOCK37-základy",
+      "DIMBLOCK38-základy",
+      "DIMBLOCK39-základy",
+      "DIMBLOCK4-základy",
+      "DIMBLOCK40-základy",
+      "DIMBLOCK41-základy",
+      "DIMBLOCK42-základy",
+      "DIMBLOCK43-základy",
+      "DIMBLOCK44-základy",
+      "DIMBLOCK45-základy",
+      "DIMBLOCK46-základy",
+      "DIMBLOCK47-základy",
+      "DIMBLOCK48-základy",
+      "DIMBLOCK49-základy",
+      "DIMBLOCK5-základy",
+      "DIMBLOCK50-základy",
+      "DIMBLOCK51-základy",
+      "DIMBLOCK52-základy",
+      "DIMBLOCK53-základy",
+      "DIMBLOCK54-základy",
+      "DIMBLOCK55-základy",
+      "DIMBLOCK56-základy",
+      "DIMBLOCK57-základy",
+      "DIMBLOCK58-základy",
+      "DIMBLOCK59-základy",
+      "DIMBLOCK6-základy",
+      "DIMBLOCK60-základy",
+      "DIMBLOCK61-základy",
+      "DIMBLOCK62-základy",
+      "DIMBLOCK63-základy",
+      "DIMBLOCK64-základy",
+      "DIMBLOCK65-základy",
+      "DIMBLOCK66-základy",
+      "DIMBLOCK67-základy",
+      "DIMBLOCK68-základy",
+      "DIMBLOCK69-základy",
+      "DIMBLOCK7-základy",
+      "DIMBLOCK70-základy",
+      "DIMBLOCK71-základy",
+      "DIMBLOCK72-základy",
+      "DIMBLOCK73-základy",
+      "DIMBLOCK74-základy",
+      "DIMBLOCK75-základy",
+      "DIMBLOCK76-základy",
+      "DIMBLOCK77-základy",
+      "DIMBLOCK78-základy",
+      "DIMBLOCK79-základy",
+      "DIMBLOCK8-základy",
+      "DIMBLOCK9-základy",
+      "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-základy",
+      "Osnova - 6mm-307864-základy",
+      "Výškové kóty - Výšková kóta - Základová-780896-základy",
+      "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-776420-základy",
+      "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-V1-základy",
+      "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-776681-základy",
+      "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-777689-základy",
+      "_Oblique",
+      "Řez - Velká značka-308779-základy"
+    ],
+    "entity_counts_by_layer": {
+      "S-FNDN": {
+        "LINE": 201
+      },
+      "A-WALL-PATT-1": {
+        "HATCH": 4,
+        "HATCH_paths=1": 4
+      },
+      "A-WALL-1": {
+        "LINE": 8
+      },
+      "A-GENM-1": {
+        "ARC": 4,
+        "INSERT": 3
+      },
+      "A-FLOR": {
+        "LINE": 9
+      },
+      "Trubky-tvarovka": {
+        "INSERT": 3
+      },
+      "Nedefinovaný_Trubky-tvarovka": {
+        "INSERT": 3
+      },
+      "A-GENM": {
+        "INSERT": 1
+      },
+      "A-DETL-1": {
+        "LINE": 4
+      },
+      "A-DETL-2": {
+        "LINE": 3
+      },
+      "A-DETL-THIN": {
+        "LINE": 98
+      },
+      "A-DETL-3": {
+        "LINE": 5
+      },
+      "Vlastní 1_A-DETL-GENF": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "A-DETL-THIN-1": {
+        "LINE": 16
+      },
+      "A-DETL-4": {
+        "LINE": 2
+      },
+      "A-DETL-5": {
+        "LINE": 2
+      },
+      "S-GRID-IDEN": {
+        "INSERT": 24
+      },
+      "S-GRID-IDEN-1": {
+        "MTEXT": 24
+      },
+      "S-GRID-1": {
+        "LINE": 12
+      },
+      "G-ANNO-SYMB-1": {
+        "LINE": 10
+      },
+      "G-ANNO-SYMB": {
+        "INSERT": 10
+      },
+      "G-ANNO-SYMB-2": {
+        "MTEXT": 10
+      },
+      "A-ANNO-DIMS": {
+        "DIMENSION": 79
+      },
+      "G-ANNO-DIMS": {
+        "INSERT": 32
+      },
+      "G-ANNO-DIMS-1": {
+        "CIRCLE": 32,
+        "HATCH": 32,
+        "HATCH_paths=1": 32,
+        "LINE": 64,
+        "MTEXT": 32
+      },
+      "G-ANNO-TEXT": {
+        "MTEXT": 6
+      },
+      "G-ANNO-TEXT-1": {
+        "MTEXT": 12
+      }
+    },
+    "closed_areas_by_layer": {},
+    "open_lengths_by_layer": {
+      "S-FNDN": [
+        0.1,
+        0.377,
+        1.25,
+        0.377,
+        0.1,
+        1.25,
+        0.375,
+        0.375,
+        1.25,
+        0.375,
+        0.375,
+        0.1,
+        0.377,
+        1.25,
+        0.377,
+        0.1,
+        1.25,
+        0.375,
+        0.375,
+        1.25,
+        0.375,
+        0.375,
+        0.1,
+        0.377,
+        1.25,
+        0.377,
+        0.1,
+        1.25,
+        0.375,
+        0.375,
+        1.25,
+        0.375,
+        0.375,
+        0.1,
+        0.377,
+        1.25,
+        0.377,
+        0.1,
+        1.25,
+        0.375,
+        0.375,
+        1.25,
+        0.375,
+        0.375,
+        0.395,
+        1.25,
+        0.375,
+        0.375,
+        0.377,
+        0.1,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        0.375,
+        0.375,
+        1.25,
+        1.25,
+        0.375,
+        0.375,
+        0.375,
+        0.375,
+        0.375,
+        0.375,
+        1.25,
+        1.25,
+        0.44,
+        0.1,
+        0.377,
+        0.375,
+        0.375,
+        1.25,
+        1.5,
+        0.069,
+        0.1,
+        0.502,
+        1.014,
+        0.1,
+        0.069,
+        0.837,
+        0.502,
+        1.5,
+        0.502,
+        0.1,
+        0.069,
+        1.5,
+        0.069,
+        0.1,
+        0.502,
+        0.529,
+        0.471,
+        1.5,
+        0.5,
+        0.5,
+        0.498,
+        0.502,
+        1.5,
+        1.5,
+        1.5,
+        0.498,
+        0.502,
+        1.5,
+        0.502,
+        0.498,
+        1.5,
+        0.498,
+        0.502,
+        1.5,
+        0.502,
+        0.498,
+        1.5,
+        0.498,
+        0.502,
+        1.5,
+        0.502,
+        0.498,
+        1.5,
+        0.498,
+        0.502,
+        1.5,
+        0.502,
+        0.498,
+        0.5,
+        0.5,
+        1.5,
+        1.446,
+        0.432,
+        0.5,
+        0.15,
+        0.15,
+        0.8,
+        0.15,
+        0.15,
+        0.8,
+        1.5,
+        1.5,
+        0.5,
+        0.5,
+        0.502,
+        0.1,
+        0.069,
+        1.5,
+        0.093,
+        0.1,
+        0.479,
+        1.5,
+        0.479,
+        0.1,
+        0.093,
+        1.5,
+        0.093,
+        0.1,
+        0.479,
+        1.5,
+        0.479,
+        0.1,
+        0.093
+      ],
+      "A-WALL-1": [
+        19.042,
+        18.042,
+        27.89,
+        26.89,
+        19.042,
+        18.042,
+        26.89,
+        27.89
+      ],
+      "A-FLOR": [
+        2.113,
+        3.751,
+        0.297,
+        3.213,
+        0.426,
+        4.172,
+        23.063,
+        0.128,
+        10.028
+      ],
+      "A-DETL-1": [
+        17.807,
+        18.985,
+        28.995,
+        23.116
+      ],
+      "A-DETL-2": [
+        47.132,
+        26.755,
+        27.517
+      ],
+      "A-DETL-THIN": [
+        7.001,
+        7.001,
+        7.001,
+        7.001,
+        7.001,
+        0.441,
+        1.2,
+        0.441,
+        0.441,
+        1.2,
+        0.441,
+        0.46,
+        1.2,
+        0.46,
+        0.46,
+        1.197,
+        0.46,
+        0.52,
+        1.2,
+        0.52,
+        0.44,
+        1.2,
+        0.44,
+        0.44,
+        1.2,
+        0.44,
+        0.44,
+        1.2,
+        0.44,
+        0.44,
+        1.2,
+        0.44,
+        0.5,
+        1.2,
+        0.5,
+        0.48,
+        1.2,
+        0.48,
+        0.5,
+        1.2,
+        0.5,
+        0.44,
+        1.197,
+        0.44,
+        0.5,
+        1.2,
+        0.5,
+        0.5,
+        1.2,
+        0.5,
+        0.42,
+        1.204,
+        0.42,
+        0.48,
+        1.205,
+        0.48,
+        0.48,
+        1.205,
+        0.48,
+        0.48,
+        1.205,
+        0.48,
+        0.5,
+        1.2,
+        0.5,
+        0.5,
+        1.2,
+        0.5,
+        0.5,
+        1.2,
+        0.5,
+        0.5,
+        1.2,
+        0.5,
+        0.46,
+        1.2,
+        0.46,
+        0.52,
+        1.194,
+        0.52,
+        0.52,
+        1.2,
+        0.52,
+        0.52,
+        1.198,
+        0.52,
+        0.54,
+        1.2,
+        0.54,
+        0.5,
+        1.2,
+        0.5,
+        0.4,
+        1.2,
+        0.4,
+        0.42,
+        1.2,
+        0.42
+      ],
+      "A-DETL-3": [
+        3.9,
+        5.244,
+        0.46,
+        1.2,
+        0.46
+      ],
+      "A-DETL-THIN-1": [
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        0.24,
+        0.24,
+        0.34,
+        0.398,
+        0.08,
+        0.08,
+        0.01,
+        0.01
+      ],
+      "A-DETL-4": [
+        1.0,
+        1.0
+      ],
+      "A-DETL-5": [
+        1.0,
+        1.0
+      ],
+      "S-GRID-1": [
+        37.417,
+        37.417,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        37.417,
+        37.417,
+        37.417,
+        37.417
+      ],
+      "G-ANNO-SYMB-1": [
+        4.656,
+        2.378,
+        2.394,
+        2.174,
+        4.656,
+        2.378,
+        2.394,
+        2.174,
+        4.407,
+        2.281
+      ],
+      "G-ANNO-DIMS-1": [
+        1.186,
+        0.723,
+        1.142,
+        2.084,
+        1.424,
+        1.98,
+        1.161,
+        1.757,
+        1.194,
+        2.144,
+        1.214,
+        2.213,
+        1.151,
+        0.946,
+        1.144,
+        2.369,
+        1.157,
+        0.713,
+        1.21,
+        0.939,
+        1.141,
+        1.052,
+        1.22,
+        0.685,
+        1.107,
+        1.828,
+        1.214,
+        2.637,
+        1.16,
+        1.2,
+        1.239,
+        0.934,
+        1.211,
+        1.487,
+        1.239,
+        1.821,
+        1.174,
+        1.612,
+        1.108,
+        2.764,
+        1.178,
+        0.971,
+        1.186,
+        0.786,
+        1.191,
+        0.755,
+        1.192,
+        0.732,
+        1.264,
+        1.963,
+        1.253,
+        2.694,
+        1.115,
+        1.913,
+        1.26,
+        2.199,
+        1.266,
+        1.923,
+        1.223,
+        1.527,
+        1.16,
+        2.254,
+        1.215,
+        1.681
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy",
+        "layer": "A-GENM-1",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy",
+        "layer": "A-GENM-1",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy",
+        "layer": "A-GENM-1",
+        "count": 1
+      },
+      {
+        "block": "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-základy",
+        "layer": "A-GENM",
+        "count": 1
+      },
+      {
+        "block": "Osnova - 6mm-307864-základy",
+        "layer": "S-GRID-IDEN",
+        "count": 24
+      },
+      {
+        "block": "Výškové kóty - Výšková kóta - Základová-780896-základy",
+        "layer": "G-ANNO-DIMS",
+        "count": 32
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-776420-základy",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 2
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-V1-základy",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-776681-základy",
+        "layer": "Trubky-tvarovka",
+        "count": 2
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-777689-základy",
+        "layer": "Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Řez - Velká značka-308779-základy",
+        "layer": "G-ANNO-SYMB",
+        "count": 10
+      }
+    ],
+    "text_by_layer": {
+      "S-GRID-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            180.9653278464635,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            180.9653278464634,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            183.7211528464635,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            183.7211528464635,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            176.0569810775498,
+            153.4670673509143
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            204.59431694539512,
+            153.46706735091422
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            176.0569810775498,
+            147.3670673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            204.59431694539512,
+            147.36706735091408
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            176.0569810775498,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            204.59431694539512,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            176.0569810775498,
+            138.27206735091443
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            204.59431694539512,
+            138.27206735091428
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            176.0569810775498,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            204.59431694539512,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            176.0569810775497,
+            126.0770673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            204.59431694539512,
+            126.0770673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            187.7211528464634,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            187.7211528464635,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            192.7134264256047,
+            120.12186817365271
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            192.7134264256047,
+            159.3393252433939
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            196.7421528464634,
+            159.3428470565121
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            196.74215284646348,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            199.5326278464634,
+            159.3428470565121
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            199.5326278464634,
+            120.125389986771
+          ]
+        }
+      ],
+      "G-ANNO-SYMB-2": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            202.74296748406059,
+            129.4195002757474
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            179.7047575777347,
+            129.4195002757475
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            186.4355735329954,
+            124.2498643025541
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            186.4355735329954,
+            153.5010358112552
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "A-VYKOP",
+          "text": "A-VYKOP",
+          "insert": [
+            200.1897647986357,
+            132.5086112838129
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "A-VYKOP",
+          "text": "A-VYKOP",
+          "insert": [
+            179.99285489230962,
+            132.5086112838129
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "B_VYKOP",
+          "text": "B_VYKOP",
+          "insert": [
+            184.09739242919778,
+            124.22898768555591
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "B_VYKOP",
+          "text": "B_VYKOP",
+          "insert": [
+            184.0973924291977,
+            150.47295919425702
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "C_VYKOP",
+          "text": "C_VYKOP",
+          "insert": [
+            199.9993212911454,
+            119.5785976987995
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "C_VYKOP",
+          "text": "C_VYKOP",
+          "insert": [
+            199.9993212911454,
+            153.7771499640344
+          ]
+        }
+      ],
+      "G-ANNO-DIMS-1": [
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            182.90776675050708,
+            147.65258680797152
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            197.0690323530663,
+            149.4842140315581
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            198.0011758482417,
+            144.88794796880342
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            182.92870973350063,
+            149.4999318664588
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            177.84386399253572,
+            155.53633267008462
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            177.7885586231421,
+            152.1613873161354
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            197.56250021161932,
+            142.50657028860869
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            197.59649858139952,
+            143.7183065129995
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            197.5515554942657,
+            137.5455028627969
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            197.5605297755018,
+            139.6119452182073
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            197.613438599213,
+            133.8574342040406
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            197.3451089270057,
+            131.4467193883506
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            201.89980259779,
+            124.14705139518901
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            201.8922176554128,
+            122.7665918825404
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            194.81454090366182,
+            127.6197810957225
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            191.4563076661604,
+            127.6285037794562
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            188.7952665597101,
+            128.1205491067638
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            185.3585291686047,
+            128.1588842745336
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            183.0395046367797,
+            128.1768996343356
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            183.0595788176646,
+            129.6828393650959
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            185.0967203600818,
+            151.8170447838801
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            188.5072896999861,
+            151.9374178194061
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            193.54289501949182,
+            151.9775421645814
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.900",
+          "text": "-0.700\n-1.900",
+          "insert": [
+            197.5051741055571,
+            152.0477597686383
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            183.5946539600574,
+            139.6706895815028
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            183.5748671538561,
+            138.49007681148763
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            183.6144407662588,
+            137.19733880633132
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            183.58146275592318,
+            135.9111964032422
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            183.5925630617489,
+            134.2015704571902
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            183.5470534074858,
+            132.9045453106904
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.700\\P-1.300",
+          "text": "-0.700\n-1.300",
+          "insert": [
+            201.9006860555433,
+            155.9037242436705
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300\\P-1.900",
+          "text": "-1.300\n-1.900",
+          "insert": [
+            201.96047281935103,
+            154.722235935534
+          ]
+        }
+      ],
+      "G-ANNO-TEXT": [
+        {
+          "type": "MTEXT",
+          "raw": "ATYPICKÝ ZÁKLAD MOŽNO ",
+          "text": "ATYPICKÝ ZÁKLAD MOŽNO ",
+          "insert": [
+            185.5681197675469,
+            145.4435520216016
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "VYM",
+          "text": "VYM",
+          "insert": [
+            185.5681197675469,
+            145.0268332716016
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ĚNIT ZA PILOTU O PRŮMĚRU ",
+          "text": "ĚNIT ZA PILOTU O PRŮMĚRU ",
+          "insert": [
+            186.3519478925469,
+            145.0268332716016
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "800mm DÉLKY 8,0m (VELMI HRUBÝ ",
+          "text": "800mm DÉLKY 8,0m (VELMI HRUBÝ ",
+          "insert": [
+            185.5681197675469,
+            144.6101145216016
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ODHAD PO PŘEDÁNÍ IGP BUDE ",
+          "text": "ODHAD PO PŘEDÁNÍ IGP BUDE ",
+          "insert": [
+            185.5681197675469,
+            144.1933957716016
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "PILOTA NADIMENZOVÁNA",
+          "text": "PILOTA NADIMENZOVÁNA",
+          "insert": [
+            185.5681197675469,
+            143.77667702160159
+          ]
+        }
+      ],
+      "G-ANNO-TEXT-1": [
+        {
+          "type": "MTEXT",
+          "raw": "LEGENDA MATERIÁL",
+          "text": "LEGENDA MATERIÁL",
+          "insert": [
+            209.8956822058498,
+            4.691553421647499
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Ů:",
+          "text": "Ů:",
+          "insert": [
+            211.9190832475164,
+            4.691553421647499
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Železobeton ",
+          "text": "Železobeton ",
+          "insert": [
+            210.9965227129182,
+            4.252590218874338
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Stávající areálová splašková kan., p",
+          "text": "Stávající areálová splašková kan., p",
+          "insert": [
+            210.9965227129182,
+            3.332045596595007
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ředpoklad ",
+          "text": "ředpoklad ",
+          "insert": [
+            212.60783521291822,
+            3.332045596595007
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "DN300",
+          "text": "DN300",
+          "insert": [
+            210.9965227129182,
+            3.16998830492834
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Stávající areálová deš",
+          "text": "Stávající areálová deš",
+          "insert": [
+            210.9965227129182,
+            2.861156944150983
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ťová kan",
+          "text": "ťová kan",
+          "insert": [
+            211.9897024004182,
+            2.861156944150983
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "., p",
+          "text": "., p",
+          "insert": [
+            212.3809550045849,
+            2.861156944150983
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ředpoklad ",
+          "text": "ředpoklad ",
+          "insert": [
+            212.5198612545849,
+            2.861156944150983
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "DN300",
+          "text": "DN300",
+          "insert": [
+            210.9965227129182,
+            2.699099652484316
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Beton prostý",
+          "text": "Beton prostý",
+          "insert": [
+            210.9965227129182,
+            3.7817015664303124
+          ]
+        }
+      ]
+    },
+    "dimensions": [
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.4999999999999709,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 26.890000000000057,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5000000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 26.890000000000093,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 26.890000000000132,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.100000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097499999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.9974999999999707,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097500000000175,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097499999999927,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 27.39000000000012,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.7699999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.000000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.0,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.9999999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.770000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 18.53999999999997,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.500000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.597499999999898,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.500000000000015,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.597500000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.500000000000058,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.497499999999913,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.5975000000000295,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.6000000000000005,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.619999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.799999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.199999999999913,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000873,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.2,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000582,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.2,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.622499999998603,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.12499999999994181,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.250000000000058,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.12499999999994181,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1225000000013679,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.250000000000058,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1274999999985448,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1225000000013679,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.249999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1274999999986321,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1225000000012806,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.250000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1274999999986321,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1225000000013679,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.249999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.12749999999866118,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.9975000000014843,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5024999999985448,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1225000000012515,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.25,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.12749999999866118,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1249999999999709,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.25,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.1249999999999709,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.6199999999999128,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000001164,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.199999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.200000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7999999999999418,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.2,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000582,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.6200000000000871,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999913,
+        "text_override": null
+      }
+    ],
+    "block_attribs": [],
+    "bbox": {
+      "x_min_m": -204.1837564750862,
+      "y_min_m": -75.21783184668571,
+      "x_max_m": 212.60783521291822,
+      "y_max_m": 159.3428470565122,
+      "width_m": 416.7915916880044,
+      "height_m": 234.56067890319792
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

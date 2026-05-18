@@ -1,0 +1,131 @@
+{
+  "provenance": {
+    "source_file": "01.02 - JES.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 451,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 368.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "se st. p. č. 1022, na které stojí budova\nvedená jako rodinný dům. Obě parcely mají dohromady výměru ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 289/1995 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "je umístěna ve velmi prudkém svahu, k jihu se svažujícího",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 3,
+    "char_count_total": 8596,
+    "text_per_page_truncated": [
+      "Městský úřad Ostrov\nodbor životního prostředí\nVáš dopis/ze dne: z 17. 9. 2025\nSpis. značka: ŽP/45038/25\nČ. j.: ŽP/46810/25\nVyřizuje: Mgr. Matylda Šimková\nE-mail: msimkova@ostrov.cz\nTelefon: 354 224 834\nDne: 26. 9. 2025\nŘízení sp. zn. ISSŘ: -\nZáměr ISSŘ: Z/2025/172750\nMěstský úřad Ostrov jako věcně příslušný orgán pro vydání jednotného environmentálního stanoviska\ndle § 15 písm. a) zákona č. 148/2023 Sb. o jednotném environmentálním stanovisku, ve znění pozdějších\npředpisů (dále jen „ZJES“) a mís",
+      "Spis. zn.: ŽP/45038/25, č. j. ŽP/46810/25 2 z 3\nSouhlas se uděluje za těchto podmínek:\n1. Výše uvedené lesní pozemky a porosty na nich nebudou stavbou, jakkoliv dotčeny a při stavbě bude\npostupováno dle zákona č. 289/1995 Sb., o lesích a o změně a doplnění některých zákonů (lesní zá-\nkon), v pozdějším znění.\n2. Stavba bude realizována dle předloženého návrhu, případné změny v projektu, které by mohly mít vliv\nna lesní pozemky, budou projednány s orgánem státní správy lesů.\nSouhlas je udělen na d",
+      "Spis. zn.: ŽP/45038/25, č. j. ŽP/46810/25 3 z 3\nVodní hospodářství (oprávněná úřední osoba: Ing. Jindřich Dvořák)\nK výše uvedenému záměru nemáme námitky. Nebudou dotčeny zájmy chráněné zákonem č. 254/2001\nSb., o vodách a o změně některých zákonů, ve znění pozdějších předpisů (vodní zákon).\nOchrana přírody a krajiny (oprávněná úřední osoba: Ing. Zuzana Šťastná)\nJako dotčený orgán ochrany přírody Vám sdělujeme, že výše uvedený záměr dle předložené PD nevy-\nžaduje vydání žádných správních úkonů, kt"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "se st. p. č. 1022, na které stojí budova\nvedená jako rodinný dům. Obě parcely mají dohromady výměru ",
+          "volume_m3": null,
+          "area_m2": 368.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "Zákon č. 289/1995 Sb."
+      ],
+      "identification": {
+        "stavba": "je umístěna ve velmi prudkém svahu, k jihu se svažujícího"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

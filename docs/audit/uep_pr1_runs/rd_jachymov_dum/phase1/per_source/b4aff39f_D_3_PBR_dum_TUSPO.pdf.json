@@ -1,0 +1,476 @@
+{
+  "provenance": {
+    "source_file": "D_3_PBR_dum_TUSPO.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1629,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "pné evakuace NE\nVíce než 1000 osob NE\nVíce než 100 osob NE\nVýskyt hořlavých kapalin/plynů (více než ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 200.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "mátkově chráněný objekt NE\nPočet nadzemních podlaží 3\nPočet podzemních podlaží 1\nZastavěná plocha < ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 600.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ísm. a) jako budova skupiny OB1. Celková půdorysná\nplocha všech podlaží rodinného domu je menší než ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 219.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "B1. Celková půdorysná\nplocha všech podlaží rodinného domu je menší než 600,0 m2 (ve skutečnosti S = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 600.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "seků\nPožární úsek Výpočtové požární zatížení p [kg·m-2] SPB Mezní rozměr\nv\nP1.01/N3 45,75 1) II. 2) ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 5.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "do skupiny U1 nebo U2 (půdorysná plocha připadající na jednu\nosobu není v požárním úseku menší než 5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "height_m",
+      "value": 6.565,
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0802",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0810",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0818",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0833",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0848",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0873",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0872",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0834",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0875",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 14604",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 06 1008",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 4230",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1443",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 4201",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 33 2000-5-51",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN ISO 3864-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "vyhláška č. 23/2008 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Vyhláška č. 246/2001 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Vyhláška č. 460/2021 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "parc. č. 1094/16, st. 1022, k. ú. Jáchymov",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 13,
+    "char_count_total": 34982,
+    "text_per_page_truncated": [
+      "POŽÁRNĚ BEZPEČNOSTNÍ ŘEŠENÍ STAVBY\nNázev stavby: Řadový rodinný dům Fibichova č.p. 733\nKategorie stavby: Kategorie I.\nDokumentace: pro povolení a provádění stavby\nMísto stavby: parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nStavební část: Ing. arch. Marek Smolka, ČKA: 05394\nZpracoval: Ing. Jan Kirschbaum\nTel.: +420 736 101 536;\nemail: kirschbaum@tuspo.cz\nAutorizoval: Bc. Zbyněk Tuček ČKAIT: 0013446\nTel.: +420 608 864 557;\nemail: tucek@tuspo.cz,www.tuspo.cz\nDatum: leden 2026\nPříloha: -\nPočet stran: 1",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nObsah\nÚvod ................................................................................................................................................................. 3\nSeznam použitých podkladů pro zpracování ................................................................................................... 3\nPopis stavby ........................",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nPříloha A – Vzorový výpočet odstupových vzdáleností .................................................................................. 12\nPříloha B – Situace – Zakreslení odstupových vzdáleností ........................................................................... 13\nÚvod\nPředmětem tohoto požárně bezpečnostního řešení je posouzení stavebních úprav",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nVytápění a větrání:\nObjekt bude vytápěn kamny/kotlem na tuhá paliva. Část objektu bude vytápěna elektrokotlem. V bytové jednotce\nbude dále krb na tuhá paliva. Zdroje vytápění na plyn se nenavrhují. FVE není navržena.\nVětrání objektu je kombinace přirozeného a nuceného VZT větrání. Samostatná strojovna VZT ve smyslu\nČSN 73 0872 není v objektu navržena.\nD",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nPozn.: 1) Výpočtové požární zatížení p je stanoveno dle Přílohy B ČSN 73 0802.\nv\n2) SPB stanoven dle čl. 4.1.1 písm. b) ČSN 73 0833.\nPožární úsek vyhovuje na mezní rozměry.\nc) Popis a zhodnocení navržených stavebních konstrukcí a požárních uzávěrů z hlediska\njejich požární odolnosti\nc1) Požadavky na požární odolnost stavebních konstrukcí\nPožadovaná požá",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\n- Nevyskytují se.\nObvodové stěny zajišťující stabilitu objektu:\n- Obvodové stěny budou zděné cihelné / keramické tl. min. 300 mm s požární odolností REI 180 DP1\ndle tab. 6.1.2 publikace.\nObvodové stěny nezajišťující stabilitu objektu:\n- Nevyskytují se.\nNosná konstrukce střechy:\n- Nosnou konstrukci střechy tvoří dřevěné prvky krovu s následujícími min. p",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nPožární pásy:\n- Požární pásy nejsou dle čl. 4.2.3 ČSN 73 0833 vyžadovány – sousední objekty jsou také OB1.\nVšechny SDK konstrukce s požární odolností budou provedeny odbornou osobou a dle technologických a\nmontážních pokynů výrobce daného systému. Případné prostupy (např. otvory pro elektroinstalaci, svítidla aj.) touto\nkonstrukcí musí být utěsněny dle ",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nDo vzdálenosti do 10,0 m od objektu vede stávající asfaltová průjezdná silniční komunikace šířky min. 3,0 m, ul.\nFibichova. Příjezdová komunikace vyhovuje.\nNástupní plochy\nNástupní plocha není navržena v souladu s čl. 12.4.4 b) ČSN 73 0802 (požární výška objektu h < 12,0 m).\ne2) Vnitřní a vnější zásahové cesty a jejich technické vybavení\nVnitřní zásahov",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nOdstupové vzdálenosti jsou stanoveny pouze od SZ obvodové stěny a od JV obvodové stěny v úrovni 3.NP, kde\ndochází ke zvětšení stávajících POP / ke vzniku nových POP. Ve zbylých částech nevznikají nové POP, ani se\nnezvětšují stávající POP, tzn. odstupové vzdálenosti jsou stávající a nově se neposuzují.\nOdstupové vzdálenosti:\nVýpočtové Výška Délka Požárně",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nInstalovat do objektu se mohou pouze tepelná zařízení, která byla schválena z hlediska požární bezpečnosti. Při\ninstalaci a provozování tepelného zařízení je nutné se řídit návodem výrobce, předmětovými normami na příslušné\ntepelné zařízení a požadavky ČSN 06 1008. Konstrukci a způsob instalace izolační podložky stanoví výrobce\nv dokumentaci na příslušn",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\npoužit prvek určený pro „vypínání s funkcí odpojení“ a zároveň umožňující obsluhu laiky. Nelze tedy používat\nodpojovače, výkonové pojistky apod. Tento prvek může být s přímým ovládáním (vypínač, jistič atd.) nebo\ns dálkovým ovládáním (jistič nebo vypínač s ovládací cívkou, stykač a podobně) a ovládacím prvkem, tj. například\ntlačítkem.\nVypínání el. energ",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nPříloha A – Vzorový výpočet odstupových vzdáleností\nZpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 12 z 13 leden 2026",
+      "Dokumentace pro povolení a provádění stavby Řadový rodinný dům Fibichova č.p. 733\nZakázka č. 2026-028 parc. č. 1094/16, st. 1022, k. ú. Jáchymov\nPříloha B – Situace – Zakreslení odstupových vzdáleností\nZpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 13 z 13 leden 2026"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "pné evakuace NE\nVíce než 1000 osob NE\nVíce než 100 osob NE\nVýskyt hořlavých kapalin/plynů (více než ",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "mátkově chráněný objekt NE\nPočet nadzemních podlaží 3\nPočet podzemních podlaží 1\nZastavěná plocha < ",
+          "volume_m3": null,
+          "area_m2": 200.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ísm. a) jako budova skupiny OB1. Celková půdorysná\nplocha všech podlaží rodinného domu je menší než ",
+          "volume_m3": null,
+          "area_m2": 600.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "B1. Celková půdorysná\nplocha všech podlaží rodinného domu je menší než 600,0 m2 (ve skutečnosti S = ",
+          "volume_m3": null,
+          "area_m2": 219.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "seků\nPožární úsek Výpočtové požární zatížení p [kg·m-2] SPB Mezní rozměr\nv\nP1.01/N3 45,75 1) II. 2) ",
+          "volume_m3": null,
+          "area_m2": 600.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "do skupiny U1 nebo U2 (půdorysná plocha připadající na jednu\nosobu není v požárním úseku menší než 5",
+          "volume_m3": null,
+          "area_m2": 5.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": 6.565,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 0802",
+        "ČSN 73 0810",
+        "ČSN 73 0818",
+        "ČSN 73 0833",
+        "ČSN 73 0848",
+        "ČSN 73 0873",
+        "ČSN 73 0872",
+        "ČSN 73 0834",
+        "ČSN 73 0875",
+        "ČSN EN 14604",
+        "ČSN 06 1008",
+        "ČSN 73 4230",
+        "ČSN EN 1443",
+        "ČSN 73 4201",
+        "ČSN 33 2000-5-51",
+        "ČSN ISO 3864-1",
+        "vyhláška č. 23/2008 Sb.",
+        "Vyhláška č. 246/2001 Sb.",
+        "Vyhláška č. 460/2021 Sb."
+      ],
+      "identification": {
+        "misto": "parc. č. 1094/16, st. 1022, k. ú. Jáchymov"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": null,
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "Ing. Jan Kirschbaum",
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [
+          "ETICS s izolantem z fasádního EPS, vnější povrch",
+          "ETICS s použitím izolantu z fasádního EPS tl",
+          "zateplení musí být kontaktně spojena se zateplovanou konstrukcí",
+          "Kontaktní zateplovací systém s tloušťkou izolantu do 200 mm se dle čl",
+          "Kontaktní zateplovací systém bude splňovat požadavky dle části c) této zprávy"
+        ],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

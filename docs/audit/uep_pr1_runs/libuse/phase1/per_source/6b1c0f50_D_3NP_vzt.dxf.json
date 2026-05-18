@@ -1,0 +1,2988 @@
+{
+  "provenance": {
+    "source_file": "D_3NP_vzt.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 119,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 261,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 14,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "0",
+          "A-AREA-BNDY-OTLN",
+          "Defpoints",
+          "POPISY",
+          "PRIPOJOVACI_HRDLA",
+          "V-flexo_osy",
+          "V-objekty",
+          "V-objekty-popis",
+          "V-tvarovky",
+          "V-tvarovky-popis",
+          "VLASTNI_ZARIZENI",
+          "VZT_DIGESTOR",
+          "VZT_EXHAUST",
+          "VZT_EXHAUST-popis"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "DUPLEX 170 EC5",
+          "Text",
+          "_None"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": -32.54920628515953,
+        "y_min_m": 0.001,
+        "x_max_m": 37.43152506326967,
+        "y_max_m": 68.72990222208972,
+        "width_m": 69.9807313484292,
+        "height_m": 68.72890222208972
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "0",
+      "value": {
+        "INSERT": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-AREA-BNDY-OTLN",
+      "value": {
+        "LWPOLYLINE": 21
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "V-flexo_osy",
+      "value": {
+        "LWPOLYLINE": 18
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 18
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "V-objekty",
+      "value": {
+        "INSERT": 16
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 16
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "V-objekty-popis",
+      "value": {
+        "TEXT": 16
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 16
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "V-tvarovky",
+      "value": {
+        "INSERT": 63,
+        "LINE": 1,
+        "MTEXT": 9
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 73
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "V-tvarovky-popis",
+      "value": {
+        "TEXT": 16
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 16
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "VZT_DIGESTOR",
+      "value": {
+        "INSERT": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 7
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "VZT_EXHAUST",
+      "value": {
+        "INSERT": 71
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 71
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "VZT_EXHAUST-popis",
+      "value": {
+        "INSERT": 3,
+        "TEXT": 18
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "closed_polygons",
+      "field": "A-AREA-BNDY-OTLN",
+      "value": {
+        "count": 21,
+        "areas_m2": [
+          9.604,
+          16.417,
+          10.795,
+          18.637,
+          6.198,
+          13.218,
+          6.088,
+          23.111,
+          14.528,
+          4.445,
+          6.088,
+          23.111,
+          14.528,
+          4.58,
+          13.983,
+          26.824,
+          1.52,
+          6.532,
+          13.538,
+          12.07,
+          5.355
+        ],
+        "sum_m2": 251.17
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "V-flexo_osy",
+      "value": {
+        "count": 18,
+        "sum_m": 8.21
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "V-tvarovky",
+      "value": {
+        "count": 1,
+        "sum_m": 0.16
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U100",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U102",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U103",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U104",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "V-tvarovky": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U105",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U106",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U107",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "V-tvarovky": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U108",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_DIGESTOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U109",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U110",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U111",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U112",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 1,
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U113",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U114",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U115",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "VZT_EXHAUST": 2,
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U116",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U117",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U118",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U119",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U120",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U121",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U122",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U123",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U124",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U125",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U126",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U127",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U128",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U129",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U130",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U131",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U132",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U133",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U134",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U135",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U136",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U137",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U182",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U183",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U184",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U185",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U186",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U187",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U188",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U189",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U190",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U191",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U192",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U193",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_DIGESTOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U194",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U195",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U229",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U230",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U231",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U232",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U233",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U234",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U235",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U236",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U237",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U238",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U239",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U240",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U241",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U242",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U243",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U244",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U245",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U246",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U247",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U248",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U249",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U250",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U251",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U252",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U253",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U254",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U67",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U68",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U69",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U70",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U71",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U73",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_DIGESTOR": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U74",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U75",
+      "value": {
+        "count": 8,
+        "by_layer": {
+          "VZT_EXHAUST": 4,
+          "V-tvarovky": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U76",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "V-objekty": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U77",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "V-objekty": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U79",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "V-objekty": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U80",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "V-objekty": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U82",
+      "value": {
+        "count": 8,
+        "by_layer": {
+          "V-tvarovky": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U83",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "V-tvarovky": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U84",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U85",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U86",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U87",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U88",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U89",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U90",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U91",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "V-tvarovky": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U92",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "V-tvarovky": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U93",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "V-tvarovky": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U94",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_DIGESTOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U96",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "VZT_EXHAUST": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U97",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_DIGESTOR": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U98",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "*U99",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "VZT_EXHAUST": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "DUPLEX 170 EC5",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "VZT_EXHAUST-popis": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Text",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "0": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "_None",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "0": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "V-objekty-popis",
+      "value": {
+        "count": 16,
+        "by_type": {
+          "TEXT": 16
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "325"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "V-tvarovky",
+      "value": {
+        "count": 9,
+        "by_type": {
+          "MTEXT": 9
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "osa = 2600"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "V-tvarovky-popis",
+      "value": {
+        "count": 16,
+        "by_type": {
+          "TEXT": 16
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "%%c160"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "VZT_EXHAUST-popis",
+      "value": {
+        "count": 18,
+        "by_type": {
+          "TEXT": 18
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "%%c160"
+      }
+    },
+    {
+      "category": "block_attribs",
+      "field": "count",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample": [
+          {
+            "block": "Text",
+            "tag": "TEXT",
+            "text": "",
+            "layer": "0"
+          }
+        ]
+      }
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "0",
+      "A-AREA-BNDY-OTLN",
+      "Defpoints",
+      "POPISY",
+      "PRIPOJOVACI_HRDLA",
+      "V-flexo_osy",
+      "V-objekty",
+      "V-objekty-popis",
+      "V-tvarovky",
+      "V-tvarovky-popis",
+      "VLASTNI_ZARIZENI",
+      "VZT_DIGESTOR",
+      "VZT_EXHAUST",
+      "VZT_EXHAUST-popis"
+    ],
+    "block_definitions": [
+      "DUPLEX 170 EC5",
+      "Text",
+      "_None"
+    ],
+    "entity_counts_by_layer": {
+      "A-AREA-BNDY-OTLN": {
+        "LWPOLYLINE": 21
+      },
+      "V-tvarovky": {
+        "INSERT": 63,
+        "LINE": 1,
+        "MTEXT": 9
+      },
+      "VZT_EXHAUST": {
+        "INSERT": 71
+      },
+      "VZT_DIGESTOR": {
+        "INSERT": 7
+      },
+      "V-objekty": {
+        "INSERT": 16
+      },
+      "VZT_EXHAUST-popis": {
+        "INSERT": 3,
+        "TEXT": 18
+      },
+      "V-flexo_osy": {
+        "LWPOLYLINE": 18
+      },
+      "0": {
+        "INSERT": 2
+      },
+      "V-objekty-popis": {
+        "TEXT": 16
+      },
+      "V-tvarovky-popis": {
+        "TEXT": 16
+      }
+    },
+    "closed_areas_by_layer": {
+      "A-AREA-BNDY-OTLN": [
+        9.604,
+        16.417,
+        10.795,
+        18.637,
+        6.198,
+        13.218,
+        6.088,
+        23.111,
+        14.528,
+        4.445,
+        6.088,
+        23.111,
+        14.528,
+        4.58,
+        13.983,
+        26.824,
+        1.52,
+        6.532,
+        13.538,
+        12.07,
+        5.355
+      ]
+    },
+    "open_lengths_by_layer": {
+      "V-flexo_osy": [
+        0.545,
+        0.567,
+        0.505,
+        0.093,
+        0.671,
+        0.545,
+        0.567,
+        0.505,
+        0.102,
+        0.671,
+        0.38,
+        0.648,
+        0.536,
+        0.591,
+        0.365,
+        0.365,
+        0.301,
+        0.252
+      ],
+      "V-tvarovky": [
+        0.16
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "*U100",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U102",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U103",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U104",
+        "layer": "V-tvarovky",
+        "count": 2
+      },
+      {
+        "block": "*U105",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U106",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U107",
+        "layer": "V-tvarovky",
+        "count": 2
+      },
+      {
+        "block": "*U108",
+        "layer": "VZT_DIGESTOR",
+        "count": 1
+      },
+      {
+        "block": "*U109",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U110",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U111",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U112",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U112",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U113",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U114",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U115",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U115",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U116",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U117",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U118",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U119",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U120",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U121",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U122",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U123",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U124",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U125",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U126",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U127",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U128",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U129",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U130",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U131",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U132",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U133",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U134",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U135",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U136",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U137",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U182",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U183",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U184",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U185",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U186",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U187",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U188",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U189",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U190",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U191",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U192",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U193",
+        "layer": "VZT_DIGESTOR",
+        "count": 1
+      },
+      {
+        "block": "*U194",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U195",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U229",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U230",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U231",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U232",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U233",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U234",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U235",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U236",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U237",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U238",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U239",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U240",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U241",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U242",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U243",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U244",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U245",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U246",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U247",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U248",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U249",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U250",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U251",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U252",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U253",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U254",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U67",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U68",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U69",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U70",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U71",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U73",
+        "layer": "VZT_DIGESTOR",
+        "count": 2
+      },
+      {
+        "block": "*U74",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U75",
+        "layer": "V-tvarovky",
+        "count": 4
+      },
+      {
+        "block": "*U75",
+        "layer": "VZT_EXHAUST",
+        "count": 4
+      },
+      {
+        "block": "*U76",
+        "layer": "V-objekty",
+        "count": 4
+      },
+      {
+        "block": "*U77",
+        "layer": "V-objekty",
+        "count": 4
+      },
+      {
+        "block": "*U79",
+        "layer": "V-objekty",
+        "count": 4
+      },
+      {
+        "block": "*U80",
+        "layer": "V-objekty",
+        "count": 4
+      },
+      {
+        "block": "*U82",
+        "layer": "V-tvarovky",
+        "count": 8
+      },
+      {
+        "block": "*U83",
+        "layer": "V-tvarovky",
+        "count": 1
+      },
+      {
+        "block": "*U84",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U85",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U86",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U87",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U88",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U89",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U90",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U91",
+        "layer": "V-tvarovky",
+        "count": 2
+      },
+      {
+        "block": "*U92",
+        "layer": "V-tvarovky",
+        "count": 2
+      },
+      {
+        "block": "*U93",
+        "layer": "V-tvarovky",
+        "count": 2
+      },
+      {
+        "block": "*U94",
+        "layer": "VZT_DIGESTOR",
+        "count": 1
+      },
+      {
+        "block": "*U96",
+        "layer": "VZT_EXHAUST",
+        "count": 1
+      },
+      {
+        "block": "*U97",
+        "layer": "VZT_DIGESTOR",
+        "count": 2
+      },
+      {
+        "block": "*U98",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "*U99",
+        "layer": "VZT_EXHAUST",
+        "count": 2
+      },
+      {
+        "block": "DUPLEX 170 EC5",
+        "layer": "VZT_EXHAUST-popis",
+        "count": 3
+      },
+      {
+        "block": "Text",
+        "layer": "0",
+        "count": 1
+      },
+      {
+        "block": "_None",
+        "layer": "0",
+        "count": 1
+      }
+    ],
+    "text_by_layer": {
+      "V-objekty-popis": [
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            -1.9742683286090381,
+            65.92572812514545
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            -1.936173090513799,
+            65.77572812514546
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            0.5953484210718135,
+            65.92572812514565
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            0.6334436591670541,
+            65.77572812514566
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            0.5209255348012106,
+            62.135728126090314
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            0.5590207728964486,
+            61.985728126090315
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            8.52141185140999,
+            61.91072812609073
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            8.559507089505228,
+            61.76072812609073
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            5.490418906259223,
+            61.91072812609065
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            5.528514144354462,
+            61.760728126090655
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            15.85784856525675,
+            65.92572812514672
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            15.89594380335199,
+            65.77572812514673
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            18.34357525339178,
+            65.92572812514683
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            18.38167049148702,
+            65.77572812514684
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "325",
+          "text": "325",
+          "insert": [
+            15.72630702651987,
+            62.13572812609122
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "75",
+          "text": "75",
+          "insert": [
+            15.76440226461511,
+            61.985728126091225
+          ]
+        }
+      ],
+      "V-tvarovky-popis": [
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -1.557276412805903,
+            65.1471898230105
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            0.502340336874815,
+            65.14718982301049
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            0.0929203368747822,
+            62.57718982301047
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -4.044384291886257,
+            62.87930190415474
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -3.209073806361848,
+            64.52790114611231
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -2.109073806361554,
+            64.52790114611413
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            6.291503315995279,
+            62.10116386842675
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            7.194978441235216,
+            62.39116386842675
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            5.679978441235217,
+            63.52795254532363
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            8.391777136685496,
+            63.17987169785391
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            6.968917965832882,
+            63.20797316027616
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            18.06805238512059,
+            65.14718982301176
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            16.54407093516811,
+            65.14718982301166
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            16.31003093516852,
+            62.57718982301145
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            20.90204946498331,
+            63.02965104579049
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            19.055485078404583,
+            64.52790114611567
+          ]
+        }
+      ],
+      "VZT_EXHAUST-popis": [
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -4.833219813869997,
+            63.43572812743695
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -1.0940882345537442,
+            64.42432971754242
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            -2.217659663125232,
+            64.10790114611878
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            -1.747659663125229,
+            64.10790114611878
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            -2.07908823455399,
+            63.35490222303355
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            -1.0653996631260512,
+            63.53651672704977
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            4.89974071586199,
+            62.58366386842659
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            7.818205708114074,
+            63.30429955466217
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            6.829978441235184,
+            62.83866386842655
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            7.269200580450654,
+            62.66780013368791
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            9.324681564876727,
+            62.62094312642518
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            17.28037900700731,
+            63.2547657394692
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            18.31264236374022,
+            63.346290226739576
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            18.294070935168328,
+            64.1079011461202
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            17.327642363739653,
+            64.42432971754371
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c125",
+          "text": "%%c125",
+          "insert": [
+            19.264070935168323,
+            64.10790114612026
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            21.066773943055388,
+            63.45573047558143
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "%%c160",
+          "text": "%%c160",
+          "insert": [
+            19.05548507840453,
+            64.85718982301275
+          ]
+        }
+      ],
+      "V-tvarovky": [
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            -3.25101812621906,
+            64.4761376330262
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            -4.555544894896302,
+            64.877328353186
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            -1.085572367008295,
+            65.492454209304
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            9.40001342936384,
+            63.88352964097617
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            7.32963102202311,
+            62.40407788492695
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            8.216486952046282,
+            62.9340307400674
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            16.79093957738673,
+            65.53533170180211
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            19.72640141380178,
+            64.89663359287161
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\A1;{\\Fromans|c238;\\H0.75x;osa = 2600}",
+          "text": "osa = 2600",
+          "insert": [
+            17.48499680233579,
+            63.57169726091368
+          ]
+        }
+      ]
+    },
+    "dimensions": [],
+    "block_attribs": [
+      {
+        "block": "Text",
+        "tag": "TEXT",
+        "text": "",
+        "layer": "0"
+      }
+    ],
+    "bbox": {
+      "x_min_m": -32.54920628515953,
+      "y_min_m": 0.001,
+      "x_max_m": 37.43152506326967,
+      "y_max_m": 68.72990222208972,
+      "width_m": 69.9807313484292,
+      "height_m": 68.72890222208972
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

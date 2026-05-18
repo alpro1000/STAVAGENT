@@ -1,0 +1,99 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0020_01_Tabulka_mistnosti.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 809,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 5,
+    "char_count_total": 21523,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nABMV world s.r.o.\nProsecká 527/24\n180 ",
+      "stavební objekt / building object: BYTOVÝ SOUBOR LIBUŠE 01 revize dokumentu / document revision: 01\ndokument / document: TABULKA MÍSTNOSTÍ / ROOM TABLE 30/11/2021 aktuální stav ke dni/ current situation at: 30/11/2021\nTABULKA MÍSTNOSTÍ / ROOM SCHEDULE\n.on\nmooR\n/ itsontsím\nolsíČ\neman\nmooR\n/ itsontsím\nvezáN\naerA\n/ itsontsím\nahcolP\nthgieH\nnaelC / akšýv\náltěvS\nroolF\n/ yhaldop\nabdalkS erutcurts\nhsinif\nroolF\n/ yhaldop\nhcrvoP\nhsinif\nllaW / něts\nhcrvoP\nepyT\ngnilieC\n/ udelhdop\npyT\nhsinif\ngnilieC\n/ udelhd",
+      "stavební objekt / building object: BYTOVÝ SOUBOR LIBUŠE 01 revize dokumentu / document revision: 01\ndokument / document: TABULKA MÍSTNOSTÍ / ROOM TABLE 30/11/2021 aktuální stav ke dni/ current situation at: 30/11/2021\nTABULKA MÍSTNOSTÍ / ROOM SCHEDULE\n.on\nmooR\n/ itsontsím\nolsíČ\neman\nmooR\n/ itsontsím\nvezáN\naerA\n/ itsontsím\nahcolP\nthgieH\nnaelC / akšýv\náltěvS\nroolF\n/ yhaldop\nabdalkS erutcurts\nhsinif\nroolF\n/ yhaldop\nhcrvoP\nhsinif\nllaW / něts\nhcrvoP\nepyT\ngnilieC\n/ udelhdop\npyT\nhsinif\ngnilieC\n/ udelhd",
+      "stavební objekt / building object: BYTOVÝ SOUBOR LIBUŠE 01 revize dokumentu / document revision: 01\ndokument / document: TABULKA MÍSTNOSTÍ / ROOM TABLE 30/11/2021 aktuální stav ke dni/ current situation at: 30/11/2021\nTABULKA MÍSTNOSTÍ / ROOM SCHEDULE\n.on\nmooR\n/ itsontsím\nolsíČ\neman\nmooR\n/ itsontsím\nvezáN\naerA\n/ itsontsím\nahcolP\nthgieH\nnaelC / akšýv\náltěvS\nroolF\n/ yhaldop\nabdalkS erutcurts\nhsinif\nroolF\n/ yhaldop\nhcrvoP\nhsinif\nllaW / něts\nhcrvoP\nepyT\ngnilieC\n/ udelhdop\npyT\nhsinif\ngnilieC\n/ udelhd",
+      "stavební objekt / building object: BYTOVÝ SOUBOR LIBUŠE 01 revize dokumentu / document revision: 01\ndokument / document: TABULKA MÍSTNOSTÍ / ROOM TABLE 30/11/2021 aktuální stav ke dni/ current situation at: 30/11/2021\nTABULKA MÍSTNOSTÍ / ROOM SCHEDULE\n.on\nmooR\n/ itsontsím\nolsíČ\neman\nmooR\n/ itsontsím\nvezáN\naerA\n/ itsontsím\nahcolP\nthgieH\nnaelC / akšýv\náltěvS\nroolF\n/ yhaldop\nabdalkS erutcurts\nhsinif\nroolF\n/ yhaldop\nhcrvoP\nhsinif\nllaW / něts\nhcrvoP\nepyT\ngnilieC\n/ udelhdop\npyT\nhsinif\ngnilieC\n/ udelhd"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

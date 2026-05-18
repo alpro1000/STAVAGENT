@@ -1,0 +1,120 @@
+{
+  "provenance": {
+    "source_file": "A100_uvod.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 179,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "SOLAR DISPOREC s.r.o. , Praha",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Ing.arch. Jakub Volka, ČKA 03947",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 835,
+    "text_per_page_truncated": [
+      "HALA HRADEC KRÁLOVÉ\nVážní 857, 50003 Hradec Králové - Slezské\nPředměstí\nSTUPEŇ PROJEKTU +0,000 = +234,690 mnm Bpv\nDDOOKKUUMMEENNTTAACCEE PPRROO PPOOVVOOLLEENNÍÍ ZZÁÁMM ĚĚRRUU ((DDPPZZ))\nODPOVĚDNÝ PROJEKTANT\nIng.arch. Jakub Volka, ČKA 03947\n733 575 363, jakub.volka@basepoint.cz\nVYPRACOVAL\nIng. arch. Jakub Volka\nAnna Abrahámová\nKristián Pócsik\nINVESTOR\nSOLAR DISPOREC s.r.o. , Praha IČO 19546220\nMalostranské náměstí 5/28, Malá Strana (Praha 1),\n118 00 Praha\nDÍL\nD\nČÁST DOKUMENTACE\nD.1.1.1\nOBSAH VÝKR"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "SOLAR DISPOREC s.r.o. , Praha",
+        "projektant": "Ing.arch. Jakub Volka, ČKA 03947"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

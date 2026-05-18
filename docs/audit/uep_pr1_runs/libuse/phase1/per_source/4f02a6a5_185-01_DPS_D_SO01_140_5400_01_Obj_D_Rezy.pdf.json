@@ -1,0 +1,189 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_140_5400_01_Obj_D_Rezy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1800,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": ",500\nD-1NP +1,370 D-1NP\n+1,170\n-0,250\n-1,650\n-1,650\nD-1PP\nZvýšené -2,250\nC9 D2 D3 D4 D5\n7,\n0 ° 31,0°",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "a\np\nr\nis\ns t\n/\na\nd\nv\ne\ne\ns\nb\nc\nn\nri\ní\np\njá\nti\nm\non\ny a opatření proti radonu, nadpraží oken bytů\nda\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "b\nc\nn\nri\ní\np\njá\nti\nm\non\ny a opatření proti radonu, nadpraží oken bytů\nda\n3\nt\n0\nu\n.\nm\n11\n/\n.2\nd\n0\na\n2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 6765,
+    "text_per_page_truncated": [
+      "+11,300\n+10,800\n+7,800 D-3NP\n+4,650 D-2NP\n+1,500 D-1NP\n-2,250 -2,250 -2,250\nD-1PP C-1PP D-1PP\nDC DB DA\n0001\n022\n033\n0533\n0042\n083052\n0042\n0513\n0513\n0573\n033\n0243\n004\n053\n0082\n053\n0082\n033\n0282\n004\n0561\n0472\n0042\n057\n0042\n057\n0042\n+14,875\nD-\nSTŘECHA\n+10,100\n+7,250\n+4,100\n+1,500 +1,450\n-1,650\n-2,750\n-4,225\n6850 4800 340\n0461\n0052\n0001\n0512\n0001\n0513\nDETAIL B2-4\n+12,940 +12,940DETAIL B5-3\nDETAIL B5-2 W 91 DETAIL B5-4\nTP ZTUŽENÍ PŘÍČKY\nDETAIL B2-3' 03a\nCF 20\nCF 20\n+8,800\nRF DETAIL B2-2 20\nDETAIL B1-"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": ",500\nD-1NP +1,370 D-1NP\n+1,170\n-0,250\n-1,650\n-1,650\nD-1PP\nZvýšené -2,250\nC9 D2 D3 D4 D5\n7,\n0 ° 31,0°",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "a\np\nr\nis\ns t\n/\na\nd\nv\ne\ne\ns\nb\nc\nn\nri\ní\np\njá\nti\nm\non\ny a opatření proti radonu, nadpraží oken bytů\nda\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "b\nc\nn\nri\ní\np\njá\nti\nm\non\ny a opatření proti radonu, nadpraží oken bytů\nda\n3\nt\n0\nu\n.\nm\n11\n/\n.2\nd\n0\na\n2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

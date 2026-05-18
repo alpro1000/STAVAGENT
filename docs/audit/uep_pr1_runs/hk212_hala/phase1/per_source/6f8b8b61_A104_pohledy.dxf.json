@@ -1,0 +1,5559 @@
+{
+  "provenance": {
+    "source_file": "A104_pohledy.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 4654,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 1276,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 238,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "---1 - PBS KÓTY",
+          "---1 - PBS PNP",
+          "---1 - PBS PNP-1",
+          "---1 - PBS SYMBOLY A TEXT",
+          "---1 - PBS SYMBOLY A TEXT-1",
+          "0",
+          "0-1",
+          "0-2",
+          "00_pL_KOTY",
+          "00_pL_KOTY 1500",
+          "00_pL_OCHRANNE PASNO TEPLOVOD",
+          "00_pL_OCHRANNE PASNO TEPLOVOD-1",
+          "00_pL_VÝŠKOVÉ KOTY",
+          "00_pL_hranice pozemku",
+          "00_pL_katastr",
+          "00_pL_katastr-1",
+          "00_pL_objekt",
+          "00_pL_pčípojka optika",
+          "00_pL_pčípojka optika-1",
+          "00_pL_přípoja voda",
+          "00_pL_přípoja voda-1",
+          "00_pL_přípoja voda-2",
+          "00_pL_přípojka NN",
+          "00_pL_přípojka NN-1",
+          "00_pL_přípojka destova kanalizace",
+          "00_pL_přípojka destova kanalizace-1",
+          "00_pL_přípojka destova kanalizace-2",
+          "00_pL_přípojka destova kanalizace-3",
+          "00_pL_přípojka splaškova kanalizace",
+          "00_pL_přípojka splaškova kanalizace-1",
+          "00_pL_přípojka splaškova kanalizace-2",
+          "00_pL_stavajici objekty",
+          "00_pl_deštová voda oblast",
+          "00_pl_rozhrani ploch",
+          "00_pl_vzt",
+          "212_HK_situace_03_dwg",
+          "212_HK_situace_03_dwg-1",
+          "2966-1_navrh dispozice stroju-HK_02_dwg",
+          "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+          "2966-1_navrh dispozice stroju-HK_dwg",
+          "2966-1_navrh dispozice stroju-HK_dwg-1",
+          "A-ANNO-IDEN",
+          "A-ANNO-IDEN-1",
+          "A-ANNO-NOTE",
+          "A-DETL-MBND",
+          "A-DETL-THIN",
+          "A-DOOR",
+          "A-DOOR-1",
+          "A-DOOR-2",
+          "A-DOOR-3"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 1524,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-POHLEDY",
+          "212_HK_situace_03_dwg-886969-Řez 2",
+          "212_HK_situace_03_dwg-886969-Řez 3",
+          "212_HK_situace_03_dwg-886969-Řez 4",
+          "212_HK_situace_03_dwg-886969-Řez 5",
+          "212_HK_situace_03_dwg__ArchTick-904835-Řez 2",
+          "212_HK_situace_03_dwg__ArchTick-904835-Řez 3",
+          "212_HK_situace_03_dwg__ArchTick-904835-Řez 4",
+          "212_HK_situace_03_dwg__ArchTick-904835-Řez 5",
+          "212_HK_situace_03_dwg__Oblique-904816-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-904816-Řez 3",
+          "212_HK_situace_03_dwg__Oblique-904816-Řez 4",
+          "212_HK_situace_03_dwg__Oblique-904816-Řez 5",
+          "212_HK_situace_03_dwg__Oblique-904818-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-904818-Řez 4",
+          "212_HK_situace_03_dwg__Oblique-904836-Řez 3",
+          "212_HK_situace_03_dwg__Oblique-V10-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-V31-Řez 4",
+          "212_HK_situace_03_dwg__Oblique-V32-Řez 4",
+          "212_HK_situace_03_dwg__Oblique-V33-Řez 4",
+          "212_HK_situace_03_dwg__Oblique-V4-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-V5-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-V6-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-V7-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-V8-Řez 2",
+          "212_HK_situace_03_dwg__Oblique-V9-Řez 2",
+          "212_HK_situace_03_dwg__U37-904821-Řez 2",
+          "212_HK_situace_03_dwg__U37-904821-Řez 3",
+          "212_HK_situace_03_dwg__U37-904821-Řez 4",
+          "212_HK_situace_03_dwg__U37-904821-Řez 5",
+          "212_HK_situace_03_dwg__U37-V11-Řez 2",
+          "212_HK_situace_03_dwg__U37-V22-Řez 3",
+          "212_HK_situace_03_dwg__U37-V34-Řez 4",
+          "212_HK_situace_03_dwg__U37-V48-Řez 5",
+          "212_HK_situace_03_dwg__U38-904822-Řez 2",
+          "212_HK_situace_03_dwg__U38-904822-Řez 3",
+          "212_HK_situace_03_dwg__U38-904822-Řez 4",
+          "212_HK_situace_03_dwg__U38-904822-Řez 5",
+          "212_HK_situace_03_dwg__U40-904829-Řez 2",
+          "212_HK_situace_03_dwg__U40-904829-Řez 4",
+          "212_HK_situace_03_dwg__U40-904829-Řez 5",
+          "212_HK_situace_03_dwg__U40-V14-Řez 2",
+          "212_HK_situace_03_dwg__U40-V15-Řez 2",
+          "212_HK_situace_03_dwg__U40-V36-Řez 4",
+          "212_HK_situace_03_dwg__U40-V37-Řez 4",
+          "212_HK_situace_03_dwg__U40-V50-Řez 5",
+          "212_HK_situace_03_dwg__U40-V51-Řez 5",
+          "212_HK_situace_03_dwg__U41-904830-Řez 2",
+          "212_HK_situace_03_dwg__U41-904830-Řez 3",
+          "212_HK_situace_03_dwg__U41-904830-Řez 4"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": -260.4164462151507,
+        "y_min_m": -7.397031967360468,
+        "x_max_m": 243.8001144109456,
+        "y_max_m": 7.563379303343556,
+        "width_m": 504.21656062609634,
+        "height_m": 14.960411270704025
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "212_HK_situace_03_dwg-1",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-IDEN",
+      "value": {
+        "LINE": 24,
+        "INSERT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 48
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-IDEN-1",
+      "value": {
+        "MTEXT": 23
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 23
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-MBND",
+      "value": {
+        "LINE": 20
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 20
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN",
+      "value": {
+        "LINE": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DOOR",
+      "value": {
+        "INSERT": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DOOR-GLAZ-2",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR",
+      "value": {
+        "LINE": 26
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 26
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR-1",
+      "value": {
+        "HATCH": 8,
+        "HATCH_paths=1": 7,
+        "HATCH_paths=2": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 16
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR-3",
+      "value": {
+        "HATCH": 2,
+        "HATCH_paths=1": 1,
+        "HATCH_paths=2": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR-LEVL",
+      "value": {
+        "INSERT": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-1",
+      "value": {
+        "HATCH": 38,
+        "HATCH_paths=1": 36,
+        "HATCH_paths=4": 1,
+        "HATCH_paths=2": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 76
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-2",
+      "value": {
+        "LINE": 148,
+        "SPLINE": 35,
+        "LWPOLYLINE": 5,
+        "INSERT": 4,
+        "ARC": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 196
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GLAZ",
+      "value": {
+        "INSERT": 42
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 42
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ROOF",
+      "value": {
+        "LINE": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ROOF-1",
+      "value": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ROOF-2",
+      "value": {
+        "HATCH": 4,
+        "HATCH_paths=1": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 8
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ROOF-OTLN",
+      "value": {
+        "LINE": 68
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 68
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ROOF-OTLN-1",
+      "value": {
+        "HATCH": 10,
+        "HATCH_paths=1": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 20
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL",
+      "value": {
+        "LINE": 309
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 309
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-1",
+      "value": {
+        "HATCH": 74,
+        "HATCH_paths=1": 48,
+        "HATCH_paths=2": 7,
+        "HATCH_paths=3": 15,
+        "HATCH_paths=6": 1,
+        "HATCH_paths=5": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 148
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-2",
+      "value": {
+        "HATCH": 17,
+        "HATCH_paths=2": 7,
+        "HATCH_paths=1": 7,
+        "HATCH_paths=3": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 34
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-3",
+      "value": {
+        "HATCH": 15,
+        "HATCH_paths=2": 1,
+        "HATCH_paths=1": 13,
+        "HATCH_paths=5": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 30
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-4",
+      "value": {
+        "HATCH": 23,
+        "HATCH_paths=1": 22,
+        "HATCH_paths=2": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 46
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-5",
+      "value": {
+        "HATCH": 3,
+        "HATCH_paths=2": 2,
+        "HATCH_paths=1": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "INSERT": 10,
+        "LINE": 13,
+        "MTEXT": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 33
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "MTEXT": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "HK_TEREN_SESAZENI_dwg-1",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "value": {
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Nedefinovaný_Trubky-tvarovka",
+      "value": {
+        "INSERT": 10
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "P-SANR-FIXT",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-BEAM",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-COLS",
+      "value": {
+        "INSERT": 9
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 9
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-FSTN",
+      "value": {
+        "INSERT": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF-1",
+      "value": {
+        "HATCH": 4,
+        "HATCH_paths=1": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 8
+      }
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-ANNO-IDEN",
+      "value": {
+        "count": 24,
+        "sum_m": 17.817
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-MBND",
+      "value": {
+        "count": 20,
+        "sum_m": 18.783
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN",
+      "value": {
+        "count": 10,
+        "sum_m": 114.079
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-FLOR",
+      "value": {
+        "count": 26,
+        "sum_m": 13.042
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-GENM-2",
+      "value": {
+        "count": 153,
+        "sum_m": 14.575
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-ROOF",
+      "value": {
+        "count": 24,
+        "sum_m": 198.698
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-ROOF-OTLN",
+      "value": {
+        "count": 68,
+        "sum_m": 228.719
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-WALL",
+      "value": {
+        "count": 309,
+        "sum_m": 939.774
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "count": 13,
+        "sum_m": 6.818
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "212_HK_situace_03_dwg-886969-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "212_HK_situace_03_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "212_HK_situace_03_dwg-886969-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "212_HK_situace_03_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "212_HK_situace_03_dwg-886969-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "212_HK_situace_03_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "212_HK_situace_03_dwg-886969-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "212_HK_situace_03_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_02_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_02_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_02_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_02_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "C profil - C150X19_3-854068-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "C profil - C150X19_3-854695-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "HK_TEREN_SESAZENI_dwg-918098-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "HK_TEREN_SESAZENI_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "HK_TEREN_SESAZENI_dwg-918098-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "HK_TEREN_SESAZENI_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "HK_TEREN_SESAZENI_dwg-918098-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "HK_TEREN_SESAZENI_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "HK_TEREN_SESAZENI_dwg-918098-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "HK_TEREN_SESAZENI_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - IPE160-854151-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - IPE160-854659-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374564-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374570-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374572-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388384-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388385-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V40-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "value": {
+        "count": 9,
+        "by_layer": {
+          "A-GLAZ": 9
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "A-GLAZ": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-GLAZ": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-GLAZ": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "value": {
+        "count": 10,
+        "by_layer": {
+          "A-GLAZ": 10
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V21-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V27-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-GLAZ": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V39-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V41-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V44-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388233-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388242-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388251-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388260-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388404-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388405-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388406-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Patní deska s ořezem - 388407-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Popiska materiálu - Popis-329410-Řez 2",
+      "value": {
+        "count": 5,
+        "by_layer": {
+          "A-ANNO-IDEN": 5
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Popiska materiálu - Popis-329410-Řez 3",
+      "value": {
+        "count": 8,
+        "by_layer": {
+          "A-ANNO-IDEN": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Popiska materiálu - Popis-329410-Řez 4",
+      "value": {
+        "count": 6,
+        "by_layer": {
+          "A-ANNO-IDEN": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Popiska materiálu - Popis-329410-Řez 5",
+      "value": {
+        "count": 5,
+        "by_layer": {
+          "A-ANNO-IDEN": 5
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-818641-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-818641-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-819336-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-819336-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-819336-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-823350-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-823350-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-823350-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-823366-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rampa - Rampa-823366-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-FLOR-LEVL": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rámový roh_ šroubovaný s náběhem - 387987-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rámový roh_ šroubovaný s náběhem - 387988-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rámový roh_ šroubovaný s náběhem - 388024-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rámový roh_ šroubovaný s náběhem - 388025-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-FSTN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387971-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387972-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388008-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388009-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Umyvadlo - 50x40 cm-459123-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "P-SANR-FIXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-GLAZ-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-GLAZ-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V28-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-GLAZ-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V45-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-GLAZ-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-Řez 2",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "G-ANNO-DIMS": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-Řez 3",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "G-ANNO-DIMS": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-Řez 4",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "G-ANNO-DIMS": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-Řez 5",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "G-ANNO-DIMS": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Potrubí_VZT_příslušenství": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 4",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Potrubí_VZT_příslušenství": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Potrubí_VZT_příslušenství": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V20-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V43-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 2",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V19-Řez 3",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V42-Řez 5",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Trubky-tvarovka": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "A-ANNO-IDEN-1",
+      "value": {
+        "count": 23,
+        "by_type": {
+          "MTEXT": 23
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "03"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "count": 10,
+        "by_type": {
+          "MTEXT": 10
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "-0.205"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "count": 2,
+        "by_type": {
+          "MTEXT": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "VENKOVNÍ VZT JEDNOTKA "
+      }
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "---1 - PBS KÓTY",
+      "---1 - PBS PNP",
+      "---1 - PBS PNP-1",
+      "---1 - PBS SYMBOLY A TEXT",
+      "---1 - PBS SYMBOLY A TEXT-1",
+      "0",
+      "0-1",
+      "0-2",
+      "00_pL_KOTY",
+      "00_pL_KOTY 1500",
+      "00_pL_OCHRANNE PASNO TEPLOVOD",
+      "00_pL_OCHRANNE PASNO TEPLOVOD-1",
+      "00_pL_VÝŠKOVÉ KOTY",
+      "00_pL_hranice pozemku",
+      "00_pL_katastr",
+      "00_pL_katastr-1",
+      "00_pL_objekt",
+      "00_pL_pčípojka optika",
+      "00_pL_pčípojka optika-1",
+      "00_pL_přípoja voda",
+      "00_pL_přípoja voda-1",
+      "00_pL_přípoja voda-2",
+      "00_pL_přípojka NN",
+      "00_pL_přípojka NN-1",
+      "00_pL_přípojka destova kanalizace",
+      "00_pL_přípojka destova kanalizace-1",
+      "00_pL_přípojka destova kanalizace-2",
+      "00_pL_přípojka destova kanalizace-3",
+      "00_pL_přípojka splaškova kanalizace",
+      "00_pL_přípojka splaškova kanalizace-1",
+      "00_pL_přípojka splaškova kanalizace-2",
+      "00_pL_stavajici objekty",
+      "00_pl_deštová voda oblast",
+      "00_pl_rozhrani ploch",
+      "00_pl_vzt",
+      "212_HK_situace_03_dwg",
+      "212_HK_situace_03_dwg-1",
+      "2966-1_navrh dispozice stroju-HK_02_dwg",
+      "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "2966-1_navrh dispozice stroju-HK_dwg",
+      "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "A-ANNO-IDEN",
+      "A-ANNO-IDEN-1",
+      "A-ANNO-NOTE",
+      "A-DETL-MBND",
+      "A-DETL-THIN",
+      "A-DOOR",
+      "A-DOOR-1",
+      "A-DOOR-2",
+      "A-DOOR-3",
+      "A-DOOR-4",
+      "A-DOOR-5",
+      "A-DOOR-6",
+      "A-DOOR-7",
+      "A-DOOR-8",
+      "A-DOOR-FRAM",
+      "A-DOOR-FRAM-1",
+      "A-DOOR-FRAM-2",
+      "A-DOOR-GLAZ",
+      "A-DOOR-GLAZ-1",
+      "A-DOOR-GLAZ-2",
+      "A-FLOR",
+      "A-FLOR-1",
+      "A-FLOR-2",
+      "A-FLOR-3",
+      "A-FLOR-LEVL",
+      "A-FLOR-LEVL-1",
+      "A-GENM",
+      "A-GENM-1",
+      "A-GENM-2",
+      "A-GENM-3",
+      "A-GLAZ",
+      "A-GLAZ-1",
+      "A-GLAZ-2",
+      "A-GLAZ-3",
+      "A-ROOF",
+      "A-ROOF-1",
+      "A-ROOF-2",
+      "A-ROOF-OTLN",
+      "A-ROOF-OTLN-1",
+      "A-WALL",
+      "A-WALL-1",
+      "A-WALL-2",
+      "A-WALL-3",
+      "A-WALL-4",
+      "A-WALL-5",
+      "DEMOLICE",
+      "DEMOLICE-1",
+      "Defpoints",
+      "G-ANNO-DIMS",
+      "G-ANNO-NPLT",
+      "G-ANNO-SCHD",
+      "G-ANNO-TEXT",
+      "G-ANNO-TTLB",
+      "G-ANNO-TTLB-WIDE",
+      "HK_TEREN_SESAZENI_dwg",
+      "HK_TEREN_SESAZENI_dwg-1",
+      "HYG",
+      "Kóty",
+      "Kóty-1",
+      "Kóty-2",
+      "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "Nedefinovaný_Trubky-tvarovka",
+      "Neviditelná",
+      "Neviditelná-1",
+      "Obrys",
+      "Obrys-1",
+      "Obrys-2",
+      "Obrys-3",
+      "Obrys-4",
+      "Obrys-5",
+      "Obrys-6",
+      "Obrys-7",
+      "Osy",
+      "Osy-1",
+      "P-SANR-FIXT",
+      "PDF4_Geometry",
+      "PDF4_Solid Fills",
+      "PDF7_0",
+      "PDF7_000 AVE ISN ELEKTRO VO SVĚTLA",
+      "PDF7_000 BOURÁNÍ",
+      "PDF7_000 ISN KABELY NN",
+      "PDF7_000 ISN NN PILÍŘEK NN",
+      "PDF7_000 ISN NN VO KABEL",
+      "PDF7_000 ISN NN VO PILÍŘEK SVĚTLA",
+      "PDF7_000 ISN SDĚL OPTIKA METALIKA CHRÁNIČKA PŘÍVOD",
+      "PDF7_0V - Splašky výtlak zaměřeno",
+      "PDF7_0V - Voda návrh",
+      "PDF7_0V-návrh kanal dešťová",
+      "PDF7_0V_popis-splašk-stoky",
+      "PDF7_0V_popis-vodovod-ostatní",
+      "PDF7_14",
+      "PDF7_26",
+      "PDF7_36",
+      "PDF7_CKKOTY",
+      "PDF7_CKKOTY_500",
+      "PDF7_CKKOTY_POMOCNÉ",
+      "PDF7_GASNET PLYN STŘEDOTLAK",
+      "PDF7_GASNET PLYN STŘEDOTLAK OCHRANNĚ PÁSMO",
+      "PDF7_GP Budovy",
+      "PDF7_GP Dopravní objekty",
+      "PDF7_GP Dopravní zařízení",
+      "PDF7_GP Druhy pozemků",
+      "PDF7_GP Elektrické objekty",
+      "PDF7_GP Hraniční linie",
+      "PDF7_GP Kanalizační objekty",
+      "PDF7_GP Koleje",
+      "PDF7_GP Plotové linie",
+      "PDF7_GP Popis",
+      "PDF7_GP Stanoviska",
+      "PDF7_GP Stromy",
+      "PDF7_GP Veřejné osvětlení - lampy",
+      "PDF7_GP Vodovodní objekty",
+      "PDF7_GP Výšky bodů",
+      "PDF7_GP Zábradlí",
+      "PDF7_ISN_KANALIZACE_PŘÍPOJKA",
+      "PDF7_ISS CETIN Nadzemní sítě",
+      "PDF7_ISS CETIN Zaměřené a kótované vnitřní STP",
+      "PDF7_ISS DEŠŤOVÁ KANALIZACE",
+      "PDF7_ISS ELEKTRÁRNA OPATOVICE HORKOVOD",
+      "PDF7_ISS ELEKTRÁRNA OPATOVICE TEPLOVOD",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ SPLAŠKOVÁ KANALIZACE",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ SPLAŠKOVÁ KANALIZACE PŘÍPOJKY",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ SPLAŠKOVÁ KANALIZACE ŠACHTY",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ SPLAŠKOVÁ KANALIZACE ŠACHTY-1",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ VODOVOD HL ŘAD",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ VODOVOD PŘÍPOJKY",
+      "PDF7_ISS KRÁLOVÉHRADECKÁ PROVOZNÍ VODOVOD ZNAČKY",
+      "PDF7_ISS TECHNICKÉ SLUŽBY HK VO",
+      "PDF7_ISS VODOVOD",
+      "PDF7_ISS ČEZ DISTRIBUCE NN",
+      "PDF7_ISS ČEZ DISTRIBUCE NN NADZEMNÍ",
+      "PDF7_ISS ČEZ DISTRIBUCE VN PODZEMNÍ",
+      "PDF7_POPIS",
+      "PDF7_POPIS_500",
+      "PDF7_Pouchov_726559$0$23700",
+      "PDF7_Slezské Předměstí_646971$0$105",
+      "PDF7_Slezské Předměstí_646971$0$21900",
+      "PDF7_Slezské Předměstí_646971$0$21999",
+      "PDF7_Slezské Předměstí_646971$0$23700",
+      "PDF7_Slezské Předměstí_646971$0$404",
+      "PDF7_VO_KABEL",
+      "PDF7_VÝŠKOVÉ KÓTY TERÉNU",
+      "PDF7_Znacky-kultury",
+      "PDF7_Znacky-kultury-1",
+      "PDF7_Znacky-kultury-2",
+      "PDF7_Znacky-kultury-3",
+      "PDF7_bod-vyska",
+      "PDF7_ctv-sit",
+      "PDF9_Geometrie",
+      "PDF9_Geometrie-1",
+      "Pomocná",
+      "Pomocná-1",
+      "Potrubí_VZT_příslušenství",
+      "Potrubí_VZT_příslušenství-1",
+      "S-BEAM",
+      "S-BEAM-1",
+      "S-COLS",
+      "S-COLS-1",
+      "S-FSTN",
+      "S-FSTN-1",
+      "S-FSTN-2",
+      "Tenká",
+      "Tenká-1",
+      "Text",
+      "Text-1",
+      "Tečkovaná",
+      "Tečkovaná-1",
+      "Trubky-tvarovka",
+      "Trubky-tvarovka-1",
+      "Trubky-tvarovka-2",
+      "Vlastní 1_A-DETL-GENF",
+      "Vlastní 1_A-DETL-GENF-1",
+      "ZTI-DPS-revizni_sachty",
+      "filtrační jednotka",
+      "filtrační jednotka-1",
+      "hch budova",
+      "hch budova-1",
+      "hch kanal",
+      "hch kanal-1",
+      "hch kanal-2",
+      "hch kanal-3",
+      "hch kanal-4",
+      "hch koleje",
+      "hch koleje-1",
+      "hch oploceni",
+      "hch oploceni-1",
+      "hch teren",
+      "hch teren-1",
+      "hch tok",
+      "hch tok-1",
+      "hchrozvodi",
+      "hchrozvodi-1",
+      "zed",
+      "zed-1",
+      "zed-2",
+      "Šrafy",
+      "Šrafy-1"
+    ],
+    "block_definitions": [
+      "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-POHLEDY",
+      "212_HK_situace_03_dwg-886969-Řez 2",
+      "212_HK_situace_03_dwg-886969-Řez 3",
+      "212_HK_situace_03_dwg-886969-Řez 4",
+      "212_HK_situace_03_dwg-886969-Řez 5",
+      "212_HK_situace_03_dwg__ArchTick-904835-Řez 2",
+      "212_HK_situace_03_dwg__ArchTick-904835-Řez 3",
+      "212_HK_situace_03_dwg__ArchTick-904835-Řez 4",
+      "212_HK_situace_03_dwg__ArchTick-904835-Řez 5",
+      "212_HK_situace_03_dwg__Oblique-904816-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-904816-Řez 3",
+      "212_HK_situace_03_dwg__Oblique-904816-Řez 4",
+      "212_HK_situace_03_dwg__Oblique-904816-Řez 5",
+      "212_HK_situace_03_dwg__Oblique-904818-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-904818-Řez 4",
+      "212_HK_situace_03_dwg__Oblique-904836-Řez 3",
+      "212_HK_situace_03_dwg__Oblique-V10-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-V31-Řez 4",
+      "212_HK_situace_03_dwg__Oblique-V32-Řez 4",
+      "212_HK_situace_03_dwg__Oblique-V33-Řez 4",
+      "212_HK_situace_03_dwg__Oblique-V4-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-V5-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-V6-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-V7-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-V8-Řez 2",
+      "212_HK_situace_03_dwg__Oblique-V9-Řez 2",
+      "212_HK_situace_03_dwg__U37-904821-Řez 2",
+      "212_HK_situace_03_dwg__U37-904821-Řez 3",
+      "212_HK_situace_03_dwg__U37-904821-Řez 4",
+      "212_HK_situace_03_dwg__U37-904821-Řez 5",
+      "212_HK_situace_03_dwg__U37-V11-Řez 2",
+      "212_HK_situace_03_dwg__U37-V22-Řez 3",
+      "212_HK_situace_03_dwg__U37-V34-Řez 4",
+      "212_HK_situace_03_dwg__U37-V48-Řez 5",
+      "212_HK_situace_03_dwg__U38-904822-Řez 2",
+      "212_HK_situace_03_dwg__U38-904822-Řez 3",
+      "212_HK_situace_03_dwg__U38-904822-Řez 4",
+      "212_HK_situace_03_dwg__U38-904822-Řez 5",
+      "212_HK_situace_03_dwg__U40-904829-Řez 2",
+      "212_HK_situace_03_dwg__U40-904829-Řez 4",
+      "212_HK_situace_03_dwg__U40-904829-Řez 5",
+      "212_HK_situace_03_dwg__U40-V14-Řez 2",
+      "212_HK_situace_03_dwg__U40-V15-Řez 2",
+      "212_HK_situace_03_dwg__U40-V36-Řez 4",
+      "212_HK_situace_03_dwg__U40-V37-Řez 4",
+      "212_HK_situace_03_dwg__U40-V50-Řez 5",
+      "212_HK_situace_03_dwg__U40-V51-Řez 5",
+      "212_HK_situace_03_dwg__U41-904830-Řez 2",
+      "212_HK_situace_03_dwg__U41-904830-Řez 3",
+      "212_HK_situace_03_dwg__U41-904830-Řez 4",
+      "212_HK_situace_03_dwg__U41-904830-Řez 5",
+      "212_HK_situace_03_dwg__U41-904832-Řez 2",
+      "212_HK_situace_03_dwg__U41-904832-Řez 3",
+      "212_HK_situace_03_dwg__U41-904832-Řez 5",
+      "212_HK_situace_03_dwg__U41-V12-Řez 2",
+      "212_HK_situace_03_dwg__U41-V13-Řez 2",
+      "212_HK_situace_03_dwg__U41-V16-Řez 2",
+      "212_HK_situace_03_dwg__U41-V23-Řez 3",
+      "212_HK_situace_03_dwg__U41-V24-Řez 3",
+      "212_HK_situace_03_dwg__U41-V25-Řez 3",
+      "212_HK_situace_03_dwg__U41-V26-Řez 3",
+      "212_HK_situace_03_dwg__U41-V35-Řez 4",
+      "212_HK_situace_03_dwg__U41-V38-Řez 4",
+      "212_HK_situace_03_dwg__U41-V49-Řez 5",
+      "212_HK_situace_03_dwg__U41-V52-Řez 5",
+      "212_HK_situace_03_dwg__U41-V53-Řez 5",
+      "212_HK_situace_03_dwg__U45-904831-Řez 2",
+      "212_HK_situace_03_dwg__U45-904831-Řez 3",
+      "212_HK_situace_03_dwg_vzt-904833-Řez 3",
+      "212_HK_situace_03_dwg_vzt-904833-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 2",
+      "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 3",
+      "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__OPEN-903212-Řez 2",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__OPEN-903212-Řez 3",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__OPEN-903212-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__OPEN-903212-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__OPEN-V30-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__OPEN-V47-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1369-904556-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1370-904557-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1371-904558-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1372-904559-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1373-904560-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1374-904561-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1375-904562-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1376-904563-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1377-904564-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1378-904565-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1379-904566-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1380-904567-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1381-904568-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1382-904569-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1383-904570-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1384-904571-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1385-904572-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1386-904573-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1387-904574-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1388-904575-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1389-904576-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1390-904577-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1391-904578-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1392-904579-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1393-904580-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1394-904581-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1395-904582-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1396-904583-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1397-904584-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1398-904585-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1399-904586-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1400-904587-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1401-904588-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1402-904589-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1403-904590-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1404-904591-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1405-904592-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1406-904593-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1407-904594-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1408-904595-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1409-904596-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1410-904597-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1411-904598-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1412-904599-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1413-904600-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1414-904601-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1415-904602-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1416-904603-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1417-904604-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1418-904605-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1419-904606-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1420-904607-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1421-904608-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1422-904609-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1423-904610-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1424-904611-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1425-904612-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1426-904613-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1427-904614-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1428-904615-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1429-904616-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1430-904617-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1431-904618-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1432-904619-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1433-904620-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1434-904621-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1435-904622-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1436-904623-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1437-904624-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1438-904625-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1439-904626-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1440-904627-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1441-904628-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1442-904629-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1443-904630-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1444-904631-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1445-904632-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1446-904633-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1447-904634-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1448-904635-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1449-904636-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1450-904637-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1451-904638-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1452-904639-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1453-904640-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1454-904641-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1455-904642-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1456-904643-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1457-904644-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1458-904645-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1459-904646-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1460-904647-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1461-904648-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1462-904649-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1463-904650-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1464-904651-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1465-904652-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1466-904653-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1467-904654-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1468-904655-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1469-904656-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1470-904657-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1471-904658-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1472-904659-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1473-904660-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1474-904661-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1475-904662-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1476-904663-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1477-904664-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1478-904665-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1479-904666-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1480-904667-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1481-904668-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1482-904669-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1483-904670-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1484-904671-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1485-904672-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1486-904673-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1487-904674-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1488-904675-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1489-904676-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1490-904677-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1491-904678-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1492-904679-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1493-904680-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1494-904681-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1495-904682-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1496-904683-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1497-904684-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1498-904685-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1499-904686-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1500-904687-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1501-904688-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1502-904689-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1503-904690-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1504-904691-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1505-904692-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1506-904693-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1507-904694-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1508-904695-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1509-904696-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1510-904697-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1511-904698-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1512-904699-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1513-904700-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1514-904701-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1515-904702-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1516-904703-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1517-904704-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1518-904705-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1519-904706-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1520-904707-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1521-904708-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1522-904709-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1523-904710-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1524-904711-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1525-904712-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1526-904713-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1527-904714-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1528-904715-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1529-904716-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1530-904717-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1531-904718-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1532-904719-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1533-904720-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1534-904721-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1535-904722-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1536-904723-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1537-904724-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1538-904725-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1539-904726-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1540-904727-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1541-904728-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1542-904729-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1543-904730-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1544-904731-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1545-904732-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1546-904733-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1547-904734-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1548-904735-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1549-904736-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1550-904737-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1551-904738-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1552-904739-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1553-904740-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1554-904741-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1555-904742-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1556-904743-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1557-904744-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1558-904745-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1559-904746-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1560-904747-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1561-904748-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1562-904749-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1563-904750-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1564-904751-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1565-904752-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1566-904753-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1567-904754-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1568-904755-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1569-904756-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1570-904757-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1571-904758-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1572-904759-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1573-904760-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1574-904761-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1575-904762-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1576-904763-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1577-904764-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1578-904765-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1579-904766-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1580-904767-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1581-904768-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1582-904769-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1583-904770-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1584-904771-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1585-904772-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1586-904773-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1587-904774-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1588-904775-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1589-904776-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1590-904777-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1591-904778-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1592-904779-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1593-904780-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1594-904781-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1595-904782-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1596-904783-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1597-904784-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1598-904785-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1599-904786-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1600-904787-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1601-904788-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1602-904789-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1603-904790-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1604-904791-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1605-904792-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1606-904793-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1607-904794-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1608-904795-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1609-904796-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1610-904797-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1611-904798-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1612-904799-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1613-904800-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1614-904801-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1615-904802-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1616-904803-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_02_dwg__X1617-904804-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 2",
+      "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 3",
+      "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1000-902559-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1001-902558-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1032-902557-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1033-902556-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1034-902555-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1035-902554-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1055-902553-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1056-902552-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1093-902551-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1094-902550-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1117-902549-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1118-902548-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1119-902547-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1124-902546-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1125-902545-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1126-902544-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1136-902543-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1137-902542-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1138-902541-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1140-902540-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1151-902539-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1152-902538-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1156-902537-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1157-902535-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1228-902534-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1238-902533-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1242-902529-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1243-902528-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1244-902527-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1245-902526-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1246-902525-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1247-902521-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1248-902522-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1251-902520-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1252-902516-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1254-902518-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1256-902515-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1257-902514-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1260-902513-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1261-902510-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1262-902508-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1263-902509-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1264-902507-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1265-902504-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1266-902505-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1267-902506-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1268-902503-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1269-902502-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1270-902501-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1271-902500-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1272-902499-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1273-902498-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1275-902496-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1278-902494-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1288-902493-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1291-902492-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1292-902490-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1293-902491-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1294-902489-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1297-902486-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1299-902485-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1301-902483-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1306-902482-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1307-902481-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1308-902480-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1310-902478-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1311-902477-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1312-902476-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1313-902474-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1314-902475-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1315-902473-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1318-902470-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1319-902469-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1320-902468-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1321-902467-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1331-902466-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1343-902464-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1346-902463-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1348-902462-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1350-902460-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1366-902459-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1367-902458-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1368-902457-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1369-902456-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1370-902452-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1371-902453-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1374-902451-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1375-902447-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1377-902449-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1379-902446-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1380-902445-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1383-902444-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1384-902441-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1385-902439-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1386-902440-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1387-902438-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1388-902435-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1389-902436-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1390-902437-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1391-902434-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1392-902433-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1393-902432-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1395-902431-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1396-902429-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1397-902428-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1399-902427-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1451-902425-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1453-902424-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1457-902423-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1462-902422-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1463-902421-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1476-902420-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1477-902419-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1498-902418-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1501-902417-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1502-902416-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1573-902415-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1574-902414-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1575-902413-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1576-902412-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1577-902411-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1578-902410-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1579-902409-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1580-902407-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1581-902406-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1582-902405-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1583-902404-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1584-902403-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1585-902402-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1586-902401-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1587-902400-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1588-902399-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1589-902398-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1590-902396-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1591-902395-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1592-902394-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1596-902393-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1597-902392-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1598-902390-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1628-902389-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1629-902388-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1630-902387-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1631-902386-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1638-902385-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1639-902384-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1640-902383-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1641-902382-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1643-902380-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1644-902379-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1645-902378-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1646-902377-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1647-902373-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1648-902374-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1651-902372-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1652-902368-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1654-902370-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1656-902367-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1657-902366-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1660-902365-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1661-902362-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1662-902360-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1663-902361-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1664-902359-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1665-902356-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1666-902357-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1667-902358-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1668-902355-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1669-902354-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1670-902353-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1672-902352-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1673-902350-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1674-902349-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1675-902348-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1676-902347-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1677-902346-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1678-902345-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1679-902344-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1680-902343-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1681-902342-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1682-902341-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1683-902340-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1684-902339-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1685-902338-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1686-902337-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1687-902336-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1688-902335-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1689-902334-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1690-902333-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1691-902332-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1704-902331-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1705-902330-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1706-902329-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1707-902328-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1708-902327-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1709-902326-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1710-902325-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1711-902323-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1712-902322-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1713-902321-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1728-902320-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1729-902319-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1730-902318-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1731-902317-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1820-902316-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1821-902315-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1822-902314-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1823-902313-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1824-902312-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1825-902311-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1826-902309-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1827-902308-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1902-902307-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1903-902306-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1960-902305-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1962-902303-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE1964-902301-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2034-902300-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2035-902299-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2049-902298-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2050-902297-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2051-902296-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2054-902295-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2056-902294-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2057-902293-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2058-902292-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2061-902291-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2063-902290-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2064-902289-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2065-902288-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2066-902287-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2067-902286-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2068-902285-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2069-902284-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2070-902283-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2071-902282-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2072-902281-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2073-902280-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2090-902279-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2134-902278-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2135-902277-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2136-902276-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2137-902268-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2138-902269-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2139-902270-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2140-902271-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2141-902272-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2142-902273-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2143-902274-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2144-902275-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2145-902267-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2146-902266-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2147-902265-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2148-902264-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2149-902263-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2150-902262-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2151-902261-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2152-902260-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2153-902259-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2154-902257-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2155-902258-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2156-902256-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2157-902255-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2158-902247-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2159-902248-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2160-902249-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2161-902250-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2162-902251-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2163-902252-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2164-902253-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2165-902254-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2166-902246-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2167-902245-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2168-902244-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2169-902243-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2170-902242-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2173-902239-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2174-902238-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2175-902237-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2176-902236-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2177-902235-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2178-902234-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2179-902233-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2180-902231-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2181-902230-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2182-902229-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2183-902228-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2188-902223-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2189-902222-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2190-902221-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2191-902220-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2192-902219-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2193-902218-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2194-902217-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2195-902216-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2196-902215-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2197-902214-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2198-902213-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2199-902212-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2200-902211-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2201-902210-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2202-902208-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2203-902209-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2204-902207-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2205-902199-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2206-902200-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2207-902201-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2208-902202-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2209-902203-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2210-902204-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2211-902205-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2212-902206-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2218-902198-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2219-902197-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2220-902196-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2221-902191-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2222-902192-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2223-902193-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2224-902194-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2225-902195-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2226-902190-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2227-902189-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2228-902188-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2229-902187-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2230-902186-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2231-902185-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2232-902184-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2235-902181-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2236-902180-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2237-902179-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2238-902178-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2239-902177-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2240-902176-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2241-902175-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2242-902174-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2243-902173-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2246-902170-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2247-902169-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2248-902168-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2249-902167-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2250-902166-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2251-902165-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2253-902163-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2254-902162-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2255-902161-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2256-902160-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2260-902156-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2261-902155-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2262-902154-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2263-902153-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2264-902152-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2265-902151-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2266-902150-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2267-902149-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2268-902148-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2269-902147-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2270-902146-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2271-902145-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2272-902144-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2273-902143-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2274-902141-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2275-902142-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2276-902140-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2277-902139-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2278-902132-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2279-902133-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2280-902134-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2281-902135-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2282-902136-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2283-902137-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2284-902138-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2295-902126-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2296-902125-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2297-902124-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2298-902123-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2299-902122-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2300-902121-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2301-902120-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2302-902119-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2303-902118-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2304-902117-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2305-902116-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2306-902115-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2307-902114-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2308-902113-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2309-902112-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2314-902107-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2315-902106-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2316-902105-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2317-902104-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2319-902102-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2320-902101-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2321-902100-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2322-902099-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2323-902098-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2324-902097-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2325-902096-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2326-902095-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2327-902094-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2328-902093-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2329-902092-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2330-902091-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2331-902090-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2332-902089-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2333-902088-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2334-902087-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2335-902086-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2336-902085-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2337-902084-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2338-902083-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2339-902082-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2342-902079-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2343-902078-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2344-902077-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2345-902076-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2346-902075-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2347-902074-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2348-902073-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2349-902072-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2350-902071-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2351-902070-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2352-902069-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2353-902068-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2354-902067-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2355-902066-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2357-902064-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2358-902063-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2359-902062-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2360-902061-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2361-902060-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2362-902059-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2363-902058-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2364-902057-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2365-902056-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2366-902055-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2369-902052-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2370-902051-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2371-902050-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2372-902049-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2373-902048-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2374-902047-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2375-902046-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2376-902045-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2377-902044-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2378-902043-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2379-902042-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2380-902041-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2381-902040-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2384-902039-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2387-902037-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2390-902036-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2393-902033-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2394-902032-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2408-901597-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2589-902031-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2590-902030-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2591-902029-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2596-902024-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2597-902023-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2598-902022-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2599-902021-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2600-902020-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2601-902019-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2602-902018-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2603-902017-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2606-902014-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2608-902012-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2609-902011-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2610-902010-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2611-902009-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2612-902008-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2613-902007-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2615-902005-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2616-902004-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2617-902003-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2618-902002-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2619-902001-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2620-902000-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2621-901999-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2622-901998-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2623-901997-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2624-901996-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2625-901995-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2630-901990-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2631-901989-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2632-901988-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2633-901987-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2634-901986-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2635-901985-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2640-901980-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2641-901979-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2642-901978-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2643-901977-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2644-901976-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2645-901975-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2646-901974-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2647-901973-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2653-901972-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2682-901970-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2683-901969-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2684-901968-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2686-901966-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2687-901965-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2688-901963-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2689-901964-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2690-901962-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2691-901961-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2693-901959-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2698-901954-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2699-901953-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2700-901952-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2701-901951-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2702-901950-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2703-901946-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2704-901947-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2707-901945-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2708-901941-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2710-901943-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2712-901940-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2713-901939-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2716-901938-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2717-901935-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2718-901933-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2719-901934-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2720-901932-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2721-901929-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2722-901930-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2723-901931-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2724-901928-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2725-901927-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2726-901926-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2728-901925-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2729-901923-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2730-901922-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2735-901917-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2736-901916-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2737-901915-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2738-901914-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2739-901913-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2741-901912-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2742-901910-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2743-901909-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2744-901907-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2745-901908-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2746-901906-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2747-901905-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2748-901904-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2749-901903-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2751-901901-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2752-901899-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2753-901900-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2754-901898-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2757-901895-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2758-901894-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2759-901893-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2766-901892-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2767-901891-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2768-901890-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2769-901889-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2770-901888-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2771-901887-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2772-901886-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2775-901885-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2776-901884-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2777-901883-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2778-901882-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2779-901881-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2780-901880-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2781-901879-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2782-901878-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2783-901876-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2784-901877-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2785-901875-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2792-901874-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2794-901873-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2795-901872-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2796-901871-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2803-901870-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2806-901869-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2807-901868-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2808-901867-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2809-901866-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2810-901865-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2811-901864-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2812-901863-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2814-901861-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2815-901860-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2816-901859-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2817-901858-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2818-901857-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2819-901856-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2820-901855-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2823-901852-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2824-901851-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2825-901850-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2826-901849-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2827-901848-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2828-901847-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2829-901846-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2830-901845-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2831-901844-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2832-901843-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2874-901594-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2881-901842-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2882-901841-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2883-901840-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2884-901839-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2885-901838-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2891-901837-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2925-901836-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2927-901834-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2928-901833-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2929-901832-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2930-901831-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2931-901830-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2932-901829-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2933-901828-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2934-901827-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2935-901826-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2948-901825-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2950-901823-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2953-901820-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2954-901819-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2961-901812-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2962-901811-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2963-901810-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2964-901809-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2965-901808-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2968-901805-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2969-901804-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2970-901803-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2971-901802-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2978-901799-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2981-901796-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2985-901794-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2992-901787-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2993-901786-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2994-901785-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2995-901784-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE2996-901783-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3004-901779-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3005-901778-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3008-901775-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3015-901772-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3016-901771-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3023-901764-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3024-901763-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3025-901762-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3026-901761-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3027-901760-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3028-901759-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3035-901752-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3036-901751-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3037-901750-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3038-901749-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3080-901748-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3081-901747-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3082-901746-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3083-901745-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3084-901744-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3085-901743-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3086-901739-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3087-901740-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3088-901741-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3089-901742-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3090-901738-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3091-901737-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3092-901736-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3093-901735-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3094-901734-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3095-901733-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3147-901732-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3148-901731-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3149-901730-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3150-901729-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3152-901595-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3153-901596-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3154-901728-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3155-901727-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3156-901726-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3157-901725-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3254-901724-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3260-901723-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3261-901722-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3262-901721-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3263-901720-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3264-901719-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3265-901718-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3270-901717-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3271-901716-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3272-901715-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3273-901714-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3274-901713-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3275-901712-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3276-901711-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3277-901710-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3278-901709-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3279-901708-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3280-901706-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3281-901707-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3282-901705-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3283-901699-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3284-901700-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3285-901701-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3286-901702-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3287-901703-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3288-901704-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3289-901698-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3290-901696-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3291-901697-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3292-901695-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3293-901693-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3294-901694-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3295-901692-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3296-901691-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3297-901690-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3298-901689-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3299-901688-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3300-901687-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3301-901686-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3302-901685-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3303-901684-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3304-901683-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3305-901682-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3306-901681-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3307-901680-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3308-901679-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3309-901678-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3310-901677-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3311-901676-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3312-901675-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3313-901674-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3314-901673-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3315-901672-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3316-901671-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3318-901670-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3319-901669-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3320-901668-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3321-901667-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3322-901666-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3323-901665-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3328-901664-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3329-901663-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3330-901662-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3334-901660-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3335-901659-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3336-901658-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3341-901653-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3342-901652-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3343-901651-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3344-901650-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3345-901649-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3347-901648-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3348-901647-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3349-901646-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3350-901645-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3355-901640-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3356-901639-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3357-901638-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3358-901637-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3359-901636-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3360-901635-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3364-901631-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3365-901630-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3366-901629-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3367-901628-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3368-901627-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3369-901626-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3370-901625-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3371-901624-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3373-901622-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3374-901621-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3375-901620-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3376-901619-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3377-901618-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3378-901617-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3379-901616-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3380-901615-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3381-901614-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3382-901613-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3383-901612-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3384-901611-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3385-901610-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3386-901609-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3387-901608-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3388-901607-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE367-902943-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE382-902942-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE384-902941-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3858-901606-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3859-901605-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3860-901604-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3861-901603-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3862-901602-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE3863-901601-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE414-902940-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE424-902930-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE425-902928-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE426-902929-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE427-902927-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE428-902925-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE429-902926-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE430-902924-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE431-902923-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE432-902922-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE433-902917-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE438-902916-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE439-902915-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE440-902914-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE441-902913-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE442-902912-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE445-902909-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE446-902908-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE447-902907-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE448-902905-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE449-902906-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE450-902904-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE451-902898-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE452-902899-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE457-902897-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE458-902896-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE459-902894-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE460-902895-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE461-902893-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE464-902890-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE465-902889-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE466-902888-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE467-902887-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE468-902886-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE469-902885-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE470-902884-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE472-902882-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE480-902881-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE481-902880-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE482-902879-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE483-902878-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE484-902877-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE485-902876-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE486-902874-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE487-902875-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE488-902873-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE490-902871-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE491-902870-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE492-902869-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE493-902868-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE494-902867-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE495-902866-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE496-902865-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE497-902864-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE498-902863-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE499-902862-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE500-902861-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE501-902860-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE502-902859-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE503-902858-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE504-902857-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE505-902856-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE506-902855-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE508-902853-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE509-902852-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE510-902851-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE511-902849-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE512-902850-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE513-902848-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE514-902847-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE515-902845-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE516-902846-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE518-902843-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE519-902842-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE521-902840-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE523-902838-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE524-902837-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE526-902835-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE527-902836-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE528-902833-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE529-902832-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE530-902831-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE533-902827-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE534-902828-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE536-902830-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE538-902824-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE539-902823-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE540-902822-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE541-902821-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE542-902820-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE543-902819-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE544-902818-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE545-902817-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE546-902816-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE547-902815-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE548-902814-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE549-902813-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE550-902812-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE551-902808-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE552-902809-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE553-902810-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE554-902811-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE555-902807-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE557-902805-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE558-902797-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE559-902798-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE560-902799-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE561-902800-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE562-902801-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE563-902802-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE564-902803-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE565-902804-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE566-902796-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE567-902795-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE569-902793-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE570-902792-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE572-902790-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE573-902789-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE574-902781-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE575-902782-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE576-902783-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE577-902784-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE578-902785-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE579-902786-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE580-902787-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE581-902788-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE582-902780-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE583-902779-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE584-902776-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE585-902777-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE586-902778-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE587-902775-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE588-902772-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE589-902773-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE590-902774-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE591-902771-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE594-902768-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE595-902767-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE596-902766-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE597-902765-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE598-902764-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE599-902763-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE600-902762-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE601-902761-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE602-902760-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE603-902759-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE604-902758-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE605-902757-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE606-902756-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE607-902755-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE608-902754-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE609-902753-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE610-902752-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE611-902751-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE612-902750-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE613-902749-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE614-902748-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE615-902747-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE616-902746-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE617-902745-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE618-902744-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE619-902742-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE620-902743-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE621-902741-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE622-902740-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE623-902739-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE624-902735-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE625-902736-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE626-902737-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE627-902738-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE628-902734-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE629-902733-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE630-902732-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE632-902730-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE633-902729-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE637-902728-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE638-902727-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE643-902722-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE644-902721-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE645-902720-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE650-902715-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE651-902714-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE652-902713-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE653-902712-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE654-902711-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE659-902706-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE660-902705-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE661-902704-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE666-902699-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE667-902698-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE668-902697-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE669-902696-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE674-902691-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE675-902690-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE680-902685-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE681-902684-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE682-902683-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE683-902682-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE684-902681-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE685-902680-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE690-902675-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE691-902674-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE696-902669-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE697-902668-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE698-902667-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE704-902666-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE708-902662-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE709-902660-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE710-902661-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE711-902659-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE713-902654-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE716-902657-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE759-902652-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE760-902651-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE761-902650-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE762-902649-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE763-902648-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE764-902647-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE798-902646-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE831-902645-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE833-902643-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE834-902642-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE835-902641-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE836-902640-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE837-902639-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE838-902638-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE841-902635-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE842-902634-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE843-902633-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE844-901592-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE845-902632-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE851-902631-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE858-902624-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE859-902623-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE860-902622-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE861-902621-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE862-902620-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE863-902619-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE864-902618-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE865-902617-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE866-902616-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE867-902615-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE870-902612-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE871-902611-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE874-902608-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE875-902607-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE880-902603-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE887-902596-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE891-902595-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE892-902594-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE894-902593-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE895-902592-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE896-902591-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE897-902590-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE898-902589-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE899-902588-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE900-902587-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE901-902586-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE904-902585-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE905-902584-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE969-902582-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE970-902581-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE974-902580-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE975-902579-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE976-902578-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE982-902577-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE983-902576-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE984-902560-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE985-902561-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE986-902562-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE987-902563-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE988-902564-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE989-902565-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE990-902566-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE991-902567-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE992-902568-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE993-902569-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE994-902570-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE995-902571-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE996-902572-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE997-902573-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE998-902574-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_SE999-902575-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__DIM-903195-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__DIM_1_-903198-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__DIM_2_-903200-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__OPEN-901600-Řez 2",
+      "2966-1_navrh dispozice stroju-HK_dwg__OPEN-901600-Řez 3",
+      "2966-1_navrh dispozice stroju-HK_dwg__OPEN-901600-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__OPEN-901600-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_dwg__OPEN-V29-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__OPEN-V46-Řez 5",
+      "2966-1_navrh dispozice stroju-HK_dwg__POLYLINE_1_-902310-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__POLYLINE_2_-902324-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__POLYLINE_3_-902391-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__POLYLINE_4_-902397-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg__POLYLINE_5_-902408-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_dfbg-903193-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_dfbg_1_-903194-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_gbvf-903196-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_gbvf_1_-903197-Řez 4",
+      "2966-1_navrh dispozice stroju-HK_dwg_gbvf_2_-903199-Řez 4",
+      "C profil - C150X19_3-854068-Řez 2",
+      "C profil - C150X19_3-854695-Řez 3",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4",
+      "HK_TEREN_SESAZENI_dwg-918098-Řez 2",
+      "HK_TEREN_SESAZENI_dwg-918098-Řez 3",
+      "HK_TEREN_SESAZENI_dwg-918098-Řez 4",
+      "HK_TEREN_SESAZENI_dwg-918098-Řez 5",
+      "HK_TEREN_SESAZENI_dwg_fgvzhj-918100-Řez 2",
+      "HK_TEREN_SESAZENI_dwg_fgvzhj-918100-Řez 3",
+      "HK_TEREN_SESAZENI_dwg_fgvzhj-918100-Řez 4",
+      "HK_TEREN_SESAZENI_dwg_fgvzhj-918100-Řez 5",
+      "IPE - IPE160-854151-Řez 2",
+      "IPE - IPE160-854659-Řez 3",
+      "M_S profily_ sloup - 374564-Řez 4",
+      "M_S profily_ sloup - 374570-Řez 4",
+      "M_S profily_ sloup - 374572-Řez 4",
+      "M_S profily_ sloup - 388384-Řez 5",
+      "M_S profily_ sloup - 388385-Řez 5",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-Řez 4",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-Řez 4",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-Řez 5",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V40-Řez 5",
+      "OKNO_1k - Okno Hala 1000x1000-586513-Řez 2",
+      "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "OKNO_1k - Okno Hala 1000x1000-586513-Řez 5",
+      "OKNO_1k - Okno Hala 1000x1000-796436-Řez 3",
+      "OKNO_1k - Okno Hala 1000x1000-796436-Řez 4",
+      "OKNO_1k - Okno Hala 1000x1000-796436-Řez 5",
+      "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+      "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3",
+      "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3",
+      "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "OKNO_1k - Okno Hala 1000x1000-V21-Řez 3",
+      "OKNO_1k - Okno Hala 1000x1000-V27-Řez 4",
+      "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2",
+      "OKNO_1k - Okno Hala 1000x1000-V39-Řez 5",
+      "OKNO_1k - Okno Hala 1000x1000-V41-Řez 5",
+      "OKNO_1k - Okno Hala 1000x1000-V44-Řez 5",
+      "Patní deska s ořezem - 388233-Řez 4",
+      "Patní deska s ořezem - 388242-Řez 4",
+      "Patní deska s ořezem - 388251-Řez 4",
+      "Patní deska s ořezem - 388260-Řez 4",
+      "Patní deska s ořezem - 388404-Řez 5",
+      "Patní deska s ořezem - 388405-Řez 5",
+      "Patní deska s ořezem - 388406-Řez 5",
+      "Patní deska s ořezem - 388407-Řez 5",
+      "Popiska materiálu - Popis-329410-Řez 2",
+      "Popiska materiálu - Popis-329410-Řez 3",
+      "Popiska materiálu - Popis-329410-Řez 4",
+      "Popiska materiálu - Popis-329410-Řez 5",
+      "Rampa - Rampa-818641-Řez 3",
+      "Rampa - Rampa-818641-Řez 5",
+      "Rampa - Rampa-819336-Řez 2",
+      "Rampa - Rampa-819336-Řez 3",
+      "Rampa - Rampa-819336-Řez 5",
+      "Rampa - Rampa-823350-Řez 2",
+      "Rampa - Rampa-823350-Řez 3",
+      "Rampa - Rampa-823350-Řez 4",
+      "Rampa - Rampa-823366-Řez 2",
+      "Rampa - Rampa-823366-Řez 4",
+      "Rámový roh_ šroubovaný s náběhem - 387987-Řez 2",
+      "Rámový roh_ šroubovaný s náběhem - 387988-Řez 3",
+      "Rámový roh_ šroubovaný s náběhem - 388024-Řez 2",
+      "Rámový roh_ šroubovaný s náběhem - 388025-Řez 3",
+      "Sloup IPE - 387971-Řez 2",
+      "Sloup IPE - 387972-Řez 3",
+      "Sloup IPE - 388008-Řez 2",
+      "Sloup IPE - 388009-Řez 3",
+      "Umyvadlo - 50x40 cm-459123-Řez 2",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 2",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 3",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 4",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 5",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V28-Řez 4",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V45-Řez 5",
+      "Výškové kóty - Horní-314756-Řez 2",
+      "Výškové kóty - Horní-314756-Řez 3",
+      "Výškové kóty - Horní-314756-Řez 4",
+      "Výškové kóty - Horní-314756-Řez 5",
+      "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 3",
+      "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 4",
+      "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 5",
+      "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 2",
+      "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 3",
+      "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 5",
+      "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V20-Řez 3",
+      "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V43-Řez 5",
+      "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 2",
+      "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 3",
+      "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 5",
+      "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V19-Řez 3",
+      "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V42-Řez 5"
+    ],
+    "entity_counts_by_layer": {
+      "A-ROOF-1": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "A-ROOF-2": {
+        "HATCH": 4,
+        "HATCH_paths=1": 4
+      },
+      "A-WALL-1": {
+        "HATCH": 74,
+        "HATCH_paths=1": 48,
+        "HATCH_paths=2": 7,
+        "HATCH_paths=3": 15,
+        "HATCH_paths=6": 1,
+        "HATCH_paths=5": 3
+      },
+      "A-WALL-2": {
+        "HATCH": 17,
+        "HATCH_paths=2": 7,
+        "HATCH_paths=1": 7,
+        "HATCH_paths=3": 3
+      },
+      "A-ROOF-OTLN-1": {
+        "HATCH": 10,
+        "HATCH_paths=1": 10
+      },
+      "A-WALL-3": {
+        "HATCH": 15,
+        "HATCH_paths=2": 1,
+        "HATCH_paths=1": 13,
+        "HATCH_paths=5": 1
+      },
+      "A-WALL-4": {
+        "HATCH": 23,
+        "HATCH_paths=1": 22,
+        "HATCH_paths=2": 1
+      },
+      "A-FLOR-1": {
+        "HATCH": 8,
+        "HATCH_paths=1": 7,
+        "HATCH_paths=2": 1
+      },
+      "S-COLS": {
+        "INSERT": 9
+      },
+      "S-FSTN": {
+        "INSERT": 12
+      },
+      "S-BEAM": {
+        "INSERT": 4
+      },
+      "A-ROOF": {
+        "LINE": 24
+      },
+      "A-WALL": {
+        "LINE": 309
+      },
+      "A-GLAZ": {
+        "INSERT": 42
+      },
+      "A-ROOF-OTLN": {
+        "LINE": 68
+      },
+      "P-SANR-FIXT": {
+        "INSERT": 1
+      },
+      "Nedefinovaný_Trubky-tvarovka": {
+        "INSERT": 10
+      },
+      "A-FLOR-LEVL": {
+        "INSERT": 10
+      },
+      "A-DOOR": {
+        "INSERT": 6
+      },
+      "A-FLOR": {
+        "LINE": 26
+      },
+      "2966-1_navrh dispozice stroju-HK_dwg-1": {
+        "INSERT": 4
+      },
+      "2966-1_navrh dispozice stroju-HK_02_dwg-1": {
+        "INSERT": 4
+      },
+      "212_HK_situace_03_dwg-1": {
+        "INSERT": 4
+      },
+      "HK_TEREN_SESAZENI_dwg-1": {
+        "INSERT": 4
+      },
+      "Vlastní 1_A-DETL-GENF-1": {
+        "HATCH": 4,
+        "HATCH_paths=1": 4
+      },
+      "A-DETL-THIN": {
+        "LINE": 10
+      },
+      "A-DETL-MBND": {
+        "LINE": 20
+      },
+      "A-GENM-1": {
+        "HATCH": 38,
+        "HATCH_paths=1": 36,
+        "HATCH_paths=4": 1,
+        "HATCH_paths=2": 1
+      },
+      "A-FLOR-3": {
+        "HATCH": 2,
+        "HATCH_paths=1": 1,
+        "HATCH_paths=2": 1
+      },
+      "A-GENM-2": {
+        "LINE": 148,
+        "SPLINE": 35,
+        "LWPOLYLINE": 5,
+        "INSERT": 4,
+        "ARC": 4
+      },
+      "Nedefinovaný_Potrubí_VZT_příslušenství": {
+        "INSERT": 3
+      },
+      "A-WALL-5": {
+        "HATCH": 3,
+        "HATCH_paths=2": 2,
+        "HATCH_paths=1": 1
+      },
+      "A-DOOR-GLAZ-2": {
+        "INSERT": 4
+      },
+      "G-ANNO-DIMS": {
+        "INSERT": 10,
+        "LINE": 13,
+        "MTEXT": 10
+      },
+      "A-ANNO-IDEN": {
+        "LINE": 24,
+        "INSERT": 24
+      },
+      "A-ANNO-IDEN-1": {
+        "MTEXT": 23
+      },
+      "G-ANNO-TEXT": {
+        "MTEXT": 2
+      }
+    },
+    "closed_areas_by_layer": {},
+    "open_lengths_by_layer": {
+      "A-ROOF": [
+        0.907,
+        28.19,
+        0.907,
+        0.377,
+        28.19,
+        0.377,
+        28.19,
+        0.907,
+        0.907,
+        0.377,
+        28.19,
+        0.377,
+        9.912,
+        9.912,
+        9.912,
+        9.912,
+        0.377,
+        0.377,
+        9.912,
+        9.912,
+        9.912,
+        9.912,
+        0.377,
+        0.377
+      ],
+      "A-WALL": [
+        1.242,
+        0.932,
+        1.147,
+        3.335,
+        0.004,
+        0.007,
+        0.004,
+        0.004,
+        0.007,
+        0.004,
+        1.0,
+        3.335,
+        0.007,
+        0.007,
+        1.0,
+        1.0,
+        24.809,
+        1.15,
+        21.586,
+        1.15,
+        0.995,
+        5.0,
+        0.995,
+        15.371,
+        3.335,
+        15.371,
+        15.371,
+        15.371,
+        3.335,
+        1.0,
+        2.15,
+        0.995,
+        5.0,
+        0.995,
+        3.335,
+        3.335,
+        24.809,
+        9.323,
+        0.997,
+        2.15,
+        2.15,
+        5.0,
+        0.995,
+        0.995,
+        3.335,
+        6.1,
+        3.335,
+        6.1,
+        6.1,
+        6.1,
+        1.276,
+        2.011,
+        2.011,
+        2.286,
+        0.995,
+        4.15,
+        2.011,
+        3.297,
+        12.473,
+        6.366,
+        3.335,
+        6.366,
+        0.004,
+        0.007,
+        0.004,
+        0.993,
+        6.366,
+        6.366,
+        0.004,
+        0.007,
+        0.004,
+        1.181,
+        0.3,
+        0.3,
+        2.245,
+        0.203,
+        25.018,
+        0.203,
+        0.3,
+        0.572,
+        1.426,
+        1.427,
+        0.572,
+        0.472,
+        1.03,
+        0.472,
+        5.485,
+        0.572,
+        0.98,
+        2.0,
+        0.099,
+        1.15,
+        2.149,
+        0.572,
+        0.571,
+        0.573,
+        0.573,
+        3.988,
+        1.0,
+        18.8,
+        4.472,
+        26.633,
+        1.15,
+        5.0,
+        0.995,
+        0.995,
+        3.335,
+        11.82,
+        3.335,
+        11.821,
+        11.821,
+        11.821,
+        1.0,
+        1.0,
+        1.15,
+        3.335,
+        3.0,
+        3.335,
+        3.0,
+        3.0,
+        3.0,
+        14.811,
+        1.0,
+        1.0,
+        1.15,
+        0.995,
+        5.0,
+        0.995,
+        3.335,
+        6.1,
+        3.335,
+        6.1,
+        6.1,
+        6.1,
+        0.565,
+        1.0,
+        5.698,
+        1.0,
+        0.565,
+        0.565,
+        3.297,
+        0.995,
+        5.0,
+        0.995,
+        3.335,
+        5.701,
+        0.565,
+        0.565,
+        5.701,
+        5.702,
+        0.565,
+        0.565,
+        5.702,
+        1.181,
+        0.993,
+        0.004,
+        0.007,
+        0.004,
+        0.004,
+        0.004,
+        0.007,
+        0.3,
+        0.3,
+        0.2,
+        1.245,
+        0.2,
+        0.075,
+        0.075,
+        0.2,
+        1.118,
+        5.349,
+        13.745,
+        0.3,
+        0.028,
+        0.007,
+        19.142,
+        4.503,
+        19.142,
+        19.142,
+        1.05,
+        4.0,
+        1.05,
+        4.0,
+        1.05,
+        19.142,
+        1.0,
+        2.15,
+        1.086,
+        0.993,
+        1.261,
+        3.372,
+        0.004,
+        0.007,
+        0.004,
+        0.004,
+        0.007,
+        0.004,
+        1.0,
+        1.15,
+        3.18,
+        2.15,
+        3.18,
+        2.15,
+        4.984,
+        3.2,
+        4.992,
+        3.179,
+        2.15,
+        3.179,
+        3.179,
+        5.012,
+        3.18,
+        0.3,
+        0.3,
+        0.195,
+        3.79,
+        0.195,
+        0.004,
+        0.195,
+        0.084,
+        0.195,
+        0.084,
+        4.972,
+        0.195,
+        3.85,
+        0.3,
+        0.3,
+        0.3,
+        0.4,
+        0.315,
+        0.008,
+        0.028,
+        0.007,
+        0.007,
+        1.086,
+        0.993,
+        1.261,
+        0.007,
+        0.007,
+        2.15,
+        0.003,
+        0.632,
+        0.253,
+        0.026,
+        0.003,
+        0.004,
+        0.054,
+        2.18,
+        0.026,
+        0.997,
+        0.003,
+        0.004,
+        1.15,
+        0.993,
+        1.261,
+        0.004,
+        0.007,
+        0.004,
+        0.004,
+        0.007,
+        0.004,
+        1.086,
+        0.006,
+        0.007,
+        0.006,
+        19.34,
+        3.2,
+        1.05,
+        3.972,
+        1.05,
+        1.05,
+        4.0,
+        1.05,
+        19.34,
+        1.261,
+        19.34,
+        0.993,
+        0.006,
+        0.007,
+        0.006,
+        19.34,
+        2.15,
+        2.15,
+        5.005,
+        2.15,
+        5.008,
+        3.17,
+        2.15,
+        1.0,
+        3.162,
+        3.162,
+        3.174,
+        3.149,
+        5.005,
+        0.315,
+        0.3,
+        0.3,
+        0.503,
+        0.309,
+        0.503,
+        0.203,
+        3.84,
+        0.203,
+        0.084,
+        0.203,
+        4.96,
+        0.203,
+        3.784,
+        0.203
+      ],
+      "A-ROOF-OTLN": [
+        0.125,
+        0.125,
+        28.19,
+        28.19,
+        28.19,
+        28.19,
+        0.125,
+        0.125,
+        28.19,
+        28.19,
+        28.19,
+        28.19,
+        0.074,
+        0.107,
+        0.013,
+        0.013,
+        0.013,
+        0.003,
+        0.01,
+        0.006,
+        0.012,
+        0.107,
+        0.069,
+        0.122,
+        0.003,
+        0.125,
+        0.125,
+        0.003,
+        0.122,
+        0.069,
+        0.107,
+        0.012,
+        0.006,
+        0.01,
+        0.003,
+        0.013,
+        0.013,
+        0.013,
+        0.107,
+        0.074,
+        0.125,
+        0.003,
+        0.122,
+        0.069,
+        0.107,
+        0.012,
+        0.006,
+        0.01,
+        0.003,
+        0.013,
+        0.013,
+        0.013,
+        0.107,
+        0.074,
+        0.074,
+        0.107,
+        0.013,
+        0.013,
+        0.013,
+        0.003,
+        0.01,
+        0.006,
+        0.012,
+        0.107,
+        0.069,
+        0.122,
+        0.003,
+        0.125
+      ],
+      "A-FLOR": [
+        2.0,
+        0.416,
+        0.434,
+        0.253,
+        0.253,
+        2.0,
+        1.427,
+        2.0,
+        0.271,
+        0.275,
+        0.037,
+        0.564,
+        0.026,
+        0.062,
+        0.609,
+        0.15,
+        0.25,
+        0.01,
+        0.002,
+        0.123,
+        0.7,
+        0.026,
+        0.062,
+        0.694,
+        0.25,
+        0.149
+      ],
+      "A-DETL-THIN": [
+        30.547,
+        30.976,
+        1.955,
+        0.83,
+        22.488,
+        1.5,
+        0.8,
+        0.32,
+        0.114,
+        24.549
+      ],
+      "A-DETL-MBND": [
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939,
+        0.939
+      ],
+      "A-GENM-2": [
+        0.001,
+        0.014,
+        0.001,
+        0.001,
+        0.001,
+        0.014,
+        0.001,
+        0.001,
+        0.003,
+        0.064,
+        0.003,
+        0.001,
+        0.064,
+        0.001,
+        0.003,
+        0.003,
+        0.07,
+        0.07,
+        0.095,
+        0.101,
+        0.107,
+        0.027,
+        0.132,
+        0.024,
+        0.132,
+        0.07,
+        0.095,
+        0.107,
+        0.027,
+        0.101,
+        5.444,
+        5.444,
+        0.0,
+        0.002,
+        0.003,
+        0.004,
+        0.012,
+        0.012,
+        0.005,
+        0.003,
+        0.005,
+        0.002,
+        0.002,
+        0.026,
+        0.026,
+        0.026,
+        0.026,
+        0.079,
+        0.032,
+        0.001,
+        0.001,
+        0.038,
+        0.0,
+        0.0,
+        0.0,
+        0.032,
+        0.0,
+        0.0,
+        0.0,
+        0.038,
+        0.001,
+        0.001,
+        0.032,
+        0.032,
+        0.08,
+        0.026,
+        0.026,
+        0.026,
+        0.026,
+        0.08,
+        0.032,
+        0.001,
+        0.001,
+        0.038,
+        0.0,
+        0.0,
+        0.0,
+        0.032,
+        0.0,
+        0.0,
+        0.0,
+        0.038,
+        0.001,
+        0.001,
+        0.032,
+        0.032,
+        0.079,
+        0.026,
+        0.026,
+        0.026,
+        0.026,
+        0.08,
+        0.032,
+        0.001,
+        0.001,
+        0.038,
+        0.0,
+        0.0,
+        0.0,
+        0.032,
+        0.0,
+        0.0,
+        0.0,
+        0.038,
+        0.001,
+        0.001,
+        0.032,
+        0.032,
+        0.08,
+        0.014,
+        0.001,
+        0.015,
+        0.006,
+        0.001,
+        0.006,
+        0.015,
+        0.014,
+        0.006,
+        0.001,
+        0.006,
+        0.003,
+        0.003,
+        0.001,
+        0.001,
+        0.003,
+        0.003,
+        0.018,
+        0.079,
+        0.074,
+        0.004,
+        0.001,
+        0.001,
+        0.043,
+        0.018,
+        0.018,
+        0.079,
+        0.0,
+        0.01,
+        0.01,
+        0.0,
+        0.08,
+        0.079,
+        0.0,
+        0.01,
+        0.01,
+        0.0,
+        0.079,
+        0.08,
+        0.0,
+        0.01,
+        0.01,
+        0.0,
+        0.08
+      ],
+      "G-ANNO-DIMS": [
+        0.125,
+        1.236,
+        0.013,
+        1.565,
+        0.015,
+        1.828,
+        0.432,
+        0.335,
+        0.003,
+        0.026,
+        0.407,
+        0.009,
+        0.822
+      ],
+      "A-ANNO-IDEN": [
+        0.293,
+        0.663,
+        1.188,
+        0.401,
+        0.525,
+        1.189,
+        0.282,
+        0.724,
+        0.797,
+        0.389,
+        0.389,
+        0.389,
+        0.867,
+        0.938,
+        0.796,
+        0.995,
+        0.995,
+        0.684,
+        0.547,
+        0.938,
+        0.745,
+        1.401,
+        1.401,
+        0.28
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "212_HK_situace_03_dwg-886969-Řez 2",
+        "layer": "212_HK_situace_03_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "212_HK_situace_03_dwg-886969-Řez 3",
+        "layer": "212_HK_situace_03_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "212_HK_situace_03_dwg-886969-Řez 4",
+        "layer": "212_HK_situace_03_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "212_HK_situace_03_dwg-886969-Řez 5",
+        "layer": "212_HK_situace_03_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 2",
+        "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 3",
+        "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 4",
+        "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 5",
+        "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 2",
+        "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 3",
+        "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 4",
+        "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 5",
+        "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "C profil - C150X19_3-854068-Řez 2",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "C profil - C150X19_3-854695-Řez 3",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "HK_TEREN_SESAZENI_dwg-918098-Řez 2",
+        "layer": "HK_TEREN_SESAZENI_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "HK_TEREN_SESAZENI_dwg-918098-Řez 3",
+        "layer": "HK_TEREN_SESAZENI_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "HK_TEREN_SESAZENI_dwg-918098-Řez 4",
+        "layer": "HK_TEREN_SESAZENI_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "HK_TEREN_SESAZENI_dwg-918098-Řez 5",
+        "layer": "HK_TEREN_SESAZENI_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "IPE - IPE160-854151-Řez 2",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - IPE160-854659-Řez 3",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374564-Řez 4",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374570-Řez 4",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374572-Řez 4",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388384-Řez 5",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388385-Řez 5",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-Řez 4",
+        "layer": "A-DOOR",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-Řez 4",
+        "layer": "A-DOOR",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-Řez 5",
+        "layer": "A-DOOR",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V40-Řez 5",
+        "layer": "A-DOOR",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 2",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+        "layer": "A-GLAZ",
+        "count": 9
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 5",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 3",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 4",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 5",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+        "layer": "A-GLAZ",
+        "count": 4
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3",
+        "layer": "A-GLAZ",
+        "count": 3
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3",
+        "layer": "A-GLAZ",
+        "count": 3
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+        "layer": "A-GLAZ",
+        "count": 10
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V21-Řez 3",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V27-Řez 4",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2",
+        "layer": "A-GLAZ",
+        "count": 3
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V39-Řez 5",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V41-Řez 5",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V44-Řez 5",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388233-Řez 4",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388242-Řez 4",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388251-Řez 4",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388260-Řez 4",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388404-Řez 5",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388405-Řez 5",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388406-Řez 5",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Patní deska s ořezem - 388407-Řez 5",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Popiska materiálu - Popis-329410-Řez 2",
+        "layer": "A-ANNO-IDEN",
+        "count": 5
+      },
+      {
+        "block": "Popiska materiálu - Popis-329410-Řez 3",
+        "layer": "A-ANNO-IDEN",
+        "count": 8
+      },
+      {
+        "block": "Popiska materiálu - Popis-329410-Řez 4",
+        "layer": "A-ANNO-IDEN",
+        "count": 6
+      },
+      {
+        "block": "Popiska materiálu - Popis-329410-Řez 5",
+        "layer": "A-ANNO-IDEN",
+        "count": 5
+      },
+      {
+        "block": "Rampa - Rampa-818641-Řez 3",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-818641-Řez 5",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-819336-Řez 2",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-819336-Řez 3",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-819336-Řez 5",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-823350-Řez 2",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-823350-Řez 3",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-823350-Řez 4",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-823366-Řez 2",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rampa - Rampa-823366-Řez 4",
+        "layer": "A-FLOR-LEVL",
+        "count": 1
+      },
+      {
+        "block": "Rámový roh_ šroubovaný s náběhem - 387987-Řez 2",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Rámový roh_ šroubovaný s náběhem - 387988-Řez 3",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Rámový roh_ šroubovaný s náběhem - 388024-Řez 2",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Rámový roh_ šroubovaný s náběhem - 388025-Řez 3",
+        "layer": "S-FSTN",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387971-Řez 2",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387972-Řez 3",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388008-Řez 2",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388009-Řez 3",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Umyvadlo - 50x40 cm-459123-Řez 2",
+        "layer": "P-SANR-FIXT",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 2",
+        "layer": "A-DOOR",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 3",
+        "layer": "A-DOOR",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 4",
+        "layer": "A-DOOR-GLAZ-2",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 5",
+        "layer": "A-DOOR-GLAZ-2",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V28-Řez 4",
+        "layer": "A-DOOR-GLAZ-2",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V45-Řez 5",
+        "layer": "A-DOOR-GLAZ-2",
+        "count": 1
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-Řez 2",
+        "layer": "G-ANNO-DIMS",
+        "count": 2
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-Řez 3",
+        "layer": "G-ANNO-DIMS",
+        "count": 2
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-Řez 4",
+        "layer": "G-ANNO-DIMS",
+        "count": 3
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-Řez 5",
+        "layer": "G-ANNO-DIMS",
+        "count": 3
+      },
+      {
+        "block": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 3",
+        "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+        "count": 1
+      },
+      {
+        "block": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 4",
+        "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+        "count": 1
+      },
+      {
+        "block": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 5",
+        "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 2",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 3",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 5",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V20-Řez 3",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V43-Řez 5",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 2",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 3",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 5",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V19-Řez 3",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      },
+      {
+        "block": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V42-Řez 5",
+        "layer": "Nedefinovaný_Trubky-tvarovka",
+        "count": 1
+      }
+    ],
+    "text_by_layer": {
+      "G-ANNO-DIMS": [
+        {
+          "type": "MTEXT",
+          "raw": "-0.205",
+          "text": "-0.205",
+          "insert": [
+            -124.57807706499611,
+            0.1405955698418009
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "+7.195",
+          "text": "+7.195",
+          "insert": [
+            -124.76104398509261,
+            7.537627537202233
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "+7.195",
+          "text": "+7.195",
+          "insert": [
+            -89.29992016985472,
+            7.537627537202248
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.200",
+          "text": "-0.200",
+          "insert": [
+            -89.56460924660045,
+            0.1435955698418008
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.195",
+          "text": "-0.195",
+          "insert": [
+            -64.52914549616766,
+            0.1483866256954471
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "+7.195",
+          "text": "+7.195",
+          "insert": [
+            -76.00284565504464,
+            7.563379303343556
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "+6.285",
+          "text": "+6.285",
+          "insert": [
+            -64.67502206097045,
+            6.630701942440058
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "+7.195",
+          "text": "+7.195",
+          "insert": [
+            -50.690175904087056,
+            7.537627537202221
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "+6.285",
+          "text": "+6.285",
+          "insert": [
+            -38.954142817126474,
+            6.630701942440058
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.205",
+          "text": "-0.205",
+          "insert": [
+            -37.78319465925847,
+            0.14059556984175
+          ]
+        }
+      ],
+      "A-ANNO-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "03",
+          "text": "03",
+          "insert": [
+            -150.19746518319002,
+            0.1500840029055174
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "02",
+          "text": "02",
+          "insert": [
+            -139.7551900950011,
+            2.3696883052682787
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "01",
+          "text": "01",
+          "insert": [
+            -149.9877323195247,
+            5.966350672612262
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "05",
+          "text": "05",
+          "insert": [
+            -143.0762487724418,
+            6.486669801579582
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "01",
+          "text": "01",
+          "insert": [
+            -116.01842654558071,
+            6.25409708291426
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "03",
+          "text": "03",
+          "insert": [
+            -116.1875249033732,
+            0.1593959497170174
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "02",
+          "text": "02",
+          "insert": [
+            -105.3242679410599,
+            2.363319438494163
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "05",
+          "text": "05",
+          "insert": [
+            -107.940545395982,
+            6.728978829320765
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "08",
+          "text": "08",
+          "insert": [
+            -110.7167788752775,
+            2.3633194384941647
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "08",
+          "text": "08",
+          "insert": [
+            -116.7737257530432,
+            2.363319438494166
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "08",
+          "text": "08",
+          "insert": [
+            -101.6137257530433,
+            2.3633194384941163
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "07",
+          "text": "07",
+          "insert": [
+            -119.6078224647256,
+            2.132823260360965
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "01",
+          "text": "01",
+          "insert": [
+            -82.27437003927781,
+            5.920859170577034
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "02",
+          "text": "02",
+          "insert": [
+            -83.0812739063301,
+            2.432684273225767
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "06",
+          "text": "06",
+          "insert": [
+            -70.67983097681602,
+            3.519475139270412
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "06",
+          "text": "06",
+          "insert": [
+            -79.66319404148152,
+            3.519475139270411
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "07",
+          "text": "07",
+          "insert": [
+            -64.49386004785045,
+            1.980450755608332
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "04",
+          "text": "04",
+          "insert": [
+            -70.73840932121063,
+            6.725909488739744
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "01",
+          "text": "01",
+          "insert": [
+            -57.47493787251931,
+            5.770958772802141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "02",
+          "text": "02",
+          "insert": [
+            -57.398212872561594,
+            2.336884731981767
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "06",
+          "text": "06",
+          "insert": [
+            -54.35303367362189,
+            3.68663984836019
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "06",
+          "text": "06",
+          "insert": [
+            -45.328033673621945,
+            3.6866398483601612
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "03",
+          "text": "03",
+          "insert": [
+            -41.90706622800222,
+            0.2022891862649451
+          ]
+        }
+      ],
+      "G-ANNO-TEXT": [
+        {
+          "type": "MTEXT",
+          "raw": "VENKOVNÍ VZT JEDNOTKA ",
+          "text": "VENKOVNÍ VZT JEDNOTKA ",
+          "insert": [
+            -94.93003494621395,
+            -2.3254031023575923
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "VENKOVNÍ VZT JEDNOTKA ",
+          "text": "VENKOVNÍ VZT JEDNOTKA ",
+          "insert": [
+            -83.71582736069985,
+            -1.898754345048505
+          ]
+        }
+      ]
+    },
+    "dimensions": [],
+    "block_attribs": [],
+    "bbox": {
+      "x_min_m": -260.4164462151507,
+      "y_min_m": -7.397031967360468,
+      "x_max_m": 243.8001144109456,
+      "y_max_m": 7.563379303343556,
+      "width_m": 504.21656062609634,
+      "height_m": 14.960411270704025
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

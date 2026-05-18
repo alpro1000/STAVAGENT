@@ -1,0 +1,143 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1811,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 25.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "50 4800 340\n022 053\n044 053\n009\n0041\n008\n006\n005\n009\n0542\n0041\n-3,500\n5791\n5711\n0024\nDETAIL B2-3' Z ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 6268,
+    "text_per_page_truncated": [
+      "+14,425\nA-\nSTŘECHA\n+7,350\nA-3NP\n+4,200\nA-2NP\n±0,000=303,800 m n.m.\nA-1NP\n-3,000\nA-1PP\nA1 A2 A3\n0512\n031\n022\n056\n0512\n031\n022\n0071\n0512\n031\n002\n025\n0512\n0082\n053\n0082\n053\n0583\n033\n0762\n004\n+10,850\n+7,220\n+4,070\n+2,000\n+1,400\n+1,180\n-0,130\n+0,270\n-0,330\n-3,000\n-3,500\n-3,000\n-3,400\n0512\n0512\n0512\n0082\n0541\n0042\n+9,950\n+9,750\n+6,800 +6,500\n+2,600\n+0,765\n-0,050\n8100 7623\n-4,975\nEPI\nAROPÁZ\nDETAIL D6\nW 91\n+10,550\n+10,350\nW\n+9,650 04\nCF 21\nCF\nCF 21 CF 20 20\nCF\nCF 20\nCF 21 20\nCF 10\nCF 20\nRF W 11 06\n5835 "
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "50 4800 340\n022 053\n044 053\n009\n0041\n008\n006\n005\n009\n0542\n0041\n-3,500\n5791\n5711\n0024\nDETAIL B2-3' Z ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 25.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

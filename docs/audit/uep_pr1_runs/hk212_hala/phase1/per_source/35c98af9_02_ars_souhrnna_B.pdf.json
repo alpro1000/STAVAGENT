@@ -1,0 +1,889 @@
+{
+  "provenance": {
+    "source_file": "02_ars_souhrnna_B.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 2298,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "0",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 2833.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "[212] Hala Hradec Králové 6/25\nZastavěná plocha: 520m2\nPodlahová plocha: 507m2\nObestavěný prostor: 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 4000.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "]\nRoční spotřeba tepla [MWh/rok ] 61\nBilance vzduchu\nDimenzování vzduchotechnických zařízení:\nHala: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 4000.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "ednotku chlazení,\nkterá má výkon 15 kW.\nVzduchový výkon jednotky (Zařízení č. 1) je stanoven na cca ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 4700.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stěny",
+        "description": "ny\nmají šířku 2 m, spodní hrana je umístěna cca 4 m nad podlahou a vzduchový\nvýkon jedné clony činí ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 25.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stěny",
+        "description": "nezávislým elektrickým zásobníkem umístěným\npřímo v objektu. Roční spotřeba TUV se odhaduje na cca 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 30.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "vé vody ze střechy\nobjektu budou odváděny střešními vpustěmi a potrubím do Retenční nádrže\nkapacity ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 90.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "9,3 l/os/den → 246,5 l/den,\n Denní potřeba TUV: cca 98 l/den,\n Roční potřeba vody (SV + TUV): cca ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 4500.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "bezprašný,\nvenkovní jednotky dodrží hlukové limity. Při návrhu je uvažováno s jednotkou o výkonu do\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 32.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "g) bilance zemních prací, požadavky na přísun nebo deponie zemin\nBilance zemních prací\nVýkopy [m3] 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ádané kapacity provozu a výroby\nbasepoint s.r.o. © [212] Hala Hradec Králové 6/25\nZastavěná plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 507.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "výroby\nbasepoint s.r.o. © [212] Hala Hradec Králové 6/25\nZastavěná plocha: 520m2\nPodlahová plocha: 5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "řešení a základní architektonické řešení\nJedná se o stavbu skladové haly. Zastavěná plocha haly je 5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 595.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ová přípojka PVC KG DN\n200, rovněž ukončená revizní šachtou a retenční nadrží., Celkem se\nodvodňuje ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ".1 Rozdělení stavby na požární úseky\nCelý objekt skladové haly tvoří jeden požární úsek o ploše cca ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ární úsek o ploše cca 495 m². Hala má\n1 nadzemní podlaží, světlou výšku 5 m a zastavěnou plochu cca ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1000.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "minut. Objekt je posuzován jako výrobní objekt – sklad, kde\nplocha PÚ nepřesahuje limitní hodnoty (1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "dpovídá také třídě využití I. Objekt je jednopodlažní,\nnepodsklepený, s celkovou zastavěnou plochou ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "í I. Objekt je jednopodlažní,\nnepodsklepený, s celkovou zastavěnou plochou 520 m² a užitnou plochou ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "sazenost dle normových výpočtů vychází na\ncca 17 osob. Celý objekt tvoří jeden požární úsek o ploše ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "built_up_area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 12464-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 62305",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 6660",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 75 5411",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0804",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 7010",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0848",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0540",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 6005",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 50110-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 50110-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 33 1310",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "zákon č. 258/2000 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "dle projektu výsledků zeměměřických činností vzniknout v souvislosti s",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "Statický posudek",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 26,
+    "char_count_total": 44368,
+    "text_per_page_truncated": [
+      "PRŮVODNÍ TECHNICKÁ ZPRÁVA\nB\nHala Hradec Králové\nHradec Králové, KÚ.: Slezské předměstí [646971], Parc. Č.: 1939/1\nDokumentace pro povolení stavby (DPS)\nV Praze, 08/2025\nIng. arch. Jakub Volka, ČKA 0003947\nVypracovala: Anna Abrahámová, Kristián Pócsik\nBasepoint s.r.o.\nKvětoslava Mašity 251, 252 31 Všenory",
+      "B.1 Celkový popis území a stavby\na) základní popis stavby; u změny stavby údaje o jejím současném stavu, závěry\nstavebně technického, případně stavebně historického průzkumu a výsledky\nstatického posouzení nosných konstrukcí\nJedná se o projekt skladové haly na pozemku p. č. 1939/1 v Hradci Králové ve\nčtvrti Slezské předměstí v oblasti s průmyslovými areály. Objekt bude sloužit k\nuskladnění dílů demontovaných fotovoltaických panelů. V hale se bude nacházet\npouze skladovací prostor. Vjezd do haly ",
+      "Rám\nPříčel rámu je navržena z profilu IPE450 z oceli S235. Příčel je ve styku se\nsloupem opatřena náběhem. Návrh spoje bude zpracován v prováděcí\ndokumentaci stavby. Sloup je navržen z profilu IPE400 z oceli S235.\nPrvky jsou navrženy na požární odolnost 15min. Příčel musí být stabilizována\nvaznicemi o maximální rozteči 1,5m jinak požární odolnost nevyhoví.\nŠtítové Sloupy\nŠtítové sloupy jsou navrženy z profilu HEA200 z oceli S235. Sloup je zároveň\nnavržen na požární odolnost 15 min.\nZtužení Objek",
+      "V území se nacházejí převážně průmyslové objekty, zejména haly a doprovodné\nadministrativní budovy.\nPozemek je rovinný. Na pozemku se nachází stávající průmyslové objekty.\ndoprovodné technické stavby a vícekolejná vlečka vedoucí v SZ části pozemku ve\nsměru JZ-SV. Na pozemku se nachází zpevněné asfaltové komunikace.\nNejedná se o poddolované území. Nejedná se o záplavové území.\nc) údaje o souladu stavby s územně plánovací dokumentací a územními opatřeními\nnebo s cíli a úkoly územního plánování, a ",
+      "Území sloužící k umístění staveb pro výrobu, skladování a manipulaci s materiály,\njejichž nároky na přepravu nevyvolávají přetížení místní dopravy a případný negativní\nvliv jejich technologií a činností nezasahuje mimo hranice areálů.\nPřípustné využití hlavní:\n- stavby pro výrobu mimo staveb pro výrobu s negativním vlivem na okolí\n- stavby pro výrobní a opravárenské služby\n- stavby technických služeb\n- stavby pro výrobní stavební činnost, stavební dvory\n- stavby pro skladování a prodej (prodejní",
+      "- hřbitovy\nd) výčet a závěry průzkumů\n- Geodetický průzkum\nZ průzkumu bylo zjištěno uspořádání dřevin, umístění stávajících objektů\nna parcele.\ne) informace o nutnosti povolení výjimky z požadavků na výstavbu\nStavba je bez výjimek.\nf) stávající ochrana území a stavby podle jiných právních předpisů, včetně rozsahu\nomezení a podmínek pro ochranu\nÚzemí není chráněno v rámci jiných právních předpisů.\ng) vliv stavby na okolní stavby a pozemky, ochrana okolí, vliv stavby na odtokové\npoměry v území, po",
+      "Zastavěná plocha: 520m2\nPodlahová plocha: 507m2\nObestavěný prostor: 2833 m3\nk) limitní bilance stavby - potřeby a spotřeby médií a hmot, hospodaření se srážkovou\nvodou, celkové produkované množství, druhy a kategorie odpadů a emisí apod…\nBilance dešťových vod\nDešťová voda bude odvedena sítí retenční regulační nádrže dešťové kanalizace, která\nbude napojena na stávající areálovou oddílnou kanalizační síť dešťové vody.\nBilance tepla pro vytápění\nCelková tepelná ztráta objektu [kW ] 20\nVýkonová reze",
+      "Stavba nebude členěna na etapy.\nn) základní požadavky na předčasné užívání staveb a zkušební provoz staveb, doba\njejich trvání ve vztahu k dokončení a užívání stavby\nNejsou.\no) seznam výsledků zeměměřických činností podle jiného právního předpisu1), pokud\nmají podle projektu výsledků zeměměřických činností vzniknout v souvislosti s\npovolením stavby\nNejsou vyžadovány.\nB.2 Urbanistické a základní architektonické řešení\nUrbanismus - kompozice prostorového řešení a základní architektonické řešení\nJe",
+      "předpokládané kapacity využití skladu budou ve skladu pracovat současní\npracovníci společnosti. Zázemí, tedy sociální zařízení, šatny a denní místnost je\numístěno v sousední hale, jedná se o stávající zázemí zaměstnanců. Docházková\nvzdálenost do sousední haly je 12m.\nB.3.2 Celkové řešení podmínek přístupnosti\na) celkové řešení přístupnosti se specifikací jednotlivých části, které podléhají\npožadavkům na přístupnost, včetně dopadů předčasného užívání a zkušebního\nprovozu a vlivu na okolí\nObjekt n",
+      "Objekt bude nosný ocelový skelet, opláštěný sendvičovou konstrukcí LOP. Objekt\nbude založen na betonových základových pasech z prostého betonu. V místech\nsloupů budou provedeny samostatné základové patky.\nNosná konstrukce bude montovaná z ocelových nosníků.\nObvodový plášť bude zhotoven ze sendvičových panelů Kingspan.\nStřecha bude ze sendvičových panelů Kingspan.\nB.3.5 Technologické řešení – základní popis technických a technologických zařízení\na) popis stávajícího stavu\nJedná se o novostavbu.\nb",
+      "Vzduchotechnická jednotka bude vybavena automatickou regulací, která zajistí\nudržování požadovaných parametrů mikroklimatu v hale, včetně dálkového\novládání a možnosti napojení na centrální řízení.\nPožadavky na udržování mikroklimatu:\nTeploty Letní – NEAGREGOVÁNY\nTeploty Zimní – Řeší UT\nHlučnost – venkovní prostory\nVe dne – L = 50 dB(A)\nA\nV noci - L = 40 dB(A)\nA\nHlučnost – hala\nL = 55 dB(A)\nA\n2. Vytápění (UT)\nPro vytápění haly je navrženo plně elektrické řešení, které kombinuje sálavé\nstropní pa",
+      "Celkový instalovaný výkon topidel činí cca 61,2 kW. Návrh počtu panelů\nvychází z vypočtených tepelných ztrát objektu (cca 15,4 kW) navýšených o\nkoeficienty pro přerušované vytápění a plošné pokrytí.\nRegulace vytápění:\n každý okruh panelů je ovládán prostorovým termostatem,\n jednotky jsou vybaveny systémem umožňujícím dálkové ovládání (TFT WIFI),\n sahary jsou spínány samostatně přes nástěnné termostaty, s možností\nnezávislého ovládání podle potřeby.\nProvoz elektrického vytápění nepředstavuje ž",
+      " přepěťové ochrany typ 1+2,\n prostor pro napojení technologických zařízení (VZT, vytápění),\n minimálně 35 % volné kapacity pro budoucí dozbrojení.\nHlavní vypínač bude umístěn na čelní straně rozvaděče a umožní odpojit celý\nobjekt.\n3.3 Zásuvkové rozvody\nZásuvkové rozvody jsou vedeny k samostatným zásuvkovým skříním, které jsou\nosazeny kombinací:\n 400 V / 32 A / 5p,\n 400 V / 16 A / 5p,\n 230 V / 16 A (2×).\nKaždá skříň bude vybavena vlastní ochranou – jističem a proudovým chráničem.\nRozmístění",
+      "Objekt je navržen s ochranou před účinky přímého i nepřímého úderu blesku\npodle souboru norem ČSN EN 62305 a v souladu s § 26 odst. 2 vyhlášky č.\n146/2024 Sb.\nV projektu jsou uvažovány následující zóny ochrany před bleskem (LPZ):\n LPZ 0A – venkovní prostory, nechráněné před přímým úderem blesku,\n LPZ 0B – venkovní prostory, chráněné před přímým úderem blesku\njímací soustavou,\n LPZ 1 – vnitřní prostory haly chráněné před účinky přímého úderu\nblesku a částečně i před indukovaným elektromagnetic",
+      " všechny kovové části konstrukce (sloupy, vazníky) budou spojeny s\nMET,\n rozvody vody budou pospojovány přes vodivé spojky,\n kabelové žlaby a technologická zařízení budou vodivě propojena.\n4.4 Materiálové a provozní požadavky\n Všechny uzemňovací vodiče budou provedeny z materiálu FeZn, v\npřechodech mezi betonem a půdou z materiálu nerez V4A kvůli\nochraně proti korozi.\n Spoje zemnicího systému budou provedeny svařením nebo\nšroubovými spoji s antikorozní ochranou.\n Přístupné části MET a svod",
+      "Rozvody jsou vedeny volně při stěnách, uchyceny na společných závěsech (SV a\nTUV), a opatřeny tepelnou izolací:\n studená voda (SV): tloušťka izolace min. 9 mm,\n teplá voda (TUV): tloušťka izolace min. 13 mm.\nIzolace je provedena z materiálů jako Mirelon nebo Armstrong.\nPříprava TUV je řešena tlakově nezávislým elektrickým zásobníkem umístěným\npřímo v objektu. Roční spotřeba TUV se odhaduje na cca 25 m³.\n5.3 Kanalizační přípojky\nNa pozemku před halou jsou vedeny dvě stávající kanalizace – splaš",
+      "6. Požárně-bezpečnostní řešení a opatření\n6.1 Rozdělení stavby na požární úseky\nCelý objekt skladové haly tvoří jeden požární úsek o ploše cca 495 m². Hala má\n1 nadzemní podlaží, světlou výšku 5 m a zastavěnou plochu cca 520 m². Uvnitř\nse nenacházejí žádné vestavby, příčky ani samostatné prostory, které by musely\ntvořit samostatný požární úsek.\n6.2 Konstrukční systém a požární odolnost\nNosná konstrukce je tvořena ocelovými sloupy a vazníky, opláštění haly z\nsendvičových panelů Kingspan s nehořla",
+      "6.6 Technická a technologická zařízení z hlediska PO\n Vzduchotechnika: vybavena tlumiči hluku, pružným uložením, bez\nnutnosti speciálních požárních opatření.\n Vytápění: elektrické sálavé panely a nástěnné jednotky – neobsahují\npaliva ani plynové spotřebiče, požární riziko minimální.\n Elektroinstalace: hlavní vypínač je u vstupu do objektu, umožňuje\nodpojení všech zařízení. Rozvody kabelů jsou navrženy v souladu s ČSN\n73 0848 (požární bezpečnost kabelových rozvodů).\n6.7 Hasicí přístroje a vyba",
+      "objektu se nenachází stálý úkryt. Požární zatížení bylo stanoveno na hodnotu 90 kg/m²,\npřičemž požární úsek je zařazen do II. stupně požární bezpečnosti. Ekonomické riziko\nbylo posouzeno jako vyhovující, s rezervou vůči maximálně přípustné ploše požárního\núseku.\nB.3.7 Úspora energie a tepelná ochrana budovy\nZohlednění plnění požadavků na energetickou náročnost, úsporu energie a tepelnou\nochranu budov.\nBudova je navržena v souladu s požadavky vyhlášky č. 264/2020 Sb., o\nenergetické náročnosti bud",
+      "Požadavky dle ČSN EN 12464-1, Tabulka 13: Logistika - obecné sklady\nPožadavky dle ČSN EN 12464-1, Tabulka 13: Logistika - regálové sklady\nVytápění je řešeno elektrickými přímotopnými sálavými panely s dotopem elektrickými\npřímotopnými saharami.\nVliv stavby na okolí\nNovostavba haly v areálu nebude mít negativní vliv na své okolí. Provoz je bezprašný,\nvenkovní jednotky dodrží hlukové limity. Při návrhu je uvažováno s jednotkou o výkonu do\n4 500 m3/ hod. Referenčně je uvažována jednotka Duplex 4500",
+      "Protipovodňová opatření, ochrana před pronikáním radonu z podloží, před bludnými\nproudy, před technickou i přírodní seizmicitou, před agresivní a tlakovou podzemní\nvodou, před hlukem a ostatními účinky – vliv poddolování, výskyt metanu apod.\nStavba se nenachází v záplavovém území. Speciální ochrana stavby není řešena.\nB.4 Připojení na technickou infrastrukturu\nNapojovací místa technické infrastruktury, přeložky, křížení se stavbami technické a\ndopravní infrastruktury a souběhy s nimi v případě, ",
+      "Na pozemku zůstane zachována stávající zeleň v maximální možné míře.\nZ důvodu přímé kolize se stavbou budou odstraněny 2 ks dřevin s obvodem\nkmene menším než 80 cm, pro které není vyžadováno povolení kácení dřevin\nrostoucích mimo les. 1ks Bříza bělokorá, 1 ks Dub červený. Umístění dřevin je\nvyznačeno v koordinační situaci. Dále budou odstraněny 2 kusy drobných dřevin,\njavor klen, dub letní ( semenáčky v blízkosti stavby). Jako kompenzace bude\nprovedena náhradní výsadba 2 ks dřevin na pozemku vla",
+      "Tento záměr nespadá do režimu zákona o integrované prevenci, neboť se nejedná\no stavbu, která by vykazovala významné environmentální riziko nebo potřebu\nintegrovaného povolení\nB.8 Celkové vodohospodářské řešení\nZejména zásobování stavby vodou, způsob zneškodňování odpadních vod, využití a\nnakládání se srážkovými vodami\nStavba bude napojena na areálovou vodovodní síť nově vybudovanou vodovodní\npřípojkou.\nStavba bude napojena na oddílnou areálovou kanalizační síť nově vybudovanou\nkanalizační přípo",
+      "b) ochrana okolí staveniště a požadavky na související asanace, demolice, demontáž,\ndekonstrukce a kácení dřevin apod.\nPřed započetím stavby budou pokáceny 2 vzrostlé stromy, 2 ks dřevin s obvodem\nkmene menším než 80 cm, pro které není vyžadováno povolení kácení dřevin rostoucích\nmimo les. 1ks Bříza bělokorá, 1 ks Dub červený. Dále budou odstraněny 2 kusy drobných\ndřevin, javor klen, dub letní ( semenáčky v blízkosti stavby)\nBude demontována stávající zpevněná plocha.\nc) vstup a vjezd na stavbu,",
+      "Katalogu odpadů a posuzovaní vlastností odpadů. Seznam nebezpečných\nodpadů a seznamy odpadů pro účely vývozu, dovozu a tranzitu odpadů a postup\npři udělování souhlasu k vývozu, dovozu a tranzitu odpadů budou kategorizovány\ntakto:\nTabulka předpokládaného odpadu během stavby\nKód Název odpadu/popis Kategorie\n08 0 1 11 Odpadní barvy a laky obsahující organická rozpouštědla N\nJedná se o barvy použitých při finálních nátěrech jednotlivých\nprostor a technologií objektu. Tyto se budou skladovat\nv přista",
+      "Nařízení vlády 378/2001 Sb. ze dne 12. září 2001, kterým se stanoví bližší\npožadavky na bezpečný provoz a používání strojů, technických zařízení, přístrojů\na nářadí\nZákon 309/2006 Sb. ze dne 23. května 2006, kterým se upravují další požadavky\nbezpečnosti a ochrany zdraví při práci v pracovně právních vztazích a o zajištění\nbezpečnosti a ochrany zdraví při činnosti nebo poskytování služeb mimo\npracovněprávní vztahy (zákon o zajištění dalších podmínek bezpečnosti a\nochrany zdraví při práci)\nZákon "
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "[212] Hala Hradec Králové 6/25\nZastavěná plocha: 520m2\nPodlahová plocha: 507m2\nObestavěný prostor: 2",
+          "volume_m3": 2833.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "]\nRoční spotřeba tepla [MWh/rok ] 61\nBilance vzduchu\nDimenzování vzduchotechnických zařízení:\nHala: ",
+          "volume_m3": 4000.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "ednotku chlazení,\nkterá má výkon 15 kW.\nVzduchový výkon jednotky (Zařízení č. 1) je stanoven na cca ",
+          "volume_m3": 4000.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stěny",
+          "description": "ny\nmají šířku 2 m, spodní hrana je umístěna cca 4 m nad podlahou a vzduchový\nvýkon jedné clony činí ",
+          "volume_m3": 4700.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stěny",
+          "description": "nezávislým elektrickým zásobníkem umístěným\npřímo v objektu. Roční spotřeba TUV se odhaduje na cca 2",
+          "volume_m3": 25.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "vé vody ze střechy\nobjektu budou odváděny střešními vpustěmi a potrubím do Retenční nádrže\nkapacity ",
+          "volume_m3": 30.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "9,3 l/os/den → 246,5 l/den,\n Denní potřeba TUV: cca 98 l/den,\n Roční potřeba vody (SV + TUV): cca ",
+          "volume_m3": 90.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "bezprašný,\nvenkovní jednotky dodrží hlukové limity. Při návrhu je uvažováno s jednotkou o výkonu do\n",
+          "volume_m3": 4500.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "g) bilance zemních prací, požadavky na přísun nebo deponie zemin\nBilance zemních prací\nVýkopy [m3] 3",
+          "volume_m3": 32.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ádané kapacity provozu a výroby\nbasepoint s.r.o. © [212] Hala Hradec Králové 6/25\nZastavěná plocha: ",
+          "volume_m3": null,
+          "area_m2": 520.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "výroby\nbasepoint s.r.o. © [212] Hala Hradec Králové 6/25\nZastavěná plocha: 520m2\nPodlahová plocha: 5",
+          "volume_m3": null,
+          "area_m2": 507.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "řešení a základní architektonické řešení\nJedná se o stavbu skladové haly. Zastavěná plocha haly je 5",
+          "volume_m3": null,
+          "area_m2": 520.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ová přípojka PVC KG DN\n200, rovněž ukončená revizní šachtou a retenční nadrží., Celkem se\nodvodňuje ",
+          "volume_m3": null,
+          "area_m2": 595.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ".1 Rozdělení stavby na požární úseky\nCelý objekt skladové haly tvoří jeden požární úsek o ploše cca ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ární úsek o ploše cca 495 m². Hala má\n1 nadzemní podlaží, světlou výšku 5 m a zastavěnou plochu cca ",
+          "volume_m3": null,
+          "area_m2": 520.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "minut. Objekt je posuzován jako výrobní objekt – sklad, kde\nplocha PÚ nepřesahuje limitní hodnoty (1",
+          "volume_m3": null,
+          "area_m2": 1000.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "dpovídá také třídě využití I. Objekt je jednopodlažní,\nnepodsklepený, s celkovou zastavěnou plochou ",
+          "volume_m3": null,
+          "area_m2": 520.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "í I. Objekt je jednopodlažní,\nnepodsklepený, s celkovou zastavěnou plochou 520 m² a užitnou plochou ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "sazenost dle normových výpočtů vychází na\ncca 17 osob. Celý objekt tvoří jeden požární úsek o ploše ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": 520.0,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "{'XC0', 'XC4'}",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 12464-1",
+        "ČSN EN 62305",
+        "ČSN 73 6660",
+        "ČSN 75 5411",
+        "ČSN 73 0804",
+        "ČSN EN ISO 7010",
+        "ČSN 73 0848",
+        "ČSN 73 0540",
+        "ČSN 73 6005",
+        "ČSN EN 50110-1",
+        "ČSN EN 50110-2",
+        "ČSN 33 1310",
+        "zákon č. 258/2000 Sb."
+      ],
+      "identification": {},
+      "referenced_documents": [
+        "dle projektu výsledků zeměměřických činností vzniknout v souvislosti s",
+        "Statický posudek"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

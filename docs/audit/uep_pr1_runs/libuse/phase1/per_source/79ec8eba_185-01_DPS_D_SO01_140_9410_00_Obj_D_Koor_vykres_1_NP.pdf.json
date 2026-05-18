@@ -1,0 +1,101 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_140_9410_00_Obj_D_Koor_vykres_1_NP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 4435,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 448,
+    "text_per_page_truncated": [
+      "D1 D2 D3 D4 D5\nTabulka místností 1.NP\nLegenda rozvodů a zařízení\nvzduchotechnika\nchlazení\nvytápění\nvodovod\n(horizontální rozvody v bytech jsou vedeny\nv podlaze nebo max. ve výšce 1,3m)\nDA DA kanalizace\nsilnoproud\nslaboproudy\nD.1.S.02\n-0,075 D.1.4.07 D.1.4.06\nD.1.1.01\nD.1.1.04 D.1.4.05\nD.1.S.01 D.1.4.01\nK\nDB DB\nK K K\nD.1.2.01\nD.1.3.01\nD.1.4.03\nD.1.2.04\nD.1.3.04\nD.1.1.03\nD.1.2.03 D.1.2.02 D.1.3.02 D.1.3.03 D.1.4.02\nD.1.1.02\nDC DC\nD1 D2 D3 D4 D5\nN"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

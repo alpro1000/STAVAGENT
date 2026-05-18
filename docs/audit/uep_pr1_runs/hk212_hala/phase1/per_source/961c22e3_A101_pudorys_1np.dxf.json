@@ -1,0 +1,4080 @@
+{
+  "provenance": {
+    "source_file": "A101_pudorys_1np.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 635,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 640,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 53,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "0",
+          "A-ANNO-DIMS",
+          "A-ANNO-DIMS-150",
+          "A-ANNO-NOTE",
+          "A-AREA-IDEN",
+          "A-AREA-IDEN-1",
+          "A-DETL",
+          "A-DETL-MBND",
+          "A-DETL-THIN",
+          "A-DETL-THIN-1",
+          "A-DOOR",
+          "A-DOOR-1",
+          "A-DOOR-FRAM",
+          "A-DOOR-HDLN",
+          "A-FLOR",
+          "A-FLOR-LEVL",
+          "A-GENM",
+          "A-GENM-1",
+          "A-GENM-2",
+          "A-GLAZ",
+          "A-GLAZ-SILL",
+          "A-WALL",
+          "A-WALL-1",
+          "A-WALL-PATT",
+          "A-WALL-PATT-1",
+          "Defpoints",
+          "E-ELEC-FIXT",
+          "G-ANNO-DIMS",
+          "G-ANNO-DIMS-1",
+          "G-ANNO-NPLT",
+          "G-ANNO-REVC",
+          "G-ANNO-REVC-1",
+          "G-ANNO-REVC-IDEN",
+          "G-ANNO-SCHD",
+          "G-ANNO-SYMB",
+          "G-ANNO-SYMB-1",
+          "G-ANNO-SYMB-2",
+          "G-ANNO-TEXT",
+          "G-ANNO-TEXT-1",
+          "G-ANNO-TTLB",
+          "G-ANNO-TTLB-WIDE",
+          "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "P-SANR-FIXT",
+          "Potrubí_VZT_příslušenství",
+          "S-BEAM",
+          "S-COLS",
+          "S-GRID",
+          "S-GRID-1",
+          "S-GRID-IDEN",
+          "S-GRID-IDEN-1"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 148,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-PŮDORYS 1NP",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP",
+          "DIMBLOCK1-1NP",
+          "DIMBLOCK10-1NP",
+          "DIMBLOCK11-1NP",
+          "DIMBLOCK12-1NP",
+          "DIMBLOCK13-1NP",
+          "DIMBLOCK14-1NP",
+          "DIMBLOCK15-1NP",
+          "DIMBLOCK16-1NP",
+          "DIMBLOCK17-1NP",
+          "DIMBLOCK18-1NP",
+          "DIMBLOCK19-1NP",
+          "DIMBLOCK2-1NP",
+          "DIMBLOCK20-1NP",
+          "DIMBLOCK21-1NP",
+          "DIMBLOCK22-1NP",
+          "DIMBLOCK23-1NP",
+          "DIMBLOCK24-1NP",
+          "DIMBLOCK25-1NP",
+          "DIMBLOCK26-1NP",
+          "DIMBLOCK27-1NP",
+          "DIMBLOCK28-1NP",
+          "DIMBLOCK29-1NP",
+          "DIMBLOCK3-1NP",
+          "DIMBLOCK30-1NP",
+          "DIMBLOCK31-1NP",
+          "DIMBLOCK32-1NP",
+          "DIMBLOCK33-1NP",
+          "DIMBLOCK34-1NP",
+          "DIMBLOCK35-1NP",
+          "DIMBLOCK36-1NP",
+          "DIMBLOCK37-1NP",
+          "DIMBLOCK38-1NP",
+          "DIMBLOCK39-1NP",
+          "DIMBLOCK4-1NP",
+          "DIMBLOCK40-1NP",
+          "DIMBLOCK41-1NP",
+          "DIMBLOCK42-1NP",
+          "DIMBLOCK43-1NP",
+          "DIMBLOCK44-1NP",
+          "DIMBLOCK45-1NP",
+          "DIMBLOCK46-1NP",
+          "DIMBLOCK47-1NP",
+          "DIMBLOCK48-1NP",
+          "DIMBLOCK49-1NP",
+          "DIMBLOCK5-1NP",
+          "DIMBLOCK6-1NP"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": -202.1251265605195,
+        "y_min_m": 0.0,
+        "x_max_m": 208.9345656993023,
+        "y_max_m": 159.3428470565122,
+        "width_m": 411.0596922598218,
+        "height_m": 159.3428470565122
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-DIMS",
+      "value": {
+        "DIMENSION": 49
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 49
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-AREA-IDEN-1",
+      "value": {
+        "MTEXT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-MBND",
+      "value": {
+        "LINE": 49
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 49
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN",
+      "value": {
+        "LINE": 28
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 28
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN-1",
+      "value": {
+        "LINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DOOR-FRAM",
+      "value": {
+        "INSERT": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DOOR-HDLN",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR",
+      "value": {
+        "LINE": 21
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR-LEVL",
+      "value": {
+        "LINE": 21
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-1",
+      "value": {
+        "ARC": 24,
+        "LINE": 7,
+        "SPLINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 35
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-2",
+      "value": {
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GLAZ",
+      "value": {
+        "INSERT": 35
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 35
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL",
+      "value": {
+        "LINE": 80
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 80
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-1",
+      "value": {
+        "LINE": 97
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 97
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-PATT-1",
+      "value": {
+        "HATCH": 12,
+        "HATCH_paths=2": 8,
+        "HATCH_paths=1": 2,
+        "HATCH_paths=3": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "E-ELEC-FIXT",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "MTEXT": 8,
+        "LINE": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 15
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-REVC-1",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-REVC-IDEN",
+      "value": {
+        "LINE": 1,
+        "INSERT": 1,
+        "MTEXT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "LINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "MTEXT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "MTEXT": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 7
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "MTEXT": 9
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 9
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "P-SANR-FIXT",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-BEAM",
+      "value": {
+        "INSERT": 13
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 13
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-COLS",
+      "value": {
+        "INSERT": 44
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 44
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-1",
+      "value": {
+        "LINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN",
+      "value": {
+        "INSERT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "MTEXT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF",
+      "value": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF-1",
+      "value": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF-2",
+      "value": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-MBND",
+      "value": {
+        "count": 49,
+        "sum_m": 167.69
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN",
+      "value": {
+        "count": 28,
+        "sum_m": 207.345
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN-1",
+      "value": {
+        "count": 12,
+        "sum_m": 7.44
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-FLOR",
+      "value": {
+        "count": 21,
+        "sum_m": 28.66
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-FLOR-LEVL",
+      "value": {
+        "count": 21,
+        "sum_m": 33.709
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-GENM-1",
+      "value": {
+        "count": 7,
+        "sum_m": 0.01
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-WALL",
+      "value": {
+        "count": 80,
+        "sum_m": 114.539
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-WALL-1",
+      "value": {
+        "count": 97,
+        "sum_m": 84.03
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 7,
+        "sum_m": 10.5
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-REVC-IDEN",
+      "value": {
+        "count": 1,
+        "sum_m": 1.741
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "count": 4,
+        "sum_m": 8.968
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "S-GRID-1",
+      "value": {
+        "count": 12,
+        "sum_m": 384.929
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Family - ___-887816-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "G-ANNO-REVC-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 489591-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 500084-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 500435-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 500572-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 568342-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 390062-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 503362-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 504078-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 504742-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505106-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505107-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505273-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505274-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374564-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374570-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374571-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374572-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388383-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388384-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388385-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388386-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-586513-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-796436-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V1-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V10-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V11-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V12-1NP",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-GLAZ": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V13-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V14-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V15-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V16-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V17-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V18-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V19-1NP",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "A-GLAZ": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V2-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V20-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V21-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V3-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V4-1NP",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-GLAZ": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V5-1NP",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-GLAZ": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V6-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "value": {
+        "count": 7,
+        "by_layer": {
+          "A-GLAZ": 7
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V9-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Osnova - 6mm-307864-1NP",
+      "value": {
+        "count": 24,
+        "by_layer": {
+          "S-GRID-IDEN": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Popisek revize - Popisek revize-490849-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "G-ANNO-REVC-IDEN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rozvaděč nastenny  - Typ 1-584972-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "E-ELEC-FIXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 374558-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 374573-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387892-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387893-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387934-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387935-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387971-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387972-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388008-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388009-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388045-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388046-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 396249-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 400226-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 400484-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 400880-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 401579-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 401588-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 401597-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 487110-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 487111-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502209-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502210-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502301-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502302-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 506871-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507568-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507725-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507857-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507956-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508019-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508076-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508146-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508228-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508229-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508303-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Umyvadlo - 50x40 cm-459123-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "P-SANR-FIXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "A-DOOR-FRAM": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Výšková kóta - Základová-780896-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "G-ANNO-DIMS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Potrubí_VZT_příslušenství": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Řez - Velká značka-308779-1NP",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "G-ANNO-SYMB": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "A-AREA-IDEN-1",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "MTEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "495 m²"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 8,
+        "by_type": {
+          "MTEXT": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "+0.000"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-REVC-IDEN",
+      "value": {
+        "count": 1,
+        "by_type": {
+          "MTEXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "1"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "MTEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "count": 7,
+        "by_type": {
+          "MTEXT": 7
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "SO.01"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "count": 9,
+        "by_type": {
+          "MTEXT": 9
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "B"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "count": 24,
+        "by_type": {
+          "MTEXT": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "count",
+      "value": 49,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "0",
+      "A-ANNO-DIMS",
+      "A-ANNO-DIMS-150",
+      "A-ANNO-NOTE",
+      "A-AREA-IDEN",
+      "A-AREA-IDEN-1",
+      "A-DETL",
+      "A-DETL-MBND",
+      "A-DETL-THIN",
+      "A-DETL-THIN-1",
+      "A-DOOR",
+      "A-DOOR-1",
+      "A-DOOR-FRAM",
+      "A-DOOR-HDLN",
+      "A-FLOR",
+      "A-FLOR-LEVL",
+      "A-GENM",
+      "A-GENM-1",
+      "A-GENM-2",
+      "A-GLAZ",
+      "A-GLAZ-SILL",
+      "A-WALL",
+      "A-WALL-1",
+      "A-WALL-PATT",
+      "A-WALL-PATT-1",
+      "Defpoints",
+      "E-ELEC-FIXT",
+      "G-ANNO-DIMS",
+      "G-ANNO-DIMS-1",
+      "G-ANNO-NPLT",
+      "G-ANNO-REVC",
+      "G-ANNO-REVC-1",
+      "G-ANNO-REVC-IDEN",
+      "G-ANNO-SCHD",
+      "G-ANNO-SYMB",
+      "G-ANNO-SYMB-1",
+      "G-ANNO-SYMB-2",
+      "G-ANNO-TEXT",
+      "G-ANNO-TEXT-1",
+      "G-ANNO-TTLB",
+      "G-ANNO-TTLB-WIDE",
+      "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "P-SANR-FIXT",
+      "Potrubí_VZT_příslušenství",
+      "S-BEAM",
+      "S-COLS",
+      "S-GRID",
+      "S-GRID-1",
+      "S-GRID-IDEN",
+      "S-GRID-IDEN-1",
+      "Vlastní 1_A-DETL-GENF",
+      "Vlastní 1_A-DETL-GENF-1",
+      "Vlastní 1_A-DETL-GENF-2"
+    ],
+    "block_definitions": [
+      "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-PŮDORYS 1NP",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP",
+      "DIMBLOCK1-1NP",
+      "DIMBLOCK10-1NP",
+      "DIMBLOCK11-1NP",
+      "DIMBLOCK12-1NP",
+      "DIMBLOCK13-1NP",
+      "DIMBLOCK14-1NP",
+      "DIMBLOCK15-1NP",
+      "DIMBLOCK16-1NP",
+      "DIMBLOCK17-1NP",
+      "DIMBLOCK18-1NP",
+      "DIMBLOCK19-1NP",
+      "DIMBLOCK2-1NP",
+      "DIMBLOCK20-1NP",
+      "DIMBLOCK21-1NP",
+      "DIMBLOCK22-1NP",
+      "DIMBLOCK23-1NP",
+      "DIMBLOCK24-1NP",
+      "DIMBLOCK25-1NP",
+      "DIMBLOCK26-1NP",
+      "DIMBLOCK27-1NP",
+      "DIMBLOCK28-1NP",
+      "DIMBLOCK29-1NP",
+      "DIMBLOCK3-1NP",
+      "DIMBLOCK30-1NP",
+      "DIMBLOCK31-1NP",
+      "DIMBLOCK32-1NP",
+      "DIMBLOCK33-1NP",
+      "DIMBLOCK34-1NP",
+      "DIMBLOCK35-1NP",
+      "DIMBLOCK36-1NP",
+      "DIMBLOCK37-1NP",
+      "DIMBLOCK38-1NP",
+      "DIMBLOCK39-1NP",
+      "DIMBLOCK4-1NP",
+      "DIMBLOCK40-1NP",
+      "DIMBLOCK41-1NP",
+      "DIMBLOCK42-1NP",
+      "DIMBLOCK43-1NP",
+      "DIMBLOCK44-1NP",
+      "DIMBLOCK45-1NP",
+      "DIMBLOCK46-1NP",
+      "DIMBLOCK47-1NP",
+      "DIMBLOCK48-1NP",
+      "DIMBLOCK49-1NP",
+      "DIMBLOCK5-1NP",
+      "DIMBLOCK6-1NP",
+      "DIMBLOCK7-1NP",
+      "DIMBLOCK8-1NP",
+      "DIMBLOCK9-1NP",
+      "Family - ___-887816-1NP",
+      "IPE - 489591-1NP",
+      "IPE - 500084-1NP",
+      "IPE - 500435-1NP",
+      "IPE - 500572-1NP",
+      "IPE - 568342-1NP",
+      "Kruhové tyče - 390062-1NP",
+      "Kruhové tyče - 503362-1NP",
+      "Kruhové tyče - 504078-1NP",
+      "Kruhové tyče - 504742-1NP",
+      "Kruhové tyče - 505106-1NP",
+      "Kruhové tyče - 505107-1NP",
+      "Kruhové tyče - 505273-1NP",
+      "Kruhové tyče - 505274-1NP",
+      "M_S profily_ sloup - 374564-1NP",
+      "M_S profily_ sloup - 374570-1NP",
+      "M_S profily_ sloup - 374571-1NP",
+      "M_S profily_ sloup - 374572-1NP",
+      "M_S profily_ sloup - 388383-1NP",
+      "M_S profily_ sloup - 388384-1NP",
+      "M_S profily_ sloup - 388385-1NP",
+      "M_S profily_ sloup - 388386-1NP",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-586513-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-796436-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V1-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V10-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V11-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V12-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V13-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V14-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V15-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V16-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V17-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V18-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V19-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V2-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V20-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V21-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V3-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V4-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V5-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V6-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "OKNO_1k - Okno Hala 1000x1000-V9-1NP",
+      "Osnova - 6mm-307864-1NP",
+      "Popisek revize - Popisek revize-490849-1NP",
+      "Rozvaděč nastenny  - Typ 1-584972-1NP",
+      "Severka-1 - Severka-1-437760-PŮDORYS 1NP",
+      "Sloup IPE - 374558-1NP",
+      "Sloup IPE - 374573-1NP",
+      "Sloup IPE - 387892-1NP",
+      "Sloup IPE - 387893-1NP",
+      "Sloup IPE - 387934-1NP",
+      "Sloup IPE - 387935-1NP",
+      "Sloup IPE - 387971-1NP",
+      "Sloup IPE - 387972-1NP",
+      "Sloup IPE - 388008-1NP",
+      "Sloup IPE - 388009-1NP",
+      "Sloup IPE - 388045-1NP",
+      "Sloup IPE - 388046-1NP",
+      "Sloup IPE - 396249-1NP",
+      "Sloup IPE - 400226-1NP",
+      "Sloup IPE - 400484-1NP",
+      "Sloup IPE - 400880-1NP",
+      "Sloup IPE - 401579-1NP",
+      "Sloup IPE - 401588-1NP",
+      "Sloup IPE - 401597-1NP",
+      "Sloup IPE - 487110-1NP",
+      "Sloup IPE - 487111-1NP",
+      "Sloup IPE - 502209-1NP",
+      "Sloup IPE - 502210-1NP",
+      "Sloup IPE - 502301-1NP",
+      "Sloup IPE - 502302-1NP",
+      "Sloup IPE - 506871-1NP",
+      "Sloup IPE - 507568-1NP",
+      "Sloup IPE - 507725-1NP",
+      "Sloup IPE - 507857-1NP",
+      "Sloup IPE - 507956-1NP",
+      "Sloup IPE - 508019-1NP",
+      "Sloup IPE - 508076-1NP",
+      "Sloup IPE - 508146-1NP",
+      "Sloup IPE - 508228-1NP",
+      "Sloup IPE - 508229-1NP",
+      "Sloup IPE - 508303-1NP",
+      "Umyvadlo - 50x40 cm-459123-1NP",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP",
+      "Výškové kóty - Výšková kóta - Základová-780896-1NP",
+      "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP",
+      "_None",
+      "_Oblique",
+      "Řez - Velká značka-308779-1NP"
+    ],
+    "entity_counts_by_layer": {
+      "Vlastní 1_A-DETL-GENF": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "S-COLS": {
+        "INSERT": 44
+      },
+      "S-BEAM": {
+        "INSERT": 13
+      },
+      "A-FLOR": {
+        "LINE": 21
+      },
+      "A-WALL-PATT-1": {
+        "HATCH": 12,
+        "HATCH_paths=2": 8,
+        "HATCH_paths=1": 2,
+        "HATCH_paths=3": 2
+      },
+      "A-WALL-1": {
+        "LINE": 97
+      },
+      "A-GLAZ": {
+        "INSERT": 35
+      },
+      "A-WALL": {
+        "LINE": 80
+      },
+      "A-DOOR-HDLN": {
+        "INSERT": 4
+      },
+      "A-GENM-1": {
+        "ARC": 24,
+        "LINE": 7,
+        "SPLINE": 4
+      },
+      "A-GENM-2": {
+        "INSERT": 3
+      },
+      "P-SANR-FIXT": {
+        "INSERT": 1
+      },
+      "Nedefinovaný_Potrubí_VZT_příslušenství": {
+        "INSERT": 1
+      },
+      "E-ELEC-FIXT": {
+        "INSERT": 1
+      },
+      "A-DETL-MBND": {
+        "LINE": 49
+      },
+      "A-FLOR-LEVL": {
+        "LINE": 21
+      },
+      "A-DOOR-FRAM": {
+        "INSERT": 2
+      },
+      "A-DETL-THIN": {
+        "LINE": 28
+      },
+      "Vlastní 1_A-DETL-GENF-1": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "A-DETL-THIN-1": {
+        "LINE": 12
+      },
+      "Vlastní 1_A-DETL-GENF-2": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "S-GRID-IDEN": {
+        "INSERT": 24
+      },
+      "S-GRID-IDEN-1": {
+        "MTEXT": 24
+      },
+      "S-GRID-1": {
+        "LINE": 12
+      },
+      "A-ANNO-DIMS": {
+        "DIMENSION": 49
+      },
+      "G-ANNO-SYMB-1": {
+        "LINE": 4
+      },
+      "G-ANNO-SYMB": {
+        "INSERT": 4
+      },
+      "G-ANNO-SYMB-2": {
+        "MTEXT": 4
+      },
+      "G-ANNO-TEXT": {
+        "MTEXT": 7
+      },
+      "A-AREA-IDEN-1": {
+        "MTEXT": 4
+      },
+      "G-ANNO-DIMS": {
+        "INSERT": 1
+      },
+      "G-ANNO-DIMS-1": {
+        "MTEXT": 8,
+        "LINE": 7
+      },
+      "G-ANNO-TEXT-1": {
+        "MTEXT": 9
+      },
+      "G-ANNO-REVC-1": {
+        "INSERT": 1
+      },
+      "G-ANNO-REVC-IDEN": {
+        "LINE": 1,
+        "INSERT": 1,
+        "MTEXT": 1
+      }
+    },
+    "closed_areas_by_layer": {},
+    "open_lengths_by_layer": {
+      "A-FLOR": [
+        4.342,
+        4.34,
+        1.323,
+        4.0,
+        4.028,
+        0.052,
+        1.346,
+        0.5,
+        0.5,
+        0.01,
+        0.01,
+        0.484,
+        1.471,
+        0.676,
+        1.055,
+        0.626,
+        0.504,
+        0.7,
+        2.0,
+        0.608,
+        0.084
+      ],
+      "A-WALL-1": [
+        1.145,
+        0.02,
+        0.1,
+        1.055,
+        2.099,
+        0.005,
+        1.714,
+        0.025,
+        0.025,
+        0.1,
+        0.02,
+        0.463,
+        0.2,
+        0.545,
+        0.2,
+        0.455,
+        0.02,
+        0.1,
+        3.55,
+        2.817,
+        0.1,
+        0.02,
+        0.345,
+        0.2,
+        0.663,
+        0.2,
+        0.573,
+        0.02,
+        0.1,
+        0.921,
+        0.1,
+        0.02,
+        0.721,
+        0.897,
+        0.372,
+        0.02,
+        0.1,
+        0.503,
+        0.02,
+        0.1,
+        0.593,
+        0.417,
+        0.004,
+        0.801,
+        0.1,
+        0.02,
+        0.42,
+        0.02,
+        0.1,
+        0.2,
+        0.497,
+        0.2,
+        0.587,
+        0.1,
+        0.02,
+        2.817,
+        4.058,
+        0.2,
+        0.457,
+        0.02,
+        0.1,
+        0.547,
+        0.2,
+        0.46,
+        0.1,
+        0.02,
+        1.635,
+        0.025,
+        0.025,
+        2.011,
+        0.217,
+        0.223,
+        0.1,
+        0.02,
+        3.179,
+        0.2,
+        2.979,
+        4.984,
+        0.2,
+        4.984,
+        0.2,
+        3.18,
+        2.98,
+        0.2,
+        0.024,
+        0.373,
+        2.539,
+        0.2,
+        3.162,
+        5.005,
+        0.2,
+        5.005,
+        0.2,
+        2.549,
+        0.373,
+        3.149,
+        0.2
+      ],
+      "A-WALL": [
+        0.373,
+        0.77,
+        1.309,
+        4.984,
+        2.277,
+        0.103,
+        0.373,
+        0.005,
+        0.005,
+        0.46,
+        0.187,
+        0.373,
+        4.832,
+        4.66,
+        0.4,
+        0.4,
+        2.37,
+        2.446,
+        0.4,
+        6.086,
+        6.089,
+        2.989,
+        6.089,
+        3.233,
+        0.33,
+        0.131,
+        0.01,
+        0.01,
+        0.078,
+        2.27,
+        0.1,
+        0.08,
+        0.22,
+        0.317,
+        4.98,
+        0.016,
+        0.078,
+        0.005,
+        0.22,
+        0.08,
+        0.22,
+        0.024,
+        0.373,
+        2.379,
+        2.452,
+        0.4,
+        0.086,
+        0.713,
+        0.807,
+        0.4,
+        1.018,
+        0.05,
+        0.025,
+        0.025,
+        0.1,
+        1.05,
+        0.13,
+        0.015,
+        0.015,
+        1.05,
+        5.765,
+        6.089,
+        2.989,
+        6.089,
+        4.054,
+        0.4,
+        2.519,
+        0.086,
+        0.223,
+        0.08,
+        0.22,
+        0.029,
+        0.029,
+        0.1,
+        6.189,
+        6.189,
+        0.2,
+        0.86,
+        0.86,
+        0.1
+      ],
+      "A-GENM-1": [
+        0.002,
+        0.001,
+        0.003,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "A-DETL-MBND": [
+        3.79,
+        3.49,
+        0.945,
+        1.095,
+        3.48,
+        3.78,
+        1.945,
+        2.245,
+        3.54,
+        3.84,
+        0.7,
+        0.5,
+        0.5,
+        0.65,
+        0.65,
+        0.5,
+        0.5,
+        0.65,
+        4.66,
+        4.96,
+        0.476,
+        0.526,
+        24.718,
+        25.018,
+        0.478,
+        0.004,
+        0.15,
+        0.043,
+        0.004,
+        0.527,
+        0.15,
+        25.271,
+        0.401,
+        0.401,
+        25.421,
+        0.493,
+        0.643,
+        0.686,
+        0.493,
+        0.009,
+        0.493,
+        0.643,
+        0.665,
+        0.493,
+        0.02,
+        4.972,
+        4.672,
+        3.85,
+        3.55
+      ],
+      "A-FLOR-LEVL": [
+        0.008,
+        4.0,
+        2.53,
+        2.33,
+        0.003,
+        4.0,
+        2.535,
+        1.685,
+        0.107,
+        0.002,
+        0.009,
+        4.0,
+        1.687,
+        0.156,
+        2.33,
+        0.002,
+        0.008,
+        4.0,
+        1.685,
+        0.1,
+        2.533
+      ],
+      "A-DETL-THIN": [
+        0.32,
+        0.22,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.1,
+        0.9,
+        1.626,
+        19.319,
+        27.97,
+        19.319,
+        27.97,
+        18.942,
+        27.565,
+        18.943,
+        27.565
+      ],
+      "A-DETL-THIN-1": [
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24
+      ],
+      "S-GRID-1": [
+        37.417,
+        37.417,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        37.417,
+        37.417,
+        37.417,
+        37.417
+      ],
+      "G-ANNO-SYMB-1": [
+        2.25,
+        2.398,
+        2.187,
+        2.133
+      ],
+      "G-ANNO-DIMS-1": [
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5
+      ],
+      "G-ANNO-REVC-IDEN": [
+        1.741
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Family - ___-887816-1NP",
+        "layer": "G-ANNO-REVC-1",
+        "count": 1
+      },
+      {
+        "block": "IPE - 489591-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 500084-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 500435-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 500572-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 568342-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 390062-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 503362-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 504078-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 504742-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505106-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505107-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505273-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505274-1NP",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374564-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374570-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374571-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374572-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388383-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388384-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388385-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388386-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-586513-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-796436-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V1-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V10-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V11-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V12-1NP",
+        "layer": "A-GLAZ",
+        "count": 3
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V13-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V14-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V15-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V16-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V17-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V18-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V19-1NP",
+        "layer": "A-GLAZ",
+        "count": 2
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V2-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V20-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V21-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V3-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V4-1NP",
+        "layer": "A-GLAZ",
+        "count": 3
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V5-1NP",
+        "layer": "A-GLAZ",
+        "count": 3
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V6-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+        "layer": "A-GLAZ",
+        "count": 7
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V9-1NP",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "Osnova - 6mm-307864-1NP",
+        "layer": "S-GRID-IDEN",
+        "count": 24
+      },
+      {
+        "block": "Popisek revize - Popisek revize-490849-1NP",
+        "layer": "G-ANNO-REVC-IDEN",
+        "count": 1
+      },
+      {
+        "block": "Rozvaděč nastenny  - Typ 1-584972-1NP",
+        "layer": "E-ELEC-FIXT",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 374558-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 374573-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387892-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387893-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387934-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387935-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387971-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387972-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388008-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388009-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388045-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388046-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 396249-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 400226-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 400484-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 400880-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 401579-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 401588-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 401597-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 487110-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 487111-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502209-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502210-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502301-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502302-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 506871-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507568-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507725-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507857-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507956-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508019-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508076-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508146-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508228-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508229-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508303-1NP",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Umyvadlo - 50x40 cm-459123-1NP",
+        "layer": "P-SANR-FIXT",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP",
+        "layer": "A-DOOR-FRAM",
+        "count": 2
+      },
+      {
+        "block": "Výškové kóty - Výšková kóta - Základová-780896-1NP",
+        "layer": "G-ANNO-DIMS",
+        "count": 1
+      },
+      {
+        "block": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP",
+        "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+        "count": 1
+      },
+      {
+        "block": "Řez - Velká značka-308779-1NP",
+        "layer": "G-ANNO-SYMB",
+        "count": 4
+      }
+    ],
+    "text_by_layer": {
+      "S-GRID-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            180.9653278464635,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            180.9653278464634,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            183.7211528464635,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            183.7211528464635,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            176.0569810775498,
+            153.4670673509143
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            204.59431694539512,
+            153.46706735091422
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            176.0569810775498,
+            147.3670673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            204.59431694539512,
+            147.36706735091408
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            176.0569810775498,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            204.59431694539512,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            176.0569810775498,
+            138.27206735091443
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            204.59431694539512,
+            138.27206735091428
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            176.0569810775498,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            204.59431694539512,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            176.0569810775497,
+            126.0770673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            204.59431694539512,
+            126.0770673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            187.7211528464634,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            187.7211528464635,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            192.7134264256047,
+            120.12186817365271
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            192.7134264256047,
+            159.3393252433939
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            196.7421528464634,
+            159.3428470565121
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            196.74215284646348,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            199.5326278464634,
+            159.3428470565121
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            199.5326278464634,
+            120.125389986771
+          ]
+        }
+      ],
+      "G-ANNO-SYMB-2": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            200.972434884069,
+            129.4195002757474
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            179.7619474366443,
+            129.4195002757475
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            186.4355735329954,
+            125.0934465042659
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            186.4355735329954,
+            153.4181778227781
+          ]
+        }
+      ],
+      "G-ANNO-TEXT": [
+        {
+          "type": "MTEXT",
+          "raw": "SO.01",
+          "text": "SO.01",
+          "insert": [
+            190.18603561246582,
+            140.5957084468362
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "HALA",
+          "text": "HALA",
+          "insert": [
+            190.18603561246582,
+            140.1789896968362
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "EL_HLAVNÍ",
+          "text": "EL_HLAVNÍ",
+          "insert": [
+            194.5525720804662,
+            151.6972847346594
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ROZVAD",
+          "text": "ROZVAD",
+          "insert": [
+            194.5525720804662,
+            151.2805659846594
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ĚČ",
+          "text": "ĚČ",
+          "insert": [
+            196.1003845804662,
+            151.2805659846594
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "VENKOVNÍ VZT ",
+          "text": "VENKOVNÍ VZT ",
+          "insert": [
+            203.06734994653178,
+            145.25237507579322
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "JEDNOTKA ",
+          "text": "JEDNOTKA ",
+          "insert": [
+            203.06734994653178,
+            144.83565632579322
+          ]
+        }
+      ],
+      "A-AREA-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "495 m²",
+          "text": "495 m²",
+          "insert": [
+            190.124786154996,
+            141.4877101145698
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1.01",
+          "text": "1.01",
+          "insert": [
+            190.29856115499598,
+            142.44860484714872
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Sklad fotovoltaických panel",
+          "text": "Sklad fotovoltaických panel",
+          "insert": [
+            188.676836154996,
+            141.98274905718262
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;\\W.7;ů",
+          "text": "ů",
+          "insert": [
+            192.33701584249602,
+            141.98274905718262
+          ]
+        }
+      ],
+      "G-ANNO-DIMS-1": [
+        {
+          "type": "MTEXT",
+          "raw": "+0.000",
+          "text": "+0.000",
+          "insert": [
+            190.40086704703512,
+            139.0732144172128
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            184.4744832190469,
+            154.1174716657277
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            193.3124676152449,
+            154.0787449355902
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            193.3750914217442,
+            123.99301381514881
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            184.26894699875803,
+            123.8727534504104
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "2.00°",
+          "text": "2.00°",
+          "insert": [
+            179.59861426348272,
+            127.68035862140191
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "2.00°",
+          "text": "2.00°",
+          "insert": [
+            179.59861426348272,
+            127.68035862140191
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "2.00°",
+          "text": "2.00°",
+          "insert": [
+            200.7773361966887,
+            152.0822150609166
+          ]
+        }
+      ],
+      "G-ANNO-TEXT-1": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            186.32538567027248,
+            156.8634123252173
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "LEGENDA MATERIÁL",
+          "text": "LEGENDA MATERIÁL",
+          "insert": [
+            206.91116465763562,
+            4.691553421647499
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Ů:",
+          "text": "Ů:",
+          "insert": [
+            208.9345656993023,
+            4.691553421647499
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Obvodový pláš",
+          "text": "Obvodový pláš",
+          "insert": [
+            208.012005164704,
+            4.334417745031492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ť - ",
+          "text": "ť - ",
+          "insert": [
+            208.6810702688707,
+            4.334417745031492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "panely Kingspan ",
+          "text": "panely Kingspan ",
+          "insert": [
+            208.80608589387072,
+            4.334417745031492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "s požární odolností EW 15 DP1",
+          "text": "s požární odolností EW 15 DP1",
+          "insert": [
+            208.012005164704,
+            4.172360453364826
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Železobeton ",
+          "text": "Železobeton ",
+          "insert": [
+            208.012005164704,
+            3.9566643212982857
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Beton prostý",
+          "text": "Beton prostý",
+          "insert": [
+            208.012005164704,
+            3.656664321298284
+          ]
+        }
+      ],
+      "G-ANNO-REVC-IDEN": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;1",
+          "text": "1",
+          "insert": [
+            205.1011535049572,
+            150.1255095879459
+          ]
+        }
+      ]
+    },
+    "dimensions": [
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.1699999999981663,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.000000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.146007779722975,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.100000000000088,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097499999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.9974999999999707,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.0975000000001165,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097499999999957,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 27.96980032874545,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.149999999999694,
+        "text_override": "<>\\X2200"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.000000000000058,
+        "text_override": "3x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7700000000014261,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000087,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.057500000002212,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000029,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.180253122230934,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999971,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8010472065144859,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8146153360449389,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.9212531222325925,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.0,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8969468777657312,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.0,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.212800000001211,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999913,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.172499999998457,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999825,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.169999999998981,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.7699999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000059,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.9999999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.770000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 19.31247949849034,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.3297467824332423,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.327772580030345,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.334659461802818,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.330316439087866,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.0109999999967263,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.098800328744808,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.1500000000000872,
+        "text_override": "<>\\X2200"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.0,
+        "text_override": "2X1000\\X1000(1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.690000000000466,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7640814404401172,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.4999999999999851,
+        "text_override": null
+      }
+    ],
+    "block_attribs": [],
+    "bbox": {
+      "x_min_m": -202.1251265605195,
+      "y_min_m": 0.0,
+      "x_max_m": 208.9345656993023,
+      "y_max_m": 159.3428470565122,
+      "width_m": 411.0596922598218,
+      "height_m": 159.3428470565122
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

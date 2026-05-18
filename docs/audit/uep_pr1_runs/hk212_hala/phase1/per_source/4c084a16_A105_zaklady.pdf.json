@@ -1,0 +1,151 @@
+{
+  "provenance": {
+    "source_file": "A105_zaklady.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 557,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "-1.300 SOLAR DISPOREC s.r.o. , Praha",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Pozn.: V případě křížení potrubí se základovými pasy nebo",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 2485,
+    "text_per_page_truncated": [
+      "A B C D E\n1 1\n2 2\n3 3\n4 4\n5 5\nA A\n6 6\nA B C D E\nB\nB\n500\n09862\n005\n09862\n005\n09862\nF\nF\n0016\n0016\n0003\n0016\n0016\n09372\n-0.700\n-1.300\n-1.300\n-1.900\n-1.300\n-1.900\n2770 4000 5000 4000 2770\n18540\n0051\n0064\n0051\n0064\n0051\n0051\n0051\n0064\n0051\n0064\n0051\nHALA HRADEC KRÁLOVÉ\nLEGENDA MATERIÁLŮ: Vážní 857, 50003 Hradec Králové - Slezské\nPředměstí\n-0.700 Železobeton\n-1.300 -1.300\n-1.900\n1500 1620 800 3200 800 4200 800 3200 800 1625 1500\n-1.300\n-1.900 Beton prostý\n1251250125 1251250130 STUPEŇ PROJEKTU +0,000 ="
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "-1.300 SOLAR DISPOREC s.r.o. , Praha",
+        "projektant": "Pozn.: V případě křížení potrubí se základovými pasy nebo"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

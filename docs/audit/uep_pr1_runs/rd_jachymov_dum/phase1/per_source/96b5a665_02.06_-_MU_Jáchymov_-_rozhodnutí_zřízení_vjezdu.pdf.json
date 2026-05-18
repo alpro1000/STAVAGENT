@@ -1,0 +1,108 @@
+{
+  "provenance": {
+    "source_file": "02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 477,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 4,
+    "char_count_total": 12214,
+    "text_per_page_truncated": [
+      "Městský úřad Jáchymov\nodbor hospodářsko správní\nnám. Republiky 1, 362 51 Jáchymov\nVáš dopis značky: žádost\nze dne: 17. 09. 2025\nSp.zn.: 0003300/25/PNe\nNaše č.j.: 0003300/1-27/25/PNe\nVyřizuje: / tel.: 774167390\nE-mail: neumann@mestojachymov.cz\nV Jáchymově: 09. 12. 2025\nOprávněná úřední osoba: Pavel Neumann\nR O Z H O D N U T Í\nO PŘIPOJENÍ SOUSEDNÍ NEMOVITOSTI K\nPOZEMNÍ KOMINIKACI - ZŘÍZENÍ SJEZDU\nMěstský úřad Jáchymov, odbor hospodářsko‑správní, jako silniční správní úřad ve věcech místních komuni",
+      "Městský úřad Jáchymov\nodbor hospodářsko správní\nnám. Republiky 1, 362 51 Jáchymov\nČ.j.: 0003300/1-27/25/PNe\n3. Stavební uspořádání sjezdu se zřetelem na odvodnění, musí být takové, aby se zabránilo stékání srážkové\nvody na místní komunikaci II. tř. 2b ul. Dvořákova a nedocházelo tím k jejímu znečištění. Z důvodu\numístění stavby na hranicích parcel, bude zachováno stávající řešení nakládání s dešťovou vodou, která\nbude částečně vsakována okolním terénem a částečně bude svedena svodem na pozemek, ",
+      "Městský úřad Jáchymov\nodbor hospodářsko správní\nnám. Republiky 1, 362 51 Jáchymov\nČ.j.: 0003300/1-27/25/PNe\nPo prostudování podkladů žádosti dospěl správní orgán k závěru, že podání trpí vadami ve smyslu § 37 odst. (3),\nzákona č. 500/2004 Sb., správní řád, a proto vyzval žadatele Mgr. Jindřicha Volného, bytem Fibichova 733, 362\n51 Jáchymov, zastoupeného společností SMASH architekti s.r.o., se sídlem Vodňanského 1008/2, 169 00 Praha\n6, IČO: 17666902, dne 18. září 2025 pod č.j.: 0003347/25/PNe, k ",
+      "Městský úřad Jáchymov\nodbor hospodářsko správní\nnám. Republiky 1, 362 51 Jáchymov\nČ.j.: 0003300/1-27/25/PNe\nOdvolání se podává v potřebném počtu stejnopisů. Nepodá-li účastník řízení potřebný počet stejnopisů, vyhotoví\nje správní orgán na náklady účastníka.\n-otisk úředního razítka-\nPavel Neumann\noprávněná úřední osoba\nPoznámka:\nRozhodnutí se podle zákona č. 634/2004 Sb., o správních poplatcích, v platném znění, z p o p l a t ň u j e .\n- Správní poplatek 500,- Kč., byl řádně uhrazen.\nObdrží:\nÚčas"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": ",,Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733“",
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": null,
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

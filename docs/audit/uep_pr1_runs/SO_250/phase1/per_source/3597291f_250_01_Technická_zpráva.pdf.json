@@ -1,0 +1,868 @@
+{
+  "provenance": {
+    "source_file": "250_01_Technická zpráva.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 2435,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30 XF3",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XF3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C25/30"
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C30/37",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C 30/37 XF4",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XF4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C30/37"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "A",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "D",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "F",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "F",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B 500 B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1737.44,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "vá zeď.\nDélka zdi 515,20 m\nVýška zdi nad terénem Proměnná, od 1,550 do 3,400 m\nPohledová plocha zdi ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 7.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ejich hlinitopísčitými až písčitými zvětralinami, se průtočnost T pohybuje v řádu okolo 10-4 až 10-\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 6101",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 6133",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 13670",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 73 6133",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 3506",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 6201",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 309/2006 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 251/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 258/2000 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 373/2011 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č.591/2006Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 592/2006 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 362/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 101/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 375/2017 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 361/2007 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 378/2001 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 168/2002 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 272/2011 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 201/2010 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 390/2021 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "D6 Olšová Vrata - Žalmanov, VD-ZDS",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stupen_pd",
+      "value": "PDPS",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "viz příloha\nB.08 projektové dokumentace",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 13,
+    "char_count_total": 31286,
+    "text_per_page_truncated": [
+      "ČÁST D.2\nSO 250\nTECHNICKÁ ZPRÁVA 1",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\nAkce: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak.č.: 25-150-2\nStupeň: PDPS\nČást: D - Dokumentace objektů\nObjekt: SO 250 – Zárubní zeď v km 6,500 – 7,000 vpravo\nPŘÍLOHA č. 1:\nTECHNICKÁ ZPRÁVA\nObsah:\n1. IDENTIFIKAČNÍ ÚDAJE STAVBY ............................................................................................................ 3\n1.1. OZNAČENÍ STAVBY: .................................................................................",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\n7.1. POSTUP VÝSTAVBY ...................................................................................................................................... 10\n7.2. BEZPEČNOST A OCHRANA ZDRAVÍ................................................................................................................ 11\n7.3. KŘIŽUJÍCÍ SÍTĚ TECHNICKÉHO VYBAVENÍ ÚZEMÍ ....................................................................................",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\n1. IDENTIFIKAČNÍ ÚDAJE STAVBY\n1.1. Označení stavby:\nNázev stavby : D6 Olšová Vrata - Žalmanov, VD-ZDS\nKraj : Karlovarský\nKatastrální území : Olšová Vrata, Andělská Hora, Žalmanov, Horní Tašovice, Bochov\nDruh stavby : novostavba\nStupeň dokumentace : Projektová dokumentace pro provádění stavby\n1.2. Stavebník/objednatel stavby:\nNázev a adresa : Ředitelství silnic a dálnic s. p.\nČerčanská 2023/12, Krč, 140 00 Praha 4\nIČO : 65993390\nNadříz",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\n2. VŠEOBECNÉ ÚDAJE\n2.1. Stručný popis stavby\nPředmětem projektové dokumentace k územnímu rozhodnutí je přestavba stávající silnice I/6 na\ndálnici D6 v úseku mezi Bochovem a Olšovými Vraty a propojuje stavby „D6 Žalmanov –\nKnínice” a „D6 Karlovy Vary – Olšová Vrata”. Přeložka hlavní trasy je navržena jako 4 pruhová\nsměrově rozdělená komunikace v kategorii D25,5/130 dle ČSN 73 6101 se středním dělícím pásem\nv šířce 3,5 m.\nTrasa dálnice ",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\n2.4. Geotechnické podmínky\nÚsek v km 6.500 – 7.000 pasport č. C.5\nVýchozím geotechnickým podkladem byla „Aktualizace podrobného geotechnického průzkumu“,\nzpracované firmou GeoTec-GS, a.s. (11/2019) pro původně předpokládaný mostní objekt, který\nnyní nahrazuje lávka SO 222 a využívá se i pro SO 250\nGeologické poměry\nZájmový úsek silnice I/6 se nachází z regionálně geologického hlediska v oblasti karlovarského\nplutonu hercynského stáří,",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\nvšak zvyšuje míru zranitelnosti podzemních vod první zvodně polutanty z povrchu. Z grafického\nzáznamu dlouhodobých normál vyplývá, že nejvyšší úrovně hladiny podzemních vod je dosaženo v\nobdobí února a března, minimum připadá na srpen a září.\nHluboká zvodeň má výhradně puklinovou propustnost a je vázána na systém hlubších tektonických\nporuch v rámci rigidních hornin. V horních partiích karlovarského plutonu mají tyto vody charakter\npr",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\nNosnou konstrukci tvoří monolitická železobetonová úhlová opěrná zeď. Objekt je řešen jako\nplošně založený, výšky 2,65 – 4,50 m.\nZáklad opěrné zdi je konstantní tloušťky 0,56 m a šířky 2,75 m.\nV podélném směru je základ členěn na 40 dilatačních celků konstantní délky 12,50 m a dva krajní\ndilatační celky DC01 a DC42 konstantní délky 7,60 m.\nDřík konstrukce je konstantní tloušťky 0,45 m a proměnné výšky 1,65 – 3,50 m. Dřík konstrukce je",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\nBednění svislého líce římsy se předpokládá jakosti C2d (tj. např. bednění z celoplošných\nvícevrstvých desek se strukturou dřeva zpevněných pečetící pryskyřičnou vrstvou). Římsy-kotevní\ntrámy jsou navrženy z betonu C 30/37 XF4, XD3, XC4 a vyztuženy betonářskou výztuží B 500 B.\nPro stavbu jsou dle TKP PK, kap. 1 stanoveny třídy přesnosti takto: kotevní trámy - 10.\n3.6.3. Zábradlí\nNa horním kotevním trámu (a dtto koruně monolitické zdi) ",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\nchloridů, chlorid vápenatý a přísady na bázi chloridů se nesmějí použít do betonu\nželezobetonových), vodní součinitel musí být v rozsahu dle TKP pk, kap. 18. Beton v kontaktu se\nzeminou se navrhuje vodotěsný, distanční podložky nesmí být elektricky vodivé, připouští se pouze\ndistanční podložky na bázi betonu podle TKP PK, kap. 18, příl. P10. Jako sekundární ochrana\nslouží ochranné nátěry spodní stavby proti zemní vlhkosti a agresivním",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\n6. D. VZTAHY PK K OSTATNÍM OBJEKTŮM STAVBY\nZárubní zeď má vazby na tyto níže uvedené objekty:\nSO 101 Dálnice D6\nSO 121 Sil. II/606 Žalmanov – Andělská Hora\nSO 122 Přeložka III/22213 Andělská Hora východ\nSO 180 Přechodné dopravní značení\nSO 190 Dopravní značení ve správě ŘSD ČR\nSO 193 Dopravní značení silnic II. a III. tříd\nSO 194 Dopravní značení MK\nSO 222 Lávka pro pěší přes D6 v km 6,597\nSO 306 Středová kanalizace v km 5,089 – 6,718",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\ndohlížet technický dozor investora akce.\nDodržení plynulosti a koordinovanosti stavby je povinen zajistit zhotovitel stavby. Podrobný\nharmonogram prací pro celou stavbu bude zpracován zhotovitelem v dostatečném předstihu před\nzahájením stavby. S tímto časovým plánem budou seznámeni všichni dodavatelé, subdodavatelé\na zhotovitelé. Harmonogram bude zpracován tak, aby nemohlo docházet ke zvýšenému tlaku\nna pracovní tempo a zatížení zaměs",
+      "Stavba: D6 Olšová Vrata - Žalmanov, VD-ZDS\nZak. č. : 25-150-2\n• Nařízení vlády č. 201/2010 Sb., o způsobu evidence úrazů, hlášení a zasílání záznamu\no úrazu.\n• Nařízení vlády č. 390/2021 Sb., o bližších podmínkách poskytování osobních ochranných\npracovních prostředků, mycích, čisticích a dezinfekčních prostředků.\n• osobních ochranných pracovních prostředků, mycích, čisticích a dezinfekčních prostředků.\n• Zákon č. 251/2005 Sb., o inspekci práce.\n• Zákon č. 258/2000 Sb., o ochraně veřejného zdraví"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [
+            "XF3"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30 XF3",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C30/37",
+          "characteristic_strength": 30,
+          "cube_strength": 37,
+          "exposure_classes": [
+            "XF4"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C 30/37 XF4",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B 500 B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "vá zeď.\nDélka zdi 515,20 m\nVýška zdi nad terénem Proměnná, od 1,550 do 3,400 m\nPohledová plocha zdi ",
+          "volume_m3": null,
+          "area_m2": 1737.44,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ejich hlinitopísčitými až písčitými zvětralinami, se průtočnost T pohybuje v řádu okolo 10-4 až 10-\n",
+          "volume_m3": null,
+          "area_m2": 7.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "{'XA2', 'XC2', 'XD3', 'XF3', 'XF4', 'XC4'}",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 6101",
+        "ČSN 73 6133",
+        "ČSN EN 13670",
+        "ČSN EN 73 6133",
+        "ČSN EN ISO 3506",
+        "ČSN 73 6201",
+        "Zákon č. 309/2006 Sb.",
+        "Zákon č. 251/2005 Sb.",
+        "Zákon č. 258/2000 Sb.",
+        "Zákon č. 373/2011 Sb.",
+        "Nařízení vlády č.591/2006Sb.",
+        "Nařízení vlády č. 592/2006 Sb.",
+        "Nařízení vlády č. 362/2005 Sb.",
+        "Nařízení vlády č. 101/2005 Sb.",
+        "Nařízení vlády č. 375/2017 Sb.",
+        "Nařízení vlády č. 361/2007 Sb.",
+        "Nařízení vlády č. 378/2001 Sb.",
+        "Nařízení vlády č. 168/2002 Sb.",
+        "Nařízení vlády č. 272/2011 Sb.",
+        "Nařízení vlády č. 201/2010 Sb.",
+        "Nařízení vlády č. 390/2021 Sb."
+      ],
+      "identification": {
+        "stavba": "D6 Olšová Vrata - Žalmanov, VD-ZDS",
+        "stupen_pd": "PDPS"
+      },
+      "referenced_documents": [
+        "viz příloha\nB.08 projektové dokumentace"
+      ],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": "D6 Olšová Vrata - Žalmanov, VD-ZDS",
+          "objekt": "SO 250 – Zárubní zeď v km 6,500 – 7,000 vpravo",
+          "obsah": null,
+          "stupen_pd": "PDPS",
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": null,
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": {
+        "ico": "65993390",
+        "isds": null,
+        "cpv_code": null,
+        "cpv_name": null,
+        "zakon": "262/2006 Sb.",
+        "predpokladana_hodnota_czk": null,
+        "hodnota_s_dph_czk": null,
+        "hodnota_zmena_zavazku_czk": null,
+        "vyhrazena_zmena_czk": null,
+        "vyhrazena_zmena_pct": null,
+        "jistota_czk": null,
+        "cislo_uctu": null,
+        "kod_banky": null,
+        "nazev_banky": null,
+        "lhuta_podani": null,
+        "zadavaci_lhuta_dnu": null,
+        "prohlidka_mista": null,
+        "hodnotici_kriterium": null,
+        "hodnotici_vaha_pct": null,
+        "tender_url": null,
+        "max_velikost_nabidky_mb": null,
+        "prilohy": [],
+        "confidence": 0.9
+      }
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

@@ -1,0 +1,129 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 3068,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "special_requirements",
+      "field": "Bílá vana (vodotěsný beton)",
+      "value": "Vodotěsná konstrukce třídy neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "watertight_class": "neurčeno",
+          "thickness_mm": null
+        },
+        "raw_text": "bílá vana"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 9324,
+    "text_per_page_truncated": [
+      "legenda\n+12,750 +12,750 Obvodové nosné zdivo\n- smýšené zdivo, převážně keramická cihla\nVnitřní nosné zdivo\n0 - keramická cihla dutinová\nŘEZ A-A 1 S ŘEZ B-B Tvárnice pro příčky\nzděné na maltu\nSDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\ntvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\nželezobeton (včetně výztuže, viz. část konstrukčně stavební)\nbeton prostý ( viz. část konstrukčně stavební)\n0 1 dřevěné konstrukce (viz. část konstrukčně staveb"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [
+        {
+          "requirement_type": "Bílá vana (vodotěsný beton)",
+          "description": "Vodotěsná konstrukce třídy neurčeno",
+          "parameters": {
+            "watertight_class": "neurčeno",
+            "thickness_mm": null
+          },
+          "raw_text": "bílá vana",
+          "confidence": 1.0
+        }
+      ],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [
+          {
+            "note_id": "POZN.2",
+            "text": ".01 nový vstup do domu přes mezipodestu schodiště",
+            "work_type": null,
+            "confidence": 1.0
+          }
+        ],
+        "title_block": null,
+        "etics_notes": [
+          "Zateplení - tepelná izolace",
+          "zateplení soklu - asfaltová penetrace -- vložená izolace z minerální vaty 100 -180 mm - SDK požární podhled s odolností min",
+          "kontaktní zateplovací systém ETICS",
+          "kontaktní zateplovací systém ETICS S03a = pod úrovní terénu S08 strop - klemba mezi patry - hliník"
+        ],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

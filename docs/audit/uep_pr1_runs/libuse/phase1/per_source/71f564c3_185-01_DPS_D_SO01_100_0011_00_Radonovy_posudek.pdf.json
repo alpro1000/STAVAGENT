@@ -1,0 +1,238 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0011_00_Radonovy posudek.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 810,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 200.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "kBq/m3. Pro předmětnou\nstavbu s jedním podzemním podlažím a s velikostí zastavěné plochy větší než 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "special_requirements",
+      "field": "Bílá vana (vodotěsný beton)",
+      "value": "Vodotěsná konstrukce třídy neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "watertight_class": "neurčeno",
+          "thickness_mm": null
+        },
+        "raw_text": "bílá vana"
+      }
+    },
+    {
+      "category": "special_requirements",
+      "field": "Bílá vana (vodotěsný beton)",
+      "value": "Vodotěsná konstrukce třídy neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "watertight_class": "neurčeno",
+          "thickness_mm": 400
+        },
+        "raw_text": "bílá vana"
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0601",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 206",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "geologický průzkum",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "radonový průzkum",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 9,
+    "char_count_total": 12681,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nDEKPROJEKT s.r.o.\nTiskařská 10/257\n108",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\nOdborný posudek\nPosouzení proti pronikání radonu z\npodloží do objektu\nBytový soubor Libuše\n142 00 Praha\nVypracoval\nIng. Miroslav Adam\nZpracováno v období\nListopad 2021\nVerze dokumentu\nPrvní vydání\nTento dokument nesmí být bez písemného souhlasu zhotovitele kopírován jinak než celý.",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\nObsah\n1. VŠEOBECNĚ......................................................................................................................................3\n1.1 Předmět.............................................................................................................................................3\n1.2 Úkol.......................................................................................................................................",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\n1. VŠEOBECNĚ\n1.1 Předmět Bytový soubor Libuše, 142 00 Praha\n1.2 Úkol Posouzení navržených opatření proti pronikání radonu\nz podloží.\n1.3 Objednatel ABMV world s.r.o.\nProsecká 527/24 kontaktní osoba:\n180 00 Praha Ing. Arch. Zdeněk Vávra\nTel: +420 724 505 067\nIČ: 05079250\nemail: zvara@abmv.cz\n1.4 Dodavatel DEKPROJEKT s.r.o.\nTiskařská 10/257 IČO: 27 64 24 11\nbudova TTC TECHKOM\nCENTRUM\n108 00 Praha 10 - Malešice bankovní spojení:\ntel.: +420 234 054 28",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\n2. NÁLEZ\n2.1 Podklady\n[1] Nabídka služeb č. D2021-054685 a objednávka ze dne 8.11.2021\n[2] Vyhl. č. 10/2016 Sb., o obecných technických požadavcích na výstavbu v Praze\n[3] Inženýrskogeologický průzkum, radonový průzkum a ověření možnosti vsakování, K2H s.r.o.\n09/2018\n[4] ČSN 73 0601 Ochrana staveb proti radonu z podloží\n[5] Vyhláška 268/2009 Sb. o technických požadavcích na stavby\n[6] Zákon 263/2016 Sb. o mírovém využívání jaderné energie a ionizu",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\n2.3 Vstupní údaje\nNa pozemku bylo provedeno měření objemové aktivity radonu a byl stanoven radonový index pozemku\n[3] . Naměřená hodnota objemové aktivity radonu v půdním vzduchu činí 16,5 kBq/m3. Pro předmětnou\nstavbu s jedním podzemním podlažím a s velikostí zastavěné plochy větší než 200 m2 činí návrhová\nhodnota objemové aktivity radonu (OAR) v podloží 24,75 kBq/m3. Pod stavbou není navržen štěrkový\npodsyp. Plynopropustnost základových půd uvaž",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\n3. POSUDEK\n3.1 Požadavek ČSN 73 0601 Ochrana staveb proti radonu z podloží [4]\nCitace odstavce 5.6 Ochrana nových staveb, v jejichž kontaktních podlažích se nenachází pobytové\nprostory\n„Stavby, v jejichž kontaktních podlažích se nenachází pobytové prostory, se chrání kontaktní konstrukcí\nv 2. nebo 3. kategorii těsnosti v podobě vodotěsné železobetonové konstrukce. Zároveň musí být\nsplněny všechny tyto podmínky:\n1. ve všech místech kontaktního podl",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\n4. NÁVRH NÁPRAVNÝCH OPATŘENÍ\nPro splnění požadavků ČSN 73 0601 [4] bude nutné doplnit do skladby podlahy min. 1 vrstvu povlakové\nnebo stěrkové hydroizolace s atestem na radon. Protiradonovou izolaci doporučujeme půdorysně rozšířit\no 1 m (obr. /3/) oproti vnějšímu obrysu společných prostor. Vzhledem k navržené skladbě podlahy se\nnabízí umístění protiradonové izolace na podkladní beton před realizací železobetonové desky z\nvodostavebného betonu (obr",
+      "DEKPROJEKT s.r.o.\nZakázka číslo: 2021-027929-AdM\n1m\nobr. /3/ Výňatek z půdorysu objektu v místě společných prostor – červenou čarou je vyznačen návrh\npřesahu hydroizolace\nV Praze dne 19.11.2021 za DEKPROJEKT s.r.o.\nIng. Miroslav Adam\nTel.: +420 739 388 132\ne-mail: miroslav.adam@dek-cz.com\nOdborný posudek\nBytový soubor Libuše, 142 00 Praha Strana 8"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "kBq/m3. Pro předmětnou\nstavbu s jedním podzemním podlažím a s velikostí zastavěné plochy větší než 2",
+          "volume_m3": null,
+          "area_m2": 200.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [
+        {
+          "requirement_type": "Bílá vana (vodotěsný beton)",
+          "description": "Vodotěsná konstrukce třídy neurčeno",
+          "parameters": {
+            "watertight_class": "neurčeno",
+            "thickness_mm": null
+          },
+          "raw_text": "bílá vana",
+          "confidence": 1.0
+        },
+        {
+          "requirement_type": "Bílá vana (vodotěsný beton)",
+          "description": "Vodotěsná konstrukce třídy neurčeno",
+          "parameters": {
+            "watertight_class": "neurčeno",
+            "thickness_mm": 400
+          },
+          "raw_text": "bílá vana",
+          "confidence": 1.0
+        }
+      ],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 0601",
+        "ČSN EN 206"
+      ],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [
+        "geologický průzkum",
+        "radonový průzkum"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

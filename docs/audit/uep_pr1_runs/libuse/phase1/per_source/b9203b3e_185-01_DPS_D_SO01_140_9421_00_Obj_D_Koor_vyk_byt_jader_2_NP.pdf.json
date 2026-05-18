@@ -1,0 +1,91 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_140_9421_00_Obj_D_Koor_vyk_byt_jader_2_NP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 7324,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 7,
+    "char_count_total": 1969,
+    "text_per_page_truncated": [
+      "N",
+      "150\n170\n150\n120\n160\n150\n200\n140\n200\n130 250 220\nD1\nD2\nD3\nD4\nD5\nDC\nDC\nD.2.2.02\nD.2.2.03\nD.2.3.02\nD.2.3.03\nD.2.4.02\nD.2.1.02 D.2.1.03\nD.2.2.04\nD.2.2.01\nD.2.3.01\nD.2.3.04\nD.2.4.03\nDB\nDB\nD.2.1.05\nD.2.1.01\nD.2.S.01\nD.2.4.01\nD.2.4.05\nD.2.1.06\nD.2.1.07\n+4,650\n+3,075\nD.2.4.07\nD.2.4.06\nDA\nDA\nD1\nD2\nD3\nD4\nD5\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "120 240 240\n150\n80\n80\n200 120\n80\nD1\nD2\nD3\nD4\nD5\nDC\nDC\nD.2.2.02\nD.2.2.03\nD.2.3.02\nD.2.3.03\nD.2.4.02\nD.2.1.02 D.2.1.03\nD.2.2.04\nD.2.2.01\nD.2.3.01\nD.2.3.04\nD.2.4.03\nDB\nDB\nD.2.1.05\nD.2.1.01\nD.2.S.01\nD.2.4.01\nD.2.4.05\nD.2.1.06\nD.2.1.07\n+4,650\n+3,075\nD.2.4.07\nD.2.4.06\nDA\nDA\n240\nD1\nD2\nD3\nD4\nD5\n80\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "80\n120 150\n150\n170\n80\n250\nD1\nD2\nD3\nD4\nD5\nDC\nDC\nD.2.2.02\nD.2.2.03\nD.2.3.02\nD.2.3.03\nD.2.4.02\nD.2.1.02 D.2.1.03\nD.2.2.04\nD.2.2.01\nD.2.3.01\nD.2.3.04\nD.2.4.03\nDB\nDB\nD.2.1.05\nD.2.1.01\nD.2.S.01\nD.2.4.01\nD.2.4.05\nD.2.1.06\nD.2.1.07\n+4,650\n+3,075\nD.2.4.07\nD.2.4.06\nDA\nDA\nD1\nD2\nD3\nD4\nD5\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "120 150\n80\n150\n170\n80\n250\nD1\nD2\nD3\nD4\nD5\nDC\nDC\nD.2.2.02\nD.2.2.03\nD.2.3.02\nD.2.3.03\nD.2.4.02\nD.2.1.02 D.2.1.03\nD.2.2.04\nD.2.2.01\nD.2.3.01\nD.2.3.04\nD.2.4.03\nDB\nDB\nD.2.1.05\nD.2.1.01\nD.2.S.01\nD.2.4.01\nD.2.4.05\nD.2.1.06\nD.2.1.07\n+4,650\n+3,075\nD.2.4.07\nD.2.4.06\nDA\nDA\nD1\nD2\nD3\nD4\nD5\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "120 240 240\n150\n250 120\n80\nD1\nD2\nD3\nD4\nD5\nDC\nDC\nD.2.2.02\nD.2.2.03\nD.2.3.02\nD.2.3.03\nD.2.4.02\nD.2.1.02 D.2.1.03\nD.2.2.04\nD.2.2.01\nD.2.3.01\nD.2.3.04\nD.2.4.03\nDB\nDB\nD.2.1.05\nD.2.1.01\nD.2.S.01\nD.2.4.01\nD.2.4.05\nD.2.1.06\nD.2.1.07\n+4,650\n+3,075\nD.2.4.07\nD.2.4.06\nDA\nDA\nD1\nD2\nD3\nD4\nD5\n60\n140\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "80\n120\n170\n120\n80\n170\n120 220 240\n200\n260\nD1\nD2\nD3\nD4\nD5\nDC\nDC\nD.2.2.02\nD.2.2.03\nD.2.3.02\nD.2.3.03\nD.2.4.02\nD.2.1.02 D.2.1.03\nD.2.2.04\nD.2.2.01\nD.2.3.01\nD.2.3.04\nD.2.4.03\nDB\nDB\nD.2.1.05\nD.2.1.01\nD.2.S.01\nD.2.4.01\nD.2.4.05\nD.2.1.06\nD.2.1.07\n+4,650\n+3,075\nD.2.4.07\nD.2.4.06\nDA\nDA\nD1\nD2\nD3\nD4\nD5\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

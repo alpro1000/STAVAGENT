@@ -1,0 +1,104 @@
+{
+  "provenance": {
+    "source_file": "A102_pudorys_strechy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 302,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "SOLAR DISPOREC s.r.o. , Praha",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "STŘEŠNÍ PLÁŠŤ",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1063,
+    "text_per_page_truncated": [
+      "A B C D E\n1 1\n2 2\n3 3\n4 4\n5 5\nA A\n6 6\nA B C D E\nB\nB\n19740\n2770 4000 5000 4000\n+7.194\n+6.287\n09372\n0016\n0016\n0003\n0016\n0016\nF\n2770\n5.25°\nF\n09182\nHALA HRADEC KRÁLOVÉ\nVážní 857, 50003 Hradec Králové - Slezské\nPředměstí\nSTUPEŇ PROJEKTU +0,000 = +234,690 mnm Bpv\nDDOOKKUUMMEENNTTAACCEE PPRROO PPOOVVOOLLEENNÍÍ ZZÁÁMM ĚĚRRUU ((DDPPZZ))\nPoznámka: ODPOVĚDNÝ PROJEKTANT\nSTŘEŠNÍ PLÁŠŤ\n- požadovaná pož. odolnost EI 15 DP1 + Broof Ing.arch. Jakub Volka, ČKA 03947\n733 575 363, jakub.volka@basepoint.cz\nVYPRACOVA"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "SOLAR DISPOREC s.r.o. , Praha",
+        "projektant": "STŘEŠNÍ PLÁŠŤ"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

@@ -1,0 +1,385 @@
+{
+  "provenance": {
+    "source_file": "03_ars_d11_TZ.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 323,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "0",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 3404.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "ími účinky vnějšího prostředí;\nZastavěná plocha: 541m2\nPodlahová plocha: 495 m2\nObestavěný prostor: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 541.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "hospodaření\nenergiemi; ochrana stavby před negativními účinky vnějšího prostředí;\nZastavěná plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "chrana stavby před negativními účinky vnějšího prostředí;\nZastavěná plocha: 541m2\nPodlahová plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "built_up_area_m2",
+      "value": 541.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 75 6760",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 5,
+    "char_count_total": 6879,
+    "text_per_page_truncated": [
+      "TECHNICKÁ ZPRÁVA\nD1.1\nHala Hradec Králové [212]\nHradec Králové, KÚ.: Slezské předměstí [646971], Parc. Č.: 1939/1\nDokumentace pro povolení záměru - DPZ\nV Praze, 08/2025\nIng. arch. Jakub Volka, ČKA 0003947\nVypracoval: Anna Abrahámová\nBasepoint s.r.o.\nKvětoslava Mašity 251, 252 31 Všenory",
+      "Architektonicko - stavební řešení, ARS\nÚčel objektu, funkční náplň, kapacitní údaje; architektonické, výtvarné, materiálové a\ndispoziční řešení, bezbariérové užívání stavby; celkové provozní řešení, technologie výroby;\nbezpečnost při užívání stavby, ochrana zdraví a pracovní prostředí; zásady hospodaření\nenergiemi; ochrana stavby před negativními účinky vnějšího prostředí;\nZastavěná plocha: 541m2\nPodlahová plocha: 495 m2\nObestavěný prostor: 3404 m3\nJedná se o projekt skladové haly na uskladnění ",
+      "Uvedeno v samostatné části dokumentace PBŘ.\npopis netradičních technologických postupů a zvláštních požadavků na provádění a jakost\nnavržených konstrukcí;\nNa stavbě nejsou uplatněny netradiční technologické postupy. Všechny konstrukce\nbudou prováděny obvyklými stavebními technologiemi v souladu s příslušnými ČSN,\ntechnickými předpisy a projektovou dokumentací.\nkonstrukční a stavebně technické řešení a technické vlastnosti stavby;\nZáklady, HTU, výkopy, spodní hydroizolace\nZákladová deska bude nav",
+      "Střecha\nStřecha je navržena sedlová se sklonem 5,25° se střešní krytinou ze\nsendwichových panelů Kingspan s nehořlavou vložkou z minerální vaty. Výška\nstavby v hřebeni bude 7,1m Nosná část střechy je zajištěna vodorovnou částí\nnosného rámu.\nStřešní vaznice budou z profilů IPE160, budou shora mechanicky připevněny na\nocelový rám. Osová vzdálenost vaznic bude 1500 mm. Zavětrování je provedeno\nondřejskými kříži z profilu R20.\nFasáda\nFasáda bude zhotovena ze sandwichových panelů Kingspan tl. 200 mm ",
+      "Veškeré klempířské prvky budou provedeny z pozinkovaného ocelového plechu s\npovrchovou úpravou. Součástí dodávky budou zejména oplechování atik,\nlemování střechy, parapetní plechy, krycí lišty, úžlabí, nároží a okapové systémy.\nOdvodnění střechy bude zajištěno pomocí žlabů a svodů dimenzovaných dle ČSN\n75 6760, s napojením na dešťovou kanalizaci. Odvodnění stávající zpevněné\nplochy bude zajištěno liniovým žlabem kolem SZ a JZ fasády zapuštěným\nv komunikaci.\n5/5"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "ími účinky vnějšího prostředí;\nZastavěná plocha: 541m2\nPodlahová plocha: 495 m2\nObestavěný prostor: ",
+          "volume_m3": 3404.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "hospodaření\nenergiemi; ochrana stavby před negativními účinky vnějšího prostředí;\nZastavěná plocha: ",
+          "volume_m3": null,
+          "area_m2": 541.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "chrana stavby před negativními účinky vnějšího prostředí;\nZastavěná plocha: 541m2\nPodlahová plocha: ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": null,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": 541.0,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "{'XC0', 'XC4'}",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 75 6760"
+      ],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": null,
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "Anna Abrahámová",
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

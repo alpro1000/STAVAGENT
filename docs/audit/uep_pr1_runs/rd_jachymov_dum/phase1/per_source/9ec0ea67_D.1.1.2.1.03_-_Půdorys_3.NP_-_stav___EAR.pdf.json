@@ -1,0 +1,120 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 438,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "Volnč Jind(cid:33)ich Mgr",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Ing. arch. Marek Smolka",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 4477,
+    "text_per_page_truncated": [
+      "ř. m. název mústnosti podlaha strop stšny plocha [m²]\n3.01 schodi(cid:35)tš 7,50\n3.02 p(cid:34)dnú prostor 57,40\ncelkem 64,90\nlegenda\nObvodoví nosní zdivo\n- smč(cid:35)ení zdivo, p(cid:33)evá(cid:36)nš keramická cihla\nVnit(cid:33)nú nosní zdivo\n- keramická cihla dutinová\nA Tvárnice pro p(cid:33)úřky\nzdšní na maltu\nSDK konstrukce (po(cid:35)árný odolnost viz. řást po(cid:35)árnž bezpeřnostný λe(cid:37)ený)\ntvarovky ztraceního bednšnú (vřetnž věztu(cid:35)e, viz. řást konstrukřnž stavebný)\n(cid:36"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "Volnč Jind(cid:33)ich Mgr",
+        "projektant": "Ing. arch. Marek Smolka"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

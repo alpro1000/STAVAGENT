@@ -1,0 +1,4575 @@
+{
+  "provenance": {
+    "source_file": "A107_stroje_kotvici_body.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 2443,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 675,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 56,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "0",
+          "0-1",
+          "0-2",
+          "2966-1_navrh dispozice stroju-HK_dwg",
+          "2966-1_navrh dispozice stroju-HK_dwg-1",
+          "A-ANNO-DIMS",
+          "A-ANNO-DIMS-150",
+          "A-ANNO-NOTE",
+          "A-AREA-IDEN",
+          "A-AREA-IDEN-1",
+          "A-DETL",
+          "A-DETL-1",
+          "A-DETL-MBND",
+          "A-DETL-THIN",
+          "A-DETL-THIN-1",
+          "A-DOOR",
+          "A-DOOR-1",
+          "A-DOOR-FRAM",
+          "A-DOOR-HDLN",
+          "A-FLOR",
+          "A-FLOR-LEVL",
+          "A-GENM",
+          "A-GENM-1",
+          "A-GENM-2",
+          "A-GLAZ",
+          "A-GLAZ-SILL",
+          "A-WALL",
+          "A-WALL-1",
+          "A-WALL-PATT",
+          "A-WALL-PATT-1",
+          "Defpoints",
+          "E-ELEC-FIXT",
+          "G-ANNO-DIMS",
+          "G-ANNO-DIMS-1",
+          "G-ANNO-NPLT",
+          "G-ANNO-SCHD",
+          "G-ANNO-SYMB",
+          "G-ANNO-SYMB-1",
+          "G-ANNO-SYMB-2",
+          "G-ANNO-TEXT",
+          "G-ANNO-TEXT-1",
+          "G-ANNO-TTLB",
+          "G-ANNO-TTLB-WIDE",
+          "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "P-SANR-FIXT",
+          "Potrubí_VZT_příslušenství",
+          "S-BEAM",
+          "S-COLS",
+          "S-GRID",
+          "S-GRID-1"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 428,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-PŮDORYS 1NP - STROJE - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1369-902944-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1370-902945-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1371-902946-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1372-902947-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1373-902948-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1374-902949-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1375-902950-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1376-902951-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1377-902952-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1378-902953-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1379-902954-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1380-902955-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1381-902956-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1382-902957-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1383-902958-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1384-902959-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1385-902960-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1386-902961-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1387-902962-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1388-902963-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1389-902964-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1390-902965-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1391-902966-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1392-902967-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1393-902968-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1394-902969-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1395-902970-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1396-902971-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1397-902972-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1398-902973-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1399-902974-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1400-902975-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1401-902976-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1402-902977-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1403-902978-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1404-902979-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1405-902980-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1406-902981-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1407-902982-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1408-902983-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1409-902984-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1410-902985-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1411-902986-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1412-902987-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1413-902988-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1414-902989-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1415-902990-1NP _ stroje - KOTVÍCÍ BODY",
+          "2966-1_navrh dispozice stroju-HK_dwg__X1416-902991-1NP _ stroje - KOTVÍCÍ BODY"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": -161.9184100760854,
+        "y_min_m": 0.0,
+        "x_max_m": 43.30640784888851,
+        "y_max_m": 159.3428470565122,
+        "width_m": 205.2248179249739,
+        "height_m": 159.3428470565122
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-DIMS",
+      "value": {
+        "DIMENSION": 83
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 83
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-AREA-IDEN-1",
+      "value": {
+        "MTEXT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-1",
+      "value": {
+        "LINE": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-MBND",
+      "value": {
+        "LINE": 49
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 49
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN",
+      "value": {
+        "LINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN-1",
+      "value": {
+        "LINE": 20
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 20
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DOOR-FRAM",
+      "value": {
+        "INSERT": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DOOR-HDLN",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR",
+      "value": {
+        "LINE": 21
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-FLOR-LEVL",
+      "value": {
+        "LINE": 21
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-1",
+      "value": {
+        "ARC": 24,
+        "LINE": 7,
+        "SPLINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 35
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-2",
+      "value": {
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GLAZ",
+      "value": {
+        "INSERT": 35
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 35
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL",
+      "value": {
+        "LINE": 81
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 81
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-1",
+      "value": {
+        "LINE": 97
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 97
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-WALL-PATT-1",
+      "value": {
+        "HATCH": 12,
+        "HATCH_paths=2": 8,
+        "HATCH_paths=1": 2,
+        "HATCH_paths=3": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "E-ELEC-FIXT",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "MTEXT": 8,
+        "LINE": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 15
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB",
+      "value": {
+        "INSERT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "LINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "MTEXT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "MTEXT": 17
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 17
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "MTEXT": 8
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 8
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "P-SANR-FIXT",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-BEAM",
+      "value": {
+        "INSERT": 14
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 14
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-COLS",
+      "value": {
+        "INSERT": 44
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 44
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-1",
+      "value": {
+        "LINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN",
+      "value": {
+        "INSERT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "MTEXT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF",
+      "value": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF-1",
+      "value": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vlastní 1_A-DETL-GENF-2",
+      "value": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-1",
+      "value": {
+        "count": 1,
+        "sum_m": 4.32
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-MBND",
+      "value": {
+        "count": 49,
+        "sum_m": 167.69
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN",
+      "value": {
+        "count": 12,
+        "sum_m": 7.44
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN-1",
+      "value": {
+        "count": 20,
+        "sum_m": 21.586
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-FLOR",
+      "value": {
+        "count": 21,
+        "sum_m": 28.662
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-FLOR-LEVL",
+      "value": {
+        "count": 21,
+        "sum_m": 33.709
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-GENM-1",
+      "value": {
+        "count": 7,
+        "sum_m": 0.01
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-WALL",
+      "value": {
+        "count": 81,
+        "sum_m": 114.357
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-WALL-1",
+      "value": {
+        "count": 97,
+        "sum_m": 84.03
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 7,
+        "sum_m": 10.5
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "count": 4,
+        "sum_m": 8.968
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "S-GRID-1",
+      "value": {
+        "count": 12,
+        "sum_m": 384.929
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "2966-1_navrh dispozice stroju-HK_dwg-1": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 489591-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 500084-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 500435-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 500572-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 568342-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "IPE - 888049-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 390062-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 503362-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 504078-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 504742-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505106-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505107-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505273-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Kruhové tyče - 505274-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-BEAM": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374564-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374570-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374571-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 374572-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388383-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388384-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388385-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_S profily_ sloup - 388386-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-DOOR-HDLN": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V1-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V10-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V11-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V12-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V13-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V14-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V15-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V16-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V17-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V18-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V19-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V2-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V3-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 6,
+        "by_layer": {
+          "A-GLAZ": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 5,
+        "by_layer": {
+          "A-GLAZ": 5
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V6-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 7,
+        "by_layer": {
+          "A-GLAZ": 7
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "OKNO_1k - Okno Hala 1000x1000-V9-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GLAZ": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 24,
+        "by_layer": {
+          "S-GRID-IDEN": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "E-ELEC-FIXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 374558-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 374573-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387892-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387893-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387934-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387935-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387971-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 387972-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388008-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388009-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388045-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 388046-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 396249-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 400226-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 400484-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 400880-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 401579-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 401588-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 401597-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 487110-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 487111-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502209-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502210-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502301-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 502302-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 506871-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507568-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507725-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507857-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 507956-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508019-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508076-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508146-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508228-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508229-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Sloup IPE - 508303-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "S-COLS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Umyvadlo - 50x40 cm-459123-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "P-SANR-FIXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "A-DOOR-FRAM": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "G-ANNO-DIMS": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Nedefinovaný_Potrubí_VZT_příslušenství": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "G-ANNO-SYMB": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "A-AREA-IDEN-1",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "MTEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "495 m²"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 8,
+        "by_type": {
+          "MTEXT": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "+0.000"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "MTEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "count": 17,
+        "by_type": {
+          "MTEXT": 17
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "SO.01"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "count": 8,
+        "by_type": {
+          "MTEXT": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "LEGENDA MATERIÁL"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "count": 24,
+        "by_type": {
+          "MTEXT": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "count",
+      "value": 83,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "0",
+      "0-1",
+      "0-2",
+      "2966-1_navrh dispozice stroju-HK_dwg",
+      "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "A-ANNO-DIMS",
+      "A-ANNO-DIMS-150",
+      "A-ANNO-NOTE",
+      "A-AREA-IDEN",
+      "A-AREA-IDEN-1",
+      "A-DETL",
+      "A-DETL-1",
+      "A-DETL-MBND",
+      "A-DETL-THIN",
+      "A-DETL-THIN-1",
+      "A-DOOR",
+      "A-DOOR-1",
+      "A-DOOR-FRAM",
+      "A-DOOR-HDLN",
+      "A-FLOR",
+      "A-FLOR-LEVL",
+      "A-GENM",
+      "A-GENM-1",
+      "A-GENM-2",
+      "A-GLAZ",
+      "A-GLAZ-SILL",
+      "A-WALL",
+      "A-WALL-1",
+      "A-WALL-PATT",
+      "A-WALL-PATT-1",
+      "Defpoints",
+      "E-ELEC-FIXT",
+      "G-ANNO-DIMS",
+      "G-ANNO-DIMS-1",
+      "G-ANNO-NPLT",
+      "G-ANNO-SCHD",
+      "G-ANNO-SYMB",
+      "G-ANNO-SYMB-1",
+      "G-ANNO-SYMB-2",
+      "G-ANNO-TEXT",
+      "G-ANNO-TEXT-1",
+      "G-ANNO-TTLB",
+      "G-ANNO-TTLB-WIDE",
+      "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "P-SANR-FIXT",
+      "Potrubí_VZT_příslušenství",
+      "S-BEAM",
+      "S-COLS",
+      "S-GRID",
+      "S-GRID-1",
+      "S-GRID-IDEN",
+      "S-GRID-IDEN-1",
+      "Vlastní 1_A-DETL-GENF",
+      "Vlastní 1_A-DETL-GENF-1",
+      "Vlastní 1_A-DETL-GENF-2",
+      "filtrační jednotka"
+    ],
+    "block_definitions": [
+      "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-PŮDORYS 1NP - STROJE - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1369-902944-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1370-902945-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1371-902946-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1372-902947-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1373-902948-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1374-902949-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1375-902950-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1376-902951-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1377-902952-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1378-902953-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1379-902954-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1380-902955-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1381-902956-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1382-902957-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1383-902958-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1384-902959-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1385-902960-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1386-902961-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1387-902962-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1388-902963-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1389-902964-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1390-902965-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1391-902966-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1392-902967-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1393-902968-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1394-902969-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1395-902970-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1396-902971-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1397-902972-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1398-902973-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1399-902974-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1400-902975-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1401-902976-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1402-902977-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1403-902978-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1404-902979-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1405-902980-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1406-902981-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1407-902982-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1408-902983-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1409-902984-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1410-902985-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1411-902986-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1412-902987-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1413-902988-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1414-902989-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1415-902990-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1416-902991-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1417-902992-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1418-902993-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1419-902994-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1420-902995-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1421-902996-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1422-902997-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1423-902998-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1424-902999-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1425-903000-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1426-903001-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1427-903002-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1428-903003-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1429-903004-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1430-903005-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1431-903006-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1432-903007-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1433-903008-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1434-903009-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1435-903010-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1436-903011-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1437-903012-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1438-903013-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1439-903014-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1440-903015-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1441-903016-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1442-903017-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1443-903018-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1444-903019-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1445-903020-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1446-903021-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1447-903022-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1448-903023-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1449-903024-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1450-903025-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1451-903026-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1452-903027-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1453-903028-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1454-903029-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1455-903030-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1456-903031-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1457-903032-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1458-903033-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1459-903034-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1460-903035-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1461-903036-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1462-903037-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1463-903038-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1464-903039-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1465-903040-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1466-903041-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1467-903042-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1468-903043-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1469-903044-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1470-903045-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1471-903046-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1472-903047-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1473-903048-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1474-903049-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1475-903050-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1476-903051-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1477-903052-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1478-903053-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1479-903054-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1480-903055-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1481-903056-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1482-903057-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1483-903058-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1484-903059-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1485-903060-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1486-903061-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1487-903062-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1488-903063-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1489-903064-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1490-903065-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1491-903066-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1492-903067-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1493-903068-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1494-903069-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1495-903070-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1496-903071-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1497-903072-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1498-903073-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1499-903074-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1500-903075-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1501-903076-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1502-903077-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1503-903078-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1504-903079-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1505-903080-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1506-903081-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1507-903082-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1508-903083-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1509-903084-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1510-903085-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1511-903086-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1512-903087-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1513-903088-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1514-903089-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1515-903090-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1516-903091-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1517-903092-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1518-903093-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1519-903094-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1520-903095-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1521-903096-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1522-903097-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1523-903098-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1524-903099-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1525-903100-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1526-903101-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1527-903102-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1528-903103-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1529-903104-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1530-903105-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1531-903106-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1532-903107-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1533-903108-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1534-903109-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1535-903110-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1536-903111-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1537-903112-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1538-903113-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1539-903114-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1540-903115-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1541-903116-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1542-903117-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1543-903118-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1544-903119-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1545-903120-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1546-903121-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1547-903122-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1548-903123-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1549-903124-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1550-903125-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1551-903126-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1552-903127-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1553-903128-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1554-903129-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1555-903130-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1556-903131-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1557-903132-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1558-903133-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1559-903134-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1560-903135-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1561-903136-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1562-903137-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1563-903138-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1564-903139-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1565-903140-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1566-903141-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1567-903142-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1568-903143-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1569-903144-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1570-903145-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1571-903146-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1572-903147-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1573-903148-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1574-903149-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1575-903150-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1576-903151-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1577-903152-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1578-903153-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1579-903154-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1580-903155-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1581-903156-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1582-903157-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1583-903158-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1584-903159-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1585-903160-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1586-903161-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1587-903162-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1588-903163-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1589-903164-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1590-903165-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1591-903166-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1592-903167-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1593-903168-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1594-903169-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1595-903170-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1596-903171-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1597-903172-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1598-903173-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1599-903174-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1600-903175-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1601-903176-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1602-903177-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1603-903178-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1604-903179-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1605-903180-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1606-903181-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1607-903182-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1608-903183-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1609-903184-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1610-903185-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1611-903186-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1612-903187-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1613-903188-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1614-903189-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1615-903190-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1616-903191-1NP _ stroje - KOTVÍCÍ BODY",
+      "2966-1_navrh dispozice stroju-HK_dwg__X1617-903192-1NP _ stroje - KOTVÍCÍ BODY",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK1-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK10-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK11-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK12-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK13-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK14-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK15-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK16-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK17-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK18-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK19-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK2-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK20-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK21-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK22-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK23-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK24-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK25-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK26-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK27-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK28-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK29-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK3-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK30-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK31-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK32-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK33-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK34-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK35-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK36-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK37-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK38-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK39-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK4-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK40-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK41-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK42-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK43-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK44-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK45-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK46-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK47-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK48-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK49-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK5-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK50-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK51-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK52-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK53-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK54-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK55-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK56-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK57-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK58-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK59-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK6-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK60-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK61-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK62-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK63-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK64-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK65-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK66-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK67-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK68-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK69-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK7-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK70-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK71-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK72-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK73-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK74-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK75-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK76-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK77-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK78-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK79-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK8-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK80-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK81-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK82-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK83-1NP _ stroje - KOTVÍCÍ BODY",
+      "DIMBLOCK9-1NP _ stroje - KOTVÍCÍ BODY",
+      "IPE - 489591-1NP _ stroje - KOTVÍCÍ BODY",
+      "IPE - 500084-1NP _ stroje - KOTVÍCÍ BODY",
+      "IPE - 500435-1NP _ stroje - KOTVÍCÍ BODY",
+      "IPE - 500572-1NP _ stroje - KOTVÍCÍ BODY",
+      "IPE - 568342-1NP _ stroje - KOTVÍCÍ BODY",
+      "IPE - 888049-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 390062-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 503362-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 504078-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 504742-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 505106-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 505107-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 505273-1NP _ stroje - KOTVÍCÍ BODY",
+      "Kruhové tyče - 505274-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 374564-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 374570-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 374571-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 374572-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 388383-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 388384-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 388385-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_S profily_ sloup - 388386-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje - KOTVÍCÍ BODY",
+      "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V1-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V10-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V11-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V12-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V13-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V14-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V15-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V16-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V17-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V18-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V19-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V2-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V3-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V6-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "OKNO_1k - Okno Hala 1000x1000-V9-1NP _ stroje - KOTVÍCÍ BODY",
+      "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje - KOTVÍCÍ BODY",
+      "Severka-1 - Severka-1-437760-PŮDORYS 1NP - STROJE - KOTVÍCÍ BODY",
+      "Sloup IPE - 374558-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 374573-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 387892-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 387893-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 387934-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 387935-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 387971-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 387972-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 388008-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 388009-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 388045-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 388046-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 396249-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 400226-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 400484-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 400880-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 401579-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 401588-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 401597-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 487110-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 487111-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 502209-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 502210-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 502301-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 502302-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 506871-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 507568-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 507725-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 507857-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 507956-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 508019-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 508076-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 508146-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 508228-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 508229-1NP _ stroje - KOTVÍCÍ BODY",
+      "Sloup IPE - 508303-1NP _ stroje - KOTVÍCÍ BODY",
+      "Umyvadlo - 50x40 cm-459123-1NP _ stroje - KOTVÍCÍ BODY",
+      "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY",
+      "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje - KOTVÍCÍ BODY",
+      "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje - KOTVÍCÍ BODY",
+      "_Oblique",
+      "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY"
+    ],
+    "entity_counts_by_layer": {
+      "Vlastní 1_A-DETL-GENF-1": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "A-DETL-THIN": {
+        "LINE": 12
+      },
+      "Vlastní 1_A-DETL-GENF": {
+        "HATCH": 2,
+        "HATCH_paths=1": 2
+      },
+      "Vlastní 1_A-DETL-GENF-2": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "S-COLS": {
+        "INSERT": 44
+      },
+      "S-BEAM": {
+        "INSERT": 14
+      },
+      "A-FLOR": {
+        "LINE": 21
+      },
+      "A-WALL-PATT-1": {
+        "HATCH": 12,
+        "HATCH_paths=2": 8,
+        "HATCH_paths=1": 2,
+        "HATCH_paths=3": 2
+      },
+      "A-WALL-1": {
+        "LINE": 97
+      },
+      "A-GLAZ": {
+        "INSERT": 35
+      },
+      "A-WALL": {
+        "LINE": 81
+      },
+      "A-DOOR-HDLN": {
+        "INSERT": 4
+      },
+      "A-GENM-1": {
+        "ARC": 24,
+        "LINE": 7,
+        "SPLINE": 4
+      },
+      "A-GENM-2": {
+        "INSERT": 3
+      },
+      "P-SANR-FIXT": {
+        "INSERT": 1
+      },
+      "Nedefinovaný_Potrubí_VZT_příslušenství": {
+        "INSERT": 1
+      },
+      "E-ELEC-FIXT": {
+        "INSERT": 1
+      },
+      "A-DETL-MBND": {
+        "LINE": 49
+      },
+      "A-FLOR-LEVL": {
+        "LINE": 21
+      },
+      "A-DOOR-FRAM": {
+        "INSERT": 2
+      },
+      "2966-1_navrh dispozice stroju-HK_dwg-1": {
+        "INSERT": 1
+      },
+      "A-DETL-THIN-1": {
+        "LINE": 20
+      },
+      "A-DETL-1": {
+        "LINE": 1
+      },
+      "G-ANNO-TEXT-1": {
+        "MTEXT": 8
+      },
+      "S-GRID-IDEN": {
+        "INSERT": 24
+      },
+      "S-GRID-IDEN-1": {
+        "MTEXT": 24
+      },
+      "S-GRID-1": {
+        "LINE": 12
+      },
+      "G-ANNO-SYMB-1": {
+        "LINE": 4
+      },
+      "G-ANNO-SYMB": {
+        "INSERT": 4
+      },
+      "G-ANNO-SYMB-2": {
+        "MTEXT": 4
+      },
+      "A-ANNO-DIMS": {
+        "DIMENSION": 83
+      },
+      "G-ANNO-TEXT": {
+        "MTEXT": 17
+      },
+      "A-AREA-IDEN-1": {
+        "MTEXT": 4
+      },
+      "G-ANNO-DIMS": {
+        "INSERT": 1
+      },
+      "G-ANNO-DIMS-1": {
+        "MTEXT": 8,
+        "LINE": 7
+      }
+    },
+    "closed_areas_by_layer": {},
+    "open_lengths_by_layer": {
+      "A-DETL-THIN": [
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24,
+        1.0,
+        0.24
+      ],
+      "A-FLOR": [
+        4.344,
+        4.34,
+        1.323,
+        4.0,
+        4.028,
+        0.052,
+        1.346,
+        0.5,
+        0.5,
+        0.01,
+        0.01,
+        0.484,
+        1.471,
+        0.676,
+        1.055,
+        0.626,
+        0.504,
+        0.7,
+        2.0,
+        0.608,
+        0.084
+      ],
+      "A-WALL-1": [
+        1.145,
+        0.02,
+        0.1,
+        1.055,
+        2.099,
+        0.005,
+        1.714,
+        0.025,
+        0.025,
+        0.1,
+        0.02,
+        0.463,
+        0.2,
+        0.545,
+        0.2,
+        0.455,
+        0.02,
+        0.1,
+        3.55,
+        2.817,
+        0.1,
+        0.02,
+        0.345,
+        0.2,
+        0.663,
+        0.2,
+        0.573,
+        0.02,
+        0.1,
+        0.921,
+        0.1,
+        0.02,
+        0.721,
+        0.897,
+        0.372,
+        0.02,
+        0.1,
+        0.503,
+        0.02,
+        0.1,
+        0.593,
+        0.417,
+        0.004,
+        0.801,
+        0.1,
+        0.02,
+        0.42,
+        0.02,
+        0.1,
+        0.2,
+        0.497,
+        0.2,
+        0.587,
+        0.1,
+        0.02,
+        2.817,
+        4.058,
+        0.2,
+        0.457,
+        0.02,
+        0.1,
+        0.547,
+        0.2,
+        0.46,
+        0.1,
+        0.02,
+        1.635,
+        0.025,
+        0.025,
+        2.011,
+        0.217,
+        0.223,
+        0.1,
+        0.02,
+        3.179,
+        0.2,
+        2.979,
+        4.984,
+        0.2,
+        4.984,
+        0.2,
+        3.18,
+        2.98,
+        0.2,
+        0.024,
+        0.373,
+        2.539,
+        0.2,
+        3.162,
+        5.005,
+        0.2,
+        5.005,
+        0.2,
+        2.549,
+        0.373,
+        3.149,
+        0.2
+      ],
+      "A-WALL": [
+        0.373,
+        0.77,
+        1.309,
+        4.984,
+        2.277,
+        0.103,
+        0.373,
+        0.005,
+        0.005,
+        0.46,
+        0.187,
+        0.373,
+        4.832,
+        4.66,
+        0.4,
+        0.4,
+        2.37,
+        2.446,
+        0.4,
+        6.086,
+        6.089,
+        2.989,
+        6.088,
+        3.233,
+        0.33,
+        0.131,
+        0.01,
+        0.01,
+        0.078,
+        2.27,
+        0.1,
+        0.08,
+        0.22,
+        0.317,
+        4.98,
+        0.016,
+        0.078,
+        0.005,
+        0.22,
+        0.08,
+        0.22,
+        0.024,
+        0.373,
+        2.379,
+        2.452,
+        0.4,
+        0.086,
+        0.713,
+        0.807,
+        0.153,
+        0.067,
+        1.018,
+        0.05,
+        0.025,
+        0.025,
+        0.1,
+        1.05,
+        0.13,
+        0.015,
+        0.015,
+        1.05,
+        5.765,
+        6.088,
+        2.989,
+        6.089,
+        4.054,
+        0.4,
+        2.519,
+        0.086,
+        0.223,
+        0.08,
+        0.22,
+        0.029,
+        0.029,
+        0.1,
+        6.189,
+        6.189,
+        0.2,
+        0.86,
+        0.86,
+        0.1
+      ],
+      "A-GENM-1": [
+        0.002,
+        0.001,
+        0.003,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "A-DETL-MBND": [
+        3.79,
+        3.49,
+        0.945,
+        1.095,
+        3.48,
+        3.78,
+        1.945,
+        2.245,
+        3.54,
+        3.84,
+        0.7,
+        0.5,
+        0.5,
+        0.65,
+        0.65,
+        0.5,
+        0.5,
+        0.65,
+        4.66,
+        4.96,
+        0.476,
+        0.526,
+        24.718,
+        25.018,
+        0.478,
+        0.004,
+        0.15,
+        0.043,
+        0.004,
+        0.527,
+        0.15,
+        25.271,
+        0.401,
+        0.401,
+        25.421,
+        0.493,
+        0.643,
+        0.686,
+        0.493,
+        0.009,
+        0.493,
+        0.643,
+        0.665,
+        0.493,
+        0.02,
+        4.972,
+        4.672,
+        3.85,
+        3.55
+      ],
+      "A-FLOR-LEVL": [
+        0.008,
+        4.0,
+        2.53,
+        2.33,
+        0.003,
+        4.0,
+        2.535,
+        1.685,
+        0.107,
+        0.002,
+        0.009,
+        4.0,
+        1.687,
+        0.156,
+        2.33,
+        0.002,
+        0.008,
+        4.0,
+        1.685,
+        0.1,
+        2.533
+      ],
+      "A-DETL-THIN-1": [
+        0.32,
+        0.22,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.039,
+        1.275,
+        1.8,
+        2.383
+      ],
+      "A-DETL-1": [
+        4.32
+      ],
+      "S-GRID-1": [
+        37.417,
+        37.417,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        26.737,
+        37.417,
+        37.417,
+        37.417,
+        37.417
+      ],
+      "G-ANNO-SYMB-1": [
+        2.25,
+        2.398,
+        2.187,
+        2.133
+      ],
+      "G-ANNO-DIMS-1": [
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "IPE - 489591-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 500084-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 500435-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 500572-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 568342-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "IPE - 888049-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 390062-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 503362-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 504078-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 504742-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505106-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505107-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505273-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "Kruhové tyče - 505274-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-BEAM",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374564-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374570-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374571-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 374572-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388383-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388384-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388385-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_S profily_ sloup - 388386-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-DOOR-HDLN",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V1-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V10-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V11-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V12-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V13-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V14-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V15-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V16-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V17-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V18-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V19-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V2-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V3-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 6
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 5
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V6-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 7
+      },
+      {
+        "block": "OKNO_1k - Okno Hala 1000x1000-V9-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-GLAZ",
+        "count": 1
+      },
+      {
+        "block": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-GRID-IDEN",
+        "count": 24
+      },
+      {
+        "block": "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "E-ELEC-FIXT",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 374558-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 374573-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387892-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387893-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387934-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387935-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387971-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 387972-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388008-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388009-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388045-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 388046-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 396249-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 400226-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 400484-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 400880-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 401579-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 401588-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 401597-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 487110-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 487111-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502209-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502210-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502301-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 502302-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 506871-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507568-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507725-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507857-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 507956-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508019-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508076-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508146-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508228-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508229-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Sloup IPE - 508303-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "S-COLS",
+        "count": 1
+      },
+      {
+        "block": "Umyvadlo - 50x40 cm-459123-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "P-SANR-FIXT",
+        "count": 1
+      },
+      {
+        "block": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "A-DOOR-FRAM",
+        "count": 2
+      },
+      {
+        "block": "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "G-ANNO-DIMS",
+        "count": 1
+      },
+      {
+        "block": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+        "count": 1
+      },
+      {
+        "block": "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY",
+        "layer": "G-ANNO-SYMB",
+        "count": 4
+      }
+    ],
+    "text_by_layer": {
+      "G-ANNO-TEXT-1": [
+        {
+          "type": "MTEXT",
+          "raw": "LEGENDA MATERIÁL",
+          "text": "LEGENDA MATERIÁL",
+          "insert": [
+            2.16619708782411,
+            4.691553421647499
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Ů:",
+          "text": "Ů:",
+          "insert": [
+            4.189598129490776,
+            4.691553421647499
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Obvodový pláš",
+          "text": "Obvodový pláš",
+          "insert": [
+            3.2670375948925314,
+            4.334417745031492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ť - ",
+          "text": "ť - ",
+          "insert": [
+            3.936102699059197,
+            4.334417745031492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "panely Kingspan ",
+          "text": "panely Kingspan ",
+          "insert": [
+            4.061118324059198,
+            4.334417745031492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "s požární odolností EW 15 DP1",
+          "text": "s požární odolností EW 15 DP1",
+          "insert": [
+            3.2670375948925314,
+            4.172360453364826
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Železobeton ",
+          "text": "Železobeton ",
+          "insert": [
+            3.2670375948925314,
+            3.9566643212982857
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Beton prostý",
+          "text": "Beton prostý",
+          "insert": [
+            3.2670375948925297,
+            3.656664321298284
+          ]
+        }
+      ],
+      "S-GRID-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            19.046917770378123,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            19.04691777037803,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            21.802742770378128,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            21.80274277037807,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            14.13857100146441,
+            153.4670673509143
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            42.67590686930969,
+            153.46706735091422
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            14.13857100146441,
+            147.3670673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            42.67590686930972,
+            147.36706735091408
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            14.13857100146441,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            42.67590686930969,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            14.13857100146441,
+            138.27206735091443
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            42.67590686930972,
+            138.27206735091428
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            14.13857100146438,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            42.67590686930969,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            14.13857100146436,
+            126.0770673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            42.67590686930972,
+            126.0770673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            25.802742770378043,
+            159.3428470565122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            25.8027427703781,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            30.795016349519308,
+            120.12186817365271
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            30.795016349519308,
+            159.3393252433939
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            34.82374277037804,
+            159.3428470565121
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            34.82374277037807,
+            120.125389986771
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            37.61421777037802,
+            159.3428470565121
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            37.61421777037802,
+            120.125389986771
+          ]
+        }
+      ],
+      "G-ANNO-SYMB-2": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            42.15371617243785,
+            129.4195002757474
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            13.03481528757227,
+            129.4195002757475
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            24.517163456909998,
+            119.3958513489948
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            24.517163456910062,
+            158.030175091199
+          ]
+        }
+      ],
+      "G-ANNO-TEXT": [
+        {
+          "type": "MTEXT",
+          "raw": "SO.01",
+          "text": "SO.01",
+          "insert": [
+            28.26762553638042,
+            140.5957084468362
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "HALA",
+          "text": "HALA",
+          "insert": [
+            28.26762553638045,
+            140.1789896968362
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "EL_HLAVNÍ",
+          "text": "EL_HLAVNÍ",
+          "insert": [
+            37.63995073441943,
+            155.51469818302792
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ROZVAD",
+          "text": "ROZVAD",
+          "insert": [
+            37.63995073441943,
+            155.09797943302792
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ĚČ",
+          "text": "ĚČ",
+          "insert": [
+            39.18776323441946,
+            155.09797943302792
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "VENKOVNÍ VZT ",
+          "text": "VENKOVNÍ VZT ",
+          "insert": [
+            41.38803044537961,
+            148.7422673273847
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "JEDNOTKA ",
+          "text": "JEDNOTKA ",
+          "insert": [
+            41.38803044537955,
+            148.3255485773847
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "FILTRA",
+          "text": "FILTRA",
+          "insert": [
+            41.55322249943929,
+            142.796595407758
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ČNÍ ",
+          "text": "ČNÍ ",
+          "insert": [
+            42.82322249943932,
+            142.796595407758
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "JEDNOTKA",
+          "text": "JEDNOTKA",
+          "insert": [
+            41.55322249943929,
+            142.379876657758
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "KOTVÍCÍ BODY ",
+          "text": "KOTVÍCÍ BODY ",
+          "insert": [
+            21.10973072974823,
+            148.0077822372012
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "PRACOVIŠT",
+          "text": "PRACOVIŠT",
+          "insert": [
+            21.109730729748257,
+            147.5910634872012
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Ě DEFRAME",
+          "text": "Ě DEFRAME",
+          "insert": [
+            23.24293385474826,
+            147.5910634872012
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "KOTVÍCÍ BODY ",
+          "text": "KOTVÍCÍ BODY ",
+          "insert": [
+            31.78000505054474,
+            134.5450765509778
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "PRACOVIŠT",
+          "text": "PRACOVIŠT",
+          "insert": [
+            31.78000505054474,
+            134.1283578009778
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Ě D",
+          "text": "Ě D",
+          "insert": [
+            33.913208175544746,
+            134.1283578009778
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "RIFT_E1",
+          "text": "RIFT_E1",
+          "insert": [
+            34.528364425544744,
+            134.1283578009778
+          ]
+        }
+      ],
+      "A-AREA-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "495 m²",
+          "text": "495 m²",
+          "insert": [
+            28.20637607891057,
+            141.4877101145698
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1.01",
+          "text": "1.01",
+          "insert": [
+            28.38015107891063,
+            142.44860484714872
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Sklad fotovoltaických panel",
+          "text": "Sklad fotovoltaických panel",
+          "insert": [
+            26.758426078910592,
+            141.98274905718262
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;\\W.7;ů",
+          "text": "ů",
+          "insert": [
+            30.41860576641056,
+            141.98274905718262
+          ]
+        }
+      ],
+      "G-ANNO-DIMS-1": [
+        {
+          "type": "MTEXT",
+          "raw": "+0.000",
+          "text": "+0.000",
+          "insert": [
+            28.48245697094974,
+            139.0732144172128
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            22.55607314296148,
+            154.1174716657277
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            31.39405753915949,
+            154.0787449355902
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            31.45668134565881,
+            123.99301381514881
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "5.65°",
+          "text": "5.65°",
+          "insert": [
+            22.35053692267259,
+            123.8727534504104
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "2.00°",
+          "text": "2.00°",
+          "insert": [
+            17.68020418739735,
+            127.68035862140191
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "2.00°",
+          "text": "2.00°",
+          "insert": [
+            17.68020418739735,
+            127.68035862140191
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "2.00°",
+          "text": "2.00°",
+          "insert": [
+            38.858926120602966,
+            152.7422150609166
+          ]
+        }
+      ]
+    },
+    "dimensions": [
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.1699999999981663,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.000000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.146007779722975,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.100000000000088,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097499999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.9974999999999707,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.0975000000001165,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.0974999999999415,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 27.969800328745432,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.149999999999694,
+        "text_override": "<>\\X2200"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.000000000000044,
+        "text_override": "3x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7700000000014261,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000087,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.057500000002212,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000029,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.180253122230934,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999971,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8010472065144859,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.9212531222326216,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000029,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8969468777657312,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999942,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.2128000000012396,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.999999999999971,
+        "text_override": "5x1000\\X1000 (1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.172499999998457,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999825,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.169999999998981,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.7699999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000059,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.9999999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.770000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 19.31247949849034,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.329746782433271,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.327772580030345,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.334659461802818,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.330316439087896,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.0109999999967263,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.0988003287449253,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.150000000000029,
+        "text_override": "3X1000\\X1000(1350)"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.690000000000495,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7640814404401172,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.632000000000058,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.2671384392978509,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.690884664094192,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.4020000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.577999999999985,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.1499999999999708,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.966,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5700000000000001,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.4300034084773797,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.45,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.150000007876341,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.69,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8420000019510626,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.766,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8419999980489665,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7799999921236012,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 7.138996591384348,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.775999999999854,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.145138439298724,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 10.70936510969944,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.398,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.582,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.729999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.45,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5749999999999709,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.4000000000000582,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.588404218208772,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.2925077797544358,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.762000000000146,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.015500000029366,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.163000000000058,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      }
+    ],
+    "block_attribs": [],
+    "bbox": {
+      "x_min_m": -161.9184100760854,
+      "y_min_m": 0.0,
+      "x_max_m": 43.30640784888851,
+      "y_max_m": 159.3428470565122,
+      "width_m": 205.2248179249739,
+      "height_m": 159.3428470565122
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

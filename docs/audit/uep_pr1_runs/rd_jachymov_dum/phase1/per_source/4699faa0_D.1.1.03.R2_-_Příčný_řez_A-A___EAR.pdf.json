@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 724,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 21992,
+    "text_per_page_truncated": [
+      "(cid:69)(cid:70)(cid:71)(cid:70)(cid:72)(cid:44)(cid:25)(cid:6)(cid:54)(cid:25)(cid:73)(cid:70)(cid:43)(cid:59)(cid:74)(cid:69)(cid:75)(cid:18)\n(cid:5)(cid:57)(cid:7)(cid:5)(cid:31)(cid:5)(cid:7)(cid:29)(cid:6)(cid:21)(cid:5)(cid:3)(cid:21)(cid:29)(cid:6)(cid:23)(cid:31)(cid:30)(cid:7)(cid:5)\n(cid:26)(cid:6)(cid:57)(cid:11)(cid:16)(cid:5)(cid:21)(cid:5)(cid:7)(cid:29)(cid:6)(cid:16)(cid:7)(cid:22)(cid:10)(cid:21)(cid:30)(cid:36)(cid:11)\n(cid:5)(cid:36)(cid:11)(cid:4)(cid:5)(cid:7)(cid:29)(cid:6)"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

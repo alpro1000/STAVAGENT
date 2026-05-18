@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "C.02 - Katastrální situační výkres _ EAR (1).pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 577,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 499,
+    "text_per_page_truncated": [
+      "legenda\nstávající objekt RD\nnavrhovaný objekt zahardního skladu\ndotčený pozemek\nkatastrální mapa\ndotčené pozemky\nk.č. k.ú. druh pozemku výměra\n1094/16 Jáchymov zahrada 269\n1 9 st.1022 Jáchymov zastavěná plocha a nádvoří 99\n3\n6\n1094/17\n5263/2\n1 1094/20\n6\n6\n0\n1094/15\n5\n3\n6 3 1094/14\n1 1094/16\n9\n2\n0\nrevize datum popis\n02\n01\n00 09/2025 vydání dokumentace\n1094/12\n1094/11\n1094/6 paré\n1030\n1094/8\n1043\n1094/13\n1022\n1016\nnázev výkresu\n1015\nKatastrální situační výkres\nměřítko číslo výkresu\n1042 1:250 C.2"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

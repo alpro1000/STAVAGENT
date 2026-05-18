@@ -1,0 +1,4667 @@
+{
+  "provenance": {
+    "source_file": "A201_vykopy.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 1045,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 1550,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 42,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "0",
+          "A-ANNO-DIMS",
+          "A-ANNO-DIMS-150",
+          "A-ANNO-NOTE",
+          "A-DETL",
+          "A-DETL-1",
+          "A-DETL-THIN",
+          "A-GENM",
+          "A-GENM-1",
+          "A-GENM-2",
+          "C-TOPO",
+          "C-TOPO-1",
+          "C-TOPO-2",
+          "C-TOPO-MAJR",
+          "C-TOPO-PATT",
+          "C-TOPO-PATT-1",
+          "Defpoints",
+          "G-ANNO-DIMS",
+          "G-ANNO-DIMS-1",
+          "G-ANNO-DIMS-2",
+          "G-ANNO-NPLT",
+          "G-ANNO-REFR",
+          "G-ANNO-SYMB",
+          "G-ANNO-SYMB-1",
+          "G-ANNO-SYMB-2",
+          "G-ANNO-TEXT",
+          "G-ANNO-TEXT-1",
+          "G-ANNO-TEXT-2",
+          "G-ANNO-TTLB",
+          "G-ANNO-TTLB-WIDE",
+          "S-FNDN",
+          "S-FNDN-1",
+          "S-GRID",
+          "S-GRID-1",
+          "S-GRID-IDEN",
+          "S-GRID-IDEN-1",
+          "Stávající dešťová kan__Trubky",
+          "Stávající dešťová kan__Trubky-1",
+          "Stávající dešťová kan__Trubky-2",
+          "Stávající splašková kan__Trubky",
+          "Stávající splašková kan__Trubky-1",
+          "Stávající splašková kan__Trubky-2"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 137,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-VÝKOPY",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP",
+          "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP",
+          "DIMBLOCK1-VÝKOP",
+          "DIMBLOCK10-VÝKOP",
+          "DIMBLOCK100-VÝKOP",
+          "DIMBLOCK101-VÝKOP",
+          "DIMBLOCK102-VÝKOP",
+          "DIMBLOCK103-VÝKOP",
+          "DIMBLOCK104-VÝKOP",
+          "DIMBLOCK105-VÝKOP",
+          "DIMBLOCK106-VÝKOP",
+          "DIMBLOCK107-VÝKOP",
+          "DIMBLOCK108-VÝKOP",
+          "DIMBLOCK109-VÝKOP",
+          "DIMBLOCK11-VÝKOP",
+          "DIMBLOCK110-VÝKOP",
+          "DIMBLOCK111-VÝKOP",
+          "DIMBLOCK112-VÝKOP",
+          "DIMBLOCK113-A-VYKOP",
+          "DIMBLOCK114-A-VYKOP",
+          "DIMBLOCK115-A-VYKOP",
+          "DIMBLOCK116-A-VYKOP",
+          "DIMBLOCK117-A-VYKOP",
+          "DIMBLOCK118-A-VYKOP",
+          "DIMBLOCK119-A-VYKOP",
+          "DIMBLOCK12-VÝKOP",
+          "DIMBLOCK120-A-VYKOP",
+          "DIMBLOCK13-VÝKOP",
+          "DIMBLOCK14-VÝKOP",
+          "DIMBLOCK15-VÝKOP",
+          "DIMBLOCK16-VÝKOP",
+          "DIMBLOCK17-VÝKOP",
+          "DIMBLOCK18-VÝKOP",
+          "DIMBLOCK19-VÝKOP",
+          "DIMBLOCK2-VÝKOP",
+          "DIMBLOCK20-VÝKOP",
+          "DIMBLOCK21-VÝKOP",
+          "DIMBLOCK22-VÝKOP",
+          "DIMBLOCK23-VÝKOP",
+          "DIMBLOCK24-VÝKOP",
+          "DIMBLOCK25-VÝKOP",
+          "DIMBLOCK26-VÝKOP",
+          "DIMBLOCK27-VÝKOP",
+          "DIMBLOCK28-VÝKOP",
+          "DIMBLOCK29-VÝKOP",
+          "DIMBLOCK3-VÝKOP",
+          "DIMBLOCK30-VÝKOP",
+          "DIMBLOCK31-VÝKOP"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": -422.639146075715,
+        "y_min_m": -19.36346811719767,
+        "x_max_m": 499.9580525737203,
+        "y_max_m": 158.9002223147261,
+        "width_m": 922.5971986494353,
+        "height_m": 178.26369043192378
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-DIMS",
+      "value": {
+        "DIMENSION": 120
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 120
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-ANNO-NOTE",
+      "value": {
+        "INSERT": 21
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 21
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-1",
+      "value": {
+        "LINE": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-DETL-THIN",
+      "value": {
+        "LINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-1",
+      "value": {
+        "ARC": 40,
+        "LINE": 47,
+        "SPLINE": 68
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 155
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "A-GENM-2",
+      "value": {
+        "INSERT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "C-TOPO",
+      "value": {
+        "LINE": 131,
+        "SPLINE": 5,
+        "LWPOLYLINE": 40
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 176
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "C-TOPO-1",
+      "value": {
+        "LINE": 58,
+        "LWPOLYLINE": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 65
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "C-TOPO-2",
+      "value": {
+        "LINE": 36,
+        "SPLINE": 4,
+        "LWPOLYLINE": 31
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 71
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "C-TOPO-MAJR",
+      "value": {
+        "LINE": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "C-TOPO-PATT-1",
+      "value": {
+        "HATCH": 3,
+        "HATCH_paths=1": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "MTEXT": 134,
+        "LINE": 286,
+        "INSERT": 37
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 457
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "MTEXT": 5,
+        "CIRCLE": 1,
+        "HATCH": 1,
+        "HATCH_paths=1": 1,
+        "LINE": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 10
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-DIMS-2",
+      "value": {
+        "CIRCLE": 51,
+        "HATCH": 51,
+        "HATCH_paths=1": 51
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 153
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB",
+      "value": {
+        "INSERT": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "LINE": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "MTEXT": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "MTEXT": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "MTEXT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "G-ANNO-TEXT-2",
+      "value": {
+        "MTEXT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 3
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-FNDN-1",
+      "value": {
+        "LINE": 148
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 148
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-1",
+      "value": {
+        "LINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN",
+      "value": {
+        "INSERT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "MTEXT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Stávající dešťová kan__Trubky-1",
+      "value": {
+        "LINE": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Stávající dešťová kan__Trubky-2",
+      "value": {
+        "LINE": 13,
+        "LWPOLYLINE": 20
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 33
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Stávající splašková kan__Trubky-1",
+      "value": {
+        "LINE": 5
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 5
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Stávající splašková kan__Trubky-2",
+      "value": {
+        "LINE": 7,
+        "LWPOLYLINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 19
+      }
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-1",
+      "value": {
+        "count": 1,
+        "sum_m": 0.5
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-DETL-THIN",
+      "value": {
+        "count": 4,
+        "sum_m": 5.401
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "A-GENM-1",
+      "value": {
+        "count": 47,
+        "sum_m": 0.271
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "C-TOPO",
+      "value": {
+        "count": 171,
+        "sum_m": 591.194
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "C-TOPO-1",
+      "value": {
+        "count": 65,
+        "sum_m": 113.872
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "C-TOPO-2",
+      "value": {
+        "count": 67,
+        "sum_m": 234.629
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "C-TOPO-MAJR",
+      "value": {
+        "count": 3,
+        "sum_m": 15.681
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "count": 286,
+        "sum_m": 207.783
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 2,
+        "sum_m": 2.571
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "G-ANNO-SYMB-1",
+      "value": {
+        "count": 6,
+        "sum_m": 18.744
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "S-FNDN-1",
+      "value": {
+        "count": 148,
+        "sum_m": 88.8
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "S-GRID-1",
+      "value": {
+        "count": 12,
+        "sum_m": 366.139
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "Stávající dešťová kan__Trubky-1",
+      "value": {
+        "count": 6,
+        "sum_m": 91.958
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "Stávající dešťová kan__Trubky-2",
+      "value": {
+        "count": 33,
+        "sum_m": 25.077
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "Stávající splašková kan__Trubky-1",
+      "value": {
+        "count": 5,
+        "sum_m": 56.713
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "Stávající splašková kan__Trubky-2",
+      "value": {
+        "count": 19,
+        "sum_m": 18.556
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "A-GENM-2": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Osnova - 6mm-307864-VÝKOP",
+      "value": {
+        "count": 24,
+        "by_layer": {
+          "S-GRID-IDEN": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "value": {
+        "count": 18,
+        "by_layer": {
+          "A-ANNO-NOTE": 18
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "A-ANNO-NOTE": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Dolní-314757-A-VYKOP",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "G-ANNO-DIMS": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Dolní-314757-B_VYKOP",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "G-ANNO-DIMS": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "value": {
+        "count": 6,
+        "by_layer": {
+          "G-ANNO-DIMS": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-A-VYKOP",
+      "value": {
+        "count": 8,
+        "by_layer": {
+          "G-ANNO-DIMS": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-B_VYKOP",
+      "value": {
+        "count": 6,
+        "by_layer": {
+          "G-ANNO-DIMS": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Horní-314756-C_VYKOP",
+      "value": {
+        "count": 7,
+        "by_layer": {
+          "G-ANNO-DIMS": 7
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "value": {
+        "count": 5,
+        "by_layer": {
+          "G-ANNO-DIMS": 5
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "Řez - Velká značka-308779-VÝKOP",
+      "value": {
+        "count": 6,
+        "by_layer": {
+          "G-ANNO-SYMB": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-DIMS",
+      "value": {
+        "count": 134,
+        "by_type": {
+          "MTEXT": 134
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "1:1"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-DIMS-1",
+      "value": {
+        "count": 5,
+        "by_type": {
+          "MTEXT": 5
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "-1.300"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-SYMB-2",
+      "value": {
+        "count": 6,
+        "by_type": {
+          "MTEXT": 6
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A-VYKOP"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT",
+      "value": {
+        "count": 12,
+        "by_type": {
+          "MTEXT": 12
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "\"A\""
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT-1",
+      "value": {
+        "count": 1,
+        "by_type": {
+          "MTEXT": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "B"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "G-ANNO-TEXT-2",
+      "value": {
+        "count": 3,
+        "by_type": {
+          "MTEXT": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "Ř"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "S-GRID-IDEN-1",
+      "value": {
+        "count": 24,
+        "by_type": {
+          "MTEXT": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "count",
+      "value": 120,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "0",
+      "A-ANNO-DIMS",
+      "A-ANNO-DIMS-150",
+      "A-ANNO-NOTE",
+      "A-DETL",
+      "A-DETL-1",
+      "A-DETL-THIN",
+      "A-GENM",
+      "A-GENM-1",
+      "A-GENM-2",
+      "C-TOPO",
+      "C-TOPO-1",
+      "C-TOPO-2",
+      "C-TOPO-MAJR",
+      "C-TOPO-PATT",
+      "C-TOPO-PATT-1",
+      "Defpoints",
+      "G-ANNO-DIMS",
+      "G-ANNO-DIMS-1",
+      "G-ANNO-DIMS-2",
+      "G-ANNO-NPLT",
+      "G-ANNO-REFR",
+      "G-ANNO-SYMB",
+      "G-ANNO-SYMB-1",
+      "G-ANNO-SYMB-2",
+      "G-ANNO-TEXT",
+      "G-ANNO-TEXT-1",
+      "G-ANNO-TEXT-2",
+      "G-ANNO-TTLB",
+      "G-ANNO-TTLB-WIDE",
+      "S-FNDN",
+      "S-FNDN-1",
+      "S-GRID",
+      "S-GRID-1",
+      "S-GRID-IDEN",
+      "S-GRID-IDEN-1",
+      "Stávající dešťová kan__Trubky",
+      "Stávající dešťová kan__Trubky-1",
+      "Stávající dešťová kan__Trubky-2",
+      "Stávající splašková kan__Trubky",
+      "Stávající splašková kan__Trubky-1",
+      "Stávající splašková kan__Trubky-2"
+    ],
+    "block_definitions": [
+      "00_BP_ROZP_KOD_velka_rvt22 - PL_ROZPISKA_21-298807-VÝKOPY",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP",
+      "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP",
+      "DIMBLOCK1-VÝKOP",
+      "DIMBLOCK10-VÝKOP",
+      "DIMBLOCK100-VÝKOP",
+      "DIMBLOCK101-VÝKOP",
+      "DIMBLOCK102-VÝKOP",
+      "DIMBLOCK103-VÝKOP",
+      "DIMBLOCK104-VÝKOP",
+      "DIMBLOCK105-VÝKOP",
+      "DIMBLOCK106-VÝKOP",
+      "DIMBLOCK107-VÝKOP",
+      "DIMBLOCK108-VÝKOP",
+      "DIMBLOCK109-VÝKOP",
+      "DIMBLOCK11-VÝKOP",
+      "DIMBLOCK110-VÝKOP",
+      "DIMBLOCK111-VÝKOP",
+      "DIMBLOCK112-VÝKOP",
+      "DIMBLOCK113-A-VYKOP",
+      "DIMBLOCK114-A-VYKOP",
+      "DIMBLOCK115-A-VYKOP",
+      "DIMBLOCK116-A-VYKOP",
+      "DIMBLOCK117-A-VYKOP",
+      "DIMBLOCK118-A-VYKOP",
+      "DIMBLOCK119-A-VYKOP",
+      "DIMBLOCK12-VÝKOP",
+      "DIMBLOCK120-A-VYKOP",
+      "DIMBLOCK13-VÝKOP",
+      "DIMBLOCK14-VÝKOP",
+      "DIMBLOCK15-VÝKOP",
+      "DIMBLOCK16-VÝKOP",
+      "DIMBLOCK17-VÝKOP",
+      "DIMBLOCK18-VÝKOP",
+      "DIMBLOCK19-VÝKOP",
+      "DIMBLOCK2-VÝKOP",
+      "DIMBLOCK20-VÝKOP",
+      "DIMBLOCK21-VÝKOP",
+      "DIMBLOCK22-VÝKOP",
+      "DIMBLOCK23-VÝKOP",
+      "DIMBLOCK24-VÝKOP",
+      "DIMBLOCK25-VÝKOP",
+      "DIMBLOCK26-VÝKOP",
+      "DIMBLOCK27-VÝKOP",
+      "DIMBLOCK28-VÝKOP",
+      "DIMBLOCK29-VÝKOP",
+      "DIMBLOCK3-VÝKOP",
+      "DIMBLOCK30-VÝKOP",
+      "DIMBLOCK31-VÝKOP",
+      "DIMBLOCK32-VÝKOP",
+      "DIMBLOCK33-VÝKOP",
+      "DIMBLOCK34-VÝKOP",
+      "DIMBLOCK35-VÝKOP",
+      "DIMBLOCK36-VÝKOP",
+      "DIMBLOCK37-VÝKOP",
+      "DIMBLOCK38-VÝKOP",
+      "DIMBLOCK39-VÝKOP",
+      "DIMBLOCK4-VÝKOP",
+      "DIMBLOCK40-VÝKOP",
+      "DIMBLOCK41-VÝKOP",
+      "DIMBLOCK42-VÝKOP",
+      "DIMBLOCK43-VÝKOP",
+      "DIMBLOCK44-VÝKOP",
+      "DIMBLOCK45-VÝKOP",
+      "DIMBLOCK46-VÝKOP",
+      "DIMBLOCK47-VÝKOP",
+      "DIMBLOCK48-VÝKOP",
+      "DIMBLOCK49-VÝKOP",
+      "DIMBLOCK5-VÝKOP",
+      "DIMBLOCK50-VÝKOP",
+      "DIMBLOCK51-VÝKOP",
+      "DIMBLOCK52-VÝKOP",
+      "DIMBLOCK53-VÝKOP",
+      "DIMBLOCK54-VÝKOP",
+      "DIMBLOCK55-VÝKOP",
+      "DIMBLOCK56-VÝKOP",
+      "DIMBLOCK57-VÝKOP",
+      "DIMBLOCK58-VÝKOP",
+      "DIMBLOCK59-VÝKOP",
+      "DIMBLOCK6-VÝKOP",
+      "DIMBLOCK60-VÝKOP",
+      "DIMBLOCK61-VÝKOP",
+      "DIMBLOCK62-VÝKOP",
+      "DIMBLOCK63-VÝKOP",
+      "DIMBLOCK64-VÝKOP",
+      "DIMBLOCK65-VÝKOP",
+      "DIMBLOCK66-VÝKOP",
+      "DIMBLOCK67-VÝKOP",
+      "DIMBLOCK68-VÝKOP",
+      "DIMBLOCK69-VÝKOP",
+      "DIMBLOCK7-VÝKOP",
+      "DIMBLOCK70-VÝKOP",
+      "DIMBLOCK71-VÝKOP",
+      "DIMBLOCK72-VÝKOP",
+      "DIMBLOCK73-VÝKOP",
+      "DIMBLOCK74-VÝKOP",
+      "DIMBLOCK75-VÝKOP",
+      "DIMBLOCK76-VÝKOP",
+      "DIMBLOCK77-VÝKOP",
+      "DIMBLOCK78-VÝKOP",
+      "DIMBLOCK79-VÝKOP",
+      "DIMBLOCK8-VÝKOP",
+      "DIMBLOCK80-VÝKOP",
+      "DIMBLOCK81-VÝKOP",
+      "DIMBLOCK82-VÝKOP",
+      "DIMBLOCK83-VÝKOP",
+      "DIMBLOCK84-VÝKOP",
+      "DIMBLOCK85-VÝKOP",
+      "DIMBLOCK86-VÝKOP",
+      "DIMBLOCK87-VÝKOP",
+      "DIMBLOCK88-VÝKOP",
+      "DIMBLOCK89-VÝKOP",
+      "DIMBLOCK9-VÝKOP",
+      "DIMBLOCK90-VÝKOP",
+      "DIMBLOCK91-VÝKOP",
+      "DIMBLOCK92-VÝKOP",
+      "DIMBLOCK93-VÝKOP",
+      "DIMBLOCK94-VÝKOP",
+      "DIMBLOCK95-VÝKOP",
+      "DIMBLOCK96-VÝKOP",
+      "DIMBLOCK97-VÝKOP",
+      "DIMBLOCK98-VÝKOP",
+      "DIMBLOCK99-VÝKOP",
+      "Osnova - 6mm-307864-VÝKOP",
+      "Severka-1 - Severka-1-437760-VÝKOPY",
+      "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP",
+      "Výškové kóty - Dolní-314757-A-VYKOP",
+      "Výškové kóty - Dolní-314757-B_VYKOP",
+      "Výškové kóty - Dolní-314757-C_VYKOP",
+      "Výškové kóty - Horní-314756-A-VYKOP",
+      "Výškové kóty - Horní-314756-B_VYKOP",
+      "Výškové kóty - Horní-314756-C_VYKOP",
+      "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "_Oblique",
+      "Řez - Velká značka-308779-VÝKOP"
+    ],
+    "entity_counts_by_layer": {
+      "C-TOPO-MAJR": {
+        "LINE": 3
+      },
+      "C-TOPO": {
+        "LINE": 131,
+        "SPLINE": 5,
+        "LWPOLYLINE": 40
+      },
+      "S-FNDN-1": {
+        "LINE": 148
+      },
+      "A-GENM-1": {
+        "ARC": 40,
+        "LINE": 47,
+        "SPLINE": 68
+      },
+      "A-GENM-2": {
+        "INSERT": 3
+      },
+      "A-DETL-1": {
+        "LINE": 1
+      },
+      "Stávající dešťová kan__Trubky-1": {
+        "LINE": 6
+      },
+      "Stávající splašková kan__Trubky-1": {
+        "LINE": 5
+      },
+      "A-DETL-THIN": {
+        "LINE": 4
+      },
+      "C-TOPO-PATT-1": {
+        "HATCH": 3,
+        "HATCH_paths=1": 3
+      },
+      "C-TOPO-1": {
+        "LINE": 58,
+        "LWPOLYLINE": 7
+      },
+      "C-TOPO-2": {
+        "LINE": 36,
+        "SPLINE": 4,
+        "LWPOLYLINE": 31
+      },
+      "Stávající dešťová kan__Trubky-2": {
+        "LINE": 13,
+        "LWPOLYLINE": 20
+      },
+      "Stávající splašková kan__Trubky-2": {
+        "LINE": 7,
+        "LWPOLYLINE": 12
+      },
+      "S-GRID-IDEN": {
+        "INSERT": 24
+      },
+      "S-GRID-IDEN-1": {
+        "MTEXT": 24
+      },
+      "S-GRID-1": {
+        "LINE": 12
+      },
+      "A-ANNO-DIMS": {
+        "DIMENSION": 120
+      },
+      "G-ANNO-TEXT": {
+        "MTEXT": 12
+      },
+      "G-ANNO-TEXT-1": {
+        "MTEXT": 1
+      },
+      "G-ANNO-DIMS": {
+        "MTEXT": 134,
+        "LINE": 286,
+        "INSERT": 37
+      },
+      "A-ANNO-NOTE": {
+        "INSERT": 21
+      },
+      "G-ANNO-DIMS-1": {
+        "MTEXT": 5,
+        "CIRCLE": 1,
+        "HATCH": 1,
+        "HATCH_paths=1": 1,
+        "LINE": 2
+      },
+      "G-ANNO-DIMS-2": {
+        "CIRCLE": 51,
+        "HATCH": 51,
+        "HATCH_paths=1": 51
+      },
+      "G-ANNO-SYMB-1": {
+        "LINE": 6
+      },
+      "G-ANNO-SYMB": {
+        "INSERT": 6
+      },
+      "G-ANNO-SYMB-2": {
+        "MTEXT": 6
+      },
+      "G-ANNO-TEXT-2": {
+        "MTEXT": 3
+      }
+    },
+    "closed_areas_by_layer": {},
+    "open_lengths_by_layer": {
+      "C-TOPO-MAJR": [
+        13.322,
+        0.467,
+        1.892
+      ],
+      "C-TOPO": [
+        1.541,
+        2.518,
+        1.612,
+        17.301,
+        1.305,
+        3.513,
+        1.436,
+        5.687,
+        2.522,
+        1.155,
+        9.69,
+        1.879,
+        12.199,
+        1.155,
+        5.287,
+        0.891,
+        4.115,
+        2.95,
+        0.178,
+        1.032,
+        1.293,
+        1.5,
+        0.767,
+        1.442,
+        1.5,
+        0.975,
+        0.822,
+        0.182,
+        2.921,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        2.312,
+        2.376,
+        15.0,
+        0.849,
+        15.0,
+        14.206,
+        15.0,
+        0.586,
+        3.033,
+        12.157,
+        0.849,
+        2.0,
+        2.453,
+        15.0,
+        2.232,
+        2.0,
+        2.379,
+        0.428,
+        1.442,
+        2.522,
+        2.05,
+        7.133,
+        1.101,
+        4.515,
+        1.156,
+        8.828,
+        1.218,
+        10.549,
+        1.365,
+        2.518,
+        14.78,
+        11.882,
+        0.558,
+        1.697,
+        2.921,
+        0.178,
+        0.605,
+        0.763,
+        1.5,
+        0.915,
+        0.596,
+        1.035,
+        1.034,
+        0.596,
+        1.188,
+        1.5,
+        1.341,
+        0.606,
+        3.689,
+        1.467,
+        0.558,
+        1.324,
+        0.754,
+        1.5,
+        1.5,
+        0.537,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        1.5,
+        2.0,
+        0.849,
+        2.0,
+        15.545,
+        5.454,
+        7.423,
+        5.377,
+        10.328,
+        3.563,
+        16.668,
+        0.819,
+        0.525,
+        6.637,
+        1.201,
+        22.359,
+        0.207,
+        0.41,
+        0.752,
+        0.767,
+        1.447,
+        0.539,
+        0.915,
+        1.05,
+        1.142,
+        1.5,
+        1.5,
+        0.957,
+        0.069,
+        0.064,
+        0.992,
+        0.322,
+        0.415,
+        1.5,
+        0.262,
+        0.322,
+        0.159,
+        0.312,
+        1.5,
+        0.596,
+        12.255,
+        12.246,
+        15.953,
+        0.29,
+        2.519,
+        18.505,
+        2.493,
+        32.291,
+        1.956,
+        0.571,
+        0.289,
+        1.653,
+        6.766,
+        0.242,
+        18.313,
+        0.24,
+        0.035,
+        6.775,
+        0.708
+      ],
+      "S-FNDN-1": [
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.373,
+        0.5,
+        0.377,
+        1.25,
+        0.377,
+        0.5,
+        0.373,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.15,
+        0.5,
+        0.15,
+        0.8,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        0.375,
+        0.5,
+        0.375,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        0.375,
+        0.5,
+        0.375,
+        1.25,
+        0.8,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "A-GENM-1": [
+        0.001,
+        0.001,
+        0.002,
+        0.001,
+        0.003,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.035,
+        0.012,
+        0.011,
+        0.035,
+        0.001,
+        0.001,
+        0.035,
+        0.011,
+        0.011,
+        0.036,
+        0.013,
+        0.013,
+        0.012,
+        0.012,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "A-DETL-1": [
+        0.5
+      ],
+      "Stávající dešťová kan__Trubky-1": [
+        23.791,
+        3.073,
+        2.44,
+        24.753,
+        19.186,
+        18.715
+      ],
+      "Stávající splašková kan__Trubky-1": [
+        19.481,
+        7.687,
+        0.994,
+        8.342,
+        20.209
+      ],
+      "A-DETL-THIN": [
+        0.32,
+        0.22,
+        0.3,
+        4.561
+      ],
+      "C-TOPO-1": [
+        2.59,
+        1.327,
+        0.596,
+        0.6,
+        1.5,
+        0.6,
+        0.604,
+        0.066,
+        0.652,
+        4.732,
+        2.146,
+        7.886,
+        1.155,
+        0.622,
+        0.6,
+        1.5,
+        0.6,
+        0.578,
+        1.594,
+        1.638,
+        0.765,
+        1.387,
+        0.6,
+        0.6,
+        1.5,
+        0.279,
+        3.263,
+        0.544,
+        0.896,
+        0.6,
+        1.5,
+        0.6,
+        4.598,
+        0.6,
+        1.5,
+        0.366,
+        0.123,
+        1.41,
+        0.279,
+        1.5,
+        0.6,
+        4.597,
+        0.6,
+        1.5,
+        0.6,
+        4.6,
+        0.6,
+        1.5,
+        0.6,
+        0.571,
+        1.453,
+        2.533,
+        1.3,
+        2.422,
+        2.0,
+        2.004,
+        9.314,
+        1.844,
+        5.681,
+        1.929,
+        4.554,
+        2.004,
+        2.0,
+        2.342,
+        2.231
+      ],
+      "C-TOPO-2": [
+        27.533,
+        1.258,
+        1.5,
+        0.571,
+        1.653,
+        0.056,
+        1.956,
+        5.425,
+        0.895,
+        0.608,
+        15.953,
+        0.003,
+        2.519,
+        0.13,
+        0.708,
+        1.089,
+        1.155,
+        0.001,
+        0.873,
+        0.001,
+        0.873,
+        1.5,
+        35.367,
+        1.442,
+        0.013,
+        18.505,
+        1.5,
+        1.5,
+        0.915,
+        0.06,
+        0.903,
+        2.166,
+        1.5,
+        1.464,
+        0.86,
+        0.249,
+        6.757,
+        6.775,
+        0.262,
+        0.455,
+        0.455,
+        0.44,
+        0.543,
+        0.52,
+        0.842,
+        36.289,
+        0.29,
+        0.014,
+        18.505,
+        0.93,
+        3.231,
+        1.044,
+        0.92,
+        2.921,
+        2.379,
+        0.428,
+        6.756,
+        0.242,
+        1.442,
+        1.009,
+        0.159,
+        0.135,
+        0.994,
+        0.138,
+        6.775,
+        0.138,
+        0.138
+      ],
+      "Stávající dešťová kan__Trubky-2": [
+        1.716,
+        2.234,
+        3.099,
+        0.335,
+        0.335,
+        0.335,
+        0.335,
+        3.099,
+        1.314,
+        1.15,
+        0.29,
+        0.29,
+        0.29,
+        0.29,
+        0.222,
+        0.201,
+        0.254,
+        0.254,
+        0.254,
+        0.254,
+        1.487,
+        3.001,
+        1.358,
+        0.19,
+        0.29,
+        0.29,
+        0.29,
+        0.29,
+        0.307,
+        0.254,
+        0.254,
+        0.254,
+        0.254
+      ],
+      "Stávající splašková kan__Trubky-2": [
+        3.575,
+        1.779,
+        0.316,
+        0.316,
+        0.316,
+        0.316,
+        0.965,
+        1.343,
+        0.303,
+        0.303,
+        0.303,
+        0.303,
+        0.623,
+        1.989,
+        4.599,
+        0.303,
+        0.303,
+        0.303,
+        0.303
+      ],
+      "S-GRID-1": [
+        34.258,
+        34.258,
+        26.794,
+        26.794,
+        26.794,
+        26.737,
+        26.737,
+        26.737,
+        34.258,
+        34.258,
+        34.258,
+        34.258
+      ],
+      "G-ANNO-DIMS": [
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        0.493,
+        0.493,
+        0.75,
+        1.064,
+        1.411,
+        1.178,
+        1.691,
+        1.16,
+        1.224,
+        0.913,
+        1.034,
+        0.956,
+        1.255,
+        0.768,
+        0.619,
+        0.96,
+        0.779,
+        0.935,
+        0.978,
+        0.821,
+        0.63,
+        0.829,
+        0.873,
+        0.927,
+        1.234,
+        0.704,
+        0.733,
+        0.745,
+        0.595,
+        0.689,
+        0.583,
+        0.989,
+        0.248,
+        0.874,
+        0.25,
+        0.63,
+        0.408,
+        0.774,
+        0.671,
+        1.122,
+        0.39,
+        1.137,
+        0.228,
+        1.414,
+        0.977,
+        1.368,
+        1.318,
+        1.114,
+        1.367,
+        0.857,
+        0.318,
+        0.928,
+        0.665,
+        0.84,
+        0.573,
+        0.939,
+        1.489,
+        1.022,
+        0.835,
+        0.929,
+        1.057,
+        1.386,
+        2.763,
+        1.393,
+        2.374,
+        1.412,
+        1.404,
+        1.332,
+        1.208,
+        1.09,
+        2.066,
+        1.244,
+        2.803,
+        0.763,
+        0.632,
+        1.23,
+        0.336,
+        1.314,
+        0.258,
+        1.425,
+        0.372,
+        1.509,
+        1.602,
+        0.904,
+        0.653,
+        0.938,
+        0.478,
+        1.213,
+        0.28,
+        1.145,
+        0.544,
+        1.03,
+        0.42,
+        1.2,
+        2.76,
+        0.834,
+        0.328,
+        0.842,
+        1.775,
+        1.027,
+        0.427,
+        1.004,
+        2.541,
+        1.039,
+        2.096,
+        0.795,
+        0.711,
+        0.78,
+        0.051,
+        0.757,
+        0.076,
+        0.434,
+        0.202,
+        0.501,
+        0.093,
+        0.91,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.001,
+        0.045,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.91,
+        0.5,
+        0.292,
+        1.815,
+        0.806,
+        0.695,
+        0.446,
+        0.401,
+        0.401,
+        0.389,
+        0.401,
+        0.401,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.74,
+        0.815,
+        1.315,
+        0.908,
+        0.809,
+        0.787,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6,
+        0.493,
+        0.493,
+        0.6
+      ],
+      "G-ANNO-DIMS-1": [
+        1.354,
+        1.216
+      ],
+      "G-ANNO-SYMB-1": [
+        3.132,
+        2.734,
+        2.187,
+        4.003,
+        4.407,
+        2.281
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP",
+        "layer": "A-GENM-2",
+        "count": 1
+      },
+      {
+        "block": "Osnova - 6mm-307864-VÝKOP",
+        "layer": "S-GRID-IDEN",
+        "count": 24
+      },
+      {
+        "block": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+        "layer": "A-ANNO-NOTE",
+        "count": 18
+      },
+      {
+        "block": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP",
+        "layer": "A-ANNO-NOTE",
+        "count": 3
+      },
+      {
+        "block": "Výškové kóty - Dolní-314757-A-VYKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 2
+      },
+      {
+        "block": "Výškové kóty - Dolní-314757-B_VYKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 3
+      },
+      {
+        "block": "Výškové kóty - Dolní-314757-C_VYKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 6
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-A-VYKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 8
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-B_VYKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 6
+      },
+      {
+        "block": "Výškové kóty - Horní-314756-C_VYKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 7
+      },
+      {
+        "block": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+        "layer": "G-ANNO-DIMS",
+        "count": 5
+      },
+      {
+        "block": "Řez - Velká značka-308779-VÝKOP",
+        "layer": "G-ANNO-SYMB",
+        "count": 6
+      }
+    ],
+    "text_by_layer": {
+      "S-GRID-IDEN-1": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            180.9653278464634,
+            157.89071177122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;A",
+          "text": "A",
+          "insert": [
+            180.9653278464635,
+            121.83315206602332
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            183.7211528464635,
+            157.8907117712201
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            183.7211528464635,
+            121.8331520660232
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            176.0004170684908,
+            153.4670673509143
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;1",
+          "text": "1",
+          "insert": [
+            204.59431694539512,
+            153.46706735091422
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            176.0004170684908,
+            147.3670673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;2",
+          "text": "2",
+          "insert": [
+            204.59431694539512,
+            147.36706735091408
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            176.0004170684908,
+            141.2695673509143
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;3",
+          "text": "3",
+          "insert": [
+            204.59431694539512,
+            141.2695673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            176.0569810775498,
+            138.27206735091443
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;4",
+          "text": "4",
+          "insert": [
+            204.59431694539512,
+            138.27206735091428
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            176.0569810775498,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;5",
+          "text": "5",
+          "insert": [
+            204.59431694539512,
+            132.1745673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            176.0569810775497,
+            126.0770673509142
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;6",
+          "text": "6",
+          "insert": [
+            204.59431694539512,
+            126.0770673509141
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            187.7211528464635,
+            157.8907117712201
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;C",
+          "text": "C",
+          "insert": [
+            187.7211528464635,
+            121.83315206602332
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            192.7134264256047,
+            121.8296302529049
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;D",
+          "text": "D",
+          "insert": [
+            192.7134264256047,
+            157.8871899581017
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            196.74215284646348,
+            157.8907117712201
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;E",
+          "text": "E",
+          "insert": [
+            196.74215284646348,
+            121.83315206602332
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            199.5326278464634,
+            157.89071177122
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p34|;\\W.7;F",
+          "text": "F",
+          "insert": [
+            199.5326278464634,
+            121.8331520660232
+          ]
+        }
+      ],
+      "G-ANNO-TEXT": [
+        {
+          "type": "MTEXT",
+          "raw": "\"A\"",
+          "text": "\"A\"",
+          "insert": [
+            190.18603561246582,
+            140.99923039714682
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "SO.01",
+          "text": "SO.01",
+          "insert": [
+            190.18603561246582,
+            140.58251164714682
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "HALA",
+          "text": "HALA",
+          "insert": [
+            190.18603561246582,
+            140.16579289714682
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Neznámá p",
+          "text": "Neznámá p",
+          "insert": [
+            186.95860206667513,
+            146.0274283061188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ředpokládaná poloha areálových sítí.",
+          "text": "ředpokládaná poloha areálových sítí.",
+          "insert": [
+            188.8239145666751,
+            146.0274283061188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Při styku se sítěmi během výkopových prací je nutné ",
+          "text": "Při styku se sítěmi během výkopových prací je nutné ",
+          "insert": [
+            186.95860206667513,
+            145.6107095561188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "jejich nalezení neprodleně nahlásit stavbyvedoucímu ",
+          "text": "jejich nalezení neprodleně nahlásit stavbyvedoucímu ",
+          "insert": [
+            186.958602066675,
+            145.1939908061188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;+",
+          "text": "+",
+          "insert": [
+            195.511258316675,
+            145.1939908061188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|; ",
+          "text": " ",
+          "insert": [
+            195.72953956667513,
+            145.1939908061188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "projektantovi a zajistit jejich vytyčení.",
+          "text": "projektantovi a zajistit jejich vytyčení.",
+          "insert": [
+            186.95860206667513,
+            144.7772720561188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Obetonování Potr. - CCA pr",
+          "text": "Obetonování Potr. - CCA pr",
+          "insert": [
+            223.7914795336629,
+            -2.611411417928876
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ůbeh",
+          "text": "ůbeh",
+          "insert": [
+            228.27616703366292,
+            -2.611411417928876
+          ]
+        }
+      ],
+      "G-ANNO-TEXT-1": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;\\W.7;B",
+          "text": "B",
+          "insert": [
+            186.32538567027248,
+            156.8634123252173
+          ]
+        }
+      ],
+      "G-ANNO-DIMS": [
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            201.3289943095712,
+            148.3384144230599
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            197.6803962787815,
+            146.7430594367364
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            192.2984201656172,
+            137.041885856208
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            195.29046389996302,
+            138.23302197301692
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            188.4425000722644,
+            127.1486476847365
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            197.6169450729587,
+            137.1777232541952
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            197.6169450729587,
+            137.1777232541952
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            199.65914711677559,
+            154.55108971321252
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            197.5120477605684,
+            126.7544875939688
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            189.47547417898178,
+            154.5441426828828
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            179.0093017049087,
+            147.21827474885
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            178.7685420096133,
+            133.4883852701899
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            180.6194147288095,
+            123.6269444289343
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            188.45206739138,
+            123.2685305435243
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            199.1074108021407,
+            123.6356264969833
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            201.0904916761163,
+            135.1125408517925
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            190.8761467762636,
+            151.00443350463863
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            182.4674928990279,
+            149.5200102510781
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            183.7037061457803,
+            145.0622753256782
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            190.7738725715137,
+            141.60551528771342
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            188.52506640078792,
+            134.0354173859717
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            182.51234760126022,
+            133.447244713541
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.160",
+          "text": "-0.160",
+          "insert": [
+            176.9896409111753,
+            122.42108356953631
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.165",
+          "text": "-0.165",
+          "insert": [
+            179.2575386819548,
+            122.0023947503155
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.165",
+          "text": "-0.165",
+          "insert": [
+            179.3622108867601,
+            122.86594043995851
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.320",
+          "text": "-0.320",
+          "insert": [
+            200.09025635580542,
+            122.825867192366
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.320",
+          "text": "-0.320",
+          "insert": [
+            200.123234366141,
+            122.3641750476675
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.345",
+          "text": "-0.345",
+          "insert": [
+            202.3393566606937,
+            123.2347945205274
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.265",
+          "text": "-0.265",
+          "insert": [
+            200.22626830677729,
+            156.3477194726381
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.265",
+          "text": "-0.265",
+          "insert": [
+            200.23773891906802,
+            156.9384560056063
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.270",
+          "text": "-0.270",
+          "insert": [
+            202.4400964788719,
+            156.3706606972194
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.220",
+          "text": "-0.220",
+          "insert": [
+            179.82868710741081,
+            156.476389908672
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.220",
+          "text": "-0.220",
+          "insert": [
+            179.7942752705389,
+            157.2391856259999
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.210",
+          "text": "-0.210",
+          "insert": [
+            177.574711792299,
+            156.5738901131425
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            180.22302238291212,
+            154.3805556237317
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            199.9116458124806,
+            154.3677718230921
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            199.97046012014653,
+            124.8809312004316
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            180.03463737495952,
+            124.8758663135606
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            183.13030087786709,
+            154.0966418998097
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            196.68231251231458,
+            154.0027646692419
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            196.6823125123147,
+            152.6147202142163
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            183.214241197435,
+            152.6106431636327
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            183.8245383255872,
+            150.20248422361263
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            195.5617637498411,
+            150.2802899682849
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            184.8126155030726,
+            146.505250377188
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            187.5892126658909,
+            143.5760929306984
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            196.1936126649541,
+            142.8285475407088
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            196.3614289769926,
+            137.79405817955478
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            193.4780396156044,
+            137.9771305199604
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            196.3004048635241,
+            134.54452413735538
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            200.0753650337273,
+            130.34806677968132
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            199.4331391629651,
+            136.003516007662
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            198.9864360193196,
+            136.576479368685
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            192.8949670666997,
+            128.9643775664219
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            184.5017105002376,
+            129.347723419217
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            183.93677976980263,
+            136.2075965744986
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            181.2388668839331,
+            127.5044248270063
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            183.5553080251943,
+            125.22831868373251
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            183.3874917131559,
+            126.5861052084074
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            196.79180126560752,
+            125.3263680127179
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            196.4507443316171,
+            126.6304092309162
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.485",
+          "text": "-1.485",
+          "insert": [
+            195.70061640640102,
+            127.3077864646579
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            199.21867065968823,
+            127.5144981163684
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            198.7674428978423,
+            132.20974621324632
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            199.87230990581352,
+            128.7813022265524
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            201.96998390111852,
+            125.9173386907151
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            180.1431360414349,
+            142.7355370395552
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            180.3969225246688,
+            146.0347613215969
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            180.0969930444833,
+            149.4147358483041
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            181.4466757053185,
+            148.35344691841652
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            181.40053270836682,
+            139.55167024989248
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            180.1892790383865,
+            139.6670277422716
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            181.6485159142511,
+            150.0069712019661
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.160",
+          "text": "-0.160",
+          "insert": [
+            212.44924562090858,
+            0.1269216413885967
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            213.5243287578495,
+            -0.974543903820788
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            215.5755610007244,
+            -0.9811395058879099
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            216.59781204352413,
+            -0.13940443015821838
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            228.9673143424421,
+            -0.18219088191471308
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            230.76022434336332,
+            -1.2609198193567441
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.345",
+          "text": "-0.345",
+          "insert": [
+            235.0745927930846,
+            -0.025360126259521183
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            213.4745753142706,
+            -0.9780910960999442
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            216.58293056614443,
+            -1.5396026800846339
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:2",
+          "text": "1:2",
+          "insert": [
+            226.1873052969945,
+            -0.9561940887866864
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            234.92707089695242,
+            -1.132363491899246
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            233.3756543915083,
+            -2.956420052599374
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            232.67955468583702,
+            -0.9564044301582197
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            215.0642062391424,
+            -2.956420052599374
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            226.9748594598,
+            -1.636950077141513
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            231.60619598023,
+            -1.6756848642960311
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            233.9245908913145,
+            -1.717418493624404
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.265",
+          "text": "-0.265",
+          "insert": [
+            279.2462121254465,
+            -15.808819498853
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            280.27895930065904,
+            -14.6234167030528
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            280.59995930065907,
+            -1.5635217914523138
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            280.27895930065904,
+            4.091126698098318
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            280.27895930065904,
+            9.118050057499165
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            280.27895930065904,
+            12.96061974583703
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.320",
+          "text": "-0.320",
+          "insert": [
+            279.3011244857343,
+            14.65819334102734
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            282.2789749231001,
+            -14.06790382657616
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            282.2789749231001,
+            -7.922996373814301
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            282.2789749231001,
+            -1.9497343806268301
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            282.27897492310024,
+            1.094111769158324
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            282.27897492310024,
+            6.82707011894174
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            282.27897492310024,
+            13.0978509087247
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            280.3522762901868,
+            -16.076027469107082
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            280.3522762901868,
+            -16.076027469107082
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            281.07144297008017,
+            -13.08218703299351
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            280.8587676351472,
+            14.34182301434887
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            281.1351315079203,
+            -1.615074362677384
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            281.544882500686,
+            -0.33222331074210265
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            362.1755233072013,
+            -13.91436536851315
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.620",
+          "text": "-1.620",
+          "insert": [
+            361.8965233072014,
+            -2.7310227784962233
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            362.1755233072015,
+            13.21743638641303
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.265",
+          "text": "-0.265",
+          "insert": [
+            359.1408943569483,
+            -15.729343525539921
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            359.35850768476007,
+            -12.23299762096624
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            359.35850768476035,
+            -5.98864651420128
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            359.35850768476035,
+            0.9304380127445288
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.485",
+          "text": "-0.485",
+          "insert": [
+            359.35850768476035,
+            11.94699458224339
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.190",
+          "text": "-0.190",
+          "insert": [
+            359.0631974801461,
+            15.480144127917871
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.5548762210763,
+            12.19212608374573
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.9626284570743,
+            14.92027631885564
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.9505392774241,
+            0.5850529294030185
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.5147392950262,
+            -4.625053628430387
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.5147392950262,
+            -4.625053628430387
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.7318468872453,
+            -5.784835250817176
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.7362660630585,
+            -5.778788839501988
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            361.03683519853934,
+            -1.768239446660803
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.399607237395,
+            -2.422614230297826
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.47763417482383,
+            1.1355162829953491
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            361.0087621067796,
+            -14.79402885766531
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            361.9262190608913,
+            -14.90066227543419
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.4864651632299,
+            -15.26628497410063
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            361.08986839272904,
+            -12.59696361679902
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            360.99934118842367,
+            12.84584476664713
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:1",
+          "text": "1:1",
+          "insert": [
+            361.9071971814966,
+            12.723209750880171
+          ]
+        }
+      ],
+      "G-ANNO-DIMS-1": [
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            199.38585593955273,
+            150.7925897257349
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.900",
+          "text": "-1.900",
+          "insert": [
+            190.00095439415858,
+            126.3845787966312
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-0.483",
+          "text": "-0.483",
+          "insert": [
+            195.2450095219279,
+            136.7811399193054
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.621",
+          "text": "-1.621",
+          "insert": [
+            195.61323338963518,
+            131.0429846475345
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1.300",
+          "text": "-1.300",
+          "insert": [
+            180.57243138730513,
+            150.9574807829594
+          ]
+        }
+      ],
+      "G-ANNO-SYMB-2": [
+        {
+          "type": "MTEXT",
+          "raw": "A-VYKOP",
+          "text": "A-VYKOP",
+          "insert": [
+            201.12166265188682,
+            132.5086112838129
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "A-VYKOP",
+          "text": "A-VYKOP",
+          "insert": [
+            175.6859645808596,
+            132.5086112838129
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "B_VYKOP",
+          "text": "B_VYKOP",
+          "insert": [
+            184.0973924291977,
+            119.5785976987995
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "B_VYKOP",
+          "text": "B_VYKOP",
+          "insert": [
+            184.09739242919778,
+            154.4502500830928
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "C_VYKOP",
+          "text": "C_VYKOP",
+          "insert": [
+            199.9993212911454,
+            119.5785976987995
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "C_VYKOP",
+          "text": "C_VYKOP",
+          "insert": [
+            199.9993212911454,
+            153.7771499640344
+          ]
+        }
+      ],
+      "G-ANNO-TEXT-2": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b0|i0|c238|p34|;Ř",
+          "text": "Ř",
+          "insert": [
+            224.0514121214439,
+            -0.5307563660523524
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ez ve sklonu",
+          "text": "ez ve sklonu",
+          "insert": [
+            224.2498496214439,
+            -0.5307563660523524
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": ", kolmý sklon 1:1",
+          "text": ", kolmý sklon 1:1",
+          "insert": [
+            225.7480527464439,
+            -0.5307563660523524
+          ]
+        }
+      ]
+    },
+    "dimensions": [
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.100000000000088,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.0974999999999415,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.997499999999913,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.0975000000002035,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 6.097499999999927,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.9999999999999134,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 5.000000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.999999999999884,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.770000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.769999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.517690876963694,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6000537610773754,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 30.061375777400418,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.1433233270639471,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6000000000001746,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.42249999999851573,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999825,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5998090933281638,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.029089373256284,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5999955567235011,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.571384663953213,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.597499999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.500000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.492500000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.599999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.600000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.500000000000015,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.597499999999927,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.5975000000001165,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.497499999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.597499999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.500000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.600000000000029,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5999955567237194,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.9818332930909673,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5713802206765977,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.017396013759309,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.2,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.2,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.199999999999971,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5999999999998836,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6000000000000874,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6000000000002037,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5999999999998836,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.42249999999851573,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999913,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.599809093328222,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.029089373256225,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.4199999999999709,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.499999999999942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5976909066733206,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.089324231276027,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.23915351096857923,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.340440339964058,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.137999617995752,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.164396384920052,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.125359975555766,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.134449341918429,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.137406087990588,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7399976443838392,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.137406032066996,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.137405059092096,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7399960416536202,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.137405063656683,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.3208320923888241,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7399956002039831,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.32083209080036607,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.1379996179956942,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8707467571099405,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 3.9007480346283994,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.1344493419183421,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7999999999999564,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.5999999999999127,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.7345219795158922,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.665676997570321,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8000000000000582,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6000000000000291,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.417000000000087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 22.55599999999962,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.417000000000262,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.6000000000001164,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 12.15701197245068,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8169428167807345,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.6999999680529,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.139680738081486,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.95535094590878,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.6832923871271492,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8070938893884886,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.8170402883560746,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 2.70007871560182,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.0289421870177609,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 8.828378650479891,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 7.78443565216806,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 4.114565491033107,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 14.206139489002549,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 14.20613948900267,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 10.27567619274417,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 9.689751603480792,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.139855862182578,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.7789250000000018,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 1.138000000000066,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.9566189477462556,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.32106812999022744,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.60000000000007,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.60000000000007,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "A-ANNO-DIMS",
+        "measurement_m": 0.9454303483681361,
+        "text_override": null
+      }
+    ],
+    "block_attribs": [],
+    "bbox": {
+      "x_min_m": -422.639146075715,
+      "y_min_m": -19.36346811719767,
+      "x_max_m": 499.9580525737203,
+      "y_max_m": 158.9002223147261,
+      "width_m": 922.5971986494353,
+      "height_m": 178.26369043192378
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

@@ -1,0 +1,911 @@
+{
+  "provenance": {
+    "source_file": "D_2_1_TZ_statika_sklad_TeAnau.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1319,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0\n",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30 XC3",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XC3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C25/30"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "F",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "0",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "A",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1999-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1995-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 1001",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 206",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 13670",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1090-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1090-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 5817",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 732810",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-7",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 12944",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1922-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 732604",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1999-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-7",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "geologický průzkum",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 10,
+    "char_count_total": 19878,
+    "text_per_page_truncated": [
+      "",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nOBSAH\n1. Úvod ......................................................................................................................................... 3\n1.1. Identifikační údaje ....................................................................................................................... 3\n1.2. Vstupní údaje .......",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n1. ÚVOD\nPředmětem projektu je posouzení nových konstrukcí zahradní sklad.\n1.1. IDENTIFIKAČNÍ ÚDAJE\nNázev stavby: Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16, k.ú. Jáchymov [656437]\nStavebník: Mgr. Jindřich Volný\nFibichova 733\n362 51 Jáchymov\nHlavní inženýr projektu: SMASH architekti s.r.o.\nV",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n[11] ČSN EN 1996-1-1 Eurokód 6: Navrhování zděných konstrukcí - Část 1-1: Obecná pravidla pro\nvyztužené a nevyztužené zděné konstrukce\n[12] ČSN EN 1997-1 Eurokód 7: Navrhování geotechnických konstrukcí - Část 1: Obecná pravidla.\n1.4. SEZNAM POUŽITÉ LITERATURY\n[13] Zásady navrhování stavebních konstrukcí. Příručka k ČSN EN 199",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nObr. 1 – Geologická mapa zájmového území\nstr.5",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nObr. 2 – Archívní dokumentace blízkého vrtu ID112349\nObr. 3 – Archívní dokumentace blízkého vrtu ID726695\n2.2. ZÁKLADOVÉ POMĚRY\nZahradní sklad bude založen ve vrstvě silně zvětralého svoru a pararuly svorového vzhledu. Dle [18] je\nsvor klasifikován jako hornina třídy R5-R6, která při zvětrávání přechází do třídy F4-CS pevné a",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPlochu parkovacího stání tvoří sekundární zastřešení z ocelových válcovaných profilů IPE180 a\npojezdových pororoštů. Celková délka stání je 7,0 m, z toho cca polovina nad skladem a zbytek nad\nsvažitým terénem směrem ke komunikaci. Ocelové IPE jsou pnuty přes skládanou stěnu na\ndvoustupňové patky se spodní částí z prostého bet",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\npožadavky na ocelové konstrukce“. Ocelové konstrukce jsou zařazeny do výrobní skupiny EXC2 podle\nČSN EN 1090-2, stupeň kvality svarů C podle ČSN EN ISO 5817.\nDodávka zděných konstrukcí se řídí požadavky uvedenými v ČSN EN 1996-2 Eurokód 6: Navrhování\nzděných konstrukcí - Část 2: Volba materiálů, konstruování a provádění zdiva",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nMimořádné zatížení\nPři návrhu nových konstrukcí není uvažováno s mimořádným zatížením podle ČSN EN 1991-1-7.\nSeizmické zatížení\nNení uvažováno.\nVíce viz Statický výpočet.\n5.4. POSOUZENÍ\nVeškeré popsané nové konstrukce vyhoví příslušným ČSN. Statické výpočty vnitřních sil a deformací jsou\nprovedeny na celkovém modelu konstrukc",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n7. PLÁN KONTROLY SPOLEHLIVOSTI KONSTRUKCÍ\nJedná se o zahradní sklad s převážně železobetonovými a betonovými konstrukcemi. Plán kontroly\nspolehlivosti konstrukcí není pro tyto konstrukce vyžadován žádnými relevantními normami ani jinými\nprávními předpisy.\nKontrola ocelových konstrukcí bude prováděna podle ČSN 732604 „Ocelové "
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0\n",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [
+            "XC3"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30 XC3",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "{'XF1', 'XC0', 'XA1', 'XC2', 'XC3'}",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 1990",
+        "ČSN EN 1991-1-1",
+        "ČSN EN 1991-1-3",
+        "ČSN EN 1991-1-4",
+        "ČSN EN 1992-1-1",
+        "ČSN EN 1993-1-1",
+        "ČSN EN 1995-1-1",
+        "ČSN EN 1996-1-1",
+        "ČSN EN 1997-1",
+        "ČSN EN 1992-1-2",
+        "ČSN EN 1993-1-8",
+        "ČSN EN 1999-1",
+        "ČSN EN 1995-1",
+        "ČSN EN 1996",
+        "ČSN 73 1001",
+        "ČSN EN 206",
+        "ČSN EN 13670",
+        "ČSN EN 1090-1",
+        "ČSN EN 1090-2",
+        "ČSN EN ISO 5817",
+        "ČSN EN 1996-2",
+        "ČSN 732810",
+        "ČSN EN 1991-1-7",
+        "ČSN EN ISO 12944",
+        "ČSN EN 1922-1-1",
+        "ČSN 732604",
+        "EN 1990",
+        "EN 1991-1-1",
+        "EN 1991-1-3",
+        "EN 1991-1-4",
+        "EN 1992-1-1",
+        "EN 1993-1-1",
+        "EN 1995-1-1",
+        "EN 1996-1-1",
+        "EN 1997-1",
+        "EN 1992-1-2",
+        "EN 1993-1-8",
+        "EN 1999-1",
+        "EN 1995-1",
+        "EN 1996",
+        "EN 1996-2",
+        "EN 1991-1-7"
+      ],
+      "identification": {},
+      "referenced_documents": [
+        "geologický průzkum"
+      ],
+      "drawing_data": {
+        "concrete_by_element": [
+          {
+            "element": "AVRŽENÉ KONSTRUKCE\nBETON PROSTÝ",
+            "concrete_class": "C16/20",
+            "exposure_classes": [],
+            "max_wc_ratio": null,
+            "dmax_mm": null,
+            "consistency_class": null,
+            "scc": false,
+            "cover_min_mm": null,
+            "cover_nom_mm": null,
+            "max_penetration_mm": null,
+            "raw_text": "avržené konstrukce\nBeton prostý: C16/20 XC0",
+            "confidence": 1.0
+          },
+          {
+            "element": "BETON VYZTUŽENÝCH KONSTRUKCÍ",
+            "concrete_class": "C25/30",
+            "exposure_classes": [
+              "XC3",
+              "XF1",
+              "XA1"
+            ],
+            "max_wc_ratio": null,
+            "dmax_mm": null,
+            "consistency_class": null,
+            "scc": false,
+            "cover_min_mm": null,
+            "cover_nom_mm": null,
+            "max_penetration_mm": null,
+            "raw_text": "Beton vyztužených konstrukcí: C25/30 XC3,XF1,XA1-CL0.4-Dmax.22-S3",
+            "confidence": 1.0
+          }
+        ],
+        "notes": [],
+        "title_block": null,
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": [
+          {
+            "element": "AVRŽENÉ KONSTRUKCE\nBETON PROSTÝ",
+            "status": "warning",
+            "rule": "CSN_EN_206_EXPOSURE_MISSING",
+            "message": "AVRŽENÉ KONSTRUKCE\nBETON PROSTÝ: chybí stupeň vlivu prostředí (XC/XD/XF/XA/XS)",
+            "norm": "ČSN EN 206"
+          },
+          {
+            "element": "BETON VYZTUŽENÝCH KONSTRUKCÍ",
+            "status": "violation",
+            "rule": "CSN_EN_206_MIN_CLASS",
+            "message": "BETON VYZTUŽENÝCH KONSTRUKCÍ: C25/30 nesplňuje XC3 (min. C30, skutečnost C25)",
+            "norm": "ČSN EN 206, Tab. F.1"
+          },
+          {
+            "element": "BETON VYZTUŽENÝCH KONSTRUKCÍ",
+            "status": "pass",
+            "rule": "CSN_EN_206_MIN_CLASS",
+            "message": "BETON VYZTUŽENÝCH KONSTRUKCÍ: C25/30 vyhovuje XF1 (min. C25)",
+            "norm": "ČSN EN 206, Tab. F.1"
+          },
+          {
+            "element": "BETON VYZTUŽENÝCH KONSTRUKCÍ",
+            "status": "violation",
+            "rule": "CSN_EN_206_MIN_CLASS",
+            "message": "BETON VYZTUŽENÝCH KONSTRUKCÍ: C25/30 nesplňuje XA1 (min. C30, skutečnost C25)",
+            "norm": "ČSN EN 206, Tab. F.1"
+          }
+        ]
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

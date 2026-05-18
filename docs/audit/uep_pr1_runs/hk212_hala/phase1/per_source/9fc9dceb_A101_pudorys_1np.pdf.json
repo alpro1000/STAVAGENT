@@ -1,0 +1,332 @@
+{
+  "provenance": {
+    "source_file": "A101_pudorys_1np.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 882,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C30/37",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C30/37",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "0",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "0016\nC D E\n3 3\n4 4\n5 5\n6 6\nC D E\n07972\nA A\nB\nB\nEL_HLAVNÍ\nROZVADĚČ\n1.01\nSklad fotovoltaických panelů\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stropy",
+        "description": "POVRCH Předměstí\nČÍSLO NÁZEV MÍSTNOSTÍ PLOCHA PODLAHA POVRCH STĚN STROPU\n1.01 Sklad fotovoltaických ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 10025",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 10025 8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 206-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "SOLAR DISPOREC s.r.o. , Praha",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Poznámka: Ing.arch. Jakub Volka, ČKA 03947",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 2631,
+    "text_per_page_truncated": [
+      "A B\n1 1\n2 2\n3145 4000 5000 4000 3170\nA B\n0016\n0016\n0003\n0016\n0016\nC D E\n3 3\n4 4\n5 5\n6 6\nC D E\n07972\nA A\nB\nB\nEL_HLAVNÍ\nROZVADĚČ\n1.01\nSklad fotovoltaických panelů\n495 m²\nSO.01\nHALA\n008\n0001x5\n0811\n0001x5\n0604\n0001x5\n077\n0001x3\n0511\n)0531(\n0001\n)0531(\n0001\n)0531(\n0001\n)0531(\n0001\n0022\n518\n+0.000\n0001x5\n5124\n0001x5\n598\n0001x5\n029\n)0531(\n0001\n)0531(\n0001\n)0531(\n0001\nF\nB\n3175 4000 5000 4000 3170\nVENKOVNÍ VZT\nJEDNOTKA\n2770 4000 5000 4000 2770\n19310\nF\n0332\n0102\n5332 °56.5\n°56.5 °56.5\n°56.5\n0332\n0011\n051"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C30/37",
+          "characteristic_strength": 30,
+          "cube_strength": 37,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C30/37",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "0016\nC D E\n3 3\n4 4\n5 5\n6 6\nC D E\n07972\nA A\nB\nB\nEL_HLAVNÍ\nROZVADĚČ\n1.01\nSklad fotovoltaických panelů\n",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stropy",
+          "description": "POVRCH Předměstí\nČÍSLO NÁZEV MÍSTNOSTÍ PLOCHA PODLAHA POVRCH STĚN STROPU\n1.01 Sklad fotovoltaických ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "{'XC0', 'XC2'}",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 10025",
+        "ČSN EN 10025 8",
+        "ČSN EN 206-1"
+      ],
+      "identification": {
+        "investor": "SOLAR DISPOREC s.r.o. , Praha",
+        "projektant": "Poznámka: Ing.arch. Jakub Volka, ČKA 03947"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

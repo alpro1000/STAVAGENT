@@ -1,0 +1,1336 @@
+{
+  "provenance": {
+    "source_file": "07_pbr_kpl.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 3706,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 22.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "í místa dle požadavků ČSN 73 0873, např. požární\nnádrž ve vzdálenosti do 600 m od objektu s objemem ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ") 7,195 m.\nParametry řešeného objektu:\n▪ Počet podlaží – n p = 1\n▪ Zastavěná plocha objektu – S z = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ":\n▪ Počet podlaží – n p = 1\n▪ Zastavěná plocha objektu – S z = 520 m2\n▪ Užitná plocha objektu – S = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 507.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "pod.), jedná se pouze o plochu určenou ke skladování. Plocha PÚ jednopodlažní\n5\nskladovací haly S = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1000.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "jelikož plocha PÚ jednopodlažní\nskladovací haly, která slouží pouze pro skladování, není větší než 1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 520.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "yhlášky č. 460/2021 Sb.:\n▪ Třída využití – I\n▪ Kategorie stavby – I (§7)\n▪ Zastavěná plocha = S z = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 6330.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "1,40\n1\n▪ P 2 = 89,10 (dle čl. 7.1.3 ČSN 73 0804)\n▪ P 2 = 1139 (dle čl. 7.1.4 ČSN 73 0804)\n▪ S max = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ",10 (dle čl. 7.1.3 ČSN 73 0804)\n▪ P 2 = 1139 (dle čl. 7.1.4 ČSN 73 0804)\n▪ S max = 6330 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3165.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ý PÚ, jelikož\nplocha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "cha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1899.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "kož půdorysná plocha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "cha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = 1899 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3165.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ý PÚ, jelikož plocha PÚ 5. skupiny\nvýrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "cha PÚ 5. skupiny\nvýrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 250.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ních konstrukcí z hlediska odpadávání a\nodkapávání:\nPlocha PÚ N01.01 – Skladovací hala je větší než ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 15.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "čtverečních\npodlahové plochy připadající na 1 osobu (podle ČSN 73 0818), tj. např. 30 % světlíků na ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "čemž se vychází z provozního řešení objektu.\nN01.01-II – Skladovací hala:\nPlocha skladovací haly je ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 50.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "užívat. Dle tab. 1, pol. 12.1 ČSN 73 0818 vychází celková obsazenost haly na E = 17 osob:\n- Prvních ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 50.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "73 0818 vychází celková obsazenost haly na E = 17 osob:\n- Prvních 50 m2 → 0 osob\n- Další plocha nad ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 150.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ychází celková obsazenost haly na E = 17 osob:\n- Prvních 50 m2 → 0 osob\n- Další plocha nad 50 m2 do ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 10.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "lková obsazenost haly na E = 17 osob:\n- Prvních 50 m2 → 0 osob\n- Další plocha nad 50 m2 do 150 m2 → ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 150.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ních 50 m2 → 0 osob\n- Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob\n- Další plocha nad ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1000.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "→ 0 osob\n- Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob\n- Další plocha nad 150 m2 do 1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 50.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "- Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob\n- Další plocha nad 150 m2 do 1000 m2 → ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 556.47,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ší než dle následujícího výpočtu.\n▪ půdorysný průmět plochy střešního pláště: A s = 19,74 * 28,19 = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 500.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ání předmětných prostor požární vodou\npožadovány následující parametry vnějších odběrních míst (S ≤ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3165.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "EPS,\njelikož plocha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "cha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1899.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "kož půdorysná plocha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "cha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = 1899 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3165.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ZOKT, jelikož plocha PÚ 5.\nskupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "cha PÚ 5.\nskupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "500 Ev.č.:2025/60-034\nA\nB\nC\nD\nE\n6\n6\n5\n5\n4\n4\n3\n3\n2\n2\n1\n1\nA\nB\nC\nD\nE\n1.01\nSklad fotovoltaických\npanelů ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "41\nCelkem bez otvorů S 1495,41\nk\nStanovení součinitele k\n3\nPůdorys je obdélníkový.\nh = 4,91 m\ns\nS = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1495.41,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "id:3042)(cid:3036) (cid:521)ℎ(cid:3042)(cid:3036)\n𝐹(cid:2868) =\nƩS *√h 𝑆(cid:3038)= 36,00\noi oi\nS = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "S max = 𝑝(cid:2870)6 (cid:521) 3 𝑘 3(cid:2873)0 (cid:521) m 𝑘(cid:2874) 2 (cid:521)𝑘(cid:2875)\nS = 4",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 7.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "0.10.1 ČSN 73 0804\n▪\n▪ l = 21\n𝑣\nm\n𝑢 𝐸∙𝑠 30 17∙1\n▪\n𝑙\nl\nu\nu\n𝑢,\n,\ns\nm\n,𝑚k\na\nu\nx\n𝑎t 𝑥\n≥\n=\nl u,s\n0\nk\n,\nu\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3650.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "pláště\nPředpokládaný požárně nebezpečný prostor\nsousedního objektu\n0\n5\n8690 7 4 6350 Řešený objekt\n3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 0,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "height_m",
+      "value": 0.0,
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 01 3495",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 7010",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 06 1008",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0802",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0804",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0810",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0818",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0845",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0848",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0872",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0873",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0875",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 080",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0831",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0833",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0835",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0865",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN ISO 3864-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 179",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 671-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 74 3282",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN ISO 3864",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 08",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0804 3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0804 2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 133/1985 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Zákon č. 283/2021 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "Malostranské náměstí 5/28, Malá Strana, 118 00 Praha 1",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "Parc. č. 1939/1, k. ú. Slezské předměstí [646971]",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "viz Příloha 3 tohoto PBŘ",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "viz Příloha 4 tohoto PBŘ",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "viz příloha D ČSN 73 0810)",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 32,
+    "char_count_total": 68028,
+    "text_per_page_truncated": [
+      "Ing. Michal Netušil, Ph.D.,\nAutorizovaný inženýr pro požární bezpečnost staveb, statiku a dynamiku staveb, ČKAIT 0012242,\nDružstevní ochoz 29, 140 00 Praha 4 Michle, IČ: 71653589, DIČ: CZ8305063316, michalnetusil@seznam.cz, +420 724 685 264\nŽivnostenské oprávnění vydáno v Praze dne 2.1.2013 úřadem městské části Praha 4 pod č.j.: P4-OŽ/101/13/VIZ/1055668/4.\nPOŽÁRNĚ BEZPEČNOSTNÍ ŘEŠENÍ\nEv. č. PBR 2025/60-034\nHALA HRADEC KRÁLOVÉ\nProjektová dokumentace pro povolení stavby\nTřída využití: I\nKategorie ",
+      "Obsah:\n1. Úvod: ......................................................................................................................................... 3\n2. Seznam použitých podkladů pro vypracování PBŘS: ................................................................ 3\n3. Stručný popis stavby z hlediska stavebních konstrukcí, výšky stavby, účelu užití, umístění\nstavby ve vztahu k okolní zástavbě: ........................................................................................... 4\n4.",
+      "1. Úvod:\nToto požárně bezpečnostní řešení je nedílnou součástí projektové dokumentace posuzovaného\nobjektu pro povolení stavby. Je zpracováno v rozsahu požadavku dle §41 odst. 2 vyhlášky č.\n246/2001 Sb. o požární prevenci ve znění pozdějšího předpisu, v souladu s vyhláškou 23/2008\nSb. o technických podmínkách požární ochrany staveb ve znění pozdějšího předpisu a dle\ntechnických předpisů a norem s nimi souvisejících. Posuzované parametry a řešení požární\nbezpečnosti, stanovené v tomto požárně bez",
+      "▪ ČSN 73 0875 – Požární bezpečnost staveb. Stanovení podmínek pro navrhování\nelektrické požární signalizace v rámci PBŘ\nPodklady pro vypracování PBŘ byly použity v platném znění ke dni zpracování.\nPoužité zkratky:\n▪ PBŘ – Požárně bezpečnostní řešení\n▪ SPB – Stupeň požární bezpečnosti\n▪ PO – Požární odolnost\n▪ PÚ – Požární úsek\n▪ ÚC – Úniková cesta\n▪ NÚC – Nechráněná úniková cesta\n▪ CHÚC – Chráněná úniková cesta\n▪ VP – Volné prostranství\n▪ ú.p. – Únikový pruh\n▪ PBZ – Požárně bezpečnostní zařízení",
+      "Provozní řešení:\nJedná se o skladovací halu, kde se budou skladovat demontované části FVE panelů. Součástí\nhaly nejsou žádné vestavky, administrativní části nebo hygienické zázemí – tyto prostory jsou\nřešeny v rámci vedlejších objektů v areálu.\nTechnická a technologická zařízení:\nInženýrské sítě:\nV řešeném objektu jsou zřízeny inženýrské sítě následovně:\n▪ Vodovod – ano\n▪ Kanalizace – ano\n▪ Plynovod – ne\n▪ Elektroinstalace – ano\nV objektu se nenachází instalační šachty, rozvody jsou vedeny volně",
+      "skladovací haly S = 507 m2, tedy dle čl. 4.1 d) ČSN 73 0845 se sklad nenavrhuje dle ČSN\nPÚ\n73 0845 a při návrhu se dále postupuje dle ČSN 73 0804, jelikož plocha PÚ jednopodlažní\nskladovací haly, která slouží pouze pro skladování, není větší než 1000 m2.\nDle §25 vyhlášky 23/2008 Sb. ve znění pozdějšího předpisu je řešený objekt řešen\nv souladu s ČSN 73 0804 a dalších souvisejících norem. V posuzované hale se neskladují\npyrotechnické výrobky.\nParametry objektu pro stanovení předpokládané kategori",
+      "a 4.6, tab. E.1 ČSN 73 080). V PÚ se nenachází PBZ, která by dle čl. 7.2 a tab. 4 ČSN 73 0804\nsnižovala součinitel c → c = 1. Materiál se uvažuje skladovat na paletách, přičemž skladovací\nvýška bude max. h sc = 3 m.\nPožární riziko:\nPožární riziko je stanoveno dle čl. 6.2.1 a) ČSN 73 0804, a to ekvivalentní dobou trvání požáru\ndle čl. 6.2.2 a rovnice 1 ČSN 73 0804. Požární riziko je určeno pro celý PÚ pro požární zatížení\np dle čl. 6.3.1 ČSN 73 0804. Výpočet viz Příloha 3 tohoto PBŘ.\n▪ p = 90 kg/",
+      "Hodnocení požární odolnosti stavebních konstrukcí:\nDle §5 a §25 vyhlášky 23/2008 Sb. nejsou na posuzovaný objekt stanoveny žádné požadavky\npřevyšující požadavky ČSN 73 0804 a ČSN 73 0810.\nPožadovaná požární odolnost stavebních konstrukcí dle tab. 10 ČSN 73 0804:\nPoznámka: Odkazy v tabulce se vztahují na články ČSN 73 0804.\nStupeň požární bezpečnosti požárního úseku\n.lo\nStavební konstrukce I. II. III. IV. V. VI. VII.\nP\nPožární odolnost stavebních konstrukcí a její druh (viz 5.6.1)3)\n1 Požární stě",
+      "2) ostatních šachet (instalačních,\nvýtahových apod.)\nb) požární uzávěry otvorů 15 DP2 15 DP2 15 DP1 15 DP1 30 DP1 30 DP1 45 DP1\nv požárně dělicích konstrukcích\n1) šachet evakuačních a\npožárních výtahů\n2) ostatních šachet (instalačních,\nvýtahových apod.)\n12 Střešní plášť (viz 9.14.1) – – 15 15 30 30 DP1 45 DP1\n13 Jednopodlažní objekty podle 9.1.4 staticky nezávislé\na) požární stěny 30 DP1 45 DP1 60 DP1 90 DP1 120 DP1 – –\nb) požární uzávěry otvorů 15 DP1 30 DP1 30 DP1 45 DP1 60 DP1 – –\nv požárních",
+      "požární odolnosti a druhu konstrukční části, se provede před uvedením stavby do\nužívání prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 vyhlášky o\npožární prevenci … bude doloženo\nSystémové fasádní panely zasažené PNP\n- Z důvodu zasažení části obvodové konstrukce posuzovaného objektu PNP sousedního\nobjektu (garáž) se požaduje PO z vnější strany. Dle pol. 12, tab. B.1 ČSN 73 0802 se\nuvažuje požární zatížení garáže p v = 35 kg/m2, objekt má nehořlavý konstrukční systém\na 1 NP. Dle tab.",
+      "- konstrukce nezajišťující stabilitu objektu nebo jeho části, které se nacházejí\nv nejvyšších dvou podlažích (většinou v nástavbách nebo vestavbách)\nv objektech s původní požární výškou h ≤ 22,5 m (např. krovy).\nJedná se o objekt s požární výškou h = 0 m a 1 NP.\nc) Mají prokázanou životnost minimálně 10 let (viz příloha D ČSN 73 0810).\nVýrobce musí doložit.\nTěchto ochran nelze užít pro zvýšení PO u konstrukcí požárně dělicích a nosných\nzajišťující stabilitu objektu nebo jeho části u PÚ:\n- v podz",
+      "Instalační šachty:\nNevyskytují se.\nStřešní plášť:\nStřešní plášť mimo PNP – střešní panely\n- Dle tab. 10 ČSN 73 0804 je střešní plášť bez požadavku na PO, jelikož PÚ pod\nstřešním pláštěm je ve II. SPB. Pro objekt je navržen střešní plášť s plechovou krytinou.\nStřešní plášť zasažený PNP vedlejšího objektu – střešní panely\n- Z důvodu zasažení části střešního pláště posuzovaného objektu PNP sousedního objektu\n(garáž) se požaduje PO z vnější strany. Dle pol. 12, tab. B.1 ČSN 73 0802 se uvažuje\npožárn",
+      "Výpočet půdorysné plochy PÚ připadající na 1 osobu\nPÚ S [m2] E m2/osoba\nPÚ\nN01.01 – Skladovací hala 495 18 28,21\nZhodnocení konstrukce střech a podhledů stropních konstrukcí z hlediska odpadávání a\nodkapávání:\nPlocha PÚ N01.01 – Skladovací hala je větší než 250 m2. Z tohoto důvodu se dle čl. 9.9.2 a)\nČSN 73 0804 v konstrukcích podhledů stropů PÚ nesmí použít výrobků, které při požáru (při\npožární zkoušce dle ČSN 73 0865) jako hořící odkapávají nebo odpadávají.\nPrůsvitné střešní pláště a světlíky",
+      "Použité stavební hmoty:\n▪ Sklo, ocel, plech, beton – A1\n▪ SDK panely – A2\n8. Zhodnocení možnosti provedení požárního zásahu, evakuace osob, zvířat a majetku a\nstanovení druhů a počtu únikových cest, jejich kapacity, provedení a vybavení:\nParametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni\nprojektové dokumentace s ohledem na finální podobu posuzovaného objektu (rozmístění\ntechnologie a regálů apod.).\nZhodnocení možnosti provedení požárního zásahu:\nProvedení po",
+      "dle tab. 16 ČSN 73 0804, 5. skupina provozu, více ÚC\n▪ E (počet evakuovaných osob dle obsazenosti objektu) = 17 osob\n▪ s (podmínky evakuace) = 1\ndle tab. 18 ČSN 73 0804, pol. 1, současná evakuace, NÚC\n▪ K u (jednotková kapacita únikového pruhu) = 40 osob/min\ndle tab. 17 ČSN 73 0804, po rovině\n▪ u (započitatelný počet únikových pruhů) = 1\nuvažuje se minimální šířka NÚC dle čl. 10.10.1 ČSN 73 0804\n▪\n▪ l = 21\n𝑣\nm\n𝑢 𝐸∙𝑠 30 17∙1\n▪\n𝑙\nl\nu\nu\n𝑢,\n,\ns\nm\n,𝑚k\na\nu\nx\n𝑎t 𝑥\n≥\n=\nl u,s\n0\nk\n,\nu\n7\nt\n5\n→\n(𝑡 𝑢\nv\n,\ny\n𝑚",
+      "Značení únikových cest\nOznačení únikových cest musí být v souladu s čl. 10.19 ČSN 73 0804, resp. ČSN ISO 3864-1.\nOznačení musí být umístěno minimálně tam, kde se mění směr úniku, případně dochází ke\nkřížení komunikací. V místech se sníženou viditelností se doporučuje doplnit značení směru\núniku značkami ze svítících barev, s vnitřním zdrojem světla nebo jinou obdobnou úpravou.\nPokud budou ÚC používány též dopravními vozíky apod., musí se na podlaze vyznačit\n(např. pruhy typu zebra) plochy ÚC, na",
+      "Pohledy na řešené fasády objektu:\nOdstupové vzdálenosti od obvodových stěn:\nOdstupové vzdálenosti jsou pro posuzovaný objekt stanoveny v souladu s §11 odst.2 vyhlášky\n23/2008 Sb. ve znění pozdějšího předpisu a v souladu s kap. 11 ČSN 73 0804 pomocí výpočtu\nhustoty tepelného toku.\nOkrajové podmínky výpočtu:\n▪ Průběh požáru podle normové teplotní křivky\n17",
+      "▪ Emisivita ε = 1,0\n▪ Kritická hodnota tepelného toku I o,cr = 18,5 kW/m2\n▪ Ekvivalentní doba trvání požáru τ e [min] – 115,29 min\n▪ Nehořlavý konstrukční systém: τ e + 0 min\nVýpočet byl proveden pomocí následujících rovnic:\n4 −11\nI = ε∗(TN+273) ∗5,67∗10\nTN = 20+345log (8∗pv+1)\n1 A −1 B −1 B −1 A\nϕ= [ 2 0,5tan 2 0,5tan + 2 0,5tan 2 0,5]\nOdstupové v2zπdál(e1n+osAti ) (1+A ) (1+B ) (1+B )\nSpecifikace PÚ a Rozměry POP [m] S Rozměry stěny [m]\nPO S [m2] p [%] d [m]\nobvodové stěny počet b h [m2] l h P",
+      "ve svislém směru:\nHodnota odstupové vzdálenosti d s je určena dle čl. 9.14.6 b) ČSN 73 0804 – nepožaduje\nse vzdálenost vyšší než dle následujícího výpočtu.\n▪ půdorysný průmět plochy střešního pláště: A s = 19,74 * 28,19 = 556,47 m2\n▪\n1/3 1/3\n→𝑑𝑠 p=ůd𝐴o 𝑠 rys=ný5 p5r6ům,47ět do =pů8d,o2r3y s𝑚u (vzdálenost od obvodové stěny) d = 8,70 m\nV PNP od střešního pláště posuzovaného objektu se nenachází žádné jiné objekty.\nVykreslení PNP dle obr. 15 ČSN 73 0804 viz níže.\nVe smyslu čl. 10.4.12 (poznámka) ČS",
+      "▪ Požární otevřenost: p o = 80 % (uvažovaná plocha 41 x 3 m)\n→ odstupová vzdálenost d = 10,60 m\nZávěr:\nVýše uvedené odstupové vzdálenosti jsou znázorněny v přiloženém situačním výkresu\n(Příloha 1 tohoto PBŘ). Objekt se nenachází v PNP objektů v okolí. PNP řešeného objektu\nnezasahuje za hranici pozemku stavebníka. PNP řešeného objektu nezasahuje na jiné objekty.\nOdstupové vzdálenosti lze považovat za vyhovující.\n10. Určení způsobu zabezpečení stavby požární vodou včetně rozmístění vnitřních a vně",
+      "Vnitřní odběrní místa:\nDle čl. 4.4 b) ČSN 73 0873 se musí zřídit vnitřní odběrní místa v řešeném PÚ, jelikož součin\npůdorysné plochy PÚ a požárního zatížení přesahuje hodnotu 9000.\nVnitřní odběrní místa – posouzení\nPÚ p [kg/m2] S [m2] p*S Hydrant\nN01.01 – Skladovací hala 90 495 44 550 ANO\nVnitřní odběrní místa a požadavky na ně musí odpovídat kap. 6 ČSN 73 0873:\n▪ Typ hadicového systému – tvarově stálá hadice\nDle čl. 6.2 (poznámka) ČSN 73 0873 by byl systém se zploštitelnou hadicí nevyhovující\nk",
+      "umožní otevření brány. Žádné další překážky, které by omezovaly průjezd či podjezd vozidel\nJPO, se zde nenachází. V souladu s přílohou 3 vyhlášky 23/2008 Sb. musí být místa zastavení\nJPO umístěna mimo ochranné pásmo nadzemního vedení vysokého napětí s vodiči bez izolace,\naby byl umožněn příjezd JPO a provedení zásahu mimo ochranné pásmo. Takto provedené\nkomunikace lze považovat za vyhovující.\nZásahové cesty:\nVnitřní zásahové cesty:\nV souladu s čl. 13.5.1 ČSN 73 0804 se nezřizují vnitřní zásahové",
+      "Závěr:\nUmístění PHP musí umožňovat jejich snadné a rychlé použití, zároveň je nutné zajistit, aby\nbyly přístroje snadno viditelné a lehce přístupné. PHP se umísťují na svislé stavební konstrukci\na v případě, že jsou k tomu konstrukčně přizpůsobeny, na vodorovné stavební konstrukci.\nRukojeť hasicího přístroje umístěného na svislé stavební konstrukci musí být nejvýše 1,5 m nad\npodlahou. Hasicí přístroje umístěné na podlaze nebo na jiné vodorovné stavební konstrukci\nmusí být vhodným způsobem zajišt",
+      "Vytápění:\nObjekt je vytápěn pomocí 21 ks sálavých elektrických stropních panelů o výkonu\n21*1200W/230V a 4 ks nástěnných elektrických ohřívačů o výkonu 4*9000W/400V. Celkový\ninstalovaný výkon topidel bude 61200 W.\nBezpečné vzdálenosti od jednotlivých spotřebičů, které se v objektu nachází, jsou dány\npřílohou 8 vyhlášky 23/2008 Sb. a ČSN 06 1008, není-li v dokumentaci výrobku uvedena\nvzdálenost vyšší. V této vzdálenosti od spotřebiče se nesmí nacházet žádné hořlavé konstrukce\na materiály. Dle tab",
+      "Otvory pro nepotrubní větrání:\nV požárně dělicích konstrukcí se nenachází otvory pro nepotrubní větrání na hranicích PÚ.\nDále tak nejsou stanoveny požadavky na tyto otvory dle čl. 9.2.5 a 9.2.6 ČSN 73 0810.\nVyústění VZT potrubí:\nV souladu s čl. 4.3.1 ČSN 73 0872 musí být vyústění VZT potrubí vně objektu uspořádáno a\numístěno tak, aby jím nemohl být přenesen oheň nebo kouř do PÚ téhož objektu nebo jiných\nobjektů.\nV souladu s čl. 4.3.2 ČSN 73 0872 musí být otvory pro výfuk vzduchu umístěny nejméně",
+      "Samočinné stabilní hasicí zařízení:\nV souladu s čl. 7.2.7 ČSN 73 0804 řešený sklad není vybaven SSHZ, jelikož půdorysná plocha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = 1899 m2 ≥ S PÚ = 495 m2\nZařízení pro odvod tepla a kouře:\nV souladu s čl. 7.2.8 ČSN 73 0804 řešený sklad není vybaven ZOKT, jelikož plocha PÚ 5.\nskupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = 495 m2\nNouzové osvětlení:\nV souladu s čl. 10.18 ČSN 73 0804",
+      "▪ Požární žebřík\nV souladu s NV 375/2017 Sb. musí být značky a zařízení určené k vysílání světelných a\nzvukových signálů vhodné pro prostředí, ve kterém jsou používány, a musí být zhotoveny z\nodolného materiálu; pokud nejsou zhotoveny z fotoluminiscenčního nebo reflexního materiálu,\nmusí při snížené viditelnosti vydávat světlo nebo být osvětleny.\n17. Závěr:\nToto požárně bezpečnostní řešení bylo v době zpracování zpracováno v souladu s platnými\nprávními předpisy a normami na úseku PO. V případě j",
+      "LEGENDA PBS:\nHranice pozemku stavebníka\nC:\\Users\\Anna Abrahámová\\Nextcloud2\\010_Projekty architektura\\212_Hradec Králové hala\\30_Podklady\\50_Zadání\\PDF Images\\Jitka C.3. SITUACE-Model97711753.png\nPožárně nebezpečný prostor řešeného objektu\nC:\\Users\\Anna Abrahámová\\Nextcloud2\\010_Projekty architektura\\212_Hradec Králové hala\\30_Podklady\\50_Zadání\\PDF Images\\Jitka C.3. SITUACE-Model20feb042.png od obvodových stěn\nPožárně nebezpečný prostor řešeného objektu\n2659\nod střešního pláště\nPředpokládaný po",
+      "A\nB\nC\nD\nE\n6\n6\n5\n5\n4\n4\n3\n3\n2\n2\n1\n1\nA\nB\nC\nD\nE\n1.01\nSklad fotovoltaických\npanelů 495 m²\n+0.000\nF F\n8.95° 11.15°\n5.65° 5.65°\n0033\n7450 7450\n0563\nEW 15 DP1\nR 15 DP1 KM 1 R 15 DP1 R 15 DP1 R 15 DP1 R 15 DP1\nR 15 DP1\nR 15 DP1 R 15 DP1\n18\n27A 27A\n2x 2x\nN01.01-II\nR 15 DP1 R 15 DP1 (nosníky) R 15 DP1\nEW 15 DP1 EW 15 DP1\nR 15 DP1 R 15 DP1\nR 15 DP1 R 15 DP1\nTS\nR 15 DP1 R 15 DP1 R 15 DP1 R 15 DP1 R 15 DP1 R 15 DP1 H\nD25 KM 1\nEW 15 DP1\nB75\n81\n.xam\n81\n.xam\n0052\n1PD\n51\nIE\n1100\nEI 15 DP1\n0078\n0078\n1PD\n51\nC-IE\nLE",
+      "PBŘ 2025/60-034 – Hala Hradec Králové – Příloha 3\nVýpočet požárního rizika a stanovení SPB\nN01.01 – Skladovací hala\nVýpočet nahodilého požárního zatížení p\nn\nPoložka dle ČSN\nMístnost S [m2] p [kg/m2] a [-] p *S p *a *S 73 0802, Příl. A\nni ni ni i ni ni i\nSklad (h ≤ 3 m) 495,00 85 – 42075,00 – 13.8.5 + 13.2.2\nsc\nCelkem 495,00 42075,00\nVýpočet stálého požárního zatížení p\ns\nS [m2] p [kg/m2]\ns\nokna do 500 3\ndveře do 500 2\npodlaha nehořlavá 0\nCelkem 5\nVýpočet požárního zatížení p\np = 85,00\nkg/m2\nn\np",
+      "Výpočet parametru odvětrání F\n0\n(cid:3037) (cid:2869)/(cid:2870)\n∑(cid:3036)(cid:2880)(cid:2869)𝑆(cid:3042)(cid:3036) (cid:521)ℎ(cid:3042)(cid:3036)\n𝐹(cid:2868) =\nƩS *√h 𝑆(cid:3038)= 36,00\noi oi\nS = 1495,41\nm2\nk\nF = 0,024\n0\nVýpočet ekvivalentní doby trvání požáru τ\ne\n2𝑝(cid:521)𝑐\nτ(cid:3032) = (cid:2869)/(cid:2874)\np 𝑘(cid:2871)=(cid:521)𝐹(cid:2868) 90,00 kg/m2\nc = 1,00\nk = 2,91\n3\nF = 0,02\n0\nτ = 115,29 min\ne\nStanovení stupně požární bezpečnosti\nn = 1\np\nk = n 1/2 = 1,00\n5 p\nk = nehořlavý = 1,00\n6",
+      "PBŘ 2025/60-034 – Hala Hradec Králové – Příloha 4\nVýpočet ekonomického rizika\nN01.01 – Skladovací hala\nVýpočet pravděpodobností p a p\n1 2\nPoložka dle ČSN\nMístnost S [m2] p [-] p [-] p *S p *S 73 0804, tab. E.1\n1 2 1i i 2i i\nSklad 495,00 1,4 0,090 693,00 44,55 5.3.4\nCelkem 495,00 693,00 44,55\nIndex pravděpodobnosti vzniku a rozšíření požáru P\n1\np = 1,40 → 5. skupina výrob a provozů\n1\nc = 1 bez PBZ\nP =\n1\nP = 1,40\n1 𝑝(cid:2869)(cid:521)𝑐\nIndex pravděpodobnosti rozsahu škod způsobených požárem P dle"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "í místa dle požadavků ČSN 73 0873, např. požární\nnádrž ve vzdálenosti do 600 m od objektu s objemem ",
+          "volume_m3": 22.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ") 7,195 m.\nParametry řešeného objektu:\n▪ Počet podlaží – n p = 1\n▪ Zastavěná plocha objektu – S z = ",
+          "volume_m3": null,
+          "area_m2": 520.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ":\n▪ Počet podlaží – n p = 1\n▪ Zastavěná plocha objektu – S z = 520 m2\n▪ Užitná plocha objektu – S = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "pod.), jedná se pouze o plochu určenou ke skladování. Plocha PÚ jednopodlažní\n5\nskladovací haly S = ",
+          "volume_m3": null,
+          "area_m2": 507.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "jelikož plocha PÚ jednopodlažní\nskladovací haly, která slouží pouze pro skladování, není větší než 1",
+          "volume_m3": null,
+          "area_m2": 1000.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "yhlášky č. 460/2021 Sb.:\n▪ Třída využití – I\n▪ Kategorie stavby – I (§7)\n▪ Zastavěná plocha = S z = ",
+          "volume_m3": null,
+          "area_m2": 520.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "1,40\n1\n▪ P 2 = 89,10 (dle čl. 7.1.3 ČSN 73 0804)\n▪ P 2 = 1139 (dle čl. 7.1.4 ČSN 73 0804)\n▪ S max = ",
+          "volume_m3": null,
+          "area_m2": 6330.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ",10 (dle čl. 7.1.3 ČSN 73 0804)\n▪ P 2 = 1139 (dle čl. 7.1.4 ČSN 73 0804)\n▪ S max = 6330 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ý PÚ, jelikož\nplocha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = ",
+          "volume_m3": null,
+          "area_m2": 3165.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "cha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "kož půdorysná plocha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = ",
+          "volume_m3": null,
+          "area_m2": 1899.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "cha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = 1899 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ý PÚ, jelikož plocha PÚ 5. skupiny\nvýrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = ",
+          "volume_m3": null,
+          "area_m2": 3165.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "cha PÚ 5. skupiny\nvýrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ních konstrukcí z hlediska odpadávání a\nodkapávání:\nPlocha PÚ N01.01 – Skladovací hala je větší než ",
+          "volume_m3": null,
+          "area_m2": 250.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "čtverečních\npodlahové plochy připadající na 1 osobu (podle ČSN 73 0818), tj. např. 30 % světlíků na ",
+          "volume_m3": null,
+          "area_m2": 15.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "čemž se vychází z provozního řešení objektu.\nN01.01-II – Skladovací hala:\nPlocha skladovací haly je ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "užívat. Dle tab. 1, pol. 12.1 ČSN 73 0818 vychází celková obsazenost haly na E = 17 osob:\n- Prvních ",
+          "volume_m3": null,
+          "area_m2": 50.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "73 0818 vychází celková obsazenost haly na E = 17 osob:\n- Prvních 50 m2 → 0 osob\n- Další plocha nad ",
+          "volume_m3": null,
+          "area_m2": 50.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ychází celková obsazenost haly na E = 17 osob:\n- Prvních 50 m2 → 0 osob\n- Další plocha nad 50 m2 do ",
+          "volume_m3": null,
+          "area_m2": 150.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "lková obsazenost haly na E = 17 osob:\n- Prvních 50 m2 → 0 osob\n- Další plocha nad 50 m2 do 150 m2 → ",
+          "volume_m3": null,
+          "area_m2": 10.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ních 50 m2 → 0 osob\n- Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob\n- Další plocha nad ",
+          "volume_m3": null,
+          "area_m2": 150.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "→ 0 osob\n- Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob\n- Další plocha nad 150 m2 do 1",
+          "volume_m3": null,
+          "area_m2": 1000.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "- Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob\n- Další plocha nad 150 m2 do 1000 m2 → ",
+          "volume_m3": null,
+          "area_m2": 50.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ší než dle následujícího výpočtu.\n▪ půdorysný průmět plochy střešního pláště: A s = 19,74 * 28,19 = ",
+          "volume_m3": null,
+          "area_m2": 556.47,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ání předmětných prostor požární vodou\npožadovány následující parametry vnějších odběrních míst (S ≤ ",
+          "volume_m3": null,
+          "area_m2": 500.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "EPS,\njelikož plocha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3",
+          "volume_m3": null,
+          "area_m2": 3165.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "cha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "kož půdorysná plocha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = ",
+          "volume_m3": null,
+          "area_m2": 1899.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "cha\nPÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙S max .\n▪ 0,3 ∙ S max = 1899 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ZOKT, jelikož plocha PÚ 5.\nskupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = ",
+          "volume_m3": null,
+          "area_m2": 3165.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "cha PÚ 5.\nskupiny výrobního provozu nepřesahuje plochu 0,5∙S max .\n▪ 0,5 ∙ S max = 3165 m2 ≥ S PÚ = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "500 Ev.č.:2025/60-034\nA\nB\nC\nD\nE\n6\n6\n5\n5\n4\n4\n3\n3\n2\n2\n1\n1\nA\nB\nC\nD\nE\n1.01\nSklad fotovoltaických\npanelů ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "41\nCelkem bez otvorů S 1495,41\nk\nStanovení součinitele k\n3\nPůdorys je obdélníkový.\nh = 4,91 m\ns\nS = ",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "id:3042)(cid:3036) (cid:521)ℎ(cid:3042)(cid:3036)\n𝐹(cid:2868) =\nƩS *√h 𝑆(cid:3038)= 36,00\noi oi\nS = ",
+          "volume_m3": null,
+          "area_m2": 1495.41,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "S max = 𝑝(cid:2870)6 (cid:521) 3 𝑘 3(cid:2873)0 (cid:521) m 𝑘(cid:2874) 2 (cid:521)𝑘(cid:2875)\nS = 4",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "0.10.1 ČSN 73 0804\n▪\n▪ l = 21\n𝑣\nm\n𝑢 𝐸∙𝑠 30 17∙1\n▪\n𝑙\nl\nu\nu\n𝑢,\n,\ns\nm\n,𝑚k\na\nu\nx\n𝑎t 𝑥\n≥\n=\nl u,s\n0\nk\n,\nu\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 7.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "pláště\nPředpokládaný požárně nebezpečný prostor\nsousedního objektu\n0\n5\n8690 7 4 6350 Řešený objekt\n3",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3650.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 0,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": 0.0,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 01 3495",
+        "ČSN EN ISO 7010",
+        "ČSN 06 1008",
+        "ČSN 73 0802",
+        "ČSN 73 0804",
+        "ČSN 73 0810",
+        "ČSN 73 0818",
+        "ČSN 73 0845",
+        "ČSN 73 0848",
+        "ČSN 73 0872",
+        "ČSN 73 0873",
+        "ČSN 73 0875",
+        "ČSN 73 080",
+        "ČSN 73 0831",
+        "ČSN 73 0833",
+        "ČSN 73 0835",
+        "ČSN 73 0865",
+        "ČSN ISO 3864-1",
+        "ČSN EN 179",
+        "ČSN EN 671-3",
+        "ČSN 74 3282",
+        "ČSN ISO 3864",
+        "ČSN 73 08",
+        "ČSN 73 0804 3",
+        "ČSN 73 0804 2",
+        "Zákon č. 133/1985 Sb.",
+        "Zákon č. 283/2021 Sb."
+      ],
+      "identification": {
+        "investor": "Malostranské náměstí 5/28, Malá Strana, 118 00 Praha 1",
+        "misto": "Parc. č. 1939/1, k. ú. Slezské předměstí [646971]"
+      },
+      "referenced_documents": [
+        "viz Příloha 3 tohoto PBŘ",
+        "viz Příloha 4 tohoto PBŘ",
+        "viz příloha D ČSN 73 0810)"
+      ],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": "Část PD.:",
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": "DPS",
+          "meritko": "1:500",
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "Ing. Eliška Vorlíčková",
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [
+          "Kontaktní zateplovací systém obvodových stěn:"
+        ],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

@@ -1,0 +1,119 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_4020_00_Podkladni_betony.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 6554,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C12/15",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C12/15",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 4360,
+    "text_per_page_truncated": [
+      "Ř\nE\nZ\n2\nHRANICE\nPOZEMKU\nD5\nD4\nDA\n1\nZ\nE\nŘ\nD3\nDB\n1\nH.H.-2,550\nS.H. -2,650 H.H.-2050\nS.H. -2600\nHRANICE POZEMKU\nŘEZ 3\n2\nD2\nB1\nH.H.-2050 DC B2 B3\nCA S.H. -2600 B4\nB5\nH.H.-4,125 B6\nS.H. -4,225 B7\n1\nH.H.-2650 U\nK\nS.H. -3200 M\nE\nZ\nO\n2 P\nE\nC\nD5 NI\nCE A\nBA R\nH\nH.H.-2650\nS.H. -3200\nH.H.-4,525\nS.H. -4,625\nBA\nD4\n3\nDA\n3\nH\nR\nA\nN H.H.-3350\nIC\nE S.H. -3450\nP BB\nO\nZ\nE\nM\nK H.H.-3350\nU C5\nS.H. -3450\nD3\nH.H.-2650 H.H.-3050\nDB BB\nS.H. -2750 S.H. -3150\nH.H.-3050\nH.H.-2650\nS.H. -3150\nS.H. -2750\nD2 C4\nCD BC\nH.H.-3350\nS"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C12/15",
+          "characteristic_strength": 12,
+          "cube_strength": 15,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C12/15",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

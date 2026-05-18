@@ -1,0 +1,107 @@
+{
+  "provenance": {
+    "source_file": "E.01 - dodatek PD č.1.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 118,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "Karlovarský",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "kraj",
+      "value": "katastrální území: Jáchymov [656437]",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 4,
+    "char_count_total": 2172,
+    "text_per_page_truncated": [
+      "D PD .1\nODATEK Č\nIdentifikační údaje\na) název stavby,\nZahradní sklad a přístupové schodiště k RD Fibichova č.p. 733, na parcele 1094/16, k.ú.\nJáchymov [656437]\nb) místo stavby\nKarlovarský kraj\nkatastrální území: Jáchymov [656437]\nparcelní čísla: 1094/16, st. 1022\nFibichova č.p. 733\n36251 Jáchymov\nc) předmět dodatku\nDoplnění PD o doplňující informace - o rozhledových poměrech a doplnění PD o upřesnění\nnapojení na veřejnou komunikaci. Dodatek vydán na žádost DI PČR.\nSoučástí doplnění jsou:\nRevidov",
+      "Napojení pozemků na komunikaci v ulici Dvořákova, tedy na horní hraně pozemků, je v místě\nobvyklé. Okolní pozemky mají takto napojeny své zahrady různými vraty a vrátky. Zároveň\njsou zde napojeny přímo na silnici i kryté garáže. Níže fotodokumentace z ulice Dvořákova:",
+      "",
+      "Doplňující informace k sjezdu z komunikace:\n- Parkovací stání je umístěno na střeše navrhovaného objektu skladu, na pozemku\ninvestora. Vjezdová brána je rovněž na pozemku investora. Samotné napojení\npozemku a komunikace bude provedeno vydlážděním z betonových dlaždic.\nSpádování je směrem na pozemek investora. Dešťové vody z napojení budou\nsvedeny na pozemek investora a zde likvidovány. Nedojde k stékání dešťových vod\nna veřejnou komunikaci.\nV Jáchymově, 22.10.2025\nSMASH architekti s.r.o.\nIng. ar"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "misto": "Karlovarský",
+        "kraj": "katastrální území: Jáchymov [656437]"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

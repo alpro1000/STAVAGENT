@@ -1,0 +1,230 @@
+{
+  "provenance": {
+    "source_file": "01_ars_pruvodni_A.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 179,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 3694.62,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "odklady získané od správců sítí\nA.3 TEA - technicko-ekonomické atributy budov\na) obestavěný prostor\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 540.1,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "A.3 TEA - technicko-ekonomické atributy budov\na) obestavěný prostor\n3694,62 m3\nb) zastavěná plocha\n5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 495.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "é atributy budov\na) obestavěný prostor\n3694,62 m3\nb) zastavěná plocha\n540,10 m2\nc) podlahová plocha\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "height_m",
+      "value": 7.195,
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "built_up_area_m2",
+      "value": 540.1,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "nebo změna dokončené stavby, trvalá nebo",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "-",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Basepoint s.r.o",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 4,
+    "char_count_total": 3820,
+    "text_per_page_truncated": [
+      "PRŮVODNÍ TECHNICKÁ ZPRÁVA\nA\nHala Hradec Králové\nHradec Králové, KÚ.: Slezské předměstí [646971], Parc. Č.: 1939/1\nDokumentace pro povolení stavby (DPS)\nV Praze, 08/2025\nIng. arch. Jakub Volka, ČKA 0003947\nVypracoval: Anna Abrahámová\nBasepoint s.r.o.\nKvětoslava Mašity 251, 252 31 Všenory",
+      "A.1 IDENTIFIKAČNÍ ÚDAJE\nA.1.1 Údaje o stavbě\na) název stavby\nHala Hradec Králové\nb) místo stavby - kraj, katastrální území, parcelní čísla pozemků, u budov adresa a\nčísla popisná, výčet pozemků s právem zákonné služebnosti, parcelní čísla pozemků\nzařízení staveniště\nk. ú.: Slezské předměstí [646971]\np.č.: 1939/1\nHradec Králové - Slezské předměstí\nVlastník pozemku: KOVOŠROT GROUP CZ s.r.o., U kabelovny 682, Dolní\nMěcholupy, 10200 Praha 10\nStavebník: SOLAR DISPOREC s.r.o., Malostranské náměstí 5/2",
+      "c) jména a příjmení projektantů jednotlivých částí dokumentace včetně čísla, pod\nkterým jsou zapsáni v evidenci autorizovaných nebo registrovaných osob vedené\nČeskou komorou architektů nebo Českou komorou autorizovaných inženýrů a\ntechniků činných ve výstavbě, s vyznačeným oborem, popřípadě specializací jejich\nautorizace\nHlavní architekt & Generální projektant:\nBasepoint s.r.o.\nKvětoslava Mašity 251, 252 31 Všenory\nBasepoint s.r.o.\nIČO: 27646793\nIng. arch. Jakub Volka (ČKA 0003947)\nTel.: +420 73",
+      "g) druh konstrukce\nocelová montovaná konstrukce\nh) způsob vytápění\nElektrické přímotopné vytápění – sálavé stropní panely, doplňkové konvektory\ni) přípojka vodovodu,\nBude vybudována nová vodovodní přípojka napojená na stávající areálovou síť.\nj) přípojka kanalizační sítě\nBudou vybudovány přípojky dešťové a splaškové oddílné kanalizace, přípojky\nbudou napojeny na stávající areálovou kanalizační oddílnou síť.\nk) přípojka plynu\nObjekt nebude napojen na plynovodní síť.\nl) výtah\nNení součástí projekt"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "odklady získané od správců sítí\nA.3 TEA - technicko-ekonomické atributy budov\na) obestavěný prostor\n",
+          "volume_m3": 3694.62,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "A.3 TEA - technicko-ekonomické atributy budov\na) obestavěný prostor\n3694,62 m3\nb) zastavěná plocha\n5",
+          "volume_m3": null,
+          "area_m2": 540.1,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "é atributy budov\na) obestavěný prostor\n3694,62 m3\nb) zastavěná plocha\n540,10 m2\nc) podlahová plocha\n",
+          "volume_m3": null,
+          "area_m2": 495.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": null,
+        "total_floors": null,
+        "height_m": 7.195,
+        "built_up_area_m2": 540.1,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "stavba": "nebo změna dokončené stavby, trvalá nebo",
+        "misto": "-",
+        "projektant": "Basepoint s.r.o"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": null,
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "Anna Abrahámová",
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

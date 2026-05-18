@@ -1,0 +1,166 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1752,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "ESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE s.r.o.\nRF Na Strži 2102/61a\n3 ° 10 31,4° ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 5.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "ION DDD\nklient / client\nVELTON REAL ESTATE s.r.o.\nRF Na Strži 2102/61a\n3 ° 10 31,4° 2 T 7 P a T 2 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 5997,
+    "text_per_page_truncated": [
+      "+13,875\nB-\nSTŘECHA\n+6,800\n+6,670 B-3NP\n+3,650\n+3,520 B-2NP\n+0,500\n+0,370 B-1NP\n-2,650\n-2,645\nB-1PP\n-3,050\nB1 B2 B3 B4 B5 B6 B7\n0001\n0041\n031\n022056\n0512\n031\n022056\n0512\n031\n002\n0282\n0082\n053\n0082\n053\n0082\n053\n0082\n004\n0012\n0512\n0512\n+9,400\n+9,200 +9,200\n+6,250 +6,050\n+3,100\n+1,500\n-0,300\n+0,170\n-0,230\n-0,750\n-2,250 -3,150\n-3,150\n-3,450\n342 5550 2700 5400 5400 2700 5550 338\n-4,125\n-4,625\nEPI\nAROPÁZ\nW\n91 DETAIL D6\n+9,800\n+9,600\nCF 21 CF 21 CF 20\nCF 20\nCF 21 CF 20 CF 20 CF 21\nCF 20\nCF 21 CF 20 CF 2"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "ESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE s.r.o.\nRF Na Strži 2102/61a\n3 ° 10 31,4° ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "ION DDD\nklient / client\nVELTON REAL ESTATE s.r.o.\nRF Na Strži 2102/61a\n3 ° 10 31,4° 2 T 7 P a T 2 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 5.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

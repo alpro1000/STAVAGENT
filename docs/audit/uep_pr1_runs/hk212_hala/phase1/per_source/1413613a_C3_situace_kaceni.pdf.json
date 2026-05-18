@@ -1,0 +1,240 @@
+{
+  "provenance": {
+    "source_file": "C3_situace_kaceni.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 3046,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 30.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "x L S\nV\nK\nO M Í - PŘEDPOKLÁDANÁ TRASA - NUTNO PROVĚŘIT\n5\n0 STÁVAJÍCÍ VEDENÍ NN\n2659 RETENČNÍ NÁDRŽ 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "es\\Jitka C.3. SITUACE-Model97711753.png A C Í STÁVAJÍCÍ VYSOKÁ ZELEŇ\n1 V STÁVAJÍCÍ VOZOVKA - ASFALT\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 0.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "O VO\nV P D\nE I Á Ř E VO\nV O P\nR E\nA VO\nA R K\nR\nA A\nVO\n232 93 SKLADOVÁ HALA\nG\nL VO\nHRADEC KRÁLOVÉ\n1 0",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 0.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "SOLAR DISPOREC s.r.o.\nN\nA\nC\nE\nO Z V O S\nD\nN 1\nK\n2 - 8\n2, 0 m 0 Š\nR 4023 D 2 VO\nVO\n1\nM\n1\na\n8\nl o\n0\ns\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 23291.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "O C D ČÁ ÍL ST DOKUMENTACE\nP výsadba 23\n2\n3\n3\n0\n3\n9\n04 V\nO\n3\n2 0 M O S Í T VO C\nOB\n.\nS\n3\nAH VÝKRESU\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 23373.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "Í T VO C\nOB\n.\nS\n3\nAH VÝKRESU\n232 91 T\nD\n8 SITUACE KÁCENÍ\nV\n. O /VO\n233 73 1475/5 B 9\nÁ\n232 91\n190/2 ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 4819,
+    "text_per_page_truncated": [
+      "0\n0\n0\n4\n1\n234 48 LEGENDA\nNAVRHOVANÝ OBJEKT\n1475/13 5\n4 232 89\nSTÁVAJÍCÍ OBJEKTY\n3\n10 0\n233 35 4 0 HRANICE ŘEŠENÉHO POZEMKU\n1\n0 STÁVAJÍCÍ VYSOKÁ ZELEŇ\n233 11 0\n0\n0\n0 5 KÁCENÍ, S.1. - S.2.\n0\nPRIS\n5 STÁVAJÍCÍ POULIČNÍ OSVĚTLENÍ\n2\n233 09 = 0 STÁVAJÍCÍ KOLEJE - VLEČKA\n0\n0\n0 5 PŘEDPOKLÁDANÝ POŽÁRNĚ NEBEZPEČNÝ PROSTOR\n5 0 232 87 ŘEŠENÉHO OBEJKTU\n7 5\n7 , 2 HYDRANTY (Podz.)\n3 x\n0 N Í PBŘ ODSTUP\n1 Á\nT TRÁVNÍK, NÍZKÁ ZELEŇ\nÍ S\nN\n260/8 Á C:\\Users\\Anna Abrahámová\\Nextcloud2\\010_Projekty architektura\\212_Hrad"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "x L S\nV\nK\nO M Í - PŘEDPOKLÁDANÁ TRASA - NUTNO PROVĚŘIT\n5\n0 STÁVAJÍCÍ VEDENÍ NN\n2659 RETENČNÍ NÁDRŽ 3",
+          "volume_m3": 30.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "es\\Jitka C.3. SITUACE-Model97711753.png A C Í STÁVAJÍCÍ VYSOKÁ ZELEŇ\n1 V STÁVAJÍCÍ VOZOVKA - ASFALT\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "O VO\nV P D\nE I Á Ř E VO\nV O P\nR E\nA VO\nA R K\nR\nA A\nVO\n232 93 SKLADOVÁ HALA\nG\nL VO\nHRADEC KRÁLOVÉ\n1 0",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 0.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "SOLAR DISPOREC s.r.o.\nN\nA\nC\nE\nO Z V O S\nD\nN 1\nK\n2 - 8\n2, 0 m 0 Š\nR 4023 D 2 VO\nVO\n1\nM\n1\na\n8\nl o\n0\ns\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 0.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "O C D ČÁ ÍL ST DOKUMENTACE\nP výsadba 23\n2\n3\n3\n0\n3\n9\n04 V\nO\n3\n2 0 M O S Í T VO C\nOB\n.\nS\n3\nAH VÝKRESU\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 23291.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "Í T VO C\nOB\n.\nS\n3\nAH VÝKRESU\n232 91 T\nD\n8 SITUACE KÁCENÍ\nV\n. O /VO\n233 73 1475/5 B 9\nÁ\n232 91\n190/2 ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 23373.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

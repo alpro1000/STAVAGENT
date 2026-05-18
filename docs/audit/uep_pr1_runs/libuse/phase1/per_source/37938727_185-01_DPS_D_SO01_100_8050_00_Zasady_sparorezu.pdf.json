@@ -1,0 +1,95 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_8050_00_Zasady_sparorezu.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 126,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 2260,
+    "text_per_page_truncated": [
+      "obklad F06, 30x60cm šířkový formát\nosy spar vždy navazují na spáry obkladové\n600 hrana místnosti\n0\n0\n6\ndlažba F18, čtverec 60x60cm\nosti\nn\nmíst\na\nn\na\nhr\nZÁSADY SPÁROŘEZU\nstřed místnosti jako počátek rastru - pravidlo symetrie\n1b\n1b\nEQ EQ EQ EQ\nQE\nQE QE\nQE\nSCHEMA SPÁROŘEZU\nB/ PŘÍPAD OSTATNÍCH TVARŮ MÍSTNOSTÍ\nn*EQ\nb1 EQ EQ b1\nn*EQ pokudšířka místnosti je dělitelná EQ (rozměrem dlažby)\nEQ šířkacelého kusu dlažby (os rastru včetně spar)\nb1 vyšlá šířka řezaného kusu dlažby\n(vždy tak jenkrajníkusy)\nvni"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

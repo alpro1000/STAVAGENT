@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "C.03 - Koordinační situační výkres _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 836,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 18533,
+    "text_per_page_truncated": [
+      "(cid:9)(cid:9)(cid:2)(cid:4)(cid:4) (cid:9)(cid:10)(cid:11)(cid:10)(cid:12)(cid:13)(cid:14)\n(cid:1)(cid:9)(cid:1)(cid:2)(cid:4)(cid:4)\n(cid:9)(cid:11)(cid:2)(cid:1)(cid:4) (cid:24)(cid:16)(cid:26)(cid:30)(cid:14)(cid:33)(cid:27)(cid:39)(cid:27)(cid:19)(cid:15)(cid:40)(cid:33)(cid:10)(cid:23)(cid:16)(cid:19)(cid:41)(cid:42)(cid:19)(cid:43)(cid:19)(cid:24)(cid:16)(cid:14)(cid:30)(cid:10)(cid:40)(cid:12)(cid:34)(cid:19)(cid:31)(cid:20)(cid:25)(cid:14)(cid:30)(cid:15)(cid:30)(cid:14)(cid:12)(cid:18)"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

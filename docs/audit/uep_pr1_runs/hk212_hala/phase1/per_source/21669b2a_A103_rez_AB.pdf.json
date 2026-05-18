@@ -1,0 +1,104 @@
+{
+  "provenance": {
+    "source_file": "A103_rez_AB.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 4321,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "SOLAR DISPOREC s.r.o. , Praha",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Ing.arch. Jakub Volka, ČKA 03947",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1320,
+    "text_per_page_truncated": [
+      "A B C D E\n2770 4000 5000 4000 2770\n+7.195\n5.25°\n+6.285\n5394\nF\n002\n502\n+3.955\nVENKOVNÍ VZT JEDNOTKA\n+3.500\n+0.000\n-0.200\n-0.405\nObetonování Potr. - CCA průbeh\n009\n18540\n-0.205\n-0.700\n-1.300\n-1.900\n05\n+0.000\n1 2 3 4 5 6\n+7.195\n-0.205\n27390\n-1.900 6100 6100 3000 6100 6100\n002\n+2.390\n+1.155\n0093\n09\n5501\n09\n558\n003502\nHALA HRADEC KRÁLOVÉ\nŘEZ \"A\"\nLEGENDA MATERIÁLŮ:\nVážní 857, 50003 Hradec Králové - Slezské\nPředměstí\nObvodový plášť - panely Kingspan\ns požární odolností EW 15 DP1\nŽelezobeton\nBeton prost"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "SOLAR DISPOREC s.r.o. , Praha",
+        "projektant": "Ing.arch. Jakub Volka, ČKA 03947"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

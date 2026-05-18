@@ -1,0 +1,134 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 448,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "Volnč Jindžich Mgr",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Ing. arch. Marek Smolka",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 5452,
+    "text_per_page_truncated": [
+      "Ř. m. název mústnosti podlaha strop střny plocha [m²]\n1.01 vstup a chodba 12,4\n1.02 chodba na zahradu 3,6\n1.03 komora 0,70\n1.04 WC 1,5\n1.05 koupelna 4,10\n1.06 občvacú mústnost + kuchynř 24,00\n1.07 pokoj 9,40\n1.08 schodi(cid:34)tř do sklepa 3,80\ncelkem 59,50\nlegenda\nObvodoví nosní zdivo\n- smč(cid:34)ení zdivo, pževá(cid:35)nř keramická cihla\nVnitžnú nosní zdivo\n- keramická cihla dutinová\nA Tvárnice pro pžúŘky\nzdřní na maltu\nSDK konstrukce (po(cid:35)árný odolnost viz. řást po(cid:35)árnž bezpeřno"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "Volnč Jindžich Mgr",
+        "projektant": "Ing. arch. Marek Smolka"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [
+          {
+            "note_id": "POZN.1",
+            "text": ".01 Bouránú v nosnčch a obvodovčch střnách bude že(cid:34)eno dle stavebnř konstrukŘnú",
+            "work_type": null,
+            "confidence": 1.0
+          }
+        ],
+        "title_block": null,
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

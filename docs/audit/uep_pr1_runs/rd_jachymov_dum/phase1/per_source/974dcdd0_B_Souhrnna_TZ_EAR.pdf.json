@@ -1,0 +1,501 @@
+{
+  "provenance": {
+    "source_file": "B_Souhrnna_TZ_EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1633,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 987.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "echnologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: 104,4 m2\nobestavěný prostor: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "pné evakuace NE\nVíce než 1000 osob NE\nVíce než 100 osob NE\nVýskyt hořlavých kapalin/plynů (více než ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 104.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "rativy apod.), typ navržené technologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 219.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "apacity provozu a výroby,\nzastavěná plocha: 104,4 m2\nobestavěný prostor: 987,0 m3\npodlahová plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 200.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "mátkově chráněný objekt NE\nPočet nadzemních podlaží 3\nPočet podzemních podlaží 1\nZastavěná plocha < ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 600.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "eků\nPožární úsek Výpočtové požární zatížení p\nv\n[kg·m- SPB Mezní rozměr\n2]\nP1.01/N3 45,75 1) II. 2) ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 217.8,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ití objektu je rodinný dům – dle ukazatele počtu stání náleží do skupiny bydlení.\nPodlahová plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 219.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "davek = 2 stání\nNavrhovaný stav:\nNavrhovaný stav nemění dosavadní využití objektu\nPodlahová plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "height_m",
+      "value": 13.0,
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "built_up_area_m2",
+      "value": 104.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "special_requirements",
+      "field": "Bílá vana (vodotěsný beton)",
+      "value": "Vodotěsná konstrukce třídy neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "watertight_class": "neurčeno",
+          "thickness_mm": null
+        },
+        "raw_text": "bílá vana"
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0802",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0833",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0810",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0540-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0601",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0532",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "vyhláška č. 395/1992 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "vyhláška č. 189/2013 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Vyhláška č. 8/2021 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 502/2000 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č.591/2006 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 362/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "se nachází v obci Jáchymov, mezi ulicemi Dvořákova a Fibichova. Stavba stávajícího",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "dle\nprojektu výsledků zeměměřických činností vzniknout v souvislosti s po",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "radonový průzkum",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 19,
+    "char_count_total": 44287,
+    "text_per_page_truncated": [
+      "B S\nOUHRNNÁ\nTECHNICKÁ ZPRÁVA\nB.1 Celkový popis území a stavby\na) základní popis stavby; u změny stavby údaje o jejím současném stavu, závěry stavebně\ntechnického, případně stavebně historického průzkumu a výsledky statického posouzení nosných\nkonstrukcí,\nJedná se o přestavbu rodinného řadového domu v ulici Fibichova. Akce řeší změnu stávající\nstavby, respektive její adaptaci na soudobé bydlení pro rodinu investora. Stav stávajícího\ndomu je poněkud zanedbaný. Stavebně technický stav domu je dobrý",
+      "f.1.4 SU – Smíšené obytné všeobecné\nPřevažující využití:\n- polyfunkční mix bydlení a doplňujících služeb\nPřípustné využití\n- stavby rodinných domů\n- stavby bytových domů\n- stavby pro malá obchodní zařízení, správu, služby, veřejné stravování a ubytování do\n20 lůžek\n- stavby pro školství a kulturu, zdravotnictví a sociální péči a stavby pro sport, které\nzajišťují obsluhu tohoto území a nenarušují trvalé bydlení\n- veřejná zeleň, veřejná prostranství a rekreační zeleň s prvky drobné architektury a\n",
+      "f) stávající ochrana území a stavby podle jiných právních předpisů, včetně rozsahu omezení a\npodmínek pro ochranu,\nObjekt se nachází v území s archeologickými nálezy dle koordinačního výkresu UP. Další\nomezení a podmínky nejsou známé.\nNavrhovaný objekt se nachází ve vzdálenosti menší než 50 m od hranice lesa.\nObjekt se nachází v poddolovaném území.\ng) vliv stavby na okolní stavby a pozemky, ochrana okolí, vliv stavby na odtokové poměry v území,\npožadavky na asanace, demolice a kácení dřevin,\nSta",
+      "Voda svedená ze strany do zahrady bude částečně retenována ve stávající jímce na\npozemku a užívána pro zálivku zahrady.\nDruhy a kategorie odpadů a emisí\nStavba skladu bude během svého provozu vytváří běžný komunální odpad.\nl) požadavky na kapacity veřejných sítí komunikačních vedení a elektronického komunikačního\nzařízení veřejné komunikační sítě,\nStavba neklade specifické požadavky na kapacity veřejných sítí komunikačních vedení a\nelektronického komunikačního zařízení veřejné komunikační sítě.\n",
+      "B.3 Základní stavebně technické a\ntechnologické řešení\nB 3.1. Celková koncepce stavebně\ntechnického a technologického řešení\nNavrhované stavební úpravy domu budou prováděny za účelem rekonstrukce stávajících\nstavebních konstrukcí, modernizaci dispozičního řešení a rozšíření obytné plochy.\nBude provedena nová střecha s vikýři a zobytnění podkroví, které sloužilo pouze pro skladování\nve stávajícím stavu. Nosné stěny zůstávají stávající, včetně stěn obvodových. Příčky zůstávají\nněkteré stávající a ",
+      "Okenní výplně jsou na hraně životnosti a nesplňují současné energetické požadavky. Dům je\nzaložen na základových pasech. Dům je vybaven standardním TZB pro rodinný dům.\nb) popis navrženého stavebně technického a konstrukčního řešení.\nPrincip a koncepce domu zůstává stávající. Tzn. nezasahujeme do založení objektu a ani do\npodzemního podlaží. Pouze dojde k zateplení těch podlah, které jsou v kontaktu s terénem a\nnesplňují nároky na energetické fungování soudobých staveb. Prostory s klenbami budou",
+      "Navrhovaný stav domu ponechává koupelny ve stávající poloze, pouze bude přistavěna 1\nkoupelna a WC v 3.NP.\nKoncepce ZTI tedy zůstává shodná se stávajícím řešením domu\nS dešťovými vodami bude zacházeno rovněž stávajícím způsobem. Neměníme rozsah\nodvodňovaných ploch. Půdorysný průmět střechy zůstává o stejné ploše jako stávající stav.\nOdvodňované plochy dvora a zahrady zůstávají rovněž shodné s těmi ve stávajícím stavu.\nZ hlediska zacházení s dešťovými vodami se nemění stávající stav.\nVytápění\nNov",
+      "Výskyt veřejnosti NE\nSpící osoby ANO\nspící veřejnost NE\nOsoby neschopné evakuace NE\nVíce než 1000 osob NE\nVíce než 100 osob NE\nVýskyt hořlavých kapalin/plynů (více než 5 m3) NE\nVýskyt pyrotechniky NE\nVýskyt hořlavého nebo hoření podporujícího plynu NE\nStálý úkryt NE\nDle vyhl. č. 460/2021 Sb. je nejhorší varianta využití objektu 3. třídy využití. Dle § 7 se jedná o\nstavbu kategorie I.\nObjekt rodinného domu nepodléhá výkonu státního požárního dozoru.\nV souladu s čl. 3.6 ČSN 73 0833 můžou až 3 obyt",
+      "Obvodové stěny nezajišťující stabilitu objektu 30+\n4 Nosná konstrukce střechy 15\n5 Nosné konstrukce uvnitř požárního úseku zajištující podzemní 45DP1\nstabilitu objektu\nnadzemní 30\nposlední 15\n6 Nosné konstrukce vně objektu 15\n7 Nosné konstrukce uvnitř PÚ nezajišťující stabilitu objektu 15\n8 Nenosné konstrukce uvnitř PÚ -\n9 Schodiště, která nejsou součástí chráněných únikových cest 15DP3\n10 Požárně dělící konstrukce výtahových a instalačních šachet do 45 m 30DP2\nvýšky\nPožární uzávěry otvorů v kon",
+      "B.3.7 Úspora energie a tepelná ochrana\nbudovy\nZohlednění plnění požadavků na energetickou náročnost, úsporu energie a tepelnou ochranu\nbudov.\nTepelně technické vlastnosti stávajících stavebních konstrukcí a navržené konstrukce jsou v\nsouladu s předpisy pro úsporu energií a ochrany tepla. Hodnoty součinitelů prostupu tepla\nnově navržených konstrukcí splňují doporučené hodnoty dle zákona č. 406/2000Sb, ČSN 73\n0540-2 a vyhlášky č. 264/2020 Sb. ve znění pozdějších předpisů.\nPro projekt nejsou uvažov",
+      "Nejbližší okolní budova s venkovním chráněným prostorem (obytná místnost) je ve vzdálenosti\ncca 5 m. Požadovanou maximální hodnotou akustického tlaku je (dle NV 272/2011) v tomto\nmístě 40 dB v době od 22:00 do 6:00 hod. Tento parametr bude dodržen.\nPožadavky tak budou splněny.\nB.3.9 Zásady ochrany stavby před negativními\núčinky vnějšího prostředí\nProtipovodňová opatření, ochrana před pronikáním radonu z podloží, před bludnými proudy, před\ntechnickou i přírodní seizmicitou, před agresivní a tlako",
+      "technické nebo dopravní infrastruktury, nebo je-li ohrožena bezpečnost, připojovací rozměry,\nvýkonové kapacity a délky.\nProjekt nepředpokládá změnu napojovacích míst a výkonových kapacit a rozměrů. V rámci\ndalšího stupně PD bude provedeno jejich ověření.\n(cid:183) Vodovod – Stávající budova je napojena stávající přípojkou veřejného vodovodu.\nNemění se požadavky na výkonové kapacity a rozměry.\n(cid:183) Kanalizace – Stávající budova je napojena stávající přípojkou veřejné kanalizace.\nNemění se po",
+      "V návrhu je využit princip běžně využívaný v dané lokalitě, a to že vstup a vjezd na pozemek je\nz ulice Dvořákova na horní hranu pozemku. Stavba skladu, která je vsunuta do svahu a její\nkonstrukce tvoří opěrnou stěnu ve svahu, rovněž tvoří svou střechou rovnou plochu v úrovni\nulice Dvořákova. Tato plocha střechy může být využita pro odstavení vozidla.\nNově navrhovaná a povolovaná stavba parkovacích stání ve svahu bude obsluhovat RD\nz hlediska dopravy v klidu.\nB.6 Řešení vegetace a souvisejících\n",
+      "nálezu stavebních materiálů s obsahem nebezpečných látek bude jejich likvidace ohlášena a\nbude ji provádět renomovaná firma, která zaručí řádný a bezpečný technologický postup\ndemontáže nebezpečných stavebních materiálů.\nHluk, vibrace\nPři stavbě hluk ze stavební činnosti nepřekročí hygienické limity dané nařízením v chráněném\nvenkovním prostoru.\nBudova nebude při svém provozu vytvářet hluk, vibrace, ani jiné zásadní vlivy, které by\npřesahovaly hygienické limity a požadavky stanovené normou a neg",
+      "B.8 Celkové vodohospodářské\nřešení\nZejména zásobování stavby vodou, způsob zneškodňování odpadních vod, využití a nakládání se\nsrážkovými vodami.\nPři provádění stavebních prací:\n(cid:183) Voda pro stavbu bude zajištěna z veřejného vodovodu.\n(cid:183) Staveniště bude na stávajícím pozemku odvodněno přirozeným vsakováním vod.\nNebude třeba řešit speciální opatření a zřizovat odvodnění staveniště.\nPři provozu budovy:\n(cid:183) Zásobování stavby vodou\nStávající. Stávající vodovodní přípojka z veřejné",
+      "Není předmětem řešení.\nf) způsob zajištění ochrany stávajících staveb civilní ochrany v území dotčeném stavbou nebo\nstaveništěm, jejich výčet, umístění a popis možného dotčení jejich funkce a provozuschopnosti.\nStavbou není dotčena žádná stávající stavba civilní ochrany.\nB.10 Zásady organizace výstavby\nDodavatel zpracuje vlastní návrh postupu a organizace výstavby včetně návrhu řešení\npřístupových dopravních cest a požadavků na zábory veřejných komunikací, před zahájením\nstavebních prací. Součás",
+      "Přebytečné stavební materiály, obaly, odpady z demolice a ostatní stavební odpady budou\nna místě ihned tříděny dle nebezpečnosti odpadu a odvezeny na vhodnou řízenou skládku.\nKe krátkodobému skladování odpadů a přepravě budou použity kontejnery, které musí být\nzabezpečeny proti manipulaci nepovolanými osobami.\nOdpad bude podle své kategorie tříděn (Vyhláška č. 8/2021 Sb. „Katalog odpadů“),\ndočasně uložen na stavbě a zlikvidován v souladu se Zákonem č. 541/2020 Sb., o odpadech,\nv platném znění a ",
+      "Opatření při nakládání s azbestem\nV dotčených částech stávající budovy nebyla v rámci předběžného ohledání zjištěna\npřítomnost azbestu (podrobný azbestový průzkum proveden nebyl). V rámci přípravy stavby\na následných demoličních pracích bude provedeno podrobné ohledání. Vzhledem k\ncharakteru stavebních prací, se přítomnost azbestu se nepředpokládá, nicméně v případě\nnálezu stavebních materiálů s obsahem nebezpečných látek bude jejich likvidace ohlášena\na bude ji provádět renomovaná firma, která ",
+      "i) požadavky na postupné uvádění stavby do provozu (užívání), požadavky na průběh a způsob\npřípravy a realizace výstavby a další specifické požadavky,\nNejsou stanoveny žádné specifické požadavky na výstavbu.\nj) návrh fází výstavby za účelem provedení kontrolních prohlídek,\n1. Prohlídka stávající stavby před započetím prací\n2. Prohlídka hrubé stavby\n3. Kolaudace stavby\nk) dočasné objekty.\nDočasné objekty nebudou realizovány."
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "echnologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: 104,4 m2\nobestavěný prostor: ",
+          "volume_m3": 987.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "pné evakuace NE\nVíce než 1000 osob NE\nVíce než 100 osob NE\nVýskyt hořlavých kapalin/plynů (více než ",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "rativy apod.), typ navržené technologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: ",
+          "volume_m3": null,
+          "area_m2": 104.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "apacity provozu a výroby,\nzastavěná plocha: 104,4 m2\nobestavěný prostor: 987,0 m3\npodlahová plocha: ",
+          "volume_m3": null,
+          "area_m2": 219.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "mátkově chráněný objekt NE\nPočet nadzemních podlaží 3\nPočet podzemních podlaží 1\nZastavěná plocha < ",
+          "volume_m3": null,
+          "area_m2": 200.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "eků\nPožární úsek Výpočtové požární zatížení p\nv\n[kg·m- SPB Mezní rozměr\n2]\nP1.01/N3 45,75 1) II. 2) ",
+          "volume_m3": null,
+          "area_m2": 600.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ití objektu je rodinný dům – dle ukazatele počtu stání náleží do skupiny bydlení.\nPodlahová plocha: ",
+          "volume_m3": null,
+          "area_m2": 217.8,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "davek = 2 stání\nNavrhovaný stav:\nNavrhovaný stav nemění dosavadní využití objektu\nPodlahová plocha: ",
+          "volume_m3": null,
+          "area_m2": 219.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": 13.0,
+        "built_up_area_m2": 104.4,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [
+        {
+          "requirement_type": "Bílá vana (vodotěsný beton)",
+          "description": "Vodotěsná konstrukce třídy neurčeno",
+          "parameters": {
+            "watertight_class": "neurčeno",
+            "thickness_mm": null
+          },
+          "raw_text": "bílá vana",
+          "confidence": 1.0
+        }
+      ],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 0802",
+        "ČSN 73 0833",
+        "ČSN 73 0810",
+        "ČSN 73 0540-2",
+        "ČSN 73 0601",
+        "ČSN 73 0532",
+        "vyhláška č. 395/1992 Sb.",
+        "vyhláška č. 189/2013 Sb.",
+        "Vyhláška č. 8/2021 Sb.",
+        "nařízení vlády č. 502/2000 Sb.",
+        "nařízení vlády č.591/2006 Sb.",
+        "nařízení vlády č. 362/2005 Sb."
+      ],
+      "identification": {
+        "stavba": "se nachází v obci Jáchymov, mezi ulicemi Dvořákova a Fibichova. Stavba stávajícího"
+      },
+      "referenced_documents": [
+        "dle\nprojektu výsledků zeměměřických činností vzniknout v souvislosti s po",
+        "radonový průzkum"
+      ],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": null,
+        "etics_notes": [
+          "zateplení celého objektu, a to jak v úrovni terénu (zateplení podlah), tak na",
+          "zateplení těch podlah, které jsou v kontaktu s terénem a"
+        ],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

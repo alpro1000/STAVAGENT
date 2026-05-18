@@ -1,0 +1,179 @@
+{
+  "provenance": {
+    "source_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 692,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 1.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "D.1.1.00\nT\nECHNICKÁ ZPRÁVA\nD.1.1 Architektonicko stavební řeš",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 2,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 2901",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "se nachází v obci Jáchymov, mezi ulicemi Dvořákova a Fibichova. Stavba stávajícího",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "geologický průzkum",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 8,
+    "char_count_total": 19487,
+    "text_per_page_truncated": [
+      "D.1.1.00\nT\nECHNICKÁ ZPRÁVA\nD.1.1 Architektonicko stavební řešení\nZejména základní architektonické řešení, stavebně technické řešení, provozní řešení, požadavky\nna technické vlastnosti stavby a podmínky přístupnosti.\n1. Úvod\n1.1. Obecné podmínky\nTato dokumentace je zpracována v úrovni pro povolení stavby a nenahrazuje dokumentaci\npro provádění stavby!\nDokumentace je zpracována se znalostí stávajícího stavu terénu v úrovni vizuálního ohledání\na z informací dodaných investorem.\nVeškeré konstrukce b",
+      "Navrhovaná stavba nemění stávající kompozici prostorového řešení. V ulici Fibichova jsou\nsituované jednotlivé domy řady řadových domů tak, že klesají spolu s ulicí směrem na\njihozápad. Tato koncepce bude dodržena. Nový krov a nové řešení střechy bude dodržovat\nstávající principy v zástavbě, tedy provedení v podobě šikmé střechy s vikýři. Zvýšení domu\nnenaruší klesající řadu okolních domů. Svou výškou bude stavba respektovat charakter území.\nZ hlediska architektonického řešení domu bude plně dodr",
+      "bouráno část schodiště z 1.PP a vstupní dveře na zahradu. Nově bude vybourán otvor do stěny\nsměrem na zahradu pro nový vstup do suterénu.\nObecně při bourání otvorů do nosných a obvodových stěn bude postupováno dle předpisu\nstatika, včetně způsobu osazování překladů atd. U některých nově zřízený otvorů je uvažováno\nnejen osazení překladu, ale i vyztužení otvoru ocelovým L profilem (viz část PD stavebně\nkonstrukční).\nV obou patrech (1.NP a 2.NP) budou sejmuty a bourány stávající podlahy a budou šk",
+      "tloušťky min. 300 mm (dle PD). Ve 3.NP bude zbudována i vnitřní nosné stěny sloužící pro ztužení\nobjektu a jako nosné prvky krovu. Vnitřní nosné stěny budou buď z keramických bloků nebo je\npřípustné využit pórobetonové tvárnice.\nSvislé konstrukce ve 3.NP budou zakončeny ztužujícím ŽB věncem ( dle části D.2 ).\n3.2.3. Vodorovné nosné konstrukce\nStávající stropy jsou dřevěné trámové se záklopem s rákosem zespodu a prkenným záklopem\na zásypem ze škváry z vrchu. Část stropů jsou cihelné klenby (v cho",
+      "otevření do krovu a osazení schodiště do krovu je část kleštin vynechána. Krokve krovu jsou\nv osové vzdálenosti cca 800 mm. V místě vikýřů jsou krokve pod jiným úhlem klesání. Krokve\njsou vedle středových vaznic osazeny na pozednice, které jsou umístěné na ztužujícím věnci.\nVěnec probíhá po obvodu v úrovni jak nižší pozednice, tak v úrovni horní části vikýře.\nPozednice budou kotveny do ŽB věnce. Z důvodu skladby s nadkrokevní izolací jsou na krokve\nuvažovány námětky v dolní koncové části, které ",
+      "3.3.3. Obvodový plášť\nStávající a navrhované stěny budou opatřeny souvrstvím kontaktního zateplovacího systému\nETICS.\nStávající stěny z exteriérové strany budou očištěny, ometeny a bude odstraněna případná\npoškozená, popraskaná, odlupující se, nebo vypadaná omítka. Případné praskliny, nebo\ndutiny budou vyspraveny. V případě, že se na podkladu vyskytují mech, nebo plísně, bude\npodklad ošetřen fungicidním přípravkem. Nutná kontrola rovinatosti podkladu, a to s\npožadavkem maximálně 20 mm/m. Při vět",
+      "Nové zděné stěny budou opatřeny omítkou jádro + štuk.\nSDK stěny a předstěny budou přetmeleny a opatřeny výmalbou. V prostoru WC, koupelny a\nza kuchyňskou linkou bude proveden keramický obklad.\nV části s mokrým provozem bude provedena nátěrová hydroizolace, zejména za sprchou a\nvanou.\n3.4.2. Nášlapné vrstvy podlah\nVeškeré podlahy musí splňovat požadavky na protiskluznost podlah dané patřičnými předpisy\na normami.\nNášlapné vrstvy podlah jsou uvažovány jako vinylová podlaha a keramická dlažba. Pod\n",
+      "Jako zámečnický výrobek bude provedeno i schodiště ve 3.NP na spací patro.\nStříška nad vstupním schodištěm bude provedena jako ocelová konstrukce, opláštěna\ndeskami typu Cetris a opatřena falcovanou krytinou – zavěšena do fasády přes ocelová táhla.\nObdobná stříška bude i nad vstupní dveřmi z ulice Fibichova.\nVeškeré zábradlí bude ocelové, rámové, svařované z jaecklů čtvercového průřezu. Ocel bude\npozinkovaná. Výplň zábradlí bude z nerezové oceli.\nVeškeré ocelové konstrukce budou opatřeny pZn a d"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "D.1.1.00\nT\nECHNICKÁ ZPRÁVA\nD.1.1 Architektonicko stavební řeš",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 1.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 2,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 2901"
+      ],
+      "identification": {
+        "stavba": "se nachází v obci Jáchymov, mezi ulicemi Dvořákova a Fibichova. Stavba stávajícího"
+      },
+      "referenced_documents": [
+        "geologický průzkum"
+      ],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": null,
+        "etics_notes": [
+          "ETICS musí splňovat podmínky uvedené v ČSN 73 2901 a zároveň podmínky"
+        ],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

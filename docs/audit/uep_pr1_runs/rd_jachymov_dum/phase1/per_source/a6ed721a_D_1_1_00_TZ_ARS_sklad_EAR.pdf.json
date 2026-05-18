@@ -1,0 +1,121 @@
+{
+  "provenance": {
+    "source_file": "D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 227,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 1.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "D.1.1.00\nT\nECHNICKÁ ZPRÁVA\nD.1.1 Architektonicko stavební řeš",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "je umístěna ve velmi prudkém svahu k jihu se svažujícího pozemku",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 3,
+    "char_count_total": 5210,
+    "text_per_page_truncated": [
+      "D.1.1.00\nT\nECHNICKÁ ZPRÁVA\nD.1.1 Architektonicko stavební řešení\nZejména základní architektonické řešení, stavebně technické řešení, provozní řešení, požadavky\nna technické vlastnosti stavby a podmínky přístupnosti.\n1. Úvod\n1.1. Obecné podmínky\nTato dokumentace je zpracována v úrovni pro povolení stavby a nenahrazuje dokumentaci\npro provádění stavby!\nDokumentace je zpracována se znalostí stávajícího stavu terénu v úrovni vizuálního ohledání\na z informací dodaných investorem.\nV případě rozporů me",
+      "1.3. Provozní řešení\nProvoz stavby je uvažován tak, že spodní část stavby je navržen jako sklad zahradní techniky\na dalšího vybavení RD a přilehlé zahrady. Střecha skladu je využitelná pro odtavení\nautomobilu a tvoří rovnou plochu napojenou na ulici Dvořákova. Obě úrovně, tedy úroveň\nulice a úroveň zahrady a skladu propojuje schodiště na hraně pozemku, které je součástí\nstavby. Další součástí je i opěrná stěna ze skládaných betonových bloků, která bude řešit\nvelkou svažitost pozemku a opření ter",
+      "2.3. Nenosné konstrukce\n2.3.1. Příčky\nPříčky v dané stavbě nejsou uvažovány.\n2.3.2. Podhledy\nStrop skladu bude ponechán ze surových bednících prken záklopu bez podhledu.\n2.3.3. Podlahy\nPodlaha skladu bude tvořena betonovou dlažbou, skládanou do pískového lože s podkladní\nvrstvou ze štěrkopískové drtě příslušné frakce.\n2.4. Povrchové úpravy\n2.4.1. Stěny\nBudou ponechány jako betonové s přirozeným surovým vzhledem.\n2.4.2. Nášlapné vrstvy podlah\nVe skladu betonová dlažba. Před skladem rovněž venkovn"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "D.1.1.00\nT\nECHNICKÁ ZPRÁVA\nD.1.1 Architektonicko stavební řeš",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 1.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "stavba": "je umístěna ve velmi prudkém svahu k jihu se svažujícího pozemku"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

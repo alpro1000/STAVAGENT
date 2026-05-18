@@ -1,0 +1,95 @@
+{
+  "provenance": {
+    "source_file": "05_konstrukce_titul.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1015,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 10025",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 2100,
+    "text_per_page_truncated": [
+      "IPE450 IPE450\nIPE450 IPE450\nIPE450 IPE450\nIPE450 IPE450\nIPE450 IPE450\nIPE450 IPE450\nPoznámky:\n- Při provádění je potřeba posutpovat podle nejnovější revize výkresů.\n- Před prováděním je potřeba porovnat výkresy stavebně konstrukční a\narchitektonicko-stavební části a na případné rozpory upozornit hlavního\ninženýra projektu a statika\n- Dokumentace je vypracovaná ve stupni dokumentace pro stavební povolení a\nnenahrazuje prováděcí dokumentaci. Cílem posudku je ověřit proveditelnost\nkonstrukce a před"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 10025"
+      ],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

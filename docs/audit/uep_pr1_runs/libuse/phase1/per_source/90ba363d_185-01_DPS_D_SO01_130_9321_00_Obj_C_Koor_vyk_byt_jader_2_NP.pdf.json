@@ -1,0 +1,90 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 5453,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 6,
+    "char_count_total": 1493,
+    "text_per_page_truncated": [
+      "N",
+      "85 120 200 240\nC4\nC3\nC2\nC1\nCA\nCA\n+2,475\n+4,050\nC.2.3.06\nC.2.1.07\nC.2.1.06\n80\nC.2.S.01\nC.2.1.01\nC.2.1.05\nCB\nC.2.3.05\nCB\nC.2.3.01\nC.2.3.02\nC.2.2.01\nC.2.2.04\nC.2.1.03\nC.2.1.04\nC.2.3.04\nC.2.3.03\nC.2.2.02\nC.2.2.03\nC.2.1.02\n80\n140\n125\nCC\nCC\nCD\nCD\nC4\nC3\nC2\nC1\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "300 250 150\n150\n80\n110\n110\n80\n150\nC4\nC3\nC2\nC1\nCA\nCA\n+2,475\n+4,050\nC.2.3.06\nC.2.1.07\nC.2.1.06\nC.2.S.01\nC.2.1.01\nC.2.1.05\nCB\nC.2.3.05\nCB\nC.2.3.01\nC.2.3.02\nC.2.2.01\nC.2.2.04\nC.2.1.03\nC.2.1.04\nC.2.3.04\nC.2.3.03\nC.2.2.02\nC.2.2.03\nC.2.1.02\nCC\nCC\nCD\nCD\nC4\nC3\nC2\nC1\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "200 120 150 130\n80\n80\n200\n80\nC4\nC3\nC2\nC1\nCA\nCA\n+2,475\n+4,050\nC.2.3.06\nC.2.1.07\nC.2.1.06\nC.2.S.01\nC.2.1.01\nC.2.1.05\nCB\nC.2.3.05\nCB\nC.2.3.01\nC.2.3.02\nC.2.2.01\nC.2.2.04\nC.2.1.03\nC.2.1.04\nC.2.3.04\nC.2.3.03\nC.2.2.02\nC.2.2.03\nC.2.1.02\nCC\nCC\nCD\nCD\nC4\nC3\nC2\nC1\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "240 230 130\n80\n120\n80\n170 120\nC4\nC3\nC2\nC1\nCA\nCA\n+2,475\n+4,050\nC.2.3.06\nC.2.1.07\nC.2.1.06\nC.2.S.01\nC.2.1.01\nC.2.1.05\nCB\nC.2.3.05\nCB\nC.2.3.01\nC.2.3.02\nC.2.2.01\nC.2.2.04\nC.2.1.03\nC.2.1.04\nC.2.3.04\nC.2.3.03\nC.2.2.02\nC.2.2.03\nC.2.1.02\n70\nCC\nCC\nCD\nCD\nC4\nC3\nC2\nC1\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT",
+      "230 230 140\n80\n150\n200\n150 120 140\nC4\nC3\nC2\nC1\nCA\nCA\n+2,475\n+4,050\nC.2.3.06\nC.2.1.07\nC.2.1.06\n150\nC.2.S.01\nC.2.1.01\nC.2.1.05\nCB\nC.2.3.05\nCB\nC.2.3.01\nC.2.3.02\nC.2.2.01\nC.2.2.04\nC.2.1.03\nC.2.1.04\n80\nC.2.3.04\nC.2.3.03\nC.2.2.02\nC.2.2.03\nC.2.1.02\nCC\nCC\nCD\nCD\nC4\nC3\nC2\nC1\nkanalizace vodovod VZT\n-\npod\nstropem\nVZT"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

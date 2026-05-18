@@ -1,0 +1,116 @@
+{
+  "uep_version": "PR1",
+  "generated_at": "2026-05-18T19:30:31.238381+00:00",
+  "project_id": "so_250",
+  "project_type": "residential",
+  "matrix_file": "coverage_matrix_residential.yaml",
+  "supported_formats": [
+    "dxf",
+    "pdf_tz"
+  ],
+  "phase1": [
+    {
+      "source_file": "250_00_rozpiska desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/0401efcd_250_00_rozpiska_desky.pdf.json"
+    },
+    {
+      "source_file": "250_01_Technická zpráva.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "73",
+      "artifact": "phase1/per_source/3597291f_250_01_Technická_zpráva.pdf.json"
+    },
+    {
+      "source_file": "250_02_Situace.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/dd6b79f2_250_02_Situace.pdf.json"
+    },
+    {
+      "source_file": "250_03_Vzorový příčný řez.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/5648585e_250_03_Vzorový_příčný_řez.pdf.json"
+    },
+    {
+      "source_file": "250_04_Rozvinutý pohled.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/c7024c80_250_04_Rozvinutý_pohled.pdf.json"
+    },
+    {
+      "source_file": "250_05_Tvar konstrukce.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/3ddbd025_250_05_Tvar_konstrukce.pdf.json"
+    },
+    {
+      "source_file": "250_06_Výztuž konstrukce.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/e74062f8_250_06_Výztuž_konstrukce.pdf.json"
+    },
+    {
+      "source_file": "250_07_Detaily.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/a3606a0e_250_07_Detaily.pdf.json"
+    },
+    {
+      "source_file": "250_08_Statický výpočet.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/5ccba628_250_08_Statický_výpočet.pdf.json"
+    },
+    {
+      "source_file": "250_08_Zábradlí.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/ed87a191_250_08_Zábradlí.pdf.json"
+    }
+  ],
+  "phase2": {
+    "artifact": "phase2/coverage_report.json",
+    "gate_passed": false,
+    "pokryto_pct": 18.42,
+    "blocking_gaps": [
+      "dimensions",
+      "dxf_meta",
+      "layer_inventory",
+      "closed_polygons",
+      "open_polylines",
+      "block_inventory",
+      "text_inventory",
+      "wall_system",
+      "foundation_system",
+      "roof_system",
+      "thermal_insulation",
+      "facade_finish",
+      "floor_finishes",
+      "windows_doors_specification",
+      "fire_safety",
+      "site_situation"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 597,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "03a\nTP\n12\nTP TP 12 TP TP 12\n12 12\nTP\n12\nTP WF TP\n27a 12 12\nTP TP\n12 12 TP\n12\nTP\n25\nTP\n14\nTP\n24\n2,0%\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 82.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "TP 12\n12 12\nTP\n12\nTP WF TP\n27a 12 12\nTP TP\n12 12 TP\n12\nTP\n25\nTP\n14\nTP\n24\n2,0%\n2 T 9 P a 1,8 % T 2 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer D",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 4465,
+    "text_per_page_truncated": [
+      "C4 C3 C2 C1\nCD CD\nCC CC\nCB CB\nCA CA\nC4 C3 C2 C1\n-\n-\n+4,050\n+7,200 +7,200\n+14,250\nW 91\n+10,200\n+12,340\n°°°000000,,,222666\n°00,13\n3\n-\n530 3403 4193 105 425 3363 3558 1565 5265\nW W W\n81 81 81\n5589 1042 6358 1042 3458 1042 3839\nW W W W OP\n82 82 82 82 50\n772 650 4914 650 2069 4696 8619\nOP\n50\n4794 1042 3664\nOP\n50\nOP\n50\nC C\n- -\nW\n81\nW W W W\n81 86 81 81\n2664 1042 4117 385 4662 601 927 1015 1042 3367 1042 1505\n22370\n3\n-\n02831\n583\n0041\n0586\n0084\n583\n9915\n1268\n385 8100 8100 5400 385\nTP TP TP TP 02a 04\n04 0"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "03a\nTP\n12\nTP TP 12 TP TP 12\n12 12\nTP\n12\nTP WF TP\n27a 12 12\nTP TP\n12 12 TP\n12\nTP\n25\nTP\n14\nTP\n24\n2,0%\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "TP 12\n12 12\nTP\n12\nTP WF TP\n27a 12 12\nTP TP\n12 12 TP\n12\nTP\n25\nTP\n14\nTP\n24\n2,0%\n2 T 9 P a 1,8 % T 2 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 82.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer D"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

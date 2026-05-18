@@ -1,0 +1,262 @@
+{
+  "uep_version": "PR1",
+  "generated_at": "2026-05-18T19:29:46.446731+00:00",
+  "project_id": "hk212_hala",
+  "project_type": "residential",
+  "matrix_file": "coverage_matrix_residential.yaml",
+  "supported_formats": [
+    "dxf",
+    "pdf_tz"
+  ],
+  "phase1": [
+    {
+      "source_file": "D.1.1.1 Půdorys 1.NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "12",
+      "artifact": "phase1/per_source/d434b17c_D.1.1.1_Půdorys_1.NP.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2 Základy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "22",
+      "artifact": "phase1/per_source/f1084bdc_D.1.1.2_Základy.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.3 Řez.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "22",
+      "artifact": "phase1/per_source/91907cb5_D.1.1.3_Řez.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.4 Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/cd832d8e_D.1.1.4_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.5 Výkres střechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/b534cfe1_D.1.1.5_Výkres_střechy.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.6 Výkopy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/70152f3d_D.1.1.6_Výkopy.pdf.json"
+    },
+    {
+      "source_file": "C1_sirsi_vztahy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/724c3a5c_C1_sirsi_vztahy.pdf.json"
+    },
+    {
+      "source_file": "C2_katastr.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/a3f1d039_C2_katastr.pdf.json"
+    },
+    {
+      "source_file": "C3_situace_kaceni.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "12",
+      "artifact": "phase1/per_source/1413613a_C3_situace_kaceni.pdf.json"
+    },
+    {
+      "source_file": "01_ars_pruvodni_A.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "13",
+      "artifact": "phase1/per_source/7b582363_01_ars_pruvodni_A.pdf.json"
+    },
+    {
+      "source_file": "02_ars_souhrnna_B.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "54",
+      "artifact": "phase1/per_source/35c98af9_02_ars_souhrnna_B.pdf.json"
+    },
+    {
+      "source_file": "03_ars_d11_TZ.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "23",
+      "artifact": "phase1/per_source/a507c5e3_03_ars_d11_TZ.pdf.json"
+    },
+    {
+      "source_file": "04_statika_d12_TZ_uplna.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "91",
+      "artifact": "phase1/per_source/b4c01371_04_statika_d12_TZ_uplna.pdf.json"
+    },
+    {
+      "source_file": "05_konstrukce_titul.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/f4bdd5d5_05_konstrukce_titul.pdf.json"
+    },
+    {
+      "source_file": "06_zaklady_titul.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "17",
+      "artifact": "phase1/per_source/58a7c08a_06_zaklady_titul.pdf.json"
+    },
+    {
+      "source_file": "07_pbr_kpl.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "78",
+      "artifact": "phase1/per_source/55766461_07_pbr_kpl.pdf.json"
+    },
+    {
+      "source_file": "A101_pudorys_1np.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "154",
+      "artifact": "phase1/per_source/961c22e3_A101_pudorys_1np.dxf.json"
+    },
+    {
+      "source_file": "A102_pudorys_strechy.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "50",
+      "artifact": "phase1/per_source/b4773cfe_A102_pudorys_strechy.dxf.json"
+    },
+    {
+      "source_file": "A104_pohledy.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "156",
+      "artifact": "phase1/per_source/6f8b8b61_A104_pohledy.dxf.json"
+    },
+    {
+      "source_file": "A105_zaklady.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "61",
+      "artifact": "phase1/per_source/20b1da51_A105_zaklady.dxf.json"
+    },
+    {
+      "source_file": "A106_stroje.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "139",
+      "artifact": "phase1/per_source/f9b46544_A106_stroje.dxf.json"
+    },
+    {
+      "source_file": "A107_stroje_kotvici_body.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "151",
+      "artifact": "phase1/per_source/a8a635e7_A107_stroje_kotvici_body.dxf.json"
+    },
+    {
+      "source_file": "A201_vykopy.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "70",
+      "artifact": "phase1/per_source/22a02072_A201_vykopy.dxf.json"
+    },
+    {
+      "source_file": "A100_uvod.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/1e09830d_A100_uvod.pdf.json"
+    },
+    {
+      "source_file": "A101_pudorys_1np.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "24",
+      "artifact": "phase1/per_source/9fc9dceb_A101_pudorys_1np.pdf.json"
+    },
+    {
+      "source_file": "A102_pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/03ac35c8_A102_pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "A103_rez_AB.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/21669b2a_A103_rez_AB.pdf.json"
+    },
+    {
+      "source_file": "A104_pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/10e03e35_A104_pohledy.pdf.json"
+    },
+    {
+      "source_file": "A105_zaklady.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/4c084a16_A105_zaklady.pdf.json"
+    }
+  ],
+  "phase2": {
+    "artifact": "phase2/coverage_report.json",
+    "gate_passed": false,
+    "pokryto_pct": 36.84,
+    "blocking_gaps": [
+      "closed_polygons",
+      "wall_system",
+      "foundation_system",
+      "roof_system",
+      "thermal_insulation",
+      "facade_finish",
+      "floor_finishes",
+      "windows_doors_specification",
+      "fire_safety",
+      "site_situation"
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_5000_01_Rezy_1_PP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1404,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1.2,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "0\n20 1150\n083\n052 0252\n004\n0011\n081 002\n0772\n004\n0512\n0012\n+2,000\nU.T.\nVJEZDOVÁ ROLOVACÍ BRÁNA min. ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 6525,
+    "text_per_page_truncated": [
+      "OBJEKT D OBJEKT C OBJEKT A\n+2,000 +1,800 +1,800\n+1,500 +1,500 D-1NP +1,300 +1,100 +0,900 +1,180 +0,900 +0,900 C-1NP\n±0,000=303,800 m n.m. +0,870 A-1NP +0,570 +0,570 +0,270\n-0,330 -1,650\n-2,250 -2,250 -2,250 D-1PP D-1PP C-1PP\n-3,000 -3,000\n-2,150 A-1PP\n-2,650 -2,750\n-3,400\n-3,700\nC5 C4 C3 C2 C1\nDA DB DC\n083\n052\n0213\n004\n083 002\n0752\n004\n033 001\n0272 0272\n004\n086 032\n0723\n004\n033\n001\n0752\n004\n+1,400 +1,500\n+1,170 -0,050\n-2,250\nRAMPA -3,500\n-2,750 -2,750\n-3,500\n340 4800 6850 6345 5900 8100 8100 540"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "0\n20 1150\n083\n052 0252\n004\n0011\n081 002\n0772\n004\n0512\n0012\n+2,000\nU.T.\nVJEZDOVÁ ROLOVACÍ BRÁNA min. ",
+          "volume_m3": null,
+          "area_m2": 1.2,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

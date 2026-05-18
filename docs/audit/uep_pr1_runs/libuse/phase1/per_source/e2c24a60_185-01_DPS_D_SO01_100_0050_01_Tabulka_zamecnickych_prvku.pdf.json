@@ -1,0 +1,119 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0050_01_Tabulka_zamecnickych_prvku.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 2299,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 9,
+    "char_count_total": 10083,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nABMV world s.r.o.\nProsecká 527/24\n180 ",
+      "Stavební objekt / Building object: BYTOVÝ SOUBOR LIBUŠE Revize dokumentu / Document revision: 01\nDokument / Document: VÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE Aktuální stav ke dni / Status quo at: 30/11/2021\nTvar kódu - ZÁMEČNICKÝ PRVEK / Code type - LOCKSMITH PRODUCT\nLP xx\nOzn. prvku / Product no.\nPOZNÁMKA / NOTE\nVŠECHNY ČÁSTI PROJEKTOVÉ DOKUMENTACE A REALIZACE JEDNOTLIVÝCH PROFESNÍCH ČÁSTÍ (ARCHITEKTONICKÁ, STAVEBNĚ-KONSTRUKČNÍ, TZB, PBŘ ATD...) PODLÉHAJÍ KOORDINACI GENERÁLNÍHO",
+      "Stavební objekt / Building object: BYTOVÝ SOUBOR LIBUŠE Revize dokumentu / Document revision:01\nDokument / Document: VÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE Aktuální stav ke dni / Status quo to date:30/11/2021\nVÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE\nMěrná jednotka\nOznačení / Orientační umístění / Placement Povrchová úprava / Material Referenční výrobek / Reference Množství /\nNázev / Name Technická specifikace / Technical specification / Units of Poznámka / Note\n",
+      "3986\n4901 150\n0001\n492\n1500\n1500\n495\n150\n0001\n150\n1500\n3809\n1500\n150\n0001\n493\n493\n0001\n0001\n40 50\n02\n01\nrozeta 100/50/5\n40/20/2,5\n15 50\n115/50/10\n06 05\n001\nLP 20 - VNITŘNÍ ZÁBRADLÍ SCHODIŠŤOVÉ - NA STĚNĚ\nSCHEMATICKY ŘEZ MADLEM\n1:25\n1:5",
+      "3632\n3632\nKOTVÍCÍ PRVEK\n5711\n2531\n521\n0001\n65\n2531\n0001\n110\n131 65\n120\n131 65\n120\n131 65\n120\n521 65\n40/20/2,5\n110\n110 120 120 120 120 120\n20 20 20 20 20 20\n2531\n2531\n4040\n20\n100\n7711\n0001\n5711\nLP 21 - VNITŘNÍ ZÁBRADLÍ SCHODIŠŤOVÉ - V ZRCADLE\n1:25",
+      "LP 22a\n150\nLP 22b\n150\n1500\n1500\n5811\nkotveno po 1500mm\n6709\n1500\n150\nkotveno po 1500mm\n112°\n1500\n1164\n1500\n4090\n841\n100\nkotveno po 1500mm\nkotveno po 1500mm 150\n4986\n112°\n0001\n40 50\n02\n01\nrozeta 100/50/5\n40/20/2,5\n15 50\n115/50/10\n06 05\n001\nSCHEMATICKY ŘEZ MADLEM\nLP 22 - VNITŘNÍ ZÁBRADLÍ VYROVNÁVACÍ RAMPY V OBJEKTU A\n1:5\n1:25",
+      "8601\n0001\n0001\n5\n4\n0\n0 9\n1\n2\n2\n3\n52 1417\nLP 23a\n150\nLP 23b\n150\n990\n1290\n150\n150\n1140 LP 23b\n40\n50\n0001\n150\n8\n6 0\n1\n2801\n0001\nLP 23a\n150\n0001\n40 50\n02\n01\nrozeta 100/50/5\n40/20/2,5\n15 50\n115/50/10\n06 05\n001\nLP 23 - VNITŘNÍ ZÁBRADLÍ VYROVNÁVACÍHO SCHODIŠTĚ V OBJEKTU D\n1:25\nPŮDORYS POHLED POHLED\nSCHEMATICKY ŘEZ MADLEM\n1:5",
+      "0201\n02\n089\n02\n120 120 120 120 120 120 120 120 120 120 120 120 120 120 120\nLP 30a\n40 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20\nLP 30b\nkotveno\nke konstrukci\nterasy\nkotveno\nke konstrukci\nterasy max. 1250mm (přizpůsobit celkové délce zábradlí)\n05\n0001.xam\n750-2000\nkotveno úchytkami\ndo boků\nbezpečnostní sklo\nkotveno\nke stěně\n0001.xam\n059\n05\n0001.xam\n059\n05\n052\nkotveno\nke stěně\nkotveno\nke stěně\n058\n052\n05\n055\nkotveno\nke stěně\n0001.xam\n059\n05\n003\nLP 30 - BALKONOVÉ ZÁBRADLÍ LP 60 až 65 - VZOR ZÁBRAD",
+      "061\n265\n061\n227\n8080 8080\n160 1076 160\n240 240\n063 063\nPLECH P5\nHTR160/80/3\nHTR160/80/3\nHILTI HIT -HY200\n+M12 8,8\nVLOŽENÁ ZÁVITOVÁ TYČ\n+2M12+PODLOŽKA\nHILTI HIT -HY200\noválná díra oválná díra +M12 8,8\n14-10mm 14-10mm\nVLOŽENÁ ZÁVITOVÁ TYČ\n+2M12+PODLOŽKA\n007\nLP 40 - PODSTAVEC PRO VENKOVNÍ CHLADICÍ JEDNOTKU BJ\n1:25\nPŮDORYS\n160 1076 160\n80 1236 80\nHILTI HIT -HY200 HILTI HIT -HY200\n+M12 8,8 +M12 8,8\nPLECH P5\nVLOŽENÁ ZÁVITOVÁ TYČ PLECH P5 VLOŽENÁ ZÁVITOVÁ TYČ\n+2M12+PODLOŽKA +2M12+PODLOŽKA\n240 240\nPOLYM"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

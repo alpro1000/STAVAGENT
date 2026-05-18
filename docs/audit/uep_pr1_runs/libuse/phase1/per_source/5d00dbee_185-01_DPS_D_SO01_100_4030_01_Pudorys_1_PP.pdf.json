@@ -1,0 +1,631 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_4030_01_Pudorys_1_PP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 4199,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "Tabulka místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "Tabulka místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ame Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 31.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 38.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "CV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 9.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 15.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "1 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 32.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "Á CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 18.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ".A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 7.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "NOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 7.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "KLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 12.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID 7 m²\nS.A.10 SKLAD ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 11.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID 7 m²\nS.A.10 SKLAD 12 m²\nD4 DA\nS.A.11 SKLAD ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 6.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "11 SKLAD 11 m²\n5550\n260\n250\nH\nS\nS\n.\n.\nA\nA\n.\n.\n1\n1\n2\n3\nS\nS\nK\nK\nL\nL\nA\nA\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 4.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "S\nS\n.\n.\nA\nA\n.\n.\n1\n1\n2\n3\nS\nS\nK\nK\nL\nL\nA\nA\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA 6 m²\nS.A.15 SKLEPNÍ KÓJE - A 4",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 5.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "A\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA 6 m²\nS.A.15 SKLEPNÍ KÓJE - A 4 m²\n2170\n250\nS.A.16 SKLEPNÍ KÓJE - A 5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 50.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "5 1 0 2 4 2 1 0 D O 0 2 3 0 0 3 1 3 0 P 9 5 9 4 0 4 S 8 4 0 0 2 N C 8 e 2 1 1 0 2 1 za 2 0 O . 1 0 5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 7.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1 0 5 0 t 4 1 e 1 S D D 0 p 0 1 9 0 2 P l 0 1 e - 0 0 n L 2 0 0 2 8 ý 1 5 S . 1 2 6 0 . I 0 1 s 0 D ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1 . 0 0 2 n 0 1 5 1 4 D 5 í 0 1 8 1 7 v 5 0 0 5 2 r 0 a 0 1 0 . 1 S ta 1 0 1 3 5 s 0 8 . 6 i 8 n D 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1\ný b ů 1\n1\n/ . V y 1\n1\nd 8\n8\ná e 2\n2\n0\n0\nv s 5\n5\ni r 0\n0\ng a n 0\n0\ne r P\nP\nr\nr\na\na\nh\nh\na\na\n8\n8\nda 3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "8\n8\ná e 2\n2\n0\n0\nv s 5\n5\ni r 0\n0\ng a n 0\n0\ne r P\nP\nr\nr\na\na\nh\nh\na\na\n8\n8\nda 3 t 0 u . m 11 / .2 d 0 a 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 16541,
+    "text_per_page_truncated": [
+      "Tabulka místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID 7 m²\nS.A.10 SKLAD 12 m²\nD4 DA\nS.A.11 SKLAD 11 m²\n5550\n260\n250\nH\nS\nS\n.\n.\nA\nA\n.\n.\n1\n1\n2\n3\nS\nS\nK\nK\nL\nL\nA\nA\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA 6 m²\nS.A.15 SKLEPNÍ KÓJE - A 4"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "Tabulka místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "Tabulka místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "místností 1.PP\nNumber Name Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ame Area\nAV VÝTAHOVÁ ŠACHTA 3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA ",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "3 m²\nBV VÝTAHOVÁ ŠACHTA 3 m²\nCV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA ",
+          "volume_m3": null,
+          "area_m2": 31.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "CV VÝTAHOVÁ ŠACHTA 3 m²\nDV VÝTAHOVÁ ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA ",
+          "volume_m3": null,
+          "area_m2": 38.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ŠACHTA 3 m²\nS.A.01 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9",
+          "volume_m3": null,
+          "area_m2": 9.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "1 SPOLEČNÁ CHODBA 31 m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD ",
+          "volume_m3": null,
+          "area_m2": 15.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "m²\nS.A.02 SPOLEČNÁ CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "Á CHODBA 38 m²\nD5 S.A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD ",
+          "volume_m3": null,
+          "area_m2": 32.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ".A.03 TECHNICKÁ MÍSTNOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD ",
+          "volume_m3": null,
+          "area_m2": 18.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "NOST 9 m²\nS.A.04 SKLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA ",
+          "volume_m3": null,
+          "area_m2": 7.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "KLAD 15 m²\nS.A.05 CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID ",
+          "volume_m3": null,
+          "area_m2": 7.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "CHODBA 3 m²\nS.A.06 SKLAD 32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID 7 m²\nS.A.10 SKLAD ",
+          "volume_m3": null,
+          "area_m2": 12.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "32 m²\nS.A.07 SKLAD 18 m²\nS.A.08 CHODBA 7 m²\nS.A.09 ÚKLID 7 m²\nS.A.10 SKLAD 12 m²\nD4 DA\nS.A.11 SKLAD ",
+          "volume_m3": null,
+          "area_m2": 11.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "11 SKLAD 11 m²\n5550\n260\n250\nH\nS\nS\n.\n.\nA\nA\n.\n.\n1\n1\n2\n3\nS\nS\nK\nK\nL\nL\nA\nA\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA ",
+          "volume_m3": null,
+          "area_m2": 6.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "S\nS\n.\n.\nA\nA\n.\n.\n1\n1\n2\n3\nS\nS\nK\nK\nL\nL\nA\nA\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA 6 m²\nS.A.15 SKLEPNÍ KÓJE - A 4",
+          "volume_m3": null,
+          "area_m2": 4.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "A\nD\nD\n5\n7\nm\nm\n²\n²\nS.A.14 CHODBA 6 m²\nS.A.15 SKLEPNÍ KÓJE - A 4 m²\n2170\n250\nS.A.16 SKLEPNÍ KÓJE - A 5",
+          "volume_m3": null,
+          "area_m2": 5.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "5 1 0 2 4 2 1 0 D O 0 2 3 0 0 3 1 3 0 P 9 5 9 4 0 4 S 8 4 0 0 2 N C 8 e 2 1 1 0 2 1 za 2 0 O . 1 0 5",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 50.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1 0 5 0 t 4 1 e 1 S D D 0 p 0 1 9 0 2 P l 0 1 e - 0 0 n L 2 0 0 2 8 ý 1 5 S . 1 2 6 0 . I 0 1 s 0 D ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 7.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1 . 0 0 2 n 0 1 5 1 4 D 5 í 0 1 8 1 7 v 5 0 0 5 2 r 0 a 0 1 0 . 1 S ta 1 0 1 3 5 s 0 8 . 6 i 8 n D 3",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1\ný b ů 1\n1\n/ . V y 1\n1\nd 8\n8\ná e 2\n2\n0\n0\nv s 5\n5\ni r 0\n0\ng a n 0\n0\ne r P\nP\nr\nr\na\na\nh\nh\na\na\n8\n8\nda 3",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "8\n8\ná e 2\n2\n0\n0\nv s 5\n5\ni r 0\n0\ng a n 0\n0\ne r P\nP\nr\nr\na\na\nh\nh\na\na\n8\n8\nda 3 t 0 u . m 11 / .2 d 0 a 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": null,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

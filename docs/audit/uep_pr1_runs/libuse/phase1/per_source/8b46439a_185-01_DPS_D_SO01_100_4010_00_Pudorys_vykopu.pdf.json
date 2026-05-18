@@ -1,0 +1,95 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_4010_00_Pudorys_vykopu.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 7276,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 4224,
+    "text_per_page_truncated": [
+      "Ř\nE\nZ\n2\nHRANICE\nPOZEMKU\nD5\nKÓTA TERÉNU\n305,16\n+1,360\nD4\nDA\n1\nZ\nE\nŘ\nD3\nDB\n1\n-2,600 = 301,200\nH.H.pažení\n305,0 HRANICE POZEMKU\nŘEZ 3\n2\nD2\nKÓTA TERÉNU\n304,8\n+1,000 B1\nDC B2 B3\nCA B4\nB5\nB6\n-4,225 = 299,575 B7\n1\nKÓTA TERÉNU KÓTA TERÉNU\n304,95 U 303,95\n-3,200 = 300,600 K\n+1,150 M +0,150\nE\nZ\nO\n2 P\nE\nC\nD5 NI\nCE A\nBA R\nH\n-4,625 = 299,175\nBA\nD4\n3\nDA\n3\nH\nR\nA\nN\nIC\nE\nP BB\nO\nZ\nE\nM\nK\nU C5\nD3\nDB BB\n-3,150 = 300,650\nH.H.pažení\nD2 C4\n303,5\nCD BC\nCC\nDC\nBC\nCB\nBD\nC3\nC5\nB1 BD\nB2\nB3\nB4\nB5\nB6\nB7\nKÓTA TERÉNU KÓTA TERÉNU"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

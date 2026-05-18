@@ -1,0 +1,672 @@
+{
+  "provenance": {
+    "source_file": "D.2.2 - statický výpočet.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 5400,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B 500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 20863559.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "rut\nTyp průběhu zatížení Kombinované\nGenerovat zatížení sněhem na pruty č. : 322-331\nParametry AR : ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.529,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "/m a= 0,264m\nSV= 27,05kNm e1= 0,036m\nSH= 3,606kNm emax= 0,1m\nVYHOVUJE\nnapětí v základové spáře\nAEF= ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "el,z\nW 166,4\n103*mm3\nW 34,60\n103*mm3\npl,y pl,z\ni 74,2 mm i 20,5 mm\ny z\nI 47,9\n103*mm4\nI 7,43\n109*mm6",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 44,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1999-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1995-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 1001",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-7",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1998",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1999-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-7",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1998",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 27,
+    "char_count_total": 49819,
+    "text_per_page_truncated": [
+      "",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 2/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nOOBBSSAAHH\nObrázek Průvodní zpráva 3 Obrázek ZS5 - ZS5: Užitné zatížení šachovnice, 16\nObrázek Průvodní zpráva 4 Izometrie\nObrázek Průvodní zpráva 5 ZS6 - Sníh - 3.15 Vygenerovaná zatížení 16\nZákladní údaje o modelu 5 Obrázek ZS6 - ZS6: Sníh, Izometrie 17\nNastavení sítě prvků 6 Výsledky - kombinace",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 3/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nPředmětem statického výpočtu je posouzení nové nosné konstrukce zahradního skladu s parkovacím\nstáním.\nPodklady\nSeznam použitých norem\n[1] ČSN EN 1990 Eurokód: Zásady navrhování konstrukcí\n[2] ČSN EN 1991-1-1 Eurokód 1: Zatížení konstrukcí - Část 1-1: Obecná za",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 4/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nMezní stavy použitelnosti\nV souladu s tab. A1.4 jsou stanoveny hodnoty a průběhy deformací pro charakteristickou kombinaci\nzatížení, výraz [6.14], častou kombinací zatížení, výraz [6.15] a kvazistálou kombinaci zatížení, výraz\n[6.16]. Posouzeny jsou limitní rel",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 5/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nKlimatické zatížení\nNahodilé zatížení sněhem\nZatížení sněhem Zatížení sněhem Tíha sněhu na zemi\nČSN EN 1991-1-3 a\nKategorie Popis snehovamapa.cz\nsk [kN/m2] sk [kN/m2]\nSNÍH VII Sněhová oblast VII. 3,44 4,00\nSklon střechy a Zatěžovací šířka b m 1 s s'\n[°] [mm] [-",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 6/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZÁÁKKLLAADDNNÍÍ ÚÚDDAAJJEE OO MMOODDEELLUU\nTíhové zrychlení\ng : 10.00 m/s2\nNNAASSTTAAVVEENNÍÍ SSÍÍTTĚĚ PPRRVVKKŮŮ\nObecné Požadovaná délka konečných prvků I FE : 500 mm\nMaximální vzdálenost mezi uzlem a linií  : 1 mm\npro integrování do linie\nMaximální počet uzlů sítě KP v tisících : 500\nPruty Poče",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 7/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1133 PPRRŮŮŘŘEEZZYY\nPrůřez Mater. IT [mm4] Iy [mm4] Iz [mm4] Hlavní osy Natočení Celkové rozměry [mm]\nč. č. A [mm2] Ay [mm2] Az [mm2]  [°] ' [°] Šířka b Výška h\n1 IPE 180\n2 47900.0 13170000.0 1009000.0 0.00 0.00 91.0 180.0\n2395.0 1218.9 876.0\n2 Obdélník 250/250\n1 549479168.0 325520832.0 32552",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 8/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nMMMOOODDDEEELLL\nIzometrie\nMateriály\n1: Beton C25/30 | EN 1992-1-1:2004/A1:2014\n2: Ocel S 235 | ČSN EN 1993-1-1:2006\n3: Topolové a jehličnaté dřevo C24 | CSN EN 338:2016-10\nZ\nY\nX\nMMMOOODDDEEELLL\nIzometrie\nTloušťka plochy [mm]\n250.0 mm\n600.0 mm\nZ\nY\nX",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 9/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nMMMOOODDDEEELLL\nIzometrie\nPrůřezy\n1: IPE 180; Ocel S 235\n2: Obdélník 250/250; Beton C25/30\n3: Obdélník 300/1000; Beton C25/30\n4: T-obdélník 100/160; Topolové a jehličnaté dřevo C24\nZ\nY\nX\nMMMOOODDDEEELLL\nIzometrie\nKlouby na koncích prutu\n1: Lokální; NNN NAN\n2: Lokální; NNN NNA\nZ\nY\nX",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 10/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..11 ZZAATTĚĚŽŽOOVVAACCÍÍ SSTTAAVVYY\nZatěž. Označení EN 1990 | ČSN Vlastní tíha - Součinitel ve směru\nstav zatěž. stavu Kategorie účinků Aktivní X Y Z\nZS1 Vlastní tíha Stálé 0.000 0.000 -1.000\nZS2 Ostatní stálé Stálé\nZS3 Zemní tlak Stálé/užitné\nZS4 Užitné zatížení Užitná zatížení - kategorie ",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 11/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemní tlak\n4 1.00 ZS4 Užitné zatížení\nKZ22 S Ch ZS1 + ZS2 + ZS3 + ZS5 1 1.00 ZS1 Vlastní tíha\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemní tl",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 12/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemní tlak\nKZ47 S Qp ZS1 + ZS2 + ZS3 + 0.6*ZS4 1 1.00 ZS1 Vlastní tíha\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemní tlak\n4 0.60 ZS4 Užitné za",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 13/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS2: Ostatní stálé\nč. Popis zatížení\nKonvertovat zatížení na pruty č. : 301,302,306,307,311,\n312,316-321,332,333,\n336,337\nZZZSSS222::: OOOSSSTTTAAATTTNNNÍÍÍ SSSTTTÁÁÁLLLÉÉÉ\nZS2 : Ostatní stálé Izometrie\nZatížení [kN/m^2]\n0.50\n0.20\n0.50\n0.50\n0.2",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 14/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZSSS333::: ZZZEEEMMMNNNÍÍÍ TTTLLLAAAKKK\nZS3 : Zemní tlak Izometrie\nZatížení [kN/m^2]\n5.00\nZ 25.00 25.00 5.00\nY\nX\n5.00\n25.00\nZS4 33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS4: Užitné zatížení\nUžitné zatížení\nč. Popis zatížení\n1 Ze zatížení na plochu pomocí roviny\nSměr zatížení na ploc",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 15/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZSSS444::: UUUŽŽŽIIITTTNNNÉÉÉ ZZZAAATTTÍÍÍŽŽŽEEENNNÍÍÍ\nZS4 : Užitné zatížení Izometrie\nZatížení [kN/m^2]\n2.50\n2.50\n2.50\n2.50\nZ\nY\nX\nZS5 33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS5: Užitné zatížení šachovnice\nUžitné zatížení šachovnice\nč. Popis zatížení\n1 Ze zatížení na plochu pomocí",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 16/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZSSS555::: UUUŽŽŽIIITTTNNNÉÉÉ ZZZAAATTTÍÍÍŽŽŽEEENNNÍÍÍ ŠŠŠAAACCCHHHOOOVVVNNNIIICCCEEE\nZS5 : Užitné zatížení šachovnice Izometrie\nZatížení [kN/m^2]\n2.50\n2.50\n2.50\n2.50\nZ\nY\nX\nZS6 33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS6: Sníh\nSníh\nč. Popis zatížení\n1 Ze zatížení sněhem (plochá/pul",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 17/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS6: Sníh\nč. Popis zatížení\ns1 : 3.20 kN/m2\nVygenerovaná celková zatížení  P Plochy : 66.8 kN\n P : 66.8 kN\nCelkový moment k počátku  M Plochy : 221.2 kNm\n M : 221.7 kNm\nBuňky vybrané pro generování  počet buněk : 11\n plocha buněk : 208635",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 18/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nKKKOOONNNTTTAAAKKKTTTNNNÍÍÍ SSSÍÍÍLLLYYY ppp ,,, PPPOOODDDPPPOOORRROOOVVVÉÉÉ RRREEEAAAKKKCCCEEE\nzzz\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nPruty Kontaktní síly p-z\nPodporové reakce[kN], [kN/m]\nKombinace výsledků: Min. hodnoty\n5.2\n5.5\n5.5\n15 5.5\n5.5\n4.3\n15\nZ\nY\nX\n36.7\n44.3 82",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 19/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZÁÁÁKKKLLLAAADDDNNNÍÍÍ VVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY nnn\nyyy\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nZákladní vnitřní Plochy Základní vnitřní síly n-y [kN/m]\nsíly\nny [kN/m] Kombinace výsledků: Min. hodnoty\n-10.4\n-16.9\n-23.5\n-30.1\n-36.6\n-43.2\n-49.7\n-56.3\n-62.9\n-69.4\nZ ",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 20/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY VVV\nzzz\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nvnitřní síly Pruty Vnitřní síly V-z\nVz [kN] Kombinace výsledků: Max. a min. hodnoty\n10.1 5.2\n8.3 5.5\n6.5 0.2 5.5\n4.7 0.2 5.5\n2.9 7.6 0.2 5.5\n1.2 1.6 10.1 0.2 4.3\n-0.6 2.0 10.1\n-2.4 10.1\n-1.7 2",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 21/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nyyy\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nvnitřní síly Pruty Vnitřní síly M-y\nMy [kNm] Kombinace výsledků: Max. a min. hodnoty\n5.1\n4.6\n4.2\n3.7\n3.2\n2.8\n2.3\n1.8 4.8\n1.4\n4.9\n0.9\n5.0\n0.5\n0.0 5.0\nMax : 5.1 5.1\nMin : 0.0\nZ 5.1\nY\n5.0\n5.0\n5.0",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 22/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nRF-CONCRETE Surfaces\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nRF-CONCRETE Surfaces\nPŘ1\nNávrh výztuže 11..11 ZZÁÁKKLLAADDNNÍÍ ÚÚDDAAJJEE\nPosouzení podle normy: CSN EN 1992-1-1/NA:2016-05\nMEZNÍ STAV ÚNOSNOSTI\nPosuzované kombinace výsledků: KV1 MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10\nTrvalá a dočasná\nMEZNÍ STAV POUŽITELNOSTI\nPosuzované kombin",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 23/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nRF-CONCRETE Surfaces\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..44 SSAADDAA VVÝÝZZTTUUŽŽEE ČČ.. 11 -- ZZÁÁKKLLAADDNNÍÍ SSÍÍŤŤ\nPrůměr výztuže ds-1: 0.010, ds-2: 0.010 m\nSměry výztuže Phi-1: 0.000°, Phi-2: 90.000°\nPlocha výztuže Použít potřebnou výztuž z tabulek 2.1, 2.2, 2.3\nUSPOŘÁDÁNÍ ZÁKLADNÍ VÝZTUŽE - DOLE (+z)\nPočet vrstev 2\nKrytí k okraj",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 24/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nRF-CONCRETE Surfaces\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPOOZZNNÁÁMMKKAA KK PPOOSSOOUUZZEENNÍÍ PPOOUUŽŽIITTEELLNNOOSSTTII\nč. Popis\n226) Trhliny v betonu se neobjevují na žádné straně desky.\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ DŘEVĚNÉHO PRVKU DLE ČSN EN 1995-1-1\nNA MEZNÍ STAV ÚNOSNOSTI\nSTROPNICE - SKLAD\nMATERIÁLOVÉ CHARAKTERISTIKY (Tříd",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 25/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nOPĚRNÁ STĚNA GRAVITAČNÍ (dle ČSN EN 1997)\n1) Geometrie, parametry zeminy\nb1 b0 bw\nh0\nb(+)\nA\nhca\nB\nh a(+)\nSa1z Sa1\nd Sa1x\nG\nSpx d C Sa21\na1 Sa22\nSp\nb D\nSpz\nzemina F4/CS - svor jemnozrnný zvětralý\ng= 18,5kNm-3 g f= 1,00 g d= 18,5kNm-3\nf ef= 26,0° g mfi= 1,25 f ef,d= 20,8°\ncef= ",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 26/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nSTROPNICE\nN 0 kN\nSd\nM 6,6 kNm M 1 kNm\ny,Sd z,Sd\nIPE180 VYHOVUJE IPE180\nG h b t t r\nw f\n18,80 180 91 5,3 8 9\nkg/m mm mm mm mm mm\ntřída 1\nf 235 MPa  1,15\ny m1\n 0,21  0,34\ny z\nL 3600 mm L 1000 mm\ny,cr z,cr\nk 1  0,21\nLT\nk 1 L 1000 mm\nw LT\nC 1  1,3\n1 My\nC 0  1,3\n2 Mz\nz 100 m",
+      "Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733 Strana: 27/27\nOddíl: 1\nparc. č. 1094/16; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZÁÁÁVVVĚĚĚRRR\nStavba je navržena v souladu s normovými hodnotami tak, aby účinky zatížení a nepříznivé vlivy\nprostředí, kterým je vystavena během výstavby a užívání při řádně prováděné běžné údržbě, nemohly\nzpůsobit:\n náhlé nebo postupné zřícení, popřípadě jiné destruktivní poškození kterékoliv její "
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B 500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "rut\nTyp průběhu zatížení Kombinované\nGenerovat zatížení sněhem na pruty č. : 322-331\nParametry AR : ",
+          "volume_m3": null,
+          "area_m2": 20863559.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "/m a= 0,264m\nSV= 27,05kNm e1= 0,036m\nSH= 3,606kNm emax= 0,1m\nVYHOVUJE\nnapětí v základové spáře\nAEF= ",
+          "volume_m3": null,
+          "area_m2": 0.529,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "el,z\nW 166,4\n103*mm3\nW 34,60\n103*mm3\npl,y pl,z\ni 74,2 mm i 20,5 mm\ny z\nI 47,9\n103*mm4\nI 7,43\n109*mm6",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 44,
+        "floors_above_ground": null,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 1990",
+        "ČSN EN 1991-1-1",
+        "ČSN EN 1991-1-3",
+        "ČSN EN 1991-1-4",
+        "ČSN EN 1992-1-1",
+        "ČSN EN 1993-1-1",
+        "ČSN EN 1996-1-1",
+        "ČSN EN 1997-1",
+        "ČSN EN 1992-1-2",
+        "ČSN EN 1993-1-8",
+        "ČSN EN 1999-1",
+        "ČSN EN 1995-1",
+        "ČSN EN 1996",
+        "ČSN 73 1001",
+        "ČSN EN 1991-1-7",
+        "ČSN EN 1998",
+        "ČSN EN 1995-1-1",
+        "ČSN EN 1997",
+        "EN 1990",
+        "EN 1991-1-1",
+        "EN 1991-1-3",
+        "EN 1991-1-4",
+        "EN 1992-1-1",
+        "EN 1993-1-1",
+        "EN 1996-1-1",
+        "EN 1997-1",
+        "EN 1992-1-2",
+        "EN 1993-1-8",
+        "EN 1999-1",
+        "EN 1995-1",
+        "EN 1996",
+        "EN 1991-1-7",
+        "EN 1998",
+        "EN 1995-1-1",
+        "EN 1997"
+      ],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

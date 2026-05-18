@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "02.07 - MU Jáchymov - nabytí právní moci.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 148,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1533,
+    "text_per_page_truncated": [
+      "Městský úřad Jáchymov\nodbor hospodářsko správní\nnám. Republiky 1, 362 51 Jáchymov\nVáš dopis značky: žádost\nze dne: 17. 09. 2025\nSp.zn.: 0003300/25/PNe\nNaše č.j.: 0004666/25/PNe\nVyřizuje: / tel.: 774167390\nE-mail: neumann@mestojachymov.cz\nV Jáchymově: 31. 12. 2025\nOprávněná úřední osoba: Pavel Neumann\nSDĚLENÍ\nMěstský úřad Jáchymov, odbor hospodářsko správní, jako silniční správní úřad ve věcech místních\nkomunikací, příslušný dle ustanovení § 40 odst. 5 písm. b) zákona č. 13/1997 Sb., o pozemních\n"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

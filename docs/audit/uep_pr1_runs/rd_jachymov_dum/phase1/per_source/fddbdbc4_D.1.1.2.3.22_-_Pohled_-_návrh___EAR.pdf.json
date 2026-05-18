@@ -1,0 +1,104 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.2.3.22 - Pohled - návrh _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1163,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "D",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "E Ing. arch. Marek Smolka",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1950,
+    "text_per_page_truncated": [
+      "povrchoví materiály - návrh\nA strukturovaná omútka, búlá\nB strukturovaná omútka, (cid:34)edá\nC pohledovč beton\nD sokl, obklad z keramickí obkladaŘky\nE okennú včplnř a dveže\nF ocelová falcovaná krytina, barva Řerná\n+12,750 G dževřní prvky / dževřnč obklad\nI\nH klempúžskí prvky (okapy, svody)\nI komún\nparapety a klempúžskí prvky: hlinúkovč plech, barva pozinkovanč plech\nF okennú rámy: plast, barva zelenomodrá\nE E\nzábradlú a zámeŘnickí prvky: barva antracit, včplš nerezová sú(cid:35)\n+9,600\nH\nF\nB\nE E"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "D",
+        "projektant": "E Ing. arch. Marek Smolka"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

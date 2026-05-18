@@ -1,0 +1,1590 @@
+{
+  "uep_version": "PR1",
+  "generated_at": "2026-05-18T19:42:25.898173+00:00",
+  "project_id": "libuse",
+  "project_type": "residential",
+  "matrix_file": "coverage_matrix_residential.yaml",
+  "supported_formats": [
+    "dxf",
+    "pdf_tz"
+  ],
+  "phase1": [
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4110_00_Obj_A_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/7b86bad4_185-01_DPS_D_SO01_110_4110_00_Obj_A_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4120_02_Obj_A_Pudorsy_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "34",
+      "artifact": "phase1/per_source/c07bfc94_185-01_DPS_D_SO01_110_4120_02_Obj_A_Pudorsy_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4130_01_Obj_A_Půdorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "30",
+      "artifact": "phase1/per_source/971c9cf5_185-01_DPS_D_SO01_110_4130_01_Obj_A_Půdorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/dec50a7a_185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/d5bb3b90_185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/0c0af105_185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7110_00_Obj_A_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/076f30ae_185-01_DPS_D_SO01_110_7110_00_Obj_A_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7120_00_Obj_A_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/430a7b8d_185-01_DPS_D_SO01_110_7120_00_Obj_A_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7130_00_Obj_A_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/eac5bb3e_185-01_DPS_D_SO01_110_7130_00_Obj_A_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9110_00_Obj_A_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/57756bec_185-01_DPS_D_SO01_110_9110_00_Obj_A_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9120_00_Obj_A_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "22",
+      "artifact": "phase1/per_source/dd760e83_185-01_DPS_D_SO01_110_9120_00_Obj_A_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9121_00_Obj_A_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/53dcd8c5_185-01_DPS_D_SO01_110_9121_00_Obj_A_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9130_00_Obj_A_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/534d9b57_185-01_DPS_D_SO01_110_9130_00_Obj_A_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_0000_00_ARS objekt B_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bc3df2da_185-01_DPS_D_SO01_120_0000_00_ARS_objekt_B_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/4c12a98f_185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/a3f8f51b_185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "26",
+      "artifact": "phase1/per_source/8423f89b_185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '12\\n12'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/b5144c0d_185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/539a689b_185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '8\\n0'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/7b6ff48e_185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/c255935e_185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/82427b4c_185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/6c03691b_185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/522301c0_185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/2cd2b494_185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/592a4035_185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/ebd66f77_185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_0000_00_ARS obj_C_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bb9e96ed_185-01_DPS_D_SO01_130_0000_00_ARS_obj_C_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4310_02_Obj_C_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/458ddee6_185-01_DPS_D_SO01_130_4310_02_Obj_C_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4320_01_Obj_C_Pudorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/7f8bef5a_185-01_DPS_D_SO01_130_4320_01_Obj_C_Pudorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4330_02_Obj_C_Pudorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/076982ce_185-01_DPS_D_SO01_130_4330_02_Obj_C_Pudorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/5d5d187f_185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "13",
+      "artifact": "phase1/per_source/93ace3c8_185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/8c49215f_185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7310_00_Obj_C_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/aba46ae5_185-01_DPS_D_SO01_130_7310_00_Obj_C_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7320_00_Obj_C_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "32",
+      "artifact": "phase1/per_source/d2c3dddd_185-01_DPS_D_SO01_130_7320_00_Obj_C_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7330_00_Obj_C_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "30",
+      "artifact": "phase1/per_source/08921de4_185-01_DPS_D_SO01_130_7330_00_Obj_C_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9310_00_Obj_C_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/a6c81a9a_185-01_DPS_D_SO01_130_9310_00_Obj_C_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9320_00_Obj_C_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "24",
+      "artifact": "phase1/per_source/709e4693_185-01_DPS_D_SO01_130_9320_00_Obj_C_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/90ba363d_185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/46d5f881_185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4110_00_Obj_A_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/7b86bad4_185-01_DPS_D_SO01_110_4110_00_Obj_A_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4120_02_Obj_A_Pudorsy_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "34",
+      "artifact": "phase1/per_source/c07bfc94_185-01_DPS_D_SO01_110_4120_02_Obj_A_Pudorsy_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4130_01_Obj_A_Půdorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "30",
+      "artifact": "phase1/per_source/971c9cf5_185-01_DPS_D_SO01_110_4130_01_Obj_A_Půdorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/dec50a7a_185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/d5bb3b90_185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/0c0af105_185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7110_00_Obj_A_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/076f30ae_185-01_DPS_D_SO01_110_7110_00_Obj_A_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7120_00_Obj_A_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/430a7b8d_185-01_DPS_D_SO01_110_7120_00_Obj_A_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7130_00_Obj_A_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/eac5bb3e_185-01_DPS_D_SO01_110_7130_00_Obj_A_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9110_00_Obj_A_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/57756bec_185-01_DPS_D_SO01_110_9110_00_Obj_A_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9120_00_Obj_A_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "22",
+      "artifact": "phase1/per_source/dd760e83_185-01_DPS_D_SO01_110_9120_00_Obj_A_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9121_00_Obj_A_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/53dcd8c5_185-01_DPS_D_SO01_110_9121_00_Obj_A_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9130_00_Obj_A_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/534d9b57_185-01_DPS_D_SO01_110_9130_00_Obj_A_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_0000_00_ARS objekt B_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bc3df2da_185-01_DPS_D_SO01_120_0000_00_ARS_objekt_B_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/4c12a98f_185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/a3f8f51b_185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "26",
+      "artifact": "phase1/per_source/8423f89b_185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '12\\n12'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/b5144c0d_185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/539a689b_185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '8\\n0'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/7b6ff48e_185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/c255935e_185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/82427b4c_185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/6c03691b_185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/522301c0_185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/2cd2b494_185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/592a4035_185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/ebd66f77_185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_0000_00_ARS obj_C_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bb9e96ed_185-01_DPS_D_SO01_130_0000_00_ARS_obj_C_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4310_02_Obj_C_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/458ddee6_185-01_DPS_D_SO01_130_4310_02_Obj_C_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4320_01_Obj_C_Pudorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/7f8bef5a_185-01_DPS_D_SO01_130_4320_01_Obj_C_Pudorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4330_02_Obj_C_Pudorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/076982ce_185-01_DPS_D_SO01_130_4330_02_Obj_C_Pudorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/5d5d187f_185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "13",
+      "artifact": "phase1/per_source/93ace3c8_185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/8c49215f_185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7310_00_Obj_C_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/aba46ae5_185-01_DPS_D_SO01_130_7310_00_Obj_C_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7320_00_Obj_C_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "32",
+      "artifact": "phase1/per_source/d2c3dddd_185-01_DPS_D_SO01_130_7320_00_Obj_C_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7330_00_Obj_C_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "30",
+      "artifact": "phase1/per_source/08921de4_185-01_DPS_D_SO01_130_7330_00_Obj_C_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9310_00_Obj_C_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/a6c81a9a_185-01_DPS_D_SO01_130_9310_00_Obj_C_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9320_00_Obj_C_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "24",
+      "artifact": "phase1/per_source/709e4693_185-01_DPS_D_SO01_130_9320_00_Obj_C_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/90ba363d_185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/46d5f881_185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0000_01_Titulka.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/1dfd742c_185-01_DPS_D_SO01_100_0000_01_Titulka.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0010_01_Technicka_zprava.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/e240cf05_185-01_DPS_D_SO01_100_0010_01_Technicka_zprava.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0011_00_Radonovy posudek.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "15",
+      "artifact": "phase1/per_source/71f564c3_185-01_DPS_D_SO01_100_0011_00_Radonovy_posudek.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0020_01_Tabulka_mistnosti.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bb222b48_185-01_DPS_D_SO01_100_0020_01_Tabulka_mistnosti.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0030_01_Tabulka_specifikace_skladeb_a_povrchu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "12",
+      "artifact": "phase1/per_source/3201299f_185-01_DPS_D_SO01_100_0030_01_Tabulka_specifikace_skladeb_a_povrchu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0040_00_Tabulka_vyplneni_otvoru.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/fa1fad00_185-01_DPS_D_SO01_100_0040_00_Tabulka_vyplneni_otvoru.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0050_01_Tabulka_zamecnickych_prvku.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/e2c24a60_185-01_DPS_D_SO01_100_0050_01_Tabulka_zamecnickych_prvku.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0060_01_Tabulka_klempirskych_prvku.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/66c84f95_185-01_DPS_D_SO01_100_0060_01_Tabulka_klempirskych_prvku.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0070_01_Tabulka_prekladu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/0ff17d25_185-01_DPS_D_SO01_100_0070_01_Tabulka_prekladu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0080_02_Tabulka_ostatnich prvku.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/da746ed9_185-01_DPS_D_SO01_100_0080_02_Tabulka_ostatnich_prvku.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4010_00_Pudorys_vykopu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/8b46439a_185-01_DPS_D_SO01_100_4010_00_Pudorys_vykopu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4020_00_Podkladni_betony.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/225b8a15_185-01_DPS_D_SO01_100_4020_00_Podkladni_betony.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4030_01_Pudorys_1_PP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/5d00dbee_185-01_DPS_D_SO01_100_4030_01_Pudorys_1_PP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4040_01_Odvodneni teras.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '50\\n3'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/800f7504_185-01_DPS_D_SO01_100_4040_01_Odvodneni_teras.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_5000_01_Rezy_1_PP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/188e217e_185-01_DPS_D_SO01_100_5000_01_Rezy_1_PP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_8030_01_Kniha_detailu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/f41c58a5_185-01_DPS_D_SO01_100_8030_01_Kniha_detailu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_8050_00_Zasady_sparorezu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/37938727_185-01_DPS_D_SO01_100_8050_00_Zasady_sparorezu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_9000_00_Pudorys_1_PP_koor_vykres_cast_A.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "124",
+      "artifact": "phase1/per_source/b98a3b17_185-01_DPS_D_SO01_100_9000_00_Pudorys_1_PP_koor_vykres_cast_A.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_9001_00_Pudorys_1_PP_koor_vykres_cast_B.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "95",
+      "artifact": "phase1/per_source/5f5b744f_185-01_DPS_D_SO01_100_9001_00_Pudorys_1_PP_koor_vykres_cast_B.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_0000_01_ARS_objekt_D_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/7c38217f_185-01_DPS_D_SO01_140_0000_01_ARS_objekt_D_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4410_00_Obj_D_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/271d7fe4_185-01_DPS_D_SO01_140_4410_00_Obj_D_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4420_01_Obj_D_Pudorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "41",
+      "artifact": "phase1/per_source/3c957960_185-01_DPS_D_SO01_140_4420_01_Obj_D_Pudorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4430_01_Obj_D_Pudorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/afbd667d_185-01_DPS_D_SO01_140_4430_01_Obj_D_Pudorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4440_00_Obj_D_Pudorys_strecha.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '02421\\n28070'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/eee5c9ab_185-01_DPS_D_SO01_140_4440_00_Obj_D_Pudorys_strecha.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_5400_01_Obj_D_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "11",
+      "artifact": "phase1/per_source/4f02a6a5_185-01_DPS_D_SO01_140_5400_01_Obj_D_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_6400_01_Obj_D_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '04\\n0'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/b929a035_185-01_DPS_D_SO01_140_6400_01_Obj_D_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_7410_00_Obj_D_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/9c213c2e_185-01_DPS_D_SO01_140_7410_00_Obj_D_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_7420_00_Obj_D_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/f9b2262e_185-01_DPS_D_SO01_140_7420_00_Obj_D_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_7430_00_Obj_D_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/8ce26104_185-01_DPS_D_SO01_140_7430_00_Obj_D_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9410_00_Obj_D_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/79ec8eba_185-01_DPS_D_SO01_140_9410_00_Obj_D_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9420_00_Obj_D_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/daf6b32a_185-01_DPS_D_SO01_140_9420_00_Obj_D_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9421_00_Obj_D_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/b9203b3e_185-01_DPS_D_SO01_140_9421_00_Obj_D_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9430_00_Obj_D_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/9bd3efc4_185-01_DPS_D_SO01_140_9430_00_Obj_D_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4110_00_Obj_A_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/7b86bad4_185-01_DPS_D_SO01_110_4110_00_Obj_A_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4120_02_Obj_A_Pudorsy_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "34",
+      "artifact": "phase1/per_source/c07bfc94_185-01_DPS_D_SO01_110_4120_02_Obj_A_Pudorsy_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4130_01_Obj_A_Půdorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "30",
+      "artifact": "phase1/per_source/971c9cf5_185-01_DPS_D_SO01_110_4130_01_Obj_A_Půdorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/dec50a7a_185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/d5bb3b90_185-01_DPS_D_SO01_110_5100_01_Obj_A_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/0c0af105_185-01_DPS_D_SO01_110_6100_00_Obj_A_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7110_00_Obj_A_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/076f30ae_185-01_DPS_D_SO01_110_7110_00_Obj_A_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7120_00_Obj_A_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/430a7b8d_185-01_DPS_D_SO01_110_7120_00_Obj_A_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_7130_00_Obj_A_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/eac5bb3e_185-01_DPS_D_SO01_110_7130_00_Obj_A_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9110_00_Obj_A_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/57756bec_185-01_DPS_D_SO01_110_9110_00_Obj_A_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9120_00_Obj_A_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "22",
+      "artifact": "phase1/per_source/dd760e83_185-01_DPS_D_SO01_110_9120_00_Obj_A_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9121_00_Obj_A_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/53dcd8c5_185-01_DPS_D_SO01_110_9121_00_Obj_A_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_110_9130_00_Obj_A_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/534d9b57_185-01_DPS_D_SO01_110_9130_00_Obj_A_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_0000_00_ARS objekt B_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bc3df2da_185-01_DPS_D_SO01_120_0000_00_ARS_objekt_B_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/4c12a98f_185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/a3f8f51b_185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "26",
+      "artifact": "phase1/per_source/8423f89b_185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '12\\n12'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/b5144c0d_185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/539a689b_185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '8\\n0'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/7b6ff48e_185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/c255935e_185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/82427b4c_185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/6c03691b_185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/522301c0_185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/2cd2b494_185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/592a4035_185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/ebd66f77_185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_0000_00_ARS obj_C_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bb9e96ed_185-01_DPS_D_SO01_130_0000_00_ARS_obj_C_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4310_02_Obj_C_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/458ddee6_185-01_DPS_D_SO01_130_4310_02_Obj_C_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4320_01_Obj_C_Pudorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/7f8bef5a_185-01_DPS_D_SO01_130_4320_01_Obj_C_Pudorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4330_02_Obj_C_Pudorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/076982ce_185-01_DPS_D_SO01_130_4330_02_Obj_C_Pudorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/5d5d187f_185-01_DPS_D_SO01_130_4340_00_Obj_C_Pudorys_strechy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "13",
+      "artifact": "phase1/per_source/93ace3c8_185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/8c49215f_185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7310_00_Obj_C_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "28",
+      "artifact": "phase1/per_source/aba46ae5_185-01_DPS_D_SO01_130_7310_00_Obj_C_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7320_00_Obj_C_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "32",
+      "artifact": "phase1/per_source/d2c3dddd_185-01_DPS_D_SO01_130_7320_00_Obj_C_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_7330_00_Obj_C_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "30",
+      "artifact": "phase1/per_source/08921de4_185-01_DPS_D_SO01_130_7330_00_Obj_C_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9310_00_Obj_C_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/a6c81a9a_185-01_DPS_D_SO01_130_9310_00_Obj_C_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9320_00_Obj_C_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "24",
+      "artifact": "phase1/per_source/709e4693_185-01_DPS_D_SO01_130_9320_00_Obj_C_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/90ba363d_185-01_DPS_D_SO01_130_9321_00_Obj_C_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/46d5f881_185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "D_1NP_chl.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "22",
+      "artifact": "phase1/per_source/61898588_D_1NP_chl.dxf.json"
+    },
+    {
+      "source_file": "D_1NP_vzt.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "125",
+      "artifact": "phase1/per_source/4885903f_D_1NP_vzt.dxf.json"
+    },
+    {
+      "source_file": "D_2NP_chl.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "19",
+      "artifact": "phase1/per_source/19e1028b_D_2NP_chl.dxf.json"
+    },
+    {
+      "source_file": "D_2NP_vzt.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "128",
+      "artifact": "phase1/per_source/bf913660_D_2NP_vzt.dxf.json"
+    },
+    {
+      "source_file": "D_3NP_chl.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "19",
+      "artifact": "phase1/per_source/982897d6_D_3NP_chl.dxf.json"
+    },
+    {
+      "source_file": "D_3NP_vzt.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "131",
+      "artifact": "phase1/per_source/6b1c0f50_D_3NP_vzt.dxf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_0000_01_ARS_objekt_D_desky.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/7c38217f_185-01_DPS_D_SO01_140_0000_01_ARS_objekt_D_desky.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4410_00_Obj_D_Pudorys_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/271d7fe4_185-01_DPS_D_SO01_140_4410_00_Obj_D_Pudorys_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4420_01_Obj_D_Pudorys_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "41",
+      "artifact": "phase1/per_source/3c957960_185-01_DPS_D_SO01_140_4420_01_Obj_D_Pudorys_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4430_01_Obj_D_Pudorys_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/afbd667d_185-01_DPS_D_SO01_140_4430_01_Obj_D_Pudorys_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_4440_00_Obj_D_Pudorys_strecha.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '02421\\n28070'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/eee5c9ab_185-01_DPS_D_SO01_140_4440_00_Obj_D_Pudorys_strecha.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_5400_01_Obj_D_Rezy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "11",
+      "artifact": "phase1/per_source/4f02a6a5_185-01_DPS_D_SO01_140_5400_01_Obj_D_Rezy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_6400_01_Obj_D_Pohledy.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '04\\n0'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/b929a035_185-01_DPS_D_SO01_140_6400_01_Obj_D_Pohledy.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_7410_00_Obj_D_Vykres_podhledu_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/9c213c2e_185-01_DPS_D_SO01_140_7410_00_Obj_D_Vykres_podhledu_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_7420_00_Obj_D_Vykres_podhledu_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "36",
+      "artifact": "phase1/per_source/f9b2262e_185-01_DPS_D_SO01_140_7420_00_Obj_D_Vykres_podhledu_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_7430_00_Obj_D_Vykres_podhledu_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/8ce26104_185-01_DPS_D_SO01_140_7430_00_Obj_D_Vykres_podhledu_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9410_00_Obj_D_Koor_vykres_1_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/79ec8eba_185-01_DPS_D_SO01_140_9410_00_Obj_D_Koor_vykres_1_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9420_00_Obj_D_Koor_vykres_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "27",
+      "artifact": "phase1/per_source/daf6b32a_185-01_DPS_D_SO01_140_9420_00_Obj_D_Koor_vykres_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9421_00_Obj_D_Koor_vyk_byt_jader_2_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/b9203b3e_185-01_DPS_D_SO01_140_9421_00_Obj_D_Koor_vyk_byt_jader_2_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_140_9430_00_Obj_D_Koor_vykres_3_NP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/9bd3efc4_185-01_DPS_D_SO01_140_9430_00_Obj_D_Koor_vykres_3_NP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0000_01_Titulka.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/1dfd742c_185-01_DPS_D_SO01_100_0000_01_Titulka.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0010_01_Technicka_zprava.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "31",
+      "artifact": "phase1/per_source/e240cf05_185-01_DPS_D_SO01_100_0010_01_Technicka_zprava.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0011_00_Radonovy posudek.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "15",
+      "artifact": "phase1/per_source/71f564c3_185-01_DPS_D_SO01_100_0011_00_Radonovy_posudek.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0020_01_Tabulka_mistnosti.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/bb222b48_185-01_DPS_D_SO01_100_0020_01_Tabulka_mistnosti.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0030_01_Tabulka_specifikace_skladeb_a_povrchu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "12",
+      "artifact": "phase1/per_source/3201299f_185-01_DPS_D_SO01_100_0030_01_Tabulka_specifikace_skladeb_a_povrchu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0040_00_Tabulka_vyplneni_otvoru.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "10",
+      "artifact": "phase1/per_source/fa1fad00_185-01_DPS_D_SO01_100_0040_00_Tabulka_vyplneni_otvoru.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0050_01_Tabulka_zamecnickych_prvku.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/e2c24a60_185-01_DPS_D_SO01_100_0050_01_Tabulka_zamecnickych_prvku.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0060_01_Tabulka_klempirskych_prvku.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/66c84f95_185-01_DPS_D_SO01_100_0060_01_Tabulka_klempirskych_prvku.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0070_01_Tabulka_prekladu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/0ff17d25_185-01_DPS_D_SO01_100_0070_01_Tabulka_prekladu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_0080_02_Tabulka_ostatnich prvku.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/da746ed9_185-01_DPS_D_SO01_100_0080_02_Tabulka_ostatnich_prvku.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4010_00_Pudorys_vykopu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/8b46439a_185-01_DPS_D_SO01_100_4010_00_Pudorys_vykopu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4020_00_Podkladni_betony.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/225b8a15_185-01_DPS_D_SO01_100_4020_00_Podkladni_betony.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4030_01_Pudorys_1_PP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "29",
+      "artifact": "phase1/per_source/5d00dbee_185-01_DPS_D_SO01_100_4030_01_Pudorys_1_PP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_4040_01_Odvodneni teras.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Unexpected error: ValueError: could not convert string to float: '50\\n3'",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/800f7504_185-01_DPS_D_SO01_100_4040_01_Odvodneni_teras.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_5000_01_Rezy_1_PP.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "9",
+      "artifact": "phase1/per_source/188e217e_185-01_DPS_D_SO01_100_5000_01_Rezy_1_PP.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_8030_01_Kniha_detailu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/f41c58a5_185-01_DPS_D_SO01_100_8030_01_Kniha_detailu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_8050_00_Zasady_sparorezu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/37938727_185-01_DPS_D_SO01_100_8050_00_Zasady_sparorezu.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_9000_00_Pudorys_1_PP_koor_vykres_cast_A.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "124",
+      "artifact": "phase1/per_source/b98a3b17_185-01_DPS_D_SO01_100_9000_00_Pudorys_1_PP_koor_vykres_cast_A.pdf.json"
+    },
+    {
+      "source_file": "185-01_DPS_D_SO01_100_9001_00_Pudorys_1_PP_koor_vykres_cast_B.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "95",
+      "artifact": "phase1/per_source/5f5b744f_185-01_DPS_D_SO01_100_9001_00_Pudorys_1_PP_koor_vykres_cast_B.pdf.json"
+    }
+  ],
+  "phase2": {
+    "artifact": "phase2/coverage_report.json",
+    "gate_passed": false,
+    "pokryto_pct": 39.47,
+    "blocking_gaps": [
+      "reinforcement",
+      "wall_system",
+      "foundation_system",
+      "roof_system",
+      "thermal_insulation",
+      "facade_finish",
+      "floor_finishes",
+      "windows_doors_specification",
+      "fire_safety",
+      "site_situation"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "03.02 - město Jáchymov - Souhlas.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 43,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 743,
+    "text_per_page_truncated": [
+      "Město Jáchymov\nnám. Republiky 1, 362 51 Jáchymov\nvyřizuje: Dagmar Ondráčková\nSMASH architekti s.r.o.\ntelefon:\nVodňanského 1008/2\ne-mail:\n16900 Praha 6\nOdbor hospodářsko správní\nV Jáchymově: 26.09.2025\nčíslo jednací: 0003281/25/DOn\nvaše značka: -\nVěc: Souhlas se stavbou - Zahradní sklad a přístupové schodiště k RD Fibichova č.p.\n733, 362 51 Jáchymov\nVážený pane architekte,\nv příloze Vám zasílám souhlasné stanovisko Města Jáchymov k plánované výstavbě\nZahradní sklad a přístupové schodiště k RD Fib"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

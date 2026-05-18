@@ -1,0 +1,14 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.0,
+  "parse_duration_ms": 0,
+  "facts": [],
+  "data": {},
+  "decode_warnings": [],
+  "extractor_error": "Unexpected error: ValueError: could not convert string to float: '8\\n0'"
+}

@@ -1,0 +1,4382 @@
+{
+  "provenance": {
+    "source_file": "RD Ja_chymov vjezd _ DPZ _ 02.dxf",
+    "source_format": "dxf",
+    "extractor": "uep.dxf_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.95,
+  "parse_duration_ms": 381,
+  "facts": [
+    {
+      "category": "dxf_meta",
+      "field": "entity_count_total",
+      "value": 1176,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "insunits_enum": 4,
+        "scale_to_m": 0.001
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "layer_count",
+      "value": 39,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "layers": [
+          "0",
+          "Defpoints",
+          "IP_Popisy bubliny",
+          "IP_Výškové kóty",
+          "IP__netisk",
+          "IP_obrysy místností",
+          "IP_rozpiska",
+          "MA_kóty",
+          "OCEL HEB sloupky rez",
+          "PDF3_Solid Fills",
+          "PDF_Tenká",
+          "SM _ Bourání",
+          "SM _ Popisy",
+          "SM _ oplocení",
+          "SMA_rozpiska",
+          "SM_ Návrh šrafa",
+          "SM_Popisy",
+          "SM__02d_tenka další",
+          "SM__05_čerchovaná",
+          "SM__06_dvojčerchovaná",
+          "SM__dveře",
+          "SM_kóty",
+          "Textové bloky",
+          "Vnější zdi",
+          "Z _ KATASTR",
+          "Z _ MERENI",
+          "Z _ POPIS",
+          "_ geometrie",
+          "_ poznamka draft",
+          "km_ hydroizolace",
+          "km__02_tlustá",
+          "km__03_velmi tlustá",
+          "km__netisk",
+          "km__tenká",
+          "km_kóty",
+          "km_rozpiska",
+          "km_tabulka místností",
+          "km_čísla místností",
+          "km_šrafy"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "block_definition_count",
+      "value": 23,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "blocks": [
+          "ARROWHEAD_1",
+          "BMW",
+          "BMW_2d",
+          "KR",
+          "PLOT_DREVENY_04",
+          "PSR_Prázdný_dveřní_otvor",
+          "_ArchTick",
+          "datum",
+          "hlavní projektant",
+          "hlavní vstup",
+          "investor",
+          "legenda materiálu",
+          "legenda skladeb",
+          "název",
+          "projektant",
+          "projektový stupeň",
+          "razítko a podpis",
+          "severka",
+          "vstup",
+          "výškový systém",
+          "zlab rez",
+          "část",
+          "řezová značka"
+        ]
+      }
+    },
+    {
+      "category": "dxf_meta",
+      "field": "modelspace_bbox",
+      "value": {
+        "x_min_m": 3841.1513722736563,
+        "y_min_m": 1820.8,
+        "x_max_m": 4232.006112669514,
+        "y_max_m": 2188.712908452895,
+        "width_m": 390.85474039585733,
+        "height_m": 367.9129084528952
+      },
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "layer_inventory",
+      "field": "IP_Popisy bubliny",
+      "value": {
+        "MTEXT": 4,
+        "LEADER": 2,
+        "LWPOLYLINE": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "IP_Výškové kóty",
+      "value": {
+        "INSERT": 8,
+        "LWPOLYLINE": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 15
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "IP_obrysy místností",
+      "value": {
+        "LWPOLYLINE": 47
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 47
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "IP_rozpiska",
+      "value": {
+        "TEXT": 3,
+        "LWPOLYLINE": 5
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 8
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "MA_kóty",
+      "value": {
+        "LINE": 8,
+        "INSERT": 8,
+        "MTEXT": 8
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "OCEL HEB sloupky rez",
+      "value": {
+        "LWPOLYLINE": 6
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "PDF3_Solid Fills",
+      "value": {
+        "HATCH": 81,
+        "HATCH_paths=2": 81
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 162
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "PDF_Tenká",
+      "value": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 2
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM _ Bourání",
+      "value": {
+        "LWPOLYLINE": 5
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 5
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM _ Popisy",
+      "value": {
+        "CIRCLE": 4,
+        "LWPOLYLINE": 8,
+        "MTEXT": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 15
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM _ oplocení",
+      "value": {
+        "LWPOLYLINE": 12
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM_ Návrh šrafa",
+      "value": {
+        "INSERT": 4,
+        "LINE": 2,
+        "LWPOLYLINE": 4,
+        "HATCH": 52,
+        "HATCH_paths=1": 42,
+        "HATCH_paths=7": 1,
+        "HATCH_paths=5": 2,
+        "HATCH_paths=6": 2,
+        "HATCH_paths=4": 1,
+        "HATCH_paths=3": 1,
+        "HATCH_paths=2": 3
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 114
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM_Popisy",
+      "value": {
+        "LINE": 4,
+        "TEXT": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 6
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM__02d_tenka další",
+      "value": {
+        "LWPOLYLINE": 118,
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 119
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM__05_čerchovaná",
+      "value": {
+        "LWPOLYLINE": 18
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 18
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM__06_dvojčerchovaná",
+      "value": {
+        "LWPOLYLINE": 28
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 28
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM__dveře",
+      "value": {
+        "LWPOLYLINE": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "SM_kóty",
+      "value": {
+        "DIMENSION": 65
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 65
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Vnější zdi",
+      "value": {
+        "INSERT": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Z _ KATASTR",
+      "value": {
+        "LINE": 18,
+        "TEXT": 4,
+        "CIRCLE": 4,
+        "LWPOLYLINE": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 27
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Z _ MERENI",
+      "value": {
+        "LINE": 19,
+        "LWPOLYLINE": 8,
+        "MTEXT": 8
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 35
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "Z _ POPIS",
+      "value": {
+        "INSERT": 19
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 19
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "_ geometrie",
+      "value": {
+        "LWPOLYLINE": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "_ poznamka draft",
+      "value": {
+        "MTEXT": 4
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 4
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km_ hydroizolace",
+      "value": {
+        "LWPOLYLINE": 7
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 7
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km__02_tlustá",
+      "value": {
+        "LWPOLYLINE": 43,
+        "CIRCLE": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 45
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km__03_velmi tlustá",
+      "value": {
+        "LWPOLYLINE": 101
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 101
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km__netisk",
+      "value": {
+        "LWPOLYLINE": 25
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 25
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km__tenká",
+      "value": {
+        "LWPOLYLINE": 1
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 1
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km_kóty",
+      "value": {
+        "INSERT": 4,
+        "MTEXT": 20,
+        "LWPOLYLINE": 13
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 37
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km_rozpiska",
+      "value": {
+        "LWPOLYLINE": 55,
+        "MTEXT": 49,
+        "INSERT": 45
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 149
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km_tabulka místností",
+      "value": {
+        "MTEXT": 3,
+        "LWPOLYLINE": 9
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 12
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km_čísla místností",
+      "value": {
+        "MTEXT": 24
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 24
+      }
+    },
+    {
+      "category": "layer_inventory",
+      "field": "km_šrafy",
+      "value": {
+        "HATCH": 13,
+        "HATCH_paths=1": 10,
+        "HATCH_paths=10": 1,
+        "HATCH_paths=2": 2
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "total": 26
+      }
+    },
+    {
+      "category": "closed_polygons",
+      "field": "IP_obrysy místností",
+      "value": {
+        "count": 47,
+        "areas_m2": [
+          21.339,
+          5.778,
+          3.843,
+          8.488,
+          16.306,
+          11.887,
+          9.5,
+          11.664,
+          14.288,
+          3.284,
+          1.371,
+          18.705,
+          8.497,
+          4.594,
+          5.848,
+          2.652,
+          9.061,
+          11.463,
+          12.626,
+          29.008,
+          36.031,
+          4.606,
+          31.9,
+          24.004,
+          4.677,
+          9.828,
+          23.09,
+          14.679,
+          12.885,
+          2.083,
+          1.791,
+          7.225,
+          4.704,
+          4.408,
+          2.832,
+          7.362,
+          19.899,
+          16.636,
+          17.264,
+          15.568,
+          10.329,
+          99.656,
+          3.033,
+          0.66,
+          17.56,
+          44.568,
+          5.5
+        ],
+        "sum_m2": 652.981
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "OCEL HEB sloupky rez",
+      "value": {
+        "count": 6,
+        "areas_m2": [
+          0.008,
+          0.007,
+          0.007,
+          0.007,
+          0.007,
+          0.008
+        ],
+        "sum_m2": 0.045
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "SM _ Bourání",
+      "value": {
+        "count": 2,
+        "areas_m2": [
+          1.495,
+          1.495
+        ],
+        "sum_m2": 2.99
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "SM _ Popisy",
+      "value": {
+        "count": 4,
+        "areas_m2": [
+          0.006,
+          0.006,
+          0.006,
+          0.006
+        ],
+        "sum_m2": 0.022
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "SM _ oplocení",
+      "value": {
+        "count": 7,
+        "areas_m2": [
+          0.2,
+          0.2,
+          0.1,
+          0.003,
+          0.003,
+          0.2,
+          0.2
+        ],
+        "sum_m2": 0.906
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "SM__02d_tenka další",
+      "value": {
+        "count": 61,
+        "areas_m2": [
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          1.26,
+          0.062,
+          0.063,
+          0.075,
+          0.075,
+          0.075,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          1.4,
+          0.062,
+          0.062,
+          0.075,
+          0.062,
+          0.062,
+          0.179,
+          0.063,
+          0.063,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.045,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062,
+          0.062
+        ],
+        "sum_m2": 9.473
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "SM__06_dvojčerchovaná",
+      "value": {
+        "count": 13,
+        "areas_m2": [
+          50.068,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.09,
+          0.25,
+          0.09,
+          0.25
+        ],
+        "sum_m2": 52.108
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "SM__dveře",
+      "value": {
+        "count": 3,
+        "areas_m2": [
+          0.005,
+          0.095,
+          0.005
+        ],
+        "sum_m2": 0.105
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "Z _ MERENI",
+      "value": {
+        "count": 2,
+        "areas_m2": [
+          0.094,
+          0.094
+        ],
+        "sum_m2": 0.189
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "_ geometrie",
+      "value": {
+        "count": 1,
+        "areas_m2": [
+          6236.695
+        ],
+        "sum_m2": 6236.695
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "km__02_tlustá",
+      "value": {
+        "count": 10,
+        "areas_m2": [
+          0.18,
+          0.179,
+          0.179,
+          0.18,
+          0.179,
+          0.179,
+          0.18,
+          0.179,
+          0.18,
+          0.179
+        ],
+        "sum_m2": 1.795
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "km__03_velmi tlustá",
+      "value": {
+        "count": 31,
+        "areas_m2": [
+          1.08,
+          1.08,
+          1.08,
+          0.54,
+          50.068,
+          0.094,
+          0.094,
+          0.35,
+          0.05,
+          0.7,
+          0.05,
+          0.31,
+          0.285,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.016,
+          0.924,
+          0.919,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09,
+          0.09
+        ],
+        "sum_m2": 58.325
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "closed_polygons",
+      "field": "km__netisk",
+      "value": {
+        "count": 25,
+        "areas_m2": [
+          311.85,
+          214.462,
+          311.85,
+          290.7,
+          214.462,
+          311.85,
+          214.462,
+          311.85,
+          290.7,
+          214.462,
+          311.85,
+          214.462,
+          311.85,
+          290.7,
+          214.462,
+          311.85,
+          214.462,
+          311.85,
+          290.7,
+          214.462,
+          311.85,
+          214.462,
+          311.85,
+          290.7,
+          214.462
+        ],
+        "sum_m2": 6716.625
+      },
+      "unit": "m2",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "IP_Popisy bubliny",
+      "value": {
+        "count": 6,
+        "sum_m": 1.75
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "IP_Výškové kóty",
+      "value": {
+        "count": 7,
+        "sum_m": 2.414
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "IP_rozpiska",
+      "value": {
+        "count": 5,
+        "sum_m": 24.249
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "MA_kóty",
+      "value": {
+        "count": 8,
+        "sum_m": 6.16
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM _ Bourání",
+      "value": {
+        "count": 3,
+        "sum_m": 23.822
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM _ Popisy",
+      "value": {
+        "count": 4,
+        "sum_m": 8.0
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM _ oplocení",
+      "value": {
+        "count": 5,
+        "sum_m": 6.725
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM_ Návrh šrafa",
+      "value": {
+        "count": 6,
+        "sum_m": 5.3
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM_Popisy",
+      "value": {
+        "count": 4,
+        "sum_m": 1.058
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM__02d_tenka další",
+      "value": {
+        "count": 57,
+        "sum_m": 162.333
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM__05_čerchovaná",
+      "value": {
+        "count": 18,
+        "sum_m": 74.366
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM__06_dvojčerchovaná",
+      "value": {
+        "count": 15,
+        "sum_m": 23.685
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "SM__dveře",
+      "value": {
+        "count": 1,
+        "sum_m": 2.173
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "Z _ KATASTR",
+      "value": {
+        "count": 19,
+        "sum_m": 88.853
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "Z _ MERENI",
+      "value": {
+        "count": 25,
+        "sum_m": 56.798
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km_ hydroizolace",
+      "value": {
+        "count": 7,
+        "sum_m": 15.675
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km__02_tlustá",
+      "value": {
+        "count": 33,
+        "sum_m": 48.19
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km__03_velmi tlustá",
+      "value": {
+        "count": 70,
+        "sum_m": 227.054
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km__tenká",
+      "value": {
+        "count": 1,
+        "sum_m": 3.381
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km_kóty",
+      "value": {
+        "count": 13,
+        "sum_m": 15.174
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km_rozpiska",
+      "value": {
+        "count": 55,
+        "sum_m": 266.75
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "open_polylines",
+      "field": "km_tabulka místností",
+      "value": {
+        "count": 9,
+        "sum_m": 43.646
+      },
+      "unit": "m",
+      "confidence": 0.9,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "BMW",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "SM_ Návrh šrafa": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "BMW_2d",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "SM_ Návrh šrafa": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "KR",
+      "value": {
+        "count": 8,
+        "by_layer": {
+          "IP_Výškové kóty": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "PLOT_DREVENY_04",
+      "value": {
+        "count": 19,
+        "by_layer": {
+          "Z _ POPIS": 19
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "PSR_Prázdný_dveřní_otvor",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "Vnější zdi": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "datum",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "hlavní projektant",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "hlavní vstup",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "km_kóty": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "investor",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "legenda materiálu",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "km_rozpiska": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "legenda skladeb",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "km_rozpiska": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "název",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "projektant",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "projektový stupeň",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "razítko a podpis",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "severka",
+      "value": {
+        "count": 3,
+        "by_layer": {
+          "km_rozpiska": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "vstup",
+      "value": {
+        "count": 2,
+        "by_layer": {
+          "km_kóty": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "výškový systém",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "zlab rez",
+      "value": {
+        "count": 1,
+        "by_layer": {
+          "SM__02d_tenka další": 1
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "část",
+      "value": {
+        "count": 4,
+        "by_layer": {
+          "km_rozpiska": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_inventory",
+      "field": "řezová značka",
+      "value": {
+        "count": 8,
+        "by_layer": {
+          "MA_kóty": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "text_inventory",
+      "field": "IP_Popisy bubliny",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "MTEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "POZN 01"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "IP_rozpiska",
+      "value": {
+        "count": 3,
+        "by_type": {
+          "TEXT": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "LEGENDA MÍSTNOSTÍ:"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "MA_kóty",
+      "value": {
+        "count": 8,
+        "by_type": {
+          "MTEXT": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "A"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "SM _ Popisy",
+      "value": {
+        "count": 3,
+        "by_type": {
+          "MTEXT": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "9x179,5x250"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "SM_Popisy",
+      "value": {
+        "count": 2,
+        "by_type": {
+          "TEXT": 2
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "2°"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "Z _ KATASTR",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "TEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "1094/16"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "Z _ MERENI",
+      "value": {
+        "count": 8,
+        "by_type": {
+          "MTEXT": 8
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "zelený travnatý pásmezi pozemky a komunikací"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "_ poznamka draft",
+      "value": {
+        "count": 4,
+        "by_type": {
+          "MTEXT": 4
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "DRAFT\n"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "km_kóty",
+      "value": {
+        "count": 20,
+        "by_type": {
+          "MTEXT": 20
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "±0,000"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "km_rozpiska",
+      "value": {
+        "count": 49,
+        "by_type": {
+          "MTEXT": 49
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "číslo výkresu"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "km_tabulka místností",
+      "value": {
+        "count": 3,
+        "by_type": {
+          "MTEXT": 3
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "č. m.\tnázev místnosti\tpodlaha\tstrop\tstěny\tplocha [m²]\n0.01\tsklad zahradní technicky\tbeton. dlažba\t\t\t\t\t17,60\n\n"
+      }
+    },
+    {
+      "category": "text_inventory",
+      "field": "km_čísla místností",
+      "value": {
+        "count": 24,
+        "by_type": {
+          "MTEXT": 24
+        }
+      },
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample_text": "1.01"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "count",
+      "value": 65,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "block_attribs",
+      "field": "count",
+      "value": 16,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {
+        "sample": [
+          {
+            "block": "KR",
+            "tag": "KOTA",
+            "text": "%%p0,000",
+            "layer": "IP_Výškové kóty"
+          },
+          {
+            "block": "KR",
+            "tag": "POPIS",
+            "text": "",
+            "layer": "IP_Výškové kóty"
+          },
+          {
+            "block": "KR",
+            "tag": "KOTA",
+            "text": "%%p0,000",
+            "layer": "IP_Výškové kóty"
+          },
+          {
+            "block": "KR",
+            "tag": "POPIS",
+            "text": "",
+            "layer": "IP_Výškové kóty"
+          },
+          {
+            "block": "KR",
+            "tag": "KOTA",
+            "text": "-3,300",
+            "layer": "IP_Výškové kóty"
+          }
+        ]
+      }
+    }
+  ],
+  "data": {
+    "header": {
+      "insunits": 4,
+      "scale_to_m": 0.001,
+      "dxf_version": "AC1024"
+    },
+    "layers": [
+      "0",
+      "Defpoints",
+      "IP_Popisy bubliny",
+      "IP_Výškové kóty",
+      "IP__netisk",
+      "IP_obrysy místností",
+      "IP_rozpiska",
+      "MA_kóty",
+      "OCEL HEB sloupky rez",
+      "PDF3_Solid Fills",
+      "PDF_Tenká",
+      "SM _ Bourání",
+      "SM _ Popisy",
+      "SM _ oplocení",
+      "SMA_rozpiska",
+      "SM_ Návrh šrafa",
+      "SM_Popisy",
+      "SM__02d_tenka další",
+      "SM__05_čerchovaná",
+      "SM__06_dvojčerchovaná",
+      "SM__dveře",
+      "SM_kóty",
+      "Textové bloky",
+      "Vnější zdi",
+      "Z _ KATASTR",
+      "Z _ MERENI",
+      "Z _ POPIS",
+      "_ geometrie",
+      "_ poznamka draft",
+      "km_ hydroizolace",
+      "km__02_tlustá",
+      "km__03_velmi tlustá",
+      "km__netisk",
+      "km__tenká",
+      "km_kóty",
+      "km_rozpiska",
+      "km_tabulka místností",
+      "km_čísla místností",
+      "km_šrafy"
+    ],
+    "block_definitions": [
+      "ARROWHEAD_1",
+      "BMW",
+      "BMW_2d",
+      "KR",
+      "PLOT_DREVENY_04",
+      "PSR_Prázdný_dveřní_otvor",
+      "_ArchTick",
+      "datum",
+      "hlavní projektant",
+      "hlavní vstup",
+      "investor",
+      "legenda materiálu",
+      "legenda skladeb",
+      "název",
+      "projektant",
+      "projektový stupeň",
+      "razítko a podpis",
+      "severka",
+      "vstup",
+      "výškový systém",
+      "zlab rez",
+      "část",
+      "řezová značka"
+    ],
+    "entity_counts_by_layer": {
+      "PDF_Tenká": {
+        "HATCH": 1,
+        "HATCH_paths=1": 1
+      },
+      "IP_obrysy místností": {
+        "LWPOLYLINE": 47
+      },
+      "PDF3_Solid Fills": {
+        "HATCH": 81,
+        "HATCH_paths=2": 81
+      },
+      "Vnější zdi": {
+        "INSERT": 1
+      },
+      "Z _ KATASTR": {
+        "LINE": 18,
+        "TEXT": 4,
+        "CIRCLE": 4,
+        "LWPOLYLINE": 1
+      },
+      "SM _ Bourání": {
+        "LWPOLYLINE": 5
+      },
+      "SM_ Návrh šrafa": {
+        "INSERT": 4,
+        "LINE": 2,
+        "LWPOLYLINE": 4,
+        "HATCH": 52,
+        "HATCH_paths=1": 42,
+        "HATCH_paths=7": 1,
+        "HATCH_paths=5": 2,
+        "HATCH_paths=6": 2,
+        "HATCH_paths=4": 1,
+        "HATCH_paths=3": 1,
+        "HATCH_paths=2": 3
+      },
+      "km__03_velmi tlustá": {
+        "LWPOLYLINE": 101
+      },
+      "SM__02d_tenka další": {
+        "LWPOLYLINE": 118,
+        "INSERT": 1
+      },
+      "SM__06_dvojčerchovaná": {
+        "LWPOLYLINE": 28
+      },
+      "km__02_tlustá": {
+        "LWPOLYLINE": 43,
+        "CIRCLE": 2
+      },
+      "SM _ Popisy": {
+        "CIRCLE": 4,
+        "LWPOLYLINE": 8,
+        "MTEXT": 3
+      },
+      "SM_kóty": {
+        "DIMENSION": 65
+      },
+      "km__netisk": {
+        "LWPOLYLINE": 25
+      },
+      "km_rozpiska": {
+        "LWPOLYLINE": 55,
+        "MTEXT": 49,
+        "INSERT": 45
+      },
+      "Z _ POPIS": {
+        "INSERT": 19
+      },
+      "Z _ MERENI": {
+        "LINE": 19,
+        "LWPOLYLINE": 8,
+        "MTEXT": 8
+      },
+      "SM _ oplocení": {
+        "LWPOLYLINE": 12
+      },
+      "km_kóty": {
+        "INSERT": 4,
+        "MTEXT": 20,
+        "LWPOLYLINE": 13
+      },
+      "km_šrafy": {
+        "HATCH": 13,
+        "HATCH_paths=1": 10,
+        "HATCH_paths=10": 1,
+        "HATCH_paths=2": 2
+      },
+      "SM__05_čerchovaná": {
+        "LWPOLYLINE": 18
+      },
+      "SM__dveře": {
+        "LWPOLYLINE": 4
+      },
+      "km_tabulka místností": {
+        "MTEXT": 3,
+        "LWPOLYLINE": 9
+      },
+      "IP_rozpiska": {
+        "TEXT": 3,
+        "LWPOLYLINE": 5
+      },
+      "km_čísla místností": {
+        "MTEXT": 24
+      },
+      "IP_Výškové kóty": {
+        "INSERT": 8,
+        "LWPOLYLINE": 7
+      },
+      "SM_Popisy": {
+        "LINE": 4,
+        "TEXT": 2
+      },
+      "MA_kóty": {
+        "LINE": 8,
+        "INSERT": 8,
+        "MTEXT": 8
+      },
+      "OCEL HEB sloupky rez": {
+        "LWPOLYLINE": 6
+      },
+      "_ poznamka draft": {
+        "MTEXT": 4
+      },
+      "_ geometrie": {
+        "LWPOLYLINE": 1
+      },
+      "IP_Popisy bubliny": {
+        "MTEXT": 4,
+        "LEADER": 2,
+        "LWPOLYLINE": 6
+      },
+      "km__tenká": {
+        "LWPOLYLINE": 1
+      },
+      "km_ hydroizolace": {
+        "LWPOLYLINE": 7
+      }
+    },
+    "closed_areas_by_layer": {
+      "IP_obrysy místností": [
+        21.339,
+        5.778,
+        3.843,
+        8.488,
+        16.306,
+        11.887,
+        9.5,
+        11.664,
+        14.288,
+        3.284,
+        1.371,
+        18.705,
+        8.497,
+        4.594,
+        5.848,
+        2.652,
+        9.061,
+        11.463,
+        12.626,
+        29.008,
+        36.031,
+        4.606,
+        31.9,
+        24.004,
+        4.677,
+        9.828,
+        23.09,
+        14.679,
+        12.885,
+        2.083,
+        1.791,
+        7.225,
+        4.704,
+        4.408,
+        2.832,
+        7.362,
+        19.899,
+        16.636,
+        17.264,
+        15.568,
+        10.329,
+        99.656,
+        3.033,
+        0.66,
+        17.56,
+        44.568,
+        5.5
+      ],
+      "SM _ Bourání": [
+        1.495,
+        1.495
+      ],
+      "km__03_velmi tlustá": [
+        1.08,
+        1.08,
+        1.08,
+        0.54,
+        50.068,
+        0.094,
+        0.094,
+        0.35,
+        0.05,
+        0.7,
+        0.05,
+        0.31,
+        0.285,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.016,
+        0.924,
+        0.919,
+        0.09,
+        0.09,
+        0.09,
+        0.09,
+        0.09,
+        0.09
+      ],
+      "SM__02d_tenka další": [
+        0.36,
+        0.36,
+        0.36,
+        0.36,
+        0.36,
+        1.26,
+        0.062,
+        0.063,
+        0.075,
+        0.075,
+        0.075,
+        0.36,
+        0.36,
+        0.36,
+        0.36,
+        0.36,
+        1.4,
+        0.062,
+        0.062,
+        0.075,
+        0.062,
+        0.062,
+        0.179,
+        0.063,
+        0.063,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.045,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062,
+        0.062
+      ],
+      "SM__06_dvojčerchovaná": [
+        50.068,
+        0.09,
+        0.09,
+        0.09,
+        0.09,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.09,
+        0.25,
+        0.09,
+        0.25
+      ],
+      "SM _ Popisy": [
+        0.006,
+        0.006,
+        0.006,
+        0.006
+      ],
+      "km__netisk": [
+        311.85,
+        214.462,
+        311.85,
+        290.7,
+        214.462,
+        311.85,
+        214.462,
+        311.85,
+        290.7,
+        214.462,
+        311.85,
+        214.462,
+        311.85,
+        290.7,
+        214.462,
+        311.85,
+        214.462,
+        311.85,
+        290.7,
+        214.462,
+        311.85,
+        214.462,
+        311.85,
+        290.7,
+        214.462
+      ],
+      "SM _ oplocení": [
+        0.2,
+        0.2,
+        0.1,
+        0.003,
+        0.003,
+        0.2,
+        0.2
+      ],
+      "SM__dveře": [
+        0.005,
+        0.095,
+        0.005
+      ],
+      "km__02_tlustá": [
+        0.18,
+        0.179,
+        0.179,
+        0.18,
+        0.179,
+        0.179,
+        0.18,
+        0.179,
+        0.18,
+        0.179
+      ],
+      "OCEL HEB sloupky rez": [
+        0.008,
+        0.007,
+        0.007,
+        0.007,
+        0.007,
+        0.008
+      ],
+      "_ geometrie": [
+        6236.695
+      ],
+      "Z _ MERENI": [
+        0.094,
+        0.094
+      ]
+    },
+    "open_lengths_by_layer": {
+      "Z _ KATASTR": [
+        0.219,
+        1.776,
+        5.497,
+        1.214,
+        9.921,
+        9.916,
+        0.58,
+        7.85,
+        5.462,
+        0.164,
+        1.776,
+        5.497,
+        1.214,
+        11.622,
+        11.627,
+        0.58,
+        7.85,
+        5.462,
+        0.627
+      ],
+      "SM _ Bourání": [
+        11.406,
+        0.75,
+        11.665
+      ],
+      "SM__02d_tenka další": [
+        14.552,
+        18.452,
+        0.251,
+        6.45,
+        3.085,
+        3.085,
+        4.124,
+        3.085,
+        3.087,
+        0.05,
+        0.474,
+        3.684,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        14.622,
+        0.251,
+        6.45,
+        3.085,
+        3.085,
+        4.976,
+        3.085,
+        3.087,
+        0.05,
+        0.474,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        5.692,
+        5.692,
+        6.344,
+        5.692,
+        1.0,
+        1.0,
+        0.13,
+        5.692,
+        1.109,
+        2.725,
+        0.05,
+        1.53,
+        1.091,
+        1.575,
+        0.241,
+        0.436,
+        1.561,
+        1.486,
+        0.407,
+        3.544,
+        0.401,
+        0.334,
+        0.249,
+        0.82,
+        2.765,
+        2.157,
+        1.067
+      ],
+      "SM__06_dvojčerchovaná": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.155,
+        2.981,
+        3.404,
+        3.081,
+        3.065,
+        1.0
+      ],
+      "km__02_tlustá": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        4.039,
+        2.461,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        7.5,
+        5.5,
+        1.155,
+        0.535
+      ],
+      "SM _ Popisy": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "km__03_velmi tlustá": [
+        13.9,
+        13.361,
+        5.5,
+        0.627,
+        10.98,
+        3.085,
+        2.6,
+        0.5,
+        2.751,
+        2.842,
+        6.6,
+        0.5,
+        2.835,
+        1.7,
+        0.8,
+        1.0,
+        3.087,
+        3.087,
+        0.25,
+        2.834,
+        0.302,
+        0.15,
+        2.835,
+        3.081,
+        3.065,
+        11.721,
+        5.235,
+        6.886,
+        3.835,
+        7.613,
+        11.05,
+        3.085,
+        3.6,
+        0.5,
+        3.751,
+        2.842,
+        6.6,
+        0.738,
+        2.835,
+        1.7,
+        0.8,
+        0.999,
+        3.087,
+        3.087,
+        0.25,
+        2.834,
+        0.302,
+        0.15,
+        2.835,
+        5.692,
+        5.442,
+        3.25,
+        3.501,
+        2.611,
+        3.5,
+        3.25,
+        1.602,
+        2.612,
+        2.05,
+        2.05,
+        1.232,
+        0.5,
+        1.306,
+        0.5,
+        0.25,
+        3.584,
+        3.584,
+        0.603,
+        2.665,
+        2.665
+      ],
+      "km_rozpiska": [
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85
+      ],
+      "Z _ MERENI": [
+        5.519,
+        3.674,
+        2.803,
+        0.745,
+        1.114,
+        1.892,
+        0.559,
+        0.766,
+        2.01,
+        1.949,
+        2.456,
+        4.222,
+        4.131,
+        2.751,
+        0.304,
+        1.57,
+        0.958,
+        1.024,
+        2.372,
+        12.6,
+        0.627,
+        0.078,
+        0.078,
+        1.125,
+        1.472
+      ],
+      "SM _ oplocení": [
+        2.414,
+        1.0,
+        2.274,
+        0.412,
+        0.625
+      ],
+      "SM_ Návrh šrafa": [
+        0.15,
+        0.15,
+        0.15,
+        0.15,
+        3.2,
+        1.5
+      ],
+      "SM__05_čerchovaná": [
+        7.0,
+        7.0,
+        7.0,
+        7.0,
+        0.75,
+        0.75,
+        3.101,
+        3.085,
+        3.085,
+        3.085,
+        3.085,
+        3.085,
+        3.085,
+        3.085,
+        3.085,
+        3.085,
+        7.0,
+        7.0
+      ],
+      "SM__dveře": [
+        2.173
+      ],
+      "km_tabulka místností": [
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85
+      ],
+      "IP_rozpiska": [
+        4.85,
+        4.85,
+        4.85,
+        4.85,
+        4.85
+      ],
+      "IP_Výškové kóty": [
+        0.345,
+        0.345,
+        0.345,
+        0.345,
+        0.345,
+        0.345,
+        0.345
+      ],
+      "SM_Popisy": [
+        0.376,
+        0.153,
+        0.376,
+        0.153
+      ],
+      "MA_kóty": [
+        0.82,
+        0.82,
+        0.82,
+        0.82,
+        0.72,
+        0.72,
+        0.72,
+        0.72
+      ],
+      "km_kóty": [
+        0.993,
+        1.143,
+        1.293,
+        0.943,
+        0.993,
+        1.273,
+        1.273,
+        1.333,
+        0.993,
+        1.533,
+        0.993,
+        1.413,
+        0.993
+      ],
+      "IP_Popisy bubliny": [
+        0.339,
+        0.268,
+        0.268,
+        0.339,
+        0.268,
+        0.268
+      ],
+      "km__tenká": [
+        3.381
+      ],
+      "km_ hydroizolace": [
+        0.422,
+        2.398,
+        3.936,
+        3.919,
+        2.398,
+        0.974,
+        1.629
+      ]
+    },
+    "block_counts_by_layer": [
+      {
+        "block": "BMW",
+        "layer": "SM_ Návrh šrafa",
+        "count": 2
+      },
+      {
+        "block": "BMW_2d",
+        "layer": "SM_ Návrh šrafa",
+        "count": 2
+      },
+      {
+        "block": "KR",
+        "layer": "IP_Výškové kóty",
+        "count": 8
+      },
+      {
+        "block": "PLOT_DREVENY_04",
+        "layer": "Z _ POPIS",
+        "count": 19
+      },
+      {
+        "block": "PSR_Prázdný_dveřní_otvor",
+        "layer": "Vnější zdi",
+        "count": 1
+      },
+      {
+        "block": "datum",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "hlavní projektant",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "hlavní vstup",
+        "layer": "km_kóty",
+        "count": 2
+      },
+      {
+        "block": "investor",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "legenda materiálu",
+        "layer": "km_rozpiska",
+        "count": 3
+      },
+      {
+        "block": "legenda skladeb",
+        "layer": "km_rozpiska",
+        "count": 3
+      },
+      {
+        "block": "název",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "projektant",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "projektový stupeň",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "razítko a podpis",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "severka",
+        "layer": "km_rozpiska",
+        "count": 3
+      },
+      {
+        "block": "vstup",
+        "layer": "km_kóty",
+        "count": 2
+      },
+      {
+        "block": "výškový systém",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "zlab rez",
+        "layer": "SM__02d_tenka další",
+        "count": 1
+      },
+      {
+        "block": "část",
+        "layer": "km_rozpiska",
+        "count": 4
+      },
+      {
+        "block": "řezová značka",
+        "layer": "MA_kóty",
+        "count": 8
+      }
+    ],
+    "text_by_layer": {
+      "Z _ KATASTR": [
+        {
+          "type": "TEXT",
+          "raw": "1094/16",
+          "text": "1094/16",
+          "insert": [
+            3958.998299706358,
+            1845.7478610169371
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "1660",
+          "text": "1660",
+          "insert": [
+            3953.308270341532,
+            1852.985297994112
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "1094/16",
+          "text": "1094/16",
+          "insert": [
+            3959.797572148193,
+            1860.069687394653
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "1660",
+          "text": "1660",
+          "insert": [
+            3953.3897073917483,
+            1867.908790033628
+          ]
+        }
+      ],
+      "SM _ Popisy": [
+        {
+          "type": "MTEXT",
+          "raw": "9x179,5x250",
+          "text": "9x179,5x250",
+          "insert": [
+            3961.870538253687,
+            1848.010518213286
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "9x179,5x250",
+          "text": "9x179,5x250",
+          "insert": [
+            3961.966589211653,
+            1866.530353626373
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "9x179,5x250",
+          "text": "9x179,5x250",
+          "insert": [
+            3961.9353954517783,
+            1863.170219963689
+          ]
+        }
+      ],
+      "km_rozpiska": [
+        {
+          "type": "MTEXT",
+          "raw": "číslo výkresu",
+          "text": "číslo výkresu",
+          "insert": [
+            3973.439999999881,
+            1842.950296527661
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "měřítko",
+          "text": "měřítko",
+          "insert": [
+            3970.098333332658,
+            1842.950296543039
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:50",
+          "text": "1:50",
+          "insert": [
+            3970.098333333015,
+            1842.7444570017822
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;D.1.1.02",
+          "text": "D.1.1.02",
+          "insert": [
+            3973.440000000238,
+            1842.730622888661
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "název výkresu",
+          "text": "název výkresu",
+          "insert": [
+            3973.439999999285,
+            1843.70029651574
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;Půdorys suterénu / skladu",
+          "text": "Půdorys suterénu / skladu",
+          "insert": [
+            3973.439999999881,
+            1843.33320282308
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "paré",
+          "text": "paré",
+          "insert": [
+            3973.439999999285,
+            1847.241032440342
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917;{\\H0.91667x;revize^I^Idatum^I^Ipopis\\P02^I^I\\P01^I^I02/2026^I^Iúprava statického řešení^I^I\\P00^I^I09/2025^I^I}vydání dokumentace ",
+          "text": "revize\t\tdatum\t\tpopis\n02\t\t\n01\t\t02/2026\t\túprava statického řešení\t\t\n00\t\t09/2025\t\tvydání dokumentace ",
+          "insert": [
+            3968.5900000001193,
+            1849.2605528180372
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "číslo výkresu",
+          "text": "číslo výkresu",
+          "insert": [
+            3973.439999999881,
+            1857.800296527422
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "měřítko",
+          "text": "měřítko",
+          "insert": [
+            3970.098333332658,
+            1857.8002965428
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:50",
+          "text": "1:50",
+          "insert": [
+            3970.098333333015,
+            1857.594457001544
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;D.1.1.01",
+          "text": "D.1.1.01",
+          "insert": [
+            3973.440000000238,
+            1857.580622888423
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "název výkresu",
+          "text": "název výkresu",
+          "insert": [
+            3973.439999999285,
+            1858.5502965155022
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;Půdorys střechy",
+          "text": "Půdorys střechy",
+          "insert": [
+            3973.439999999881,
+            1858.183202822841
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "paré",
+          "text": "paré",
+          "insert": [
+            3973.439999999285,
+            1862.091032440103
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917;{\\H0.91667x;revize^I^Idatum^I^Ipopis\\P02^I^I02/2026^I^I}úprava statického řešení^I{\\H0.91667x;\\P01^I^I\\H1.090905124x;10/2025^I^Iúpřesnění napojení na komunikaci}^I{\\H0.91667x;^I^I\\P00^I^I09/2025^I^I}vydání dokumentace ",
+          "text": "revize\t\tdatum\t\tpopis\n02\t\t02/2026\t\túprava statického řešení\t\n01\t\t10/2025\t\túpřesnění napojení na komunikaci\t\t\t\n00\t\t09/2025\t\tvydání dokumentace ",
+          "insert": [
+            3968.5900000001193,
+            1864.1105528177989
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "navrhovaný objekt parkovacího stání",
+          "text": "navrhovaný objekt parkovacího stání",
+          "insert": [
+            3969.719214962537,
+            1869.184710554546
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "katastrální mapa",
+          "text": "katastrální mapa",
+          "insert": [
+            3969.719214962537,
+            1868.778231462092
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "ploty",
+          "text": "ploty",
+          "insert": [
+            3969.719214962537,
+            1868.5933787231681
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "navrhovaný plot a vjezd / vstup",
+          "text": "navrhovaný plot a vjezd / vstup",
+          "insert": [
+            3969.715959454114,
+            1868.00555618019
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "vstup / vjezd",
+          "text": "vstup / vjezd",
+          "insert": [
+            3969.7155854112452,
+            1868.220148075231
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "hranice podzemní části navrhované budovy",
+          "text": "hranice podzemní části navrhované budovy",
+          "insert": [
+            3969.719214962537,
+            1868.967964393443
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "číslo výkresu",
+          "text": "číslo výkresu",
+          "insert": [
+            3938.659867182851,
+            1836.43042934073
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "měřítko",
+          "text": "měřítko",
+          "insert": [
+            3938.6598671982288,
+            1839.772096007953
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:50",
+          "text": "1:50",
+          "insert": [
+            3938.454027656972,
+            1839.772096007596
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;D.1.1.03",
+          "text": "D.1.1.03",
+          "insert": [
+            3938.440193543851,
+            1836.4304293403732
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "název výkresu",
+          "text": "název výkresu",
+          "insert": [
+            3939.40986717093,
+            1836.430429341326
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Příčný řez A-A",
+          "text": "Příčný řez A-A",
+          "insert": [
+            3939.04277347827,
+            1836.43042934073
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "paré",
+          "text": "paré",
+          "insert": [
+            3942.9506030955313,
+            1836.430429341326
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917;{\\H0.91667x;revize^I^Idatum^I^Ipopis\\P02^I^I02/2026^I^Iúprava statického řešení\\P01^I^I}10/2025^I^Iúpřesnění napojení na komunikaci^I{\\H0.91667x;^I^I\\P00^I^I09/2025^I^I}vydání dokumentace ",
+          "text": "revize\t\tdatum\t\tpopis\n02\t\t02/2026\t\túprava statického řešení\n01\t\t10/2025\t\túpřesnění napojení na komunikaci\t\t\t\n00\t\t09/2025\t\tvydání dokumentace ",
+          "insert": [
+            3944.970123473227,
+            1841.280429340492
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;původní úroveň terénu a opěrná zídka",
+          "text": "původní úroveň terénu a opěrná zídka",
+          "insert": [
+            3948.652127444063,
+            1840.237976521545
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.25;LEGENDA",
+          "text": "LEGENDA",
+          "insert": [
+            3968.58999999988,
+            1869.604201303124
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;ocelová konstrukce",
+          "text": "ocelová konstrukce",
+          "insert": [
+            3969.6324528190653,
+            1851.193012947131
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "číslo výkresu",
+          "text": "číslo výkresu",
+          "insert": [
+            3973.439999999881,
+            1828.1002965278992
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "měřítko",
+          "text": "měřítko",
+          "insert": [
+            3970.098333332658,
+            1828.1002965432772
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "1:50",
+          "text": "1:50",
+          "insert": [
+            3970.098333333015,
+            1827.894457002021
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;D.1.1.04",
+          "text": "D.1.1.04",
+          "insert": [
+            3973.440000000238,
+            1827.8806228889002
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "název výkresu",
+          "text": "název výkresu",
+          "insert": [
+            3973.439999999285,
+            1828.850296515978
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;Podélný řez B-B",
+          "text": "Podélný řez B-B",
+          "insert": [
+            3973.439999999881,
+            1828.4832028233182
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "paré",
+          "text": "paré",
+          "insert": [
+            3973.439999999285,
+            1832.39103244058
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917;{\\H0.91667x;revize^I^Idatum^I^Ipopis\\P02^I^I\\P01^I^I02/2026^I^Iúprava statického řešení^I^I\\P00^I^I09/2025^I^I}vydání dokumentace ",
+          "text": "revize\t\tdatum\t\tpopis\n02\t\t\n01\t\t02/2026\t\túprava statického řešení\t\t\n00\t\t09/2025\t\tvydání dokumentace ",
+          "insert": [
+            3968.5900000001193,
+            1834.410552818276
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;ocelová konstrukce",
+          "text": "ocelová konstrukce",
+          "insert": [
+            3969.6324528190653,
+            1836.3430129473688
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.25;POZNÁMKY",
+          "text": "POZNÁMKY",
+          "insert": [
+            3968.58999999988,
+            1866.886910782697
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;zpevněná plocha napojení na komunikaci bude provedena z hladké betonové dlažby. Plocha bude vyspádována směrem na pozemek investora. Výška napojení na komunikaci je cca 763,4 m, výška stání a vjedzu na hraně pozemku bude cca 763,3m. Spád bude proměnný, dle výšky stoupající komunikace, cca 7-9 %.",
+          "text": "zpevněná plocha napojení na komunikaci bude provedena z hladké betonové dlažby. Plocha bude vyspádována směrem na pozemek investora. Výška napojení na komunikaci je cca 763,4 m, výška stání a vjedzu na hraně pozemku bude cca 763,3m. Spád bude proměnný, dle výšky stoupající komunikace, cca 7-9 %.",
+          "insert": [
+            3969.719214962537,
+            1866.5818772506282
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "POZN. 01",
+          "text": "POZN. 01",
+          "insert": [
+            3968.639819811021,
+            1866.4919456632
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "napojení na komunikaci - dlážděná plocha - betonová dlažba",
+          "text": "napojení na komunikaci - dlážděná plocha - betonová dlažba",
+          "insert": [
+            3969.719214962537,
+            1867.7204662372449
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.25;POZNÁMKY",
+          "text": "POZNÁMKY",
+          "insert": [
+            3947.746481438125,
+            1841.280429340732
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;zpevněná plocha napojení na komunikaci bude provedena z hladké betonové dlažby. Plocha bude vyspádována směrem na pozemek investora. Výška napojení na komunikaci je cca 763,4 m, výška stání a vjedzu na hraně pozemku bude cca 763,3m. Spád bude proměnný dle výšky stoupající komunikace, cca 7-9%.",
+          "text": "zpevněná plocha napojení na komunikaci bude provedena z hladké betonové dlažby. Plocha bude vyspádována směrem na pozemek investora. Výška napojení na komunikaci je cca 763,4 m, výška stání a vjedzu na hraně pozemku bude cca 763,3m. Spád bude proměnný dle výšky stoupající komunikace, cca 7-9%.",
+          "insert": [
+            3947.441447906056,
+            1840.151214378075
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "POZN. 01",
+          "text": "POZN. 01",
+          "insert": [
+            3947.351516318629,
+            1841.23060952959
+          ]
+        }
+      ],
+      "Z _ MERENI": [
+        {
+          "type": "MTEXT",
+          "raw": "zelený travnatý pásmezi pozemky a komunikací",
+          "text": "zelený travnatý pásmezi pozemky a komunikací",
+          "insert": [
+            3963.275099581449,
+            1870.866453586088
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "asfaltová komunikace",
+          "text": "asfaltová komunikace",
+          "insert": [
+            3963.3212479463054,
+            1871.162882883596
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "vydlážděná plocha ",
+          "text": "vydlážděná plocha ",
+          "insert": [
+            3948.826152231794,
+            1856.244347266641
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "asfaltová komunikace",
+          "text": "asfaltová komunikace",
+          "insert": [
+            3948.851874591699,
+            1856.5432424994578
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "odvodnění",
+          "text": "odvodnění",
+          "insert": [
+            3948.826152231794,
+            1854.744674093243
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "pororošt - stání",
+          "text": "pororošt - stání",
+          "insert": [
+            3948.826152231794,
+            1854.1947043479952
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "Katastrální hranice pozemku",
+          "text": "Katastrální hranice pozemku",
+          "insert": [
+            3948.826152231794,
+            1855.331554936703
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "oplocení / vjezdová brána",
+          "text": "oplocení / vjezdová brána",
+          "insert": [
+            3949.7683438489357,
+            1855.0142570240591
+          ]
+        }
+      ],
+      "km_kóty": [
+        {
+          "type": "MTEXT",
+          "raw": "%%p0,000",
+          "text": "±0,000",
+          "insert": [
+            3958.4498586164027,
+            1868.8575851685139
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "%%p0,000",
+          "text": "±0,000",
+          "insert": [
+            3962.2829512268213,
+            1868.236950613471
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1,615",
+          "text": "-1,615",
+          "insert": [
+            3962.2829512268213,
+            1864.797756161914
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-3,230",
+          "text": "-3,230",
+          "insert": [
+            3962.2829512268213,
+            1862.0378196628062
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-3,230",
+          "text": "-3,230",
+          "insert": [
+            3958.532253206159,
+            1848.64029117236
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-3,230",
+          "text": "-3,230",
+          "insert": [
+            3962.282024604014,
+            1847.303008891487
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "-1,615",
+          "text": "-1,615",
+          "insert": [
+            3962.2829512268213,
+            1849.947756162152
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S03a",
+          "text": "S03a",
+          "insert": [
+            3957.174668619115,
+            1848.223725190524
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S03b",
+          "text": "S03b",
+          "insert": [
+            3954.859237540379,
+            1850.299041402649
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S04",
+          "text": "S04",
+          "insert": [
+            3957.321316914571,
+            1851.887516676367
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S05",
+          "text": "S05",
+          "insert": [
+            3962.124699711835,
+            1834.863179284317
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S01",
+          "text": "S01",
+          "insert": [
+            3958.238046054304,
+            1834.3981897464591
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S03a",
+          "text": "S03a",
+          "insert": [
+            3954.829018417997,
+            1835.842046923091
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S03b",
+          "text": "S03b",
+          "insert": [
+            3954.829018417997,
+            1834.372092960537
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S02",
+          "text": "S02",
+          "insert": [
+            3958.238046054304,
+            1837.7906582417932
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S01",
+          "text": "S01",
+          "insert": [
+            3945.052336524631,
+            1849.0452712060592
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S02",
+          "text": "S02",
+          "insert": [
+            3948.5973322362124,
+            1850.523282912917
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S03a",
+          "text": "S03a",
+          "insert": [
+            3946.0007923362364,
+            1847.249066821258
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S04",
+          "text": "S04",
+          "insert": [
+            3945.699294378435,
+            1850.575431049878
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;S01",
+          "text": "S01",
+          "insert": [
+            3945.0501621170692,
+            1846.8661152670961
+          ]
+        }
+      ],
+      "km_tabulka místností": [
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917t8,28,40,48,56;č. m.^Inázev místnosti^Ipodlaha^Istrop^Istěny^Iplocha [m²]\\P\\pa0.25,s*,t8,28;0.01^Isklad zahradní technicky^Ibeton. dlažba^I^I^I^I^I17,60\\P\\P",
+          "text": "č. m.\tnázev místnosti\tpodlaha\tstrop\tstěny\tplocha [m²]\n0.01\tsklad zahradní technicky\tbeton. dlažba\t\t\t\t\t17,60\n\n",
+          "insert": [
+            3968.5905305443534,
+            1856.298683555154
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917t8,28,40,48,56;č. m.^Inázev místnosti^Ipodlaha^Istrop^Istěny^Iplocha [m²]\\P\\pa0.25,s*,t8,28;1.01^Istání^Ipororošt^I^I^I^I^I^I44,60\\P1.02^Ischodiště^Ibeton^I^I^I^I^I^I5,50\\P",
+          "text": "č. m.\tnázev místnosti\tpodlaha\tstrop\tstěny\tplocha [m²]\n1.01\tstání\tpororošt\t\t\t\t\t\t44,60\n1.02\tschodiště\tbeton\t\t\t\t\t\t5,50\n",
+          "insert": [
+            3968.5905305443534,
+            1871.1486835549151
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxa0.66667,sm1.07917t8,28,40,48,56;č. m.^Inázev místnosti^Ipodlaha^Istrop^Istěny^Iplocha [m²]\\P\\pa0.25,s*,t8,28;0.01^Isklad zahradní technicky^Ibeton. dlažba^I^I^I^I^I17,60\\P\\P",
+          "text": "č. m.\tnázev místnosti\tpodlaha\tstrop\tstěny\tplocha [m²]\n0.01\tsklad zahradní technicky\tbeton. dlažba\t\t\t\t\t17,60\n\n",
+          "insert": [
+            3968.5905305443534,
+            1841.448683555392
+          ]
+        }
+      ],
+      "IP_rozpiska": [
+        {
+          "type": "TEXT",
+          "raw": "LEGENDA MÍSTNOSTÍ:",
+          "text": "LEGENDA MÍSTNOSTÍ:",
+          "insert": [
+            3968.596884684451,
+            1856.5520074896122
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "LEGENDA MÍSTNOSTÍ:",
+          "text": "LEGENDA MÍSTNOSTÍ:",
+          "insert": [
+            3968.596884684451,
+            1871.402007489374
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "LEGENDA MÍSTNOSTÍ:",
+          "text": "LEGENDA MÍSTNOSTÍ:",
+          "insert": [
+            3968.596884684451,
+            1841.702007489851
+          ]
+        }
+      ],
+      "km_čísla místností": [
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p38;1.01",
+          "text": "1.01",
+          "insert": [
+            3958.648708636689,
+            1863.604138827215
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;stání",
+          "text": "stání",
+          "insert": [
+            3958.517145407763,
+            1863.4550164305
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p38;1.02",
+          "text": "1.02",
+          "insert": [
+            3962.0686250328877,
+            1865.4994677809862
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "schodiště",
+          "text": "schodiště",
+          "insert": [
+            3961.937061803963,
+            1865.350345384272
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fArial|b1|i0|c238|p38;0.01",
+          "text": "0.01",
+          "insert": [
+            3958.461814436706,
+            1849.1055891943922
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "sklad zahradní techniky",
+          "text": "sklad zahradní techniky",
+          "insert": [
+            3958.330251207781,
+            1848.9564667976772
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;v.673,40",
+          "text": "v.673,40",
+          "insert": [
+            3959.017849130041,
+            1871.3614076530362
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\pxql;v.673,30",
+          "text": "v.673,30",
+          "insert": [
+            3959.335838337019,
+            1870.152530957816
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "IPE 180",
+          "text": "IPE 180",
+          "insert": [
+            3957.689416390367,
+            1852.931635103851
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "IPE 180",
+          "text": "IPE 180",
+          "insert": [
+            3955.6894163903853,
+            1852.931635103707
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "IPE 180",
+          "text": "IPE 180",
+          "insert": [
+            3958.691914030508,
+            1852.931635112857
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "IPE 180",
+          "text": "IPE 180",
+          "insert": [
+            3960.689416390367,
+            1852.93163511652
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3956.158012659877,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3956.783012659872,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3957.408012659872,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3958.033012659877,
+            1849.6200162381451
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3958.658012659872,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3959.498563876636,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3959.908427887455,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3960.533012659872,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3961.148012659872,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "100/160",
+          "text": "100/160",
+          "insert": [
+            3955.7480174187554,
+            1849.620016238149
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "IPE 180",
+          "text": "IPE 180",
+          "insert": [
+            3959.689416390367,
+            1852.9316351041332
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "IPE 180",
+          "text": "IPE 180",
+          "insert": [
+            3956.689416390367,
+            1852.931635103851
+          ]
+        }
+      ],
+      "SM_Popisy": [
+        {
+          "type": "TEXT",
+          "raw": "2°",
+          "text": "2°",
+          "insert": [
+            3947.763340999625,
+            1849.787431221153
+          ]
+        },
+        {
+          "type": "TEXT",
+          "raw": "2°",
+          "text": "2°",
+          "insert": [
+            3981.0829981194593,
+            1837.1490320709981
+          ]
+        }
+      ],
+      "MA_kóty": [
+        {
+          "type": "MTEXT",
+          "raw": "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+          "text": "A",
+          "insert": [
+            3958.3080694915534,
+            1855.0927631151621
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+          "text": "A",
+          "insert": [
+            3958.3080694915534,
+            1846.3527843592212
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+          "text": "A",
+          "insert": [
+            3958.3080694915534,
+            1870.342702388047
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "{\\fCentury Gothic|b1|i0|c238|p34;A}",
+          "text": "A",
+          "insert": [
+            3958.3080694915534,
+            1860.766580718938
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;B",
+          "text": "B",
+          "insert": [
+            3954.366479456988,
+            1849.090988583558
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;B",
+          "text": "B",
+          "insert": [
+            3963.5392128591284,
+            1849.090988583558
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;B",
+          "text": "B",
+          "insert": [
+            3954.366479456988,
+            1863.940988583319
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "\\fCentury Gothic|b1|i0|c238|p34;B",
+          "text": "B",
+          "insert": [
+            3963.5392128591284,
+            1863.940988583319
+          ]
+        }
+      ],
+      "_ poznamka draft": [
+        {
+          "type": "MTEXT",
+          "raw": "{\\c11777023;DRAFT}\\P",
+          "text": "DRAFT\n",
+          "insert": [
+            3969.647693952024,
+            1862.40614480072
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "{\\c11777023;DRAFT}\\P",
+          "text": "DRAFT\n",
+          "insert": [
+            3969.647693952024,
+            1847.556144800959
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "{\\c11777023;DRAFT}\\P",
+          "text": "DRAFT\n",
+          "insert": [
+            3969.647693952024,
+            1832.706144801197
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "{\\c11777023;DRAFT}\\P",
+          "text": "DRAFT\n",
+          "insert": [
+            3943.2657154561493,
+            1840.222735388588
+          ]
+        }
+      ],
+      "IP_Popisy bubliny": [
+        {
+          "type": "MTEXT",
+          "raw": "POZN 01",
+          "text": "POZN 01",
+          "insert": [
+            3960.692271218474,
+            1870.55
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "7,7%",
+          "text": "7,7%",
+          "insert": [
+            3959.9084467883695,
+            1870.702851506171
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "7,7%",
+          "text": "7,7%",
+          "insert": [
+            3948.393920332354,
+            1855.8023523565532
+          ]
+        },
+        {
+          "type": "MTEXT",
+          "raw": "POZN 01",
+          "text": "POZN 01",
+          "insert": [
+            3947.40319622779,
+            1855.58137657638
+          ]
+        }
+      ]
+    },
+    "dimensions": [
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 6.010936757898889,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.00000000053551,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 7.350059330626429,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9999999997996426,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 6.350059331997792,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 3.935000001977198,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.49999999982956805,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 6.010936757898889,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.00000000053551,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 7.77358122700546,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9999999999105931,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.4999999996097758,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 4.000000000298023,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 2.273581227187067,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 5.999999999831431,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.000000001815381,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 3.0850000004335314,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.24999999628216032,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.6000000001522713,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.2499999953801744,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 5.848770127895288,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.0000000001820741,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9999999999823049,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9999999999948778,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9975023598596454,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9999999999948778,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9999999997955747,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 2.999999999770429,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.23000000685779382,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 2.682144989763387,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.0,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.7863800232787617,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.4999999996609992,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 2.999999999770429,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.30000000685779377,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 2.8422425168515177,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.0,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.5000041663222947,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.499999967655167,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 2.7361138034034522,
+        "text_override": "2682 - 2790"
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.16,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.18,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.049998840258456766,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.000000048438087,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.050257844036445024,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.7585122767919674,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.6249999999948778,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.625,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.625000000005588,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.624999999994412,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.625,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.624999708559364,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.6249939163262025,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.615,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.05000000623287633,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.000004133977462,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 1.0000000299979,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.5000000162399374,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.2300000097728334,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.5,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.5000000000004657,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.4350690669873729,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.9975023598596454,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.25,
+        "text_override": null
+      },
+      {
+        "type": "DIMENSION",
+        "layer": "SM_kóty",
+        "measurement_m": 0.24999999652802943,
+        "text_override": null
+      }
+    ],
+    "block_attribs": [
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "%%p0,000",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "%%p0,000",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "-3,300",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "%%p0,000",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "-3,230",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "-4,230",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "-3,230",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "KOTA",
+        "text": "-4,230",
+        "layer": "IP_Výškové kóty"
+      },
+      {
+        "block": "KR",
+        "tag": "POPIS",
+        "text": "",
+        "layer": "IP_Výškové kóty"
+      }
+    ],
+    "bbox": {
+      "x_min_m": 3841.1513722736563,
+      "y_min_m": 1820.8,
+      "x_max_m": 4232.006112669514,
+      "y_max_m": 2188.712908452895,
+      "width_m": 390.85474039585733,
+      "height_m": 367.9129084528952
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

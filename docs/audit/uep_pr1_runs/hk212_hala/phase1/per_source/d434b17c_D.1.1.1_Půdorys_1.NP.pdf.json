@@ -1,0 +1,205 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.1 Půdorys 1.NP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1765,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C30/37",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C30/37 XF4 ",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XF4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C30/37"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "F",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 368.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "s\nř\na\ne\nt\nm\na v\ns\nší\ne\nů\nn\nb\ne\nl\nm\nn\nR\ní\n,\nř\no\np\ne\na\nž\nš\nrc\nm\ne\n.\nn\nč\ni\ní\n.\nt\n1\ná\n3\nl\n7\np\n1,\no\n1\nd\n3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "KSÚS Středočeského kraje, Zborovská 81/11, 150 21 Praha 5 - Smíchov www.a",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 2578,
+    "text_per_page_truncated": [
+      "A B C D E F G\nP04\n12 400\n800 10 800 800\n800 2 400 800 4 800 800 2 000 800 LEGENDA MÍSTNOSTÍ\nOzn. Místnost m2 Úprava podlah Úprava stěn Poznámka\n0 0 0 0 0 1.01 Skladová hala 194,18 Hlazený drátkobeton Beton\n0 0 0 0 0\n8 8 8 8 8\nLEGENDA MATERIÁLŮ\n5 05\n0\n8 Skládané bloky z prostého betonu\nBeton C30/37 XF4 S3\nOcelová vrata posuvná dvoukřídlá manuální\nOtvor 5200x6000mm\nD01\n0 0 Rozměr křídla - 3050x6200\n0 0\n2 2 Včetně integrovaných ocelových dveří 800x1970\n3 3\n0 POZNÁMKY\n0\n4\n2\n- VEŠKERÉ NESROVNALOSTI P"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C30/37",
+          "characteristic_strength": 30,
+          "cube_strength": 37,
+          "exposure_classes": [
+            "XF4"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": "S3",
+          "raw_text": "C30/37 XF4 ",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "s\nř\na\ne\nt\nm\na v\ns\nší\ne\nů\nn\nb\ne\nl\nm\nn\nR\ní\n,\nř\no\np\ne\na\nž\nš\nrc\nm\ne\n.\nn\nč\ni\ní\n.\nt\n1\ná\n3\nl\n7\np\n1,\no\n1\nd\n3",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 368.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "{'XF4'}",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "KSÚS Středočeského kraje, Zborovská 81/11, 150 21 Praha 5 - Smíchov www.a"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [
+          {
+            "note_id": "POZNÁMKA0",
+            "text": "0 0 0 0 1.01 Skladová hala 194,18 Hlazený drátkobeton Beton",
+            "work_type": "BETON",
+            "confidence": 1.0
+          }
+        ],
+        "title_block": null,
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

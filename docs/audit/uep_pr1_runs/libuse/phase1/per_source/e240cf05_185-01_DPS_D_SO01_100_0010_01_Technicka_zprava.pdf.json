@@ -1,0 +1,516 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0010_01_Technicka_zprava.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 3672,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C12/15",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C12/15",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 22367.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "aná celková zastavěná plocha 2 192 m2\nCelkový obestavěný prostor\nCelkový obestavěný prostor objektu ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 2192.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "emních\npodlaží do vodorovné roviny = průmět podzemního podlaží)\nNavrhovaná celková zastavěná plocha ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1290.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ový obestavěný prostor\nCelkový obestavěný prostor objektu 22 367 m3\nPlocha užitná celková\nHPP 1. NP ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1290.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "tor\nCelkový obestavěný prostor objektu 22 367 m3\nPlocha užitná celková\nHPP 1. NP 1 290 m2\nHPP 2. NP ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1160.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "objektu 22 367 m3\nPlocha užitná celková\nHPP 1. NP 1 290 m2\nHPP 2. NP 1 290 m2\nHPP 3. NP - Podkroví 1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3740.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "m3\nPlocha užitná celková\nHPP 1. NP 1 290 m2\nHPP 2. NP 1 290 m2\nHPP 3. NP - Podkroví 1 160 m2\nCelkem ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 8.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "obytných místnostech objektu Bytový soubor Libuše.\nVyhovující obytná část je vždy větší výměry než 8",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 2,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "height_m",
+      "value": 2.3,
+      "unit": "m",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "built_up_area_m2",
+      "value": 2192.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "special_requirements",
+      "field": "Bílá vana (vodotěsný beton)",
+      "value": "Vodotěsná konstrukce třídy neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "watertight_class": "neurčeno",
+          "thickness_mm": null
+        },
+        "raw_text": "bílá\nvana"
+      }
+    },
+    {
+      "category": "special_requirements",
+      "field": "Bílá vana (vodotěsný beton)",
+      "value": "Vodotěsná konstrukce třídy neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "watertight_class": "neurčeno",
+          "thickness_mm": null
+        },
+        "raw_text": "bílá vana"
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0601",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 33 2000-5-52",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0802",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0540-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0540-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0540-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0540 - 2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0532",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 272/2011 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Nařízení vlády č. 163/2002 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č.352/2000Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 20,
+    "char_count_total": 67494,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nABMV world s.r.o.\nProsecká 527/24\n180 ",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nOBSAH:\n1 ARCHITEKTONICKÉ ŘEŠENÍ 3\n2 MATERIÁLOVÉ ŘEŠENÍ 3\n3 DISPOZIČNÍ ŘEŠENÍ 3\n3.1 Navrhované parametry stavby 3\n3.2 Dispozice podlaží 5\n4 BEZBARIÉROVÉ UŽÍVÁNÍ STAVBY 5\n5 KONSTRUKČNÍ ŘEŠENÍ 6\n6 STAVEBNĚ TECHNICKÉ ŘEŠENÍ 6\n6.1 Výkopy, podkladní betony, ochrana proti bludným proudům, uzemnění objektu 6\n6.2 Hydroizolace spodní stavby, ochrana proti radonu 7\n6.3 Zásypy 7\n6.4 Svi",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nÚvod:\nVýrobky, konstrukce, zařízení a sestavy, uváděné v této projektové dokumentaci jako konkrétní výrobky určené\nvýrobním typem, případně i výrobcem, jsou zde uvedeny pouze jako referenční, tzn. určují tímto způsobem pouze\nparametry, kvalitu, standardy, vybavení, případně rozměry použitého výrobku, které slouží zejména jako vodítko pro\ncelkový standard použitých materiálů ",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\n1 ARCHITEKTONICKÉ ŘEŠENÍ\nNa pozemku přibližně trojúhelníkového tvaru jsme zvolili poměrně kompaktní soubor čtyř objektů A-D se společným\nsuterénem. Jedná se o objekty k bydlení, pouze v přízemí objektu A jsou umístěny 3 malé komerční jednotky.\nCílem bylo zajistit co možná nejvíce soukromého venkovního prostoru, výhledů a vhodné orientace místností.\nPozemek má mírně svažitou ",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nBilance jednotek\nByty objekt A\n1kk 1\n2kk 5\n3kk 1\n4kk\nCelkem 7\nByty objekt B\n1kk\n2kk 2\n3kk 6\n4kk 1\nCelkem 9\nByty objekt C\n1kk\n2kk 5\n3kk 4\n4kk\nCelkem 9\nByty objekt D\n1kk\n2kk 6\n3kk 5\n4kk\nCelkem 11\nByty CELKEM\n1kk 1\n2kk 18\n3kk 16\n4kk 1\nCelkem 36\nSklepy\n1pp 35\nCelkem 35\nObchodní jednotky\nObchody 3\nCelkem 3\nParkovací stání\n1. PP 36\nExteriér 8\nCelkem 44\nVýškové řešení objektu\nCelko",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nObjekt A\nObjekt A je navržen jako samostatně stojící se společným suterénem, kterým jsou propojeny všechny 4 bytové objekty.\nObjekt A má obdélníkový půdorys, 2 nadzemní podlaží a podkroví.\nDo objektu se vchází z ulice Jalodvorská a prostor vstupu je chráněn vykonzolovaným rohem proti dešti. Přes zádveří\nse vstupuje do společné chodby a dále na schodiště s výtahem. Na 1.NP js",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nVšechny domovní vstupy objektu z pěších komunikací jsou navrženy jako dvoukřídlové celoprosklené dveřní sestavy\nse symetrickými křídly, šířka sestavy 1600 mm, šířka aktivního křídla 900 mm. Zámky a kliky ve výšce max. 1000 resp.\n1100 mm, horní hrana zvonkových tabel 1200 mm. Zasklení dveří budou ve výšce 800 až 1000 mm a zároveň ve\nvýšce 1400 až 1600 mm kontrastně označeny o",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nZákladní výkopová figura objektu A je navržena na kótě -3,500 = 300,300 m n.m. Během výkopových prací bude\nprovedeno zajištění stavební jámy – viz. samostatná část dokumentace D_SO01_200 – Stavebně konstrukční řešení –\nzaložení stavební jámy, a dále bude těžena zemina do úrovně tvaru základové desky vč. podkladních betonů.\nZajištění stavební jámy bude lokálně pomocí pilotový",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nObvodové konstrukce nadzemních podlaží jsou navrženy jednovrstvé vnější obvodové zděné, s vyšším akustikým\nútlumem a s vloženou tepelnou izolací ze systémových keramických tvárnice Porotherm 44 TB Profi P12 v tl. 440mm\nna tenkovrstvou maltu. Rozsah monolitu a zděných stěn je patrný v výkresových příloh této části PD a části\nD_SO01_220 – Stavebně konstrukční řešení – nadzemní",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nspára mezi navazující vodorovnou konstrukcí a nenosnou stěnou či příčkou bude vyplněna vhodným materiálem\nsplňujícím akustické požadavky a požadavky na požární odolnost dělící konstrukce dle PBŘ. Kotvení musí zabezpečit\nsvislé deformace stropu a zároveň příčky podpírat ve vodorovném směru.\nInstalační předstěny v koupelnách, komorách a WC bytů jsou navržené jako typové SDK př",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nSkladby podlah v 1. nadzemním podlaží objektu jsou navrženy v tl. 230mm. Hrubé podlahy jsou tvořeny instalační\nvrtvou z lehkého polystyrén betonu, akustickou kročejovou izolací a betonovou roznášecí deskou. Ve skladbách je\nnavržena 25 resp. 30 mm izolační kročejová vrstva (minerální vata), min. 50 mm roznášecí vrstva (betonový potěr) a\npodle účelu místnosti navržené nášlapné",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nPřechody mezi podlahami odlišných materiálů jsou řešeny ukončujícími a přechodovými zapuštěnými „L“ lištami, po\nobvodě místností jsou navrženy soklové prvky výšky 80 mm, výplň soklu shodná s barvou stěn. V prostorech s\nprovozní vlhkostí jsou navrženy hydroizolační stěrky s vytažením 300 mm na stěny, v prostoru van a sprchových\nkoutů do výšky 2400 mm s půdorysným přesahem 100",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nTerasy v úrovni 1. NP budou zatepleny polystyrenem (EPS), který bude zároveň tvořit spádovou vrstvu. Nášlap bude\ntvořit dřevěná palubová terasa (z dřevěných terasových prken), na podkladním roštu z masivních dřevěných hranolů,\nna rektifikačních terčích s pryžovými podložkami. Variantně bude nášlapná vrstva teras tvořena betonovými\ndlaždicemi na rektifikačních terčích a pryžo",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nOkenní sestavy bytů jsou navrženy z dřevohliníkových profilů, s izolačním trojsklem (podle vybraného výrobce),\nkoeficient pro stupu tepla U oken a okenních sestav jako celku max. 1,0 WK-1m-2, otvíravá křídla jsou kombinovaně\notočná sklopná, případně posuvná. Vybraná okna a balkónové dveře budou mít nulový parapet ve výšce podlahy.\nVšechna okna do obytných místností budou s p",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\npřechodových a nárožních lišt (ref. Schluter). Obklady jsou navrženy velkoformátové 30x60mm rektifikované s bílou\nspárovací hmotou. V rámci obkladů budou zapracovány všechna revizní dvířka a koncové zařizovací prvky.\nVeškeré materiálové a pohledové řešení bude dodavatelem stavby vyvzorkováno a provedeno až po písemném\nodouhlasení architekta a stavebníka.\n6.10.3 Podhledy vnit",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nakustickými doplňky, zajišťujícími tichý provoz a omezení přenosu hluku a vibrací do okolních konstrukcí (osazovací\nsilentbloky, dotlumení při dorazu), vč. možnosti nouzového otevření. Součástí dodávky garážových vrat budou\ndálková ovládání dle výkazu výměr.\nMezi objektem C a B budou v suterénu osazena protipožární posuvná vrata s odolností dle PBŘ, v šířce 5400mm a\nvýšce 21",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\n7.2 Osvětlení\nBylo posuzováno denní osvětlení dle normových požadavků v obytných místnostech objektu Bytový soubor Libuše.\nVyhovující obytná část je vždy větší výměry než 8m2. Zbývající části místností budou sloužit jako jídelní kouty.\n7.3 Akustika\nStavební konstrukce objektu byly navrženy a odpovídají požadavkům na ně kladeným z hlediska zvukové izolace dle\nČSN 73 0532.\nPož",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nA.3.2.04 J 36 31\nA.3.2.03 J 34 31\nA.3.3.02 J 33 31\ntab. 12 Požadované minimální neprůzvučnosti oken, útlumy štěrbin, objekt B\nHodnoty požadované minimální neprůzvučnosti oken, útlumy štěrbin Neprůzvučnosti fasády, oken,\nútlum štěrbin\nobytná místnost fasáda pož. izolace izolace/útlum\nR´wPLÁŠŤ [dB] RwOKNO [dB]\nDwŠTĚRBINA [dB]\nB.1.1.03 Z 30 25\nB.1.1.03 J 30 27\nB.1.1.09 Z 30 25\n",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nC.2.3.06 JZ 40 35\nC.3.1.04 JZ 40 35\nC.3.1.03 JZ 40 35\nC.3.1.03 JV 36 31\nC.3.2.04 JV 33 28\nC.3.2.04 SV 30 25\nC.3.2.03 SV 30 25\nC.3.3.03 SV 30 25\nC.3.3.03 SZ 33 28\nC.3.3.05 SZ 33 28\nC.3.3.05 JZ 40 35\ntab. 14 Požadované minimální neprůzvučnosti oken, útlumy štěrbin, objekt D\nHodnoty požadované minimální neprůzvučnosti oken, útlumy štěrbin Neprůzvučnosti fasády, oken,\nútlum štěr",
+      "Akce: BYTOVÝ SOUBOR LIBUŠE\nStupeň: DOKUMENTACE PRO PROVEDENÍ STAVBY\nDokument: D.SO01.100.0010 – TECHNICKÁ ZPRÁVA revize 01\nMezibytové stěny: jsou navržené jako nosné železobetonové stěny v tl. 250mm nebo zděné keramické akusticé\ntl.250mm. V mezibytových stěnách nejsou vedeny žádné instalace, kromě minimálního rozsahu rozvodů elektro.\nPolohy krabic elektro jsou v projektu navrženy tak, aby ve stěnách a příčkách nebyly osazeny přímo proti sobě\n(rozteč min. 250 mm), pro drážkové rozvody je předepsá"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C12/15",
+          "characteristic_strength": 12,
+          "cube_strength": 15,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C12/15",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "aná celková zastavěná plocha 2 192 m2\nCelkový obestavěný prostor\nCelkový obestavěný prostor objektu ",
+          "volume_m3": 22367.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "emních\npodlaží do vodorovné roviny = průmět podzemního podlaží)\nNavrhovaná celková zastavěná plocha ",
+          "volume_m3": null,
+          "area_m2": 2192.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ový obestavěný prostor\nCelkový obestavěný prostor objektu 22 367 m3\nPlocha užitná celková\nHPP 1. NP ",
+          "volume_m3": null,
+          "area_m2": 1290.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "tor\nCelkový obestavěný prostor objektu 22 367 m3\nPlocha užitná celková\nHPP 1. NP 1 290 m2\nHPP 2. NP ",
+          "volume_m3": null,
+          "area_m2": 1290.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "objektu 22 367 m3\nPlocha užitná celková\nHPP 1. NP 1 290 m2\nHPP 2. NP 1 290 m2\nHPP 3. NP - Podkroví 1",
+          "volume_m3": null,
+          "area_m2": 1160.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "m3\nPlocha užitná celková\nHPP 1. NP 1 290 m2\nHPP 2. NP 1 290 m2\nHPP 3. NP - Podkroví 1 160 m2\nCelkem ",
+          "volume_m3": null,
+          "area_m2": 3740.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "obytných místnostech objektu Bytový soubor Libuše.\nVyhovující obytná část je vždy větší výměry než 8",
+          "volume_m3": null,
+          "area_m2": 8.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 2,
+        "total_floors": null,
+        "height_m": 2.3,
+        "built_up_area_m2": 2192.0,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [
+        {
+          "requirement_type": "Bílá vana (vodotěsný beton)",
+          "description": "Vodotěsná konstrukce třídy neurčeno",
+          "parameters": {
+            "watertight_class": "neurčeno",
+            "thickness_mm": null
+          },
+          "raw_text": "bílá\nvana",
+          "confidence": 1.0
+        },
+        {
+          "requirement_type": "Bílá vana (vodotěsný beton)",
+          "description": "Vodotěsná konstrukce třídy neurčeno",
+          "parameters": {
+            "watertight_class": "neurčeno",
+            "thickness_mm": null
+          },
+          "raw_text": "bílá vana",
+          "confidence": 1.0
+        }
+      ],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 0601",
+        "ČSN 33 2000-5-52",
+        "ČSN 73 0802",
+        "ČSN 73 0540-2",
+        "ČSN 73 0540-3",
+        "ČSN 73 0540-4",
+        "ČSN 73 0540 - 2",
+        "ČSN 73 0532",
+        "Nařízení vlády č. 272/2011 Sb.",
+        "Nařízení vlády č. 163/2002 Sb.",
+        "nařízení vlády č.352/2000Sb."
+      ],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": "BYTOVÝ SOUBOR LIBUŠE",
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "Ing. arch. Zdeněk Vávra Strana: 1/19",
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [
+          "zateplení kontaktním zateplovacím systémem z minerální vaty o",
+          "zateplení objektu a jeho jednotlivých částí jsou navrženy, v závislosti na umístění a funkci konstrukcí, různé",
+          "Zateplení ve skladbách vnitřních podlah a střech je navržena většinově z běžných polystyrénových EPS desek v tl",
+          "zateplení minerální vatou určenou pro",
+          "zateplení podhledů (exteriér 1",
+          "KZS jsou navrženy izolace z běžných minerálních NF"
+        ],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

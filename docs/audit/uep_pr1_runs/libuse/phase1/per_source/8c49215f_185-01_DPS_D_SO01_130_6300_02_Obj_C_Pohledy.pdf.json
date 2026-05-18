@@ -1,0 +1,168 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_130_6300_02_Obj_C_Pohledy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 2286,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 0.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "05 W\n13 +9,600 13 W +9,600 03\n19\n+9,069\n8 W 1 8 W 1 C 04 W b L 3 P 0 8 W 1 C 04 W b 0 F 8 +8,200\nLP\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 12.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "hitekti s.r.o.\n82 82 82 +12,340 82 +12,340\nNa Příkopě 853/12\n110 00 Praha 1 -Nové Město\nF\nTP 12 8 W ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 2,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 5153,
+    "text_per_page_truncated": [
+      "3 C\n+14,250 +14,250\nC- C-\nSTŘECHA STŘECHA\n+12,340\nF TP\n12 28\nF\n08\nTP TP W\n03a F 03a F 05 W\n13 +9,600 13 W +9,600 03\n19\n+9,069\n8 W 1 8 W 1 C 04 W b L 3 P 0 8 W 1 C 04 W b 0 F 8 +8,200\nLP\n0 T 2 P a C +7 - , 3 2 N 0 P 0 64 W +7,124 L 3 P 0 C +7 - , 3 2 N 0 P 0\nW 05 W\nF F +6,450 03 W +6,450 03\n16 F 16 F 05\n08 08\nCW\nLP CW CW LP CW 04b LP CW +5,050\n30 04b 04b 30 10 30 10\n+5,450\n+4,050 +4,050\nLP\nC-2NP W 30 C-2NP LEGENDA TAGŮ\n05 W\n+3,300 +3,300 +3,300 03\nF F F F F D10 W F\n16 16 08 16 08 178 18 16 XF Ozn"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "05 W\n13 +9,600 13 W +9,600 03\n19\n+9,069\n8 W 1 8 W 1 C 04 W b L 3 P 0 8 W 1 C 04 W b 0 F 8 +8,200\nLP\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 0.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "hitekti s.r.o.\n82 82 82 +12,340 82 +12,340\nNa Příkopě 853/12\n110 00 Praha 1 -Nové Město\nF\nTP 12 8 W ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 12.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 2,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. název výkresu / d"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

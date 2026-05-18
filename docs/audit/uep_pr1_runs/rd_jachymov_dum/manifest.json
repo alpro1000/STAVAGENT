@@ -1,0 +1,525 @@
+{
+  "uep_version": "PR1",
+  "generated_at": "2026-05-18T19:28:45.198886+00:00",
+  "project_id": "rd_jachymov_dum",
+  "project_type": "residential",
+  "matrix_file": "coverage_matrix_residential.yaml",
+  "supported_formats": [
+    "dxf",
+    "pdf_tz"
+  ],
+  "phase1": [
+    {
+      "source_file": "A - Průvodní list _ EAR (1).pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "11",
+      "artifact": "phase1/per_source/daf3fbfe_A_-_Průvodní_list___EAR__1_.pdf.json"
+    },
+    {
+      "source_file": "B - Souhrnná technická zpráva _ EAR (1).pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "19",
+      "artifact": "phase1/per_source/e36d2521_B_-_Souhrnná_technická_zpráva___EAR__1_.pdf.json"
+    },
+    {
+      "source_file": "C.01 - Situace širších vztahů _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/6e8a11ad_C.01_-_Situace_širších_vztahů___EAR.pdf.json"
+    },
+    {
+      "source_file": "C.02 - Katastrální situační výkres _ EAR (1).pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/af88fb65_C.02_-_Katastrální_situační_výkres___EAR__1_.pdf.json"
+    },
+    {
+      "source_file": "C.03 - Koordinační situační výkres _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/0b8eb601_C.03_-_Koordinační_situační_výkres___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.2.2 - statický výpočet.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "51",
+      "artifact": "phase1/per_source/e95acf7c_D.2.2_-_statický_výpočet.pdf.json"
+    },
+    {
+      "source_file": "D.2.3.01 - výkres tvaru.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Insufficient extractable text (0 chars across 1 pages) — PDF likely scanned, route through MinerU OCR (PR2 wiring).",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/edf5e598_D.2.3.01_-_výkres_tvaru.pdf.json"
+    },
+    {
+      "source_file": "01.02 - JES.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/5699d369_01.02_-_JES.pdf.json"
+    },
+    {
+      "source_file": "02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/96b5a665_02.06_-_MU_Jáchymov_-_rozhodnutí_zřízení_vjezdu.pdf.json"
+    },
+    {
+      "source_file": "02.07 - MU Jáchymov - nabytí právní moci.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/e14b0ee5_02.07_-_MU_Jáchymov_-_nabytí_právní_moci.pdf.json"
+    },
+    {
+      "source_file": "03.02 - město Jáchymov - Souhlas.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/4d2adb38_03.02_-_město_Jáchymov_-_Souhlas.pdf.json"
+    },
+    {
+      "source_file": "03.03 - město Jáchymov - Vyjádření k žádosti.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Insufficient extractable text (0 chars across 1 pages) — PDF likely scanned, route through MinerU OCR (PR2 wiring).",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/6b586f72_03.03_-_město_Jáchymov_-_Vyjádření_k_žádosti.pdf.json"
+    },
+    {
+      "source_file": "05.02 - Stanovisko PČR_sig.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/b8e28119_05.02_-_Stanovisko_PČR_sig.pdf.json"
+    },
+    {
+      "source_file": "05.02b - PČR - RD Jáchymov - dodatek PD č.1_sig.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/4d5c930c_05.02b_-_PČR_-_RD_Jáchymov_-_dodatek_PD_č.1_sig.pdf.json"
+    },
+    {
+      "source_file": "05.02c - PČR - C.03.R1 - Koordinační situační výkres_sig.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/69b968a1_05.02c_-_PČR_-_C.03.R1_-_Koordinační_situační_výkres_sig.pdf.json"
+    },
+    {
+      "source_file": "06.01 - TI - DTM mapa.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/fe9632cd_06.01_-_TI_-_DTM_mapa.pdf.json"
+    },
+    {
+      "source_file": "E.01 - dodatek PD č.1.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/3e8a99ba_E.01_-_dodatek_PD_č.1.pdf.json"
+    },
+    {
+      "source_file": "C.01 - Situační výkres širších vztahů _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/df3979ff_C.01_-_Situační_výkres_širších_vztahů___EAR.pdf.json"
+    },
+    {
+      "source_file": "C.02 - Katastrální situační výkres _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/efecc0b0_C.02_-_Katastrální_situační_výkres___EAR.pdf.json"
+    },
+    {
+      "source_file": "C.03.R2 - Koordinační situační výkres _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/05a6e360_C.03.R2_-_Koordinační_situační_výkres___EAR.pdf.json"
+    },
+    {
+      "source_file": "D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/a6ed721a_D_1_1_00_TZ_ARS_sklad_EAR.pdf.json"
+    },
+    {
+      "source_file": "D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "81",
+      "artifact": "phase1/per_source/362c6b50_D_2_1_TZ_statika_sklad_TeAnau.pdf.json"
+    },
+    {
+      "source_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "11",
+      "artifact": "phase1/per_source/23b27242_D_1_1_01_TZ_ARS_dum_EAR.pdf.json"
+    },
+    {
+      "source_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "86",
+      "artifact": "phase1/per_source/81ec6d5f_D_2_1_TZ_statika_dum_TeAnau.pdf.json"
+    },
+    {
+      "source_file": "D_3_PBR_dum_TUSPO.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "34",
+      "artifact": "phase1/per_source/b4aff39f_D_3_PBR_dum_TUSPO.pdf.json"
+    },
+    {
+      "source_file": "A - průvodní list _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "14",
+      "artifact": "phase1/per_source/a6f61309_A_-_průvodní_list___EAR.pdf.json"
+    },
+    {
+      "source_file": "B_Souhrnna_TZ_EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "33",
+      "artifact": "phase1/per_source/974dcdd0_B_Souhrnna_TZ_EAR.pdf.json"
+    },
+    {
+      "source_file": "RD Ja_chymov vjezd _ DPZ _ 02.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "108",
+      "artifact": "phase1/per_source/b42fc3ea_RD_Ja_chymov_vjezd___DPZ___02.dxf.json"
+    },
+    {
+      "source_file": "RD Ja_chymov vjezd _ situace 04.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "102",
+      "artifact": "phase1/per_source/b40c3c7b_RD_Ja_chymov_vjezd___situace_04.dxf.json"
+    },
+    {
+      "source_file": "RD Jachymov dum _ DPZ _ 10.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "182",
+      "artifact": "phase1/per_source/1b3ca890_RD_Jachymov_dum___DPZ___10.dxf.json"
+    },
+    {
+      "source_file": "RD Jachymov dum _ situace 02.dxf",
+      "source_format": "dxf",
+      "extractor": "uep.dxf_extractor",
+      "extractor_error": "",
+      "facts_count": "118",
+      "artifact": "phase1/per_source/f19cc974_RD_Jachymov_dum___situace_02.dxf.json"
+    },
+    {
+      "source_file": "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/e81760e5_D.1.1.02.R1_-_Půdorys_suterénu_skladu___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.01.R2 - Půdorys střechy _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/5478d55d_D.1.1.01.R2_-_Půdorys_střechy___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/4699faa0_D.1.1.03.R2_-_Příčný_řez_A-A___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "5",
+      "artifact": "phase1/per_source/a38cb484_D.1.1.04.R1_-_Podélný_řez_B-B___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/fdc5fa21_D.1.1.2.1.01_-_Půdorys_1.NP_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/bb66da1a_D.1.1.2.1.02_-_Půdorys_2.NP_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/9ec0ea67_D.1.1.2.1.03_-_Půdorys_3.NP_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/379c1d5a_D.1.1.2.1.04_-_Půdorys_1.PP_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/12425c91_D.1.1.2.1.11_-_Půdorys_1.NP_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/c63c94a8_D.1.1.2.1.12_-_Půdorys_2.NP_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/3931860d_D.1.1.2.1.13_-_Půdorys_3.NP_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/fd29e140_D.1.1.2.1.14_-_Půdorys_1.PP_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/5bd03218_D.1.1.2.1.21_-_Půdorys_1.NP_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/d0169688_D.1.1.2.1.22_-_Půdorys_2.NP_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/7cf01ba4_D.1.1.2.1.23_-_Půdorys_3.NP_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "8",
+      "artifact": "phase1/per_source/3dcd42bd_D.1.1.2.1.24_-_Půdorys_1.PP_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/f6833633_D.1.1.2.1.25_-_Půdorys_krov_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/54565465_D.1.1.2.2.01_-_Řez_A-A_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/2f5f4feb_D.1.1.2.2.11_-_Řez_A-A_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "6",
+      "artifact": "phase1/per_source/25779840_D.1.1.2.2.21_-_Řez_A-A__Řez_B-B_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.3.01 - Pohled - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/fa96f4b8_D.1.1.2.3.01_-_Pohled_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.3.02 - Pohled - stav _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/11ac3428_D.1.1.2.3.02_-_Pohled_-_stav___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.3.11 - Pohled - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/0be64625_D.1.1.2.3.11_-_Pohled_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.3.12 - Pohled - bourání _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/296d0f45_D.1.1.2.3.12_-_Pohled_-_bourání___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.3.21 - Pohled - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/86a919eb_D.1.1.2.3.21_-_Pohled_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.1.1.2.3.22 - Pohled - návrh _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "7",
+      "artifact": "phase1/per_source/fddbdbc4_D.1.1.2.3.22_-_Pohled_-_návrh___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.2.2 - statický výpočet _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "",
+      "facts_count": "81",
+      "artifact": "phase1/per_source/7e382d09_D.2.2_-_statický_výpočet___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Insufficient extractable text (0 chars across 1 pages) — PDF likely scanned, route through MinerU OCR (PR2 wiring).",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/4a3e8fad_D.2.3.01_-_výkres_tvaru_1.PP___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Insufficient extractable text (0 chars across 1 pages) — PDF likely scanned, route through MinerU OCR (PR2 wiring).",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/326974de_D.2.3.02_-_výkres_tvaru_1.NP___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Insufficient extractable text (0 chars across 1 pages) — PDF likely scanned, route through MinerU OCR (PR2 wiring).",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/faf2fbc5_D.2.3.03_-_výkres_tvaru_2.NP___EAR.pdf.json"
+    },
+    {
+      "source_file": "D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf",
+      "source_format": "pdf_tz",
+      "extractor": "uep.pdf_tz_extractor",
+      "extractor_error": "Insufficient extractable text (0 chars across 1 pages) — PDF likely scanned, route through MinerU OCR (PR2 wiring).",
+      "facts_count": "0",
+      "artifact": "phase1/per_source/cb417097_D.2.3.04_-_výkres_tvaru_3.NP___EAR.pdf.json"
+    }
+  ],
+  "phase2": {
+    "artifact": "phase2/coverage_report.json",
+    "gate_passed": false,
+    "pokryto_pct": 42.11,
+    "blocking_gaps": [
+      "wall_system",
+      "foundation_system",
+      "roof_system",
+      "thermal_insulation",
+      "facade_finish",
+      "floor_finishes",
+      "windows_doors_specification",
+      "fire_safety",
+      "site_situation"
+    ]
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "provenance": {
+    "source_file": "250_06_Výztuž konstrukce.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 2208,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 10027-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 744,
+    "text_per_page_truncated": [
+      "PRŮMĚRY ZAKŘIVENÍ\n(POKUD NENÍ UVEDENO JINAK)\n∅ PRUTU [mm] D [mm]\n≤16 4∅\n>16 7∅\nMEZNÍ ODCHYLKY\nX X X X X\nODCHYLKA HODNOTA [mm]\nPOLOHA PRUTŮ ±20\nROZMĚRY PRUTŮ VÁZANÉ NA KRYTÍ ±10\nOSTATNÍ ROZMĚRY PRUTŮ ±20\nSPECIFIKACE OCELI\nDLE ČSN EN 10027-1\nKONSTRUKCE TŘÍDA OCELI POVRCHOVÁ ÚPRAVA\nBETONÁŘSKÁ VÝZTUŽ B500B ŽEBÍRKOVÁ\nČÁST D.2\nKRYTÍ VÝZTUŽE\nSO 250\n(POKUD NENÍ UVEDENO JINAK)\nKRYTÍ [mm]\nc 50\nmin\nc 60\nnom\nPOZNÁMKY\nROZMĚRY VÝZTUŽE JSOU KÓTOVÁNY DO OSY PRUTŮ\nV POPISU TVARU VÝZTUŽE JE OKÓTOVÁN TEČNOVÝ POLYG"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 10027-1"
+      ],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

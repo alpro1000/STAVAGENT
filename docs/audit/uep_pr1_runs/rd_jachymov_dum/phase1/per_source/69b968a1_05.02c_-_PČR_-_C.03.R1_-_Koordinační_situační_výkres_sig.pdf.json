@@ -1,0 +1,109 @@
+{
+  "provenance": {
+    "source_file": "05.02c - PČR - C.03.R1 - Koordinační situační výkres_sig.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 783,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1\n1\n0 6 0\n.\n2\n7\n.\n0\n2 z 0 eď\n61.80\n6 6 6 3 6 2 . . 2 2 3 0 . 0 00 beton 61.80\n1043\n61.80\n1094/13 vs\n",
+        "source_section": null
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 3467,
+    "text_per_page_truncated": [
+      "77.00 legenda\n676.00\n75.60 stávající objekt RD - stavebně upravovaný\nnavrhovaný objekt parkovacího stání\n75.60\n76.00\nhranice podzemní části navrhované budovy\n75.10\n675.50\ndotčený pozemek\nkatastrální mapa\n75.10\n75.20 7755..5400 Ploty\n75.50\n74.90\n75.20 75.00 675.00\n7755..2200\nb\nvs\no\ntu\nu\np\nra\n/\nn é\nvj e\nko\nzd\nnstrukce původního uspořádání zahrady\n75.30 74.60 75.00 75.20 1\n74.50 75.10 9 3 navrhovaný plot a vjezd / vstup\n6 zpevněné plochy\n75.10 74.20 674.50\nrozhledové trojúhelníky\n74.80 74.10\n74.70\n"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "1\n1\n0 6 0\n.\n2\n7\n.\n0\n2 z 0 eď\n61.80\n6 6 6 3 6 2 . . 2 2 3 0 . 0 00 beton 61.80\n1043\n61.80\n1094/13 vs\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

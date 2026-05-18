@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.01.R2 - Půdorys střechy _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1250,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 13260,
+    "text_per_page_truncated": [
+      "(cid:1)(cid:2)(cid:3)(cid:4)(cid:5)(cid:1)(cid:6)\n(cid:2)(cid:2)(cid:1)\n(cid:8)(cid:6)(cid:7)(cid:2)(cid:6)(cid:5)(cid:1)(cid:4)(cid:3)(cid:2)(cid:1)\n(cid:8)(cid:6)(cid:7)(cid:2)(cid:6)(cid:5)(cid:1)(cid:4)(cid:3)(cid:2)(cid:1)\n(cid:5)(cid:5)(cid:5)(cid:1)\n(cid:7)(cid:7)(cid:5)(cid:1) (cid:6)(cid:2)(cid:2)(cid:2) (cid:1)(cid:2)(cid:2) (cid:4)(cid:2)(cid:2)(cid:2)\n(cid:1)(cid:6)(cid:6)(cid:2)\n(cid:18)(cid:19)(cid:15)(cid:32)(cid:28)(cid:19) (cid:33)(cid:30)(cid:24)(cid:20)(cid:21) (cid:29)(cid:13"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

@@ -1,0 +1,104 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.2.3.01 - Pohled - stav _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 998,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "Volnč Jind(cid:33)ich Mgr",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Ing. arch. Marek Smolka",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1844,
+    "text_per_page_truncated": [
+      "povrchoví materiály\nA strukturovaná omútka, búlá\nB strukturovaná omútka, Řervená\nC omútková (cid:35)ambrána kolem okna, bí(cid:36)ová\nD sokl, obklad z keramickí obkladaŘky\nE okennú včplnř a dve(cid:33)e\nF ocelová falcovaná krytina, barva Řervená\nG d(cid:33)evřní prvky / d(cid:33)evřnč obklad\nH klempú(cid:33)skí prvky (okapy, svody)\nI komún\nI +11,100\nF\nF +8,440\nG E E\n+6,565\n+5,890\nG H\nTato dokumetnace je vypracována v podrobnosti PD pro povolenú zámřru a nenú urŘena pro\nrealizaci dúla. Ve(cid:35)"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "Volnč Jind(cid:33)ich Mgr",
+        "projektant": "Ing. arch. Marek Smolka"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

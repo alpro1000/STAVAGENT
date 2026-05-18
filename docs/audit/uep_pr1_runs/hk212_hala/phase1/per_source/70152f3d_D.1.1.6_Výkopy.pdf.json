@@ -1,0 +1,148 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.6 Výkopy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 362,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 368.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "s\nř\na\ne\nt\nm\na v\ns\nší\ne\nů\nn\nb\ne\nl\nm\nn\nR\ní\n,\nř\no\np\ne\na\nž\nš\nrc\nm\ne\n.\nn\nč\ni\ní\n.\nt\n1\ná\n3\nl\n7\np\n1,\no\n1\nd\n3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "KSÚS Středočeského kraje, Zborovská 81/11, 150 21 Praha 5 - Smíchov www.a",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Zodp. projektant: Vypracoval :",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1707,
+    "text_per_page_truncated": [
+      "13 000\n0\n0 2 -0,750 1\n2\nLEGENDA\nPůvodní zemina. Hutněno na E = 15 MPa\ndef,2\nPOZNÁMKY\n!!- NEJPRVE BUDOU VYHLOUBENY FIGURY 1 - 4, DO KTERÝCH SE NÁSLEDNĚ PROVEDOU\nZÁKLADOVÉ PÁSY, FIGURA 5 BUDE VYHLOUBENA PRO PROVEDENÍ ZÁKLADOVÝCH PÁSŮ!!\n- VEŠKERÉ NESROVNALOSTI PROJEKTU NUTNO KONZULTOVAT S INVESTOREM POPŘ.\nPROJEKTANTEM\n- ZA BEZPEČNOST A OCHRANU ZDRAVÍ PŘI PRÁCI ODPOVÍDÁ DODAVATEL STAVEBNÍCH PRACÍ\n- NA STAVBĚ MUSÍ BÝT VŽDY DODRŽENY VŠECHNY PRACOVNÍ, TECHNICKÉ, TECHNOLOG.\nPOSTUPY A DOPORUČENÍ VÝROBCŮ\n"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "s\nř\na\ne\nt\nm\na v\ns\nší\ne\nů\nn\nb\ne\nl\nm\nn\nR\ní\n,\nř\no\np\ne\na\nž\nš\nrc\nm\ne\n.\nn\nč\ni\ní\n.\nt\n1\ná\n3\nl\n7\np\n1,\no\n1\nd\n3",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 368.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "KSÚS Středočeského kraje, Zborovská 81/11, 150 21 Praha 5 - Smíchov www.a",
+        "projektant": "Zodp. projektant: Vypracoval :"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": null,
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "O",
+          "zodpovedny_projektant": "Zodp. projektant: Vypracoval :",
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

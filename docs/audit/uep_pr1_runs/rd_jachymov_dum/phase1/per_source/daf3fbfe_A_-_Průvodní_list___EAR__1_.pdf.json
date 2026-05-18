@@ -1,0 +1,185 @@
+{
+  "provenance": {
+    "source_file": "A - Průvodní list _ EAR (1).pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 155,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 120.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "dotčené veřejné infrastruktury\nA.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 51.55,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "A.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\n120,0 m3\nb) zastavěná plocha,\n5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 17.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "é\natributy budov\na) obestavěný prostor,\n120,0 m3\nb) zastavěná plocha,\n51,55 m2\nc) podlahová plocha,\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "nebo změna dokončené stavby, trvalá nebo dočasná",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "-",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "kraj",
+      "value": "katastrální území: Jáchymov [656437]",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 3,
+    "char_count_total": 3866,
+    "text_per_page_truncated": [
+      "A P\nRŮVODNÍ LIST\nPodle vyhlášky č.131/2024, příloha č.1 – dokumentace pro povolení stavby\nTato dokumentace nenahrazuje realizační dokumentaci stavby\nA.1 Identifikační údaje\nA.1.1 Údaje o stavbě\na) název stavby,\nZahradní sklad a přístupové schodiště k RD Fibichova č.p. 733, na parcele 1094/16, k.ú.\nJáchymov [656437]\nb) místo stavby - kraj, katastrální území, parcelní čísla pozemků, u budov adresa a čísla popisná,\nvýčet pozemků s právem zákonné služebnosti, parcelní čísla pozemků zařízení staveniš",
+      "c) jména a příjmení projektantů jednotlivých částí dokumentace včetně čísla, pod kterým jsou\nzapsáni v evidenci autorizovaných nebo registrovaných osob vedené Českou komorou architektů\nnebo Českou komorou autorizovaných inženýrů a techniků činných ve výstavbě, s vyznačeným\noborem, popřípadě specializací jejich autorizace, d) jméno, popřípadě jména a příjmení\nautorizovaného zeměměřického inženýra včetně čísla položky, pod kterým je veden v rejstříku\nautorizovaných zeměměřických inženýrů u České k",
+      "g) druh konstrukce,\nBetonový základ, ocelová konstrukce, výplň dřevo a ocel\nh) způsob vytápění,\nnevytápěný prostor\ni) přípojka vodovodu,\nbez připojení na vodu\nj) přípojka kanalizační sítě,\nbez připojení na kanalizační síť\nk) přípojka plynu,\nBez připojení\nl) výtah.\nbez výtahu\nA.4 Atributy stavby pro stanovení\npodmínek napojení a provádění\nčinností v ochranných a\nbezpečnostních pásmech dopravní\na technické infrastruktury\na) hloubka stavby,\n1,5 m\nb) výška stavby,\n4,3 m\nc) předpokládaná kapacita poč"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "dotčené veřejné infrastruktury\nA.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\n",
+          "volume_m3": 120.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "A.3 TEA - technicko-ekonomické\natributy budov\na) obestavěný prostor,\n120,0 m3\nb) zastavěná plocha,\n5",
+          "volume_m3": null,
+          "area_m2": 51.55,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "é\natributy budov\na) obestavěný prostor,\n120,0 m3\nb) zastavěná plocha,\n51,55 m2\nc) podlahová plocha,\n",
+          "volume_m3": null,
+          "area_m2": 17.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "stavba": "nebo změna dokončené stavby, trvalá nebo dočasná",
+        "misto": "-",
+        "kraj": "katastrální území: Jáchymov [656437]"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

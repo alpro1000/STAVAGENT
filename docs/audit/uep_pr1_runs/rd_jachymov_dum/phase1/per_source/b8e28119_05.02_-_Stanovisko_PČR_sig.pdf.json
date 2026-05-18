@@ -1,0 +1,116 @@
+{
+  "provenance": {
+    "source_file": "05.02 - Stanovisko PČR_sig.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 107,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "„Zahradní sklad a přístupové",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 2,
+    "char_count_total": 2757,
+    "text_per_page_truncated": [
+      "JID: PCR19ETRfo28881008\nPOLICIE ČESKÉ REPUBLIKY\nKrajské ředitelství policie Karlovarského kraje\ndopravní inspektorát\nRolavská 386, 360 17 Karlovy Vary\nČ. j. KRPK-75748-6/ČJ-2025-190306 Karlovy Vary 20. listopadu 2025\nPočet stran: 2\nSMASH architekti s.r.o.\nVodňanského 1008/2\n169 00 Praha 6\nJáchymov, místní komunikace ul. Dvořákova, stavba „Zahradní sklad a přístupové\nschodiště k RD Fibichova č. p. 733“ – návrh dopravního řešení pro sloučený\nstavební stupeň Povolení záměru /DPZ/ a napojení parkova",
+      "2. strana\nPlochy vymezující rozhledové trojúhelníky příslušného připojení sousední nemovitosti k\nsilnici musí být po celou dobu existence připojení prosty veškerých překážek vyšších než\n0,7 m nad úrovní hran těles silnice i připojení (např. do nich nesmí zasahovat oplocení\npozemků, vzrostlá zeleň, atd. ...).\nDopravně inženýrská opatření včetně zvláštního užívání dotčených komunikací po\ndobu výstavby si zhotovitel před započetím prací projedná na příslušném silničním\nsprávním úřadě.\nZpracoval:\npo"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "stavba": "„Zahradní sklad a přístupové"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": null,
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "por. Bc. Petr Chvostal",
+          "zodpovedny_projektant": null,
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

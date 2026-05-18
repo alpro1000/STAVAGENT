@@ -1,0 +1,501 @@
+{
+  "project_type": "residential",
+  "matrix_file": "coverage_matrix_residential.yaml",
+  "project_id": "so_250",
+  "total_categories": 38,
+  "pokryto_count": 7,
+  "castecne_count": 0,
+  "chybi_count": 31,
+  "skip_count": 0,
+  "pokryto_pct": 18.42,
+  "blocking_gaps": [
+    "dimensions",
+    "dxf_meta",
+    "layer_inventory",
+    "closed_polygons",
+    "open_polylines",
+    "block_inventory",
+    "text_inventory",
+    "wall_system",
+    "foundation_system",
+    "roof_system",
+    "thermal_insulation",
+    "facade_finish",
+    "floor_finishes",
+    "windows_doors_specification",
+    "fire_safety",
+    "site_situation"
+  ],
+  "categories": [
+    {
+      "category": "project_identification",
+      "label_cs": "Identifikační údaje stavby",
+      "status": "pokryto",
+      "filled_fields": [
+        "misto",
+        "projektant",
+        "stavba",
+        "stupen_pd"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_01_Technická zpráva.pdf",
+        "250_08_Statický výpočet.pdf"
+      ],
+      "fact_count": 6,
+      "optional": false,
+      "notes": "Investor, název stavby, místo, autorizovaný projektant, číslo zakázky. One or more identification facts must be present.\n"
+    },
+    {
+      "category": "norm_references",
+      "label_cs": "Citované normy ČSN EN",
+      "status": "pokryto",
+      "filled_fields": [
+        "citation"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_01_Technická zpráva.pdf",
+        "250_06_Výztuž konstrukce.pdf",
+        "250_08_Statický výpočet.pdf"
+      ],
+      "fact_count": 42,
+      "optional": false,
+      "notes": "Without at least one ČSN citation the TZ is unreviewable. Žihle pilot used 14+ norms; minimum for residential = 3-5.\n"
+    },
+    {
+      "category": "referenced_documents",
+      "label_cs": "Soupis odkazovaných dokumentů",
+      "status": "pokryto",
+      "filled_fields": [
+        "document"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_01_Technická zpráva.pdf"
+      ],
+      "fact_count": 1,
+      "optional": true,
+      "notes": "Cross-check inventory of drawings TZ cites vs drawings actually uploaded. Optional — TZs sometimes embed full description without explicit drawing references.\n"
+    },
+    {
+      "category": "concrete_grade",
+      "label_cs": "Třída betonu (C20/25 / C30/37 …)",
+      "status": "pokryto",
+      "filled_fields": [
+        "class"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_01_Technická zpráva.pdf",
+        "250_08_Statický výpočet.pdf"
+      ],
+      "fact_count": 3,
+      "optional": false,
+      "notes": null
+    },
+    {
+      "category": "exposure_class",
+      "label_cs": "Třída expozice (XC1 / XF1 / XA2 …)",
+      "status": "pokryto",
+      "filled_fields": [
+        "class"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_00_rozpiska desky.pdf",
+        "250_01_Technická zpráva.pdf",
+        "250_02_Situace.pdf",
+        "250_03_Vzorový příčný řez.pdf",
+        "250_04_Rozvinutý pohled.pdf",
+        "250_05_Tvar konstrukce.pdf",
+        "250_06_Výztuž konstrukce.pdf",
+        "250_07_Detaily.pdf",
+        "250_08_Statický výpočet.pdf",
+        "250_08_Zábradlí.pdf"
+      ],
+      "fact_count": 89,
+      "optional": false,
+      "notes": "Mandatory per ČSN EN 206. Coverage gate flags missing XC class because durability cannot be specified without it.\n"
+    },
+    {
+      "category": "reinforcement",
+      "label_cs": "Třída výztuže (B500B / B500C)",
+      "status": "pokryto",
+      "filled_fields": [
+        "steel_grade"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_01_Technická zpráva.pdf",
+        "250_06_Výztuž konstrukce.pdf",
+        "250_08_Statický výpočet.pdf"
+      ],
+      "fact_count": 3,
+      "optional": false,
+      "notes": null
+    },
+    {
+      "category": "special_requirements",
+      "label_cs": "Speciální požadavky (bílá vana, pohledový beton, vodotěsnost)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "Optional — most residential projects don't require white-tank construction. Flagged but not blocking.\n"
+    },
+    {
+      "category": "quantities",
+      "label_cs": "Objemy / plochy / hmotnosti (m³ / m² / t)",
+      "status": "pokryto",
+      "filled_fields": [
+        "area_m2",
+        "mass_tons"
+      ],
+      "missing_fields": [],
+      "contributing_sources": [
+        "250_01_Technická zpráva.pdf",
+        "250_02_Situace.pdf",
+        "250_08_Statický výpočet.pdf"
+      ],
+      "fact_count": 6,
+      "optional": false,
+      "notes": "At least one volume / area / mass quantity. Empty quantities means the TZ has no totals — pipeline cannot derive výkaz výměr.\n"
+    },
+    {
+      "category": "dimensions",
+      "label_cs": "Rozměry (tloušťky, výšky, počty podlaží)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": null
+    },
+    {
+      "category": "dxf_meta",
+      "label_cs": "DXF metadata (entity count, units, bbox)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [
+        "entity_count_total",
+        "layer_count"
+      ],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Sanity check — empty DXF = upload error. Engine flags any DXF with < 100 entities as suspicious but doesn't block here (PR2 reconciliation does that).\n"
+    },
+    {
+      "category": "layer_inventory",
+      "label_cs": "Vrstvy výkresů (CAD layer catalog)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "At least one layer with entities. Universal — any DXF that ezdxf parses produces this.\n"
+    },
+    {
+      "category": "closed_polygons",
+      "label_cs": "Uzavřené polygony (plochy místností / sekcí)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Source for room areas. ArchiCAD: A-AREA-BNDY-OTLN / IP_obrysy místností. Allplan: O-Místnosti.\n"
+    },
+    {
+      "category": "open_polylines",
+      "label_cs": "Otevřené polyčáry (osy stěn, hrany konstrukcí)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Wall axes, edges, dimension lines. Universal — appears in every architectural DXF.\n"
+    },
+    {
+      "category": "block_inventory",
+      "label_cs": "Inventář INSERT bloků (dveře, okna, sanitar, kuchyně)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Door / window / sanitary blocks. Without blocks the drawing is either schematic or pure-line — coverage matrix flags as warning.\n"
+    },
+    {
+      "category": "text_inventory",
+      "label_cs": "Texty a popisky (TEXT + MTEXT)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Room codes, dimension labels, drawing notes. Pure-geometry DXF without text is not a complete project drawing.\n"
+    },
+    {
+      "category": "dimensions_drawn",
+      "label_cs": "Kótování (DIMENSION entity)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "Some ArchiCAD exports drop DIMENSION on export; many use TEXT labels instead. Optional — flagged but not blocking.\n"
+    },
+    {
+      "category": "block_attribs",
+      "label_cs": "Atributy bloků (ID dveří/oken/místností)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "ATTRIB tags inside INSERT blocks. AIA-style drawings always have them; some Allplan drawings don't. Optional.\n"
+    },
+    {
+      "category": "wall_system",
+      "label_cs": "Konstrukční systém stěn (cihly / monolit / kombinovaný)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Wall material + thickness. Cross-checked between TZ description and DXF wall layers in PR2 reconciliation.\n"
+    },
+    {
+      "category": "foundation_system",
+      "label_cs": "Konstrukční systém základů (pasy / desky / piloty)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Foundation type per ČSN EN 1997. Critical for výkaz — separate DPS section in vyhláška 499/2006 (D.1.1.2 statika).\n"
+    },
+    {
+      "category": "roof_system",
+      "label_cs": "Střešní systém (plochá / sedlová / krytina / izolace)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": null
+    },
+    {
+      "category": "stair_system",
+      "label_cs": "Schodišťový systém (monolit / prefab / dřevěné)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "Some single-story projects don't have stairs (RD bungalov). Optional.\n"
+    },
+    {
+      "category": "thermal_insulation",
+      "label_cs": "Tepelná izolace (EPS / minerální / fasáda / střecha)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "ETICS or interior insulation must be specified for energy certificate (PENB) per ČSN 73 0540.\n"
+    },
+    {
+      "category": "facade_finish",
+      "label_cs": "Povrchová úprava fasády (omítka / obklad / dřevo)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": null
+    },
+    {
+      "category": "floor_finishes",
+      "label_cs": "Skladby podlah (PU / dlažba / vinyl / parkety)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "Pattern 8 (door-vs-gate hazard, STAVAGENT_PATTERNS.md): F10 PU garáž bound to D05 sekční vrata — coverage matrix flags F10 presence to alert downstream classifier.\n"
+    },
+    {
+      "category": "windows_doors_specification",
+      "label_cs": "Specifikace oken a dveří (rozměry / materiál / U-value)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": null
+    },
+    {
+      "category": "heating_system",
+      "label_cs": "Vytápění (zdroj tepla, otopná tělesa, regulace)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.5 UT. Optional if vytápění je předmětem samostatného projektu — RD often have it inline.\n"
+    },
+    {
+      "category": "ventilation_system",
+      "label_cs": "Vzduchotechnika (VZT) — distribuce, rekuperace",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.3 VZT. Optional — many bytovky have natural ventilation only. Libuše_objekt_D has dedicated VZT DXF set.\n"
+    },
+    {
+      "category": "water_supply",
+      "label_cs": "Zdravotechnika — vodovod (ZTI vodovod)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.4 ZTI vodovod."
+    },
+    {
+      "category": "sewer_system",
+      "label_cs": "Zdravotechnika — kanalizace",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.4 ZTI kanalizace."
+    },
+    {
+      "category": "electrical_strong",
+      "label_cs": "Silnoproud (zásuvky, osvětlení, hlavní rozvaděč)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.1 silnoproud."
+    },
+    {
+      "category": "electrical_weak",
+      "label_cs": "Slaboproud (datové sítě, EZS, EPS)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.2 slaboproud."
+    },
+    {
+      "category": "cooling_chl",
+      "label_cs": "Chlazení (split, multisplit)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.x chl — Libuše_objekt_D má samostatný chl DXF set per podlaží. Optional for most RD.\n"
+    },
+    {
+      "category": "measurement_control",
+      "label_cs": "Měření a regulace (MaR)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.1.4.6 MaR — usually only in larger projects."
+    },
+    {
+      "category": "fire_safety",
+      "label_cs": "Požárně bezpečnostní řešení (PBŘ)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "D.1.3 PBŘ je povinný pro každou rezidenční stavbu. Coverage gate flags missing PBŘ as blocking.\n"
+    },
+    {
+      "category": "accessibility",
+      "label_cs": "Bezbariérové užívání (vyhl. 398/2009)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "Mandatory for buildings ≥ 3 bytové jednotky. Optional flag, blocking decided downstream when project_type subtype refines.\n"
+    },
+    {
+      "category": "site_situation",
+      "label_cs": "Koordinační situace + vytyčení",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": false,
+      "notes": "D.2 koordinační situace je povinná. RD Jáchymov má samostatný DXF \"situace 02\" — coverage matrix očekává odpovídající fact z některého z drawings.\n"
+    },
+    {
+      "category": "utility_connections",
+      "label_cs": "Přípojky inženýrských sítí (voda / kanalizace / elektro / plyn)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "D.2 inženýrské objekty. Optional pro stavby napojené na existující přípojky.\n"
+    },
+    {
+      "category": "geological_conditions",
+      "label_cs": "Geologické a hydrogeologické poměry (IGP)",
+      "status": "chybi",
+      "filled_fields": [],
+      "missing_fields": [],
+      "contributing_sources": [],
+      "fact_count": 0,
+      "optional": true,
+      "notes": "Mandatory pro stavby > 1 NP nebo s podzemním podlažím. Optional flag — IGP report often separate PDF, routing in PR3.\n"
+    }
+  ]
+}

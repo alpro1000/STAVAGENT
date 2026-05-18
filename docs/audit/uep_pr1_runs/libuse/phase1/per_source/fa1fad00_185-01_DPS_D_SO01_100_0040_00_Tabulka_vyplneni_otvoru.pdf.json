@@ -1,0 +1,186 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0040_00_Tabulka_vyplneni_otvoru.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 5806,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ita litn e V / T Z V e to N / a k m á n z o P\nxxx D## L/P mm mm mm mm mm dB (Rw) dB (R'w) tř. Wm-2K-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 101.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "70 Bezpečnostní dveřní křídlo plné plechové Bezpečnostní dveřní křídlo plechové pozinkované Next SD1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 730540-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE VÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. PROJEKT INTERIÉRU",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 25,
+    "char_count_total": 74495,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nABMV world s.r.o.\nProsecká 527/24\n180 ",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision: 00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at: 15/09/2021\nSYSTÉM KÓDOVÁNÍ / CODING SYSTEM\nTvar kódu - VNITŘNÍ DVEŘE / Code type - INTERIOR DOORS\nxxx Dxx\nozn. dveří /door No ozn. Typu dveří / type door\nPŘÍLOHY / ANNEXES\n1 - výkresy dveří\nPOZNÁMKA / NOTE\nUVEDENÉ ROZMĚRY A POZICE (KONSTRUKCÍ, ROZVODŮ, TZB..) JSOU JEN ORIENTAČNÍ, ZHOTOVITEL JE",
+      "revize dokumentu /\nstavební objekt / building object: SO-01 BYTOVÝ DŮM 00\ndocument revision:\naktuální stav ke dni /\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE 15/09/2021\ncurrent situation at:\nPŘEHLED KÓDŮ / CODES LIST\nČíslo popisu\nReferenční výrobek /\n/ no. Popis / description Technická specifikace / technical specification Poznámka / note\nreference product\nDescription\nNAVRŽENÉ VÝROBKY A MATERIÁLY BUDOU ZHOTOVITELEM PŘEDLOŽENÉ KE SCHVÁLENÍ V RÁMCI VZORKOVÁNÍ.\nOZNAČENÍ TY",
+      "Typ bude vybrán na základě vzorků dodavatele a vzorek\nD25 Objektové OJ - interiérové otv interiérové dveře otevíravé, š.800mm, plné, bezpolodrážkové se skrytými panty\npotvrdí architekt projektu.\nTyp bude vybrán na základě vzorků dodavatele a vzorek\nD26 Objektové OJ - interiérové otv interiérové dveře otevíravé, š.900mm, plné, bezpolodrážkové se skrytými panty\npotvrdí architekt projektu.\nTyp bude vybrán na základě vzorků dodavatele a vzorek\nD31 Bytové otevíravé jednokřídlé interiérové dveře oteví",
+      "Protipožární posuvná brána s odolností EW30DP1 pozinkované , včetně integrovaných\ndveří 1000x2000mm s dveřním zavíračem C3, uzavírat signálem z kouřových čidel z Typ bude vybrán na základě vzorků dodavatele a vzorek\n90 Suterénní vrata mezi objekty C a B Hoermann OD\npřilehlých požárních úseků, montáž na stěnu, neblokovaný zámek, pohon SupraMatic HT, potvrdí architekt projektu.\nruční zapuštěné madlo z učlechtilé oceli\nBEZPEČNOSTNÍ ODOLNOST / SAFETY RESISTANCE\nbezpečnostní zasklení, ochrana před úr",
+      "TYP KOVANÍ / FITTING TYPE\nkování je uváděné vždy ze strany průchodu dveřním otvorem\nTyp bude vybrán na základě vzorků dodavatele a\nK1 klika kování klika/klika, provedení matný nerez, zámková vložka\nvzorek potvrdí architekt projektu.\nTyp bude vybrán na základě vzorků dodavatele a\nK2 klika kování klika/klika, provedení matný nerez, z vnitřní strany WC zámek\nvzorek potvrdí architekt projektu.\nbezpečnostní kování koule/klika - min. 3. bezpečnostní třída, provedení matný nerez, Typ bude vybrán na zák",
+      "EZS / Electronic Security System\nEZS1 Signalizace otevření V případě zakódování objektu - signalizace otevření dveří na velín centra\nV případě zakódování objektu - signalizace otevření dveří po časovém intervalu na velín\nEZS2 Signalizace otevření s časovou prodlevou\ncentra\nEPS/ FAS\nDo dveří vstupů z garáží budou instalovány elektromagnetické zámky. V běžném režimu\nbude zámek ovládán čtecí jednotkou přístupového systému. V objektech B, C a D budou\nEMG Elektromagnetický zámek\ninstalovány ve směru ",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision:00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at:15/09/2021\nTABULKA DVEŘÍ / DOORS TABLE\nx\n.o N / o ls íČ / u p y T .n z O k ra M e p y T / .č ito n ts ím z .n m o o r m o rf / .č its o n ts ím o d .n m o o r o t g n in e p O / ín á rív tO / le d ířk te č o P s e v a e l fO .o N / a k říš á ltě v s á v o k le C h td iw ra e lc la to T / a ld íř",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision:00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at:15/09/2021\nTABULKA DVEŘÍ / DOORS TABLE\nx\n.o N / o ls íČ / u p y T .n z O k ra M e p y T / .č ito n ts ím z .n m o o r m o rf / .č its o n ts ím o d .n m o o r o t g n in e p O / ín á rív tO / le d ířk te č o P s e v a e l fO .o N / a k říš á ltě v s á v o k le C h td iw ra e lc la to T / a ld íř",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision:00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at:15/09/2021\nTABULKA DVEŘÍ / DOORS TABLE\nx\n.o N / o ls íČ / u p y T .n z O k ra M e p y T / .č ito n ts ím z .n m o o r m o rf / .č its o n ts ím o d .n m o o r o t g n in e p O / ín á rív tO / le d ířk te č o P s e v a e l fO .o N / a k říš á ltě v s á v o k le C h td iw ra e lc la to T / a ld íř",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision:00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at:15/09/2021\nTABULKA DVEŘÍ / DOORS TABLE\nx\n.o N / o ls íČ / u p y T .n z O k ra M e p y T / .č ito n ts ím z .n m o o r m o rf / .č its o n ts ím o d .n m o o r o t g n in e p O / ín á rív tO / le d ířk te č o P s e v a e l fO .o N / a k říš á ltě v s á v o k le C h td iw ra e lc la to T / a ld íř",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision:00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at:15/09/2021\nTABULKA DVEŘÍ / DOORS TABLE\nx\n.o N / o ls íČ / u p y T .n z O k ra M e p y T / .č ito n ts ím z .n m o o r m o rf / .č its o n ts ím o d .n m o o r o t g n in e p O / ín á rív tO / le d ířk te č o P s e v a e l fO .o N / a k říš á ltě v s á v o k le C h td iw ra e lc la to T / a ld íř",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM revize dokumentu / document revision:00\ndokument / document: TABULKA VNITŘNÍCH DVEŘÍ / INTERIOR DOORS TABLE aktuální stav ke dni / current situation at:15/09/2021\nTABULKA DVEŘÍ / DOORS TABLE\nx\n.o N / o ls íČ / u p y T .n z O k ra M e p y T / .č ito n ts ím z .n m o o r m o rf / .č its o n ts ím o d .n m o o r o t g n in e p O / ín á rív tO / le d ířk te č o P s e v a e l fO .o N / a k říš á ltě v s á v o k le C h td iw ra e lc la to T / a ld íř",
+      "",
+      "",
+      "Stavební objekt / Building object: SO-01 BYTOVÝ DŮM Revize dokumentu / Document revision: 00\nDokument / Document: TABULKA OKEN / WINDOWS SCHEDULE Aktuální stav ke dni / Status quo at: 15/09/2021\nSYSTÉM KÓDOVÁNÍ / CODING SYSTEM\nTvar kódu - OKNA / Code type - WINDOWS\nW xx\nozn. OKNA / WINDOWS No.\nPŘÍLOHY / ANNEXES\nPOZNÁMKA / NOTE\nVŠECHNY ČÁSTI PROJEKTOVÉ DOKUMENTACE A REALIZACE JEDNOTLIVÝCH PROFESNÍCH ČÁSTÍ (ARCHITEKTONICKÁ, STAVEBNĚ-KONSTRUKČNÍ, TZB, PBŘ ATD...) PODLÉHAJÍ KOORDINACI GENERÁLNÍHO PR",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM Revize dokumentu / Document0 r0evision:\ndokument / document: TABULKA OKEN / WINDOWS SCHEDULE Aktuální stav ke dni / Current s1it5u/a0t9io/n2 0a2t1:\nPŘEHLED KÓDŮ / CODES LIST\nČíslo popisu\nokna / No.\nReferenční výrobek /\ndescription Popis / description Technická specifikace / Technical specification Poznámka / Note\nReference product\nwindows\nleaf\nNAVRŽENÉ VÝROBKY A MATERIÁLY BUDOU ZHOTOVITELEM PŘEDLOŽENÉ KE SCHVÁLENÍ V RÁMCI VZORKOVÁNÍ.\nTYP OKNA /",
+      "Číslo popisu\nokna / No.\nReferenční výrobek /\ndescription Popis / description Technická specifikace / Technical specification Poznámka / Note\nReference product\nwindows\nleaf\nNAVRŽENÉ VÝROBKY A MATERIÁLY BUDOU ZHOTOVITELEM PŘEDLOŽENÉ KE SCHVÁLENÍ V RÁMCI VZORKOVÁNÍ.\nTYP OKNA / WINDOW TYPE\nPARAPET / WINDOW SILL\nVnitřní parapet, konstrukce z umélého kamene vysoce odolného vůči vlhkosti, oděru, UV záření, běžným chemikáliím a vysokým Barevnost bude vybrána na základě vzorků\nIP1 vnitřní parapet z uměln",
+      "stavebný objekt / building objects: SO-01 BYTOVÝ DŮM Revize dokumentu / Document revision: 00\ndokument / document: TABULKA OKEN / WINDOWS SCHEDULE Aktuální stav ke dni / Current situation at: 15/09/2021\nTABULKA OKEN / WINDOWS TABLE\nín\nk r a M e p y T / ín e č a n z O e p y t w o d n iW / a n k o p y T h t d iW / a k ř íŠ t h g ie H / a k š ý V g n in e p O / ín á r ív t O g n iz a lG / ín e lk s a Z e p y t g n it t iF / ín á v o k p y T t n a la e S / ín ě n s ě T\nllis\nw o d n iw la n r e t n I",
+      "",
+      "Stavební objekt / Building object: SO-01 BYTOVÝ DŮM Revize dokumentu / Document revision: 00\nDokument / Document: TABULKA PROSKLENÝCH STĚN / GLASS WALL SCHEDULE Aktuální stav ke dni / Status quo at: 15/09/2021\nSYSTÉM KÓDOVÁNÍ / CODING SYSTEM\nTvar kódu - OKNA / Code type - WINDOWS\nCW xx\nozn. OKNA / WINDOWS No.\nPŘÍLOHY / ANNEXES\nPOZNÁMKA / NOTE\nVŠECHNY ČÁSTI PROJEKTOVÉ DOKUMENTACE A REALIZACE JEDNOTLIVÝCH PROFESNÍCH ČÁSTÍ (ARCHITEKTONICKÁ, STAVEBNĚ-KONSTRUKČNÍ, TZB, PBŘ ATD...) PODLÉHAJÍ KOORDINAC",
+      "stavební objekt / building object: SO-01 BYTOVÝ DŮM Revize dokumentu / Document0 r0evision:\ndokument / document: TABULKA PROSKLENÝCH STĚN / GLASS WALL SCHEDULE Aktuální stav ke dni / Current s1it5u/a0t9io/n2 0a2t1:\nPŘEHLED KÓDŮ / CODES LIST\nČíslo popisu\nokna / No.\nReferenční výrobek /\ndescription Popis / description Technická specifikace / Technical specification Poznámka / Note\nReference product\nwindows\nleaf\nNAVRŽENÉ VÝROBKY A MATERIÁLY BUDOU ZHOTOVITELEM PŘEDLOŽENÉ KE SCHVÁLENÍ V RÁMCI VZORKOV",
+      "Číslo popisu\nokna / No.\nReferenční výrobek /\ndescription Popis / description Technická specifikace / Technical specification Poznámka / Note\nReference product\nwindows\nleaf\nNAVRŽENÉ VÝROBKY A MATERIÁLY BUDOU ZHOTOVITELEM PŘEDLOŽENÉ KE SCHVÁLENÍ V RÁMCI VZORKOVÁNÍ.\nTYP OKNA / WINDOW TYPE\nTYP KOVÁNÍ / FITTING TYPE\nK1 Klika Kování celoobvodové bezpečnostní, klika z přírodního hliníku Typ bude vybrán na základě vzorků dodavatele a\nK2 Klika, horní ovládání Kování, klička dle dodavatele oken\nvzorek pot",
+      "stavebný objekt / building objects: SO-01 BYTOVÝ DŮM Revize dokumentu / Document revision: 00\ndokument / document: TABULKA PROSKLENÝCH STĚN / GLASS WALL SCHEDULE Aktuální stav ke dni / Current situation at: 15/09/2021\nTABULKA OKEN / WINDOWS TABLE\nk r a M e p y T / ín e č a n z O e p y t w o d n iW / a n k o p y T h t d iW / a k ř íŠ t h g ie H / a k š ý V g n in e p O / ín á r ív t O g n iz a lG / ín e lk s a Z e p y t g n it t iF / ín á v o k p y T t n a la e S / ín ě n s ě T w o d n iw la n r ",
+      ""
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "ita litn e V / T Z V e to N / a k m á n z o P\nxxx D## L/P mm mm mm mm mm dB (Rw) dB (R'w) tř. Wm-2K-",
+          "volume_m3": null,
+          "area_m2": 1.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "70 Bezpečnostní dveřní křídlo plné plechové Bezpečnostní dveřní křídlo plechové pozinkované Next SD1",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 101.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 730540-2"
+      ],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [
+        "DLE VÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI. PROJEKT INTERIÉRU"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

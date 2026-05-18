@@ -1,0 +1,1420 @@
+{
+  "provenance": {
+    "source_file": "D.2.2 - statický výpočet _ EAR.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 14347,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B 500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 0.3,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "VUJE\n1y\ne= 0 m e = 0,00 m a/3= 0,33 m VYHOVUJE\nx 2x\ne= 0 m e = 0,00 m b/3= 0,20 m VYHOVUJE\ny 2y\nV = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 0.003877,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "PPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nVýpočet teploty v ocelovém profilu HEA160\n4\na 25,000 r 7850,000\nkg/m3\nV ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "= 1,38\nz y\nI = 2,25E-06m4  = 81,6  = -1,22\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,38\nz z z\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "22\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,38\nz z z\nW = 4,49E-05m3  = 0,68  = 93,9\ny,el y 1\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "z\nW = 4,49E-05m3  = 0,68  = 93,9\ny,el y 1\nW = 4,49E-05m3  = 0,68  = 0,87\ny,el z y,rel\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "E-05m3  = 0,68  = 0,87\ny,el z y,rel\nW = 4,49E-05m3 M = 9,18kNm  = 0,99\nz,el y,el, Rd y\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 0.001536,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "ZZZEEENNNÍÍÍ\nVýpočet teploty v ocelovém jeklu h 100 b 100 mm\nt 4 mm\na c 25,000 r a 7850,000\nkg/m3\nV ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "= 1,14\nz y\nI = 2,25E-06m4  = 81,6  = -0,63\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,14\nz z z\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "3\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,14\nz z z\nW = 4,49E-05m3  = 0,91  = 181,0\ny,el y 1\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "W = 4,49E-05m3  = 0,91  = 181,0\ny,el y 1\nW = 4,49E-05m3  = 0,91  = 0,45\ny,el z y,rel\nW = 4,49E-0",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 5.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "E-05m3  = 0,91  = 0,45\ny,el z y,rel\nW = 4,49E-05m3 M = 2,47kNm  = 0,64\nz,el y,el, Rd y\nW = 4,49E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "e = 0,00 m a/3= 0,33 m VYHOVUJE\n2x\nsměr y) e = 0,00 m b/3= 0,20 m VYHOVUJE\n2y\nM= 0 kNm Q= 0 kN A = 0",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "měr y) e = 0,00 m b/3= 0,20 m VYHOVUJE\n2y\nM= 0 kNm Q= 0 kN A = 0,60\nm2\nx x ef1\nM= 0 kNm Q= 0 kN A = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "m e = 0,00 m a/3= 0,33 m VYHOVUJE\nx 2x\ne= 0 m e = 0,00 m b/3= 0,20 m VYHOVUJE\ny 2y\nV = 0,30\nm3\nA = 0",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "YHOVUJE\nx 2x\ne= 0 m e = 0,00 m b/3= 0,20 m VYHOVUJE\ny 2y\nV = 0,30\nm3\nA = 0,60\nm2\nb ef1\nG = 6 kN A = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.906248,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ocelovém profilu HEA160\n4\na 25,000 r 7850,000\nkg/m3\nV 0,003877\nm3/m\nc a\ne res 0,500 g n,r 1,000 A m ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "= 3200mm  = 1,30\nm1 z,cr Mz\n = 0,34  = 0,34\ny z\nf = 204MPa i = 39,2mm  = -1,22\nyd y y\nA =\n1,46E-",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 0.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "klu h 100 b 100 mm\nt 4 mm\na c 25,000 r a 7850,000\nkg/m3\nV 0,001536\nm3/m\ne res 0,500 g n,r 1,000 A m ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 3.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "= 3200mm  = 1,30\nm1 z,cr Mz\n = 0,34  = 0,34\ny z\nf = 55MPa i = 39,2mm  = -0,63\nyd y y\nA =\n1,46E-0",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "POOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nSTĚNA CP P10-M1,0\n = 18,00 kN/m",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "OOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nVNITŘNÍ STĚNA CP P10-M5,0\n = 18,00 kN/m",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 3.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "Í\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nPTH 30 Profi P10 na maltu pro tenké spáry\n = 10,00 kN/m",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "l,y el,z\nW 324,9103*mm3 W 156,49103*mm3\npl,y pl,z\ni 74,5mm i 45,2mm\ny z\nI 148,0103*mm4 I 60,21109*mm",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": ",y el,z\nW 429,5103*mm3 W 203,82103*mm3\npl,y pl,z\ni 82,8mm i 49,8mm\ny z\nI 209,8103*mm4 I 108,00109*mm",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "l,y el,z\nW 245,1103*mm3 W 117,63103*mm3\npl,y pl,z\ni 65,7mm i 39,8mm\ny z\nI 121,9103*mm4 I 31,41109*mm",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 234.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "000\nkg/m3\nV 0,003877\nm3/m\nc a\ne res 0,500 g n,r 1,000 A m 0,906248\nm2/m\nF 1,000 g n,c 1,000 A m / V ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "l,y el,z\nW\n245,1103*mm3\nW\n117,63103*mm3\npl,y pl,z\ni 65,7mm i 39,8mm\ny z\nI\n121,9103*mm4\nI\n31,41109*mm",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 6.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "3\nel,y el,z\nW 166,4103*mm3 W 34,60103*mm3\npl,y pl,z\ni 74,2mm i 20,5mm\ny z\nI 47,9103*mm4 I 7,43109*mm",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 260.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "r a 7850,000\nkg/m3\nV 0,001536\nm3/m\ne res 0,500 g n,r 1,000 A m 0,4\nm2/m\nF 1,000 g n,c 1,000 A m / V ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 44,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 2,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN ISO 13822",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0038",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1999-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1995-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 1001",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-7",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1996-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1998",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1999-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-7",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1998",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 77,
+    "char_count_total": 157459,
+    "text_per_page_truncated": [
+      "",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 2/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nOOBBSSAAHH\nObrázek Průvodní zpráva 3 Obrázek Základní vnitřní síly ny, KV1: MSÚ (STR/GEO) - 48\nObrázek Průvodní zpráva 4 trvalá/dočasná - rovn. 6.10, Izometrie\nObrázek Průvodní zpráva 5 Obrázek vnitřní síly My, KV1: MSÚ (STR/GEO) - 49\nObrázek Průvodní zpráva 6 trvalá/dočasná - rovn. 6.10, Izometrie\nZákladní údaj",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 3/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nPředmětem statického výpočtu je hodnocení existujících konstrukcí řadového rodinného domu a návrh\nnových konstrukcí nástavby.\nPodklady\nSeznam použitých norem\n[1] ČSN EN 1990 Eurokód: Zásady navrhování konstrukcí\n[2] ČSN ISO 13822 Zásady navrhování konstrukcí - Hodnocení exis",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 4/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nNávrhové postupy a požadavky na konstrukce\nNové konstrukce jsou navrženy pro informativní návrhovou životnost 50 let. Stávající konstrukce jsou\nposouzeny pro zbytkovou životnost 50 let.\nMezní stavy únosnosti\nKonstrukce přístavby a nové ocelové překlady jsou posouzeny na účin",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 5/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nAnalýza konstrukce, výpočtové postupy a metody\nPro simulaci reálného chování konstrukce objektu je vytvořen celkový výpočtový model. Vazby jednotlivých\nprutových prvků jsou modelovány kloubové. Zdivo je modelováno jako ortotropní materiál s částečně\nvyloučeným tahem podle re",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 6/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPRRRŮŮŮVVVOOODDDNNNÍÍÍ ZZZPPPRRRÁÁÁVVVAAA\nNahodilé zatížení sněhem\nZatížení sněhem Zatížení sněhem Tíha sněhu na zemi\nČSN EN 1991-1-3 a\nKategorie Popis snehovamapa.cz\nsk [kN/m2] sk [kN/m2]\nSNÍH VII Sněhová oblast VII. 3,44 4,00\nSklon střechy a Zatěžovací šířka b m 1 s s'\n[°] [mm] [-] [kN/m2] [kN/m]\n8 1000 0,80 3,20 ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 7/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nNNAASSTTAAVVEENNÍÍ SSÍÍTTĚĚ PPRRVVKKŮŮ\nObecné Požadovaná délka konečných prvků I FE : 500 mm\nMaximální vzdálenost mezi uzlem a linií  : 1 mm\npro integrování do linie\nMaximální počet uzlů sítě KP v tisících : 500\nPruty Počet dělení lanových prutů, : 10\nprutů s pružným podložím, s náběhy nebo plastickými\nvlastnos",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 8/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..44 PPLLOOCCHHYY\nPlocha Typ plochy Mat. Tloušťka Plocha Hmotnost\nč. Geometrie Tuhost Hraniční linie č. č. Typ d [mm] A [mm2] G [kg]\n23 Rovinná Standard 127,132,136,133,125 4 Konstantní 300.0 14640000 7968.1\n24 Rovinná Standard 36,45,76,111,116,125, 4 Konstantní 450.0 3030000 2473.7\n69,1\n25 Rovinná Standard 24",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 9/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..44 PPLLOOCCHHYY\nPlocha Typ plochy Mat. Tloušťka Plocha Hmotnost\nč. Geometrie Tuhost Hraniční linie č. č. Typ d [mm] A [mm2] G [kg]\n648,644\n69 Čtyřúhelník Standard 644,646,649,652,654 1 Konstantní 100.0 3053200 763.3\n70 Rovinná Standard 535,668,666,667 1 Konstantní 100.0 3024300 756.1\n71 Rovinná Standard 194,",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 10/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1100 LLIINNIIOOVVÉÉ KKLLOOUUBBYY\nKloub Linie Plocha Kloub - posun/natočení [MN/m2] Momentový kloub [MNm/rad/m]\nč. č. č. Strana ux uy uz x y z\n1 23 61 -\n2 143 61 -\n3 289 61 -\n5 506 61 -\n6 508 61 -\n7 619 61 -\n8 623 61 -\n9 626 61 -\n10 14 62 -\n11 69 62 -\n12 133 62 -\n13 179 62 -\n14 300 62 -\n15 517 62 -\n16 533",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 11/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1133 PPRRŮŮŘŘEEZZYY\nPrůřez Mater. IT [mm4] Iy [mm4] Iz [mm4] Hlavní osy Natočení Celkové rozměry [mm]\nč. č. A [mm2] Ay [mm2] Az [mm2]  [°] ' [°] Šířka b Výška h\n8 QRO 100x4 (warmgefertigt)\n3 3610000.0 2320000.0 2320000.0 0.00 0.00 100.0 100.0\n1520.0 646.0 646.0\n9 UPE 200\n3 88900.0 19090000.0 1873000.0 0.0",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 12/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1177 PPRRUUTTYY\nPrut Linie Natočení prutu Průřez Kloub č. Exc. Dělení Délka\nč. č. Typ prutu typ  [°] Počát. Konec Počát. Konec č. č. L [mm]\n20 55 Nosník Úhel 0.00 11 11 - - - - 566 YZ\n21 52 Nosník Úhel 0.00 11 11 3 1 - - 2153 YZ\n22 53 Tuhý prut Úhel 0.00 0 0 - 4 - - 200 Z\n23 54 Nosník Úhel 0.00 11 11 - - -",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 13/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1177 PPRRUUTTYY\nPrut Linie Natočení prutu Průřez Kloub č. Exc. Dělení Délka\nč. č. Typ prutu typ  [°] Počát. Konec Počát. Konec č. č. L [mm]\n129 344 Nosník Úhel 0.00 1 1 - - - - 100 X\n130 354 Tuhý prut Úhel 0.00 0 0 - - - - 60 Z\n131 349 Nosník Úhel 0.00 1 1 - - - - 250 X\n132 355 Nosník Úhel 0.00 11 11 1 - -",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 14/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1177 PPRRUUTTYY\nPrut Linie Natočení prutu Průřez Kloub č. Exc. Dělení Délka\nč. č. Typ prutu typ  [°] Počát. Konec Počát. Konec č. č. L [mm]\n226 698 Nosník Úhel 0.00 14 14 1 1 - - 4575 Y\n227 518 Tuhý prut Úhel 0.00 0 0 - - - - 200 Z\n228 701 Nosník Úhel 0.00 14 14 1 1 - - 4575 Y\n229 520 Nosník Úhel 0.00 11 1",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 15/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..1177 PPRRUUTTYY\nPrut Linie Natočení prutu Průřez Kloub č. Exc. Dělení Délka\nč. č. Typ prutu typ  [°] Počát. Konec Počát. Konec č. č. L [mm]\n323 406 Nosník Úhel 0.00 1 1 - - - - 750 X\n324 603 Nosník Úhel 0.00 1 1 - - - - 1000 X\n325 143 Nosník Úhel 0.00 1 1 - - - - 50 X\n326 289 Nosník Úhel 0.00 1 1 - - - - 5",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 16/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nMMMOOODDDEEELLL\nIzometrie\nMateriály\n1: Beton C25/30 | EN 1992-1-1:2004/A1:2014\n2: Zdivo (Křídový pískovec, Skupina 1, Malta pro zdění pro tenké spáry, M10 - M20, 0.5 - 3 mm) | EN 1996-1-1; Izotropní zdivo 2D\n3: Ocel S 235 | ČSN EN 1993-1-1:2006\n4: Zdivo (Cihla, Skupina 1, Standardní malta, M10 - M20, <> 0,5 - 3",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 17/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nMMMOOODDDEEELLL\nIzometrie\nTloušťka plochy [mm]\n100.0 mm\n150.0 mm\n300.0 mm\n450.0 mm\n500.0 mm\nZ\nY\nX\nMMMOOODDDEEELLL\nIzometrie\nPrůřezy\n1: Obdélník 300/250; Beton C25/30\n3: HEA 200; Ocel S 235\n4: 2I HEA 180-180 | Ferona - DIN 1025-3:1994; Ocel S 235\n5: IPE 200; Ocel S 235\n6: HEA 160; Ocel S 235\n7: IPE 180; Ocel S 2",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 18/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nMODEL\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nMMMOOODDDEEELLL\nIzometrie\nKlouby na koncích prutu\n1: Lokální; NNN NAN\n2: Lokální; NNN NAA\n3: Lokální; PNN NAN\n4: Lokální; APN NNA\n5: Lokální; ANN NAA\n22..11 ZZAATTĚĚŽŽOOVVAACCÍÍ SSTTAAVVYY\nZatěž. Označení EN 1990 | ČSN Vlastní tíha - Součinitel ve směru\nstav zatěž. stavu Kategorie účinků Aktivní X Y Z\nZS1 Vlast",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 19/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n3 1.35 ZS3 Zemní tlak\n4 1.50 ZS4 Užitné zatížení\n5 0.75 ZS7 Sníh\nKZ8 STR 1.35*ZS1 + 1.35*ZS2 + 1.35*ZS3 + 1.5*ZS4 + 1 1.35 ZS1 Vlastní tíha\n0.75*ZS5 + 0.9*ZS8\n2 1.35 ZS2 Ostatní stálé\n3 1.",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 20/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\nKZ27 STR 1.35*ZS1 + 1.35*ZS2 + 1.35*ZS3 + 1.05*ZS4 + 1 1.35 ZS1 Vlastní tíha\n1.5*ZS7\n2 1.35 ZS2 Ostatní stálé\n3 1.35 ZS3 Zemní tlak\n4 1.05 ZS4 Užitné zatížení\n5 1.50 ZS7 Sníh\nKZ28 STR 1.35",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 21/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n3 1.35 ZS3 Zemní tlak\n4 1.05 ZS4 Užitné zatížení\n5 1.50 ZS8 Vítr\nKZ46 STR 1.35*ZS1 + 1.35*ZS2 + 1.35*ZS3 + 1.05*ZS4 + 1 1.35 ZS1 Vlastní tíha\n0.75*ZS5 + 1.5*ZS8\n2 1.35 ZS2 Ostatní stálé\n3 ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 22/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n5 0.50 ZS6 Sníh\nKZ65 S Ch ZS1 + ZS2 + ZS3 + ZS4 + 0.5*ZS7 1 1.00 ZS1 Vlastní tíha\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemní tlak\n4 1.00 ZS4 Užitné zatížení\n5 0.50 ZS7 Sníh\nKZ66 S Ch ZS1 + ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 23/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemní tlak\n4 0.70 ZS4 Užitné zatížení\n5 1.00 ZS5 Sníh\n6 0.60 ZS8 Vítr\nKZ87 S Ch ZS1 + ZS2 + ZS3 + 0.7*ZS4 + ZS6 + 0.6*ZS8 1 1.00 ZS1 Vlastní tíha\n2 1.00",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 24/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n3 1.00 ZS3 Zemní tlak\n4 0.70 ZS4 Užitné zatížení\n5 0.50 ZS7 Sníh\n6 1.00 ZS8 Vítr\nKZ107 S Ch ZS1 + ZS2 + ZS3 + 0.5*ZS5 + ZS8 1 1.00 ZS1 Vlastní tíha\n2 1.00 ZS2 Ostatní stálé\n3 1.00 ZS3 Zemn",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 25/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n22..55 KKOOMMBBIINNAACCEE ZZAATTÍÍŽŽEENNÍÍ\nKombin. Kombinace zatížení\nzatížení NS Označení č. Součinitel Zatěžovací stav\n5 0.20 ZS7 Sníh\nKZ130 S Fr ZS1 + ZS2 + 0.3*ZS4 + 0.2*ZS5 1 1.00 ZS1 Vlastní tíha\n2 1.00 ZS2 Ostatní stálé\n3 0.30 ZS4 Užitné zatížení\n4 0.20 ZS5 Sníh\nKZ131 S Fr ZS1 + ZS2 + 0.3*ZS4 + 0.2*ZS",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 26/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS1: Vlastní tíha\nč. Popis zatížení\nY : 519.4 kNm\nZ : 0.0 kNm\nM Pruty X : -464.6 kNm\nY : 519.4 kNm\nZ : 0.0 kNm\nBuňky vybrané pro generování  počet buněk : 7\n plocha buněk : 57953126 mm2\nKonvertovat zatížení na pruty č. : 103,104,125,126,206,\n330,334,337,3",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 27/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZSSS111::: VVVLLLAAASSSTTTNNNÍÍÍ TTTÍÍÍHHHAAA\nZS1 : Vlastní tíha Izometrie\nZatížení [kN/m^2]\n0.50\n0.50\n0.50\n0.50\n0.50\n0.50\n0.50\n0.50 0.50\n0.50\n0.50\n0.50 0.50\n0.50\n0.50\n00..5500 0.50\n0.50\n0.50\n0 0.5.500\n0.50 0.50 0.50\n0.50\n0.50\n0.50 0.50 0.50 0.50\n0.50\n0.50\n0.50\n0.50 0.50 0.50\n0.50 0.50\n0.50 0.50\n0.50\n0 0.5",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 28/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZS2 33..22 ZZAATTÍÍŽŽEENNÍÍ NNAA PPRRUUTT ZS2: Ostatní stálé\nOstatní stálé Vztaženo Na prutech Zatížení Zatížení Zatížení Vztažná Parametry zatížení\nč. na č. typ průběh směr délka Symbol Hodnota Jednotka\n1 Pruty 125,126, Síla Konstant. ZL Skutečná d. p -3.0 kN/m\n145,206,\n208,361\n33..22//11 ZZAATTÍÍŽŽEENNÍÍ N",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 29/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS2: Ostatní stálé\nč. Popis zatížení\n128,173,174,176,177,\n179,186,189,191,199,\n201,202,204,211,213,\n214,216,222,224,229,\n238,240,268,270,271,\n273,287,289,290,292\n3 Ze zatížení na plochu pomocí roviny\nSměr zatížení na plochu Vztaženo globálně na průmět plochy",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 30/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS2: Ostatní stálé\nč. Popis zatížení\nP Pruty X : 0.0 kN\nY : 0.0 kN\nZ : -71.5 kN\nCelkový moment k počátku  M Plochy X : -303.6 kNm\nY : 367.2 kNm\nZ : 0.0 kNm\nM Pruty X : -303.6 kNm\nY : 367.2 kNm\nZ : 0.0 kNm\nBuňky vybrané pro generování  počet buněk : 11\n ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 31/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZSSS222::: OOOSSSTTTAAATTTNNNÍÍÍ SSSTTTÁÁÁLLLÉÉÉ\nZS2 : Ostatní stálé Izometrie\nZatížení [kN/m], [kN/m^2]\n00..7700\n00..7700\n0.70\n00..7700\n0.30\n0.70\n00..7700\n0.30\n00..7700\n0.30\n0.70\n0.70 00..7700 2.00 0.30\n0.70\n0.70 2.00 3.0 0.70\n3.0 2.00 3 . 3 0 .0 3.0 0.70 0.70\n2 2.0.000 2.00 2.00\n2.00\n2.00\n0.70\n0.70\n1.50\n",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 32/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZS3 33..44 ZZAATTÍÍŽŽEENNÍÍ NNAA PPLLOOCCHHUU ZS3: Zemní tlak\nZemní tlak Zatížení Zatížení Zatížení Parametry zatížení Na uzlu\nč. Na plochách č. typ průběh směr Symbol Hodnota Jednotka č.\n1 8,10,13,15,20,26,39,43,50, Síla Lineární v Z z p1 -5.00 kN/m2 326\n54,74\np2 -30.00 kN/m2 324\nZZZSSS333::: ZZZEEEMMMNNNÍÍ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 33/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS4: Užitné zatížení\nč. Popis zatížení\nBuňky vybrané pro generování  počet buněk : 6\n plocha buněk : 15600000 mm2\nKonvertovat zatížení na pruty č. : 256,260,264,275,294,\n318\n2 Ze zatížení na plochu pomocí roviny\nSměr zatížení na plochu Vztaženo globálně na",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 34/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS4: Užitné zatížení\nč. Popis zatížení\nY : 0.0 kN\nZ : -71.5 kN\nCelkový moment k počátku  M Plochy X : -303.6 kNm\nY : 367.2 kNm\nZ : 0.0 kNm\nM Pruty X : -303.6 kNm\nY : 367.2 kNm\nZ : 0.0 kNm\nBuňky vybrané pro generování  počet buněk : 11\n plocha buněk : 476",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 35/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZSSS444::: UUUŽŽŽIIITTTNNNÉÉÉ ZZZAAATTTÍÍÍŽŽŽEEENNNÍÍÍ\nZS4 : Užitné zatížení Izometrie\nZatížení [kN/m^2]\n0.75\n0.75\n0.75\n0.75\n1.50\n1.50\n3.00\n3.00\n3.00\n1.50\n1.50 1.50\n1.50\n1.50\n3.00\n1.50 1.50\n3.00\n3.00 33..0000 3.00 1.50\n3.00 3.00 3.00 3.00 1.50\n3.00 1.50\n3.00\n1.50\n1.50\n1.50\n3.00 1.50\n1.50\n3.00\n1.50\n1.50\n1.5",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 36/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZS5 33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS5: Sníh\nSníh\nč. Popis zatížení\n1 Ze zatížení na plochu pomocí roviny\nSměr zatížení na plochu Vztaženo globálně na průmět plochy: : ZP\nPlocha aplikace zatížení Zavřená rovina\nTyp průběhu zatížení: Kombinované\nVelikost zatížení na plochu Konstantní : -3.",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 37/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS5: Sníh\nč. Popis zatížení\nY : 20.7 kNm\nZ : 0.0 kNm\nBuňky vybrané pro generování  počet buněk : 3\n plocha buněk : 2815500 mm2\nKonvertovat zatížení na pruty č. : 365,366,368,369,371\nZZZSSS555::: SSSNNNÍÍÍHHH\nZS5 : Sníh Izometrie\nZatížení [kN/m^2]\n1.60\n1.60",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 38/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS6: Sníh\nč. Popis zatížení\nKonvertovat zatížení na pruty č. : 21,36,54,89,95,174,\n179,191,199,204,211,\n216,268,273,287,292\n2 Ze zatížení na plochu pomocí roviny\nSměr zatížení na plochu Vztaženo globálně na průmět plochy: : ZP\nPlocha aplikace zatížení Zavřen",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 39/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS6: Sníh\nč. Popis zatížení\nBuňky vybrané pro generování  počet buněk : 3\n plocha buněk : 2815500 mm2\nKonvertovat zatížení na pruty č. : 365,366,368,369,371\nZZZSSS666::: SSSNNNÍÍÍHHH\nZS6 : Sníh Izometrie\nZatížení [kN/m^2]\n1.60\n1.60\n1.60\n1.60\n0.80\n1.60 1.60",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 40/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS7: Sníh\nč. Popis zatížení\n216,268,273,287,292\n2 Ze zatížení na plochu pomocí roviny\nSměr zatížení na plochu Vztaženo globálně na průmět plochy: : ZP\nPlocha aplikace zatížení Zavřená rovina\nTyp průběhu zatížení: Kombinované\nVelikost zatížení na plochu Konst",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 41/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS7: Sníh\nč. Popis zatížení\nZ : 0.0 kNm\nBuňky vybrané pro generování  počet buněk : 3\n plocha buněk : 2815500 mm2\nKonvertovat zatížení na pruty č. : 365,366,368,369,371\nZZZSSS777::: SSSNNNÍÍÍHHH\nZS7 : Sníh Izometrie\nZatížení [kN/m^2]\n0.80\n0.80\n0.80\n1.60\n0.",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 42/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS8: Vítr\nč. Popis zatížení\nZadat vítr na stranu A - B\nVytvořit typ zatížení Zatížení na prut\nTyp průběhu zatížení Kombinované\nGenerovat zatížení větrem na pruty č. : 21,36,54,89,174,199,\n211,268,287\nRozměry pultové střechy h : 12800 mm\nb : 6400 mm\nd : 2131 ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 43/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS8: Vítr\nč. Popis zatížení\n M : 76.2 kNm\nBuňky vybrané pro generování  počet buněk : 29\n plocha buněk : 18819671 mm2\n3 Ze zatížení větrem (sedlová/korýtková střecha)\nDynamický tlak Podle normy : EN 1991-1-4\nNárodní příloha : Česká republika\nVětrná oblast",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 44/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS8: Vítr\nč. Popis zatížení\nNárodní příloha : Česká republika\nVětrná oblast : III\nKategorie terénu : Kategorie III\nVýška konstrukce h : 12800 mm\nZákladní rychlost větru vb,0 : 27.5 m/s\nGeometrie střechy Uzel A : 174\nB : 37\nC : 38\nD : 42\nE : 191\nF : 175\nVygen",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 45/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS8: Vítr\nč. Popis zatížení\nGenerovat zatížení větrem na pruty č. : 91,92,176,177,201,202,\n213,214,270,271,289,\n290\nRozměry sedlové/korýtkové střechy h : 12800 mm\nb : 4000 mm\nd : 4887 mm\ne : 4000 mm\nA : 27647137 mm2\n 1 : 45.0 °\n 2 : 45.0 °\nb F : 1000 mm\nd ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 46/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nZATÍŽENÍ\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n33..1155 VVYYGGEENNEERROOVVAANNÁÁ ZZAATTÍÍŽŽEENNÍÍ ZS8: Vítr\nč. Popis zatížení\nI -0.200 -0.18\nJ -0.300 -0.27\nVygenerovaná celková zatížení  P Plochy : 2.4 kN\n P : 2.4 kN\nCelkový moment k počátku  M Plochy : 28.9 kNm\n M : 28.9 kNm\nBuňky vybrané pro generování  počet buněk : 4\n plocha buněk : 6948141 mm2",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 47/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOODDDPPPOOORRROOOVVVÉÉÉ RRREEEAAAKKKCCCEEE\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nPodporové reakce[kN], [kN/m]\nKombinace výsledků: Max. hodnoty\nZ\nX\nY\n134.7\n138.6\n113.0\n133.3\n96.5\n174.8\n0.9 121.9\n112.14.2 102.4\n90.9 77.7\n132.8\n144.5\n151.9 58.5 82.3\n78.1\n76.2\n97.1\n48.9 109.7\n78.7\n97.1\n",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 48/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZÁÁÁKKKLLLAAADDDNNNÍÍÍ VVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY nnn\nyyy\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nPlochy Základní vnitřní síly n-y [kN/m]\nKombinace výsledků: Min. hodnoty\nZákladní vnitřní\nsíly\nny [kN/m]\n10.8\n-11.2\n-33.3\n-55.4\n-77.4\n-99.5\n-121.6\n-143.6\n-165.7\n-187.8\n-209.9\nMax : ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 49/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nyyy\nvnitřní síly K P V ru 1 ty : V M n S it Ú řn í ( S s T íly R M /G - E y O) - trvalá/dočasná - rovn. 6.10 -0.1 Izometrie\nMy [kNm] Kombinace výsledků: Max. a min. hodnoty\n3.9\n3.3 -2.3\n-2.3\n2.7 -0.2 -2.2 -1.0 -1.1 -0.4\n2.1\n-0.1\n-1.3\n1.4\n-1.1\n0.8 -0.1 0.8 -0.4\n0.2 0.7 1",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 50/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nzzz\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nvnitřní síly Pruty Vnitřní síly M-z\nMz [kNm] Kombinace výsledků: Max. a min. hodnoty 0.2\n3.5\n2.6\n1.8\n1.0\n0.2 3.5 3.3 -5.3 1.2 -1.2 0.5 -5.6 0.5 0.2\n-0.7 1.9\n-1.5 0.2 0.9 -1.7 -0.5\n-2.3\n-0.4\n-3.1 -0.1\n-0.6 1",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 51/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nyyy\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nvnitřní síly Pruty Vnitřní síly M-y\nMy [kNm] Kombinace výsledků: Max. a min. hodnoty 3.3\n105.8 -25.9-4.4 17.2\n-7.6 8.8 22.0 25.3\n93.9 -0.5 8.5 13.2 -16.7\n3.5\n81.9\n17.5\n69.9 9.3 23.4 26.0\n58.0 6.3\n18.8\n46.0 ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 52/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nzzz\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nvnitřní síly Pruty Vnitřní síly M-z 0.1\nMz [kNm] Kombinace výsledků: Max. a min. hodnoty -1.1 -0.9\n-1.2\n2 1 . . 0 6 2.0 1.5 1.8 0.7 0.6 -0.2 -0.9 -1.2 -1.3 -1.7 -1.4 0.3\n1.3 -0.4\n1.0 -0.5 -0.3 0.3\n-0.8\n0.6 ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 53/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nLLLOOOKKKÁÁÁLLLNNNÍÍÍ DDDEEEFFFOOORRRMMMAAACCCEEE uuu\nzzz\nKV2 : MSP - charakteristická Izometrie\nLokální deformace Pruty Lokální deformace u-z\nuz [mm] Kombinace výsledků: Max. hodnoty 1.2\n15.8 -0.2 6.6\n14.3 11.9\n14.1\n12.9 0.1 0.8 4.4 8.6 11.9 13.6\n11.4 0.3\n1.3\n10.0\n7.1\n8.5 0.2\n7.1 0.2 0.2 12.9\n5.6 0.2 15.8\n1",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 54/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nyyy\nKV4 : MSP - kvazistálá Izometrie\nvnitřní síly Pruty Vnitřní síly M-y\nMy [kNm] Kombinace výsledků: Max. a min. hodnoty\n8.7\n7.0\n5.3\n-9.9 1.1\n3.6\n1.9 -2.2 5.7\n0.2 -3.3\n8.7\n-1.4 -0.2 2.6 5.4 5.5 8.6\n-3.1 -3.2 1.1\n-4.8\n5.4\n-6.5\n-8.2 3.9 8.1\n7.6\n-9.9 1.9\nMax : 8.7\nMin : -",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 55/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nVÝSLEDKY\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nVVVNNNIIITTTŘŘŘNNNÍÍÍ SSSÍÍÍLLLYYY MMM\nyyy\nKV1 : MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10 Izometrie\nvnitřní síly Pruty Vnitřní síly M-y\nMy [kNm] Kombinace výsledků: Max. a min. hodnoty\n-0.8\n3.1\n2.5 -1.6\n2.1 0.9\n1.8\n0.7\n1.1 2.4 1.9\n1.0\n0.5 1.4\n2.4 2.5 2.1\n-0.2\n1.81.0\n-0.9 2.4 2.6 1.1\n-1.5 1.70.9 2.9\n-2.2 -",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 56/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nRF-CONCRETE Members\nPŘ1\nPosouzení betonových prutů 11..11 ZZÁÁKKLLAADDNNÍÍ ÚÚDDAAJJEE\nPosouzení betonu podle CSN EN 1992-1-1/NA:2016-05\nMEZNÍ STAV ÚNOSNOSTI\nKombinace výsledků k posouzení: KV1 MSÚ (STR/GEO) - trvalá/dočasná - rovn. 6.10\nTrvalá a dočasná\nMEZNÍ STAV POUŽITELNOSTI\nKombinace výsledků ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 57/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n11..66 SSAADDAA VVÝÝZZTTUUŽŽEE ČČ.. 11 -- PPOOZZEEDDNNÍÍ VVĚĚNNCCEE\nPočet střihů: 2\nSklon: 90°\nTyp kotvení: Hák\nUspořádání třmínků: Stejné vzdálenosti ve všech částech\nUSPOŘÁDÁNÍ VÝZTUŽE\nKrytí výztuže podle normy\nKrytí výztuže c-horní: 35.0 mm\nKrytí výztuže c-dolní: 35.0 mm\nKrytí výztuže c-po stra",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 58/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n44..33 PPOOSSOOUUZZEENNÍÍ PPOOUUŽŽIITTEELLNNOOSSTTII PPOO PPRRUUTTEECCHH\nPrut Místo Posouzení\nč. x [m] Zatížení Typ Navržená hodnot Mezní hodn. Jedn. Využití Poznámka\n15 0.000 KV2 c -0.57 -15.00 MPa 0.04\n15 0.000 KV2 s 12.92 400.00 MPa 0.04\n15 0.000 KV3 wk 0.000 0.400 mm 0.00\nPrut č. 29 - Obdéln",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 59/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n44..33 PPOOSSOOUUZZEENNÍÍ PPOOUUŽŽIITTEELLNNOOSSTTII PPOO PPRRUUTTEECCHH\nPrut Místo Posouzení\nč. x [m] Zatížení Typ Navržená hodnot Mezní hodn. Jedn. Využití Poznámka\n133 0.000 KV2 s 16.67 400.00 MPa 0.05\n133 0.000 KV3 wk 0.000 0.400 mm 0.00\nPrut č. 135 - Obdélník 300/250\n135 0.000 KV2 c -1.79 -",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 60/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n44..33 PPOOSSOOUUZZEENNÍÍ PPOOUUŽŽIITTEELLNNOOSSTTII PPOO PPRRUUTTEECCHH\nPrut Místo Posouzení\nč. x [m] Zatížení Typ Navržená hodnot Mezní hodn. Jedn. Využití Poznámka\n298 0.000 KV3 wk 0.000 0.400 mm 0.00\nPrut č. 300 - Obdélník 300/250\n300 0.040 KV4 c -1.06 -11.25 MPa 0.10\n300 0.040 KV2 s 14.72 4",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 61/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n44..33 PPOOSSOOUUZZEENNÍÍ PPOOUUŽŽIITTEELLNNOOSSTTII PPOO PPRRUUTTEECCHH\nPrut Místo Posouzení\nč. x [m] Zatížení Typ Navržená hodnot Mezní hodn. Jedn. Využití Poznámka\nPrut č. 324 - Obdélník 300/250\n324 0.000 KV2 c -0.72 -15.00 MPa 0.05\n324 0.000 KV2 s 18.06 400.00 MPa 0.05\n324 0.000 KV3 wk 0.000",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 62/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\n44..33 PPOOSSOOUUZZEENNÍÍ PPOOUUŽŽIITTEELLNNOOSSTTII PPOO PPRRUUTTEECCHH\nPrut Místo Posouzení\nč. x [m] Zatížení Typ Navržená hodnot Mezní hodn. Jedn. Využití Poznámka\nPrut č. 355 - Obdélník 300/250\n355 1.000 KV4 c -0.27 -11.25 MPa 0.03\n355 0.000 KV2 s 7.28 400.00 MPa 0.02\n355 0.000 KV3 wk 0.000 ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 63/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nNNNUUUTTTNNNÉÉÉ PPPLLLOOOCCCHHHYYY PPPŘŘŘÍÍÍČČČNNNÉÉÉ VVVÝÝÝZZZTTTUUUŽŽŽEEE\nRF-CONCRETE Members PŘ1 Izometrie\nPosouzení betonových prutů 2.40 2.40\n2.40 2.40 2.40\n2.40\n2*a-sw,T,třmínky +\na-sw,V,třmínky 2.40\n2.40 2.40 2.40\n2.40\n2.40\n2.40\n2.40 2.40\n2.40 2.40 2.40\n2.40\n2.40\n2.40 2.40 2.40\n2.40\n1.20 2.",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 64/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nRF-CONCRETE Members\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nNNNAAAVVVRRRŽŽŽEEENNNÉÉÉ PPPLLLOOOCCCHHHYYY PPPŘŘŘÍÍÍČČČNNNÉÉÉ VVVÝÝÝZZZTTTUUUŽŽŽEEE\nRF-CONCRETE Members PŘ1 Izometrie\nPosouzení betonových prutů 15.71 15.71\n11.78 11.78\na-s,třmínky,navr.\n13.96 13.96\n12.44 11.22 10.45\n10.46\n11.78\n11.00 11.00 7.73\n13.96 13.96\n7.85\n11.78\n12.69\n15.71 15.71\n12.69 10.5",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 65/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nZÁKLADOVý PAS PODÉLNÝ\n1) Síly na základ\n4) Posouzení napětí v základové spáře\nsměr x)\nM= 0 kNm Q= 0 kN směr x)\nx x\nM= 0 kNm Q= 0 kN e = 0,00 m a/3= 0,33 m VYHOVUJE\ny y 1x\nM= 0 kNm N= 200 kN e = 0,00 m b/3= 0,20 m VYHOVUJE\nz 1y\ne = 0,00 m a/3= 0,33 m VYHOVUJE\n2x\nsměr y) e = 0,00 m b/3= 0,20",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 66/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nSTĚNA CP P10-M1,0\n = 18,00 kN/m3 t = 0,6 m\nf = 1,82 MPa t = 0,6 m\nk ef\nK ( ) = 1000 b= 1,00 m\ne sec\n = 1,50 h= 3,00 m\ninf\n = 2,20 h = 2,25 m\nM ef\nf = 0,83 MPa\nd\nN = 230 kN M = 5,0 kNm\ned fi\nN = 274 kN M = 0,0 kNm\ni hi\nN = 252 kN M = 0,0 kNm\nm h",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 67/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nVNITŘNÍ STĚNA CP P10-M5,0\n = 18,00 kN/m3 t = 0,3 m\nf = 2,95 MPa t = 0,3 m\nk ef\nK ( ) = 1000 b= 0,70 m\ne sec\n = 1,50 h= 3,00 m\ninf\n = 2,20 h = 2,25 m\nM ef\nf = 1,34 MPa\nd\nN = 180 kN M = 0,0 kNm\ned fi\nN = 195 kN M = 0,0 kNm\ni hi\nN = 188 kN M = 0,0",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 68/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nPTH 30 Profi P10 na maltu pro tenké spáry\n = 10,00 kN/m3 t = 0,3 m\nf = 3,85 MPa t = 0,3 m\nk ef\nK ( ) = 1000 b= 1,00 m\ne sec\n = 1,50 h= 2,00 m\ninf\n = 2,20 h = 2,00 m\nM ef\nf = 1,75 MPa\nd\nN = 120 kN M = 5,0 kNm\ned fi\nN = 128 kN M = 2,0 kNm\ni hi\nN ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 69/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPRŮVLAK POD SLOUPEK A PŘÍČKU (2x HEA180)\nN 0 kN\nSd\nM y,Sd 51,5 kNm M z,Sd 0 kNm\nHE180A VYHOVUJE HE180A\nG h b t t r\nw f\n35,50 171 180 6 9,5 15\nkg/m mm mm mm mm mm\ntřída 1\nf 235 MPa  1,15\ny m1\n 0,34  0,49\ny z\nL 4600 mm L 2500 mm\ny,cr z,cr\nk 1  0,21\nLT\nk 1 L 2500 mm\nw LT\nC 1  1,3\n1 My\nC ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 70/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPRŮVLAK POD SLOUPEK A PŘÍČKU\nN 0 kN\nSd\nM y,Sd 77 kNm M z,Sd 0 kNm\nHE200A VYHOVUJE HE200A\nG h b t t r\nw f\n42,30 190 200 6,5 10 18\nkg/m mm mm mm mm mm\ntřída 1\nf 235 MPa  1,15\ny m1\n 0,34  0,49\ny z\nL 4400 mm L 2700 mm\ny,cr z,cr\nk 1  0,21\nLT\nk 1 L 2700 mm\nw LT\nC 1  1,3\n1 My\nC 0  1,3\n2 Mz\n",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 71/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nSTŘEDOVÁ VAZNICE\nN 5 kN\nSd\nM y,Sd 24,6 kNm M z,Sd 2,5 kNm\nHE160A VYHOVUJE HE160A\nG h b t t r\nw f\n30,40 152 160 6 9 15\nkg/m mm mm mm mm mm\ntřída 1\nf 235 MPa  1,15\ny m1\n 0,34  0,49\ny z\nL 4000 mm L 1000 mm\ny,cr z,cr\nk 1  0,21\nLT\nk 1 L 1000 mm\nw LT\nC 1  1,3\n1 My\nC 0  1,3\n2 Mz\nz g 100 mm ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 72/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nVýpočet teploty v ocelovém profilu HEA160\n4\na 25,000 r 7850,000\nkg/m3\nV 0,003877\nm3/m\nc a\ne res 0,500 g n,r 1,000 A m 0,906248\nm2/m\nF 1,000 g n,c 1,000 A m / V 234\nt [celé min.] 15,000 Q m 672,773 k y,  0,295\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nSTŘEDOVÁ VAZNICE R15\nN 1,7 kN\nSd\nM y,Sd 9 kNm M z,Sd",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 73/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nSTROPNICE 2.NP\nN 0 kN\nSd\nM y,Sd 20,6 kNm M z,Sd 0 kNm\nIPE180 VYHOVUJE IPE180\nG h b t t r\nw f\n18,80 180 91 5,3 8 9\nkg/m mm mm mm mm mm\ntřída 1\nf 235 MPa  1,15\ny m1\n 0,21  0,34\ny z\nL 4000 mm L 1000 mm\ny,cr z,cr\nk 1  0,21\nLT\nk 1 L 1000 mm\nw LT\nC 1  1,3\n1 My\nC 0  1,3\n2 Mz\nz g 100 mm  M.",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 74/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nSLOUPEK PODKROVÍ\nh= 100mm b= 100mm t= 4\nf = 235MPa L = 3200mm  = 1,30\ny y,cr My\n = 1,15 L = 3200mm  = 1,30\nm1 z,cr Mz\n = 0,34  = 0,34\ny z\nf = 204MPa i = 39,2mm  = -1,22\nyd y y\nA =\n1,46E-03m2\ni = 39,2mm k = 1,38\nz y\nI = 2,25E-06m4  = 81,6  = -1,22\ny y z\nI = 2,25E-06m4  = 81,6 k = 1",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 75/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ DŘEVĚNÉHO PRVKU DLE ČSN EN 1995-1-1\nNA MEZNÍ STAV ÚNOSNOSTI\nKROKEV á 800 mm\nMATERIÁLOVÉ CHARAKTERISTIKY (Třída použití 2 ; Střednědobé zatížení)\nTřída pevnosti dřeva C24\nf = 24 MPa\nm,k\nf = 14 MPa f = 2,5 MPa k = 0,80\nt,0,k v,k mod\nf = 21 MPa E = 7,4 GPa  = 1,30\nc,0,k 0,05 M\nPRŮŘ",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 76/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nPPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ DŘEVĚNÉHO PRVKU DLE ČSN EN 1995-1-1\nNA MEZNÍ STAV ÚNOSNOSTI\nSLOUPEK\nMATERIÁLOVÉ CHARAKTERISTIKY (Třída použití 2 ; Střednědobé zatížení)\nTřída pevnosti dřeva C24\nf = 24 MPa\nm,k\nf = 14 MPa f = 2,5 MPa k = 0,80\nt,0,k v,k mod\nf = 21 MPa E = 7,4 GPa  = 1,30\nc,0,k 0,05 M\nPRŮŘEZOVÉ CH",
+      "Řadový rodinný dům Fibichova č.p. 733 Strana: 77/77\nOddíl: 1\nparc. č. 1094/16, st. 1022; k.ú. Jáchymov [656437]\nDokumentace pro povolení záměru, Základní stavebně konstrukční řešení\nZZZÁÁÁVVVĚĚĚRRR\nKomentář k posouzení stávajících konstrukcí\nStávající dřevěné stropní konstrukce byly hodnoceny metodou dílčích součinitelů ve stavu po změně skladby\nnášlapné vrstvy. Stávající prvky stropní konstrukce jsou posouzeny dle stávajících norem pro navrhování.\nOstatní existující konstrukce byly posouzeny Ho"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B 500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "VUJE\n1y\ne= 0 m e = 0,00 m a/3= 0,33 m VYHOVUJE\nx 2x\ne= 0 m e = 0,00 m b/3= 0,20 m VYHOVUJE\ny 2y\nV = ",
+          "volume_m3": 0.3,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "PPPOOOSSSOOOUUUZZZEEENNNÍÍÍ\nVýpočet teploty v ocelovém profilu HEA160\n4\na 25,000 r 7850,000\nkg/m3\nV ",
+          "volume_m3": 0.003877,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "= 1,38\nz y\nI = 2,25E-06m4  = 81,6  = -1,22\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,38\nz z z\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "22\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,38\nz z z\nW = 4,49E-05m3  = 0,68  = 93,9\ny,el y 1\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "z\nW = 4,49E-05m3  = 0,68  = 93,9\ny,el y 1\nW = 4,49E-05m3  = 0,68  = 0,87\ny,el z y,rel\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "E-05m3  = 0,68  = 0,87\ny,el z y,rel\nW = 4,49E-05m3 M = 9,18kNm  = 0,99\nz,el y,el, Rd y\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "ZZZEEENNNÍÍÍ\nVýpočet teploty v ocelovém jeklu h 100 b 100 mm\nt 4 mm\na c 25,000 r a 7850,000\nkg/m3\nV ",
+          "volume_m3": 0.001536,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "= 1,14\nz y\nI = 2,25E-06m4  = 81,6  = -0,63\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,14\nz z z\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "3\ny y z\nI = 2,25E-06m4  = 81,6 k = 1,14\nz z z\nW = 4,49E-05m3  = 0,91  = 181,0\ny,el y 1\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "W = 4,49E-05m3  = 0,91  = 181,0\ny,el y 1\nW = 4,49E-05m3  = 0,91  = 0,45\ny,el z y,rel\nW = 4,49E-0",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Beton",
+          "description": "E-05m3  = 0,91  = 0,45\ny,el z y,rel\nW = 4,49E-05m3 M = 2,47kNm  = 0,64\nz,el y,el, Rd y\nW = 4,49E-",
+          "volume_m3": 5.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "e = 0,00 m a/3= 0,33 m VYHOVUJE\n2x\nsměr y) e = 0,00 m b/3= 0,20 m VYHOVUJE\n2y\nM= 0 kNm Q= 0 kN A = 0",
+          "volume_m3": null,
+          "area_m2": 0.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "měr y) e = 0,00 m b/3= 0,20 m VYHOVUJE\n2y\nM= 0 kNm Q= 0 kN A = 0,60\nm2\nx x ef1\nM= 0 kNm Q= 0 kN A = ",
+          "volume_m3": null,
+          "area_m2": 0.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "m e = 0,00 m a/3= 0,33 m VYHOVUJE\nx 2x\ne= 0 m e = 0,00 m b/3= 0,20 m VYHOVUJE\ny 2y\nV = 0,30\nm3\nA = 0",
+          "volume_m3": null,
+          "area_m2": 0.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "YHOVUJE\nx 2x\ne= 0 m e = 0,00 m b/3= 0,20 m VYHOVUJE\ny 2y\nV = 0,30\nm3\nA = 0,60\nm2\nb ef1\nG = 6 kN A = ",
+          "volume_m3": null,
+          "area_m2": 0.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ocelovém profilu HEA160\n4\na 25,000 r 7850,000\nkg/m3\nV 0,003877\nm3/m\nc a\ne res 0,500 g n,r 1,000 A m ",
+          "volume_m3": null,
+          "area_m2": 0.906248,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "= 3200mm  = 1,30\nm1 z,cr Mz\n = 0,34  = 0,34\ny z\nf = 204MPa i = 39,2mm  = -1,22\nyd y y\nA =\n1,46E-",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "klu h 100 b 100 mm\nt 4 mm\na c 25,000 r a 7850,000\nkg/m3\nV 0,001536\nm3/m\ne res 0,500 g n,r 1,000 A m ",
+          "volume_m3": null,
+          "area_m2": 0.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "= 3200mm  = 1,30\nm1 z,cr Mz\n = 0,34  = 0,34\ny z\nf = 55MPa i = 39,2mm  = -0,63\nyd y y\nA =\n1,46E-0",
+          "volume_m3": null,
+          "area_m2": 3.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "POOOSSSOOOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nSTĚNA CP P10-M1,0\n = 18,00 kN/m",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "OOUUUZZZEEENNNÍÍÍ\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nVNITŘNÍ STĚNA CP P10-M5,0\n = 18,00 kN/m",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "Í\nPOSOUZENÍ ZDĚNÉ STĚNY DLE ČSN EN 1996-1-1\nPTH 30 Profi P10 na maltu pro tenké spáry\n = 10,00 kN/m",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 3.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "l,y el,z\nW 324,9103*mm3 W 156,49103*mm3\npl,y pl,z\ni 74,5mm i 45,2mm\ny z\nI 148,0103*mm4 I 60,21109*mm",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": ",y el,z\nW 429,5103*mm3 W 203,82103*mm3\npl,y pl,z\ni 82,8mm i 49,8mm\ny z\nI 209,8103*mm4 I 108,00109*mm",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "l,y el,z\nW 245,1103*mm3 W 117,63103*mm3\npl,y pl,z\ni 65,7mm i 39,8mm\ny z\nI 121,9103*mm4 I 31,41109*mm",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "000\nkg/m3\nV 0,003877\nm3/m\nc a\ne res 0,500 g n,r 1,000 A m 0,906248\nm2/m\nF 1,000 g n,c 1,000 A m / V ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 234.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "l,y el,z\nW\n245,1103*mm3\nW\n117,63103*mm3\npl,y pl,z\ni 65,7mm i 39,8mm\ny z\nI\n121,9103*mm4\nI\n31,41109*mm",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "3\nel,y el,z\nW 166,4103*mm3 W 34,60103*mm3\npl,y pl,z\ni 74,2mm i 20,5mm\ny z\nI 47,9103*mm4 I 7,43109*mm",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 6.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "r a 7850,000\nkg/m3\nV 0,001536\nm3/m\ne res 0,500 g n,r 1,000 A m 0,4\nm2/m\nF 1,000 g n,c 1,000 A m / V ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 260.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 44,
+        "floors_above_ground": 2,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 1990",
+        "ČSN ISO 13822",
+        "ČSN 73 0038",
+        "ČSN EN 1991-1-1",
+        "ČSN EN 1991-1-3",
+        "ČSN EN 1991-1-4",
+        "ČSN EN 1992-1-1",
+        "ČSN EN 1993-1-1",
+        "ČSN EN 1995-1-1",
+        "ČSN EN 1996-1-1",
+        "ČSN EN 1997-1",
+        "ČSN EN 1992-1-2",
+        "ČSN EN 1993-1-8",
+        "ČSN EN 1999-1",
+        "ČSN EN 1995-1",
+        "ČSN EN 1996",
+        "ČSN 73 1001",
+        "ČSN EN 1991-1-7",
+        "ČSN EN 1996-1",
+        "ČSN EN 1998",
+        "EN 1990",
+        "EN 1991-1-1",
+        "EN 1991-1-3",
+        "EN 1991-1-4",
+        "EN 1992-1-1",
+        "EN 1993-1-1",
+        "EN 1995-1-1",
+        "EN 1996-1-1",
+        "EN 1997-1",
+        "EN 1992-1-2",
+        "EN 1993-1-8",
+        "EN 1999-1",
+        "EN 1995-1",
+        "EN 1996",
+        "EN 1991-1-7",
+        "EN 1996-1",
+        "EN 1998"
+      ],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [
+          {
+            "element": "MPA\nNOVÉ KONSTRUKCE\nBETON",
+            "concrete_class": "C25/30",
+            "exposure_classes": [],
+            "max_wc_ratio": null,
+            "dmax_mm": null,
+            "consistency_class": null,
+            "scc": false,
+            "cover_min_mm": null,
+            "cover_nom_mm": null,
+            "max_penetration_mm": null,
+            "raw_text": "MPa\nNové konstrukce\nBeton: C25/30 fck = 25 MPa",
+            "confidence": 1.0
+          }
+        ],
+        "notes": [
+          {
+            "note_id": "POZNÁMKA15",
+            "text": "0.000 KV2 c -0.57 -15.00 MPa 0.04",
+            "work_type": null,
+            "confidence": 1.0
+          },
+          {
+            "note_id": "POZNÁMKA13",
+            "text": "3 0.000 KV2 s 16.67 400.00 MPa 0.05",
+            "work_type": null,
+            "confidence": 1.0
+          },
+          {
+            "note_id": "POZNÁMKA29",
+            "text": "8 0.000 KV3 wk 0.000 0.400 mm 0.00",
+            "work_type": null,
+            "confidence": 1.0
+          }
+        ],
+        "title_block": null,
+        "etics_notes": [
+          "zateplením 0,70 kN/m2"
+        ],
+        "has_scc": false,
+        "norm_findings": [
+          {
+            "element": "MPA\nNOVÉ KONSTRUKCE\nBETON",
+            "status": "warning",
+            "rule": "CSN_EN_206_EXPOSURE_MISSING",
+            "message": "MPA\nNOVÉ KONSTRUKCE\nBETON: chybí stupeň vlivu prostředí (XC/XD/XF/XA/XS)",
+            "norm": "ČSN EN 206"
+          }
+        ]
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

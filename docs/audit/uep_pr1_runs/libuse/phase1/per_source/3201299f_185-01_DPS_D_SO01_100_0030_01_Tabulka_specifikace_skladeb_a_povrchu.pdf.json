@@ -1,0 +1,218 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0030_01_Tabulka_specifikace_skladeb_a_povrchu.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1921,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C12/15",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C12/15",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C12/15",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C12/15",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C12/15",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C12/15",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE VÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 20,
+    "char_count_total": 50246,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nABMV world s.r.o.\nProsecká 527/24\n180 ",
+      "stavební objekt / building object: BYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\ndokument / document: TABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\nSYSTÉM KÓDOVÁNÍ / CODING SYSTEM\nTvar kódu POVRCHU / FINISH Code type\nF-00\nTvar kódu SKLADEB PODLAH / FLOOR STRUCTURE Code type\nFF-00\nozn. Typu / type mark\nčíselník (2 číslice) / number\nTvar kódu SKLADEB STĚN / WALL STRUCTURE Code type\nWF-00\nTvar kódu SKLADEB STŘECH / RO",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Technická specifikace / Technical specifications\nThickness (mm) Reference product\nPovrch podlahy 1PP - vjezdová rampa\nvsyp pro pancéřové betonové podlahy se střední a vyšší provozní zátěží, směs",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Technická specifikace / Technical specifications\nThickness (mm) Reference product\nPovrch stěn - společné chodby a schodiště\nF 04 Otěruvzdorný nátěr 1 Vnitřní disperzní malířský nátěr e 2 vrstvác",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Technická specifikace / Technical specifications\nThickness (mm) Reference product\nPovrch podlahy exteriérový - balkóny\nSlinutá keramická dlažba kalibrovaná 600x600mm; protiskluznost tř. R 11; Sv",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Technická specifikace / Technical specifications\nThickness (mm) Reference product\nPovrch podlahy 1PP - pochozí plocha chodby, sklady, technické místnosti\nDvoukomponentní uzavírací barevný nátěr ",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Technická specifikace / Technical specifications\nThickness (mm) Reference product\nPovrch sádrokartonových konstrukcí - otěruvzdorná výmalba\nF 17 Otěruvzdorný nátěr 1 Vnitřní disperzní malířský n",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Technická specifikace / Technical specifications\nThickness (mm) Reference product\nPovrch podlahy - obchodní jednotky - WC\nSlinutá keramická dlažba; formát 600x600mm; světle šedá; protiskluznost ",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) Reference product\n(mm)\npodlaha na terénu\nPovrchová úprava 3.8 viz Tabulka povrchů\nFF 01 Železobeton",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) Reference product\n(mm)\npodlaha nad suterénem - vinyl\nPovrchová úprava 7 viz Tabulka povrchů\nCemento",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nsuterenní obvodová stěna\nZásyp stavební jámy -\nWF 01 Železobeton 250 250 Vod",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nnadzemní obvodová stěna u střechy - atika ke hřebeni\nVenkovní tenkovrstvý om",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nnadzemní obvodová stěna u střechy - k výtahové nebo instalační šachtě\nCiheln",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nnadzemní obvodová stěna - nadpraží balkónu\nVenkovní tenkovrstvý omítkový sys",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nvnitřní nosná stěn instalační šachty - železobeton\nNeomítnutá vnitřní strana",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nnadzemní obvodové stěny - věnce\nCihelné pásky 25\nLepidlo 5\nVýztužná vrstva 4",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilddinogk uombjeenctts /:\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nstřecha sedlová\nKeramická pálená krytina skládaná 30 viz Tabulka povrchů\nDřev",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilddinogk uombjeenctts /:\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nchodník nad suterénem - vstupy do objektů\nPochozí dlažba 60 viz část projektu",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilddinogk uombjeenctts /:\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek / Reference\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) product\n(mm)\nbalkony\nPochozí vrstva na rektifikačních terčích 47 viz Tabulka povrchů\nSepar",
+      "stavebný objekt /\nBYTOVÝ SOUBOR LIBUŠE revize dokumentu / document revision:01\nbuilding objects:\ndokument /\nTABULKA SKLADEB A POVRCHŮ / SURFACES AND STRUCTURES TABLE aktuální stav ke dni / current situation at:30/11/2021\ndocument:\nCelková tl.. /\nTloušťka / Referenční výrobek /\nKód / Code Pořadí vrstev / Order of layers Total thickness Technická specifikace / Technical specifications\nThickness (mm) Reference product\n(mm)\npodhled balkónu a objektových vstupů\nSystémové zavěšení 54 Systémové zavěšen"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C12/15",
+          "characteristic_strength": 12,
+          "cube_strength": 15,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C12/15",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C12/15",
+          "characteristic_strength": 12,
+          "cube_strength": 15,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C12/15",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C12/15",
+          "characteristic_strength": 12,
+          "cube_strength": 15,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": "F5",
+          "raw_text": "C12/15",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [
+        "DLE VÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

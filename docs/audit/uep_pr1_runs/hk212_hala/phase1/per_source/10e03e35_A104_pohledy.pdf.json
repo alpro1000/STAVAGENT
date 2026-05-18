@@ -1,0 +1,104 @@
+{
+  "provenance": {
+    "source_file": "A104_pohledy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 645,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "POHLED - SV 04 +6.285",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "05 Ing.arch. Jakub Volka, ČKA 03947",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1422,
+    "text_per_page_truncated": [
+      "+7.195\nPOHLED - SZ 05\n01\nHALA HRADEC KRÁLOVÉ\nVýkaz materiáůl\nVážní 857, 50003 Hradec Králové - Slezské\nOzn. Materiál Předměstí\n01 Kingspan NF 100, barva bílá\n02 Kingspan NF 100, barva modrá\n02\n03 Sokl: stěrka s výztužnou tkaninou, fasádní nátěr šedé barvy\n04 Střešní krytina z vlnitého plechu, titanzinek\n05 Okapní žlab, FeZn STUPEŇ PROJEKTU +0,000 = +234,690 mnm Bpv\n06 Spirálová vrata, ocel + náětr, slonová kost\n03 -0.205 07 Plastový svod dešťové vody, barva bílá\nDDOOKKUUMMEENNTTAACCEE PPRROO PPO"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "POHLED - SV 04 +6.285",
+        "projektant": "05 Ing.arch. Jakub Volka, ČKA 03947"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

@@ -1,0 +1,235 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_130_5300_01_Obj_C_Rezy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1722,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 15.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "0 C-1NP\n+0,570 +0,570 +0,320 +0,170 +0,270 -0,030 -0,030\n-2,250\nC-1PP\n-2,650\nC5 C4 C3 C2 C1\nDETAIL D",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 8.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "0,570 +0,570 +0,320 +0,170 +0,270 -0,030 -0,030\n-2,250\nC-1PP\n-2,650\nC5 C4 C3 C2 C1\nDETAIL D15\nT 2 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 52.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": ",570 +0,320 +0,170 +0,270 -0,030 -0,030\n-2,250\nC-1PP\n-2,650\nC5 C4 C3 C2 C1\nDETAIL D15\nT 2 P 8 T 2 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "ačení CF, WF, FF, RF\n28\n01 Viz D_01_0100_030-Tabulka specifikace skladeb a povrchů\nDETAIL D6 R 10 F ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 1002.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "-Tabulka specifikace skladeb a povrchů\nDETAIL D6 R 10 F 2 T 9 P a W 13 F +11,055 R 2 F 1 W 13 F +11,",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 6427,
+    "text_per_page_truncated": [
+      "+12,340\n+7,200 +7,200 C-3NP\n+4,050 C-2NP\n+0,900\nC-1NP\n-2,250\nC-1PP\nCA CB CC CE\n0472\n0042\n057\n0042\n0513\n0513\n0513\n0513\n053\n0082\n053\n0082\n033\n0282\n004\n0042\n0001\n057\n0042\n057\n0042\n083\n002\n+14,250\nC-\nSTŘECHA\n+9,500\n+2,900\n+2,520\n+0,900 +0,850 +1,000\n+0,500\n-0,500 +0,570\n+0,320\n-2,750 -2,750\n340 4800 6850 1400 4085 205\nCD\n0081\n0001\n0512\n0001\n0551\n0061\nHPV-3,440\n-3,050\nEPI\nAROPÁZ\nDETAIL B5-3 DETAIL B5-1 +12,340\nW\n91\nLP DETAIL B5-2\n40\nDETAIL B5-4\nDETAIL B2-3'\nTP\n03a\nCF 20\nW +8,200 01\nDETAIL B5-5 RF 20\n"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "0 C-1NP\n+0,570 +0,570 +0,320 +0,170 +0,270 -0,030 -0,030\n-2,250\nC-1PP\n-2,650\nC5 C4 C3 C2 C1\nDETAIL D",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 15.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "0,570 +0,570 +0,320 +0,170 +0,270 -0,030 -0,030\n-2,250\nC-1PP\n-2,650\nC5 C4 C3 C2 C1\nDETAIL D15\nT 2 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 8.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": ",570 +0,320 +0,170 +0,270 -0,030 -0,030\n-2,250\nC-1PP\n-2,650\nC5 C4 C3 C2 C1\nDETAIL D15\nT 2 P 8 T 2 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 52.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "ačení CF, WF, FF, RF\n28\n01 Viz D_01_0100_030-Tabulka specifikace skladeb a povrchů\nDETAIL D6 R 10 F ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "-Tabulka specifikace skladeb a povrchů\nDETAIL D6 R 10 F 2 T 9 P a W 13 F +11,055 R 2 F 1 W 13 F +11,",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 1002.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [
+        "DLE\nVÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

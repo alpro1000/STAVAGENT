@@ -1,0 +1,625 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_110_4140_00_Obj_A_Pudorys_strechy.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 639,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 135.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "25 550 1745 550 3375 550 2931 550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 40.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "550 3375 550 2931 550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 40.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 4.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4 0 T 2 P a T 0 P 4",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 8.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "42\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4 0 T 2 P a T 0 P 4 T 2 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 40.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4 0 T 2 P a T 0 P 4 T 2 P 8 T 0 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 12.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "T 0 P 4 T 2 P 8 T 0 P 4 0 T 2 P a\nOP\n52\nTP\n22\nNad úrovní šikmé\nstřechy\nPod úrovní šikmé střechy\n8 W ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 12.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "P 0\n1,8% 2,0%\nOP TP\n53 29a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "2,0%\nOP TP\n53 29a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "TP\n53 29a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 212.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 1212.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "P\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "TP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "2 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P 2 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P 2 T 1 P 2 T 1 P ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 2.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 4687,
+    "text_per_page_truncated": [
+      "A1 A2 A3 A4\nAA AA\nW\n91 +11,226\nAC W W AC\n+7,350 84 +7,350 84 +7,350\n+4,200\nA1 A2 A3 A4\n504\n5544\n054\n+14,425\n°63,13\n°62,76\n1\n-\n385 8100 8100 8384\n3283 1042 1579 1042 358 1042 1536 1042 3495 185200 4475 200200 494 1042 3753\nW\nW W W 81 81 81 81\nOP\nA 50 A\n- OP OP -\n50 50\nOP\n50\nOP\n50\nW\n82 W W W W W\n82 82 82 82 82\nW W\n81 81\nTP 01\n535 6875 8125 6000\n1\n-\n583\n0084\n0586\n583\n3568\n7673\nAB AB\n1071 550 2773 550 7125 550 1745 550 3375 550 2931 550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "25 550 1745 550 3375 550 2931 550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 135.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "550 3375 550 2931 550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 40.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "550 766\n6094 1042 7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 40.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "7103 1042\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4 0 T 2 P a T 0 P 4",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 4.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "42\n1055 1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4 0 T 2 P a T 0 P 4 T 2 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 8.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1200 2620 3930 3745 4350 2620 1670\n?\n0135\nT 0 P 4 0 T 2 P a T 0 P 4 0 T 2 P a T 0 P 4 T 2 P 8 T 0 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 40.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "T 0 P 4 T 2 P 8 T 0 P 4 0 T 2 P a\nOP\n52\nTP\n22\nNad úrovní šikmé\nstřechy\nPod úrovní šikmé střechy\n8 W ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 12.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "P 0\n1,8% 2,0%\nOP TP\n53 29a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 12.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "2,0%\nOP TP\n53 29a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "TP\n53 29a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "a\nTP TP 28 TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 212.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "TP TP 28\n14 14\nTP TP\n12 12\nTP\n12 TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "TP\n14 TP\nTP 25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n1",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 1212.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "25\n12 TP\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "P\n27a\nTP\nTP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "TP 12 T 1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1 P 2 T 1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1 P 2 T 1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "1 P 2 12 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "2 T 1 P 2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "2 T 1 P 2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P 2 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "2 5 0\nTP TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P 2 T 1 P 2 T 1 P ",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Výztuž",
+          "description": "TP\n12 12 TP TP\n12 12 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2\nT 1 P 2 T 1 P 2 T 1 P 2 T 1 P 2",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 2.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

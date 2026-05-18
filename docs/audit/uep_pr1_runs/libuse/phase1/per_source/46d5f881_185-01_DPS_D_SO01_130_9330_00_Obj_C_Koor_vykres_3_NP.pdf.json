@@ -1,0 +1,101 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_130_9330_00_Obj_C_Koor_vykres_3_NP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 4563,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 423,
+    "text_per_page_truncated": [
+      "C4 C3 C2 C1\nLegenda rozvodů a zařízení Tabulka místností 3.NP\nvzduchotechnika\nchlazení\nvytápění\nvodovod\n(horizontální rozvody v bytech jsou vedeny\nv podlaze nebo max. ve výšce 1,3m)\nkanalizace\nsilnoproud\nCD CD\nslaboproudy\nCC CC\nC.3.2.04\nC.3.3.06\nC.3.2.03\nC.3.3.03\nC.3.2.05\nC.3.2.06\nK\nK\nK\nC.3.3.02 C.3.2.02\nC.3.2.01\nC.3.3.01\nC.3.1.02\nCB CB\nK\nC.3.S.01\nC.3.3.04 K\nC.3.1.01\nC.3.1.03\nC.3.1.04\nC.3.3.05\n+7,200\nCA CA\nN\nC4 C3 C2 C1"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

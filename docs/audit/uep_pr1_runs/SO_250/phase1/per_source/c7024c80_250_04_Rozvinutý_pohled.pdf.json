@@ -1,0 +1,85 @@
+{
+  "provenance": {
+    "source_file": "250_04_Rozvinutý pohled.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 5325,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 1017,
+    "text_per_page_truncated": [
+      "ROZVINUTÝ POHLED\nM 1:100\nPRAHA\n43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24 23 22\n21 20\nDC01 = 7,60 m DC02 = 12,50 m DC03 = 12,50 m DC04 = 12,50 m DC05 = 12,50 m DC06 = 12,50 m DC07 = 12,50 m DC08 = 12,50 m DC09 = 12,50 m DC10 = 12,50 m DC11 = 12,50 m DC12 = 12,50 m DC13 = 12,50 m DC14 = 12,50 m DC15 = 12,50 m DC16 = 12,50 m DC17 = 12,50 m DC18 = 12,50 m DC19 = 12,50 m DC20 = 12,50 m DC21 = 12,50 m DC22 = 12,50 m DC23 = 12,50 m\nCELKOVÁ DÉLKA SO 250 = 515,2 m CELKOVÁ DÉLKA SO 250 ="
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

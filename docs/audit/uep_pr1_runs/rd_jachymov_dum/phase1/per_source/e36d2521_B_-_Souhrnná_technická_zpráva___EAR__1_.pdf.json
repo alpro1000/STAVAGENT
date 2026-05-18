@@ -1,0 +1,275 @@
+{
+  "provenance": {
+    "source_file": "B - Souhrnná technická zpráva _ EAR (1).pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1188,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "volume_m3",
+      "value": 120.0,
+      "unit": "m3",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Beton",
+        "description": "echnologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: 51,55 m2\nobestavěný prostor: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 51.55,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "rativy apod.), typ navržené technologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 17.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "apacity provozu a výroby,\nzastavěná plocha: 51,55 m2\nobestavěný prostor: 120,0 m3\npodlahová plocha: ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 3,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "built_up_area_m2",
+      "value": 51.55,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0532",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "vyhláška č. 395/1992 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "vyhláška č. 189/2013 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "Vyhláška č. 8/2021 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 502/2000 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č.591/2006 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 362/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "stavba",
+      "value": "je umístěna ve velmi prudkém svahu, k jihu se svažujícího se pozemku",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "dle\nprojektu výsledků zeměměřických činností vzniknout v souvislosti s po",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 13,
+    "char_count_total": 31378,
+    "text_per_page_truncated": [
+      "B S\nOUHRNNÁ\nTECHNICKÁ ZPRÁVA\nB.1 Celkový popis území a stavby\na) základní popis stavby; u změny stavby údaje o jejím současném stavu, závěry stavebně\ntechnického, případně stavebně historického průzkumu a výsledky statického posouzení nosných\nkonstrukcí,\nJedná se o novou stavbu skladu zahradní techniky, přístupového schodiště na pozemek a\nparkovacího stání, umístěné na střeše skladu.\nNavrhovaná stavba je umístěna ve velmi prudkém svahu, k jihu se svažujícího se pozemku\nřadového rodinného domu v ",
+      "c) údaje o souladu stavby s územně plánovací dokumentací a územními opatřeními nebo s cíli a\núkoly územního plánování, a s požadavky na ochranu kulturně historických, architektonických,\narcheologických a urbanistických hodnot v území,\nOblast je řešena Územním plánem města Jáchymov. Aktuálně platný je UP po vydání změny\nč.5 z 04/2024 pod č. usn. 354/XII/2024 . Zpracovatelem je Atelier M.A.A.T, s.r.o.\nNavrhovaná stavba se nachází v ploše Smíšené obytné všeobecné.\nStanovení podmínek pro využití plo",
+      "d) výčet a závěry průzkumů,\nV rámci předprojektové přípravy byl pozemek prohlédnut a bylo vypracováno polohopisné a\nvýškopisné zaměření pozemku. Dále nebyl shledán důvod provádět podrobnější průzkumy.\ne) informace o nutnosti povolení výjimky z požadavků na výstavbu,\nV rámci povolení navrhované stavby je nutné požádat o výjimku z požadavků na výstavbu –\nnedodržení odstupových vzdáleností od hranice pozemku.\nNavrhovaná stavba ovšem sousedí s vedlejší stavbou garáže, která rovněž odstupové\nvzdáleno",
+      "k) limitní bilance stavby - potřeby a spotřeby médií a hmot, hospodaření se srážkovou vodou,\ncelkové produkované množství, druhy a kategorie odpadů a emisí apod.,\nSpotřeba vody a produkce splaškových vod\nStavba nebude napojena na vodovod\nHospodaření se srážkovou vodou\nBude zachováno stávající řešení nakládání s dešťovou vodou. Střecha stavby je částečně\npropustná na stávající terén a částečně bude voda svedena svodem na pozemek, kde\nbude akumulována pro zálivku.\nDruhy a kategorie odpadů a emisí\n",
+      "B.3 Základní stavebně technické a\ntechnologické řešení\nB 3.1. Celková koncepce stavebně\ntechnického a technologického řešení\nStavební akce je koncipovaná jako maximálně jednoduché umístění obslužné stavby do\nsvažitého pozemku. V co největší míře je využit princip skládaných konstrukcí z jednotlivých\ndílů. Tzn. opěrná stěna je navržena z prefabrikovaných betonových dílců na zámek, které\nbudou osazeny jeřábem na předem připravený betonový základ. I další konstrukce jsou\nnavrženy s maximálním důraz",
+      "B.3.5 Technologické řešení - základní popis\ntechnických a technologických zařízení\na) popis stávajícího stavu,\nPozemek v této části neobsahuje technická ani technologická zařízení.\nb) popis navrženého řešení,\nZdravotně technické instalace\nVodovod\nNebude přiveden\nKanalizace\nNení řešena pro splaškovou vodu\nDešťové vody budou svedeny do akumulační nádrže a využívány pro zálivku zahrady.\nVytápění\nNení předmětem návrhu.\nVzduchotechnika\nNení předmětem návrhu.\nSilnoproudá elektrotechnika\nV rámci akce b",
+      "Zásady řešení parametrů stavby\nStavba je navržena v souladu se všemi dotčenými hygienickými normami a požadavky.\nBudou vytvořeny vyhovující podmínky, a to zejména v oblasti větrání, osvětlení a likvidace\nodpadů.\nVětrání prostorů bude přirozené.\nOsvětlení skladu bude uměle.\nZásobování pitnou vodou není předmětem akce.\nOchranu proti hluku tvoří zejména obvodové konstrukce.\nObjekt je napojen na veřejnou síť elektriky.\nVliv stavby na okolí\nBudova nebude při svém provozu vytvářet hluk, vibrace, ani j",
+      "B.4 Připojení na technickou\ninfrastrukturu\nNapojovací místa technické infrastruktury, přeložky, křížení se stavbami technické a dopravní\ninfrastruktury a souběhy s nimi v případě, kdy je stavba umístěna v ochranném pásmu stavby\ntechnické nebo dopravní infrastruktury, nebo je-li ohrožena bezpečnost, připojovací rozměry,\nvýkonové kapacity a délky.\nProjekt nepředpokládá změnu napojovacích míst a výkonových kapacit a rozměrů. Stávající\nRD zůstává napojeno na sítě ve stávajícím provedení. Stavba skla",
+      "vibrace, voda, odpady, půda, vliv na klima a ovzduší, včetně zařazení stacionárních zdrojů a\nzhodnocení souladu s opatřeními uvedenými v příslušném programu zlepšování kvality ovzduší\npodle jiného právního předpisu3),\nStavba nebude mít výraznější negativní vliv na životní prostředí. Během výstavby se\npředpokládá běžná stavební činnost prováděná běžnými technologiemi, které neovlivní\nživotní prostředí v blízkém okolí.\nBudou respektovány požadavky vedoucí k minimalizaci negativních vlivů vycházejí",
+      "d) v případě záměrů spadajících do režimu zákona o integrované prevenci základní parametry\nzpůsobu naplnění závěrů o nejlepších dostupných technikách nebo integrované povolení, bylo-li\nvydáno.\nZáměr nespadá do režimu zákona o integrované prevenci.\nB.8 Celkové vodohospodářské\nřešení\nZejména zásobování stavby vodou, způsob zneškodňování odpadních vod, využití a nakládání se\nsrážkovými vodami.\nZásobování stavby vodou\nNení pro daný typ stavby předmětem řešení.\nZpůsob zneškodňování odpadních vod\nZneš",
+      "B.10 Zásady organizace výstavby\nDodavatel zpracuje vlastní návrh postupu a organizace výstavby včetně návrhu řešení\npřístupových dopravních cest a požadavků na zábory veřejných komunikací, před zahájením\nstavebních prací. Součástí návrhu bude i řešení vnitrostaveništní dopravy materiálu. Přesný\nrozsah prostoru pro zařízení staveniště bude definován investorem. Staveniště bude zřízeno\npřímo v budově a na pozemcích investora. Podle své případné potřeby si dodavatel zajistí\nvlastním nákladem potřeb",
+      "Odpad bude podle své kategorie tříděn (Vyhláška č. 8/2021 Sb. „Katalog odpadů“),\ndočasně uložen na stavbě a zlikvidován v souladu se Zákonem č. 541/2020 Sb., o odpadech,\nv platném znění a vyhláškami s ním souvisejícími.\nS nebezpečným materiálem bude nakládáno v souladu s ustanoveními dle výše uvedeného\nzákona.\nMnožství odpadů produkovaných při výstavbě objektů nelze přesně stanovit, protože je do\nurčité míry ovlivněno stavebně-technickými a technologickými podmínkami výstavby a\nprofesionalitou s",
+      "Bezpečnost práce při provádění stavebních prací zajistí zhotovitel ve smyslu platných\npředpisů v ČR, zejména dle nařízení vlády č.591/2006 Sb., o bližších minimálních požadavcích\nna bezpečnost a ochranu zdraví při práci na staveništích, nařízení vlády č. 362/2005 Sb., o\nbližších minimálních požadavcích na bezpečnost a ochranu zdraví při práci na pracovištích s\nnebezpečím pádu z výšky nebo do hloubky, nařízením vlády č. 101/2005 Sb. o podrobnějších\npožadavcích na pracoviště a pracovní prostředí a"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Beton",
+          "description": "echnologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: 51,55 m2\nobestavěný prostor: ",
+          "volume_m3": 120.0,
+          "area_m2": null,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "rativy apod.), typ navržené technologie,\npředpokládané kapacity provozu a výroby,\nzastavěná plocha: ",
+          "volume_m3": null,
+          "area_m2": 51.55,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "apacity provozu a výroby,\nzastavěná plocha: 51,55 m2\nobestavěný prostor: 120,0 m3\npodlahová plocha: ",
+          "volume_m3": null,
+          "area_m2": 17.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 3,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": 51.55,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [
+        "ČSN 73 0532",
+        "vyhláška č. 395/1992 Sb.",
+        "vyhláška č. 189/2013 Sb.",
+        "Vyhláška č. 8/2021 Sb.",
+        "nařízení vlády č. 502/2000 Sb.",
+        "nařízení vlády č.591/2006 Sb.",
+        "nařízení vlády č. 362/2005 Sb."
+      ],
+      "identification": {
+        "stavba": "je umístěna ve velmi prudkém svahu, k jihu se svažujícího se pozemku"
+      },
+      "referenced_documents": [
+        "dle\nprojektu výsledků zeměměřických činností vzniknout v souvislosti s po"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

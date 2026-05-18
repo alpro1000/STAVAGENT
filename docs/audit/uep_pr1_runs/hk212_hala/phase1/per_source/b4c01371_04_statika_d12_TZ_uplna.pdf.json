@@ -1,0 +1,1105 @@
+{
+  "provenance": {
+    "source_file": "04_statika_d12_TZ_uplna.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1825,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C16/20",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C16/20 XC0",
+        "context": ""
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30 XC4",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XC4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C25/30"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "0",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "C",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "reinforcement",
+      "field": "steel_grade",
+      "value": "B500B",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw_text": "B500B",
+        "diameter_mm": null,
+        "total_mass_tons": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 10.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "aximální dynamický tlak qₚ = 0,80 kN/m²\nSoučinitel zatížení γ_f = 1,50\nPlocha pro stanovení cₚₑ A = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 10.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stěny",
+        "description": "aximální dynamický tlak qₚ = 0,80 kN/m²\nSoučinitel zatížení γ_f = 1,50\nPlocha pro stanovení cₚₑ A = ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "special_requirements",
+      "field": "Pohledový beton",
+      "value": "Pohledový beton třídy PB neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "class": "PB neurčeno"
+        },
+        "raw_text": "pohledový beton"
+      }
+    },
+    {
+      "category": "special_requirements",
+      "field": "Pohledový beton",
+      "value": "Pohledový beton třídy PB neurčeno",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "parameters": {
+          "class": "PB neurčeno"
+        },
+        "raw_text": "pohledový beton"
+      }
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1993-1-11",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 1411",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 12944-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1997-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 0037",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 72 1006",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 13670",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1090-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN ISO 1461",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN EN 1536",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "ČSN 73 2400",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "zákon č. 309/2006 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "vyhláška č. 48/1982 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 362/2005Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 362/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 591/2006 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 378/2001 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 495/2001 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "nařízení vlády č. 101/2005 Sb.",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1990",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-3",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1991-1-4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1992-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-8",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1993-1-11",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1996-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1995-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "norm_references",
+      "field": "citation",
+      "value": "EN 1997-1-1",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "SOLAR DISPOREC s.r.o",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "misto",
+      "value": "Vážní 857, 50003 Hradec Králové – Slezské Předměstí",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Ing. Jiří Plachý (",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "dle projektu požární ochrany",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "geologický průzkum",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 33,
+    "char_count_total": 39529,
+    "text_per_page_truncated": [
+      "AKCE:Hala Hradec Králové – SOLAR DISPOREC\nVážní 857 HRADEC KRÁLOVÉ\nTECHNICKÁ ZPRÁVA a STATICKÝ VÝPOČET\nMísto stavby : Vážní 857, 50003 Hradec Králové – Slezské Předměstí\nObjednatel : Ing. Arch. Jakub Volka ČKA 03947\nperspektiveLAB\n565 01 Choceň\nInvestor : SOLAR DISPOREC s.r.o.\nMalostranské náměstí 5/28, Malá Strana (Praha 1)\n118 00 Praha\nStupeň dokumentace : DSP\nČást : D.1.2 Stavebně konstrukční část\nVypracoval : Bc. Martin Doležal\ntel.: 606287393\nIČO:21981078\nZodpovědný projektant : Ing. Jiří P",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nÚVOD:.......................................................................................................................................................3\nIDENTIFIKAČNÍ ÚDAJE:.........................................................................................................................3\nZADÁVACÍ PODMÍNKY:.....................................................................................................",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nVaznice:........................................................................................................................................27\nRám:.............................................................................................................................................29\nŠtítové sloupy:..............................................................................................................",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nÚVOD:\nObsahem dokumentace je návrh a posouzení nosných konstrukcí ocelové haly. Objekt se bude\nnacházet na adrese Vážní 857 v Hradci Králové. Objekt bude mít půdorysné rozměry\n18,54x28,19x7,195m. Sklon střechy 5,25°. Osová vzdálenost hlavních nosných konstrukcí 6,1m a\n3,0m. Dokumentace je vypracována v rozsahu pro stavební povolení. Dokumentace je vypracována\nna základě objednávky pana Ing. Arch. Jakuba Volky\nIDENTIF",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nČSN EN 1993-1-8 Eurokód 3: Navrhování ocelových konstrukcí - Část 1-8: Navrhování\nstyčníků\nČSN EN 1993-1-11 Eurokód 3: Navrhování ocelových konstrukcí - Část 1-11: Navrhování\nocelových tažených prvků\nČSN 73 1411 Rozteče, roztečné čáry, průměry šroubů nebo nýtů a těžištní osy pro\nšroubové a nýtové spoje\nČSN EN ISO 12944-2 Nátěrové hmoty – Protikorozní ochrana ocelových konstrukcí ochrannými\nnátěrovými systémy – Část 2",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nŘádné kotvení konstrukce\nSvislé nosné monolitické konstrukce jsou vždy vyvazovány na kotevní výztuž z předchozí\nsousedící monolitické konstrukce. Veškeré sousedící monolitické konstrukce jsou navzájem\nprovázané výztuží. Každý vzniklý vyvázaný roh (ať ve stěně nebo v desce) musí mít zavlečenou\nvnitřní závlačovou výztuž. Pro kotvení platí vždy délky výztuže na min. kotevní délku (dle třídy betonu\na profilu výztuže – cc",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nStropní konstrukce obecně L/250 L/300\nStropní a střešní konstrukce s dlažbou nebo omítkou L/250 L/350\nPřípady, kdy průhyb může narušit vzhled konstrukce L/400\nkde  je výsledný průhyb a  je průhyb od užitného zatížení\nmax 2\nVodorovné posuvy a průhyby od zatížení větrem jsou omezeny následujícím způsobem:\nu vícepodlažních budov každé patro H/300, kde H je výška patra\nkonstrukce jako celek H /500, kde H je výška budov",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\ni. Rovinnost celkově (l = 2,0 m): 9 mm\nii. Rovinnost místně (l = 0,2 m): 4 mm\nb. Povrch bez styku s bedněním\ni. Rovinnost celkově (l = 2,0 m): 15 mm\nii. Rovinnost místně (l = 0,2 m): 6 mm\nc. Kosoúhlost příčného řezu: větší z a/25 nebo b/25, max.  30 mm\nd. Přímost hran\ni. Pro délky l < 1,0 m:  8 mm\nii. Pro délky l > 1,0 m:  8 mm/m, max.  20 mm\n13) Tolerance pro otvory (kruhové a pravoúhlé) a vložené prvky:\na. Otvo",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nProvedení betonových konstrukcí s ohledem na požární zatížení\nNení-li uvedeno jinak, jsou železobetonové konstrukce standardně navrženy na požární odolnost\n90 minut. Pro posouzení požární odolnosti nosných železobetonových prvků byly použity tabulky firmy\nPAVUS a.s. - „Hodnoty požární odolnosti stavebních konstrukcí podle Eurokódů“. Tyto hodnoty jsou\nz hlediska návrhu na straně bezpečné a odpovídají požadavkům normy ",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nFunkční tolerance jsou dány v D. 2 normy ČSN EN 1090-2. Obecně jsou hodnoty uvedeny pro dvě\ntoleranční třídy. Jestliže není v technické zprávě nebo ve výkresech stanoveno jinak, bude použita\ntoleranční třída „1“.\nKontrola, zkoušení a oprava\nKontrola, zkoušení a opravy se musí provádět v průběhu prací podle specifikace, třídy provedení a\nv souladu s požadavky na jakost uvedenými v normě ČSN EN 1090-2 – kapitola 12, re",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nPožadavky na kontrolu\n- Únosnost základové spáry 200 kPa\nBezpečnost práce a další opatření\nPři výstavbě bude realizační firma bezpodmínečně dodržovat všechna zákonná ustanovení a předpisy\no bezpečnosti a ochraně zdraví při práci a technických norem ČSN týkajících se bezpečnosti a\nochrany zdraví při práci.\nJedná se především o dodržování jednotlivých ustanovení zákona č. 309/2006 Sb. ve znění vyhlášky\n591/2006 Sb. o b",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZatížení:\nProměnná zatížení:\nKlimatická zatížení:\nZatížení sněhem: I. sněhová oblast - střecha\nPROTOKOL ZATÍŽENÍ: ZATÍŽENÍ VĚTREM\nZatížení podle ČSN EN 1991-1-4\nVětrná oblast: II\nRychlost větru vₑ,₀ = 25,00 m/s\nKategorie terénu: II\nReferenční výška budovy zₑ = 7,20 m\nSoučinitel směru větru c_dir = 1,00\nSoučinitel ročního období c_season = 1,00\nMěrná hmotnost vzduchu ρ = 1,250 kg/m³\nSoučinitel orografie c₀ = 1,00\nMaxi",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nPROTOKOL ZATÍŽENÍ: ZATÍŽENÍ VĚTREM\nZatížení podle ČSN EN 1991-1-4\nVětrná oblast: II\nRychlost větru vₑ,₀ = 25,00 m/s\nKategorie terénu: II\nReferenční výška budovy zₑ = 5,40 m\nSoučinitel směru větru c_dir = 1,00\nSoučinitel ročního období c_season = 1,00\nMěrná hmotnost vzduchu ρ = 1,250 kg/m³\nSoučinitel orografie c₀ = 1,00\nMaximální dynamický tlak qₚ = 0,80 kN/m²\nSoučinitel zatížení γ_f = 1,50\nPlocha pro stanovení cₚₑ A ",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nUžitná zatížení:\nKategorie H - nepochozí střechy q = 0,75kN/m2\nk\nKategorie E - plochy pro skladování a průmysl q = 15kN/m2\nk\nStálé zatížení:\nStřešní a Stěnové panely Kingspan g=0,25kN/m2\nk\nPodklady:\nPůdorys základů + stávající kanalizace\n13",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nPůdorys 1.NP\nPůdorys střechy\nPříčný a podélný řez\n14",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nTechnické pohledy\n15",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\n3D Model :\nPozn.: štítové sloupy – červeně, rám – modře, vaznice – zelená, ztužidla – šedivá\nZatížení - vlastní tíha generována programem\nOstatní stálé:\nváha panelů g= 0,25kN/m2\nk\nproměnné:\nsníh q= 0,8 kN/m2\nk\nVítr – tlak střecha q= 0,14 kN/m2\nk\nVítr – sání střecha q= 0,44 kN/m2\nk\nVítr – tlak stěny q= 0,45 kN/m2\nk\nVítr – sání stěny q= 0,50 kN/m2\nk\n16",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZS01 – Vlastní tíha – generováno programem\nZS02 – váha panelů – skladba střechy\nZS03 – sníh\nZS04 – vítr I\n17",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZS05 – vítr II\nKombinace\nMSÚ1: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 sníh + 1,5 . (0,6) vítr I\n18",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nMSP1: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 sníh + 1,0 . (0,6) vítr I\nMSÚ2: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 sníh + 1,5 . (0,6) vítr II\nMSP2: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 sníh + 1,0 . (0,6) vítr II\nMSÚ3: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 . (0,5) sníh + 1,5 . vítr I\nMSP3: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 . (0,5) sníh + 1,0 . vítr I\nMSÚ4: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 . (0,5) ",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nNávrh\nStřešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200mm. Panely je možné uložit\ndle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5m což\nvyhoví pro všechny případy zatížení.\nStěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. Panely budou uloženy jako\nprosté nosníky, nebo jako spojitý nosník o 3 polích. Vzdálenost rámů bude 6,1m\n20",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nVaznice:\nVnitřní síly:\nVz[kN] – 7,67kN IPE 5,52kN - UPE\nMy[kNm] – 11,65kNm IPE 8,44kNm - UPE\n21",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\ndeformace [mm]\nWlim IPE = 6100/250 = 24,4 > 18,00 mm VYHOVUJE\nWlim UPE = 6100/250 = 24,4 > 12,30 mm VYHOVUJE\nPosouzení: 1→ 100% (95%)\nNávrh:\nVaznice jsou navrženy z profilu IPE 160 z oceli S235. Krajní nosníky jsou navrženy z profilu UPE160 z\noceli S235. Maximální osová vzdálenost vaznic činí 1,5m. Vaznice jsou navržení jako prosté nosníky,\nnicméně je možné je na stavbě svařit a vytvořit spojitý nosník. Nosníky jsou ",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nRám:\nVnitřní síly\nN[kN] sloup – 191kN, příčel - 70,6kN\nVz[kN] sloup – 60kN, příčel – 97,5kN\nMy[kNm] sloup – 257,32kNm, příčel – 257,32kNm\n23",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\ndeformace [mm]\nWlim sloup = 5400/250 = 21,4mm > 7,6mm VYHOVUJE\nWlim příčel = 18540/250 = 74,16mm > 62,3,mm VYHOVUJE\nPosouzení: 1→ 100% (84%)\nNávrh:\nPříčel rámu je navržena z profilu IPE450 z oceli S235. Příčel je se styku se sloupem opatřena\nnáběhem. Návrh spoje ve vyšším stupni PD. Sloup je navržen z profilu IPE400 z oceli S235.\nPrvky jsou navrženy na požární únosnost 15min. Příčel musí být stabilizována vaznicemi o",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nŠtítové sloupy:\nVnitřní síly:\nN[kN] 33,83 kN\nVz[kN] – 9,45kN\nMy[kNm] – 13,1kNm\n25",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nDeformace [mm]\nWlim = 5400/250 = 21,4mm > 5,9 mm VYHOVUJE\nPosouzení: 1→ 100% (14%)\nNávrh:\nŠtítové sloupy jsou navrženy z profilu HEA200 z oceli S235. Sloup je zároveň navržen na požární\núnosnost 15 min.\n26",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZtužení objektu:\nVnitřní síly:\nN[kN] střešní – 48,3kN, stěnová – 125,43kN\nPosouzení: 1→ 100% (14%)\nNávrh:\nStřešní ztužidla jsou navržena z ocelové kulatiny Ø20mm z oceli S235.\nStěnová ztužidla jsou navržena z ocelového profilu L70/70/6 z oceli S235.\n27",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZákladová deska:\nNávrh\nZákladová deska bude navržena výšky 200 mm, beton C25/30, XC4, vyztužená u obou povrchů Kari\nsítěmi Ø8 mm s oky 100/100 mm u spodního a horního povrchu, výztuž B500B, krytí 30 mm. Deska\nje uložená na zhutněném štěrkovém loži tloušťky 250 mm. Základová spára musí být před betonáží\nřádně zhutněna E = 45,0 MPa, přičemž E /E < 1,75.\ndef,2 def2 de\nPo předložení IGP a zjištění charakteristiky zeminy ",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZáklady:\nReakce\n29",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nNávrh\nSloupy rámu budou založeny na dvoustupňových patkách o rozměrech 1,5x1,5x(2x0,6m) z prostého\nbetonu C16/20 XC0. Základy pod štítové sloupy budou navrženy z dvoustupňových patek o\nrozměrech 0,8x0,8x(0,2x0,6m) z prostého betonu C16/20 XC0. Výpočet počítá se 200 kPa únosností\nzeminy. Po předložení IGP a zjištění vyšší únosnosti zeminy budou základy přepočítány.\n30",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZáklady - pilota:\nPod jedním základem se nachází staré vodní trubky, které nelze narušit. Jedním z možných řešení je\npilota\nNávrh\nPilota je navržena o průměru 800mm a délky 8,0m z betonu C25/30 XC4. Vyztužena 8x R25 B500B\ntřmínky (šroubovice) R10 á 200 m.\nRozměry a návrh piloty je vypočten z odhadovaných charakteristik zeminy. Po předložení IGP bude\npilota přepočítána. V případě skalního podloží pod objektem bude pil",
+      "Hala Hradec Králové – SOLAR DISPOREC\nTechnická zpráva a statický výpočet 6/2025\nZÁVĚR:\nKonstrukce původní byly posouzeny a nové navrženy dle EN 1991-1-1 Zatížení stavebních konstrukcí,\nEN 1991-1-3 Zatížení sněhem, EN 1991-1-4 Zatížení větrem, EN 1992-1-1 Navrhování betonových\nkonstrukcí - Část 1-1: Obecná pravidla a pravidla pro pozemní stavby, EN 1996-1-1 Navrhování\nzděných konstrukcí - Část 1-1: Obecná pravidla pro vyztužené a nevyztužené zděné konstrukce,\nEN 1993-1-1 Navrhování ocelových kons"
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C16/20",
+          "characteristic_strength": 16,
+          "cube_strength": 20,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C16/20 XC0",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [
+            "XC4"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30 XC4",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B500B",
+          "confidence": 1.0
+        },
+        {
+          "steel_grade": "B500B",
+          "diameter_mm": null,
+          "total_mass_tons": null,
+          "raw_text": "B500B",
+          "confidence": 1.0
+        }
+      ],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "aximální dynamický tlak qₚ = 0,80 kN/m²\nSoučinitel zatížení γ_f = 1,50\nPlocha pro stanovení cₚₑ A = ",
+          "volume_m3": null,
+          "area_m2": 10.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stěny",
+          "description": "aximální dynamický tlak qₚ = 0,80 kN/m²\nSoučinitel zatížení γ_f = 1,50\nPlocha pro stanovení cₚₑ A = ",
+          "volume_m3": null,
+          "area_m2": 10.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [
+        {
+          "requirement_type": "Pohledový beton",
+          "description": "Pohledový beton třídy PB neurčeno",
+          "parameters": {
+            "class": "PB neurčeno"
+          },
+          "raw_text": "pohledový beton",
+          "confidence": 1.0
+        },
+        {
+          "requirement_type": "Pohledový beton",
+          "description": "Pohledový beton třídy PB neurčeno",
+          "parameters": {
+            "class": "PB neurčeno"
+          },
+          "raw_text": "pohledový beton",
+          "confidence": 1.0
+        }
+      ],
+      "exposure_classes_found": "{'XC0', 'XC1', 'XC2', 'XC4'}",
+      "raw_facts": [],
+      "norms": [
+        "ČSN EN 1990",
+        "ČSN EN 1991-1-1",
+        "ČSN EN 1991-1-2",
+        "ČSN EN 1991-1-3",
+        "ČSN EN 1991-1-4",
+        "ČSN EN 1992-1-1",
+        "ČSN EN 1992-1-2",
+        "ČSN EN 1993-1-1",
+        "ČSN EN 1993-1-2",
+        "ČSN EN 1993-1-8",
+        "ČSN EN 1993-1-11",
+        "ČSN 73 1411",
+        "ČSN EN ISO 12944-2",
+        "ČSN EN 1997-1",
+        "ČSN EN 1997-2",
+        "ČSN 73 0037",
+        "ČSN 72 1006",
+        "ČSN EN 13670",
+        "ČSN EN 1090-2",
+        "ČSN EN ISO 1461",
+        "ČSN EN 1536",
+        "ČSN 73 2400",
+        "zákon č. 309/2006 Sb.",
+        "vyhláška č. 48/1982 Sb.",
+        "nařízení vlády č. 362/2005Sb.",
+        "nařízení vlády č. 362/2005 Sb.",
+        "nařízení vlády č. 591/2006 Sb.",
+        "nařízení vlády č. 378/2001 Sb.",
+        "nařízení vlády č. 495/2001 Sb.",
+        "nařízení vlády č. 101/2005 Sb.",
+        "EN 1990",
+        "EN 1991-1-1",
+        "EN 1991-1-2",
+        "EN 1991-1-3",
+        "EN 1991-1-4",
+        "EN 1992-1-1",
+        "EN 1992-1-2",
+        "EN 1993-1-1",
+        "EN 1993-1-2",
+        "EN 1993-1-8",
+        "EN 1993-1-11",
+        "EN 1997-1",
+        "EN 1997-2",
+        "EN 1996-1-1",
+        "EN 1995-1-1",
+        "EN 1997-1-1"
+      ],
+      "identification": {
+        "investor": "SOLAR DISPOREC s.r.o",
+        "misto": "Vážní 857, 50003 Hradec Králové – Slezské Předměstí",
+        "projektant": "Ing. Jiří Plachý ("
+      },
+      "referenced_documents": [
+        "dle projektu požární ochrany",
+        "geologický průzkum"
+      ],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": "Hala Hradec Králové – SOLAR DISPOREC",
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "Bc. Martin Doležal",
+          "zodpovedny_projektant": "Ing. Jiří Plachý (ČKAIT 0013051)",
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": {
+        "ico": "21981078",
+        "isds": null,
+        "cpv_code": null,
+        "cpv_name": null,
+        "zakon": "309/2006 Sb.",
+        "predpokladana_hodnota_czk": null,
+        "hodnota_s_dph_czk": null,
+        "hodnota_zmena_zavazku_czk": null,
+        "vyhrazena_zmena_czk": null,
+        "vyhrazena_zmena_pct": null,
+        "jistota_czk": null,
+        "cislo_uctu": null,
+        "kod_banky": null,
+        "nazev_banky": null,
+        "lhuta_podani": null,
+        "zadavaci_lhuta_dnu": null,
+        "prohlidka_mista": null,
+        "hodnotici_kriterium": null,
+        "hodnotici_vaha_pct": null,
+        "tender_url": null,
+        "max_velikost_nabidky_mb": null,
+        "prilohy": [],
+        "confidence": 0.9
+      }
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

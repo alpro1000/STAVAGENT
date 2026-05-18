@@ -1,0 +1,792 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 1132,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 14.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ostí 2.NP\nČ. místnosti Název Plocha\nLEGENDA MATERIÁLŮ\nB.2.1\nCF20 -Pevný SDK podhled B.2.1.01 CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 24.9,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "LEGENDA MATERIÁLŮ\nB.2.1\nCF20 -Pevný SDK podhled B.2.1.01 CHODBA 14,4 m²\nB.2.1.02 OBÝVACÍ POKOJ + KK ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ".01 CHODBA 14,4 m²\nB.2.1.02 OBÝVACÍ POKOJ + KK 24,9 m²\nCF21 -Pevný SDK podhled do vlhka B.2.1.03 WC ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 5.7,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "02 OBÝVACÍ POKOJ + KK 24,9 m²\nCF21 -Pevný SDK podhled do vlhka B.2.1.03 WC 1,6 m²\nB.2.1.05 KOUPELNA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 13.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stropy",
+        "description": "24,9 m²\nCF21 -Pevný SDK podhled do vlhka B.2.1.03 WC 1,6 m²\nB.2.1.05 KOUPELNA 5,7 m²\nB.2.1.06 POKOJ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 12.7,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stropy",
+        "description": "KOUPELNA 5,7 m²\nB.2.1.06 POKOJ 13,4 m²\nCF10 -Pevný podhled do vlhka -Cementová deska\nB.2.1.07 POKOJ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 5.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stropy",
+        "description": "POKOJ 13,4 m²\nCF10 -Pevný podhled do vlhka -Cementová deska\nB.2.1.07 POKOJ 12,7 m²\nB.2.1.08 BALKON 5",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 78.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Stropy",
+        "description": "vlhka -Cementová deska\nB.2.1.07 POKOJ 12,7 m²\nB.2.1.08 BALKON 5,4 m²\nBezpodhledové řešení\nB.2.1: 7 7",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 6.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "5,4 m²\nBezpodhledové řešení\nB.2.1: 7 78,0 m²\nB.2.2\nSpecifikacee konstrukce podhledů\nB.2.2.01 CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 21.2,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "viz. 185-01_DPS_D_SO01_100_0030 -Tabulka specifikace skladeb a povrchů\nB.2.2.02 OBÝVACÍ POKOJ + KK 2",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 13.2,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "ulka specifikace skladeb a povrchů\nB.2.2.02 OBÝVACÍ POKOJ + KK 21,2 m²\nLEGENDA PRVKŮ B.2.2.03 POKOJ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 4.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "povrchů\nB.2.2.02 OBÝVACÍ POKOJ + KK 21,2 m²\nLEGENDA PRVKŮ B.2.2.03 POKOJ 13,2 m²\nB.2.2.04 KOUPELNA 4",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 8.8,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "CÍ POKOJ + KK 21,2 m²\nLEGENDA PRVKŮ B.2.2.03 POKOJ 13,2 m²\nB.2.2.04 KOUPELNA 4,3 m²\nB.2.2.05 BALKON ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 54.2,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "4 KOUPELNA 4,3 m²\nB.2.2.05 BALKON 8,8 m²\nOP17 -Revizní dvířka VZT\nOP18 -Revizní dvířka CHL B.2.2: 5 ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 6.8,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "č požáru -specifikace prvků viz. 185-01_DPS_D_SO01_300 -Požárně bezpečnostní řešení B.2.3.01 CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 21.2,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "stní řešení B.2.3.01 CHODBA 6,8 m²\nKoncové prvky VZT -specifikace prvků B.2.3.02 OBÝVACÍ POKOJ + KK ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 13.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "rvků B.2.3.02 OBÝVACÍ POKOJ + KK 21,2 m²\nviz. 185-01_DPS_D_SO01_510 -Vzduchotechnika B.2.3.03 POKOJ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 4.2,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "O01_510 -Vzduchotechnika B.2.3.03 POKOJ 13,0 m² Osvětlení -specifikace prvků viz. B.2.3.04 KOUPELNA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 8.6,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": ".2.3.04 KOUPELNA 4,2 m² XX 185-01_DPS_D_SO01_620 -Základní elektroinstalace objektu\nB.2.3.05 BALKON ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 54.0,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Základy",
+        "description": "620 -Základní elektroinstalace objektu\nB.2.3.05 BALKON 8,6 m²\nOsa umístění koncových prvků\nB.2.3: 5 ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 14.5,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "objektu\nB.2.3.05 BALKON 8,6 m²\nOsa umístění koncových prvků\nB.2.3: 5 54,0 m²\nB.2.4\nB.2.4.01 CHODBA 1",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 24.8,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "umístění koncových prvků\nB.2.3: 5 54,0 m²\nB.2.4\nB.2.4.01 CHODBA 14,5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 1.5,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "rvků\nB.2.3: 5 54,0 m²\nB.2.4\nB.2.4.01 CHODBA 14,5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK 24,8 m²\nB.2.4.03 WC ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 5.7,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ".4\nB.2.4.01 CHODBA 14,5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK 24,8 m²\nB.2.4.03 WC 1,5 m²\nB.2.4.05 KOUPELNA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 13.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK 24,8 m²\nB.2.4.03 WC 1,5 m²\nB.2.4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 12.9,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "OKOJ + KK 24,8 m²\nB.2.4.03 WC 1,5 m²\nB.2.4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ 13,4 m²\nB.2.4.07 POKOJ ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 5.5,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "03 WC 1,5 m²\nB.2.4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ 13,4 m²\nB.2.4.07 POKOJ 12,9 m²\nB.2.4.08 BALKON ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 78.3,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": ".4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ 13,4 m²\nB.2.4.07 POKOJ 12,9 m²\nB.2.4.08 BALKON 5,5 m² B.2.4: 7 ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 17.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "07 POKOJ 12,9 m²\nB.2.4.08 BALKON 5,5 m² B.2.4: 7 78,3 m² Společné prostory\nB.2.S.01 SPOLEČNÁ CHODBA ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "area_m2",
+      "value": 17.4,
+      "unit": "m2",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Plocha",
+        "description": "KON 5,5 m² B.2.4: 7 78,3 m² Společné prostory\nB.2.S.01 SPOLEČNÁ CHODBA 17,4 m² Společné prostory: 1 ",
+        "source_section": null
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 2,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 6149,
+    "text_per_page_truncated": [
+      "B1 B2 B3 B4 B5 B6 B7\nBA BA\n2325 2325 2280 2285 B.2.4.06\nB.2.4.07 B.2.1.06\nB.2.1.07\nB.2.1.05 B.2.S.01 B.2.4.01\nB.2.1.01 B.2.4.05\nBB BB\nB.2.1.03 B.2.3.04\nB.2.3.01 B.2.2.01\nB.2.4.03\nB.2.2.04\nB.2.2.03\nB.2.4.02\nB.2.1.02\nB.2.3.02 B.2.3.03\nB.2.2.02\nBC BC\nBD BD\nB1 B2 B3 B4 B5 B6 B7\n0441\n5441\n0631\n5531\n1500 2325 1500\n0031\n0332\n5881\n1130 1130\n055\n054\n5311\n5111\n036\n840 845\n549\n5571\n5811\n1825 1820\n5151\n0051\n940 945\n527\n5831\n1900 1350\n0501\n0501 1240 1245\n2045 2045\n0021\n5782\n5681\n1235 1220\n2069 2065\n0021\n5982"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Plocha",
+          "description": "ostí 2.NP\nČ. místnosti Název Plocha\nLEGENDA MATERIÁLŮ\nB.2.1\nCF20 -Pevný SDK podhled B.2.1.01 CHODBA ",
+          "volume_m3": null,
+          "area_m2": 14.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "LEGENDA MATERIÁLŮ\nB.2.1\nCF20 -Pevný SDK podhled B.2.1.01 CHODBA 14,4 m²\nB.2.1.02 OBÝVACÍ POKOJ + KK ",
+          "volume_m3": null,
+          "area_m2": 24.9,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ".01 CHODBA 14,4 m²\nB.2.1.02 OBÝVACÍ POKOJ + KK 24,9 m²\nCF21 -Pevný SDK podhled do vlhka B.2.1.03 WC ",
+          "volume_m3": null,
+          "area_m2": 1.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "02 OBÝVACÍ POKOJ + KK 24,9 m²\nCF21 -Pevný SDK podhled do vlhka B.2.1.03 WC 1,6 m²\nB.2.1.05 KOUPELNA ",
+          "volume_m3": null,
+          "area_m2": 5.7,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stropy",
+          "description": "24,9 m²\nCF21 -Pevný SDK podhled do vlhka B.2.1.03 WC 1,6 m²\nB.2.1.05 KOUPELNA 5,7 m²\nB.2.1.06 POKOJ ",
+          "volume_m3": null,
+          "area_m2": 13.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stropy",
+          "description": "KOUPELNA 5,7 m²\nB.2.1.06 POKOJ 13,4 m²\nCF10 -Pevný podhled do vlhka -Cementová deska\nB.2.1.07 POKOJ ",
+          "volume_m3": null,
+          "area_m2": 12.7,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stropy",
+          "description": "POKOJ 13,4 m²\nCF10 -Pevný podhled do vlhka -Cementová deska\nB.2.1.07 POKOJ 12,7 m²\nB.2.1.08 BALKON 5",
+          "volume_m3": null,
+          "area_m2": 5.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Stropy",
+          "description": "vlhka -Cementová deska\nB.2.1.07 POKOJ 12,7 m²\nB.2.1.08 BALKON 5,4 m²\nBezpodhledové řešení\nB.2.1: 7 7",
+          "volume_m3": null,
+          "area_m2": 78.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "5,4 m²\nBezpodhledové řešení\nB.2.1: 7 78,0 m²\nB.2.2\nSpecifikacee konstrukce podhledů\nB.2.2.01 CHODBA ",
+          "volume_m3": null,
+          "area_m2": 6.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "viz. 185-01_DPS_D_SO01_100_0030 -Tabulka specifikace skladeb a povrchů\nB.2.2.02 OBÝVACÍ POKOJ + KK 2",
+          "volume_m3": null,
+          "area_m2": 21.2,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "ulka specifikace skladeb a povrchů\nB.2.2.02 OBÝVACÍ POKOJ + KK 21,2 m²\nLEGENDA PRVKŮ B.2.2.03 POKOJ ",
+          "volume_m3": null,
+          "area_m2": 13.2,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "povrchů\nB.2.2.02 OBÝVACÍ POKOJ + KK 21,2 m²\nLEGENDA PRVKŮ B.2.2.03 POKOJ 13,2 m²\nB.2.2.04 KOUPELNA 4",
+          "volume_m3": null,
+          "area_m2": 4.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "CÍ POKOJ + KK 21,2 m²\nLEGENDA PRVKŮ B.2.2.03 POKOJ 13,2 m²\nB.2.2.04 KOUPELNA 4,3 m²\nB.2.2.05 BALKON ",
+          "volume_m3": null,
+          "area_m2": 8.8,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "4 KOUPELNA 4,3 m²\nB.2.2.05 BALKON 8,8 m²\nOP17 -Revizní dvířka VZT\nOP18 -Revizní dvířka CHL B.2.2: 5 ",
+          "volume_m3": null,
+          "area_m2": 54.2,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "č požáru -specifikace prvků viz. 185-01_DPS_D_SO01_300 -Požárně bezpečnostní řešení B.2.3.01 CHODBA ",
+          "volume_m3": null,
+          "area_m2": 6.8,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "stní řešení B.2.3.01 CHODBA 6,8 m²\nKoncové prvky VZT -specifikace prvků B.2.3.02 OBÝVACÍ POKOJ + KK ",
+          "volume_m3": null,
+          "area_m2": 21.2,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "rvků B.2.3.02 OBÝVACÍ POKOJ + KK 21,2 m²\nviz. 185-01_DPS_D_SO01_510 -Vzduchotechnika B.2.3.03 POKOJ ",
+          "volume_m3": null,
+          "area_m2": 13.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "O01_510 -Vzduchotechnika B.2.3.03 POKOJ 13,0 m² Osvětlení -specifikace prvků viz. B.2.3.04 KOUPELNA ",
+          "volume_m3": null,
+          "area_m2": 4.2,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": ".2.3.04 KOUPELNA 4,2 m² XX 185-01_DPS_D_SO01_620 -Základní elektroinstalace objektu\nB.2.3.05 BALKON ",
+          "volume_m3": null,
+          "area_m2": 8.6,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Základy",
+          "description": "620 -Základní elektroinstalace objektu\nB.2.3.05 BALKON 8,6 m²\nOsa umístění koncových prvků\nB.2.3: 5 ",
+          "volume_m3": null,
+          "area_m2": 54.0,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "objektu\nB.2.3.05 BALKON 8,6 m²\nOsa umístění koncových prvků\nB.2.3: 5 54,0 m²\nB.2.4\nB.2.4.01 CHODBA 1",
+          "volume_m3": null,
+          "area_m2": 14.5,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "umístění koncových prvků\nB.2.3: 5 54,0 m²\nB.2.4\nB.2.4.01 CHODBA 14,5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK ",
+          "volume_m3": null,
+          "area_m2": 24.8,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "rvků\nB.2.3: 5 54,0 m²\nB.2.4\nB.2.4.01 CHODBA 14,5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK 24,8 m²\nB.2.4.03 WC ",
+          "volume_m3": null,
+          "area_m2": 1.5,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ".4\nB.2.4.01 CHODBA 14,5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK 24,8 m²\nB.2.4.03 WC 1,5 m²\nB.2.4.05 KOUPELNA ",
+          "volume_m3": null,
+          "area_m2": 5.7,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "5 m²\nB.2.4.02 OBÝVACÍ POKOJ + KK 24,8 m²\nB.2.4.03 WC 1,5 m²\nB.2.4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ ",
+          "volume_m3": null,
+          "area_m2": 13.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "OKOJ + KK 24,8 m²\nB.2.4.03 WC 1,5 m²\nB.2.4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ 13,4 m²\nB.2.4.07 POKOJ ",
+          "volume_m3": null,
+          "area_m2": 12.9,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "03 WC 1,5 m²\nB.2.4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ 13,4 m²\nB.2.4.07 POKOJ 12,9 m²\nB.2.4.08 BALKON ",
+          "volume_m3": null,
+          "area_m2": 5.5,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": ".4.05 KOUPELNA 5,7 m²\nB.2.4.06 POKOJ 13,4 m²\nB.2.4.07 POKOJ 12,9 m²\nB.2.4.08 BALKON 5,5 m² B.2.4: 7 ",
+          "volume_m3": null,
+          "area_m2": 78.3,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "07 POKOJ 12,9 m²\nB.2.4.08 BALKON 5,5 m² B.2.4: 7 78,3 m² Společné prostory\nB.2.S.01 SPOLEČNÁ CHODBA ",
+          "volume_m3": null,
+          "area_m2": 17.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        },
+        {
+          "element_type": "Plocha",
+          "description": "KON 5,5 m² B.2.4: 7 78,3 m² Společné prostory\nB.2.S.01 SPOLEČNÁ CHODBA 17,4 m² Společné prostory: 1 ",
+          "volume_m3": null,
+          "area_m2": 17.4,
+          "mass_tons": null,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": {
+        "floors_underground": null,
+        "floors_above_ground": 2,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {},
+      "referenced_documents": [],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

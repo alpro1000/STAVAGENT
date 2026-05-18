@@ -1,0 +1,332 @@
+{
+  "provenance": {
+    "source_file": "D.1.1.3 Řez.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 3442,
+  "facts": [
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C30/37",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C30/37 XF4 ",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XF4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C30/37"
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C30/37",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C 30/37 XA2 ",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "XA2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "derived_from": "C30/37"
+      }
+    },
+    {
+      "category": "concrete_grade",
+      "field": "class",
+      "value": "C25/30",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "raw": "C25/30",
+        "context": ""
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "{",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "A",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "2",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ",",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": " ",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "X",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "F",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "4",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "'",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "}",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "quantities",
+      "field": "mass_tons",
+      "value": 368.0,
+      "unit": "t",
+      "confidence": 1.0,
+      "evidence": {
+        "element_type": "Výztuž",
+        "description": "s\nř\na\ne\nt\nm\na v\ns\nší\ne\nů\nn\nb\ne\nl\nm\nn\nR\ní\n,\nř\no\np\ne\na\nž\nš\nrc\nm\ne\n.\nn\nč\ni\ní\n.\nt\n1\ná\n3\nl\n7\np\n1,\no\n1\nd\n3",
+        "source_section": null
+      }
+    },
+    {
+      "category": "project_identification",
+      "field": "investor",
+      "value": "KSÚS Středočeského kraje, Zborovská 81/11, 150 21 Praha 5 - Smíchov www.a",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "Zodp. projektant: Vypracoval :",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 1,
+    "char_count_total": 3016,
+    "text_per_page_truncated": [
+      "LEGENDA\nSkládané bloky z prostého betonu\nBeton C30/37 XF4 S3\nŠtěrkový podsyp - štěrk frakce 0/32, hutněno na E = 30 MPa.\ndef,2\nHutnění po mocnostech max tloušťky 0,25\n!!! Povrch bude zbaven ostrých kusů štěrku, a bude uhlazen,\naby nedošlo k perforaci PE folie !!!\nDrátkobeton, C 30/37 XA2 S4, dávkování drátků á 30kg/m3\nVyztužení KARI sítěmi 8/150/150 při spodním povrchu\nZákladové pásy z betonu C25/30. Krytí 35 mm.\nVyztužení KARI sítěmi 8/150/150 při obou površích.\nŠtěrkový polštář - štěrk frakce "
+    ],
+    "regex_result": {
+      "concrete_specifications": [
+        {
+          "concrete_class": "C30/37",
+          "characteristic_strength": 30,
+          "cube_strength": 37,
+          "exposure_classes": [
+            "XF4"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": "S3",
+          "raw_text": "C30/37 XF4 ",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C30/37",
+          "characteristic_strength": 30,
+          "cube_strength": 37,
+          "exposure_classes": [
+            "XA2"
+          ],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C 30/37 XA2 ",
+          "confidence": 1.0
+        },
+        {
+          "concrete_class": "C25/30",
+          "characteristic_strength": 25,
+          "cube_strength": 30,
+          "exposure_classes": [],
+          "concrete_type": null,
+          "min_cement_content": null,
+          "max_water_cement_ratio": null,
+          "consistency_class": null,
+          "raw_text": "C25/30",
+          "confidence": 1.0
+        }
+      ],
+      "reinforcement": [],
+      "quantities": [
+        {
+          "element_type": "Výztuž",
+          "description": "s\nř\na\ne\nt\nm\na v\ns\nší\ne\nů\nn\nb\ne\nl\nm\nn\nR\ní\n,\nř\no\np\ne\na\nž\nš\nrc\nm\ne\n.\nn\nč\ni\ní\n.\nt\n1\ná\n3\nl\n7\np\n1,\no\n1\nd\n3",
+          "volume_m3": null,
+          "area_m2": null,
+          "mass_tons": 368.0,
+          "length_m": null,
+          "concrete_class": null,
+          "source_section": null,
+          "confidence": 1.0
+        }
+      ],
+      "dimensions": null,
+      "special_requirements": [],
+      "exposure_classes_found": "{'XA2', 'XF4'}",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "investor": "KSÚS Středočeského kraje, Zborovská 81/11, 150 21 Praha 5 - Smíchov www.a",
+        "projektant": "Zodp. projektant: Vypracoval :"
+      },
+      "referenced_documents": [],
+      "drawing_data": {
+        "concrete_by_element": [],
+        "notes": [],
+        "title_block": {
+          "stavba": null,
+          "objekt": null,
+          "obsah": null,
+          "stupen_pd": null,
+          "meritko": null,
+          "format": null,
+          "cislo_vykresu": null,
+          "datum": null,
+          "revize": null,
+          "projektant": "O",
+          "zodpovedny_projektant": "Zodp. projektant: Vypracoval :",
+          "confidence": 1.0
+        },
+        "etics_notes": [],
+        "has_scc": false,
+        "norm_findings": []
+      },
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}

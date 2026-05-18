@@ -1,0 +1,134 @@
+{
+  "provenance": {
+    "source_file": "185-01_DPS_D_SO01_100_0080_02_Tabulka_ostatnich prvku.pdf",
+    "source_format": "pdf_tz",
+    "extractor": "uep.pdf_tz_extractor",
+    "extractor_version": "1.0"
+  },
+  "confidence": 0.9,
+  "parse_duration_ms": 705,
+  "facts": [
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "s",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "e",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "t",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": "(",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "exposure_class",
+      "field": "class",
+      "value": ")",
+      "unit": null,
+      "confidence": 1.0,
+      "evidence": {
+        "source": "standalone"
+      }
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_underground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "dimensions",
+      "field": "floors_above_ground",
+      "value": 1,
+      "unit": "ks",
+      "confidence": 1.0,
+      "evidence": {}
+    },
+    {
+      "category": "project_identification",
+      "field": "projektant",
+      "value": "/ general designer",
+      "unit": null,
+      "confidence": 0.95,
+      "evidence": {}
+    },
+    {
+      "category": "referenced_documents",
+      "field": "document",
+      "value": "DLE VÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI",
+      "unit": null,
+      "confidence": 0.85,
+      "evidence": {}
+    }
+  ],
+  "data": {
+    "page_count": 6,
+    "char_count_total": 18268,
+    "text_per_page_truncated": [
+      "projekt / project číslo zakázky / project number: 185-01\nBYTOVÝ SOUBOR LIBUŠE\nstupeň dokumentace / design stage\nDOKUMENTACE PRO PROVEDENÍ STAVBY DPS\nDETAIL DESIGN DOCUMENTATION DDD\nklient / client\nVELTON REAL ESTATE\nNa Strži 2102/61a\n140 00, Praha 4 - Krč\narchitekt / architect\nA.D.N.S. architekti s.r.o.\nNa Příkopě 853/12\n110 00 Praha 1 - Nové Město\ngenerální projektant / general designer\nABMV world s.r.o.\nProsecká 527/24\n180 00 Praha 8\nprojektant / designer\nABMV world s.r.o.\nProsecká 527/24\n180 ",
+      "stavební objekt / building object: BYTOVÝ SOUBOR LIBUŠE revize dokumentu / revision of the document:02\ndokument / document: TABULKA OSTATNÍCH PRVKŮ / OTHER PRODUCTS TABLE aktuální stav ke dni / current situation at:15/09/2021\nSYSTÉM KÓDOVÁNÍ / CODING SYSTEM\nTvar kódu - OSTATNÍ PRVEK / Code type - OTHER PRODUCTS\nOP-00\nozn. výrobku / type mark\nčíselník (2 číslice) / number\nPŘÍLOHY / ANNEXES\nPOZNÁMKA / NOTE\nUVEDENÉ ROZMĚRY A POZICE (KONSTRUKCÍ, ROZVODŮ, TZB..) JSOU JEN ORIENTAČNÍ, ZHOTOVITEL JE POV",
+      "Stavební objekt / Building object: BYTOVÝ SOUBOR LIBUŠE Revize dokumentu / Document revision:02\nDokument / Document: TABULKA OSTATNÍCH PRVKŮ / OTHER PRODUCTS TABLE Aktuální stav ke dni / Status quo to date:15/09/2021\nVÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE\nMěrná jednotka\nOznačení / Orientační umístění / Placement Povrchová úprava / Material Množství /\nNázev / Name Technická specifikace / Technical specification / Units of Poznámka / Note\nIdentification description finish Quantit",
+      "Stavební objekt / Building object: BYTOVÝ SOUBOR LIBUŠE Revize dokumentu / Document revision:02\nDokument / Document: TABULKA OSTATNÍCH PRVKŮ / OTHER PRODUCTS TABLE Aktuální stav ke dni / Status quo to date:15/09/2021\nVÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE\nMěrná jednotka\nOznačení / Orientační umístění / Placement Povrchová úprava / Material Množství /\nNázev / Name Technická specifikace / Technical specification / Units of Poznámka / Note\nIdentification description finish Quantit",
+      "Stavební objekt / Building object: BYTOVÝ SOUBOR LIBUŠE Revize dokumentu / Document revision:02\nDokument / Document: TABULKA OSTATNÍCH PRVKŮ / OTHER PRODUCTS TABLE Aktuální stav ke dni / Status quo to date:15/09/2021\nVÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE\nMěrná jednotka\nOznačení / Orientační umístění / Placement Povrchová úprava / Material Množství /\nNázev / Name Technická specifikace / Technical specification / Units of Poznámka / Note\nIdentification description finish Quantit",
+      "Stavební objekt / Building object: BYTOVÝ SOUBOR LIBUŠE Revize dokumentu / Document revision:02\nDokument / Document: TABULKA OSTATNÍCH PRVKŮ / OTHER PRODUCTS TABLE Aktuální stav ke dni / Status quo to date:15/09/2021\nVÝKAZ ZÁMEČNICKÝCH VÝROBKŮ / LOCKSMITH PRODUCTS SCHEDULE\nMěrná jednotka\nOznačení / Orientační umístění / Placement Povrchová úprava / Material Množství /\nNázev / Name Technická specifikace / Technical specification / Units of Poznámka / Note\nIdentification description finish Quantit"
+    ],
+    "regex_result": {
+      "concrete_specifications": [],
+      "reinforcement": [],
+      "quantities": [],
+      "dimensions": {
+        "floors_underground": 1,
+        "floors_above_ground": 1,
+        "total_floors": null,
+        "height_m": null,
+        "built_up_area_m2": null,
+        "gross_floor_area_m2": null,
+        "confidence": 1.0
+      },
+      "special_requirements": [],
+      "exposure_classes_found": "set()",
+      "raw_facts": [],
+      "norms": [],
+      "identification": {
+        "projektant": "/ general designer"
+      },
+      "referenced_documents": [
+        "DLE VÝKRESU PODHLEDŮ V ARCHITEKTONICKO-STAVEBNÍ ČÁSTI"
+      ],
+      "drawing_data": null,
+      "tender_info": null
+    }
+  },
+  "decode_warnings": [],
+  "extractor_error": null
+}
