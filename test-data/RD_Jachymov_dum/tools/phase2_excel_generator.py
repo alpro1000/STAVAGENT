@@ -38,6 +38,7 @@ META = PROJ / "inputs" / "meta"
 ITEMS_JSON = OUT / "items_rd_jachymov_complete.json"
 HEADER_JSON = META / "project_header.json"
 DXF_EXTRACT_JSON = OUT / "dxf_comprehensive_extract.json"
+SKLADBY_JSON = OUT / "skladby_per_zone.json"
 
 TODAY = date.today().isoformat()
 TARGET = OUT / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}.xlsx"
@@ -229,17 +230,29 @@ def build_sheet_souhrn(wb: Workbook, items: list[dict], header: dict) -> None:
         row += 1
     row += 2
 
-    # Disclaimer
-    ws.cell(row=row, column=1, value="POZNÁMKA — STAV ROZPOČTU").font = Font(bold=True, size=11, color="A04000")
+    # Disclaimer — Part 5 (2026-05-17) updated for 187 items + Sheet 8 Var_E_Skladby
+    ws.cell(row=row, column=1, value="POZNÁMKA — ROZSAH ROZPOČTU").font = Font(bold=True, size=11, color="A04000")
     row += 1
+    # Compute live stats for disclaimer
+    from collections import Counter
+    conf_dist = Counter(round(it["mnozstvi_confidence"], 2) for it in items)
+    n_expansion = sum(1 for it in items if it.get("_expansion_origin"))
+    n_recalc = sum(1 for it in items if it.get("_previous_mnozstvi") is not None)
+    conf_summary = " · ".join(f"{n}×{c:.2f}" for c, n in sorted(conf_dist.items(), reverse=True))
     disclaimer = (
-        "Tento výkaz výměr je vygenerován automatizovaným pipelinem STAVAGENT z dokumentace DSP. "
-        "Všechny ÚRS kódy v listech B/C jsou NAVRŽENÉ a vyžadují produkční ověření 2-stage matcherem "
-        "(catalog lookup + Perplexity rerank) před finální cenotvorbou. "
-        "Jednotkové ceny ponecháno k vyplnění zhotovitelem.\n\n"
-        "Confidence per item viz skrytý sloupec — distribuce: 51,5 % geometry-from-TZ "
-        "(typické pro DSP scope), 21,1 % regex z TZ, 12,3 % DXF DIMENSION/INSERT, "
-        "9,4 % empirické sazby (Methvin norms), 5,8 % ostatní (LWPOLYLINE + manual + DXF HATCH)."
+        f"Rozpočet generován STAVAGENT pipelinem z DSP dokumentace s DPS-grade DXF metadaty.\n"
+        f"{len(items)} položek celkem ({sum(1 for it in items if it['objekt']=='260219_dum')} dum + "
+        f"{sum(1 for it in items if it['objekt']=='260217_sklad')} sklad), 4 corpus patterns aplikované, "
+        f"zero-fabrication policy.\n\n"
+        f"Confidence distribution: {conf_summary}.\n\n"
+        f"{n_expansion} položek vzniklo per-room expansion ze 9 aggregate parents "
+        f"(každá expanded položka tagged _expansion_origin).\n"
+        f"{n_recalc} položek recalculated s exact external perimeter 38.70 m "
+        f"(DXF km_R_návrh_tlustá 2 closed polygon) vs prior fallback 41.0 m.\n\n"
+        f"Skladby vrstev (Sheet 8 Var_E) pochází POUZE z TZ explicit text + DXF cross-validation HATCH patterns. "
+        f"ŽÁDNÉ generic 'standardní RD' assumption — kde TZ silent, explicit fallback flag s ČSN default.\n\n"
+        f"ÚRS kódy navrženy, vyžadují produkční ověření 2-stage matcherem před finální cenotvorbou. "
+        f"Jednotkové ceny ponecháno k vyplnění zhotovitelem."
     )
     cell = ws.cell(row=row, column=1, value=disclaimer)
     cell.font = DISCLAIMER_FONT
@@ -596,6 +609,167 @@ def build_sheet_var_D(wb: Workbook, items: list[dict], dxf_extract: dict) -> Non
 
 
 # ───────────────────────────────────────────────────────────────────────────
+# Sheet 8 — Var_E_Skladby_Vrstev (TZ-explicit composition per element type)
+
+def build_sheet_var_E(wb: Workbook, skladby: dict) -> None:
+    """Render skladby_per_zone.json as readable Sheet 8 — composition vrstev per element.
+    Sources: TZ ARS + statika + B + PBŘ. ZERO generic patterns. ZERO S-code per-room assignment.
+    """
+    ws = wb.create_sheet("Var_E_Skladby_Vrstev")
+    ws.freeze_panes = "A4"
+
+    # Title + intro
+    ws.cell(row=1, column=1, value="VÝKAZ SKLADEB VRSTEV — TZ-EXPLICIT COMPOSITION PER ELEMENT").font = Font(
+        name="Calibri", size=14, bold=True, color="1F3A5F"
+    )
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=7)
+
+    intro = (
+        "Skladby vrstev pochází VÝHRADNĚ z TZ explicit text (ARS dum + statika dum + B souhrnná + PBŘ TUSPO). "
+        "DXF cross-validation slouží pouze jako podpůrný důkaz přes semantic HATCH patterns "
+        "(CONCRETE1 = ŽB, INSULATION = EPS/MW, WOOD3 = dřevo). "
+        "ŽÁDNÝ generic 'standard RD' pattern. Kde TZ silent, explicit '_TZ_silent' flag s ČSN fallback."
+    )
+    c = ws.cell(row=2, column=1, value=intro)
+    c.font = DISCLAIMER_FONT
+    c.fill = DISCLAIMER_FILL
+    c.alignment = Alignment(wrap_text=True, vertical="top")
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=7)
+    ws.row_dimensions[2].height = 48
+
+    # Headers
+    headers = [
+        "Element type",
+        "Composition vrstev (TZ explicit)",
+        "TZ source citation",
+        "DXF cross-validation",
+        "Applies to rooms / plocha",
+        "Plocha celkem",
+        "Data quality",
+    ]
+    write_header_row(ws, 4, headers)
+
+    row = 5
+    for el in skladby["elements"]:
+        # Compose layers as numbered list (with thickness + source per layer)
+        layer_lines = []
+        for i, layer in enumerate(el["composition_layers"], start=1):
+            line = f"{i}. {layer['vrstva']}"
+            if layer.get("tloušťka_mm") is not None:
+                line += f" (tl. {layer['tloušťka_mm']} mm)"
+            if layer.get("lambda_W_mK") is not None:
+                line += f" (λ = {layer['lambda_W_mK']} W/mK)"
+            if layer.get("rozteč_mm") is not None:
+                line += f" (rozteč {layer['rozteč_mm']} mm)"
+            if layer.get("vyztužení"):
+                line += f" [výztuž: {layer['vyztužení']}]"
+            layer_lines.append(line)
+        composition_str = "\n".join(layer_lines)
+
+        # TZ source citation
+        tz_src = el.get("tz_source", "—")
+
+        # DXF cross-validation
+        dxf_cv = el.get("dxf_cross_validation", "—") or "—"
+
+        # Applies to rooms / area
+        applies = el.get("applies_to_rooms", "—") or "—"
+
+        # Plocha celkem
+        plocha = el.get("total_area_m2") or el.get("applies_to_area_m2") or el.get("applies_to_area_m2_approx")
+        plocha_str = f"{plocha} m²" if plocha is not None else "—"
+
+        # Data quality flag
+        if el.get("tz_explicit") is True:
+            dq = "TZ explicit"
+        elif el.get("tz_explicit") is False:
+            dq = el.get("_data_quality", "TZ silent — fallback")
+        else:
+            dq = el.get("_data_quality", "—")
+        if "tz_silent_o_vyšce" in dq.lower() or "tz silent" in dq.lower():
+            dq_color = "A04000"  # orange for silent
+        elif "TZ explicit" in dq or "tz_explicit" in dq.lower():
+            dq_color = "008000"  # green for explicit
+        else:
+            dq_color = "555555"
+
+        # Write cells
+        c_el = ws.cell(row=row, column=1, value=el["element_type"])
+        c_el.font = KAPITOLA_FONT
+        c_el.fill = KAPITOLA_FILL
+        c_el.alignment = Alignment(wrap_text=True, vertical="top")
+
+        c_comp = ws.cell(row=row, column=2, value=composition_str)
+        c_comp.font = BODY_FONT
+        c_comp.alignment = Alignment(wrap_text=True, vertical="top")
+
+        c_tz = ws.cell(row=row, column=3, value=tz_src)
+        c_tz.alignment = Alignment(wrap_text=True, vertical="top")
+
+        c_dxf = ws.cell(row=row, column=4, value=dxf_cv)
+        c_dxf.alignment = Alignment(wrap_text=True, vertical="top")
+
+        c_app = ws.cell(row=row, column=5, value=applies)
+        c_app.alignment = Alignment(wrap_text=True, vertical="top")
+
+        c_pl = ws.cell(row=row, column=6, value=plocha_str)
+        c_pl.alignment = BODY_ALIGN_RIGHT
+        c_pl.font = Font(bold=True)
+
+        c_dq = ws.cell(row=row, column=7, value=dq)
+        c_dq.font = Font(bold=True, color=dq_color, italic=("silent" in dq.lower() or "fallback" in dq.lower()))
+        c_dq.alignment = Alignment(wrap_text=True, vertical="top")
+
+        for col in range(1, 8):
+            ws.cell(row=row, column=col).border = BORDER
+        # Adjust row height by composition length
+        ws.row_dimensions[row].height = max(60, len(layer_lines) * 16)
+        row += 1
+
+    # Cross-validation notes section
+    row += 1
+    ws.cell(row=row, column=1, value="CROSS-VALIDATION POZNÁMKY (DXF × TZ konzistence)").font = Font(
+        bold=True, size=11, color="1F3A5F"
+    )
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+    row += 1
+    for note in skladby.get("_cross_validation_notes", []):
+        c = ws.cell(row=row, column=1, value="• " + note)
+        c.font = DISCLAIMER_FONT
+        c.alignment = Alignment(wrap_text=True, vertical="top")
+        ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+        ws.row_dimensions[row].height = 30
+        row += 1
+
+    # Per-podlaží výška + obklad výška silent flags
+    row += 1
+    ws.cell(row=row, column=1, value="TZ SILENT VALUES — ČSN DEFAULT FALLBACK").font = Font(
+        bold=True, size=11, color="A04000"
+    )
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+    row += 1
+    silent_notes = [
+        f"Per-podlaží výška: TZ NEMÁ explicit value. Fallback: 1.PP 2.50 m, 1.NP 2.80 m, 2.NP 2.80 m, 3.NP nadezdívka 2.65 m. "
+        f"Σ = 10.75 m vs TZ B 13.0 m celková výška = +2.25 m pro krov+střechu. Flag: tz_silent_fallback_csn_vyska_podlazi.",
+        f"Obklad výška v koupelnách: TZ NEMÁ explicit value. Fallback: 2.0 m (CSN Czech RD standard, po sprchový kout). "
+        f"Flag: tz_silent_fallback_csn_obklad_vyska_2m.",
+    ]
+    for note in silent_notes:
+        c = ws.cell(row=row, column=1, value="⚠ " + note)
+        c.font = Font(name="Calibri", size=10, italic=True, color="A04000")
+        c.fill = DISCLAIMER_FILL
+        c.alignment = Alignment(wrap_text=True, vertical="top")
+        ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
+        ws.row_dimensions[row].height = 36
+        row += 1
+
+    # Column widths
+    widths = [28, 65, 30, 35, 28, 14, 22]
+    for i, w in enumerate(widths, start=1):
+        ws.column_dimensions[get_column_letter(i)].width = w
+
+
+# ───────────────────────────────────────────────────────────────────────────
 # Main
 
 def main() -> int:
@@ -604,9 +778,11 @@ def main() -> int:
     items = bundle["items"]
     header = json.loads(HEADER_JSON.read_text())
     dxf_extract = json.loads(DXF_EXTRACT_JSON.read_text()) if DXF_EXTRACT_JSON.exists() else None
-    print(f"  ✓ {len(items)} items loaded, project_header.json loaded, dxf_extract {'loaded' if dxf_extract else 'NOT FOUND'}", file=sys.stderr)
+    skladby = json.loads(SKLADBY_JSON.read_text()) if SKLADBY_JSON.exists() else None
+    print(f"  ✓ {len(items)} items, project_header, dxf_extract {'✓' if dxf_extract else '✗'}, skladby {'✓' if skladby else '✗'}", file=sys.stderr)
 
-    print(f"[2/3] Building {'7' if dxf_extract else '6'} sheets...", file=sys.stderr)
+    n_sheets = 6 + (1 if dxf_extract else 0) + (1 if skladby else 0)
+    print(f"[2/3] Building {n_sheets} sheets...", file=sys.stderr)
     wb = Workbook()
     default = wb.active
     wb.remove(default)
@@ -626,6 +802,9 @@ def main() -> int:
     if dxf_extract:
         build_sheet_var_D(wb, items, dxf_extract)
         print(f"  ✓ Sheet 7: Var_D_PerPodlazi_Mistnost", file=sys.stderr)
+    if skladby:
+        build_sheet_var_E(wb, skladby)
+        print(f"  ✓ Sheet 8: Var_E_Skladby_Vrstev", file=sys.stderr)
 
     print(f"[3/3] Saving workbook...", file=sys.stderr)
     wb.save(str(TARGET))

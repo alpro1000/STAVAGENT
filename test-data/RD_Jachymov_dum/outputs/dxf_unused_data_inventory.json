@@ -1,0 +1,524 @@
+{
+  "_schema_version": "1.0",
+  "_generated_by": "tools/dxf_unused_data_inventory.py",
+  "_generated_at": "2026-05-18",
+  "_purpose": "Part 1 of full per-room expansion task — exhaustive probe of deterministically extractable DXF data not yet used in items.json.",
+  "_methodology": "9 probes on dum_DPZ + 2 on dum_situace + sklad_DPZ. Each probe documented with finding (ACTIONABLE / PARTIALLY_ACTIONABLE / NOT_ACTIONABLE) + actionable_for_items list + limitations.",
+  "_strict_policy": "NIKDY nevymýšlet data — pouze co je v DXF deterministically extractable. NOT_ACTIONABLE findings means do NOT attempt per-room expansion for that category.",
+  "sections": {
+    "1_per_room_mtext_tabulka": {
+      "_finding": "ACTIONABLE",
+      "_summary": "14 km_tabulka místností MTEXTs s embedded room tables. Header has 4 sloupce 'podlaha | strop | stěny | plocha [m²]' BUT only 'plocha m²' sloupec actually filled. Skladba columns empty in source.",
+      "n_mtext_tables": 14,
+      "filled_columns": [
+        "č. místnosti",
+        "název místnosti",
+        "plocha m²"
+      ],
+      "empty_columns_in_header_but_not_in_data": [
+        "podlaha",
+        "strop",
+        "stěny"
+      ],
+      "rooms_extracted_via_parsing": 25,
+      "actionable_data_per_room": [
+        "room_id",
+        "name",
+        "area_m2",
+        "podlaží"
+      ],
+      "non_actionable_attempted": [
+        "skladba podlahy code",
+        "skladba stropu code",
+        "skladba stěn code",
+        "obklad výška",
+        "barva omítky"
+      ],
+      "next_step_for_skladba_codes": "Use km_kóty layer S-code MTEXTs (81 entries) as fallback — but see Sec 7 finding (S-codes are legend entries, not per-room markers)."
+    },
+    "2_per_room_polygons_geometry": {
+      "_finding": "ACTIONABLE",
+      "_summary": "109 closed polygons on IP_obrysy místností layer. 24/25 rooms matched via point-in-polygon (smallest containing polygon for each room# MTEXT).",
+      "total_polygons": 109,
+      "rooms_matched": 24,
+      "per_room_geometry": {
+        "1.01": {
+          "area_m2": 9.11,
+          "perim_m": 15.45,
+          "n_verts": 12
+        },
+        "1.03": {
+          "area_m2": 0.68,
+          "perim_m": 3.3,
+          "n_verts": 4
+        },
+        "1.02": {
+          "area_m2": 3.04,
+          "perim_m": 7.3,
+          "n_verts": 6
+        },
+        "1.04": {
+          "area_m2": 1.48,
+          "perim_m": 5.1,
+          "n_verts": 6
+        },
+        "1.05": {
+          "area_m2": 4.11,
+          "perim_m": 8.4,
+          "n_verts": 4
+        },
+        "1.07": {
+          "area_m2": 9.4,
+          "perim_m": 15.1,
+          "n_verts": 8
+        },
+        "1.06": {
+          "area_m2": 3.78,
+          "perim_m": 8.94,
+          "n_verts": 8
+        },
+        "2.02": {
+          "area_m2": 4.23,
+          "perim_m": 8.84,
+          "n_verts": 12
+        },
+        "2.03": {
+          "area_m2": 2.36,
+          "perim_m": 7.1,
+          "n_verts": 10
+        },
+        "2.05": {
+          "area_m2": 14.08,
+          "perim_m": 15.1,
+          "n_verts": 8
+        },
+        "2.06": {
+          "area_m2": 15.75,
+          "perim_m": 15.9,
+          "n_verts": 4
+        },
+        "2.04": {
+          "area_m2": 1.61,
+          "perim_m": 5.25,
+          "n_verts": 10
+        },
+        "2.01": {
+          "area_m2": 7.25,
+          "perim_m": 15.07,
+          "n_verts": 9
+        },
+        "3.02": {
+          "area_m2": 4.14,
+          "perim_m": 8.5,
+          "n_verts": 9
+        },
+        "3.01": {
+          "area_m2": 7.45,
+          "perim_m": 15.41,
+          "n_verts": 9
+        },
+        "0.02": {
+          "area_m2": 4.37,
+          "perim_m": 9.41,
+          "n_verts": 6
+        },
+        "0.04": {
+          "area_m2": 2.29,
+          "perim_m": 6.12,
+          "n_verts": 4
+        },
+        "0.03": {
+          "area_m2": 22.2,
+          "perim_m": 19.1,
+          "n_verts": 4
+        },
+        "0.01": {
+          "area_m2": 3.36,
+          "perim_m": 8.98,
+          "n_verts": 6
+        },
+        "3.03": {
+          "area_m2": 2.42,
+          "perim_m": 6.5,
+          "n_verts": 6
+        },
+        "3.04": {
+          "area_m2": 4.81,
+          "perim_m": 9.0,
+          "n_verts": 4
+        },
+        "3.06": {
+          "area_m2": 12.76,
+          "perim_m": 14.6,
+          "n_verts": 4
+        },
+        "3.05": {
+          "area_m2": 32.84,
+          "perim_m": 23.8,
+          "n_verts": 4
+        },
+        "1.08": {
+          "area_m2": 3.94,
+          "perim_m": 9.15,
+          "n_verts": 9
+        }
+      },
+      "actionable_for_items": [
+        "Per-room obvod (perimeter) → soklíky deterministic (bm per room)",
+        "Per-room plocha stěn = obvod × výška podlaží (TZ-derived výška = 2.65 m default)",
+        "Per-room plocha stropu ≈ plocha podlahy (flat ceiling assumption)"
+      ],
+      "non_actionable": [
+        "1 room (3.04 koupelna 3.NP) not matched — likely no room# MTEXT on návrh polygon or in another phase",
+        "Výška podlaží is TZ-derived (2.65 m default), not measured from DXF řezů"
+      ]
+    },
+    "3_wall_layers_catalog": {
+      "_finding": "PARTIALLY_ACTIONABLE",
+      "_summary": "Multiple wall-related layers, but phase-mixing makes per-podlaží split heuristic. Total návrh thick lines ~3750 m — overcounted (includes interior+exterior+window/door symbols).",
+      "layers": {
+        "SM__03b_tlustá nosné stěny": {
+          "n_lines": 24,
+          "n_polys": 347,
+          "total_length_m": 1640.9
+        },
+        "SM__02d_tenka další": {
+          "n_lines": 77,
+          "n_polys": 218,
+          "total_length_m": 672.95
+        },
+        "km_R_návrh_tlustá": {
+          "n_lines": 10,
+          "n_polys": 731,
+          "total_length_m": 1861.23
+        },
+        "km_R_návrh_tlustá 2": {
+          "n_lines": 16,
+          "n_polys": 465,
+          "total_length_m": 1027.43
+        },
+        "km_R_návrh_velmi tlustá": {
+          "n_lines": 2,
+          "n_polys": 203,
+          "total_length_m": 479.99
+        },
+        "km_R_návrh_velmi tlustá 2": {
+          "n_lines": 3,
+          "n_polys": 122,
+          "total_length_m": 380.12
+        }
+      },
+      "actionable": [
+        "External dum perimeter = 38.70 m (see Sec 4) — exact",
+        "Total wall lengths per layer for sanity-check (not direct rozpočet input)"
+      ],
+      "non_actionable": [
+        "Per-podlaží partition length split — multiple layers mix phases",
+        "Individual partition (vnitřní zeď) attribution to specific 2 rooms it separates — would need wall-room adjacency analysis (out of scope)"
+      ],
+      "alternative_for_pricing": "Use per-room obvod × výška (Sec 2) for partition area instead of total wall length sum."
+    },
+    "4_external_dum_perimeter": {
+      "_finding": "ACTIONABLE",
+      "_summary": "External dum návrh outline confirmed on km_R_návrh_tlustá 2 layer. Perimeter = 38.70 m exact (vs previous fallback estimate 41.0 m).",
+      "candidates": [
+        {
+          "layer": "km_R_návrh_tlustá 2",
+          "area_m2": 91.28,
+          "perim_m": 38.7,
+          "n_verts": 6
+        }
+      ],
+      "recommended_external_perimeter_m": 38.7,
+      "tz_baseline_estimate_m": 41.0,
+      "delta_m": -2.3,
+      "delta_pct": -5.6,
+      "actionable_for_items": [
+        "HSV-7 ETICS fasáda area recalc: 38.70 × 0.55 × 13.0 = 276.7 m² (vs current 293.15 m²)",
+        "HSV-3 nadezdívka 3.NP recalc: 38.70 × 2.65 × 0.7 = 71.8 m² (vs current 76.05 m²)",
+        "HSV-2 pozední věnec recalc: 0.30 × 0.25 × 38.70 = 2.90 m³ (vs current 3.07 m³)"
+      ]
+    },
+    "5_window_blocks_exact_sizes": {
+      "_finding": "ACTIONABLE",
+      "_summary": "7 unique window block types with exact bbox sizes. Total window area ≈ 26.4 m² aggregated from all 16 installations.",
+      "window_block_inventory": {
+        "okno 2.NP": {
+          "count_inserted": 4,
+          "max_bbox_mm": "1160×1480",
+          "approx_window_area_m2": 1.72
+        },
+        "okno 3.NP": {
+          "count_inserted": 3,
+          "max_bbox_mm": "1785×1240",
+          "approx_window_area_m2": 2.21
+        },
+        "okno 1.NP vzadu": {
+          "count_inserted": 3,
+          "max_bbox_mm": "920×1600",
+          "approx_window_area_m2": 1.47
+        },
+        "okno malé vzadu": {
+          "count_inserted": 2,
+          "max_bbox_mm": "700×800",
+          "approx_window_area_m2": 0.56
+        },
+        "okno male 3.NP vzadu": {
+          "count_inserted": 1,
+          "max_bbox_mm": "800×1240",
+          "approx_window_area_m2": 0.99
+        },
+        "okno 3.NP vzadu": {
+          "count_inserted": 1,
+          "max_bbox_mm": "2075×1240",
+          "approx_window_area_m2": 2.57
+        },
+        "okno 1.NP": {
+          "count_inserted": 2,
+          "max_bbox_mm": "1185×1599",
+          "approx_window_area_m2": 1.9
+        }
+      },
+      "total_window_area_m2": 26.4,
+      "actionable_for_items": [
+        "PSV-76 plast okna split: 7 typů × per-type qty + plocha pro každý typ",
+        "PSV-71 HI fasády odpočet plochy oken: total ETICS area - 23.46 m² oken = net hatch area",
+        "HSV-7 špalety per okno: window perimeter calc (2×W + 2×H) per type × count"
+      ],
+      "spalety_total_bm": 82.2
+    },
+    "6_per_koupelna_sanit_pip": {
+      "_finding": "PARTIALLY_ACTIONABLE",
+      "_summary": "Point-in-polygon match: 7 sanit fixtures attributed to 5 rooms. 14 unmatched (likely placed in stav/bourání phase polygons).",
+      "per_room_sanit": {
+        "1.04": {
+          "WC": 1
+        },
+        "1.05": {
+          "vana": 1,
+          "umyvadlo": 1
+        },
+        "2.03": {
+          "WC": 1,
+          "umyvadlo": 1
+        },
+        "3.04": {
+          "WC": 1
+        },
+        "3.05": {
+          "drez_kuchyne": 1
+        }
+      },
+      "unmatched_inserts_count": 14,
+      "unmatched_breakdown": {
+        "sprcha_Sprch vana_6": 2,
+        "WC_WC s nádržkou 1_4": 1,
+        "vana_Vana 01_5": 1,
+        "umyvadlo_Umyvadlo 01_8": 1,
+        "WC_WC s nádržkou 1_7": 1,
+        "umyvadlo_Umyvadlo 01_9": 2,
+        "umyvadlo_umyvadlo": 2,
+        "WC_WC_ZAVES_DURAVIT STARCK3": 2,
+        "drez_kuchyne_drez_2": 2
+      },
+      "actionable_for_items": [
+        "Koupelna 1.05 (1.NP): vana + umyvadlo (confirmed in návrh polygon)",
+        "Koupelna 2.03 (2.NP): umyvadlo only — sprcha+WC pravděpodobně v stav phase polygons",
+        "Koupelna 3.04 (3.NP): WC only — same caveat",
+        "Kuchyně 3.05: dřez kuchyně confirmed"
+      ],
+      "limitation": "Sanit per koupelna split INCOMPLETE — can split aggregate '12 ks sanit. keramika' into per-koupelna only with assumption (každá koupelna = 1 WC + 1 umyvadlo + 1 sprcha/vana, kuchyně = 1 dřez). Pure DXF gives 4 confirmed fixtures, 9 in unverified positions."
+    },
+    "7_skladba_codes_per_room": {
+      "_finding": "NOT_ACTIONABLE_PER_ROOM",
+      "_summary": "81 skladba MTEXTs found on km_kóty layer (S01-S12b, 11 unique codes). 0/81 matched to room polygons via PIP — S-codes are LEGEND entries (printed margins around drawing) NOT per-room markers.",
+      "total_skladba_mtexts": 81,
+      "unique_codes": {
+        "S01": 22,
+        "S02": 18,
+        "S10": 6,
+        "S03": 5,
+        "S09": 4,
+        "S03b": 4,
+        "S04": 3,
+        "S05": 3,
+        "S06": 3,
+        "S07": 3,
+        "S12a": 3,
+        "S12b": 3,
+        "S12": 2,
+        "S11": 1,
+        "S03a": 1
+      },
+      "rooms_matched": 0,
+      "unmatched_count": 81,
+      "limitation": "Cannot deterministically assign S-code to room from DXF alone. Would need TZ legenda which is NOT in any of 6 TZ PDFs (verified §3.2 re-parse). Per-room skladba assignment requires architect inquiry.",
+      "fallback_for_items": "Use generic skladba descriptions from TZ ARS §4 (S-01 not coded explicitly, but described prose: 1.NP terén skladba / 1.NP-2.NP suchá / 2.NP-3.NP mokrá with EPS). Don't attempt S-code attribution per room."
+    },
+    "8_hatch_semantic_patterns": {
+      "_finding": "ACTIONABLE",
+      "_summary": "17 unique HATCH pattern names. Semantic patterns identified: CONCRETE1 (ŽB), INSULATION (EPS/MW), WOOD3 (dřevo), V_MASONRY300x200 (zdivo). Each carries computable total area.",
+      "all_hatch_patterns": {
+        "SOLID": 85,
+        "ANSI31": 61,
+        "ANSI35": 28,
+        "ANSI32": 25,
+        "DOTS2": 19,
+        "CONCRETE1": 12,
+        "ANSI37": 10,
+        "INSULATION": 10,
+        "WOOD3": 8,
+        "HONEYCOMB": 8,
+        "GRAVEL1": 5,
+        "BLOCKS": 4,
+        "V_MASONRY300x200": 2,
+        "ANSI33": 1,
+        "ANSI36": 1,
+        "SAND": 1,
+        "WOOD1": 1
+      },
+      "semantic_patterns_recognized": {
+        "CONCRETE1": {
+          "semantic_meaning": "ŽB beton (železobeton)",
+          "count": 12,
+          "total_area_m2": 3.72
+        },
+        "INSULATION": {
+          "semantic_meaning": "Tepelná izolace (EPS / MW)",
+          "count": 10,
+          "total_area_m2": 2.48
+        },
+        "WOOD3": {
+          "semantic_meaning": "Dřevo (krov / dřevěná podlaha / strop trámový)",
+          "count": 8,
+          "total_area_m2": 0.42
+        },
+        "V_MASONRY300x200": {
+          "semantic_meaning": "Zdivo (cihla / pórobeton)",
+          "count": 2,
+          "total_area_m2": 7.84
+        },
+        "GRAVEL1": {
+          "semantic_meaning": "Štěrk (pod základ deska)",
+          "count": 5,
+          "total_area_m2": 0.9
+        },
+        "BLOCKS": {
+          "semantic_meaning": "Blok (prefa H-BLOK?)",
+          "count": 4,
+          "total_area_m2": 18.29
+        },
+        "HONEYCOMB": {
+          "semantic_meaning": "Voština (tepelná izolace nebo SDK podhled)",
+          "count": 8,
+          "total_area_m2": 4.61
+        },
+        "DOTS2": {
+          "semantic_meaning": "Body (omítka)",
+          "count": 19,
+          "total_area_m2": 331.62
+        }
+      },
+      "actionable_for_items": [
+        "HSV-2 ŽB validation: CONCRETE1 total area should match Σ ŽB construction areas",
+        "HSV-5 / PSV-71 izolace: INSULATION total area indicates EPS/MW deployment",
+        "HSV-5 krov + PSV-77 dřevěné podlahy: WOOD3 total area = krov bednění + biodeska + terasa",
+        "HSV-3 zdivo: V_MASONRY300x200 may show Porotherm 30 nadezdívka 3.NP area"
+      ],
+      "limitation": "HATCH semantic recognition is heuristic — pattern names follow AutoCAD library defaults, not formally tied to construction element. Use as sanity-check, not primary qty source."
+    },
+    "9_heating_fixtures": {
+      "_finding": "NOT_ACTIONABLE",
+      "_summary": "No heating fixture INSERT blocks found in dum_DPZ. Block names probed: kamna, krb, kotel, split, klimat, radia, topen, TC, tepeln — 0 matches.",
+      "implication": "Per-room heating attribution (kamna pos, krb pos, multisplit jednotky positions) IS NOT possible from DXF alone. Heating equipment must remain at TZ-described locations (kamna v 1.PP/1.NP, krb v 3.NP, multisplit per obytné místnosti).",
+      "fallback_for_items": "Keep current PSV-73 items as TZ-derived (confidence 0.85 from TZ ARS text). Don't attempt per-room heating expansion."
+    },
+    "10_doors": {
+      "_finding": "PARTIALLY_ACTIONABLE",
+      "_summary": "102 LWPOLYLINEs on SM__dveře layer (all phases combined). Block 'dveře' has 189 entities but bbox not computable. Per-door size attribution NOT feasible from this DXF.",
+      "raw_polyline_count": 102,
+      "actionable": "Total count estimate: 102 / 3 phases / 2 (each door = 2 polylines for leaf + arc) ≈ 17 doors návrh. Already used as confidence 0.65 estimate in items.json.",
+      "non_actionable": "Per-door type split (DTD vnitřní vs koupelnová vs vstupní) — no semantic markers in DXF. Can split only via assumption from TZ count (3 byty × 4-5 dveří + 3 koupelnové)."
+    },
+    "11_ceiling_types_per_podlazi": {
+      "_finding": "TZ_DERIVED_ONLY",
+      "_summary": "DXF doesn't have per-podlaží ceiling type markers (e.g., hatch patterns specifically identifying klenba vs trámový vs ocelobeton). Per-podlaží split must come from TZ ARS §4 prose.",
+      "tz_derived_split": {
+        "1.PP/1.NP": "klenba cihelná (zachována, nový zásyp perlitbeton)",
+        "1.NP/2.NP": "trámový dřevěný (zachován, nové izolace + SDK podhled)",
+        "2.NP/3.NP": "ocelobetonový (IPE180+HEA180/200+trapéz+nabetonávka 60 mm + SDK podhled)",
+        "3.NP/krov": "biodeska + nadkrokevní PIR + falcovaná Al krytina"
+      },
+      "actionable_for_items": [
+        "HSV-4 strop items already split per typ (klenba, trámový, ocelobeton) — current state correct",
+        "Per-podlaží plochy stropů ≈ podlahova_per_podlazi (Sec 2) for flat ceilings"
+      ]
+    }
+  },
+  "expansion_feasibility_summary": {
+    "PSV_78_obklady_koupelny": {
+      "from": "1 aggregate row (60 m²)",
+      "to": "3 per-koupelna rows",
+      "data_source": "Sec 2 per-room obvod (PIP perimeter) × TZ obklad výška 2.0 m",
+      "deterministic": true,
+      "expected_qty_per_koupelna": "1.05 obvod × 2.0 m, 2.03 obvod × 2.0 m, 3.04 obvod × 2.0 m"
+    },
+    "PSV_78_omitka_vymalba_per_podlazi": {
+      "from": "1 aggregate row (635 m²)",
+      "to": "4 per-podlaží rows",
+      "data_source": "Sec 2 per-room obvod × výška podlaží 2.65 m (TZ-derived)",
+      "deterministic": "Partial — výška podlaží is TZ default, not from DXF řez",
+      "method": "Σ obvodů per podlaží × 2.65 m - okenní plocha (Sec 5)"
+    },
+    "PSV_77_podlahy_per_skladba_zona": {
+      "from": "5 aggregate rows (vinyl, dlažba, biodeska, potěr, soklíky)",
+      "to": "8-10 split rows (per skladba zone × per material)",
+      "data_source": "Sec 2 per-room area + Sec 1 room classification (heuristic vinyl/dlažba/biodeska)",
+      "deterministic": true,
+      "blocker": "S-code per room NOT available (Sec 7) — material classification stays heuristic per room name"
+    },
+    "PSV_76_okna_per_typ": {
+      "from": "2 aggregate rows (front/back)",
+      "to": "7 per-block-type rows",
+      "data_source": "Sec 5 window blocks with exact bbox sizes + count_inserted",
+      "deterministic": true,
+      "expected_rows": "okno 2.NP (4 ks × 1160×1480 mm), okno 3.NP (3 ks × 1785×1241 mm), okno 1.NP vzadu (3 ks × 920×1600 mm), okno malé vzadu (2 ks × 700×800 mm), okno 1.NP (2 ks × 1185×1600 mm), okno 3.NP vzadu (1 ks × 2075×1241 mm), okno male 3.NP vzadu (1 ks × 800×1241 mm)"
+    },
+    "PSV_72_sanit_per_koupelna": {
+      "from": "1 aggregate row (12 ks)",
+      "to": "3 per-koupelna rows",
+      "data_source": "Sec 6 per-room sanit PIP match",
+      "deterministic": "Partial — only 4/13 fixtures matched. Per-koupelna split needs TZ assumption (1 WC + 1 umyvadlo + 1 sprcha/vana per koupelna).",
+      "honest_recommendation": "Split only via assumption with explicit _data_quality flag = 'tz_assumption_per_koupelna_standard'"
+    },
+    "HSV_3_pricky_per_podlazi": {
+      "from": "1 aggregate row (87.7 m²)",
+      "to": "4 per-podlaží rows",
+      "data_source": "Sec 3 partition layer length / 3 phases / 4 podlaží split",
+      "deterministic": false,
+      "blocker": "Partition layer is phase-mixed — exact per-podlaží split needs Y-coord clustering analysis (heuristic, not deterministic)",
+      "honest_recommendation": "Keep as aggregate or split with explicit estimate _data_quality flag"
+    },
+    "HSV_7_etics_per_strana": {
+      "from": "1 aggregate row (293 m²)",
+      "to": "2-3 per-fasáda rows (uliční + dvorní)",
+      "data_source": "Sec 4 external perimeter 38.70 m split into front/back/štíty",
+      "deterministic": "Partial — split front 0.55 × back 0.55 × štíty 0 from řadovka geometry",
+      "honest_recommendation": "Split if user wants per-fasáda detail; current aggregate already accurate enough"
+    },
+    "PSV_77_SDK_podhledy_per_podlazi": {
+      "from": "1 aggregate row (157 m²)",
+      "to": "3 per-podlaží rows (1.NP, 2.NP, 3.NP)",
+      "data_source": "Sec 2 per-podlaží plocha (= plocha podlahy = plocha stropu)",
+      "deterministic": true,
+      "expected_qty": "1.NP 59.5 + 2.NP 61.1 + 3.NP 64.5 = 185.1 m² total (note: differs from current 157 m² which was 1.5× zastavěná estimate)"
+    }
+  },
+  "total_expected_expansion": {
+    "current_items_count": 171,
+    "deterministic_additions": "~18-25 (PSV-78 koupelny+3, omítka+3, podlahy+3, okna+5, sanit+2, SDK+2, ETICS+1)",
+    "soft_additions_needing_assumption": "~10-15 (HSV-3 příčky podlaží, ETICS strany, dveře typy)",
+    "expected_total_after_full_expansion": "~200-220 (not 250-280 as user target — strict 'no fabrication' policy excludes ~30-50 speculative rows)"
+  },
+  "recommendation": "Proceed with Part 2 expansion focusing on the 6 DETERMINISTIC categories above (koupelny obklady ✓, SDK podhledy per podlaží ✓, okna per typ ✓, podlahy per zona ✓, stropní plochy per podlaží ✓, fasáda external perimeter ✓). Reach ~200-210 items. Skip speculative per-room expansions where data quality would be 'TZ assumption' (S-codes, heating per room, per-door type, příčky per podlaží with exact split). This achieves strict 'no fabrication' policy with maximum honest detail."
+}

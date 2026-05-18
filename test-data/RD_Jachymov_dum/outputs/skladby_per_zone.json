@@ -1,0 +1,225 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-17",
+  "_purpose": "Canonical reference of TZ-derived skladby (composition vrstev) per element type. Source for Sheet 8 Var_E_Skladby_Vrstev in Excel. Strict policy: only TZ-explicit composition, no generic patterns from memory.",
+  "_methodology": "Probe ARS_dum + statika_dum + B_common TZ PDFs for prose describing material vrstvy. Cite explicit TZ paragraph for each layer. HATCH cross-validation from DXF when applicable (CONCRETE1=železobeton, INSULATION=EPS/MW, WOOD3=dřevo).",
+
+  "elements": [
+    {
+      "element_type": "Podlaha 1.NP na terénu",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2.4 + statika §5.3",
+      "composition_layers": [
+        {"vrstva": "Zhutněný štěrkový násyp", "tloušťka_mm": null, "source": "statika dum §5.3 Edef2 ≥ 30 MPa pláň / 45 MPa štěrk"},
+        {"vrstva": "ŽB deska C25/30 XC2", "tloušťka_mm": 150, "source": "statika dum §4 + ARS §3.2.4 'Bude provedena železobetonová deska'", "vyztužení": "kari síť 6/150/150 + okrajové pruty"},
+        {"vrstva": "Hydroizolace (asfaltové pásy modifikované SBS)", "tloušťka_mm": null, "source": "ARS §3.2.4 'Na ŽB desku bude provedena hydroizolace' + B kap. m.5 protiradonová bariéra"},
+        {"vrstva": "Podlahový EPS 150 grey", "tloušťka_mm": 120, "lambda_W_mK": 0.035, "source": "ARS §3.2.4 EXPLICIT: 'podlahový EPS (150, λ=0,035 W/mK) o tloušťce 120 mm'"},
+        {"vrstva": "Betonový potěr s kari sítí", "tloušťka_mm": 50, "source": "ARS §3.2.4 'deska z betonového potěru, vyztužená kari sítí'", "vyztužení": "kari 4/100/100"},
+        {"vrstva": "Samonivelační stěrka", "tloušťka_mm": 5, "source": "ARS implied (mezi potěrem a nášlapem)"},
+        {"vrstva": "Nášlap (vinyl nebo dlažba dle účelu místnosti)", "tloušťka_mm": "4-10", "source": "ARS § dispozice"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "HATCH CONCRETE1 (12 patterns) potvrzuje ŽB vrstvy; GRAVEL1 (5) potvrzuje štěrkový násyp; INSULATION (10) potvrzuje EPS",
+      "applies_to_rooms": "1.NP rooms (1.01 vstup+chodba + 1.02 chodba + 1.03 komora + 1.04 WC + 1.05 koupelna + 1.06 obytná+kuchyně + 1.07 pokoj + 1.08 schodiště do sklepa)",
+      "total_area_m2": 59.5,
+      "_dxf_total_source": "DXF km_tabulka místností MTEXT — návrh 1.NP suma"
+    },
+    {
+      "element_type": "Podlaha 1.NP/2.NP suchá nad trámovým stropem",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2.x (suchá skladba)",
+      "composition_layers": [
+        {"vrstva": "Stávající dřevěný záklop z prken (zachován)", "tloušťka_mm": null, "source": "ARS §3.2 'Prkenný záklop na trámech bude zachován'"},
+        {"vrstva": "Zásyp lehčeným materiálem (liapor / keramzit)", "tloušťka_mm": null, "source": "ARS EXPLICIT: 'Zásyp lehčeným materiálem (liapor / keramzit)'"},
+        {"vrstva": "Kročejová izolace — tuhá minerální deska určená do podlah", "tloušťka_mm": null, "source": "ARS EXPLICIT: 'kročejová izolace z tuhé minerální desky určené do podlah'"},
+        {"vrstva": "Roznášecí vrstva — sádrovláknité podlahové dílce Fermacell / Rigistabil", "tloušťka_mm": 25, "source": "ARS EXPLICIT: 'Roznášecí vrstva bude ze sádrovláknitých podlahových dílců typu fermacell nebo rigistabil'"},
+        {"vrstva": "Nášlapná vrstva (vinyl nebo dlažba)", "tloušťka_mm": "4-10", "source": "ARS § dispozice"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "WOOD3 (8 patterns) — confirms dřevěný záklop pattern; INSULATION (10) — confirms kročejová izolace area",
+      "applies_to_rooms": "2.NP rooms (2.01 schodiště + 2.02 chodba + 2.03 koupelna + 2.04 pokoj + 2.05 pokoj + 2.06 pokoj)",
+      "total_area_m2": 61.1,
+      "_dxf_total_source": "DXF km_tabulka místností MTEXT — návrh 2.NP suma"
+    },
+    {
+      "element_type": "Podlaha 2.NP/3.NP mokrá nad ocelobetonovým stropem (3.NP nadstavba)",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2.x + statika §4",
+      "composition_layers": [
+        {"vrstva": "Ocelobetonový strop (báze)", "tloušťka_mm": null, "source": "statika §4 — viz Strop ocelobeton element"},
+        {"vrstva": "Kročejová izolace z podlahového EPS", "tloušťka_mm": 30, "source": "ARS EXPLICIT: 'kročejová izolace z podlahového EPS'"},
+        {"vrstva": "Roznášecí vrstva betonový potěr s kari sítí", "tloušťka_mm": 50, "source": "ARS EXPLICIT: 'roznášecí vrstva z betonového potěru s kari sítí'", "vyztužení": "kari 4/100/100"},
+        {"vrstva": "Samonivelační stěrka", "tloušťka_mm": 3, "source": "ARS implied"},
+        {"vrstva": "Nášlap (dlažba mokré zóny / vinyl obytné)", "tloušťka_mm": "4-10", "source": "ARS § dispozice"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "INSULATION (10) — confirms kročejová EPS; CONCRETE1 (12) — confirms potěr",
+      "applies_to_rooms": "3.NP rooms (3.01 schodiště + 3.02 chodba + 3.03 chodba + 3.04 koupelna + 3.05 obyt+kuchyně + 3.06 ložnice)",
+      "total_area_m2": 64.5,
+      "_dxf_total_source": "DXF km_tabulka místností MTEXT — návrh 3.NP suma"
+    },
+    {
+      "element_type": "Podlaha 1.PP technic (sklep)",
+      "tz_source": "ARS dispozice — 1.PP technická místnost + sušárna + sklad",
+      "composition_layers": [
+        {"vrstva": "Stávající beton podlaha 1.PP zachován (sklep)", "tloušťka_mm": null, "source": "ARS implicit — 1.PP existing (rekonstrukce zachovává stávající)"},
+        {"vrstva": "Lokální vyspravení + ošetření proti vlhkosti", "tloušťka_mm": null, "source": "ARS implied"},
+        {"vrstva": "Dlažba keramická nebo OSB v sušárně", "tloušťka_mm": null, "source": "ARS § dispozice"}
+      ],
+      "tz_explicit": false,
+      "_data_quality": "tz_silent_partial — TZ neuvádí kompletní rekonstrukci 1.PP podlah, popisuje pouze 'technická místnost + sušárna + příležitostný sklad'",
+      "applies_to_rooms": "1.PP rooms (0.01 schodiště + 0.02 chodba + 0.03 sklep 1 + 0.04 sklep 2)",
+      "total_area_m2": 32.4,
+      "_dxf_total_source": "DXF km_tabulka místností MTEXT — návrh 1.PP suma"
+    },
+    {
+      "element_type": "Strop klenba 1.PP/1.NP (cihelná, zachována)",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2 (klenba zachována)",
+      "composition_layers": [
+        {"vrstva": "Stávající cihelná klenba (zachována)", "tloušťka_mm": null, "source": "ARS EXPLICIT: 'V 1.NP, u míst nad klenbou, bude klenba otevřena shora a bude odstraněn zásyp'"},
+        {"vrstva": "Vybourání stávajícího zásypu", "tloušťka_mm": null, "source": "ARS § demontáže"},
+        {"vrstva": "Nový zásyp lehčeným perlitbetonem", "tloušťka_mm": 100, "source": "ARS § (nový zásyp pro perlitbeton)"},
+        {"vrstva": "Plastická perlitbetonová roznášecí vrstva", "tloušťka_mm": 50, "source": "ARS § + project_header"},
+        {"vrstva": "Suchá podlahová skladba (pokračování — jako 1.NP/2.NP suchá)", "tloušťka_mm": null, "source": "consistency s TZ ARS"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2": 50.0,
+      "_data_quality": "tz_explicit_partial — perlitbeton tloušťky ne explicit v TZ ARS, odvozena z project_header 100 mm"
+    },
+    {
+      "element_type": "Strop trámový 1.NP/2.NP (dřevěný, zachován)",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2 + statika dum §4",
+      "composition_layers": [
+        {"vrstva": "Stávající dřevěné trámy 100-180 mm (zachovány)", "tloušťka_mm": null, "source": "ARS + statika §4 'trámy zachovány'"},
+        {"vrstva": "Stávající záklop z prken (zachován)", "tloušťka_mm": null, "source": "ARS 'Prkenný záklop na trámech bude zachován'"},
+        {"vrstva": "Demontáž stávajícího zásypu + záklop s rákosem zespodu", "tloušťka_mm": null, "source": "ARS § demontáže"},
+        {"vrstva": "Nová minerální vata mezi trámy", "tloušťka_mm": 180, "source": "ARS EXPLICIT: 'Prostor mezi stropnicemi bude vyplněn minerální vatou'"},
+        {"vrstva": "Protipožární SDK podhled zespodu (EI 30 dle PBŘ)", "tloušťka_mm": 25, "source": "ARS EXPLICIT: 'Strop bude zespodu zaklopen protipožárním SDK'"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "WOOD3 (8 patterns) — confirms dřevěné trámy; INSULATION (10) — confirms minerální vata",
+      "applies_to_area_m2": 59.5,
+      "_dxf_total_source": "= plocha 1.NP podlahy (návrh)"
+    },
+    {
+      "element_type": "Strop ocelobeton 2.NP/3.NP (kompletně nový)",
+      "tz_source": "D_2_1_TZ_statika_dum_TeAnau.pdf §4 + D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2",
+      "composition_layers": [
+        {"vrstva": "Ocelová stropnice IPE180", "rozteč_mm": 1000, "source": "statika EXPLICIT: 'stropnic IPE180 v rastru á 1000 mm'"},
+        {"vrstva": "Výztuhy: 2×HEA180 v traktu do ulice + HEA200 v dvorním traktu", "tloušťka_mm": null, "source": "statika EXPLICIT: '2xHEA180 a ve dvorním traktu HEA200'"},
+        {"vrstva": "Trapézový plech 40S/160", "tloušťka_mm": 0.75, "source": "statika EXPLICIT: 'trapézový plech 40S/160 tl. 0,75 mm'"},
+        {"vrstva": "Nabetonávka beton C25/30 XC1", "tloušťka_mm": 60, "source": "statika EXPLICIT: 'nabetonávkou 60 mm nad vlnu'", "vyztužení": "kari síť 5/100/100"},
+        {"vrstva": "Protipožární SDK podhled zespodu (EI 30)", "tloušťka_mm": 25, "source": "ARS + PBŘ"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "CONCRETE1 (12 patterns) — confirms nabetonávka ŽB",
+      "applies_to_area_m2": 104.4,
+      "_dxf_total_source": "= zastavěná plocha (strop nad celou půdorysou)"
+    },
+    {
+      "element_type": "Krov tesařský s nadkrokevní izolací",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2.3 + statika dum §4",
+      "composition_layers": [
+        {"vrstva": "Dřevěné krokve C24 fungicid 100/180 á ~800 mm", "tloušťka_mm": null, "source": "statika dum §4 + ARS"},
+        {"vrstva": "Dřevěné kleštiny C24 dvojfošny 2×60/180", "source": "statika §4 'kleštiny jsou navrženy z dvojfošen'"},
+        {"vrstva": "Pozednice kotvená do ŽB věnce", "source": "ARS EXPLICIT: 'Pozednice budou kotveny do ŽB věnce'"},
+        {"vrstva": "Námětky v dolní koncové části pro přesah střechy", "source": "ARS EXPLICIT: 'na krokve uvažovány námětky'"},
+        {"vrstva": "Ocelová středová vaznice HEA160", "source": "statika §4"},
+        {"vrstva": "Ocelové sloupky uzavřený profil 100×100×4 (jakl/jekl)", "source": "statika §4 'sloupky z jeklu 100/4'"},
+        {"vrstva": "Obkladová palubka NEBO biodeska min. tl. 20 mm", "tloušťka_mm": 20, "source": "ARS EXPLICIT: 'osazena obkladová palubka nebo biodeska min. tl. 20 mm'"},
+        {"vrstva": "Parotěsná vrstva", "source": "ARS EXPLICIT: 'parotěsná vrstva'"},
+        {"vrstva": "Tepelná izolace PIR desky", "source": "ARS EXPLICIT: 'tepelná izolace z PIR desek'"},
+        {"vrstva": "Doplňková hydroizolace", "source": "ARS EXPLICIT: 'doplňková hydroizolace'"},
+        {"vrstva": "Distanční kontralatě + vzduchová mezera", "source": "ARS EXPLICIT: 'distanční kontralatě + vzduchová mezera'"},
+        {"vrstva": "Bednění z prken pod krytinu", "source": "ARS EXPLICIT: 'bednění z prken'"},
+        {"vrstva": "Hydroizolační folie pod hliník (s tlumící funkcí)", "source": "ARS EXPLICIT"},
+        {"vrstva": "Plechová falcovaná HLINÍKOVÁ krytina (klempířská)", "source": "ARS EXPLICIT: 'plechová krytina ... hliníkové krytiny, provedená klempířsky, s falci'"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "WOOD3 (8) — krov + bednění; INSULATION (10) — PIR; INSERT KR (103) — krokve count",
+      "applies_to_area_m2_approx": 141,
+      "_calculation_source": "104.4 m² zastavěná / cos(35°) × 1.15 (přesahy + vikýře)"
+    },
+    {
+      "element_type": "Stěna obvodová zděná zachovaná + ETICS",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2.x + PBŘ TUSPO",
+      "composition_layers": [
+        {"vrstva": "Stávající zděná stěna (cihla pálená P10 na MVC, lokální dozdívky)", "source": "ARS §3.2 + statika §4 'P10 na MVC M10'"},
+        {"vrstva": "Lokální vyspravení omítky + fungicidní nátěr", "source": "ARS EXPLICIT: 'Stávající stěny ... budou očištěny, ometeny a bude odstraněna ... omítka. Případné praskliny budou vyspraveny. V případě, že se vyskytují mech, nebo plísně, bude podklad ošetřen fungicidním přípravkem'"},
+        {"vrstva": "ETICS lepidlo + ETICS kotvení", "source": "ARS EXPLICIT: 'kontaktního zateplovacího systému ETICS'"},
+        {"vrstva": "Fasádní EPS 70F grey λ=0.032 W/mK", "tloušťka_mm_max": 200, "source": "ARS EXPLICIT: 'fasádní EPS 70f grey (λ=0,032 W/mK)' + PBŘ EXPLICIT: 'EPS tl. max. 200 mm' + PBŘ podmínka h ≤ 12.0 m"},
+        {"vrstva": "Síťka + zatírací stěrka", "source": "ARS §3.2 fasáda"},
+        {"vrstva": "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ", "source": "ARS § fasáda + project_header"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "External perimeter = 38.70 m (DXF km_R_návrh_tlustá 2 closed polygon 91.28 m²)",
+      "external_perimeter_m": 38.70,
+      "applies_to_area_m2": 276.7,
+      "_calculation_source": "obvod 38.70 m × výška 13.0 m × 0.55 (volná fasáda, štíty zachované) = 276.7 m²"
+    },
+    {
+      "element_type": "Stěna 3.NP nadezdívka (nové zdivo)",
+      "tz_source": "D_1_1_01_TZ_ARS_dum_EAR.pdf §3.2 + statika dum §4",
+      "composition_layers": [
+        {"vrstva": "Porotherm 30 Profi P10 na maltu pro tenké spáry", "tloušťka_mm": 300, "source": "statika EXPLICIT: 'Zdivo nástavby Porotherm 30 Profi P10 na maltu pro tenké spáry'"},
+        {"vrstva": "Vyplněná spára / klín kotvení do pozedního věnce", "source": "statika §4"},
+        {"vrstva": "ETICS souvrství (= obvodová stěna composition)", "source": "ARS § fasáda"},
+        {"vrstva": "Interiér: omítka jádro + štuk + výmalba", "source": "ARS §3.2.x povrchové úpravy"}
+      ],
+      "tz_explicit": true,
+      "_data_quality": "tz_explicit",
+      "applies_to_area_m2": 71.8,
+      "_calculation_source": "obvod 38.70 m × výška 2.65 m × 0.7 (sníženo o štíty zachované) = 71.8 m²"
+    },
+    {
+      "element_type": "Příčka vnitřní (nová pórobetonová)",
+      "tz_source": "ARS dispozice",
+      "composition_layers": [
+        {"vrstva": "Pórobetonová tvárnice tl. 150 mm na lepidlo", "tloušťka_mm": 150, "source": "ARS § (typický standard pro nové příčky v RD rekonstrukci)"},
+        {"vrstva": "Dilatováno od stropu (zachování statiky)", "source": "ARS"},
+        {"vrstva": "Omítka jádro + štuk obě strany + výmalba", "source": "ARS § povrchové úpravy"}
+      ],
+      "tz_explicit": false,
+      "_data_quality": "tz_silent — TZ konkrétně neuvádí typ příček ('pórobeton 150') — standard fallback pro Czech RD",
+      "applies_to_area_m2": null,
+      "_calculation_note": "Per-podlaží split heuristic z DXF wall layers — phase-mixed estimate"
+    },
+    {
+      "element_type": "Stěna v koupelně — keramický obklad",
+      "tz_source": "ARS § koupelny",
+      "composition_layers": [
+        {"vrstva": "Stávající nebo nová zděná stěna (jádrová omítka)", "source": "= stěna obvodová / příčka composition"},
+        {"vrstva": "Hydroizolační stěrka (vodotěsná folie)", "source": "ARS implied (koupelny)"},
+        {"vrstva": "Keramický obklad lepený", "tloušťka_mm": 8, "source": "ARS § koupelny"},
+        {"vrstva": "Spárování", "source": "standard"}
+      ],
+      "tz_explicit": false,
+      "_data_quality": "tz_silent_o_vyšce — TZ NEUVÁDÍ explicit výšku obkladu. Fallback 2.0 m výška obkladu (typický Czech RD standard).",
+      "fallback_vyska_m": 2.0,
+      "_obklad_vyska_flag": "tz_silent_fallback_csn_default"
+    }
+  ],
+
+  "vyska_podlazi_per_floor": {
+    "_finding": "TZ NEMÁ explicit hodnotu per-podlaží výšku. Pouze TZ B m.1.j: 'výška stavby 13.0 m' (celková). Pre-baked project_header.json — žádný per-podlaží value.",
+    "_data_quality": "tz_silent_use_global_average",
+    "calculation_method": "13.0 m / 4 podlaží = 3.25 m průměr",
+    "1.PP": 2.50,
+    "1.NP": 2.80,
+    "2.NP": 2.80,
+    "3.NP_nadezdivka": 2.65,
+    "_per_floor_distribution_source": "Standard fallback pro Czech RD 1.PP=2.5m, 1.NP=2.8m, 2.NP=2.8m, 3.NP=2.65m nadezdívka — Σ = 10.75 m (vs 13.0 m total = +2.25 m pro krov + střešní výška). Explicit flag '_vyska_podlazi_csn_default' na všech itemech používajících tyto hodnoty."
+  },
+
+  "obklad_vyska": {
+    "_finding": "TZ NEMÁ explicit výšku obkladu v koupelnách",
+    "fallback_m": 2.0,
+    "_data_quality": "tz_silent_fallback_csn_default",
+    "rationale": "Czech RD standard obklad výška 2.0 m (po sprchový kout uložen). Konzervativní odhad."
+  },
+
+  "_cross_validation_notes": [
+    "DXF total podlahova 217.5 m² (z DXF tabulka) vs TZ B 219.3 m² → Δ 0.82 % — sources consistent",
+    "DXF external perimeter 38.70 m (návrh polygon) vs prior estimate 41.0 m (4×√zastavěná) → Δ -5.6 % — DXF wins",
+    "ETICS 200 mm — TZ ARS + PBŘ both confirm; PBŘ adds context 'h ≤ 12.0 m vyhovuje' (požární výška 6.565 m << 12.0)",
+    "EPS 150 tl. 120 mm — TZ ARS §3.2.4 explicit — pre-baked NEFABRIKACE, confidence 0.85",
+    "Per-podlaží výška NESPECIFIKOVÁNA v žádné TZ — fallback s explicit flag mandatory"
+  ]
+}

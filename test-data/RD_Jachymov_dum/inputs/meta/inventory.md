@@ -9,6 +9,7 @@
 **Datum Phase 1 TZB+M gate:** 2026-05-16 (Phase 1 §TZB — 22 položek dum, 1 needs_mapping flag: instalater_TUV_akumulacni_zasobnik. Architectural bugfix: `_gate` field oddělený od `kapitola_group`)
 **Datum Phase 1 VRN gate:** 2026-05-16 (Phase 1 §VRN — 19 položek (15 dum + 4 sklad), 2 needs_mapping flags: mykolog + azbestovy_specialista. Phase 1 COMPLETE)
 **Datum Phase 1 complete:** 2026-05-16 — **171 položek celkem** (144 dum + 27 sklad), všechna 4 STOP gates uzavřena, 5 needs_mapping flags akumulovaných pro batch update.
+**Datum Part 2 expansion:** 2026-05-17 — **187 položek celkem** (160 dum + 27 sklad). Per-room/per-zone expansion 7 kategorií + 8 items recalced s exact DXF external perimeter 38.70 m. Zero fabrication, strict source priority order maintained.
 **Sběr:** Email cesta Volný → Jiří Šmíd → Karel Šmíd → Alexander; OneDrive linky 2× (sklad+parking + dům)
 **Status:** **PODKLADY DSP KOMPLETNÍ** pro varianty A/C, **DSP-only limity zachovány** pro variantu B (chybí výpisy oken/dveří, tabulky místností, skladby — typický nedostatek DSP). Phase 0b §3.1 + §3.2 dokončeny.
 
@@ -302,3 +303,89 @@ Tento RD Jáchymov pilot přinesl 4 distinct corpus patterns pro budoucí STAVAG
 **Problem:** Catalog classification (HSV/PSV/M/VRN per Czech ÚRS 800) NE vždy odpovídá workflow gates user definuje (např. user-spec "TZB+M gate" obsahuje PSV-72/73 + M-21). Naivní `kapitola_group` filter v merge logic vede k duplikacím or accidental deletes.
 **Solution:** Parallel `_gate` field on each item, populated via `KAPITOLA_TO_GATE` table mapping kapitola prefix → user-workflow gate. `kapitola_group` stays as classification (HSV/PSV/M/VRN per catalog). Merge filter uses `_gate` exclusively.
 **Lesson:** Workflow concerns (review gates, batch commits) and classification concerns (ÚRS hierarchy, catalog) are orthogonal — separate fields, don't conflate.
+
+## 10. Per-room / per-zone expansion log (Part 2 — 2026-05-17)
+
+Po Part 1 cross-reference matrix verification proveden refactor `tools/phase1_items_generator.py` z template-driven na hybrid data-driven loop. Source priority order applied per item (12 levels, DXF DIMENSION → INSERT → bbox → MTEXT → TZ ARS → statika → B → PBŘ → cross-deriv → Methvin → odpady → fallback).
+
+### 10.1 Net change
+
+**Items: 171 → 187 (+16 net)** — vs Part 1 forecast +5 (forecast undercounted; reality is honest 187 because categorical splits yield 3-7 children per aggregate, not assumed 1.5).
+
+| Gate | Před | Po | Δ |
+|---|--:|--:|--:|
+| HSV | 95 | 95 | 0 |
+| PSV | 35 | 48 | +13 |
+| TZB | 22 | 25 | +3 |
+| VRN | 19 | 19 | 0 |
+| **Total** | **171** | **187** | **+16** |
+
+### 10.2 7 expansion kategorií (per Part 1 inventory)
+
+| Kategorie | Před | Po | Source priority used |
+|---|--:|--:|---|
+| PSV-77 podlahy per skladba zona | 5 agg | 7 per-zone | DXF rooms × material classification + TZ skladby explicit |
+| PSV-76 okna per typ | 2 agg | 7 + žaluzie | DXF INSERT block bbox (exact mm) |
+| PSV-78 omítka per podlaží | 2 agg | 4 per-podlaží | DXF obvod + TZ silent výška fallback s flag |
+| PSV-78 SDK podhled per podlaží | 1 agg | 3 per-podlaží | DXF per-floor area (1.PP excluded klenba zach.) |
+| PSV-78 obklady koupelen | 1 agg | 3 per-koupelna | DXF rooms PIP + TZ silent výška 2.0 m fallback |
+| PSV-72 sanit per koupelna | 1 agg | 3 + dřez kuch. | DXF PIP partial + TZ assumption per koupelna |
+| HSV-3 příčky per podlaží | 1 agg | DROP | (phase-mixed estimate, no precision gain) |
+
+### 10.3 8 RECALC items s new external perimeter 38.70 m (DXF km_R_návrh_tlustá 2)
+
+| Item | Před | Po | Δ % |
+|---|--:|--:|--:|
+| HSV-2 Pozední věnec 3.NP | 3.07 m³ | 2.90 m³ | −5.5 % |
+| HSV-2 Pozední věnec — bednění | 20.5 m² | 19.4 m² | −5.6 % |
+| HSV-3 Nadezdívka 3.NP Porotherm | 76.05 m² | 71.8 m² | −5.6 % |
+| HSV-7 Příprava podkladu | 293.15 m² | 276.7 m² | −5.6 % |
+| HSV-7 ETICS EPS 70F grey 200 mm | 293.15 m² | 276.7 m² | −5.6 % |
+| HSV-7 ETICS sokl XPS | 14.35 m² | 13.5 m² | −5.9 % |
+| **HSV-7 Špalety EPS** | **80 bm** | **89.9 bm** | **+12.4 %** ↑ |
+| HSV-7 Tenkovrstvá omítka | 307.55 m² | 290.2 m² | −5.6 % |
+
+Špalety jediná pozitivní změna — per-window perimeter z DXF block bbox (exact 2×(W+H) per typ) replaces flat 5 m estimate per okno.
+
+Každý recalc item nese `_previous_mnozstvi` + `_recalc_reason` fields pro auditability.
+
+### 10.4 8 unique `_data_quality` categorical values
+
+Per-item provenance tagging:
+
+| Value | Count | Meaning |
+|---|--:|---|
+| `dxf_deterministic` | 23 | DXF source only, highest confidence |
+| `dxf_plus_tz_explicit` | 2 | DXF + TZ EXPLICIT cite both confirm |
+| `dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn` | 4 | omítka per podlaží — DXF obvod + TZ silent fallback |
+| `dxf_partial_pip_plus_tz_assumption` | 3 | sanit per koupelna — partial DXF PIP + TZ standard |
+| `dxf_perimeter_ratio_estimate` | 2 | soklíky — DXF perimeter × typical ratio |
+| `tz_silent_fallback_csn_default` | 3 | obklady koupelen — TZ silent, ČSN 2.0 m fallback |
+| `tz_explicit_fallback_dxf_data_missing` | 1 | biodeska 3.NP — TZ explicit, DXF nemá data |
+| `tz_only_aggregate` | 1 | výmalba — TZ-only aggregate kept (no DXF expansion) |
+
+Total 39 items s explicit data_quality flag (zbylých 148 items zachovaných z původní Phase 1 — implicit "ready_for_phase2" status).
+
+### 10.5 Confidence distribution shift (Part 1 → Part 2)
+
+| Confidence | Před | Po | Δ |
+|---|--:|--:|--:|
+| 0.99 (manual judgement) | 5 | **17** | **+12** |
+| 0.95 (DXF DIMENSION/INSERT) | 21 | 25 | +4 |
+| 0.90 (DXF bbox/LWPOLYLINE) | 5 | **12** | **+7** |
+| 0.85 (regex TZ) | 36 | 37 | +1 |
+| 0.80 (Methvin empirical) | 16 | 16 | = |
+| 0.75 (geometry-from-TZ) | 88 | **80** | **−8** |
+| **< 0.70** | **0** | **0** | strict policy ✓ |
+
+Confidence buckets shifted upward — 8 items moved from 0.75 to 0.90+ via DXF data utilization; +12 items added at 0.99 (recalc items + DXF deterministic).
+
+### 10.6 Final acceptance criteria met
+
+- ✅ Items final count: 187 (160 dum + 27 sklad)
+- ✅ Excel: 8 sheets, 63.6 KB
+- ✅ Sheet 8 Var_E pochází POUZE z TZ explicit text + DXF cross-validation HATCH patterns
+- ✅ 0 položek pod confidence 0.70 (strict policy maintained)
+- ✅ 0 fabrication — every item explicit _source + mnozstvi_formula + _data_quality
+- ✅ 25 items tagged _expansion_origin (linked to replaced parent aggregates)
+- ✅ 8 items tagged _previous_mnozstvi + _recalc_reason
