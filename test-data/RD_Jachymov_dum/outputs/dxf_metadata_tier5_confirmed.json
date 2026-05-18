@@ -1,0 +1,308 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-18",
+  "_generated_by": "tools/path_c_tier4_5_inserts_metadata.py",
+  "_purpose": "Path C Tier 5 — metadata layers quick scan + skip confirmation (closes inventory).",
+  "_summary": {
+    "total_metadata_layers_confirmed": 31
+  },
+  "per_file": {
+    "dum_DPZ": {
+      "n_metadata_layers": 10,
+      "layers": [
+        {
+          "layer_name": "Defpoints",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "IP__netisk",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ geometrie",
+          "entity_count": 13,
+          "entity_types": {
+            "LWPOLYLINE": 12,
+            "DIMENSION": 1
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "SM_rozpiska",
+          "entity_count": 804,
+          "entity_types": {
+            "LWPOLYLINE": 341,
+            "MTEXT": 192,
+            "INSERT": 271
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km__netisk",
+          "entity_count": 87,
+          "entity_types": {
+            "LWPOLYLINE": 87
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "SMA_rozpiska",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ poznamka draft",
+          "entity_count": 1,
+          "entity_types": {
+            "MTEXT": 1
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "stafaz",
+          "entity_count": 3,
+          "entity_types": {
+            "INSERT": 3
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "SM__Popisy bubliny",
+          "entity_count": 145,
+          "entity_types": {
+            "MTEXT": 92,
+            "LEADER": 26,
+            "LWPOLYLINE": 27
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km_rozpiska",
+          "entity_count": 22,
+          "entity_types": {
+            "INSERT": 22
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        }
+      ]
+    },
+    "dum_situace": {
+      "n_metadata_layers": 6,
+      "layers": [
+        {
+          "layer_name": "Defpoints",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ geometrie",
+          "entity_count": 1,
+          "entity_types": {
+            "LWPOLYLINE": 1
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km_rozpiska",
+          "entity_count": 131,
+          "entity_types": {
+            "MTEXT": 61,
+            "LWPOLYLINE": 43,
+            "INSERT": 27
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km__netisk",
+          "entity_count": 27,
+          "entity_types": {
+            "LWPOLYLINE": 27
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ značky hranice",
+          "entity_count": 3,
+          "entity_types": {
+            "LWPOLYLINE": 3
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ poznamka draft",
+          "entity_count": 3,
+          "entity_types": {
+            "MTEXT": 3
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        }
+      ]
+    },
+    "sklad_DPZ": {
+      "n_metadata_layers": 9,
+      "layers": [
+        {
+          "layer_name": "Defpoints",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "IP_rozpiska",
+          "entity_count": 8,
+          "entity_types": {
+            "TEXT": 3,
+            "LWPOLYLINE": 5
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "IP__netisk",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ geometrie",
+          "entity_count": 1,
+          "entity_types": {
+            "LWPOLYLINE": 1
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km_rozpiska",
+          "entity_count": 149,
+          "entity_types": {
+            "LWPOLYLINE": 55,
+            "MTEXT": 49,
+            "INSERT": 45
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km__netisk",
+          "entity_count": 25,
+          "entity_types": {
+            "LWPOLYLINE": 25
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "SMA_rozpiska",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ poznamka draft",
+          "entity_count": 4,
+          "entity_types": {
+            "MTEXT": 4
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "IP_Popisy bubliny",
+          "entity_count": 12,
+          "entity_types": {
+            "MTEXT": 4,
+            "LEADER": 2,
+            "LWPOLYLINE": 6
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        }
+      ]
+    },
+    "sklad_situace": {
+      "n_metadata_layers": 6,
+      "layers": [
+        {
+          "layer_name": "Defpoints",
+          "entity_count": 0,
+          "entity_types": {},
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ geometrie",
+          "entity_count": 5,
+          "entity_types": {
+            "LWPOLYLINE": 5
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km_rozpiska",
+          "entity_count": 126,
+          "entity_types": {
+            "MTEXT": 56,
+            "LWPOLYLINE": 43,
+            "INSERT": 27
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "km__netisk",
+          "entity_count": 27,
+          "entity_types": {
+            "LWPOLYLINE": 27
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ značky hranice",
+          "entity_count": 3,
+          "entity_types": {
+            "LWPOLYLINE": 3
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        },
+        {
+          "layer_name": "_ poznamka draft",
+          "entity_count": 3,
+          "entity_types": {
+            "MTEXT": 3
+          },
+          "probe_status": "probed_metadata_only_confirmed",
+          "decision": "skip — title block / razítko / severka / defpoints content"
+        }
+      ]
+    }
+  }
+}
