@@ -1,0 +1,2286 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-18",
+  "_purpose": "Full content extraction of 20 embedded MTEXT tables detected in Tier 2.",
+  "_type_distribution": {
+    "other": 41,
+    "tabulka_mistnosti": 17
+  },
+  "tables": [
+    {
+      "table_id": "T01",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3848440.0,
+        1967536.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T02",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3848440.0,
+        1981230.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 9,
+      "data_rows_sample": [
+        [
+          "1.01",
+          "vstup a chodba",
+          "12,40"
+        ],
+        [
+          "1.02",
+          "chodba na zahradu",
+          "3,60"
+        ],
+        [
+          "1.03",
+          "komora",
+          "0,70"
+        ],
+        [
+          "1.04",
+          "WC",
+          "1,50"
+        ],
+        [
+          "1.05",
+          "koupelna",
+          "4,10"
+        ],
+        [
+          "1.06",
+          "obývací místnost + kuchyně",
+          "24,00"
+        ],
+        [
+          "1.07",
+          "pokoj",
+          "9,40"
+        ],
+        [
+          "1.08",
+          "schodiště do sklepa",
+          "3,80"
+        ],
+        [
+          "celkem",
+          "59,50"
+        ]
+      ],
+      "raw_chars": 254
+    },
+    {
+      "table_id": "T03",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3878140.0,
+        1967536.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T04",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3907840.0,
+        1967536.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T05",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3907840.0,
+        1981230.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "3.01",
+          "schodiště",
+          "7,50"
+        ],
+        [
+          "3.02",
+          "půdní prostor",
+          "57,40"
+        ],
+        [
+          "celkem",
+          "64,90"
+        ]
+      ],
+      "raw_chars": 112
+    },
+    {
+      "table_id": "T06",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3818740.0,
+        1967536.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T07",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3818740.0,
+        1981230.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 5,
+      "data_rows_sample": [
+        [
+          "0.01",
+          "schodiště",
+          "3,50"
+        ],
+        [
+          "0.02",
+          "chodba",
+          "4,40"
+        ],
+        [
+          "0.03",
+          "sklep 1",
+          "22,20"
+        ],
+        [
+          "0.04",
+          "sklep 2",
+          "2,30"
+        ],
+        [
+          "celkem",
+          "32,40"
+        ]
+      ],
+      "raw_chars": 141
+    },
+    {
+      "table_id": "T08",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3846665.0,
+        1948871.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T09",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3818965.0,
+        1993341.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T10",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3780170.0,
+        1957106.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T11",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3793864.0,
+        1957106.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 9,
+      "data_rows_sample": [
+        [
+          "1.01",
+          "vstup a chodba",
+          "12,4"
+        ],
+        [
+          "1.02",
+          "chodba na zahradu",
+          "3,6"
+        ],
+        [
+          "1.03",
+          "komora",
+          "0,70"
+        ],
+        [
+          "1.04",
+          "WC",
+          "1,5"
+        ],
+        [
+          "1.05",
+          "koupelna",
+          "4,10"
+        ],
+        [
+          "1.06",
+          "obývací místnost + kuchyně",
+          "24,00"
+        ],
+        [
+          "1.07",
+          "pokoj",
+          "9,40"
+        ],
+        [
+          "1.08",
+          "schodiště do sklepa",
+          "3,80"
+        ],
+        [
+          "celkem",
+          "59,40"
+        ]
+      ],
+      "raw_chars": 251
+    },
+    {
+      "table_id": "T12",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3848440.0,
+        1901991.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T13",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3848440.0,
+        1915685.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 9,
+      "data_rows_sample": [
+        [
+          "1.01",
+          "vstup a chodba",
+          "12,4"
+        ],
+        [
+          "1.02",
+          "chodba na zahradu",
+          "3,6"
+        ],
+        [
+          "1.03",
+          "komora",
+          "0,70"
+        ],
+        [
+          "1.04",
+          "WC",
+          "1,5"
+        ],
+        [
+          "1.05",
+          "koupelna",
+          "4,10"
+        ],
+        [
+          "1.06",
+          "obývací místnost + kuchyně",
+          "24,00"
+        ],
+        [
+          "1.07",
+          "pokoj",
+          "9,40"
+        ],
+        [
+          "1.08",
+          "schodiště do sklepa",
+          "3,80"
+        ],
+        [
+          "celkem",
+          "59,50"
+        ]
+      ],
+      "raw_chars": 251
+    },
+    {
+      "table_id": "T14",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3878140.0,
+        1901991.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T15",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3878140.0,
+        1915685.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 7,
+      "data_rows_sample": [
+        [
+          "2.01",
+          "schodiště",
+          "7,30"
+        ],
+        [
+          "2.02",
+          "chodba",
+          "5,90"
+        ],
+        [
+          "2.03",
+          "koupelna",
+          "2,40"
+        ],
+        [
+          "2.04",
+          "pokoj",
+          "15,50"
+        ],
+        [
+          "2.05",
+          "pokoj",
+          "14,10"
+        ],
+        [
+          "2.06",
+          "pokoj",
+          "15,80"
+        ],
+        [
+          "celkem",
+          "61,00"
+        ]
+      ],
+      "raw_chars": 174
+    },
+    {
+      "table_id": "T16",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3907840.0,
+        1901991.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T17",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3907840.0,
+        1915685.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "3.01",
+          "schodiště",
+          "7,50"
+        ],
+        [
+          "3.02",
+          "půdní prostor",
+          "57,40"
+        ],
+        [
+          "celkem",
+          "64,90"
+        ]
+      ],
+      "raw_chars": 112
+    },
+    {
+      "table_id": "T18",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3818740.0,
+        1901991.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T19",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3818740.0,
+        1915685.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 5,
+      "data_rows_sample": [
+        [
+          "0.01",
+          "schodiště",
+          "3,50"
+        ],
+        [
+          "0.02",
+          "chodba",
+          "4,40"
+        ],
+        [
+          "0.03",
+          "sklep 1",
+          "22,20"
+        ],
+        [
+          "0.04",
+          "sklep 2",
+          "2,3"
+        ],
+        [
+          "celkem",
+          "32,40"
+        ]
+      ],
+      "raw_chars": 140
+    },
+    {
+      "table_id": "T20",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3846665.0,
+        1883326.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T21",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3818965.0,
+        1927796.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T22",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3780170.0,
+        1891561.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 64
+    },
+    {
+      "table_id": "T23",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3848440.0,
+        1850140.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 9,
+      "data_rows_sample": [
+        [
+          "1.01",
+          "vstup a chodba",
+          "9,10"
+        ],
+        [
+          "1.02",
+          "zádveří",
+          "3,00"
+        ],
+        [
+          "1.03",
+          "koupelna",
+          "2,60"
+        ],
+        [
+          "1.04",
+          "obývací místnost + kuchyně",
+          "24,40"
+        ],
+        [
+          "1.05",
+          "ložnice",
+          "14,50"
+        ],
+        [
+          "1.06",
+          "chodba na zahradu",
+          "3,80"
+        ],
+        [
+          "1.08",
+          "schodiště do sklepa",
+          "4,00"
+        ],
+        [
+          "celkem",
+          "61,40"
+        ],
+        [
+          "byt",
+          "48,20"
+        ]
+      ],
+      "raw_chars": 255
+    },
+    {
+      "table_id": "T24",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3878140.0,
+        1836445.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T25",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3878140.0,
+        1850140.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 9,
+      "data_rows_sample": [
+        [
+          "2.01",
+          "schodiště",
+          "7,30"
+        ],
+        [
+          "2.02",
+          "chodba",
+          "4,20"
+        ],
+        [
+          "2.03",
+          "koupelna",
+          "2,50"
+        ],
+        [
+          "2.04",
+          "chodba",
+          "1,60"
+        ],
+        [
+          "2.05",
+          "společný pokoj",
+          "22,10"
+        ],
+        [
+          "2.06",
+          "pokoj",
+          "I",
+          "9,00"
+        ],
+        [
+          "2.07",
+          "pokoj",
+          "II",
+          "14,40"
+        ],
+        [
+          "celkem",
+          "61,10"
+        ],
+        [
+          "Byt",
+          "49,60"
+        ]
+      ],
+      "raw_chars": 215
+    },
+    {
+      "table_id": "T26",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3907840.0,
+        1836445.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T27",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3907840.0,
+        1850140.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 8,
+      "data_rows_sample": [
+        [
+          "3.01",
+          "schodiště",
+          "7,60"
+        ],
+        [
+          "3.02",
+          "chodba",
+          "4,10"
+        ],
+        [
+          "3.03",
+          "chodba",
+          "2,40"
+        ],
+        [
+          "3.04",
+          "koupelna",
+          "4,80"
+        ],
+        [
+          "3.05",
+          "obývací místnost a kuchyně",
+          "32,80"
+        ],
+        [
+          "3.06",
+          "ložnice",
+          "12,80"
+        ],
+        [
+          "celkem",
+          "64,50"
+        ],
+        [
+          "byt",
+          "52,80"
+        ]
+      ],
+      "raw_chars": 208
+    },
+    {
+      "table_id": "T28",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3818740.0,
+        1850140.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 5,
+      "data_rows_sample": [
+        [
+          "0.01",
+          "schodiště",
+          "3,40"
+        ],
+        [
+          "0.02",
+          "chodba",
+          "4,40"
+        ],
+        [
+          "0.03",
+          "sklep 1",
+          "22,20"
+        ],
+        [
+          "0.04",
+          "sklep 2",
+          "2,3"
+        ],
+        [
+          "celkem",
+          "32,30"
+        ]
+      ],
+      "raw_chars": 140
+    },
+    {
+      "table_id": "T29",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3846665.0,
+        1817780.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T30",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3818965.0,
+        1862250.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T31",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3780170.0,
+        1813665.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T32",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3848440.0,
+        1836445.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T33",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3818740.0,
+        1836445.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T34",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3878140.0,
+        1981230.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 7,
+      "data_rows_sample": [
+        [
+          "2.01",
+          "schodiště",
+          "7,30"
+        ],
+        [
+          "2.02",
+          "chodba",
+          "5,90"
+        ],
+        [
+          "2.03",
+          "koupelna",
+          "2,40"
+        ],
+        [
+          "2.04",
+          "pokoj",
+          "15,50"
+        ],
+        [
+          "2.05",
+          "pokoj",
+          "14,10"
+        ],
+        [
+          "2.06",
+          "pokoj",
+          "15,80"
+        ],
+        [
+          "celkem",
+          "61,00"
+        ]
+      ],
+      "raw_chars": 174
+    },
+    {
+      "table_id": "T35",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM_rozpiska",
+      "position": [
+        3937540.0,
+        1836445.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "-",
+          "-"
+        ],
+        [
+          "01",
+          "-",
+          "-"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 62
+    },
+    {
+      "table_id": "T36",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3937540.0,
+        1850140.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 8,
+      "data_rows_sample": [
+        [
+          "3.01",
+          "schodiště",
+          "7,60"
+        ],
+        [
+          "3.02",
+          "chodba",
+          "4,10"
+        ],
+        [
+          "3.03",
+          "chodba",
+          "2,40"
+        ],
+        [
+          "3.04",
+          "koupelna",
+          "4,80"
+        ],
+        [
+          "3.05",
+          "obývací místnost a kuchyně",
+          "32,80"
+        ],
+        [
+          "3.06",
+          "ložnice",
+          "12,80"
+        ],
+        [
+          "celkem",
+          "64,50"
+        ],
+        [
+          "byt",
+          "52,80"
+        ]
+      ],
+      "raw_chars": 208
+    },
+    {
+      "table_id": "T37",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM__Popisy bubliny",
+      "position": [
+        3810450.0,
+        1848717.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\c195;Terasa"
+      ],
+      "data_rows_count": 7,
+      "data_rows_sample": [
+        [
+          "-",
+          "terasová dřevěná prkna",
+          "25 mm"
+        ],
+        [
+          "- podkladní rošt z dřevěných hranolů",
+          "50 mm"
+        ],
+        [
+          "- rektifikovatelné terče pro terasu",
+          "50 mm"
+        ],
+        [
+          "- betonové dlaždice",
+          "50 mm"
+        ],
+        [
+          "- štěrkový podsyp 16/32 mm",
+          "100 mm"
+        ],
+        [
+          "- hrubý podsyp 4/8 mm",
+          "150 mm"
+        ],
+        [
+          "- geotextilie"
+        ]
+      ],
+      "raw_chars": 233
+    },
+    {
+      "table_id": "T38",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM__Popisy bubliny",
+      "position": [
+        3813880.0,
+        1848053.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\c195;podlaha anglický dvorek"
+      ],
+      "data_rows_count": 4,
+      "data_rows_sample": [
+        [
+          "-",
+          "betonová dlažba",
+          "50 mm"
+        ],
+        [
+          "-",
+          "kladecí vrstva - kamenná drť 4-8 mm",
+          "40 mm"
+        ],
+        [
+          "-",
+          "podkladní nosná vrstva - kamenná drť 4-8 mm",
+          "150 mm"
+        ],
+        [
+          "-",
+          "zhutněná zemní pláň (30 MPa)"
+        ]
+      ],
+      "raw_chars": 197
+    },
+    {
+      "table_id": "T39",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM__Popisy bubliny",
+      "position": [
+        3779460.0,
+        1827270.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\c481;Terasa"
+      ],
+      "data_rows_count": 7,
+      "data_rows_sample": [
+        [
+          "-",
+          "terasová dřevěná prkna",
+          "25 mm"
+        ],
+        [
+          "- podkladní rošt z dřevěných hranolů",
+          "50 mm"
+        ],
+        [
+          "- rektifikovatelné terče pro terasu",
+          "50 mm"
+        ],
+        [
+          "- betonové dlaždice",
+          "50 mm"
+        ],
+        [
+          "- štěrkový podsyp 16/32 mm",
+          "100 mm"
+        ],
+        [
+          "- hrubý podsyp 4/8 mm",
+          "150 mm"
+        ],
+        [
+          "- geotextilie"
+        ]
+      ],
+      "raw_chars": 233
+    },
+    {
+      "table_id": "T40",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM__Popisy bubliny",
+      "position": [
+        3774572.0,
+        1824386.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\c481;podlaha anglický dvorek"
+      ],
+      "data_rows_count": 4,
+      "data_rows_sample": [
+        [
+          "-",
+          "betonová dlažba",
+          "50 mm"
+        ],
+        [
+          "-",
+          "kladecí vrstva - kamenná drť 4-8 mm",
+          "40 mm"
+        ],
+        [
+          "-",
+          "podkladní nosná vrstva - kamenná drť 4-8 mm",
+          "150 mm"
+        ],
+        [
+          "-",
+          "zhutněná zemní pláň (30 MPa)\\c195;"
+        ]
+      ],
+      "raw_chars": 203
+    },
+    {
+      "table_id": "T41",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM__Popisy bubliny",
+      "position": [
+        3783116.0,
+        1849095.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\c195;Terasa"
+      ],
+      "data_rows_count": 7,
+      "data_rows_sample": [
+        [
+          "-",
+          "terasová dřevěná prkna",
+          "25 mm"
+        ],
+        [
+          "- podkladní rošt z dřevěných hranolů",
+          "50 mm"
+        ],
+        [
+          "- rektifikovatelné terče pro terasu",
+          "50 mm"
+        ],
+        [
+          "- betonové dlaždice",
+          "50 mm"
+        ],
+        [
+          "- štěrkový podsyp 16/32 mm",
+          "100 mm"
+        ],
+        [
+          "- hrubý podsyp 4/8 mm",
+          "150 mm"
+        ],
+        [
+          "- geotextilie"
+        ]
+      ],
+      "raw_chars": 233
+    },
+    {
+      "table_id": "T42",
+      "source_dxf": "dum_DPZ",
+      "source_layer": "SM__Popisy bubliny",
+      "position": [
+        3778624.0,
+        1846895.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\c195;podlaha anglický dvorek"
+      ],
+      "data_rows_count": 4,
+      "data_rows_sample": [
+        [
+          "-",
+          "betonová dlažba",
+          "50 mm"
+        ],
+        [
+          "-",
+          "kladecí vrstva - kamenná drť 4-8 mm",
+          "40 mm"
+        ],
+        [
+          "-",
+          "podkladní nosná vrstva - kamenná drť 4-8 mm",
+          "150 mm"
+        ],
+        [
+          "-",
+          "zhutněná zemní pláň (30 MPa)"
+        ]
+      ],
+      "raw_chars": 197
+    },
+    {
+      "table_id": "T43",
+      "source_dxf": "dum_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842869.0,
+        -997790.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 56
+    },
+    {
+      "table_id": "T44",
+      "source_dxf": "dum_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842869.0,
+        -997765.0
+      ],
+      "type": "other",
+      "header_row": [
+        "dotčené pozemky"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "k.č.",
+          "k.ú.",
+          "druh pozemku",
+          "výměra"
+        ],
+        [
+          "1094/16",
+          "Jáchymov",
+          "zahrada",
+          "269"
+        ],
+        [
+          "st.1022",
+          "Jáchymov",
+          "zastavěná plocha a nádvoří",
+          "99"
+        ]
+      ],
+      "raw_chars": 121
+    },
+    {
+      "table_id": "T45",
+      "source_dxf": "dum_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842785.0,
+        -997790.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 56
+    },
+    {
+      "table_id": "T46",
+      "source_dxf": "dum_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842953.0,
+        -997790.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01"
+        ],
+        [
+          "00",
+          "12/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 56
+    },
+    {
+      "table_id": "T47",
+      "source_dxf": "dum_situace",
+      "source_layer": "_Popis",
+      "position": [
+        -842920.0,
+        -997726.0
+      ],
+      "type": "other",
+      "header_row": [
+        "\\W1;SOUHLASÍM SE STAVEBNÍM ZÁMĚREM"
+      ],
+      "data_rows_count": 5,
+      "data_rows_sample": [
+        [
+          "na pozemku parc. č. 1094/16 a 1022 v k.ú. Jáchymov [656437]]"
+        ],
+        [
+          "Jméno:",
+          "................................................"
+        ],
+        [
+          "Příjmení:",
+          "................................................"
+        ],
+        [
+          "Datum narození:",
+          "................................................"
+        ],
+        [
+          "Podpis:",
+          "................................................"
+        ]
+      ],
+      "raw_chars": 341
+    },
+    {
+      "table_id": "T48",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_rozpiska",
+      "position": [
+        3968590.0,
+        1849261.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01",
+          "02/2026",
+          "úprava statického řešení"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 89
+    },
+    {
+      "table_id": "T49",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_rozpiska",
+      "position": [
+        3968590.0,
+        1864111.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "02/2026",
+          "úprava statického řešení"
+        ],
+        [
+          "01",
+          "10/2025",
+          "úpřesnění napojení na komunikaci"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 130
+    },
+    {
+      "table_id": "T50",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_rozpiska",
+      "position": [
+        3944970.0,
+        1841280.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "02/2026",
+          "úprava statického řešení"
+        ],
+        [
+          "01",
+          "10/2025",
+          "úpřesnění napojení na komunikaci"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 129
+    },
+    {
+      "table_id": "T51",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3968591.0,
+        1856299.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 1,
+      "data_rows_sample": [
+        [
+          "0.01",
+          "sklad zahradní technicky",
+          "beton. dlažba",
+          "17,60"
+        ]
+      ],
+      "raw_chars": 103
+    },
+    {
+      "table_id": "T52",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3968591.0,
+        1871149.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 2,
+      "data_rows_sample": [
+        [
+          "1.01",
+          "stání",
+          "pororošt",
+          "44,60"
+        ],
+        [
+          "1.02",
+          "schodiště",
+          "beton",
+          "5,50"
+        ]
+      ],
+      "raw_chars": 105
+    },
+    {
+      "table_id": "T53",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_rozpiska",
+      "position": [
+        3968590.0,
+        1834411.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01",
+          "02/2026",
+          "úprava statického řešení"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 89
+    },
+    {
+      "table_id": "T54",
+      "source_dxf": "sklad_DPZ",
+      "source_layer": "km_tabulka místností",
+      "position": [
+        3968591.0,
+        1841449.0
+      ],
+      "type": "tabulka_mistnosti",
+      "header_row": [
+        "č. m.",
+        "název místnosti",
+        "podlaha",
+        "strop",
+        "stěny",
+        "plocha [m²]"
+      ],
+      "data_rows_count": 1,
+      "data_rows_sample": [
+        [
+          "0.01",
+          "sklad zahradní technicky",
+          "beton. dlažba",
+          "17,60"
+        ]
+      ],
+      "raw_chars": 103
+    },
+    {
+      "table_id": "T55",
+      "source_dxf": "sklad_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842869.0,
+        -997790.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 56
+    },
+    {
+      "table_id": "T56",
+      "source_dxf": "sklad_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842869.0,
+        -997766.0
+      ],
+      "type": "other",
+      "header_row": [
+        "dotčené pozemky"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "k.č.",
+          "k.ú.",
+          "druh pozemku",
+          "výměra"
+        ],
+        [
+          "1094/16",
+          "Jáchymov",
+          "zahrada",
+          "269"
+        ],
+        [
+          "st.1022",
+          "Jáchymov",
+          "zastavěná plocha a nádvoří",
+          "99"
+        ]
+      ],
+      "raw_chars": 121
+    },
+    {
+      "table_id": "T57",
+      "source_dxf": "sklad_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842785.0,
+        -997790.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02",
+          "02/2026",
+          "úprava schodiště po zapracování statiky"
+        ],
+        [
+          "01",
+          "10/2025",
+          "doplnění rozhledových poměrů"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 140
+    },
+    {
+      "table_id": "T58",
+      "source_dxf": "sklad_situace",
+      "source_layer": "km_rozpiska",
+      "position": [
+        -842953.0,
+        -997790.0
+      ],
+      "type": "other",
+      "header_row": [
+        "revize",
+        "datum",
+        "popis"
+      ],
+      "data_rows_count": 3,
+      "data_rows_sample": [
+        [
+          "02"
+        ],
+        [
+          "01"
+        ],
+        [
+          "00",
+          "09/2025",
+          "vydání dokumentace"
+        ]
+      ],
+      "raw_chars": 56
+    }
+  ]
+}

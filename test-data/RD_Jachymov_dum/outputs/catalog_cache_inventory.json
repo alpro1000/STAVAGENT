@@ -1,0 +1,100 @@
+{
+  "catalogs_discovered": [
+    {
+      "name": "URS201801",
+      "path": "URS_MATCHER_SERVICE/backend/data/URS201801.csv",
+      "format": "CSV semicolon",
+      "rows": 39741,
+      "schema": [
+        "code",
+        "type",
+        "description"
+      ],
+      "vintage": "2018",
+      "description_format": "tokenized normalized (lowercase, deaccent — needs item-side normalization for BM25 matching)",
+      "sample_unique_codes": [
+        "00572100",
+        "00572410",
+        "00572420",
+        "00572440",
+        "00572450",
+        "00572470",
+        "00572472",
+        "00572474",
+        "00572510",
+        "00572521"
+      ]
+    },
+    {
+      "name": "KROS_TSKP",
+      "path": "URS_MATCHER_SERVICE/backend/data/KROS.MDB",
+      "format": "Microsoft Access MDB (extracted via mdb-export)",
+      "rows": 11994,
+      "table": "TSKP",
+      "schema_main_fields": [
+        "Kod (hierarchical 0..01..011..0111..01111)",
+        "Popis (readable Czech)",
+        "PopisSkrateny",
+        "MJ",
+        "Uroven (level 0-5)",
+        "IDRodic (parent GUID)"
+      ],
+      "vintage": "12/05/25 dle ZmenaCas (likely 2025 update)",
+      "description_format": "readable Czech (NOT tokenized — more useful for human-readable matching)",
+      "sample_entries": [
+        {
+          "kod": "0",
+          "popis": "Vedlejší rozpočtové náklady"
+        },
+        {
+          "kod": "01",
+          "popis": "Průzkumné, zeměměřičské a projektové práce"
+        },
+        {
+          "kod": "011",
+          "popis": "průzkumné práce"
+        },
+        {
+          "kod": "0111",
+          "popis": "geotechnický průzkum"
+        },
+        {
+          "kod": "01111",
+          "popis": "inženýrsko-geologický"
+        },
+        {
+          "kod": "01112",
+          "popis": "radonový"
+        },
+        {
+          "kod": "01113",
+          "popis": "hydrogeologický"
+        },
+        {
+          "kod": "01114",
+          "popis": "pedologický"
+        },
+        {
+          "kod": "0112",
+          "popis": "biologický průzkum"
+        },
+        {
+          "kod": "01121",
+          "popis": "botanický"
+        }
+      ],
+      "other_tables_in_mdb": "JKSO (971 rows building classification), CPACPV (2364 rows product activity), Diel (169 rows sections)"
+    }
+  ],
+  "overlap_analysis": {
+    "urs201801_total": 39741,
+    "tskp_total": 11994,
+    "common_codes": 0,
+    "unique_to_urs201801": 39741,
+    "unique_to_tskp": 11994,
+    "sample_common": [],
+    "recommendation": "Use TSKP as PRIMARY (readable Czech popis enables BM25/fuzzy match without tokenization normalization step). Fall back to URS201801 for codes not in TSKP (URS201801 has more codes but tokenized form). Per Part 5b: try TSKP first → URS2018 → needs_production_lookup."
+  },
+  "_decision_per_user_spec": "NEK matchingu zatím — deferred to Part 5b after Tier 5 final items.json upgrade.",
+  "_generated_at": "2026-05-18"
+}
