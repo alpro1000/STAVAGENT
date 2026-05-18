@@ -233,6 +233,127 @@ async def test_calculator_mostovka(mcp_server):
     )
 
 
+@pytest.mark.asyncio
+async def test_calculator_formwork_override_rimsa_t(mcp_server):
+    """Říms with formwork_system_name='Římsové bednění T' must surface the
+    override + T-bednění unit (bm) + productivity hint, without erroring."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "rimsa",
+            "volume_m3": 12.5,
+            "concrete_class": "C30/37",
+            "formwork_system_name": "Římsové bednění T",
+            "rental_czk_override": 350.0,
+            "formwork_length_bm": 156.0,
+            "cycle_length_bm": 26.0,
+        },
+    )
+    data = result.structured_content
+    fw = data.get("formwork", {})
+    assert fw.get("system") == "Římsové bednění T", (
+        f"Expected formwork.system='Římsové bednění T', got {fw.get('system')!r}"
+    )
+    assert fw.get("source") in ("override", "monolit_planner_api"), (
+        f"Expected formwork.source to flag the override, got {fw.get('source')!r}"
+    )
+    assert fw.get("unit") == "bm", (
+        f"Říms T-bednění must report unit='bm', got {fw.get('unit')!r}"
+    )
+    assert fw.get("length_bm") == 156.0, (
+        f"Expected formwork.length_bm=156, got {fw.get('length_bm')!r}"
+    )
+    assert fw.get("rental_czk_override") == 350.0
+    assert fw.get("rental_unit") == "Kč/bm/měs"
+    # cycle_length_bm=26 over 156 bm → 6 záběry
+    assert data.get("num_tacts") == 6, (
+        f"156 bm / 26 bm cycle should yield 6 záběry, got {data.get('num_tacts')}"
+    )
+    # Productivity hint should be echoed for T-bednění
+    prod = fw.get("productivity", {})
+    assert prod.get("assembly_h_per_bm") == 1.0
+    assert prod.get("strip_h_per_bm") == 0.43
+
+
+@pytest.mark.asyncio
+async def test_calculator_formwork_override_mismatch_warning(mcp_server):
+    """Specifying T-bednění for a foundation must emit a warning, not error."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "zaklady",  # foundation, not říms
+            "volume_m3": 50,
+            "concrete_class": "C25/30",
+            "formwork_system_name": "Římsové bednění T",
+        },
+    )
+    data = result.structured_content
+    assert "warnings" in data, (
+        "Semantic mismatch (T-bednění for foundation) must surface in 'warnings'"
+    )
+    joined = " ".join(data["warnings"])
+    assert "Římsové bednění T" in joined, (
+        f"Warning should name the offending system. Got: {data['warnings']!r}"
+    )
+    # Calculation must still complete — override is a hint, not a hard block
+    assert "schedule" in data and "formwork" in data
+
+
+@pytest.mark.asyncio
+async def test_calculator_manufacturer_override_only(mcp_server):
+    """preferred_manufacturer without formwork_system_name must rewrite the
+    brand on the auto-selected system."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "stena",
+            "volume_m3": 30,
+            "concrete_class": "C25/30",
+            "height_m": 2.8,
+            "preferred_manufacturer": "PERI",
+        },
+    )
+    data = result.structured_content
+    fw = data.get("formwork", {})
+    assert fw.get("manufacturer") == "PERI", (
+        f"Expected manufacturer override to PERI, got {fw.get('manufacturer')!r}"
+    )
+    assert fw.get("source") in ("manufacturer_override", "monolit_planner_api")
+
+
+@pytest.mark.asyncio
+async def test_calculator_no_override_backward_compat(mcp_server):
+    """Existing callers passing zero override fields must keep working
+    unchanged. The override echo block reports None for every override."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "stena",
+            "volume_m3": 30,
+            "concrete_class": "C25/30",
+            "height_m": 2.8,
+        },
+    )
+    data = result.structured_content
+    assert data.get("formwork", {}).get("source") in (
+        "auto", "monolit_planner_api"
+    ), (
+        "Without override fields, formwork.source must stay 'auto' "
+        f"(or come from the live API). Got: {data.get('formwork')!r}"
+    )
+    inp = data.get("input", {})
+    # The override fields are echoed with None when not supplied.
+    for key in (
+        "preferred_manufacturer", "formwork_system_name",
+        "rental_czk_override", "formwork_length_bm", "cycle_length_bm",
+    ):
+        assert key in inp, f"input.{key} must be echoed for self-describing schema"
+        assert inp[key] is None, (
+            f"input.{key} must be None when override not supplied, "
+            f"got {inp[key]!r}"
+        )
+
+
 # ── Test: Tool 5 — parse_construction_budget ─────────────────────────────────
 
 @pytest.mark.asyncio
