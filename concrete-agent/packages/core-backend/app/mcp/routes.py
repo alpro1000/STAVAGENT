@@ -368,6 +368,11 @@ TOOL_DESCRIPTIONS = {
         "Spočítá betonářské práce pro jeden ŽB prvek (7engine pipeline): "
         "bednění, výztuž, zrání, podpěry, harmonogram, CZK/m³."
     ),
+    "calculate_pump": (
+        "Spočítá náklady na betonpumpu (TOV multi-supplier) podle objemu: "
+        "čerpadlo, přistavení, doprava, vibrátor, příplatek + volitelně "
+        "bednění doprava / ztracené díly / chemie. Vrací rozpad po položkách."
+    ),
     "parse_construction_budget": (
         "Parsuje Excel rozpočet / soupis prací. Podporuje 4 formáty (Komplet/"
         "FORESTINA, OTSKP D6, AspeEsticon/SŽ, RTS)."
@@ -396,6 +401,7 @@ TOOL_ORDER = [
     "find_urs_code",
     "classify_construction_element",
     "calculate_concrete_works",
+    "calculate_pump",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",
@@ -510,6 +516,34 @@ async def rest_calculate(
 
     from app.mcp.tools.calculator import calculate_concrete_works
     return await calculate_concrete_works(**body.model_dump())
+
+
+class PumpRequest(BaseModel):
+    volume_m3: float
+    pump_supplier: Optional[str] = None
+    cerpadlo_rate_czk_sh: float = 2500.0
+    vibrator_rate_czk_sh: float = 50.0
+    transport_km: float = 72.0
+    transport_rate_czk_km: float = 68.0
+    preplatek_rate_czk_m3: float = 35.0
+    bedneni_doprava_czk: Optional[float] = None
+    bedneni_ztracene_dily_czk: Optional[float] = None
+    chemie_najezd_myti_czk: Optional[float] = None
+
+
+@router.post("/tools/pump")
+async def rest_pump(
+    body: PumpRequest,
+    authorization: Optional[str] = Header(None),
+):
+    """Calculate TOV concrete pump cost (5 credits)."""
+    api_key = _extract_bearer(authorization)
+    credit_check = mcp_auth.check_credits(api_key or "", "calculate_pump")
+    if not credit_check["ok"]:
+        raise HTTPException(status_code=402, detail=credit_check["error"])
+
+    from app.mcp.tools.calculator import calculate_pump
+    return await calculate_pump(**body.model_dump())
 
 
 class BreakdownElement(BaseModel):

@@ -43,6 +43,7 @@ TOOL_COSTS = {
     "find_urs_code": 3,
     "get_construction_advisor": 3,
     "calculate_concrete_works": 5,
+    "calculate_pump": 5,
     "parse_construction_budget": 5,
     "analyze_construction_document": 10,
     "create_work_breakdown": 20,

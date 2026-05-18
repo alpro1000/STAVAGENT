@@ -54,13 +54,14 @@ def test_mcp_server_imports():
     assert mcp.name == "STAVAGENT"
 
 
-# ── Test: All 9 tools are registered ────────────────────────────────────────
+# ── Test: All 10 tools are registered ───────────────────────────────────────
 
 EXPECTED_TOOLS = [
     "find_otskp_code",
     "find_urs_code",
     "classify_construction_element",
     "calculate_concrete_works",
+    "calculate_pump",
     "parse_construction_budget",
     "analyze_construction_document",
     "create_work_breakdown",
@@ -70,7 +71,7 @@ EXPECTED_TOOLS = [
 
 
 def test_all_tools_registered(registered_tools):
-    """All 9 MCP tools must be registered."""
+    """All MCP tools must be registered."""
     for tool_name in EXPECTED_TOOLS:
         assert tool_name in registered_tools, (
             f"MCP tool '{tool_name}' is NOT registered. "
@@ -352,6 +353,128 @@ async def test_calculator_no_override_backward_compat(mcp_server):
             f"input.{key} must be None when override not supplied, "
             f"got {inp[key]!r}"
         )
+
+
+# ── Test: Tool 4b — calculate_pump ───────────────────────────────────────────
+
+@pytest.mark.asyncio
+async def test_pump_calculator_basic(mcp_server):
+    """Pump calculator with defaults must return 5 line items + per-m³ + totals
+    matching the TOV formulas for the 266.328 m³ reference case."""
+    result = await mcp_server.call_tool(
+        "calculate_pump",
+        {"volume_m3": 266.328},
+    )
+    data = result.structured_content
+    assert "lines" in data, f"Missing 'lines'. Got: {list(data.keys())}"
+    assert len(data["lines"]) == 5, (
+        "Pump-only call must yield exactly 5 lines (čerpadlo, přistavení, "
+        f"doprava, vibrátor, příplatek). Got {len(data['lines'])}."
+    )
+    names = [line["name"] for line in data["lines"]]
+    assert names == [
+        "Bet. čerpadlo",
+        "Počet přistavení",
+        "Doprava čerpadla",
+        "Ponorný vibrátor",
+        "Příplatek za přečerpaný m³",
+    ], f"Unexpected line names: {names}"
+    # Per-line totals: each is coefficient × volume × rate (or transport_km × rate).
+    totals = {line["name"]: line["total_czk"] for line in data["lines"]}
+    assert abs(totals["Bet. čerpadlo"] - 0.07510 * 266.328 * 2500) < 0.5
+    assert abs(totals["Počet přistavení"] - 0.05864 * 266.328 * 2500) < 0.5
+    assert totals["Doprava čerpadla"] == 4896.0  # 72 km × 68 Kč/km
+    assert abs(totals["Ponorný vibrátor"] - 0.07330 * 266.328 * 50) < 0.5
+    assert abs(totals["Příplatek za přečerpaný m³"] - 1.03 * 266.328 * 35) < 0.5
+    # Subtotals: ~104 520 Kč pump-only, identical with-bednění when no extras.
+    expected_subtotal = sum(totals.values())
+    assert abs(data["subtotal_pump_only_czk"] - expected_subtotal) < 0.5
+    assert data["subtotal_with_bedneni_czk"] == data["subtotal_pump_only_czk"], (
+        "Without bednění inputs, with-bednění subtotal must equal pump-only."
+    )
+    # Per-m³ unit cost echoed correctly
+    assert abs(
+        data["per_m3_czk"] - data["subtotal_pump_only_czk"] / 266.328
+    ) < 0.5
+
+
+@pytest.mark.asyncio
+async def test_pump_calculator_with_bedneni_lines(mcp_server):
+    """When bednění flat-fee inputs are supplied, three extra lines must
+    appear and the with-bednění subtotal must equal pump-only + the fees."""
+    result = await mcp_server.call_tool(
+        "calculate_pump",
+        {
+            "volume_m3": 100.0,
+            "bedneni_doprava_czk": 5000.0,
+            "bedneni_ztracene_dily_czk": 12000.0,
+            "chemie_najezd_myti_czk": 3500.0,
+        },
+    )
+    data = result.structured_content
+    assert len(data["lines"]) == 8, (
+        f"With all 3 bednění inputs supplied, expected 8 lines, got {len(data['lines'])}."
+    )
+    bedneni_lines = [line for line in data["lines"] if line["category"] == "bedneni"]
+    assert len(bedneni_lines) == 3
+    assert {line["name"] for line in bedneni_lines} == {
+        "Doprava bednění",
+        "Bednění ztracené díly",
+        "Chemie nájezd + mytí",
+    }
+    # Subtotals: with-bednění must equal pump-only + extras (20 500 Kč)
+    delta = data["subtotal_with_bedneni_czk"] - data["subtotal_pump_only_czk"]
+    assert abs(delta - (5000.0 + 12000.0 + 3500.0)) < 0.5
+    # Echo verification
+    assert data["input"]["bedneni_doprava_czk"] == 5000.0
+    assert data["input"]["bedneni_ztracene_dily_czk"] == 12000.0
+    assert data["input"]["chemie_najezd_myti_czk"] == 3500.0
+
+
+@pytest.mark.asyncio
+async def test_pump_calculator_rate_overrides(mcp_server):
+    """Custom hourly rates must propagate through to the line totals."""
+    result = await mcp_server.call_tool(
+        "calculate_pump",
+        {
+            "volume_m3": 100.0,
+            "pump_supplier": "Schwing",
+            "cerpadlo_rate_czk_sh": 3000.0,    # 20 % over default
+            "vibrator_rate_czk_sh": 75.0,
+            "transport_km": 50.0,
+            "transport_rate_czk_km": 80.0,
+            "preplatek_rate_czk_m3": 40.0,
+        },
+    )
+    data = result.structured_content
+    totals = {line["name"]: line["total_czk"] for line in data["lines"]}
+    # čerpadlo + přistavení both use cerpadlo rate
+    assert abs(totals["Bet. čerpadlo"] - 0.07510 * 100 * 3000) < 0.5
+    assert abs(totals["Počet přistavení"] - 0.05864 * 100 * 3000) < 0.5
+    assert totals["Doprava čerpadla"] == 50 * 80  # 4000
+    assert abs(totals["Ponorný vibrátor"] - 0.07330 * 100 * 75) < 0.5
+    assert abs(totals["Příplatek za přečerpaný m³"] - 1.03 * 100 * 40) < 0.5
+    assert data["input"]["pump_supplier"] == "Schwing"
+
+
+@pytest.mark.asyncio
+async def test_pump_calculator_zero_volume_error(mcp_server):
+    """volume_m3 ≤ 0 must return a clear error, not crash."""
+    result = await mcp_server.call_tool(
+        "calculate_pump",
+        {"volume_m3": 0.0},
+    )
+    data = result.structured_content
+    assert "error" in data, f"Expected error for volume=0, got: {list(data.keys())}"
+
+
+def test_pump_calculator_credit_cost():
+    """calculate_pump must cost 5 credits in TOOL_COSTS."""
+    from app.mcp import auth as mcp_auth
+    assert mcp_auth.TOOL_COSTS.get("calculate_pump") == 5, (
+        f"Expected calculate_pump to cost 5 credits, "
+        f"got {mcp_auth.TOOL_COSTS.get('calculate_pump')!r}"
+    )
 
 
 # ── Test: Tool 5 — parse_construction_budget ─────────────────────────────────
