@@ -4,6 +4,7 @@ Czech Building Audit System
 """
 import logging
 import os
+import re
 import time
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
@@ -313,12 +314,6 @@ class BareOptionsAllowMiddleware:
             },
         )
         await response(scope, receive, send)
-
-
-# `re` import is hoisted here for `BareOptionsAllowMiddleware`. Keeping
-# it after the class block to avoid moving unrelated import lines at
-# the top of the file.
-import re  # noqa: E402
 
 
 # ── Application lifespan (replaces deprecated @app.on_event decorators) ──────
