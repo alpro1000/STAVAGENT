@@ -1,7 +1,7 @@
 {
   "_schema_version": "1.0",
   "_generated_by": "tools/phase1_items_generator.py",
-  "_generated_at": "2026-05-17",
+  "_generated_at": "2026-05-18",
   "_branch": "claude/rd-jachymov-phase-0b-foundation",
   "_project": "RD Jáchymov Fibichova 733",
   "_target_variant": "B (max detail položkový, ~140 items)",
@@ -516,9 +516,9 @@
       "subkapitola": "Pozední věnec 3.NP",
       "popis": "ŽB pozední věnec 300×250 mm po obvodu nadezdívky 3.NP, beton C25/30 XC1 + výztuž 100 kg/m³",
       "mj": "m³",
-      "mnozstvi": 3.07,
-      "mnozstvi_formula": "0.30 × 0.25 × ~41 m obvod = 3.1",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 2.9,
+      "mnozstvi_formula": "0.30 × 0.25 × obvod 38.7 m (DXF km_R_návrh_tlustá 2 closed polygon area 91.28 m²) = 2.9 m³",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "274321311",
       "urs_alternatives": [
         "274321111",
@@ -526,7 +526,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika dům §4 + ARS pozední věnec po obvodu nadezdívky 3.NP",
+      "source": "TZ statika dům §4 + ARS pozední věnec po obvodu nadezdívky 3.NP + DXF external perimeter 38.70 m",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -535,6 +535,9 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 3.07,
+      "_recalc_reason": "Part 1 inventory 2026-05-17 discovered exact external perimeter 38.70 m from DXF km_R_návrh_tlustá 2 closed polygon (91.28 m² × 6 vrcholů) — replaces prior fallback estimate 4×√104.4 ≈ 41.0 m",
       "id": "260219_dum.HSV2.007"
     },
     {
@@ -545,16 +548,16 @@
       "subkapitola": "Pozední věnec — bednění",
       "popis": "Bednění pozedního věnce systémové oboustranné",
       "mj": "m²",
-      "mnozstvi": 20.4,
-      "mnozstvi_formula": "2 × 0.25 × ~41 = 20.5",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 19.4,
+      "mnozstvi_formula": "2 (oboustranné) × 0.25 m výška × obvod 38.7 m (DXF) = 19.4 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "631311115",
       "urs_alternatives": [
         "631311111"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika dům §4",
+      "source": "TZ statika dům §4 + DXF external perimeter",
       "subdodavatel": "bednici_tesar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -562,6 +565,9 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 20.5,
+      "_recalc_reason": "Same as Pozední věnec 3.NP — perimeter 38.70 m DXF-verified",
       "id": "260219_dum.HSV2.008"
     },
     {
@@ -884,16 +890,16 @@
       "subkapitola": "Nadezdívka 3.NP Porotherm",
       "popis": "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry, výška 2.65 m",
       "mj": "m²",
-      "mnozstvi": 76.05,
-      "mnozstvi_formula": "obvod 41.0 m × výška 2.65 m × 0.7 (sníženo o štíty zachované) = 76.05 m²",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 71.8,
+      "mnozstvi_formula": "obvod 38.7 m (DXF km_R_návrh_tlustá 2) × výška 2.65 m × 0.7 (sníženo o štíty zachované — řadovka) = 71.8 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "311321411",
       "urs_alternatives": [
         "311321321"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ statika dům §4 + ARS — nástavba 3.NP",
+      "source": "TZ statika dům §4 + ARS — nástavba 3.NP + DXF external perimeter 38.70 m",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -901,8 +907,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.002",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 76.05,
+      "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback estimate 41.0 m",
+      "id": "260219_dum.HSV3.002"
     },
     {
       "objekt": "260219_dum",
@@ -1220,22 +1228,21 @@
       "popis": "Trapézový plech 40S/160 tl. 0.75 mm — dodávka + montáž na stropnice IPE180",
       "mj": "m²",
       "mnozstvi": 104.4,
-      "mnozstvi_formula": "= zastavěná plocha 104.4 m² (TZ B m.1.j)",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi_formula": "= zastavěna plocha 104.4 m² (celý strop 2.NP/3.NP)",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "411321414",
       "urs_alternatives": [
         "764121511"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ statika dům §4 — trapéz 40S/160 nad IPE180",
+      "source": "TZ statika dům §4 — trapéz 40S/160 nad IPE180",
       "subdodavatel": "ocelobeton_strop_IPE_trapez",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.005",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "id": "260219_dum.HSV4.005"
     },
     {
       "objekt": "260219_dum",
@@ -1246,22 +1253,21 @@
       "popis": "Protipožární SDK podhled pod trapézovým plechem (EI 30 dle PBŘ — ocelobeton + SDK)",
       "mj": "m²",
       "mnozstvi": 104.4,
-      "mnozstvi_formula": "= zastavěná plocha 104.4 m² (TZ B m.1.j)",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi_formula": "= plocha trapézu 104.4 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "342213131",
       "urs_alternatives": [
         "763121521"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ PBŘ + statika §4 — ochrana ocelobetonu",
+      "source": "TZ PBŘ + statika §4 — ochrana ocelobetonu",
       "subdodavatel": "sadrokartonar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.006",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "id": "260219_dum.HSV4.006"
     },
     {
       "objekt": "260219_dum",
@@ -1371,16 +1377,16 @@
       "subkapitola": "Strop 1.NP/2.NP — minerální vata mezi trámy",
       "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 60/180)",
       "mj": "m²",
-      "mnozstvi": 59.5,
-      "mnozstvi_formula": "1.NP plocha (návrh) = 59.5 m² (DXF tabulka místností — strop 1.NP/2.NP)",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 100.0,
+      "mnozstvi_formula": "= plocha stropu",
+      "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "713121121",
       "urs_alternatives": [
         "713141121"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — minerální vata mezi trámy + protipož. SDK zespodu",
+      "source": "TZ ARS dům §4 — minerální vata mezi trámy + protipož. SDK zespodu",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -1388,8 +1394,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.011",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "id": "260219_dum.HSV4.011"
     },
     {
       "objekt": "260219_dum",
@@ -1682,7 +1687,7 @@
       "subkapitola": "Pozednice 140/160",
       "popis": "Tesařský krov — pozednice 140/160 mm kotvená do ŽB věnce 3.NP",
       "mj": "bm",
-      "mnozstvi": 20.4,
+      "mnozstvi": 19.4,
       "mnozstvi_formula": "polovina obvodu (2 dlouhé strany) = ~20",
       "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "762331923",
@@ -2356,16 +2361,16 @@
       "subkapitola": "Příprava podkladu",
       "popis": "Příprava fasádního podkladu — očištění tlakovou vodou, vyspravení omítek, fungicidní nátěr",
       "mj": "m²",
-      "mnozstvi": 293.15,
-      "mnozstvi_formula": "= ETICS plocha = 293.15 m²",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 276.7,
+      "mnozstvi_formula": "obvod 38.7 m (DXF) × 0.55 (volná fasáda, štíty zachované) × výška 13.0 m = 276.7 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622401110",
       "urs_alternatives": [
         "622201001"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — ETICS kontaktní, podklad existující omítka",
+      "source": "TZ ARS dům §3.2 — ETICS kontaktní, podklad existující omítka + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2373,8 +2378,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.001",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 293.15,
+      "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
+      "id": "260219_dum.HSV7.001"
     },
     {
       "objekt": "260219_dum",
@@ -2384,16 +2391,16 @@
       "subkapitola": "ETICS EPS 70F grey 200 mm",
       "popis": "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 max tl. 200 mm + síťka + lepidlo + zatírací stěrka",
       "mj": "m²",
-      "mnozstvi": 293.15,
-      "mnozstvi_formula": "obvod 41.0 m × 0.55 (volná fasáda, štíty zachované) × 13.0 m výška = 293.15 m²",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 276.7,
+      "mnozstvi_formula": "obvod 38.7 m × 0.55 × 13.0 m = 276.7 m² (PBŘ: tl. max 200 mm vyhovuje h ≤ 12.0 m)",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622221121",
       "urs_alternatives": [
         "622221001"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 + PBŘ — EPS 70F grey 200 mm (h≤12m povoleno)",
+      "source": "TZ ARS dům §3.2 EXPLICIT 'fasádní EPS 70f grey (λ=0,032 W/mK)' + PBŘ EXPLICIT 'EPS tl. max. 200 mm' + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2401,8 +2408,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.002",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_plus_tz_explicit",
+      "_previous_mnozstvi": 293.15,
+      "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
+      "id": "260219_dum.HSV7.002"
     },
     {
       "objekt": "260219_dum",
@@ -2412,23 +2421,25 @@
       "subkapitola": "ETICS sokl XPS",
       "popis": "ETICS sokl — XPS λ=0.034 tl. 120 mm + soklový profil + cihelný obklad spárovaný",
       "mj": "m²",
-      "mnozstvi": 14.35,
-      "mnozstvi_formula": "obvod 41.0 m × 0.5 m výška sokl × 0.7 (řadovka) = 14.35 m²",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 13.5,
+      "mnozstvi_formula": "obvod 38.7 m × 0.5 m výška sokl × 0.7 (řadovka) = 13.5 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622223111",
       "urs_alternatives": [
         "622223121"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — sokl XPS + cihelný obklad",
+      "source": "TZ ARS dům §3.2 — sokl XPS + cihelný obklad + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.003",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 14.35,
+      "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
+      "id": "260219_dum.HSV7.003"
     },
     {
       "objekt": "260219_dum",
@@ -2436,18 +2447,18 @@
       "_gate": "HSV",
       "kapitola": "HSV-7 Fasáda ETICS",
       "subkapitola": "Špalety EPS",
-      "popis": "Špalety oken — EPS přesah 35-40 mm + síťka + omítka (cca 10 oken × obvod ~5 m špalety)",
+      "popis": "Špalety oken — EPS přesah 35-40 mm + síťka + omítka",
       "mj": "bm",
-      "mnozstvi": 80.0,
-      "mnozstvi_formula": "16 oken (DXF) × průměr 5 m obvod špalety = 80.0 bm",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 82.2,
+      "mnozstvi_formula": "Σ per-typ okno 16 ks × per-window perimeter (2×(W+H)) z DXF bbox = 82.2 bm",
+      "mnozstvi_confidence": 0.99,
       "urs_code_proposed": "622221221",
       "urs_alternatives": [
         "622221111"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — EPS přesah na špaletách 35-40 mm",
+      "source": "DXF okna per typ bbox + TZ ARS §3.2 EPS přesah na špaletách 35-40 mm",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2455,8 +2466,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.004",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 80.0,
+      "_recalc_reason": "Per-window perimeter from DXF block bbox replaces prior estimate 10 okna × 5 m = 50 bm and Comprehensive 16 okna × 5 m = 80 bm; now exact 2×(W+H) per typ",
+      "id": "260219_dum.HSV7.004"
     },
     {
       "objekt": "260219_dum",
@@ -2475,7 +2488,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — profilace různými tl. EPS",
+      "source": "TZ ARS dům §3.2 — profilace různými tl. EPS",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -2491,23 +2504,25 @@
       "subkapitola": "Tenkovrstvá omítka pastovitá",
       "popis": "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ — finální vrstva ETICS",
       "mj": "m²",
-      "mnozstvi": 307.55,
-      "mnozstvi_formula": "ETICS 293.15 m² + sokl 14.4 m² = 307.55 m²",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 290.2,
+      "mnozstvi_formula": "ETICS plocha 276.7 m² + sokl 13.5 m² = 290.2 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622521111",
       "urs_alternatives": [
         "622511111"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — pastovitá probarvená lomená bílá",
+      "source": "TZ ARS dům §3.2 — pastovitá probarvená lomená bílá + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.006",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 307.55,
+      "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
+      "id": "260219_dum.HSV7.006"
     },
     {
       "objekt": "260219_dum",
@@ -2598,9 +2613,9 @@
       "subkapitola": "Podlahový EPS 150",
       "popis": "Podlahový EPS 150 λ=0.035 tl. 120 mm — pod betonový potěr 1.NP a 3.NP",
       "mj": "m²",
-      "mnozstvi": 124.0,
-      "mnozstvi_formula": "1.NP plocha 59.5 m² + 3.NP plocha 64.5 m² = 124.0 m²",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 177.5,
+      "mnozstvi_formula": "(rozsah 1.NP 73 m²) + (3.NP nadstavba 104 m²) = ~177 m²",
+      "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "713141121",
       "urs_alternatives": [
         "713141111",
@@ -2608,7 +2623,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm",
+      "source": "TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2616,8 +2631,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.001",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "id": "260219_dum.PSV71.001"
     },
     {
       "objekt": "260219_dum",
@@ -2649,12 +2663,12 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-76 Výplně otvorů",
-      "subkapitola": "Plastová okna trojsklo — uliční",
-      "popis": "Plastová okna izolačním trojsklem Uw=0.85 W/m²K — uliční fasáda Fibichova (9 ks)",
+      "subkapitola": "Plastové okno trojsklo — 'okno 1.NP' (ulice)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 1.NP' velikost 1185×1600 mm × 2 ks (fasáda ulice)",
       "mj": "ks",
-      "mnozstvi": 9,
-      "mnozstvi_formula": "DXF dum_DPZ INSERT block count: okno 1.NP (2) + okno 2.NP (4) + okno 3.NP (3) = 9",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi": 2,
+      "mnozstvi_formula": "DXF INSERT block name 'okno 1.NP' count = 2 ks × bbox 1185×1600 mm = 3.8 m² fasády",
+      "mnozstvi_confidence": 0.99,
       "urs_code_proposed": "766621011",
       "urs_alternatives": [
         "766629011",
@@ -2662,7 +2676,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF dum_DPZ INSERT blocks 'okno 1.NP'/'okno 2.NP'/'okno 3.NP' + TZ ARS Uw=0.85",
+      "source": "DXF dum_DPZ INSERT block 'okno 1.NP' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
       "subdodavatel": "okennar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2670,6 +2684,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
       "id": "260219_dum.PSV76.001"
     },
     {
@@ -2677,12 +2696,12 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-76 Výplně otvorů",
-      "subkapitola": "Plastová okna trojsklo — dvorní",
-      "popis": "Plastová okna trojsklo Uw=0.85 — dvorní fasáda zahrada (7 ks bez žaluzií)",
+      "subkapitola": "Plastové okno trojsklo — 'okno 1.NP vzadu' (zahrada)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 1.NP vzadu' velikost 920×1600 mm × 3 ks (fasáda zahrada)",
       "mj": "ks",
-      "mnozstvi": 7,
-      "mnozstvi_formula": "DXF dum_DPZ INSERT block count: okno 1.NP vzadu (3) + okno malé vzadu (2) + okno 3.NP vzadu (1) + okno male 3.NP vzadu (1) = 7",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi": 3,
+      "mnozstvi_formula": "DXF INSERT block name 'okno 1.NP vzadu' count = 3 ks × bbox 920×1600 mm = 4.41 m² fasády",
+      "mnozstvi_confidence": 0.99,
       "urs_code_proposed": "766621011",
       "urs_alternatives": [
         "766629011",
@@ -2690,7 +2709,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF dum_DPZ INSERT blocks '... vzadu' + TZ ARS — okna bez žaluzií na dvorní fasádě",
+      "source": "DXF dum_DPZ INSERT block 'okno 1.NP vzadu' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
       "subdodavatel": "okennar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2698,7 +2717,177 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
       "id": "260219_dum.PSV76.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "subkapitola": "Plastové okno trojsklo — 'okno 2.NP' (ulice)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 2.NP' velikost 1160×1480 mm × 4 ks (fasáda ulice)",
+      "mj": "ks",
+      "mnozstvi": 4,
+      "mnozstvi_formula": "DXF INSERT block name 'okno 2.NP' count = 4 ks × bbox 1160×1480 mm = 6.88 m² fasády",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "766621011",
+      "urs_alternatives": [
+        "766629011",
+        "766629111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT block 'okno 2.NP' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
+      "subdodavatel": "okennar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
+      "id": "260219_dum.PSV76.003"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "subkapitola": "Plastové okno trojsklo — 'okno 3.NP' (ulice)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 3.NP' velikost 1785×1241 mm × 3 ks (fasáda ulice)",
+      "mj": "ks",
+      "mnozstvi": 3,
+      "mnozstvi_formula": "DXF INSERT block name 'okno 3.NP' count = 3 ks × bbox 1785×1241 mm = 6.66 m² fasády",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "766621011",
+      "urs_alternatives": [
+        "766629011",
+        "766629111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT block 'okno 3.NP' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
+      "subdodavatel": "okennar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
+      "id": "260219_dum.PSV76.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "subkapitola": "Plastové okno trojsklo — 'okno 3.NP vzadu' (zahrada)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 3.NP vzadu' velikost 2075×1241 mm × 1 ks (fasáda zahrada)",
+      "mj": "ks",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "DXF INSERT block name 'okno 3.NP vzadu' count = 1 ks × bbox 2075×1241 mm = 2.57 m² fasády",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "766621011",
+      "urs_alternatives": [
+        "766629011",
+        "766629111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT block 'okno 3.NP vzadu' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
+      "subdodavatel": "okennar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
+      "id": "260219_dum.PSV76.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "subkapitola": "Plastové okno trojsklo — 'okno male 3.NP vzadu' (zahrada)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno male 3.NP vzadu' velikost 800×1241 mm × 1 ks (fasáda zahrada)",
+      "mj": "ks",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "DXF INSERT block name 'okno male 3.NP vzadu' count = 1 ks × bbox 800×1241 mm = 0.99 m² fasády",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "766621011",
+      "urs_alternatives": [
+        "766629011",
+        "766629111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT block 'okno male 3.NP vzadu' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
+      "subdodavatel": "okennar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
+      "id": "260219_dum.PSV76.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "subkapitola": "Plastové okno trojsklo — 'okno malé vzadu' (zahrada)",
+      "popis": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno malé vzadu' velikost 700×800 mm × 2 ks (fasáda zahrada)",
+      "mj": "ks",
+      "mnozstvi": 2,
+      "mnozstvi_formula": "DXF INSERT block name 'okno malé vzadu' count = 2 ks × bbox 700×800 mm = 1.12 m² fasády",
+      "mnozstvi_confidence": 0.99,
+      "urs_code_proposed": "766621011",
+      "urs_alternatives": [
+        "766629011",
+        "766629111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT block 'okno malé vzadu' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
+      "subdodavatel": "okennar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        5
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_expansion_origin": [
+        "260219_dum.PSV76.001_aggregate_ulicni",
+        "260219_dum.PSV76.002_aggregate_dvorni"
+      ],
+      "id": "260219_dum.PSV76.007"
     },
     {
       "objekt": "260219_dum",
@@ -2709,7 +2898,7 @@
       "popis": "Integrované stínící venkovní žaluzie v kastlíku pod omítkou s purenitovou izolací — uliční fasáda Fibichova (9 ks)",
       "mj": "ks",
       "mnozstvi": 9,
-      "mnozstvi_formula": "= počet uličních oken 9",
+      "mnozstvi_formula": "Σ uličních oken (block names bez 'vzadu' = okno 1.NP 2 + okno 2.NP 4 + okno 3.NP 3) = 9 ks",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "766631211",
       "urs_alternatives": [
@@ -2718,15 +2907,16 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'",
+      "source": "TZ ARS dům §3.2 — 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'",
       "subdodavatel": "okenni_zaluzie_kastlik_purenit",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         5
       ],
-      "status_flag": "needs_subdod_mapping",
-      "notes": "Subdod 'okenni_zaluzie_kastlik_purenit' není v Libuše schema ani v current mapping. Hybrid trade: okenář + ETICS specialista + purenit dodávka. FLAG pro batch mapping update po Phase 1.",
-      "id": "260219_dum.PSV76.003"
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "id": "260219_dum.PSV76.008"
     },
     {
       "objekt": "260219_dum",
@@ -2752,7 +2942,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.004"
+      "id": "260219_dum.PSV76.009"
     },
     {
       "objekt": "260219_dum",
@@ -2780,7 +2970,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.005"
+      "id": "260219_dum.PSV76.010"
     },
     {
       "objekt": "260219_dum",
@@ -2790,7 +2980,7 @@
       "subkapitola": "Oplechování krytiny",
       "popis": "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Pzn lakovaný 0.55 mm)",
       "mj": "bm",
-      "mnozstvi": 46.5,
+      "mnozstvi": 45.3,
       "mnozstvi_formula": "obvod střechy ~22 + 4 vikýře × 6 m okrajových lemů = 46",
       "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "764312235",
@@ -3045,18 +3235,19 @@
       "_gate": "PSV",
       "kapitola": "PSV-77 Podlahy",
       "subkapitola": "Nášlap vinyl obytné místnosti",
-      "popis": "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, obývák, chodby)",
+      "popis": "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, obývák, kuchyně, chodby)",
       "mj": "m²",
-      "mnozstvi": 115.4,
-      "mnozstvi_formula": "Σ obytných místností (vinyl třída) z DXF tabulky místností = 115.4 m²",
+      "mnozstvi": 171.5,
+      "mnozstvi_formula": "1.01=12.4 + 1.02=3.6 + 1.06=24.0 + 1.07=9.4 + 1.08=3.8 + 2.01=7.3 + 2.02=5.9 + 2.04=15.5 + 2.05=14.1 + 2.06=15.8 + 3.01=7.6 + 3.02=4.1 + 3.03=2.4 + 3.05=32.8 + 3.06=12.8 = 171.5 m²",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "776511820",
       "urs_alternatives": [
-        "776521820"
+        "776521820",
+        "776521810"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 + DXF MTEXT room labels (2× kuchyně, 3× koupelna, 7× chodba)",
+      "source": "DXF km_tabulka místností MTEXT (návrh) — rooms classified per name (kuchyně/obytná/chodba = vinyl) + TZ ARS §3.2.4 nášlapná vrstva",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3064,36 +3255,105 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.001",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_room_ids": [
+        "1.01",
+        "1.02",
+        "1.06",
+        "1.07",
+        "1.08",
+        "2.01",
+        "2.02",
+        "2.04",
+        "2.05",
+        "2.06",
+        "3.01",
+        "3.02",
+        "3.03",
+        "3.05",
+        "3.06"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV77.001_aggregate"
+      ],
+      "id": "260219_dum.PSV77.001"
     },
     {
       "objekt": "260219_dum",
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-77 Podlahy",
-      "subkapitola": "Nášlap keramická dlažba",
-      "popis": "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + kuchyně + spíž + technic 1.PP",
+      "subkapitola": "Nášlap keramická dlažba — mokré zóny",
+      "popis": "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + spíž + komora (NÁDRŽ NP)",
       "mj": "m²",
-      "mnozstvi": 102.1,
-      "mnozstvi_formula": "dlažba (69.7 m²) + dlažba 1.PP technic (32.4 m²) = 102.1 m² mokrých zón",
+      "mnozstvi": 13.5,
+      "mnozstvi_formula": "1.03=0.7 + 1.04=1.5 + 1.05=4.1 + 2.03=2.4 + 3.04=4.8 = 13.5 m²",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "771274102",
       "urs_alternatives": [
-        "771274107"
+        "771274107",
+        "771271101"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 + DXF MTEXT room labels",
-      "subdodavatel": "podlahar",
+      "source": "DXF km_tabulka místností MTEXT (návrh) — rooms classified per name (koupelna/WC/spíž = dlažba mokré) + TZ ARS skladba mokrá",
+      "subdodavatel": "obkladac",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         4
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.002",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "_room_ids": [
+        "1.03",
+        "1.04",
+        "1.05",
+        "2.03",
+        "3.04"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV77.002_aggregate"
+      ],
+      "id": "260219_dum.PSV77.002"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-77 Podlahy",
+      "subkapitola": "Nášlap keramická dlažba — 1.PP sklep",
+      "popis": "Nášlapná vrstva keramická dlažba — 1.PP technické místnosti (sušárna + sklepy + schodiště + chodba)",
+      "mj": "m²",
+      "mnozstvi": 32.4,
+      "mnozstvi_formula": "0.01=3.5 + 0.02=4.4 + 0.03=22.2 + 0.04=2.3 = 32.4 m²",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "771274102",
+      "urs_alternatives": [
+        "771274107",
+        "771271101"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF km_tabulka místností MTEXT (návrh) — 1.PP all rooms = dlažba sklep zone",
+      "subdodavatel": "obkladac",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        4
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_room_ids": [
+        "0.01",
+        "0.02",
+        "0.03",
+        "0.04"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV77.002_aggregate"
+      ],
+      "id": "260219_dum.PSV77.003"
     },
     {
       "objekt": "260219_dum",
@@ -3104,7 +3364,7 @@
       "popis": "Nášlapná vrstva biodeska (smrk masiv) nebo OSB v 3.NP spací části nad krovem",
       "mj": "m²",
       "mnozstvi": 25.0,
-      "mnozstvi_formula": "TZ ARS — patro nad kleštinami z biodesky ~5×5m. NEPOUŽITELNÉ DXF (PLOT_DREVENY_04=0 v dum_DPZ)",
+      "mnozstvi_formula": "TZ ARS dům §3.2.3 — 'patro pro přespání z biodesky nad kleštinami'; DXF dum_DPZ NEMÁ samostatnou místnost s biodeska klasifikací (PLOT_DREVENY_04=0 v dum_DPZ, ten block je terasa v situaci). Fallback TZ.",
       "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "766411111",
       "urs_alternatives": [
@@ -3112,15 +3372,16 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — patro pro přespání z biodesky",
+      "source": "TZ ARS dům §3.2.3 — biodeska patro pro přespání",
       "subdodavatel": "biodeska_konstrukcni",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
         3
       ],
-      "status_flag": "needs_subdod_mapping",
-      "notes": "Subdod 'biodeska_konstrukcni' není v current mapping. Pseudo-hybrid mezi truhlář a krov_tesarsky_kompletni. FLAG pro batch mapping update.",
-      "id": "260219_dum.PSV77.003"
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "tz_explicit_fallback_dxf_data_missing",
+      "id": "260219_dum.PSV77.004"
     },
     {
       "objekt": "260219_dum",
@@ -3130,16 +3391,16 @@
       "subkapitola": "Betonový potěr s kari nad EPS",
       "popis": "Mokrá podlahová skladba — betonový potěr s kari síťkou 4/100/100 tl. 50 mm + samonivelační stěrka",
       "mj": "m²",
-      "mnozstvi": 185.1,
-      "mnozstvi_formula": "vinyl 115.4 m² + dlažba 69.7 m² = 185.1 m² (mokré skladby kde se klade nový potěr; 1.PP technic vyňato — beton ponechán)",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 126.4,
+      "mnozstvi_formula": "vinyl 1.NP+3.NP + dlažba mokré (vyňato 2.NP suchá skladba) = 126.4 m²",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "631321311",
       "urs_alternatives": [
         "631321411"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — betonový potěr s kari + samonivelační stěrka",
+      "source": "TZ ARS dům §3.2.4 + §3.2.x — 'kročejová izolace + betonový potěr s kari sítí'; DXF rooms areas",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3147,72 +3408,105 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.004",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_deterministic",
+      "id": "260219_dum.PSV77.005"
     },
     {
       "objekt": "260219_dum",
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-77 Podlahy",
-      "subkapitola": "Soklíky podlah",
-      "popis": "Soklíky podlahové laminátové (dub) v obytných místnostech",
+      "subkapitola": "Soklíky vinyl",
+      "popis": "Soklíky podlahové laminátové (dub) v obytných místnostech s vinyl podlahou",
       "mj": "bm",
-      "mnozstvi": 48.47,
-      "mnozstvi_formula": "vinyl plocha 115.4 m² × 0.42 m soklíku/m² (typ. poměr obvod/plocha RD místnost) = 48.47 bm",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 72.03,
+      "mnozstvi_formula": "vinyl plocha 171.5 m² × 0.42 m soklíku/m² (typ. obvod/plocha ratio v Czech RD místnosti) = 72.03 bm",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "776511831",
       "urs_alternatives": [
         "776511820"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS — laminátové soklíky standard RD",
+      "source": "DXF rooms vinyl + standard ratio per RD geometry",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV77.005",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "_data_quality": "dxf_perimeter_ratio_estimate",
+      "_room_ids": [
+        "1.01",
+        "1.02",
+        "1.06",
+        "1.07",
+        "1.08",
+        "2.01",
+        "2.02",
+        "2.04",
+        "2.05",
+        "2.06",
+        "3.01",
+        "3.02",
+        "3.03",
+        "3.05",
+        "3.06"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV77.005_aggregate"
+      ],
+      "id": "260219_dum.PSV77.006"
     },
     {
       "objekt": "260219_dum",
       "kapitola_group": "PSV",
       "_gate": "PSV",
-      "kapitola": "PSV-78 Povrchové úpravy",
-      "subkapitola": "Vyspravení stávajících stěn",
-      "popis": "Vyspravení stávajících cihelných stěn — cementová stěrka + výztužná síťka + tenkovrstvá štuková omítka",
-      "mj": "m²",
-      "mnozstvi": 328.9,
-      "mnozstvi_formula": "interier_celkem (548.2) × 0.6 (stávající stěny po bourání) = ~329",
-      "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "612301351",
+      "kapitola": "PSV-77 Podlahy",
+      "subkapitola": "Soklíky keramické",
+      "popis": "Soklíky keramické v místnostech s dlažbou (koupelny + WC + spíž + 1.PP)",
+      "mj": "bm",
+      "mnozstvi": 19.28,
+      "mnozstvi_formula": "(dlažba mokré 13.5 + dlažba sklep 32.4) × 0.42 m soklíku/m² = 19.28 bm",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "771274107",
       "urs_alternatives": [
-        "612311311"
+        "771274102"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §3 — vyspravení stávajícího zdiva po nových otvorech",
-      "subdodavatel": "zednik",
+      "source": "DXF rooms dlažba + standard ratio per RD geometry",
+      "subdodavatel": "obkladac",
       "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [
-        3
-      ],
+      "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV78.001"
+      "_data_quality": "dxf_perimeter_ratio_estimate",
+      "_room_ids": [
+        "0.01",
+        "0.02",
+        "0.03",
+        "0.04",
+        "1.03",
+        "1.04",
+        "1.05",
+        "2.03",
+        "3.04"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV77.005_aggregate"
+      ],
+      "id": "260219_dum.PSV77.007"
     },
     {
       "objekt": "260219_dum",
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
-      "subkapitola": "Nové zděné stěny — omítka",
-      "popis": "Nové zděné stěny (Porotherm 30, nadezdívka 3.NP) — vápenocementová jádrová omítka tl. 15 mm + štuk",
+      "subkapitola": "Omítka jádrová + štuk 1.PP",
+      "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1.PP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 219.3,
-      "mnozstvi_formula": "interier × 0.4 (nové zdivo 3.NP + příčky) = ~219",
+      "mnozstvi": 94.4,
+      "mnozstvi_formula": "Σ obvodů rooms 1.PP (0.01=3.5m²→7.64m, 0.02=4.4m²→8.56m, 0.03=22.2m²→19.24m, 0.04=2.3m²→6.19m) = 41.63 m × výška 2.5 m = 104.1 m² stěn; − okna 6.61 − dveře 3.1 = 94.4 m²",
       "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "612311311",
       "urs_alternatives": [
@@ -3220,12 +3514,67 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — nové zděné stěny",
+      "source": "DXF rooms 1.PP obvod + výška podlaží 2.5 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [],
+      "vyjasneni_ref": [
+        3
+      ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_room_ids": [
+        "0.01",
+        "0.02",
+        "0.03",
+        "0.04"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.001_vyspraveni_agg",
+        "260219_dum.PSV78.002_nove_omitka_agg"
+      ],
+      "id": "260219_dum.PSV78.001"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Omítka jádrová + štuk 1.NP",
+      "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1.NP (stávající vyspravené + nové zděné)",
+      "mj": "m²",
+      "mnozstvi": 208.7,
+      "mnozstvi_formula": "Σ obvodů rooms 1.NP (1.01=12.4m²→14.38m, 1.02=3.6m²→7.75m, 1.03=0.7m²→3.42m, 1.04=1.5m²→5.0m, 1.05=4.1m²→8.27m, 1.06=24.0m²→20.0m, 1.07=9.4m²→12.52m, 1.08=3.8m²→7.96m) = 79.3 m × výška 2.8 m = 222.0 m² stěn; − okna 6.61 − dveře 6.7 = 208.7 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "612311311",
+      "urs_alternatives": [
+        "612301351"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF rooms 1.NP obvod + výška podlaží 2.8 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        3
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_room_ids": [
+        "1.01",
+        "1.02",
+        "1.03",
+        "1.04",
+        "1.05",
+        "1.06",
+        "1.07",
+        "1.08"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.001_vyspraveni_agg",
+        "260219_dum.PSV78.002_nove_omitka_agg"
+      ],
       "id": "260219_dum.PSV78.002"
     },
     {
@@ -3233,24 +3582,39 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
-      "subkapitola": "SDK podhledy + předstěny — tmelení",
-      "popis": "SDK podhledy a předstěny — tmelení spojů + povrchová úprava před výmalbou (Q3 standard)",
+      "subkapitola": "Omítka jádrová + štuk 2.NP",
+      "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 2.NP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 156.6,
-      "mnozstvi_formula": "= cca 1.5× zastavěná pro celý SDK (podhledy + některé předstěny)",
+      "mnozstvi": 196.8,
+      "mnozstvi_formula": "Σ obvodů rooms 2.NP (2.01=7.3m²→11.03m, 2.02=5.9m²→9.92m, 2.03=2.4m²→6.32m, 2.04=15.5m²→16.07m, 2.05=14.1m²→15.33m, 2.06=15.8m²→16.23m) = 74.9 m × výška 2.8 m = 209.7 m² stěn; − okna 6.61 − dveře 6.3 = 196.8 m²",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "612471141",
+      "urs_code_proposed": "612311311",
       "urs_alternatives": [
-        "763121521"
+        "612301351"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS + PBŘ — SDK podhledy ocelobeton + trámový strop",
-      "subdodavatel": "sadrokartonar",
+      "source": "DXF rooms 2.NP obvod + výška podlaží 2.8 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [],
+      "vyjasneni_ref": [
+        3
+      ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_room_ids": [
+        "2.01",
+        "2.02",
+        "2.03",
+        "2.04",
+        "2.05",
+        "2.06"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.001_vyspraveni_agg",
+        "260219_dum.PSV78.002_nove_omitka_agg"
+      ],
       "id": "260219_dum.PSV78.003"
     },
     {
@@ -3258,24 +3622,39 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
-      "subkapitola": "Keramický obklad koupelny + WC",
-      "popis": "Keramický obklad koupelny + WC + sprchové kouty — 3 koupelny, výška 2.0 m",
+      "subkapitola": "Omítka jádrová + štuk 3.NP",
+      "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 3.NP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 60.0,
-      "mnozstvi_formula": "3 koupelny × ~20 m² obkladu (obvod 10 m × 2 m výška) = 60",
-      "mnozstvi_confidence": 0.95,
-      "urs_code_proposed": "781447001",
+      "mnozstvi": 180.4,
+      "mnozstvi_formula": "Σ obvodů rooms 3.NP (3.01=7.6m²→11.25m, 3.02=4.1m²→8.27m, 3.03=2.4m²→6.32m, 3.04=4.8m²→8.94m, 3.05=32.8m²→23.38m, 3.06=12.8m²→14.61m) = 72.77 m × výška 2.65 m = 192.8 m² stěn; − okna 6.61 − dveře 5.8 = 180.4 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "612311311",
       "urs_alternatives": [
-        "781447003"
+        "612301351"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF dum_DPZ 3× koupelna MTEXT + TZ ARS",
-      "subdodavatel": "obkladac",
+      "source": "DXF rooms 3.NP obvod + výška podlaží 2.65 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [],
+      "vyjasneni_ref": [
+        3
+      ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_room_ids": [
+        "3.01",
+        "3.02",
+        "3.03",
+        "3.04",
+        "3.05",
+        "3.06"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.001_vyspraveni_agg",
+        "260219_dum.PSV78.002_nove_omitka_agg"
+      ],
       "id": "260219_dum.PSV78.004"
     },
     {
@@ -3283,11 +3662,220 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "SDK podhled — tmelení + úprava 1.NP",
+      "popis": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou (1.NP)",
+      "mj": "m²",
+      "mnozstvi": 59.5,
+      "mnozstvi_formula": "1.01=12.4 + 1.02=3.6 + 1.03=0.7 + 1.04=1.5 + 1.05=4.1 + 1.06=24.0 + 1.07=9.4 + 1.08=3.8 = 59.5 m²",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "612471141",
+      "urs_alternatives": [
+        "763121521"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF km_tabulka místností MTEXT — plocha 1.NP = plocha podhledu (flat ceiling assumption)",
+      "subdodavatel": "sadrokartonar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_room_ids": [
+        "1.01",
+        "1.02",
+        "1.03",
+        "1.04",
+        "1.05",
+        "1.06",
+        "1.07",
+        "1.08"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.003_sdk_aggregate"
+      ],
+      "id": "260219_dum.PSV78.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "SDK podhled — tmelení + úprava 2.NP",
+      "popis": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou (2.NP)",
+      "mj": "m²",
+      "mnozstvi": 61.1,
+      "mnozstvi_formula": "2.01=7.3 + 2.02=5.9 + 2.03=2.4 + 2.04=15.5 + 2.05=14.1 + 2.06=15.8 = 61.1 m²",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "612471141",
+      "urs_alternatives": [
+        "763121521"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF km_tabulka místností MTEXT — plocha 2.NP = plocha podhledu (flat ceiling assumption)",
+      "subdodavatel": "sadrokartonar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_room_ids": [
+        "2.01",
+        "2.02",
+        "2.03",
+        "2.04",
+        "2.05",
+        "2.06"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.003_sdk_aggregate"
+      ],
+      "id": "260219_dum.PSV78.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "SDK podhled — tmelení + úprava 3.NP",
+      "popis": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou (3.NP)",
+      "mj": "m²",
+      "mnozstvi": 64.5,
+      "mnozstvi_formula": "3.01=7.6 + 3.02=4.1 + 3.03=2.4 + 3.04=4.8 + 3.05=32.8 + 3.06=12.8 = 64.5 m²",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "612471141",
+      "urs_alternatives": [
+        "763121521"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF km_tabulka místností MTEXT — plocha 3.NP = plocha podhledu (flat ceiling assumption)",
+      "subdodavatel": "sadrokartonar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_room_ids": [
+        "3.01",
+        "3.02",
+        "3.03",
+        "3.04",
+        "3.05",
+        "3.06"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.003_sdk_aggregate"
+      ],
+      "id": "260219_dum.PSV78.007"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Keramický obklad koupelna 1.05 (1.NP)",
+      "popis": "Keramický obklad stěn koupelny 1.05 1.NP (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+      "mj": "m²",
+      "mnozstvi": 16.8,
+      "mnozstvi_formula": "DXF IP_obrysy místností room 1.05 perimeter 8.4 bm × TZ silent → CSN default obklad výška 2.0 m = 16.8 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "781447001",
+      "urs_alternatives": [
+        "781447003"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF rooms PIP perimeter 1.05 + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+      "subdodavatel": "obkladac",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "DXF perimeter approximate from area 4.1 m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
+      "_data_quality": "tz_silent_fallback_csn_default",
+      "_room_ids": [
+        "1.05"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.004_obklady_koupelen_agg"
+      ],
+      "id": "260219_dum.PSV78.008"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Keramický obklad koupelna 2.03 (2.NP)",
+      "popis": "Keramický obklad stěn koupelny 2.03 2.NP (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+      "mj": "m²",
+      "mnozstvi": 12.4,
+      "mnozstvi_formula": "DXF IP_obrysy místností room 2.03 perimeter 6.2 bm × TZ silent → CSN default obklad výška 2.0 m = 12.4 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "781447001",
+      "urs_alternatives": [
+        "781447003"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF rooms PIP perimeter 2.03 + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+      "subdodavatel": "obkladac",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "DXF perimeter approximate from area 2.4 m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
+      "_data_quality": "tz_silent_fallback_csn_default",
+      "_room_ids": [
+        "2.03"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.004_obklady_koupelen_agg"
+      ],
+      "id": "260219_dum.PSV78.009"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Keramický obklad koupelna 3.04 (3.NP)",
+      "popis": "Keramický obklad stěn koupelny 3.04 3.NP (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+      "mj": "m²",
+      "mnozstvi": 18.0,
+      "mnozstvi_formula": "DXF IP_obrysy místností room 3.04 perimeter 9.0 bm × TZ silent → CSN default obklad výška 2.0 m = 18.0 m²",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "781447001",
+      "urs_alternatives": [
+        "781447003"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF rooms PIP perimeter 3.04 + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+      "subdodavatel": "obkladac",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "DXF perimeter approximate from area 4.8 m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
+      "_data_quality": "tz_silent_fallback_csn_default",
+      "_room_ids": [
+        "3.04"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV78.004_obklady_koupelen_agg"
+      ],
+      "id": "260219_dum.PSV78.010"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-78 Povrchové úpravy",
       "subkapitola": "Obklad za kuchyňskou linkou",
-      "popis": "Keramický obklad za kuchyňskou linkou — 2 kuchyně × ~5 m² obklad nad pracovní deskou",
+      "popis": "Keramický obklad za kuchyňskou linkou nad pracovní deskou — 2 kuchyně × ~5 m² (1.06 byt rodičů + 3.05 byt 3.NP)",
       "mj": "m²",
       "mnozstvi": 10.0,
-      "mnozstvi_formula": "DXF dum_DPZ 2× kuchyně MTEXT × 5 m² obklad za linkou",
+      "mnozstvi_formula": "DXF dum_DPZ 2× kuchyně MTEXT (rooms 1.06 obyt+kuchyně + 3.05 obyt+kuchyně) × 5 m² obklad za linkou = 10 m²",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "781447001",
       "urs_alternatives": [
@@ -3301,7 +3889,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV78.005"
+      "_data_quality": "dxf_plus_tz_explicit",
+      "id": "260219_dum.PSV78.011"
     },
     {
       "objekt": "260219_dum",
@@ -3311,8 +3900,8 @@
       "subkapitola": "Interiérová výmalba",
       "popis": "Interiérová výmalba akrylátová bílá 2× — všechny stěny + podhledy mimo obklad",
       "mj": "m²",
-      "mnozstvi": 634.8,
-      "mnozstvi_formula": "interier_stěny ~548 − obklady 70 + SDK podhledy 157 = ~635",
+      "mnozstvi": 577.9,
+      "mnozstvi_formula": "Σ ploch 1.NP+2.NP+3.NP × 2.5 (stěny per ratio) − obklady 70 + SDK podhledy = ~628 m²",
       "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "784121011",
       "urs_alternatives": [
@@ -3320,13 +3909,14 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS — interiérová výmalba",
+      "source": "TZ ARS — interiérová výmalba (aggregate, no TZ per-room directive)",
       "subdodavatel": "malir",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV78.006"
+      "_data_quality": "tz_only_aggregate",
+      "id": "260219_dum.PSV78.012"
     },
     {
       "objekt": "260219_dum",
@@ -3464,9 +4054,9 @@
       "subkapitola": "Nové rozvody vody do 3.NP",
       "popis": "Nové rozvody studené + teplé vody do koupelen 1.NP + 2.NP + 3.NP a kuchyní (PEX/Cu, dimenze DN15-25)",
       "mj": "bm",
-      "mnozstvi": 61,
-      "mnozstvi_formula": "3 koupelen × 15 bm + 2 kuchyně × 8 bm = 61 bm",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 80.0,
+      "mnozstvi_formula": "3 patra × ~25 bm rozvodů (koupelny + kuchyně + bojler 3.NP) = 75 (round 80)",
+      "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "722172011",
       "urs_alternatives": [
         "722172021",
@@ -3474,7 +4064,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — nové koupelny + kuchyně, vyjasnění #6 working assumption",
+      "source": "TZ ARS dům §4 — nové koupelny + kuchyně, vyjasnění #6 working assumption",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3482,8 +4072,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.002",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "id": "260219_dum.PSV72.002"
     },
     {
       "objekt": "260219_dum",
@@ -3493,16 +4082,16 @@
       "subkapitola": "Nové odpadní rozvody",
       "popis": "Nové odpadní rozvody PVC-HT DN40-DN110 ke koupelnám 1.NP, 2.NP, 3.NP a kuchyním + napojení na stávající",
       "mj": "bm",
-      "mnozstvi": 48,
-      "mnozstvi_formula": "3 koupelen × 12 bm odpadní + 2 kuchyně × 6 bm = 48 bm",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 60.0,
+      "mnozstvi_formula": "3 patra × ~20 bm odpadní + svislé propojení = 60",
+      "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "721174021",
       "urs_alternatives": [
         "721174022"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF comprehensive extraction 2026-05-17 | predchozi: TZ ARS dům §4 — nové koupelny + kuchyně, odpad do stávající kanalizace",
+      "source": "TZ ARS dům §4 — nové koupelny + kuchyně, odpad do stávající kanalizace",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3510,20 +4099,19 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.003",
-      "_dxf_extraction_status": "upgraded_by_comprehensive"
+      "id": "260219_dum.PSV72.003"
     },
     {
       "objekt": "260219_dum",
       "kapitola_group": "PSV",
       "_gate": "TZB",
       "kapitola": "PSV-72 ZTI",
-      "subkapitola": "Sanitární keramika — kompletní set",
-      "popis": "Sanitární keramika dodávka + montáž — 3× WC + 4× umyvadlo + 2× sprchový kout + 1× vana + 2× kuchyňský dřez",
-      "mj": "ks",
-      "mnozstvi": 12,
-      "mnozstvi_formula": "DXF dum_DPZ MTEXT: 3 koupelny + 2 kuchyně. 3 WC + 4 umyvadlo + 2 sprcha + 1 vana + 2 dřez = 12 ks",
-      "mnozstvi_confidence": 0.95,
+      "subkapitola": "Sanitární keramika koupelna 1.05 (1.NP)",
+      "popis": "Sanitární keramika dodávka + montáž v koupelně 1.05 1.NP: 1× vana (DXF) + 1× umyvadlo (DXF) + 1× WC (TZ standard)",
+      "mj": "set",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "DXF INSERT PIP do polygonu 1.05 = ['vana', 'umyvadlo'] (2 fixtures); TZ standard 'koupelna má WC + umyvadlo + sprcha/vana' = ['WC'] (1 fixtures). Total = 3 fixtures jeden set per koupelna.",
+      "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "725291131",
       "urs_alternatives": [
         "725211213",
@@ -3531,7 +4119,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF dum_DPZ MTEXT room labels 3× koupelna + 2× kuchyně; TZ ARS §4 — koupelny 1.NP/2.NP + nová 3.NP",
+      "source": "DXF dum_DPZ INSERT positions PIP do room 1.05 polygon (partial — 4/13 fixtures matched celkem) + TZ ARS § koupelny standard pattern",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3539,7 +4127,112 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_partial_pip_plus_tz_assumption",
+      "_room_ids": [
+        "1.05"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV72.004_sanit_aggregate"
+      ],
       "id": "260219_dum.PSV72.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "TZB",
+      "kapitola": "PSV-72 ZTI",
+      "subkapitola": "Sanitární keramika koupelna 2.03 (2.NP)",
+      "popis": "Sanitární keramika dodávka + montáž v koupelně 2.03 2.NP: 1× umyvadlo (DXF) + 1× WC (TZ standard) + 1× sprcha (TZ standard)",
+      "mj": "set",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "DXF INSERT PIP do polygonu 2.03 = ['umyvadlo'] (1 fixtures); TZ standard 'koupelna má WC + umyvadlo + sprcha/vana' = ['WC', 'sprcha'] (2 fixtures). Total = 3 fixtures jeden set per koupelna.",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "725291131",
+      "urs_alternatives": [
+        "725211213",
+        "725331111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT positions PIP do room 2.03 polygon (partial — 4/13 fixtures matched celkem) + TZ ARS § koupelny standard pattern",
+      "subdodavatel": "vodar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        6
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_partial_pip_plus_tz_assumption",
+      "_room_ids": [
+        "2.03"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV72.004_sanit_aggregate"
+      ],
+      "id": "260219_dum.PSV72.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "TZB",
+      "kapitola": "PSV-72 ZTI",
+      "subkapitola": "Sanitární keramika koupelna 3.04 (3.NP)",
+      "popis": "Sanitární keramika dodávka + montáž v koupelně 3.04 3.NP: 1× WC (DXF) + 1× umyvadlo (TZ standard) + 1× sprcha (TZ standard)",
+      "mj": "set",
+      "mnozstvi": 1,
+      "mnozstvi_formula": "DXF INSERT PIP do polygonu 3.04 = ['WC'] (1 fixtures); TZ standard 'koupelna má WC + umyvadlo + sprcha/vana' = ['umyvadlo', 'sprcha'] (2 fixtures). Total = 3 fixtures jeden set per koupelna.",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "725291131",
+      "urs_alternatives": [
+        "725211213",
+        "725331111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ INSERT positions PIP do room 3.04 polygon (partial — 4/13 fixtures matched celkem) + TZ ARS § koupelny standard pattern",
+      "subdodavatel": "vodar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        6
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_partial_pip_plus_tz_assumption",
+      "_room_ids": [
+        "3.04"
+      ],
+      "_expansion_origin": [
+        "260219_dum.PSV72.004_sanit_aggregate"
+      ],
+      "id": "260219_dum.PSV72.006"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "PSV",
+      "_gate": "TZB",
+      "kapitola": "PSV-72 ZTI",
+      "subkapitola": "Kuchyňský dřez 2 ks (1.06 + 3.05)",
+      "popis": "Kuchyňský dřez nerez + montáž — 2 ks (kuchyně 1.06 byt rodičů + kuchyně 3.05 byt 3.NP)",
+      "mj": "ks",
+      "mnozstvi": 2,
+      "mnozstvi_formula": "DXF rooms 1.06 + 3.05 kuchyně MTEXT (každá obytná místnost + kuchyně) = 2 dřezy",
+      "mnozstvi_confidence": 0.95,
+      "urs_code_proposed": "725840111",
+      "urs_alternatives": [
+        "725840121"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF kuchyně MTEXT 2× + TZ ARS — dispozice byty",
+      "subdodavatel": "vodar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        6
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "id": "260219_dum.PSV72.007"
     },
     {
       "objekt": "260219_dum",
@@ -3566,7 +4259,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.005"
+      "id": "260219_dum.PSV72.008"
     },
     {
       "objekt": "260219_dum",
@@ -3593,7 +4286,7 @@
       ],
       "status_flag": "needs_subdod_mapping",
       "notes": "Subdod 'instalater_TUV_akumulacni_zasobnik' — specialty subset vytápěč+vodař hybrid pro multivariantní topný systém (kamna+krb+kotel). Není v current mapping. FLAG pro batch update.",
-      "id": "260219_dum.PSV72.006"
+      "id": "260219_dum.PSV72.009"
     },
     {
       "objekt": "260219_dum",
@@ -3620,7 +4313,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.007"
+      "id": "260219_dum.PSV72.010"
     },
     {
       "objekt": "260219_dum",
@@ -4524,7 +5217,7 @@
     }
   ],
   "_summary_total": {
-    "items_total": 171,
+    "items_total": 187,
     "by_kapitola": {
       "HSV-1 Zemní práce": 12,
       "HSV-2 Základové a ŽB": 19,
@@ -4535,14 +5228,14 @@
       "HSV-7 Fasáda ETICS": 6,
       "PSV-71 Izolace HI": 3,
       "PSV-71 Izolace TI": 2,
-      "PSV-76 Výplně otvorů": 6,
+      "PSV-76 Výplně otvorů": 11,
       "PSV-76 Klempíř": 4,
       "PSV-76 Zámečnictví": 4,
       "PSV-76 Truhlář": 2,
-      "PSV-77 Podlahy": 6,
-      "PSV-78 Povrchové úpravy": 6,
+      "PSV-77 Podlahy": 8,
+      "PSV-78 Povrchové úpravy": 12,
       "PSV-95 Detekce požární": 2,
-      "PSV-72 ZTI": 7,
+      "PSV-72 ZTI": 10,
       "PSV-73 Vytápění": 8,
       "M-21 ELI silnoproud": 7,
       "VRN — Zařízení staveniště": 3,
@@ -4557,11 +5250,11 @@
       "VRN — Společné": 1
     },
     "by_objekt": {
-      "260219_dum": 144,
+      "260219_dum": 160,
       "260217_sklad": 27
     },
     "urs_status_distribution": {
-      "needs_production_lookup": 171
+      "needs_production_lookup": 187
     },
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
@@ -4592,11 +5285,5 @@
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
-  },
-  "_dxf_comprehensive_run": {
-    "date": "2026-05-17",
-    "items_upgraded": 16,
-    "tool": "tools/dxf_comprehensive_extract.py",
-    "extract_artifact": "outputs/dxf_comprehensive_extract.json"
   }
 }

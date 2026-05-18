@@ -65,9 +65,9 @@ DUM = {
     "n_podlazi_nadzemnich": 3,
     "n_podlazi_podzemnich": 1,
     "n_pater_nove_3NP": 1,  # nástavba
-    "obvod_pudorysu_m_odhad": 4 * (104.4 ** 0.5),  # ~40.9 m for square approximation; řadový dům má 2 štítové stěny společné
-    "fasada_volna_m_odhad": 2 * (104.4 ** 0.5),    # ~20.4 m čelní + dvorní fasáda (štíty zachované)
-    "fasada_eps_plocha_m2_odhad": 2 * (104.4 ** 0.5) * 13.0,  # ~265 m² fasáda volná × výška 13 m
+    "obvod_pudorysu_m_odhad": 38.70,  # DXF km_R_návrh_tlustá 2 closed polygon (area 91.28 m², 6 vrcholů) — Part 1 inventory 2026-05-17 finding; replaces prior 4×√104.4≈40.87 estimate
+    "fasada_volna_m_odhad": 38.70 * 0.55,    # ~21.3 m volná fasáda = obvod 38.70 × 0.55 (řadovka, štíty zachované)
+    "fasada_eps_plocha_m2_odhad": round(38.70 * 0.55 * 13.0, 1),  # ~276.7 m² fasáda volná × výška 13 m (DXF perimeter)
     "strecha_pudorys_m2_odhad": 104.4 * 1.15,      # +15% pro střechu nad zastavěnou (sklon ~35°)
     "krytina_m2_odhad": 104.4 * 1.35,              # +35% pro krytinu při sklonu střechy + vikýře
 }
@@ -141,6 +141,82 @@ def _gate_for(kapitola: str) -> str:
     return KAPITOLA_TO_GATE.get(prefix, "OTHER")
 
 
+# ───────────────────────────────────────────────────────────────────────────
+# Part 2 (2026-05-17) — Per-room data from DXF km_tabulka místností MTEXT parse.
+# Source: outputs/dxf_comprehensive_extract.json (own. místností 25)
+
+PER_PODLAZI_AREA_M2 = {
+    "1.PP": 32.4,   # 0.01 + 0.02 + 0.03 + 0.04
+    "1.NP": 59.5,   # 1.01..1.08
+    "2.NP": 61.1,   # 2.01..2.06
+    "3.NP": 64.5,   # 3.01..3.06
+}
+PER_PODLAZI_VYSKA_M = {
+    "1.PP": 2.50,   # TZ silent — Czech RD CSN default (sklep)
+    "1.NP": 2.80,   # TZ silent — Czech RD CSN default
+    "2.NP": 2.80,   # TZ silent — Czech RD CSN default
+    "3.NP": 2.65,   # TZ silent — Czech RD CSN default (nadezdívka, Σ s krov ≤ 13 m)
+}
+KOUPELNY_LIST = [
+    {"room_id": "1.05", "podlazi": "1.NP", "area_m2": 4.10, "obvod_m": 8.4,  "fixtures_dxf": ["vana", "umyvadlo"], "fixtures_tz_assumption": ["WC"]},
+    {"room_id": "2.03", "podlazi": "2.NP", "area_m2": 2.40, "obvod_m": 6.2,  "fixtures_dxf": ["umyvadlo"],          "fixtures_tz_assumption": ["WC", "sprcha"]},
+    {"room_id": "3.04", "podlazi": "3.NP", "area_m2": 4.80, "obvod_m": 9.0,  "fixtures_dxf": ["WC"],                "fixtures_tz_assumption": ["umyvadlo", "sprcha"]},
+]
+KUCHYNE_DREZ = [
+    {"room_id": "1.06", "podlazi": "1.NP", "fixtures_dxf": []},   # TZ assumption: kuchyně má dřez (společenská část 1.NP byt rodičů)
+    {"room_id": "3.05", "podlazi": "3.NP", "fixtures_dxf": ["drez_kuchyne"]},  # DXF confirmed
+]
+# Window blocks per DXF (Part 1 inventory verified)
+OKNA_PER_TYP = [
+    {"block_name": "okno 1.NP",       "count": 2, "size_mm": "1185×1600", "plocha_m2": 1.90, "strana": "ulice"},
+    {"block_name": "okno 1.NP vzadu", "count": 3, "size_mm": "920×1600",  "plocha_m2": 1.47, "strana": "zahrada"},
+    {"block_name": "okno 2.NP",       "count": 4, "size_mm": "1160×1480", "plocha_m2": 1.72, "strana": "ulice"},
+    {"block_name": "okno 3.NP",       "count": 3, "size_mm": "1785×1241", "plocha_m2": 2.22, "strana": "ulice"},
+    {"block_name": "okno 3.NP vzadu", "count": 1, "size_mm": "2075×1241", "plocha_m2": 2.57, "strana": "zahrada"},
+    {"block_name": "okno male 3.NP vzadu", "count": 1, "size_mm": "800×1241",  "plocha_m2": 0.99, "strana": "zahrada"},
+    {"block_name": "okno malé vzadu", "count": 2, "size_mm": "700×800",   "plocha_m2": 0.56, "strana": "zahrada"},
+]
+# Material classification (room_id → material zone) for PSV-77 podlahy + soklíky
+ROOM_MATERIAL = {
+    # 1.PP — dlažba sklep (all rooms — technic, sušárna, sklep)
+    "0.01": "dlazba_sklep", "0.02": "dlazba_sklep", "0.03": "dlazba_sklep", "0.04": "dlazba_sklep",
+    # 1.NP — vinyl obytné + dlažba mokré
+    "1.01": "vinyl", "1.02": "vinyl", "1.03": "dlazba_mokre", "1.04": "dlazba_mokre",
+    "1.05": "dlazba_mokre", "1.06": "vinyl", "1.07": "vinyl", "1.08": "vinyl",
+    # 2.NP — vinyl obytné + dlažba mokré
+    "2.01": "vinyl", "2.02": "vinyl", "2.03": "dlazba_mokre", "2.04": "vinyl",
+    "2.05": "vinyl", "2.06": "vinyl",
+    # 3.NP — vinyl obytné + dlažba mokré + biodeska půdní
+    "3.01": "vinyl", "3.02": "vinyl", "3.03": "vinyl", "3.04": "dlazba_mokre",
+    "3.05": "vinyl", "3.06": "vinyl",
+}
+# Per-room area (from DXF tabulka místností MTEXT návrh)
+ROOM_AREA = {
+    "0.01": 3.50, "0.02": 4.40, "0.03": 22.20, "0.04": 2.30,
+    "1.01": 12.40, "1.02": 3.60, "1.03": 0.70, "1.04": 1.50, "1.05": 4.10, "1.06": 24.00, "1.07": 9.40, "1.08": 3.80,
+    "2.01": 7.30, "2.02": 5.90, "2.03": 2.40, "2.04": 15.50, "2.05": 14.10, "2.06": 15.80,
+    "3.01": 7.60, "3.02": 4.10, "3.03": 2.40, "3.04": 4.80, "3.05": 32.80, "3.06": 12.80,
+}
+# Cumulative window area per fasáda side (for omítka odpočet calc)
+OKENNI_PLOCHA_M2 = sum(o["count"] * o["plocha_m2"] for o in OKNA_PER_TYP)  # 26.41 m²
+
+# Skladba code (S01..S12b) → element type mapping — TZ skladby_per_zone.json
+SKLADBA_CODE_REF = {
+    "S01": "Podlaha 1.NP terén",
+    "S02": "Podlaha suchá nad trámovým stropem 1.NP/2.NP",
+    "S03": "Podlaha mokrá nad ocelobetonem 2.NP/3.NP",
+    "S04": "Strop klenba 1.PP/1.NP",
+    "S05": "Strop trámový 1.NP/2.NP",
+    "S06": "Strop ocelobeton 2.NP/3.NP",
+    "S07": "Krov tesařský s nadkrokevní izolací",
+    "S08": "Stěna obvodová zachovaná + ETICS",
+    "S09": "Stěna 3.NP nadezdívka",
+    "S10": "Příčka vnitřní pórobeton",
+    "S11": "Stěna v koupelně — keramický obklad",
+    "S12": "Podlaha 1.PP technic",
+}
+
+
 def mk(
     objekt: str,
     kapitola: str,
@@ -157,11 +233,16 @@ def mk(
     vyjasneni_ref: list[int] | None = None,
     status_flag: str = "ready_for_phase2",
     notes: str | None = None,
+    # Part 2 (2026-05-17) expansion fields — optional, populated only on per-zone/per-room items
+    data_quality: str | None = None,             # categorical: dxf_deterministic / dxf_plus_tz_explicit / tz_silent_fallback_csn_default / dxf_partial_pip_plus_tz_assumption / dxf_phase_mixed_estimate
+    room_ids: list[str] | None = None,           # per-room expansion items: list of DXF room IDs (e.g. ["1.05"])
+    expansion_origin: list[str] | None = None,   # IDs of parent aggregate items this row replaces
+    previous_mnozstvi: float | None = None,      # for RECALC items: prior qty value before update
+    recalc_reason: str | None = None,            # for RECALC items: human-readable reason
 ) -> dict:
-    """Build a single item dict with all mandatory fields."""
-    # subdodavatel_status: "mapped" if trade is in canonical mapping json, else "needs_mapping"
+    """Build a single item dict with all mandatory + optional expansion fields."""
     sub_status = "mapped" if subdodavatel in KNOWN_TRADES else "needs_mapping"
-    return {
+    item = {
         "objekt": objekt,
         "kapitola_group": kapitola.split("-")[0].split(" ")[0],   # HSV / PSV / M / VRN — classification view
         "_gate": _gate_for(kapitola),                              # HSV / PSV / TZB / VRN — workflow gate
@@ -183,6 +264,13 @@ def mk(
         "status_flag": status_flag,
         "notes": notes,
     }
+    # Optional expansion fields — only set when supplied (preserves backward-compat for non-expanded items)
+    if data_quality is not None:        item["_data_quality"] = data_quality
+    if room_ids is not None:            item["_room_ids"] = room_ids
+    if expansion_origin is not None:    item["_expansion_origin"] = expansion_origin
+    if previous_mnozstvi is not None:   item["_previous_mnozstvi"] = previous_mnozstvi
+    if recalc_reason is not None:       item["_recalc_reason"] = recalc_reason
+    return item
 
 
 # ───────────────────────────────────────────────────────────────────────────
@@ -305,17 +393,27 @@ def gen_HSV_2():
            "m²", round(2 * 2.05 * BV_L + 1.20 * BV_L, 1), "viditelná plocha BV pro ošetřování ~53", C_MANUAL,
            "279351102", ["279351101", "999999001"],
            "ČSN EN 13670 + TZ §5.5 — trhliny max 0.20 mm", "bila_vana_csb02", []),
-        # ŽB pozední věnec
+        # ŽB pozední věnec — RECALC: new external perimeter 38.70 m (DXF) vs prior ~41 m
         mk(O, "HSV-2 Základové a ŽB", "Pozední věnec 3.NP",
            "ŽB pozední věnec 300×250 mm po obvodu nadezdívky 3.NP, beton C25/30 XC1 + výztuž 100 kg/m³",
-           "m³", round(0.30 * 0.25 * DUM["obvod_pudorysu_m_odhad"], 2), "0.30 × 0.25 × ~41 m obvod = 3.1", C_GEOM_FROM_TZ,
+           "m³", round(0.30 * 0.25 * DUM["obvod_pudorysu_m_odhad"], 2),
+           f"0.30 × 0.25 × obvod {DUM['obvod_pudorysu_m_odhad']} m (DXF km_R_návrh_tlustá 2 closed polygon area 91.28 m²) = {round(0.30 * 0.25 * DUM['obvod_pudorysu_m_odhad'], 2)} m³",
+           C_DXF_BBOX,
            "274321311", ["274321111", "273321311"],
-           "TZ statika dům §4 + ARS pozední věnec po obvodu nadezdívky 3.NP", "zelezobetonarsky_specialny", [3, 8]),
+           "TZ statika dům §4 + ARS pozední věnec po obvodu nadezdívky 3.NP + DXF external perimeter 38.70 m", "zelezobetonarsky_specialny", [3, 8],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=3.07,
+           recalc_reason="Part 1 inventory 2026-05-17 discovered exact external perimeter 38.70 m from DXF km_R_návrh_tlustá 2 closed polygon (91.28 m² × 6 vrcholů) — replaces prior fallback estimate 4×√104.4 ≈ 41.0 m"),
         mk(O, "HSV-2 Základové a ŽB", "Pozední věnec — bednění",
            "Bednění pozedního věnce systémové oboustranné",
-           "m²", round(2 * 0.25 * DUM["obvod_pudorysu_m_odhad"], 1), "2 × 0.25 × ~41 = 20.5", C_GEOM_FROM_TZ,
+           "m²", round(2 * 0.25 * DUM["obvod_pudorysu_m_odhad"], 1),
+           f"2 (oboustranné) × 0.25 m výška × obvod {DUM['obvod_pudorysu_m_odhad']} m (DXF) = {round(2 * 0.25 * DUM['obvod_pudorysu_m_odhad'], 1)} m²",
+           C_DXF_BBOX,
            "631311115", ["631311111"],
-           "TZ statika dům §4", "bednici_tesar", [3]),
+           "TZ statika dům §4 + DXF external perimeter", "bednici_tesar", [3],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=20.5,
+           recalc_reason="Same as Pozední věnec 3.NP — perimeter 38.70 m DXF-verified"),
         mk(O, "HSV-2 Základové a ŽB", "Pozední věnec — výztuž",
            "Výztuž B500B věnce 100 kg/m³ (Methvin sazba pro pozední věnce)",
            "kg", round(3.1 * 100), "3.1 × 100 = 310", C_EMPIRICAL,
@@ -398,9 +496,13 @@ def gen_HSV_3():
         mk(O, "HSV-3 Svislé konstrukce", "Nadezdívka 3.NP Porotherm",
            "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry, výška 2.65 m",
            "m²", round(DUM["obvod_pudorysu_m_odhad"] * 2.65 * 0.7, 1),
-           "41 m obvod × 2.65 m výška × 0.7 (sníženo o štíty zachované) = ~76", C_GEOM_FROM_TZ,
+           f"obvod {DUM['obvod_pudorysu_m_odhad']} m (DXF km_R_návrh_tlustá 2) × výška 2.65 m × 0.7 (sníženo o štíty zachované — řadovka) = {round(DUM['obvod_pudorysu_m_odhad'] * 2.65 * 0.7, 1)} m²",
+           C_DXF_BBOX,
            "311321411", ["311321321"],
-           "TZ statika dům §4 + ARS — nástavba 3.NP", "zednik", [3]),
+           "TZ statika dům §4 + ARS — nástavba 3.NP + DXF external perimeter 38.70 m", "zednik", [3],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=76.05,
+           recalc_reason="External perimeter 38.70 m (DXF) replaces prior fallback estimate 41.0 m"),
         mk(O, "HSV-3 Svislé konstrukce", "Překlady IPN160 ve dvojici",
            "Ocelové překlady IPN160 ve dvojici nad otvory pro nové dveře/okna v 1.NP a 2.NP (8 otvorů odhad)",
            "ks", 8, "odhad 8 nových otvorů × 2 IPN160 (dvojice)", C_GEOM_FROM_TZ,
@@ -754,37 +856,65 @@ def gen_HSV_6():
 def gen_HSV_7():
     items = []
     O = "260219_dum"
+    # HSV-7 ETICS items — Part 2 RECALC: external perimeter 38.70 m (DXF) — 4 items affected
+    etics_plocha = DUM["fasada_eps_plocha_m2_odhad"]   # 276.7 m² (was 265.5 m² s prior perimeter)
+    sokl_plocha = round(DUM["obvod_pudorysu_m_odhad"] * 0.5 * 0.7, 1)   # 13.5 m² (was 14.4 m²)
     items += [
         mk(O, "HSV-7 Fasáda ETICS", "Příprava podkladu",
            "Příprava fasádního podkladu — očištění tlakovou vodou, vyspravení omítek, fungicidní nátěr",
-           "m²", DUM["fasada_eps_plocha_m2_odhad"], "fasada_volna 2×L × výška = ~265", C_GEOM_FROM_TZ,
+           "m²", etics_plocha,
+           f"obvod {DUM['obvod_pudorysu_m_odhad']} m (DXF) × 0.55 (volná fasáda, štíty zachované) × výška 13.0 m = {etics_plocha} m²",
+           C_DXF_BBOX,
            "622401110", ["622201001"],
-           "TZ ARS dům §4 — ETICS kontaktní, podklad existující omítka", "fasadnik_etics", [3]),
+           "TZ ARS dům §3.2 — ETICS kontaktní, podklad existující omítka + DXF perimeter", "fasadnik_etics", [3],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=293.15,
+           recalc_reason="External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m"),
         mk(O, "HSV-7 Fasáda ETICS", "ETICS EPS 70F grey 200 mm",
            "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 max tl. 200 mm + síťka + lepidlo + zatírací stěrka",
-           "m²", DUM["fasada_eps_plocha_m2_odhad"], "= 265 m²", C_GEOM_FROM_TZ,
+           "m²", etics_plocha,
+           f"obvod {DUM['obvod_pudorysu_m_odhad']} m × 0.55 × 13.0 m = {etics_plocha} m² (PBŘ: tl. max 200 mm vyhovuje h ≤ 12.0 m)",
+           C_DXF_BBOX,
            "622221121", ["622221001"],
-           "TZ ARS dům §4 + PBŘ — EPS 70F grey 200 mm (h≤12m povoleno)", "fasadnik_etics", [3]),
+           "TZ ARS dům §3.2 EXPLICIT 'fasádní EPS 70f grey (λ=0,032 W/mK)' + PBŘ EXPLICIT 'EPS tl. max. 200 mm' + DXF perimeter", "fasadnik_etics", [3],
+           data_quality="dxf_plus_tz_explicit",
+           previous_mnozstvi=293.15,
+           recalc_reason="External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m"),
         mk(O, "HSV-7 Fasáda ETICS", "ETICS sokl XPS",
            "ETICS sokl — XPS λ=0.034 tl. 120 mm + soklový profil + cihelný obklad spárovaný",
-           "m²", round(DUM["obvod_pudorysu_m_odhad"] * 0.5 * 0.7, 1), "obvod × 0.5 m výška sokl × 0.7 (řadovka) = 14.4", C_GEOM_FROM_TZ,
+           "m²", sokl_plocha,
+           f"obvod {DUM['obvod_pudorysu_m_odhad']} m × 0.5 m výška sokl × 0.7 (řadovka) = {sokl_plocha} m²",
+           C_DXF_BBOX,
            "622223111", ["622223121"],
-           "TZ ARS dům §4 — sokl XPS + cihelný obklad", "fasadnik_etics", []),
+           "TZ ARS dům §3.2 — sokl XPS + cihelný obklad + DXF perimeter", "fasadnik_etics", [],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=14.35,
+           recalc_reason="External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m"),
         mk(O, "HSV-7 Fasáda ETICS", "Špalety EPS",
-           "Špalety oken — EPS přesah 35-40 mm + síťka + omítka (cca 10 oken × obvod ~5 m špalety)",
-           "bm", round(10 * 5.0, 1), "10 oken × 5 m obvod špaletu = 50", C_GEOM_FROM_TZ,
+           "Špalety oken — EPS přesah 35-40 mm + síťka + omítka",
+           "bm", round(sum(o["count"] * 2 * (int(o["size_mm"].split("×")[0]) + int(o["size_mm"].split("×")[1])) / 1000 for o in OKNA_PER_TYP), 1),
+           f"Σ per-typ okno {sum(o['count'] for o in OKNA_PER_TYP)} ks × per-window perimeter (2×(W+H)) z DXF bbox = {round(sum(o['count'] * 2 * (int(o['size_mm'].split('×')[0]) + int(o['size_mm'].split('×')[1])) / 1000 for o in OKNA_PER_TYP), 1)} bm",
+           C_MANUAL,
            "622221221", ["622221111"],
-           "TZ ARS dům §4 — EPS přesah na špaletách 35-40 mm", "fasadnik_etics", [5]),
+           "DXF okna per typ bbox + TZ ARS §3.2 EPS přesah na špaletách 35-40 mm", "fasadnik_etics", [5],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=80.0,
+           recalc_reason="Per-window perimeter from DXF block bbox replaces prior estimate 10 okna × 5 m = 50 bm and Comprehensive 16 okna × 5 m = 80 bm; now exact 2×(W+H) per typ"),
         mk(O, "HSV-7 Fasáda ETICS", "Profilace fasády",
            "Profilace fasády — různé tloušťky EPS (kordony, šambrány, rámování oken) — paušál podle pohledů",
            "soubor", 1, "paušál — dle pohledů NCS NZÚ", C_MANUAL,
            "622221221", ["622221121"],
-           "TZ ARS dům §4 — profilace různými tl. EPS", "fasadnik_etics", []),
+           "TZ ARS dům §3.2 — profilace různými tl. EPS", "fasadnik_etics", []),
         mk(O, "HSV-7 Fasáda ETICS", "Tenkovrstvá omítka pastovitá",
            "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ — finální vrstva ETICS",
-           "m²", DUM["fasada_eps_plocha_m2_odhad"] + 14.4, "fasada + sokl + profilace ~280 m²", C_GEOM_FROM_TZ,
+           "m²", round(etics_plocha + sokl_plocha, 1),
+           f"ETICS plocha {etics_plocha} m² + sokl {sokl_plocha} m² = {round(etics_plocha + sokl_plocha, 1)} m²",
+           C_DXF_BBOX,
            "622521111", ["622511111"],
-           "TZ ARS dům §4 — pastovitá probarvená lomená bílá", "fasadnik_etics", []),
+           "TZ ARS dům §3.2 — pastovitá probarvená lomená bílá + DXF perimeter", "fasadnik_etics", [],
+           data_quality="dxf_deterministic",
+           previous_mnozstvi=307.55,
+           recalc_reason="External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m"),
     ]
     return items
 
@@ -831,31 +961,33 @@ def gen_PSV():
            "TZ ARS dům §4 — kročejová EPS shora ocelobeton", "izolater_TI", []),
     ]
 
-    # ── PSV-76 Výplně otvorů — okna ──────────────────────────────────
+    # ── PSV-76 Výplně otvorů — okna per typ — Part 2 expansion: 2 aggregates → 7 per-block-type items ──
+    # Source: DXF INSERT block names + block definition bbox (Part 1 inventory verified)
     okna_front = DXF_FINDINGS["dum_okna_front_zaluzie"]
-    okna_back  = DXF_FINDINGS["dum_okna_back_no_zaluzie"]
+    for okno in OKNA_PER_TYP:
+        block_name = okno["block_name"]
+        items.append(mk(
+            O, "PSV-76 Výplně otvorů", f"Plastové okno trojsklo — '{block_name}' ({okno['strana']})",
+            f"Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ '{block_name}' velikost {okno['size_mm']} mm × {okno['count']} ks (fasáda {okno['strana']})",
+            "ks", okno["count"],
+            f"DXF INSERT block name '{block_name}' count = {okno['count']} ks × bbox {okno['size_mm']} mm = {okno['count'] * okno['plocha_m2']} m² fasády",
+            C_MANUAL,  # DXF INSERT count + block bbox = highest deterministic (1.0 mapped to 0.99 cap)
+            "766621011", ["766629011", "766629111"],
+            f"DXF dum_DPZ INSERT block '{block_name}' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
+            "okennar", [5],
+            data_quality="dxf_deterministic",
+            expansion_origin=["260219_dum.PSV76.001_aggregate_ulicni", "260219_dum.PSV76.002_aggregate_dvorni"],
+        ))
+    # Žaluzie kastlík purenit — agregátní pro 9 ks uličních oken (4 typy × strana=ulice)
     items += [
-        mk(O, "PSV-76 Výplně otvorů", "Plastová okna trojsklo — uliční",
-           f"Plastová okna izolačním trojsklem Uw=0.85 W/m²K — uliční fasáda Fibichova ({okna_front} ks)",
-           "ks", okna_front,
-           f"DXF dum_DPZ INSERT block count: okno 1.NP (2) + okno 2.NP (4) + okno 3.NP (3) = {okna_front}", C_DXF_INSERT,
-           "766621011", ["766629011", "766629111"],
-           "DXF dum_DPZ INSERT blocks 'okno 1.NP'/'okno 2.NP'/'okno 3.NP' + TZ ARS Uw=0.85", "okennar", [5]),
-        mk(O, "PSV-76 Výplně otvorů", "Plastová okna trojsklo — dvorní",
-           f"Plastová okna trojsklo Uw=0.85 — dvorní fasáda zahrada ({okna_back} ks bez žaluzií)",
-           "ks", okna_back,
-           f"DXF dum_DPZ INSERT block count: okno 1.NP vzadu (3) + okno malé vzadu (2) + okno 3.NP vzadu (1) + okno male 3.NP vzadu (1) = {okna_back}", C_DXF_INSERT,
-           "766621011", ["766629011", "766629111"],
-           "DXF dum_DPZ INSERT blocks '... vzadu' + TZ ARS — okna bez žaluzií na dvorní fasádě", "okennar", [5]),
         mk(O, "PSV-76 Výplně otvorů", "Žaluzie kastlík purenit",
            f"Integrované stínící venkovní žaluzie v kastlíku pod omítkou s purenitovou izolací — uliční fasáda Fibichova ({okna_front} ks)",
            "ks", okna_front,
-           f"= počet uličních oken {okna_front}", C_DXF_INSERT,
+           f"Σ uličních oken (block names bez 'vzadu' = okno 1.NP {sum(o['count'] for o in OKNA_PER_TYP if o['block_name']=='okno 1.NP')} + okno 2.NP {sum(o['count'] for o in OKNA_PER_TYP if o['block_name']=='okno 2.NP')} + okno 3.NP {sum(o['count'] for o in OKNA_PER_TYP if o['block_name']=='okno 3.NP')}) = {okna_front} ks", C_DXF_INSERT,
            "766631211", ["766632111", "767531111"],
-           "TZ ARS dům §4 — 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'",
+           "TZ ARS dům §3.2 — 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku pod omítkou s purenitovou izolací'",
            "okenni_zaluzie_kastlik_purenit", [5],
-           status_flag="needs_subdod_mapping",
-           notes="Subdod 'okenni_zaluzie_kastlik_purenit' není v Libuše schema ani v current mapping. Hybrid trade: okenář + ETICS specialista + purenit dodávka. FLAG pro batch mapping update po Phase 1."),
+           data_quality="dxf_deterministic"),
         mk(O, "PSV-76 Výplně otvorů", "Vstupní plastové dveře",
            "Plastové vstupní dveře (ulice + zahrada) — 2 ks",
            "ks", 2,
@@ -943,84 +1075,183 @@ def gen_PSV():
            "TZ ARS dům §4 + DXF dum_situace PLOT_DREVENY_04 (terasa, ne 3.NP)", "truhlar", []),
     ]
 
-    # ── PSV-77 Podlahy ───────────────────────────────────────────────
-    # Distribution per typický RD 219.3 m² podlahova:
-    # mokré (koupelny + WC + kuchyně + spíž + technic 1.PP) ~30%, suché obytné ~70%
+    # ── PSV-77 Podlahy — Part 2 expansion: 5 aggregates → 7 per-zone items ──
+    # Source: DXF km_tabulka místností MTEXT (návrh) + TZ ARS §3.2.4 skladby
+    vinyl_rooms  = [r for r, m in ROOM_MATERIAL.items() if m == "vinyl"]
+    dlazba_mokre_rooms = [r for r, m in ROOM_MATERIAL.items() if m == "dlazba_mokre"]
+    dlazba_sklep_rooms = [r for r, m in ROOM_MATERIAL.items() if m == "dlazba_sklep"]
+    vinyl_area    = round(sum(ROOM_AREA[r] for r in vinyl_rooms), 2)
+    dlazba_mokre_area = round(sum(ROOM_AREA[r] for r in dlazba_mokre_rooms), 2)
+    dlazba_sklep_area = round(sum(ROOM_AREA[r] for r in dlazba_sklep_rooms), 2)
+    vinyl_formula = " + ".join(f"{r}={ROOM_AREA[r]}" for r in sorted(vinyl_rooms)) + f" = {vinyl_area} m²"
+    dlazba_mokre_formula = " + ".join(f"{r}={ROOM_AREA[r]}" for r in sorted(dlazba_mokre_rooms)) + f" = {dlazba_mokre_area} m²"
+    dlazba_sklep_formula = " + ".join(f"{r}={ROOM_AREA[r]}" for r in sorted(dlazba_sklep_rooms)) + f" = {dlazba_sklep_area} m²"
+    # Potěr = mokré skladby (vinyl 1.NP+3.NP + dlažba mokré). 1.PP sklep beton ponechán, 2.NP suchá skladba.
+    poter_area = round(vinyl_area + dlazba_mokre_area - sum(ROOM_AREA[r] for r in vinyl_rooms if r.startswith("2.")), 2)
     items += [
         mk(O, "PSV-77 Podlahy", "Nášlap vinyl obytné místnosti",
-           "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, obývák, chodby)",
-           "m²", round(DUM["podlahova_m2"] * 0.55, 1),
-           "podlahova_plocha × 0.55 (obytné po odečtení mokrých + 3.NP biodeska) = 121", C_GEOM_FROM_TZ,
-           "776511820", ["776521820"],
-           "TZ ARS dům §4 + DXF MTEXT room labels (2× kuchyně, 3× koupelna, 7× chodba)", "podlahar", [4]),
-        mk(O, "PSV-77 Podlahy", "Nášlap keramická dlažba",
-           "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + kuchyně + spíž + technic 1.PP",
-           "m²", round(DUM["podlahova_m2"] * 0.25, 1),
-           "podlahova × 0.25 mokré (3 koupelny + 2 kuchyně + spíž + 1.PP technic) = 55", C_GEOM_FROM_TZ,
-           "771274102", ["771274107"],
-           "TZ ARS dům §4 + DXF MTEXT room labels", "podlahar", [4]),
+           "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, obývák, kuchyně, chodby)",
+           "m²", vinyl_area, vinyl_formula, C_DXF_INSERT,
+           "776511820", ["776521820", "776521810"],
+           "DXF km_tabulka místností MTEXT (návrh) — rooms classified per name (kuchyně/obytná/chodba = vinyl) + TZ ARS §3.2.4 nášlapná vrstva", "podlahar", [4],
+           data_quality="dxf_deterministic",
+           room_ids=sorted(vinyl_rooms),
+           expansion_origin=["260219_dum.PSV77.001_aggregate"]),
+        mk(O, "PSV-77 Podlahy", "Nášlap keramická dlažba — mokré zóny",
+           "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + spíž + komora (NÁDRŽ NP)",
+           "m²", dlazba_mokre_area, dlazba_mokre_formula, C_DXF_INSERT,
+           "771274102", ["771274107", "771271101"],
+           "DXF km_tabulka místností MTEXT (návrh) — rooms classified per name (koupelna/WC/spíž = dlažba mokré) + TZ ARS skladba mokrá", "obkladac", [4],
+           data_quality="dxf_deterministic",
+           room_ids=sorted(dlazba_mokre_rooms),
+           expansion_origin=["260219_dum.PSV77.002_aggregate"]),
+        mk(O, "PSV-77 Podlahy", "Nášlap keramická dlažba — 1.PP sklep",
+           "Nášlapná vrstva keramická dlažba — 1.PP technické místnosti (sušárna + sklepy + schodiště + chodba)",
+           "m²", dlazba_sklep_area, dlazba_sklep_formula, C_DXF_INSERT,
+           "771274102", ["771274107", "771271101"],
+           "DXF km_tabulka místností MTEXT (návrh) — 1.PP all rooms = dlažba sklep zone", "obkladac", [4],
+           data_quality="dxf_deterministic",
+           room_ids=sorted(dlazba_sklep_rooms),
+           expansion_origin=["260219_dum.PSV77.002_aggregate"]),
         mk(O, "PSV-77 Podlahy", "Nášlap biodeska 3.NP spací patro",
            "Nášlapná vrstva biodeska (smrk masiv) nebo OSB v 3.NP spací části nad krovem",
            "m²", 25.0,
-           "TZ ARS — patro nad kleštinami z biodesky ~5×5m. NEPOUŽITELNÉ DXF (PLOT_DREVENY_04=0 v dum_DPZ)", C_GEOM_FROM_TZ,
+           "TZ ARS dům §3.2.3 — 'patro pro přespání z biodesky nad kleštinami'; DXF dum_DPZ NEMÁ samostatnou místnost s biodeska klasifikací (PLOT_DREVENY_04=0 v dum_DPZ, ten block je terasa v situaci). Fallback TZ.", C_GEOM_FROM_TZ,
            "766411111", ["766421111"],
-           "TZ ARS dům §4 — patro pro přespání z biodesky",
+           "TZ ARS dům §3.2.3 — biodeska patro pro přespání",
            "biodeska_konstrukcni", [3],
-           status_flag="needs_subdod_mapping",
-           notes="Subdod 'biodeska_konstrukcni' není v current mapping. Pseudo-hybrid mezi truhlář a krov_tesarsky_kompletni. FLAG pro batch mapping update."),
+           data_quality="tz_explicit_fallback_dxf_data_missing"),
         mk(O, "PSV-77 Podlahy", "Betonový potěr s kari nad EPS",
            "Mokrá podlahová skladba — betonový potěr s kari síťkou 4/100/100 tl. 50 mm + samonivelační stěrka",
-           "m²", round(DUM["zastavena_m2"] * 0.7 + DUM["zastavena_m2"], 1),
-           "(rozsah 1.NP + 3.NP) ~177 m²", C_GEOM_FROM_TZ,
+           "m²", poter_area, f"vinyl 1.NP+3.NP + dlažba mokré (vyňato 2.NP suchá skladba) = {poter_area} m²", C_DXF_INSERT,
            "631321311", ["631321411"],
-           "TZ ARS dům §4 — betonový potěr s kari + samonivelační stěrka", "podlahar", [4]),
-        mk(O, "PSV-77 Podlahy", "Soklíky podlah",
-           "Soklíky podlahové laminátové (dub) v obytných místnostech",
-           "bm", round(DUM["podlahova_m2"] * 0.55 * 0.4, 1),
-           "obvod místností 121 m² × 0.4 m/m² (typ. RD soklík poměr) = 48", C_GEOM_FROM_TZ,
+           "TZ ARS dům §3.2.4 + §3.2.x — 'kročejová izolace + betonový potěr s kari sítí'; DXF rooms areas", "podlahar", [4],
+           data_quality="dxf_deterministic"),
+        mk(O, "PSV-77 Podlahy", "Soklíky vinyl",
+           "Soklíky podlahové laminátové (dub) v obytných místnostech s vinyl podlahou",
+           "bm", round(vinyl_area * 0.42, 2),
+           f"vinyl plocha {vinyl_area} m² × 0.42 m soklíku/m² (typ. obvod/plocha ratio v Czech RD místnosti) = {round(vinyl_area * 0.42, 2)} bm", C_DXF_INSERT,
            "776511831", ["776511820"],
-           "TZ ARS — laminátové soklíky standard RD", "podlahar", []),
+           "DXF rooms vinyl + standard ratio per RD geometry", "podlahar", [],
+           data_quality="dxf_perimeter_ratio_estimate",
+           room_ids=sorted(vinyl_rooms),
+           expansion_origin=["260219_dum.PSV77.005_aggregate"]),
+        mk(O, "PSV-77 Podlahy", "Soklíky keramické",
+           "Soklíky keramické v místnostech s dlažbou (koupelny + WC + spíž + 1.PP)",
+           "bm", round((dlazba_mokre_area + dlazba_sklep_area) * 0.42, 2),
+           f"(dlažba mokré {dlazba_mokre_area} + dlažba sklep {dlazba_sklep_area}) × 0.42 m soklíku/m² = {round((dlazba_mokre_area + dlazba_sklep_area) * 0.42, 2)} bm", C_DXF_INSERT,
+           "771274107", ["771274102"],
+           "DXF rooms dlažba + standard ratio per RD geometry", "obkladac", [],
+           data_quality="dxf_perimeter_ratio_estimate",
+           room_ids=sorted(dlazba_mokre_rooms + dlazba_sklep_rooms),
+           expansion_origin=["260219_dum.PSV77.005_aggregate"]),
     ]
 
-    # ── PSV-78 Povrchové úpravy ──────────────────────────────────────
-    fasada_interier_m2 = round(DUM["podlahova_m2"] * 2.5, 1)  # interier walls = 2.5× floor (typický RD koeficient)
+    # ── PSV-78 Povrchové úpravy — Part 2 expansion ───────────────────
+    # Omítka per podlaží (4): replace 2 aggregates (vyspravení + nové)
+    # SDK podhledy per podlaží (3): replace 1 aggregate; 1.PP excluded klenba zachována
+    # Obklady koupelen per koupelna (3): replace 1 aggregate
+    # Keep: obklad za kuchyňskou linkou, interiérová výmalba
+
+    # Per-podlaží omítka calculation: Σ rooms (obvod × výška podlaží) - okna - dveře (heuristic 5%)
+    # Per-room obvod approximation: 4 × √area_m² (rectangular assumption)
+    def per_room_obvod(area_m2: float) -> float:
+        # approximate perimeter for rectangle of given area, using aspect ratio 1.5 typical room
+        # P = 2 × (W + H) where W × H = area, W/H ≈ 1.5 → H = √(area/1.5), W = 1.5×H
+        h = (area_m2 / 1.5) ** 0.5
+        return round(2 * (1.5 * h + h), 2)
+
+    def podlazi_omitka_calc(podlazi: str, rooms_in_podlazi: list[str]) -> tuple[float, str]:
+        vyska = PER_PODLAZI_VYSKA_M[podlazi]
+        room_areas = [(r, ROOM_AREA[r], per_room_obvod(ROOM_AREA[r])) for r in rooms_in_podlazi]
+        total_obvod = sum(o for _, _, o in room_areas)
+        plocha_sten = round(total_obvod * vyska, 1)
+        # Odpočet okenní + dveře plochy
+        okenni_per_podlazi = round(OKENNI_PLOCHA_M2 / 4, 2)   # rovnoměrná distribuce mezi 4 podlaží
+        dvere_odpocet = round(plocha_sten * 0.03, 1)   # 3% odpočet na vnitřní dveře (cca 5 dveří × 1.6 m²)
+        net = round(plocha_sten - okenni_per_podlazi - dvere_odpocet, 1)
+        formula = (
+            f"Σ obvodů rooms {podlazi} ({', '.join(f'{r}={ROOM_AREA[r]}m²→{per_room_obvod(ROOM_AREA[r])}m' for r in rooms_in_podlazi)}) "
+            f"= {round(total_obvod,2)} m × výška {vyska} m = {plocha_sten} m² stěn; "
+            f"− okna {okenni_per_podlazi} − dveře {dvere_odpocet} = {net} m²"
+        )
+        return net, formula
+
+    ROOMS_PER_PODLAZI = {
+        "1.PP": ["0.01", "0.02", "0.03", "0.04"],
+        "1.NP": ["1.01", "1.02", "1.03", "1.04", "1.05", "1.06", "1.07", "1.08"],
+        "2.NP": ["2.01", "2.02", "2.03", "2.04", "2.05", "2.06"],
+        "3.NP": ["3.01", "3.02", "3.03", "3.04", "3.05", "3.06"],
+    }
+
+    # PSV-78 Omítka per podlaží (4 items)
+    for podlazi in ["1.PP", "1.NP", "2.NP", "3.NP"]:
+        m2, formula = podlazi_omitka_calc(podlazi, ROOMS_PER_PODLAZI[podlazi])
+        items.append(mk(
+            O, "PSV-78 Povrchové úpravy", f"Omítka jádrová + štuk {podlazi}",
+            f"Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách {podlazi} (stávající vyspravené + nové zděné)",
+            "m²", m2, formula, C_GEOM_FROM_TZ,
+            "612311311", ["612301351"],
+            f"DXF rooms {podlazi} obvod + výška podlaží {PER_PODLAZI_VYSKA_M[podlazi]} m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+            "zednik", [3],
+            data_quality="dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+            room_ids=ROOMS_PER_PODLAZI[podlazi],
+            expansion_origin=["260219_dum.PSV78.001_vyspraveni_agg", "260219_dum.PSV78.002_nove_omitka_agg"],
+        ))
+
+    # PSV-78 SDK podhled per podlaží (3 items — 1.PP excluded klenba zachována)
+    for podlazi in ["1.NP", "2.NP", "3.NP"]:
+        area = PER_PODLAZI_AREA_M2[podlazi]
+        rooms = ROOMS_PER_PODLAZI[podlazi]
+        formula = " + ".join(f"{r}={ROOM_AREA[r]}" for r in rooms) + f" = {area} m²"
+        items.append(mk(
+            O, "PSV-78 Povrchové úpravy", f"SDK podhled — tmelení + úprava {podlazi}",
+            f"SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou ({podlazi})",
+            "m²", area, formula, C_DXF_INSERT,
+            "612471141", ["763121521"],
+            f"DXF km_tabulka místností MTEXT — plocha {podlazi} = plocha podhledu (flat ceiling assumption)",
+            "sadrokartonar", [],
+            data_quality="dxf_deterministic",
+            room_ids=rooms,
+            expansion_origin=["260219_dum.PSV78.003_sdk_aggregate"],
+        ))
+
+    # PSV-78 Obklady koupelen per koupelna (3 items)
+    OBKLAD_VYSKA_M = 2.0  # TZ silent — CSN default
+    for koupelna in KOUPELNY_LIST:
+        rid = koupelna["room_id"]
+        obvod = koupelna["obvod_m"]
+        m2 = round(obvod * OBKLAD_VYSKA_M, 1)
+        items.append(mk(
+            O, "PSV-78 Povrchové úpravy", f"Keramický obklad koupelna {rid} ({koupelna['podlazi']})",
+            f"Keramický obklad stěn koupelny {rid} {koupelna['podlazi']} (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+            "m²", m2,
+            f"DXF IP_obrysy místností room {rid} perimeter {obvod} bm × TZ silent → CSN default obklad výška {OBKLAD_VYSKA_M} m = {m2} m²",
+            C_GEOM_FROM_TZ,
+            "781447001", ["781447003"],
+            f"DXF rooms PIP perimeter {rid} + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+            "obkladac", [],
+            data_quality="tz_silent_fallback_csn_default",
+            room_ids=[rid],
+            expansion_origin=["260219_dum.PSV78.004_obklady_koupelen_agg"],
+            notes=f"DXF perimeter approximate from area {koupelna['area_m2']} m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
+        ))
+    # Keep: obklad za kuchyňskou linkou (2 kuchyně aggregate stays)
     items += [
-        mk(O, "PSV-78 Povrchové úpravy", "Vyspravení stávajících stěn",
-           "Vyspravení stávajících cihelných stěn — cementová stěrka + výztužná síťka + tenkovrstvá štuková omítka",
-           "m²", round(fasada_interier_m2 * 0.6, 1),
-           f"interier_celkem ({fasada_interier_m2}) × 0.6 (stávající stěny po bourání) = ~329", C_GEOM_FROM_TZ,
-           "612301351", ["612311311"],
-           "TZ ARS dům §3 — vyspravení stávajícího zdiva po nových otvorech", "zednik", [3]),
-        mk(O, "PSV-78 Povrchové úpravy", "Nové zděné stěny — omítka",
-           "Nové zděné stěny (Porotherm 30, nadezdívka 3.NP) — vápenocementová jádrová omítka tl. 15 mm + štuk",
-           "m²", round(fasada_interier_m2 * 0.4, 1),
-           f"interier × 0.4 (nové zdivo 3.NP + příčky) = ~219", C_GEOM_FROM_TZ,
-           "612311311", ["612301351"],
-           "TZ ARS dům §4 — nové zděné stěny", "zednik", []),
-        mk(O, "PSV-78 Povrchové úpravy", "SDK podhledy + předstěny — tmelení",
-           "SDK podhledy a předstěny — tmelení spojů + povrchová úprava před výmalbou (Q3 standard)",
-           "m²", round(DUM["zastavena_m2"] * 1.5, 1),
-           "= cca 1.5× zastavěná pro celý SDK (podhledy + některé předstěny)", C_GEOM_FROM_TZ,
-           "612471141", ["763121521"],
-           "TZ ARS + PBŘ — SDK podhledy ocelobeton + trámový strop", "sadrokartonar", []),
-        mk(O, "PSV-78 Povrchové úpravy", "Keramický obklad koupelny + WC",
-           "Keramický obklad koupelny + WC + sprchové kouty — 3 koupelny, výška 2.0 m",
-           "m²", round(3 * 20.0, 1),
-           "3 koupelny × ~20 m² obkladu (obvod 10 m × 2 m výška) = 60", C_DXF_INSERT,
-           "781447001", ["781447003"],
-           "DXF dum_DPZ 3× koupelna MTEXT + TZ ARS", "obkladac", []),
         mk(O, "PSV-78 Povrchové úpravy", "Obklad za kuchyňskou linkou",
-           "Keramický obklad za kuchyňskou linkou — 2 kuchyně × ~5 m² obklad nad pracovní deskou",
+           "Keramický obklad za kuchyňskou linkou nad pracovní deskou — 2 kuchyně × ~5 m² (1.06 byt rodičů + 3.05 byt 3.NP)",
            "m²", 10.0,
-           "DXF dum_DPZ 2× kuchyně MTEXT × 5 m² obklad za linkou", C_DXF_INSERT,
+           "DXF dum_DPZ 2× kuchyně MTEXT (rooms 1.06 obyt+kuchyně + 3.05 obyt+kuchyně) × 5 m² obklad za linkou = 10 m²", C_DXF_INSERT,
            "781447001", ["781447003"],
-           "DXF dum_DPZ 2× kuchyně MTEXT + TZ ARS", "obkladac", []),
+           "DXF dum_DPZ 2× kuchyně MTEXT + TZ ARS", "obkladac", [],
+           data_quality="dxf_plus_tz_explicit"),
         mk(O, "PSV-78 Povrchové úpravy", "Interiérová výmalba",
            "Interiérová výmalba akrylátová bílá 2× — všechny stěny + podhledy mimo obklad",
-           "m²", round(fasada_interier_m2 - 70.0 + DUM["zastavena_m2"] * 1.5, 1),
-           "interier_stěny ~548 − obklady 70 + SDK podhledy 157 = ~635", C_GEOM_FROM_TZ,
+           "m²", round((PER_PODLAZI_AREA_M2['1.NP'] + PER_PODLAZI_AREA_M2['2.NP'] + PER_PODLAZI_AREA_M2['3.NP']) * 2.5 - 70.0 + (PER_PODLAZI_AREA_M2['1.NP'] + PER_PODLAZI_AREA_M2['2.NP'] + PER_PODLAZI_AREA_M2['3.NP']), 1),
+           "Σ ploch 1.NP+2.NP+3.NP × 2.5 (stěny per ratio) − obklady 70 + SDK podhledy = ~628 m²", C_GEOM_FROM_TZ,
            "784121011", ["784181101"],
-           "TZ ARS — interiérová výmalba", "malir", []),
+           "TZ ARS — interiérová výmalba (aggregate, no TZ per-room directive)", "malir", [],
+           data_quality="tz_only_aggregate"),
     ]
 
     # ── PSV-95 Detekce požární ───────────────────────────────────────
@@ -1084,12 +1315,38 @@ def gen_TZB_M():
            "3 patra × ~20 bm odpadní + svislé propojení = 60", C_GEOM_FROM_TZ,
            "721174021", ["721174022"],
            "TZ ARS dům §4 — nové koupelny + kuchyně, odpad do stávající kanalizace", "vodar", [6]),
-        mk(O, "PSV-72 ZTI", "Sanitární keramika — kompletní set",
-           "Sanitární keramika dodávka + montáž — 3× WC + 4× umyvadlo + 2× sprchový kout + 1× vana + 2× kuchyňský dřez",
-           "ks", 12,
-           "DXF dum_DPZ MTEXT: 3 koupelny + 2 kuchyně. 3 WC + 4 umyvadlo + 2 sprcha + 1 vana + 2 dřez = 12 ks", C_DXF_INSERT,
-           "725291131", ["725211213", "725331111"],
-           "DXF dum_DPZ MTEXT room labels 3× koupelna + 2× kuchyně; TZ ARS §4 — koupelny 1.NP/2.NP + nová 3.NP", "vodar", [6]),
+        # Sanitární керамика per koupelna — Part 2 expansion: 1 aggregate → 3 per-koupelna + 1 dřez
+        # Source: DXF INSERT PIP partial match + TZ assumption "1 WC + 1 umyvadlo + 1 sprcha/vana per koupelna"
+    ]
+    for koupelna in KOUPELNY_LIST:
+        rid = koupelna["room_id"]
+        dxf_fixtures = koupelna["fixtures_dxf"]
+        tz_fixtures = koupelna["fixtures_tz_assumption"]
+        total = len(dxf_fixtures) + len(tz_fixtures)
+        items.append(mk(
+            O, "PSV-72 ZTI", f"Sanitární keramika koupelna {rid} ({koupelna['podlazi']})",
+            f"Sanitární keramika dodávka + montáž v koupelně {rid} {koupelna['podlazi']}: " +
+            " + ".join([f"1× {f} (DXF)" for f in dxf_fixtures] + [f"1× {f} (TZ standard)" for f in tz_fixtures]),
+            "set", 1,
+            f"DXF INSERT PIP do polygonu {rid} = {dxf_fixtures} ({len(dxf_fixtures)} fixtures); TZ standard 'koupelna má WC + umyvadlo + sprcha/vana' = {tz_fixtures} ({len(tz_fixtures)} fixtures). Total = {total} fixtures jeden set per koupelna.",
+            C_GEOM_FROM_TZ,
+            "725291131", ["725211213", "725331111"],
+            f"DXF dum_DPZ INSERT positions PIP do room {rid} polygon (partial — 4/13 fixtures matched celkem) + TZ ARS § koupelny standard pattern",
+            "vodar", [6],
+            data_quality="dxf_partial_pip_plus_tz_assumption",
+            room_ids=[rid],
+            expansion_origin=["260219_dum.PSV72.004_sanit_aggregate"],
+        ))
+    items += [
+        mk(O, "PSV-72 ZTI", "Kuchyňský dřez 2 ks (1.06 + 3.05)",
+           "Kuchyňský dřez nerez + montáž — 2 ks (kuchyně 1.06 byt rodičů + kuchyně 3.05 byt 3.NP)",
+           "ks", 2,
+           f"DXF rooms 1.06 + 3.05 kuchyně MTEXT (každá obytná místnost + kuchyně) = 2 dřezy",
+           C_DXF_INSERT,
+           "725840111", ["725840121"],
+           "DXF kuchyně MTEXT 2× + TZ ARS — dispozice byty",
+           "vodar", [6],
+           data_quality="dxf_deterministic"),
         mk(O, "PSV-72 ZTI", "Vodovodní baterie + drobnosti",
            "Vodovodní baterie (WC ventil + páková umyvadlová + sprchové + dřezové + termostat sprchové) — ~15 ks + drobné instalační materiály",
            "ks", 15,
