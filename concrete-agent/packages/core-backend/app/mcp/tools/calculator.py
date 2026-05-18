@@ -795,3 +795,246 @@ async def _try_monolit_api(
     except Exception as e:
         logger.debug(f"[MCP/Calculator] Monolit API unavailable: {e}")
         return None
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# MCP Tool: calculate_pump (TOV concrete pump cost calculator)
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# Mirrors the multi-supplier pump_calc widget in the Monolit-Planner TOV
+# (technologicko-organizační vstup) panel. Coefficients per m³ come from
+# the Registr Rozpočtů cenový katalog and are stable across all suppliers —
+# only the hourly rates vary between betonárny.
+#
+# Reference: Monolit-Planner UI TOV pump_calc panel, Registr Rozpočtů
+# vendor pricing median (DOKA / PERI / Lobr / Schwing).
+
+# TOV coefficients per m³ of concrete (Czech praxe, validated on
+# Žihle 2062-1 + SO-202 pilot data).
+PUMP_COEFFICIENTS = {
+    "cerpadlo_sh_per_m3": 0.07510,      # Bet. čerpadlo (Sh / m³)
+    "pristaveni_sh_per_m3": 0.05864,    # Počet přistavení (Sh / m³)
+    "doprava_km_per_m3": 0.27034,       # Doprava čerpadla (km / m³) — informative
+    "vibrator_sh_per_m3": 0.07330,      # Ponorný vibrátor (Sh / m³)
+    "preplatek_m3_per_m3": 1.03,        # Příplatek za přečerpaný m³ (× 1.03)
+}
+
+PUMP_DEFAULT_RATES = {
+    "cerpadlo_czk_sh": 2500.0,
+    "vibrator_czk_sh": 50.0,
+    "transport_km": 72.0,
+    "transport_czk_km": 68.0,
+    "preplatek_czk_m3": 35.0,
+}
+
+
+async def calculate_pump(
+    volume_m3: float,
+    pump_supplier: Optional[str] = None,
+    cerpadlo_rate_czk_sh: float = 2500.0,
+    vibrator_rate_czk_sh: float = 50.0,
+    transport_km: float = 72.0,
+    transport_rate_czk_km: float = 68.0,
+    preplatek_rate_czk_m3: float = 35.0,
+    bedneni_doprava_czk: Optional[float] = None,
+    bedneni_ztracene_dily_czk: Optional[float] = None,
+    chemie_najezd_myti_czk: Optional[float] = None,
+) -> dict:
+    """Spočítá náklady na betonpumpu + dopravu + příplatky podle TOV vzorce.
+
+    Mirrors the Monolit-Planner TOV pump_calc widget. Applies fixed
+    coefficients per m³ of concrete (from Registr Rozpočtů median pricing)
+    multiplied by user-supplied hourly rates. Pump-only subtotal aggregates
+    the first 5 line items (čerpadlo + přistavení + doprava + vibrátor +
+    příplatek). Optional bednění costs (doprava, ztracené díly, chemie)
+    are added as standalone line items and aggregated into a separate
+    "with-bednění" subtotal so callers can choose the right scope.
+
+    TOV coefficients (per m³ of concrete):
+      - 0.07510 Sh — Bet. čerpadlo
+      - 0.05864 Sh — Počet přistavení
+      - 0.07330 Sh — Ponorný vibrátor
+      - 1.03 × m³ — Příplatek za přečerpaný m³
+      - 0.27034 km/m³ — Doprava čerpadla (informative; quantity is
+        `transport_km` parameter, not derived from volume)
+
+    Verification example (266.328 m³ at default rates):
+      čerpadlo: 0.07510 × 266.328 × 2500 ≈ 50 003 Kč
+      přistavení: 0.05864 × 266.328 × 2500 ≈ 39 044 Kč
+      doprava: 72 × 68 = 4 896 Kč
+      vibrátor: 0.07330 × 266.328 × 50 ≈ 976 Kč
+      příplatek: 1.03 × 266.328 × 35 ≈ 9 601 Kč
+      ≈ 104 520 Kč total pump-only.
+
+    Args:
+        volume_m3: Concrete volume in m³ for the pour. Drives every
+            coefficient-based line.
+        pump_supplier: Optional supplier label echoed in the result
+            (e.g. 'Lobr', 'Schwing', 'CEMEX'). Does not affect math.
+        cerpadlo_rate_czk_sh: Hourly rate for the pump in Kč/Sh
+            (default 2 500 — Czech median 2026).
+        vibrator_rate_czk_sh: Hourly rate for the immersion vibrator
+            in Kč/Sh (default 50).
+        transport_km: One-way distance in km to the construction site
+            (default 72 — median per Registr Rozpočtů 2026). The
+            coefficient 0.27034 km/m³ is informative; quantity comes from
+            this parameter, not from volume_m3.
+        transport_rate_czk_km: Transport rate in Kč/km (default 68).
+        preplatek_rate_czk_m3: Surcharge per m³ pumped (default 35).
+        bedneni_doprava_czk: Optional flat-fee bednění transport cost in Kč.
+            When provided, appears as a standalone line item and is included
+            in `subtotal_with_bedneni_czk`.
+        bedneni_ztracene_dily_czk: Optional flat-fee bednění consumables /
+            ztracené díly cost in Kč.
+        chemie_najezd_myti_czk: Optional flat-fee chemistry / nájezd / mytí
+            cost in Kč.
+
+    Returns:
+        Dict with `lines[]` (one entry per cost component), pump-only
+        subtotal, with-bednění subtotal, per-m³ unit cost, and an echo
+        of the inputs for self-describing schemas.
+    """
+    try:
+        if volume_m3 <= 0:
+            return {
+                "error": f"volume_m3 must be > 0 (got {volume_m3})",
+                "source": "mcp_pump_calculator",
+            }
+
+        lines: list[dict] = []
+
+        # ── 1. Bet. čerpadlo ────────────────────────────────────────────
+        cerpadlo_qty = PUMP_COEFFICIENTS["cerpadlo_sh_per_m3"] * volume_m3
+        cerpadlo_total = cerpadlo_qty * cerpadlo_rate_czk_sh
+        lines.append({
+            "name": "Bet. čerpadlo",
+            "unit": "Sh",
+            "coefficient": PUMP_COEFFICIENTS["cerpadlo_sh_per_m3"],
+            "quantity": round(cerpadlo_qty, 4),
+            "unit_price": cerpadlo_rate_czk_sh,
+            "total_czk": round(cerpadlo_total, 2),
+            "category": "pump",
+        })
+
+        # ── 2. Počet přistavení ────────────────────────────────────────
+        pristaveni_qty = PUMP_COEFFICIENTS["pristaveni_sh_per_m3"] * volume_m3
+        pristaveni_total = pristaveni_qty * cerpadlo_rate_czk_sh
+        lines.append({
+            "name": "Počet přistavení",
+            "unit": "Sh",
+            "coefficient": PUMP_COEFFICIENTS["pristaveni_sh_per_m3"],
+            "quantity": round(pristaveni_qty, 4),
+            "unit_price": cerpadlo_rate_czk_sh,
+            "total_czk": round(pristaveni_total, 2),
+            "category": "pump",
+        })
+
+        # ── 3. Doprava čerpadla — flat km × rate, NOT volume-driven ────
+        doprava_total = transport_km * transport_rate_czk_km
+        lines.append({
+            "name": "Doprava čerpadla",
+            "unit": "km",
+            # Echo the informative volume-derived hint so callers see what
+            # the coefficient would predict for this volume:
+            "coefficient_hint_km_per_m3": PUMP_COEFFICIENTS["doprava_km_per_m3"],
+            "coefficient_hint_km": round(
+                PUMP_COEFFICIENTS["doprava_km_per_m3"] * volume_m3, 2,
+            ),
+            "quantity": transport_km,
+            "unit_price": transport_rate_czk_km,
+            "total_czk": round(doprava_total, 2),
+            "category": "pump",
+        })
+
+        # ── 4. Ponorný vibrátor ────────────────────────────────────────
+        vibrator_qty = PUMP_COEFFICIENTS["vibrator_sh_per_m3"] * volume_m3
+        vibrator_total = vibrator_qty * vibrator_rate_czk_sh
+        lines.append({
+            "name": "Ponorný vibrátor",
+            "unit": "Sh",
+            "coefficient": PUMP_COEFFICIENTS["vibrator_sh_per_m3"],
+            "quantity": round(vibrator_qty, 4),
+            "unit_price": vibrator_rate_czk_sh,
+            "total_czk": round(vibrator_total, 2),
+            "category": "pump",
+        })
+
+        # ── 5. Příplatek za přečerpaný m³ ─────────────────────────────
+        preplatek_qty = PUMP_COEFFICIENTS["preplatek_m3_per_m3"] * volume_m3
+        preplatek_total = preplatek_qty * preplatek_rate_czk_m3
+        lines.append({
+            "name": "Příplatek za přečerpaný m³",
+            "unit": "m³",
+            "coefficient": PUMP_COEFFICIENTS["preplatek_m3_per_m3"],
+            "quantity": round(preplatek_qty, 4),
+            "unit_price": preplatek_rate_czk_m3,
+            "total_czk": round(preplatek_total, 2),
+            "category": "pump",
+        })
+
+        subtotal_pump_only = sum(line["total_czk"] for line in lines)
+
+        # ── 6/7/8. Optional bednění + chemie lines (flat fees) ─────────
+        if bedneni_doprava_czk is not None:
+            lines.append({
+                "name": "Doprava bednění",
+                "unit": "fix",
+                "coefficient": None,
+                "quantity": 1,
+                "unit_price": float(bedneni_doprava_czk),
+                "total_czk": round(float(bedneni_doprava_czk), 2),
+                "category": "bedneni",
+            })
+        if bedneni_ztracene_dily_czk is not None:
+            lines.append({
+                "name": "Bednění ztracené díly",
+                "unit": "fix",
+                "coefficient": None,
+                "quantity": 1,
+                "unit_price": float(bedneni_ztracene_dily_czk),
+                "total_czk": round(float(bedneni_ztracene_dily_czk), 2),
+                "category": "bedneni",
+            })
+        if chemie_najezd_myti_czk is not None:
+            lines.append({
+                "name": "Chemie nájezd + mytí",
+                "unit": "fix",
+                "coefficient": None,
+                "quantity": 1,
+                "unit_price": float(chemie_najezd_myti_czk),
+                "total_czk": round(float(chemie_najezd_myti_czk), 2),
+                "category": "bedneni",
+            })
+
+        subtotal_with_bedneni = sum(line["total_czk"] for line in lines)
+        per_m3 = subtotal_pump_only / volume_m3
+
+        return {
+            "lines": lines,
+            "subtotal_pump_only_czk": round(subtotal_pump_only, 2),
+            "subtotal_with_bedneni_czk": round(subtotal_with_bedneni, 2),
+            "per_m3_czk": round(per_m3, 2),
+            "input": {
+                "volume_m3": volume_m3,
+                "pump_supplier": pump_supplier,
+                "cerpadlo_rate_czk_sh": cerpadlo_rate_czk_sh,
+                "vibrator_rate_czk_sh": vibrator_rate_czk_sh,
+                "transport_km": transport_km,
+                "transport_rate_czk_km": transport_rate_czk_km,
+                "preplatek_rate_czk_m3": preplatek_rate_czk_m3,
+                "bedneni_doprava_czk": bedneni_doprava_czk,
+                "bedneni_ztracene_dily_czk": bedneni_ztracene_dily_czk,
+                "chemie_najezd_myti_czk": chemie_najezd_myti_czk,
+            },
+            "coefficients": dict(PUMP_COEFFICIENTS),
+            "note": (
+                "TOV multi-supplier pump cost. Coefficients from Registr "
+                "Rozpočtů median pricing. Hourly rates vary per betonárna — "
+                "override defaults for vendor-specific quotes."
+            ),
+            "source": "mcp_pump_calculator",
+        }
+
+    except Exception as e:
+        logger.error(f"[MCP/Pump] Error: {e}")
+        return {"error": str(e), "source": "mcp_pump_calculator"}

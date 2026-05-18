@@ -59,6 +59,13 @@ from app.mcp.tools.calculator import calculate_concrete_works  # noqa: E402
 mcp.tool()(calculate_concrete_works)
 
 
+# ── Tool 4b: Pump cost calculator (TOV multi-supplier) ───────────────────────
+
+from app.mcp.tools.calculator import calculate_pump  # noqa: E402
+
+mcp.tool()(calculate_pump)
+
+
 # ── Tool 5: Budget Parser ────────────────────────────────────────────────────
 
 from app.mcp.tools.budget import parse_construction_budget  # noqa: E402
