@@ -1,0 +1,369 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — residential (pozemní stavby, rezidenční budovy)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Loaded by app/services/uep/coverage_engine.py and evaluated against the
+# stream of `PerSourceExtraction` records emitted by Phase-1 extractors.
+#
+# Field shape (validated against app.models.uep_schemas.CoverageRequirement):
+#   category:         coverage-matrix key (must equal the `category` on facts)
+#   label_cs:         human-readable Czech label (renders in coverage report)
+#   required_fields:  fact `field` names that must be present for `pokryto`
+#                     (empty list = "any fact in this category counts")
+#   expected_sources: source formats that could legitimately fill this row
+#                     (drives source-route diagnostics; not a hard filter)
+#   optional:         when true, `chybi` does NOT block the gate
+#   project_types:    filters loader for multi-type matrix sharing (we keep
+#                     this single-type for PR1 but the loader supports it)
+#   notes:            free-form context for next maintainer
+#
+# Categories below derive from the actual Žihle / Libuše / RD Jáchymov pilot
+# corpus + ČSN 73 0540 (energetika) + ČSN 73 0810 (požární bezpečnost) +
+# vyhláška 499/2006 D.1.1 (architektonicko-stavební řešení) checklist.
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.2, §7
+# Reference: STAVAGENT_PATTERNS.md Pattern 5 (TSKP hierarchical structure)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: residential
+description: >
+  Coverage requirements for residential / pozemní stavby projects
+  (D.1.1 architektonicko-stavební řešení + D.1.4 profession schemas).
+
+# ─── A. Project identification & metadata (TZ-driven) ─────────────────────
+requirements:
+
+  - category: project_identification
+    label_cs: Identifikační údaje stavby
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Investor, název stavby, místo, autorizovaný projektant, číslo zakázky.
+      One or more identification facts must be present.
+
+  - category: norm_references
+    label_cs: Citované normy ČSN EN
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Without at least one ČSN citation the TZ is unreviewable. Žihle
+      pilot used 14+ norms; minimum for residential = 3-5.
+
+  - category: referenced_documents
+    label_cs: Soupis odkazovaných dokumentů
+    required_fields: [document]
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Cross-check inventory of drawings TZ cites vs drawings actually
+      uploaded. Optional — TZs sometimes embed full description without
+      explicit drawing references.
+
+  # ─── B. Concrete works (TZ + drawings) ─────────────────────────────────
+
+  - category: concrete_grade
+    label_cs: Třída betonu (C20/25 / C30/37 …)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: exposure_class
+    label_cs: Třída expozice (XC1 / XF1 / XA2 …)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Mandatory per ČSN EN 206. Coverage gate flags missing XC class
+      because durability cannot be specified without it.
+
+  - category: reinforcement
+    label_cs: Třída výztuže (B500B / B500C)
+    required_fields: [steel_grade]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: special_requirements
+    label_cs: Speciální požadavky (bílá vana, pohledový beton, vodotěsnost)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Optional — most residential projects don't require white-tank
+      construction. Flagged but not blocking.
+
+  # ─── C. Quantities & dimensions (TZ + soupis + drawings) ───────────────
+
+  - category: quantities
+    label_cs: Objemy / plochy / hmotnosti (m³ / m² / t)
+    required_fields: []
+    expected_sources: [pdf_tz, xlsx_soupis]
+    optional: false
+    notes: >
+      At least one volume / area / mass quantity. Empty quantities
+      means the TZ has no totals — pipeline cannot derive výkaz výměr.
+
+  - category: dimensions
+    label_cs: Rozměry (tloušťky, výšky, počty podlaží)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  # ─── D. DXF / drawing structural inventory ─────────────────────────────
+
+  - category: dxf_meta
+    label_cs: DXF metadata (entity count, units, bbox)
+    required_fields: [entity_count_total, layer_count]
+    expected_sources: [dxf, dwg]
+    optional: false
+    notes: >
+      Sanity check — empty DXF = upload error. Engine flags any DXF with
+      < 100 entities as suspicious but doesn't block here (PR2
+      reconciliation does that).
+
+  - category: layer_inventory
+    label_cs: Vrstvy výkresů (CAD layer catalog)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+    notes: >
+      At least one layer with entities. Universal — any DXF that ezdxf
+      parses produces this.
+
+  - category: closed_polygons
+    label_cs: Uzavřené polygony (plochy místností / sekcí)
+    required_fields: []
+    expected_sources: [dxf, dwg, ifc]
+    optional: false
+    notes: >
+      Source for room areas. ArchiCAD: A-AREA-BNDY-OTLN / IP_obrysy
+      místností. Allplan: O-Místnosti.
+
+  - category: open_polylines
+    label_cs: Otevřené polyčáry (osy stěn, hrany konstrukcí)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+    notes: >
+      Wall axes, edges, dimension lines. Universal — appears in every
+      architectural DXF.
+
+  - category: block_inventory
+    label_cs: Inventář INSERT bloků (dveře, okna, sanitar, kuchyně)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+    notes: >
+      Door / window / sanitary blocks. Without blocks the drawing is
+      either schematic or pure-line — coverage matrix flags as warning.
+
+  - category: text_inventory
+    label_cs: Texty a popisky (TEXT + MTEXT)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+    notes: >
+      Room codes, dimension labels, drawing notes. Pure-geometry DXF
+      without text is not a complete project drawing.
+
+  - category: dimensions_drawn
+    label_cs: Kótování (DIMENSION entity)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: true
+    notes: >
+      Some ArchiCAD exports drop DIMENSION on export; many use TEXT
+      labels instead. Optional — flagged but not blocking.
+
+  - category: block_attribs
+    label_cs: Atributy bloků (ID dveří/oken/místností)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: true
+    notes: >
+      ATTRIB tags inside INSERT blocks. AIA-style drawings always
+      have them; some Allplan drawings don't. Optional.
+
+  # ─── E. Building structural systems (cross-source) ─────────────────────
+
+  - category: wall_system
+    label_cs: Konstrukční systém stěn (cihly / monolit / kombinovaný)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc]
+    optional: false
+    notes: >
+      Wall material + thickness. Cross-checked between TZ description
+      and DXF wall layers in PR2 reconciliation.
+
+  - category: foundation_system
+    label_cs: Konstrukční systém základů (pasy / desky / piloty)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc]
+    optional: false
+    notes: >
+      Foundation type per ČSN EN 1997. Critical for výkaz — separate
+      DPS section in vyhláška 499/2006 (D.1.1.2 statika).
+
+  - category: roof_system
+    label_cs: Střešní systém (plochá / sedlová / krytina / izolace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc]
+    optional: false
+
+  - category: stair_system
+    label_cs: Schodišťový systém (monolit / prefab / dřevěné)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc]
+    optional: true
+    notes: >
+      Some single-story projects don't have stairs (RD bungalov).
+      Optional.
+
+  # ─── F. Building physics & finishes ────────────────────────────────────
+
+  - category: thermal_insulation
+    label_cs: Tepelná izolace (EPS / minerální / fasáda / střecha)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ETICS or interior insulation must be specified for energy
+      certificate (PENB) per ČSN 73 0540.
+
+  - category: facade_finish
+    label_cs: Povrchová úprava fasády (omítka / obklad / dřevo)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: floor_finishes
+    label_cs: Skladby podlah (PU / dlažba / vinyl / parkety)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Pattern 8 (door-vs-gate hazard, STAVAGENT_PATTERNS.md): F10 PU
+      garáž bound to D05 sekční vrata — coverage matrix flags F10
+      presence to alert downstream classifier.
+
+  - category: windows_doors_specification
+    label_cs: Specifikace oken a dveří (rozměry / materiál / U-value)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  # ─── G. D.1.4 technical equipment (Czech vyhláška 499/2006) ────────────
+
+  - category: heating_system
+    label_cs: Vytápění (zdroj tepla, otopná tělesa, regulace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      D.1.4.5 UT. Optional if vytápění je předmětem samostatného
+      projektu — RD often have it inline.
+
+  - category: ventilation_system
+    label_cs: Vzduchotechnika (VZT) — distribuce, rekuperace
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      D.1.4.3 VZT. Optional — many bytovky have natural ventilation
+      only. Libuše_objekt_D has dedicated VZT DXF set.
+
+  - category: water_supply
+    label_cs: Zdravotechnika — vodovod (ZTI vodovod)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: D.1.4.4 ZTI vodovod.
+
+  - category: sewer_system
+    label_cs: Zdravotechnika — kanalizace
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: D.1.4.4 ZTI kanalizace.
+
+  - category: electrical_strong
+    label_cs: Silnoproud (zásuvky, osvětlení, hlavní rozvaděč)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: D.1.4.1 silnoproud.
+
+  - category: electrical_weak
+    label_cs: Slaboproud (datové sítě, EZS, EPS)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: D.1.4.2 slaboproud.
+
+  - category: cooling_chl
+    label_cs: Chlazení (split, multisplit)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      D.1.4.x chl — Libuše_objekt_D má samostatný chl DXF set per
+      podlaží. Optional for most RD.
+
+  - category: measurement_control
+    label_cs: Měření a regulace (MaR)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: D.1.4.6 MaR — usually only in larger projects.
+
+  # ─── H. Fire safety & accessibility (ČSN 73 0810 + vyhl. 398/2009) ─────
+
+  - category: fire_safety
+    label_cs: Požárně bezpečnostní řešení (PBŘ)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      D.1.3 PBŘ je povinný pro každou rezidenční stavbu. Coverage
+      gate flags missing PBŘ as blocking.
+
+  - category: accessibility
+    label_cs: Bezbariérové užívání (vyhl. 398/2009)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Mandatory for buildings ≥ 3 bytové jednotky. Optional flag,
+      blocking decided downstream when project_type subtype refines.
+
+  # ─── I. Environment & site (D.2 + situace) ─────────────────────────────
+
+  - category: site_situation
+    label_cs: Koordinační situace + vytyčení
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg]
+    optional: false
+    notes: >
+      D.2 koordinační situace je povinná. RD Jáchymov má samostatný
+      DXF "situace 02" — coverage matrix očekává odpovídající fact
+      z některého z drawings.
+
+  - category: utility_connections
+    label_cs: Přípojky inženýrských sítí (voda / kanalizace / elektro / plyn)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      D.2 inženýrské objekty. Optional pro stavby napojené na
+      existující přípojky.
+
+  - category: geological_conditions
+    label_cs: Geologické a hydrogeologické poměry (IGP)
+    required_fields: []
+    expected_sources: [pdf_geology, pdf_tz]
+    optional: true
+    notes: >
+      Mandatory pro stavby > 1 NP nebo s podzemním podlažím. Optional
+      flag — IGP report often separate PDF, routing in PR3.
