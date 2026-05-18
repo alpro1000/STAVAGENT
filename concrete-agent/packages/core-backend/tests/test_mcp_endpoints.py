@@ -2,7 +2,9 @@
 Tests for MCP health + tools-listing endpoints.
 
 - GET /mcp/health         — public, no auth (Cloud Run uptime checks)
-- GET /api/v1/mcp/tools   — requires Bearer API key, returns 9 tools
+- GET /api/v1/mcp/tools   — requires Bearer API key, returns the full tool
+  list. The count is derived from TOOL_ORDER (single source of truth),
+  so adding a new MCP tool doesn't require touching these tests.
 
 These endpoints live in app/main.py and app/mcp/routes.py.
 
@@ -45,7 +47,9 @@ def test_mcp_health_payload_shape(client):
     body = client.get("/mcp/health").json()
     assert body["status"] == "ok"
     assert isinstance(body["version"], str) and body["version"]
-    assert body["tools"] == 9
+    # Tool count is dynamic — must match TOOL_ORDER length (single source
+    # of truth shared between health probe, billing, and listing endpoint).
+    assert body["tools"] == len(TOOL_ORDER)
     assert isinstance(body["mcp_available"], bool)
     assert isinstance(body["timestamp"], int) and body["timestamp"] > 0
 
@@ -96,15 +100,19 @@ def test_tools_rejects_invalid_key(client):
 
 
 @requires_db
-def test_tools_returns_all_nine(client, api_key):
+def test_tools_returns_full_catalog(client, api_key):
+    """Listing endpoint must return every entry in TOOL_ORDER in order.
+    Count is derived from TOOL_ORDER so adding a tool only requires
+    updating TOOL_ORDER + TOOL_DESCRIPTIONS + TOOL_COSTS."""
     response = client.get(
         "/api/v1/mcp/tools",
         headers={"Authorization": f"Bearer {api_key}"},
     )
     assert response.status_code == 200
     body = response.json()
-    assert body["total"] == 9
-    assert len(body["tools"]) == 9
+    expected_count = len(TOOL_ORDER)
+    assert body["total"] == expected_count
+    assert len(body["tools"]) == expected_count
 
     names = [t["name"] for t in body["tools"]]
     assert names == TOOL_ORDER

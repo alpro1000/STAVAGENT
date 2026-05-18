@@ -544,10 +544,15 @@ app.include_router(parser_router)
 @app.get("/mcp/health")
 @app.head("/mcp/health")
 async def mcp_health():
+    # Tool count is derived from TOOL_COSTS — single source of truth shared
+    # with billing + the GET /api/v1/mcp/tools listing. Adding a new MCP tool
+    # only requires registering it in server.py + adding a TOOL_COSTS entry;
+    # the health probe picks it up automatically.
+    from app.mcp.auth import TOOL_COSTS
     return {
         "status": "ok",
         "version": app.version,
-        "tools": 9,
+        "tools": len(TOOL_COSTS),
         "mcp_available": _mcp_http_app is not None,
         "timestamp": int(time.time()),
     }
@@ -696,7 +701,7 @@ async def oauth_protected_resource(request: Request):
 #                               │                 non-allowlisted Origin
 #                               │                 per Anthropic spec)
 #                               │
-#                               └── _mcp_http_app  (FastMCP — 9 tools)
+#                               └── _mcp_http_app  (FastMCP tool surface)
 #
 # Both CORSMiddleware layers use `_CORS_ALLOW_ORIGINS` /
 # `_CORS_EXPOSE_HEADERS` so config can't drift. CORSMiddleware.send()
@@ -714,8 +719,10 @@ if _mcp_http_app is not None:
         expose_headers=_CORS_EXPOSE_HEADERS,
     )
     app.mount("/mcp", mcp_with_cors)
+    from app.mcp.auth import TOOL_COSTS as _MCP_TOOL_COSTS
     logger.info(
-        "🔌 MCP server mounted at /mcp (9 tools, CORS + RFC 9728 challenge)"
+        "🔌 MCP server mounted at /mcp (%d tools, CORS + RFC 9728 challenge)",
+        len(_MCP_TOOL_COSTS),
     )
 
 # MCP Auth + Billing + REST API (for GPT Actions)
