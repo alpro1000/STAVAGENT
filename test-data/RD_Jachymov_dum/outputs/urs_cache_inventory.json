@@ -1,0 +1,53 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-18",
+  "_purpose": "URS local cache discovery for Part 5b deferred matching phase.",
+  "_decision_per_user_spec": "NEK matchingu zatím — URS lookup deferred to Part 5b after final items.json upgrade (post Tier 5).",
+  "urs_cache": {
+    "path": "URS_MATCHER_SERVICE/backend/data/URS201801.csv",
+    "size_bytes": 1960079,
+    "n_rows": 39742,
+    "schema": "code;type;description (semicolon-separated, KROS URS 2018 catalog)",
+    "schema_sample_rows": [
+      [
+        "010001000",
+        "K",
+        " cinnst nakld pruvdnch rozdln zakldn"
+      ],
+      [
+        "011002000",
+        "K",
+        " cinnst geodtck hlavn nakld projktv pruvdnch titul"
+      ],
+      [
+        "011103000",
+        "K",
+        " geodtck geotchnck prac projktv pruzkmn"
+      ]
+    ],
+    "_format_note": "Description field is encoded — appears to be lowercased + diacritic-stripped + tokenized form (e.g. 'cinnst nakld pruvdnch rozdln zakldn'). For BM25/fuzzy matching v Part 5b deferred phase, will need to normalize item popis to same encoding for consistent matching.",
+    "kapitola_prefix_distribution_top20": {
+      "286": 2968,
+      "553": 1858,
+      "611": 1605,
+      "598": 1578,
+      "552": 1516,
+      "484": 1433,
+      "551": 1066,
+      "735": 980,
+      "631": 909,
+      "593": 888,
+      "590": 856,
+      "422": 835,
+      "592": 806,
+      "283": 780,
+      "319": 626,
+      "765": 600,
+      "345": 597,
+      "734": 521,
+      "732": 513,
+      "562": 482
+    },
+    "_deferred_to_part_5b": "URS matching against this cache will run AFTER final items.json upgrade (Tier 5 complete)."
+  }
+}
