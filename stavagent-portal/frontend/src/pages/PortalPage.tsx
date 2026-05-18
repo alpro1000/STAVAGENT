@@ -85,12 +85,21 @@ const SERVICES: Service[] = [
   },
   {
     id: 'monolit-calculator',
-    name: 'Kalkulátor betonáže',
-    description: 'Detail prvku + Plán objektu. 7 výpočetních jader (bednění, výztuž, betonáž, zrání, harmonogram, PERT, čerpadla). 25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 22 typů prvků. Normy ČSN EN 13670, DIN 18218, Saul.',
+    name: 'Monolit-Planner — plánovač projektu',
+    description: 'Tabulkový pohled na objekty a pozice. Klasifikace, propojení s Registrem a Klasifikátorem, hromadné importy z výkazu výměr. Z každé pozice otevřete Kalkulátor betonáže s předvyplněným kontextem.',
     icon: 'Hexagon',
     url: 'https://kalkulator.stavagent.cz',
     status: 'active',
-    tags: ['Beton', 'Bednění', 'Takty', 'Gantt', 'ČSN EN 13670']
+    tags: ['Tabulka', 'Objekty', 'Pozice', 'Workflow']
+  },
+  {
+    id: 'concrete-calculator',
+    name: 'Kalkulátor betonáže — rychlý výpočet',
+    description: 'Samostatný kalkulátor pro rychlý odhad bez tabulky. Ruční vstup: prvek, objem, bednění (DOKA / PERI / ULMA / NOE override), výztuž, zrání, harmonogram. 7 výpočetních jader, 25 systémů bednění, 22 typů prvků. Normy ČSN EN 13670, DIN 18218.',
+    icon: 'Calculator',
+    url: 'https://kalkulator.stavagent.cz/planner',
+    status: 'active',
+    tags: ['Standalone', 'Beton', 'Bednění', 'Override', 'Rychlý odhad']
   },
   // ===== BETA =====
   {
