@@ -4,6 +4,7 @@ Czech Building Audit System
 """
 import logging
 import os
+import re
 import time
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
@@ -199,6 +200,122 @@ class MCPAuthChallengeMiddleware:
         await self.app(scope, receive, send_with_challenge)
 
 
+class BareOptionsAllowMiddleware:
+    """Return 204 + CORS headers for `OPTIONS` requests that AREN'T a
+    real CORS preflight.
+
+    Why this exists
+    ===============
+
+    Starlette's `CORSMiddleware` short-circuits OPTIONS requests with
+    a 200 + CORS headers — but only when the request looks like a real
+    preflight, i.e. it carries `Access-Control-Request-Method` (per
+    the Fetch spec). Anything else falls through to route dispatch,
+    which 405s because no FastAPI route (and no FastMCP route on the
+    `/mcp/` mount) registers an OPTIONS handler.
+
+    Some legitimate clients send bare OPTIONS without
+    `Access-Control-Request-Method`:
+
+      - `curl -X OPTIONS …` for a health probe
+      - Intermediary proxies / gateways that strip the request-method
+        header on retry
+      - Some MCP client implementations probing `/mcp/` for liveness
+
+    Without an OPTIONS handler, those clients see 405 + no CORS
+    headers → browser surfaces a `CORS_ERROR` and Claude.ai treats
+    the server as unreachable.
+
+    What this middleware does
+    =========================
+
+      1. Pass through anything that isn't an HTTP OPTIONS request.
+      2. Pass through OPTIONS requests that ARE real preflights
+         (Access-Control-Request-Method present) — Starlette's
+         `CORSMiddleware` further down the stack handles them with
+         its normal 200 + CORS-headers response.
+      3. For bare OPTIONS from an allow-listed `Origin`, short-circuit
+         with a `204 No Content` and the same CORS headers that
+         CORSMiddleware would have set on a preflight (so the browser
+         is happy regardless of which path the request took).
+      4. Bare OPTIONS without `Origin`, or with a non-allow-listed
+         origin, still pass through (returning 405 is correct for
+         non-CORS clients hitting routes that don't define OPTIONS).
+
+    Ordering
+    ========
+
+    Added to the app middleware stack AFTER `CORSMiddleware` (so the
+    last-added-first-running rule places this OUTSIDE CORSMiddleware
+    in the request flow). Real preflights are inspected by this
+    middleware first, get the request-method header, are passed
+    through to CORSMiddleware, and respond with 200. Bare OPTIONS
+    short-circuit here.
+    """
+
+    def __init__(self, app, allow_origins, allow_origin_regex=None):
+        self.app = app
+        self.allow_origins = set(allow_origins or [])
+        self.allow_origin_regex = (
+            re.compile(allow_origin_regex) if allow_origin_regex else None
+        )
+
+    def _origin_allowed(self, origin: str) -> bool:
+        if not origin:
+            return False
+        if origin in self.allow_origins:
+            return True
+        if self.allow_origin_regex and self.allow_origin_regex.fullmatch(origin):
+            return True
+        return False
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http" or scope.get("method") != "OPTIONS":
+            await self.app(scope, receive, send)
+            return
+
+        headers = {
+            k.decode("latin-1").lower(): v.decode("latin-1")
+            for k, v in scope.get("headers", [])
+        }
+        # Real CORS preflight — let CORSMiddleware handle it
+        if "access-control-request-method" in headers:
+            await self.app(scope, receive, send)
+            return
+
+        origin = headers.get("origin", "")
+        if not self._origin_allowed(origin):
+            # No origin or not allow-listed → don't short-circuit;
+            # original 405 behaviour is fine for non-CORS clients.
+            await self.app(scope, receive, send)
+            return
+
+        # Bare OPTIONS from allow-listed origin → 204 + CORS headers.
+        # Methods + headers + max-age mirror what a real preflight
+        # would have returned via CORSMiddleware (same allow lists,
+        # 24 h cache). `Mcp-Session-Id` is explicit because some MCP
+        # transports use it and CORSMiddleware's `Access-Control-
+        # Allow-Headers: *` doesn't apply to credentialed requests in
+        # all browsers.
+        from starlette.responses import Response
+
+        response = Response(
+            status_code=204,
+            headers={
+                "Access-Control-Allow-Origin": origin,
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Methods":
+                    "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers":
+                    "Authorization, Content-Type, Mcp-Session-Id, "
+                    "X-Requested-With",
+                "Access-Control-Max-Age": "86400",
+                "Vary": "Origin",
+            },
+        )
+        await response(scope, receive, send)
+
+
 # ── Application lifespan (replaces deprecated @app.on_event decorators) ──────
 
 async def _run_startup() -> None:
@@ -389,6 +506,16 @@ app.add_middleware(
 # Added LAST so it ends up first in the Starlette middleware stack
 # (user_middleware is `insert(0, ...)`-prepended, then wrapped in
 # reverse, so the last add_middleware call runs first on requests).
+# Bare OPTIONS fallback — catches OPTIONS requests that aren't a real
+# CORS preflight (no `Access-Control-Request-Method`). Real preflights
+# pass through to the CORSMiddleware registered above. See the docstring
+# on `BareOptionsAllowMiddleware` for the full motivation.
+app.add_middleware(
+    BareOptionsAllowMiddleware,
+    allow_origins=_CORS_ALLOW_ORIGINS,
+    allow_origin_regex=_CORS_ALLOW_ORIGIN_REGEX,
+)
+
 app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 # Middleware to exclude /healthcheck from access logs
