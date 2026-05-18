@@ -98,16 +98,26 @@ export default function useCalculator() {
   // must not overwrite these fields. See `LOCKED_FIELDS` below.
   const isTzContextLocked = !!positionContext?.position_id;
 
+  // Manual override toggle: lets the user unlock element_type + volume
+  // while staying in the linked-mode session (so apply-to-position, sibling
+  // IDs, project context, savedVariants etc. all keep working). When ON the
+  // form behaves like the standalone /planner page, but the position
+  // breadcrumb + re-link affordance remain visible in the header.
+  const [manualOverride, setManualOverride] = useState(false);
+  const isLinkedMode = isTzContextLocked;
+  const isStandaloneMode = !positionContext;
+
   /**
    * FormState keys that are locked from the parent Monolit Planner context
    * when `isTzContextLocked` is true. Matches user design decision (Task 1,
    * 2026-04-20): "Core 3 — element_type + volume_m3 + position code".
    * Position code is read-only display (not a FormState field), so the
-   * locking here covers the two writable form fields.
+   * locking here covers the two writable form fields. `manualOverride`
+   * empties the set without dropping the linked-mode context.
    */
   const LOCKED_FIELDS = ['element_type', 'volume_m3'] as const;
   const lockedFieldSet: ReadonlySet<string> = new Set(
-    isTzContextLocked ? LOCKED_FIELDS : [],
+    isTzContextLocked && !manualOverride ? LOCKED_FIELDS : [],
   );
 
   /** Portal mode: opened from Portal (back-link → Portal, not Monolit) */
@@ -1437,6 +1447,11 @@ export default function useCalculator() {
     // Task 1: strict marker for TZ context lock (position_id present)
     isTzContextLocked,
     lockedFieldSet,
+    // Mode flags + manual override toggle for the header banner
+    isLinkedMode,
+    isStandaloneMode,
+    manualOverride,
+    setManualOverride,
 
     // Form state
     form, setForm,
