@@ -6,7 +6,7 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
-import { Calculator, ArrowLeft, Star } from 'lucide-react';
+import { Calculator, ArrowLeft, Star, Unlock, Link2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import type { PlannerOutput } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -154,6 +154,7 @@ export default function PlannerPage() {
 
   const {
     positionContext, isMonolitMode, isPortalMode, isTzContextLocked, lockedFieldSet,
+    isLinkedMode, isStandaloneMode, manualOverride, setManualOverride,
     form, setForm, result, setResult, error, setError, plan,
     showAdvanced, setShowAdvanced, showLog, setShowLog, showHelp, setShowHelp,
     showNorms, setShowNorms, showProductivityNorms, setShowProductivityNorms,
@@ -214,8 +215,69 @@ export default function PlannerPage() {
               </div>
             );
           })()}
+          {/* Mode badge: tells the user whether the calculator is bound to a
+              Monolit Planner row or running standalone. */}
+          {(() => {
+            const standalone = isStandaloneMode;
+            const linkedActive = isLinkedMode && !manualOverride;
+            const linkedOverride = isLinkedMode && manualOverride;
+            const badge = standalone
+              ? { icon: '✏️', text: 'Samostatný režim', bg: 'var(--r0-slate-100, #f1f5f9)', fg: 'var(--r0-slate-600, #475569)' }
+              : linkedOverride
+                ? { icon: '🔓', text: 'Override aktivní', bg: 'rgba(245,158,11,0.12)', fg: 'var(--r0-orange, #f59e0b)' }
+                : linkedActive
+                  ? { icon: '📊', text: 'Propojeno s pozicí', bg: 'rgba(5,150,105,0.12)', fg: 'var(--r0-success, #059669)' }
+                  : null;
+            if (!badge) return null;
+            return (
+              <span
+                title={
+                  standalone
+                    ? 'Samostatný kalkulátor — všechna pole editovatelná, výsledek se nikam nesynchronizuje.'
+                    : linkedOverride
+                      ? 'Ruční override — typ prvku a objem jsou odemčené. Změny se nepropíšou zpět do Monolit-Planneru.'
+                      : 'Kalkulátor je propojen s pozicí Monolit-Planneru. Typ prvku a objem jsou zamčené z původní pozice.'
+                }
+                style={{
+                  marginLeft: 8,
+                  padding: '2px 8px',
+                  borderRadius: 4,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  background: badge.bg,
+                  color: badge.fg,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {badge.icon} {badge.text}
+              </span>
+            );
+          })()}
         </div>
         <div className="r0-header-right">
+          {/* Manual override toggle — visible only in linked mode.
+              Lets the user unlock element_type + volume_m3 inside the same
+              session so a misclassified pozice can be recalculated without
+              going back to the parent table. */}
+          {isLinkedMode && (
+            <button
+              className="r0-btn"
+              onClick={() => setManualOverride(!manualOverride)}
+              title={manualOverride
+                ? 'Vrátit do propojeného režimu — typ prvku a objem se znovu uzamknou na hodnoty z pozice.'
+                : 'Odemknout typ prvku a objem pro ruční úpravu. Změny se nepropíšou zpět do Monolit-Planneru.'}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                background: manualOverride ? 'var(--r0-orange, #f59e0b)' : undefined,
+                color: manualOverride ? 'white' : undefined,
+                borderColor: manualOverride ? 'var(--r0-orange, #f59e0b)' : undefined,
+              }}
+            >
+              {manualOverride
+                ? <><Link2 size={14} className="inline" /> Vrátit propojení</>
+                : <><Unlock size={14} className="inline" /> Ruční override</>}
+            </button>
+          )}
           {/* A4 (2026-04-15): Uložit variantu in the toolbar — mirrors the
               same button in the sidebar bottom (which is below the long form
               and easy to miss). Visible only when a result exists. */}
@@ -261,6 +323,41 @@ export default function PlannerPage() {
           <span className="r0-badge">v1.1</span>
         </div>
       </header>
+
+      {/* Ruční override banner — informs the user that changes to the
+          unlocked fields won't sync back to the parent Monolit-Planner row
+          and offers a quick path back to the linked state. */}
+      {isLinkedMode && manualOverride && (
+        <div style={{
+          padding: '8px 16px',
+          background: 'rgba(245,158,11,0.12)',
+          borderBottom: '1px solid var(--r0-orange, #f59e0b)',
+          color: 'var(--r0-orange, #b45309)',
+          fontSize: 12,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          flexWrap: 'wrap',
+        }}>
+          <Unlock size={14} />
+          <strong>Ruční override aktivní.</strong>
+          <span>Typ prvku a objem jsou odemčené. Změny se nepropíšou zpět do pozice „{positionContext?.part_name || 'Monolit-Planner'}".</span>
+          <button
+            className="r0-btn"
+            onClick={() => setManualOverride(false)}
+            style={{
+              marginLeft: 'auto',
+              padding: '2px 10px',
+              fontSize: 11,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
+            <Link2 size={12} className="inline" /> Vrátit propojení
+          </button>
+        </div>
+      )}
 
       {/* ─── Help Panel — full description restored from commit 67a2bc8^ ─── */}
       {showHelp && <HelpPanel onClose={() => {

@@ -54,6 +54,111 @@ CURING_DAYS_TABLE = {
 # XF3/XF4 exposure minimum curing days (TKP §7.8.3 note)
 EXPOSURE_MIN_CURING = {"XF3": 7, "XF4": 7, "XD3": 7}
 
+# ── Formwork override catalog (parity with Monolit-Planner UI) ────────────────
+# Subset of the 29-system catalog (`Monolit-Planner/shared/.../formwork-systems`)
+# used to validate `formwork_system_name` / `preferred_manufacturer` overrides
+# against semantic intent. The MCP wrapper is intentionally read-only — it
+# surfaces overrides in the result, warns on a semantic mismatch, but does not
+# re-run the 7-engine pipeline. Authoritative selection still lives in the
+# shared TypeScript code reached via /api/calculate when the Monolit-Planner
+# backend is available.
+KNOWN_MANUFACTURERS = ("DOKA", "PERI", "ULMA", "NOE", "Místní")
+
+# system_name → (manufacturer, unit, allowed element_types, productivity hint)
+# `allowed` is a tuple of element_type strings; empty tuple = "any".
+KNOWN_FORMWORK_SYSTEMS = {
+    # Říms-specific (T-bednění / římsový vozík) — unit is bm, not m²
+    "Římsové bednění T": {
+        "manufacturer": "DOKA",
+        "unit": "bm",
+        "allowed": ("rimsa",),
+        "productivity": {
+            "assembly_h_per_bm": 1.0,
+            "strip_h_per_bm": 0.43,
+        },
+    },
+    "Římsový vozík T": {
+        "manufacturer": "DOKA", "unit": "bm", "allowed": ("rimsa",),
+        "productivity": {"assembly_h_per_bm": 0.8, "strip_h_per_bm": 0.35},
+    },
+    "Římsový vozík TU": {
+        "manufacturer": "DOKA", "unit": "bm", "allowed": ("rimsa",),
+        "productivity": {"assembly_h_per_bm": 0.8, "strip_h_per_bm": 0.35},
+    },
+    # Wall / column systems (m², vertical only)
+    "Frami Xlife": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("stena", "sloup", "zaklady", "operna_zed"),
+    },
+    "Framax Xlife": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("stena", "sloup", "driky_piliru", "opery_ulozne_prahy",
+                    "kridla_opery", "operna_zed"),
+    },
+    "TRIO": {
+        "manufacturer": "PERI", "unit": "m2",
+        "allowed": ("stena", "sloup", "driky_piliru", "operna_zed"),
+    },
+    "MAXIMO": {
+        "manufacturer": "PERI", "unit": "m2",
+        "allowed": ("stena", "sloup", "driky_piliru"),
+    },
+    "VARIO GT 24": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("stena", "sloup", "driky_piliru", "operna_zed"),
+    },
+    # Slab / falsework systems
+    "Dokaflex": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("deska", "stropni_deska", "zakladova_deska"),
+    },
+    "SKYDECK": {
+        "manufacturer": "PERI", "unit": "m2",
+        "allowed": ("deska", "stropni_deska"),
+    },
+    "Top 50": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("mostovkova_deska", "pruvlak", "pricinik"),
+    },
+    "Staxo 100": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("mostovkova_deska", "deska", "pruvlak"),
+    },
+    "VARIOKIT HD 200": {
+        "manufacturer": "PERI", "unit": "m2",
+        "allowed": ("mostovkova_deska", "pruvlak"),
+    },
+    # MSS (movable scaffolding)
+    "DOKA MSS": {
+        "manufacturer": "DOKA", "unit": "m2",
+        "allowed": ("mostovkova_deska",),
+    },
+    "VARIOKIT Mobile": {
+        "manufacturer": "PERI", "unit": "m2",
+        "allowed": ("mostovkova_deska",),
+    },
+}
+
+
+def _validate_formwork_override(
+    system_name: str, element_type: str
+) -> Optional[str]:
+    """Return a warning string when system_name is not semantically valid
+    for the given element_type. Unknown system names pass through silently
+    so user-supplied systems outside the small Czech catalog aren't blocked."""
+    spec = KNOWN_FORMWORK_SYSTEMS.get(system_name)
+    if spec is None:
+        return None  # unknown system → trust the user, no warning
+    allowed = spec["allowed"]
+    if allowed and element_type not in allowed:
+        allowed_cs = ", ".join(allowed)
+        return (
+            f"⚠️ Bednění '{system_name}' ({spec['unit']}) je typicky určeno "
+            f"pro element_type ∈ {{{allowed_cs}}}, ale zadáno '{element_type}'. "
+            f"Výpočet pokračuje s overridem — ověřte technologickou správnost."
+        )
+    return None
+
 
 def _lateral_pressure(height_m: float, pour_rate_factor: float = 1.0) -> float:
     """Calculate lateral pressure in kN/m² using DIN 18218 simplified."""
@@ -132,6 +237,11 @@ async def calculate_concrete_works(
     pile_diameter_mm: Optional[int] = None,
     pile_count: Optional[int] = None,
     pile_geology: Optional[str] = None,
+    preferred_manufacturer: Optional[str] = None,
+    formwork_system_name: Optional[str] = None,
+    rental_czk_override: Optional[float] = None,
+    formwork_length_bm: Optional[float] = None,
+    cycle_length_bm: Optional[float] = None,
 ) -> dict:
     """Calculate concrete works for a single RC structural element.
 
@@ -304,14 +414,85 @@ async def calculate_concrete_works(
             - rock: bedrock — embedment 0.5-2m into rock
             - mixed: mixed conditions — use worst-case scenario
             Bridge piles typically: below_gwt (most Czech geology).
+
+        preferred_manufacturer: Manufacturer pre-filter for the formwork
+            auto-recommendation. Values: 'DOKA', 'PERI', 'ULMA', 'NOE',
+            'Místní' (traditional carpentry). If omitted, the engine picks
+            across all manufacturers based on geometry + lateral pressure.
+            Mirrors the Calculator UI dropdown "Výrobce bednění".
+
+        formwork_system_name: Manual override of the formwork system. Bypasses
+            auto-detection. Pass the catalog name verbatim, e.g.:
+            - 'Římsové bednění T' / 'Římsový vozík T' / 'Římsový vozík TU' —
+              T-bednění for parapets / římsy. Triggers T-bednění math:
+              · assembly norm 1.0 h/bm
+              · strip + relocate norm 0.43 h/bm
+              · rental priced per Kč/bm/month (use rental_czk_override).
+              Unit switches from m² to bm — pass formwork_length_bm + cycle_length_bm.
+            - 'Frami Xlife' (DOKA, walls ≤3m, 80 kN/m²)
+            - 'Framax Xlife' (DOKA, walls/piers ≤6.75m, 100 kN/m²)
+            - 'TRIO' / 'MAXIMO' (PERI walls/piers)
+            - 'VARIO GT 24' (DOKA, walls ≤12m, custom 150 kN/m²)
+            - 'Dokaflex' / 'SKYDECK' (slabs)
+            - 'Top 50' / 'Staxo 100' / 'VARIOKIT HD 200' (bridge falsework)
+            - 'DOKA MSS' / 'VARIOKIT Mobile' (movable scaffolding)
+            Unknown system names pass through without a warning (so user-
+            supplied systems outside the small Czech catalog aren't blocked).
+            Known systems with element_type mismatch surface a ⚠️ warning in
+            `warnings[]` but the calculation still runs with the override.
+
+        rental_czk_override: Manual rental price override per system unit per
+            month. For T-bednění / římsové systémy the unit is bm (Kč/bm/měs);
+            for wall / slab systems it is m² (Kč/m²/měs). Surfaced in
+            `formwork.rental_czk_override` and `formwork.rental_unit`.
+
+        formwork_length_bm: User-supplied total formwork length in linear
+            meters. Only meaningful for říms / linear elements where the unit
+            is bm. When provided AND the chosen system uses bm, takes priority
+            over the m² area estimate (and `formwork_area_m2` is ignored).
+
+        cycle_length_bm: Záběr length in linear meters (typical 25–30 m for
+            římsy per Czech practice). Used to recompute `num_tacts` for říms
+            elements when both formwork_length_bm and cycle_length_bm are
+            provided: `num_tacts = ceil(formwork_length_bm / cycle_length_bm)`.
     """
     try:
+        # ── Collect formwork override warnings up-front ──────────────────
+        # `override_warnings` is the channel for semantic validation hits
+        # (e.g. T-bednění specified for a foundation). The result picks them
+        # up in `warnings[]` at the very end.
+        override_warnings: list[str] = []
+        if (
+            preferred_manufacturer
+            and preferred_manufacturer not in KNOWN_MANUFACTURERS
+        ):
+            override_warnings.append(
+                f"⚠️ preferred_manufacturer '{preferred_manufacturer}' není "
+                f"v katalogu {KNOWN_MANUFACTURERS}. Hodnota přijata, ale "
+                f"engine ji nemusí použít při auto-výběru."
+            )
+        if formwork_system_name:
+            mismatch = _validate_formwork_override(
+                formwork_system_name, element_type
+            )
+            if mismatch:
+                override_warnings.append(mismatch)
+
         # ── Try Monolit-Planner API first ────────────────────────────────
         api_result = await _try_monolit_api(
             element_type, volume_m3, concrete_class, height_m,
             width_m, formwork_area_m2, is_prestressed,
+            preferred_manufacturer=preferred_manufacturer,
+            formwork_system_name=formwork_system_name,
+            rental_czk_override=rental_czk_override,
+            formwork_length_bm=formwork_length_bm,
+            cycle_length_bm=cycle_length_bm,
         )
         if api_result:
+            # Surface override warnings even when the full API returns —
+            # the API may not know about the catalog mismatch rules.
+            if override_warnings:
+                api_result.setdefault("warnings", []).extend(override_warnings)
             return api_result
 
         # ── Fallback: simplified calculation ─────────────────────────────
@@ -348,7 +529,7 @@ async def calculate_concrete_works(
 
         # Lateral pressure (vertical elements only) — uses per-tact height, not total
         pressure_kn = 0
-        formwork_system = {}
+        formwork_system: dict = {}
         pour_height = min(h, MAX_POUR_HEIGHT_PER_TACT)  # pressure per záběr
         if profile["orientation"] == "vertical" and h > 0 and element_type != "pilota":
             pressure_kn = _lateral_pressure(pour_height)
@@ -361,8 +542,53 @@ async def calculate_concrete_works(
                 "manufacturer": "DOKA",
             }
 
+        # ── Apply formwork overrides (system + manufacturer) ─────────────
+        # Order: explicit system_name wins; otherwise manufacturer-only
+        # override keeps the auto-selected system but rewrites the brand.
+        formwork_system["source"] = "auto"
+        if formwork_system_name:
+            spec = KNOWN_FORMWORK_SYSTEMS.get(formwork_system_name)
+            formwork_system["system"] = formwork_system_name
+            formwork_system["source"] = "override"
+            if spec:
+                formwork_system["manufacturer"] = spec["manufacturer"]
+                formwork_system["unit"] = spec["unit"]
+                if "productivity" in spec:
+                    formwork_system["productivity"] = spec["productivity"]
+            else:
+                # Unknown system: keep user-supplied name, default unit m².
+                formwork_system.setdefault("unit", "m2")
+        elif preferred_manufacturer:
+            formwork_system["manufacturer"] = preferred_manufacturer
+            formwork_system["source"] = "manufacturer_override"
+
+        # Rental override + unit echo for the result payload
+        if rental_czk_override is not None:
+            formwork_system["rental_czk_override"] = float(rental_czk_override)
+            formwork_system["rental_unit"] = (
+                f"Kč/{formwork_system.get('unit', 'm2')}/měs"
+            )
+
+        # T-bednění (bm) override: replaces formwork_area_m2 with formwork_length_bm
+        # for the result echo and labor-norm hint. Productivity math itself stays
+        # in Monolit-Planner shared — here we just surface the numbers.
+        if formwork_length_bm is not None and formwork_system.get("unit") == "bm":
+            formwork_system["length_bm"] = float(formwork_length_bm)
+            # Suppress the m² echo so downstream consumers don't double-count.
+            formwork_area_m2 = 0.0
+
         # Number of tacts
-        num_tacts = _calculate_tacts(h, volume_m3, element_type)
+        # For říms with both length + cycle length provided, override the
+        # default heuristic to match Czech practice (25–30 m záběry).
+        if (
+            element_type == "rimsa"
+            and formwork_length_bm
+            and cycle_length_bm
+            and cycle_length_bm > 0
+        ):
+            num_tacts = max(1, math.ceil(formwork_length_bm / cycle_length_bm))
+        else:
+            num_tacts = _calculate_tacts(h, volume_m3, element_type)
 
         # ── Curing calculation with class table ──────────────────────────
         # Saul maturity model baseline
@@ -432,8 +658,8 @@ async def calculate_concrete_works(
                     "(posuvnou skruž) pro ekonomičtější výstavbu."
                 )
 
-        # Warnings
-        warnings = []
+        # Warnings — start with the formwork override hits collected earlier
+        warnings: list[str] = list(override_warnings)
         if bridge_tech_warning:
             warnings.append(bridge_tech_warning)
         if num_bridges > 1:
@@ -460,6 +686,12 @@ async def calculate_concrete_works(
                 "curing_class": effective_curing_class,
                 "exposure_class": exposure_class,
                 "num_bridges": num_bridges,
+                # Formwork override echo (None when not supplied)
+                "preferred_manufacturer": preferred_manufacturer,
+                "formwork_system_name": formwork_system_name,
+                "rental_czk_override": rental_czk_override,
+                "formwork_length_bm": formwork_length_bm,
+                "cycle_length_bm": cycle_length_bm,
             },
             "formwork": {
                 **formwork_system,
@@ -508,8 +740,21 @@ async def calculate_concrete_works(
 async def _try_monolit_api(
     element_type, volume_m3, concrete_class, height_m,
     width_m, formwork_area_m2, is_prestressed,
+    *,
+    preferred_manufacturer: Optional[str] = None,
+    formwork_system_name: Optional[str] = None,
+    rental_czk_override: Optional[float] = None,
+    formwork_length_bm: Optional[float] = None,
+    cycle_length_bm: Optional[float] = None,
 ) -> Optional[dict]:
-    """Try calling the full Monolit-Planner calculator API."""
+    """Try calling the full Monolit-Planner calculator API.
+
+    Forwards formwork overrides (preferred_manufacturer, formwork_system_name,
+    rental_czk_override, formwork_length_bm, cycle_length_bm) so the
+    Monolit-Planner shared engine can honour them. None values are omitted
+    from the payload to keep backward compat with older Monolit revisions
+    that don't know these keys.
+    """
     try:
         import httpx
 
@@ -518,7 +763,7 @@ async def _try_monolit_api(
             "https://monolit-planner-api-1086027517695.europe-west3.run.app",
         )
 
-        payload = {
+        payload: dict = {
             "element_type": element_type,
             "concrete_m3": volume_m3,
             "concrete_class": concrete_class,
@@ -528,6 +773,16 @@ async def _try_monolit_api(
         }
         if formwork_area_m2:
             payload["formwork_area_m2"] = formwork_area_m2
+        if preferred_manufacturer:
+            payload["preferred_manufacturer"] = preferred_manufacturer
+        if formwork_system_name:
+            payload["formwork_system_name"] = formwork_system_name
+        if rental_czk_override is not None:
+            payload["rental_czk_override"] = rental_czk_override
+        if formwork_length_bm is not None:
+            payload["formwork_length_bm"] = formwork_length_bm
+        if cycle_length_bm is not None:
+            payload["cycle_length_bm"] = cycle_length_bm
 
         async with httpx.AsyncClient(timeout=10.0) as client:
             resp = await client.post(f"{api_url}/api/calculate", json=payload)
@@ -540,3 +795,246 @@ async def _try_monolit_api(
     except Exception as e:
         logger.debug(f"[MCP/Calculator] Monolit API unavailable: {e}")
         return None
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# MCP Tool: calculate_pump (TOV concrete pump cost calculator)
+# ═════════════════════════════════════════════════════════════════════════════
+#
+# Mirrors the multi-supplier pump_calc widget in the Monolit-Planner TOV
+# (technologicko-organizační vstup) panel. Coefficients per m³ come from
+# the Registr Rozpočtů cenový katalog and are stable across all suppliers —
+# only the hourly rates vary between betonárny.
+#
+# Reference: Monolit-Planner UI TOV pump_calc panel, Registr Rozpočtů
+# vendor pricing median (DOKA / PERI / Lobr / Schwing).
+
+# TOV coefficients per m³ of concrete (Czech praxe, validated on
+# Žihle 2062-1 + SO-202 pilot data).
+PUMP_COEFFICIENTS = {
+    "cerpadlo_sh_per_m3": 0.07510,      # Bet. čerpadlo (Sh / m³)
+    "pristaveni_sh_per_m3": 0.05864,    # Počet přistavení (Sh / m³)
+    "doprava_km_per_m3": 0.27034,       # Doprava čerpadla (km / m³) — informative
+    "vibrator_sh_per_m3": 0.07330,      # Ponorný vibrátor (Sh / m³)
+    "preplatek_m3_per_m3": 1.03,        # Příplatek za přečerpaný m³ (× 1.03)
+}
+
+PUMP_DEFAULT_RATES = {
+    "cerpadlo_czk_sh": 2500.0,
+    "vibrator_czk_sh": 50.0,
+    "transport_km": 72.0,
+    "transport_czk_km": 68.0,
+    "preplatek_czk_m3": 35.0,
+}
+
+
+async def calculate_pump(
+    volume_m3: float,
+    pump_supplier: Optional[str] = None,
+    cerpadlo_rate_czk_sh: float = 2500.0,
+    vibrator_rate_czk_sh: float = 50.0,
+    transport_km: float = 72.0,
+    transport_rate_czk_km: float = 68.0,
+    preplatek_rate_czk_m3: float = 35.0,
+    bedneni_doprava_czk: Optional[float] = None,
+    bedneni_ztracene_dily_czk: Optional[float] = None,
+    chemie_najezd_myti_czk: Optional[float] = None,
+) -> dict:
+    """Spočítá náklady na betonpumpu + dopravu + příplatky podle TOV vzorce.
+
+    Mirrors the Monolit-Planner TOV pump_calc widget. Applies fixed
+    coefficients per m³ of concrete (from Registr Rozpočtů median pricing)
+    multiplied by user-supplied hourly rates. Pump-only subtotal aggregates
+    the first 5 line items (čerpadlo + přistavení + doprava + vibrátor +
+    příplatek). Optional bednění costs (doprava, ztracené díly, chemie)
+    are added as standalone line items and aggregated into a separate
+    "with-bednění" subtotal so callers can choose the right scope.
+
+    TOV coefficients (per m³ of concrete):
+      - 0.07510 Sh — Bet. čerpadlo
+      - 0.05864 Sh — Počet přistavení
+      - 0.07330 Sh — Ponorný vibrátor
+      - 1.03 × m³ — Příplatek za přečerpaný m³
+      - 0.27034 km/m³ — Doprava čerpadla (informative; quantity is
+        `transport_km` parameter, not derived from volume)
+
+    Verification example (266.328 m³ at default rates):
+      čerpadlo: 0.07510 × 266.328 × 2500 ≈ 50 003 Kč
+      přistavení: 0.05864 × 266.328 × 2500 ≈ 39 044 Kč
+      doprava: 72 × 68 = 4 896 Kč
+      vibrátor: 0.07330 × 266.328 × 50 ≈ 976 Kč
+      příplatek: 1.03 × 266.328 × 35 ≈ 9 601 Kč
+      ≈ 104 520 Kč total pump-only.
+
+    Args:
+        volume_m3: Concrete volume in m³ for the pour. Drives every
+            coefficient-based line.
+        pump_supplier: Optional supplier label echoed in the result
+            (e.g. 'Lobr', 'Schwing', 'CEMEX'). Does not affect math.
+        cerpadlo_rate_czk_sh: Hourly rate for the pump in Kč/Sh
+            (default 2 500 — Czech median 2026).
+        vibrator_rate_czk_sh: Hourly rate for the immersion vibrator
+            in Kč/Sh (default 50).
+        transport_km: One-way distance in km to the construction site
+            (default 72 — median per Registr Rozpočtů 2026). The
+            coefficient 0.27034 km/m³ is informative; quantity comes from
+            this parameter, not from volume_m3.
+        transport_rate_czk_km: Transport rate in Kč/km (default 68).
+        preplatek_rate_czk_m3: Surcharge per m³ pumped (default 35).
+        bedneni_doprava_czk: Optional flat-fee bednění transport cost in Kč.
+            When provided, appears as a standalone line item and is included
+            in `subtotal_with_bedneni_czk`.
+        bedneni_ztracene_dily_czk: Optional flat-fee bednění consumables /
+            ztracené díly cost in Kč.
+        chemie_najezd_myti_czk: Optional flat-fee chemistry / nájezd / mytí
+            cost in Kč.
+
+    Returns:
+        Dict with `lines[]` (one entry per cost component), pump-only
+        subtotal, with-bednění subtotal, per-m³ unit cost, and an echo
+        of the inputs for self-describing schemas.
+    """
+    try:
+        if volume_m3 <= 0:
+            return {
+                "error": f"volume_m3 must be > 0 (got {volume_m3})",
+                "source": "mcp_pump_calculator",
+            }
+
+        lines: list[dict] = []
+
+        # ── 1. Bet. čerpadlo ────────────────────────────────────────────
+        cerpadlo_qty = PUMP_COEFFICIENTS["cerpadlo_sh_per_m3"] * volume_m3
+        cerpadlo_total = cerpadlo_qty * cerpadlo_rate_czk_sh
+        lines.append({
+            "name": "Bet. čerpadlo",
+            "unit": "Sh",
+            "coefficient": PUMP_COEFFICIENTS["cerpadlo_sh_per_m3"],
+            "quantity": round(cerpadlo_qty, 4),
+            "unit_price": cerpadlo_rate_czk_sh,
+            "total_czk": round(cerpadlo_total, 2),
+            "category": "pump",
+        })
+
+        # ── 2. Počet přistavení ────────────────────────────────────────
+        pristaveni_qty = PUMP_COEFFICIENTS["pristaveni_sh_per_m3"] * volume_m3
+        pristaveni_total = pristaveni_qty * cerpadlo_rate_czk_sh
+        lines.append({
+            "name": "Počet přistavení",
+            "unit": "Sh",
+            "coefficient": PUMP_COEFFICIENTS["pristaveni_sh_per_m3"],
+            "quantity": round(pristaveni_qty, 4),
+            "unit_price": cerpadlo_rate_czk_sh,
+            "total_czk": round(pristaveni_total, 2),
+            "category": "pump",
+        })
+
+        # ── 3. Doprava čerpadla — flat km × rate, NOT volume-driven ────
+        doprava_total = transport_km * transport_rate_czk_km
+        lines.append({
+            "name": "Doprava čerpadla",
+            "unit": "km",
+            # Echo the informative volume-derived hint so callers see what
+            # the coefficient would predict for this volume:
+            "coefficient_hint_km_per_m3": PUMP_COEFFICIENTS["doprava_km_per_m3"],
+            "coefficient_hint_km": round(
+                PUMP_COEFFICIENTS["doprava_km_per_m3"] * volume_m3, 2,
+            ),
+            "quantity": transport_km,
+            "unit_price": transport_rate_czk_km,
+            "total_czk": round(doprava_total, 2),
+            "category": "pump",
+        })
+
+        # ── 4. Ponorný vibrátor ────────────────────────────────────────
+        vibrator_qty = PUMP_COEFFICIENTS["vibrator_sh_per_m3"] * volume_m3
+        vibrator_total = vibrator_qty * vibrator_rate_czk_sh
+        lines.append({
+            "name": "Ponorný vibrátor",
+            "unit": "Sh",
+            "coefficient": PUMP_COEFFICIENTS["vibrator_sh_per_m3"],
+            "quantity": round(vibrator_qty, 4),
+            "unit_price": vibrator_rate_czk_sh,
+            "total_czk": round(vibrator_total, 2),
+            "category": "pump",
+        })
+
+        # ── 5. Příplatek za přečerpaný m³ ─────────────────────────────
+        preplatek_qty = PUMP_COEFFICIENTS["preplatek_m3_per_m3"] * volume_m3
+        preplatek_total = preplatek_qty * preplatek_rate_czk_m3
+        lines.append({
+            "name": "Příplatek za přečerpaný m³",
+            "unit": "m³",
+            "coefficient": PUMP_COEFFICIENTS["preplatek_m3_per_m3"],
+            "quantity": round(preplatek_qty, 4),
+            "unit_price": preplatek_rate_czk_m3,
+            "total_czk": round(preplatek_total, 2),
+            "category": "pump",
+        })
+
+        subtotal_pump_only = sum(line["total_czk"] for line in lines)
+
+        # ── 6/7/8. Optional bednění + chemie lines (flat fees) ─────────
+        if bedneni_doprava_czk is not None:
+            lines.append({
+                "name": "Doprava bednění",
+                "unit": "fix",
+                "coefficient": None,
+                "quantity": 1,
+                "unit_price": float(bedneni_doprava_czk),
+                "total_czk": round(float(bedneni_doprava_czk), 2),
+                "category": "bedneni",
+            })
+        if bedneni_ztracene_dily_czk is not None:
+            lines.append({
+                "name": "Bednění ztracené díly",
+                "unit": "fix",
+                "coefficient": None,
+                "quantity": 1,
+                "unit_price": float(bedneni_ztracene_dily_czk),
+                "total_czk": round(float(bedneni_ztracene_dily_czk), 2),
+                "category": "bedneni",
+            })
+        if chemie_najezd_myti_czk is not None:
+            lines.append({
+                "name": "Chemie nájezd + mytí",
+                "unit": "fix",
+                "coefficient": None,
+                "quantity": 1,
+                "unit_price": float(chemie_najezd_myti_czk),
+                "total_czk": round(float(chemie_najezd_myti_czk), 2),
+                "category": "bedneni",
+            })
+
+        subtotal_with_bedneni = sum(line["total_czk"] for line in lines)
+        per_m3 = subtotal_pump_only / volume_m3
+
+        return {
+            "lines": lines,
+            "subtotal_pump_only_czk": round(subtotal_pump_only, 2),
+            "subtotal_with_bedneni_czk": round(subtotal_with_bedneni, 2),
+            "per_m3_czk": round(per_m3, 2),
+            "input": {
+                "volume_m3": volume_m3,
+                "pump_supplier": pump_supplier,
+                "cerpadlo_rate_czk_sh": cerpadlo_rate_czk_sh,
+                "vibrator_rate_czk_sh": vibrator_rate_czk_sh,
+                "transport_km": transport_km,
+                "transport_rate_czk_km": transport_rate_czk_km,
+                "preplatek_rate_czk_m3": preplatek_rate_czk_m3,
+                "bedneni_doprava_czk": bedneni_doprava_czk,
+                "bedneni_ztracene_dily_czk": bedneni_ztracene_dily_czk,
+                "chemie_najezd_myti_czk": chemie_najezd_myti_czk,
+            },
+            "coefficients": dict(PUMP_COEFFICIENTS),
+            "note": (
+                "TOV multi-supplier pump cost. Coefficients from Registr "
+                "Rozpočtů median pricing. Hourly rates vary per betonárna — "
+                "override defaults for vendor-specific quotes."
+            ),
+            "source": "mcp_pump_calculator",
+        }
+
+    except Exception as e:
+        logger.error(f"[MCP/Pump] Error: {e}")
+        return {"error": str(e), "source": "mcp_pump_calculator"}
