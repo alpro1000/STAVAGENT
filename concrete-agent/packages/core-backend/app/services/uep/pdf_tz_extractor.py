@@ -88,18 +88,23 @@ class PdfTzExtractor(BaseExtractor):
             )
 
         # Existing deterministic patterns — single source of truth.
-        regex_result = extract_from_text(combined_text)
+        # `extract_from_text` returns a mix of dicts and Pydantic / dataclass
+        # instances; normalise to plain dicts here so the downstream
+        # `.get()` calls work uniformly.
+        regex_result_raw = extract_from_text(combined_text)
+        regex_result = _normalise_to_plain(regex_result_raw)
 
         facts: list[ExtractedFact] = []
 
         # ------------------------------------------------------------------
         # Concrete specifications.
-        # `concrete_specifications` is a list of dicts:
-        #   [{class: "C30/37", exposure: ["XC4", "XF1"], context: "..."}]
+        # `concrete_specifications` items come from `ConcreteSpecification`
+        # in services/regex_extractor.py — fields: `concrete_class`,
+        # `exposure_classes` (list), `raw_text`, `context_text`, …
         # Coverage matrix category: `concrete_grade`.
         # ------------------------------------------------------------------
         for spec in regex_result.get("concrete_specifications", []) or []:
-            klass = spec.get("class") or spec.get("concrete_class")
+            klass = spec.get("concrete_class") or spec.get("class")
             if not klass:
                 continue
             facts.append(
@@ -110,12 +115,14 @@ class PdfTzExtractor(BaseExtractor):
                     unit=None,
                     confidence=1.0,
                     evidence={
-                        "raw": spec.get("raw_text") or spec.get("raw") or "",
-                        "context": (spec.get("context") or "")[:200],
+                        "raw": spec.get("raw_text") or "",
+                        "context": (
+                            spec.get("context_text") or spec.get("context") or ""
+                        )[:200],
                     },
                 )
             )
-            exposure = spec.get("exposure") or []
+            exposure = spec.get("exposure_classes") or spec.get("exposure") or []
             for xclass in exposure:
                 facts.append(
                     ExtractedFact(
@@ -142,10 +149,11 @@ class PdfTzExtractor(BaseExtractor):
             )
 
         # ------------------------------------------------------------------
-        # Reinforcement.
+        # Reinforcement — `ReinforcementSpecification`: `steel_grade`,
+        # `diameter_mm`, `total_mass_tons`, `raw_text`.
         # ------------------------------------------------------------------
         for steel in regex_result.get("reinforcement", []) or []:
-            grade = steel.get("grade") or steel.get("steel_grade")
+            grade = steel.get("steel_grade") or steel.get("grade")
             if grade:
                 facts.append(
                     ExtractedFact(
@@ -154,87 +162,128 @@ class PdfTzExtractor(BaseExtractor):
                         value=grade,
                         unit=None,
                         confidence=1.0,
-                        evidence={"context": (steel.get("context") or "")[:200]},
+                        evidence={
+                            "raw_text": (steel.get("raw_text") or "")[:200],
+                            "diameter_mm": steel.get("diameter_mm"),
+                            "total_mass_tons": steel.get("total_mass_tons"),
+                        },
                     )
                 )
 
         # ------------------------------------------------------------------
-        # Quantities — volume_m3, area_m2, mass_tons.
-        # Stored as ExtractedFact category=`quantities` with field=metric name.
+        # Quantities — `QuantityItem`: `element_type`, `description`,
+        # `volume_m3`, `area_m2`, `mass_tons`, `length_m`, `concrete_class`.
+        # Emit one fact per non-null metric so the coverage matrix can ask
+        # for `quantities.volume_m3` etc. directly.
         # ------------------------------------------------------------------
+        metric_units = {
+            "volume_m3": "m3",
+            "area_m2": "m2",
+            "mass_tons": "t",
+            "length_m": "m",
+        }
         for quantity in regex_result.get("quantities", []) or []:
-            metric_type = quantity.get("type") or "unknown"
-            value = quantity.get("value")
-            if value is None:
-                continue
-            unit_map = {
-                "volume_m3": "m3",
-                "area_m2": "m2",
-                "mass_tons": "t",
-            }
-            facts.append(
-                ExtractedFact(
-                    category="quantities",
-                    field=metric_type,
-                    value=value,
-                    unit=unit_map.get(metric_type),
-                    confidence=1.0,
-                    evidence={"context": (quantity.get("context") or "")[:200]},
+            for metric, unit in metric_units.items():
+                value = quantity.get(metric)
+                if value is None:
+                    continue
+                facts.append(
+                    ExtractedFact(
+                        category="quantities",
+                        field=metric,
+                        value=value,
+                        unit=unit,
+                        confidence=1.0,
+                        evidence={
+                            "element_type": quantity.get("element_type") or "",
+                            "description": (quantity.get("description") or "")[:120],
+                            "source_section": quantity.get("source_section"),
+                        },
+                    )
                 )
-            )
 
         # ------------------------------------------------------------------
-        # Dimensions — thickness, floor counts, building height.
+        # Dimensions — `BuildingDimensions` is a single dict (or None).
+        # Each non-null field becomes a fact under `dimensions`.
         # ------------------------------------------------------------------
-        for dim in regex_result.get("dimensions", []) or []:
-            metric_type = dim.get("type") or "unknown"
-            value = dim.get("value")
-            if value is None:
-                continue
-            facts.append(
-                ExtractedFact(
-                    category="dimensions",
-                    field=metric_type,
-                    value=value,
-                    unit=dim.get("unit"),
-                    confidence=1.0,
-                    evidence={"context": (dim.get("context") or "")[:200]},
+        dims_payload = regex_result.get("dimensions")
+        if isinstance(dims_payload, dict):
+            dims_iter = [dims_payload]
+        elif isinstance(dims_payload, list):
+            dims_iter = [d for d in dims_payload if isinstance(d, dict)]
+        else:
+            dims_iter = []
+        dim_units = {
+            "floors_underground": "ks",
+            "floors_above_ground": "ks",
+            "total_floors": "ks",
+            "height_m": "m",
+            "built_up_area_m2": "m2",
+            "gross_floor_area_m2": "m2",
+        }
+        for dims in dims_iter:
+            for field_name, unit in dim_units.items():
+                value = dims.get(field_name)
+                if value is None:
+                    continue
+                facts.append(
+                    ExtractedFact(
+                        category="dimensions",
+                        field=field_name,
+                        value=value,
+                        unit=unit,
+                        confidence=1.0,
+                        evidence={},
+                    )
                 )
-            )
 
         # ------------------------------------------------------------------
-        # Special requirements — bílá vana, pohledový beton, vodotěsnost.
+        # Special requirements — `SpecialRequirement`: `requirement_type`,
+        # `description`, `parameters`, `raw_text`.
         # ------------------------------------------------------------------
         for req in regex_result.get("special_requirements", []) or []:
-            req_type = req.get("type") or "unknown"
+            req_type = req.get("requirement_type") or req.get("type") or "unknown"
             facts.append(
                 ExtractedFact(
                     category="special_requirements",
                     field=req_type,
-                    value=req.get("value") or True,
+                    value=req.get("description") or req.get("value") or True,
                     unit=None,
                     confidence=1.0,
-                    evidence={"context": (req.get("context") or "")[:200]},
+                    evidence={
+                        "parameters": req.get("parameters") or {},
+                        "raw_text": (req.get("raw_text") or "")[:200],
+                    },
                 )
             )
 
         # ------------------------------------------------------------------
-        # Norms (ČSN EN …) — coverage matrix wants citations present.
+        # Norms (`_extract_norms` returns `List[str]`) — coverage matrix
+        # wants at least one citation present.
         # ------------------------------------------------------------------
         for norm in regex_result.get("norms", []) or []:
+            if isinstance(norm, str):
+                citation = norm
+            elif isinstance(norm, dict):
+                citation = norm.get("number") or norm.get("value") or norm.get("citation") or ""
+            else:
+                citation = str(norm)
+            if not citation:
+                continue
             facts.append(
                 ExtractedFact(
                     category="norm_references",
                     field="citation",
-                    value=norm.get("number") or norm.get("value") or "",
+                    value=citation,
                     unit=None,
                     confidence=1.0,
-                    evidence={"context": (norm.get("context") or "")[:200]},
+                    evidence={},
                 )
             )
 
         # ------------------------------------------------------------------
-        # Identification — investor, project name, etc.
+        # Identification — `_extract_identification` returns `Dict[str, str]`
+        # with keys like `investor`, `project_name`, `address`.
         # ------------------------------------------------------------------
         identification = regex_result.get("identification") or {}
         if isinstance(identification, dict):
@@ -253,16 +302,20 @@ class PdfTzExtractor(BaseExtractor):
                 )
 
         # ------------------------------------------------------------------
-        # Drawing references and referenced documents — knowing the
-        # drawing inventory the TZ cites helps coverage matrix detect
-        # missing drawings.
+        # Referenced documents (drawing list cited in TZ).
         # ------------------------------------------------------------------
         for ref in regex_result.get("referenced_documents", []) or []:
+            if isinstance(ref, str):
+                doc_value = ref
+            elif isinstance(ref, dict):
+                doc_value = ref.get("name") or ref.get("title") or str(ref)
+            else:
+                doc_value = str(ref)
             facts.append(
                 ExtractedFact(
                     category="referenced_documents",
                     field="document",
-                    value=ref if isinstance(ref, str) else (ref.get("name") or str(ref)),
+                    value=doc_value,
                     unit=None,
                     confidence=0.85,
                     evidence={},
@@ -278,27 +331,54 @@ class PdfTzExtractor(BaseExtractor):
             "page_count": page_count,
             "char_count_total": total_chars,
             "text_per_page_truncated": [t[:500] for t in text_per_page],
-            "regex_result": _stringify_dataclasses(regex_result),
+            "regex_result": regex_result,  # already normalised to plain types
         }
 
         return facts, raw_data, decode_warnings
 
 
-def _stringify_dataclasses(obj: Any) -> Any:
-    """Best-effort coercion of regex_extractor's dataclass outputs to JSON-able
-    dicts. `regex_result['drawing_data']` may be a custom dataclass; we
-    fall back to str() for any non-serialisable leaf."""
-    if hasattr(obj, "dict") and callable(obj.dict):
+def _normalise_to_plain(obj: Any) -> Any:
+    """Recursively coerce `regex_extractor` output (Pydantic models,
+    dataclasses, enums) to plain JSON-able primitives.
+
+    The existing `services/regex_extractor.py` returns a mix:
+      - dict of category → list/dict
+      - inner items are Pydantic models (ConcreteSpecification, …),
+        dataclasses (`ExtractedFact`, …), or plain dicts depending on
+        the category.
+
+    Normalisation rules (in priority order):
+      1. Pydantic v2 model → `model_dump()`
+      2. Pydantic v1 model → `dict()`
+      3. dataclass → `{field: normalised value}`
+      4. Enum → `value`
+      5. dict / list / tuple → recurse
+      6. primitives → as-is
+      7. fallback → `str(obj)`
+    """
+    # Pydantic v2 has `model_dump`; v1 has `dict()` — try both.
+    if hasattr(obj, "model_dump") and callable(obj.model_dump):
         try:
-            return obj.dict()
+            return _normalise_to_plain(obj.model_dump())
+        except Exception:  # noqa: BLE001
+            pass
+    if hasattr(obj, "dict") and callable(obj.dict) and not isinstance(obj, type):
+        try:
+            return _normalise_to_plain(obj.dict())
         except Exception:  # noqa: BLE001
             pass
     if hasattr(obj, "__dataclass_fields__"):
-        return {f: _stringify_dataclasses(getattr(obj, f)) for f in obj.__dataclass_fields__}
+        return {f: _normalise_to_plain(getattr(obj, f)) for f in obj.__dataclass_fields__}
     if isinstance(obj, dict):
-        return {k: _stringify_dataclasses(v) for k, v in obj.items()}
+        return {k: _normalise_to_plain(v) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
-        return [_stringify_dataclasses(v) for v in obj]
+        return [_normalise_to_plain(v) for v in obj]
+    if hasattr(obj, "value") and obj.__class__.__module__ != "builtins":
+        # Likely a stdlib Enum or similar. Use the `.value` attribute.
+        try:
+            return obj.value
+        except Exception:  # noqa: BLE001
+            pass
     if isinstance(obj, (str, int, float, bool)) or obj is None:
         return obj
     return str(obj)
