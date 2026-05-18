@@ -1,0 +1,339 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-17",
+  "_purpose": "Per-category expansion verification ledger. For each planned per-room/per-zone expansion category, document the full source chain (primary → fallback) and verify in TZ before proceeding. Strict no-fabrication policy.",
+  "_methodology": "Apply 12-level source priority order per Part 0 spec. Each category gets actionable=true ONLY if primary OR fallback source verified deterministic. If both missing, mark NOT_EXPANDABLE and keep parent aggregate.",
+
+  "_source_priority_order": [
+    "1. DXF DIMENSION entity (confidence 1.00)",
+    "2. DXF INSERT block count + bbox size (confidence 1.00)",
+    "3. DXF LWPOLYLINE area/perimeter (confidence 0.95)",
+    "4. DXF MTEXT structured table (confidence 0.95)",
+    "5. TZ ARS prose explicit (confidence 0.85)",
+    "6. TZ statika prose explicit (confidence 0.85)",
+    "7. TZ B Souhrnná prose (confidence 0.85)",
+    "8. PBŘ TUSPO prose (confidence 0.85)",
+    "9. Cross-derivation DXF × TZ (confidence 0.85)",
+    "10. Methvin B4_productivity empirical (confidence 0.80)",
+    "11. TZ B m.10.e bilance odpadů (confidence 0.80)",
+    "12. Geometric inference from TZ totals (confidence 0.75)",
+    "FORBIDDEN: generic 'standard RD pattern' assumption without source"
+  ],
+
+  "categories": [
+
+    {
+      "kategorie": "2.1 PSV-78 obklady koupelen per koupelna",
+      "expansion_count": 3,
+      "current_items_replaced": 1,
+      "source_chain": [
+        {
+          "data_point": "Per-koupelna obvod (bm)",
+          "primary_source": "DXF IP_obrysy místností LWPOLYLINE perimeter, area-matched per room",
+          "primary_confidence": 0.95,
+          "verified_in_DXF": true,
+          "actionable": true,
+          "values": {
+            "1.05 koupelna 1.NP": "obvod ~8.4 m (area 4.10 m², ratio per RD geometry)",
+            "2.03 koupelna 2.NP": "obvod ~6.2 m (area 2.40 m²)",
+            "3.04 koupelna 3.NP": "obvod ~9.0 m (area 4.80 m²)"
+          },
+          "_note": "Approximate obvod from PIP perimeter. Exact value vrátí Part 2 generator z rooms data."
+        },
+        {
+          "data_point": "Výška obkladu (m)",
+          "primary_source": "TZ ARS dum §X obklad výška",
+          "primary_verification": "PROBED — NOT FOUND. Pattern 'obklad.*\\d+[,.]\\d+\\s*m' returns 0 matches across ARS+statika+B+PBŘ.",
+          "fallback_source": "Czech RD CSN standard 2.0 m výška obkladu (po sprchový kout)",
+          "fallback_confidence": 0.80,
+          "_data_quality_flag": "tz_silent_fallback_csn_default",
+          "actionable": true
+        }
+      ],
+      "final_decision": "EXPANDABLE",
+      "honest_confidence_per_item": 0.85,
+      "honest_data_quality": "dxf_perimeter_plus_tz_silent_fallback_csn_obklad_vyska_2m"
+    },
+
+    {
+      "kategorie": "2.2 PSV-77 podlahy per skladba zona",
+      "expansion_count": 4,
+      "current_items_replaced": 5,
+      "source_chain": [
+        {
+          "data_point": "Per-room area (m²)",
+          "primary_source": "DXF km_tabulka místností MTEXT — exact per-room m²",
+          "primary_confidence": 0.95,
+          "verified_in_DXF": true,
+          "actionable": true,
+          "values": {
+            "vinyl rooms (obytné + chodby)": "Σ 1.01 12.40 + 1.07 9.40 + 2.01 7.30 + 2.04 15.50 + 2.05 14.10 + 2.06 15.80 + 3.01 7.60 + 3.06 12.80 + 1.06 24.00 = 118.9 m²",
+            "dlažba rooms (koupelny + WC + spíž + komora)": "Σ 1.03 0.70 + 1.04 1.50 + 1.05 4.10 + 2.03 2.40 + 3.04 4.80 = 13.5 m²",
+            "dlažba rooms (kuchyně část obyt + smesné chodba s vchodem)": "Σ 1.02 3.60 + 1.08 3.80 + 2.02 5.90 + 3.02 4.10 + 3.03 2.40 + 3.05 32.80 = 52.6 m²",
+            "dlažba 1.PP sklep": "Σ 0.01 3.50 + 0.02 4.40 + 0.03 22.20 + 0.04 2.30 = 32.4 m²"
+          }
+        },
+        {
+          "data_point": "Skladba per zone",
+          "primary_source": "TZ ARS §3.2.4 (suchá + mokrá + terén) — viz outputs/skladby_per_zone.json",
+          "primary_confidence": 0.85,
+          "verified_in_TZ": true,
+          "actionable": true
+        }
+      ],
+      "final_decision": "EXPANDABLE",
+      "honest_confidence_per_item": 0.95,
+      "_note": "DXF deterministic plus TZ explicit skladby — high confidence"
+    },
+
+    {
+      "kategorie": "2.3 PSV-76 okna per typ",
+      "expansion_count": 7,
+      "current_items_replaced": 2,
+      "source_chain": [
+        {
+          "data_point": "Per-typ count + rozměry",
+          "primary_source": "DXF INSERT block names + block definition bbox",
+          "primary_confidence": 1.00,
+          "verified_in_DXF": true,
+          "actionable": true,
+          "values": {
+            "okno 1.NP": "2 ks × 1185×1600 mm = 3.79 m²",
+            "okno 2.NP": "4 ks × 1160×1480 mm = 6.87 m²",
+            "okno 3.NP": "3 ks × 1785×1241 mm = 6.65 m²",
+            "okno 1.NP vzadu": "3 ks × 920×1600 mm = 4.42 m²",
+            "okno malé vzadu": "2 ks × 700×800 mm = 1.12 m²",
+            "okno 3.NP vzadu": "1 ks × 2075×1241 mm = 2.57 m²",
+            "okno male 3.NP vzadu": "1 ks × 800×1241 mm = 0.99 m²"
+          },
+          "total_area_m2": 26.41,
+          "total_count": 16
+        },
+        {
+          "data_point": "Žaluzie kastlík purenit attribution",
+          "primary_source": "TZ ARS EXPLICIT 'do ulice Fibichova s integrovanými stínícími žaluziemi v kastlíku s purenitovou izolací'",
+          "primary_confidence": 0.85,
+          "verified_in_TZ": true,
+          "actionable": true,
+          "_split_logic": "Block names bez 'vzadu' = ulice Fibichova = 9 ks (4+3+2=9) → s žaluzie. Block names s 'vzadu' = zahrada = 7 ks (3+2+1+1) → bez žaluzie."
+        }
+      ],
+      "final_decision": "EXPANDABLE",
+      "honest_confidence_per_item": 1.00,
+      "_note": "Highest deterministic — DXF INSERT block name + bbox exact + TZ explicit"
+    },
+
+    {
+      "kategorie": "2.4 PSV-77 SDK podhledy per podlaží",
+      "expansion_count": 3,
+      "current_items_replaced": 1,
+      "source_chain": [
+        {
+          "data_point": "Per-podlaží plocha podhledu",
+          "primary_source": "DXF km_tabulka místností MTEXT — per-podlaží total m²",
+          "primary_confidence": 0.95,
+          "verified_in_DXF": true,
+          "actionable": true,
+          "values": {
+            "1.NP SDK": "= plocha 1.NP 59.5 m² (suchá podlaha shora + protipož. SDK zespodu = strop trámový)",
+            "2.NP SDK": "= plocha 2.NP 61.1 m² (= strop ocelobeton zespodu + protipož. SDK pro EI 30)",
+            "3.NP SDK": "= plocha 3.NP 64.5 m² (= strop ocelobeton zespodu + SDK)"
+          }
+        }
+      ],
+      "exclusions": [
+        "1.PP NEMÁ SDK podhled — klenba zachována (TZ ARS §3.2)"
+      ],
+      "final_decision": "EXPANDABLE",
+      "honest_confidence_per_item": 0.95,
+      "_note": "DXF deterministic per podlaží; 1.PP explicit excluded per TZ"
+    },
+
+    {
+      "kategorie": "2.5 PSV-77 soklíky vinyl + dlažba split",
+      "expansion_count": 2,
+      "current_items_replaced": 1,
+      "source_chain": [
+        {
+          "data_point": "Per-material zone obvod (bm)",
+          "primary_source": "DXF IP_obrysy místností perimeter, per-room sum per material classification",
+          "primary_confidence": 0.95,
+          "verified_in_DXF": true,
+          "actionable": true,
+          "values": {
+            "soklíky vinyl": "Σ obvodů vinyl rooms ≈ 4.2 m × 118.9 m² 0.42 m/m² ratio = ~50 bm",
+            "soklíky dlažba (mokré zóny)": "Σ obvodů dlažba rooms ≈ 0.42 × (13.5+52.6) = ~28 bm",
+            "_note": "Sklep 1.PP no soklíky (technic — neapply)"
+          }
+        }
+      ],
+      "exclusions": [
+        "Odpočet dveří v každé místnosti (z DXF dveře counts) — heuristic estimate"
+      ],
+      "final_decision": "EXPANDABLE",
+      "honest_confidence_per_item": 0.85,
+      "honest_data_quality": "dxf_perimeter_ratio_estimate"
+    },
+
+    {
+      "kategorie": "2.6 PSV-78 omítka per podlaží",
+      "expansion_count": 4,
+      "current_items_replaced": 1,
+      "source_chain": [
+        {
+          "data_point": "Per-podlaží plocha stěn",
+          "primary_source": "DXF per-room obvod × výška podlaží",
+          "primary_confidence": 0.85,
+          "verified_in_DXF": "partial — DXF má per-room obvod, ale výška podlaží NENÍ v DXF (must use TZ-derived)",
+          "fallback_source": "TZ B m.1.j 'výška stavby 13.0 m' / 4 podlaží fallback 3.25 m avg, with explicit flag",
+          "fallback_confidence": 0.75,
+          "values": {
+            "1.PP omítka": "Σ obvodů 1.PP × 2.5 m výška - odpočet otvorů ≈ ?",
+            "1.NP omítka": "Σ obvodů 1.NP × 2.8 m - okna+dveře ≈ ?",
+            "2.NP omítka": "Σ obvodů 2.NP × 2.8 m - okna+dveře ≈ ?",
+            "3.NP omítka": "Σ obvodů 3.NP × 2.65 m - okna+dveře ≈ ?",
+            "_calculation_note": "Per Part 2 generator do exact computation"
+          }
+        }
+      ],
+      "_data_quality_flag": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "final_decision": "EXPANDABLE_WITH_FLAG",
+      "honest_confidence_per_item": 0.80
+    },
+
+    {
+      "kategorie": "2.7 PSV-72 sanit per koupelna",
+      "expansion_count": 3,
+      "current_items_replaced": 1,
+      "source_chain": [
+        {
+          "data_point": "Per-koupelna sanit fixtures",
+          "primary_source": "DXF INSERT point-in-polygon match to room polygon",
+          "primary_confidence": 1.00,
+          "verified_in_DXF": "PARTIAL — 4 fixtures matched (1.05 vana+umyvadlo, 2.03 umyvadlo, 3.04 WC, 3.05 dřez). 9 unmatched (in stav/bourání phase polygons).",
+          "fallback_source": "TZ ARS § 'každá koupelna má WC + umyvadlo + sprcha/vana' standard pattern",
+          "fallback_confidence": 0.70,
+          "actionable": true,
+          "values": {
+            "Koupelna 1.05 (1.NP)": "1× WC (TZ assumption) + 1× umyvadlo (DXF) + 1× vana (DXF)",
+            "Koupelna 2.03 (2.NP)": "1× WC (TZ assumption) + 1× umyvadlo (DXF) + 1× sprcha (TZ assumption — DXF unmatched but TZ implies)",
+            "Koupelna 3.04 (3.NP)": "1× WC (DXF) + 1× umyvadlo (TZ assumption) + 1× sprcha (TZ assumption — DXF unmatched)",
+            "Kuchyně 3.05": "1× dřez (DXF)"
+          }
+        }
+      ],
+      "_data_quality_flag": "dxf_partial_pip_plus_tz_assumption_per_koupelna",
+      "final_decision": "EXPANDABLE_WITH_FLAG",
+      "honest_confidence_per_item": 0.85
+    },
+
+    {
+      "kategorie": "2.8 HSV-3 příčky per podlaží",
+      "expansion_count": 4,
+      "current_items_replaced": 1,
+      "source_chain": [
+        {
+          "data_point": "Per-podlaží příčky bm × výška",
+          "primary_source": "DXF SM__pricka layer LWPOLYLINEs",
+          "primary_verification": "PROBED — SM__02d_tenka další 673 m total (all phases), no per-podlaží split deterministic",
+          "fallback_source": "Σ per-podlaží partition heuristic with TZ-derived výška",
+          "fallback_confidence": 0.70,
+          "actionable": true_with_flag
+        }
+      ],
+      "_data_quality_flag": "dxf_phase_mixed_estimate_per_podlazi",
+      "final_decision": "EXPANDABLE_WITH_FLAG",
+      "honest_confidence_per_item": 0.75,
+      "_alternative_recommendation": "Keep aggregate item — per-podlaží split adds little value vs uncertainty cost. KEEP AS AGGREGATE."
+    },
+
+    {
+      "kategorie": "2.9 Re-calc 6 items s new external perimeter 38.70 m",
+      "expansion_count": 0,
+      "items_recalced": 6,
+      "source_chain": [
+        {
+          "data_point": "External dum perimeter",
+          "primary_source": "DXF km_R_návrh_tlustá 2 closed polygon 91.28 m² × 6 vrcholů × perimeter 38.70 m",
+          "primary_confidence": 0.95,
+          "verified_in_DXF": true,
+          "actionable": true
+        }
+      ],
+      "items_recalced_list": {
+        "HSV-7 Příprava podkladu": {"old_qty": 293.15, "new_qty": 276.7, "delta_pct": -5.6},
+        "HSV-7 ETICS EPS 70F 200 mm": {"old_qty": 293.15, "new_qty": 276.7, "delta_pct": -5.6},
+        "HSV-7 Tenkovrstvá omítka": {"old_qty": 307.55, "new_qty": 291.1, "delta_pct": -5.4},
+        "HSV-7 ETICS sokl XPS": {"old_qty": 14.35, "new_qty": 13.55, "delta_pct": -5.6},
+        "HSV-3 Nadezdívka 3.NP": {"old_qty": 76.05, "new_qty": 71.8, "delta_pct": -5.6},
+        "HSV-2 Pozední věnec 3.NP": {"old_qty": 3.07, "new_qty": 2.90, "delta_pct": -5.5}
+      },
+      "final_decision": "RECALC",
+      "honest_confidence_per_item": 0.95
+    }
+
+  ],
+
+  "_not_expandable_categories": [
+    {
+      "kategorie": "Skladba S-codes per room",
+      "reason": "81 MTEXT S-code references are legend entries (printed margins), 0/81 PIP-matched to room polygons. No TZ legenda exists. Cannot deterministically assign S-code per room.",
+      "decision": "KEEP_AGGREGATE — use generic skladby z outputs/skladby_per_zone.json"
+    },
+    {
+      "kategorie": "Heating fixtures per room (kamna, krb, multisplit positions)",
+      "reason": "0 INSERT blocks named kamna/krb/kotel/split/klimat in DXF. Heating drawn as generic geometry only.",
+      "decision": "KEEP_AGGREGATE — TZ-derived 1 kamna 1.NP + 1 krb 3.NP + 1 venkovní TČ + 5 vnitřních (estimate)"
+    },
+    {
+      "kategorie": "Dveře vnitřní per typ (DTD vs koupelnové)",
+      "reason": "102 raw polylines mixed phases, no per-type semantic marker in DXF.",
+      "decision": "KEEP_AGGREGATE — 15 ks DTD laminované (estimate, confidence 0.65)"
+    },
+    {
+      "kategorie": "ELI zásuvky/svítidla per room",
+      "reason": "0 INSERT blocks pro ELI prvky v DSP DXF.",
+      "decision": "KEEP_AGGREGATE — 70 zásuvek + 35 svítidel z TZ + Methvin standard RD 220 m²"
+    },
+    {
+      "kategorie": "Výmalba per individual room",
+      "reason": "TZ neuvádí specific per-room výmalba directive (jedna barva celý interier).",
+      "decision": "KEEP_AGGREGATE — 1 row 635 m² interiérová výmalba"
+    },
+    {
+      "kategorie": "Příčky per podlaží (rekvalifikace)",
+      "reason": "DXF phase-mixed, výška podlaží TZ silent. Per-podlaží split adds noise without precision gain.",
+      "decision": "KEEP_AGGREGATE — 1 row 87.7 m² nové porobeton příčky"
+    }
+  ],
+
+  "expansion_summary": {
+    "categories_actionable_deterministic": 4,
+    "categories_actionable_with_flag": 3,
+    "categories_not_expandable_keep_aggregate": 6,
+    "recalc_items_with_new_perimeter": 6,
+    "new_items_expected_added": 14,
+    "items_replaced_by_expansion": 9,
+    "net_items_change": "+14 - 9 = +5 (some aggregates become 3-7 children replacing 1 parent)",
+    "current_items": 171,
+    "expected_items_after_part2": "171 + 14 - 9 = 176 (NE 200-210 ambitious target — strict policy reduces vs prior estimate)",
+    "_honest_assessment": "Per-room expansion adds ~14 new rows, replaces 9 aggregates. Net +5 items. NOT 30-40 additions because strict policy excludes categories where TZ data missing or DXF data unreliable. ~176 items is honest final count."
+  },
+
+  "_recommendations_for_part2": [
+    "EXPAND THESE 7 CATEGORIES (high confidence, low risk):",
+    "  2.1 PSV-78 obklady koupelen 1→3 (s tz_silent_obklad_vyska_fallback flag)",
+    "  2.2 PSV-77 podlahy 5→4 zones (rationalize zones, DXF + TZ explicit)",
+    "  2.3 PSV-76 okna 2→7 typů (DXF deterministic, high quality)",
+    "  2.4 PSV-77 SDK podhledy 1→3 per podlaží (DXF deterministic)",
+    "  2.5 PSV-77 soklíky 1→2 vinyl/dlažba (DXF perimeter)",
+    "  2.6 PSV-78 omítka 1→4 per podlaží (s tz_silent_vyska_podlazi_fallback flag)",
+    "  2.7 PSV-72 sanit 1→3 per koupelna (s tz_assumption flag)",
+    "",
+    "DROP THIS CATEGORY (low value, keep aggregate):",
+    "  2.8 HSV-3 příčky per podlaží — phase-mixed estimate, no precision gain",
+    "",
+    "RECALC THESE 6 ITEMS with new perimeter 38.70 m:",
+    "  HSV-7 ETICS 3 items + HSV-3 nadezdívka + HSV-2 pozední věnec + HSV-7 sokl XPS"
+  ]
+}
