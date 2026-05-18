@@ -103,6 +103,58 @@
       "kapitola_group": "HSV",
       "_gate": "HSV",
       "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Anglický dvorek — skladba dlažby",
+      "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 40 mm + podkladní nosná vrstva kamenná drť 4-8 mm tl. 150 mm na zhutněnou zemní pláň (30 MPa)",
+      "mj": "m²",
+      "mnozstvi": 30.0,
+      "mnozstvi_formula": "PDF řez C-C explicit composition + anglický dvorek ~30 m² odhad (2.5 × 2.0 m + odkop k vstupu 1.PP)",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "564831111",
+      "urs_alternatives": [
+        "564851111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 4-vrstvý dlažební systém (Path C Tier 3 embedded tables)",
+      "subdodavatel": "podlahar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "tz_explicit",
+      "id": "260219_dum.HSV1.004"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Terasa garapa — podkladní rošt",
+      "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm + štěrkový podsyp 16/32 mm tl. 100 mm + hrubý podsyp 4/8 mm tl. 150 mm + geotextilie",
+      "mj": "m²",
+      "mnozstvi": 30.0,
+      "mnozstvi_formula": "PDF řez C-C explicit composition + terasa ~30 m² odhad (rozměry z TZ ARS dům §4 terasa za op. stěnou)",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "564831111",
+      "urs_alternatives": [
+        "564851111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 5-vrstvý podkladní systém terasa (Path C Tier 3 embedded tables); dřevěná prkna garapa same item v PSV-76 Truhlář",
+      "subdodavatel": "podlahar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "tz_explicit",
+      "id": "260219_dum.HSV1.005"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
       "subkapitola": "Pažení rýh",
       "popis": "Pažení a rozepření dočasných výkopů příložné, hl. do 2 m, v zemině třídy 3",
       "mj": "m²",
@@ -122,7 +174,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.004"
+      "id": "260219_dum.HSV1.006"
     },
     {
       "objekt": "260219_dum",
@@ -150,7 +202,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.005"
+      "id": "260219_dum.HSV1.007"
     },
     {
       "objekt": "260219_dum",
@@ -178,7 +230,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.006"
+      "id": "260219_dum.HSV1.008"
     },
     {
       "objekt": "260217_sklad",
@@ -1837,23 +1889,25 @@
       "_gate": "HSV",
       "kapitola": "HSV-5 Krov + střecha",
       "subkapitola": "Nadkrokevní PIR izolace",
-      "popis": "Nadkrokevní tepelná izolace PIR (polyisokyanurát) tl. 180 mm (λ = 0.022 W/mK)",
+      "popis": "Nadkrokevní tepelná izolace PIR (polyisokyanurát) tl. 160 mm (λ=0,022 W/mK) — řez A-A S10 explicit",
       "mj": "m²",
       "mnozstvi": 140.94000000000003,
-      "mnozstvi_formula": "= 141 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi_formula": "= 141 m² (plocha krytiny krov)",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "713131811",
       "urs_alternatives": [
         "713141121"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — nadkrokevní PIR (rušení tepelných mostů)",
+      "source": "PDF řez D.1.1.2.2.21 legenda S10 'tepelná izolace PIR 160 mm' EXPLICIT (Path C Tier 1 finding — was prior 180 mm odhad)",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_plus_tz_explicit",
+      "_recalc_reason": "PIR tloušťka 160 mm (NE 180 mm odhad) z řez S10 legenda explicit",
       "id": "260219_dum.HSV5.009"
     },
     {
@@ -2388,11 +2442,11 @@
       "kapitola_group": "HSV",
       "_gate": "HSV",
       "kapitola": "HSV-7 Fasáda ETICS",
-      "subkapitola": "ETICS EPS 70F grey 200 mm",
-      "popis": "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 max tl. 200 mm + síťka + lepidlo + zatírací stěrka",
+      "subkapitola": "ETICS EPS 70F grey 160 mm",
+      "popis": "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 tl. 160 mm + síťka + lepidlo + zatírací stěrka (řez S01+S12a explicit, ne 200 mm fallback)",
       "mj": "m²",
       "mnozstvi": 276.7,
-      "mnozstvi_formula": "obvod 38.7 m × 0.55 × 13.0 m = 276.7 m² (PBŘ: tl. max 200 mm vyhovuje h ≤ 12.0 m)",
+      "mnozstvi_formula": "obvod 38.7 m × 0.55 × 13.0 m = 276.7 m² (PBŘ: tl. max 200 mm povolena, řez S01+S12a EXPLICIT 160 mm applied)",
       "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622221121",
       "urs_alternatives": [
@@ -2978,11 +3032,11 @@
       "_gate": "PSV",
       "kapitola": "PSV-76 Klempíř",
       "subkapitola": "Oplechování krytiny",
-      "popis": "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Pzn lakovaný 0.55 mm)",
+      "popis": "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Al / Pzn lakovaný 0.55 mm)",
       "mj": "bm",
-      "mnozstvi": 45.3,
-      "mnozstvi_formula": "obvod střechy ~22 + 4 vikýře × 6 m okrajových lemů = 46",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 69.5,
+      "mnozstvi_formula": "DXF klempířina total 173.8 m × 0.40 (oplechování+úžlabí+hřeben+lemy) = 69.5 bm",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "764312235",
       "urs_alternatives": [
         "764315235",
@@ -2990,7 +3044,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 + DXF (obvod střechy z LWPOLYLINE situace, vikýře 4 ks)",
+      "source": "DXF MA_klempíř (75.4 m) + SM__ klempířina (98.4 m) total = 173.8 m × 0.40 split heuristic — Path C Tier 3",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -2998,6 +3052,9 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_perimeter_ratio_estimate",
+      "_previous_mnozstvi": 46.0,
+      "_recalc_reason": "Klempířina total 173.8 m z DXF (Path C Tier 3) replaces estimate ~46 bm. +70% více klempířiny.",
       "id": "260219_dum.PSV76.001"
     },
     {
@@ -3006,10 +3063,10 @@
       "_gate": "PSV",
       "kapitola": "PSV-76 Klempíř",
       "subkapitola": "Venkovní parapety oken",
-      "popis": "Venkovní parapety oken — Pzn plech lakovaný 250 mm × tl. 0.55 mm",
+      "popis": "Venkovní parapety oken — Pzn plech lakovaný 250 mm × tl. 0.55 mm × 16 ks oken",
       "mj": "bm",
       "mnozstvi": 20.8,
-      "mnozstvi_formula": "= 16 oken × průměrná šíře 1.3 m parapetu",
+      "mnozstvi_formula": "= 16 oken (DXF INSERT) × průměrná šíře 1.3 m parapetu",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "764218201",
       "urs_alternatives": [
@@ -3018,12 +3075,13 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF okna count 16 + TZ ARS — venkovní parapety",
+      "source": "DXF okna 16 ks INSERT blocks + standard parapet width",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_deterministic",
       "id": "260219_dum.PSV76.002"
     },
     {
@@ -3031,12 +3089,12 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-76 Klempíř",
-      "subkapitola": "Dešťové svody Pzn",
-      "popis": "Dešťové svody Pzn 100 mm + žlaby — 4 svody × ~14 m výška",
+      "subkapitola": "Dešťové svody + žlaby",
+      "popis": "Dešťové svody Pzn 100 mm + žlaby — 4 svody × ~14 m + žlaby per obvod střechy",
       "mj": "bm",
-      "mnozstvi": 56.0,
-      "mnozstvi_formula": "4 svody × 14 m (do úrovně okapu + svislé do gajgru) = 56",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 43.5,
+      "mnozstvi_formula": "DXF klempířina total 173.8 m × 0.25 (svody+žlaby) = 43.5 bm",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "764454802",
       "urs_alternatives": [
         "764451802",
@@ -3044,12 +3102,15 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS + odhad standard RD",
+      "source": "DXF klempířina lengths split + TZ ARS dešťové svody",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_perimeter_ratio_estimate",
+      "_previous_mnozstvi": 56.0,
+      "_recalc_reason": "Svody 43 bm z DXF split (NE 56 bm odhad)",
       "id": "260219_dum.PSV76.003"
     },
     {
@@ -3057,24 +3118,25 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-76 Klempíř",
-      "subkapitola": "Vikýře — klempířské doplňky",
-      "popis": "Klempířské doplňky kolem vikýřů — atika, okapnice, závěrné lemy (4 vikýře)",
-      "mj": "ks",
-      "mnozstvi": 4,
-      "mnozstvi_formula": "4 vikýře (TZ ARS)",
-      "mnozstvi_confidence": 0.75,
+      "subkapitola": "Vikýře + atika + závětrné lemy",
+      "popis": "Klempířské doplňky vikýřů + atika + závětrné lemy (4 vikýře komplexní detail)",
+      "mj": "bm",
+      "mnozstvi": 26.1,
+      "mnozstvi_formula": "DXF klempířina total 173.8 m × 0.15 (vikýře+atika+lemy) = 26.1 bm",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "764315235",
       "urs_alternatives": [
         "764312235"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 — 4 vikýře",
+      "source": "DXF klempířina geometry split + TZ ARS 4 vikýře",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
+      "_data_quality": "dxf_perimeter_ratio_estimate",
       "id": "260219_dum.PSV76.004"
     },
     {
@@ -3505,16 +3567,16 @@
       "subkapitola": "Omítka jádrová + štuk 1.PP",
       "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1.PP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 94.4,
-      "mnozstvi_formula": "Σ obvodů rooms 1.PP (0.01=3.5m²→7.64m, 0.02=4.4m²→8.56m, 0.03=22.2m²→19.24m, 0.04=2.3m²→6.19m) = 41.63 m × výška 2.5 m = 104.1 m² stěn; − okna 6.61 − dveře 3.1 = 94.4 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 78.2,
+      "mnozstvi_formula": "Σ obvodů rooms 1.PP (0.01=3.5m²→7.64m, 0.02=4.4m²→8.56m, 0.03=22.2m²→19.24m, 0.04=2.3m²→6.19m) = 41.63 m × výška 2.1 m = 87.4 m² stěn; − okna 6.61 − dveře 2.6 = 78.2 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "612311311",
       "urs_alternatives": [
         "612301351"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms 1.PP obvod + výška podlaží 2.5 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "source": "DXF rooms 1.PP obvod + výška podlaží 2.1 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3522,7 +3584,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "0.01",
         "0.02",
@@ -3533,6 +3595,7 @@
         "260219_dum.PSV78.001_vyspraveni_agg",
         "260219_dum.PSV78.002_nove_omitka_agg"
       ],
+      "_recalc_reason": "Výška podlaží 1.PP=2.1 m z DXF (Path C Tier 1) replaces prior TZ silent fallback CSN default",
       "id": "260219_dum.PSV78.001"
     },
     {
@@ -3543,16 +3606,16 @@
       "subkapitola": "Omítka jádrová + štuk 1.NP",
       "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1.NP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 208.7,
-      "mnozstvi_formula": "Σ obvodů rooms 1.NP (1.01=12.4m²→14.38m, 1.02=3.6m²→7.75m, 1.03=0.7m²→3.42m, 1.04=1.5m²→5.0m, 1.05=4.1m²→8.27m, 1.06=24.0m²→20.0m, 1.07=9.4m²→12.52m, 1.08=3.8m²→7.96m) = 79.3 m × výška 2.8 m = 222.0 m² stěn; − okna 6.61 − dveře 6.7 = 208.7 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 208.4,
+      "mnozstvi_formula": "Σ obvodů rooms 1.NP (1.01=12.4m²→14.38m, 1.02=3.6m²→7.75m, 1.03=0.7m²→3.42m, 1.04=1.5m²→5.0m, 1.05=4.1m²→8.27m, 1.06=24.0m²→20.0m, 1.07=9.4m²→12.52m, 1.08=3.8m²→7.96m) = 79.3 m × výška 2.795 m = 221.6 m² stěn; − okna 6.61 − dveře 6.6 = 208.4 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "612311311",
       "urs_alternatives": [
         "612301351"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms 1.NP obvod + výška podlaží 2.8 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "source": "DXF rooms 1.NP obvod + výška podlaží 2.795 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3560,7 +3623,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "1.01",
         "1.02",
@@ -3575,6 +3638,7 @@
         "260219_dum.PSV78.001_vyspraveni_agg",
         "260219_dum.PSV78.002_nove_omitka_agg"
       ],
+      "_recalc_reason": "Výška podlaží 1.NP=2.795 m z DXF (Path C Tier 1) replaces prior TZ silent fallback CSN default",
       "id": "260219_dum.PSV78.002"
     },
     {
@@ -3585,16 +3649,16 @@
       "subkapitola": "Omítka jádrová + štuk 2.NP",
       "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 2.NP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 196.8,
-      "mnozstvi_formula": "Σ obvodů rooms 2.NP (2.01=7.3m²→11.03m, 2.02=5.9m²→9.92m, 2.03=2.4m²→6.32m, 2.04=15.5m²→16.07m, 2.05=14.1m²→15.33m, 2.06=15.8m²→16.23m) = 74.9 m × výška 2.8 m = 209.7 m² stěn; − okna 6.61 − dveře 6.3 = 196.8 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 201.6,
+      "mnozstvi_formula": "Σ obvodů rooms 2.NP (2.01=7.3m²→11.03m, 2.02=5.9m²→9.92m, 2.03=2.4m²→6.32m, 2.04=15.5m²→16.07m, 2.05=14.1m²→15.33m, 2.06=15.8m²→16.23m) = 74.9 m × výška 2.865 m = 214.6 m² stěn; − okna 6.61 − dveře 6.4 = 201.6 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "612311311",
       "urs_alternatives": [
         "612301351"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms 2.NP obvod + výška podlaží 2.8 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "source": "DXF rooms 2.NP obvod + výška podlaží 2.865 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3602,7 +3666,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "2.01",
         "2.02",
@@ -3615,6 +3679,7 @@
         "260219_dum.PSV78.001_vyspraveni_agg",
         "260219_dum.PSV78.002_nove_omitka_agg"
       ],
+      "_recalc_reason": "Výška podlaží 2.NP=2.865 m z DXF (Path C Tier 1) replaces prior TZ silent fallback CSN default",
       "id": "260219_dum.PSV78.003"
     },
     {
@@ -3625,16 +3690,16 @@
       "subkapitola": "Omítka jádrová + štuk 3.NP",
       "popis": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 3.NP (stávající vyspravené + nové zděné)",
       "mj": "m²",
-      "mnozstvi": 180.4,
-      "mnozstvi_formula": "Σ obvodů rooms 3.NP (3.01=7.6m²→11.25m, 3.02=4.1m²→8.27m, 3.03=2.4m²→6.32m, 3.04=4.8m²→8.94m, 3.05=32.8m²→23.38m, 3.06=12.8m²→14.61m) = 72.77 m × výška 2.65 m = 192.8 m² stěn; − okna 6.61 − dveře 5.8 = 180.4 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 179.1,
+      "mnozstvi_formula": "Σ obvodů rooms 3.NP (3.01=7.6m²→11.25m, 3.02=4.1m²→8.27m, 3.03=2.4m²→6.32m, 3.04=4.8m²→8.94m, 3.05=32.8m²→23.38m, 3.06=12.8m²→14.61m) = 72.77 m × výška 2.63 m = 191.4 m² stěn; − okna 6.61 − dveře 5.7 = 179.1 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "612311311",
       "urs_alternatives": [
         "612301351"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms 3.NP obvod + výška podlaží 2.65 m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+      "source": "DXF rooms 3.NP obvod + výška podlaží 2.63 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -3642,7 +3707,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "_data_quality": "dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "3.01",
         "3.02",
@@ -3655,6 +3720,7 @@
         "260219_dum.PSV78.001_vyspraveni_agg",
         "260219_dum.PSV78.002_nove_omitka_agg"
       ],
+      "_recalc_reason": "Výška podlaží 3.NP=2.63 m z DXF (Path C Tier 1) replaces prior TZ silent fallback CSN default",
       "id": "260219_dum.PSV78.004"
     },
     {
@@ -3776,30 +3842,31 @@
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
       "subkapitola": "Keramický obklad koupelna 1.05 (1.NP)",
-      "popis": "Keramický obklad stěn koupelny 1.05 1.NP (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+      "popis": "Keramický obklad stěn koupelny 1.05 1.NP — výška obkladu 1.6 m (z DXF km Obklady layer)",
       "mj": "m²",
-      "mnozstvi": 16.8,
-      "mnozstvi_formula": "DXF IP_obrysy místností room 1.05 perimeter 8.4 bm × TZ silent → CSN default obklad výška 2.0 m = 16.8 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 13.4,
+      "mnozstvi_formula": "DXF IP_obrysy místností room 1.05 perimeter 8.4 bm × DXF km Obklady layer výška 1.6 m (per-koupelna explicit, NE uniform 2.0 m fallback) = 13.4 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "781447001",
       "urs_alternatives": [
         "781447003"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms PIP perimeter 1.05 + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+      "source": "DXF rooms PIP perimeter 1.05 + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
       "subdodavatel": "obkladac",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
-      "notes": "DXF perimeter approximate from area 4.1 m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
-      "_data_quality": "tz_silent_fallback_csn_default",
+      "notes": "Per-koupelna obklad výšky: 1.05=1.6 m (parapet/sprcha level), 2.03=2.45 m (sprcha plný), 3.04=2.70 m (celokeramický). DXF km Obklady 11 LWPOLYLINE markerů.",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "1.05"
       ],
       "_expansion_origin": [
         "260219_dum.PSV78.004_obklady_koupelen_agg"
       ],
+      "_recalc_reason": "Obklad výška 1.6 m z DXF km Obklady (Path C Tier 1) replaces prior 2.0 m TZ silent fallback",
       "id": "260219_dum.PSV78.008"
     },
     {
@@ -3808,30 +3875,31 @@
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
       "subkapitola": "Keramický obklad koupelna 2.03 (2.NP)",
-      "popis": "Keramický obklad stěn koupelny 2.03 2.NP (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+      "popis": "Keramický obklad stěn koupelny 2.03 2.NP — výška obkladu 2.45 m (z DXF km Obklady layer)",
       "mj": "m²",
-      "mnozstvi": 12.4,
-      "mnozstvi_formula": "DXF IP_obrysy místností room 2.03 perimeter 6.2 bm × TZ silent → CSN default obklad výška 2.0 m = 12.4 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 15.2,
+      "mnozstvi_formula": "DXF IP_obrysy místností room 2.03 perimeter 6.2 bm × DXF km Obklady layer výška 2.45 m (per-koupelna explicit, NE uniform 2.0 m fallback) = 15.2 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "781447001",
       "urs_alternatives": [
         "781447003"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms PIP perimeter 2.03 + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+      "source": "DXF rooms PIP perimeter 2.03 + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
       "subdodavatel": "obkladac",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
-      "notes": "DXF perimeter approximate from area 2.4 m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
-      "_data_quality": "tz_silent_fallback_csn_default",
+      "notes": "Per-koupelna obklad výšky: 1.05=1.6 m (parapet/sprcha level), 2.03=2.45 m (sprcha plný), 3.04=2.70 m (celokeramický). DXF km Obklady 11 LWPOLYLINE markerů.",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "2.03"
       ],
       "_expansion_origin": [
         "260219_dum.PSV78.004_obklady_koupelen_agg"
       ],
+      "_recalc_reason": "Obklad výška 2.45 m z DXF km Obklady (Path C Tier 1) replaces prior 2.0 m TZ silent fallback",
       "id": "260219_dum.PSV78.009"
     },
     {
@@ -3840,30 +3908,31 @@
       "_gate": "PSV",
       "kapitola": "PSV-78 Povrchové úpravy",
       "subkapitola": "Keramický obklad koupelna 3.04 (3.NP)",
-      "popis": "Keramický obklad stěn koupelny 3.04 3.NP (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+      "popis": "Keramický obklad stěn koupelny 3.04 3.NP — výška obkladu 2.7 m (z DXF km Obklady layer)",
       "mj": "m²",
-      "mnozstvi": 18.0,
-      "mnozstvi_formula": "DXF IP_obrysy místností room 3.04 perimeter 9.0 bm × TZ silent → CSN default obklad výška 2.0 m = 18.0 m²",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 24.3,
+      "mnozstvi_formula": "DXF IP_obrysy místností room 3.04 perimeter 9.0 bm × DXF km Obklady layer výška 2.7 m (per-koupelna explicit, NE uniform 2.0 m fallback) = 24.3 m²",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "781447001",
       "urs_alternatives": [
         "781447003"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF rooms PIP perimeter 3.04 + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+      "source": "DXF rooms PIP perimeter 3.04 + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
       "subdodavatel": "obkladac",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
-      "notes": "DXF perimeter approximate from area 4.8 m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
-      "_data_quality": "tz_silent_fallback_csn_default",
+      "notes": "Per-koupelna obklad výšky: 1.05=1.6 m (parapet/sprcha level), 2.03=2.45 m (sprcha plný), 3.04=2.70 m (celokeramický). DXF km Obklady 11 LWPOLYLINE markerů.",
+      "_data_quality": "dxf_deterministic",
       "_room_ids": [
         "3.04"
       ],
       "_expansion_origin": [
         "260219_dum.PSV78.004_obklady_koupelen_agg"
       ],
+      "_recalc_reason": "Obklad výška 2.7 m z DXF km Obklady (Path C Tier 1) replaces prior 2.0 m TZ silent fallback",
       "id": "260219_dum.PSV78.010"
     },
     {
@@ -5217,9 +5286,9 @@
     }
   ],
   "_summary_total": {
-    "items_total": 187,
+    "items_total": 189,
     "by_kapitola": {
-      "HSV-1 Zemní práce": 12,
+      "HSV-1 Zemní práce": 14,
       "HSV-2 Základové a ŽB": 19,
       "HSV-3 Svislé konstrukce": 10,
       "HSV-4 Vodorovné": 20,
@@ -5250,11 +5319,11 @@
       "VRN — Společné": 1
     },
     "by_objekt": {
-      "260219_dum": 160,
+      "260219_dum": 162,
       "260217_sklad": 27
     },
     "urs_status_distribution": {
-      "needs_production_lookup": 187
+      "needs_production_lookup": 189
     },
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,

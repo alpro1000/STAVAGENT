@@ -38,7 +38,8 @@ META = PROJ / "inputs" / "meta"
 ITEMS_JSON = OUT / "items_rd_jachymov_complete.json"
 HEADER_JSON = META / "project_header.json"
 DXF_EXTRACT_JSON = OUT / "dxf_comprehensive_extract.json"
-SKLADBY_JSON = OUT / "skladby_per_zone.json"
+SKLADBY_JSON = OUT / "skladby_per_zone_v2.json"   # Path C Gate 5: use v2 with 13 S-codes from řez A-A legend
+SKLADBY_JSON_FALLBACK = OUT / "skladby_per_zone.json"
 
 TODAY = date.today().isoformat()
 TARGET = OUT / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}.xlsx"
@@ -778,7 +779,9 @@ def main() -> int:
     items = bundle["items"]
     header = json.loads(HEADER_JSON.read_text())
     dxf_extract = json.loads(DXF_EXTRACT_JSON.read_text()) if DXF_EXTRACT_JSON.exists() else None
-    skladby = json.loads(SKLADBY_JSON.read_text()) if SKLADBY_JSON.exists() else None
+    skladby = json.loads(SKLADBY_JSON.read_text()) if SKLADBY_JSON.exists() else (
+        json.loads(SKLADBY_JSON_FALLBACK.read_text()) if SKLADBY_JSON_FALLBACK.exists() else None
+    )
     print(f"  ✓ {len(items)} items, project_header, dxf_extract {'✓' if dxf_extract else '✗'}, skladby {'✓' if skladby else '✗'}", file=sys.stderr)
 
     n_sheets = 6 + (1 if dxf_extract else 0) + (1 if skladby else 0)

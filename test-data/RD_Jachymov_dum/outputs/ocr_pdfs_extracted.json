@@ -1,0 +1,97 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-18",
+  "_generated_by": "tools/path_c_part1_ocr.py",
+  "_purpose": "Path C Část 1 — OCR attempt on 6 drawing-heavy / scanned PDFs via pdftoppm 300 DPI + tesseract ces+eng.",
+  "_ocr_pipeline": "pdftoppm -r 300 -png → tesseract --psm 6 -l ces+eng",
+  "results_per_pdf": {
+    "D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf": {
+      "path": "inputs/vykresy_pdf/260219_dum/D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf",
+      "size_bytes": 316850,
+      "pages_rendered": 1,
+      "ocr_text_length": 2056,
+      "scodes_found": [
+        "S3"
+      ],
+      "fcodes_found": [],
+      "dimensions_found": [
+        "662,05 m"
+      ],
+      "material_markers": [],
+      "text_sample_first_500": "MATERIÁL:\nŘ BETON OPĚRNÉ STĚNY — \"BÍLÁ VANA\"\nEZ A-A C25/30 XC3,XF1,XA1 - CL 0.4 - Dmax. 22-S3\n+0.000\n1 -=\n-400\nEZ Z\nZ\nT | LEGENDA: +0,000=+662,05 m n.m. Bpv\nHN SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ projekt:\n2 K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE Ř .\nZELEZOBETON/TVAROVKY ZTRACENÉHO BEDNENI adový rodinný dům\n< 7 SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Fibichova č.p. 733\nS Y M K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE pare. č. 1094/16, sL1022\nO ce < — NOVÉ ZDiVo | ká. Jáchymov [65643",
+      "text_sample_middle_500": "0 Praha 4\n8 iS og IČ: 01828894\no N N V ST Ň\no HMM \\ | | OTVOR VE VODOROVNE KONSTRUKCI\nO 3 NE AL N —=77— PROSTUP SVISLOU KONSTRUKCÍ PŘSLUŠNÉHO PODLAŽÍ\n= — ANZ ee vy - VÝŠKA [mm], kkkk — VÝŠKOVÁ KOTA\nE ASSA \\ vw HHek kkk DH — DOL Hina HH — HORNÍ HRANA, OSA ie PROSTUPU vypračovař\n% NÍ \\ MN ZI | SVR VE SVISLÉ KONSTRUKCÍ PŘÍSLUŠNÉHO PODLAŽÍ\nS NĚ Ná ZN a w — VÝŠKA [mm], k.kkk — VÝŠKOVÁ KÓTA [m] zodpovědný projektant:\nE 2M WR vw DHekkkk DH — DOLNÍ HRANA, HH — HORNÍ HRANA, OSA — OSA PROSTUPU Ing. Jan Tv",
+      "probe_status": "ocr_extracted"
+    },
+    "D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf": {
+      "path": "inputs/vykresy_pdf/260219_dum/D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf",
+      "size_bytes": 331741,
+      "pages_rendered": 1,
+      "ocr_text_length": 2297,
+      "scodes_found": [],
+      "fcodes_found": [],
+      "dimensions_found": [
+        "662,05 m"
+      ],
+      "material_markers": [],
+      "text_sample_first_500": "ŘEZ A-A MATERIÁL:\nE BETON OPĚRNÉ STĚNY — \"BÍLÁ VANA\"\nC25/30 XC3,XF1,XA1 - CL 0.4 - Dmax. 22-53\n+2.080 UPE100 ZDVO P. ,\nZe penn CIHLA PLNA PALENA P10 NA MALTU M10\nSE +1.200\nNa >L — —\nV\n-0.200\nV DO -0.850 +0,000=+662,05 m n.m. Bpv\n/ KM LEGENDA:\nrere, SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ projekt:\n-1.100 2 K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE Ř ,\nWs Ž ŽELEZOBETON /TVAROVKY ZTRACENÉHO BEDNĚNÍ adový rodinný dům\nP Fibichova č.p. 733\ns WY) SVISLA KONSTRUKCE PRISLUSNEHO PODLAŽÍ, PŘILÉHAJÍCÍ\nY",
+      "text_sample_middle_500": "VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ 140 00 Praha 4\n= ee m Cog IČ: 01828894\n5 yf TT | Ay Ta Zw\nS ý M.. Z Nf APN160 7 y OTVOR VE VODOROVNÉ KONSTRUKCI\nS „DR OH V n\nO & ; 7 j = i Y ; ý 3m. PROSTUP SVISLOU KONSTRUKCÍ PŘÍSLUŠNÉHO PODLAŽÍ\n= ony one W LOY ee vy- VýšKA [mm], kkkk — VÝŠKOVÁ KOTA [m]\nE y : / _ J ý ; / vw HH=k.kkk DH — DOLNÍ HRANA, HH — HORNÍ HRANA, OSA — OSA PROSTUPU vypracoval\n8 ; _ a] Qo ý To | SVR VE SVISLÉ KONSTRUKCÍ PŘÍSLUŠNÉHO PODLAŽÍ\n5 ý ZESÍLENÍ OSTENI m S 7 a w — VÝŠKA [mm],",
+      "probe_status": "ocr_extracted"
+    },
+    "D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf": {
+      "path": "inputs/vykresy_pdf/260219_dum/D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf",
+      "size_bytes": 357089,
+      "pages_rendered": 1,
+      "ocr_text_length": 2416,
+      "scodes_found": [],
+      "fcodes_found": [],
+      "dimensions_found": [
+        "662,05 m"
+      ],
+      "material_markers": [],
+      "text_sample_first_500": "MATERIÁL:\nBETON CHRÁNĚNÝCH KONSTRUKCÍ\nC25/30 XC1 - CL 0.4 - Dmax. 22-53\nZDVO o ,\nCIHLA PLNÁ PALENA P10 NA MALTU M10\nKONSTRUKČNÍ OCEL SPOJ. MATERIÁL\n9235 8.8\n+0,000=+662,05 m n.m. Bpv\nLEGENDA;\njekt:\nE SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Proje\nE ON UB yl000, 80 W700, HD, MHAy K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE Řadový rodinný dům\n2 =) (E oPNIGO 79007 ey ŽELEZOBETON /TVAROVKY ZTRACENÉHO BEDNĚNÍ Fibichova č.p. 733\noz + + MH \"ee ng = WN re\ns == — Ne > r SVISLA KONSTRUKCE PŘÍSLUŠNÉHO POD",
+      "text_sample_middle_500": "“ : N Čerčanská 624/8 TeAnau\n= Mo VEE = s iN ro 140 00 Praha 4\nS E N = a M ho JE i S . HORNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ č 01828894.\n00 -———4 o SIF = o- : : :\nane ne =\no WN M m\nU. N Mý PES NS\ns | JVS n | A | | OTVOR VE VODOROVNE KONSTRUKCÍ\n2 See MLO , N\nO 3 = in Se EL Se LL SS Eo] S 73- PROSTUP SVISLOU KONSTRUKCÍ PŘÍSLUŠNÉHO PODLAŽÍ\nš < in in < | — w- VÝŠKA [mm], k.kkk — VÝŠKOVÁ KÓTA [m]\nB ~—t [SN „ - - - vypracoval:\n- ~ =) (E 85, 500 1000, 1000, 1000, 1000, 100 100 1900 365 v",
+      "probe_status": "ocr_extracted"
+    },
+    "D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf": {
+      "path": "inputs/vykresy_pdf/260219_dum/D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf",
+      "size_bytes": 359389,
+      "pages_rendered": 1,
+      "ocr_text_length": 2545,
+      "scodes_found": [],
+      "fcodes_found": [],
+      "dimensions_found": [
+        "662,05 m"
+      ],
+      "material_markers": [],
+      "text_sample_first_500": "m 1950 MATERIÁL: Digitálně\nYY === T\n50 4900 BETON CHRANENYCH KONSTRUKCI oie mo podepsal Ing. Jan\nU 7708 _y % ,\n75,800 5002075 | 950 C25/30 XC1 - CL 0.4 - Dmax. 22-53 \"9 Tara] e Tvardík\n= ao : varal\n«“ 2 v\n8 | <| ZDNO — a CS, Datum:\n_————E——_ CIHLA PLNA PALENA P10 NA MALTU M10 Seay’ O 2026.02.16\nZ | |) | 21 err ; 19. Inn!\na Vo 582 , , 16:18:09 +01'00\nSH tell WASH g KERAMITCKÉ DUTINOVÉ ZDIVO P10\n4875., 308 ||s omy ©\n3 m m 1 ed NA MALTU PRO TENKÉ SPARY\no gin “HEATGO | n off M +0,000=+662,05 m n.m.",
+      "text_sample_middle_500": ", 350 Se TeAnau ero\n_ PY 785) 10 DD 765 DO Z SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Čerčanská 624/8 TeAnau\n> 900 6350 900 M K HORNIMU LÍCI DESKY PŘÍSLUŠNÉHO PODLAŽÍ 140 00 Praha 4\n8 777 177 A STÁVAJÍCÍ ZDIVO IČ: 01828894\n= NN XZ SVSLÁ KONSTRUKCE VYŠŠÍHO PODLAŽÍ, PŘILÉHAJÍCÍ\n3 Y K HORNÍMU LÍCI STROPNÍ DESKY PŘÍSLUŠNÉHO PODLAŽÍ\nO 3 | | DOLNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ\n3 Ř 12.305 — vypracoval:\n= EZ A-A +12. | | HORNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ In",
+      "probe_status": "ocr_extracted"
+    },
+    "C.01 - Situační výkres širších vztahů _ EAR.pdf": {
+      "path": "inputs/situace/C.01 - Situační výkres širších vztahů _ EAR.pdf",
+      "size_bytes": 723654,
+      "pages_rendered": 1,
+      "ocr_text_length": 2749,
+      "scodes_found": [],
+      "fcodes_found": [],
+      "dimensions_found": [],
+      "material_markers": [],
+      "text_sample_first_500": "o E E = sz : 7\nx _Cisarska® — W j= - ae. lif legenda\n„o alej p — : — al =: 0 3} - navrhovaná stavba\ni 18 ov = m Hi 5 4\nJÁCHYMOV | se EM\nL p ' av \"= = ie | 2\na _ 8 M = = l Pod Kamennou horou\nk ll |\nM i FON 3 JE 4 T i ja i\np a 4 > u z ; ye N\nA SS, > > ec: + & : — Je BS / ; =\nE PY Ú — : S oS\nE D0 -až čá Panorama\nNS ou | BS S\nO Gi = | 8\nro. ns ~ <= a ES Komenského = /\n: a > > l ; (G i)\nfy SS — > HUSOVÁ mě ; ’ Zizkova = 70%\nW Vy- o c = L KM + ! = ' - |\nre ye ~~ Pa E |\nKey, A — —\n-= ay - “ie, > k = i",
+      "text_sample_middle_500": "1094/16, st.1022, k.ú. Jáchymov [4544371\n= N 2 ko) i > z JP 4 Ý ARCKN PPV X MA\n(p) “ > i © ' F 0 hs Y razítko/podpis „K TV ~ Digitálně podepsat\n\\ Te) : Ko wt / torizovaný projektant SS | Ing.arch. Marek\n« fi k BT X P 4 „2 < 4 a autorizovany projektan is SEE AV . le .\noh : CM x : i £ Oe i Jf 5(2 9 *JŠ|| Smolka pare\nA S AN mas A A M P ta l/ VA, Ing. arch. Marek Smolka E C, 9) Datum: 2025.09.17\n| i 4 S er AN m i 4 ff tel.: +420 732 618 505, email: smolka@smasharch.cz ey : ‘ant\nSp nd čí | k © YS. i",
+      "probe_status": "ocr_extracted"
+    },
+    "03.03 - město Jáchymov - Vyjádření k žádosti.pdf": {
+      "path": "inputs/dokladova_cast/03.03 - město Jáchymov - Vyjádření k žádosti.pdf",
+      "size_bytes": 38854,
+      "pages_rendered": 1,
+      "ocr_text_length": 1160,
+      "scodes_found": [],
+      "fcodes_found": [],
+      "dimensions_found": [],
+      "material_markers": [],
+      "text_sample_first_500": "Město Jáchymov\nnám. Republiky 1, 362 51 Jáchymov\nvyřizuje: Dagmar Ondráčková SMASH architekti s.r.o.\ntelefon: 353808130 Vodňanského 1008/2\ne-mail: ondrackova © mestojachymov.cz 169 00 Praha 6\nOdbor hospodářsko správní ID schránky: vgj8ab3\nV Jáchymově: 25.9.2025\nčíslo jednací:\nvaše značka: DOn\nVěc: Žádost o souhlas se stavbou\nRada města Jáchymov dne 25.9.2025 projednala Vaši žádost ze dne 17.9.2025 o souhlas se\nstavebním záměrem — zahradní sklad a přístupové schodiště k RD Fibichova ulice č.p. 73",
+      "text_sample_middle_500": "u „Zahradní sklad a\npřístupové schodiště k RD Fibichova č.p. 733“ pozemková parcela č. 1094/16, k.ú. Jáchymov\na připojením nemovitosti k místní komunikaci na pozemkové parcele č.5263/2 (ostatní plocha,\nsilnice) ve vlastnictví města Jáchymov za těchto podmínek:\no Provadénim stavby nebude zatížen žádný jiný pozemek ve vlastnictví Města Jáchymov,\nnež který je uváděn v žádosti;\no Toto rozhodnutí nenahrazuje jiná povolení nutná podle zvláštních předpisů.\nS pozdravem |\nFrantišek Holy\nstarostů měsla\nMĚ",
+      "probe_status": "ocr_extracted"
+    }
+  }
+}
