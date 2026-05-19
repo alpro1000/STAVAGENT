@@ -332,6 +332,38 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-19 — Session: Orphaned files & data/ cleanup
+
+**Topic:** Cleanup 13 orphaned souborů v root repa + `data/peri-pdfs/` reorganizace (handoff in-conversation).
+
+**Rozhodnuto:**
+- 9 RD Jáchymov PDF + 4 hk212 DXF v root = **byte-identické duplikáty** existujících souborů v `test-data/{project}/inputs/{dokladova_cast,vykresy_dxf}/` (SHA-256 verified). Smazány `git rm` místo `git mv` — task §6.1/§6.2 navrhoval move do nového subfolderu, ale kanonická destinace už existovala (move by vytvořil třetí kopii).
+- 3 soubory z `data/peri-pdfs/` přesunuty `git mv` (historie zachována):
+  - `formwork_catalog_PERI_DOKA_2025.md` → `docs/reference/formwork_catalog_2025.md` (sjednocení se steering cheat-sheet)
+  - `parse_peri_pdfs.py` → `scripts/parse_peri_pdfs.py`
+  - `rimsa_element_spec_v2_DOKA_PERI.md` → `docs/specs/element/rimsa-v2-doka-peri.md` (single file, ne split — polished doménová reference, ne implementační spec)
+- `data/` složka odstraněna (`rmdir`).
+- `docs/steering/structure.md` §5 doplněn o zákaz orphaned root souborů + ad-hoc `data/` (verze bump 1.0 → 1.1).
+- Classification report: `docs/handoff/2026-05-19-orphaned-files-classification.md`.
+
+**Odmítnuto:**
+- Vytváření `test-data/RD_Jachymov_dum/stavebni_povoleni/` a `test-data/hk212_hala/dxf/` (per task §6.1/§6.2 návrh) — kanonická lokace `inputs/dokladova_cast/` a `inputs/vykresy_dxf/` už existuje.
+- Split `rimsa_element_spec_v2_DOKA_PERI.md` do req/design/tasks (per task §6.3.1 fallback — split až při aktivním rozpracování).
+- Update stale `data/peri-pdfs/` odkazů v 10 audit/inventory dokumentech (per task §8 out-of-scope — audit docs = snapshot in time).
+- Gate 5 (`test-data/_orphaned/`) — žádné neidentifikovatelné soubory.
+
+**Otevřené otázky:**
+- Konfirmace deviace `git rm` vs `git mv` pro Gate 2/3 (G.1 z classification reportu).
+- Stale markdown references na `data/peri-pdfs/` v audit dokumentech — ponechat snapshot, nebo follow-up `chore/docs-fix-stale-peri-paths`?
+
+**Co dál:**
+- TASK: `docs/normy/` → `app/knowledge_base/B7_regulations/` (66 MB doménová data, per docs-audit findings §D.6)
+- TASK: `docs/bugs/aplikovat-timeout/` real content fill z Project Knowledge (per task §8 mimo scope)
+- TASK: `docs/{architecture,audits,competitive}/` → `docs/reference/` (per docs-audit findings §D.7 migration map)
+- TASK: vyřízení 5 open questions z předchozí audit session (docs-audit-findings §F)
+
+---
+
 ### 2026-05-19 — Session: Docs structure audit
 
 **Topic:** Inventory aktuální struktury `docs/` proti steering plánu (handoff `docs/docs/handoff/2026-05-19-docs-audit.md`).
