@@ -887,3 +887,305 @@ def test_token_unsupported_password_grant_returns_400(token_client):
     })
     assert resp.status_code == 400
     assert resp.json()["detail"]["error"] == "unsupported_grant_type"
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# GET + POST /api/v1/mcp/oauth/authorize — Gate 4.5
+#
+# DCR consent flow:
+#   GET  → validate client + redirect_uri + render HTML form
+#   POST → validate api_key + mint code with binding + 303 redirect
+# Legacy sk-stavagent-* path on GET stays untouched.
+# ───────────────────────────────────────────────────────────────────────────
+
+
+@pytest.fixture
+def authorize_client(monkeypatch):
+    """TestClient with /authorize DB helpers mocked."""
+    state = {
+        "client_lookup_result": None,       # dict | None for lookup_oauth_client_for_authorize
+        "user_lookup_result": None,         # int | None for _resolve_initial_access_user_id
+        "generate_code_calls": [],          # list of generate_code kwargs
+        "get_credits_result": None,         # for legacy path
+    }
+
+    def fake_lookup_oauth_client(client_id):
+        return state["client_lookup_result"]
+
+    def fake_resolve_user(api_key):
+        return state["user_lookup_result"]
+
+    def fake_generate_code(**kwargs):
+        state["generate_code_calls"].append(kwargs)
+        return "test-code-" + "z" * 20
+
+    def fake_get_credits(api_key):
+        return state["get_credits_result"] or {
+            "email": "u@x.com", "credits": 100,
+            "total_used": 0, "total_purchased": 0,
+        }
+
+    def fake_is_allowed_uri(uri):
+        # Always true for legacy-path tests; DCR path uses registered_uris list.
+        return True
+
+    monkeypatch.setattr(mcp_auth, "lookup_oauth_client_for_authorize", fake_lookup_oauth_client)
+    monkeypatch.setattr(mcp_auth, "_resolve_initial_access_user_id", fake_resolve_user)
+    monkeypatch.setattr(mcp_auth, "get_credits", fake_get_credits)
+    monkeypatch.setattr(mcp_oauth_codes, "generate_code", fake_generate_code)
+    monkeypatch.setattr(mcp_oauth_codes, "is_allowed_redirect_uri", fake_is_allowed_uri)
+
+    app = FastAPI()
+    app.include_router(router)
+    tc = TestClient(app)
+    tc.state = state  # type: ignore[attr-defined]
+    return tc
+
+
+# ── GET /authorize for dcr-* ────────────────────────────────────────────────
+
+
+_DCR_AUTH_PARAMS = {
+    "response_type": "code",
+    "client_id": "dcr-" + "c" * 24,
+    "redirect_uri": "https://claude.ai/api/mcp/auth_callback",
+    "code_challenge": "challengeABCD",
+    "code_challenge_method": "S256",
+    "state": "xyz",
+    "scope": "mcp",
+}
+
+
+def test_authorize_get_dcr_renders_consent_form(authorize_client):
+    """Valid DCR client + matching redirect_uri → 200 HTML form."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1,
+        "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": "Claude.ai MCP",
+        "redirect_uris": ["https://claude.ai/api/mcp/auth_callback"],
+        "grant_types": ["authorization_code"],
+        "software_id": "ai.anthropic.claude",
+        "software_version": "1.0",
+    }
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=_DCR_AUTH_PARAMS)
+    assert resp.status_code == 200
+    assert resp.headers["content-type"].startswith("text/html")
+    body = resp.text
+    # Form must echo every OAuth param as hidden input
+    assert 'name="response_type"' in body
+    assert _DCR_AUTH_PARAMS["client_id"] in body
+    assert "challengeABCD" in body
+    assert "xyz" in body  # state preserved
+    assert 'name="api_key"' in body
+    assert 'type="password"' in body
+    assert "Claude.ai MCP" in body  # client_name displayed
+    # Form posts back to /authorize, not directly to redirect_uri
+    assert 'action="/api/v1/mcp/oauth/authorize"' in body
+    assert 'method="POST"' in body
+    # No code minted yet — that happens on POST
+    assert authorize_client.state["generate_code_calls"] == []
+
+
+def test_authorize_get_dcr_unknown_client_returns_400(authorize_client):
+    """lookup_oauth_client_for_authorize returns None → 400 invalid_client."""
+    authorize_client.state["client_lookup_result"] = None
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=_DCR_AUTH_PARAMS)
+    assert resp.status_code == 400
+    assert resp.json()["detail"]["error"] == "invalid_client"
+
+
+def test_authorize_get_dcr_redirect_uri_mismatch_returns_400(authorize_client):
+    """redirect_uri not in registered list → 400 invalid_redirect_uri."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1,
+        "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": "X",
+        "redirect_uris": ["https://other.example.com/cb"],  # doesn't match
+        "grant_types": ["authorization_code"],
+        "software_id": None, "software_version": None,
+    }
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=_DCR_AUTH_PARAMS)
+    assert resp.status_code == 400
+    assert resp.json()["detail"]["error"] == "invalid_redirect_uri"
+
+
+def test_authorize_get_dcr_redirect_uris_as_json_string(authorize_client):
+    """JSONB column sometimes returns as raw str — must json.loads."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1, "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": "X",
+        "redirect_uris": '["https://claude.ai/api/mcp/auth_callback"]',  # STR
+        "grant_types": ["authorization_code"],
+        "software_id": None, "software_version": None,
+    }
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=_DCR_AUTH_PARAMS)
+    assert resp.status_code == 200
+
+
+def test_authorize_get_dcr_wrong_response_type_returns_400(authorize_client):
+    """response_type=token (implicit) is not supported → 400."""
+    params = dict(_DCR_AUTH_PARAMS, response_type="token")
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=params)
+    assert resp.status_code == 400
+    assert resp.json()["detail"]["error"] == "unsupported_response_type"
+
+
+def test_authorize_get_dcr_wrong_pkce_method_returns_400(authorize_client):
+    """code_challenge_method=plain is RFC-allowed but rejected for security."""
+    params = dict(_DCR_AUTH_PARAMS, code_challenge_method="plain")
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=params)
+    assert resp.status_code == 400
+    assert resp.json()["detail"]["error"] == "invalid_request"
+
+
+# ── POST /authorize for DCR consent submission ──────────────────────────────
+
+
+def test_authorize_post_dcr_happy_mints_code_with_binding(authorize_client):
+    """Valid api_key + matching client → 303 + generate_code called with
+    oauth_client_id binding."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1, "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": "Claude.ai MCP",
+        "redirect_uris": ["https://claude.ai/api/mcp/auth_callback"],
+        "grant_types": ["authorization_code"],
+        "software_id": None, "software_version": None,
+    }
+    authorize_client.state["user_lookup_result"] = 42  # valid user
+
+    resp = authorize_client.post(
+        "/api/v1/mcp/oauth/authorize",
+        data={**_DCR_AUTH_PARAMS, "api_key": "sk-stavagent-" + "u" * 48},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 303
+    location = resp.headers["location"]
+    assert location.startswith("https://claude.ai/api/mcp/auth_callback?")
+    assert "code=test-code-" in location
+    assert "state=xyz" in location
+
+    # generate_code called with BOTH bindings: user_api_key + oauth_client_id
+    assert len(authorize_client.state["generate_code_calls"]) == 1
+    call = authorize_client.state["generate_code_calls"][0]
+    assert call["client_id"] == "sk-stavagent-" + "u" * 48  # user
+    assert call["oauth_client_id"] == _DCR_AUTH_PARAMS["client_id"]  # DCR client
+
+
+def test_authorize_post_dcr_invalid_api_key_re_renders_form(authorize_client):
+    """Invalid api_key → 200 with form + error message (NOT 401, NOT redirect)."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1, "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": "X",
+        "redirect_uris": ["https://claude.ai/api/mcp/auth_callback"],
+        "grant_types": ["authorization_code"],
+        "software_id": None, "software_version": None,
+    }
+    authorize_client.state["user_lookup_result"] = None  # unknown api_key
+
+    resp = authorize_client.post(
+        "/api/v1/mcp/oauth/authorize",
+        data={**_DCR_AUTH_PARAMS, "api_key": "sk-stavagent-WRONG"},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 200
+    assert "Invalid or inactive API key" in resp.text
+    # User can fix + resubmit without re-bouncing through the broker
+    assert 'action="/api/v1/mcp/oauth/authorize"' in resp.text
+    # No code minted on invalid auth
+    assert authorize_client.state["generate_code_calls"] == []
+
+
+def test_authorize_post_rejects_non_dcr_client_id(authorize_client):
+    """sk-stavagent-* client_id via POST is a programming error → 400."""
+    resp = authorize_client.post(
+        "/api/v1/mcp/oauth/authorize",
+        data={**_DCR_AUTH_PARAMS,
+              "client_id": "sk-stavagent-" + "u" * 48,
+              "api_key": "sk-stavagent-" + "u" * 48},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 400
+    assert resp.json()["detail"]["error"] == "invalid_request"
+
+
+def test_authorize_post_tampered_redirect_uri_returns_400(authorize_client):
+    """Hidden field tampered after form render → re-validated server-side → 400."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1, "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": "X",
+        "redirect_uris": ["https://claude.ai/api/mcp/auth_callback"],
+        "grant_types": ["authorization_code"],
+        "software_id": None, "software_version": None,
+    }
+    resp = authorize_client.post(
+        "/api/v1/mcp/oauth/authorize",
+        data={**_DCR_AUTH_PARAMS,
+              "redirect_uri": "https://attacker.evil.com/cb",  # tampered!
+              "api_key": "sk-stavagent-" + "u" * 48},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 400
+    assert resp.json()["detail"]["error"] == "invalid_redirect_uri"
+
+
+# ── Legacy GET /authorize for sk-stavagent-* ────────────────────────────────
+
+
+def test_authorize_get_legacy_sk_stavagent_unchanged(authorize_client):
+    """sk-stavagent-* client_id → existing behaviour: 302 redirect with code,
+    NO HTML form rendered, oauth_client_id NOT passed to generate_code."""
+    authorize_client.state["get_credits_result"] = {
+        "email": "u@x.com", "credits": 100,
+        "total_used": 0, "total_purchased": 0,
+    }
+    params = dict(_DCR_AUTH_PARAMS, client_id="sk-stavagent-" + "u" * 48)
+    resp = authorize_client.get(
+        "/api/v1/mcp/oauth/authorize",
+        params=params,
+        follow_redirects=False,
+    )
+    assert resp.status_code == 302
+    assert resp.headers["location"].startswith(_DCR_AUTH_PARAMS["redirect_uri"])
+    assert "code=test-code-" in resp.headers["location"]
+    # Crucial backward-compat assertion: legacy flow passes oauth_client_id=None
+    # (default) so consume_code returns oauth_client_id=None and /token
+    # takes the legacy bearer=api_key branch.
+    call = authorize_client.state["generate_code_calls"][0]
+    assert call.get("oauth_client_id") is None or "oauth_client_id" not in call
+
+
+def test_authorize_get_legacy_unknown_api_key_redirects_with_error(authorize_client):
+    """Legacy path: unknown sk-stavagent-* → 302 to redirect_uri with
+    error=unauthorized_client (per RFC §4.1.2.1 redirect for known-good
+    redirect_uri)."""
+    authorize_client.state["get_credits_result"] = {"error": "Invalid API key.", "credits": 0}
+    params = dict(_DCR_AUTH_PARAMS, client_id="sk-stavagent-" + "z" * 48)
+    resp = authorize_client.get(
+        "/api/v1/mcp/oauth/authorize",
+        params=params,
+        follow_redirects=False,
+    )
+    assert resp.status_code == 302
+    assert "error=unauthorized_client" in resp.headers["location"]
+
+
+# ── XSS smoke test — paranoia about HTML rendering ──────────────────────────
+
+
+def test_authorize_get_dcr_html_escapes_client_name(authorize_client):
+    """Malicious client_name from DB must be HTML-escaped, not rendered as
+    markup. Defence in depth: if an attacker somehow registered a client
+    with <script> in client_name (shouldn't happen given RFC 7591 §2
+    validation but tools fail), the consent page must not execute it."""
+    authorize_client.state["client_lookup_result"] = {
+        "id": 1, "client_id": _DCR_AUTH_PARAMS["client_id"],
+        "client_name": '<script>alert(1)</script>',
+        "redirect_uris": ["https://claude.ai/api/mcp/auth_callback"],
+        "grant_types": ["authorization_code"],
+        "software_id": None, "software_version": None,
+    }
+    resp = authorize_client.get("/api/v1/mcp/oauth/authorize", params=_DCR_AUTH_PARAMS)
+    assert resp.status_code == 200
+    # Verbatim tag must NOT appear; escaped form must be present
+    assert "<script>alert(1)</script>" not in resp.text
+    assert "&lt;script&gt;" in resp.text

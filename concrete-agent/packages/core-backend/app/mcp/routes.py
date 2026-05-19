@@ -25,7 +25,7 @@ from typing import Optional
 from urllib.parse import urlencode, urlparse
 
 from fastapi import APIRouter, Form, Header, HTTPException, Query, Request
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from pydantic import BaseModel, EmailStr, Field
 
 from app.mcp import auth as mcp_auth
@@ -184,30 +184,14 @@ async def get_credits(authorization: Optional[str] = Header(None)):
 
 # ── OAuth 2.0 endpoints ─────────────────────────────────────────────────────
 
-@router.get("/oauth/authorize")
-async def oauth_authorize(
-    response_type: str = Query(...),
-    client_id: str = Query(...),
-    redirect_uri: str = Query(...),
-    state: Optional[str] = Query(None),
-    code_challenge: str = Query(...),
-    code_challenge_method: str = Query("S256"),
-    scope: Optional[str] = Query(None),  # accepted, ignored — single-user MCP
-):
-    """RFC 6749 §4.1 authorization_code start + RFC 7636 PKCE.
+def _validate_authorize_common(
+    response_type: str, code_challenge: str, code_challenge_method: str
+) -> None:
+    """Shared RFC 6749 §4.1 + RFC 7636 PKCE parameter validation.
 
-    Single-user MCP — no consent screen. The endpoint validates the
-    request, mints a 10-min one-time code, and 302-redirects the browser
-    to `redirect_uri?code=...&state=...`.
-
-    `client_id` is the user's MCP API key (`sk-stavagent-...`). The
-    user pastes it into the ChatGPT / Claude.ai connector config UI;
-    the third party then calls this endpoint with it.
+    Raises HTTPException with the appropriate RFC error code if any
+    constraint fails — caller (GET or POST handler) propagates.
     """
-    # ── Parameter validation (return user-visible errors, not redirects,
-    #    so the misconfiguration is obvious in the browser tab). RFC 6749
-    #    §4.1.2.1 says to redirect with `error=` only when redirect_uri
-    #    itself is valid; otherwise show the error to the user.
     if response_type != "code":
         raise HTTPException(
             status_code=400,
@@ -226,6 +210,201 @@ async def oauth_authorize(
             detail={"error": "invalid_request",
                     "error_description": "code_challenge required (PKCE mandatory)"},
         )
+
+
+def _render_dcr_consent_form(
+    *,
+    client_row: dict,
+    client_id: str,
+    redirect_uri: str,
+    state: Optional[str],
+    code_challenge: str,
+    code_challenge_method: str,
+    scope: Optional[str],
+    error_message: Optional[str] = None,
+) -> HTMLResponse:
+    """Render the minimal consent screen for DCR authorization_code flow.
+
+    HTML-only, no JS, no external assets. Form POSTs back to /authorize
+    with all query params preserved in hidden inputs plus the user's
+    api_key. Posting via form instead of query-string keeps the api_key
+    out of the browser URL bar + server access logs.
+
+    TODO Replace with a proper styled consent page before Claude
+    Directory submission — show requested scopes, application logo
+    from software_id, "I agree" / "Deny" buttons, link to TOS/privacy.
+    Current MVP is functional but visually rudimentary.
+    """
+    # Escape user-supplied strings for safe HTML embedding.
+    import html as _html
+    client_name = _html.escape(client_row.get("client_name") or client_id)
+    software_id = _html.escape(client_row.get("software_id") or "")
+    error_html = (
+        f'<p class="error">{_html.escape(error_message)}</p>'
+        if error_message else ""
+    )
+    software_html = (
+        f'<p class="meta">Software: <code>{software_id}</code></p>'
+        if software_id else ""
+    )
+    # Hidden fields preserve query state across the POST.
+    hidden = {
+        "response_type": "code",
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "code_challenge": code_challenge,
+        "code_challenge_method": code_challenge_method,
+        "state": state or "",
+        "scope": scope or "",
+    }
+    hidden_inputs = "\n".join(
+        f'    <input type="hidden" name="{k}" value="{_html.escape(v)}">'
+        for k, v in hidden.items()
+    )
+    body = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Authorize {client_name} — STAVAGENT</title>
+  <style>
+    body {{ font-family: -apple-system, system-ui, sans-serif;
+            max-width: 480px; margin: 4rem auto; padding: 1rem;
+            color: #222; line-height: 1.4; }}
+    h1 {{ font-size: 1.5rem; margin-bottom: 0.5rem; }}
+    .app {{ font-weight: 600; }}
+    .meta {{ color: #666; font-size: 0.9rem; }}
+    .scope {{ background: #f5f5f0; padding: 0.75rem 1rem;
+             border-radius: 4px; margin: 1rem 0; }}
+    input[type=password] {{ width: 100%; box-sizing: border-box;
+                            font-family: ui-monospace, monospace;
+                            font-size: 14px; padding: 0.5rem;
+                            border: 1px solid #ccc; border-radius: 4px; }}
+    button {{ background: #FF9F1C; color: #fff; border: 0;
+             padding: 0.75rem 1.5rem; border-radius: 4px;
+             font-weight: 600; cursor: pointer; font-size: 1rem; }}
+    button:hover {{ background: #F97316; }}
+    .actions {{ margin-top: 1rem; display: flex; gap: 1rem;
+               align-items: center; }}
+    .cancel {{ color: #666; text-decoration: none; }}
+    .cancel:hover {{ text-decoration: underline; }}
+    .error {{ background: #fee; border: 1px solid #fbb;
+             padding: 0.75rem 1rem; border-radius: 4px;
+             color: #900; margin-bottom: 1rem; }}
+    code {{ background: #f5f5f0; padding: 0 4px; border-radius: 2px;
+           font-size: 0.85em; }}
+  </style>
+</head>
+<body>
+  <h1>Authorize <span class="app">{client_name}</span></h1>
+  <p>This application is requesting access to STAVAGENT MCP tools
+     on your behalf.</p>
+  {software_html}
+  <div class="scope">
+    Requested scope: <code>{_html.escape(scope or 'mcp')}</code>
+  </div>
+  {error_html}
+  <form method="POST" action="/api/v1/mcp/oauth/authorize">
+{hidden_inputs}
+    <label for="api_key"><strong>Your STAVAGENT API key</strong></label>
+    <input type="password" id="api_key" name="api_key"
+           placeholder="sk-stavagent-..." autocomplete="off"
+           autocapitalize="off" autocorrect="off" spellcheck="false"
+           required>
+    <div class="actions">
+      <button type="submit">Authorize</button>
+      <a class="cancel"
+         href="{_html.escape(redirect_uri)}?error=access_denied{('&state=' + _html.escape(state)) if state else ''}">
+        Cancel
+      </a>
+    </div>
+  </form>
+  <p class="meta" style="margin-top: 2rem;">
+    Don't have an API key? Sign up at
+    <a href="https://www.stavagent.cz/api-access">stavagent.cz/api-access</a>.
+  </p>
+</body>
+</html>
+"""
+    return HTMLResponse(content=body, status_code=200)
+
+
+@router.get("/oauth/authorize")
+async def oauth_authorize(
+    response_type: str = Query(...),
+    client_id: str = Query(...),
+    redirect_uri: str = Query(...),
+    state: Optional[str] = Query(None),
+    code_challenge: str = Query(...),
+    code_challenge_method: str = Query("S256"),
+    scope: Optional[str] = Query(None),  # accepted, ignored for legacy
+):
+    """RFC 6749 §4.1 authorization_code start + RFC 7636 PKCE.
+
+    Dispatches on client_id prefix:
+
+    - dcr-{hex24}     → DCR-broker flow (Claude.ai connector etc.):
+                        validate the DCR client + its registered
+                        redirect_uris, render an inline HTML consent
+                        form. User posts their api_key → POST handler
+                        below mints code bound to (oauth_client_id,
+                        user_api_key).
+
+    - sk-stavagent-*  → Legacy flow (ChatGPT custom GPT pre-DCR):
+                        client_id IS the api_key. Mint code with
+                        oauth_client_id=NULL — /token then uses the
+                        backward-compat path (bearer = api_key, no
+                        mcp_oauth_tokens row).
+    """
+    _validate_authorize_common(response_type, code_challenge, code_challenge_method)
+
+    # ── DCR-broker dispatch ──────────────────────────────────────────────────
+    if client_id.startswith("dcr-"):
+        client_row = mcp_auth.lookup_oauth_client_for_authorize(client_id)
+        if not client_row:
+            # RFC 6749 §4.1.2.1: if redirect_uri can't be validated
+            # (because we have no registered URIs for an unknown
+            # client), MUST return the error to the user, not redirect.
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "invalid_client",
+                        "error_description":
+                            "Unknown or inactive client_id. Did you "
+                            "register the client via /oauth/register?"},
+            )
+
+        registered_uris = client_row["redirect_uris"]
+        if isinstance(registered_uris, str):
+            registered_uris = json.loads(registered_uris)
+        # RFC 7591 §2 + 6749 §3.1.2.3: exact match (no prefix / suffix
+        # extension). One byte mismatch → rejected.
+        if redirect_uri not in registered_uris:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "invalid_redirect_uri",
+                        "error_description":
+                            "redirect_uri does not match any of the "
+                            "client's registered URIs"},
+            )
+
+        # MVP consent shortcut: render an inline form. User pastes
+        # api_key → POST handler below mints + redirects.
+        #
+        # TODO Replace with explicit "logged-in via cookie/JWT →
+        # auto-consent" path before Claude Directory submission. The
+        # form gets us through the OAuth dance today but it's a
+        # paste-the-bearer step that ideally would be a button-click
+        # on a real consent screen.
+        return _render_dcr_consent_form(
+            client_row=client_row,
+            client_id=client_id,
+            redirect_uri=redirect_uri,
+            state=state,
+            code_challenge=code_challenge,
+            code_challenge_method=code_challenge_method,
+            scope=scope,
+        )
+
+    # ── Legacy path: client_id IS the api_key ───────────────────────────────
     if not mcp_oauth_codes.is_allowed_redirect_uri(redirect_uri):
         raise HTTPException(
             status_code=400,
@@ -262,6 +441,96 @@ async def oauth_authorize(
     return RedirectResponse(
         url=f"{redirect_uri}?{urlencode(params)}",
         status_code=302,
+    )
+
+
+@router.post("/oauth/authorize")
+async def oauth_authorize_consent(
+    response_type: str = Form(...),
+    client_id: str = Form(...),
+    redirect_uri: str = Form(...),
+    code_challenge: str = Form(...),
+    code_challenge_method: str = Form("S256"),
+    state: str = Form(""),
+    scope: str = Form(""),
+    api_key: str = Form(...),
+):
+    """Form-submission target for the DCR consent screen rendered by GET.
+
+    All OAuth params are echoed back as hidden fields so we re-validate
+    them server-side (defence against a tampered hidden field). On
+    valid api_key: mint a code bound to (oauth_client_id, user_api_key)
+    + 302 to redirect_uri. On invalid: re-render the form with an
+    inline error message (HTTP 200, NOT a redirect — keeps the user on
+    /authorize so they can fix their api_key without round-tripping
+    through the broker).
+
+    This handler exists only for DCR-issued client_ids. Legacy
+    sk-stavagent-* clients have no consent UI and use the GET-only
+    redirect flow.
+    """
+    if not client_id.startswith("dcr-"):
+        # POST with a non-DCR client_id is a programming error on the
+        # caller side, not a user-recoverable input mistake. Return JSON
+        # rather than HTML form here.
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_request",
+                    "error_description":
+                        "POST /oauth/authorize only handles DCR consent. "
+                        "Legacy clients should use GET."},
+        )
+    _validate_authorize_common(response_type, code_challenge, code_challenge_method)
+
+    client_row = mcp_auth.lookup_oauth_client_for_authorize(client_id)
+    if not client_row:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_client",
+                    "error_description": "Unknown or inactive client_id"},
+        )
+    registered_uris = client_row["redirect_uris"]
+    if isinstance(registered_uris, str):
+        registered_uris = json.loads(registered_uris)
+    if redirect_uri not in registered_uris:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_redirect_uri",
+                    "error_description":
+                        "redirect_uri does not match any of the "
+                        "client's registered URIs"},
+        )
+
+    # Validate the user's pasted api_key. Re-render with inline error
+    # if it doesn't match an active row — the browser tab stays on
+    # /authorize so the user can correct + resubmit.
+    user_id = mcp_auth._resolve_initial_access_user_id(api_key.strip())
+    if user_id is None:
+        return _render_dcr_consent_form(
+            client_row=client_row,
+            client_id=client_id,
+            redirect_uri=redirect_uri,
+            state=state or None,
+            code_challenge=code_challenge,
+            code_challenge_method=code_challenge_method,
+            scope=scope or None,
+            error_message="Invalid or inactive API key. Check the value and try again.",
+        )
+
+    code = mcp_oauth_codes.generate_code(
+        client_id=api_key.strip(),  # FK to mcp_api_keys = the user who granted consent
+        redirect_uri=redirect_uri,
+        code_challenge=code_challenge,
+        state=state or None,
+        code_challenge_method=code_challenge_method,
+        oauth_client_id=client_id,  # FK to mcp_oauth_clients = the broker app
+    )
+    params = {"code": code}
+    if state:
+        params["state"] = state
+    return RedirectResponse(
+        url=f"{redirect_uri}?{urlencode(params)}",
+        status_code=303,  # See Other — convert POST → GET for redirect
     )
 
 

@@ -506,6 +506,35 @@ ACCESS_TOKEN_TTL_SECONDS = 3600
 REFRESH_TOKEN_TTL_SECONDS = 7_776_000
 
 
+def lookup_oauth_client_for_authorize(client_id: str) -> Optional[dict]:
+    """Look up a DCR-issued OAuth client by id for the /authorize flow.
+
+    Returns the active client row with the consent-screen fields:
+    `id`, `client_id`, `client_name`, `redirect_uris`, `grant_types`,
+    `software_id`. Returns None if the client is unknown or inactive
+    (caller maps to RFC 6749 §4.1.2.1 `unauthorized_client` redirect /
+    400 depending on whether redirect_uri itself is valid).
+
+    No secret check here — /authorize doesn't see the client_secret,
+    only the client_id + redirect_uri. Secret verification happens
+    later on /token when the broker exchanges the code.
+    """
+    if not client_id or not client_id.startswith("dcr-"):
+        return None
+    cur = _execute(
+        "SELECT id, client_id, client_name, redirect_uris, grant_types, "
+        "       software_id, software_version "
+        "FROM mcp_oauth_clients "
+        "WHERE client_id = %s AND is_active = TRUE",
+        (client_id,),
+    )
+    row = cur.fetchone()
+    _get_db().commit()
+    if not row:
+        return None
+    return dict(row)
+
+
 def validate_oauth_client_credentials(
     client_id: str, client_secret: str
 ) -> Optional[dict]:
