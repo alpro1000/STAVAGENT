@@ -18,8 +18,28 @@ import fs from 'fs';
 import db from '../db/init.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 import { logger } from '../utils/logger.js';
+import { optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Optional auth — Portal JWT populates req.user if present. Write
+// endpoints below reject anonymous calls (was hardcoded userId=1).
+router.use(optionalAuth);
+
+/**
+ * Resolve userId from the authenticated request, or reject the call.
+ * Use on every write endpoint. Reads can also call this — anonymous
+ * reads of the document store leak metadata, so we gate them too.
+ */
+function requireUserId(req, res) {
+  if (req.user && req.user.userId) return req.user.userId;
+  logger.warn(`[Documents] Anonymous request rejected — ${req.method} ${req.originalUrl}`);
+  res.status(401).json({
+    error: 'Unauthorized',
+    message: 'Portal JWT required. Forward stavagent_jwt cookie or Bearer header.',
+  });
+  return null;
+}
 
 // Configure multer for file uploads
 const uploadDir = process.env.UPLOAD_DIR || './uploads/documents';
@@ -77,7 +97,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     const { project_id, analysis_type } = req.body;
-    const userId = 1; // Kiosk mode - no auth
+    const userId = requireUserId(req, res);
+    if (userId === null) return;
 
     // Validate project exists and user owns it
     if (!project_id) {
@@ -140,7 +161,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   } catch (error) {
     logger.error('[Documents] Upload error', {
       error: error.message,
-      userId: 1
+      userId: req.user?.userId ?? null
     });
 
     // Clean up uploaded file if there was an error
@@ -163,7 +184,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = 1; // Kiosk mode - no auth
+    const userId = requireUserId(req, res);
+    if (userId === null) return;
 
     // Get document
     const document = await db.prepare(`
@@ -221,7 +243,8 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/analysis', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = 1; // Kiosk mode - no auth
+    const userId = requireUserId(req, res);
+    if (userId === null) return;
 
     // Verify user owns the document
     const document = await db.prepare(`
@@ -271,7 +294,8 @@ router.get('/:id/analysis', async (req, res) => {
 router.post('/:id/confirm', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = 1; // Kiosk mode - no auth
+    const userId = requireUserId(req, res);
+    if (userId === null) return;
     const { title, description } = req.body;
 
     // Verify user owns the document
@@ -355,7 +379,8 @@ router.post('/:id/confirm', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = 1; // Kiosk mode - no auth
+    const userId = requireUserId(req, res);
+    if (userId === null) return;
 
     // Get document
     const document = await db.prepare(`
@@ -395,7 +420,8 @@ router.delete('/:id', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const { project_id } = req.query;
-    const userId = 1; // Kiosk mode - no auth
+    const userId = requireUserId(req, res);
+    if (userId === null) return;
 
     if (!project_id) {
       return res.status(400).json({ error: 'project_id query parameter is required' });

@@ -332,6 +332,68 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-19 — Session: Landing CTA + CZ/EN terminology + prerender hash drift
+
+**Topic:** Tři navazující landing-page PRs uzavřené v jedné session: #1136 (CTA route fix + manual prerender), #1138/#1183 (CZ/EN terminology audit + prerender hash drift fix). Začalo CTA "Vyzkoušet zdarma" → /register redirectem na /, skončilo production "buttons don't work" emergency po merge — root cause hash drift mezi committed snapshotem a vite-buildem.
+
+**Rozhodnuto:**
+- CTA "Vyzkoušet zdarma" routes unauthenticated users na `/login` (ne `/register`). `/register` redirectuje na `/` (separátní bug, P2, workaround logován v `BACKLOG.md` jako `register-route-redirect`). Login page má funkční odkaz "Nemáte účet? Zaregistrujte se" na registrační formulář.
+- CZ terminologie cleanup v `LandingPage.tsx` + meta description: `smeta/smety/smetu/smety` → `rozpočet/rozpočtu/Rozpočet/Rozpočty` (Russian/Slovak loan); `bětonpumpa/bětonpumpy` → `čerpadlo betonu/čerpadla betonu`; `kran/kranu` → `jeřáb/jeřábu` (Germanism); `mechanizmy` → `stroje`. Aplikováno taky na strukturované `tov:` karty (unicode-escaped bloky).
+- EN landing cleanup (`LandingPageEn.tsx`): odstraněny CZ glossary parentézy `(takty)` + `(betonáž)` v popiscích; module title `Klasifikátor stavebních prací` → `Klasifikátor — construction works classifier`; `Kalkulátor betonáže` → `Kalkulátor — concrete works calculator` (4 výskyty: module title + HowItWorks step 3 + FAQ entry + footer products list); bullety `Detail prvku` / `Plán objektu` → `Single-element detail` / `Whole-object plan`.
+- **Prerender hash drift fix v `scripts/prerender.mjs`** — `applySnapshotIfPresent()` přepsáno: před copy snapshot → dist čte fresh `dist/index.html` vyrobený vite, extrahuje `/assets/*.{js,css}` list, a graft-replacuje stale references v snapshot HTML na fresh hashe match-by-name-prefix (`index-OLD.js` → `index-NEW.js`, `chunk-AAA-OLD.js` → `chunk-AAA-NEW.js`). No-op pokud hashe už shodné (happy local case). Verified injekce fake hashů + simulovaný build emituje rewrite log lines.
+- Manual prerender regenerace (4 HTML soubory v `public/prerendered/`) zaházena do stejné PR jako source edits — workaround pro `prerender.yml` GitHub Action blokovaný `protect-main` branch protection (user preferuje nechat protection enabled).
+
+**Odmítnuto:**
+- Investigation root cause `/register` redirectu na `/` — separátní bug, workaround postačuje. Pravděpodobně auth-guard inverze v `App.tsx`, ale out of scope této session.
+- Update `og:description` + `twitter:description` meta tagů ve `index.html` — pořád obsahují "přípraváře monolitů". Copy decision, ne technical, vyžaduje strategický kontext.
+- Disable `SKIP_PRERENDER=1` na Vercelu pro forced full Puppeteer prerender — Vercel build container chybí GUI libs (libnss3, libxss1, libasound2) které Chromium dynamicky linkuje.
+- Odstranění prerender snapshot systému úplně — ztratil by SEO prerender benefit (Google by viděl prázdný `<div id="root">`).
+- Deterministic / stable filename mode v `vite.config.ts` (no content hash) — defeats cache busting.
+- Rebuild brigády → čety přejmenování v `LandingPage.tsx:236` ("Brigada: 4 lidé + 2 čerpadla" v structured card) per CLAUDE.md "Čety, ne Brigády" rule — out of session scope.
+
+**Otevřené otázky:**
+- Měly by `og:description` + `twitter:description` být aktualizovány aby matchovaly nový "stavby" subtitle? Copy decision pro brand-konzistenci.
+- Měl by `kalkulator.stavagent.cz` brand title (a footer list) napříč všemi 3 moduly přejít na `Kalkulátor` bez `betonáže` qualifier? Footer list už používá zjednodušený název post-cleanup, ale konzistence v jiných místech rozdrobená.
+- Bude prerender hash drift fix ovlivněn pokud Vercel přidá `<link rel="preload" as="font">` nebo jiné non-asset references v budoucnu? Aktuální regex `\/assets\/([^"'\s>)]+\.(?:js|css))` je narrowly scoped na js/css — bezpečné.
+- "Smeta" jako Russian loan acceptable v Czech construction context (běžně se používá)? Některé tooltips/comment by mohli zůstat s "smeta" pokud je to colloquial-OK. Konzervativně jsem nahradil všude.
+
+**Co dál:**
+- Sledovat next deploy main na Vercel — pokud hash drift opravdu nastává, build log by měl ukázat `[prerender] index.html: index-X.js → index-Y.js` lines.
+- User verification v incognito: 6 kroků (hard refresh → subtitle "stavby" → klik "Vyzkoušet zdarma" → /login → "Zaregistrujte se" link → registrace). Po úspěchu → Google Cloud for Startups re-aplikace.
+- Investigovat `/register` redirect root cause a optionally restore goCta na `/register` pro cleaner UX (separátní task).
+- Rozhodnout o `Brigada` → `Četa` cleanup v landing structured cards.
+- Audit pre-existing meta tagů (og/twitter description, twitter alt) pro coherentní subtitle messaging.
+
+---
+
+### 2026-05-19 — Session: CLAUDE.md SDD integration
+
+**Topic:** Integrate `docs/steering/` + `docs/soul.md` workflow do root `CLAUDE.md` (handoff `docs/handoff/2026-05-19-claude-md-sdd.md`).
+
+**Rozhodnuto:**
+- Hlavička: `Version: 4.31.0 → 4.32.0`, `Last Updated: 2026-05-18 → 2026-05-19`.
+- Přidána nová sekce `## 🚨 Mandatory reading at session start` mezi `**Repository:**` a `English TL;DR` blok — explicit pořadí 6 souborů (conventions → product → tech → structure → domain → soul) + povinný session-log template.
+- Sekce `## 📐 Calculator Philosophy (POVINNÉ ČTENÍ)` — active reference přepnut z `docs/CALCULATOR_PHILOSOPHY.md` na `docs/steering/domain.md §1`. Starý path zůstává pouze v deprecation note s datem.
+- Přidána nová sekce `## 📋 Workflow discipline (Spec-Driven Development)` mezi adaptive-thinking poznámku a `Key rules:` blok — hybridní model online/Code, životní cykly feature/bug, mapa "co update v jakém steering souboru", task-writing pravidla.
+- Nový changelog entry v4.32.0 vložen na začátek seznamu (před v4.31.0). Všechny v4.24-v4.31 entries zachovány beze změny (Krit. 6 verified).
+- 5 commits, jeden Gate = jeden commit, žádný rewrite, vše přes `Edit` str_replace.
+
+**Odmítnuto:**
+- Rewrite CLAUDE.md from scratch (per task §7).
+- Cleanup historických changelog entries (per task §7).
+- Trim CLAUDE.md k 300-line limitu (separátní follow-up taska).
+- Update per-service CLAUDE.md souborů (`concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.MD`).
+
+**Otevřené otázky:**
+- Žádné — všechny edits byly mechanické per task §3.
+
+**Co dál:**
+- Patch `docs/steering/conventions.md` s pravidlem "Před `git mv` vždy zkontroluj SHA-256 zda target neexistuje" (Alexandr explicitně přislíbil v G.1 odpovědi).
+- Separátní taska: trim CLAUDE.md na 300 řádků (currently 700+, mimo vlastní limit).
+- Per-service CLAUDE.md soubory (concrete-agent, Monolit-Planner) — případně i tam přidat SDD mandatory-reading block, ale separate scope.
+
+---
+
 ### 2026-05-19 — Session: Orphaned files & data/ cleanup
 
 **Topic:** Cleanup 13 orphaned souborů v root repa + `data/peri-pdfs/` reorganizace (handoff in-conversation).

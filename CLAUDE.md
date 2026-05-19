@@ -1,8 +1,32 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.31.0
-**Last Updated:** 2026-05-18
+**Version:** 4.32.0
+**Last Updated:** 2026-05-19
 **Repository:** STAVAGENT (Monorepo)
+
+---
+
+## 🚨 Mandatory reading at session start
+
+Před JAKOUKOLIV prací přečti v tomto pořadí:
+
+1. `docs/steering/conventions.md` — jak pracovat (mantra, naming, gates, communication)
+2. `docs/steering/product.md` — co stavíme a pro koho
+3. `docs/steering/tech.md` — stack, AI tier, infrastructure, MCP
+4. `docs/steering/structure.md` — repo layout, kam co patří
+5. `docs/steering/domain.md` — construction rules, OTSKP/ÚRS, skruž, rebar matrix
+6. `docs/soul.md` — aktuální stav, recent decisions, session log
+
+Pokud kterýkoliv soubor chybí nebo je outdated → **STOP** a informuj Alexandra.
+
+Po session **POVINNĚ** přidej entry do `docs/soul.md` §9 (Session log):
+```markdown
+## YYYY-MM-DD — Session: {topic}
+**Rozhodnuto:** ...
+**Odmítnuto:** ...
+**Otevřené otázky:** ...
+**Co dál:** ...
+```
 
 ---
 
@@ -11,6 +35,8 @@
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing nine domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.32.0 (2026-05-19 — SDD workflow + steering integration):** Repo přijal Spec-Driven Development workflow s online claude.ai + Claude Code hybrid (firewall blokuje terminal na práci). Nový `docs/steering/` (5 canonical context souborů: product / tech / structure / domain / conventions) + `docs/soul.md` (living memory) + `docs/templates/` (3-file spec + 4-file bug šablony) + `docs/handoff/` (session snapshots) + `docs/audit_project_knowledge.md` (migration map). Mandatory reading block + workflow discipline pravidla přidána do tohoto CLAUDE.md (hlavička + Session Setup). `docs/CALCULATOR_PHILOSOPHY.md` (root) + `docs/normy/navody/CALCULATOR_PHILOSOPHY.md` deprecated → obsah nyní v `docs/steering/domain.md` §1. Cleanup orphaned root files (13 byte-identical duplicates `git rm`'d, 3 unique files moved from `data/peri-pdfs/` → `docs/reference/` + `scripts/` + `docs/specs/element/`, `data/` folder removed). N+1 corpus structure: `test-data/{project}/` pro RD_Jachymov_dum + SO_250 + hk212_hala + libuse + most-2062-1-zihle + most-litovel; `test-data/tz/` pro golden test markdownů; KB study material (Litovel diplomka — TKP 4 + ČSN 73 6244 + VL 4) marked separately v `soul.md` §2.4.
 >
 > **Changelog — v4.31.0 (2026-05-18 — RD Jáchymov N=5 pilot + Phase 0a Completeness Audit MANDATORY):** Residential renovation + nadstavba pilot (RD Fibichova 733, DSP stupeň, dům 260219 + sklad 260217) shipped to zhotovitel Karel Šmíd via 8-sheet Excel `Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-18.xlsx` (65.1 KB). Final items.json: **189 položek** (97 HSV / 48 PSV / 25 TZB / 19 VRN), confidence distribution 0.99=17 / 0.95=25 / 0.90=23 / 0.85=39 / 0.80=16 / 0.75=69, **strict zero under 0.70**. Every position carries `source` + `mnozstvi_formula` + `mnozstvi_confidence` + `_data_quality` (31 items `dxf_deterministic`, 18 with `_recalc_reason`). Excel views: Souhrn (investor), Var_A_dum+sklad (kapitola aggregate), Var_C_hybrid (subkapitola), Var_B_polozkovy (per-item audit trail), Var_D_per_podlazi (projektant coordination), Var_E_skladby_vrstev (statik/TI). **NEW MANDATORY RULE — Phase 0a Completeness Audit** codified into `concrete-agent/CLAUDE.md` between Universal Parser and Monorepo Structure: Phase 1 (item generation) gate cannot open until `outputs/source_completeness_audit.json` returns `gate_status: OPEN` with 0 blockers. 3 audit sections — A) every PDF in `inputs/` gets `probe_status` (drawing-heavy/scanned PDFs trigger OCR via `pdftoppm -r 300 -png` → `tesseract -l ces+eng --psm 6`); B) every DXF layer gets terminal `probe_status` (probed_extracted / probed_metadata_only_confirmed / probed_empty), zero `unknown` allowed, 5-tier prioritization (Tier 1 DIMENSIONs → Tier 2 MTEXT + embedded tables → Tier 3 geometry + HATCH + dual catalog → Tier 4 INSERT discovery → Tier 5 metadata skip-confirmation); C) cross-reference matrix on 6–10 high-stakes data points across TZ text / DXF DIMENSION / INSERT / LWPOLYLINE bbox, drift > 0.10 mm flags Phase 0b §3.2 re-parse. **Empirical motivator:** RD Jáchymov first pass probed 11 of 156 DXF layers (7 %), shipped 6 silent drifts (ETICS 200→160 mm, PIR 180→160 mm, klempířina 4-way DXF split, obklady per-koupelna výška, per-podlaží světlé výšky, špalety perimeter) — all user-caught. Cure: 156/156 layers probed via Path C 5-tier exhaustive sweep (785 DIMENSIONs + 2268 MTEXT + 1306 INSERTs + 31 metadata layers + 6 OCR'd PDFs). Pilot artefakty at `test-data/RD_Jachymov_dum/` retained as canonical N=5 baseline (companion to Žihle 2062-1 mostový pilot N=4). **9 corpus patterns** committed to `concrete-agent/packages/core-backend/app/knowledge_base/B5_tech_cards/real_world_examples/rd_jachymov/patterns/`: 01 file_swap_detection (SHA-verified swap detection via Rdt fingerprint drift), 02 tz_validator_iterative_refinement (4 Czech regex weakness classes), 03 multi_view_items_json (single source N projections — items.json upstream, Excel downstream), 04 workflow_gate_vs_catalog_grouping (`_gate` field parallel to `kapitola_group`), 05 exhaustive_dxf_extraction (5-tier prioritization), 06 embedded_table_extraction_dxf_mtext (`^I` literal caret-I tab, NOT ASCII `\t`), 07 honest_detail_fallback_dsp_scope (partially superseded by 05 — fallback applies post-exhaustive-extraction), **08 completeness_audit_mandatory** (CRITICAL — Phase 0a algorithm canonical reference), **09 iterative_layer_probe_user_caught_gaps** (ANTI-PATTERN preserved as negative example). Tooling: `tools/phase0a_completeness_audit.py`, `tools/path_c_part1_ocr.py`, `tools/path_c_tier{1,2,3,4_5}_*.py`. Dual catalog inventory (URS201801 39 741 codes + KROS TSKP 11 994 codes, 0 overlap = complementary) staged at `outputs/catalog_cache_inventory.json` for Part 5b URS matching (4-stage TSKP fuzzy search per backlog `otskp_search_algorithm.md`, 80 % top-1 / 95 % top-3 acceptance target). Branch `claude/rd-jachymov-phase-0b-foundation` shipped as PR #1177 — squash-merged into main (against earlier "use merge-commit" preference; per-tier atomic audit trail preserved on branch tip `61830ba` until branch deletion). Pivotal generalization: **Completeness ≠ correctness** — 100 % correct extraction across 7 % source coverage still ships 93 % blind spots. Phase 0a now mandatory for ALL future N+1 pilots regardless of size; cost of audit is negligible compared to silent-drift ship.
 >
@@ -47,8 +73,10 @@
 **Před úpravou kalkulátoru, golden tests, acceptance criteria, nebo UI textů** — přečti:
 
 ```
-docs/CALCULATOR_PHILOSOPHY.md
+docs/steering/domain.md §1 (Calculator philosophy)
 ```
+
+> **Pozn.:** `docs/CALCULATOR_PHILOSOPHY.md` (root) + `docs/normy/navody/CALCULATOR_PHILOSOPHY.md` byly **deprecated** 2026-05-19 — obsah nyní v `docs/steering/domain.md` §1. Pokud najdeš starý link kdekoliv v repu, oprav na nový.
 
 **TL;DR pozicování:**
 
@@ -307,6 +335,47 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 }
 ```
 > ⚠️ Эти ключи не верифицированы против актуальной Claude Code docs — если харнес их игнорирует, проверь `/help` или попроси Claude настроить SessionStart hook вместо этого.
+
+## 📋 Workflow discipline (Spec-Driven Development)
+
+Tento repo používá SDD workflow s gibridním online/offline modelem:
+
+| Kde | Co se dělá |
+|---|---|
+| claude.ai online (na práci) | Spec creation, planning, requirements, design |
+| Claude Code (doma) | Implementation, tests, refactoring, bugs |
+| Git repo | Bridge — všechny artefakty v `docs/` |
+
+**Životní cyklus feature:**
+1. Spec se vytvoří v `docs/specs/{feature-name}/{requirements,design,tasks}.md`
+2. Claude Code implementuje podle `tasks.md` (Gates = commits)
+3. Po dokončení → update `docs/soul.md` §9
+
+**Životní cyklus bug:**
+1. Bug se reportuje v `docs/bugs/{bug-id}/report.md`
+2. Claude Code píše `analyze.md` → `fix.md`
+3. Po deployi → `verify.md` + update `docs/soul.md` §9
+
+**Update pravidla pro context docs:**
+
+| Když | Co update |
+|---|---|
+| Architectural decision (new tool/DB/AI provider) | `docs/steering/tech.md` |
+| Změna repo layoutu | `docs/steering/structure.md` |
+| Doménové pravidlo (nová norma, terminologie) | `docs/steering/domain.md` |
+| Workflow změna | `docs/steering/conventions.md` |
+| Nový freelance / corpus case | `docs/soul.md` §2.3 nebo §2.4 |
+| Po každé session | `docs/soul.md` §9 — Session log entry |
+
+**Pravidla pro task writing:**
+- ❌ NESPECIFIKUJ jména proměnných, souborů, tříd, tabulek
+- ✅ Popisuj v termínech business logiky + architektury
+- Claude Code odvodí naming z existujících konvencí v repu
+- Detail v `docs/steering/conventions.md` §9
+
+**Šablony pro nové specs/bugs:** `docs/templates/_TEMPLATE_spec/` + `docs/templates/_TEMPLATE_bug/`
+
+---
 
 **Key rules:**
 - Determinism > AI: if regex can do it, don't use LLM
