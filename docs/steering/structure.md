@@ -77,10 +77,25 @@ STAVAGENT/
 │   ├── diagnose_*.py
 │   └── migrations/
 │
-├── tests/                        # Tests
+├── tests/                        # Tests (code-level, mocks)
 │   ├── unit/
-│   ├── integration/
-│   └── golden/                   # Golden test runner (SO-202, SO-250, VP4)
+│   └── integration/
+│
+├── test-data/                    # Real-world test corpora + project data
+│   ├── tz/                       # Golden test markdowns per TZ case
+│   │   ├── SO-202_D6_most_golden_test.md
+│   │   ├── SO-203_D6_most_golden_test_v2.md
+│   │   ├── SO-207_D6_estakada_golden_test_v2.md
+│   │   ├── VP4_FORESTINA_operna_zed_golden_test.md
+│   │   └── ...
+│   ├── RD_Jachymov_dum/          # N=5 corpus case (Phase 0b foundation)
+│   ├── SO_250/                   # SO-250 D6 Žalmanov data
+│   ├── hk212_hala/               # hk212 Hradec Králové data
+│   ├── libuse/                   # Libuše VELTON data
+│   ├── most-2062-1-zihle/        # Žihle 2062-1 bridge data
+│   ├── most-litovel/             # Diploma thesis — KB study material (TKP 4 + ČSN 73 6244 + VL 4)
+│   ├── kros_catalog.db           # KROS catalog SQLite (working copy)
+│   └── STAVAGENT_Drawings_to_VV_Rozpocet_Playbook.md
 │
 ├── .claude/                      # Claude Code settings (optional, viz tech.md §13)
 ├── CLAUDE.md                     # Per-repo Claude Code instructions
@@ -160,7 +175,11 @@ Registr DB (Cloud SQL)
 | Nový knowledge zdroj (PDF, norma) | `app/knowledge_base/{B?_bucket}/{source_slug}/` — viz `domain.md` §3 |
 | Spec pro novou feature | `docs/specs/{feature-name}/` (3 files: req/design/tasks) |
 | Bug specifikace | `docs/bugs/{bug-id}/` (4 files: report/analyze/fix/verify) |
-| Golden test data | `tests/golden/{test_name}/` + pointer in `docs/reference/golden_tests/` |
+| Golden test (TZ case) | `test-data/tz/{case_name}_golden_test.md` |
+| Project test data (PDFs, DXF, XLSX) | `test-data/{project_slug}/` |
+| Dataset-bound playbook | `test-data/{playbook_name}.md` |
+| Project-agnostic playbook | `docs/reference/playbooks/{name}.md` |
+| Catalog working DB | `test-data/{catalog}.db` |
 | Operational script | `scripts/{script_name}.{py,sh}` |
 
 ---
@@ -213,7 +232,8 @@ Registr DB (Cloud SQL)
 | Co jsme dělali minule | `docs/soul.md` |
 | Specifikace aktivní feature | `docs/specs/{feature-name}/` |
 | Pending bugs | `docs/bugs/{bug-id}/` |
-| Golden test data | `tests/golden/` + pointer v `docs/reference/golden_tests/` |
+| Golden test data | `test-data/tz/{case}_golden_test.md` |
+| Project test data | `test-data/{project_slug}/` |
 | Architecture deep dive | `docs/reference/architecture/` |
 | Vendor catalog (PERI, DOKA) | `app/knowledge_base/B5_tech_cards/formwork_vendor/` + `docs/reference/formwork_catalog_2025.md` |
 
