@@ -55,6 +55,26 @@ except ImportError:  # pragma: no cover
     load_rules = None  # type: ignore[assignment]
     rules_path_for = None  # type: ignore[assignment]
 
+# Derivation registry (PR2 Phase 4) — same lazy re-export shape.
+try:
+    from app.services.uep.derivation_registry import (  # noqa: F401
+        DerivationError,
+        DerivationRegistry,
+        UnknownDerivationRule,
+        apply_derivation,
+        get_global_registry,
+        list_applicable_derivations,
+        load_registry,
+    )
+except ImportError:  # pragma: no cover
+    DerivationError = None  # type: ignore[assignment]
+    DerivationRegistry = None  # type: ignore[assignment]
+    UnknownDerivationRule = None  # type: ignore[assignment]
+    apply_derivation = None  # type: ignore[assignment]
+    get_global_registry = None  # type: ignore[assignment]
+    list_applicable_derivations = None  # type: ignore[assignment]
+    load_registry = None  # type: ignore[assignment]
+
 
 __all__ = [
     "BaseExtractor",
