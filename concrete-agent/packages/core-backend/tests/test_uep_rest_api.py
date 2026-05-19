@@ -99,8 +99,42 @@ def test_coverage_matrix_config_residential(client) -> None:
 
 
 def test_coverage_matrix_config_unknown_type(client) -> None:
+    # `bridge` is in the allow-list (PR3 ships the YAML); for PR2 the
+    # YAML doesn't exist so we get a 404 from the path-not-exists
+    # check (NOT from the allow-list).
     r = client.get("/api/v1/uep/config/coverage-matrices/bridge")
     assert r.status_code == 404
+
+
+def test_coverage_matrix_config_rejects_path_traversal(client) -> None:
+    """Amazon Q A3 — `project_type` allow-list blocks `../`-style escape."""
+    # Note: FastAPI's path matcher rejects literal `..` in the URL
+    # segment before our handler runs, so we send a non-allow-list
+    # token that wouldn't be screened by the matcher.
+    r = client.get("/api/v1/uep/config/coverage-matrices/etc_passwd_attempt")
+    assert r.status_code == 400
+    assert "Invalid project_type" in r.json()["detail"]
+
+
+def test_coverage_matrix_config_rejects_random_string(client) -> None:
+    r = client.get("/api/v1/uep/config/coverage-matrices/__init__")
+    assert r.status_code == 400
+
+
+def test_reconciliation_rules_config_rejects_unknown_project_type(client) -> None:
+    """Amazon Q A4 — `project_type` query param allow-list."""
+    r = client.get(
+        "/api/v1/uep/config/reconciliation-rules?project_type=../../secrets"
+    )
+    assert r.status_code == 400
+    assert "Invalid project_type" in r.json()["detail"]
+
+
+def test_reconciliation_rules_config_rejects_random_string(client) -> None:
+    r = client.get(
+        "/api/v1/uep/config/reconciliation-rules?project_type=hijacked"
+    )
+    assert r.status_code == 400
 
 
 # ---------------------------------------------------------------------------

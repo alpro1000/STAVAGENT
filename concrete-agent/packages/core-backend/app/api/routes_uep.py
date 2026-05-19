@@ -417,8 +417,33 @@ def get_applicable_derivations(
 # ---------------------------------------------------------------------------
 
 
+# Allow-list of project_type values accepted by the config endpoints.
+# Closes Amazon Q PR #1186 comments A3 + A4 (discussion_r3266899109 +
+# discussion_r3266899130) — without this list, the raw `project_type`
+# string flowed into the file path via matrix_path_for() and a caller
+# could request `../../secrets` to read arbitrary YAML.
+_ALLOWED_PROJECT_TYPES: set[str] = {
+    "residential",
+    "bridge",
+    "road",
+    "industrial",
+}
+
+
+def _ensure_project_type(project_type: str) -> None:
+    if project_type not in _ALLOWED_PROJECT_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"Invalid project_type. Must be one of: "
+                f"{', '.join(sorted(_ALLOWED_PROJECT_TYPES))}"
+            ),
+        )
+
+
 @router.get("/uep/config/coverage-matrices/{project_type}")
 def get_coverage_matrix_config(project_type: str) -> dict:
+    _ensure_project_type(project_type)
     p = matrix_path_for(project_type)
     if not p.exists():
         raise HTTPException(status_code=404, detail=f"No matrix for {project_type}")
@@ -437,6 +462,7 @@ def get_derivation_rules_config() -> dict:
 
 @router.get("/uep/config/reconciliation-rules")
 def get_reconciliation_rules_config(project_type: str = "residential") -> dict:
+    _ensure_project_type(project_type)
     p = rules_path_for(project_type)
     if not p.exists():
         raise HTTPException(status_code=404, detail=f"No rules for {project_type}")
