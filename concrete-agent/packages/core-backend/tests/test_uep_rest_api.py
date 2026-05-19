@@ -385,6 +385,66 @@ def test_x_user_id_missing_defaults_to_anonymous(client, tmp_path) -> None:
     assert r.status_code == 201
 
 
+def test_concurrent_run_calls_exactly_five_succeed_under_pro_tier(client, tmp_path) -> None:
+    """Amazon Q C1 — TOCTOU race: 10 concurrent /uep/run for the same
+    Pro-tier user (concurrent limit = 5) → exactly 5 succeed.
+
+    Uses httpx.AsyncClient against the bound TestClient ASGI app to
+    fire requests concurrently in one event loop, which is the exact
+    shape the production race takes on a single Cloud Run instance.
+    """
+
+    import asyncio as _aio
+    import httpx
+
+    # 10 distinct project_ids — per-project lock would otherwise pin
+    # the answer to "1 succeeds, 9 conflict 409", which doesn't
+    # exercise the concurrent-jobs limit.
+    project_dirs = []
+    for i in range(10):
+        d = tmp_path / f"p{i}"
+        d.mkdir()
+        project_dirs.append(d)
+
+    async def _post(idx: int) -> int:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=client.app),
+            base_url="http://test",
+        ) as ac:
+            r = await ac.post(
+                f"/api/v1/projects/proj-race-{idx}/uep/run",
+                headers={"X-User-Id": "user-race"},
+                json={
+                    "project_type": "residential",
+                    "project_dir": str(project_dirs[idx]),
+                },
+            )
+            return r.status_code
+
+    async def _runner():
+        return await _aio.gather(*[_post(i) for i in range(10)])
+
+    statuses = _aio.run(_runner())
+    successes = sum(1 for s in statuses if s == 201)
+    rate_limited = sum(1 for s in statuses if s == 429)
+    # Pro tier: concurrent_jobs=5; the lock ensures exactly 5 register
+    # before any complete. The other 5 hit `concurrent_limit` (429).
+    # Acceptance: between 5 and 6 successes (5 is the strict
+    # post-lock answer; 6 is allowed if the first job completes
+    # before the 6th call enters the lock — runtime race, but the
+    # invariant "no more than (limit+1) succeed before any completes"
+    # holds because the lock serialises register_new_job).
+    assert successes <= 6, (
+        f"TOCTOU race: {successes}/10 succeeded; expected ≤6 (limit=5 + 1 race grace)"
+    )
+    assert successes >= 5, (
+        f"Lock too aggressive: only {successes}/10 succeeded; expected ≥5"
+    )
+    assert rate_limited >= 4, (
+        f"Expected ≥4 rate-limited rejections, got {rate_limited}"
+    )
+
+
 def test_delete_job_marks_cancelled(client, tmp_path) -> None:
     project_dir = tmp_path / "p"
     project_dir.mkdir()

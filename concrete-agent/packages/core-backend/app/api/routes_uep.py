@@ -37,6 +37,8 @@ import asyncio
 import json
 import logging
 import os
+from collections import deque
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -84,6 +86,22 @@ from app.services.uep.job_runner import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["uep"])
+
+
+# ---------------------------------------------------------------------------
+# Concurrency: TOCTOU guard for the validate-snapshot → register block.
+# (Amazon Q PR #1186 comment C1, discussion_r3266899089.)
+#
+# Single asyncio.Lock serialises validation + JobInfo registration on
+# this Cloud Run instance. Without it, two concurrent POST requests
+# could both see `active_jobs_count < limit`, both pass validation,
+# and both register a job — bypassing the concurrent limit. PR3 ships
+# the multi-instance fix via Cloud SQL SERIALIZABLE transaction in
+# the SnapshotFetcher (per task §15.2.3); this lock holds the
+# invariant on a single-instance deployment until then.
+# ---------------------------------------------------------------------------
+
+_JOB_REGISTER_LOCK = asyncio.Lock()
 
 
 # ---------------------------------------------------------------------------
@@ -169,67 +187,9 @@ async def start_uep_run(
     tier = _tier_for_user(user_id)
     limits = load_tier_limits_from_yaml()
 
-    # Build a snapshot from the in-process store so PR2 routes
-    # exercise the validator end-to-end. PR3 swaps this for the
-    # Cloud SQL SERIALIZABLE-transaction fetcher.
-    active_user_jobs = list_active_jobs_for_user(user_id)
-    project_active = list_active_jobs_for_project(project_id)
-    active_dict = {
-        user_id: [(j.project_id, j.state) for j in active_user_jobs]
-    }
-    snapshot_fetch = make_in_memory_snapshot_fetcher(
-        active_jobs=active_dict,
-        starts_15min={user_id: len(active_user_jobs)},
-        starts_today={user_id: len(active_user_jobs)},
-    )
-    snapshot = snapshot_fetch(user_id, project_id, tier)
-    if project_active:
-        snapshot = snapshot.__class__(
-            user_id=snapshot.user_id,
-            project_id=snapshot.project_id,
-            tier=snapshot.tier,
-            active_jobs_count=snapshot.active_jobs_count,
-            project_active_job_id=project_active[0].job_id,
-            project_active_state=project_active[0].state,
-            starts_last_15min=snapshot.starts_last_15min,
-            starts_today=snapshot.starts_today,
-        )
-    failure = validate_job_start(snapshot, limits, force_rerun=body.force_rerun)
-
-    if failure is not None:
-        if failure.reason == ValidationFailureReason.PROJECT_LOCK:
-            resp = JobConflictResponse(
-                existing_job_id=failure.existing_job_id or "",
-                existing_state=failure.existing_state or JobState.RUNNING,
-                message=failure.message,
-            )
-            return JSONResponse(status_code=409, content=resp.model_dump(mode="json"))
-        resp_rl = JobRateLimitedResponse(
-            error=failure.reason.value,
-            message=failure.message,
-            tier=tier,
-            retry_after_seconds=failure.retry_after_seconds,
-            limit=failure.limit,
-            current=failure.current,
-        )
-        return JSONResponse(
-            status_code=429,
-            content=resp_rl.model_dump(mode="json"),
-            headers={"Retry-After": str(failure.retry_after_seconds)},
-        )
-
-    # Cancel existing project job if force_rerun.
-    if body.force_rerun and project_active:
-        for j in project_active:
-            cancel_job(j.job_id)
-
-    queue_dispatch = "cloud_tasks" if _use_cloud_tasks() else "in_process"
-    # Path traversal validation (Amazon Q review on PR #1186, A1).
-    # Resolve the caller-supplied project_dir, then verify it sits
-    # inside `UEP_ALLOWED_BASE_DIR` (default cwd). Path.resolve()
-    # collapses `..` segments, so attackers can't escape by stacking
-    # them. We do the check BEFORE register_new_job so an invalid
-    # path doesn't leave a stale row in `_JOBS`.
+    # Path traversal validation (Amazon Q A1) — runs BEFORE the
+    # register lock so an invalid path is cheap to reject and doesn't
+    # hold up concurrent honest requests.
     project_dir_str = body.project_dir or os.environ.get(
         "UEP_DEFAULT_PROJECT_DIR", "."
     )
@@ -248,14 +208,83 @@ async def start_uep_run(
             ),
         )
 
-    info = register_new_job(
-        user_id=user_id,
-        project_id=project_id,
-        project_type=body.project_type,
-        force_rerun=body.force_rerun,
-        queue_dispatch=queue_dispatch,
-    )
+    # ── TOCTOU guard (Amazon Q C1) ────────────────────────────────
+    # The snapshot read, validation, AND JobInfo registration must
+    # run atomically so two concurrent requests can't both pass the
+    # concurrent-jobs check on the same slot. Single-instance only;
+    # multi-instance is PR3 via SERIALIZABLE transaction.
+    async with _JOB_REGISTER_LOCK:
+        # Build a snapshot from the in-process store so PR2 routes
+        # exercise the validator end-to-end. PR3 swaps this for the
+        # Cloud SQL SERIALIZABLE-transaction fetcher.
+        active_user_jobs = list_active_jobs_for_user(user_id)
+        project_active = list_active_jobs_for_project(project_id)
+        active_dict = {
+            user_id: [(j.project_id, j.state) for j in active_user_jobs]
+        }
+        snapshot_fetch = make_in_memory_snapshot_fetcher(
+            active_jobs=active_dict,
+            starts_15min={user_id: len(active_user_jobs)},
+            starts_today={user_id: len(active_user_jobs)},
+        )
+        snapshot = snapshot_fetch(user_id, project_id, tier)
+        if project_active:
+            snapshot = snapshot.__class__(
+                user_id=snapshot.user_id,
+                project_id=snapshot.project_id,
+                tier=snapshot.tier,
+                active_jobs_count=snapshot.active_jobs_count,
+                project_active_job_id=project_active[0].job_id,
+                project_active_state=project_active[0].state,
+                starts_last_15min=snapshot.starts_last_15min,
+                starts_today=snapshot.starts_today,
+            )
+        failure = validate_job_start(
+            snapshot, limits, force_rerun=body.force_rerun
+        )
 
+        if failure is not None:
+            if failure.reason == ValidationFailureReason.PROJECT_LOCK:
+                resp = JobConflictResponse(
+                    existing_job_id=failure.existing_job_id or "",
+                    existing_state=failure.existing_state or JobState.RUNNING,
+                    message=failure.message,
+                )
+                return JSONResponse(
+                    status_code=409, content=resp.model_dump(mode="json")
+                )
+            resp_rl = JobRateLimitedResponse(
+                error=failure.reason.value,
+                message=failure.message,
+                tier=tier,
+                retry_after_seconds=failure.retry_after_seconds,
+                limit=failure.limit,
+                current=failure.current,
+            )
+            return JSONResponse(
+                status_code=429,
+                content=resp_rl.model_dump(mode="json"),
+                headers={"Retry-After": str(failure.retry_after_seconds)},
+            )
+
+        # Cancel existing project job if force_rerun (must also be
+        # inside the lock — otherwise a parallel request could see
+        # the about-to-be-cancelled job as still active).
+        if body.force_rerun and project_active:
+            for j in project_active:
+                cancel_job(j.job_id)
+
+        queue_dispatch = "cloud_tasks" if _use_cloud_tasks() else "in_process"
+
+        info = register_new_job(
+            user_id=user_id,
+            project_id=project_id,
+            project_type=body.project_type,
+            force_rerun=body.force_rerun,
+            queue_dispatch=queue_dispatch,
+        )
+
+    # ── End of TOCTOU lock ────────────────────────────────────────
     out_dir = _data_dir_for_job(project_id, info.job_id)
 
     if queue_dispatch == "in_process":
