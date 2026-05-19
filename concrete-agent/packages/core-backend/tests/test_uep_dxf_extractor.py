@@ -135,6 +135,116 @@ def test_corrupt_dxf_surfaces_extractor_error(tmp_path: Path) -> None:
     not JACHYMOV_DPZ.exists(),
     reason="RD Jáchymov corpus not present in this checkout",
 )
+def _build_dxf_with_units(path: Path, insunits: int, scale_coords_to_mm: bool) -> None:
+    """Build a tiny DXF with explicit `$INSUNITS` and coords either in
+    metre-scale (e.g. 4 m × 3 m) or mm-scale (4000 × 3000).
+
+    The PR1 verification §3.2 bug was: insunits=0 + coords in mm →
+    extractor scaled by 1.0 → bbox came back as 4 722 × 1 687 m.
+    """
+
+    doc = ezdxf.new("R2018")
+    factor = 1000.0 if scale_coords_to_mm else 1.0
+    points = [
+        (0, 0),
+        (4 * factor, 0),
+        (4 * factor, 3 * factor),
+        (0, 3 * factor),
+    ]
+    doc.modelspace().add_lwpolyline(
+        points, close=True, dxfattribs={"layer": "rooms"}
+    )
+    doc.modelspace().add_line(
+        (0, 0), (10 * factor, 0), dxfattribs={"layer": "walls"}
+    )
+    doc.header["$INSUNITS"] = insunits
+    doc.saveas(path)
+
+
+def test_dxf_explicit_mm_units_no_heuristic(tmp_path: Path) -> None:
+    """`$INSUNITS=4` (mm) — heuristic must NOT fire; scale 0.001 applied
+    deterministically."""
+
+    p = tmp_path / "explicit_mm.dxf"
+    _build_dxf_with_units(p, insunits=4, scale_coords_to_mm=True)
+
+    extraction = DxfExtractor().extract(p)
+    assert extraction.extractor_error is None
+
+    # No magnitude-inferred warning when units are explicit.
+    inferred = [
+        w for w in extraction.decode_warnings
+        if w.get("code") == "inferred_units_from_magnitude"
+    ]
+    assert inferred == []
+
+    bbox = extraction.data["bbox"]
+    # bbox spans the LINE (0,0)→(10000,0) and the polyline; max x = 10000
+    # mm → 10 m, max y = 3000 mm → 3 m.
+    assert abs(bbox["width_m"] - 10.0) < 0.001
+    assert abs(bbox["height_m"] - 3.0) < 0.001
+
+
+def test_dxf_unitless_with_mm_coords_infers_mm(tmp_path: Path) -> None:
+    """`$INSUNITS=0` + coords like 4000 / 3000 → must infer mm.
+
+    Reproduces the PR1 verification finding: RD_Jachymov situace DXFs.
+    With the fix, bbox is correctly 4 m × 3 m (not 4 000 × 3 000 m).
+    """
+
+    p = tmp_path / "unitless_mm_coords.dxf"
+    _build_dxf_with_units(p, insunits=0, scale_coords_to_mm=True)
+
+    extraction = DxfExtractor().extract(p)
+    assert extraction.extractor_error is None
+
+    inferred = [
+        w for w in extraction.decode_warnings
+        if w.get("code") == "inferred_units_from_magnitude"
+    ]
+    assert len(inferred) == 1
+    assert inferred[0]["inferred_unit"] == "mm"
+    assert inferred[0]["scale_to_m"] == 0.001
+
+    # Combined bbox: x_max = 10000 mm (from line) → 10 m, y_max = 3000
+    # mm (from polyline) → 3 m.
+    bbox = extraction.data["bbox"]
+    assert abs(bbox["width_m"] - 10.0) < 0.001
+    assert abs(bbox["height_m"] - 3.0) < 0.001
+
+    # dxf_meta entity_count_total carries the inferred unit too.
+    meta = [
+        f for f in extraction.facts
+        if f.category == "dxf_meta" and f.field == "entity_count_total"
+    ][0]
+    assert meta.evidence["inferred_unit"] == "mm"
+    assert meta.evidence["scale_to_m"] == 0.001
+
+
+def test_dxf_unitless_with_metre_coords_infers_m(tmp_path: Path) -> None:
+    """`$INSUNITS=0` + coords like 4 / 3 → must infer metres (small
+    typical-building drawing in metres)."""
+
+    p = tmp_path / "unitless_metre_coords.dxf"
+    _build_dxf_with_units(p, insunits=0, scale_coords_to_mm=False)
+
+    extraction = DxfExtractor().extract(p)
+    assert extraction.extractor_error is None
+
+    inferred = [
+        w for w in extraction.decode_warnings
+        if w.get("code") == "inferred_units_from_magnitude"
+    ]
+    assert len(inferred) == 1
+    # Median |x| on {0, 4, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0} sample is in
+    # (1, 1000) → "m" (or "m_low_signal" when too many zeros dominate).
+    assert inferred[0]["inferred_unit"] in ("m", "m_low_signal")
+    assert inferred[0]["scale_to_m"] == 1.0
+
+    bbox = extraction.data["bbox"]
+    assert abs(bbox["width_m"] - 10.0) < 0.001  # line goes to (10, 0)
+
+
 def test_real_jachymov_dxf_meets_baseline() -> None:
     """Reference: 7 476 entities, 53 layers, 61 block defs. Use ≥-bounds
     so cosmetic ArchiCAD updates don't break the test."""

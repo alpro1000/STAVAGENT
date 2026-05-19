@@ -30,7 +30,7 @@ import logging
 import math
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import ezdxf
 from ezdxf.lldxf.const import DXFError, DXFStructureError
@@ -44,8 +44,15 @@ logger = logging.getLogger(__name__)
 # DXF header `$INSUNITS` enum → unit-to-metre scale. ezdxf exposes the
 # raw enum; we apply the scale so all length facts are reported in metres.
 # Reference: ezdxf docs `ezdxf.units.IUS`.
+#
+# IMPORTANT: `$INSUNITS=0` ("unitless") is not actually unitless in
+# real-world Czech corpora. PR1 verification (docs/audit/
+# UEP_PR1_VERIFICATION.md §3.2) found 2 of 11 production DXFs declare 0
+# but store coordinates in millimetres — the legacy default-to-metres
+# scaling silently inflated bbox to 4 722 × 1 687 m. PR2 fixes this
+# with a coordinate-magnitude heuristic (`_infer_units_from_magnitude`)
+# applied only when units_enum == 0.
 _INSUNITS_SCALE = {
-    0: 1.0,        # Unitless — assume metres (most CZ ArchiCAD exports)
     1: 0.0254,     # Inches
     2: 0.3048,     # Feet
     4: 0.001,      # Millimetres
@@ -53,6 +60,99 @@ _INSUNITS_SCALE = {
     6: 1.0,        # Metres
     14: 0.1,       # Decimetres
 }
+
+
+# Magnitude threshold used by the unitless heuristic. Picked from PR1
+# corpus: real-world building drawings have absolute coordinate
+# components in 0…30 m (metres) or 0…30 000 mm (millimetres); site /
+# situace drawings reach 100–500 m or 100 000–500 000 mm. The 1 000
+# split cleanly separates the two regimes in every probed DXF.
+_MM_MAGNITUDE_THRESHOLD = 1000.0
+
+
+def _infer_units_from_magnitude(samples: list[float]) -> tuple[float, str]:
+    """Return (scale_to_m, inferred_label) given a list of |coord| samples.
+
+    Pure function — caller assembles `samples` from the doc and decides
+    whether to use the result. Returns:
+      - (0.001, "mm") if median |x| > _MM_MAGNITUDE_THRESHOLD
+      - (1.0,   "m")  if median |x| in (1.0, threshold]
+      - (1.0,   "m_low_signal") if median |x| ≤ 1.0 (very small drawing
+        or empty geometry — keep metres assumption with a "low signal"
+        decode_warning so the operator knows the inference was weak).
+
+    No exception — caller's job is to surface the inference choice via
+    `decode_warnings`.
+    """
+
+    if not samples:
+        return 1.0, "m_low_signal"
+    # Filter near-zero coords — origin (0,0) corners on rectangular
+    # drawings dominate the distribution and pull the median down to
+    # zero, which would always pick the "m_low_signal" branch even on
+    # clearly-mm drawings. We only care about magnitudes that
+    # ACTUALLY carry unit information.
+    s = sorted(abs(v) for v in samples if v is not None and abs(v) > 0.5)
+    if not s:
+        return 1.0, "m_low_signal"
+    median = s[len(s) // 2]
+    if median > _MM_MAGNITUDE_THRESHOLD:
+        return 0.001, "mm"
+    if median > 1.0:
+        return 1.0, "m"
+    return 1.0, "m_low_signal"
+
+
+def _sample_coord_magnitudes(doc: Any, max_samples: int = 200) -> list[float]:
+    """Collect up to `max_samples` |coord| values from the modelspace.
+
+    Walks LINE / LWPOLYLINE / POLYLINE / TEXT / MTEXT / INSERT and
+    pulls the X and Y components. Bails as soon as `max_samples` is
+    reached so cost is bounded on huge drawings.
+    """
+
+    samples: list[float] = []
+    try:
+        msp = doc.modelspace()
+    except Exception:  # noqa: BLE001
+        return samples
+    for entity in msp:
+        etype = entity.dxftype()
+        try:
+            if etype == "LWPOLYLINE":
+                for p in entity.get_points("xy"):
+                    samples.append(p[0])
+                    samples.append(p[1])
+                    if len(samples) >= max_samples:
+                        return samples
+            elif etype == "POLYLINE":
+                for v in entity.vertices:
+                    samples.append(v.dxf.location.x)
+                    samples.append(v.dxf.location.y)
+                    if len(samples) >= max_samples:
+                        return samples
+            elif etype == "LINE":
+                samples.append(entity.dxf.start.x)
+                samples.append(entity.dxf.start.y)
+                samples.append(entity.dxf.end.x)
+                samples.append(entity.dxf.end.y)
+                if len(samples) >= max_samples:
+                    return samples
+            elif etype == "INSERT":
+                samples.append(entity.dxf.insert.x)
+                samples.append(entity.dxf.insert.y)
+                if len(samples) >= max_samples:
+                    return samples
+            elif etype in ("TEXT", "MTEXT"):
+                ins = getattr(entity.dxf, "insert", None)
+                if ins is not None:
+                    samples.append(ins.x)
+                    samples.append(ins.y)
+                    if len(samples) >= max_samples:
+                        return samples
+        except Exception:  # noqa: BLE001 — silent per-entity skip OK here
+            continue
+    return samples
 
 
 def _polyline_area_m2(points: list[tuple[float, float]]) -> float:
@@ -127,8 +227,32 @@ class DxfExtractor(BaseExtractor):
                 ) from exc
 
         units_enum = int(doc.header.get("$INSUNITS", 0))
-        scale = _INSUNITS_SCALE.get(units_enum, 1.0)
-        if units_enum not in _INSUNITS_SCALE:
+        inferred_unit_label: Optional[str] = None
+        if units_enum == 0:
+            # $INSUNITS=0 means "unitless" in the DXF spec. Real corpora
+            # (PR1 verification §3.2) treat that label as "we forgot to
+            # set it" — coords are in whatever the modeller worked in.
+            # Sample magnitudes and decide.
+            samples = _sample_coord_magnitudes(doc)
+            scale, inferred_unit_label = _infer_units_from_magnitude(samples)
+            decode_warnings.append(
+                {
+                    "code": "inferred_units_from_magnitude",
+                    "message": (
+                        f"$INSUNITS=0 (unitless); inferred {inferred_unit_label!r} "
+                        f"from {len(samples)} coord samples (median magnitude "
+                        f"-> scale_to_m={scale})"
+                    ),
+                    "insunits": 0,
+                    "inferred_unit": inferred_unit_label,
+                    "scale_to_m": scale,
+                    "samples_used": len(samples),
+                }
+            )
+        elif units_enum in _INSUNITS_SCALE:
+            scale = _INSUNITS_SCALE[units_enum]
+        else:
+            scale = 1.0
             decode_warnings.append(
                 {
                     "code": "unknown_units",
@@ -324,7 +448,11 @@ class DxfExtractor(BaseExtractor):
                 value=total_entities,
                 unit="ks",
                 confidence=1.0,
-                evidence={"insunits_enum": units_enum, "scale_to_m": scale},
+                evidence={
+                    "insunits_enum": units_enum,
+                    "scale_to_m": scale,
+                    "inferred_unit": inferred_unit_label,
+                },
             )
         )
         facts.append(
@@ -480,6 +608,7 @@ class DxfExtractor(BaseExtractor):
                 "insunits": units_enum,
                 "scale_to_m": scale,
                 "dxf_version": doc.dxfversion,
+                "inferred_unit": inferred_unit_label,
             },
             "layers": layer_catalogue,
             "block_definitions": block_defs,
