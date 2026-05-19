@@ -2,6 +2,19 @@
 """
 Phase 1 items generator for RD Jáchymov — variant B (max detail, ~140 items).
 
+# ─────────────────────────────────────────────────────────────────────────
+# AUDIT 2026-05-18 (Part 5b WebSearch verification):
+# Heuristic urs_code_proposed estimates correct 6-digit family in ~75 % cases
+# but 9-digit leaf wrong in ~63 % cases (6 of 8 verified codes had wrong leaf:
+# different distance band, material, geometry, or location).
+#
+# Recommendation: emit 6-digit family + leaf_disambiguation_needed flag,
+# defer leaf to production URS_MATCHER service (online catalog).
+# See outputs/urs_websearch_verifications.json for evidence.
+# Items with urs_status = "wrong_leaf_disambiguation_needed" carry the
+# 6-digit family in `urs_code_family_6digit` for downstream lookup.
+# ─────────────────────────────────────────────────────────────────────────
+
 Generates structured items per kapitola GROUP (HSV / PSV / TZB+M / VRN) with
 4 STOP gates. Re-runnable: each group invocation merges into
 outputs/items_rd_jachymov_complete.json without overwriting other groups.

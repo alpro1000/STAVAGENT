@@ -29,8 +29,8 @@
         "121101102",
         "121301101"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "TZ statika §3 + ARS dispozice zahrada",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -39,7 +39,9 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.001"
+      "id": "260219_dum.HSV1.001",
+      "urs_verification_note": "WebSearch: 'Sejmutí ornice ... do 50 m' m³ — leaf valid; distance ≤ 50 m for staging-close work matches RD Jáchymov dvorek scope",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -57,8 +59,8 @@
         "132211101",
         "131201101"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "TZ statika dům §5.5 + geologie F4-CS Rdt 350 kPa",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -68,7 +70,9 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.002"
+      "id": "260219_dum.HSV1.002",
+      "urs_verification_note": "WebSearch: 'Hloubení rýh š do 600 mm v hornině tř. 3 objemu do 100 m3' — exact match to item",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -187,13 +191,14 @@
       "mnozstvi": 18.6,
       "mnozstvi_formula": "= V hloubení rýh BV + figura dvorek (12.6 + 6.0)",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "162701105",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "162301101",
-        "997013501"
+        "162701104",
+        "162701103",
+        "162701102"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "= součet HSV-1 hloubení dům",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -202,7 +207,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.007"
+      "id": "260219_dum.HSV1.007",
+      "urs_code_proposed_was": "162701105",
+      "urs_code_family_6digit": "162701",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf 162701105 = 9-10 km, item says 'do 8 km'. Hint: Wahrscheinlich 162701104 (8-9 km) podle WebSearch popis ladder",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -302,15 +311,17 @@
         "132211101",
         "131201101"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "DXF + TZ statika sklad §3",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV1.003"
+      "id": "260217_sklad.HSV1.003",
+      "urs_verification_note": "WebSearch: same URS leaf as HSV1.002 — exact match",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260217_sklad",
@@ -377,13 +388,14 @@
       "mnozstvi": 32.1,
       "mnozstvi_formula": "= součet hloubení sklad + figura + patky (25.5+4.85+1.75)",
       "mnozstvi_confidence": 0.95,
-      "urs_code_proposed": "162701105",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "162301101",
-        "997013501"
+        "162701104",
+        "162701103",
+        "162701102"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "= součet HSV-1 sklad hloubení",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -392,7 +404,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV1.006"
+      "id": "260217_sklad.HSV1.006",
+      "urs_code_proposed_was": "162701105",
+      "urs_code_family_6digit": "162701",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: Same wrong-leaf as HSV1.007 — 9-10 km vs 'do 8 km'. Hint: Wahrscheinlich 162701104 (8-9 km)",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -519,20 +535,23 @@
       "mnozstvi": 13.2,
       "mnozstvi_formula": "1.20 × 10 × 1.10 přesah = 13.2",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "711132101",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "711121101",
-        "711111001"
+        "711141xxx_PE_folie"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ statika §5.5 — separační fólie povinné pod základ BV",
       "subdodavatel": "izolater_HI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.005"
+      "id": "260219_dum.HSV2.005",
+      "urs_code_proposed_was": "711132101",
+      "urs_code_family_6digit": "711141",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = AIP bituminous rolls, item = PE separation foil. Hint: Family 711 (Izolace proti vodě) correct, leaf should be 711141 PE-folie family",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -765,20 +784,25 @@
       "mnozstvi": 4.84,
       "mnozstvi_formula": "0.5 × 0.5 × 19.4 obvod = 4.85",
       "mnozstvi_confidence": 0.95,
-      "urs_code_proposed": "273313811",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "273313611",
+        "271313611_pasy_C16_20",
+        "271313811",
         "274313811"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "DXF sklad_DPZ + TZ statika sklad §4 — C16/20 XC0 pasy 500×500",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV2.001"
+      "id": "260217_sklad.HSV2.001",
+      "urs_code_proposed_was": "273313811",
+      "urs_code_family_6digit": "271313",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = ZÁKLADY DESKY C 25/30, item = ZÁKLADOVÉ PASY C16/20 XC0. Hint: Základové pasy = TKP 271 (pasy), NOT 273 (desky); class C16/20 leaf needed.",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260217_sklad",
@@ -2125,12 +2149,14 @@
       "mnozstvi": 140.9,
       "mnozstvi_formula": "= plocha krytiny ~141",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "962081141",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "962081132"
+        "762341xxx",
+        "765191xxx",
+        "764xxx_demontaz_plech"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ B m.10.e — 0.1 t kovů; stávající plech krytina",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -2139,7 +2165,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV6.002"
+      "id": "260219_dum.HSV6.002",
+      "urs_code_proposed_was": "962081141",
+      "urs_code_family_6digit": "762",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = bourání skleněných tvárnic, item = bourání plechové krytiny. Hint: Plech krytina demolice = TKP 762 (tesařské konstrukce) or 764/765 (klempířina); NOT 962 (zdivo).",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -2258,12 +2288,14 @@
       "mnozstvi": 60.0,
       "mnozstvi_formula": "2 koupelny × ~30 m² obkladů = 60",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "962081141",
+      "urs_code_proposed": "781473810",
       "urs_alternatives": [
-        "971033211"
+        "781471810",
+        "978059541",
+        "978059511"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.9,
       "source": "TZ ARS dům §3 — koupelny kompletně bourány",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -2272,7 +2304,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV6.007"
+      "id": "260219_dum.HSV6.007",
+      "urs_code_proposed_was": "962081141",
+      "urs_verification_note": "WebSearch found exact match — 'Demontáž obkladů z dlaždic keramických lepených' (modern bonded tiles, fits post-1990 koupelna). 781471810 = malta-laid (older). 978059541/511 = odsekání (chip-off, no reuse).",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -2642,13 +2677,13 @@
       "mnozstvi": 40.5,
       "mnozstvi_formula": "3 koupelny × (~5.5 m² podlaha + ~8 m² stěny v okolí sprchy) = 40.5",
       "mnozstvi_confidence": 0.95,
-      "urs_code_proposed": "711132101",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "711121101",
-        "771274102"
+        "771274102",
+        "711161xxx_sterka"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "DXF dum_DPZ MTEXT labels: 3× koupelna; TZ ARS — HI vana koupelny",
       "subdodavatel": "izolater_HI",
       "subdodavatel_status": "mapped",
@@ -2657,7 +2692,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.003"
+      "id": "260219_dum.PSV71.003",
+      "urs_code_proposed_was": "711132101",
+      "urs_code_family_6digit": "711",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = AIP bituminous rolls, item = liquid stěrka coating for koupelna. Hint: Hydroizolační stěrka koupelen — TKP 771-27 family or 711-16 stěrka family",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -2670,13 +2709,13 @@
       "mnozstvi": 177.5,
       "mnozstvi_formula": "(rozsah 1.NP 73 m²) + (3.NP nadstavba 104 m²) = ~177 m²",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "713141121",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "713141111",
-        "713121121"
+        "713121121",
+        "713121122"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
@@ -2685,7 +2724,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.001"
+      "id": "260219_dum.PSV71.001",
+      "urs_code_proposed_was": "713141121",
+      "urs_code_family_6digit": "713121",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = izolace STŘECH plochých, item = PODLAHA EPS. Hint: Podlahy = TKP 713-12 (vrstvy podlah), NOT 713-14 (střechy).",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -2698,19 +2741,24 @@
       "mnozstvi": 104.4,
       "mnozstvi_formula": "= zastavěna plocha 104.4 m² (strop 2.NP/3.NP)",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "713141111",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "713141121"
+        "713121121",
+        "713121111"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ ARS dům §4 — kročejová EPS shora ocelobeton",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.002"
+      "id": "260219_dum.PSV71.002",
+      "urs_code_proposed_was": "713141111",
+      "urs_code_family_6digit": "713121",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: Same wrong-family — kročejová EPS podlaha, not střecha. Hint: Kročejová izolace mezi vrstvy podlahy = TKP 713-12.",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -4074,19 +4122,24 @@
       "mnozstvi": 21.209,
       "mnozstvi_formula": "DXF DIMENSION 6.35 × 3.34 = 21.2 m²",
       "mnozstvi_confidence": 0.95,
-      "urs_code_proposed": "771121011",
+      "urs_code_proposed": null,
       "urs_alternatives": [
-        "771274102"
+        "596211xxx_betonova_dlazba_piskove_loze",
+        "771-12_pokladka_betonove"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ statika sklad §4 + DXF DIMENSION",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.PSV77.001"
+      "id": "260217_sklad.PSV77.001",
+      "urs_code_proposed_was": "771121011",
+      "urs_code_family_6digit": "596",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = nátěr penetrační (primer), item = betonová dlažba do pískového lože install. Hint: Betonová dlažba do pískového lože = TKP 596 (chodník) family, NOT 771-1 (primery).",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -5354,5 +5407,12 @@
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
+  },
+  "_websearch_verification_log": {
+    "applied_at": "2026-05-19",
+    "verified_exact": 3,
+    "wrong_leaf_flagged": 9,
+    "direct_replacement": 1,
+    "source": "outputs/urs_websearch_verifications.json"
   }
 }
