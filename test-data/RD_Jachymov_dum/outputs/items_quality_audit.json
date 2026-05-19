@@ -1,0 +1,814 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-19",
+  "_generated_by": "tools/quality_audit.py",
+  "items_checked": 204,
+  "items_total_incl_deprecated": 208,
+  "issues_found_total": 55,
+  "summary_by_dimension": {
+    "urs_family_consistency": 29,
+    "subdodavatel_logical": 26
+  },
+  "summary_by_severity": {
+    "informational": 55
+  },
+  "issues": [
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code": "564831111",
+      "first_digit": "5",
+      "expected_first_digits": [
+        "1"
+      ],
+      "reason": "URS kód 564831111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV1.004",
+      "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "current_subdodavatel": "podlahar",
+      "expected_set": [
+        "VRN_management",
+        "zemni_prace"
+      ],
+      "reason": "Subdodavatel 'podlahar' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV1.004",
+      "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code": "564831111",
+      "first_digit": "5",
+      "expected_first_digits": [
+        "1"
+      ],
+      "reason": "URS kód 564831111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV1.005",
+      "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "current_subdodavatel": "podlahar",
+      "expected_set": [
+        "VRN_management",
+        "zemni_prace"
+      ],
+      "reason": "Subdodavatel 'podlahar' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV1.005",
+      "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code": "962031132",
+      "first_digit": "9",
+      "expected_first_digits": [
+        "1"
+      ],
+      "reason": "URS kód 962031132 prvních digit '9' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV1.001",
+      "popis": "Sejmutí ornice a demolice stávajících kamenných zídek a schodiště v místě nového"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "current_subdodavatel": "bourani_demolice",
+      "expected_set": [
+        "VRN_management",
+        "zemni_prace"
+      ],
+      "reason": "Subdodavatel 'bourani_demolice' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV1.001",
+      "popis": "Sejmutí ornice a demolice stávajících kamenných zídek a schodiště v místě nového"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code": "631311115",
+      "first_digit": "6",
+      "expected_first_digits": [
+        "2",
+        "3"
+      ],
+      "reason": "URS kód 631311115 prvních digit '6' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV2.003",
+      "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code": "711141",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "2",
+        "3"
+      ],
+      "reason": "URS kód 711141 prvních digit '7' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV2.005",
+      "popis": "Separační PE fólie pod základovou patou bílé vany (povinná dle ČBS 02)"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code": "631311115",
+      "first_digit": "6",
+      "expected_first_digits": [
+        "2",
+        "3"
+      ],
+      "reason": "URS kód 631311115 prvních digit '6' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV2.008",
+      "popis": "Bednění pozedního věnce systémové oboustranné"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "current_subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "expected_set": [
+        "bednici_tesar",
+        "bila_vana_csb02",
+        "izolater_HI",
+        "podlahar",
+        "prefa_bloky_specialista",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'ocelobeton_strop_IPE_trapez' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV2.010",
+      "popis": "Nabetonávka stropu 2.NP/3.NP — beton C25/30 XC1 tl. 60 mm nad vlnu trapézového p"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "current_subdodavatel": "ocelobeton_strop_IPE_trapez",
+      "expected_set": [
+        "bednici_tesar",
+        "bila_vana_csb02",
+        "izolater_HI",
+        "podlahar",
+        "prefa_bloky_specialista",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'ocelobeton_strop_IPE_trapez' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV2.011",
+      "popis": "Výztuž nabetonávky kari síť 5/100/100 (cca 4.4 kg/m²)"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code": "174101101",
+      "first_digit": "1",
+      "expected_first_digits": [
+        "2",
+        "3"
+      ],
+      "reason": "URS kód 174101101 prvních digit '1' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV2.005",
+      "popis": "Štěrkopískové lože pod podlahu skladu + pod schodišťovou desku"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "current_subdodavatel": "zemni_prace",
+      "expected_set": [
+        "bednici_tesar",
+        "bila_vana_csb02",
+        "izolater_HI",
+        "podlahar",
+        "prefa_bloky_specialista",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'zemni_prace' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV2.005",
+      "popis": "Štěrkopískové lože pod podlahu skladu + pod schodišťovou desku"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code": "767131120",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "3"
+      ],
+      "reason": "URS kód 767131120 prvních digit '7' neodpovídá HSV-3 expected ['3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV3.005",
+      "popis": "Zesílení ostění úhelníky L100/10 dvojicí u otvoru u komínového tělesa (statická "
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code": "962081120",
+      "first_digit": "9",
+      "expected_first_digits": [
+        "3"
+      ],
+      "reason": "URS kód 962081120 prvních digit '9' neodpovídá HSV-3 expected ['3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV3.006",
+      "popis": "Dočasné podstojkování stávajících přiléhajících stropů při osazování IPN překlad"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "current_subdodavatel": "zelezobetonarsky_specialny",
+      "expected_set": [
+        "ocel_zamecnik_konstrukce",
+        "prefa_bloky_specialista",
+        "zednik"
+      ],
+      "reason": "Subdodavatel 'zelezobetonarsky_specialny' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV3.006",
+      "popis": "Dočasné podstojkování stávajících přiléhajících stropů při osazování IPN překlad"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code": "273361821",
+      "first_digit": "2",
+      "expected_first_digits": [
+        "3"
+      ],
+      "reason": "URS kód 273361821 prvních digit '2' neodpovídá HSV-3 expected ['3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV3.003",
+      "popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "current_subdodavatel": "zelezobetonarsky_specialny",
+      "expected_set": [
+        "ocel_zamecnik_konstrukce",
+        "prefa_bloky_specialista",
+        "zednik"
+      ],
+      "reason": "Subdodavatel 'zelezobetonarsky_specialny' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV3.003",
+      "popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "342213131",
+      "first_digit": "3",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 342213131 prvních digit '3' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.006",
+      "popis": "Protipožární SDK podhled pod trapézovým plechem (EI 30 dle PBŘ — ocelobeton + SD"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "sadrokartonar",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'sadrokartonar' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.006",
+      "popis": "Protipožární SDK podhled pod trapézovým plechem (EI 30 dle PBŘ — ocelobeton + SD"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "974031150",
+      "first_digit": "9",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 974031150 prvních digit '9' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.007",
+      "popis": "Vyvezení původního zásypu z cihelné klenby 1.PP/1.NP — manuálně + odvoz"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "bourani_demolice",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'bourani_demolice' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.007",
+      "popis": "Vyvezení původního zásypu z cihelné klenby 1.PP/1.NP — manuálně + odvoz"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "271223111",
+      "first_digit": "2",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 271223111 prvních digit '2' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.008",
+      "popis": "Nový zásyp klenby 1.PP/1.NP — perlitbeton (lehký zásyp) tl. 100 mm"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "631321311",
+      "first_digit": "6",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 631321311 prvních digit '6' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.009",
+      "popis": "Plastická perlitbetonová roznášecí vrstva tl. 50 mm nad zásypem klenby"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "974041141",
+      "first_digit": "9",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 974041141 prvních digit '9' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.010",
+      "popis": "Strop trámový 1.NP/2.NP — sejmutí podlah, demontáž záklopu a zásypu shora (zacho"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "bourani_demolice",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'bourani_demolice' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.010",
+      "popis": "Strop trámový 1.NP/2.NP — sejmutí podlah, demontáž záklopu a zásypu shora (zacho"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "713121121",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 713121121 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.011",
+      "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 6"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "izolater_TI",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.011",
+      "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 6"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "342213131",
+      "first_digit": "3",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 342213131 prvních digit '3' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.012",
+      "popis": "Protipožární SDK podhled zespodu trámového stropu (EI 30 dle PBŘ)"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "sadrokartonar",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'sadrokartonar' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.012",
+      "popis": "Protipožární SDK podhled zespodu trámového stropu (EI 30 dle PBŘ)"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "631311114",
+      "first_digit": "6",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 631311114 prvních digit '6' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.013",
+      "popis": "Suchá podlahová skladba 1.NP/2.NP — zásyp Liapor pro vyrovnání tl. 50 mm"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "771421111",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 771421111 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.014",
+      "popis": "Suchá podlahová skladba — sádrovláknité dílce Fermacell tl. 25 mm (dva 12.5 mm v"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "762341110",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 762341110 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV4.001",
+      "popis": "Dřevěné stropnice 100/160 mm á 625 mm primární zastřešení skladu — rezivo C24 fu"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "762331110",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 762331110 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV4.002",
+      "popis": "Prkenný záklop stropnic skladu tl. 20 mm + impregnace"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "712331101",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 712331101 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV4.003",
+      "popis": "Hydroizolační střešní souvrství skladu (modifikovaný asfaltový pás SBS + ochrann"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV4.003",
+      "popis": "Hydroizolační střešní souvrství skladu (modifikovaný asfaltový pás SBS + ochrann"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "783201001",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 783201001 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV4.006",
+      "popis": "Žárově zinková povrchová úprava IPE180 + pororoštů dle ČSN EN ISO 12944 (C3 pros"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code": "411321414",
+      "first_digit": "4",
+      "expected_first_digits": [
+        "5",
+        "6",
+        "7"
+      ],
+      "reason": "URS kód 411321414 prvních digit '4' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV5.005",
+      "popis": "Ocelová středová vaznice HEA160 — 2 ks × cca 10 m délka"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "ocel_zamecnik_konstrukce",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'ocel_zamecnik_konstrukce' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.005",
+      "popis": "Ocelová středová vaznice HEA160 — 2 ks × cca 10 m délka"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code": "411321414",
+      "first_digit": "4",
+      "expected_first_digits": [
+        "5",
+        "6",
+        "7"
+      ],
+      "reason": "URS kód 411321414 prvních digit '4' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV5.006",
+      "popis": "Ocelové sloupky uzavřený profil 100×100×4 mm pod vaznice HEA160 (~6 ks × ~2.5 m "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "ocel_zamecnik_konstrukce",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'ocel_zamecnik_konstrukce' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.006",
+      "popis": "Ocelové sloupky uzavřený profil 100×100×4 mm pod vaznice HEA160 (~6 ks × ~2.5 m "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.008",
+      "popis": "Parotěsná folie nad bedněním pod nadkrokevní PIR (např. Isover Vario nebo Tyvek "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.010",
+      "popis": "Doplňková hydroizolační difuzně otevřená folie nad PIR pod kontralatě"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code": "311321411",
+      "first_digit": "3",
+      "expected_first_digits": [
+        "5",
+        "6",
+        "7"
+      ],
+      "reason": "URS kód 311321411 prvních digit '3' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV5.015",
+      "popis": "Vikýře — zděná čela z Porotherm 30 (odhad 4 ks × ~3 m² stěna)"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "zednik",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.015",
+      "popis": "Vikýře — zděná čela z Porotherm 30 (odhad 4 ks × ~3 m² stěna)"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "PSV-77 Podlahy",
+      "current_subdodavatel": "biodeska_konstrukcni",
+      "expected_set": [
+        "obkladac",
+        "podlahar"
+      ],
+      "reason": "Subdodavatel 'biodeska_konstrukcni' neodpovídá PSV-77 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.PSV77.004",
+      "popis": "Nášlapná vrstva biodeska (smrk masiv) nebo OSB v 3.NP spací části nad krovem"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code": "631321311",
+      "first_digit": "6",
+      "expected_first_digits": [
+        "5",
+        "7",
+        "9"
+      ],
+      "reason": "URS kód 631321311 prvních digit '6' neodpovídá PSV-77 expected ['5', '7', '9'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.PSV77.005",
+      "popis": "Mokrá podlahová skladba — betonový potěr s kari síťkou 4/100/100 tl. 50 mm + sam"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "PSV-95 Detekce požární",
+      "urs_code": "966067121",
+      "first_digit": "9",
+      "expected_first_digits": [
+        "0",
+        "3"
+      ],
+      "reason": "URS kód 966067121 prvních digit '9' neodpovídá PSV-95 expected ['0', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.PSV95.002",
+      "popis": "Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné chodbě"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "PSV-95 Detekce požární",
+      "current_subdodavatel": "VRN_management",
+      "expected_set": [
+        "elektroinstalater",
+        "revize_specialista"
+      ],
+      "reason": "Subdodavatel 'VRN_management' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.PSV95.002",
+      "popis": "Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné chodbě"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code": "996019011",
+      "first_digit": "9",
+      "expected_first_digits": [
+        "0",
+        "2",
+        "7"
+      ],
+      "reason": "URS kód 996019011 prvních digit '9' neodpovídá M-21 expected ['0', '2', '7'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.M21.007",
+      "popis": "Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revizní zpráva pro kolau"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "M-21 ELI silnoproud",
+      "current_subdodavatel": "revize_specialista",
+      "expected_set": [
+        "elektroinstalater"
+      ],
+      "reason": "Subdodavatel 'revize_specialista' neodpovídá M-21 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.M21.007",
+      "popis": "Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revizní zpráva pro kolau"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "VRN — Doprava + odpad",
+      "current_subdodavatel": "bourani_demolice",
+      "expected_set": [
+        "VRN_management",
+        "azbestovy_specialista",
+        "geodet",
+        "mykolog",
+        "revize_specialista"
+      ],
+      "reason": "Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.VRN.001",
+      "popis": "Kontejnery na suť tříděnou velkoobjemové (beton/cihly, dřevo, kovy, EPS, sádra, "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "VRN — Doprava + odpad",
+      "current_subdodavatel": "bourani_demolice",
+      "expected_set": [
+        "VRN_management",
+        "azbestovy_specialista",
+        "geodet",
+        "mykolog",
+        "revize_specialista"
+      ],
+      "reason": "Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.VRN.003",
+      "popis": "Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné + recyklace + třídění "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "VRN — Doprava + odpad",
+      "current_subdodavatel": "prefa_bloky_specialista",
+      "expected_set": [
+        "VRN_management",
+        "azbestovy_specialista",
+        "geodet",
+        "mykolog",
+        "revize_specialista"
+      ],
+      "reason": "Subdodavatel 'prefa_bloky_specialista' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.VRN.001",
+      "popis": "Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) auto s hydraulickou ruk"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "VRN — Doprava + odpad",
+      "current_subdodavatel": "bourani_demolice",
+      "expected_set": [
+        "VRN_management",
+        "azbestovy_specialista",
+        "geodet",
+        "mykolog",
+        "revize_specialista"
+      ],
+      "reason": "Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.VRN.002",
+      "popis": "Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (drobné množství)"
+    }
+  ]
+}
