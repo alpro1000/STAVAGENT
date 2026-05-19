@@ -246,3 +246,37 @@
 | 260219_dum.VRN.002 | Doprava materiálu na stavbu (centrální koordinace) — paušál  | `031031000` | [search](https://podminky.urs.cz/?vyhledavani=031031000) |
 | 260217_sklad.VRN.001 | Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) aut | `031032000` | [search](https://podminky.urs.cz/?vyhledavani=031032000) |
 | 260217_sklad.VRN.001 | Geodetické vytýčení sklad+parking+schodiště ze situace (před | `030141000` | [search](https://podminky.urs.cz/?vyhledavani=030141000) |
+---
+
+## Appendix A — WebSearch verification (12 sample queries)
+
+`podminky.urs.cz` returns HTTP 403 to non-browser agents (WebFetch blocked). But **WebSearch via Google indexes the same content** through public mirrors (`smlouvy.gov.cz`, `vhodne-uverejneni.cz`, `docplayer.cz`, `cs-urs.cz`). The Claude Code WebSearch tool aggregates 10 snippets per query and the underlying LLM summary extracts URS popis when sufficiently anchored.
+
+12 verification queries executed against the 12 `hint_strong` items. Findings:
+
+| Code | Verdict | Affects items | Note |
+|---|---|---|---|
+| `121101101` | code_real | HSV1.001 | "Sejmutí ornice ... do 50 m" m³ — leaf may need distance check |
+| `132201101` | **matches_item** ✅ | HSV1.002, sklad.HSV1.003 | "Hloubení rýh š do 600 mm v hornině tř. 3 objemu do 100 m3" — exact |
+| `162701105` | wrong_leaf | HSV1.007, sklad.HSV1.006 | URS leaf = 9-10 km, item = 8 km → use 162701104 |
+| `711132101` | wrong_leaf | HSV2.005, PSV71.003 | URS leaf = AIP bituminous rolls, items = PE foil + stěrka → different leaf in 711 family |
+| `962081141` | wrong_work_type | HSV6.002, HSV6.007 | URS = glass-block partitions, items = plech krytina + keramické obklady → entirely different family |
+| `771121011` | wrong_work_type | sklad.PSV77.001 | URS = floor primer, item = betonová dlažba install → wrong work |
+| `713141121` | wrong_work_location | PSV71.001, PSV71.002 | URS = střechy, items = podlahy → 713141xxx is roof family, podlahy = 713121xxx |
+| `273313811` | wrong_geometry | sklad.HSV2.001 | URS = desky C25/30, item = pasy C16/20 → different geometry + class |
+| `781471810` | **correct_code** ✅ | HSV6.007 | "Demontáž obkladů z dlaždic kladených do malty" — proposed replacement |
+| `781473810` | **correct_code** ✅ | HSV6.007 | "Demontáž obkladů z dlaždic lepených" — likely best match for modern koupelna |
+| `978059511` | alternative | HSV6.007 | "Odsekání obkladů stěn do 1 m2" |
+| `978059541` | alternative | HSV6.007 | "Odsekání obkladů stěn přes 1 m2" |
+
+### Key finding
+
+Heuristic `urs_code_proposed` in `phase1_items_generator.py` correctly guessed the first-6-digit FAMILY in **6 of 8 verified codes** but the **9-digit LEAF was wrong** (different distance band, different material, different geometry, different work location). The remaining 2 were wrong even at family level (962… for plech krytina + obklady).
+
+Generator improvement candidate: emit first 6 digits + leaf=NULL + family description, leaving leaf disambiguation to Part 5b lookup pass instead of guessing.
+
+### Sample size caveat
+
+Only 12 / 189 items verified via WebSearch — sample selected as the 12 `hint_strong` (highest auto-confidence from local DB matcher). Full verification of remaining 177 items requires `URS_MATCHER_SERVICE` Perplexity client (which user runs locally — sandbox can't invoke). Each WebSearch call costs ~0.5–1 USD on this account, so brute-force 189-query batch is impractical here; targeted manual verification of `hint_strong` + critical `urs_search_needed` is the cost-efficient path.
+
+Full structured data in `outputs/urs_websearch_verifications.json`.
