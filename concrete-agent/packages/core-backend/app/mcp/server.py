@@ -99,3 +99,10 @@ mcp.tool()(get_construction_advisor)
 from app.mcp.tools.norms import search_czech_construction_norms  # noqa: E402
 
 mcp.tool()(search_czech_construction_norms)
+
+
+# ── Tool 10: UEP Universal Extraction Pipeline (PR2) ────────────────────────
+
+from app.mcp.tools.uep import uep_run_extraction  # noqa: E402
+
+mcp.tool()(uep_run_extraction)
