@@ -54,6 +54,10 @@ def client(tmp_path):
 
     # Wipe in-process job store between tests.
     _JOBS.clear()
+    # Wipe the sliding-window start log (Amazon Q C2 fix shipped in
+    # routes_uep.py). The reset hook is module-private and tests
+    # access it via the directly-imported module.
+    _mod._reset_starts_for_testing()
 
     app = FastAPI()
     app.include_router(router)
@@ -443,6 +447,68 @@ def test_concurrent_run_calls_exactly_five_succeed_under_pro_tier(client, tmp_pa
     assert rate_limited >= 4, (
         f"Expected ≥4 rate-limited rejections, got {rate_limited}"
     )
+
+
+def test_sliding_window_counts_completed_starts_not_just_active(client, tmp_path) -> None:
+    """Amazon Q C2 — start timestamps must count completed jobs.
+
+    Pre-fix: `starts_last_15min` returned `len(active_user_jobs)`,
+    so a user could rapidly start+complete jobs and bypass the burst
+    limit. The fix records each successful register_new_job() in a
+    per-user deque.
+    """
+
+    # Drive `now` to record 5 starts directly via the recording hook —
+    # this is the same path the live route exercises after a
+    # successful register_new_job.
+    user = "u-c2"
+    for _ in range(5):
+        _mod._record_job_start(user)
+
+    from datetime import datetime, timezone
+    s15, sday = _mod._count_starts(user, datetime.now(timezone.utc))
+    assert s15 == 5
+    assert sday == 5
+
+
+def test_sliding_window_prunes_old_starts(client) -> None:
+    """Starts older than 24 h drop out of the deque entirely."""
+
+    user = "u-c2-prune"
+    from datetime import datetime, timedelta, timezone
+
+    # Manually inject 2 stale + 1 fresh timestamps into the deque.
+    now = datetime.now(timezone.utc)
+    dq = _mod._STARTS_BY_USER.setdefault(user, _mod.deque())
+    dq.append(now - timedelta(hours=25))
+    dq.append(now - timedelta(hours=30))
+    dq.append(now - timedelta(minutes=5))
+    assert len(dq) == 3
+
+    s15, sday = _mod._count_starts(user, now)
+    # 25h and 30h ones get pruned by _prune_user_starts; only the
+    # 5min-old start remains.
+    assert s15 == 1
+    assert sday == 1
+    assert len(_mod._STARTS_BY_USER[user]) == 1
+
+
+def test_sliding_window_partitions_15min_vs_today(client) -> None:
+    """`starts_last_15min` is the 15-min count, `starts_today` is the
+    UTC-date count; they need not match when starts span the window."""
+
+    user = "u-c2-partition"
+    from datetime import datetime, timedelta, timezone
+
+    now = datetime.now(timezone.utc).replace(hour=12, minute=0, second=0, microsecond=0)
+    dq = _mod._STARTS_BY_USER.setdefault(user, _mod.deque())
+    dq.append(now - timedelta(hours=5))   # today, not in 15-min window
+    dq.append(now - timedelta(minutes=10))  # today + in 15-min
+    dq.append(now - timedelta(minutes=2))   # today + in 15-min
+
+    s15, sday = _mod._count_starts(user, now)
+    assert s15 == 2
+    assert sday == 3
 
 
 def test_delete_job_marks_cancelled(client, tmp_path) -> None:

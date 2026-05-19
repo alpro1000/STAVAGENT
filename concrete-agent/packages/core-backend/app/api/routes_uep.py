@@ -105,6 +105,80 @@ _JOB_REGISTER_LOCK = asyncio.Lock()
 
 
 # ---------------------------------------------------------------------------
+# Job start timestamp tracking for sliding-window + daily rate limits.
+# (Amazon Q PR #1186 comment C2, discussion_r3266899095.)
+#
+# Each successful register_new_job() pushes the timestamp into the
+# per-user deque. The sliding window check walks the deque, popping
+# entries older than 15 min, then reports `len(deque)` as the burst
+# count. Daily count is the number of pushes since the last UTC
+# midnight; reset is implicit by trimming entries older than 24 h.
+#
+# Pre-fix shape used `len(active_jobs)` which only counted IN-FLIGHT
+# jobs — a user could complete-and-restart fast jobs to bypass the
+# burst limit because completed jobs vanished from the count.
+#
+# Transitional in-process storage: PR3 replaces this with the
+# `sliding_window_starts` Cloud SQL table seeded by the Alembic
+# migration in commit 2febc4b0.
+# ---------------------------------------------------------------------------
+
+_STARTS_BY_USER: dict[str, deque[datetime]] = {}
+
+_SLIDING_WINDOW = timedelta(minutes=15)
+_DAILY_WINDOW = timedelta(hours=24)
+
+
+def _prune_user_starts(user_id: str, now: datetime) -> deque[datetime]:
+    """Drop timestamps older than 24 h. Returns the live deque."""
+
+    dq = _STARTS_BY_USER.setdefault(user_id, deque())
+    cutoff_24h = now - _DAILY_WINDOW
+    while dq and dq[0] < cutoff_24h:
+        dq.popleft()
+    return dq
+
+
+def _count_starts(user_id: str, now: datetime) -> tuple[int, int]:
+    """Return `(starts_last_15min, starts_today)` from the deque.
+
+    `starts_today` is the count of starts whose timestamp's UTC date
+    matches `now.date()` — exact "today" semantics, not a rolling 24 h
+    window. The deque is pruned to a 24 h horizon so this scan stays
+    bounded.
+    """
+
+    dq = _prune_user_starts(user_id, now)
+    cutoff_15m = now - _SLIDING_WINDOW
+    today = now.date()
+    in_15m = 0
+    in_today = 0
+    for ts in dq:
+        if ts >= cutoff_15m:
+            in_15m += 1
+        if ts.date() == today:
+            in_today += 1
+    return in_15m, in_today
+
+
+def _record_job_start(user_id: str) -> None:
+    """Append `now` to the user's start log. Called inside the
+    TOCTOU lock immediately after register_new_job() succeeds."""
+
+    now = datetime.now(timezone.utc)
+    dq = _prune_user_starts(user_id, now)
+    dq.append(now)
+
+
+def _reset_starts_for_testing() -> None:
+    """Test-only: wipe the in-memory start log. Production never
+    calls this (PR3 backs the data by the Cloud SQL
+    `sliding_window_starts` table)."""
+
+    _STARTS_BY_USER.clear()
+
+
+# ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
@@ -222,10 +296,16 @@ async def start_uep_run(
         active_dict = {
             user_id: [(j.project_id, j.state) for j in active_user_jobs]
         }
+        # Amazon Q C2 — read REAL start timestamps for the sliding
+        # window + daily limit, not `len(active_user_jobs)` (which
+        # only counted IN-FLIGHT jobs and let a user bypass the
+        # burst limit by completing jobs fast).
+        now = datetime.now(timezone.utc)
+        s15, sday = _count_starts(user_id, now)
         snapshot_fetch = make_in_memory_snapshot_fetcher(
             active_jobs=active_dict,
-            starts_15min={user_id: len(active_user_jobs)},
-            starts_today={user_id: len(active_user_jobs)},
+            starts_15min={user_id: s15},
+            starts_today={user_id: sday},
         )
         snapshot = snapshot_fetch(user_id, project_id, tier)
         if project_active:
@@ -283,6 +363,9 @@ async def start_uep_run(
             force_rerun=body.force_rerun,
             queue_dispatch=queue_dispatch,
         )
+        # Record the start AFTER successful registration so a rejected
+        # request (409 / 429) doesn't pollute the deque (Amazon Q C2).
+        _record_job_start(user_id)
 
     # ── End of TOCTOU lock ────────────────────────────────────────
     out_dir = _data_dir_for_job(project_id, info.job_id)
