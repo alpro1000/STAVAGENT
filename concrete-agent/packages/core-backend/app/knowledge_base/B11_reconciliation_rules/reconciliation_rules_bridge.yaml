@@ -1,0 +1,198 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Reconciliation Rules — bridge (mostní objekty)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Žihle 2062-1 + SO 202/203/207 calibration. The "no winner" pattern
+# from STAVAGENT_PATTERNS.md applies in spades to bridge engineering —
+# every conflict is critical because mostní konstrukce is the highest
+# liability layer in Czech construction.
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.3
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: bridge
+description: >
+  12 reconciliation rules for bridge projects. Tolerance bands tighter
+  than residential: ±1.5 % geometry, exact for concrete class + steel
+  + bearings count, ±5 % for prestress cable area.
+
+rules:
+
+  # ─── A. Geometry agreement ────────────────────────────────────────────────
+
+  - id: bridge_span_geometry_tz_vs_drawing
+    description: >
+      Bridge span pattern (e.g. "5+5×20+5") from TZ must match the
+      drawn span sequence from DXF / IFC. Žihle pattern 7.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: bridge_deck_width_tz_vs_drawing
+    description: Mostovková šířka — TZ vs DXF, ±1.5 % tolerance.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 1.5
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: bridge_substructure_height_tz_vs_drawing
+    description: Výška opěr / pilířů — TZ vs DXF, ±2 %.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  # ─── B. Materials (exact) ────────────────────────────────────────────────
+
+  - id: bridge_concrete_class_tz_vs_drawing
+    description: >
+      Třída betonu mostovky / opěr / pilířů — TZ vs DXF legend.
+      Exact. Mismatch = liability issue.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: bridge_exposure_class_xf4_check
+    description: >
+      Bridge mostovka MUSÍ být alespoň XF4 + XD3. Exact match TZ vs
+      drawing; mismatch = durability defect (liability).
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: bridge_reinforcement_steel_grade
+    description: >
+      Třída výztuže B500B/C + prestress Y1860 — exact. Drawing legend
+      = canonical; TZ description should match.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  # ─── C. Quantity reconciliation ──────────────────────────────────────────
+
+  - id: bridge_total_volume_tz_vs_soupis
+    description: >
+      Sum of beton (m³) — TZ vs UNIXML soupis. ±2 % per Žihle
+      pilot's 16 reconciliation flags.
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: bridge_reinforcement_mass_tz_vs_soupis
+    description: Sum of výztuž (t) — TZ vs soupis. ±2 %.
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: bridge_formwork_area_tz_vs_soupis
+    description: Sum of bednění (m²) — TZ vs soupis. ±2 %.
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  # ─── D. Component count agreement (exact) ────────────────────────────────
+
+  - id: bridge_bearings_count_tz_vs_drawing
+    description: >
+      Number of mostní ložiska — TZ count vs DXF block count.
+      Integrální rám = 0 → both sides must agree on 0.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  # ─── E. Passport-schema agreement ────────────────────────────────────────
+
+  - id: bridge_passport_concrete_grade
+    description: >
+      Passport schema (MergedSO) emits concrete_grade authoritatively.
+      Mismatch → passport wins (already human-reviewed).
+    left_source: passport_schema
+    right_source: pdf_tz
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm_and_boost_confidence
+    on_mismatch: passport_wins
+    severity: important
+
+  # ─── F. Geology cross-check ──────────────────────────────────────────────
+
+  - id: bridge_geology_xa_vs_concrete_exposure
+    description: >
+      IGP XA class (aggressive chemicals from groundwater) must be
+      reflected in concrete exposure spec. Critical for mostní opěry
+      in proximity of waterways (Žihle: Mladotický potok).
+    left_source: pdf_geology
+    right_source: pdf_tz
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
