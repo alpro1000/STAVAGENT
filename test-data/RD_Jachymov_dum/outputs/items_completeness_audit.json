@@ -1,0 +1,2246 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-19",
+  "_generated_by": "tools/completeness_check.py",
+  "_purpose": "Verify all WORKS for RD Jáchymov are accounted for in items.json. Orthogonal to Phase 0a (which checks SOURCES probed); this checks item-level completeness via 4 sections.",
+  "_items_total": 189,
+  "section_A_tkp_coverage": {
+    "_purpose": "Czech URS TSKP family coverage (0-9). Each family should have ≥1 item OR explicit N/A.",
+    "n_families_with_items": 9,
+    "n_families_total": 10,
+    "n_orphan_items_no_code": 0,
+    "families": [
+      {
+        "tkp_family": "0",
+        "label": "VRN, společné konstrukce, ZS, doprava",
+        "n_items": 16,
+        "samples": [
+          {
+            "id": "260219_dum.VRN.001",
+            "popis": "Zařízení staveniště — buňka kancelář + sociální buňka (WC + šatna), pronájem ~8 "
+          },
+          {
+            "id": "260219_dum.VRN.002",
+            "popis": "Mobilní chemické WC TOI TOI pro pracovníky — pronájem ~8 měsíců"
+          },
+          {
+            "id": "260219_dum.VRN.003",
+            "popis": "El. odběr stavby (zřízení staveništního rozvaděče + měřič) + vodovodní odběr (zř"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "1",
+        "label": "Zemní práce (sejmutí ornice, hloubení rýh/jam, výkopy)",
+        "n_items": 12,
+        "samples": [
+          {
+            "id": "260219_dum.HSV1.001",
+            "popis": "Sejmutí ornice tl. 100 mm na ploše budoucí opěrné stěny a anglického dvorku"
+          },
+          {
+            "id": "260219_dum.HSV1.002",
+            "popis": "Hloubení rýh š. do 60 cm pro pas opěrné stěny bílé vany v zemině třídy 3 (F4-CS)"
+          },
+          {
+            "id": "260219_dum.HSV1.003",
+            "popis": "Hloubení jam nezapažených pro anglický dvorek a nový vstup do 1.PP ze zahrady, h"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "2",
+        "label": "Základové konstrukce, ŽB pasy/desky/věnce, hydroizolace",
+        "n_items": 22,
+        "samples": [
+          {
+            "id": "260219_dum.HSV2.001",
+            "popis": "Bílá vana ČBS 02 — pata úhlové opěrné stěny 250×1200 mm × L=10 m, C25/30 XC3 XF1"
+          },
+          {
+            "id": "260219_dum.HSV2.002",
+            "popis": "Bílá vana ČBS 02 — stěna úhlová tl. 250 mm × výška 2050 mm × L=10 m, beton C25/3"
+          },
+          {
+            "id": "260219_dum.HSV2.004",
+            "popis": "Výztuž bílé vany B500B 120 kg/m³ (empirická sazba Methvin pro úhlové opěrné stěn"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "3",
+        "label": "Svislé konstrukce (zdivo, příčky, sloupy)",
+        "n_items": 12,
+        "samples": [
+          {
+            "id": "260217_sklad.HSV2.003",
+            "popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300"
+          },
+          {
+            "id": "260219_dum.HSV3.001",
+            "popis": "Lokální dozdívky a přizdívky z cihel plných pálených P10 na MVC M10 (uvedeno v T"
+          },
+          {
+            "id": "260219_dum.HSV3.002",
+            "popis": "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry,"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "4",
+        "label": "Vodorovné konstrukce (stropy, schodiště, překlady)",
+        "n_items": 9,
+        "samples": [
+          {
+            "id": "260219_dum.HSV4.001",
+            "popis": "Ocelová stropnice IPE180 1.NP v pozici nové příčky 2.NP — dodávka + montáž (1 ks"
+          },
+          {
+            "id": "260219_dum.HSV4.002",
+            "popis": "Ocelobetonový strop 2.NP/3.NP — stropnice IPE180 á 1000 mm × rozpon ~8 m × ~8 ks"
+          },
+          {
+            "id": "260219_dum.HSV4.003",
+            "popis": "Ocelobetonový strop — výztuha 2×HEA180 trakt do ulice (Fibichova), dl. ~10 m"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "5",
+        "label": "Komunikace, zpevněné plochy, dlažby (NA mostech / silnicích — pro RD typicky 564 chodník + dvorek)",
+        "n_items": 3,
+        "samples": [
+          {
+            "id": "260219_dum.HSV1.004",
+            "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4"
+          },
+          {
+            "id": "260219_dum.HSV1.005",
+            "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
+          },
+          {
+            "id": "260217_sklad.PSV77.001",
+            "popis": "Betonová dlažba do pískového lože — povrch podlahy skladu (~21 m²)"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "6",
+        "label": "Úpravy povrchů, omítky vnitřní/vnější, ETICS",
+        "n_items": 18,
+        "samples": [
+          {
+            "id": "260219_dum.HSV2.003",
+            "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění"
+          },
+          {
+            "id": "260219_dum.HSV2.008",
+            "popis": "Bednění pozedního věnce systémové oboustranné"
+          },
+          {
+            "id": "260219_dum.HSV4.009",
+            "popis": "Plastická perlitbetonová roznášecí vrstva tl. 50 mm nad zásypem klenby"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "7",
+        "label": "Konstrukce ostatní (izolace, výplně otvorů, klempířina, podlahy, malby, obklady)",
+        "n_items": 79,
+        "samples": [
+          {
+            "id": "260219_dum.HSV2.005",
+            "popis": "Separační PE fólie pod základovou patou bílé vany (povinná dle ČBS 02)"
+          },
+          {
+            "id": "260219_dum.HSV3.005",
+            "popis": "Zesílení ostění úhelníky L100/10 dvojicí u otvoru u komínového tělesa (statická "
+          },
+          {
+            "id": "260219_dum.HSV4.011",
+            "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 6"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "8",
+        "label": "Trubní vedení (kanalizace venkovní, vodovod venkovní)",
+        "n_items": 0,
+        "samples": [],
+        "gap_flag": true
+      },
+      {
+        "tkp_family": "9",
+        "label": "Ostatní konstrukce (bourání, demolice, lešení, přesun hmot, VRN konstrukčního charakteru)",
+        "n_items": 18,
+        "samples": [
+          {
+            "id": "260217_sklad.HSV1.001",
+            "popis": "Sejmutí ornice a demolice stávajících kamenných zídek a schodiště v místě nového"
+          },
+          {
+            "id": "260219_dum.HSV3.006",
+            "popis": "Dočasné podstojkování stávajících přiléhajících stropů při osazování IPN překlad"
+          },
+          {
+            "id": "260219_dum.HSV4.007",
+            "popis": "Vyvezení původního zásypu z cihelné klenby 1.PP/1.NP — manuálně + odvoz"
+          }
+        ],
+        "gap_flag": false
+      }
+    ]
+  },
+  "section_B_subdodavatel_coverage": {
+    "_purpose": "Each mapped trade (37) should have ≥1 item OR explicit not_in_scope.",
+    "n_trades_total": 36,
+    "n_trades_with_items": 36,
+    "n_trades_missing": 0,
+    "trades": [
+      {
+        "trade": "zemni_prace",
+        "label_cz": "Zemní práce",
+        "n_items": 12,
+        "kapitoly_expected": [
+          "HSV-1"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "zelezobetonarsky_specialny",
+        "label_cz": "ŽB práce — komplexní (bednění + výztuž + betonáž + ošetření)",
+        "n_items": 12,
+        "kapitoly_expected": [
+          "HSV-2"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "bila_vana_csb02",
+        "label_cz": "Bílá vana ČBS 02 — specialista (těsnění + dohled betonáže)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "HSV-2"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "bednici_tesar",
+        "label_cz": "Bednící tesař (systémové bednění + odbednění)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "HSV-2",
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "zednik",
+        "label_cz": "Zedník",
+        "n_items": 11,
+        "kapitoly_expected": [
+          "HSV-3",
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "ocel_zamecnik_konstrukce",
+        "label_cz": "Zámečník ocelových konstrukcí — IPE/HEA/UPE/L (dodávka + montáž)",
+        "n_items": 8,
+        "kapitoly_expected": [
+          "HSV-3",
+          "HSV-4",
+          "HSV-5",
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "ocelobeton_strop_IPE_trapez",
+        "label_cz": "Ocelobetonový strop hybridní (IPE + trapéz + nabetonávka) — komplexní dodavatel",
+        "n_items": 6,
+        "kapitoly_expected": [
+          "HSV-4"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "krov_tesarsky_kompletni",
+        "label_cz": "Tesařský krov — komplexní (krokve + kleštiny + pozednice + bednění + PIR + kontralatě)",
+        "n_items": 10,
+        "kapitoly_expected": [
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "plech_falcovany_hlinik",
+        "label_cz": "Klempíř — falcovaná hliníková krytina (specialista)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "klempir",
+        "label_cz": "Klempíř (plech Pzn lakovaný + falcování + svody)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "HSV-4",
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "bourani_demolice",
+        "label_cz": "Demoliční práce (manuální + odvoz + likvidace)",
+        "n_items": 18,
+        "kapitoly_expected": [
+          "HSV-6"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "fasadnik_etics",
+        "label_cz": "Fasádník ETICS (kontaktní zateplení + omítka)",
+        "n_items": 6,
+        "kapitoly_expected": [
+          "HSV-7"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "izolater_HI",
+        "label_cz": "Izolatér hydroizolace (asfaltové pásy + folie)",
+        "n_items": 7,
+        "kapitoly_expected": [
+          "PSV-71"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "izolater_TI",
+        "label_cz": "Izolatér tepelná izolace (EPS, MW, PIR)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "PSV-71"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "vodar",
+        "label_cz": "Instalatér ZTI (vodovod + kanalizace + sanita)",
+        "n_items": 9,
+        "kapitoly_expected": [
+          "PSV-72"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "topenar",
+        "label_cz": "Topenář (ÚT rozvody + kotle + radiátory + TUV)",
+        "n_items": 5,
+        "kapitoly_expected": [
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "specialista_TC_multisplit",
+        "label_cz": "Specialista tepelné čerpadlo + chlazení (multisplit)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "kominik",
+        "label_cz": "Kominík — revize a údržba komínů",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "okennar",
+        "label_cz": "Okenář (plastová okna + venkovní žaluzie)",
+        "n_items": 8,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "truhlar",
+        "label_cz": "Truhlář (vnitřní dveře, dřevěné stupně schodiště, vestavby)",
+        "n_items": 3,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "zamecnik_PSV",
+        "label_cz": "Zámečník PSV (zábradlí, schodiště ocel, stříšky)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "podlahar",
+        "label_cz": "Podlahář (suchá + mokrá skladba + nášlap)",
+        "n_items": 9,
+        "kapitoly_expected": [
+          "PSV-77"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "malir",
+        "label_cz": "Malíř (interiérová výmalba + tmely)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "obkladac",
+        "label_cz": "Obkladač (keramický obklad koupelny, kuchyně)",
+        "n_items": 7,
+        "kapitoly_expected": [
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "sadrokartonar",
+        "label_cz": "Sádrokartonář (SDK podhledy, předstěny, suché podlahy)",
+        "n_items": 5,
+        "kapitoly_expected": [
+          "HSV-4",
+          "PSV-77",
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "elektroinstalater",
+        "label_cz": "Elektroinstalatér silnoproud (kompletní ELI + příprava FVE)",
+        "n_items": 7,
+        "kapitoly_expected": [
+          "M-21"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "revize_specialista",
+        "label_cz": "Revize (ELI, hydrant, komín, plyn)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "M-21",
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "VRN_management",
+        "label_cz": "VRN — generální dodavatel (zařízení staveniště, BOZP, doprava, likvidace)",
+        "n_items": 11,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "geodet",
+        "label_cz": "Geodet (vytýčení, polohopis, výškopis)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "specialista_RC3_dvere",
+        "label_cz": "Specialista bezpečnostní dveře RC3 (sklad)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "prefa_bloky_specialista",
+        "label_cz": "Specialista prefa bloků s autem s hydraulickou rukou (Herkul H-BLOK)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "HSV-3"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "okenni_zaluzie_kastlik_purenit",
+        "label_cz": "Okenář + venkovní žaluzie v kastlíku s purenitovou izolací",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "biodeska_konstrukcni",
+        "label_cz": "Konstrukční biodeska (smrk masiv / OSB / X-LAM) pro půdní vestavby a nášlapy",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-77",
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "instalater_TUV_akumulacni_zasobnik",
+        "label_cz": "Instalatér akumulačního zásobníku TUV pro multivariantní topný systém",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-72",
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "mykolog",
+        "label_cz": "Autorizovaný mykolog dřeva (specialty surveyor)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "azbestovy_specialista",
+        "label_cz": "Autorizovaný technik azbestu (odběr + laboratorní posudek)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      }
+    ]
+  },
+  "section_C_rd_anchor_checklist": {
+    "_purpose": "~70 typical works for Czech RD rekonstrukce + nástavba.",
+    "n_anchors_total": 67,
+    "n_applicable": 66,
+    "n_ok": 59,
+    "n_missing": 7,
+    "n_na": 1,
+    "anchors": [
+      {
+        "anchor_id": "D01",
+        "label": "Bourání plechové krytiny",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV5.013",
+          "260219_dum.HSV6.002",
+          "260219_dum.PSV76.003"
+        ],
+        "keywords_used": [
+          "bourani plech",
+          "demontaz plech",
+          "krytina"
+        ]
+      },
+      {
+        "anchor_id": "D02",
+        "label": "Bourání keramických obkladů",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.HSV6.007",
+          "260219_dum.PSV77.002",
+          "260219_dum.PSV77.003"
+        ],
+        "keywords_used": [
+          "bourani obkladu",
+          "demontaz obklad",
+          "keramick"
+        ]
+      },
+      {
+        "anchor_id": "D03",
+        "label": "Bourání příček + zdiva",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV3.007",
+          "260219_dum.HSV4.001"
+        ],
+        "keywords_used": [
+          "bourani pricek",
+          "bourani zdiva",
+          "pricky"
+        ]
+      },
+      {
+        "anchor_id": "D04",
+        "label": "Bourání podlah",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV6.008"
+        ],
+        "keywords_used": [
+          "bourani podlah",
+          "demontaz podlah"
+        ]
+      },
+      {
+        "anchor_id": "D05",
+        "label": "Bourání střešní krytiny + krov",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "bourani strech",
+          "bourani krov",
+          "demolice krytiny"
+        ]
+      },
+      {
+        "anchor_id": "D06",
+        "label": "Demontáž oken + dveří",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "demontaz okna",
+          "demontaz dvere",
+          "vybourani okna"
+        ]
+      },
+      {
+        "anchor_id": "D07",
+        "label": "Odstranění komínu",
+        "applicable": false,
+        "status": "n_a",
+        "n_hits": 0,
+        "sample_ids": [],
+        "applicability_reason": "demolice_komin = False per project metadata"
+      },
+      {
+        "anchor_id": "Z01",
+        "label": "Sejmutí ornice",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.001",
+          "260217_sklad.HSV1.001"
+        ],
+        "keywords_used": [
+          "sejmuti ornic",
+          "ornice"
+        ]
+      },
+      {
+        "anchor_id": "Z02",
+        "label": "Hloubení rýh pro pasy",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.002",
+          "260217_sklad.HSV1.003"
+        ],
+        "keywords_used": [
+          "hloubeni ryh"
+        ]
+      },
+      {
+        "anchor_id": "Z03",
+        "label": "Hloubení jam (figury nepoužívat)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.003",
+          "260217_sklad.HSV1.002"
+        ],
+        "keywords_used": [
+          "hloubeni jam"
+        ]
+      },
+      {
+        "anchor_id": "Z04",
+        "label": "Odvoz výkopku na deponii",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.007",
+          "260217_sklad.HSV1.006"
+        ],
+        "keywords_used": [
+          "odvoz vykopku",
+          "vodorovne premisteni"
+        ]
+      },
+      {
+        "anchor_id": "Z05",
+        "label": "Štěrkopískový zásyp / podsyp",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV1.005",
+          "260219_dum.HSV1.008",
+          "260217_sklad.HSV1.005"
+        ],
+        "keywords_used": [
+          "zasyp",
+          "podsyp",
+          "sterkopisk"
+        ]
+      },
+      {
+        "anchor_id": "Z06",
+        "label": "Pažení výkopů (pokud nutno)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV1.006"
+        ],
+        "keywords_used": [
+          "pazeni",
+          "rozepreni"
+        ]
+      },
+      {
+        "anchor_id": "B01",
+        "label": "Základové pasy / patky",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 11,
+        "sample_ids": [
+          "260219_dum.HSV1.002",
+          "260217_sklad.HSV1.003",
+          "260217_sklad.HSV1.005"
+        ],
+        "keywords_used": [
+          "zaklad pas",
+          "zaklad patk",
+          "patky",
+          "pas"
+        ]
+      },
+      {
+        "anchor_id": "B02",
+        "label": "Základová deska na terénu",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV2.012"
+        ],
+        "keywords_used": [
+          "zb deska",
+          "zakladova deska"
+        ]
+      },
+      {
+        "anchor_id": "B03",
+        "label": "Pozední věnec",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV2.007",
+          "260219_dum.HSV2.008",
+          "260219_dum.HSV2.009"
+        ],
+        "keywords_used": [
+          "pozedni venec",
+          "venec"
+        ]
+      },
+      {
+        "anchor_id": "B04",
+        "label": "Nabetonávka stropu",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV2.010",
+          "260219_dum.HSV2.011"
+        ],
+        "keywords_used": [
+          "nabetonavk"
+        ]
+      },
+      {
+        "anchor_id": "B05",
+        "label": "Hydroizolace pod základ (BV)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV2.001",
+          "260219_dum.HSV2.002",
+          "260219_dum.HSV2.003"
+        ],
+        "keywords_used": [
+          "bila vana",
+          "hydroizolac",
+          "separac pe"
+        ]
+      },
+      {
+        "anchor_id": "B06",
+        "label": "Bednění + odbednění ŽB",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.HSV2.003",
+          "260219_dum.HSV2.008",
+          "260217_sklad.HSV2.003"
+        ],
+        "keywords_used": [
+          "bedneni",
+          "odbedneni"
+        ]
+      },
+      {
+        "anchor_id": "S01",
+        "label": "Cihelné zdivo + překlady",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV3.003",
+          "260219_dum.HSV3.004"
+        ],
+        "keywords_used": [
+          "cihelne zdivo",
+          "preklady"
+        ]
+      },
+      {
+        "anchor_id": "S02",
+        "label": "Nadezdívka / dozdívka",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV2.007",
+          "260219_dum.HSV3.001",
+          "260219_dum.HSV3.002"
+        ],
+        "keywords_used": [
+          "nadezdivk",
+          "dozdivk"
+        ]
+      },
+      {
+        "anchor_id": "S03",
+        "label": "SDK příčky + předstěny",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV6.005",
+          "260219_dum.PSV78.005",
+          "260219_dum.PSV78.006"
+        ],
+        "keywords_used": [
+          "sdk pricky",
+          "predsteny",
+          "sadrokarton"
+        ]
+      },
+      {
+        "anchor_id": "V01",
+        "label": "Strop ocelobetonový (IPE+trapéz)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 11,
+        "sample_ids": [
+          "260217_sklad.HSV1.004",
+          "260217_sklad.HSV1.005",
+          "260219_dum.HSV2.010"
+        ],
+        "keywords_used": [
+          "strop ocelobeton",
+          "ipe",
+          "trapez"
+        ]
+      },
+      {
+        "anchor_id": "V02",
+        "label": "Schodiště (ŽB / dřevěné)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260217_sklad.HSV1.001",
+          "260217_sklad.HSV2.005",
+          "260217_sklad.HSV2.006"
+        ],
+        "keywords_used": [
+          "schodist"
+        ]
+      },
+      {
+        "anchor_id": "V03",
+        "label": "Krov dřevěný + krokve",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 20,
+        "sample_ids": [
+          "260219_dum.HSV5.001",
+          "260219_dum.HSV5.002",
+          "260219_dum.HSV5.003"
+        ],
+        "keywords_used": [
+          "krov",
+          "krokve",
+          "krokev"
+        ]
+      },
+      {
+        "anchor_id": "V04",
+        "label": "Bednění krovu / OSB",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV5.007",
+          "260219_dum.HSV5.014",
+          "260219_dum.PSV77.004"
+        ],
+        "keywords_used": [
+          "bedneni krov",
+          "osb",
+          "biodeska"
+        ]
+      },
+      {
+        "anchor_id": "K01",
+        "label": "Falcovaná plechová krytina",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV5.013",
+          "260219_dum.HSV5.016",
+          "260219_dum.PSV76.003"
+        ],
+        "keywords_used": [
+          "falcovan",
+          "plechova krytina"
+        ]
+      },
+      {
+        "anchor_id": "K02",
+        "label": "Klempířina — atika",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV3.001",
+          "260219_dum.PSV76.004",
+          "260219_dum.PSV76.001"
+        ],
+        "keywords_used": [
+          "klempir atik",
+          "atik"
+        ]
+      },
+      {
+        "anchor_id": "K03",
+        "label": "Klempířina — okap + svod",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV76.003"
+        ],
+        "keywords_used": [
+          "okap",
+          "svod"
+        ]
+      },
+      {
+        "anchor_id": "K04",
+        "label": "Klempířina — parapety",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV76.002"
+        ],
+        "keywords_used": [
+          "parapet"
+        ]
+      },
+      {
+        "anchor_id": "F01",
+        "label": "ETICS zateplení (EPS/MW)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 6,
+        "sample_ids": [
+          "260219_dum.HSV7.001",
+          "260219_dum.HSV7.002",
+          "260219_dum.HSV7.003"
+        ],
+        "keywords_used": [
+          "etics",
+          "kontaktni zatepleni"
+        ]
+      },
+      {
+        "anchor_id": "F02",
+        "label": "Sokl XPS / tenkostěnný",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV7.003",
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV77.006"
+        ],
+        "keywords_used": [
+          "sokl xps",
+          "sokl"
+        ]
+      },
+      {
+        "anchor_id": "F03",
+        "label": "Špalety oken (perimeter EPS)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV7.004"
+        ],
+        "keywords_used": [
+          "spalet"
+        ]
+      },
+      {
+        "anchor_id": "F04",
+        "label": "Tenkovrstvá omítka fasády",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV7.006"
+        ],
+        "keywords_used": [
+          "tenkovrstv",
+          "fasada omitka"
+        ]
+      },
+      {
+        "anchor_id": "O01",
+        "label": "Plastová okna trojsklem",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 7,
+        "sample_ids": [
+          "260219_dum.PSV76.001",
+          "260219_dum.PSV76.002",
+          "260219_dum.PSV76.003"
+        ],
+        "keywords_used": [
+          "okno",
+          "plastov okna"
+        ]
+      },
+      {
+        "anchor_id": "O02",
+        "label": "Vstupní dveře venkovní",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV76.009"
+        ],
+        "keywords_used": [
+          "vstupni dvere",
+          "venkovni dvere"
+        ]
+      },
+      {
+        "anchor_id": "O03",
+        "label": "Vnitřní dveře + zárubně",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV76.010",
+          "260217_sklad.PSV76.001"
+        ],
+        "keywords_used": [
+          "vnitrni dvere",
+          "zarubn"
+        ]
+      },
+      {
+        "anchor_id": "O04",
+        "label": "Venkovní žaluzie / kastlík",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV76.008"
+        ],
+        "keywords_used": [
+          "zaluzie",
+          "kastlik"
+        ]
+      },
+      {
+        "anchor_id": "I01",
+        "label": "TI mezi krokvemi / nad krovem",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV2.004",
+          "260219_dum.HSV5.007",
+          "260219_dum.HSV5.008"
+        ],
+        "keywords_used": [
+          "ti krov",
+          "nad krokve",
+          "mezi krokv",
+          "pir"
+        ]
+      },
+      {
+        "anchor_id": "I02",
+        "label": "Podlahová TI (EPS)",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "eps podlah",
+          "podlahov eps",
+          "tepelna izolace podlah"
+        ]
+      },
+      {
+        "anchor_id": "I03",
+        "label": "Kročejová izolace",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV71.002"
+        ],
+        "keywords_used": [
+          "krocejov"
+        ]
+      },
+      {
+        "anchor_id": "I04",
+        "label": "Hydroizolace koupelen (stěrka)",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "hydroizolac koupeln",
+          "sterka koupeln"
+        ]
+      },
+      {
+        "anchor_id": "P01",
+        "label": "Cementový potěr / lite směs",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV71.001",
+          "260219_dum.PSV77.005"
+        ],
+        "keywords_used": [
+          "potěr",
+          "potřr",
+          "anhydrit",
+          "lit smes",
+          "samonivelacni"
+        ]
+      },
+      {
+        "anchor_id": "P02",
+        "label": "Vinyl / laminát nášlap",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 5,
+        "sample_ids": [
+          "260219_dum.PSV77.001",
+          "260219_dum.PSV77.002",
+          "260219_dum.PSV77.003"
+        ],
+        "keywords_used": [
+          "vinyl",
+          "laminat",
+          "naslapn"
+        ]
+      },
+      {
+        "anchor_id": "P03",
+        "label": "Keramická dlažba",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV1.004",
+          "260219_dum.PSV77.002",
+          "260219_dum.PSV77.003"
+        ],
+        "keywords_used": [
+          "dlazba"
+        ]
+      },
+      {
+        "anchor_id": "P04",
+        "label": "Sokl k podlaze",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV7.003",
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV77.006"
+        ],
+        "keywords_used": [
+          "sokl"
+        ]
+      },
+      {
+        "anchor_id": "U01",
+        "label": "Vnitřní omítka štuková",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 7,
+        "sample_ids": [
+          "260219_dum.HSV7.004",
+          "260219_dum.HSV7.006",
+          "260219_dum.PSV76.008"
+        ],
+        "keywords_used": [
+          "omítk",
+          "omitk",
+          "stuk"
+        ]
+      },
+      {
+        "anchor_id": "U02",
+        "label": "Obklad koupelen keramický",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV78.008",
+          "260219_dum.PSV78.009",
+          "260219_dum.PSV78.010"
+        ],
+        "keywords_used": [
+          "obklad koupeln",
+          "keramick obklad"
+        ]
+      },
+      {
+        "anchor_id": "U03",
+        "label": "Výmalba — finalní",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 9,
+        "sample_ids": [
+          "260219_dum.HSV3.002",
+          "260219_dum.HSV3.004",
+          "260219_dum.HSV7.001"
+        ],
+        "keywords_used": [
+          "vymalb",
+          "natěr",
+          "nater",
+          "mal"
+        ]
+      },
+      {
+        "anchor_id": "T01",
+        "label": "Vodovod vnitřní rozvody",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "vodovod rozvod",
+          "rozvody vodovod"
+        ]
+      },
+      {
+        "anchor_id": "T02",
+        "label": "Kanalizace splašková",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV72.003"
+        ],
+        "keywords_used": [
+          "kanalizace splask",
+          "odpadni rozvod",
+          "ht potrubi"
+        ]
+      },
+      {
+        "anchor_id": "T03",
+        "label": "Vytápění radiátory + rozvody",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.PSV73.001",
+          "260219_dum.PSV73.002",
+          "260219_dum.PSV73.003"
+        ],
+        "keywords_used": [
+          "radiator",
+          "topen rozvod",
+          "vytapeni"
+        ]
+      },
+      {
+        "anchor_id": "T04",
+        "label": "Tepelné čerpadlo / kotel",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV72.009",
+          "260219_dum.PSV73.003",
+          "260219_dum.PSV73.005"
+        ],
+        "keywords_used": [
+          "tepelne cerpadlo",
+          "elektrokotel",
+          "kotel"
+        ]
+      },
+      {
+        "anchor_id": "T05",
+        "label": "Komín / komínové těleso",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV3.005",
+          "260219_dum.PSV73.002",
+          "260219_dum.PSV73.004"
+        ],
+        "keywords_used": [
+          "komin"
+        ]
+      },
+      {
+        "anchor_id": "T06",
+        "label": "Sanita — WC, umyvadlo, vana",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV6.011",
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV77.002"
+        ],
+        "keywords_used": [
+          "sanit",
+          "wc",
+          "umyvadl",
+          "vana koupeln",
+          "sprch"
+        ]
+      },
+      {
+        "anchor_id": "T07",
+        "label": "ELI silnoproud — rozvody",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 7,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.002",
+          "260219_dum.M21.003"
+        ],
+        "keywords_used": [
+          "eli silnoproud",
+          "silnoprou",
+          "elektroinstalac"
+        ]
+      },
+      {
+        "anchor_id": "T08",
+        "label": "ELI svítidla + zásuvky",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.004",
+          "260219_dum.M21.005"
+        ],
+        "keywords_used": [
+          "svitidl",
+          "zasuvk",
+          "vypin"
+        ]
+      },
+      {
+        "anchor_id": "T09",
+        "label": "PD / detekce požární",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV95.001",
+          "260219_dum.PSV95.002"
+        ],
+        "keywords_used": [
+          "detekce poz",
+          "edhp",
+          "detekce kour"
+        ]
+      },
+      {
+        "anchor_id": "R01",
+        "label": "Zařízení staveniště + buňky",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 6,
+        "sample_ids": [
+          "260219_dum.HSV5.012",
+          "260219_dum.VRN.001",
+          "260219_dum.VRN.002"
+        ],
+        "keywords_used": [
+          "zarizeni staveni",
+          "bunk",
+          "ZS"
+        ]
+      },
+      {
+        "anchor_id": "R02",
+        "label": "Geodet + vytýčení",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.VRN.001",
+          "260217_sklad.VRN.001"
+        ],
+        "keywords_used": [
+          "geodet",
+          "vytyceni"
+        ]
+      },
+      {
+        "anchor_id": "R03",
+        "label": "BOZP koordinátor",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.VRN.001",
+          "260217_sklad.VRN.001"
+        ],
+        "keywords_used": [
+          "bozp"
+        ]
+      },
+      {
+        "anchor_id": "R04",
+        "label": "Odpady — odvoz na skládku",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.HSV1.007",
+          "260219_dum.HSV6.012",
+          "260219_dum.PSV72.003"
+        ],
+        "keywords_used": [
+          "odpad",
+          "skladkovne",
+          "skladkov"
+        ]
+      },
+      {
+        "anchor_id": "R05",
+        "label": "Revize závěrečné",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.PSV72.001",
+          "260219_dum.PSV73.007",
+          "260219_dum.M21.007"
+        ],
+        "keywords_used": [
+          "reviz"
+        ]
+      },
+      {
+        "anchor_id": "R06",
+        "label": "Dokumentace skutečného provedení",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "DSP skuteč",
+          "dokument provedeni"
+        ]
+      },
+      {
+        "anchor_id": "R07",
+        "label": "Pojištění stavby",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.VRN.001",
+          "260219_dum.VRN.002",
+          "260217_sklad.VRN.001"
+        ],
+        "keywords_used": [
+          "pojiste"
+        ]
+      },
+      {
+        "anchor_id": "R08",
+        "label": "Energie staveniště",
+        "applicable": true,
+        "status": "missing",
+        "n_hits": 0,
+        "sample_ids": [],
+        "keywords_used": [
+          "energie staveni"
+        ]
+      },
+      {
+        "anchor_id": "R09",
+        "label": "Kolaudace",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.M21.007",
+          "260219_dum.VRN.001",
+          "260219_dum.VRN.001"
+        ],
+        "keywords_used": [
+          "kolaudac"
+        ]
+      }
+    ]
+  },
+  "section_D_tz_verb_scan": {
+    "_purpose": "Regex 'provedení X' / 'montáž Y' / 'instalace Z' in TZ → coverage check in items.",
+    "n_tz_files_scanned": 7,
+    "n_unique_verb_phrases": 70,
+    "n_covered_in_items": 16,
+    "n_uncovered": 54,
+    "_caveat": "Token coverage is fuzzy; FAR-uncovered items may still be present via different phrasing. Manual review of uncovered list recommended.",
+    "phrases": [
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "nosných konstrukcí",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "nosnych",
+          "konstrukci"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "stavby",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "stavby"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "nadezdívek",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "nadezdivek"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "stavby před vlastním zahájením stavby",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "stavby",
+          "pred",
+          "vlastnim"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "podlah 1/300 rozponu",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "podlah",
+          "1/300",
+          "rozponu"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "stavby je nutné zejména řešit definitivní pr ůřezy",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "stavby",
+          "nutne",
+          "zejmena"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "železobetonových konstrukcí se řídí požadavky uvedenými v ČSN",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "zelezobetonovych",
+          "konstrukci",
+          "ridi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "ocelových konstrukcí se řídí požadavky uvedenými v ČSN",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "ocelovych",
+          "konstrukci",
+          "ridi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "zd ěných konstrukcí se řídí požadavky uvedenými v",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "enych",
+          "konstrukci",
+          "ridi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "d řevěných konstrukcí se řídí požadavky uvedenými v",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "revenych",
+          "konstrukci",
+          "ridi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "bude provád ěno postupným rozebíráním stavebních konstrukcí z",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "bude",
+          "provad",
+          "postupnym"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "nosných prvk ů musí probíhat od podepíraných k",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "nosnych",
+          "prvk",
+          "musi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "stropních",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "stropnich"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "částí konstrukcí nesmí být narušena",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "casti",
+          "konstrukci",
+          "nesmi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "prováděno ze samostatné pomocné konstrukce",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "provadeno",
+          "samostatne",
+          "pomocne"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "nosných konstrukcí se provádí",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "nosnych",
+          "konstrukci",
+          "provadi"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_dum_TeAnau.pdf",
+        "verb_phrase": "příček se musí vždy ov ěřit",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "pricek",
+          "musi",
+          "vzdy"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "a vybavení",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "vybaveni"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "požárního zásahu",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "pozarniho",
+          "zasahu"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "bezpečného zásahu",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "bezpecneho",
+          "zasahu"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "krbu musí odpovídat požadavkům uvedeným v",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "krbu",
+          "musi",
+          "odpovidat"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "dle části j1) této zprávy",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "casti",
+          "teto",
+          "zpravy"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "a provedení krbu",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "provedeni",
+          "krbu"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "SHZ se nenavrhuje",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "nenavrhuje"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "do objektu se mohou pouze tepeln á zařízení",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "objektu",
+          "mohou",
+          "pouze"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "a provozování tepelného zařízení je nutné se řídit",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "provozovani",
+          "tepelneho",
+          "zarizeni"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "izolační podložky st anoví výrobce",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "izolacni",
+          "podlozky",
+          "anovi"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "pouze tepelné zařízení",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "pouze",
+          "tepelne",
+          "zarizeni"
+        ]
+      },
+      {
+        "tz_file": "D_3_PBR_dum_TUSPO.pdf",
+        "verb_phrase": "požárních klapek",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "pozarnich",
+          "klapek"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "v podobě šikmé střechy s vikýři",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "podobe",
+          "sikme",
+          "strechy"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "pouze vybourání a rozšíření několika dveřních a okenních",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "pouze",
+          "vybourani",
+          "rozsireni"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "několik lokálních dozdívek a přizdívek",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "nekolik",
+          "lokalnich",
+          "dozdivek"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "dle PBŘ a návrhu statika)",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "navrhu",
+          "statika)"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "bednění z prken a následně",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "bedneni",
+          "prken",
+          "nasledne"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "do spacího patra v krovu",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "spaciho",
+          "patra",
+          "krovu"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "jako ocelová",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "jako",
+          "ocelova"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "lokální",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "lokalni"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "dle standard ů",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "standard"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "jako zapuštěné",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "jako",
+          "zapustene"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "vyspravení stávajících stěn",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "vyspraveni",
+          "stavajicich",
+          "sten"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "zejména oplechování střechy",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "zejmena",
+          "oplechovani",
+          "strechy"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "terasových prken z garapy na roznášecí hliníkový rošt",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "terasovych",
+          "prken",
+          "garapy"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "schodiště z opěrné zídky do objektu ze zahrady",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "schodiste",
+          "operne",
+          "zidky"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "i schodiště ve 3",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "schodiste"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "překladu",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "prekladu"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "schodiště do krovu je část kleštin vynechána",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "schodiste",
+          "krovu",
+          "cast"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "venkovních žaluzií",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "venkovnich",
+          "zaluzii"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "a demontáže",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "demontaze"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "stávající střechy a krovové konstrukce",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "stavajici",
+          "strechy",
+          "krovove"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "otvorů do nosných a obvodových stěn bude postupo",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "otvoru",
+          "nosnych",
+          "obvodovych"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "zásypů podlah",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "zasypu",
+          "podlah"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "zásyp",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "zasyp"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "a rozšíření několika dveřních a okenních o tvorů",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "rozsireni",
+          "nekolika",
+          "dvernich"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+        "verb_phrase": "a případná",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "pripadna"
+        ]
+      },
+      {
+        "tz_file": "D_2_1_TZ_statika_sklad_TeAnau.pdf",
+        "verb_phrase": "hydroizola ční st řešní",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "hydroizola",
+          "resni"
+        ]
+      },
+      {
+        "tz_file": "D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+        "verb_phrase": "bloků bude i statické řešení umístění bloků a",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "bloku",
+          "bude",
+          "staticke"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "zateplení celého objektu",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "zatepleni",
+          "celeho",
+          "objektu"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "stavebních úprav bude objekt nadále využíván jako rodinný",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "stavebnich",
+          "uprav",
+          "bude"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "otvorů",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "otvoru"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "osvětlení",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "osvetleni"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "dle platných předpisů",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "platnych",
+          "predpisu"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "s kastlíkem",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "kastlikem"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "vrstvy izolace proti vlhkosti a",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "vrstvy",
+          "izolace",
+          "proti"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "ověření skutečného stavu a provedeno upřesnění navrhovaných z",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "overeni",
+          "skutecneho",
+          "stavu"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "jejich ověření",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "jejich",
+          "overeni"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "podrobné ohledání",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "podrobne",
+          "ohledani"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "kontroln ích prohlídek",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "kontroln",
+          "prohlidek"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "Vodovod",
+        "covered_in_items": true,
+        "lookup_tokens": [
+          "vodovod"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "na stávajícím domě a b ourání stávající",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "stavajicim",
+          "dome",
+          "ourani"
+        ]
+      },
+      {
+        "tz_file": "B_Souhrnna_TZ_EAR.pdf",
+        "verb_phrase": "v rámci budov y viz výkresová dokumentace",
+        "covered_in_items": false,
+        "lookup_tokens": [
+          "ramci",
+          "budov",
+          "vykresova"
+        ]
+      }
+    ]
+  },
+  "_summary": {
+    "tkp_gaps": 1,
+    "subdodavatel_gaps": 0,
+    "anchor_missing": 7,
+    "tz_phrases_uncovered": 54
+  }
+}

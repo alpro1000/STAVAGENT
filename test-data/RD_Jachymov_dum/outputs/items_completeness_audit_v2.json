@@ -1,0 +1,3322 @@
+{
+  "_schema_version": "2.0",
+  "_generated_at": "2026-05-19",
+  "_generated_by": "tools/completeness_check_v2.py",
+  "_items_total": 208,
+  "_rooms_total": 25,
+  "_sections_present": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+  ],
+  "section_A_tkp_coverage": {
+    "coverage": [
+      {
+        "tkp_family": "0",
+        "label": "VRN, společné konstrukce, ZS, doprava",
+        "n_items": 17,
+        "samples": [
+          {
+            "id": "260219_dum.VRN.001",
+            "popis": "Zařízení staveniště — buňka kancelář + sociální buňka (WC + šatna), pronájem ~8 "
+          },
+          {
+            "id": "260219_dum.VRN.002",
+            "popis": "Mobilní chemické WC TOI TOI pro pracovníky — pronájem ~8 měsíců"
+          },
+          {
+            "id": "260219_dum.VRN.003",
+            "popis": "El. odběr stavby (zřízení staveništního rozvaděče + měřič) + vodovodní odběr (zř"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "1",
+        "label": "Zemní práce (sejmutí ornice, hloubení rýh/jam, výkopy)",
+        "n_items": 12,
+        "samples": [
+          {
+            "id": "260219_dum.HSV1.001",
+            "popis": "Sejmutí ornice tl. 100 mm na ploše budoucí opěrné stěny a anglického dvorku"
+          },
+          {
+            "id": "260219_dum.HSV1.002",
+            "popis": "Hloubení rýh š. do 60 cm pro pas opěrné stěny bílé vany v zemině třídy 3 (F4-CS)"
+          },
+          {
+            "id": "260219_dum.HSV1.003",
+            "popis": "Hloubení jam nezapažených pro anglický dvorek a nový vstup do 1.PP ze zahrady, h"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "2",
+        "label": "Základové konstrukce, ŽB pasy/desky/věnce, hydroizolace",
+        "n_items": 22,
+        "samples": [
+          {
+            "id": "260219_dum.HSV2.001",
+            "popis": "Bílá vana ČBS 02 — pata úhlové opěrné stěny 250×1200 mm × L=10 m, C25/30 XC3 XF1"
+          },
+          {
+            "id": "260219_dum.HSV2.002",
+            "popis": "Bílá vana ČBS 02 — stěna úhlová tl. 250 mm × výška 2050 mm × L=10 m, beton C25/3"
+          },
+          {
+            "id": "260219_dum.HSV2.004",
+            "popis": "Výztuž bílé vany B500B 120 kg/m³ (empirická sazba Methvin pro úhlové opěrné stěn"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "3",
+        "label": "Svislé konstrukce (zdivo, příčky, sloupy)",
+        "n_items": 12,
+        "samples": [
+          {
+            "id": "260217_sklad.HSV2.003",
+            "popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300"
+          },
+          {
+            "id": "260219_dum.HSV3.001",
+            "popis": "Lokální dozdívky a přizdívky z cihel plných pálených P10 na MVC M10 (uvedeno v T"
+          },
+          {
+            "id": "260219_dum.HSV3.002",
+            "popis": "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry,"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "4",
+        "label": "Vodorovné konstrukce (stropy, schodiště, překlady)",
+        "n_items": 9,
+        "samples": [
+          {
+            "id": "260219_dum.HSV4.001",
+            "popis": "Ocelová stropnice IPE180 1.NP v pozici nové příčky 2.NP — dodávka + montáž (1 ks"
+          },
+          {
+            "id": "260219_dum.HSV4.002",
+            "popis": "Ocelobetonový strop 2.NP/3.NP — stropnice IPE180 á 1000 mm × rozpon ~8 m × ~8 ks"
+          },
+          {
+            "id": "260219_dum.HSV4.003",
+            "popis": "Ocelobetonový strop — výztuha 2×HEA180 trakt do ulice (Fibichova), dl. ~10 m"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "5",
+        "label": "Komunikace, zpevněné plochy, dlažby (NA mostech / silnicích — pro RD typicky 564 chodník + dvorek)",
+        "n_items": 3,
+        "samples": [
+          {
+            "id": "260219_dum.HSV1.004",
+            "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4"
+          },
+          {
+            "id": "260219_dum.HSV1.005",
+            "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
+          },
+          {
+            "id": "260217_sklad.PSV77.001",
+            "popis": "Betonová dlažba do pískového lože — povrch podlahy skladu (~21 m²)"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "6",
+        "label": "Úpravy povrchů, omítky vnitřní/vnější, ETICS",
+        "n_items": 18,
+        "samples": [
+          {
+            "id": "260219_dum.HSV2.003",
+            "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění"
+          },
+          {
+            "id": "260219_dum.HSV2.008",
+            "popis": "Bednění pozedního věnce systémové oboustranné"
+          },
+          {
+            "id": "260219_dum.HSV4.009",
+            "popis": "Plastická perlitbetonová roznášecí vrstva tl. 50 mm nad zásypem klenby"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "7",
+        "label": "Konstrukce ostatní (izolace, výplně otvorů, klempířina, podlahy, malby, obklady)",
+        "n_items": 94,
+        "samples": [
+          {
+            "id": "260219_dum.HSV2.005",
+            "popis": "Separační PE fólie pod základovou patou bílé vany (povinná dle ČBS 02)"
+          },
+          {
+            "id": "260219_dum.HSV3.005",
+            "popis": "Zesílení ostění úhelníky L100/10 dvojicí u otvoru u komínového tělesa (statická "
+          },
+          {
+            "id": "260219_dum.HSV4.011",
+            "popis": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 6"
+          }
+        ],
+        "gap_flag": false
+      },
+      {
+        "tkp_family": "8",
+        "label": "Trubní vedení (kanalizace venkovní, vodovod venkovní)",
+        "n_items": 0,
+        "samples": [],
+        "gap_flag": true
+      },
+      {
+        "tkp_family": "9",
+        "label": "Ostatní konstrukce (bourání, demolice, lešení, přesun hmot, VRN konstrukčního charakteru)",
+        "n_items": 21,
+        "samples": [
+          {
+            "id": "260217_sklad.HSV1.001",
+            "popis": "Sejmutí ornice a demolice stávajících kamenných zídek a schodiště v místě nového"
+          },
+          {
+            "id": "260219_dum.HSV3.006",
+            "popis": "Dočasné podstojkování stávajících přiléhajících stropů při osazování IPN překlad"
+          },
+          {
+            "id": "260219_dum.HSV4.007",
+            "popis": "Vyvezení původního zásypu z cihelné klenby 1.PP/1.NP — manuálně + odvoz"
+          }
+        ],
+        "gap_flag": false
+      }
+    ],
+    "n_orphans": 0
+  },
+  "section_B_subdodavatel": {
+    "coverage": [
+      {
+        "trade": "zemni_prace",
+        "label_cz": "Zemní práce",
+        "n_items": 12,
+        "kapitoly_expected": [
+          "HSV-1"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "zelezobetonarsky_specialny",
+        "label_cz": "ŽB práce — komplexní (bednění + výztuž + betonáž + ošetření)",
+        "n_items": 12,
+        "kapitoly_expected": [
+          "HSV-2"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "bila_vana_csb02",
+        "label_cz": "Bílá vana ČBS 02 — specialista (těsnění + dohled betonáže)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "HSV-2"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "bednici_tesar",
+        "label_cz": "Bednící tesař (systémové bednění + odbednění)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "HSV-2",
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "zednik",
+        "label_cz": "Zedník",
+        "n_items": 11,
+        "kapitoly_expected": [
+          "HSV-3",
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "ocel_zamecnik_konstrukce",
+        "label_cz": "Zámečník ocelových konstrukcí — IPE/HEA/UPE/L (dodávka + montáž)",
+        "n_items": 8,
+        "kapitoly_expected": [
+          "HSV-3",
+          "HSV-4",
+          "HSV-5",
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "ocelobeton_strop_IPE_trapez",
+        "label_cz": "Ocelobetonový strop hybridní (IPE + trapéz + nabetonávka) — komplexní dodavatel",
+        "n_items": 6,
+        "kapitoly_expected": [
+          "HSV-4"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "krov_tesarsky_kompletni",
+        "label_cz": "Tesařský krov — komplexní (krokve + kleštiny + pozednice + bednění + PIR + kontralatě)",
+        "n_items": 10,
+        "kapitoly_expected": [
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "plech_falcovany_hlinik",
+        "label_cz": "Klempíř — falcovaná hliníková krytina (specialista)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "klempir",
+        "label_cz": "Klempíř (plech Pzn lakovaný + falcování + svody)",
+        "n_items": 5,
+        "kapitoly_expected": [
+          "HSV-4",
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "bourani_demolice",
+        "label_cz": "Demoliční práce (manuální + odvoz + likvidace)",
+        "n_items": 21,
+        "kapitoly_expected": [
+          "HSV-6"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "fasadnik_etics",
+        "label_cz": "Fasádník ETICS (kontaktní zateplení + omítka)",
+        "n_items": 6,
+        "kapitoly_expected": [
+          "HSV-7"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "izolater_HI",
+        "label_cz": "Izolatér hydroizolace (asfaltové pásy + folie)",
+        "n_items": 7,
+        "kapitoly_expected": [
+          "PSV-71"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "izolater_TI",
+        "label_cz": "Izolatér tepelná izolace (EPS, MW, PIR)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "PSV-71"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "vodar",
+        "label_cz": "Instalatér ZTI (vodovod + kanalizace + sanita)",
+        "n_items": 18,
+        "kapitoly_expected": [
+          "PSV-72"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "topenar",
+        "label_cz": "Topenář (ÚT rozvody + kotle + radiátory + TUV)",
+        "n_items": 5,
+        "kapitoly_expected": [
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "specialista_TC_multisplit",
+        "label_cz": "Specialista tepelné čerpadlo + chlazení (multisplit)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "kominik",
+        "label_cz": "Kominík — revize a údržba komínů",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "okennar",
+        "label_cz": "Okenář (plastová okna + venkovní žaluzie)",
+        "n_items": 8,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "truhlar",
+        "label_cz": "Truhlář (vnitřní dveře, dřevěné stupně schodiště, vestavby)",
+        "n_items": 3,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "zamecnik_PSV",
+        "label_cz": "Zámečník PSV (zábradlí, schodiště ocel, stříšky)",
+        "n_items": 4,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "podlahar",
+        "label_cz": "Podlahář (suchá + mokrá skladba + nášlap)",
+        "n_items": 9,
+        "kapitoly_expected": [
+          "PSV-77"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "malir",
+        "label_cz": "Malíř (interiérová výmalba + tmely)",
+        "n_items": 5,
+        "kapitoly_expected": [
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "obkladac",
+        "label_cz": "Obkladač (keramický obklad koupelny, kuchyně)",
+        "n_items": 7,
+        "kapitoly_expected": [
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "sadrokartonar",
+        "label_cz": "Sádrokartonář (SDK podhledy, předstěny, suché podlahy)",
+        "n_items": 5,
+        "kapitoly_expected": [
+          "HSV-4",
+          "PSV-77",
+          "PSV-78"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "elektroinstalater",
+        "label_cz": "Elektroinstalatér silnoproud (kompletní ELI + příprava FVE)",
+        "n_items": 7,
+        "kapitoly_expected": [
+          "M-21"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "revize_specialista",
+        "label_cz": "Revize (ELI, hydrant, komín, plyn)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "M-21",
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "VRN_management",
+        "label_cz": "VRN — generální dodavatel (zařízení staveniště, BOZP, doprava, likvidace)",
+        "n_items": 12,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "geodet",
+        "label_cz": "Geodet (vytýčení, polohopis, výškopis)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "specialista_RC3_dvere",
+        "label_cz": "Specialista bezpečnostní dveře RC3 (sklad)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "prefa_bloky_specialista",
+        "label_cz": "Specialista prefa bloků s autem s hydraulickou rukou (Herkul H-BLOK)",
+        "n_items": 2,
+        "kapitoly_expected": [
+          "HSV-3"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "okenni_zaluzie_kastlik_purenit",
+        "label_cz": "Okenář + venkovní žaluzie v kastlíku s purenitovou izolací",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-76"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "biodeska_konstrukcni",
+        "label_cz": "Konstrukční biodeska (smrk masiv / OSB / X-LAM) pro půdní vestavby a nášlapy",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-77",
+          "HSV-5"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "instalater_TUV_akumulacni_zasobnik",
+        "label_cz": "Instalatér akumulačního zásobníku TUV pro multivariantní topný systém",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "PSV-72",
+          "PSV-73"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "mykolog",
+        "label_cz": "Autorizovaný mykolog dřeva (specialty surveyor)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      },
+      {
+        "trade": "azbestovy_specialista",
+        "label_cz": "Autorizovaný technik azbestu (odběr + laboratorní posudek)",
+        "n_items": 1,
+        "kapitoly_expected": [
+          "VRN"
+        ],
+        "gap_flag": false
+      }
+    ]
+  },
+  "section_C_anchors": {
+    "anchors": [
+      {
+        "anchor_id": "D01",
+        "label": "Bourání plechové krytiny",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV5.013",
+          "260219_dum.HSV6.002",
+          "260219_dum.PSV76.003"
+        ]
+      },
+      {
+        "anchor_id": "D02",
+        "label": "Bourání keramických obkladů",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 14,
+        "sample_ids": [
+          "260219_dum.HSV6.007",
+          "260219_dum.PSV77.002",
+          "260219_dum.PSV77.003"
+        ]
+      },
+      {
+        "anchor_id": "D03",
+        "label": "Bourání příček + zdiva",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV3.007",
+          "260219_dum.HSV4.001"
+        ]
+      },
+      {
+        "anchor_id": "D04",
+        "label": "Bourání podlah",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV6.008"
+        ]
+      },
+      {
+        "anchor_id": "D05",
+        "label": "Bourání střešní krytiny + krov",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV6.002"
+        ]
+      },
+      {
+        "anchor_id": "D06",
+        "label": "Demontáž oken + dveří",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV6.013",
+          "260219_dum.HSV6.014",
+          "260219_dum.HSV6.015"
+        ]
+      },
+      {
+        "anchor_id": "D07",
+        "label": "Odstranění komínu",
+        "applicable": false,
+        "status": "n_a",
+        "n_hits": 0,
+        "sample_ids": []
+      },
+      {
+        "anchor_id": "Z01",
+        "label": "Sejmutí ornice",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.001",
+          "260217_sklad.HSV1.001"
+        ]
+      },
+      {
+        "anchor_id": "Z02",
+        "label": "Hloubení rýh pro pasy",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.002",
+          "260217_sklad.HSV1.003"
+        ]
+      },
+      {
+        "anchor_id": "Z03",
+        "label": "Hloubení jam (figury nepoužívat)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.003",
+          "260217_sklad.HSV1.002"
+        ]
+      },
+      {
+        "anchor_id": "Z04",
+        "label": "Odvoz výkopku na deponii",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV1.007",
+          "260217_sklad.HSV1.006"
+        ]
+      },
+      {
+        "anchor_id": "Z05",
+        "label": "Štěrkopískový zásyp / podsyp",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV1.005",
+          "260219_dum.HSV1.008",
+          "260217_sklad.HSV1.005"
+        ]
+      },
+      {
+        "anchor_id": "Z06",
+        "label": "Pažení výkopů (pokud nutno)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV1.006"
+        ]
+      },
+      {
+        "anchor_id": "B01",
+        "label": "Základové pasy / patky",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 11,
+        "sample_ids": [
+          "260219_dum.HSV1.002",
+          "260217_sklad.HSV1.003",
+          "260217_sklad.HSV1.005"
+        ]
+      },
+      {
+        "anchor_id": "B02",
+        "label": "Základová deska na terénu",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV2.012"
+        ]
+      },
+      {
+        "anchor_id": "B03",
+        "label": "Pozední věnec",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV2.007",
+          "260219_dum.HSV2.008",
+          "260219_dum.HSV2.009"
+        ]
+      },
+      {
+        "anchor_id": "B04",
+        "label": "Nabetonávka stropu",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV2.010",
+          "260219_dum.HSV2.011"
+        ]
+      },
+      {
+        "anchor_id": "B05",
+        "label": "Hydroizolace pod základ (BV)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV2.001",
+          "260219_dum.HSV2.002",
+          "260219_dum.HSV2.003"
+        ]
+      },
+      {
+        "anchor_id": "B06",
+        "label": "Bednění + odbednění ŽB",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.HSV2.003",
+          "260219_dum.HSV2.008",
+          "260217_sklad.HSV2.003"
+        ]
+      },
+      {
+        "anchor_id": "S01",
+        "label": "Cihelné zdivo + překlady",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.HSV3.003",
+          "260219_dum.HSV3.004"
+        ]
+      },
+      {
+        "anchor_id": "S02",
+        "label": "Nadezdívka / dozdívka",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV2.007",
+          "260219_dum.HSV3.001",
+          "260219_dum.HSV3.002"
+        ]
+      },
+      {
+        "anchor_id": "S03",
+        "label": "SDK příčky + předstěny",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV6.005",
+          "260219_dum.PSV78.005",
+          "260219_dum.PSV78.006"
+        ]
+      },
+      {
+        "anchor_id": "V01",
+        "label": "Strop ocelobetonový (IPE+trapéz)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 11,
+        "sample_ids": [
+          "260217_sklad.HSV1.004",
+          "260217_sklad.HSV1.005",
+          "260219_dum.HSV2.010"
+        ]
+      },
+      {
+        "anchor_id": "V02",
+        "label": "Schodiště (ŽB / dřevěné)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 11,
+        "sample_ids": [
+          "260217_sklad.HSV1.001",
+          "260217_sklad.HSV2.005",
+          "260217_sklad.HSV2.006"
+        ]
+      },
+      {
+        "anchor_id": "V03",
+        "label": "Krov dřevěný + krokve",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 20,
+        "sample_ids": [
+          "260219_dum.HSV5.001",
+          "260219_dum.HSV5.002",
+          "260219_dum.HSV5.003"
+        ]
+      },
+      {
+        "anchor_id": "V04",
+        "label": "Bednění krovu / OSB",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV5.007",
+          "260219_dum.HSV5.014",
+          "260219_dum.PSV77.004"
+        ]
+      },
+      {
+        "anchor_id": "K01",
+        "label": "Falcovaná plechová krytina",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV5.013",
+          "260219_dum.HSV5.016",
+          "260219_dum.PSV76.003"
+        ]
+      },
+      {
+        "anchor_id": "K02",
+        "label": "Klempířina — atika",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV3.001",
+          "260219_dum.PSV76.004",
+          "260219_dum.PSV76.001"
+        ]
+      },
+      {
+        "anchor_id": "K03",
+        "label": "Klempířina — okap + svod",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV76.003",
+          "260219_dum.PSV76.014"
+        ]
+      },
+      {
+        "anchor_id": "K04",
+        "label": "Klempířina — parapety",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV76.002",
+          "260219_dum.HSV6.013",
+          "260219_dum.PSV76.014"
+        ]
+      },
+      {
+        "anchor_id": "F01",
+        "label": "ETICS zateplení (EPS/MW)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 6,
+        "sample_ids": [
+          "260219_dum.HSV7.001",
+          "260219_dum.HSV7.002",
+          "260219_dum.HSV7.003"
+        ]
+      },
+      {
+        "anchor_id": "F02",
+        "label": "Sokl XPS / tenkostěnný",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV7.003",
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV77.006"
+        ]
+      },
+      {
+        "anchor_id": "F03",
+        "label": "Špalety oken (perimeter EPS)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV7.004"
+        ]
+      },
+      {
+        "anchor_id": "F04",
+        "label": "Tenkovrstvá omítka fasády",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.HSV7.006"
+        ]
+      },
+      {
+        "anchor_id": "O01",
+        "label": "Plastová okna trojsklem",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.PSV76.001",
+          "260219_dum.PSV76.002",
+          "260219_dum.PSV76.003"
+        ]
+      },
+      {
+        "anchor_id": "O02",
+        "label": "Vstupní dveře venkovní",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV76.009",
+          "260219_dum.HSV6.014"
+        ]
+      },
+      {
+        "anchor_id": "O03",
+        "label": "Vnitřní dveře + zárubně",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV76.010",
+          "260217_sklad.PSV76.001",
+          "260219_dum.HSV6.015"
+        ]
+      },
+      {
+        "anchor_id": "O04",
+        "label": "Venkovní žaluzie / kastlík",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV76.008"
+        ]
+      },
+      {
+        "anchor_id": "I01",
+        "label": "TI mezi krokvemi / nad krovem",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 10,
+        "sample_ids": [
+          "260219_dum.HSV2.004",
+          "260219_dum.HSV5.007",
+          "260219_dum.HSV5.008"
+        ]
+      },
+      {
+        "anchor_id": "I02",
+        "label": "Podlahová TI (EPS)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV71.001",
+          "260219_dum.PSV71.002"
+        ]
+      },
+      {
+        "anchor_id": "I03",
+        "label": "Kročejová izolace",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV71.002"
+        ]
+      },
+      {
+        "anchor_id": "I04",
+        "label": "Hydroizolace koupelen (stěrka)",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 6,
+        "sample_ids": [
+          "260217_sklad.HSV4.003",
+          "260219_dum.HSV5.010",
+          "260219_dum.HSV7.002"
+        ]
+      },
+      {
+        "anchor_id": "P01",
+        "label": "Cementový potěr / lite směs",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV71.001",
+          "260219_dum.PSV77.005"
+        ]
+      },
+      {
+        "anchor_id": "P02",
+        "label": "Vinyl / laminát nášlap",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 5,
+        "sample_ids": [
+          "260219_dum.PSV77.001",
+          "260219_dum.PSV77.002",
+          "260219_dum.PSV77.003"
+        ]
+      },
+      {
+        "anchor_id": "P03",
+        "label": "Keramická dlažba",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV1.004",
+          "260219_dum.PSV77.002",
+          "260219_dum.PSV77.003"
+        ]
+      },
+      {
+        "anchor_id": "P04",
+        "label": "Sokl k podlaze",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV7.003",
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV77.006"
+        ]
+      },
+      {
+        "anchor_id": "U01",
+        "label": "Vnitřní omítka štuková",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 7,
+        "sample_ids": [
+          "260219_dum.HSV7.004",
+          "260219_dum.HSV7.006",
+          "260219_dum.PSV76.008"
+        ]
+      },
+      {
+        "anchor_id": "U02",
+        "label": "Obklad koupelen keramický",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 6,
+        "sample_ids": [
+          "260219_dum.PSV78.008",
+          "260219_dum.PSV78.009",
+          "260219_dum.PSV78.010"
+        ]
+      },
+      {
+        "anchor_id": "U03",
+        "label": "Výmalba — finalní",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 14,
+        "sample_ids": [
+          "260219_dum.HSV3.002",
+          "260219_dum.HSV3.004",
+          "260219_dum.HSV7.001"
+        ]
+      },
+      {
+        "anchor_id": "T01",
+        "label": "Vodovod vnitřní rozvody",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 21,
+        "sample_ids": [
+          "260219_dum.PSV72.001",
+          "260219_dum.PSV72.002",
+          "260219_dum.PSV72.003"
+        ]
+      },
+      {
+        "anchor_id": "T02",
+        "label": "Kanalizace splašková",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV72.003"
+        ]
+      },
+      {
+        "anchor_id": "T03",
+        "label": "Vytápění radiátory + rozvody",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.PSV73.001",
+          "260219_dum.PSV73.002",
+          "260219_dum.PSV73.003"
+        ]
+      },
+      {
+        "anchor_id": "T04",
+        "label": "Tepelné čerpadlo / kotel",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV72.009",
+          "260219_dum.PSV73.003",
+          "260219_dum.PSV73.005"
+        ]
+      },
+      {
+        "anchor_id": "T05",
+        "label": "Komín / komínové těleso",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV3.005",
+          "260219_dum.PSV73.002",
+          "260219_dum.PSV73.004"
+        ]
+      },
+      {
+        "anchor_id": "T06",
+        "label": "Sanita — WC, umyvadlo, vana",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 19,
+        "sample_ids": [
+          "260219_dum.HSV6.011",
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV77.002"
+        ]
+      },
+      {
+        "anchor_id": "T07",
+        "label": "ELI silnoproud — rozvody",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 7,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.002",
+          "260219_dum.M21.003"
+        ]
+      },
+      {
+        "anchor_id": "T08",
+        "label": "ELI svítidla + zásuvky",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.004",
+          "260219_dum.M21.005"
+        ]
+      },
+      {
+        "anchor_id": "T09",
+        "label": "PD / detekce požární",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV95.001",
+          "260219_dum.PSV95.002"
+        ]
+      },
+      {
+        "anchor_id": "R01",
+        "label": "Zařízení staveniště + buňky",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 7,
+        "sample_ids": [
+          "260219_dum.HSV5.012",
+          "260219_dum.VRN.001",
+          "260219_dum.VRN.002"
+        ]
+      },
+      {
+        "anchor_id": "R02",
+        "label": "Geodet + vytýčení",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.VRN.001",
+          "260217_sklad.VRN.001"
+        ]
+      },
+      {
+        "anchor_id": "R03",
+        "label": "BOZP koordinátor",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.VRN.001",
+          "260217_sklad.VRN.001"
+        ]
+      },
+      {
+        "anchor_id": "R04",
+        "label": "Odpady — odvoz na skládku",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.HSV1.007",
+          "260219_dum.HSV6.012",
+          "260219_dum.PSV72.003"
+        ]
+      },
+      {
+        "anchor_id": "R05",
+        "label": "Revize závěrečné",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.PSV72.001",
+          "260219_dum.PSV73.007",
+          "260219_dum.M21.007"
+        ]
+      },
+      {
+        "anchor_id": "R06",
+        "label": "Dokumentace skutečného provedení",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.VRN.001"
+        ]
+      },
+      {
+        "anchor_id": "R07",
+        "label": "Pojištění stavby",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.VRN.001",
+          "260219_dum.VRN.002",
+          "260217_sklad.VRN.001"
+        ]
+      },
+      {
+        "anchor_id": "R08",
+        "label": "Energie staveniště",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.VRN.020"
+        ]
+      },
+      {
+        "anchor_id": "R09",
+        "label": "Kolaudace",
+        "applicable": true,
+        "status": "ok",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.M21.007",
+          "260219_dum.VRN.001",
+          "260219_dum.VRN.001"
+        ]
+      }
+    ]
+  },
+  "section_D_tz_verbs": {
+    "_see_v1": "outputs/items_completeness_audit.json"
+  },
+  "section_E_per_podlazi": {
+    "1.PP": {
+      "podlaha": {
+        "status": "✓",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV77.003",
+          "260219_dum.PSV77.007"
+        ]
+      },
+      "soklíky": {
+        "status": "N/A",
+        "reason": "Sklep — bez soklíků obvyklé",
+        "n_hits": 0
+      },
+      "omítka_stěn": {
+        "status": "✓",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV78.001"
+        ]
+      },
+      "výmalba": {
+        "status": "✓",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV78.012.1_PP"
+        ]
+      },
+      "strop_podhled": {
+        "status": "N/A",
+        "reason": "Klenba sklepa zachována — žádný podhled",
+        "n_hits": 0
+      },
+      "stropní_svítidla": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.005"
+        ]
+      },
+      "vytápěcí_prvky": {
+        "status": "N/A",
+        "reason": "Sklep technický bez topení — verify TZ",
+        "n_hits": 0
+      }
+    },
+    "1.NP": {
+      "podlaha": {
+        "status": "✓",
+        "n_hits": 6,
+        "sample_ids": [
+          "260219_dum.HSV2.012",
+          "260219_dum.HSV4.010",
+          "260219_dum.HSV4.013"
+        ]
+      },
+      "soklíky": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV77.006",
+          "260219_dum.PSV77.007"
+        ]
+      },
+      "omítka_stěn": {
+        "status": "✓",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV78.002"
+        ]
+      },
+      "výmalba": {
+        "status": "✓",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV78.005",
+          "260219_dum.PSV78.012.1_NP"
+        ]
+      },
+      "strop_podhled": {
+        "status": "✓",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV4.012",
+          "260219_dum.PSV78.005",
+          "260219_dum.PSV78.012.1_NP"
+        ]
+      },
+      "stropní_svítidla": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.005"
+        ]
+      },
+      "vytápěcí_prvky": {
+        "status": "PARTIAL",
+        "reason": "8 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.PSV72.009",
+          "260219_dum.PSV73.001",
+          "260219_dum.PSV73.002"
+        ]
+      }
+    },
+    "2.NP": {
+      "podlaha": {
+        "status": "✓",
+        "n_hits": 4,
+        "sample_ids": [
+          "260219_dum.HSV4.010",
+          "260219_dum.HSV4.013",
+          "260219_dum.HSV6.008"
+        ]
+      },
+      "soklíky": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV77.006",
+          "260219_dum.PSV77.007"
+        ]
+      },
+      "omítka_stěn": {
+        "status": "✓",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV78.003"
+        ]
+      },
+      "výmalba": {
+        "status": "✓",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV78.006",
+          "260219_dum.PSV78.012.2_NP"
+        ]
+      },
+      "strop_podhled": {
+        "status": "✓",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV4.012",
+          "260219_dum.PSV78.006",
+          "260219_dum.PSV78.012.2_NP"
+        ]
+      },
+      "stropní_svítidla": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.005"
+        ]
+      },
+      "vytápěcí_prvky": {
+        "status": "PARTIAL",
+        "reason": "8 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 8,
+        "sample_ids": [
+          "260219_dum.PSV72.009",
+          "260219_dum.PSV73.001",
+          "260219_dum.PSV73.002"
+        ]
+      }
+    },
+    "3.NP": {
+      "podlaha": {
+        "status": "✓",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV71.003",
+          "260219_dum.PSV71.001",
+          "260219_dum.PSV77.004"
+        ]
+      },
+      "soklíky": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV77.006",
+          "260219_dum.PSV77.007"
+        ]
+      },
+      "omítka_stěn": {
+        "status": "✓",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.PSV78.004"
+        ]
+      },
+      "výmalba": {
+        "status": "✓",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV78.007",
+          "260219_dum.PSV78.012.3_NP"
+        ]
+      },
+      "strop_podhled": {
+        "status": "✓",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.PSV78.007",
+          "260219_dum.PSV78.012.3_NP"
+        ]
+      },
+      "stropní_svítidla": {
+        "status": "PARTIAL",
+        "reason": "2 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 2,
+        "sample_ids": [
+          "260219_dum.M21.001",
+          "260219_dum.M21.005"
+        ]
+      },
+      "vytápěcí_prvky": {
+        "status": "✓",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.PSV73.003",
+          "260219_dum.PSV73.004",
+          "260219_dum.PSV73.007"
+        ]
+      }
+    }
+  },
+  "section_F_per_room": [
+    {
+      "room_id": "1.01",
+      "name": "vstup a chodba",
+      "type": "chodba",
+      "podlazi": "1.NP",
+      "area_m2": 12.4,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 6
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "1.02",
+      "name": "chodba na zahradu",
+      "type": "chodba",
+      "podlazi": "1.NP",
+      "area_m2": 3.6,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 6
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "1.03",
+      "name": "komora",
+      "type": "komora",
+      "podlazi": "1.NP",
+      "area_m2": 0.7,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.002"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "komora — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "komora — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "komora — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "1.04",
+      "name": "WC",
+      "type": "wc",
+      "podlazi": "1.NP",
+      "area_m2": 1.5,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 2,
+          "sample_ids": [
+            "260219_dum.PSV77.002",
+            "260219_dum.PSV77.007"
+          ]
+        },
+        "soklíky": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.007"
+          ]
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "1.05",
+      "name": "koupelna",
+      "type": "koupelna",
+      "podlazi": "1.NP",
+      "area_m2": 4.1,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 6
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.1_NP"
+          ]
+        },
+        "obklad": {
+          "status": "✓",
+          "n_hits": 4,
+          "sample_ids": [
+            "260219_dum.PSV78.008",
+            "260219_dum.PSV78.009"
+          ]
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "stropní_podhled": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.1_NP"
+          ]
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "1.06",
+      "name": "obývací místnost + kuchyně",
+      "type": "kuchyne",
+      "podlazi": "1.NP",
+      "area_m2": 24.0,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 6
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "1.07",
+      "name": "pokoj",
+      "type": "obytna",
+      "podlazi": "1.NP",
+      "area_m2": 9.4,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 6
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "obytna — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "1.08",
+      "name": "schodiště do sklepa",
+      "type": "sklep",
+      "podlazi": "1.NP",
+      "area_m2": 3.8,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 6
+        },
+        "soklíky": {
+          "status": "N/A",
+          "reason": "Sklep — bez soklíků"
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "sklep — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "stropní_podhled": {
+          "status": "N/A",
+          "reason": "Sklep — klenba zachována"
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "sklep — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "3.01",
+      "name": "schodiště",
+      "type": "schodiste",
+      "podlazi": "3.NP",
+      "area_m2": 7.6,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "schodiste — obklad není povinný"
+        },
+        "dveře": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV76.013"
+          ]
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "schodiste — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "schodiste — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "3.02",
+      "name": "chodba",
+      "type": "chodba",
+      "podlazi": "3.NP",
+      "area_m2": 4.1,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "3.03",
+      "name": "chodba",
+      "type": "chodba",
+      "podlazi": "3.NP",
+      "area_m2": 2.4,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "3.04",
+      "name": "koupelna",
+      "type": "koupelna",
+      "podlazi": "3.NP",
+      "area_m2": 4.8,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.3_NP"
+          ]
+        },
+        "obklad": {
+          "status": "✓",
+          "n_hits": 4,
+          "sample_ids": [
+            "260219_dum.PSV78.008",
+            "260219_dum.PSV78.009"
+          ]
+        },
+        "dveře": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "stropní_podhled": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.3_NP"
+          ]
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 4
+        }
+      }
+    },
+    {
+      "room_id": "3.05",
+      "name": "obývací místnost a kuchyně",
+      "type": "kuchyne",
+      "podlazi": "3.NP",
+      "area_m2": 32.8,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "dveře": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 4
+        }
+      }
+    },
+    {
+      "room_id": "3.06",
+      "name": "ložnice",
+      "type": "obytna",
+      "podlazi": "3.NP",
+      "area_m2": 12.8,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.001"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "obytna — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 3.NP level (no per-room split)",
+          "n_hits": 4
+        }
+      }
+    },
+    {
+      "room_id": "0.01",
+      "name": "schodiště",
+      "type": "schodiste",
+      "podlazi": "1.PP",
+      "area_m2": 3.5,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "schodiste — obklad není povinný"
+        },
+        "dveře": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV76.013"
+          ]
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "schodiste — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_GLOBAL",
+          "reason": "9 global items with kw",
+          "n_hits": 9
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "schodiste — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "0.02",
+      "name": "chodba",
+      "type": "chodba",
+      "podlazi": "1.PP",
+      "area_m2": 4.4,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_GLOBAL",
+          "reason": "9 global items with kw",
+          "n_hits": 9
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "0.03",
+      "name": "sklep 1",
+      "type": "sklep",
+      "podlazi": "1.PP",
+      "area_m2": 22.2,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV71.001"
+          ]
+        },
+        "soklíky": {
+          "status": "N/A",
+          "reason": "Sklep — bez soklíků"
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "sklep — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "stropní_podhled": {
+          "status": "N/A",
+          "reason": "Sklep — klenba zachována"
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "sklep — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "0.04",
+      "name": "sklep 2",
+      "type": "sklep",
+      "podlazi": "1.PP",
+      "area_m2": 2.3,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 2
+        },
+        "soklíky": {
+          "status": "N/A",
+          "reason": "Sklep — bez soklíků"
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "sklep — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "OK_GLOBAL",
+          "reason": "8 global items with kw",
+          "n_hits": 8
+        },
+        "stropní_podhled": {
+          "status": "N/A",
+          "reason": "Sklep — klenba zachována"
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "sklep — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "2.01",
+      "name": "schodiště",
+      "type": "schodiste",
+      "podlazi": "2.NP",
+      "area_m2": 7.3,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "schodiste — obklad není povinný"
+        },
+        "dveře": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV76.013"
+          ]
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "schodiste — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "schodiste — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "2.02",
+      "name": "chodba",
+      "type": "chodba",
+      "podlazi": "2.NP",
+      "area_m2": 4.2,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "2.03",
+      "name": "koupelna",
+      "type": "koupelna",
+      "podlazi": "2.NP",
+      "area_m2": 2.5,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 4
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.2_NP"
+          ]
+        },
+        "obklad": {
+          "status": "✓",
+          "n_hits": 4,
+          "sample_ids": [
+            "260219_dum.PSV78.008",
+            "260219_dum.PSV78.009"
+          ]
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "stropní_podhled": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.2_NP"
+          ]
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "2.04",
+      "name": "chodba",
+      "type": "chodba",
+      "podlazi": "2.NP",
+      "area_m2": 1.6,
+      "attrs": {
+        "podlaha": {
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV77.003"
+          ]
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "chodba — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "N/A",
+          "reason": "chodba — okno obvykle nepřítomné"
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "N/A",
+          "reason": "chodba — vytápění obvykle není"
+        }
+      }
+    },
+    {
+      "room_id": "2.05",
+      "name": "společný pokoj",
+      "type": "obytna",
+      "podlazi": "2.NP",
+      "area_m2": 22.1,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 4
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "obytna — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "2.06",
+      "name": "pokoj",
+      "type": "obytna",
+      "podlazi": "2.NP",
+      "area_m2": 9.0,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 4
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "obytna — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    },
+    {
+      "room_id": "2.07",
+      "name": "pokoj",
+      "type": "obytna",
+      "podlazi": "2.NP",
+      "area_m2": 14.4,
+      "attrs": {
+        "podlaha": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 4
+        },
+        "soklíky": {
+          "status": "OK_GLOBAL",
+          "reason": "2 global items with kw",
+          "n_hits": 2
+        },
+        "omítka_obvod": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "výmalba": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 2
+        },
+        "obklad": {
+          "status": "N/A",
+          "reason": "obytna — obklad není povinný"
+        },
+        "dveře": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "okno": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        },
+        "stropní_podhled": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 3
+        },
+        "vytápěcí_prvek": {
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 2.NP level (no per-room split)",
+          "n_hits": 1
+        }
+      }
+    }
+  ],
+  "section_G_cross_element": {
+    "okna": {
+      "dxf_count": 16,
+      "okna_items_ks_sum": 0,
+      "parapety_items_ks_sum": 32,
+      "parapety_items_bm_sum": 20.8,
+      "parapety_has_any_items": true,
+      "spalety_bm": 82.2,
+      "spalety_expected_bm": 80.0,
+      "oplech_parapetu_ks": 16,
+      "verdict": "OK",
+      "items_okna_ids": []
+    },
+    "dvere": {
+      "dxf_vnitrni_count": 15,
+      "dxf_vstupni_count": 2,
+      "dxf_total_expected": 17,
+      "dvere_items_ks_sum": 19,
+      "zarubn_items_ks_sum": 31,
+      "kovani_items_ks_sum": 0,
+      "verdict": "OK",
+      "items_dvere_ids": [
+        "260219_dum.PSV76.009",
+        "260219_dum.PSV76.010",
+        "260217_sklad.PSV76.001",
+        "260219_dum.PSV76.013"
+      ]
+    },
+    "krokve": {
+      "dxf_krokve_blocks_count": 103,
+      "_note": "KR INSERT count is gross (incl sloupky + námětky); geometric calc primary per items.json",
+      "krokve_bm_sum": 156.0,
+      "klestiny_bm_sum": 110.0,
+      "pozednice_bm_sum": 19.4,
+      "hea_items_qty_sum": 1929.0,
+      "verdict": "OK",
+      "items_krokve_ids": [
+        "260219_dum.HSV5.001"
+      ]
+    },
+    "sanit": {
+      "dxf_sanit_count": {
+        "wc": 7,
+        "umyvadlo": 7,
+        "vana": 2,
+        "sprcha": 2,
+        "drez_kuchyne": 3
+      },
+      "dxf_drez_count": 0,
+      "dxf_total_fixtures": 21,
+      "sanit_items_ks_sum": 24.0,
+      "baterie_items_ks_sum": 15,
+      "rozvody_voda_bm": 0,
+      "verdict": "OK",
+      "items_sanit_ids": [
+        "260219_dum.PSV72.007",
+        "260219_dum.PSV72.008",
+        "260219_dum.PSV72.004.A",
+        "260219_dum.PSV72.004.B",
+        "260219_dum.PSV72.004.C"
+      ]
+    }
+  },
+  "section_H_material_balance": {
+    "podlahy": {
+      "per_material_dum": {
+        "vinyl": 171.5,
+        "dlazba": 45.9,
+        "biodeska": 25.0,
+        "ostatní": 0
+      },
+      "per_material_sklad": {
+        "vinyl": 0,
+        "dlazba": 21.209,
+        "biodeska": 0,
+        "ostatní": 0
+      },
+      "dum_habitable_total_m2": 217.4,
+      "biodeska_extra_spici_patro_m2": 25.0,
+      "tz_baseline_dum_m2": 219.3,
+      "_note": "Comparing dum habitable (vinyl + dlažba) vs TZ 219.3. Biodeska 25 m² is půdní spící patro nad krovem — ADDITIONAL surface, NOT in TZ habitable.",
+      "delta_pct": 0.8663930688554518,
+      "verdict": "OK"
+    },
+    "fasada_etics": {
+      "per_kategorie_m2": {
+        "priprava": 276.7,
+        "eps_hlavni": 276.7,
+        "omitka": 290.2,
+        "spalety": 0,
+        "sokl": 13.5,
+        "profilace": 0
+      },
+      "_logic": "priprava ≈ EPS ≈ omítka should match within ±5 %",
+      "verdict": "OK"
+    },
+    "steny_vnitrni": {
+      "omitka_psv78_m2": 667.3000000000001,
+      "sdk_podhled_m2": 185.1,
+      "paintable_total_m2": 852.4000000000001,
+      "vymalba_interier_m2": 799.5,
+      "nove_obklady_keramick_m2": 62.900000000000006,
+      "vymalba_plus_obklad_m2": 862.4,
+      "_logic": "Paint-able = interiérová omítka stěn + SDK podhled stropy. Výmalba pokrývá paintable - obklady. Δ ≤ 10 % acceptable (round 70-cm obklad sub).",
+      "delta_pct": 1.17315814171749,
+      "verdict": "OK"
+    }
+  },
+  "section_I_cost_ratio": {
+    "_status": "INFORMATIONAL_ONLY",
+    "_method": "Σ(qty × Methvin průměrná sazba) per kapitola → aggregate per gate",
+    "_disclaimer": "Methvin rates have INCONSISTENT UNITS per kapitola (Kč/m³ vs Kč/m² vs Kč/ks) and are aggregated naively — results are NOT reliable for ratio analysis. Treated as informational ballpark only. Real cenotvorba requires unit-aware per-item rates from URS catalog. Verdict 'OUT OF RANGE' for this section is EXPECTED and not treated as a gap in consolidated_gaps.",
+    "total_estimate_czk_ballpark": 64074561.125,
+    "per_kapitola_czk": {
+      "HSV-1": 115245.0,
+      "HSV-2": 12471300.0,
+      "HSV-3": 4260000.0,
+      "HSV-4": 25547303.025,
+      "HSV-5": 4328736.0,
+      "HSV-6": 348155.0,
+      "HSV-7": 1739555.0,
+      "PSV-71": 207400.0,
+      "PSV-76": 4318500.0,
+      "PSV-77": 433187.1,
+      "PSV-78": 600180.0,
+      "PSV-95": 25000.0,
+      "PSV-72": 1352000.0,
+      "PSV-73": 2775000.0,
+      "M-21": 2436000.0,
+      "VRN": 3117000.0
+    },
+    "per_gate_breakdown": [
+      {
+        "gate": "HSV",
+        "estimate_czk": 48810294.025,
+        "pct_of_total": 0.7617733647801087,
+        "typical_range_pct": [
+          0.45,
+          0.55
+        ],
+        "in_range": false,
+        "verdict": "OUT OF RANGE (typical 45-55%)"
+      },
+      {
+        "gate": "PSV",
+        "estimate_czk": 9711267.1,
+        "pct_of_total": 0.15156197607120167,
+        "typical_range_pct": [
+          0.25,
+          0.35
+        ],
+        "in_range": false,
+        "verdict": "OUT OF RANGE (typical 25-35%)"
+      },
+      {
+        "gate": "TZB",
+        "estimate_czk": 2436000.0,
+        "pct_of_total": 0.03801820811925226,
+        "typical_range_pct": [
+          0.15,
+          0.2
+        ],
+        "in_range": false,
+        "verdict": "OUT OF RANGE (typical 15-20%)"
+      },
+      {
+        "gate": "VRN",
+        "estimate_czk": 3117000.0,
+        "pct_of_total": 0.04864645102943731,
+        "typical_range_pct": [
+          0.05,
+          0.1
+        ],
+        "in_range": false,
+        "verdict": "OUT OF RANGE (typical 5-10%)"
+      }
+    ]
+  },
+  "section_J_tz_deep_scan": [
+    {
+      "anchor_id": "J01",
+      "severity": "important",
+      "description": "TZ statika — IPE profily (počet jednotek)",
+      "tz_mention_count": 1,
+      "tz_mention_sample": [
+        "IPE180"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J02",
+      "severity": "important",
+      "description": "TZ statika — HEA profily",
+      "tz_mention_count": 3,
+      "tz_mention_sample": [
+        "HEA160",
+        "HEA180",
+        "HEA200"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J03",
+      "severity": "important",
+      "description": "TZ statika — IPN profily",
+      "tz_mention_count": 1,
+      "tz_mention_sample": [
+        "IPN160"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J04",
+      "severity": "important",
+      "description": "TZ statika — jekl uzavřený profil",
+      "tz_mention_count": 1,
+      "tz_mention_sample": [
+        "jekl"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J05",
+      "severity": "important",
+      "description": "TZ B m.10.e — bilance odpadů (kategorie t)",
+      "tz_mention_count": 0,
+      "tz_mention_sample": [],
+      "items_keyword_hit": true,
+      "status": "tz_silent",
+      "verdict": "TZ_silent"
+    },
+    {
+      "anchor_id": "J06",
+      "severity": "important",
+      "description": "TZ ARS — komínové těleso (zachované / nové)",
+      "tz_mention_count": 2,
+      "tz_mention_sample": [
+        "Komín",
+        "komín"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J07",
+      "severity": "important",
+      "description": "TZ ARS — vikýře (počet, materiál)",
+      "tz_mention_count": 2,
+      "tz_mention_sample": [
+        "vikýř",
+        "Vikýř"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J08",
+      "severity": "important",
+      "description": "TZ ARS — opěrná stěna / bílá vana",
+      "tz_mention_count": 5,
+      "tz_mention_sample": [
+        "bílá vana",
+        "Opěrné stěn",
+        "opěrná stěn"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J09",
+      "severity": "important",
+      "description": "TZ ARS — anglický dvorek",
+      "tz_mention_count": 2,
+      "tz_mention_sample": [
+        "anglický \ndvorek",
+        "anglický dvorek"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J10",
+      "severity": "important",
+      "description": "TZ ARS — terasa (materiál)",
+      "tz_mention_count": 2,
+      "tz_mention_sample": [
+        "terasy",
+        "terasa"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J11",
+      "severity": "important",
+      "description": "TZ PBŘ — detekce kouře (PSV-95)",
+      "tz_mention_count": 1,
+      "tz_mention_sample": [
+        "hlásič"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J12",
+      "severity": "important",
+      "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
+      "tz_mention_count": 4,
+      "tz_mention_sample": [
+        "Protipožární",
+        "EI 180",
+        "EI 90"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J13",
+      "severity": "important",
+      "description": "TZ ARS — tepelné čerpadlo (PSV-73)",
+      "tz_mention_count": 3,
+      "tz_mention_sample": [
+        "tepelné čerpadl",
+        "TČ",
+        "multisplit"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J14",
+      "severity": "medium",
+      "description": "TZ ARS — elektrokotel / kotel",
+      "tz_mention_count": 2,
+      "tz_mention_sample": [
+        "kotel",
+        "elektrokotel"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J15",
+      "severity": "medium",
+      "description": "TZ ARS — krb (PSV-73)",
+      "tz_mention_count": 2,
+      "tz_mention_sample": [
+        "krb",
+        "Krb"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J16",
+      "severity": "medium",
+      "description": "TZ ARS — kamna (PSV-73)",
+      "tz_mention_count": 1,
+      "tz_mention_sample": [
+        "Kamna"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J17",
+      "severity": "medium",
+      "description": "TZ ARS — žaluzie (PSV-76)",
+      "tz_mention_count": 1,
+      "tz_mention_sample": [
+        "žaluzie"
+      ],
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
+    },
+    {
+      "anchor_id": "J18",
+      "severity": "informational",
+      "description": "TZ ARS — geodet vytýčení",
+      "tz_mention_count": 0,
+      "tz_mention_sample": [],
+      "items_keyword_hit": true,
+      "status": "tz_silent",
+      "verdict": "TZ_silent"
+    }
+  ],
+  "consolidated_gaps": [],
+  "_gap_severity_counts": {}
+}
