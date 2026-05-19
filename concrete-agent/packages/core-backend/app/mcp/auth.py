@@ -832,6 +832,174 @@ def datetime_now_utc():
     return datetime.now(timezone.utc)
 
 
+# ── Unified Bearer token resolution (middleware hot path) ───────────────────
+
+
+# Sentinel return values from resolve_bearer_token so the middleware can
+# distinguish "no such token" from "found but expired" from "found but
+# revoked" — each maps to a slightly different RFC 6750 error_description.
+class BearerStatus:
+    OK = "ok"
+    UNKNOWN = "unknown"
+    EXPIRED = "expired"
+    REVOKED = "revoked"
+    MALFORMED = "malformed"
+
+
+def resolve_bearer_token(token: str) -> dict:
+    """Look up a Bearer token and return a unified AuthContext.
+
+    Dual-prefix routing:
+      sat-{hex48}         → mcp_oauth_tokens (DCR path).
+                            Returns user_api_key, oauth_client_id,
+                            grant_type, scope. Checks revoked_at +
+                            access_expires_at lifecycle.
+      sk-stavagent-{hex48} → mcp_api_keys (legacy).
+                            Returns user_api_key = the token itself,
+                            oauth_client_id = "legacy",
+                            grant_type = "legacy_bearer",
+                            scope = "*".
+      anything else        → status=MALFORMED.
+
+    Return shape (always a dict so middleware doesn't branch on None):
+      {
+        "status": BearerStatus.{OK|UNKNOWN|EXPIRED|REVOKED|MALFORMED},
+        "user_api_key": str | None,
+        "oauth_client_id": str | None,
+        "grant_type": str | None,
+        "scope": str | None,
+        "token_row_id": int | None,  # for last_used_at update; None for legacy
+        "error_description": str,    # human-readable hint for WWW-Authenticate
+      }
+    """
+    if not token or not isinstance(token, str):
+        return {
+            "status": BearerStatus.MALFORMED,
+            "user_api_key": None, "oauth_client_id": None,
+            "grant_type": None, "scope": None, "token_row_id": None,
+            "error_description": "Bearer token missing or not a string",
+        }
+
+    # ── sat-* (DCR path) ────────────────────────────────────────────────────
+    if token.startswith("sat-"):
+        cur = _execute(
+            "SELECT id, user_api_key, oauth_client_id, grant_type, scope, "
+            "       access_expires_at, revoked_at "
+            "FROM mcp_oauth_tokens WHERE access_token = %s",
+            (token,),
+        )
+        row = cur.fetchone()
+        _get_db().commit()
+
+        if not row:
+            return {
+                "status": BearerStatus.UNKNOWN,
+                "user_api_key": None, "oauth_client_id": None,
+                "grant_type": None, "scope": None, "token_row_id": None,
+                "error_description": "Access token not found",
+            }
+
+        if row["revoked_at"] is not None:
+            return {
+                "status": BearerStatus.REVOKED,
+                "user_api_key": None, "oauth_client_id": row["oauth_client_id"],
+                "grant_type": None, "scope": None, "token_row_id": row["id"],
+                "error_description": "Access token has been revoked",
+            }
+
+        if row["access_expires_at"] <= datetime_now_utc():
+            return {
+                "status": BearerStatus.EXPIRED,
+                "user_api_key": None, "oauth_client_id": row["oauth_client_id"],
+                "grant_type": None, "scope": None, "token_row_id": row["id"],
+                "error_description": (
+                    "Access token expired. Use grant_type=refresh_token "
+                    "with your refresh_token to obtain a new pair."
+                ),
+            }
+
+        return {
+            "status": BearerStatus.OK,
+            "user_api_key": row["user_api_key"],
+            "oauth_client_id": row["oauth_client_id"],
+            "grant_type": row["grant_type"],
+            "scope": row["scope"],
+            "token_row_id": row["id"],
+            "error_description": "",
+        }
+
+    # ── sk-stavagent-* (legacy path) ────────────────────────────────────────
+    if token.startswith("sk-stavagent-"):
+        cur = _execute(
+            "SELECT api_key, is_active FROM mcp_api_keys WHERE api_key = %s",
+            (token,),
+        )
+        row = cur.fetchone()
+        _get_db().commit()
+
+        if not row:
+            return {
+                "status": BearerStatus.UNKNOWN,
+                "user_api_key": None, "oauth_client_id": None,
+                "grant_type": None, "scope": None, "token_row_id": None,
+                "error_description": "API key not found",
+            }
+        if not row["is_active"]:
+            return {
+                "status": BearerStatus.REVOKED,
+                "user_api_key": None, "oauth_client_id": "legacy",
+                "grant_type": None, "scope": None, "token_row_id": None,
+                "error_description": "API key has been deactivated",
+            }
+        return {
+            "status": BearerStatus.OK,
+            "user_api_key": row["api_key"],
+            "oauth_client_id": "legacy",
+            "grant_type": "legacy_bearer",
+            "scope": "*",
+            "token_row_id": None,
+            "error_description": "",
+        }
+
+    # Unknown prefix.
+    return {
+        "status": BearerStatus.MALFORMED,
+        "user_api_key": None, "oauth_client_id": None,
+        "grant_type": None, "scope": None, "token_row_id": None,
+        "error_description": (
+            "Bearer prefix not recognized. Expected sat-* (OAuth access "
+            "token) or sk-stavagent-* (legacy API key)."
+        ),
+    }
+
+
+def update_token_last_used(token_row_id: int) -> None:
+    """Bump `last_used_at` on a successful Bearer use.
+
+    Synchronous + best-effort: any DB exception is swallowed + logged
+    because failing the auth gate over a stats column would be perverse.
+    Called from the middleware hot path; ~1ms on Cloud SQL with the
+    primary-key index on `id`.
+    """
+    if not token_row_id:
+        return
+    try:
+        conn = _get_db()
+        cur = conn.cursor()
+        cur.execute(
+            "UPDATE mcp_oauth_tokens SET last_used_at = NOW() WHERE id = %s",
+            (token_row_id,),
+        )
+        conn.commit()
+    except psycopg2.Error as exc:
+        try:
+            _get_db().rollback()
+        except psycopg2.Error:
+            pass
+        logger.debug("[MCP/Auth] last_used_at update failed (row=%s): %s",
+                     token_row_id, exc)
+
+
 # ── Public API ───────────────────────────────────────────────────────────────
 
 def register(email: str, password: str, client_ip: str = "unknown") -> dict:
@@ -901,12 +1069,19 @@ def login(email: str, password: str, client_ip: str = "unknown") -> dict:
     }
 
 
-def check_credits(api_key: str, tool_name: str) -> dict:
+def check_credits(api_key: Optional[str], tool_name: str) -> dict:
     """Check if API key has enough credits for the tool, deducting atomically.
 
     Uses a single UPDATE ... WHERE credits >= cost RETURNING credits, id.
     Postgres takes a row lock for the UPDATE, so concurrent requests
     against the same row are serialized — no double-spend.
+
+    DCR-aware: `api_key=None` is the signal that the request authenticated
+    with a sat-* token whose `mcp_oauth_tokens.user_api_key IS NULL`
+    (public-DCR client_credentials grant). For paid tools this returns
+    a 402-shaped result with `error_code=user_consent_required` so the
+    broker knows it needs to obtain a user-bound token (i.e. drive the
+    user through authorization_code flow). Free tools still succeed.
     """
     cost = TOOL_COSTS.get(tool_name, 0)
 
@@ -914,7 +1089,24 @@ def check_credits(api_key: str, tool_name: str) -> dict:
     if cost == 0:
         return {"ok": True, "cost": 0, "credits_remaining": None}
 
-    # Paid tools require a valid key
+    # Paid tools require a valid key. Two distinguishable cases:
+    #   api_key is None → DCR public-client request (token row exists
+    #                     but user_api_key=NULL). Return 402-shaped
+    #                     result with explicit user_consent_required.
+    #   api_key == ""  → unauthenticated request (no token presented).
+    #                     Keep the legacy "register at …" hint.
+    if api_key is None:
+        return {
+            "ok": False,
+            "cost": cost,
+            "http_status": 402,
+            "error_code": "user_consent_required",
+            "error": (
+                "This tool requires user consent. Obtain a user-bound "
+                "access_token via grant_type=authorization_code "
+                "(GET /api/v1/mcp/oauth/authorize) and retry."
+            ),
+        }
     if not api_key:
         return {
             "ok": False,
