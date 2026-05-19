@@ -46,6 +46,7 @@ TOOL_COSTS = {
     "calculate_pump": 5,
     "parse_construction_budget": 5,
     "analyze_construction_document": 10,
+    "uep_run_extraction": 15,  # PR2 §3.5 — UEP universal extraction pipeline
     "create_work_breakdown": 20,
 }
 
