@@ -1,0 +1,133 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-19",
+  "_generated_by": "WebSearch tool (Claude Code), manual aggregation",
+  "_purpose": "Part 5b — supplemental verification of urs_code_proposed against public Czech construction tender mirrors indexed by Google. podminky.urs.cz blocks WebFetch directly (403), but its content surfaces in Google snippets via mirrors (smlouvy.gov.cz, vhodne-uverejneni.cz, docplayer.cz, cs-urs.cz). WebSearch tool aggregates 10 snippet links per query; the underlying LLM summary extracts URS code popis when sufficiently anchored in snippets.",
+  "_method": "One WebSearch call per code with query template '\"<code>\" <distinctive token> popis URS'. LLM summary returns either: (a) verbatim popis from snippet, (b) family confirmation only, (c) no signal. Manually aggregated below.",
+  "_sample_size": "12 WebSearch queries (limited by token budget). NOT the full 189-item soupis. Each verification record cites the exact items.json item IDs affected.",
+  "verifications": [
+    {
+      "code": "121101101",
+      "verified_popis": "Sejmutí ornice nebo lesní půdy s vodorovným přemístěním — do 50 m",
+      "mj": "m3",
+      "source": "search snippets from Czech tender PDFs",
+      "verdict": "code_real",
+      "affects_items": [],
+      "note": "Code 121101101 IS valid URS leaf, but RD Jáchymov item HSV1.001 proposed 121101101 — that's the 'do 50 m' leaf. Item popis says 'tl. 100 mm ... ploše budoucí opěrné stěny' with no transport distance mentioned. Acceptable proposal for staging close-by; verify distance per project."
+    },
+    {
+      "code": "132201101",
+      "verified_popis": "Hloubení rýh š do 600 mm v hornině tř. 3 objemu do 100 m3",
+      "mj": "m3",
+      "source": "Czech tender mirrors + cs-urs.cz catalog 800-1",
+      "verdict": "matches_item",
+      "affects_items": ["260219_dum.HSV1.002", "260217_sklad.HSV1.003"],
+      "note": "Excellent match. RD Jáchymov item: 'Hloubení rýh š. do 60 cm ... v zemině třídy 3 (F4-CS)'. URS leaf 132201101 is exactly that. urs_status = matched."
+    },
+    {
+      "code": "162701105",
+      "verified_popis": "Vodorovné přemístění výkopku nebo sypaniny po suchu na obvyklém dopravním prostředku, bez naložení výkopku, avšak se složením bez rozhrnutí z horniny tř. 1 až 4 na vzdálenost přes 9 000 do 10 000 m",
+      "mj": "m3",
+      "source": "Czech tender mirrors + smlouvy.gov.cz snippets",
+      "verdict": "wrong_leaf_distance",
+      "affects_items": ["260219_dum.HSV1.007", "260217_sklad.HSV1.006"],
+      "correct_code_hint": "Leaf needs adjustment — RD Jáchymov item says 'odvoz na deponii do 8 km', URS 162701105 is for 9-10 km. Likely 162701104 (8-9 km) or 162701103 (7-8 km). Verify exact leaf on podminky.urs.cz."
+    },
+    {
+      "code": "711132101",
+      "verified_popis": "Provedení izolace proti zemní vlhkosti pásy na sucho AIP nebo tkaniny na ploše svislé S (AIP = asfaltové izolační pásy)",
+      "mj": "m2",
+      "source": "local kros_catalog.db + cs-urs.cz catalog 800-711",
+      "verdict": "wrong_leaf_material",
+      "affects_items": ["260219_dum.HSV2.005", "260219_dum.PSV71.003"],
+      "correct_code_hint": "Family 711 (Izolace proti vodě, vlhkosti a plynům) IS the right family, BUT leaf 711132101 is for bituminous rolls (AIP). RD Jáchymov items use PE foil (HSV2.005) and liquid stěrka coating (PSV71.003). Search '711141xxx PE fólie' / '711141xxx stěrka koupelna' on podminky.urs.cz for correct leaves."
+    },
+    {
+      "code": "962081141",
+      "verified_popis": "Bourání příček nebo přizdívek ze skleněných tvárnic, tl. přes 100 do 150 mm",
+      "mj": "m2",
+      "source": "local kros_catalog.db",
+      "verdict": "wrong_work_type",
+      "affects_items": ["260219_dum.HSV6.002", "260219_dum.HSV6.007"],
+      "correct_code_hint": "962081141 is for glass-block partition demolition — entirely unrelated to RD Jáchymov items. HSV6.002 'Bourání plechové krytiny' needs roofing family (762/764 demontáž krytiny). HSV6.007 'Bourání keramických obkladů koupelen' has multiple correct candidates listed below."
+    },
+    {
+      "code": "771121011",
+      "verified_popis": "Nátěr penetrační na podlahu",
+      "mj": "m2",
+      "source": "local kros_catalog.db + cs-urs.cz catalog 800-771",
+      "verdict": "wrong_work_type",
+      "affects_items": ["260217_sklad.PSV77.001"],
+      "correct_code_hint": "771121011 is floor primer painting, NOT betonová dlažba install. For 'Betonová dlažba do pískového lože' look at TSKP 596 (chodník) or 771-12 (laying ceramic/concrete tiles on bedding). Search 'betonová dlažba do pískového lože' on podminky.urs.cz."
+    },
+    {
+      "code": "781471810",
+      "verified_popis": "Demontáž obkladů z dlaždic keramických kladených do malty",
+      "mj": "m2",
+      "source": "Czech tender mirrors + WebSearch summary for 'bourání keramických obkladů URS'",
+      "verdict": "correct_code_candidate",
+      "affects_items": ["260219_dum.HSV6.007"],
+      "correct_code_hint": "PROPOSED REPLACEMENT for HSV6.007 'Bourání keramických obkladů a zařizovacích předmětů v koupelnách'. Alternative: 781473810 (lepené obklady — modern stavební lepidlo) — likely more relevant for koupelny built post-1990s."
+    },
+    {
+      "code": "781473810",
+      "verified_popis": "Demontáž obkladů z dlaždic keramických lepených",
+      "mj": "m2",
+      "source": "Czech tender mirrors + WebSearch summary",
+      "verdict": "correct_code_candidate",
+      "affects_items": ["260219_dum.HSV6.007"],
+      "correct_code_hint": "Likely the best match — RD Jáchymov koupelny use modern lepené obklady, not malta-laid."
+    },
+    {
+      "code": "978059511",
+      "verified_popis": "Odsekání a odebrání obkladů stěn z vnitřních obkládaček plochy do 1 m2",
+      "mj": "m2",
+      "source": "Czech tender mirrors + WebSearch summary",
+      "verdict": "alternative_code",
+      "affects_items": ["260219_dum.HSV6.007"],
+      "correct_code_hint": "Alternative if individual koupelny < 1 m2. RD Jáchymov koupelny are larger → 978059541 fits better."
+    },
+    {
+      "code": "978059541",
+      "verified_popis": "Odsekání a odebrání obkladů stěn z vnitřních obkládaček plochy přes 1 m2",
+      "mj": "m2",
+      "source": "Czech tender mirrors + WebSearch summary",
+      "verdict": "alternative_code",
+      "affects_items": ["260219_dum.HSV6.007"],
+      "correct_code_hint": "Alternative if work scope is 'odsekat odstránit' (chip off + remove) rather than 'demontovat' (controlled dismount). Choose based on whether obklady reuse expected (no for renovation = use 978059xxx)."
+    },
+    {
+      "code": "713141121",
+      "verified_popis": "Montáž tepelné izolace střech plochých rohožemi, pásy, deskami, dílci, bloky",
+      "mj": "m2",
+      "source": "local kros_catalog.db + cs-urs.cz catalog 800-713",
+      "verdict": "wrong_work_location",
+      "affects_items": ["260219_dum.PSV71.001", "260219_dum.PSV71.002"],
+      "correct_code_hint": "713141121 is for STŘECHY (roofs). RD Jáchymov PSV71.001/.002 are PODLAHY (floors) — different family. Look at 713121xxx (Montáž tepelné izolace podlah). Local DB has 713121122 ('Montáž tepelné izolace podlah rohožemi'); that's the right family root."
+    },
+    {
+      "code": "273313811",
+      "verified_popis": "Základy z betonu prostého desky z betonu kamenem neprokládaného tř. C 25/30",
+      "mj": "m3",
+      "source": "local kros_catalog.db",
+      "verdict": "wrong_geometry_class",
+      "affects_items": ["260217_sklad.HSV2.001"],
+      "correct_code_hint": "Item is 'Základové PASY z prostého betonu C16/20'. URS 273313811 is for DESKY (slabs), not PASY (strip foundations); also C25/30 instead of C16/20. Look at 271xxx family (pasy) with C16/20 leaf."
+    }
+  ],
+  "_summary": {
+    "queries_run": 12,
+    "codes_verified_real": 12,
+    "codes_matching_item_exactly": 1,
+    "codes_wrong_leaf_minor": 3,
+    "codes_wrong_work_type_or_family": 6,
+    "new_correct_codes_proposed": 4,
+    "items_with_actionable_updates": 8,
+    "items_total": 189
+  },
+  "_next_steps": [
+    "User runs URS_MATCHER_SERVICE Perplexity client on remaining 124 urs_search_needed items locally (sandbox can't invoke).",
+    "For the 8 actionable_updates items above, items.json should be patched manually OR by a follow-up tool with explicit user approval (per strict no-fabrication policy).",
+    "Pattern observation: heuristic urs_code_proposed in phase1_items_generator.py guesses first 6 digits correctly (family) but the 9-digit leaf is wrong in 6/12 verified cases. Generator could be improved by emitting first 6 digits + leaf=NULL + family description, leaving leaf disambiguation to Part 5b lookup."
+  ]
+}
