@@ -122,16 +122,22 @@
 | `TASK_Zihle_PhaseD_SoupisAndTZ.md` | Spec | `docs/specs/zihle-phased/` |
 | `TASK_Zihle_XLSX_Hygiene_Kfely_Recalibration.md` | Spec | `docs/specs/zihle-xlsx-hygiene/` |
 
-### 3.6 Golden tests — Reference
+### 3.6 Golden tests — already live in `test-data/tz/`
 
-| Файл | Куда |
+Эти MD-файлы уже на месте в репо в `test-data/tz/`. Дублируются в Project Knowledge — **удалить из Project Knowledge**, оригинал остается в репо.
+
+| Файл в Project Knowledge | Уже в репо как |
 |---|---|
-| `SO-202_D6_most_golden_test.md` | `docs/reference/golden_tests/so202_d6.md` |
-| `SO-250_golden_test.md` | `docs/reference/golden_tests/so250.md` |
-| `VP4_FORESTINA_operna_zed_golden_test.md` | `docs/reference/golden_tests/vp4_forestina.md` |
-| `SO-250_smartextractor_probe.md` | `docs/reference/golden_tests/so250_probe.md` |
-| `SO-250_calculator_test_log.md` | `docs/reference/golden_tests/so250_log.md` |
-| `SO250_briefing_calculator_test.md` | `docs/reference/golden_tests/so250_briefing.md` |
+| `SO-202_D6_most_golden_test.md` | `test-data/tz/SO-202_D6_most_golden_test.md` ✓ |
+| `SO-250_golden_test.md` | `test-data/tz/SO-250_golden_test.md` (добавить если ещё нет) |
+| `VP4_FORESTINA_operna_zed_golden_test.md` | `test-data/tz/VP4_FORESTINA_operna_zed_golden_test.md` ✓ |
+| `SO-250_smartextractor_probe.md` | `test-data/tz/SO-250_smartextractor_probe.md` |
+| `SO-250_calculator_test_log.md` | `test-data/tz/SO-250_calculator_test_log.md` |
+| `SO250_briefing_calculator_test.md` | `test-data/tz/SO250_briefing_calculator_test.md` |
+
+Также в `test-data/tz/`: `SO-203_D6_most_golden_test_v2.md`, `SO-207_D6_estakada_golden_test_v2.md` (уже там).
+
+**Project test data (не markdown):** `test-data/{project_slug}/` — например `test-data/RD_Jachymov_dum/` для RD Jáchymov исходники.
 
 ### 3.7 Architecture docs (Reference, не Steering)
 
@@ -169,8 +175,8 @@
 
 | Файл | Куда |
 |---|---|
-| `SKILL_stavagent_dxf_exhaustive.md` | `docs/reference/playbooks/dxf_exhaustive.md` |
-| `STAVAGENT_Drawings_to_VV_Rozpocet_Playbook.md` | `docs/reference/playbooks/drawings_to_vv.md` |
+| `SKILL_stavagent_dxf_exhaustive.md` | `docs/reference/playbooks/dxf_exhaustive.md` (project-agnostic) |
+| `STAVAGENT_Drawings_to_VV_Rozpocet_Playbook.md` | **Уже на месте** в `test-data/STAVAGENT_Drawings_to_VV_Rozpocet_Playbook.md` (dataset-bound playbook) — удалить копию из Project Knowledge |
 
 ### 3.11 Codex specifications (отдельный sub-domain)
 
