@@ -193,6 +193,8 @@ Registr DB (Cloud SQL)
 - ❌ Cloudbuild artefakty
 - ❌ User uploads (jdou do GCS)
 - ❌ `*.py` souborů obsahujících business logic v `docs/` (kód patří do `app/`)
+- ❌ Orphaned PDF / DXF / XLSX v root repa (project data jde do `test-data/{project_slug}/inputs/{dokladova_cast,vykresy_dxf,vykresy_pdf,tz,situace}/`)
+- ❌ Ad-hoc `data/` složka v root (vendor reference → `docs/reference/`; operational scripty → `scripts/`; vendor PDFs → `app/knowledge_base/B5_tech_cards/{vendor_product}/`; element specs → `docs/specs/element/{name}.md`)
 
 ---
 
@@ -244,3 +246,4 @@ Registr DB (Cloud SQL)
 | Date | Version | Notes |
 |---|---|---|
 | 19.05.2026 | 1.0 | Initial structure steering. Bude rozšiřováno při přidávání nových modulů. |
+| 19.05.2026 | 1.1 | §5 doplněn: zákaz orphaned project files v root + zákaz ad-hoc `data/` (per orphaned-files cleanup handoff). |
