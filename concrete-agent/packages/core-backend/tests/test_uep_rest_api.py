@@ -328,6 +328,63 @@ def test_read_artifact_json_rejects_backslash(tmp_path) -> None:
     assert exc.value.status_code == 400
 
 
+def test_x_user_id_rejects_path_traversal(client, tmp_path) -> None:
+    """Amazon Q B1 — X-User-Id must reject `../` etc."""
+    project_dir = tmp_path / "p"
+    project_dir.mkdir()
+    r = client.post(
+        "/api/v1/projects/proj-1/uep/run",
+        headers={"X-User-Id": "../../etc/passwd"},
+        json={"project_type": "residential", "project_dir": str(project_dir)},
+    )
+    assert r.status_code == 400
+    assert "Invalid X-User-Id" in r.json()["detail"]
+
+
+def test_x_user_id_rejects_html_injection(client, tmp_path) -> None:
+    project_dir = tmp_path / "p"
+    project_dir.mkdir()
+    r = client.post(
+        "/api/v1/projects/proj-1/uep/run",
+        headers={"X-User-Id": "<script>alert(1)</script>"},
+        json={"project_type": "residential", "project_dir": str(project_dir)},
+    )
+    assert r.status_code == 400
+
+
+def test_x_user_id_rejects_oversized(client, tmp_path) -> None:
+    project_dir = tmp_path / "p"
+    project_dir.mkdir()
+    r = client.post(
+        "/api/v1/projects/proj-1/uep/run",
+        headers={"X-User-Id": "a" * 65},
+        json={"project_type": "residential", "project_dir": str(project_dir)},
+    )
+    assert r.status_code == 400
+
+
+def test_x_user_id_accepts_uuid_shape(client, tmp_path) -> None:
+    project_dir = tmp_path / "p"
+    project_dir.mkdir()
+    r = client.post(
+        "/api/v1/projects/proj-1/uep/run",
+        headers={"X-User-Id": "550e8400-e29b-41d4-a716-446655440000"},
+        json={"project_type": "residential", "project_dir": str(project_dir)},
+    )
+    assert r.status_code == 201
+
+
+def test_x_user_id_missing_defaults_to_anonymous(client, tmp_path) -> None:
+    project_dir = tmp_path / "p"
+    project_dir.mkdir()
+    r = client.post(
+        "/api/v1/projects/proj-1/uep/run",
+        # no X-User-Id header
+        json={"project_type": "residential", "project_dir": str(project_dir)},
+    )
+    assert r.status_code == 201
+
+
 def test_delete_job_marks_cancelled(client, tmp_path) -> None:
     project_dir = tmp_path / "p"
     project_dir.mkdir()

@@ -91,10 +91,51 @@ router = APIRouter(prefix="/api/v1", tags=["uep"])
 # ---------------------------------------------------------------------------
 
 
-def _resolve_user(x_user_id: Optional[str]) -> str:
-    """Auth seam — PR2 reads header; PR3 wires JWT middleware."""
+# Header format guard for the PR2 X-User-Id dev seam (Amazon Q PR #1186
+# comment B1, discussion_r3266899102). Allowed shape: UUID OR alphanumeric
+# (with `-` and `_`), length 1..64. Rejects injection vectors:
+# `../`, `<script>`, oversized payloads, control chars. The seam is
+# explicitly NOT secure auth — PR3 wires the real JWT middleware
+# that already runs on the Portal side. This guard's job is to keep
+# the header from being a vehicle for path / log / template injection
+# while the seam is in place.
+import re as _re  # noqa: E402
 
-    return (x_user_id or "anonymous").strip() or "anonymous"
+_USER_ID_PATTERN = _re.compile(r"^[A-Za-z0-9_\-]{1,64}$")
+
+
+def _resolve_user(x_user_id: Optional[str]) -> str:
+    """Auth seam — PR2 reads header with format validation; PR3 wires
+    JWT middleware that replaces this entirely.
+
+    PR2 contract:
+      - missing / empty header → `anonymous` (lets local CLI + tests run)
+      - present but malformed (oversize, control chars, `../`, `<`, etc.)
+        → HTTP 400 so injection attempts don't reach downstream paths
+      - valid format → echoed as the user_id
+
+    SECURITY NOTE: this does not authenticate the caller. The caller
+    can still pick any well-formed identifier they want. The full
+    JWT-based auth lands in PR3 (`Portal JWT validation` middleware,
+    `user_tier_overrides` table lookup, etc.). This guard exists to
+    prevent the header value being a vehicle for injection attacks
+    while the seam is the contract.
+    """
+
+    if x_user_id is None:
+        return "anonymous"
+    candidate = x_user_id.strip()
+    if not candidate:
+        return "anonymous"
+    if not _USER_ID_PATTERN.match(candidate):
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Invalid X-User-Id header — must be 1..64 chars of "
+                "[A-Za-z0-9_-] (PR2 dev seam; PR3 wires JWT middleware)"
+            ),
+        )
+    return candidate
 
 
 def _tier_for_user(_user_id: str) -> str:
