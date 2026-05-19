@@ -332,6 +332,35 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-19 — Session: Docs structure audit
+
+**Topic:** Inventory aktuální struktury `docs/` proti steering plánu (handoff `docs/docs/handoff/2026-05-19-docs-audit.md`).
+
+**Rozhodnuto:**
+- 5 chybějících šablon dovytvořeno: `_TEMPLATE_spec/{design,tasks}.md` (autorské, mirror requirements.md stylu) + `_TEMPLATE_bug/{analyze,fix,verify}.md` (kopie z `bugs/aplikovat-timeout/` které slouží jako kanonická šablona).
+- 4 prázdné `1` placeholdery od GitHub web UI smazány (`docs/templates/1`, `docs/templates/_TEMPLATE_bug/1`, `docs/templates/_TEMPLATE_spec/1`, `docs/bugs/aplikovat-timeout/1`).
+- Findings report uložen na `docs/handoff/2026-05-19-docs-audit-findings.md` (sekce A–F per task §6).
+- Migration map pre-existing folders (architecture/, audits/, competitive/, normy/) navržena, ale **nic se nemigrovalo** — separátní taska.
+
+**Odmítnuto:**
+- Migrace `docs/architecture/`, `docs/audits/`, `docs/competitive/`, `docs/normy/` — out of scope (per task §4 a §8). Pouze inventory + doporučení do reportu §D.
+- Audit obsahu `docs/bugs/aplikovat-timeout/` souborů (per task §3.6 — řeší samostatná taska).
+- Otevírat PR (per task §8 no-PR-unless-asked policy).
+
+**Otevřené otázky:**
+- Misnested `docs/docs/handoff/2026-05-19-docs-audit.md` — přesunout do `docs/handoff/`?
+- Duplikát `CALCULATOR_PHILOSOPHY.md` (root vs `normy/navody/`) — která je kanonická?
+- Branch name mismatch: task říká `chore/docs-structure-audit`, session-level pinuje `claude/docs-audit-2026-05-19-0G3lF` — použit druhý.
+- Kdy spustit migraci pre-existing folders (architecture/, audits/, normy/, competitive/) do nové struktury?
+- Cleanup deadline 2026-07-29 (Gate 2 leftover) — vztah k novému workflow?
+
+**Co dál:**
+- Reakce Alexandra na otevřené otázky F.1–F.5 z findings reportu.
+- Samostatná taska `chore/docs-migrate-pre-existing-folders` (per §D.7 mapy).
+- Pilot specs (`cross-user-isolation/`, `mcp-policy-engine/`) teď mají kompletní šablony k použití.
+
+---
+
 ### 2026-05-19 — Session: SDD workflow setup
 
 **Topic:** Spec-Driven Development + persistent memory workflow для STAVAGENT, with constraint that work is online claude.ai (no terminal access at work, firewall blocks).
