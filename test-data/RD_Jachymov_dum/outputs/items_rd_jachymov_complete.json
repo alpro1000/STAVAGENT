@@ -80,18 +80,19 @@
       "_gate": "HSV",
       "kapitola": "HSV-1 Zemní práce",
       "subkapitola": "Hloubení figury anglický dvorek",
-      "popis": "Hloubení figury pro anglický dvorek a nový vstup do 1.PP ze zahrady",
+      "popis": "Hloubení jam nezapažených pro anglický dvorek a nový vstup do 1.PP ze zahrady, hornina tř. 3 (F4-CS)",
       "mj": "m³",
       "mnozstvi": 6.0,
       "mnozstvi_formula": "L=2.5 × W=2.0 × H=1.2 (dvorek odkop)",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "132211101",
+      "urs_code_proposed": "131201101",
       "urs_alternatives": [
-        "132201101",
-        "131211101"
+        "131211101",
+        "131301101",
+        "132201101"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "TZ ARS dům §6.2 zahrada — nový vstup do 1.PP",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -100,7 +101,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.003"
+      "id": "260219_dum.HSV1.003",
+      "popis_was_fabricated": "Hloubení figury pro anglický dvorek a nový vstup do 1.PP ze zahrady",
+      "urs_code_proposed_was": "132211101",
+      "urs_verification_note": "Korekce 2026-05-19: 'figura' RU loanword odstraněn → správný URS term 'Hloubení jam nezapažených' (TKP 131). Verified leaf 131201101 = 'Hloubení jam nezapažených v hornině tř. 3 objemu do 100 m3' m³ (smlouvy.gov.cz, 2016).",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -273,18 +278,19 @@
       "_gate": "HSV",
       "kapitola": "HSV-1 Zemní práce",
       "subkapitola": "Hloubení figury skladu",
-      "popis": "Hloubení figury pro objekt skladu v lichoběžníku 6.35 × 3.34 m, hl. do 1.2 m",
+      "popis": "Hloubení jam nezapažených pro objekt skladu v lichoběžníku 6,35 × 3,34 m, hl. do 1,2 m, hornina tř. 3",
       "mj": "m³",
       "mnozstvi": 25.5,
       "mnozstvi_formula": "DXF: L=6.350 × W=3.340 × H=1.2 (DXF DIMENSION ověřeno)",
       "mnozstvi_confidence": 0.95,
-      "urs_code_proposed": "132211101",
+      "urs_code_proposed": "131201101",
       "urs_alternatives": [
-        "132201101",
-        "131211101"
+        "131211101",
+        "131301101",
+        "132201101"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "DXF sklad_DPZ DIMENSION 6350.06 + 3340.0 mm (vyjasnění #18 resolved)",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -293,7 +299,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV1.002"
+      "id": "260217_sklad.HSV1.002",
+      "popis_was_fabricated": "Hloubení figury pro objekt skladu v lichoběžníku 6.35 × 3.34 m, hl. do 1.2 m",
+      "urs_code_proposed_was": "132211101",
+      "urs_verification_note": "Korekce 2026-05-19: stejná oprava jako HSV1.003 — 'figura' → 'jám nezapažených'.",
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260217_sklad",
@@ -2305,7 +2315,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV6.007",
-      "urs_code_proposed_was": "962081141",
+      "urs_code_proposed_was": "781473810",
       "urs_verification_note": "WebSearch found exact match — 'Demontáž obkladů z dlaždic keramických lepených' (modern bonded tiles, fits post-1990 koupelna). 781471810 = malta-laid (older). 978059541/511 = odsekání (chip-off, no reuse).",
       "urs_websearch_verified_at": "2026-05-19"
     },
@@ -5413,6 +5423,7 @@
     "verified_exact": 3,
     "wrong_leaf_flagged": 9,
     "direct_replacement": 1,
+    "fabricated_term_corrected": 2,
     "source": "outputs/urs_websearch_verifications.json"
   }
 }
