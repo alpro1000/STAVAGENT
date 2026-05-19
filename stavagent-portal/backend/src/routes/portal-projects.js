@@ -997,9 +997,14 @@ router.delete('/:id/kiosks/:linkId', async (req, res) => {
       return res.status(503).json({ success: false, error: 'Database not available' });
     }
 
-    // Allow deletion if user owns the project OR if project was registry-created (owner_id = 1)
+    // Strict owner check — was `OR owner_id = 1` to allow deletion of
+    // legacy kiosk-orphans, but that gave EVERY logged-in user permission
+    // to delete the 58 sirot (audit §2.2 RISKY classification).
+    // Pre-multi-tenant orphans are now handled by the one-off cleanup
+    // migration in docs/security/sirot_cleanup_playbook.md — not by an
+    // implicit DELETE branch in this endpoint.
     const projectCheck = await pool.query(
-      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND (owner_id = $2 OR owner_id = 1)',
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
       [id, userId]
     );
     if (projectCheck.rows.length === 0) {
