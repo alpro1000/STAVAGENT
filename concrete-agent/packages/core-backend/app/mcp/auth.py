@@ -495,6 +495,314 @@ def json_dumps_compact(value) -> str:
     return _json.dumps(value, separators=(",", ":"), ensure_ascii=False)
 
 
+# ── OAuth token storage (RFC 6749 + RFC 7636 + BCP §4.14) ───────────────────
+
+# Standard OAuth 2.0 TTLs. access_token = 1h matches the canonical
+# choice that fits inside a typical session without too many refreshes;
+# refresh_token = 90d is long enough that a user who connects an MCP
+# client and uses it monthly doesn't have to re-grant consent, short
+# enough that a leaked refresh becomes useless within a quarter.
+ACCESS_TOKEN_TTL_SECONDS = 3600
+REFRESH_TOKEN_TTL_SECONDS = 7_776_000
+
+
+def validate_oauth_client_credentials(
+    client_id: str, client_secret: str
+) -> Optional[dict]:
+    """Verify a DCR-issued (client_id, client_secret) pair.
+
+    Returns the matching mcp_oauth_clients row as a dict on success,
+    or None on any failure (unknown client / inactive / wrong secret).
+    Caller maps None → 401 invalid_client per RFC 6749 §5.2.
+
+    Constant-time secret verify via `verify_client_secret` (which uses
+    hmac.compare_digest). Unknown client_id and wrong secret take the
+    same wall-clock time as a successful lookup so an attacker can't
+    enumerate valid client_ids via response timing.
+    """
+    if not client_id or not client_secret:
+        return None
+
+    cur = _execute(
+        "SELECT id, client_id, client_secret_hash, client_secret_salt, "
+        "       client_name, redirect_uris, grant_types, scope, "
+        "       created_by_user_id, is_active "
+        "FROM mcp_oauth_clients WHERE client_id = %s",
+        (client_id,),
+    )
+    row = cur.fetchone()
+    _get_db().commit()
+
+    if not row or not row["is_active"]:
+        # Still call verify with a dummy hash so unknown-client and
+        # wrong-secret paths take similar time. Cheap insurance.
+        verify_client_secret(client_secret, "0" * 64, b"\x00" * 16)
+        return None
+
+    if not verify_client_secret(
+        client_secret, row["client_secret_hash"], row["client_secret_salt"]
+    ):
+        return None
+
+    return dict(row)
+
+
+def resolve_user_api_key_for_client(oauth_client_id: str) -> Optional[str]:
+    """For authenticated DCR (`created_by_user_id IS NOT NULL`),
+    return the api_key of the registering user so client_credentials
+    grants can attribute credits.
+
+    Returns None for public DCR clients (`created_by_user_id IS NULL`)
+    OR if the bound user has been deactivated / deleted. /token then
+    mints a token with `user_api_key=NULL` → middleware enforces 402
+    on paid tools.
+    """
+    cur = _execute(
+        """
+        SELECT k.api_key
+        FROM mcp_oauth_clients c
+        JOIN mcp_api_keys k ON k.id = c.created_by_user_id
+        WHERE c.client_id = %s
+          AND c.is_active = TRUE
+          AND k.is_active = TRUE
+        """,
+        (oauth_client_id,),
+    )
+    row = cur.fetchone()
+    _get_db().commit()
+    return row["api_key"] if row else None
+
+
+def mint_token_pair(
+    *,
+    oauth_client_id: str,
+    user_api_key: Optional[str],
+    grant_type: str,
+    scope: Optional[str],
+    with_refresh: bool,
+    rotated_from_id: Optional[int] = None,
+) -> dict:
+    """Generate + persist a new mcp_oauth_tokens row.
+
+    Returns the response shape `{access_token, refresh_token, expires_in,
+    token_type, scope}` suitable for RFC 6749 §5.1 token endpoint
+    response (caller strips None refresh_token before serialization).
+
+    `with_refresh=False` for client_credentials per RFC 6749 §4.4.3
+    ("A refresh token SHOULD NOT be included.") — keeps the
+    server-to-server flow stateless from the caller's perspective.
+
+    `rotated_from_id` is set on the new row when called from
+    `rotate_refresh_token`, building the audit chain that lets us
+    revoke an entire family on replay detection.
+    """
+    access = generate_access_token()
+    refresh = generate_refresh_token() if with_refresh else None
+
+    conn = _get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            INSERT INTO mcp_oauth_tokens (
+                access_token, refresh_token,
+                oauth_client_id, user_api_key,
+                grant_type, scope,
+                access_expires_at, refresh_expires_at,
+                rotated_from
+            ) VALUES (
+                %s, %s,
+                %s, %s,
+                %s, %s,
+                NOW() + INTERVAL '%s seconds',
+                CASE WHEN %s::text IS NULL THEN NULL
+                     ELSE NOW() + INTERVAL '%s seconds' END,
+                %s
+            )
+            RETURNING id
+            """,
+            (
+                access, refresh,
+                oauth_client_id, user_api_key,
+                grant_type, scope,
+                ACCESS_TOKEN_TTL_SECONDS,
+                refresh, REFRESH_TOKEN_TTL_SECONDS,
+                rotated_from_id,
+            ),
+        )
+        new_id = cur.fetchone()["id"]
+        conn.commit()
+    except psycopg2.Error:
+        conn.rollback()
+        raise
+
+    out = {
+        "access_token": access,
+        "token_type": "bearer",
+        "expires_in": ACCESS_TOKEN_TTL_SECONDS,
+        "scope": scope or "",
+        "_token_row_id": new_id,
+    }
+    if refresh:
+        out["refresh_token"] = refresh
+    return out
+
+
+def lookup_refresh_token(refresh_token: str) -> Optional[dict]:
+    """Return the mcp_oauth_tokens row for a refresh_token, regardless
+    of revoked/expired status — caller checks the lifecycle fields and
+    chooses 401 vs replay-revoke.
+
+    Returning the revoked row (instead of filtering it out in SQL) is
+    what enables replay detection: presenting a revoked refresh_token
+    is a positive signal that the token was stolen, and we use it to
+    revoke every descendant in the rotation chain.
+    """
+    if not refresh_token:
+        return None
+    cur = _execute(
+        """
+        SELECT id, access_token, refresh_token,
+               oauth_client_id, user_api_key, grant_type, scope,
+               issued_at, access_expires_at, refresh_expires_at,
+               revoked_at, rotated_from
+        FROM mcp_oauth_tokens
+        WHERE refresh_token = %s
+        """,
+        (refresh_token,),
+    )
+    row = cur.fetchone()
+    _get_db().commit()
+    return dict(row) if row else None
+
+
+def revoke_refresh_chain(token_row_id: int) -> int:
+    """Revoke `token_row_id` + every descendant connected via rotated_from.
+
+    Triggered by `rotate_refresh_token` when it detects replay of an
+    already-revoked refresh_token. Per OAuth 2.0 BCP §4.14:
+
+      "If a refresh token is used more than once, the authorization
+       server SHOULD revoke all refresh tokens that were subsequently
+       issued based on the originally-issued refresh token."
+
+    Returns the number of rows revoked (for logging + tests).
+    """
+    conn = _get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            WITH RECURSIVE chain(id) AS (
+                SELECT id FROM mcp_oauth_tokens WHERE id = %s
+              UNION ALL
+                SELECT t.id FROM mcp_oauth_tokens t
+                JOIN chain c ON t.rotated_from = c.id
+            )
+            UPDATE mcp_oauth_tokens
+               SET revoked_at = NOW()
+             WHERE id IN (SELECT id FROM chain)
+               AND revoked_at IS NULL
+            RETURNING id
+            """,
+            (token_row_id,),
+        )
+        revoked = cur.fetchall()
+        conn.commit()
+    except psycopg2.Error:
+        conn.rollback()
+        raise
+    return len(revoked)
+
+
+def rotate_refresh_token(
+    *, presented_refresh: str, client_id: str, scope: Optional[str]
+) -> dict:
+    """Atomic refresh rotation per RFC 6749 §6 + OAuth 2.0 BCP §4.14.
+
+    Decision tree (all in one transaction so concurrent rotations of the
+    same refresh_token can't both succeed):
+
+      old_row not found                    → invalid_grant
+      old_row.oauth_client_id != client_id → invalid_grant (cross-client use)
+      old_row.refresh_expires_at <= NOW()  → invalid_grant (expired)
+      old_row.revoked_at IS NOT NULL       → REPLAY: revoke chain → invalid_grant
+      else                                  → revoke old, mint new pair,
+                                              new.rotated_from = old.id
+    """
+    conn = _get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            SELECT id, oauth_client_id, user_api_key, scope,
+                   refresh_expires_at, revoked_at
+            FROM mcp_oauth_tokens
+            WHERE refresh_token = %s
+            FOR UPDATE
+            """,
+            (presented_refresh,),
+        )
+        old = cur.fetchone()
+        if not old:
+            conn.rollback()
+            return {"ok": False, "error": "invalid_grant",
+                    "error_description": "refresh_token not found"}
+
+        if old["oauth_client_id"] != client_id:
+            conn.rollback()
+            return {"ok": False, "error": "invalid_grant",
+                    "error_description": "refresh_token does not belong to this client"}
+
+        now_compare = datetime_now_utc()
+        if old["refresh_expires_at"] is None or old["refresh_expires_at"] <= now_compare:
+            conn.rollback()
+            return {"ok": False, "error": "invalid_grant",
+                    "error_description": "refresh_token expired"}
+
+        if old["revoked_at"] is not None:
+            # REPLAY DETECTED. Per BCP §4.14, revoke the whole rotation
+            # chain so any stolen-and-rotated descendants become useless.
+            conn.commit()  # release SELECT FOR UPDATE row lock first
+            revoked_count = revoke_refresh_chain(old["id"])
+            logger.warning(
+                "[MCP/OAuth] Refresh-token replay detected: token row %s "
+                "presented after revoke. Revoked %d row(s) in chain.",
+                old["id"], revoked_count,
+            )
+            return {"ok": False, "error": "invalid_grant",
+                    "error_description": "refresh_token has been revoked"}
+
+        # Revoke old + mint new in same connection. mint_token_pair opens
+        # its own cursor on the same connection; rollback below covers
+        # both inserts.
+        cur.execute(
+            "UPDATE mcp_oauth_tokens SET revoked_at = NOW() WHERE id = %s",
+            (old["id"],),
+        )
+        conn.commit()  # commit revoke before mint so the new row's
+                       # rotated_from sees the revoked-at timestamp set
+    except psycopg2.Error:
+        conn.rollback()
+        raise
+
+    new_pair = mint_token_pair(
+        oauth_client_id=client_id,
+        user_api_key=old["user_api_key"],
+        grant_type="refresh_token",
+        scope=scope or old["scope"],
+        with_refresh=True,
+        rotated_from_id=old["id"],
+    )
+    return {"ok": True, **new_pair}
+
+
+def datetime_now_utc():
+    """Wrap `datetime.now(timezone.utc)` so tests can monkeypatch."""
+    from datetime import datetime, timezone
+    return datetime.now(timezone.utc)
+
+
 # ── Public API ───────────────────────────────────────────────────────────────
 
 def register(email: str, password: str, client_ip: str = "unknown") -> dict:

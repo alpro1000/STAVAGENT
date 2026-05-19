@@ -268,61 +268,195 @@ async def oauth_authorize(
 @router.post("/oauth/token")
 async def oauth_token(
     grant_type: str = Form(...),
-    # client_credentials grant
+    # client_credentials + refresh_token grants
     client_id: str = Form(""),
     client_secret: str = Form(""),
     # authorization_code grant
     code: str = Form(""),
     redirect_uri: str = Form(""),
     code_verifier: str = Form(""),
+    # refresh_token grant
+    refresh_token: str = Form(""),
+    scope: str = Form(""),
 ):
     """OAuth 2.0 token endpoint.
 
-    Supports two grant types:
+    Supports three grant types + smart routing for legacy / DCR clients:
 
-    - `client_credentials` (ChatGPT legacy connectors): API key as
-      `client_id` → bearer token = the same API key.
-    - `authorization_code` (ChatGPT custom connectors, Claude.ai MCP):
-      code + PKCE `code_verifier` → bearer token = the API key tied
-      to the code at `/oauth/authorize` time.
+    - `client_credentials` (RFC 6749 §4.4)
+        Server-to-server. ChatGPT legacy custom GPTs (client_id=
+        sk-stavagent-{hex}) → backward-compat path: access_token =
+        the api_key itself, NO mcp_oauth_tokens row written. DCR-issued
+        clients (client_id=dcr-{hex24}) → new path: validate secret,
+        resolve user_api_key from mcp_oauth_clients.created_by_user_id
+        (NULL for public DCR), mint sat-{hex48} access_token, INSERT
+        into mcp_oauth_tokens. No refresh_token per RFC §4.4.3.
 
-    Bearer token is the API key string itself — stateless, no JWT lookup
-    on each MCP call. Future enhancement: swap for short-lived JWT
-    + refresh_token.
+    - `authorization_code` (RFC 6749 §4.1 + RFC 7636 PKCE)
+        consume_code() returns (user_api_key, oauth_client_id). If
+        oauth_client_id IS NULL → legacy: access_token = api_key, no
+        token row. If NOT NULL → new path: mint sat-{hex48} access +
+        srt-{hex48} refresh, INSERT bound to (oauth_client_id,
+        user_api_key).
+
+    - `refresh_token` (RFC 6749 §6 + BCP §4.14 rotation)
+        DCR-only. Rotates: revoke old, mint new pair, new.rotated_from
+        = old.id. Replay (presenting an already-revoked refresh_token)
+        revokes the entire rotation chain.
+
+    Format-based dispatch (legacy vs new) is explicit and commented at
+    each branch so a future reviewer can trace the backward-compat
+    boundary without grep.
     """
+    grant_type = (grant_type or "").strip()
+
+    # ── client_credentials grant ─────────────────────────────────────────────
     if grant_type == "client_credentials":
+        # Dispatch: dcr- prefix → new DCR flow; otherwise legacy.
+        # The `sk-stavagent-` legacy path is preserved verbatim because
+        # ChatGPT custom GPTs in production today (May 2026) authenticate
+        # with their api_key as both client_id and client_secret — see
+        # docs/audits/mcp_status/2026-05-09_chatgpt_legacy_oauth.md.
+        if client_id.startswith("dcr-"):
+            client_row = mcp_auth.validate_oauth_client_credentials(
+                client_id, client_secret
+            )
+            if not client_row:
+                raise HTTPException(
+                    status_code=401,
+                    detail={"error": "invalid_client",
+                            "error_description": "Unknown or invalid client credentials"},
+                )
+            # client_credentials grant must be advertised by the client.
+            grant_types_allowed = client_row["grant_types"]
+            if isinstance(grant_types_allowed, str):
+                # JSONB columns come back as str in some psycopg2 paths
+                grant_types_allowed = json.loads(grant_types_allowed)
+            if "client_credentials" not in grant_types_allowed:
+                raise HTTPException(
+                    status_code=400,
+                    detail={"error": "unauthorized_client",
+                            "error_description":
+                                "Client did not register for client_credentials grant"},
+                )
+            # Resolve user_api_key — only NOT NULL for authenticated DCR.
+            # Public-DCR clients get user_api_key=NULL → middleware will
+            # 402 paid tools.
+            user_api_key = (
+                mcp_auth.resolve_user_api_key_for_client(client_id)
+                if client_row["created_by_user_id"] is not None
+                else None
+            )
+            new = mcp_auth.mint_token_pair(
+                oauth_client_id=client_id,
+                user_api_key=user_api_key,
+                grant_type="client_credentials",
+                scope=scope or client_row.get("scope"),
+                with_refresh=False,  # RFC 6749 §4.4.3
+            )
+            # Strip internal id before serialising.
+            new.pop("_token_row_id", None)
+            return new
+
+        # Legacy path: sk-stavagent-* (or any non-dcr- value) keeps the
+        # old single-table lookup. NO mcp_oauth_tokens row written —
+        # MCPAuthChallengeMiddleware will fall back to mcp_api_keys
+        # when it sees a sk-stavagent-* bearer.
         result = mcp_auth.oauth_token(client_id, client_secret)
         if "error" in result:
             raise HTTPException(status_code=401, detail=result)
         return result
 
+    # ── authorization_code grant ────────────────────────────────────────────
     if grant_type == "authorization_code":
-        result = mcp_oauth_codes.consume_code(
+        consume = mcp_oauth_codes.consume_code(
             code=code,
             code_verifier=code_verifier,
             redirect_uri=redirect_uri,
         )
-        if not result["ok"]:
-            # invalid_request → 400, everything else → 400 per RFC 6749 §5.2
+        if not consume["ok"]:
             raise HTTPException(
                 status_code=400,
-                detail={"error": result["error"],
-                        "error_description": result.get("error_description", "")},
+                detail={"error": consume["error"],
+                        "error_description": consume.get("error_description", "")},
             )
-        # The "bearer token" is the API key tied to the code. Reuse the
-        # client_credentials shape so consumers see one response schema.
-        api_key = result["client_id"]
-        return {
-            "access_token": api_key,
-            "token_type": "bearer",
-            "scope": "mcp",
-        }
+
+        user_api_key = consume["client_id"]
+        oauth_client_id = consume.get("oauth_client_id")
+
+        # Dispatch:
+        #   oauth_client_id IS NULL  → legacy authorize flow (ChatGPT
+        #     custom GPT before DCR) where the user pasted their api_key
+        #     into the "Client ID" field directly. Preserve the existing
+        #     bearer = api_key shape; no mcp_oauth_tokens row.
+        #   oauth_client_id NOT NULL → DCR-broker flow. Mint sat-/srt-
+        #     pair bound to (oauth_client_id, user_api_key).
+        if not oauth_client_id:
+            return {
+                "access_token": user_api_key,
+                "token_type": "bearer",
+                "scope": "mcp",
+            }
+
+        new = mcp_auth.mint_token_pair(
+            oauth_client_id=oauth_client_id,
+            user_api_key=user_api_key,
+            grant_type="authorization_code",
+            scope=scope or "mcp",
+            with_refresh=True,
+        )
+        new.pop("_token_row_id", None)
+        return new
+
+    # ── refresh_token grant ─────────────────────────────────────────────────
+    if grant_type == "refresh_token":
+        if not refresh_token:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "invalid_request",
+                        "error_description": "refresh_token required"},
+            )
+        # refresh_token grant is DCR-only by construction (legacy flow
+        # doesn't mint refresh tokens). Validate client credentials
+        # before touching the rotation chain so a stolen refresh_token
+        # without matching client credentials gets 401 not 200.
+        if not client_id.startswith("dcr-"):
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "invalid_client",
+                        "error_description":
+                            "refresh_token grant requires a DCR-issued client_id"},
+            )
+        client_row = mcp_auth.validate_oauth_client_credentials(
+            client_id, client_secret
+        )
+        if not client_row:
+            raise HTTPException(
+                status_code=401,
+                detail={"error": "invalid_client",
+                        "error_description": "Unknown or invalid client credentials"},
+            )
+        rotation = mcp_auth.rotate_refresh_token(
+            presented_refresh=refresh_token,
+            client_id=client_id,
+            scope=scope or None,
+        )
+        if not rotation["ok"]:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": rotation["error"],
+                        "error_description": rotation.get("error_description", "")},
+            )
+        # Strip internal id before serialising.
+        rotation.pop("_token_row_id", None)
+        rotation.pop("ok", None)
+        return rotation
 
     raise HTTPException(
         status_code=400,
         detail={"error": "unsupported_grant_type",
                 "error_description":
-                    "Supported: client_credentials, authorization_code"},
+                    "Supported: client_credentials, authorization_code, refresh_token"},
     )
 
 

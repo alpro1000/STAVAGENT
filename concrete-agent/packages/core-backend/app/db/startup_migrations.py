@@ -99,6 +99,16 @@ _CRITICAL_SCHEMA: dict[str, set[str]] = {
         "request_payload_hash", "registered_ip", "registered_user_agent",
         "created_at",
     },
+    # Columns referenced by app.mcp.auth.{mint_token_pair,
+    # lookup_refresh_token, rotate_refresh_token, revoke_refresh_chain}
+    # — DCR token issuance + refresh rotation (BCP §4.14).
+    "mcp_oauth_tokens": {
+        "id", "access_token", "refresh_token",
+        "oauth_client_id", "user_api_key",
+        "grant_type", "scope",
+        "issued_at", "access_expires_at", "refresh_expires_at",
+        "revoked_at", "rotated_from", "last_used_at",
+    },
 }
 
 
