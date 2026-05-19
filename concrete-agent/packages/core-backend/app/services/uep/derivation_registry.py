@@ -259,7 +259,14 @@ def load_registry(path: Optional[Path] = None) -> DerivationRegistry:
     """
 
     p = path or rules_path()
-    raw = yaml.safe_load(p.read_text(encoding="utf-8"))
+    # YAML I/O wrap (Amazon Q PR #1186 C3) — malformed file →
+    # RuntimeError with path context, not raw YAMLError.
+    try:
+        raw = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        raise RuntimeError(
+            f"Failed to load derivation rules from {p}: {exc}"
+        ) from exc
     rule_set = DerivationRuleSet.model_validate(raw)
     registry = DerivationRegistry(rule_set)
     logger.info("[uep.derivation] loaded %d rules from %s", len(registry), p.name)

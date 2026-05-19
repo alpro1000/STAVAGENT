@@ -95,7 +95,16 @@ def load_tier_limits_from_yaml(path: Optional[Path] = None) -> dict[str, TierLim
     """
 
     p = path or _yaml_path()
-    raw = yaml.safe_load(p.read_text(encoding="utf-8"))
+    # YAML I/O wrap (Amazon Q PR #1186 C3) — malformed file →
+    # RuntimeError with path context, not raw YAMLError → 500.
+    # Same pattern applied to coverage_engine.load_matrix,
+    # reconciliation_engine.load_rules, derivation_registry.load_registry.
+    try:
+        raw = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        raise RuntimeError(
+            f"Failed to load tier limits from {p}: {exc}"
+        ) from exc
     out: dict[str, TierLimits] = {}
     for entry in raw.get("tiers", []):
         tier = TierLimits.model_validate(entry)

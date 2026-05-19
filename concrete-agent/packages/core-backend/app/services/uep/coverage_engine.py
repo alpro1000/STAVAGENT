@@ -77,8 +77,19 @@ def load_matrix(
     if not yaml_path.exists():
         raise FileNotFoundError(f"Coverage matrix not found: {yaml_path}")
 
-    with yaml_path.open("r", encoding="utf-8") as fp:
-        raw = yaml.safe_load(fp)
+    # Wrap YAML I/O so malformed files surface as RuntimeError with
+    # the source path attached, rather than propagating raw
+    # yaml.YAMLError / OSError to the REST handler (which would
+    # crash with 500 and leak internal details). Closes Amazon Q
+    # PR #1186 comment C3 (discussion_r3266899141) — applied
+    # consistently across all 4 yaml.safe_load sites in services/uep/.
+    try:
+        with yaml_path.open("r", encoding="utf-8") as fp:
+            raw = yaml.safe_load(fp)
+    except (OSError, yaml.YAMLError) as exc:
+        raise RuntimeError(
+            f"Failed to load coverage matrix from {yaml_path}: {exc}"
+        ) from exc
 
     if not isinstance(raw, dict):
         raise ValueError(f"Matrix YAML root must be a mapping: {yaml_path}")

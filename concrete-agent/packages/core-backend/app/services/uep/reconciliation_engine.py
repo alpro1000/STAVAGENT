@@ -61,7 +61,14 @@ def load_rules(path: Path, project_type: str) -> ReconciliationRuleSet:
     wrong YAML).
     """
 
-    raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    # YAML I/O wrap (Amazon Q PR #1186 C3) — malformed file → RuntimeError
+    # with path context, not raw YAMLError → 500.
+    try:
+        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        raise RuntimeError(
+            f"Failed to load reconciliation rules from {path}: {exc}"
+        ) from exc
     rule_set = ReconciliationRuleSet.model_validate(raw)
     if rule_set.project_type != project_type:
         raise ValueError(
