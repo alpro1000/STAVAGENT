@@ -6,6 +6,30 @@
 
 ---
 
+## 🚨 Mandatory reading at session start
+
+Před JAKOUKOLIV prací přečti v tomto pořadí:
+
+1. `docs/steering/conventions.md` — jak pracovat (mantra, naming, gates, communication)
+2. `docs/steering/product.md` — co stavíme a pro koho
+3. `docs/steering/tech.md` — stack, AI tier, infrastructure, MCP
+4. `docs/steering/structure.md` — repo layout, kam co patří
+5. `docs/steering/domain.md` — construction rules, OTSKP/ÚRS, skruž, rebar matrix
+6. `docs/soul.md` — aktuální stav, recent decisions, session log
+
+Pokud kterýkoliv soubor chybí nebo je outdated → **STOP** a informuj Alexandra.
+
+Po session **POVINNĚ** přidej entry do `docs/soul.md` §9 (Session log):
+```markdown
+## YYYY-MM-DD — Session: {topic}
+**Rozhodnuto:** ...
+**Odmítnuto:** ...
+**Otevřené otázky:** ...
+**Co dál:** ...
+```
+
+---
+
 > **English TL;DR for external readers**
 >
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
