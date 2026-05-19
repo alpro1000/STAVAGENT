@@ -26,6 +26,7 @@ from fastapi.testclient import TestClient
 
 from app.mcp import auth as mcp_auth
 from app.mcp import oauth_codes as mcp_oauth_codes
+from app.mcp import rate_limit as mcp_rate_limit
 from app.mcp.routes import (
     _LOOPBACK_HOSTS,
     _hash_payload,
@@ -40,11 +41,21 @@ from app.mcp.routes import (
 @pytest.fixture
 def client(monkeypatch):
     """Fresh FastAPI app + TestClient per test. DB helpers monkeypatched
-    to in-memory state so tests run without Postgres."""
+    to in-memory state so tests run without Postgres.
+
+    Gate 6 addition: rate limiter is patched to ALLOWED so the existing
+    Gate 3 happy/failure tests don't trip the 10-req/h limiter from
+    sharing a Cloud Run instance. The 429 + 503 paths are exercised in
+    separate fixtures further below.
+    """
     state = {
         "registered": [],         # list of register_oauth_client kwargs
         "audit_failures": [],     # list of log_oauth_registration_failure kwargs
         "valid_initial_tokens": {},  # api_key -> user_id
+        "rate_limit_result": {
+            "status": mcp_rate_limit.RateLimitResult.ALLOWED,
+            "current": 1, "limit": 10, "retry_after": 3600,
+        },
     }
 
     def fake_register(**kwargs):
@@ -61,9 +72,13 @@ def client(monkeypatch):
     def fake_resolve(api_key: str):
         return state["valid_initial_tokens"].get(api_key)
 
+    async def fake_rate_limit(_client_ip: str):
+        return state["rate_limit_result"]
+
     monkeypatch.setattr(mcp_auth, "register_oauth_client", fake_register)
     monkeypatch.setattr(mcp_auth, "log_oauth_registration_failure", fake_audit)
     monkeypatch.setattr(mcp_auth, "_resolve_initial_access_user_id", fake_resolve)
+    monkeypatch.setattr(mcp_rate_limit, "check_register_rate_limit", fake_rate_limit)
 
     app = FastAPI()
     app.include_router(router)
@@ -138,6 +153,114 @@ def test_hash_payload_format_sha256_hex():
 def test_hash_payload_sensitive_to_changes():
     """A single byte flip must produce a different hash (no truncation bugs)."""
     assert _hash_payload(b"abc") != _hash_payload(b"abd")
+
+
+# ── POST /api/v1/mcp/oauth/register — rate limit (Gate 6) ───────────────────
+
+
+def test_register_rate_limit_exceeded_returns_429(client):
+    """status='exceeded' from rate limiter → 429 + Retry-After header + audit row."""
+    client.state["rate_limit_result"] = {
+        "status": mcp_rate_limit.RateLimitResult.EXCEEDED,
+        "current": 11, "limit": 10, "retry_after": 3600,
+    }
+    resp = client.post(
+        "/api/v1/mcp/oauth/register",
+        json={"redirect_uris": ["https://example.com/cb"], "client_name": "X"},
+    )
+    assert resp.status_code == 429
+    assert resp.headers["retry-after"] == "3600"
+    body = resp.json()
+    assert body["detail"]["error"] == "rate_limit_exceeded"
+    assert body["detail"]["retry_after"] == 3600
+
+    # Audit row written with status=rate_limited + ip + user_agent + payload_hash
+    assert len(client.state["audit_failures"]) == 1
+    audit = client.state["audit_failures"][0]
+    assert audit["status"] == "rate_limited"
+    assert audit["error_code"] == "rate_limit_exceeded"
+    assert audit["registered_ip"]
+    assert audit["request_payload_hash"]
+
+
+def test_register_rate_limit_runs_before_validation(client):
+    """429 must fire even on malformed payloads — protects against flood
+    of bad JSON wasting parser cycles."""
+    client.state["rate_limit_result"] = {
+        "status": mcp_rate_limit.RateLimitResult.EXCEEDED,
+        "current": 11, "limit": 10, "retry_after": 3600,
+    }
+    resp = client.post(
+        "/api/v1/mcp/oauth/register",
+        content=b"this is not json",
+        headers={"content-type": "application/json"},
+    )
+    # 429 wins over the 400 invalid_client_metadata that the JSON
+    # parse-failure path would otherwise return
+    assert resp.status_code == 429
+
+
+def test_register_redis_unreachable_returns_503(client):
+    """status='unavailable' → 503 (fail-closed) + Retry-After header."""
+    client.state["rate_limit_result"] = {
+        "status": mcp_rate_limit.RateLimitResult.UNAVAILABLE,
+        "error_description": "Rate limiter unavailable. Registration "
+                             "temporarily disabled — please retry in a few minutes.",
+        "retry_after": 3600,
+    }
+    resp = client.post(
+        "/api/v1/mcp/oauth/register",
+        json={"redirect_uris": ["https://example.com/cb"]},
+    )
+    assert resp.status_code == 503
+    assert resp.headers["retry-after"] == "3600"
+    body = resp.json()
+    assert body["detail"]["error"] == "service_unavailable"
+    # No audit row on 503 — Redis is down, so the audit DB might be too;
+    # we don't want to compound the fault
+    assert client.state["audit_failures"] == []
+
+
+def test_register_uses_x_forwarded_for_for_ip(client):
+    """Rate limiter must receive the leftmost XFF IP, not request.client.host."""
+    # Capture the IP that the rate limiter is called with
+    captured = []
+
+    async def capture_rl(client_ip):
+        captured.append(client_ip)
+        return {
+            "status": mcp_rate_limit.RateLimitResult.ALLOWED,
+            "current": 1, "limit": 10, "retry_after": 3600,
+        }
+
+    import pytest as _pytest  # noqa: F401 — keep the spirit of fixture-scope
+    # Override the per-fixture fake with a recorder
+    from app.mcp import rate_limit as _rl
+    real_fake = _rl.check_register_rate_limit
+    _rl.check_register_rate_limit = capture_rl  # type: ignore[assignment]
+    try:
+        resp = client.post(
+            "/api/v1/mcp/oauth/register",
+            headers={"x-forwarded-for": "203.0.113.1, 10.0.0.1"},
+            json={"redirect_uris": ["https://example.com/cb"]},
+        )
+    finally:
+        _rl.check_register_rate_limit = real_fake  # type: ignore[assignment]
+    assert resp.status_code == 201, resp.text
+    assert captured == ["203.0.113.1"]
+    # Also verify the audit log + client_ip propagation use the same value:
+    # Trigger the failure path next so audit_failures gets the IP.
+    client.state["rate_limit_result"] = {
+        "status": mcp_rate_limit.RateLimitResult.EXCEEDED,
+        "current": 11, "limit": 10, "retry_after": 3600,
+    }
+    resp2 = client.post(
+        "/api/v1/mcp/oauth/register",
+        headers={"x-forwarded-for": "203.0.113.42, 10.0.0.1"},
+        json={"redirect_uris": ["https://example.com/cb"]},
+    )
+    assert resp2.status_code == 429
+    assert client.state["audit_failures"][-1]["registered_ip"] == "203.0.113.42"
 
 
 # ── POST /api/v1/mcp/oauth/register — happy paths ───────────────────────────

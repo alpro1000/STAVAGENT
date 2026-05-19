@@ -978,8 +978,17 @@ def update_token_last_used(token_row_id: int) -> None:
 
     Synchronous + best-effort: any DB exception is swallowed + logged
     because failing the auth gate over a stats column would be perverse.
-    Called from the middleware hot path; ~1ms on Cloud SQL with the
+    Called from the middleware hot path; ~5-10ms on Cloud SQL with the
     primary-key index on `id`.
+
+    TODO Make this true fire-and-forget via `asyncio.create_task` +
+    a bounded background-task pool. The Gate 5 spec requested
+    non-blocking — current implementation still serializes the UPDATE
+    on the request thread (acceptable for MVP because the wall-clock
+    cost is dominated by FastMCP tool execution, but the 5-10ms is
+    extra latency we shouldn't ship long-term). Blocker: psycopg2 is
+    sync, so async needs either asyncpg path or a thread-pool
+    executor wrapper.
     """
     if not token_row_id:
         return

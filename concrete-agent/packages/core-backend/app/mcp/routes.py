@@ -30,6 +30,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 from app.mcp import auth as mcp_auth
 from app.mcp import oauth_codes as mcp_oauth_codes
+from app.mcp import rate_limit as mcp_rate_limit
 
 logger = logging.getLogger(__name__)
 
@@ -811,15 +812,58 @@ async def oauth_register(request: Request):
     `mcp_oauth_registration_log` — success row carries
     `oauth_client_id` FK; failure rows carry NULL FK + status + error_code.
 
-    TODO Gate 6: Wrap with Redis-backed rate limit (10 req/h per IP,
-    atomic Lua INCR+EXPIRE, fail closed → 503 if Redis unreachable).
-    Endpoint is deployed without rate limit; do not advertise publicly
-    until Gate 6 lands.
+    Rate limited (Gate 6): 10 registrations / hour per source IP via
+    Redis-backed atomic Lua INCR+EXPIRE. Fail-closed: Redis unreachable
+    → 503 (NOT graceful fallback — this is a public endpoint with no
+    second auth layer). MCP_RATE_LIMIT_WHITELIST env can bypass for
+    CI smoke tests. See app/mcp/rate_limit.py.
     """
     raw_body = await request.body()
     payload_hash = _hash_payload(raw_body)
-    client_ip = request.client.host if request.client else "unknown"
+    client_ip = mcp_rate_limit.extract_client_ip(request)
     user_agent = request.headers.get("user-agent")
+
+    # ── 0. Rate limit gate ───────────────────────────────────────────────────
+    # Runs BEFORE any DB work or JSON parse so a flood of malformed
+    # bodies can't pin the connection pool. Audit row is still
+    # written on `exceeded` so we have forensic evidence + caller
+    # identity for security review.
+    rl = await mcp_rate_limit.check_register_rate_limit(client_ip)
+    if rl["status"] == mcp_rate_limit.RateLimitResult.UNAVAILABLE:
+        # Fail closed: rate limiter is the only DoS gate on a public
+        # endpoint. 503 instead of 500 so Cloud Run / brokers know to
+        # retry rather than treat as a permanent server fault.
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "service_unavailable",
+                "error_description": rl["error_description"],
+                "retry_after": rl["retry_after"],
+            },
+            headers={"Retry-After": str(rl["retry_after"])},
+        )
+    if rl["status"] == mcp_rate_limit.RateLimitResult.EXCEEDED:
+        # 429 + RFC 6585 Retry-After header + audit row.
+        mcp_auth.log_oauth_registration_failure(
+            status="rate_limited",
+            error_code="rate_limit_exceeded",
+            error_description=(
+                f"Exceeded {rl['limit']} registrations/hour from this IP. "
+                f"Retry in {rl['retry_after']}s."
+            ),
+            client_name=None,
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "error": "rate_limit_exceeded",
+                "retry_after": rl["retry_after"],
+            },
+            headers={"Retry-After": str(rl["retry_after"])},
+        )
 
     # ── 1. Initial-access-token detection ────────────────────────────────────
     auth_header = request.headers.get("authorization")
