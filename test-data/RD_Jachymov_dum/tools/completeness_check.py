@@ -83,8 +83,10 @@ RD_ANCHORS = [
     ("D02", "Bourání keramických obkladů",      ["bourani obkladu", "demontaz obklad", "keramick"], "demolice_koupelna"),
     ("D03", "Bourání příček + zdiva",           ["bourani pricek", "bourani zdiva", "pricky"], "demolice_dispozice"),
     ("D04", "Bourání podlah",                   ["bourani podlah", "demontaz podlah"], "demolice_podlaha"),
-    ("D05", "Bourání střešní krytiny + krov",   ["bourani strech", "bourani krov", "demolice krytiny"], "demolice_strecha"),
-    ("D06", "Demontáž oken + dveří",            ["demontaz okna", "demontaz dvere", "vybourani okna"], "demolice_otvory"),
+    ("D05", "Bourání střešní krytiny + krov",   ["bourani plech", "bourani stresn", "bourani krytin",
+                                                  "bourani krov", "demolice krytin"], "demolice_strecha"),
+    ("D06", "Demontáž oken + dveří",            ["demontaz okn", "demontaz dver", "vybourani okn",
+                                                  "okno demontaz", "vybourani dver"], "demolice_otvory"),
     ("D07", "Odstranění komínu",                ["bourani komin", "demolice komin", "odstrane komin"], "demolice_komin"),
 
     # Zemní + základy (TKP 1+2)
@@ -134,9 +136,11 @@ RD_ANCHORS = [
 
     # Izolace (TKP 711/712/713)
     ("I01", "TI mezi krokvemi / nad krovem",    ["ti krov", "nad krokve", "mezi krokv", "pir"], "krov"),
-    ("I02", "Podlahová TI (EPS)",               ["eps podlah", "podlahov eps", "tepelna izolace podlah"], None),
+    ("I02", "Podlahová TI (EPS)",               ["podlahov eps", "eps podlah", "eps 150",
+                                                  "tepelna izolace podlah", "izolace podlah"], None),
     ("I03", "Kročejová izolace",                ["krocejov"], None),
-    ("I04", "Hydroizolace koupelen (stěrka)",   ["hydroizolac koupeln", "sterka koupeln"], "koupelna"),
+    ("I04", "Hydroizolace koupelen (stěrka)",   ["hydroizol", "sterka", "izolace koupeln",
+                                                  "hydroizolac koupeln", "sterka koupeln"], "koupelna"),
 
     # Podlahy (TKP 771-775)
     ("P01", "Cementový potěr / lite směs",      ["potěr", "potřr", "anhydrit", "lit smes", "samonivelacni"], None),
@@ -150,7 +154,8 @@ RD_ANCHORS = [
     ("U03", "Výmalba — finalní",                ["vymalb", "natěr", "nater", "mal"], None),
 
     # ZTI + vytápění + ELI (TKP 721-731 + M-21/22)
-    ("T01", "Vodovod vnitřní rozvody",          ["vodovod rozvod", "rozvody vodovod"], None),
+    ("T01", "Vodovod vnitřní rozvody",          ["vodovod", "rozvod vod", "rozvody vodovod",
+                                                  "rozvod studen", "rozvod tepl vod", "PSV-72"], None),
     ("T02", "Kanalizace splašková",             ["kanalizace splask", "odpadni rozvod", "ht potrubi"], None),
     ("T03", "Vytápění radiátory + rozvody",     ["radiator", "topen rozvod", "vytapeni"], "vytapeni"),
     ("T04", "Tepelné čerpadlo / kotel",         ["tepelne cerpadlo", "elektrokotel", "kotel"], "vytapeni"),
@@ -166,9 +171,11 @@ RD_ANCHORS = [
     ("R03", "BOZP koordinátor",                 ["bozp"], None),
     ("R04", "Odpady — odvoz na skládku",        ["odpad", "skladkovne", "skladkov"], None),
     ("R05", "Revize závěrečné",                 ["reviz"], None),
-    ("R06", "Dokumentace skutečného provedení", ["DSP skuteč", "dokument provedeni"], None),
+    ("R06", "Dokumentace skutečného provedení", ["DSP skutec", "dokumentac skutec", "dokumentace skuteč",
+                                                  "predavac protokol", "dokumentace proveden"], None),
     ("R07", "Pojištění stavby",                 ["pojiste"], None),
-    ("R08", "Energie staveniště",               ["energie staveni"], None),
+    ("R08", "Energie staveniště",               ["energie staveni", "el odber stavby", "elektr odber",
+                                                  "voda staveni", "spotreb stavby"], None),
     ("R09", "Kolaudace",                        ["kolaudac"], None),
 ]
 
