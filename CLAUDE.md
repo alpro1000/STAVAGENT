@@ -334,6 +334,47 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 ```
 > ⚠️ Эти ключи не верифицированы против актуальной Claude Code docs — если харнес их игнорирует, проверь `/help` или попроси Claude настроить SessionStart hook вместо этого.
 
+## 📋 Workflow discipline (Spec-Driven Development)
+
+Tento repo používá SDD workflow s gibridním online/offline modelem:
+
+| Kde | Co se dělá |
+|---|---|
+| claude.ai online (na práci) | Spec creation, planning, requirements, design |
+| Claude Code (doma) | Implementation, tests, refactoring, bugs |
+| Git repo | Bridge — všechny artefakty v `docs/` |
+
+**Životní cyklus feature:**
+1. Spec se vytvoří v `docs/specs/{feature-name}/{requirements,design,tasks}.md`
+2. Claude Code implementuje podle `tasks.md` (Gates = commits)
+3. Po dokončení → update `docs/soul.md` §9
+
+**Životní cyklus bug:**
+1. Bug se reportuje v `docs/bugs/{bug-id}/report.md`
+2. Claude Code píše `analyze.md` → `fix.md`
+3. Po deployi → `verify.md` + update `docs/soul.md` §9
+
+**Update pravidla pro context docs:**
+
+| Když | Co update |
+|---|---|
+| Architectural decision (new tool/DB/AI provider) | `docs/steering/tech.md` |
+| Změna repo layoutu | `docs/steering/structure.md` |
+| Doménové pravidlo (nová norma, terminologie) | `docs/steering/domain.md` |
+| Workflow změna | `docs/steering/conventions.md` |
+| Nový freelance / corpus case | `docs/soul.md` §2.3 nebo §2.4 |
+| Po každé session | `docs/soul.md` §9 — Session log entry |
+
+**Pravidla pro task writing:**
+- ❌ NESPECIFIKUJ jména proměnných, souborů, tříd, tabulek
+- ✅ Popisuj v termínech business logiky + architektury
+- Claude Code odvodí naming z existujících konvencí v repu
+- Detail v `docs/steering/conventions.md` §9
+
+**Šablony pro nové specs/bugs:** `docs/templates/_TEMPLATE_spec/` + `docs/templates/_TEMPLATE_bug/`
+
+---
+
 **Key rules:**
 - Determinism > AI: if regex can do it, don't use LLM
 - Confidence: never overwrite higher with lower
