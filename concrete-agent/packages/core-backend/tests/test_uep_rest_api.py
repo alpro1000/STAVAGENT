@@ -270,6 +270,30 @@ def test_run_accepts_path_inside_allowed_base(client, tmp_path, monkeypatch) -> 
     assert r.status_code == 201
 
 
+def test_read_artifact_json_rejects_dotdot(tmp_path, monkeypatch) -> None:
+    """Amazon Q A2 — `_read_artifact_json` filename must reject `..`."""
+    monkeypatch.setenv("UEP_DATA_DIR", str(tmp_path))
+    from fastapi import HTTPException as _Hex
+    _JOBS.clear()
+    with pytest.raises(_Hex) as exc:
+        _mod._read_artifact_json("p1", "../etc/passwd")
+    assert exc.value.status_code == 400
+
+
+def test_read_artifact_json_rejects_slash(tmp_path) -> None:
+    from fastapi import HTTPException as _Hex
+    with pytest.raises(_Hex) as exc:
+        _mod._read_artifact_json("p1", "subdir/file.json")
+    assert exc.value.status_code == 400
+
+
+def test_read_artifact_json_rejects_backslash(tmp_path) -> None:
+    from fastapi import HTTPException as _Hex
+    with pytest.raises(_Hex) as exc:
+        _mod._read_artifact_json("p1", "..\\windows\\system32")
+    assert exc.value.status_code == 400
+
+
 def test_delete_job_marks_cancelled(client, tmp_path) -> None:
     project_dir = tmp_path / "p"
     project_dir.mkdir()

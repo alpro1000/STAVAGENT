@@ -333,13 +333,29 @@ def _jobs_for_project(project_id: str) -> list[str]:
 
 
 def _read_artifact_json(project_id: str, filename: str) -> dict:
+    # Path traversal guards (Amazon Q PR #1186 comment A2).
+    # The route handlers below currently pass literal filenames
+    # ("coverage_report.json" / "reconciliation_report.json"), so the
+    # check is defence-in-depth — a future caller that lets filename
+    # come from a URL segment must not be able to escape the
+    # artefacts directory via `..` or absolute paths.
+    if ".." in filename or "/" in filename or "\\" in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+
     info = _latest_completed_job(project_id)
     if info is None or not info.artifacts_path:
         raise HTTPException(status_code=404, detail="No completed job for project")
-    p = Path(info.artifacts_path) / filename
-    if not p.exists():
+
+    artifacts_dir = Path(info.artifacts_path).resolve()
+    artifact_file = (artifacts_dir / filename).resolve()
+    try:
+        artifact_file.relative_to(artifacts_dir)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid file path")
+
+    if not artifact_file.exists():
         raise HTTPException(status_code=404, detail=f"Artefact {filename} not found")
-    return json.loads(p.read_text(encoding="utf-8"))
+    return json.loads(artifact_file.read_text(encoding="utf-8"))
 
 
 @router.get("/projects/{project_id}/uep/coverage-report")
