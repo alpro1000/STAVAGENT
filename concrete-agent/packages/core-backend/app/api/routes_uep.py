@@ -183,6 +183,30 @@ async def start_uep_run(
             cancel_job(j.job_id)
 
     queue_dispatch = "cloud_tasks" if _use_cloud_tasks() else "in_process"
+    # Path traversal validation (Amazon Q review on PR #1186, A1).
+    # Resolve the caller-supplied project_dir, then verify it sits
+    # inside `UEP_ALLOWED_BASE_DIR` (default cwd). Path.resolve()
+    # collapses `..` segments, so attackers can't escape by stacking
+    # them. We do the check BEFORE register_new_job so an invalid
+    # path doesn't leave a stale row in `_JOBS`.
+    project_dir_str = body.project_dir or os.environ.get(
+        "UEP_DEFAULT_PROJECT_DIR", "."
+    )
+    project_dir = Path(project_dir_str).resolve()
+    base_allowed = Path(
+        os.environ.get("UEP_ALLOWED_BASE_DIR", os.getcwd())
+    ).resolve()
+    try:
+        project_dir.relative_to(base_allowed)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Invalid project_dir: path traversal not allowed "
+                "(must be inside UEP_ALLOWED_BASE_DIR)"
+            ),
+        )
+
     info = register_new_job(
         user_id=user_id,
         project_id=project_id,
@@ -191,7 +215,6 @@ async def start_uep_run(
         queue_dispatch=queue_dispatch,
     )
 
-    project_dir = Path(body.project_dir) if body.project_dir else Path(os.environ.get("UEP_DEFAULT_PROJECT_DIR", "."))
     out_dir = _data_dir_for_job(project_id, info.job_id)
 
     if queue_dispatch == "in_process":

@@ -46,6 +46,11 @@ def client(tmp_path):
 
     os.environ["UEP_DATA_DIR"] = str(tmp_path / "uep_data")
     os.environ["UEP_USE_CLOUD_TASKS"] = "0"
+    # A1 path-traversal allow base — most existing tests run their
+    # project_dir under tmp_path, so set the allow root accordingly.
+    # The dedicated A1 traversal tests below override this via
+    # monkeypatch with their own narrower base.
+    os.environ["UEP_ALLOWED_BASE_DIR"] = str(tmp_path)
 
     # Wipe in-process job store between tests.
     _JOBS.clear()
@@ -217,6 +222,52 @@ def test_per_project_lock_409_on_second_run(client, tmp_path) -> None:
         body = r2.json()
         assert body["error"] == "project_locked"
         assert "existing_job_id" in body
+
+
+def test_run_rejects_path_traversal_dotdot(client, tmp_path, monkeypatch) -> None:
+    """Amazon Q A1 — `/uep/run` must reject `../`-escape attempts."""
+    monkeypatch.setenv("UEP_ALLOWED_BASE_DIR", str(tmp_path))
+
+    r = client.post(
+        "/api/v1/projects/proj-pt-1/uep/run",
+        headers={"X-User-Id": "user-A"},
+        json={
+            "project_type": "residential",
+            "project_dir": str(tmp_path / ".." / ".." / "etc"),
+        },
+    )
+    assert r.status_code == 400
+    assert "path traversal" in r.json()["detail"].lower()
+
+
+def test_run_rejects_absolute_path_outside_base(client, tmp_path, monkeypatch) -> None:
+    """Amazon Q A1 — absolute paths outside UEP_ALLOWED_BASE_DIR rejected."""
+    base = tmp_path / "allowed"
+    base.mkdir()
+    monkeypatch.setenv("UEP_ALLOWED_BASE_DIR", str(base))
+
+    r = client.post(
+        "/api/v1/projects/proj-pt-2/uep/run",
+        headers={"X-User-Id": "user-A"},
+        json={"project_type": "residential", "project_dir": "/etc"},
+    )
+    assert r.status_code == 400
+
+
+def test_run_accepts_path_inside_allowed_base(client, tmp_path, monkeypatch) -> None:
+    """Counter-example — inside UEP_ALLOWED_BASE_DIR works."""
+    base = tmp_path / "allowed"
+    base.mkdir()
+    inner = base / "myproject"
+    inner.mkdir()
+    monkeypatch.setenv("UEP_ALLOWED_BASE_DIR", str(base))
+
+    r = client.post(
+        "/api/v1/projects/proj-pt-3/uep/run",
+        headers={"X-User-Id": "user-A"},
+        json={"project_type": "residential", "project_dir": str(inner)},
+    )
+    assert r.status_code == 201
 
 
 def test_delete_job_marks_cancelled(client, tmp_path) -> None:
