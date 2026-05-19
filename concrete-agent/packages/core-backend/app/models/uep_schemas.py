@@ -48,6 +48,10 @@ class SourceFormat(str, Enum):
     XML_GBXML = "xml_gbxml"      # PR3
     XML_GENERIC = "xml_generic"  # PR3
     PDF_GEOLOGY = "pdf_geology"  # PR3
+    # Synthetic source — Workflow A's passport_schema.MergedSO emitted
+    # via app/services/uep/passport_adapter.py. Read-only Phase 1
+    # source (PR2 task §3.7, Q12 = A).
+    PASSPORT_SCHEMA = "passport_schema"
 
 
 # ---------------------------------------------------------------------------

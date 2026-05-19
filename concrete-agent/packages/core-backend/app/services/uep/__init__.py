@@ -76,6 +76,17 @@ except ImportError:  # pragma: no cover
     load_registry = None  # type: ignore[assignment]
 
 
+# Passport schema bridge (PR2 §3.7) — read-only adapter, lazy-import.
+try:
+    from app.services.uep.passport_adapter import (  # noqa: F401
+        merged_so_to_extraction,
+        merged_sos_to_extractions,
+    )
+except ImportError:  # pragma: no cover
+    merged_so_to_extraction = None  # type: ignore[assignment]
+    merged_sos_to_extractions = None  # type: ignore[assignment]
+
+
 __all__ = [
     "BaseExtractor",
     "ExtractorError",
@@ -89,4 +100,13 @@ __all__ = [
     "load_rules",
     "evaluate_reconciliation",
     "rules_path_for",
+    "DerivationError",
+    "DerivationRegistry",
+    "UnknownDerivationRule",
+    "apply_derivation",
+    "get_global_registry",
+    "list_applicable_derivations",
+    "load_registry",
+    "merged_so_to_extraction",
+    "merged_sos_to_extractions",
 ]
