@@ -1,0 +1,5 @@
+# Malformed YAML: unbalanced quotes + dangling colon
+element_type: "broken
+field_with_no_value:
+  - item1
+    bad indent

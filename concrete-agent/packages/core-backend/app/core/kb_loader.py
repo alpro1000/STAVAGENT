@@ -15,8 +15,27 @@ from typing import Any, Dict, Iterable, List, Optional
 import xml.etree.ElementTree as ET
 
 import pandas as pd
+import yaml
 
 logger = logging.getLogger(__name__)
+
+
+# ── Skip patterns ────────────────────────────────────────────────────────────
+# Files we deliberately do NOT load but also do NOT log per-file "unsupported
+# format" warnings for. Two reasons:
+#   - .zip in B6 are distribution archives (packaged KB downloads), not
+#     runtime entries — silent skip without per-file warning, only an
+#     aggregated count per category.
+#   - .gitkeep / .DS_Store / Thumbs.db are OS / VCS metadata.
+#   - .tmp / .bak are editor leftovers (e.g. vim swap detritus on dev
+#     machines that synced into the repo).
+#
+# Anything not in either set + not in `_load_file()`'s dispatcher still
+# gets the original "Unsupported format" warning so genuinely unknown
+# extensions stay visible.
+
+_SKIP_FILES = frozenset({".gitkeep", ".DS_Store", "Thumbs.db"})
+_SKIP_SUFFIXES = frozenset({".zip", ".tmp", ".bak"})
 
 
 class KnowledgeBaseLoader:
@@ -91,10 +110,34 @@ class KnowledgeBaseLoader:
                 # Загружаем категорию
                 self.data[category] = self._load_category(category_path)
 
-                # Загружаем metadata
-                metadata_path = category_path / "metadata.json"
-                if metadata_path.exists():
-                    with open(metadata_path, "r", encoding="utf-8") as f:
+                # Загружаем metadata — metadata.yaml имеет приоритет над
+                # metadata.json (YAML вытесняет JSON в новых ингестах). Если
+                # обе формы присутствуют — WARN о неоднозначности (сигнал
+                # незавершённой миграции, не INFO).
+                metadata_json_path = category_path / "metadata.json"
+                metadata_yaml_path = category_path / "metadata.yaml"
+                metadata_yml_path = category_path / "metadata.yml"
+                yaml_meta = (
+                    metadata_yaml_path if metadata_yaml_path.exists()
+                    else metadata_yml_path if metadata_yml_path.exists()
+                    else None
+                )
+                if yaml_meta and metadata_json_path.exists():
+                    logger.warning(
+                        f"⚠️  Both metadata.json and {yaml_meta.name} present in "
+                        f"{category} — YAML wins, JSON ignored. Migration in "
+                        f"progress; delete the stale file."
+                    )
+                if yaml_meta:
+                    try:
+                        with open(yaml_meta, "r", encoding="utf-8") as f:
+                            self.metadata[category] = yaml.safe_load(f)
+                    except yaml.YAMLError as e:
+                        logger.error(
+                            f"❌ Malformed YAML metadata {yaml_meta}: {e}"
+                        )
+                elif metadata_json_path.exists():
+                    with open(metadata_json_path, "r", encoding="utf-8") as f:
                         self.metadata[category] = json.load(f)
 
                 logger.info(f"✅ Loaded: {category}")
@@ -118,42 +161,63 @@ class KnowledgeBaseLoader:
     def _load_category(self, path: Path) -> Dict[str, Any]:
         """
         Загружает все файлы из одной категории
-        
+
         Поддерживает:
         - JSON
         - CSV
         - XLSX
         - PDF (текст извлекается)
+        - YAML / YML
+        - XML, TXT/MD
+        Silent-skip без per-file warning'ов: .zip / .tmp / .bak,
+        plus the metadata/.gitkeep/.DS_Store/Thumbs.db noise. Aggregated
+        counter logged once per category if N > 0.
         """
         data = {}
-        
+        skipped_count = 0
+
         # Рекурсивно ищем все файлы
         files = list(path.rglob("*"))
         logger.debug(f"Found {len(files)} files in {path.name}")
-        
+
         for file_path in files:
             if not file_path.is_file():
                 continue
 
-            # Пропускаем metadata.json (загружается отдельно)
-            if file_path.name == "metadata.json" or file_path.name == ".gitkeep":
+            # metadata.{json,yaml,yml} — загружаются отдельно в load_all().
+            if file_path.name in ("metadata.json", "metadata.yaml", "metadata.yml"):
                 continue
-            
+
+            # Точечно-именованные skip-файлы (.gitkeep / .DS_Store / Thumbs.db).
+            if file_path.name in _SKIP_FILES:
+                continue
+
+            # Расширения, которые мы намеренно пропускаем без warning'а
+            # (.zip distribution archives in B6, editor leftovers).
+            if file_path.suffix.lower() in _SKIP_SUFFIXES:
+                skipped_count += 1
+                continue
+
             try:
                 logger.debug(f"Loading file: {file_path.name}")
-                
+
                 # Определяем формат и загружаем
                 file_data = self._load_file(file_path)
-                
+
                 # Сохраняем с относительным путем как ключом
                 relative_path = str(file_path.relative_to(path))
                 data[relative_path] = file_data
-                
+
             except Exception as e:
                 logger.error(f"❌ Failed to load {file_path.name}: {e}")
                 # Continue loading other files
                 continue
-        
+
+        if skipped_count > 0:
+            logger.info(
+                f"📦 Skipped {skipped_count} archive/temp file(s) in {path.name}"
+            )
+
         return data
     
     def _load_file(self, file_path: Path) -> Any:
@@ -161,13 +225,16 @@ class KnowledgeBaseLoader:
         Умная загрузка файла - определяет формат автоматически
         """
         suffix = file_path.suffix.lower()
-        
+
         if suffix == ".json":
             return self._load_json(file_path)
-        
+
+        elif suffix in (".yaml", ".yml"):
+            return self._load_yaml(file_path)
+
         elif suffix == ".csv":
             return self._load_csv(file_path)
-        
+
         elif suffix in [".xlsx", ".xls"]:
             return self._load_excel(file_path)
 
@@ -183,11 +250,30 @@ class KnowledgeBaseLoader:
         else:
             logger.warning(f"⚠️  Unsupported format: {file_path}")
             return None
-    
+
     def _load_json(self, path: Path) -> Dict:
         """Загрузка JSON"""
         with open(path, 'r', encoding='utf-8') as f:
             return json.load(f)
+
+    def _load_yaml(self, path: Path) -> Any:
+        """Загрузка YAML через safe_load.
+
+        Returns whatever PyYAML parses — single dict (most B4 default_ceilings
+        and B7 regulation INDEX files), list of entries (some B5 examples),
+        or scalar/string for the rare top-level non-mapping. Consumers
+        downstream handle each shape the same way they handle JSON.
+
+        Uses `yaml.safe_load` exclusively — `yaml.load` without a Loader
+        executes arbitrary Python (security hole), and SafeLoader still
+        covers every shape the KB actually uses.
+
+        `yaml.YAMLError` propagates out so the per-file try/except in
+        `_load_category` catches it + logs ERROR + continues with the
+        rest of the category (same pattern as malformed JSON).
+        """
+        with open(path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
     
     def _load_csv(self, path: Path) -> List[Dict]:
         """
