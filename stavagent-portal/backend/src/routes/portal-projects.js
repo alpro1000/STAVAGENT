@@ -45,7 +45,13 @@ const router = express.Router();
 /**
  * POST /api/portal-projects/create-from-kiosk
  * Create portal project from kiosk (Monolit, Registry, etc.)
- * NO AUTH REQUIRED - kiosks communicate without user session
+ *
+ * AUTH: requireAuth — kiosks must forward the user's Portal JWT (Bearer
+ * header or `stavagent_jwt` cookie). Without it the request returns 401
+ * + logger.warn so anonymous attempts surface in Cloud Logging. Was
+ * previously open + hardcoded owner_id=1, which produced the
+ * "58 sirot" duplicate-projects symptom: kiosk-created rows owned by
+ * user_id=1 are invisible to any real logged-in user (whose user_id≠1).
  *
  * Body:
  * - project_name: string (required)
@@ -58,7 +64,7 @@ const router = express.Router();
  * - portal_project_id: string - ID in Portal system
  * - link_id: string - kiosk link ID
  */
-router.post('/create-from-kiosk', async (req, res) => {
+router.post('/create-from-kiosk', requireAuth, async (req, res) => {
   try {
     const { project_name, project_type, kiosk_type, kiosk_project_id, description, stavba_name } = req.body;
 
@@ -85,7 +91,7 @@ router.post('/create-from-kiosk', async (req, res) => {
       const portal_project_id = `proj_${uuidv4()}`;
       const link_id = `link_${uuidv4()}`;
 
-      // 1. Create portal project (owner_id=1 for kiosk-created projects)
+      // 1. Create portal project — owner_id from authenticated user's JWT.
       await client.query(
         `INSERT INTO portal_projects (
           portal_project_id,
@@ -97,8 +103,8 @@ router.post('/create-from-kiosk', async (req, res) => {
           core_status,
           created_at,
           updated_at
-        ) VALUES ($1, $2, $3, $4, $5, 1, 'not_sent', NOW(), NOW())`,
-        [portal_project_id, project_name, project_type || 'custom', description || '', stavba_name || null]
+        ) VALUES ($1, $2, $3, $4, $5, $6, 'not_sent', NOW(), NOW())`,
+        [portal_project_id, project_name, project_type || 'custom', description || '', stavba_name || null, req.user.userId]
       );
 
       // 2. Create kiosk link
@@ -991,9 +997,14 @@ router.delete('/:id/kiosks/:linkId', async (req, res) => {
       return res.status(503).json({ success: false, error: 'Database not available' });
     }
 
-    // Allow deletion if user owns the project OR if project was registry-created (owner_id = 1)
+    // Strict owner check — was `OR owner_id = 1` to allow deletion of
+    // legacy kiosk-orphans, but that gave EVERY logged-in user permission
+    // to delete the 58 sirot (audit §2.2 RISKY classification).
+    // Pre-multi-tenant orphans are now handled by the one-off cleanup
+    // migration in docs/security/sirot_cleanup_playbook.md — not by an
+    // implicit DELETE branch in this endpoint.
     const projectCheck = await pool.query(
-      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND (owner_id = $2 OR owner_id = 1)',
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
       [id, userId]
     );
     if (projectCheck.rows.length === 0) {

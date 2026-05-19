@@ -12,8 +12,14 @@ import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { isMonolithicElement } from '@stavagent/monolit-shared';
+import { optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Optional auth — picks up Portal JWT if forwarded so the user-scoped
+// query below reads from the verified userId. Anonymous calls still
+// proceed but receive empty results (no `|| 1` fallback).
+router.use(optionalAuth);
 
 const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
 
@@ -59,7 +65,13 @@ function determineSubtype(item) {
  * Each source has its own timeout; failures are non-fatal.
  */
 router.get('/projects', async (req, res) => {
-  const userId = req.user?.userId || req.query.user_id || 1;
+  // Drop the `|| req.query.user_id || 1` spoofing fallback — owner comes
+  // from the verified JWT only. Anonymous callers get an empty result.
+  const userId = req.user?.userId || null;
+  if (!userId) {
+    logger.warn(`[ImportRegistry] Anonymous GET /projects — no Portal JWT (returning empty list)`);
+    return res.json({ success: true, projects: [], debug: { reason: 'anonymous' } });
+  }
   const PORTAL_TIMEOUT = parseInt(process.env.PORTAL_TIMEOUT_MS || '5000', 10);
   const REGISTRY_TIMEOUT = parseInt(process.env.REGISTRY_TIMEOUT_MS || '8000', 10);
   const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';

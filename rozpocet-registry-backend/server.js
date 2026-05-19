@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { batchMapPositions } from './services/tovProfessionMapper.js';
 import ExcelJS from 'exceljs';
+import { requireAuth } from './middleware/auth.js';
 
 dotenv.config();
 
@@ -141,7 +142,7 @@ app.get('/', (req, res) => {
 
 // DELETE /api/registry/cleanup-empty — remove empty/duplicate projects (no sheets or no items)
 // Protected by a simple secret query param to prevent accidental calls
-app.delete('/api/registry/cleanup-empty', requireDB, async (req, res) => {
+app.delete('/api/registry/cleanup-empty', requireAuth, requireDB, async (req, res) => {
   try {
     const secret = req.query.secret;
     if (secret !== 'cleanup2026') {
@@ -199,9 +200,12 @@ app.delete('/api/registry/cleanup-empty', requireDB, async (req, res) => {
 
 // ============ PROJECTS ============
 
-app.get('/api/registry/projects', requireDB, async (req, res) => {
+app.get('/api/registry/projects', requireAuth, requireDB, async (req, res) => {
   try {
-    const userId = req.query.user_id || 1;
+    // Owner-scoped — was `req.query.user_id || 1` which let anyone
+    // pass user_id=N as a query string. Now req.user.userId comes from
+    // the verified JWT (requireAuth above).
+    const userId = req.user.userId;
     const result = await pool.query(
       `SELECT p.*,
         (SELECT COUNT(*) FROM registry_sheets WHERE project_id = p.project_id) as sheets_count,
@@ -219,10 +223,12 @@ app.get('/api/registry/projects', requireDB, async (req, res) => {
   }
 });
 
-app.post('/api/registry/projects', requireDB, async (req, res) => {
+app.post('/api/registry/projects', requireAuth, requireDB, async (req, res) => {
   try {
     const { project_name, portal_project_id, project_id } = req.body;
-    const userId = req.body.user_id || 1;
+    // Owner-scoped — was `req.body.user_id || 1` (caller could spoof).
+    // Now req.user.userId comes from the verified JWT.
+    const userId = req.user.userId;
     const projectId = project_id || `reg_${uuidv4()}`;
 
     const result = await pool.query(
@@ -242,11 +248,12 @@ app.post('/api/registry/projects', requireDB, async (req, res) => {
   }
 });
 
-app.get('/api/registry/projects/:id', requireDB, async (req, res) => {
+app.get('/api/registry/projects/:id', requireAuth, requireDB, async (req, res) => {
   try {
+    // Owner-scoped — caller can only read their own project rows.
     const result = await pool.query(
-      'SELECT * FROM registry_projects WHERE project_id = $1',
-      [req.params.id]
+      'SELECT * FROM registry_projects WHERE project_id = $1 AND owner_id = $2',
+      [req.params.id, req.user.userId]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, error: 'Project not found' });
@@ -257,9 +264,17 @@ app.get('/api/registry/projects/:id', requireDB, async (req, res) => {
   }
 });
 
-app.delete('/api/registry/projects/:id', requireDB, async (req, res) => {
+app.delete('/api/registry/projects/:id', requireAuth, requireDB, async (req, res) => {
   try {
-    await pool.query('DELETE FROM registry_projects WHERE project_id = $1', [req.params.id]);
+    // Owner-scoped DELETE — returns 0 rows affected if the caller is not
+    // the owner (no error, but also no destruction of other users' data).
+    const result = await pool.query(
+      'DELETE FROM registry_projects WHERE project_id = $1 AND owner_id = $2 RETURNING project_id',
+      [req.params.id, req.user.userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Project not found' });
+    }
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -268,8 +283,18 @@ app.delete('/api/registry/projects/:id', requireDB, async (req, res) => {
 
 // ============ SHEETS ============
 
-app.get('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
+app.get('/api/registry/projects/:id/sheets', requireAuth, requireDB, async (req, res) => {
   try {
+    // Owner-scoped — only return sheets when the caller owns the parent
+    // project. Otherwise the existence of the project_id is leaked via
+    // an empty-vs-non-empty list.
+    const parentCheck = await pool.query(
+      'SELECT 1 FROM registry_projects WHERE project_id = $1 AND owner_id = $2',
+      [req.params.id, req.user.userId]
+    );
+    if (parentCheck.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Project not found' });
+    }
     const result = await pool.query(
       `SELECT s.*,
         (SELECT COUNT(*) FROM registry_items WHERE sheet_id = s.sheet_id) as items_count
@@ -284,21 +309,34 @@ app.get('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
   }
 });
 
-app.post('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
+app.post('/api/registry/projects/:id/sheets', requireAuth, requireDB, async (req, res) => {
   try {
     const { sheet_name, sheet_order, sheet_id } = req.body;
     const sheetId = sheet_id || `sheet_${uuidv4()}`;
 
-    // Ensure parent project exists (auto-create if needed to prevent FK violation)
+    // Ensure parent project exists AND belongs to the caller. If it
+    // doesn't exist for this user, auto-create it under their owner_id
+    // — was previously auto-creating with `owner_id=1` regardless of
+    // caller (the registry-side root cause of the "58 sirot" symptom
+    // per audit §2.3).
     const projectCheck = await pool.query(
-      'SELECT project_id FROM registry_projects WHERE project_id = $1',
-      [req.params.id]
+      'SELECT project_id FROM registry_projects WHERE project_id = $1 AND owner_id = $2',
+      [req.params.id, req.user.userId]
     );
     if (projectCheck.rows.length === 0) {
+      // Also check whether the project exists under a different owner —
+      // in that case we refuse rather than overwriting.
+      const otherOwnerCheck = await pool.query(
+        'SELECT 1 FROM registry_projects WHERE project_id = $1',
+        [req.params.id]
+      );
+      if (otherOwnerCheck.rows.length > 0) {
+        return res.status(404).json({ success: false, error: 'Project not found' });
+      }
       await pool.query(
         `INSERT INTO registry_projects (project_id, project_name, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 1, NOW(), NOW())`,
-        [req.params.id, 'Auto-created']
+         VALUES ($1, $2, $3, NOW(), NOW())`,
+        [req.params.id, 'Auto-created', req.user.userId]
       );
     }
 
@@ -321,9 +359,22 @@ app.post('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
   }
 });
 
-app.delete('/api/registry/sheets/:id', requireDB, async (req, res) => {
+app.delete('/api/registry/sheets/:id', requireAuth, requireDB, async (req, res) => {
   try {
-    await pool.query('DELETE FROM registry_sheets WHERE sheet_id = $1', [req.params.id]);
+    // Owner-scoped via JOIN to registry_projects — caller can only
+    // delete sheets that belong to a project they own.
+    const result = await pool.query(
+      `DELETE FROM registry_sheets s
+       USING registry_projects p
+       WHERE s.sheet_id = $1
+         AND s.project_id = p.project_id
+         AND p.owner_id = $2
+       RETURNING s.sheet_id`,
+      [req.params.id, req.user.userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Sheet not found' });
+    }
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -333,7 +384,7 @@ app.delete('/api/registry/sheets/:id', requireDB, async (req, res) => {
 // ============ ITEMS ============
 
 // Bulk create items (efficient single-transaction insert)
-app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
+app.post('/api/registry/sheets/:id/items/bulk', requireAuth, requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
     const { items } = req.body;
@@ -342,10 +393,13 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
       return res.status(400).json({ success: false, error: 'items array required' });
     }
 
-    // Validate sheet exists before starting transaction (prevents FK violation)
+    // Validate sheet exists AND belongs to a project owned by the
+    // caller — prevents bulk-inserts into another user's sheet.
     const sheetCheck = await client.query(
-      'SELECT sheet_id FROM registry_sheets WHERE sheet_id = $1',
-      [req.params.id]
+      `SELECT s.sheet_id FROM registry_sheets s
+       JOIN registry_projects p ON s.project_id = p.project_id
+       WHERE s.sheet_id = $1 AND p.owner_id = $2`,
+      [req.params.id, req.user.userId]
     );
     if (sheetCheck.rows.length === 0) {
       client.release();
@@ -441,8 +495,18 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
   }
 });
 
-app.get('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
+app.get('/api/registry/sheets/:id/items', requireAuth, requireDB, async (req, res) => {
   try {
+    // Sheet-via-project owner gate — 404 if caller doesn't own the parent.
+    const sheetCheck = await pool.query(
+      `SELECT 1 FROM registry_sheets s
+       JOIN registry_projects p ON s.project_id = p.project_id
+       WHERE s.sheet_id = $1 AND p.owner_id = $2`,
+      [req.params.id, req.user.userId]
+    );
+    if (sheetCheck.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Sheet not found' });
+    }
     const result = await pool.query(
       `SELECT i.*,
         (SELECT json_agg(json_build_object('tov_type', tov_type, 'tov_data', tov_data))
@@ -458,9 +522,20 @@ app.get('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
   }
 });
 
-app.post('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
+app.post('/api/registry/sheets/:id/items', requireAuth, requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
+    // Owner gate before BEGIN — sheet must belong to caller's project.
+    const sheetCheck = await client.query(
+      `SELECT 1 FROM registry_sheets s
+       JOIN registry_projects p ON s.project_id = p.project_id
+       WHERE s.sheet_id = $1 AND p.owner_id = $2`,
+      [req.params.id, req.user.userId]
+    );
+    if (sheetCheck.rows.length === 0) {
+      client.release();
+      return res.status(404).json({ success: false, error: 'Sheet not found' });
+    }
     await client.query('BEGIN');
 
     const { kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, tov_data, sync_metadata } = req.body;
@@ -495,34 +570,70 @@ app.post('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
   }
 });
 
-app.put('/api/registry/items/:id', requireDB, async (req, res) => {
+app.put('/api/registry/items/:id', requireAuth, requireDB, async (req, res) => {
   try {
     const { kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem } = req.body;
+    // Owner-scoped UPDATE — joins through sheet → project. UPDATE
+    // returns RETURNING only when the row passes the JOIN gate, so a
+    // foreign-project item update gets 404.
     const result = await pool.query(
-      `UPDATE registry_items
-       SET kod = $1, popis = $2, mnozstvi = $3, mj = $4, cena_jednotkova = $5, cena_celkem = $6, updated_at = NOW()
-       WHERE item_id = $7
-       RETURNING *`,
-      [kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, req.params.id]
+      `UPDATE registry_items i
+       SET kod = $1, popis = $2, mnozstvi = $3, mj = $4,
+           cena_jednotkova = $5, cena_celkem = $6, updated_at = NOW()
+       FROM registry_sheets s
+       JOIN registry_projects p ON s.project_id = p.project_id
+       WHERE i.item_id = $7
+         AND i.sheet_id = s.sheet_id
+         AND p.owner_id = $8
+       RETURNING i.*`,
+      [kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, req.params.id, req.user.userId]
     );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Item not found' });
+    }
     res.json({ success: true, item: result.rows[0] });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-app.delete('/api/registry/items/:id', requireDB, async (req, res) => {
+app.delete('/api/registry/items/:id', requireAuth, requireDB, async (req, res) => {
   try {
-    await pool.query('DELETE FROM registry_items WHERE item_id = $1', [req.params.id]);
+    // Owner-scoped DELETE via sheet → project JOIN.
+    const result = await pool.query(
+      `DELETE FROM registry_items i
+       USING registry_sheets s, registry_projects p
+       WHERE i.item_id = $1
+         AND i.sheet_id = s.sheet_id
+         AND s.project_id = p.project_id
+         AND p.owner_id = $2
+       RETURNING i.item_id`,
+      [req.params.id, req.user.userId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Item not found' });
+    }
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-app.patch('/api/registry/items/:id/tov', requireDB, async (req, res) => {
+app.patch('/api/registry/items/:id/tov', requireAuth, requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
+    // Owner gate before BEGIN.
+    const itemCheck = await client.query(
+      `SELECT 1 FROM registry_items i
+       JOIN registry_sheets s ON i.sheet_id = s.sheet_id
+       JOIN registry_projects p ON s.project_id = p.project_id
+       WHERE i.item_id = $1 AND p.owner_id = $2`,
+      [req.params.id, req.user.userId]
+    );
+    if (itemCheck.rows.length === 0) {
+      client.release();
+      return res.status(404).json({ success: false, error: 'Item not found' });
+    }
     await client.query('BEGIN');
 
     await client.query('DELETE FROM registry_tov WHERE item_id = $1', [req.params.id]);
@@ -552,13 +663,14 @@ app.patch('/api/registry/items/:id/tov', requireDB, async (req, res) => {
 
 // ============ MONOLIT INTEGRATION ============
 
-app.post('/api/registry/import/monolit', requireDB, async (req, res) => {
+app.post('/api/registry/import/monolit', requireAuth, requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    const { project_name, positions, user_id } = req.body;
-    const userId = user_id || 1;
+    const { project_name, positions } = req.body;
+    // req.body.user_id ignored — owner comes from verified JWT.
+    const userId = req.user.userId;
     const projectId = `reg_${uuidv4()}`;
 
     // Create project
