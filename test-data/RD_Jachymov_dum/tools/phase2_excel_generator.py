@@ -40,6 +40,7 @@ HEADER_JSON = META / "project_header.json"
 DXF_EXTRACT_JSON = OUT / "dxf_comprehensive_extract.json"
 SKLADBY_JSON = OUT / "skladby_per_zone_v2.json"   # Path C Gate 5: use v2 with 13 S-codes from řez A-A legend
 SKLADBY_JSON_FALLBACK = OUT / "skladby_per_zone.json"
+URS_VERIFICATIONS_JSON = OUT / "urs_websearch_verifications.json"
 
 TODAY = date.today().isoformat()
 TARGET = OUT / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}.xlsx"
@@ -67,6 +68,11 @@ DISCLAIMER_FILL = PatternFill("solid", fgColor="FFF8E1")
 
 CONF_LOW_FILL    = PatternFill("solid", fgColor="FFE4E4")   # < 0.70 red
 CONF_MED_FILL    = PatternFill("solid", fgColor="FFF1CC")   # < 0.80 orange
+
+# URS verification status fills (Part 5b WebSearch)
+URS_VERIFIED_FILL = PatternFill("solid", fgColor="C6EFCE")  # green — matched_websearch_verified
+URS_WRONG_FILL    = PatternFill("solid", fgColor="FFC7CE")  # red — wrong_leaf_disambiguation_needed
+URS_PENDING_FILL  = PatternFill("solid", fgColor="FFEB9C")  # orange — needs_production_lookup
 
 
 def write_header_row(ws, row: int, headers: list[str]):
@@ -213,11 +219,24 @@ def build_sheet_souhrn(wb: Workbook, items: list[dict], header: dict) -> None:
         bold=True, size=11, color="1F3A5F"
     )
     row += 1
+    # Compute URS verification stats live from items
+    from collections import Counter as _Counter
+    _urs_stat = _Counter(it.get("urs_status", "needs_production_lookup") for it in items)
+    _n_verified = _urs_stat.get("matched_websearch_verified", 0)
+    _n_wrong = _urs_stat.get("wrong_leaf_disambiguation_needed", 0)
+    _n_pending = _urs_stat.get("needs_production_lookup", 0)
+    _pct = lambda n: f"{n/len(items)*100:.1f} %"
+    urs_status_value = (
+        f"{_n_verified} WebSearch verified ({_pct(_n_verified)}) ✓ | "
+        f"{_n_wrong} wrong leaf flagged ({_pct(_n_wrong)}) ⚠ | "
+        f"{_n_pending} needs_production_lookup ({_pct(_n_pending)})"
+    )
+
     stat_rows = [
         ("Položky celkem", "171 (144 dum + 27 sklad)"),
         ("Gate distribution", "HSV 95 | PSV 35 | TZB+M 22 | VRN 19"),
         ("Confidence dist", "0.99 manual: 5 | 0.95 DXF/regex: 21 | 0.90 LWPOLYLINE: 5 | 0.85 TZ: 36 | 0.80 empirické: 16 | 0.75 geometry: 88 | <0.70: 0"),
-        ("URS status", "171 needs_production_lookup (sandbox bez Cloud Run URS_MATCHER — viz disclaimer níže)"),
+        ("URS status (Part 5b)", urs_status_value),
         ("subdodavatel needs_mapping", "0 (v1.2 mapping covers all 5 RD Jáchymov pilot flags)"),
         ("Phase 0b validation", "67/69 verified (97.1 %), 0 silent drifts, gate OPEN"),
         ("Phase 0b §3.3 DXF", "4/4 DXF parsed OK, vyjasnění #18 fully_resolved (sklad geom z DIMENSION + parking LWPOLYLINE bbox)"),
@@ -252,7 +271,11 @@ def build_sheet_souhrn(wb: Workbook, items: list[dict], header: dict) -> None:
         f"(DXF km_R_návrh_tlustá 2 closed polygon) vs prior fallback 41.0 m.\n\n"
         f"Skladby vrstev (Sheet 8 Var_E) pochází POUZE z TZ explicit text + DXF cross-validation HATCH patterns. "
         f"ŽÁDNÉ generic 'standardní RD' assumption — kde TZ silent, explicit fallback flag s ČSN default.\n\n"
-        f"ÚRS kódy navrženy, vyžadují produkční ověření 2-stage matcherem před finální cenotvorbou. "
+        f"ÚRS kódy navrženy heuristikou. Part 5b WebSearch verified 12 codes / 8 unique families "
+        f"(viz Sheet 9 Var_F_URS_Verification_Trail). Wrong-leaf pattern identifikován: heuristika "
+        f"odhadne 6-cifernou rodinu správně v ~75 % případů, ale 9-cifrový leaf je chybný v ~63 % "
+        f"(odlišný distance band / materiál / geometrie / lokace). Produkční URS_MATCHER service "
+        f"(Perplexity-driven online lookup) nutný pro finální ověření zbývajících položek před cenotvorbou. "
         f"Jednotkové ceny ponecháno k vyplnění zhotovitelem."
     )
     cell = ws.cell(row=row, column=1, value=disclaimer)
@@ -453,8 +476,17 @@ def build_sheet_var_B(wb: Workbook, items: list[dict], objekt: str, title: str) 
         ws.cell(row=row, column=13, value=it["source"]).alignment = BODY_ALIGN_LEFT
         vref = ", ".join(f"#{v}" for v in it.get("vyjasneni_ref", []) or [])
         ws.cell(row=row, column=14, value=vref or "—").alignment = BODY_ALIGN_CENTER
-        ws.cell(row=row, column=15, value="ANO").alignment = BODY_ALIGN_CENTER
-        ws.cell(row=row, column=15).font = Font(bold=True, color="A04000")
+        urs_st = it.get("urs_status") or "needs_production_lookup"
+        if urs_st == "matched_websearch_verified":
+            urs_label, urs_color, urs_fill = "OVĚŘENO ✓", "0F5132", URS_VERIFIED_FILL
+        elif urs_st == "wrong_leaf_disambiguation_needed":
+            urs_label, urs_color, urs_fill = "LEAF CHYBNÝ — viz alternatives", "9C0006", URS_WRONG_FILL
+        else:
+            urs_label, urs_color, urs_fill = "ANO", "A04000", URS_PENDING_FILL
+        c_urs = ws.cell(row=row, column=15, value=urs_label)
+        c_urs.alignment = BODY_ALIGN_CENTER
+        c_urs.font = Font(bold=True, color=urs_color)
+        c_urs.fill = urs_fill
 
         for col in range(1, 16):
             ws.cell(row=row, column=col).border = BORDER
@@ -771,6 +803,113 @@ def build_sheet_var_E(wb: Workbook, skladby: dict) -> None:
 
 
 # ───────────────────────────────────────────────────────────────────────────
+# Sheet 9 — Var_F URS Verification Trail (Part 5b WebSearch evidence)
+
+def build_sheet_var_F(wb: Workbook, items: list[dict], verifs: dict) -> None:
+    """Render WebSearch URS verification audit trail."""
+    ws = wb.create_sheet("Var_F_URS_Verification_Trail")
+    ws.freeze_panes = "A2"
+
+    headers = [
+        "URS kód", "Verdict", "Items používající", "Verified popis (URS)",
+        "MJ", "Item popis (truncated)", "Correct code hint", "Confidence po",
+    ]
+    write_header_row(ws, 1, headers)
+
+    # Build a code → items lookup against current items.json state
+    by_code_now: dict[str, list[dict]] = {}
+    by_code_was: dict[str, list[dict]] = {}
+    for it in items:
+        c_now = it.get("urs_code_proposed")
+        c_was = it.get("urs_code_proposed_was")
+        if c_now:
+            by_code_now.setdefault(c_now, []).append(it)
+        if c_was:
+            by_code_was.setdefault(c_was, []).append(it)
+
+    VERDICT_STYLES = {
+        "matches_item": ("✓ matches_item", URS_VERIFIED_FILL, "0F5132"),
+        "code_real": ("✓ code_real", URS_VERIFIED_FILL, "0F5132"),
+        "correct_code_candidate": ("✓ correct_replacement", URS_VERIFIED_FILL, "0F5132"),
+        "alternative_code": ("◌ alternative", URS_PENDING_FILL, "A04000"),
+        "wrong_leaf_distance": ("⚠ wrong_leaf (distance)", URS_WRONG_FILL, "9C0006"),
+        "wrong_leaf_material": ("⚠ wrong_leaf (material)", URS_WRONG_FILL, "9C0006"),
+        "wrong_work_type": ("❌ wrong_work_type", URS_WRONG_FILL, "9C0006"),
+        "wrong_work_location": ("❌ wrong_location", URS_WRONG_FILL, "9C0006"),
+        "wrong_geometry_class": ("❌ wrong_geometry", URS_WRONG_FILL, "9C0006"),
+    }
+
+    row = 2
+    for v in verifs["verifications"]:
+        code = v["code"]
+        verdict = v.get("verdict", "")
+        label, fill, color = VERDICT_STYLES.get(verdict, (verdict, None, "000000"))
+
+        # Find items using this code (either current proposed OR previous proposed)
+        affected_items = v.get("affects_items") or []
+        if not affected_items:
+            # fallback: derive from items.json
+            for ix in by_code_now.get(code, []) + by_code_was.get(code, []):
+                if ix["id"] not in affected_items:
+                    affected_items.append(ix["id"])
+
+        # Pull the actual item popis for the first affected (truncated)
+        items_by_id = {i["id"]: i for i in items}
+        sample_item = items_by_id.get(affected_items[0]) if affected_items else None
+        item_popis = (sample_item["popis"][:80] + "…") if sample_item else "—"
+        # Conf after
+        if sample_item and len(affected_items) == 1:
+            conf_after = sample_item.get("urs_confidence", "—")
+        elif affected_items:
+            confs = [items_by_id[a].get("urs_confidence", 0) for a in affected_items if a in items_by_id]
+            conf_after = f"{min(confs):.2f}–{max(confs):.2f}" if confs else "—"
+        else:
+            conf_after = "—"
+
+        ws.cell(row=row, column=1, value=code).alignment = BODY_ALIGN_CENTER
+        c2 = ws.cell(row=row, column=2, value=label)
+        c2.alignment = BODY_ALIGN_CENTER
+        if fill:
+            c2.fill = fill
+        c2.font = Font(bold=True, color=color)
+        ws.cell(row=row, column=3, value=", ".join(affected_items) or "—").alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=4, value=v.get("verified_popis", "")).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=5, value=v.get("mj", "")).alignment = BODY_ALIGN_CENTER
+        ws.cell(row=row, column=6, value=item_popis).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=7, value=v.get("correct_code_hint", "") or v.get("note", "")).alignment = BODY_ALIGN_LEFT
+        ws.cell(row=row, column=8, value=str(conf_after)).alignment = BODY_ALIGN_CENTER
+
+        for col in range(1, 9):
+            ws.cell(row=row, column=col).border = BORDER
+        row += 1
+
+    # Header / disclaimer block above the table — insert as row 0? openpyxl doesn't allow easily,
+    # append a footer notes block instead.
+    row += 1
+    note = (
+        "Zdroj: outputs/urs_websearch_verifications.json (12 WebSearch queries 2026-05-18).\n"
+        "Metoda: podminky.urs.cz blokuje WebFetch (403), ale Google indexuje stejný obsah přes "
+        "veřejné zrcadla českých veřejných zakázek (smlouvy.gov.cz, vhodne-uverejneni.cz, "
+        "docplayer.cz, cs-urs.cz). WebSearch tool agreguje 10 snippet linků + LLM summary "
+        "extrahuje URS popis when anchored.\n"
+        "Key finding: heuristic urs_code_proposed v phase1_items_generator.py odhadne první 6 "
+        "cifer (rodinu) správně v ~75 % případů, ale 9-cifrový leaf je chybný v ~63 % verified codes."
+    )
+    c = ws.cell(row=row, column=1, value=note)
+    c.font = DISCLAIMER_FONT
+    c.fill = DISCLAIMER_FILL
+    c.alignment = Alignment(wrap_text=True, vertical="top")
+    c.border = BORDER
+    ws.merge_cells(start_row=row, start_column=1, end_row=row + 4, end_column=8)
+    ws.row_dimensions[row].height = 60
+
+    widths = [13, 26, 30, 60, 6, 60, 60, 16]
+    for i, w in enumerate(widths, start=1):
+        ws.column_dimensions[get_column_letter(i)].width = w
+    ws.auto_filter.ref = f"A1:H{row - 2}"
+
+
+# ───────────────────────────────────────────────────────────────────────────
 # Main
 
 def main() -> int:
@@ -782,9 +921,10 @@ def main() -> int:
     skladby = json.loads(SKLADBY_JSON.read_text()) if SKLADBY_JSON.exists() else (
         json.loads(SKLADBY_JSON_FALLBACK.read_text()) if SKLADBY_JSON_FALLBACK.exists() else None
     )
-    print(f"  ✓ {len(items)} items, project_header, dxf_extract {'✓' if dxf_extract else '✗'}, skladby {'✓' if skladby else '✗'}", file=sys.stderr)
+    urs_verifs = json.loads(URS_VERIFICATIONS_JSON.read_text()) if URS_VERIFICATIONS_JSON.exists() else None
+    print(f"  ✓ {len(items)} items, project_header, dxf_extract {'✓' if dxf_extract else '✗'}, skladby {'✓' if skladby else '✗'}, urs_verifs {'✓' if urs_verifs else '✗'}", file=sys.stderr)
 
-    n_sheets = 6 + (1 if dxf_extract else 0) + (1 if skladby else 0)
+    n_sheets = 6 + (1 if dxf_extract else 0) + (1 if skladby else 0) + (1 if urs_verifs else 0)
     print(f"[2/3] Building {n_sheets} sheets...", file=sys.stderr)
     wb = Workbook()
     default = wb.active
@@ -808,6 +948,9 @@ def main() -> int:
     if skladby:
         build_sheet_var_E(wb, skladby)
         print(f"  ✓ Sheet 8: Var_E_Skladby_Vrstev", file=sys.stderr)
+    if urs_verifs:
+        build_sheet_var_F(wb, items, urs_verifs)
+        print(f"  ✓ Sheet 9: Var_F_URS_Verification_Trail", file=sys.stderr)
 
     print(f"[3/3] Saving workbook...", file=sys.stderr)
     wb.save(str(TARGET))
