@@ -85,8 +85,10 @@ RD_ANCHORS = [
     ("D04", "Bourání podlah",                   ["bourani podlah", "demontaz podlah"], "demolice_podlaha"),
     ("D05", "Bourání střešní krytiny + krov",   ["bourani plech", "bourani stresn", "bourani krytin",
                                                   "bourani krov", "demolice krytin"], "demolice_strecha"),
-    ("D06", "Demontáž oken + dveří",            ["demontaz okn", "demontaz dver", "vybourani okn",
-                                                  "okno demontaz", "vybourani dver"], "demolice_otvory"),
+    ("D06", "Demontáž oken + dveří",            ["stavajicich drevenych okn", "drevenych oken",
+                                                  "stavajicich vstupnich dver", "vstupnich dveri",
+                                                  "stavajicich vnitrnich dver", "vnitrnich dveri",
+                                                  "demontaz okn", "demontaz dver", "vybourani okn"], "demolice_otvory"),
     ("D07", "Odstranění komínu",                ["bourani komin", "demolice komin", "odstrane komin"], "demolice_komin"),
 
     # Zemní + základy (TKP 1+2)

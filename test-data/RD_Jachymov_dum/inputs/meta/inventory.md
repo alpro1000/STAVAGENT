@@ -505,3 +505,55 @@ Plus 18 internal recalibrations (vs 8 v Part 2):
 ### 11.7 Anti-pattern preserved jako corpus lesson
 
 User-caught extraction gap (11/156 layers probed) je negativním exemplárem pro budoucí pipelines — Phase 0a Completeness Audit teď MANDATORY před každým novým pilotem. Pattern dokumentován v `concrete-agent/.../patterns/rd_jachymov/iterative_layer_probe_user_caught_gaps.md` + `completeness_audit_mandatory.md`.
+
+---
+
+## 12. Completeness Audit v2 fixes applied (2026-05-19)
+
+Sekvenční Completeness Audit v2 (10 sekcí A–J, commit `aad7cdc`) identifikoval **16 → 8 finálních gaps** po keyword refining. Tento gate aplikoval konkrétní opravy → **0 gaps remaining**.
+
+### 12.1 Items count delta
+
+| Stav | Items celkem | Active | Změna |
+|---|--:|--:|--:|
+| Před audit v2 fix | 189 | 189 | baseline |
+| Po audit v2 fix   | **208** | **204** | +15 nové, +4 deprecated set/aggregate s mnozstvi=0 |
+
+### 12.2 Gap-by-gap rezoluce
+
+| Gap | Severity | Fix | Items |
+|---|---|---|---|
+| **GAP_001 TKP 8** | medium | **N/A** per TZ B Souhrnná: "Stávající vodovodní + kanalizační přípojka, plyn zaslepena" — žádné nové venkovní rozvody | 0 added (suppressed v audit logic) |
+| **GAP_002 D06 Demontáž oken+dveří** | important | **+3 HSV-6** items | HSV6.013 (16 oken), HSV6.014 (2 vstupní), HSV6.015 (15 vnitřních) |
+| **GAP_003 R08 Voda staveniště** | important | **+1 VRN** item | VRN.020 voda staveniště paušál (plyn N/A — přípojka zaslepena) |
+| **GAP_004 Oplechování parapetů** | important | **+1 PSV-76** item | PSV76.014 — Pzn 16 ks (per DXF okno × 16) |
+| **GAP_005 Sanit set split** | important | **+9 PSV-72** items (3 sets → 9 per-fixture) | PSV72.004/005/006.A/B/C — split per 3 koupelny (1.05 / 2.03 / 3.04). Originální set items marked deprecated, mnozstvi=0 |
+| **GAP_006 Podlahy +20 %** | important | **Audit-side fix** — separate dum vs sklad; biodeska "spící patro nad krovem" excluded (additional surface, NE in TZ habitable baseline) | 0 items changed. Dum habitable 217.4 m² vs TZ 219.3 — Δ 0.9 % OK |
+| **GAP_007 Stěny +54 %** | important | **+4 PSV-78** items (aggregate výmalba → per-podlaží split). Original PSV78.012 deprecated, mnozstvi=0 | PSV78.012.1_PP / 1_NP / 2_NP / 3_NP. Formula: omítka + SDK podhled − obklad per podlaží |
+| **GAP_008 J12 Fire-rated dveře EI** | important | **+1 PSV-76** item per PBŘ TUSPO § "Požární uzávěry otvorů" | PSV76.013 — EI 30 DP3 dveře mezi 1.PP a 1.NP (vrchol schodiště do sklepa, uzavírá otvor v REI 90 stropu klenby sklepa) |
+
+### 12.3 Po fix — audit v2 stav
+
+| Sekce | Verdict |
+|---|---|
+| **A. TKP coverage** | 9/10 families OK + TKP 8 N/A documented |
+| **B. Subdodavatel** | 36/36 trades OK |
+| **C. RD anchors** | 50 OK / 0 missing / 5 N/A (z 60 anchors po keyword refine) |
+| **E. Per-podlaží matrix** | 28 cells — 0 GAP |
+| **F. Per-room matrix** | 225 cells — 0 GAP (all rooms covered) |
+| **G. Cross-element chains** | okna OK / dveře OK / krokve OK / sanit OK (all 4 chains green) |
+| **H. Material balance** | podlahy OK / fasada_etics OK / steny_vnitrni OK |
+| **I. Cost ratio** | INFORMATIONAL (Methvin rates unit-inconsistent — NE included in gaps) |
+| **J. TZ deep scan** | 18 anchors — 16 covered / 0 gap / 2 tz_silent (mykolog + azbest negative result) |
+
+### 12.4 Excel + tooling
+
+- `outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-19.xlsx` (73.1 KB, 9 sheets, 208 items)
+- `tools/fix_audit_v2_gaps.py` (NEW — idempotent gap fixer)
+- `tools/completeness_check_v2.py` (refined: exclusive role buckets, TKP-N/A skip, deprecated-item exclusion)
+
+### 12.5 Strict policy reaffirmation post-fix
+
+- **0 fabrication**: každá z 15 added items má explicit DXF nebo TZ source citation + `_audit_gap_fixed: GAP_XXX` + `_added_at: 2026-05-19`.
+- **4 deprecated items** (3 sanit sets PSV72.004/005/006 + 1 aggregate výmalba PSV78.012) — mnozstvi=0, `_data_quality: deprecated_split_*`, audit trail preserved.
+- **0 critical + 0 important gaps remaining**. 1 TKP family marked N/A explicitly. Audit logic clean (false-positive rate 0 % after final refinements).

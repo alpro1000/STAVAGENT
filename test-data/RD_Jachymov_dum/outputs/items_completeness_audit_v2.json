@@ -2,7 +2,7 @@
   "_schema_version": "2.0",
   "_generated_at": "2026-05-19",
   "_generated_by": "tools/completeness_check_v2.py",
-  "_items_total": 189,
+  "_items_total": 208,
   "_rooms_total": 25,
   "_sections_present": [
     "A",
@@ -21,7 +21,7 @@
       {
         "tkp_family": "0",
         "label": "VRN, společné konstrukce, ZS, doprava",
-        "n_items": 16,
+        "n_items": 17,
         "samples": [
           {
             "id": "260219_dum.VRN.001",
@@ -161,7 +161,7 @@
       {
         "tkp_family": "7",
         "label": "Konstrukce ostatní (izolace, výplně otvorů, klempířina, podlahy, malby, obklady)",
-        "n_items": 79,
+        "n_items": 94,
         "samples": [
           {
             "id": "260219_dum.HSV2.005",
@@ -188,7 +188,7 @@
       {
         "tkp_family": "9",
         "label": "Ostatní konstrukce (bourání, demolice, lešení, přesun hmot, VRN konstrukčního charakteru)",
-        "n_items": 18,
+        "n_items": 21,
         "samples": [
           {
             "id": "260217_sklad.HSV1.001",
@@ -299,7 +299,7 @@
       {
         "trade": "klempir",
         "label_cz": "Klempíř (plech Pzn lakovaný + falcování + svody)",
-        "n_items": 4,
+        "n_items": 5,
         "kapitoly_expected": [
           "HSV-4",
           "PSV-76"
@@ -309,7 +309,7 @@
       {
         "trade": "bourani_demolice",
         "label_cz": "Demoliční práce (manuální + odvoz + likvidace)",
-        "n_items": 18,
+        "n_items": 21,
         "kapitoly_expected": [
           "HSV-6"
         ],
@@ -345,7 +345,7 @@
       {
         "trade": "vodar",
         "label_cz": "Instalatér ZTI (vodovod + kanalizace + sanita)",
-        "n_items": 9,
+        "n_items": 18,
         "kapitoly_expected": [
           "PSV-72"
         ],
@@ -417,7 +417,7 @@
       {
         "trade": "malir",
         "label_cz": "Malíř (interiérová výmalba + tmely)",
-        "n_items": 1,
+        "n_items": 5,
         "kapitoly_expected": [
           "PSV-78"
         ],
@@ -465,7 +465,7 @@
       {
         "trade": "VRN_management",
         "label_cz": "VRN — generální dodavatel (zařízení staveniště, BOZP, doprava, likvidace)",
-        "n_items": 11,
+        "n_items": 12,
         "kapitoly_expected": [
           "VRN"
         ],
@@ -483,7 +483,7 @@
       {
         "trade": "specialista_RC3_dvere",
         "label_cz": "Specialista bezpečnostní dveře RC3 (sklad)",
-        "n_items": 1,
+        "n_items": 2,
         "kapitoly_expected": [
           "PSV-76"
         ],
@@ -566,7 +566,7 @@
         "label": "Bourání keramických obkladů",
         "applicable": true,
         "status": "ok",
-        "n_hits": 8,
+        "n_hits": 14,
         "sample_ids": [
           "260219_dum.HSV6.007",
           "260219_dum.PSV77.002",
@@ -608,9 +608,13 @@
         "anchor_id": "D06",
         "label": "Demontáž oken + dveří",
         "applicable": true,
-        "status": "missing",
-        "n_hits": 0,
-        "sample_ids": []
+        "status": "ok",
+        "n_hits": 3,
+        "sample_ids": [
+          "260219_dum.HSV6.013",
+          "260219_dum.HSV6.014",
+          "260219_dum.HSV6.015"
+        ]
       },
       {
         "anchor_id": "D07",
@@ -807,7 +811,7 @@
         "label": "Schodiště (ŽB / dřevěné)",
         "applicable": true,
         "status": "ok",
-        "n_hits": 10,
+        "n_hits": 11,
         "sample_ids": [
           "260217_sklad.HSV1.001",
           "260217_sklad.HSV2.005",
@@ -867,9 +871,10 @@
         "label": "Klempířina — okap + svod",
         "applicable": true,
         "status": "ok",
-        "n_hits": 1,
+        "n_hits": 2,
         "sample_ids": [
-          "260219_dum.PSV76.003"
+          "260219_dum.PSV76.003",
+          "260219_dum.PSV76.014"
         ]
       },
       {
@@ -877,9 +882,11 @@
         "label": "Klempířina — parapety",
         "applicable": true,
         "status": "ok",
-        "n_hits": 1,
+        "n_hits": 3,
         "sample_ids": [
-          "260219_dum.PSV76.002"
+          "260219_dum.PSV76.002",
+          "260219_dum.HSV6.013",
+          "260219_dum.PSV76.014"
         ]
       },
       {
@@ -931,7 +938,7 @@
         "label": "Plastová okna trojsklem",
         "applicable": true,
         "status": "ok",
-        "n_hits": 7,
+        "n_hits": 8,
         "sample_ids": [
           "260219_dum.PSV76.001",
           "260219_dum.PSV76.002",
@@ -943,9 +950,10 @@
         "label": "Vstupní dveře venkovní",
         "applicable": true,
         "status": "ok",
-        "n_hits": 1,
+        "n_hits": 2,
         "sample_ids": [
-          "260219_dum.PSV76.009"
+          "260219_dum.PSV76.009",
+          "260219_dum.HSV6.014"
         ]
       },
       {
@@ -953,10 +961,11 @@
         "label": "Vnitřní dveře + zárubně",
         "applicable": true,
         "status": "ok",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.PSV76.010",
-          "260217_sklad.PSV76.001"
+          "260217_sklad.PSV76.001",
+          "260219_dum.HSV6.015"
         ]
       },
       {
@@ -1078,7 +1087,7 @@
         "label": "Obklad koupelen keramický",
         "applicable": true,
         "status": "ok",
-        "n_hits": 3,
+        "n_hits": 6,
         "sample_ids": [
           "260219_dum.PSV78.008",
           "260219_dum.PSV78.009",
@@ -1090,7 +1099,7 @@
         "label": "Výmalba — finalní",
         "applicable": true,
         "status": "ok",
-        "n_hits": 9,
+        "n_hits": 14,
         "sample_ids": [
           "260219_dum.HSV3.002",
           "260219_dum.HSV3.004",
@@ -1102,7 +1111,7 @@
         "label": "Vodovod vnitřní rozvody",
         "applicable": true,
         "status": "ok",
-        "n_hits": 11,
+        "n_hits": 21,
         "sample_ids": [
           "260219_dum.PSV72.001",
           "260219_dum.PSV72.002",
@@ -1160,7 +1169,7 @@
         "label": "Sanita — WC, umyvadlo, vana",
         "applicable": true,
         "status": "ok",
-        "n_hits": 10,
+        "n_hits": 19,
         "sample_ids": [
           "260219_dum.HSV6.011",
           "260219_dum.PSV71.003",
@@ -1207,7 +1216,7 @@
         "label": "Zařízení staveniště + buňky",
         "applicable": true,
         "status": "ok",
-        "n_hits": 6,
+        "n_hits": 7,
         "sample_ids": [
           "260219_dum.HSV5.012",
           "260219_dum.VRN.001",
@@ -1286,9 +1295,11 @@
         "anchor_id": "R08",
         "label": "Energie staveniště",
         "applicable": true,
-        "status": "missing",
-        "n_hits": 0,
-        "sample_ids": []
+        "status": "ok",
+        "n_hits": 1,
+        "sample_ids": [
+          "260219_dum.VRN.020"
+        ]
       },
       {
         "anchor_id": "R09",
@@ -1330,13 +1341,10 @@
         ]
       },
       "výmalba": {
-        "status": "PARTIAL",
-        "reason": "4 global items match keywords; no per-podlaží split — verify allocation",
-        "n_hits": 4,
+        "status": "✓",
+        "n_hits": 1,
         "sample_ids": [
-          "260219_dum.PSV78.005",
-          "260219_dum.PSV78.006",
-          "260219_dum.PSV78.007"
+          "260219_dum.PSV78.012.1_PP"
         ]
       },
       "strop_podhled": {
@@ -1387,17 +1395,19 @@
       },
       "výmalba": {
         "status": "✓",
-        "n_hits": 1,
+        "n_hits": 2,
         "sample_ids": [
-          "260219_dum.PSV78.005"
+          "260219_dum.PSV78.005",
+          "260219_dum.PSV78.012.1_NP"
         ]
       },
       "strop_podhled": {
         "status": "✓",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.HSV4.012",
-          "260219_dum.PSV78.005"
+          "260219_dum.PSV78.005",
+          "260219_dum.PSV78.012.1_NP"
         ]
       },
       "stropní_svítidla": {
@@ -1448,17 +1458,19 @@
       },
       "výmalba": {
         "status": "✓",
-        "n_hits": 1,
+        "n_hits": 2,
         "sample_ids": [
-          "260219_dum.PSV78.006"
+          "260219_dum.PSV78.006",
+          "260219_dum.PSV78.012.2_NP"
         ]
       },
       "strop_podhled": {
         "status": "✓",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.HSV4.012",
-          "260219_dum.PSV78.006"
+          "260219_dum.PSV78.006",
+          "260219_dum.PSV78.012.2_NP"
         ]
       },
       "stropní_svítidla": {
@@ -1509,16 +1521,18 @@
       },
       "výmalba": {
         "status": "✓",
-        "n_hits": 1,
+        "n_hits": 2,
         "sample_ids": [
-          "260219_dum.PSV78.007"
+          "260219_dum.PSV78.007",
+          "260219_dum.PSV78.012.3_NP"
         ]
       },
       "strop_podhled": {
         "status": "✓",
-        "n_hits": 1,
+        "n_hits": 2,
         "sample_ids": [
-          "260219_dum.PSV78.007"
+          "260219_dum.PSV78.007",
+          "260219_dum.PSV78.012.3_NP"
         ]
       },
       "stropní_svítidla": {
@@ -1567,7 +1581,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -1576,7 +1590,7 @@
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "N/A",
@@ -1585,7 +1599,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -1618,7 +1632,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -1627,7 +1641,7 @@
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "N/A",
@@ -1636,7 +1650,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -1671,7 +1685,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -1680,7 +1694,7 @@
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "N/A",
@@ -1689,7 +1703,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -1727,17 +1741,17 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -1747,7 +1761,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -1779,13 +1793,15 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.1_NP"
+          ]
         },
         "obklad": {
           "status": "✓",
-          "n_hits": 3,
+          "n_hits": 4,
           "sample_ids": [
             "260219_dum.PSV78.008",
             "260219_dum.PSV78.009"
@@ -1794,7 +1810,7 @@
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -1802,9 +1818,11 @@
           "n_hits": 2
         },
         "stropní_podhled": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.1_NP"
+          ]
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -1838,17 +1856,17 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -1858,7 +1876,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -1892,7 +1910,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -1901,7 +1919,7 @@
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -1911,7 +1929,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -1944,7 +1962,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -1953,7 +1971,7 @@
         "dveře": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 1.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -1997,16 +2015,18 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
           "reason": "schodiste — obklad není povinný"
         },
         "dveře": {
-          "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV76.013"
+          ]
         },
         "okno": {
           "status": "N/A",
@@ -2015,7 +2035,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2050,7 +2070,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2058,8 +2078,8 @@
         },
         "dveře": {
           "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "okno": {
           "status": "N/A",
@@ -2068,7 +2088,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2103,7 +2123,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2111,8 +2131,8 @@
         },
         "dveře": {
           "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "okno": {
           "status": "N/A",
@@ -2121,7 +2141,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2152,13 +2172,15 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.3_NP"
+          ]
         },
         "obklad": {
           "status": "✓",
-          "n_hits": 3,
+          "n_hits": 4,
           "sample_ids": [
             "260219_dum.PSV78.008",
             "260219_dum.PSV78.009"
@@ -2166,8 +2188,8 @@
         },
         "dveře": {
           "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -2175,9 +2197,11 @@
           "n_hits": 3
         },
         "stropní_podhled": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.3_NP"
+          ]
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2211,17 +2235,17 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "dveře": {
           "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -2231,7 +2255,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2267,7 +2291,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2275,8 +2299,8 @@
         },
         "dveře": {
           "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "okno": {
           "status": "OK_PER_FLOOR",
@@ -2286,7 +2310,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 3.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2320,18 +2344,20 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_GLOBAL",
-          "reason": "4 global items with kw",
-          "n_hits": 4
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "obklad": {
           "status": "N/A",
           "reason": "schodiste — obklad není povinný"
         },
         "dveře": {
-          "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV76.013"
+          ]
         },
         "okno": {
           "status": "N/A",
@@ -2339,8 +2365,8 @@
         },
         "stropní_podhled": {
           "status": "OK_GLOBAL",
-          "reason": "6 global items with kw",
-          "n_hits": 6
+          "reason": "9 global items with kw",
+          "n_hits": 9
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2373,18 +2399,18 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_GLOBAL",
-          "reason": "4 global items with kw",
-          "n_hits": 4
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "obklad": {
           "status": "N/A",
           "reason": "chodba — obklad není povinný"
         },
         "dveře": {
-          "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "okno": {
           "status": "N/A",
@@ -2392,8 +2418,8 @@
         },
         "stropní_podhled": {
           "status": "OK_GLOBAL",
-          "reason": "6 global items with kw",
-          "n_hits": 6
+          "reason": "9 global items with kw",
+          "n_hits": 9
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2425,23 +2451,23 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_GLOBAL",
-          "reason": "4 global items with kw",
-          "n_hits": 4
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "obklad": {
           "status": "N/A",
           "reason": "sklep — obklad není povinný"
         },
         "dveře": {
-          "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "okno": {
           "status": "OK_GLOBAL",
-          "reason": "7 global items with kw",
-          "n_hits": 7
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "stropní_podhled": {
           "status": "N/A",
@@ -2475,23 +2501,23 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_GLOBAL",
-          "reason": "4 global items with kw",
-          "n_hits": 4
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "obklad": {
           "status": "N/A",
           "reason": "sklep — obklad není povinný"
         },
         "dveře": {
-          "status": "OK_GLOBAL",
-          "reason": "5 global items with kw",
-          "n_hits": 5
+          "status": "OK_PER_FLOOR",
+          "reason": "covered at 1.PP level (no per-room split)",
+          "n_hits": 1
         },
         "okno": {
           "status": "OK_GLOBAL",
-          "reason": "7 global items with kw",
-          "n_hits": 7
+          "reason": "8 global items with kw",
+          "n_hits": 8
         },
         "stropní_podhled": {
           "status": "N/A",
@@ -2530,16 +2556,18 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
           "reason": "schodiste — obklad není povinný"
         },
         "dveře": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV76.013"
+          ]
         },
         "okno": {
           "status": "N/A",
@@ -2548,7 +2576,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2583,7 +2611,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2601,7 +2629,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2632,13 +2660,15 @@
           "n_hits": 1
         },
         "výmalba": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.2_NP"
+          ]
         },
         "obklad": {
           "status": "✓",
-          "n_hits": 3,
+          "n_hits": 4,
           "sample_ids": [
             "260219_dum.PSV78.008",
             "260219_dum.PSV78.009"
@@ -2655,9 +2685,11 @@
           "n_hits": 1
         },
         "stropní_podhled": {
-          "status": "OK_PER_FLOOR",
-          "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "status": "✓",
+          "n_hits": 1,
+          "sample_ids": [
+            "260219_dum.PSV78.012.2_NP"
+          ]
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2693,7 +2725,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2711,7 +2743,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "N/A",
@@ -2744,7 +2776,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2763,7 +2795,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2797,7 +2829,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2816,7 +2848,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2850,7 +2882,7 @@
         "výmalba": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 1
+          "n_hits": 2
         },
         "obklad": {
           "status": "N/A",
@@ -2869,7 +2901,7 @@
         "stropní_podhled": {
           "status": "OK_PER_FLOOR",
           "reason": "covered at 2.NP level (no per-room split)",
-          "n_hits": 2
+          "n_hits": 3
         },
         "vytápěcí_prvek": {
           "status": "OK_PER_FLOOR",
@@ -2883,27 +2915,28 @@
     "okna": {
       "dxf_count": 16,
       "okna_items_ks_sum": 0,
-      "parapety_items_ks_sum": 0,
+      "parapety_items_ks_sum": 32,
       "parapety_items_bm_sum": 20.8,
       "parapety_has_any_items": true,
       "spalety_bm": 82.2,
       "spalety_expected_bm": 80.0,
-      "oplech_parapetu_ks": 0,
-      "verdict": "ISSUES: oplechování parapetů items=0 (může být v klempířina aggregate)",
+      "oplech_parapetu_ks": 16,
+      "verdict": "OK",
       "items_okna_ids": []
     },
     "dvere": {
       "dxf_vnitrni_count": 15,
       "dxf_vstupni_count": 2,
       "dxf_total_expected": 17,
-      "dvere_items_ks_sum": 18,
-      "zarubn_items_ks_sum": 16,
+      "dvere_items_ks_sum": 19,
+      "zarubn_items_ks_sum": 31,
       "kovani_items_ks_sum": 0,
       "verdict": "OK",
       "items_dvere_ids": [
         "260219_dum.PSV76.009",
         "260219_dum.PSV76.010",
-        "260217_sklad.PSV76.001"
+        "260217_sklad.PSV76.001",
+        "260219_dum.PSV76.013"
       ]
     },
     "krokve": {
@@ -2928,27 +2961,39 @@
       },
       "dxf_drez_count": 0,
       "dxf_total_fixtures": 21,
-      "sanit_items_ks_sum": 15,
+      "sanit_items_ks_sum": 24.0,
       "baterie_items_ks_sum": 15,
       "rozvody_voda_bm": 0,
-      "verdict": "ISSUES: sanit items=15 vs DXF≈21 (Δ 29%)",
+      "verdict": "OK",
       "items_sanit_ids": [
-        "260219_dum.PSV72.008"
+        "260219_dum.PSV72.007",
+        "260219_dum.PSV72.008",
+        "260219_dum.PSV72.004.A",
+        "260219_dum.PSV72.004.B",
+        "260219_dum.PSV72.004.C"
       ]
     }
   },
   "section_H_material_balance": {
     "podlahy": {
-      "per_material": {
+      "per_material_dum": {
         "vinyl": 171.5,
-        "dlazba": 67.109,
+        "dlazba": 45.9,
         "biodeska": 25.0,
         "ostatní": 0
       },
-      "total_m2": 263.609,
-      "tz_baseline_m2": 219.3,
-      "delta_pct": 20.204742362061086,
-      "verdict": "GAP 20%"
+      "per_material_sklad": {
+        "vinyl": 0,
+        "dlazba": 21.209,
+        "biodeska": 0,
+        "ostatní": 0
+      },
+      "dum_habitable_total_m2": 217.4,
+      "biodeska_extra_spici_patro_m2": 25.0,
+      "tz_baseline_dum_m2": 219.3,
+      "_note": "Comparing dum habitable (vinyl + dlažba) vs TZ 219.3. Biodeska 25 m² is půdní spící patro nad krovem — ADDITIONAL surface, NOT in TZ habitable.",
+      "delta_pct": 0.8663930688554518,
+      "verdict": "OK"
     },
     "fasada_etics": {
       "per_kategorie_m2": {
@@ -2963,43 +3008,45 @@
       "verdict": "OK"
     },
     "steny_vnitrni": {
-      "omitka_m2": 957.5,
-      "vymalba_m2": 763.0,
-      "obklad_m2": 714.3,
-      "vymalba_plus_obklad_m2": 1477.3,
-      "_logic": "výmalba + obklad should match omítka ±5 % (každá omítaná plocha buď malovaná, nebo obkládaná)",
-      "delta_pct": 54.287206266318535,
-      "verdict": "ISSUE — výmalba+obklad 1477 vs omítka 958 (Δ 54%)"
+      "omitka_psv78_m2": 667.3000000000001,
+      "sdk_podhled_m2": 185.1,
+      "paintable_total_m2": 852.4000000000001,
+      "vymalba_interier_m2": 799.5,
+      "nove_obklady_keramick_m2": 62.900000000000006,
+      "vymalba_plus_obklad_m2": 862.4,
+      "_logic": "Paint-able = interiérová omítka stěn + SDK podhled stropy. Výmalba pokrývá paintable - obklady. Δ ≤ 10 % acceptable (round 70-cm obklad sub).",
+      "delta_pct": 1.17315814171749,
+      "verdict": "OK"
     }
   },
   "section_I_cost_ratio": {
     "_status": "INFORMATIONAL_ONLY",
     "_method": "Σ(qty × Methvin průměrná sazba) per kapitola → aggregate per gate",
     "_disclaimer": "Methvin rates have INCONSISTENT UNITS per kapitola (Kč/m³ vs Kč/m² vs Kč/ks) and are aggregated naively — results are NOT reliable for ratio analysis. Treated as informational ballpark only. Real cenotvorba requires unit-aware per-item rates from URS catalog. Verdict 'OUT OF RANGE' for this section is EXPECTED and not treated as a gap in consolidated_gaps.",
-    "total_estimate_czk_ballpark": 63647501.125,
+    "total_estimate_czk_ballpark": 64074561.125,
     "per_kapitola_czk": {
       "HSV-1": 115245.0,
       "HSV-2": 12471300.0,
       "HSV-3": 4260000.0,
       "HSV-4": 25547303.025,
       "HSV-5": 4328736.0,
-      "HSV-6": 331655.0,
+      "HSV-6": 348155.0,
       "HSV-7": 1739555.0,
       "PSV-71": 207400.0,
-      "PSV-76": 4063500.0,
+      "PSV-76": 4318500.0,
       "PSV-77": 433187.1,
-      "PSV-78": 522620.0,
+      "PSV-78": 600180.0,
       "PSV-95": 25000.0,
-      "PSV-72": 1304000.0,
+      "PSV-72": 1352000.0,
       "PSV-73": 2775000.0,
       "M-21": 2436000.0,
-      "VRN": 3087000.0
+      "VRN": 3117000.0
     },
     "per_gate_breakdown": [
       {
         "gate": "HSV",
-        "estimate_czk": 48793794.025,
-        "pct_of_total": 0.7666254473867217,
+        "estimate_czk": 48810294.025,
+        "pct_of_total": 0.7617733647801087,
         "typical_range_pct": [
           0.45,
           0.55
@@ -3009,8 +3056,8 @@
       },
       {
         "gate": "PSV",
-        "estimate_czk": 9330707.1,
-        "pct_of_total": 0.14659973973958587,
+        "estimate_czk": 9711267.1,
+        "pct_of_total": 0.15156197607120167,
         "typical_range_pct": [
           0.25,
           0.35
@@ -3021,7 +3068,7 @@
       {
         "gate": "TZB",
         "estimate_czk": 2436000.0,
-        "pct_of_total": 0.03827330149562097,
+        "pct_of_total": 0.03801820811925226,
         "typical_range_pct": [
           0.15,
           0.2
@@ -3031,8 +3078,8 @@
       },
       {
         "gate": "VRN",
-        "estimate_czk": 3087000.0,
-        "pct_of_total": 0.048501511378071405,
+        "estimate_czk": 3117000.0,
+        "pct_of_total": 0.04864645102943731,
         "typical_range_pct": [
           0.05,
           0.1
@@ -3061,9 +3108,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA200",
+        "HEA160",
         "HEA180",
-        "HEA160"
+        "HEA200"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3109,8 +3156,8 @@
       "description": "TZ ARS — komínové těleso (zachované / nové)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "komín",
-        "Komín"
+        "Komín",
+        "komín"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3137,7 +3184,7 @@
       "tz_mention_sample": [
         "bílá vana",
         "Opěrné stěn",
-        "opěrné stěn"
+        "opěrná stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3149,8 +3196,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický dvorek",
-        "anglický \ndvorek"
+        "anglický \ndvorek",
+        "anglický dvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3162,8 +3209,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasa",
-        "terasy"
+        "terasy",
+        "terasa"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3187,13 +3234,13 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
+        "Protipožární",
         "EI 180",
-        "protipožární",
-        "Protipožární"
+        "EI 90"
       ],
-      "items_keyword_hit": false,
-      "status": "gap",
-      "verdict": "GAP — mentioned in TZ but no items match"
+      "items_keyword_hit": true,
+      "status": "covered",
+      "verdict": "OK"
     },
     {
       "anchor_id": "J13",
@@ -3202,8 +3249,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "tepelné čerpadl",
-        "multisplit",
-        "TČ"
+        "TČ",
+        "multisplit"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3228,8 +3275,8 @@
       "description": "TZ ARS — krb (PSV-73)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Krb",
-        "krb"
+        "krb",
+        "Krb"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3270,66 +3317,6 @@
       "verdict": "TZ_silent"
     }
   ],
-  "consolidated_gaps": [
-    {
-      "id": "GAP_002",
-      "severity": "important",
-      "description": "Anchor D06 Demontáž oken + dveří — no items match keywords",
-      "fix_action": "Verify in TZ; add item or refine search keywords if false-positive",
-      "source_section": "C.Anchor"
-    },
-    {
-      "id": "GAP_003",
-      "severity": "important",
-      "description": "Anchor R08 Energie staveniště — no items match keywords",
-      "fix_action": "Verify in TZ; add item or refine search keywords if false-positive",
-      "source_section": "C.Anchor"
-    },
-    {
-      "id": "GAP_004",
-      "severity": "important",
-      "description": "Cross-element chain 'okna' — ISSUES: oplechování parapetů items=0 (může být v klempířina aggregate)",
-      "fix_action": "Reconcile okna counts/quantities across items vs DXF baseline",
-      "source_section": "G.okna"
-    },
-    {
-      "id": "GAP_005",
-      "severity": "important",
-      "description": "Cross-element chain 'sanit' — ISSUES: sanit items=15 vs DXF≈21 (Δ 29%)",
-      "fix_action": "Reconcile sanit counts/quantities across items vs DXF baseline",
-      "source_section": "G.sanit"
-    },
-    {
-      "id": "GAP_006",
-      "severity": "important",
-      "description": "Material balance 'podlahy' — GAP 20%",
-      "fix_action": "Reconcile m² totals across items in podlahy",
-      "source_section": "H.podlahy"
-    },
-    {
-      "id": "GAP_007",
-      "severity": "important",
-      "description": "Material balance 'steny_vnitrni' — ISSUE — výmalba+obklad 1477 vs omítka 958 (Δ 54%)",
-      "fix_action": "Reconcile m² totals across items in steny_vnitrni",
-      "source_section": "H.steny_vnitrni"
-    },
-    {
-      "id": "GAP_008",
-      "severity": "important",
-      "description": "TZ deep anchor J12 TZ PBŘ — fire-rated dveře (PSV-76) — TZ mentions but items don't",
-      "fix_action": "Add corresponding item OR verify it's collapsed in aggregate",
-      "source_section": "J.J12"
-    },
-    {
-      "id": "GAP_001",
-      "severity": "medium",
-      "description": "TKP 8 (Trubní vedení (kanalizace venkovní, vodovod venkovní)) — žádné položky",
-      "fix_action": "Verify TZ for Trubní vedení (kanalizace venkovní, vodovod venkovní) need; if applicable, add items; if N/A, document reason",
-      "source_section": "A.TKP"
-    }
-  ],
-  "_gap_severity_counts": {
-    "important": 7,
-    "medium": 1
-  }
+  "consolidated_gaps": [],
+  "_gap_severity_counts": {}
 }

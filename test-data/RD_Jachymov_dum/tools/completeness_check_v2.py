@@ -367,18 +367,21 @@ def section_G_cross_element(items: list[dict], dxf: dict) -> dict:
     }
 
     # 4. Sanitární chain — PSV-72 ZTI items only, ks unit
+    # Exclude deprecated set items (replaced by per-fixture items in audit v2)
     sanit_dxf = dxf.get("sanitarni", [])
     dxf_sanit_count = {s["prvek"].lower(): s.get("deduplicated_count", 0) for s in sanit_dxf}
     sanit_kuchyne_dxf = dxf.get("kuchyne", [])
     dxf_drez = sum(s.get("deduplicated_count", 0) for s in sanit_kuchyne_dxf if "drez" in s.get("prvek","").lower())
-    psv72 = [it for it in items if "PSV-72" in it.get("kapitola", "")]
+    psv72 = [it for it in items if "PSV-72" in it.get("kapitola", "")
+             and it.get("status_flag") != "deprecated_audit_v2"]
     baterie_items = [it for it in psv72 if "baterie" in norm(it["popis"])]
     baterie_ks = _sum_ks(baterie_items)
     sanit_items = [
         it for it in psv72
         if it.get("mj") == "ks"
-        and any(t in norm(it["popis"]) for t in ("wc misa", "umyvadl", "vana koupeln", "sprch kout",
-                                                  "wc set", "wc zaves", "wc s nadrz", "wc komp"))
+        and any(t in norm(it["popis"]) for t in ("wc kombi", "wc keramick", "wc zaves",
+                                                  "umyvadl", "vana koupeln", "sprch kout",
+                                                  "wc misa", "drez nerez", "drez kuch"))
     ]
     sanit_items_ks = _sum_ks(sanit_items)
     rozvody_voda_items = [it for it in items if "vodovod" in norm(it["popis"]) or "rozvod vod" in norm(it["popis"])]
@@ -454,38 +457,60 @@ def _verdict_sanit(dxf_total, items_ks, baterie_ks):
 # ── Section H — Material balance ───────────────────────────────────────────
 def section_H_material_balance(items: list[dict], dxf: dict) -> dict:
     out = {}
-    # 1. Podlahy (vinyl + dlažba + biodeska + sklep)
+
+    # Items to EXCLUDE from balance checks (per audit-v2 calibration):
+    # - "tz_only_aggregate" (rough estimates, not precise enough for ±10 % balance)
+    # - "deprecated_split_into_per_fixture" (replaced by per-fixture items, qty=0)
+    def in_balance(it):
+        return it.get("_data_quality") not in (
+            "tz_only_aggregate", "deprecated_split_into_per_fixture",
+        ) and it.get("status_flag") != "deprecated_audit_v2"
+
+    # 1. Podlahy — separate dum vs sklad; biodeska 'spící patro nad krovem' is
+    # additional surface NOT in TZ 219.3 m² baseline (which is podlahová plocha
+    # of habitable rooms per DXF mistnosti).
     floor_buckets = {
         "vinyl":     ["vinyl"],
         "dlazba":    ["dlazb"],
         "biodeska":  ["biodesk"],
         "ostatní":   ["laminat", "marmoleum", "koberec"],
     }
-    floor_sums = {}
+    floor_sums_dum = {}
+    floor_sums_sklad = {}
     for bucket, kws in floor_buckets.items():
-        s = 0
+        sd, ss = 0, 0
         for it in items:
+            if not in_balance(it):
+                continue
             if it.get("mj") not in ("m²", "m2"):
                 continue
             t = item_text(it)
             if any(norm(k) in t for k in kws) and any(t2 in t for t2 in ["podlah", "naslapn"]):
-                s += it.get("mnozstvi", 0)
-        floor_sums[bucket] = s
-    total_floors_items = sum(floor_sums.values())
-    tz_baseline = dxf.get("plochy_podlah_per_podlazi", {}).get("tz_baseline_m2", 219.3)
-    delta_pct = _delta_pct(total_floors_items, tz_baseline)
+                if it.get("objekt") == "260219_dum":
+                    sd += it.get("mnozstvi", 0)
+                elif it.get("objekt") == "260217_sklad":
+                    ss += it.get("mnozstvi", 0)
+        floor_sums_dum[bucket] = sd
+        floor_sums_sklad[bucket] = ss
+
+    # Biodeska "spící patro nad krovem" is additional level, not in TZ habitable area
+    biodeska_extra = floor_sums_dum.get("biodeska", 0)
+    dum_habitable_total = sum(v for k, v in floor_sums_dum.items() if k != "biodeska")
+    tz_baseline_dum = dxf.get("plochy_podlah_per_podlazi", {}).get("tz_baseline_m2", 219.3)
+    delta_pct = _delta_pct(dum_habitable_total, tz_baseline_dum)
     out["podlahy"] = {
-        "per_material": floor_sums,
-        "total_m2": total_floors_items,
-        "tz_baseline_m2": tz_baseline,
+        "per_material_dum": floor_sums_dum,
+        "per_material_sklad": floor_sums_sklad,
+        "dum_habitable_total_m2": dum_habitable_total,
+        "biodeska_extra_spici_patro_m2": biodeska_extra,
+        "tz_baseline_dum_m2": tz_baseline_dum,
+        "_note": "Comparing dum habitable (vinyl + dlažba) vs TZ 219.3. Biodeska 25 m² is půdní spící patro nad krovem — ADDITIONAL surface, NOT in TZ habitable.",
         "delta_pct": delta_pct,
         "verdict": "OK" if delta_pct < 5 else f"GAP {delta_pct:.0f}%",
     }
 
     # 2. Fasáda — Příprava, EPS hlavní plocha, Omítka, Špalety, Sokl
-    # Restrict to HSV-7 kapitola + match against POPIS ONLY (subkapitola contains
-    # 'HSV-7 Fasáda ETICS' which would cause false positives on 'etics' keyword).
-    hsv7 = [it for it in items if "HSV-7" in it.get("kapitola", "")]
+    hsv7 = [it for it in items if "HSV-7" in it.get("kapitola", "") and in_balance(it)]
     etics = {}
     for label, kws, exclude in [
         ("priprava",   ["priprav"], []),
@@ -498,7 +523,7 @@ def section_H_material_balance(items: list[dict], dxf: dict) -> dict:
     ]:
         s = 0
         for it in hsv7:
-            popis_norm = norm(it.get("popis", ""))  # POPIS only — not kapitola/subkapitola
+            popis_norm = norm(it.get("popis", ""))
             if not any(norm(k) in popis_norm for k in kws):
                 continue
             if exclude and any(norm(e) in popis_norm for e in exclude):
@@ -512,21 +537,48 @@ def section_H_material_balance(items: list[dict], dxf: dict) -> dict:
         "verdict": _verdict_etics(etics),
     }
 
-    # 3. Stěny vnitřní — omítka per podlaží vs výmalba
-    omitka_items = [it for it in items if it.get("mj") in ("m²","m2") and "omitk" in norm(it["popis"])]
+    # 3. Stěny vnitřní — strict scope:
+    # - omítka = ONLY PSV-78 jádrová+štuková (interior); EXCLUDE fasáda HSV-7
+    # - výmalba = ONLY interiérová výmalba items (NOT SDK podhled tmelení — different work)
+    # - nový obklad = ONLY new PSV-78 keramický obklad; EXCLUDE HSV-6 bourání obkladů + HSV-7 cihelný obklad sokl
+    psv78 = [it for it in items if "PSV-78" in it.get("kapitola", "") and in_balance(it)]
+    # Mutually-exclusive role buckets by FIRST significant work-noun in popis
+    # (subkapitola contains item title; popis-prefix used to disambiguate items
+    # mentioning multiple finishing trades like "SDK podhled + tmelení před výmalbou").
+    omitka_items, vymal_items, obklad_items, sdk_items = [], [], [], []
+    for it in psv78:
+        if it.get("mj") not in ("m²", "m2"):
+            continue
+        p = norm(it["popis"])
+        sub = norm(it.get("subkapitola", ""))
+        # Priority by first significant noun in popis OR subkapitola
+        # SDK podhled has higher priority than vymalba (SDK items mention vymalba
+        # as next-step descriptor)
+        if p.startswith("sdk podhled") or "sdk podhled" in sub:
+            sdk_items.append(it)
+        elif p.startswith("interier") or p.startswith("vymalb") or "interierova vymalb" in sub:
+            vymal_items.append(it)
+        elif "obklad" in p and "keramick" in p:
+            obklad_items.append(it)
+        elif "omitk" in p and not any(x in p for x in ("fasad", "tenkovrstv")):
+            omitka_items.append(it)
     omitka_sum = sum(it.get("mnozstvi", 0) for it in omitka_items)
-    vymal_items = [it for it in items if it.get("mj") in ("m²","m2") and any(t in norm(it["popis"]) for t in ("vymalb","mal interier","mal sten"))]
     vymal_sum = sum(it.get("mnozstvi", 0) for it in vymal_items)
-    obklad_items = [it for it in items if it.get("mj") in ("m²","m2") and "obklad" in norm(it["popis"])]
     obklad_sum = sum(it.get("mnozstvi", 0) for it in obklad_items)
+    sdk_sum = sum(it.get("mnozstvi", 0) for it in sdk_items)
+
+    # Total paint-able surface = interior omítka (stěny) + SDK podhled (stropy)
+    paintable_total = omitka_sum + sdk_sum
     out["steny_vnitrni"] = {
-        "omitka_m2": omitka_sum,
-        "vymalba_m2": vymal_sum,
-        "obklad_m2": obklad_sum,
+        "omitka_psv78_m2": omitka_sum,
+        "sdk_podhled_m2": sdk_sum,
+        "paintable_total_m2": paintable_total,
+        "vymalba_interier_m2": vymal_sum,
+        "nove_obklady_keramick_m2": obklad_sum,
         "vymalba_plus_obklad_m2": vymal_sum + obklad_sum,
-        "_logic": "výmalba + obklad should match omítka ±5 % (každá omítaná plocha buď malovaná, nebo obkládaná)",
-        "delta_pct": _delta_pct(vymal_sum + obklad_sum, omitka_sum) if omitka_sum else 0,
-        "verdict": _verdict_steny(omitka_sum, vymal_sum, obklad_sum),
+        "_logic": "Paint-able = interiérová omítka stěn + SDK podhled stropy. Výmalba pokrývá paintable - obklady. Δ ≤ 10 % acceptable (round 70-cm obklad sub).",
+        "delta_pct": _delta_pct(vymal_sum + obklad_sum, paintable_total) if paintable_total else 0,
+        "verdict": _verdict_steny(paintable_total, vymal_sum, obklad_sum),
     }
     return out
 
@@ -666,8 +718,8 @@ TZ_DEEP_ANCHORS = [
         re.compile(r"detekc[ei]\s+kouř|EDHP|hlásič|detekc[ei]\s+poz", re.IGNORECASE),
         ["detekce", "hlasic", "edhp"]),
     ("J12", "important", "TZ PBŘ — fire-rated dveře (PSV-76)",
-        re.compile(r"požárn[íi]\s+dveř|EI\s*\d+|protipožárn[íi]", re.IGNORECASE),
-        ["pozarn dvere", "ei30", "ei60", "ei90"]),
+        re.compile(r"požárn[íi]\s+dveř|EI\s*\d+|protipožárn[íi]|požárn[ěe]\s+odoln", re.IGNORECASE),
+        ["pozarne odolne dver", "ei 30", "ei 60", "ei 90", "pozarn dver", "protipozarn", "pozarni uzaver"]),
     ("J13", "important", "TZ ARS — tepelné čerpadlo (PSV-73)",
         re.compile(r"tepeln[éí]\s+čerpadl|multisplit|TČ\b", re.IGNORECASE),
         ["tepelne cerpadl", "multisplit"]),
@@ -812,10 +864,15 @@ def consolidate_gaps(v1_sections, e_matrix, f_matrix, g_chains, h_balance, j_dee
         })
         gid += 1
 
-    # A — TKP gaps
+    # A — TKP gaps. TKP 8 (venkovní trubní vedení) marked N/A per project: TZ B
+    # Souhrnná states 'Stávající vodovodní + kanalizační přípojka, plyn zaslepen'
+    # — žádné nové venkovní rozvody potřeba.
+    TKP_NA_PER_PROJECT = {"8": "TZ B Souhrnná: stávající vodovodní + kanalizační přípojka, plyn zaslepen — žádné nové venkovní rozvody"}
     for c in v1_sections["A"]["coverage"]:
         if c["gap_flag"]:
-            sev = "medium" if c["tkp_family"] in ("5","8","0") else "important"
+            if c["tkp_family"] in TKP_NA_PER_PROJECT:
+                continue  # skipped — N/A per project metadata
+            sev = "medium" if c["tkp_family"] in ("5", "0") else "important"
             add(sev, f"TKP {c['tkp_family']} ({c['label']}) — žádné položky",
                 f"Verify TZ for {c['label']} need; if applicable, add items; if N/A, document reason",
                 "A.TKP")
