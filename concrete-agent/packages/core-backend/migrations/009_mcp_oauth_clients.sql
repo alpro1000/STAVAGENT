@@ -57,14 +57,39 @@ CREATE INDEX IF NOT EXISTS idx_mcp_oauth_clients_active ON mcp_oauth_clients(is_
 -- Audit log for registrations — INFO-level structured record per RFC 7591
 -- §3.1 ("the authorization server SHOULD record a log entry"). Allows
 -- security review of who registered what + when + from where.
+--
+-- Captures BOTH success and failure paths so DoS attempts + malformed
+-- payloads + bad redirect URIs leave a forensic trail:
+--   oauth_client_id  NULL  → request failed before client row created
+--                            (validation error, rate limit, server error).
+--                   <id>  → registration succeeded; FK ON DELETE CASCADE
+--                            cleans the log if the client is later purged.
+--   status                → 'success' | 'invalid_redirect_uri'
+--                            | 'invalid_client_metadata' | 'rate_limited'
+--                            | 'server_error'. Free-form TEXT (no CHECK
+--                            constraint) so new RFC error codes don't
+--                            require migration.
+--   error_code            → RFC 7591 error code on failure, NULL on success.
+--   error_description     → human-readable hint, optional even on failure.
+--   request_payload_hash  → SHA-256 hex of the raw JSON body. NEVER plaintext
+--                            — software_id / software_version / scope can
+--                            leak sensitive integration details. Hash gives
+--                            us "same payload retried N times" detection
+--                            without storing user data.
 CREATE TABLE IF NOT EXISTS mcp_oauth_registration_log (
-    id                  SERIAL PRIMARY KEY,
-    oauth_client_id     INTEGER NOT NULL REFERENCES mcp_oauth_clients(id) ON DELETE CASCADE,
-    client_name         TEXT NOT NULL,
-    registered_ip       TEXT,
+    id                    SERIAL PRIMARY KEY,
+    oauth_client_id       INTEGER REFERENCES mcp_oauth_clients(id) ON DELETE CASCADE,
+    client_name           TEXT,
+    status                TEXT NOT NULL,
+    error_code            TEXT,
+    error_description     TEXT,
+    request_payload_hash  TEXT,
+    registered_ip         TEXT,
     registered_user_agent TEXT,
-    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_mcp_oauth_reg_log_client ON mcp_oauth_registration_log(oauth_client_id);
+CREATE INDEX IF NOT EXISTS idx_mcp_oauth_reg_log_client ON mcp_oauth_registration_log(oauth_client_id) WHERE oauth_client_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_mcp_oauth_reg_log_status ON mcp_oauth_registration_log(status);
+CREATE INDEX IF NOT EXISTS idx_mcp_oauth_reg_log_ip_created ON mcp_oauth_registration_log(registered_ip, created_at);
 CREATE INDEX IF NOT EXISTS idx_mcp_oauth_reg_log_created ON mcp_oauth_registration_log(created_at);

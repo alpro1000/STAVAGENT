@@ -19,6 +19,8 @@ Free tools (OTSKP, classify) work without any authentication.
 Paid tools require a valid API key with sufficient credits.
 """
 
+import hashlib
+import hmac
 import logging
 import os
 import re
@@ -199,6 +201,115 @@ def _verify_password(password: str, hashed: str) -> bool:
 def _generate_api_key() -> str:
     """Generate a unique API key."""
     return f"sk-stavagent-{secrets.token_hex(24)}"
+
+
+# ── DCR / OAuth crypto helpers (RFC 7591 + 6749) ────────────────────────────
+#
+# Distinct cryptographic surface from the user-password path above:
+#   - User passwords use bcrypt (slow by design, defends against offline
+#     dictionary attacks on stolen DB dumps).
+#   - DCR client_secret + OAuth tokens use SHA-256 + 128-bit salt: the
+#     secrets themselves carry 192 bits of entropy, can never be guessed
+#     offline, and are verified on every server-to-server /token call
+#     and every Bearer presentation. Slow hashing here would waste CPU
+#     on every request without raising the practical security bar.
+#
+# Token format conventions (see migrations 009 + 011 + auth crypto Q3):
+#   dcr-{hex24}  → 96-bit OAuth client_id     (mcp_oauth_clients.client_id)
+#   dcs-{hex48}  → 192-bit OAuth client_secret (returned once on /register)
+#   sat-{hex48}  → 192-bit Stavagent Access Token  (mcp_oauth_tokens.access_token)
+#   srt-{hex48}  → 192-bit Stavagent Refresh Token (mcp_oauth_tokens.refresh_token)
+
+_DCR_SALT_BYTES = 16  # 128-bit salt — RFC 7613 / OWASP Password Storage minimum
+
+
+def generate_salt(n_bytes: int = _DCR_SALT_BYTES) -> bytes:
+    """Cryptographically random salt for client_secret hashing.
+
+    Returns raw bytes; callers persist as `.hex()` in
+    `mcp_oauth_clients.client_secret_salt`. The verify helper accepts
+    either hex string or raw bytes for the salt argument to keep
+    storage details out of consumer call sites.
+    """
+    return secrets.token_bytes(n_bytes)
+
+
+def _coerce_salt(salt: bytes | str) -> bytes:
+    """Accept salt as raw bytes or hex string. Returns raw bytes."""
+    if isinstance(salt, bytes):
+        return salt
+    return bytes.fromhex(salt)
+
+
+def hash_client_secret(secret: str, salt: bytes | str) -> str:
+    """SHA-256(salt || secret) → hex digest.
+
+    Salt is prepended (not appended) to follow the convention used by
+    every standards body that bothered to specify (NIST SP 800-132,
+    PKCS#5, RFC 7613). Secrets are encoded UTF-8 — acceptable because
+    `generate_client_secret()` only emits hex chars (ASCII subset).
+    """
+    salt_bytes = _coerce_salt(salt)
+    h = hashlib.sha256()
+    h.update(salt_bytes)
+    h.update(secret.encode("utf-8"))
+    return h.hexdigest()
+
+
+def verify_client_secret(secret: str, expected_hash: str, salt: bytes | str) -> bool:
+    """Constant-time compare of `hash_client_secret(secret, salt)` against expected.
+
+    `hmac.compare_digest` defends against timing side-channels: each
+    byte comparison takes the same wall-clock time whether the prefix
+    matched or not, so an attacker can't binary-search the hash by
+    measuring response latency.
+    """
+    return hmac.compare_digest(hash_client_secret(secret, salt), expected_hash)
+
+
+def generate_client_id() -> str:
+    """Public OAuth client_id, 96-bit entropy. Format: dcr-{hex24}.
+
+    `dcr-` prefix marks the registration mechanism (Dynamic Client
+    Registration per RFC 7591). Length is the standard short-ID
+    choice (24 hex chars = 12 bytes) — enough that brute-force
+    enumeration is computationally infeasible, short enough for
+    URL-safe transport without truncation.
+    """
+    return f"dcr-{secrets.token_hex(12)}"
+
+
+def generate_client_secret() -> str:
+    """OAuth client_secret returned once on /register. Format: dcs-{hex48}.
+
+    192-bit entropy mirrors the existing api_key entropy
+    (`sk-stavagent-{hex48}`). `dcs-` = Dynamic Client Secret.
+    Returned in PLAINTEXT in the /register response body (RFC 7591
+    §3.2.1) — never logged, never stored plaintext on the server.
+    """
+    return f"dcs-{secrets.token_hex(24)}"
+
+
+def generate_access_token() -> str:
+    """OAuth 2.0 access_token, 192-bit entropy. Format: sat-{hex48}.
+
+    `sat-` = Stavagent Access Token. Distinct prefix from
+    `sk-stavagent-` lets MCPAuthChallengeMiddleware route bearers to
+    the correct lookup table (sat-* → mcp_oauth_tokens,
+    sk-stavagent-* → mcp_api_keys legacy path).
+    """
+    return f"sat-{secrets.token_hex(24)}"
+
+
+def generate_refresh_token() -> str:
+    """OAuth 2.0 refresh_token, 192-bit entropy. Format: srt-{hex48}.
+
+    NULL for client_credentials grant per RFC 6749 §4.4.3 — caller is
+    responsible for not minting one in that path. For authorization_code
+    grant, lifetime is 90 days with rotation per OAuth 2.0 BCP §4.14
+    (mcp_oauth_tokens.rotated_from chain).
+    """
+    return f"srt-{secrets.token_hex(24)}"
 
 
 # ── Public API ───────────────────────────────────────────────────────────────

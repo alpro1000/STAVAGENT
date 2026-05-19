@@ -17,6 +17,25 @@
 -- access_expires_at  = issued_at + 3600s  (OAuth canon)
 -- refresh_expires_at = issued_at + 90d    (canonical long-lived)
 --
+-- FK target asymmetry (intentional)
+-- ----------------------------------
+-- This table references mcp_api_keys via api_key (TEXT) while
+-- mcp_oauth_clients.created_by_user_id references mcp_api_keys via id
+-- (INTEGER). Different target columns on the same parent table is
+-- deliberate, not an oversight:
+--   mcp_oauth_tokens.user_api_key  → hot path. Middleware reads the
+--                                     bearer access_token on every
+--                                     authenticated /mcp/* request,
+--                                     pulls user_api_key directly,
+--                                     uses it for credit attribution.
+--                                     A JOIN every request would
+--                                     double the auth lookup cost.
+--   mcp_oauth_clients.created_by_user_id → cold path. Consulted only
+--                                     by /token client_credentials
+--                                     grant when minting a new token.
+--                                     One extra JOIN per token-mint
+--                                     is acceptable.
+--
 -- user_api_key (NULLABLE)
 -- -----------------------
 -- NULL          → client_credentials grant on a public-DCR client
