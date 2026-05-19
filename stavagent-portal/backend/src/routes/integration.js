@@ -24,21 +24,29 @@ function safeGetPool() {
   }
 }
 
-// Integration API is PUBLIC - no auth required for cross-kiosk communication
-// Kiosks (Monolit, Registry) sync data without user authentication
+// Integration API is per-route auth — see /import-from-registry for the
+// canonical pattern (requireAuth + req.user.userId stamped onto
+// owner_id). Previously the comment said "PUBLIC - no auth required"
+// which is incorrect: cross-kiosk sync MUST forward the user's Portal
+// JWT, otherwise INSERT-ed projects end up with owner_id=1 (audit §2.3
+// "58 sirot" root cause).
 
 /**
  * POST /api/integration/import-from-monolit
  * Import project data from Monolit-Planner to Portal
- * 
+ *
+ * AUTH: requireAuth — Monolit must forward the user's Portal JWT (Bearer
+ * header or stavagent_jwt cookie). Anonymous requests now return 401
+ * with logger.warn so missing forwards surface in Cloud Logging.
+ *
  * Body:
  * - portal_project_id: string (optional, creates new if not provided)
  * - project_name: string
  * - monolit_project_id: string
  * - objects: Array<{ code, name, positions[] }>
  */
-router.post('/import-from-monolit', async (req, res) => {
-  console.log('[Integration] POST /import-from-monolit - Request received');
+router.post('/import-from-monolit', requireAuth, async (req, res) => {
+  console.log('[Integration] POST /import-from-monolit - Request received from user', req.user?.userId);
   console.log('[Integration] Body:', JSON.stringify(req.body).substring(0, 200));
   
   const pool = safeGetPool();
@@ -65,15 +73,17 @@ router.post('/import-from-monolit', async (req, res) => {
     // Track monolit_id → position_instance_id mapping (returned to Monolit for write-back)
     const instanceMapping = [];
 
-    // Create or get portal project
+    // Create or get portal project — owner_id from authenticated user's JWT.
+    // Was hardcoded to 1; that produced kiosk-orphans invisible to real
+    // users (audit §2.3).
     let projectId = portal_project_id;
     if (!projectId) {
       projectId = `proj_${uuidv4()}`;
-      console.log('[Integration] Creating new project:', projectId);
+      console.log('[Integration] Creating new project:', projectId, 'for user', req.user.userId);
       await client.query(
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'monolit', 1, NOW(), NOW())`,
-        [projectId, project_name]
+         VALUES ($1, $2, 'monolit', $3, NOW(), NOW())`,
+        [projectId, project_name, req.user.userId]
       );
     }
 
