@@ -1,0 +1,222 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Reconciliation Rules — residential (pozemní stavby)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Loaded by `app/services/uep/reconciliation_engine.py` and evaluated against
+# the stream of `PerSourceExtraction` records produced by Phase 1.
+#
+# Field shape (validated against
+# app.models.reconciliation_schemas.ReconciliationRule):
+#
+#   id:               stable rule id (no spaces)
+#   description:      human-readable Czech/English description
+#   left_source:      source format string (`dxf`, `pdf_tz`, `passport_schema`,
+#                     `xlsx_soupis`, `*` wildcard); resolved against
+#                     PerSourceExtraction.provenance.source_format.
+#   right_source:     same
+#   join_on:          fact attribute used as join key. Common: `field`,
+#                     `category`, `evidence.element_type`. Engine reads
+#                     dotted paths inside `evidence`.
+#   compare_field:    path inside ExtractedFact to the value being diffed.
+#                     Plain (`value`) for scalars; dotted (`value.sum_m2`)
+#                     for nested dicts.
+#   tolerance.type:   percentage | absolute | exact
+#   tolerance.value:  ±N (percentage) or absolute units (m / m² / m³ / t / ks)
+#   on_match:         confirm | confirm_and_boost_confidence
+#   on_mismatch:      flag_conflict | drawing_wins | tz_wins | regex_wins |
+#                     passport_wins
+#   severity:         critical | important | informational
+#
+# Calibration sources:
+#   - STAVAGENT_PATTERNS.md (7 Žihle-validated patterns; "triangulation
+#     no-winner" + audit trail mandatory).
+#   - Pre-Cemex audit `docs/audits/pre_cemex_2026_06_28/…` §Section 4.
+#   - PR1 verification `docs/audit/UEP_PR1_VERIFICATION.md` (DXF mm-as-metres
+#     drift + PDF TZ exposure-class garbage).
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.3
+# Reference: docs/tasks/TASK_UEP_PR2.md §3.1
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: residential
+description: >
+  10 universal reconciliation rules for residential / pozemní stavby projects.
+  Tolerance bands ±2 % geometry, exact for material classifications, exact for
+  counts (per task §2 Q4 default).
+
+rules:
+
+  # ─── A. Cross-source geometric agreement ──────────────────────────────────
+
+  - id: geometry_room_area_agreement
+    description: >
+      DXF closed-polygon room area vs XLSX tabulka místností area (per
+      room_code). Žihle pattern 7 ("triangulation no-winner") proves this
+      is the highest-signal early sanity check.
+    left_source: dxf
+    right_source: xlsx_soupis
+    join_on: field
+    compare_field: value.sum_m2
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+    notes: >
+      Triggers VYJASNĚNÍ entry when conflict. PR2 left-source `dxf`
+      facts come from `closed_polygons` category emitted by
+      uep.dxf_extractor; PR3 xlsx_soupis extractor will emit matching
+      facts keyed by the same field name.
+
+  # ─── B. Concrete class / exposure consistency ─────────────────────────────
+
+  - id: concrete_class_tz_vs_drawing
+    description: >
+      Concrete class (C25/30, C30/37, …) cited in TZ vs the value
+      embedded in drawing notes. Exact match — class strings shouldn't
+      drift.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: exposure_class_tz_vs_drawing
+    description: >
+      Exposure class (XC1 / XF3 / XA2 …) per ČSN EN 206. Exact match
+      mandatory — durability spec.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  # ─── C. Reinforcement specification ───────────────────────────────────────
+
+  - id: reinforcement_steel_grade
+    description: >
+      Steel grade (B500B / B500C / Y1860 prestress) — TZ vs drawing
+      legend. Exact.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  # ─── D. Quantity vs geometry derivation ──────────────────────────────────
+
+  - id: total_volume_tz_vs_soupis
+    description: >
+      Sum of concrete volume (m³) declared in TZ quantities vs sum of
+      m³ rows in the XLSX/UNIXML soupis. ±2 %.
+    left_source: pdf_tz
+    right_source: xlsx_soupis
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: total_area_tz_vs_soupis
+    description: >
+      Sum of area (m²) on the TZ side vs the soupis side. Same band.
+    left_source: pdf_tz
+    right_source: xlsx_soupis
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: important
+
+  # ─── E. Passport-schema vs extractor agreement ───────────────────────────
+
+  - id: passport_concrete_grade_check
+    description: >
+      passport_schema.MergedSO emits concrete_grade as authoritative
+      (confidence 0.95 per PR2 task §3.7). When TZ regex also extracts
+      a grade, both must agree (exact); on mismatch passport wins.
+    left_source: passport_schema
+    right_source: pdf_tz
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm_and_boost_confidence
+    on_mismatch: passport_wins
+    severity: important
+
+  - id: passport_reinforcement_check
+    description: >
+      Same shape for reinforcement steel grade. Passport wins on
+      mismatch — the MergedSO has already been human-reviewed
+      through Workflow A.
+    left_source: passport_schema
+    right_source: pdf_tz
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm_and_boost_confidence
+    on_mismatch: passport_wins
+    severity: important
+
+  # ─── F. Cross-reference completeness ─────────────────────────────────────
+
+  - id: tz_referenced_documents_in_upload
+    description: >
+      Every `referenced_documents` fact extracted from the TZ should
+      have a corresponding source_file in the upload (i.e. the TZ
+      points at a drawing that we actually have). PR2 only emits
+      left_only on missing — no compare_field.
+    left_source: pdf_tz
+    right_source: "*"
+    join_on: value
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: informational
+    notes: >
+      Soft flag for now. The Phase 3 gate doesn't block on
+      informational severity. PR3 wires this into the
+      `referenced_documents` coverage row.
+
+  # ─── G. Geology cross-check (PR3-ready) ──────────────────────────────────
+
+  - id: geology_xa_vs_concrete_exposure
+    description: >
+      Geological report (PDF) classifies aggressive chemical exposure
+      (XA1/XA2/XA3). When present, the concrete spec must list at
+      least the same XA class. PR2 emits the rule but the
+      pdf_geology extractor is PR3 — until then this rule produces
+      mostly `left_only` flags.
+    left_source: pdf_geology
+    right_source: pdf_tz
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical

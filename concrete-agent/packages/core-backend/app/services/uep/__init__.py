@@ -43,6 +43,18 @@ except ImportError:  # pragma: no cover — only between commits in this PR
     evaluate_coverage = None  # type: ignore[assignment]
     load_matrix = None  # type: ignore[assignment]
 
+# Reconciliation engine (PR2 Phase 3) — same lazy re-export shape.
+try:
+    from app.services.uep.reconciliation_engine import (  # noqa: F401
+        evaluate_reconciliation,
+        load_rules,
+        rules_path_for,
+    )
+except ImportError:  # pragma: no cover
+    evaluate_reconciliation = None  # type: ignore[assignment]
+    load_rules = None  # type: ignore[assignment]
+    rules_path_for = None  # type: ignore[assignment]
+
 
 __all__ = [
     "BaseExtractor",
@@ -54,4 +66,7 @@ __all__ = [
     "list_supported_formats",
     "load_matrix",
     "evaluate_coverage",
+    "load_rules",
+    "evaluate_reconciliation",
+    "rules_path_for",
 ]
