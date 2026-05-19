@@ -106,3 +106,20 @@ mcp.tool()(search_czech_construction_norms)
 from app.mcp.tools.uep import uep_run_extraction  # noqa: E402
 
 mcp.tool()(uep_run_extraction)
+
+
+# ── Tools 11-15: UEP read-only inspection (PR3) ─────────────────────────────
+
+from app.mcp.tools.uep import (  # noqa: E402
+    uep_get_coverage_matrix,
+    uep_get_dwg_conversion_status,
+    uep_get_job,
+    uep_get_reconciliation_rules,
+    uep_list_supported_formats,
+)
+
+mcp.tool()(uep_get_job)
+mcp.tool()(uep_list_supported_formats)
+mcp.tool()(uep_get_coverage_matrix)
+mcp.tool()(uep_get_reconciliation_rules)
+mcp.tool()(uep_get_dwg_conversion_status)
