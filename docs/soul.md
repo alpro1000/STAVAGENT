@@ -40,9 +40,19 @@
 
 ### 2.3 Active freelance
 
-- **Libuše objekt D** (VELTON, akce 185-01) — branch `claude/libuse-delivery-continue-GEBr5`, 11 commits ahead. Phase 7a Part 2 + Phase 8 pending. Deadline 11.05 (passed) — uzavřít.
-- **hk212_hala** (Hradec Králové, SOLAR DISPOREC) — Phase 1 Etapa 1 complete, 141 items, 29.8% URS match (catalog vintage gap)
-- **Žihle 2062-1** — pilot COMPLETE, 154 položek, 10.59M Kč. Phase E dropped (ADR-005). 7 product patterns documented.
+- **Libuše objekt D** (VELTON, akce 185-01) — branch `claude/libuse-delivery-continue-GEBr5`, 11 commits ahead. Phase 7a Part 2 + Phase 8 pending. Deadline 11.05 (passed) — uzavřít. Test data: `test-data/libuse/`.
+- **hk212_hala** (Hradec Králové, SOLAR DISPOREC) — Phase 1 Etapa 1 complete, 141 items, 29.8% URS match (catalog vintage gap). Phase 2.1 audit trail extraction. Test data: `test-data/hk212_hala/`.
+- **Žihle 2062-1** — pilot COMPLETE, 154 položek, 10.59M Kč. Phase E dropped (ADR-005). 7 product patterns documented. Test data: `test-data/most-2062-1-zihle/`.
+- **RD Jáchymov dům** — N=5 corpus case COMPLETE (18.05.2026). Hybrid DSP/DPS (DPS-grade DXF в DSP-contracted). 189 items. Test data: `test-data/RD_Jachymov_dum/` (PR #1177 Phase 0b foundation). Path C: 89% → 100% DXF coverage. Dual catalog discovered: URS201801 (39741) + TSKP (11994). Subdod v1.2. **9 corpus patterns** dokumentovány (viz §5.1).
+- **SO-250 D6 Žalmanov** — SmartExtractor probe case. Test data: `test-data/SO_250/`.
+
+### 2.4 Knowledge corpus sources (NE freelance, study material pro KB)
+
+- **Litovel bridge** — vlastní diplomová práce, používaná jako study material pro bridge KB build-out v2 (TKP 4 + ČSN 73 6244 + VL 4 + Litovel case study). Test data: `test-data/most-litovel/`. Material se integruje do `app/knowledge_base/B7_regulations/` (TKP, ČSN, VL) a `B6_research_papers/` (case study). NE klient, NE deadline — open-ended KB enrichment.
+
+**Shared assets v `test-data/`:**
+- `kros_catalog.db` — KROS catalog SQLite (working copy, parallel to OTSKP DB)
+- `STAVAGENT_Drawings_to_VV_Rozpocet_Playbook.md` — dataset-bound playbook (drawings → výkaz výměr → rozpočet)
 
 ---
 
