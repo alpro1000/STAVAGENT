@@ -23,7 +23,19 @@
 
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
+// Fail-fast on missing JWT_SECRET — refuses to start with a known
+// fallback value, which would silently let any attacker forge tokens
+// signed against the literal string 'dev-secret-key-change-in-production'.
+// Local dev / test sets JWT_SECRET explicitly via .env or
+// `process.env.JWT_SECRET = '…'` at the top of the test file (see
+// `stavagent-portal/backend/tests/isolation.e2e.test.js`).
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error(
+    '[Auth] FATAL: JWT_SECRET environment variable is required. ' +
+    'Set it via Cloud Run / Secret Manager (production) or .env (local).'
+  );
+}
 
 function _extractToken(req) {
   const authHeader = req.headers && req.headers.authorization;
