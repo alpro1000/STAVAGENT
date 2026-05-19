@@ -118,6 +118,15 @@ export function getPool() {
 }
 
 /**
+ * Test-only seam: swap the pool instance for an in-process double.
+ * Used by tests/isolation.e2e.test.js to wire a query-spying mock pool
+ * without booting a real Postgres. Production code never calls this.
+ */
+export function __setPoolForTesting(p) {
+  pool = p;
+}
+
+/**
  * Execute SQL query with one retry on connection timeout.
  * Handles Render Free Tier PostgreSQL sleep (DB needs ~2-5s to wake up).
  */
