@@ -71,8 +71,10 @@ Po session **POVINNĚ** přidej entry do `docs/soul.md` §9 (Session log):
 **Před úpravou kalkulátoru, golden tests, acceptance criteria, nebo UI textů** — přečti:
 
 ```
-docs/CALCULATOR_PHILOSOPHY.md
+docs/steering/domain.md §1 (Calculator philosophy)
 ```
+
+> **Pozn.:** `docs/CALCULATOR_PHILOSOPHY.md` (root) + `docs/normy/navody/CALCULATOR_PHILOSOPHY.md` byly **deprecated** 2026-05-19 — obsah nyní v `docs/steering/domain.md` §1. Pokud najdeš starý link kdekoliv v repu, oprav na nový.
 
 **TL;DR pozicování:**
 
