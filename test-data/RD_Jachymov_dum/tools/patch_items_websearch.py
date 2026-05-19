@@ -112,12 +112,56 @@ HSV6007_REPLACEMENT = {
     "note": "WebSearch found exact match — 'Demontáž obkladů z dlaždic keramických lepených' (modern bonded tiles, fits post-1990 koupelna). 781471810 = malta-laid (older). 978059541/511 = odsekání (chip-off, no reuse).",
 }
 
+# ── D. Fabricated-term correction — "Hloubení figury" is not a Czech URS term ─
+# User flagged 2026-05-19: "figura/figury" is a Russian loanword inadvertently
+# left in item popis by Phase 1 generator. Correct Czech construction term for
+# this work is "Hloubení jam" (TKP 131). WebSearch verified 131201101 =
+# "Hloubení jam nezapažených v hornině tř. 3 objemu do 100 m3" m³.
+FIGURA_FIX = {
+    "260219_dum.HSV1.003": {
+        "old_popis": "Hloubení figury pro anglický dvorek a nový vstup do 1.PP ze zahrady",
+        "new_popis": "Hloubení jam nezapažených pro anglický dvorek a nový vstup do 1.PP ze zahrady, hornina tř. 3 (F4-CS)",
+        "verified_code": "131201101",
+        "alternatives": ["131211101", "131301101", "132201101"],
+        "note": "Korekce 2026-05-19: 'figura' RU loanword odstraněn → správný URS term 'Hloubení jam nezapažených' (TKP 131). Verified leaf 131201101 = 'Hloubení jam nezapažených v hornině tř. 3 objemu do 100 m3' m³ (smlouvy.gov.cz, 2016).",
+    },
+    "260217_sklad.HSV1.002": {
+        "old_popis": "Hloubení figury pro objekt skladu v lichoběžníku 6.35 × 3.34 m, hl. do 1.2 m",
+        "new_popis": "Hloubení jam nezapažených pro objekt skladu v lichoběžníku 6,35 × 3,34 m, hl. do 1,2 m, hornina tř. 3",
+        "verified_code": "131201101",
+        "alternatives": ["131211101", "131301101", "132201101"],
+        "note": "Korekce 2026-05-19: stejná oprava jako HSV1.003 — 'figura' → 'jám nezapažených'.",
+    },
+}
+
 TODAY = str(date.today())
 
 
-def patch(items: list[dict]) -> tuple[int, int, int]:
+def patch(items: list[dict]) -> tuple[int, int, int, int]:
     by_id = {i["id"]: i for i in items}
-    n_exact = n_wrong = n_repl = 0
+    n_exact = n_wrong = n_repl = n_figura = 0
+
+    # D. Fabricated-term corrections (run FIRST so popis is canonical before other patches)
+    for iid, info in FIGURA_FIX.items():
+        it = by_id.get(iid)
+        if not it:
+            print(f"WARN: {iid} not found (figura fix)", file=sys.stderr)
+            continue
+        # Idempotency: only patch if popis still has the old (RU loan) form
+        if "figury" in it["popis"] or "figura" in it["popis"]:
+            it["popis_was_fabricated"] = info["old_popis"]
+            it["popis"] = info["new_popis"]
+        # Always set verified code (idempotent assignment)
+        prev_code = it.get("urs_code_proposed")
+        if prev_code and prev_code != info["verified_code"]:
+            it["urs_code_proposed_was"] = prev_code
+        it["urs_code_proposed"] = info["verified_code"]
+        it["urs_alternatives"] = info["alternatives"]
+        it["urs_status"] = "matched_websearch_verified"
+        it["urs_confidence"] = 0.95
+        it["urs_verification_note"] = info["note"]
+        it["urs_websearch_verified_at"] = TODAY
+        n_figura += 1
 
     for iid, info in EXACT.items():
         it = by_id.get(iid)
@@ -160,13 +204,13 @@ def patch(items: list[dict]) -> tuple[int, int, int]:
         it["urs_websearch_verified_at"] = TODAY
         n_repl += 1
 
-    return n_exact, n_wrong, n_repl
+    return n_exact, n_wrong, n_repl, n_figura
 
 
 def main() -> int:
     doc = json.loads(ITEMS.read_text())
     items = doc["items"]
-    n_exact, n_wrong, n_repl = patch(items)
+    n_exact, n_wrong, n_repl, n_figura = patch(items)
 
     # Update document-level header
     doc["_websearch_verification_log"] = {
@@ -174,12 +218,13 @@ def main() -> int:
         "verified_exact": n_exact,
         "wrong_leaf_flagged": n_wrong,
         "direct_replacement": n_repl,
+        "fabricated_term_corrected": n_figura,
         "source": "outputs/urs_websearch_verifications.json",
     }
 
     ITEMS.write_text(json.dumps(doc, indent=2, ensure_ascii=False))
     print(
-        f"\n✓ Patched items.json: exact={n_exact} wrong_leaf={n_wrong} replacement={n_repl}",
+        f"\n✓ Patched items.json: exact={n_exact} wrong_leaf={n_wrong} replacement={n_repl} figura_fix={n_figura}",
         file=sys.stderr,
     )
     return 0

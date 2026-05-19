@@ -398,7 +398,10 @@ def build_sheet_var_C(wb: Workbook, items: list[dict]) -> None:
         c7 = ws.cell(row=row, column=7, value=None); c7.number_format = '#,##0 "Kč";-#,##0 "Kč";"—"'; c7.alignment = BODY_ALIGN_RIGHT; c7.font = Font(italic=True, color="888888")
         c8 = ws.cell(row=row, column=8, value=None); c8.number_format = '#,##0 "Kč";-#,##0 "Kč";"—"'; c8.alignment = BODY_ALIGN_RIGHT; c8.font = Font(italic=True, color="888888")
         ws.cell(row=row, column=9, value=it["subdodavatel"]).alignment = BODY_ALIGN_LEFT
-        ws.cell(row=row, column=10, value=f"URS-prop {it['urs_code_proposed']}").alignment = BODY_ALIGN_LEFT
+        _kod = it.get("urs_code_proposed") or (
+            f"{it['urs_code_family_6digit']}??? ?" if it.get("urs_code_family_6digit") else "—"
+        )
+        ws.cell(row=row, column=10, value=f"URS-prop {_kod}").alignment = BODY_ALIGN_LEFT
         for col in range(1, 11):
             ws.cell(row=row, column=col).border = BORDER
         row += 1
@@ -460,7 +463,16 @@ def build_sheet_var_B(wb: Workbook, items: list[dict], objekt: str, title: str) 
         ws.cell(row=row, column=1, value=pol).alignment = BODY_ALIGN_CENTER
         ws.cell(row=row, column=2, value=it["kapitola"]).alignment = BODY_ALIGN_LEFT
         ws.cell(row=row, column=3, value=it["subkapitola"]).alignment = BODY_ALIGN_LEFT
-        ws.cell(row=row, column=4, value=it["urs_code_proposed"]).alignment = BODY_ALIGN_CENTER
+        # URS kód display — for wrong_leaf items, show family + "xxx ?" so user
+        # sees the 6-digit family hint instead of an empty cell (regression fix).
+        urs_kod_display = it.get("urs_code_proposed")
+        if not urs_kod_display:
+            fam = it.get("urs_code_family_6digit")
+            urs_kod_display = f"{fam}??? ?" if fam else "—"
+        c_kod = ws.cell(row=row, column=4, value=urs_kod_display)
+        c_kod.alignment = BODY_ALIGN_CENTER
+        if not it.get("urs_code_proposed") and it.get("urs_code_family_6digit"):
+            c_kod.font = Font(italic=True, color="9C0006")
         ws.cell(row=row, column=5, value=it["popis"]).alignment = BODY_ALIGN_LEFT
         ws.cell(row=row, column=6, value=it["mj"]).alignment = BODY_ALIGN_CENTER
         c_qty = ws.cell(row=row, column=7, value=it["mnozstvi"])
