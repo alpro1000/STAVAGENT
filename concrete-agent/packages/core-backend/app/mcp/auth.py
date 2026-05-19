@@ -312,6 +312,189 @@ def generate_refresh_token() -> str:
     return f"srt-{secrets.token_hex(24)}"
 
 
+# ── DCR registration (RFC 7591) ─────────────────────────────────────────────
+
+
+# Allowed grant_types per the well-known manifest in app/main.py. Kept here
+# (not imported from main.py) so an isolated DCR transaction never circularly
+# imports the FastAPI app — and so a single source of truth lives next to
+# the validation that enforces it. main.py mirrors this list as a literal
+# in _oauth_discovery_payload().
+SUPPORTED_GRANT_TYPES = frozenset({"authorization_code", "client_credentials"})
+
+
+def _resolve_initial_access_user_id(api_key: str) -> Optional[int]:
+    """Look up `mcp_api_keys.id` for an Authorization-header bearer token.
+
+    Used by the DCR endpoint when an Authorization header is present:
+    presence = "authenticated DCR" intent → resolve to the registering
+    user's id so created_by_user_id binds correctly for downstream
+    client_credentials credit attribution. Returns None for unknown /
+    inactive keys (caller decides how to reject).
+    """
+    cur = _execute(
+        "SELECT id FROM mcp_api_keys WHERE api_key = %s AND is_active = TRUE",
+        (api_key,),
+    )
+    row = cur.fetchone()
+    _get_db().commit()
+    return int(row["id"]) if row else None
+
+
+def register_oauth_client(
+    *,
+    client_name: str,
+    redirect_uris: list[str],
+    grant_types: list[str],
+    scope: Optional[str],
+    software_id: Optional[str],
+    software_version: Optional[str],
+    created_by_user_id: Optional[int],
+    registered_ip: str,
+    registered_user_agent: Optional[str],
+    request_payload_hash: Optional[str],
+) -> dict:
+    """Insert a DCR client + matching audit row in a single transaction.
+
+    Returns `{"client_id", "client_secret", "issued_at_unix"}` on success.
+    Caller is responsible for input validation (redirect_uris scheme,
+    grant_types subset, client_name length) — that lives in the route
+    handler so validation failures can also log to the audit table
+    without touching this path.
+
+    The plaintext client_secret is returned ONCE here. Storage holds
+    only `SHA-256(salt||secret)` + the salt — verify_client_secret on
+    /token does the constant-time compare.
+
+    Transaction shape:
+      BEGIN
+        INSERT mcp_oauth_clients ...
+        INSERT mcp_oauth_registration_log (status='success', oauth_client_id=fk) ...
+      COMMIT
+    A failure on either INSERT rolls both back and re-raises — the
+    route handler then writes a separate audit row with status='server_error'.
+    """
+    client_id = generate_client_id()
+    client_secret = generate_client_secret()
+    salt = generate_salt()
+    secret_hash = hash_client_secret(client_secret, salt)
+
+    conn = _get_db()
+    cur = conn.cursor()
+    try:
+        cur.execute(
+            """
+            INSERT INTO mcp_oauth_clients (
+                client_id, client_secret_hash, client_secret_salt,
+                client_name, redirect_uris, grant_types, scope,
+                software_id, software_version,
+                registration_source, registered_ip, registered_user_agent,
+                created_by_user_id
+            ) VALUES (
+                %s, %s, %s,
+                %s, %s::jsonb, %s::jsonb, %s,
+                %s, %s,
+                'dcr', %s, %s,
+                %s
+            )
+            RETURNING id, EXTRACT(EPOCH FROM registered_at)::BIGINT AS issued_at_unix
+            """,
+            (
+                client_id, secret_hash, salt.hex(),
+                client_name,
+                json_dumps_compact(redirect_uris),
+                json_dumps_compact(grant_types),
+                scope,
+                software_id, software_version,
+                registered_ip, registered_user_agent,
+                created_by_user_id,
+            ),
+        )
+        row = cur.fetchone()
+        client_row_id = row["id"]
+        issued_at = int(row["issued_at_unix"])
+
+        cur.execute(
+            """
+            INSERT INTO mcp_oauth_registration_log (
+                oauth_client_id, client_name, status,
+                request_payload_hash, registered_ip, registered_user_agent
+            ) VALUES (%s, %s, 'success', %s, %s, %s)
+            """,
+            (
+                client_row_id, client_name,
+                request_payload_hash, registered_ip, registered_user_agent,
+            ),
+        )
+        conn.commit()
+    except psycopg2.Error:
+        conn.rollback()
+        raise
+
+    return {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "issued_at_unix": issued_at,
+    }
+
+
+def log_oauth_registration_failure(
+    *,
+    status: str,
+    error_code: Optional[str],
+    error_description: Optional[str],
+    client_name: Optional[str],
+    request_payload_hash: Optional[str],
+    registered_ip: str,
+    registered_user_agent: Optional[str],
+) -> None:
+    """Audit a registration attempt that failed before / instead of an INSERT.
+
+    `oauth_client_id` is NULL (no client row created). Best-effort: if the
+    audit INSERT itself fails (e.g. DB outage that also broke the main
+    INSERT), we log + swallow — the route handler still has to return a
+    400/500 to the caller, and a missing audit row is not a reason to
+    further obscure the failure mode.
+    """
+    try:
+        conn = _get_db()
+        cur = conn.cursor()
+        cur.execute(
+            """
+            INSERT INTO mcp_oauth_registration_log (
+                oauth_client_id, client_name, status,
+                error_code, error_description,
+                request_payload_hash, registered_ip, registered_user_agent
+            ) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                client_name, status,
+                error_code, error_description,
+                request_payload_hash, registered_ip, registered_user_agent,
+            ),
+        )
+        conn.commit()
+    except psycopg2.Error as exc:
+        try:
+            _get_db().rollback()
+        except psycopg2.Error:
+            pass
+        logger.warning(
+            "[MCP/DCR] Failed to audit registration failure (status=%s): %s",
+            status, exc,
+        )
+
+
+def json_dumps_compact(value) -> str:
+    """JSON dump without whitespace — matches the JSONB column we INSERT into.
+
+    Separated from `json` module path so call sites read as a single
+    intent and tests can monkeypatch one symbol if needed.
+    """
+    import json as _json
+    return _json.dumps(value, separators=(",", ":"), ensure_ascii=False)
+
+
 # ── Public API ───────────────────────────────────────────────────────────────
 
 def register(email: str, password: str, client_ip: str = "unknown") -> dict:

@@ -22,11 +22,11 @@ import json
 import logging
 import os
 from typing import Optional
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 from fastapi import APIRouter, Form, Header, HTTPException, Query, Request
-from fastapi.responses import RedirectResponse
-from pydantic import BaseModel, EmailStr
+from fastapi.responses import JSONResponse, RedirectResponse
+from pydantic import BaseModel, EmailStr, Field
 
 from app.mcp import auth as mcp_auth
 from app.mcp import oauth_codes as mcp_oauth_codes
@@ -110,6 +110,35 @@ class CreditCheckResponse(BaseModel):
     credits: int
     total_used: int
     total_purchased: int
+
+
+class DCRRequest(BaseModel):
+    """RFC 7591 §2 client_metadata. Only fields we actually consume.
+
+    pydantic v1/v2 compatible: `Field(default=...)` instead of dataclass
+    syntax, no model_config (the project still has both versions in
+    different services).
+    """
+    redirect_uris: list[str] = Field(default_factory=list)
+    client_name: Optional[str] = None
+    grant_types: Optional[list[str]] = None
+    scope: Optional[str] = None
+    software_id: Optional[str] = None
+    software_version: Optional[str] = None
+    # Echoed-but-unused fields are accepted silently per RFC 7591 §3.2.1:
+    # "the authorization server MAY reject ... [or] ignore values that it
+    # does not understand". Anthropic broker sends application_type +
+    # token_endpoint_auth_method which we don't yet enforce.
+    application_type: Optional[str] = None
+    token_endpoint_auth_method: Optional[str] = None
+    response_types: Optional[list[str]] = None
+    contacts: Optional[list[str]] = None
+    logo_uri: Optional[str] = None
+    client_uri: Optional[str] = None
+    policy_uri: Optional[str] = None
+    tos_uri: Optional[str] = None
+    jwks_uri: Optional[str] = None
+    jwks: Optional[dict] = None
 
 
 # ── Auth endpoints ───────────────────────────────────────────────────────────
@@ -295,6 +324,320 @@ async def oauth_token(
                 "error_description":
                     "Supported: client_credentials, authorization_code"},
     )
+
+
+# ── Dynamic Client Registration (RFC 7591) ──────────────────────────────────
+
+# Local-loopback hosts allowed under http:// per RFC 8252 §7.3 (loopback
+# interface redirection). All other schemes / hosts MUST be https://.
+_LOOPBACK_HOSTS = {"localhost", "127.0.0.1", "::1", "[::1]"}
+
+# RFC 7591 §2 client_name has no explicit max — we cap at 200 chars to
+# bound DB row size and keep audit logs readable. 200 is generous (e.g.
+# "Anthropic Claude Desktop — Claude.ai Connector Beta v2 (2026)" fits).
+_CLIENT_NAME_MAX_LEN = 200
+
+
+def _validate_redirect_uri(uri: str) -> Optional[str]:
+    """Return None if URI is acceptable, else an RFC 7591 error description.
+
+    Acceptance rules:
+      - https:// any host, any port.
+      - http:// only for loopback hosts (RFC 8252 §7.3).
+      - No fragment (RFC 6749 §3.1.2).
+      - No javascript:, data:, file:, mailto:, ... schemes.
+    """
+    if not uri or not isinstance(uri, str):
+        return "redirect_uri must be a non-empty string"
+    try:
+        parsed = urlparse(uri)
+    except Exception as exc:  # noqa: BLE001
+        return f"redirect_uri could not be parsed: {exc}"
+    if parsed.fragment:
+        return "redirect_uri must not contain a fragment"
+    if parsed.scheme == "https":
+        if not parsed.hostname:
+            return "redirect_uri must include a host"
+        return None
+    if parsed.scheme == "http":
+        if (parsed.hostname or "").lower() in _LOOPBACK_HOSTS:
+            return None
+        return "redirect_uri with http:// is only allowed for loopback hosts"
+    return f"redirect_uri scheme '{parsed.scheme}' not allowed (use https)"
+
+
+def _hash_payload(raw_body: bytes) -> Optional[str]:
+    """SHA-256 hex of the raw request body for audit-log forensics.
+
+    Returns None for empty / unreadable bodies — caller persists NULL
+    rather than logging a hash of nothing.
+    """
+    if not raw_body:
+        return None
+    return hashlib.sha256(raw_body).hexdigest()
+
+
+@router.post("/oauth/register", status_code=201)
+async def oauth_register(request: Request):
+    """RFC 7591 §3 Dynamic Client Registration.
+
+    Public endpoint by default (no Authorization header) — RFC 7591 §3
+    "the authorization server MAY require an initial access token". We
+    accept both modes:
+
+      No Authorization header   → public DCR. The client row is created
+                                  with `created_by_user_id = NULL`.
+                                  client_credentials grants issued to
+                                  this client mint tokens with
+                                  `user_api_key = NULL`, and paid MCP
+                                  tools return 402 Payment Required.
+                                  authorization_code grants still work
+                                  fully (the user supplies their own
+                                  api_key during the consent flow).
+
+      Bearer sk-stavagent-{hex} → authenticated DCR. The client row
+                                  binds to that user; client_credentials
+                                  grants attribute credits to them.
+
+      Any other Authorization   → 401, invalid_token. Explicit reject
+                                  rather than silent downgrade to public
+                                  DCR so misconfigured callers see the
+                                  problem.
+
+    Audit trail: every code path writes one row to
+    `mcp_oauth_registration_log` — success row carries
+    `oauth_client_id` FK; failure rows carry NULL FK + status + error_code.
+
+    TODO Gate 6: Wrap with Redis-backed rate limit (10 req/h per IP,
+    atomic Lua INCR+EXPIRE, fail closed → 503 if Redis unreachable).
+    Endpoint is deployed without rate limit; do not advertise publicly
+    until Gate 6 lands.
+    """
+    raw_body = await request.body()
+    payload_hash = _hash_payload(raw_body)
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent")
+
+    # ── 1. Initial-access-token detection ────────────────────────────────────
+    auth_header = request.headers.get("authorization")
+    bearer = _extract_bearer(auth_header)
+    created_by_user_id: Optional[int] = None
+    if auth_header is not None:
+        if not bearer or not bearer.startswith("sk-stavagent-"):
+            mcp_auth.log_oauth_registration_failure(
+                status="invalid_token",
+                error_code="invalid_token",
+                error_description="Authorization header must be 'Bearer sk-stavagent-{hex48}'",
+                client_name=None,
+                request_payload_hash=payload_hash,
+                registered_ip=client_ip,
+                registered_user_agent=user_agent,
+            )
+            raise HTTPException(
+                status_code=401,
+                detail={"error": "invalid_token",
+                        "error_description": "Bearer sk-stavagent-{hex48} required"},
+            )
+        created_by_user_id = mcp_auth._resolve_initial_access_user_id(bearer)
+        if created_by_user_id is None:
+            mcp_auth.log_oauth_registration_failure(
+                status="invalid_token",
+                error_code="invalid_token",
+                error_description="Initial access token does not match an active user",
+                client_name=None,
+                request_payload_hash=payload_hash,
+                registered_ip=client_ip,
+                registered_user_agent=user_agent,
+            )
+            raise HTTPException(
+                status_code=401,
+                detail={"error": "invalid_token",
+                        "error_description": "Initial access token invalid or inactive"},
+            )
+
+    # ── 2. JSON parse ────────────────────────────────────────────────────────
+    try:
+        body_json = json.loads(raw_body or b"{}")
+    except json.JSONDecodeError as exc:
+        mcp_auth.log_oauth_registration_failure(
+            status="invalid_client_metadata",
+            error_code="invalid_client_metadata",
+            error_description=f"Request body is not valid JSON: {exc.msg}",
+            client_name=None,
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_client_metadata",
+                    "error_description": "Request body must be valid JSON"},
+        )
+
+    try:
+        # `model_validate` for pydantic v2, fallback to `parse_obj` for v1.
+        if hasattr(DCRRequest, "model_validate"):
+            body = DCRRequest.model_validate(body_json)
+        else:  # pragma: no cover — covered by version pinned to v2 in CI
+            body = DCRRequest.parse_obj(body_json)
+    except Exception as exc:  # noqa: BLE001
+        mcp_auth.log_oauth_registration_failure(
+            status="invalid_client_metadata",
+            error_code="invalid_client_metadata",
+            error_description=f"client_metadata failed schema validation: {exc}",
+            client_name=body_json.get("client_name") if isinstance(body_json, dict) else None,
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_client_metadata",
+                    "error_description": "client_metadata failed schema validation"},
+        )
+
+    # ── 3. redirect_uris validation ──────────────────────────────────────────
+    if not body.redirect_uris:
+        mcp_auth.log_oauth_registration_failure(
+            status="invalid_redirect_uri",
+            error_code="invalid_redirect_uri",
+            error_description="redirect_uris must contain at least one URI",
+            client_name=body.client_name,
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_redirect_uri",
+                    "error_description": "redirect_uris must contain at least one URI"},
+        )
+    for uri in body.redirect_uris:
+        err = _validate_redirect_uri(uri)
+        if err:
+            mcp_auth.log_oauth_registration_failure(
+                status="invalid_redirect_uri",
+                error_code="invalid_redirect_uri",
+                error_description=err,
+                client_name=body.client_name,
+                request_payload_hash=payload_hash,
+                registered_ip=client_ip,
+                registered_user_agent=user_agent,
+            )
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "invalid_redirect_uri",
+                        "error_description": err},
+            )
+
+    # ── 4. client_name validation ───────────────────────────────────────────
+    client_name = (body.client_name or "").strip()
+    if not client_name:
+        # RFC 7591 §2 client_name is recommended but not required. We
+        # require it because the audit log + future user-facing "your
+        # connected apps" UI both need a label. Derive from software_id
+        # as a fallback so well-behaved brokers without an explicit
+        # client_name still succeed.
+        client_name = (body.software_id or "").strip() or "Unnamed MCP Client"
+    if len(client_name) > _CLIENT_NAME_MAX_LEN:
+        mcp_auth.log_oauth_registration_failure(
+            status="invalid_client_metadata",
+            error_code="invalid_client_metadata",
+            error_description=f"client_name exceeds {_CLIENT_NAME_MAX_LEN} chars",
+            client_name=client_name[:_CLIENT_NAME_MAX_LEN],
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_client_metadata",
+                    "error_description": f"client_name exceeds {_CLIENT_NAME_MAX_LEN} chars"},
+        )
+
+    # ── 5. grant_types validation ───────────────────────────────────────────
+    grant_types = body.grant_types or ["authorization_code"]
+    unsupported = [g for g in grant_types if g not in mcp_auth.SUPPORTED_GRANT_TYPES]
+    if unsupported:
+        mcp_auth.log_oauth_registration_failure(
+            status="invalid_client_metadata",
+            error_code="invalid_client_metadata",
+            error_description=(
+                f"Unsupported grant_types: {unsupported}. "
+                f"Allowed: {sorted(mcp_auth.SUPPORTED_GRANT_TYPES)}"
+            ),
+            client_name=client_name,
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "invalid_client_metadata",
+                    "error_description": (
+                        f"Unsupported grant_types: {unsupported}. "
+                        f"Allowed: {sorted(mcp_auth.SUPPORTED_GRANT_TYPES)}"
+                    )},
+        )
+
+    # ── 6. INSERT (single transaction with audit row) ───────────────────────
+    try:
+        result = mcp_auth.register_oauth_client(
+            client_name=client_name,
+            redirect_uris=body.redirect_uris,
+            grant_types=grant_types,
+            scope=body.scope,
+            software_id=body.software_id,
+            software_version=body.software_version,
+            created_by_user_id=created_by_user_id,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+            request_payload_hash=payload_hash,
+        )
+    except Exception as exc:  # noqa: BLE001 — RFC 7591 §3.2.2 maps anything else to server_error
+        logger.exception("[MCP/DCR] register_oauth_client failed")
+        mcp_auth.log_oauth_registration_failure(
+            status="server_error",
+            error_code="server_error",
+            error_description=str(exc)[:500],
+            client_name=client_name,
+            request_payload_hash=payload_hash,
+            registered_ip=client_ip,
+            registered_user_agent=user_agent,
+        )
+        raise HTTPException(
+            status_code=500,
+            detail={"error": "server_error",
+                    "error_description": "Registration failed; please retry"},
+        )
+
+    logger.info(
+        "[MCP/DCR] Registered client_id=%s name=%r ip=%s authenticated=%s",
+        result["client_id"], client_name, client_ip, created_by_user_id is not None,
+    )
+
+    # ── 7. RFC 7591 §3.2.1 response ─────────────────────────────────────────
+    # Echo all registered_metadata + assign client_id + plaintext
+    # client_secret + issued_at + expires_at=0 (no expiry for MVP).
+    response_body = {
+        "client_id": result["client_id"],
+        "client_secret": result["client_secret"],
+        "client_id_issued_at": result["issued_at_unix"],
+        "client_secret_expires_at": 0,
+        "client_name": client_name,
+        "redirect_uris": body.redirect_uris,
+        "grant_types": grant_types,
+        "token_endpoint_auth_method": body.token_endpoint_auth_method or "client_secret_post",
+        "response_types": body.response_types or ["code"],
+    }
+    # Optional echo fields — only include if caller sent them
+    for field in ("scope", "software_id", "software_version",
+                  "application_type", "contacts", "logo_uri",
+                  "client_uri", "policy_uri", "tos_uri"):
+        val = getattr(body, field, None)
+        if val is not None:
+            response_body[field] = val
+    return JSONResponse(status_code=201, content=response_body)
 
 
 # ── Billing webhook (Lemon Squeezy) ─────────────────────────────────────────

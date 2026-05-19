@@ -614,6 +614,13 @@ def _oauth_discovery_payload(request) -> dict:
         "issuer": base,
         "authorization_endpoint": f"{base}/api/v1/mcp/oauth/authorize",
         "token_endpoint": f"{base}/api/v1/mcp/oauth/token",
+        # RFC 7591 §1.1 Dynamic Client Registration — advertised so the
+        # Anthropic broker (claude.ai) + ChatGPT broker self-register
+        # without a human pasting credentials. Without this field, the
+        # connector falls back to "Couldn't reach the MCP server"
+        # because brokers have no path to obtain a client_id /
+        # client_secret on their own.
+        "registration_endpoint": f"{base}/api/v1/mcp/oauth/register",
         "grant_types_supported": ["authorization_code", "client_credentials"],
         "response_types_supported": ["code"],
         "code_challenge_methods_supported": ["S256"],
