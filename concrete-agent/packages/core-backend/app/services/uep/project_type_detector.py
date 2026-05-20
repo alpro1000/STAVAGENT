@@ -1,5 +1,6 @@
 """
-UEP project type detection — Phase 0 of the pipeline (PR3 §3.6).
+UEP project type detection — Phase 0 of the pipeline (PR3 §3.6 +
+PR4a §3.1 multi-subtype extension).
 
 Decides which coverage matrix + reconciliation rule set + derivation
 defaults to apply for a freshly-uploaded project. Pure regex over
@@ -18,8 +19,19 @@ Per task §2 Q15 = B (default): when two types tie within ε confidence,
 the heuristic returns a list and the caller decides — REST returns a
 400 with the candidate list, CLI prints the list and exits.
 
+**PR4a multi-subtype (§3.1):** a project tagged `mep_only` (or even a
+mixed-discipline project) can carry several D.1.4 sub-disciplines in
+one upload — D.1.4 silnoproud + ZTI + VZT bundled together is the
+common Czech residential D&B pattern. `ProjectTypeDetection.mep_subtypes`
+returns the list of matching subtypes (`mep_d14_<name>`) so the coverage
+gate can apply each matrix via `load_matrices_for_subtypes()`. The
+list is non-empty whenever at least one D.1.4 filename / content hit
+fired regardless of the umbrella `top_choice` (a residential project
+that also carries a silnoproud D.1.4.1 file gets that subtype tagged).
+
 Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §4.4
 Reference: docs/tasks/TASK_UEP_PR3.md §3.6
+Reference: docs/tasks/TASK_UEP_PR4.md §3.1
 """
 
 from __future__ import annotations
@@ -52,11 +64,17 @@ class ProjectTypeDetection(BaseModel):
       (confidence diff to the runner-up ≥ AMBIGUITY_GAP).
     - `ambiguous_candidates` populated when ≥ 2 candidates are within
       AMBIGUITY_GAP — caller picks one via the REST/CLI prompt.
+    - `mep_subtypes` (PR4a §3.1) carries the list of D.1.4 sub-disciplines
+      detected in the upload, e.g. `["mep_d14_silnoproud", "mep_d14_zti"]`.
+      Non-empty for `top_choice == "mep_only"` (every detected subtype),
+      and ALSO non-empty for non-MEP umbrella types whose upload happens
+      to include D.1.4 files (typical for residential D&B packages).
     """
 
     top_choice: str | None = None
     candidates: list[ProjectTypeCandidate] = Field(default_factory=list)
     ambiguous_candidates: list[str] = Field(default_factory=list)
+    mep_subtypes: list[str] = Field(default_factory=list)
     files_scanned: int = 0
     tz_chars_scanned: int = 0
 
@@ -107,6 +125,69 @@ _D14_FILENAME_HINTS: re.Pattern[str] = re.compile(
     r"|silnoproud|slaboproud|MaR|elektro)(?:[_\-\s\.]|$)",
     re.IGNORECASE,
 )
+
+
+# Per-D.1.4-subtype keyword patterns (PR4a §3.1). Each pattern unions
+# filename and content hints. A subtype is reported when EITHER a
+# filename or a TZ content hit fires — the multi-subtype detector
+# (`_detect_mep_subtypes` below) does not weigh filename vs content
+# the way the umbrella scorer does, because subtypes are a flat set,
+# not a winner-take-all competition.
+_MEP_SUBTYPE_PATTERNS: dict[str, re.Pattern[str]] = {
+    "mep_d14_silnoproud": re.compile(
+        r"(?:^|[_\-\s/])(silnoproud\w*|D\.?1\.?4\.?1|elektro\w*"
+        r"|rozvad[eě][čc]\w*|hlavn[ií]\s*rozvod\w*)|"
+        r"\b(instalovan[ýyé]\s*v[ýy]kon|TN[\-\s]?C[\-\s]?S|TN[\-\s]?S"
+        r"|fotovoltaick\w*|FVE\b|jisti[čc]\w*|prouďov\w*\s*chr[áa]ni[čc]\w*)",
+        re.IGNORECASE,
+    ),
+    "mep_d14_slaboproud": re.compile(
+        r"(?:^|[_\-\s/])(slaboproud\w*|D\.?1\.?4\.?2|EPS\b|EZS\b|CCTV\b"
+        r"|datov[áaé]\w*\s*s[ií][tť]\w*|kamerov\w*|strukturovan\w*\s*kabel\w*)|"
+        r"\b(po[žz]ární\s*signalizac\w*|hlasov[áa]\s*signalizac\w*"
+        r"|UTP\b|FTP\b|Cat\s*6a?\b|patch\s*panel\w*)",
+        re.IGNORECASE,
+    ),
+    "mep_d14_zti": re.compile(
+        r"(?:^|[_\-\s/])(ZTI\b|zdravotechnik\w*|vodov\w*|kanaliz\w*"
+        r"|D\.?1\.?4\.?4)|"
+        r"\b(vnit[řr]n[ií]\s*vodovod\w*|vnit[řr]n[ií]\s*kanalizac\w*"
+        r"|de[šs][ťt]ov[áaé]\s*vod\w*|spla[šs]kov[áaé]\s*kanal\w*"
+        r"|sanit[áa]rn[ií]\s*p[řr]edm[eě]t\w*)",
+        re.IGNORECASE,
+    ),
+    "mep_d14_vzt": re.compile(
+        r"(?:^|[_\-\s/])(VZT\b|vzduchotechnik\w*|klimatizac\w*"
+        r"|D\.?1\.?4\.?3|rekuperac\w*)|"
+        r"\b(p[řr][ií]vod\s*vzduchu|odvod\s*vzduchu"
+        r"|m[³3]/h\b|VZT\s*jednotk\w*"
+        r"|po[žz]árn[íi]\s*klapk\w*)",
+        re.IGNORECASE,
+    ),
+    "mep_d14_ut": re.compile(
+        r"(?:^|[_\-\s/])(UT|[ÚU]T|topen[ií]|vyt[áa]p[eě]n[ií]\w*"
+        r"|D\.?1\.?4\.?5)|"
+        r"\b([úu]st[řr]edn[ií]\s*vyt[áa]p[eě]n[ií]|otopn[áaeyé]\s*soustav\w*"
+        r"|otopn[áaeyé]\s*t[eě]les\w*|podlahov[éae]\s*vyt[áa]p[eě]n[ií]"
+        r"|tepeln[éaá]\s*z[\-\s]?tr[áa]t\w*|tepeln[éaáý]\s*[čc]erpadl\w*"
+        r"|ekvitermn\w*)",
+        re.IGNORECASE,
+    ),
+    "mep_d14_plyn": re.compile(
+        r"(?:^|[_\-\s/])(plyn\w*|gas\b|HUP\b|plynom[eě]r\w*)|"
+        r"\b(plynovodn[ií]\s*p[řr][ií]pojk\w*|hlavn[ií]\s*uz[áa]v[eě]r\s*plyn\w*"
+        r"|plynov[éaý]\s*spot[řr]ebi[čc]\w*"
+        r"|odvod\s*spalin|TPG\s*704)",
+        re.IGNORECASE,
+    ),
+    "mep_d14_mar": re.compile(
+        r"(?:^|[_\-\s/])(MaR\b|M&R\b|BMS\b|SCADA\b|D\.?1\.?4\.?6)|"
+        r"\b(m[eě][řr]en[ií]\s*a\s*regulac\w*|building\s*management"
+        r"|BACnet\b|KNX\b|Modbus\b|DDC\b|frekven[čc]n[ií]\s*m[eě]ni[čc]\w*"
+        r"|prostorov[éaý]\s*[čc]idl\w*)",
+        re.IGNORECASE,
+    ),
+}
 
 
 # Filename hints for construction drawings — presence means it's NOT
@@ -217,6 +298,46 @@ def _normalise_scores(scores: _Scores) -> list[ProjectTypeCandidate]:
     return out
 
 
+def _detect_mep_subtypes(filenames: list[str], tz_text: str) -> list[str]:
+    """Return the list of D.1.4 sub-disciplines hit by either filename
+    or TZ content (PR4a §3.1).
+
+    A subtype is included when AT LEAST ONE filename OR a TZ content
+    match fires for it. Subtypes are a flat set (no winner-take-all):
+    one project can legitimately span silnoproud + ZTI + VZT, and the
+    coverage gate will apply each subtype's matrix in turn via
+    `coverage_engine.load_matrices_for_subtypes`.
+
+    Output order is deterministic (sorted by subtype name) so the
+    coverage gate sees a stable ordering regardless of input order.
+    """
+
+    hit: set[str] = set()
+
+    # Filename pass — normalise underscores/dashes to spaces so the
+    # boundary anchors in `_MEP_SUBTYPE_PATTERNS` fire inside typical
+    # `SO_201_D.1.4.1_silnoproud.pdf` styles.
+    for raw_name in filenames:
+        name = _normalise_filename(raw_name)
+        for subtype, pattern in _MEP_SUBTYPE_PATTERNS.items():
+            if pattern.search(name):
+                hit.add(subtype)
+
+    # TZ content pass — bounded read, same way `_scan_tz_text` caps the
+    # umbrella scorer.
+    if tz_text:
+        chunk = tz_text[:200_000]
+        for subtype, pattern in _MEP_SUBTYPE_PATTERNS.items():
+            if subtype in hit:
+                # Already matched on a filename — skip the content
+                # search to keep regex cost bounded.
+                continue
+            if pattern.search(chunk):
+                hit.add(subtype)
+
+    return sorted(hit)
+
+
 def detect_project_type(
     filenames: Iterable[str] = (),
     tz_text: str = "",
@@ -229,6 +350,13 @@ def detect_project_type(
     Multi-type packages (a project with both bridge AND road keywords
     in volume) will surface as `ambiguous_candidates` — task §2 Q15=B
     default; caller picks one via the REST/CLI prompt.
+
+    `mep_subtypes` (PR4a §3.1) is populated whenever the upload
+    contains D.1.4 sub-discipline signal (silnoproud / slaboproud /
+    ZTI / VZT / ÚT / plyn / MaR). It is independent of the umbrella
+    `top_choice`: a residential project that ships an embedded D.1.4
+    silnoproud TZ will report `top_choice="residential"` AND
+    `mep_subtypes=["mep_d14_silnoproud"]`.
     """
 
     scores = _Scores()
@@ -253,10 +381,13 @@ def detect_project_type(
                 if (top.confidence - c.confidence) < AMBIGUITY_GAP
             ]
 
+    mep_subtypes = _detect_mep_subtypes(file_list, tz_text)
+
     return ProjectTypeDetection(
         top_choice=top_choice,
         candidates=candidates,
         ambiguous_candidates=ambiguous,
+        mep_subtypes=mep_subtypes,
         files_scanned=files_scanned,
         tz_chars_scanned=tz_chars,
     )

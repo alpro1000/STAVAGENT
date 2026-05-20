@@ -3,10 +3,18 @@ UEP coverage matrix engine — Phase 2.
 
 `load_matrix(yaml_path, project_type) -> list[CoverageRequirement]` reads
 YAML coverage matrices from `app/knowledge_base/B10_coverage_matrices/`
-and filters by project_type. `evaluate_coverage(extractions, requirements,
-project_type, matrix_file) -> CoverageReport` walks every requirement,
-inspects the stream of `PerSourceExtraction.facts`, and emits per-category
-`POKRYTO / CASTECNE / CHYBI / SKIP` plus the project-wide gate verdict.
+and filters by project_type. PR4a §3.1 adds **hierarchical matrices** —
+a YAML with `extends: <parent>` at the root loads the parent first and
+merges its `requirements:` on top (subtype rows override base rows with
+the same category). `load_matrices_for_subtypes(subtypes)` is the
+multi-subtype helper: it loads every subtype matrix and returns the
+union of categories so a single project (e.g. D.1.4 silnoproud + ZTI +
+VZT bundled together) can be evaluated against every relevant matrix.
+
+`evaluate_coverage(extractions, requirements, project_type, matrix_file)
+-> CoverageReport` walks every requirement, inspects the stream of
+`PerSourceExtraction.facts`, and emits per-category `POKRYTO / CASTECNE
+/ CHYBI / SKIP` plus the project-wide gate verdict.
 
 Algorithm per requirement (see task §3.2):
 
@@ -64,25 +72,17 @@ def matrix_path_for(project_type: str) -> Path:
     return DEFAULT_MATRIX_DIR / f"coverage_matrix_{project_type}.yaml"
 
 
-def load_matrix(
-    yaml_path: Path,
-    project_type: str | None = None,
-) -> list[CoverageRequirement]:
-    """Load a coverage matrix YAML and return validated requirements.
+def _safe_load_yaml(yaml_path: Path) -> dict[str, Any]:
+    """Load a YAML file as a dict, surfacing parse/IO failures with the
+    source path attached so REST handlers don't bleed internal detail.
 
-    `project_type` filters `CoverageRequirement.project_types` when the
-    YAML contains entries for more than one type. When `None`, every
-    requirement is returned regardless of `project_types`.
+    Shared by `load_matrix()` and `_load_raw_matrix()` (hierarchical
+    base+delta path). Mirrors the same wrap done elsewhere in
+    `services/uep/` — single canonical site to keep behaviour consistent.
     """
+
     if not yaml_path.exists():
         raise FileNotFoundError(f"Coverage matrix not found: {yaml_path}")
-
-    # Wrap YAML I/O so malformed files surface as RuntimeError with
-    # the source path attached, rather than propagating raw
-    # yaml.YAMLError / OSError to the REST handler (which would
-    # crash with 500 and leak internal details). Closes Amazon Q
-    # PR #1186 comment C3 (discussion_r3266899141) — applied
-    # consistently across all 4 yaml.safe_load sites in services/uep/.
     try:
         with yaml_path.open("r", encoding="utf-8") as fp:
             raw = yaml.safe_load(fp)
@@ -90,19 +90,35 @@ def load_matrix(
         raise RuntimeError(
             f"Failed to load coverage matrix from {yaml_path}: {exc}"
         ) from exc
-
     if not isinstance(raw, dict):
         raise ValueError(f"Matrix YAML root must be a mapping: {yaml_path}")
+    return raw
+
+
+def _requirements_from_raw(
+    raw: dict[str, Any],
+    yaml_path: Path,
+    project_type: str | None,
+) -> list[CoverageRequirement]:
+    """Convert the raw `requirements:` list of dicts into validated
+    `CoverageRequirement` instances, applying the project_type filter.
+
+    Pure — does not look at `extends:` (hierarchical merge happens in
+    `load_matrix()` before calling this helper).
+    """
+
     requirements_raw = raw.get("requirements", [])
     if not isinstance(requirements_raw, list):
         raise ValueError(f"`requirements` must be a list in {yaml_path}")
 
-    # YAML uses string source format names; Pydantic validates them against
-    # the `SourceFormat` enum on construction.
-    requirements: list[CoverageRequirement] = []
+    out: list[CoverageRequirement] = []
     for idx, req_raw in enumerate(requirements_raw):
         if not isinstance(req_raw, dict):
             raise ValueError(f"requirement[{idx}] must be a mapping in {yaml_path}")
+        # YAML default for project_types: the file-level `project_type`
+        # field falls back to "residential" only for legacy single-type
+        # files. Hierarchical matrices (PR4a) inherit the subtype name
+        # from their own file-level `project_type`.
         req_raw.setdefault("project_types", [raw.get("project_type", "residential")])
         try:
             req = CoverageRequirement(**req_raw)
@@ -111,7 +127,110 @@ def load_matrix(
                 f"Invalid requirement[{idx}] (category={req_raw.get('category')}): {exc}"
             ) from exc
         if project_type is None or project_type in req.project_types:
-            requirements.append(req)
+            out.append(req)
+    return out
+
+
+def _merge_hierarchical_requirements(
+    base: list[CoverageRequirement],
+    delta: list[CoverageRequirement],
+) -> list[CoverageRequirement]:
+    """Merge a subtype `delta` matrix into its `base`.
+
+    Algorithm (per Q16 = C hierarchical, PR4a task §3.1):
+
+    1. Start with every base requirement.
+    2. For each delta requirement: if its `category` matches a base row,
+       the delta REPLACES the base row (subtype-specific
+       `required_fields` / `optional` / `notes` win). Otherwise the
+       delta is APPENDED as a new row.
+    3. Order is preserved — base rows first (in their original order),
+       then any net-new delta rows in their original order.
+
+    This is purely additive at the YAML-load layer; the runtime
+    `CoverageRequirement` model is unchanged so all existing PR1-3
+    coverage logic still applies.
+    """
+
+    by_cat = {req.category: i for i, req in enumerate(base)}
+    merged = list(base)
+    for d_req in delta:
+        if d_req.category in by_cat:
+            merged[by_cat[d_req.category]] = d_req
+        else:
+            by_cat[d_req.category] = len(merged)
+            merged.append(d_req)
+    return merged
+
+
+def load_matrix(
+    yaml_path: Path,
+    project_type: str | None = None,
+    *,
+    base_dir: Path | None = None,
+    _seen: set[Path] | None = None,
+) -> list[CoverageRequirement]:
+    """Load a coverage matrix YAML and return validated requirements.
+
+    `project_type` filters `CoverageRequirement.project_types` when the
+    YAML contains entries for more than one type. When `None`, every
+    requirement is returned regardless of `project_types`.
+
+    **Hierarchical matrices (PR4a)** — if the YAML root carries an
+    `extends:` key naming another matrix project_type (e.g. `mep_base`),
+    the base matrix is loaded first and the current matrix's
+    `requirements:` are merged on top:
+
+        # coverage_matrix_mep_d14_silnoproud.yaml
+        version: 1
+        project_type: mep_d14_silnoproud
+        extends: mep_base
+        requirements:
+          - category: electrical_installed_power_kw
+            …
+          - category: norm_references     # also defined in mep_base
+            required_fields: [citation]   # subtype override
+
+    `base_dir` lets tests point at a fixture directory; production
+    callers leave it `None` to use the bundled `DEFAULT_MATRIX_DIR`.
+    `_seen` is the internal cycle-guard — passing it explicitly is not
+    part of the public API.
+    """
+    raw = _safe_load_yaml(yaml_path)
+
+    # Cycle guard: a YAML that `extends:` itself, directly or via a
+    # chain, would loop forever. We track the resolved paths we've
+    # already visited and refuse to re-enter.
+    seen = set(_seen) if _seen is not None else set()
+    canonical = yaml_path.resolve()
+    if canonical in seen:
+        raise ValueError(
+            f"Cycle in coverage matrix `extends:` chain at {yaml_path}"
+        )
+    seen.add(canonical)
+
+    delta_reqs = _requirements_from_raw(raw, yaml_path, project_type)
+
+    if "extends" in raw:
+        extends = raw["extends"]
+        if not isinstance(extends, str) or not extends.strip():
+            raise ValueError(
+                f"`extends:` must be a non-empty project_type string in {yaml_path}"
+            )
+        base_root = base_dir or yaml_path.parent
+        base_path = base_root / f"coverage_matrix_{extends.strip()}.yaml"
+        # Pass project_type=None to the base load so we get every row;
+        # the subtype filter is applied on the subtype's own rows only.
+        # This matches the intent of "inherit ALL base categories".
+        base_reqs = load_matrix(
+            base_path,
+            project_type=None,
+            base_dir=base_root,
+            _seen=seen,
+        )
+        requirements = _merge_hierarchical_requirements(base_reqs, delta_reqs)
+    else:
+        requirements = delta_reqs
 
     if not requirements:
         raise ValueError(
@@ -119,6 +238,43 @@ def load_matrix(
         )
 
     return requirements
+
+
+def load_matrices_for_subtypes(
+    subtypes: list[str],
+    *,
+    base_dir: Path | None = None,
+) -> list[CoverageRequirement]:
+    """Convenience helper for multi-subtype projects (PR4a §3.1).
+
+    When `project_type_detector` reports several MEP subtypes for one
+    project (e.g. silnoproud + ZTI + VZT bundled in one TZ pack), the
+    coverage gate must apply every relevant matrix and union the
+    categories. Each subtype's hierarchical matrix already inherits
+    `mep_base`, so the merge here is at the requirement level:
+
+    1. Load each subtype matrix (each one already merged with mep_base).
+    2. De-duplicate by category — the FIRST subtype's row wins when two
+       subtypes both redefine a base category. Order = caller-supplied.
+
+    Returning the unioned `CoverageRequirement` list lets the existing
+    `evaluate_coverage()` consume it without any further change.
+    """
+
+    if not subtypes:
+        raise ValueError("load_matrices_for_subtypes requires ≥1 subtype")
+
+    root = base_dir or DEFAULT_MATRIX_DIR
+    by_cat: dict[str, CoverageRequirement] = {}
+    order: list[str] = []
+    for subtype in subtypes:
+        path = root / f"coverage_matrix_{subtype}.yaml"
+        reqs = load_matrix(path, project_type=subtype, base_dir=root)
+        for req in reqs:
+            if req.category not in by_cat:
+                by_cat[req.category] = req
+                order.append(req.category)
+    return [by_cat[c] for c in order]
 
 
 def evaluate_coverage(

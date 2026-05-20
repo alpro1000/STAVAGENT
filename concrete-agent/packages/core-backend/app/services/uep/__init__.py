@@ -37,11 +37,13 @@ from app.services.uep.registry import (
 try:
     from app.services.uep.coverage_engine import (  # noqa: F401
         evaluate_coverage,
+        load_matrices_for_subtypes,
         load_matrix,
     )
 except ImportError:  # pragma: no cover — only between commits in this PR
     evaluate_coverage = None  # type: ignore[assignment]
     load_matrix = None  # type: ignore[assignment]
+    load_matrices_for_subtypes = None  # type: ignore[assignment]
 
 # Reconciliation engine (PR2 Phase 3) — same lazy re-export shape.
 try:
@@ -96,6 +98,7 @@ __all__ = [
     "get_extractor",
     "list_supported_formats",
     "load_matrix",
+    "load_matrices_for_subtypes",
     "evaluate_coverage",
     "load_rules",
     "evaluate_reconciliation",

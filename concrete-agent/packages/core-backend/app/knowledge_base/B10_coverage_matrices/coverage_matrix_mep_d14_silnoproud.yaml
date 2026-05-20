@@ -1,0 +1,213 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_silnoproud (D.1.4.1)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` (15 shared D.1.4 rows) with silnoproud-specific
+# categories per vyhláška 499/2006 D.1.4.1 + ČSN 33 2000.
+#
+# Coverage = base (15) + silnoproud-specific rows below (≥15 here),
+# minus any base rows the subtype redefines (≥0). Net subtype matrix
+# typically lands at 28-30 categories evaluated.
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (silnoproud bullet)
+# Reference: ČSN 33 2000 (provedení elektrických zařízení do 1000 V)
+# Reference: ČSN EN 60439 (rozváděče nízkého napětí)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_silnoproud
+extends: mep_base
+description: >
+  D.1.4.1 silnoproud. Rozšiřuje mep_base o silnoproud-specifické
+  kategorie: hlavní el. rozvody (HR), rozvaděče (R+), kabely, ochrany,
+  fotovoltaika (FVE), nabíjecí infrastruktura.
+
+requirements:
+
+  # ─── A. Override base rows with silnoproud-specific labels/norms ──────
+
+  - category: norm_references
+    label_cs: Citované normy ČSN 33 2000 / ČSN EN 60439 / ČSN 33 2130
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Silnoproud TZ musí citovat aspoň ČSN 33 2000 (provedení el.
+      zařízení) + ČSN 33 2130 (vnitřní rozvody) + ČSN EN 60439
+      (rozváděče). Minimum 3 normy.
+
+  - category: safety_classification
+    label_cs: Třída ochrany před úrazem el. proudem (TN-S / TN-C-S)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Sítě TN-S nebo TN-C-S (ČSN 33 2000-4-41 / -5-54). Bez deklarace
+      sítě nelze posoudit ochrany před úrazem el. proudem.
+
+  - category: ip_protection_class
+    label_cs: Krytí IP / IK rozvaděčů + svítidel (IP20 / IP44 / IP65)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Krytí rozvaděčů a svítidel per prostředí: IP20 interiér,
+      IP44 koupelna, IP65 venkovní. Silnoproud overriduje base na
+      required.
+
+  # ─── B. Silnoproud-specific: výkon, rozvody ───────────────────────────
+
+  - category: electrical_installed_power_kw
+    label_cs: Celkový instalovaný výkon (kW + kVA + soudobost)
+    required_fields: [value]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Pi (instalovaný výkon) + Ps (soudobý výkon) + soudobost
+      podle ČSN 33 2130 tab. 1. Vstup pro dimenzi přípojky.
+
+  - category: electrical_main_distribution_board
+    label_cs: Hlavní rozvaděč HR (jmenovitý proud + IP + osazení)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      HR / RH1 specifikace: jmenovitý proud (In), počet polí,
+      osazení (jistič hlavní + selektivní jističe + svodiče).
+
+  - category: electrical_subdistribution_boards
+    label_cs: Podružné rozvaděče R+ (počet + dimenze + umístění)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Per podlaží / per kapitola. Pro každé R+ specifikace jmen.
+      proudu, osazení, umístění (návaznost na rozvadec_locations).
+
+  - category: electrical_cable_specifications
+    label_cs: Kabely (typy CYKY / CYA / CHKE, průřezy, žíly)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Specifikace kabelových typů: CYKY / CYA (vnitřní), CHKE
+      (požárně odolné), CXKH (s vlastní izolací). Průřezy podle
+      ČSN 33 2000-5-52 + dovolených úbytků napětí.
+
+  - category: electrical_overcurrent_protection
+    label_cs: Ochrana proti zkratu a přetížení (jističe + selektivita)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Jističe (typ B / C / D), selektivita mezi HR a R+, hodnota
+      zkratového proudu Ik" min/max. Klíčové pro projektování
+      revize a koordinaci s distribuční sítí.
+
+  - category: electrical_residual_current_protection
+    label_cs: Ochrana proudovými chrániči (RCD typu A / AC / B)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN 33 2000-4-41 čl. 411.3.3 — RCD ≤ 30 mA pro zásuvky a
+      koupelny. Typ A pro pulzní DC (fotovoltaika), typ B pro
+      frekvenční měniče.
+
+  - category: electrical_surge_protection
+    label_cs: Ochrana proti přepětí (SPD typu T1+T2 / T2 / T3)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      SPD na HR (T1+T2 — typicky kombinovaný) + T3 u citlivých
+      spotřebičů. Podle ČSN EN 62305-4 (LPS = ochrana před
+      atmosférickými výboji).
+
+  - category: electrical_grounding
+    label_cs: Uzemnění a pospojování (zemnič + uzemňovací svorka HOP)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Zemnič (typicky FeZn 30×4 mm v základech), HOP — hlavní
+      ochranná přípojnice, pospojování kovových konstrukcí (potrubí
+      ZTI / VZT / dveře, ČSN 33 2000-5-54).
+
+  - category: electrical_lightning_protection
+    label_cs: Hromosvod a soustava jímacích vodičů (LPS)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      LPS dle ČSN EN 62305 (třída ochrany I / II / III / IV).
+      Optional — malé RD bez vysokých objektů typicky LPS neřeší,
+      ale projektant musí provést analýzu rizika R1.
+
+  - category: electrical_lighting_design
+    label_cs: Osvětlení (intenzita lux + svítidla + ovládání)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Lux per prostor (ČSN EN 12464-1 — interiér, ČSN EN 13201 —
+      venkovní), typy svítidel, ovládání (vypínače / čidla /
+      stmívače / KNX-DALI).
+
+  - category: electrical_socket_circuits
+    label_cs: Zásuvkové obvody (32A / 16A / vyhrazené pro spotřebiče)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Počet a typ zásuvkových obvodů, vyhrazené pro spotřebiče
+      ≥ 3 kW (varná deska, sporák, klimatizace). Soulad s typovým
+      použitím prostoru.
+
+  - category: electrical_emergency_lighting
+    label_cs: Nouzové osvětlení a značení únikových cest
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      ČSN EN 1838 + ČSN 73 0810. Optional pro RD, povinné pro
+      veřejnost / shromažďovací prostory.
+
+  # ─── C. Volitelné / projektově specifické technologie ─────────────────
+
+  - category: electrical_photovoltaic_system
+    label_cs: Fotovoltaická soustava (FVE — panely, střídače, akumulace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      FVE: Wp panelů, počet stringů, výkon střídače, kapacita
+      akumulace, schéma připojení na HR. ČSN EN 50438 + 50549.
+
+  - category: electrical_charging_infrastructure
+    label_cs: Nabíjecí stanice EV (wallbox / DC rychlonabíječka)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Mode 3 wallbox (AC 11/22 kW) nebo Mode 4 DC. Soudobost +
+      load management (smart charging) v Pi výpočtu.
+
+  - category: electrical_backup_power
+    label_cs: Náhradní zdroj (UPS / DA dieselagregát / akumulace)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      UPS pro EPS / kamery / servery; DA pro celý objekt
+      (zdravotnické, datacentra). Volitelné — projektově specifické.
+
+  - category: electrical_measurement_metering
+    label_cs: Měření spotřeby (HDS, podružná měření, smart meter)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Hlavní domovní skříň (HDS) + měření distributora (smart meter)
+      + podružná měření spotřebičů > 3 kW (sazba D27 — tepelné
+      čerpadlo).

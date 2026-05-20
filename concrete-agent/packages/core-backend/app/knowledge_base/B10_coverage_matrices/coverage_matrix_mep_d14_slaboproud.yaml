@@ -1,0 +1,167 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_slaboproud (D.1.4.2)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` with slaboproud-specific categories per vyhláška
+# 499/2006 D.1.4.2 + ČSN 73 0875 (EPS) + ČSN 33 4590 (kabeláž).
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (slaboproud bullet)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_slaboproud
+extends: mep_base
+description: >
+  D.1.4.2 slaboproud. Strukturovaná kabeláž (UTP/FTP), požárně
+  poplachová signalizace (EPS), kamerový systém (CCTV / IP), EZS
+  (zabezpečení), detekce kouře / CO, domácí telefony, antény / SAT.
+
+requirements:
+
+  # ─── A. Override base rows with slaboproud-specific norms ─────────────
+
+  - category: norm_references
+    label_cs: Citované normy ČSN EN 50173 / ČSN 73 0875 / ČSN EN 62676
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN EN 50173 (kabeláž), ČSN 73 0875 (EPS), ČSN EN 62676
+      (CCTV), ČSN EN 50131 (EZS). Minimum 3 normy per subdiscipline.
+
+  - category: ip_protection_class
+    label_cs: Krytí slaboproudových zařízení (IP54 detektory venku, IP20 interiér)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+
+  # ─── B. EPS — Požárně poplachová signalizace ──────────────────────────
+
+  - category: slaboproud_eps_system
+    label_cs: EPS — požárně poplachová signalizace (ústředna + smyčky + hlásiče)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Ústředna EPS, počet adresných smyček, automatické hlásiče
+      (kouře / teploty), tlačítkové hlásiče, sirény, klíčový trezor
+      (PO). ČSN 73 0875.
+
+  - category: slaboproud_eps_zones
+    label_cs: EPS zóny / hlásicí oblasti (členění objektu)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Rozdělení objektu na hlásicí zóny — max. 1600 m² per zóna,
+      max. 5 podlaží, lokalizace na grafické nadstavbě.
+
+  - category: slaboproud_eps_evacuation_system
+    label_cs: Domácí rozhlas (DR / ER pro evakuaci)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      ČSN EN 50849 / ČSN EN 60849 — povinné u objektů s počtem
+      osob > 200 nebo > 4 podlaží. Optional u RD.
+
+  # ─── C. Kamerový a zabezpečovací systém ──────────────────────────────
+
+  - category: slaboproud_cctv_system
+    label_cs: Kamerový systém (CCTV / IP kamery + NVR + diskové úložiště)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      ČSN EN 62676. IP kamery (rozlišení + IR + PTZ), NVR
+      (počet kanálů + storage), retence záznamu (typicky 7-30 dní).
+
+  - category: slaboproud_intruder_alarm_system
+    label_cs: EZS — elektronický zabezpečovací systém (PIR + magnetické kontakty + ústředna)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      ČSN EN 50131 (stupně zabezpečení 1-4). PIR detektory,
+      magnetické kontakty na oknech / dveřích, sirény, GSM
+      komunikátor.
+
+  - category: slaboproud_access_control
+    label_cs: Systém kontroly vstupu (ACS — RFID čtečky + elektromagnetické zámky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      RFID karty / PIN, časové profily, integrace s EZS a
+      docházkou. Optional pro RD; běžné v bytových domech a
+      administrativě.
+
+  # ─── D. Strukturovaná kabeláž a datové sítě ───────────────────────────
+
+  - category: slaboproud_structured_cabling
+    label_cs: Strukturovaná kabeláž (UTP/FTP Cat6a, datové zásuvky, patch panel)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      ČSN EN 50173 + ČSN EN 50174. Počet datových zásuvek, kategorie
+      kabeláže (Cat6a / Cat7), délky lankových vedení (≤ 90 m
+      horizontální).
+
+  - category: slaboproud_data_rack
+    label_cs: Datový rozvaděč R-DAT (19" rack + patch panel + switche)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Umístění R-DAT (větrání + IP rating + napájení + UPS),
+      osazení (počet U, switche, patch panely). Návaznost na
+      silnoproud (UPS).
+
+  - category: slaboproud_wifi_coverage
+    label_cs: Wi-Fi pokrytí (access pointy + mesh)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Plánovaný počet AP, RF spektrum (2.4/5/6 GHz), PoE
+      napájení. Optional — některé projekty řeší v rámci IT
+      dodávky.
+
+  # ─── E. Specifické detekce a komunikace ──────────────────────────────
+
+  - category: slaboproud_co_smoke_detectors
+    label_cs: Autonomní detektory kouře a CO (vyhláška o PO bytových staveb)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Vyhl. 23/2008 Sb. — povinné v každé bytové jednotce.
+      Autonomní (baterie) nebo síťové (230 V) s alarmem.
+
+  - category: slaboproud_intercom_system
+    label_cs: Domovní telefon / videotelefon (intercom)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Audio / video, integrace s elektromagnet. zámkem na dveřích.
+      Standard u bytovek; volitelné u RD.
+
+  - category: slaboproud_tv_antenna_distribution
+    label_cs: TV anténa / SAT rozvody (STA + DVB-T2 / DVB-S2)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  # ─── F. PO / požárně bezpečnostní část slaboproudu ────────────────────
+
+  - category: slaboproud_voice_communication_safety
+    label_cs: Komunikační systémy pro PBZ (PCO, propojení s HZS)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Pult centralizované ochrany (PCO) + GSM/PSTN komunikátor
+      EPS. Volitelné pro RD, povinné pro objekty s vyhrazenými
+      požárně bezpečnostními zařízeními.

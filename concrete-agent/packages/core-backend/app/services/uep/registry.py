@@ -36,7 +36,7 @@ _TZ_FILENAME_HINT = re.compile(
 
 # Extension → SourceFormat baseline routing. The format then resolves to
 # an extractor class via `_EXTRACTORS`. Lower-cased ext. PR3 wires
-# DWG / IFC / XML extensions; PR4 wires gbXML.
+# DWG / IFC / XML extensions; PR4a wires gbXML via the XML sub-router.
 _EXT_FORMAT = {
     ".dxf": SourceFormat.DXF,
     ".dwg": SourceFormat.DWG,
@@ -60,6 +60,9 @@ def _try_lazy_import(name: str):
         if name == "LandXmlExtractor":
             from app.services.uep.landxml_extractor import LandXmlExtractor
             return LandXmlExtractor
+        if name == "GbxmlExtractor":
+            from app.services.uep.gbxml_extractor import GbxmlExtractor
+            return GbxmlExtractor
     except ImportError:
         return None
     return None
@@ -80,6 +83,9 @@ def _build_extractors_table() -> dict[SourceFormat, type[BaseExtractor]]:
     landxml_cls = _try_lazy_import("LandXmlExtractor")
     if landxml_cls is not None:
         table[SourceFormat.XML_LANDXML] = landxml_cls
+    gbxml_cls = _try_lazy_import("GbxmlExtractor")
+    if gbxml_cls is not None:
+        table[SourceFormat.XML_GBXML] = gbxml_cls
     return table
 
 
