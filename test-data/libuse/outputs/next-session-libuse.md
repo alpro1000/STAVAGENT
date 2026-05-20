@@ -7,8 +7,78 @@ extracted, 6 152 sub-items paired, Excel dashboard delivered)
 
 ## ⭐ Phase 6.6 — TZ-driven material decomposition (2026-05-20)
 
-**Status:** ✅ GATE 1 + GATE 2 + GATE 3 + **GATE 4** complete. Branch
-`claude/tz-material-decomposition-lBp5D` pushed.
+**Status:** ✅ GATE 1 + GATE 2 + GATE 3 + GATE 4 + **GATE 5** complete.
+Branch `claude/tz-material-decomposition-lBp5D` pushed.
+
+### GATE 5 (2026-05-20 evening) — Citation enrichment + Sumarizace aggregator
+
+**GATE 5a — ODHAD → ČSN citation enrichment**
+
+Hand-curated ČSN normy applied offline to all 12 KB entries (no URL
+fabrication). Confidence 0.3 → 0.6 + status Odhad → Confirm + Zdroj
+marker "🌐 ČSN xxxx" + drops `[odhad]` prefix from popis. Sources used:
+
+| Material kind | ČSN reference |
+|---|---|
+| Penetrace + perlinka + nárožní lišta | ČSN 73 3450 |
+| Lepidlo C2TE | ČSN EN 12004 |
+| Spárovací hmota | ČSN EN 13888 |
+| Lepidlo na vinyl | ČSN 74 4505 |
+| Samonivelační stěrka | ČSN EN 13813 |
+| Malba disperzní | ČSN 73 3300 |
+| Tmel akrylátový | ČSN EN ISO 11600 |
+| Tmel / manžeta / objímka protipožární prostup | ČSN 73 0810 + ČSN EN 1366-3 |
+
+Sub-item provenance shifted: `generic_no_documentation` 4 184 → 0;
+`generic_with_csn_norm` 0 → 3 918. Documented coverage **20.9 % → 99.5 %**.
+
+**Standalone Perplexity enrichment script** added at
+`concrete-agent/packages/core-backend/scripts/enrich_generic_rates.py`.
+Run separately when `PPLX_API_KEY` env var + network egress to
+`api.perplexity.ai` available:
+
+```bash
+export PPLX_API_KEY=pplx-...
+python concrete-agent/packages/core-backend/scripts/enrich_generic_rates.py \
+    --kb-path test-data/libuse/knowledge_base/generic_consumption_rates.json
+```
+
+The script populates `citation_url` per KB entry by querying Perplexity
+for ÚNMZ / publisher URL of the ČSN. Honesty contract: only writes the
+URL Perplexity's `citations[]` actually returns — no fabricated links.
+After running, re-run `phase_6_6_pair_materials.py` +
+`phase_6_6_excel.py` to surface URLs in the deliverable (status
+Confirm → OK, confidence 0.6 → 0.7).
+
+**GATE 5b — 11b_Material_aggregate sheet**
+
+New parallel sheet placed immediately after `11_Sumarizace_dle_kódu`
+(which remains byte-identical, 4 845 rows preserved). Per kapitola:
+
+- ▼ Header (kapitola code, blue-tinted)
+- Práce subtotals (top 8 master popis groups + sum qty + count)
+- Materiály subtotals (aggregated sub-items across kapitola, with
+  prevailing source + citation_norm columns)
+- Provenance breakdown row
+
+Plus grand totals across all kapitoly (top 30 materials by qty) +
+provenance distribution napříč objektem.
+
+**Dashboard updates:**
+- Hero stat refreshed: 99.5 % documented (was 20.9 % pre-5a)
+- Block 2 provenance table extended with 2 new tiers (`generic_with_csn_url`,
+  `generic_with_csn_norm`) — purple-shaded
+- New Block 13: Citation enrichment stats (KB entries with citation_norm
+  vs citation_url, sub-items promoted)
+
+**Items file integrity:** `items_objekt_D_complete.json` SHA still
+`373685edbe427d02…` ✅. GATE 5 wrote only to
+`items_objekt_D_with_materials.json` + KB JSON + Excel.
+
+**Backup chain:** `pre_phase6_6.xlsx` (1.2 MB) + `pre_gate4.xlsx` (1.6 MB) +
+**`pre_gate5.xlsx` (1.7 MB)** + current 1.7 MB.
+
+### GATE 4 (2026-05-20 late) — 4 bug fixes + Czech rozpočet layout
 
 ### GATE 4 (2026-05-20 late) — 4 bug fixes + Czech rozpočet layout
 

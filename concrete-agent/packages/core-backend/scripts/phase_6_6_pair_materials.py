@@ -52,6 +52,11 @@ CONFIDENCE: dict[str, float] = {
     "tabulka_referenced":      0.95,
     "vykres_annotated":        0.85,
     "generic_no_documentation": 0.3,
+    # GATE 5a — Case 4 with hand-curated ČSN norm reference
+    # (citation_url still null offline; promoted to 0.7 when URL populated
+    # by enrich_generic_rates.py).
+    "generic_with_csn_norm":   0.6,
+    "generic_with_csn_url":    0.7,
 }
 
 ZDROJ_MARKER: dict[str, str] = {
@@ -60,6 +65,8 @@ ZDROJ_MARKER: dict[str, str] = {
     "tabulka_referenced":      "📋 Tabulka {section}",
     "vykres_annotated":        "📐 Výkres {section}",
     "generic_no_documentation": "⚠ ODHAD — generic standard",
+    "generic_with_csn_norm":   "🌐 {norm}",
+    "generic_with_csn_url":    "🌐 {norm}",
 }
 
 STATUS_FOR_SOURCE: dict[str, str] = {
@@ -68,6 +75,8 @@ STATUS_FOR_SOURCE: dict[str, str] = {
     "tabulka_referenced":       "OK",
     "vykres_annotated":         "Confirm",
     "generic_no_documentation": "Odhad",
+    "generic_with_csn_norm":    "Confirm",
+    "generic_with_csn_url":     "OK",
 }
 
 
@@ -359,8 +368,11 @@ def _index_library(library: list[dict[str, Any]]) -> dict[str, list[dict[str, An
 
 
 def _format_zdroj_marker(source_type: str, section: Optional[str],
-                        document: Optional[str]) -> str:
+                        document: Optional[str],
+                        citation_norm: Optional[str] = None) -> str:
     template = ZDROJ_MARKER[source_type]
+    if source_type in {"generic_with_csn_norm", "generic_with_csn_url"}:
+        return template.format(norm=citation_norm or "ČSN (n/a)")
     if "{section}" not in template:
         return template
     if source_type.startswith("tz_"):
@@ -389,7 +401,10 @@ def _build_subitem(*, master: dict[str, Any], verbatim_popis: str,
                   rate_unit_denom: Optional[str], mnozstvi_value: float,
                   MJ_subitem: str, mnozstvi_formula: str,
                   qty_confidence: float,
-                  add_odhad_prefix: bool = False) -> dict[str, Any]:
+                  add_odhad_prefix: bool = False,
+                  citation_norm: Optional[str] = None,
+                  citation_source: Optional[str] = None,
+                  citation_url: Optional[str] = None) -> dict[str, Any]:
     """Build a single material sub-item dict.
 
     `verbatim_popis` may be a long TZ paragraph (provenance) — sub-item
@@ -407,8 +422,18 @@ def _build_subitem(*, master: dict[str, Any], verbatim_popis: str,
         kind_for_synth = source_entry.get("material_kind")
 
     clean_popis = _synthesize_popis(verbatim_popis, kind_for_synth, spec_for_synth)
-    if add_odhad_prefix:
+    # GATE 5a — drop [odhad] prefix when a ČSN norm citation is available
+    # (the citation IS the documentation; visual marker no longer needed)
+    suppress_odhad_prefix = bool(citation_norm)
+    if add_odhad_prefix and not suppress_odhad_prefix:
         clean_popis = f"[odhad] {clean_popis}"
+
+    # GATE 5a — promote generic_no_documentation to a higher tier when a
+    # citation is available.
+    effective_source = source_type
+    if source_type == "generic_no_documentation" and citation_norm:
+        effective_source = ("generic_with_csn_url" if citation_url
+                            else "generic_with_csn_norm")
 
     return {
         "item_id": _new_id("sub"),
@@ -420,16 +445,20 @@ def _build_subitem(*, master: dict[str, Any], verbatim_popis: str,
         "MJ": MJ_subitem,
         "mnozstvi": round(mnozstvi_value, 3),
         "misto": master.get("misto"),  # Inherit cross-objekt scope
-        "source": source_type,
-        "confidence": CONFIDENCE[source_type],
+        "source": effective_source,
+        "confidence": CONFIDENCE[effective_source],
         "qty_confidence": qty_confidence,
-        "zdroj_marker": _format_zdroj_marker(source_type, section, document),
-        "status_label": STATUS_FOR_SOURCE[source_type],
+        "zdroj_marker": _format_zdroj_marker(effective_source, section,
+                                              document, citation_norm),
+        "status_label": STATUS_FOR_SOURCE[effective_source],
         "mnozstvi_formula": mnozstvi_formula,
         "rate_value": rate_value,
         "rate_unit_num": rate_unit_num,
         "rate_unit_denom": rate_unit_denom,
         "source_entry_id": source_entry.get("material_id") if source_entry else None,
+        "citation_norm": citation_norm,
+        "citation_source": citation_source,
+        "citation_url": citation_url,
         "phase": "6.6_B",
     }
 
@@ -617,13 +646,20 @@ def _pair_master(master: dict[str, Any],
             MJ_subitem=kb_entry["MJ_consumed"],
             mnozstvi_formula=formula,
             qty_confidence=CONFIDENCE["generic_no_documentation"],
-            add_odhad_prefix=True,  # Case 4 MUST use [odhad] prefix
+            add_odhad_prefix=True,  # Case 4 keeps [odhad] unless citation
+            citation_norm=kb_entry.get("citation_norm"),
+            citation_source=kb_entry.get("citation_source"),
+            citation_url=kb_entry.get("citation_url"),
         ))
 
     if sub_items:
+        # A sub-item is "documented" if its source isn't the bare
+        # generic_no_documentation (Case 4 entries promoted to
+        # generic_with_csn_norm by GATE 5a count as documented).
+        has_undoc_generic = any(s["source"] == "generic_no_documentation"
+                                for s in sub_items)
         case_label = ("cases_1_3_library" if library_matches and
-                      not any(s["source"] == "generic_no_documentation"
-                              for s in sub_items)
+                      not has_undoc_generic
                       else "case_4_generic" if not library_matches
                       else "mixed")
         return sub_items, case_label

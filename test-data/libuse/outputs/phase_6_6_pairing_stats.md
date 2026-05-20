@@ -1,6 +1,6 @@
 # Phase 6.6 GATE 2 — Master ↔ material pairing stats
 
-_Generated: 2026-05-20T18:57:18+00:00_
+_Generated: 2026-05-20T19:20:57+00:00_
 
 _Branch: claude/tz-material-decomposition-lBp5D_
 
@@ -22,7 +22,7 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | `tz_explicit_no_rate` | 664 | 13.4 | 0.5 |
 | `tabulka_referenced` | 374 | 7.5 | 0.95 |
 | `vykres_annotated` | 0 | 0.0 | 0.85 |
-| `generic_no_documentation` | 3918 | 79.1 | 0.3 |
+| `generic_no_documentation` | 0 | 0.0 | 0.3 |
 
 ## 3. Pairing cases per master item
 
@@ -30,9 +30,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 |---|---:|
 | `case_4_generic` | 1398 |
 | `case5_master_is_material` | 973 |
+| `cases_1_3_library` | 623 |
 | `no_kapitola_rule` | 432 |
-| `mixed` | 337 |
-| `cases_1_3_library` | 286 |
 | `skipped_status` | 223 |
 | `no_pairing` | 215 |
 | `skipped_mj_incompatible` | 101 |
@@ -92,9 +91,9 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | [odhad] Penetrace univerzální — disperzní | 15.34 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 2 | [odhad] Malba disperzní — 1× vrstva | 11.51 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 3 | [odhad] Tmel akrylátový — spárování / dilatace | 3.83 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 1 | Penetrace univerzální — disperzní | 15.34 | l | 🌐 ČSN 73 3450 | 0.6 |
+  | 2 | Malba disperzní — 1× vrstva | 11.51 | l | 🌐 ČSN 73 3300 | 0.6 |
+  | 3 | Tmel akrylátový — spárování / dilatace | 3.83 | kg | 🌐 ČSN EN ISO 11600 | 0.6 |
 
 ### Master `31aa7a4d-226…` — kapitola `PSV-771`
 - **popis:** Dlažba keramická — kladení (F01)
@@ -107,7 +106,7 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | 1 | Nášlapná vrstva (dlažba/vinyl)	15/7 mm | 9.96 | m2 | ⚠ TZ Podlahy (rate odhad) | 0.5 |
   | 2 | Lepidlo (Cemix) tl. 5 mm | 49.83 | kg | 📋 Tabulka 0030 | 0.95 |
   | 3 | Dle použitého sytému (ref. např. Cemix penetrace H) | 1.99 | l | 📋 Tabulka 0030 | 0.95 |
-  | 4 | [odhad] Spárovací hmota — keramika | 4.98 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 4 | Spárovací hmota — keramika | 4.98 | kg | 🌐 ČSN EN 13888 | 0.6 |
 
 ### Master `2e9c92df-47c…` — kapitola `PSV-781`
 - **popis:** Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)
@@ -118,9 +117,9 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
   | 1 | Obklad keramický (Schluter) | 6.70 | m2 | ⚠ TZ Obklady vnitřní (rate odhad) | 0.5 |
-  | 2 | [odhad] Penetrace univerzální — disperzní | 1.34 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 3 | [odhad] Lepidlo flexibilní C2TE — disperzní | 33.49 | kg | ⚠ ODHAD — generic standard | 0.3 |
-  | 4 | [odhad] Spárovací hmota — keramika | 3.35 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 2 | Penetrace univerzální — disperzní | 1.34 | l | 🌐 ČSN 73 3450 | 0.6 |
+  | 3 | Lepidlo flexibilní C2TE — disperzní | 33.49 | kg | 🌐 ČSN EN 12004 | 0.6 |
+  | 4 | Spárovací hmota — keramika | 3.35 | kg | 🌐 ČSN EN 13888 | 0.6 |
 
 ### Master `d42db1fc-33f…` — kapitola `HSV-622.1`
 - **popis:** Cihelné pásky Terca — kladení
@@ -131,8 +130,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
   | 1 | Obkladový pásek cihelný (Terca) | 542.58 | m2 | ⚠ TZ Fasádní plášť (rate odhad) | 0.5 |
-  | 2 | [odhad] Penetrace univerzální — disperzní | 108.52 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 3 | [odhad] Lepidlo flexibilní C2TE — disperzní | 2,712.90 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 2 | Penetrace univerzální — disperzní | 108.52 | l | 🌐 ČSN 73 3450 | 0.6 |
+  | 3 | Lepidlo flexibilní C2TE — disperzní | 2,712.90 | kg | 🌐 ČSN EN 12004 | 0.6 |
 
 ### Master `5f3d6fb4-7d5…` — kapitola `HSV-963`
 - **popis:** Prostup ve stropě — VZT (vzduchotechnika), 1.NP
@@ -142,8 +141,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | [odhad] Tmel požárně-odolný — utěsnění prostupu | 0.50 | kg | ⚠ ODHAD — generic standard | 0.3 |
-  | 2 | [odhad] Manžeta protipožární — prostup | 1.00 | ks | ⚠ ODHAD — generic standard | 0.3 |
+  | 1 | Tmel požárně-odolný — utěsnění prostupu | 0.50 | kg | 🌐 ČSN 73 0810 + ČSN EN 1366-3 | 0.6 |
+  | 2 | Manžeta protipožární — prostup | 1.00 | ks | 🌐 ČSN 73 0810 + ČSN EN 1366-3 | 0.6 |
 
 ## 7. Stop conditions check
 
@@ -153,7 +152,7 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Sub-items have paired_with link | 100 % | 100 % | ✅ |
 | Cross-objekt scope inherited | 100 % | 100 % | ✅ |
 | Generic rates NOT inlined in code | external KB | generic_consumption_rates.json | ✅ |
-| Case 4 sub-items use [odhad] prefix | required | 3918 / 3918 | ✅ |
+| Case 4 sub-items use [odhad] prefix | required | 0 / 0 | ✅ |
 
 ---
 
