@@ -87,6 +87,18 @@ CASE5_PRIMARY_KEYWORDS = [
     "armovací síť", "armovaci sit",
     # Existing items that are already standalone material rows:
     "tmel ", "akrylový ",
+    # GATE 4 additions — PSV-763.2 single-material rows + others
+    "uw + cw profil", "ud + cd profil", "uw+cw profil", "cd profil", "cw profil",
+    "sdk desky", "sdk deska",
+    "izolace minerální vata", "izolace mineralni vata", "izolace minerá",
+    "tmelení q", "tmeleni q",
+    "pur pěna", "pur pena",
+    "závěsy posuvné", "zavesy posuvne",
+    "parozábrana fólie", "parozabrana folie", "difuzní fólie", "difuzni folie",
+    "latě ", "kontralatě",
+    "hřebenáče", "hrebenace",
+    "kročejová izolace", "krocejova izolace",
+    "polystyrenbeton", "polystyrén beton", "polystyren beton",
 ]
 
 # Work-type to material-kind needs map. Each entry tells the pairer which
@@ -211,6 +223,110 @@ SKIP_STATUSES = {
     "to_be_clarified_with_collegues",
 }
 
+# --- GATE 4 bug fixes -------------------------------------------------------
+#
+# Bug 1: install-action masters (Osazení ..., — kotvení, — klika, — spárování,
+#        — montáž) are paired siblings of "— dodávka" masters that already
+#        carry the materials. Pairing them produces double-counted materials.
+# Bug 2: MJ incompatibility — a "ks" master cannot consume a "kg/m²" rate.
+#        Skip rate application when master.MJ != rate.MJ_applied_to.
+# Bug 4: Over-broad kapitola matching — PSV-763.2 holds 5 distinct work
+#        types per WF group (profily / SDK desky / vata / tmelení / kotvení).
+#        Material attachment must respect the master's main material focus,
+#        not just its kapitola.
+
+# Bug 1 — install-only patterns that skip pairing
+INSTALL_SUFFIX_RE = re.compile(
+    r"\s—\s+(kotvení|kotveni|montáž|montaz|klika|spárování|sparovani)\b",
+    re.IGNORECASE,
+)
+INSTALL_PREFIX_RE = re.compile(
+    r"^(osazení|osazeni|rektifikační šrouby|rektifikacni srouby|"
+    r"dodatečné kotvení|dodatecne kotveni|"
+    r"montáž (tp|lp|op|li)|montaz (tp|lp|op|li))",
+    re.IGNORECASE,
+)
+
+# Bug 4 — work-focus rules: master popis keyword → allowed material_kind set
+# Pairing intersects this with kapitola needs to suppress off-topic ancillaries.
+WORK_FOCUS_RULES: list[tuple[re.Pattern[str], set[str]]] = [
+    (re.compile(r"\bsdk\s+desk|\bsadrokart\w*\s+desk|\bsdk\b(?!\s+podhled)", re.I),
+     {"sdk_deska", "perlinka", "tmel_tesnici"}),
+    (re.compile(r"\bprofil[yo]\b|\b(ud|cd|uw|cw)\s+profil|\b(uw|cw)\s*\+", re.I),
+     {"sdk_profily"}),
+    (re.compile(r"\bzávěs\w*\s+podhled|\bzaves\w*\s+podhled", re.I),
+     {"sdk_zavesy", "kotevni_prvky"}),
+    (re.compile(r"\bvata\b|\bminer\w+\s+vat|\bcedicov", re.I),
+     {"mineralni_vata", "kotevni_prvky", "lepidlo"}),
+    (re.compile(r"\beps\b|\bpolystyr", re.I),
+     {"eps_polystyren", "kotevni_prvky", "lepidlo"}),
+    (re.compile(r"\bxps\b", re.I),
+     {"xps_extrudovany_polystyren", "kotevni_prvky", "lepidlo"}),
+    (re.compile(r"\bkotvení\b|\bkotveni\b|\bhmoždink|\bhmozdink|\bkotva", re.I),
+     {"kotevni_prvky", "pur_pena"}),
+    (re.compile(r"\btmelení|\btmeleni|\btmel\w+\s+q", re.I),
+     {"tmel_tesnici", "perlinka"}),
+    (re.compile(r"\bdlažb|\bdlazb", re.I),
+     {"dlazba_keramicka", "lepidlo", "sparovaci_hmota", "penetrace",
+      "lista_zakoncovaci"}),
+    (re.compile(r"\bvinyl", re.I),
+     {"vinyl_dilce", "lepidlo", "cementovy_poter", "lista_zakoncovaci"}),
+    (re.compile(r"\bobklad\w*\s+keram|\bkeramic\w*\s+obklad", re.I),
+     {"obklad_keramicky", "lepidlo", "sparovaci_hmota", "hydroizolace_sterka",
+      "penetrace", "lista_zakoncovaci"}),
+    (re.compile(r"\bcihel\w*\s+pásk|\bcihel\w*\s+pask|\bterca\b", re.I),
+     {"obklad_cihelny_terca", "lepidlo", "penetrace", "sparovaci_hmota"}),
+    (re.compile(r"\bmalb\w|\bvymal\w|\bnátěr|\bnater\b", re.I),
+     {"malba_interier", "vymalba", "tmel_tesnici", "penetrace"}),
+    (re.compile(r"\bomítk\w|\bomitk\w", re.I),
+     {"omitka_vapenocementova", "omitka_sadrova", "penetrace", "perlinka",
+      "lista_zakoncovaci"}),
+    (re.compile(r"\bpotěr\b|\bpoter\b|\bmazanin\w", re.I),
+     {"cementovy_poter", "kari_sit", "pe_separacni_folie", "penetrace"}),
+    (re.compile(r"\bprostup\w|\bštrob|\bstrob", re.I),
+     {"tmel_protipozarni", "manzeta_protipozarni", "objimka_protipozarni"}),
+    (re.compile(r"\bhydroizolac", re.I),
+     {"hydroizolace", "hydroizolace_sterka"}),
+    (re.compile(r"\bzinkov|\bžárov\w+\s+zink|\bzarov\w+\s+zink", re.I),
+     {"zinkove_pozinkovani"}),
+    (re.compile(r"\banti.?graffit", re.I),
+     {"anti_graffiti", "penetrace"}),
+    (re.compile(r"\bpolyureta|\bpu\s+stěrk|\bpu\s+sterk", re.I),
+     {"polyuretanova_uprava", "penetrace"}),
+    (re.compile(r"\bepoxid", re.I),
+     {"epoxidova_uprava", "penetrace"}),
+]
+
+
+def _is_install_only(popis: str) -> bool:
+    """Bug 1 — master is install-only (sibling carries materials)."""
+    if not popis:
+        return False
+    if INSTALL_SUFFIX_RE.search(popis):
+        return True
+    if INSTALL_PREFIX_RE.search(popis):
+        return True
+    return False
+
+
+def _detect_work_focus(popis: str) -> Optional[set[str]]:
+    """Bug 4 — derive allowed material_kinds from master popis. Returns
+    None when no rule matches (caller uses kapitola needs as-is).
+    """
+    if not popis:
+        return None
+    for pat, kinds in WORK_FOCUS_RULES:
+        if pat.search(popis):
+            return kinds
+    return None
+
+
+def _mj_compatible(master_mj: str, rate_denom: Optional[str]) -> bool:
+    """Bug 2 — master.MJ must equal rate.unit_denom (case-insensitive)."""
+    if not rate_denom:
+        return False
+    return (master_mj or "").lower() == rate_denom.lower()
+
 
 def _normalize(s: str) -> str:
     return (s.replace("á", "a").replace("é", "e").replace("í", "i")
@@ -318,15 +434,16 @@ def _build_subitem(*, master: dict[str, Any], verbatim_popis: str,
     }
 
 
-def _candidate_library_matches(master: dict[str, Any], needs: dict[str, Any],
+def _candidate_library_matches(master: dict[str, Any],
+                              relevant_kinds: set[str],
                               library_by_kap: dict[str, list[dict[str, Any]]]
                               ) -> list[dict[str, Any]]:
     """Find library entries that match master's kapitola AND a relevant
-    material_kind. Returns up to 3 ancillary candidates."""
+    material_kind (already work-focus filtered by caller). Returns up to
+    3 ancillary candidates, one per kind."""
     kap = master.get("kapitola")
     if not kap or kap not in library_by_kap:
         return []
-    relevant_kinds = set(needs.get("primary_kinds", []) + needs.get("ancillary_kinds", []))
     matches = []
     seen_kinds: set[str] = set()
     for entry in library_by_kap[kap]:
@@ -335,7 +452,6 @@ def _candidate_library_matches(master: dict[str, Any], needs: dict[str, Any],
             continue
         if kind in seen_kinds:
             continue  # One representative per material_kind per master
-        # Prefer entries with manufacturer or thickness specifikum
         seen_kinds.add(kind)
         matches.append(entry)
         if len(matches) >= 3:
@@ -351,7 +467,8 @@ def _pair_master(master: dict[str, Any],
 
     Returns (sub_items, case_label) where case_label is one of:
       'case5_master_is_material' | 'cases_1_3_library' | 'case_4_generic' |
-      'no_pairing'
+      'mixed' | 'skipped_install_only' | 'skipped_mj_incompatible' |
+      'no_pairing' | etc.
     """
     status = master.get("status", "")
     if status in SKIP_STATUSES:
@@ -367,7 +484,7 @@ def _pair_master(master: dict[str, Any],
 
     needs = KAPITOLA_NEEDS[kapitola]
     master_qty = float(master.get("mnozstvi", 0) or 0)
-    master_mj = master.get("MJ", "")
+    master_mj = (master.get("MJ") or "").lower()
 
     if master_qty <= 0:
         return [], "skipped_zero_qty"
@@ -376,10 +493,27 @@ def _pair_master(master: dict[str, Any],
     if _is_case5_master(popis):
         return [], "case5_master_is_material"
 
-    sub_items: list[dict[str, Any]] = []
+    # Bug 1 — install-only master (sibling "— dodávka" carries the materials)
+    if _is_install_only(popis):
+        return [], "skipped_install_only"
 
-    # Cases 1-3: library-matched candidates
-    library_matches = _candidate_library_matches(master, needs, library_by_kap)
+    # Bug 4 — work-focus filter limits ancillary kinds to master's primary
+    # material subject (e.g. SDK podhled master gets only sdk_* + tmel,
+    # not vata or kotvení).
+    work_focus = _detect_work_focus(popis)
+    primary_kinds = set(needs.get("primary_kinds", []))
+    ancillary_kinds = set(needs.get("ancillary_kinds", []))
+    relevant_kinds = primary_kinds | ancillary_kinds
+    if work_focus is not None:
+        relevant_kinds = relevant_kinds & work_focus
+
+    sub_items: list[dict[str, Any]] = []
+    n_mj_skips = 0
+
+    # Cases 1-3: library-matched candidates (filtered by work_focus via
+    # relevant_kinds intersection)
+    library_matches = _candidate_library_matches(master, relevant_kinds,
+                                                 library_by_kap)
     library_covered_kinds: set[str] = set()
     for entry in library_matches:
         kind = entry.get("material_kind")
@@ -392,29 +526,46 @@ def _pair_master(master: dict[str, Any],
         # Compute mnozstvi
         rate = entry.get("consumption_rate")
         if rate and rate.get("value"):
-            # Case 1 — explicit TZ rate, applies if MJ compatible
+            # Case 1 — explicit TZ rate. Bug 2: enforce MJ compatibility.
+            rate_denom = rate.get("unit_denom", "")
+            if not _mj_compatible(master_mj, rate_denom):
+                n_mj_skips += 1
+                # Fall through to no-rate / KB lookup
+                rate = None
+        if rate and rate.get("value"):
             rate_val = float(rate["value"])
             rate_num = rate.get("unit_num", "")
             rate_denom = rate.get("unit_denom", "")
             sub_qty = master_qty * rate_val
             sub_mj = rate_num
-            formula = f"master.qty {master_qty} {master_mj} × {rate_val} {rate_num}/{rate_denom}"
+            formula = (f"master.qty {master_qty} {master_mj} × "
+                       f"{rate_val} {rate_num}/{rate_denom}")
             qty_conf = CONFIDENCE["tz_explicit_with_rate"]
         else:
             # Case 2/3 — no rate; look up KB generic rate for kind
             kb_rate = _find_kb_rate_for_kind(kind, kapitola, rates_kb)
+            # Bug 2: KB rate also needs MJ compatibility
+            if kb_rate and master_mj != kb_rate["MJ_applied_to"].lower():
+                kb_rate = None
+                n_mj_skips += 1
             if kb_rate:
                 sub_qty = master_qty * float(kb_rate["rate"])
                 sub_mj = kb_rate["MJ_consumed"]
                 formula = (f"master.qty {master_qty} {master_mj} × "
                            f"{kb_rate['rate']} {kb_rate['MJ_consumed']}"
                            f"/{kb_rate['MJ_applied_to']} (KB rate)")
-                qty_conf = CONFIDENCE["tz_explicit_no_rate"] if source_type.startswith("tz_") else 0.5
+                qty_conf = (CONFIDENCE["tz_explicit_no_rate"]
+                            if source_type.startswith("tz_") else 0.5)
             else:
-                # No rate available — match becomes a tagged-only entry
-                sub_qty = master_qty  # 1:1 implied (m² of work = m² of material)
-                sub_mj = entry.get("MJ") or master_mj
-                formula = f"master.qty {master_qty} {master_mj} × 1:1 (no rate available)"
+                # Bug 2: skip 1:1 fallback when entry MJ doesn't match master.MJ
+                entry_mj = (entry.get("MJ") or "").lower()
+                if entry_mj and entry_mj != master_mj:
+                    n_mj_skips += 1
+                    continue  # Skip this library candidate entirely
+                sub_qty = master_qty
+                sub_mj = entry_mj or master_mj
+                formula = (f"master.qty {master_qty} {master_mj} × 1:1 "
+                           f"(no rate available, MJ compatible)")
                 qty_conf = 0.3
 
         sub_items.append(_build_subitem(
@@ -433,7 +584,7 @@ def _pair_master(master: dict[str, Any],
         ))
 
     # Case 4 — fill gaps from generic-rate KB for ancillary kinds NOT covered
-    # by library hits.
+    # by library hits. Bug 4 (work_focus) and Bug 2 (MJ) both apply.
     for kb_key in needs.get("generic_fallback_keys", []):
         if kb_key not in rates_kb:
             continue
@@ -441,8 +592,14 @@ def _pair_master(master: dict[str, Any],
         kb_kind = kb_entry.get("material_kind")
         if kb_kind in library_covered_kinds:
             continue  # Already covered by Case 1-3
-        # Verify kapitola applicability per KB whitelist
         if kapitola not in kb_entry.get("applies_to_kapitoly", []):
+            continue
+        # Bug 4: KB kind must pass work-focus filter
+        if work_focus is not None and kb_kind not in work_focus:
+            continue
+        # Bug 2: MJ must match
+        if master_mj != kb_entry["MJ_applied_to"].lower():
+            n_mj_skips += 1
             continue
         sub_qty = master_qty * float(kb_entry["rate"])
         formula = (f"master.qty {master_qty} {master_mj} × "
@@ -464,13 +621,15 @@ def _pair_master(master: dict[str, Any],
         ))
 
     if sub_items:
-        # Tag the master so Excel generator can pick up has_subitems
         case_label = ("cases_1_3_library" if library_matches and
-                      not any(s["source"] == "generic_no_documentation" for s in sub_items)
+                      not any(s["source"] == "generic_no_documentation"
+                              for s in sub_items)
                       else "case_4_generic" if not library_matches
                       else "mixed")
         return sub_items, case_label
 
+    if n_mj_skips > 0:
+        return [], "skipped_mj_incompatible"
     return [], "no_pairing"
 
 

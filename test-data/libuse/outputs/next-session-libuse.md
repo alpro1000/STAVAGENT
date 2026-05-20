@@ -7,8 +7,48 @@ extracted, 6 152 sub-items paired, Excel dashboard delivered)
 
 ## ⭐ Phase 6.6 — TZ-driven material decomposition (2026-05-20)
 
-**Status:** ✅ GATE 1 + GATE 2 + GATE 3 complete. Branch
+**Status:** ✅ GATE 1 + GATE 2 + GATE 3 + **GATE 4** complete. Branch
 `claude/tz-material-decomposition-lBp5D` pushed.
+
+### GATE 4 (2026-05-20 late) — 4 bug fixes + Czech rozpočet layout
+
+1. **Bug 1** (install-only double-counting) — 44 masters in NEEDS map
+   would have double-paired with their sibling "— dodávka" carriers
+   (HSV-642 "Osazení okenního rámu W03", PSV-766 "— kotvení", PSV-764
+   "Montáž TP01A", …). Now skipped via INSTALL_SUFFIX_RE / INSTALL_PREFIX_RE.
+2. **Bug 2** (MJ incompatibility) — 101 masters where master.MJ ≠
+   rate.MJ_applied_to (ks-master can't consume kg/m²). MJ check now
+   enforced on TZ rates, KB rates, and 1:1 fallback.
+3. **Bug 3** (master popis duplication) — fixed by new layout (master
+   row carries B-F, sub-rows carry G-L; blanks instead of repetition).
+4. **Bug 4** (over-broad kapitola matching) — WORK_FOCUS_RULES detect
+   master's primary subject (SDK / vata / kotvení / dlažba / malba /
+   omítka / potěr / prostup / hydroizolace / zinkov / anti-graffiti /
+   PU / epoxid). Intersect with kapitola needs so SDK desky no longer
+   attached to PSV-763.2 vata-rows.
+5. **Case 5 keywords expanded** — UW+CW profily, SDK desky, izolace
+   minerální vata, Tmelení Q3, PUR pěna, závěsy posuvné, parozábrana
+   fólie, latě, hřebenáče, kročejová izolace, polystyrenbeton now
+   correctly marked as standalone material specs (973 masters total,
+   was 547 in GATE 3).
+
+**Sub-items GATE 3 → GATE 4:** 6 152 → 4 956 (−1 196). Provenance:
+21 % documented (was 32 %), 79 % `[odhad]` (was 68 %). The shift
+reflects honest correction — Bug 4 removed wrongly-paired library
+matches, leaving more masters covered only by KB generic rates.
+
+**New Material_rozklad layout** (Czech rozpočet hierarchy):
+columns A-M, A=Pol.č. (1, 1.1, 1.2…), B-F master cols (master row
+only), G-L sub cols (sub rows only), M hidden master UUID,
+alternating master block tint (light blue / lighter), medium bottom
+border between blocks, status conditional formatting on L.
+
+**Audit dashboard:** Block 11 (Bug 1 install-only report) + Block 12
+(Bug 4 work-pattern + provenance delta table) added.
+
+**Items file integrity:** `items_objekt_D_complete.json` SHA still
+`373685edbe427d02…` ✅. GATE 4 wrote only to
+`items_objekt_D_with_materials.json`.
 
 ### Artifacts added (additive — main VV untouched)
 
