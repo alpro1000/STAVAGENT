@@ -530,6 +530,113 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-20 — Session: UEP PR4a — MEP D.1.4 matrices + gbXML adapter
+
+**Topic:** UEP PR4a per `docs/tasks/TASK_UEP_PR4.md` §3.1 + §3.2
+(Q16 = C hierarchical). Adds detailed coverage matrices for D.1.4
+silnoproud / slaboproud / ZTI / VZT / ÚT / plyn / MaR (7 disciplines),
+a hierarchical `mep_base` parent shared across all subtypes, the gbXML
+extractor (energy / HVAC exchange format), and multi-subtype detection
+in `project_type_detector`. Scope-locked to PR4a; PR4b (full IFC diff),
+PR4c (UI), PR4d (perf) remain queued.
+
+**Rozhodnuto:**
+- **Q16 = C hierarchical** confirmed: each subtype YAML declares
+  `extends: mep_base` and inherits all 15 base rows; `load_matrix()`
+  resolves the parent transparently, dedupes by category, and
+  subtype rows REPLACE base rows on conflict.
+- `load_matrices_for_subtypes(["mep_d14_silnoproud", "mep_d14_zti",
+  "mep_d14_vzt"])` returns the unioned category list for projects
+  bundling multiple D.1.4 disciplines (canonical Czech residential
+  D&B pattern).
+- `ProjectTypeDetection.mep_subtypes: list[str]` populated whenever
+  ANY D.1.4 signal fires — independent of umbrella `top_choice` so a
+  residential project with an embedded D.1.4 silnoproud TZ surfaces
+  both `top_choice="residential"` AND
+  `mep_subtypes=["mep_d14_silnoproud"]`.
+- gbXML extractor mirrors LandXML iterparse pattern (≤200 MB memory
+  bound per v3 §15.4). Emits `space_inventory` + `surface_inventory`
+  + `hvac_zone` + reuses `norm_references` for Construction/Material
+  layers — these feed `mep_d14_vzt` / `mep_d14_ut` matrices.
+- `_ALLOWED_PROJECT_TYPES` in `routes_uep.py` extended 4 → 12 (the
+  path-traversal allow-list from Amazon Q PR #1186 hotfix).
+
+**Odmítnuto:**
+- Real gbXML corpus calibration — STOP-condition #2 mentioned the
+  option but corpus has none; synthetic Revit-shaped fixture in
+  `test_uep_gbxml_extractor.py` is sufficient for PR4a scope (basic
+  spaces/surfaces/HVAC zones). Real-export calibration left for PR4b
+  when a corpus sample lands.
+- Separate top-level `subtype_matrix_dir` config — `load_matrix()`
+  resolves `extends:` from the same directory as the subtype YAML
+  (or `base_dir=` override for tests). Adding a config key would be
+  overengineering for one matrix folder.
+- Changing `CoverageRequirement` model shape — hierarchical merge
+  happens at YAML-load layer; the runtime model is unchanged, so
+  all PR1-3 evaluation paths work without code change.
+- IFC diff engine (PR4b), UI viewers (PR4c), perf optimization
+  (PR4d), AI narrative (PR5), MCP tool additions for MEP subtypes —
+  scope-locked out of PR4a per task split decision in §6.
+
+**Otevřené otázky:**
+- Reconciliation rules for MEP subtypes — `/uep/config/reconciliation-rules?project_type=mep_d14_*`
+  will 404 until PR4 §3.x adds the rule YAMLs. Not blocking PR4a
+  (the config endpoint surfaces 404 cleanly).
+- `job_runner.py` currently calls `matrix_path_for(info.project_type)`
+  with a single string — when `JobInfo.project_type == "mep_only"`
+  the coverage gate cannot yet apply multiple subtype matrices. The
+  hook for this is `load_matrices_for_subtypes` but `job_runner`
+  isn't yet wired to consume `mep_subtypes` from the detection pass.
+  Followup ticket: extend `JobInfo` schema or thread the subtypes
+  through `start_job()` body.
+- gbXML reference samples — no real Revit / OpenStudio export in
+  `test-data/`. PR4b calibration should request a sample upload from
+  Alexander before extending the adapter (currently sufficient for
+  unit tests + smoke checks; production usage will need calibration
+  pass against ≥1 real export).
+- D.1.4 reconciliation rules + derivation rules YAMLs (CKZ, drift
+  thresholds per discipline) — out of PR4a, queued for PR4b/c.
+
+**Co dál:**
+1. Push branch `claude/uep-pr4a-matrices-adapter-1OEjF` + open PR
+   with title "feat(uep): PR4a — MEP D.1.4 hierarchical matrices +
+   gbXML adapter".
+2. Wire `mep_subtypes` from `detect_project_type` into `JobInfo` /
+   `start_job()` so `job_runner` can call `load_matrices_for_subtypes`
+   when subtypes detected (small follow-up commit on the same PR or
+   separate PR4a-jobrunner ticket).
+3. PR4b — full IFC diff engine (quantity deltas, material changes,
+   severity), per task §3.3 + Q19 = B.
+4. PR4b also: collect a real gbXML sample for calibration pass + add
+   a discipline-aware filename test fixture (multi-discipline pack
+   currently relies on user-friendly naming; production uploads from
+   Allplan / Revit often strip the D.1.4.x prefix).
+5. Reconciliation + derivation rules YAMLs per MEP subtype (deferred
+   from PR4a to PR4b/c).
+
+**Test count delta (PR4a):**
+- gbXML extractor: 8 new (`test_uep_gbxml_extractor.py`)
+- Hierarchical coverage: 12 new (`test_uep_coverage_hierarchical.py`)
+- MEP matrices smoke: 11 new (`test_uep_coverage_matrices_pr4a.py`)
+- Multi-subtype detection: 11 new (`test_uep_project_type_detector_multi_subtype.py`)
+- **Total: 42 new tests**, 81 tests pass in the relevant UEP module
+  set. Zero PR3 regressions.
+
+**Acceptance criteria status (per TASK_UEP_PR4.md §4):**
+- AC 1 (7 subtype matrices) ✅
+- AC 2 (mep_base shared base) ✅
+- AC 3 (≥15 categories per subtype) ✅ (28-32 per subtype after merge)
+- AC 4 (multi-subtype aggregation) ✅
+- AC 5 (project type detection updated) ✅
+- AC 6 (gbXML parses spaces/surfaces/HVAC zones) ✅
+- AC 7 (integration with VZT/ÚT matrices) ✅ via shared
+  `hvac_zone` + `space_inventory` + `surface_inventory` categories
+- AC 26 (MEP matrix tests per subtype) ✅
+- AC 27 (gbXML adapter tests) ✅
+- AC 8-25, 28-33 (IFC diff full, UI, performance, docs) → PR4b/c/d
+
+---
+
 ## 10. Document metadata
 
 | Field | Value |
