@@ -1,0 +1,290 @@
+{
+  "_schema_version": "2.0",
+  "_generated_at": "2026-05-18",
+  "_purpose": "Cross-reference critical Tier 1 dimensions with nearby MTEXT semantic context for element attribution.",
+  "_critical_dim_values_checked": [
+    2100,
+    2795,
+    2865,
+    2630,
+    3200,
+    6350,
+    3340,
+    180,
+    160
+  ],
+  "semantic_pairs": [
+    {
+      "dimension_value_mm": 2100,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_koty nepouzite",
+      "dimension_position": [
+        3829440.0,
+        1862108.0
+      ],
+      "nearby_text_count": 1,
+      "nearby_text_top3": [
+        {
+          "text": "H",
+          "classification": "other",
+          "distance_mm": 391.4
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2100,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_koty nepouzite",
+      "dimension_position": [
+        3829290.0,
+        1815042.0
+      ],
+      "nearby_text_count": 1,
+      "nearby_text_top3": [
+        {
+          "text": "E",
+          "classification": "other",
+          "distance_mm": 457.0
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2100,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3780019.0,
+        1838929.0
+      ],
+      "nearby_text_count": 1,
+      "nearby_text_top3": [
+        {
+          "text": "S06",
+          "classification": "skladba_code",
+          "distance_mm": 877.5
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2795,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3783164.0,
+        1838929.0
+      ],
+      "nearby_text_count": 1,
+      "nearby_text_top3": [
+        {
+          "text": "S07",
+          "classification": "skladba_code",
+          "distance_mm": 788.5
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2865,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3786434.0,
+        1838929.0
+      ],
+      "nearby_text_count": 2,
+      "nearby_text_top3": [
+        {
+          "text": "\\c481;ocelové stropnice - viz stavebně konstrukční část PD",
+          "classification": "konstr_callout_general",
+          "distance_mm": 233.2
+        },
+        {
+          "text": "S09",
+          "classification": "skladba_code",
+          "distance_mm": 1034.9
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2865,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3786434.0,
+        1838929.0
+      ],
+      "nearby_text_count": 2,
+      "nearby_text_top3": [
+        {
+          "text": "\\c481;ocelové stropnice - viz stavebně konstrukční část PD",
+          "classification": "konstr_callout_general",
+          "distance_mm": 233.2
+        },
+        {
+          "text": "S09",
+          "classification": "skladba_code",
+          "distance_mm": 1034.9
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2630,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3789565.0,
+        1838929.0
+      ],
+      "nearby_text_count": 4,
+      "nearby_text_top3": [
+        {
+          "text": "HEA 160",
+          "classification": "konstr_callout_profile",
+          "distance_mm": 587.5
+        },
+        {
+          "text": "S11",
+          "classification": "skladba_code",
+          "distance_mm": 861.4
+        },
+        {
+          "text": "JEKL 100x4",
+          "classification": "konstr_callout_general",
+          "distance_mm": 990.5
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 2630,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3806450.0,
+        1847735.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 3200,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3831940.0,
+        1977816.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 3200,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3861640.0,
+        1977816.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 3200,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3831940.0,
+        1912271.0
+      ],
+      "nearby_text_count": 1,
+      "nearby_text_top3": [
+        {
+          "text": "POZN.1.03",
+          "classification": "poznamka_reference",
+          "distance_mm": 1424.1
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 6350,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3925090.0,
+        1833855.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 6350,
+      "dimension_file": "sklad_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3955261.0,
+        1855783.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 3340,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3888140.0,
+        1847535.0
+      ],
+      "nearby_text_count": 1,
+      "nearby_text_top3": [
+        {
+          "text": "B",
+          "classification": "other",
+          "distance_mm": 1069.2
+        }
+      ]
+    },
+    {
+      "dimension_value_mm": 180,
+      "dimension_file": "sklad_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3956659.0,
+        1837333.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 160,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3895560.0,
+        1845215.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 160,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3866080.0,
+        1845215.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    },
+    {
+      "dimension_value_mm": 160,
+      "dimension_file": "dum_DPZ",
+      "dimension_layer": "SM_kóty",
+      "dimension_position": [
+        3836380.0,
+        1845215.0
+      ],
+      "nearby_text_count": 0,
+      "nearby_text_top3": []
+    }
+  ]
+}

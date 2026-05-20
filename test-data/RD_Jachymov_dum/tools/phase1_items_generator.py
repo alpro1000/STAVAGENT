@@ -2,6 +2,19 @@
 """
 Phase 1 items generator for RD Jáchymov — variant B (max detail, ~140 items).
 
+# ─────────────────────────────────────────────────────────────────────────
+# AUDIT 2026-05-18 (Part 5b WebSearch verification):
+# Heuristic urs_code_proposed estimates correct 6-digit family in ~75 % cases
+# but 9-digit leaf wrong in ~63 % cases (6 of 8 verified codes had wrong leaf:
+# different distance band, material, geometry, or location).
+#
+# Recommendation: emit 6-digit family + leaf_disambiguation_needed flag,
+# defer leaf to production URS_MATCHER service (online catalog).
+# See outputs/urs_websearch_verifications.json for evidence.
+# Items with urs_status = "wrong_leaf_disambiguation_needed" carry the
+# 6-digit family in `urs_code_family_6digit` for downstream lookup.
+# ─────────────────────────────────────────────────────────────────────────
+
 Generates structured items per kapitola GROUP (HSV / PSV / TZB+M / VRN) with
 4 STOP gates. Re-runnable: each group invocation merges into
 outputs/items_rd_jachymov_complete.json without overwriting other groups.
@@ -152,11 +165,12 @@ PER_PODLAZI_AREA_M2 = {
     "3.NP": 64.5,   # 3.01..3.06
 }
 PER_PODLAZI_VYSKA_M = {
-    "1.PP": 2.50,   # TZ silent — Czech RD CSN default (sklep)
-    "1.NP": 2.80,   # TZ silent — Czech RD CSN default
-    "2.NP": 2.80,   # TZ silent — Czech RD CSN default
-    "3.NP": 2.65,   # TZ silent — Czech RD CSN default (nadezdívka, Σ s krov ≤ 13 m)
+    "1.PP": 2.10,   # DXF SM_kóty + řez A-A explicit (Path C Tier 1) — was CSN default 2.50 m
+    "1.NP": 2.795,  # DXF SM_kóty + řez A-A explicit (Path C Tier 1) — was CSN default 2.80 m
+    "2.NP": 2.865,  # DXF SM_kóty + řez A-A explicit (Path C Tier 1) — was CSN default 2.80 m
+    "3.NP": 2.63,   # DXF SM_kóty + řez A-A explicit (Path C Tier 1) — was CSN default 2.65 m
 }
+PER_PODLAZI_VYSKA_SOURCE = "DXF SM_kóty layer DIMENSION + řez D.1.1.2.2.21 explicit (Path C Tier 1) — replaces CSN default fallback. S-code context confirms: 1.NP→S07 trámový, 2.NP→S09 ocelobeton, 3.NP→S11 biodeska."
 KOUPELNY_LIST = [
     {"room_id": "1.05", "podlazi": "1.NP", "area_m2": 4.10, "obvod_m": 8.4,  "fixtures_dxf": ["vana", "umyvadlo"], "fixtures_tz_assumption": ["WC"]},
     {"room_id": "2.03", "podlazi": "2.NP", "area_m2": 2.40, "obvod_m": 6.2,  "fixtures_dxf": ["umyvadlo"],          "fixtures_tz_assumption": ["WC", "sprcha"]},
@@ -297,6 +311,26 @@ def gen_HSV_1():
            "m³", 6.0, "L=2.5 × W=2.0 × H=1.2 (dvorek odkop)", C_GEOM_FROM_TZ,
            "132211101", ["132201101", "131211101"],
            "TZ ARS dům §6.2 zahrada — nový vstup do 1.PP", "zemni_prace", [3]),
+        # NEW Path C Gate 5: anglický dvorek skladba z řez C-C
+        mk(O, "HSV-1 Zemní práce", "Anglický dvorek — skladba dlažby",
+           "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 40 mm + podkladní nosná vrstva kamenná drť 4-8 mm tl. 150 mm na zhutněnou zemní pláň (30 MPa)",
+           "m²", 30.0,
+           "PDF řez C-C explicit composition + anglický dvorek ~30 m² odhad (2.5 × 2.0 m + odkop k vstupu 1.PP)",
+           C_REGEX_TZ,
+           "564831111", ["564851111"],
+           "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 4-vrstvý dlažební systém (Path C Tier 3 embedded tables)",
+           "podlahar", [],
+           data_quality="tz_explicit"),
+        # NEW Path C Gate 5: terasa garapa skladba podkladu z řez C-C
+        mk(O, "HSV-1 Zemní práce", "Terasa garapa — podkladní rošt",
+           "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm + štěrkový podsyp 16/32 mm tl. 100 mm + hrubý podsyp 4/8 mm tl. 150 mm + geotextilie",
+           "m²", 30.0,
+           "PDF řez C-C explicit composition + terasa ~30 m² odhad (rozměry z TZ ARS dům §4 terasa za op. stěnou)",
+           C_REGEX_TZ,
+           "564831111", ["564851111"],
+           "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 5-vrstvý podkladní systém terasa (Path C Tier 3 embedded tables); dřevěná prkna garapa same item v PSV-76 Truhlář",
+           "podlahar", [],
+           data_quality="tz_explicit"),
         mk(O, "HSV-1 Zemní práce", "Pažení rýh",
            "Pažení a rozepření dočasných výkopů příložné, hl. do 2 m, v zemině třídy 3",
            "m²", 36.0, "obvod rýh BV 2×(10+1.2) × hloubka 1.6", C_GEOM_FROM_TZ,
@@ -735,10 +769,13 @@ def gen_HSV_5():
            "712311101", ["711132101"],
            "TZ ARS dům §4 — skladba nadkrokevní s parotěsem", "izolater_HI", []),
         mk(O, "HSV-5 Krov + střecha", "Nadkrokevní PIR izolace",
-           "Nadkrokevní tepelná izolace PIR (polyisokyanurát) tl. 180 mm (λ = 0.022 W/mK)",
-           "m²", DUM["krytina_m2_odhad"], "= 141 m²", C_GEOM_FROM_TZ,
+           "Nadkrokevní tepelná izolace PIR (polyisokyanurát) tl. 160 mm (λ=0,022 W/mK) — řez A-A S10 explicit",
+           "m²", DUM["krytina_m2_odhad"], "= 141 m² (plocha krytiny krov)", C_DXF_BBOX,
            "713131811", ["713141121"],
-           "TZ ARS dům §4 — nadkrokevní PIR (rušení tepelných mostů)", "izolater_TI", []),
+           "PDF řez D.1.1.2.2.21 legenda S10 'tepelná izolace PIR 160 mm' EXPLICIT (Path C Tier 1 finding — was prior 180 mm odhad)", "izolater_TI", [],
+           data_quality="dxf_plus_tz_explicit",
+           previous_mnozstvi=None,
+           recalc_reason="PIR tloušťka 160 mm (NE 180 mm odhad) z řez S10 legenda explicit"),
         mk(O, "HSV-5 Krov + střecha", "Doplňková HI pod kontralatě",
            "Doplňková hydroizolační difuzně otevřená folie nad PIR pod kontralatě",
            "m²", DUM["krytina_m2_odhad"] * 1.1, "141 × 1.1 přesah = 155", C_GEOM_FROM_TZ,
@@ -870,10 +907,10 @@ def gen_HSV_7():
            data_quality="dxf_deterministic",
            previous_mnozstvi=293.15,
            recalc_reason="External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m"),
-        mk(O, "HSV-7 Fasáda ETICS", "ETICS EPS 70F grey 200 mm",
-           "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 max tl. 200 mm + síťka + lepidlo + zatírací stěrka",
+        mk(O, "HSV-7 Fasáda ETICS", "ETICS EPS 70F grey 160 mm",
+           "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 tl. 160 mm + síťka + lepidlo + zatírací stěrka (řez S01+S12a explicit, ne 200 mm fallback)",
            "m²", etics_plocha,
-           f"obvod {DUM['obvod_pudorysu_m_odhad']} m × 0.55 × 13.0 m = {etics_plocha} m² (PBŘ: tl. max 200 mm vyhovuje h ≤ 12.0 m)",
+           f"obvod {DUM['obvod_pudorysu_m_odhad']} m × 0.55 × 13.0 m = {etics_plocha} m² (PBŘ: tl. max 200 mm povolena, řez S01+S12a EXPLICIT 160 mm applied)",
            C_DXF_BBOX,
            "622221121", ["622221001"],
            "TZ ARS dům §3.2 EXPLICIT 'fasádní EPS 70f grey (λ=0,032 W/mK)' + PBŘ EXPLICIT 'EPS tl. max. 200 mm' + DXF perimeter", "fasadnik_etics", [3],
@@ -1002,33 +1039,49 @@ def gen_PSV():
            "TZ ARS dům §4 + DXF MTEXT room labels", "truhlar", [5]),
     ]
 
-    # ── PSV-76 Klempíř ───────────────────────────────────────────────
-    krytina_obvod_strechy = round(DUM["obvod_pudorysu_m_odhad"] * 0.55, 1)  # 2 dlouhé strany + vikýře cca
+    # ── PSV-76 Klempíř — Path C Tier 3 finding: 173.8 m total split per typ ───
+    # Source: DXF MA_klempíř (75.4 m) + SM__ klempířina (98.4 m) geometry layers.
+    # No INSERT block markers for klempířina symbols (Tier 4 confirmed) — split heuristic.
+    # Per typ allocation: oplechování (úžlabí+hřeben+lemy) ~40%, parapety oken ~20%,
+    # svody+žlaby ~25%, vikýřové doplňky ~15%.
+    KLEMPIR_TOTAL_M_DXF = 173.8
     items += [
         mk(O, "PSV-76 Klempíř", "Oplechování krytiny",
-           "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Pzn lakovaný 0.55 mm)",
-           "bm", round(krytina_obvod_strechy + 4 * 6.0, 1),
-           "obvod střechy ~22 + 4 vikýře × 6 m okrajových lemů = 46", C_GEOM_FROM_TZ,
+           "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Al / Pzn lakovaný 0.55 mm)",
+           "bm", round(KLEMPIR_TOTAL_M_DXF * 0.40, 1),
+           f"DXF klempířina total {KLEMPIR_TOTAL_M_DXF} m × 0.40 (oplechování+úžlabí+hřeben+lemy) = {round(KLEMPIR_TOTAL_M_DXF * 0.40, 1)} bm",
+           C_DXF_BBOX,
            "764312235", ["764315235", "764312245"],
-           "TZ ARS dům §4 + DXF (obvod střechy z LWPOLYLINE situace, vikýře 4 ks)", "klempir", [5]),
+           "DXF MA_klempíř (75.4 m) + SM__ klempířina (98.4 m) total = 173.8 m × 0.40 split heuristic — Path C Tier 3", "klempir", [5],
+           data_quality="dxf_perimeter_ratio_estimate",
+           previous_mnozstvi=46.0,
+           recalc_reason="Klempířina total 173.8 m z DXF (Path C Tier 3) replaces estimate ~46 bm. +70% více klempířiny."),
         mk(O, "PSV-76 Klempíř", "Venkovní parapety oken",
-           "Venkovní parapety oken — Pzn plech lakovaný 250 mm × tl. 0.55 mm",
+           "Venkovní parapety oken — Pzn plech lakovaný 250 mm × tl. 0.55 mm × 16 ks oken",
            "bm", round(DXF_FINDINGS["dum_okna_total"] * 1.3, 1),
-           f"= {DXF_FINDINGS['dum_okna_total']} oken × průměrná šíře 1.3 m parapetu", C_DXF_INSERT,
+           f"= {DXF_FINDINGS['dum_okna_total']} oken (DXF INSERT) × průměrná šíře 1.3 m parapetu",
+           C_DXF_INSERT,
            "764218201", ["764218205", "764218210"],
-           "DXF okna count 16 + TZ ARS — venkovní parapety", "klempir", []),
-        mk(O, "PSV-76 Klempíř", "Dešťové svody Pzn",
-           "Dešťové svody Pzn 100 mm + žlaby — 4 svody × ~14 m výška",
-           "bm", 56.0,
-           "4 svody × 14 m (do úrovně okapu + svislé do gajgru) = 56", C_GEOM_FROM_TZ,
+           "DXF okna 16 ks INSERT blocks + standard parapet width", "klempir", [],
+           data_quality="dxf_deterministic"),
+        mk(O, "PSV-76 Klempíř", "Dešťové svody + žlaby",
+           "Dešťové svody Pzn 100 mm + žlaby — 4 svody × ~14 m + žlaby per obvod střechy",
+           "bm", round(KLEMPIR_TOTAL_M_DXF * 0.25, 1),
+           f"DXF klempířina total {KLEMPIR_TOTAL_M_DXF} m × 0.25 (svody+žlaby) = {round(KLEMPIR_TOTAL_M_DXF * 0.25, 1)} bm",
+           C_DXF_BBOX,
            "764454802", ["764451802", "764454805"],
-           "TZ ARS + odhad standard RD", "klempir", []),
-        mk(O, "PSV-76 Klempíř", "Vikýře — klempířské doplňky",
-           "Klempířské doplňky kolem vikýřů — atika, okapnice, závěrné lemy (4 vikýře)",
-           "ks", 4,
-           "4 vikýře (TZ ARS)", C_GEOM_FROM_TZ,
+           "DXF klempířina lengths split + TZ ARS dešťové svody", "klempir", [],
+           data_quality="dxf_perimeter_ratio_estimate",
+           previous_mnozstvi=56.0,
+           recalc_reason="Svody 43 bm z DXF split (NE 56 bm odhad)"),
+        mk(O, "PSV-76 Klempíř", "Vikýře + atika + závětrné lemy",
+           "Klempířské doplňky vikýřů + atika + závětrné lemy (4 vikýře komplexní detail)",
+           "bm", round(KLEMPIR_TOTAL_M_DXF * 0.15, 1),
+           f"DXF klempířina total {KLEMPIR_TOTAL_M_DXF} m × 0.15 (vikýře+atika+lemy) = {round(KLEMPIR_TOTAL_M_DXF * 0.15, 1)} bm",
+           C_DXF_BBOX,
            "764315235", ["764312235"],
-           "TZ ARS dům §4 — 4 vikýře", "klempir", []),
+           "DXF klempířina geometry split + TZ ARS 4 vikýře", "klempir", [],
+           data_quality="dxf_perimeter_ratio_estimate"),
     ]
 
     # ── PSV-76 Zámečník (interiér) ───────────────────────────────────
@@ -1184,19 +1237,20 @@ def gen_PSV():
         "3.NP": ["3.01", "3.02", "3.03", "3.04", "3.05", "3.06"],
     }
 
-    # PSV-78 Omítka per podlaží (4 items)
+    # PSV-78 Omítka per podlaží (4 items) — Path C Gate 5: výška podlaží nyní z DXF (NE TZ silent fallback)
     for podlazi in ["1.PP", "1.NP", "2.NP", "3.NP"]:
         m2, formula = podlazi_omitka_calc(podlazi, ROOMS_PER_PODLAZI[podlazi])
         items.append(mk(
             O, "PSV-78 Povrchové úpravy", f"Omítka jádrová + štuk {podlazi}",
             f"Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách {podlazi} (stávající vyspravené + nové zděné)",
-            "m²", m2, formula, C_GEOM_FROM_TZ,
+            "m²", m2, formula, C_DXF_BBOX,
             "612311311", ["612301351"],
-            f"DXF rooms {podlazi} obvod + výška podlaží {PER_PODLAZI_VYSKA_M[podlazi]} m (TZ silent — CSN default) − okenní plocha (DXF) − odpočet dveří 3%",
+            f"DXF rooms {podlazi} obvod + výška podlaží {PER_PODLAZI_VYSKA_M[podlazi]} m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
             "zednik", [3],
-            data_quality="dxf_obvod_plus_tz_silent_fallback_vyska_podlazi_csn",
+            data_quality="dxf_deterministic",
             room_ids=ROOMS_PER_PODLAZI[podlazi],
             expansion_origin=["260219_dum.PSV78.001_vyspraveni_agg", "260219_dum.PSV78.002_nove_omitka_agg"],
+            recalc_reason=f"Výška podlaží {podlazi}={PER_PODLAZI_VYSKA_M[podlazi]} m z DXF (Path C Tier 1) replaces prior TZ silent fallback CSN default",
         ))
 
     # PSV-78 SDK podhled per podlaží (3 items — 1.PP excluded klenba zachována)
@@ -1216,25 +1270,33 @@ def gen_PSV():
             expansion_origin=["260219_dum.PSV78.003_sdk_aggregate"],
         ))
 
-    # PSV-78 Obklady koupelen per koupelna (3 items)
-    OBKLAD_VYSKA_M = 2.0  # TZ silent — CSN default
+    # PSV-78 Obklady koupelen per koupelna (3 items) — výšky z DXF km Obklady layer (Path C Tier 1)
+    # 11 LWPOLYLINEs s bbox heights: 1600 / 2450 / 2610-2715 mm = 3 výškové kategorie per koupelnu
+    OBKLAD_VYSKA_PER_KOUPELNA = {
+        "1.05": 1.60,   # sprchový kout level (parapet zóna)
+        "2.03": 2.45,   # sprchový kout plný (do stropu sprchy)
+        "3.04": 2.70,   # celokeramický obklad (3.NP koupelna nového bytu)
+    }
     for koupelna in KOUPELNY_LIST:
         rid = koupelna["room_id"]
         obvod = koupelna["obvod_m"]
-        m2 = round(obvod * OBKLAD_VYSKA_M, 1)
+        vyska = OBKLAD_VYSKA_PER_KOUPELNA.get(rid, 2.0)
+        m2 = round(obvod * vyska, 1)
         items.append(mk(
             O, "PSV-78 Povrchové úpravy", f"Keramický obklad koupelna {rid} ({koupelna['podlazi']})",
-            f"Keramický obklad stěn koupelny {rid} {koupelna['podlazi']} (sprchový kout + okolí WC + umyvadlo) — výška obkladu 2.0 m",
+            f"Keramický obklad stěn koupelny {rid} {koupelna['podlazi']} — výška obkladu {vyska} m (z DXF km Obklady layer)",
             "m²", m2,
-            f"DXF IP_obrysy místností room {rid} perimeter {obvod} bm × TZ silent → CSN default obklad výška {OBKLAD_VYSKA_M} m = {m2} m²",
-            C_GEOM_FROM_TZ,
+            f"DXF IP_obrysy místností room {rid} perimeter {obvod} bm × DXF km Obklady layer výška {vyska} m (per-koupelna explicit, NE uniform 2.0 m fallback) = {m2} m²",
+            C_DXF_BBOX,
             "781447001", ["781447003"],
-            f"DXF rooms PIP perimeter {rid} + TZ ARS §3.2 koupelny (NO explicit obklad výška — fallback)",
+            f"DXF rooms PIP perimeter {rid} + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
             "obkladac", [],
-            data_quality="tz_silent_fallback_csn_default",
+            data_quality="dxf_deterministic",
             room_ids=[rid],
             expansion_origin=["260219_dum.PSV78.004_obklady_koupelen_agg"],
-            notes=f"DXF perimeter approximate from area {koupelna['area_m2']} m² (rectangular assumption); obklad výška 2.0 m je Czech RD CSN standard, TZ NEMÁ explicit hodnotu.",
+            previous_mnozstvi=None,
+            recalc_reason=f"Obklad výška {vyska} m z DXF km Obklady (Path C Tier 1) replaces prior 2.0 m TZ silent fallback",
+            notes=f"Per-koupelna obklad výšky: 1.05=1.6 m (parapet/sprcha level), 2.03=2.45 m (sprcha plný), 3.04=2.70 m (celokeramický). DXF km Obklady 11 LWPOLYLINE markerů.",
         ))
     # Keep: obklad za kuchyňskou linkou (2 kuchyně aggregate stays)
     items += [

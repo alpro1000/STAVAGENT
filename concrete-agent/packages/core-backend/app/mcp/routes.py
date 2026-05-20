@@ -393,6 +393,11 @@ TOOL_DESCRIPTIONS = {
         "Vyhledá české stavební normy (ČSN, TP, TKP, VL) — 3vrstvé hledání: "
         "lokální NKB + Perplexity web search + regex extrakce ID."
     ),
+    "uep_run_extraction": (
+        "Spustí UEP (Universal Extraction Pipeline) end-to-end pro projekt — "
+        "discovery → extrakce → coverage matrix → reconciliation. Vrátí job_id "
+        "pro polling stavu."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -407,6 +412,7 @@ TOOL_ORDER = [
     "create_work_breakdown",
     "get_construction_advisor",
     "search_czech_construction_norms",
+    "uep_run_extraction",
 ]
 
 

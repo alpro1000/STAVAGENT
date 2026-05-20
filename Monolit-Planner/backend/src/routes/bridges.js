@@ -1,19 +1,31 @@
 /**
- * Bridges routes - NO AUTH (Kiosk Mode)
- * GET /api/bridges - List all bridges with summary
+ * Bridges routes — optionalAuth (kiosk-or-portal mode)
+ *
+ * Matches the existing monolith-projects.js pattern: if a Portal JWT is
+ * forwarded (Bearer header), req.user is populated and new bridges are
+ * stamped with that user's portal_user_id / owner_id. Without a token
+ * the kiosk-mode path still works (legacy bridges with owner_id=1
+ * remain visible to anonymous callers per the existing schema).
+ *
+ * Was previously hardcoding `ownerId = 1` on every POST — that was the
+ * Monolit half of the "58 sirot" symptom (audit §2.3).
  */
 
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { createSnapshot } from '../services/snapshot.js';
+import { optionalAuth } from '../middleware/auth.js';
 // NOTE: BRIDGE_TEMPLATE_POSITIONS and createDefaultPositions removed
 // Templates only used during Excel import (parser-driven)
 
 const router = express.Router();
 
-// NO AUTH REQUIRED - This is a public kiosk application
-// Authentication is handled at the portal level (stavagent-portal)
+// Optional auth: if Portal JWT is present, req.user.userId is the
+// authoritative owner for new bridges. Unauthenticated kiosk callers
+// still work, but their writes are no longer silently attributed to
+// user_id=1 — see POST handler below.
+router.use(optionalAuth);
 
 // GET all bridges with summary (no auth - kiosk mode)
 router.get('/', async (req, res) => {
@@ -81,13 +93,23 @@ router.get('/:bridge_id', async (req, res) => {
   }
 });
 
-// POST create new EMPTY bridge manually (no auth - kiosk mode)
-// User adds parts manually via "🏗️ Přidat část konstrukce"
-// Templates only used during Excel import (parser-driven)
+// POST create new EMPTY bridge — optionalAuth picks up Portal JWT if
+// forwarded. If no JWT, the request is rejected with 401 (per audit
+// recommendation: writes that mint new owned rows must carry user
+// identity; reads stay kiosk-friendly). User adds parts manually via
+// "🏗️ Přidat část konstrukce". Templates only used during Excel
+// import (parser-driven).
 router.post('/', async (req, res) => {
   try {
     const { bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
-    const ownerId = 1; // Default owner for kiosk mode
+    if (!req.user || !req.user.userId) {
+      logger.warn(`[Bridges] Anonymous POST /api/bridges rejected — no Portal JWT (path=${req.originalUrl})`);
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Portal JWT required to create a bridge. Forward stavagent_jwt cookie or Bearer header.',
+      });
+    }
+    const ownerId = req.user.userId;
 
     if (!bridge_id) {
       return res.status(400).json({ error: 'bridge_id is required' });

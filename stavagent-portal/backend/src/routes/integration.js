@@ -24,21 +24,29 @@ function safeGetPool() {
   }
 }
 
-// Integration API is PUBLIC - no auth required for cross-kiosk communication
-// Kiosks (Monolit, Registry) sync data without user authentication
+// Integration API is per-route auth — see /import-from-registry for the
+// canonical pattern (requireAuth + req.user.userId stamped onto
+// owner_id). Previously the comment said "PUBLIC - no auth required"
+// which is incorrect: cross-kiosk sync MUST forward the user's Portal
+// JWT, otherwise INSERT-ed projects end up with owner_id=1 (audit §2.3
+// "58 sirot" root cause).
 
 /**
  * POST /api/integration/import-from-monolit
  * Import project data from Monolit-Planner to Portal
- * 
+ *
+ * AUTH: requireAuth — Monolit must forward the user's Portal JWT (Bearer
+ * header or stavagent_jwt cookie). Anonymous requests now return 401
+ * with logger.warn so missing forwards surface in Cloud Logging.
+ *
  * Body:
  * - portal_project_id: string (optional, creates new if not provided)
  * - project_name: string
  * - monolit_project_id: string
  * - objects: Array<{ code, name, positions[] }>
  */
-router.post('/import-from-monolit', async (req, res) => {
-  console.log('[Integration] POST /import-from-monolit - Request received');
+router.post('/import-from-monolit', requireAuth, async (req, res) => {
+  console.log('[Integration] POST /import-from-monolit - Request received from user', req.user?.userId);
   console.log('[Integration] Body:', JSON.stringify(req.body).substring(0, 200));
   
   const pool = safeGetPool();
@@ -65,15 +73,17 @@ router.post('/import-from-monolit', async (req, res) => {
     // Track monolit_id → position_instance_id mapping (returned to Monolit for write-back)
     const instanceMapping = [];
 
-    // Create or get portal project
+    // Create or get portal project — owner_id from authenticated user's JWT.
+    // Was hardcoded to 1; that produced kiosk-orphans invisible to real
+    // users (audit §2.3).
     let projectId = portal_project_id;
     if (!projectId) {
       projectId = `proj_${uuidv4()}`;
-      console.log('[Integration] Creating new project:', projectId);
+      console.log('[Integration] Creating new project:', projectId, 'for user', req.user.userId);
       await client.query(
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'monolit', 1, NOW(), NOW())`,
-        [projectId, project_name]
+         VALUES ($1, $2, 'monolit', $3, NOW(), NOW())`,
+        [projectId, project_name, req.user.userId]
       );
     }
 
@@ -283,12 +293,18 @@ router.post('/import-from-monolit', async (req, res) => {
 /**
  * GET /api/integration/for-registry/:portal_project_id
  * Get project data formatted for Rozpočet Registry
- * 
+ *
+ * AUTH: requireAuth — JWT required. Registry must forward the user's
+ * Portal token. The query additionally enforces owner_id match so a
+ * logged-in user can only fetch their own projects (returns 404 for
+ * other users' project_ids — matches GET /api/portal-projects/:id
+ * behaviour).
+ *
  * Returns:
  * - project: { name, sheets[] }
  * - items: ParsedItem[] (Registry format)
  */
-router.get('/for-registry/:portal_project_id', async (req, res) => {
+router.get('/for-registry/:portal_project_id', requireAuth, async (req, res) => {
   const pool = safeGetPool();
   if (!pool) {
     return res.status(503).json({ success: false, error: 'Database not available' });
@@ -297,10 +313,10 @@ router.get('/for-registry/:portal_project_id', async (req, res) => {
   try {
     const { portal_project_id } = req.params;
 
-    // Get project (no auth check)
+    // Owner-scoped read — same pattern as GET /api/portal-projects/:id.
     const projectResult = await pool.query(
-      'SELECT * FROM portal_projects WHERE portal_project_id = $1',
-      [portal_project_id]
+      'SELECT * FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
+      [portal_project_id, req.user.userId]
     );
 
     if (projectResult.rows.length === 0) {
@@ -372,12 +388,17 @@ router.get('/for-registry/:portal_project_id', async (req, res) => {
 /**
  * POST /api/integration/sync-tov
  * Sync TOV data from Registry back to Portal
- * 
+ *
+ * AUTH: requireAuth — JWT required. Registry must forward the user's
+ * Portal token. The project lookup additionally enforces owner_id
+ * match — a logged-in user cannot sync TOV onto another user's
+ * project (returns 404 to avoid leaking project existence).
+ *
  * Body:
  * - portal_project_id: string
  * - updates: Array<{ position_id, tovData }>
  */
-router.post('/sync-tov', async (req, res) => {
+router.post('/sync-tov', requireAuth, async (req, res) => {
   const pool = safeGetPool();
   if (!pool) {
     return res.status(503).json({ success: false, error: 'Database not available' });
@@ -392,10 +413,10 @@ router.post('/sync-tov', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid request body' });
     }
 
-    // Check project exists (no auth check)
+    // Owner-scoped existence check — prevents cross-tenant TOV writes.
     const projectCheck = await client.query(
-      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1',
-      [portal_project_id]
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
+      [portal_project_id, req.user.userId]
     );
 
     if (projectCheck.rows.length === 0) {
@@ -1096,13 +1117,21 @@ router.post('/import-from-registry', requireAuth, async (req, res) => {
 
 /**
  * GET /api/integration/registry-status/:registry_project_id
- * Check if a Registry project already has a portal link
+ * Check if a Registry project already has a portal link.
+ *
+ * AUTH: requireAuth — the kiosk_links lookup itself is keyed by the
+ * caller-supplied registry_project_id (an opaque kiosk-side identifier);
+ * the response is just a yes/no + portal_project_id. We still require
+ * JWT because (a) this endpoint feeds Registry's "is this project
+ * imported?" UI which only makes sense for an authenticated session,
+ * and (b) the consistency invariant from §2.4 of the audit is that
+ * every kiosk → Portal call forwards user context.
  *
  * Returns:
  * - linked: boolean
  * - portal_project_id: string | null
  */
-router.get('/registry-status/:registry_project_id', async (req, res) => {
+router.get('/registry-status/:registry_project_id', requireAuth, async (req, res) => {
   const pool = safeGetPool();
   if (!pool) {
     return res.json({ linked: false, portal_project_id: null });
@@ -1130,19 +1159,23 @@ router.get('/registry-status/:registry_project_id', async (req, res) => {
 
 /**
  * GET /api/integration/list-registry-projects
- * List all Portal projects linked to Registry (for Monolit "Načíst z Rozpočtu" modal).
- * PUBLIC endpoint — no auth required (cross-kiosk communication pattern).
- * Scoped by kiosk_type='registry' in kiosk_links (intrinsic filter, not user-based).
+ * List Portal projects linked to Registry (for Monolit "Načíst z
+ * Rozpočtu" modal).
+ *
+ * AUTH: requireAuth — was previously open and returned EVERY user's
+ * Registry-linked project (cross-tenant data leak per audit §2.4).
+ * Now scoped to the authenticated user's owner_id in addition to the
+ * intrinsic kiosk_type='registry' filter.
  */
-router.get('/list-registry-projects', async (req, res) => {
+router.get('/list-registry-projects', requireAuth, async (req, res) => {
   const pool = safeGetPool();
   if (!pool) {
     return res.json({ success: true, projects: [] });
   }
 
   try {
-    // Get all projects that have a Registry kiosk link (regardless of owner).
-    // This is cross-kiosk data, not user-scoped.
+    // Owner-scoped + kiosk_type='registry' filter — the caller only
+    // sees their own Registry-linked projects.
     const result = await pool.query(
       `SELECT
          pp.portal_project_id,
@@ -1163,7 +1196,9 @@ router.get('/list-registry-projects', async (req, res) => {
          ON pp.portal_project_id = kl.portal_project_id
          AND kl.kiosk_type = 'registry'
          AND kl.status != 'deleted'
-       ORDER BY pp.updated_at DESC`
+       WHERE pp.owner_id = $1
+       ORDER BY pp.updated_at DESC`,
+      [req.user.userId]
     );
 
     const projects = result.rows.map(r => ({

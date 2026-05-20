@@ -1,0 +1,2435 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-18",
+  "_generated_by": "tools/path_c_tier3_geometry.py",
+  "geometry_per_layer": {
+    "dum_DPZ": {
+      "IP_zařizováky": {
+        "n_line": 0,
+        "n_poly": 9,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 32.53,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          2.52,
+          1.6
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "SM__04_čárkovaná": {
+        "n_line": 0,
+        "n_poly": 90,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 797.6,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "SM__06_dvojčerchovaná": {
+        "n_line": 65,
+        "n_poly": 56,
+        "n_arc": 15,
+        "n_hatch": 0,
+        "total_length_m": 346.1,
+        "n_closed_polys": 3,
+        "closed_areas_m2_top10": [
+          4.36,
+          1.1,
+          1.1
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "IP_obrysy místností": {
+        "n_line": 0,
+        "n_poly": 109,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1461.06,
+        "n_closed_polys": 109,
+        "closed_areas_m2_top10": [
+          99.66,
+          57.39,
+          57.39,
+          36.03,
+          32.84,
+          31.9,
+          29.01,
+          24.35,
+          24.0,
+          24.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "_ geometrie": {
+        "n_line": 0,
+        "n_poly": 12,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1072.74,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          53507.18
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM_Popisy": {
+        "n_line": 0,
+        "n_poly": 62,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 46.66,
+        "n_closed_polys": 17,
+        "closed_areas_m2_top10": [
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_šrafy": {
+        "n_line": 0,
+        "n_poly": 70,
+        "n_arc": 0,
+        "n_hatch": 62,
+        "total_length_m": 89.36,
+        "n_closed_polys": 14,
+        "closed_areas_m2_top10": [
+          0.16,
+          0.16,
+          0.16,
+          0.16,
+          0.16,
+          0.16,
+          0.16,
+          0.16,
+          0.16,
+          0.16
+        ],
+        "hatch_areas_m2_by_pattern": {
+          "ANSI32": 145.01,
+          "WOOD3": 0.3,
+          "ANSI31": 161.98,
+          "ANSI37": 2.17,
+          "ANSI35": 4.02
+        },
+        "target_geom_layer": false,
+        "hatch_focus_layer": true
+      },
+      "PDF_Tenká": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 1,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM_rozpiska": {
+        "n_line": 0,
+        "n_poly": 341,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1818.8,
+        "n_closed_polys": 11,
+        "closed_areas_m2_top10": [
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__netisk": {
+        "n_line": 0,
+        "n_poly": 87,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 9087.81,
+        "n_closed_polys": 87,
+        "closed_areas_m2_top10": [
+          883.05,
+          883.05,
+          883.05,
+          883.05,
+          851.78,
+          701.59,
+          701.59,
+          701.59,
+          701.59,
+          701.59
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_tabulka místností": {
+        "n_line": 0,
+        "n_poly": 130,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 630.5,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_R_návrh_velmi tlustá": {
+        "n_line": 2,
+        "n_poly": 203,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 479.99,
+        "n_closed_polys": 32,
+        "closed_areas_m2_top10": [
+          1.89,
+          0.81,
+          0.81,
+          0.81,
+          0.75,
+          0.5,
+          0.11,
+          0.08,
+          0.08,
+          0.08
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_R_návrh_šrafa": {
+        "n_line": 0,
+        "n_poly": 127,
+        "n_arc": 7,
+        "n_hatch": 86,
+        "total_length_m": 329.54,
+        "n_closed_polys": 46,
+        "closed_areas_m2_top10": [
+          1.6,
+          1.5,
+          1.2,
+          1.12,
+          0.96,
+          0.96,
+          0.95,
+          0.92,
+          0.89,
+          0.88
+        ],
+        "hatch_areas_m2_by_pattern": {
+          "ANSI31": 121.03,
+          "ANSI37": 3.24,
+          "ANSI32": 3.45,
+          "WOOD3": 0.12,
+          "ANSI35": 11.86,
+          "HONEYCOMB": 4.57,
+          "DOTS2": 145.05,
+          "V_MASONRY300x200": 7.84,
+          "WOOD1": 0.48,
+          "CONCRETE1": 3.7,
+          "GRAVEL1": 0.88
+        },
+        "target_geom_layer": false,
+        "hatch_focus_layer": true
+      },
+      "km_kóty": {
+        "n_line": 0,
+        "n_poly": 130,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 119.66,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "IP_Výškové kóty": {
+        "n_line": 0,
+        "n_poly": 73,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 60.81,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM_ Návrh šrafa": {
+        "n_line": 0,
+        "n_poly": 31,
+        "n_arc": 0,
+        "n_hatch": 10,
+        "total_length_m": 23.52,
+        "n_closed_polys": 31,
+        "closed_areas_m2_top10": [
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ],
+        "hatch_areas_m2_by_pattern": {
+          "BLOCKS": 9.5,
+          "DOTS2": 179.08
+        },
+        "target_geom_layer": true,
+        "hatch_focus_layer": true
+      },
+      "km_R_návrh_tlustá": {
+        "n_line": 10,
+        "n_poly": 731,
+        "n_arc": 3,
+        "n_hatch": 0,
+        "total_length_m": 1865.15,
+        "n_closed_polys": 239,
+        "closed_areas_m2_top10": [
+          3.78,
+          2.75,
+          2.61,
+          2.3,
+          2.29,
+          2.21,
+          2.21,
+          1.72,
+          1.72,
+          1.72
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "MA_kóty": {
+        "n_line": 36,
+        "n_poly": 27,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 41.6,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "MA_klempíř": {
+        "n_line": 20,
+        "n_poly": 7,
+        "n_arc": 3,
+        "n_hatch": 0,
+        "total_length_m": 75.88,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          0.29
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "km Obklady": {
+        "n_line": 0,
+        "n_poly": 11,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 58.09,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_R_návrh_tlustá 2": {
+        "n_line": 16,
+        "n_poly": 465,
+        "n_arc": 3,
+        "n_hatch": 0,
+        "total_length_m": 1029.31,
+        "n_closed_polys": 320,
+        "closed_areas_m2_top10": [
+          91.28,
+          4.36,
+          2.75,
+          2.73,
+          2.38,
+          2.38,
+          2.21,
+          2.15,
+          2.15,
+          2.15
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_R_návrh_velmi tlustá 2": {
+        "n_line": 3,
+        "n_poly": 122,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 380.12,
+        "n_closed_polys": 29,
+        "closed_areas_m2_top10": [
+          6.53,
+          3.78,
+          2.62,
+          2.17,
+          2.12,
+          1.92,
+          1.92,
+          1.78,
+          1.72,
+          1.72
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_R_návrh_šrafa 2": {
+        "n_line": 20,
+        "n_poly": 11,
+        "n_arc": 3,
+        "n_hatch": 41,
+        "total_length_m": 92.65,
+        "n_closed_polys": 3,
+        "closed_areas_m2_top10": [
+          2.52,
+          1.6,
+          0.29
+        ],
+        "hatch_areas_m2_by_pattern": {
+          "ANSI31": 112.99,
+          "INSULATION": 2.48,
+          "BLOCKS": 8.79,
+          "DOTS2": 7.49
+        },
+        "target_geom_layer": false,
+        "hatch_focus_layer": true
+      },
+      "SM__dveře": {
+        "n_line": 1,
+        "n_poly": 102,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 118.93,
+        "n_closed_polys": 76,
+        "closed_areas_m2_top10": [
+          0.62,
+          0.33,
+          0.31,
+          0.15,
+          0.15,
+          0.15,
+          0.14,
+          0.14,
+          0.13,
+          0.12
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__návrh_nábytek": {
+        "n_line": 0,
+        "n_poly": 3,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 36.73,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__03b_tlustá nosné stěny": {
+        "n_line": 24,
+        "n_poly": 347,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1640.9,
+        "n_closed_polys": 54,
+        "closed_areas_m2_top10": [
+          6.53,
+          2.62,
+          2.26,
+          2.26,
+          2.26,
+          2.17,
+          2.1,
+          2.1,
+          2.1,
+          1.95
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__02b_tenka okna 1": {
+        "n_line": 0,
+        "n_poly": 76,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 173.74,
+        "n_closed_polys": 29,
+        "closed_areas_m2_top10": [
+          2.9,
+          2.1,
+          1.92,
+          1.92,
+          1.78,
+          1.72,
+          1.72,
+          1.72,
+          1.47,
+          1.47
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__02d_tenka další": {
+        "n_line": 77,
+        "n_poly": 218,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 672.95,
+        "n_closed_polys": 29,
+        "closed_areas_m2_top10": [
+          91.28,
+          2.73,
+          2.38,
+          2.38,
+          2.21,
+          2.15,
+          2.15,
+          2.15,
+          2.02,
+          2.02
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__02e_tenka schody": {
+        "n_line": 188,
+        "n_poly": 14,
+        "n_arc": 2,
+        "n_hatch": 0,
+        "total_length_m": 237.81,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "PDF3_Solid Fills": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 81,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SMA_okna": {
+        "n_line": 0,
+        "n_poly": 243,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 368.3,
+        "n_closed_polys": 219,
+        "closed_areas_m2_top10": [
+          1.65,
+          1.65,
+          1.52,
+          1.46,
+          1.46,
+          1.46,
+          1.07,
+          0.81,
+          0.79,
+          0.79
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SMA_popisy": {
+        "n_line": 0,
+        "n_poly": 38,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 19.35,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SMA_šrafy": {
+        "n_line": 0,
+        "n_poly": 10,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 28.71,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": true
+      },
+      "Oblouky a kružnice.2D": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 6,
+        "n_hatch": 0,
+        "total_length_m": 4.75,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_R_návrh_ zateplení": {
+        "n_line": 0,
+        "n_poly": 139,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 169.45,
+        "n_closed_polys": 3,
+        "closed_areas_m2_top10": [
+          0.01,
+          0.01,
+          0.01
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "SM__ klempířina": {
+        "n_line": 15,
+        "n_poly": 17,
+        "n_arc": 13,
+        "n_hatch": 0,
+        "total_length_m": 101.08,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "SM__Popisy bubliny": {
+        "n_line": 0,
+        "n_poly": 27,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 28.32,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_ hydroizolace": {
+        "n_line": 0,
+        "n_poly": 24,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 35.38,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      }
+    },
+    "dum_situace": {
+      "Z _ MERENI": {
+        "n_line": 76,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.36,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ KATASTR": {
+        "n_line": 2833,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 3.93,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ VRSTEV": {
+        "n_line": 165,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.32,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "_ geometrie": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.2,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_ELE_stávající_NN_podzemní": {
+        "n_line": 0,
+        "n_poly": 9,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.13,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_rozpiska": {
+        "n_line": 0,
+        "n_poly": 43,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.83,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__netisk": {
+        "n_line": 0,
+        "n_poly": 27,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 47.27,
+        "n_closed_polys": 27,
+        "closed_areas_m2_top10": [
+          3.12,
+          3.12,
+          3.12,
+          2.91,
+          2.91,
+          2.16,
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__02_tlustá": {
+        "n_line": 0,
+        "n_poly": 21,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.06,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_VODA_návrh": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_KANALIZACE_splašková_návrh": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_ELE_návrh": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_KANALIZACE_dešťová_návrh": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_požárně nebezpečný prostor": {
+        "n_line": 2,
+        "n_poly": 2,
+        "n_arc": 4,
+        "n_hatch": 0,
+        "total_length_m": 0.03,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_CETIN_stávající_podzemní": {
+        "n_line": 0,
+        "n_poly": 2,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.02,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_VODA_stávající": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.04,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_PLYN_stávající": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.05,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ mapa-KN": {
+        "n_line": 0,
+        "n_poly": 2,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.01,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "IP_ Návrh šrafa": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 1,
+        "total_length_m": 0.01,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ Bourání": {
+        "n_line": 3,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__ rozhedlové trojuhelniky a doprava": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 1,
+        "total_length_m": 0.23,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "_ značky hranice": {
+        "n_line": 0,
+        "n_poly": 3,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.12,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ Popisy": {
+        "n_line": 0,
+        "n_poly": 4,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ výrazná červená": {
+        "n_line": 0,
+        "n_poly": 6,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.17,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ oplocení": {
+        "n_line": 0,
+        "n_poly": 10,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.02,
+        "n_closed_polys": 6,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_KANALIZACE_dešťová_stav": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_KANALIZACE_splašková_stav": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__ rozhedlové trojuhelniky a doprava 02": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 2,
+        "total_length_m": 0.13,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM_sit srafa": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 4,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Obrysy situace další": {
+        "n_line": 0,
+        "n_poly": 2,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.01,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      }
+    },
+    "sklad_DPZ": {
+      "IP_rozpiska": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 24.25,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__06_dvojčerchovaná": {
+        "n_line": 0,
+        "n_poly": 28,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 71.65,
+        "n_closed_polys": 13,
+        "closed_areas_m2_top10": [
+          50.07,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.25,
+          0.09,
+          0.09,
+          0.09
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": true,
+        "hatch_focus_layer": false
+      },
+      "IP_obrysy místností": {
+        "n_line": 0,
+        "n_poly": 47,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 700.23,
+        "n_closed_polys": 47,
+        "closed_areas_m2_top10": [
+          99.66,
+          44.57,
+          36.03,
+          31.9,
+          29.01,
+          24.0,
+          23.09,
+          21.34,
+          19.9,
+          18.7
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "_ geometrie": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 315.96,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          6236.69
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM_Popisy": {
+        "n_line": 4,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1.06,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_šrafy": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 13,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {
+          "ANSI37": 7.41,
+          "WOOD3": 0.78,
+          "SAND": 3.7,
+          "CONCRETE1": 0.21
+        },
+        "target_geom_layer": false,
+        "hatch_focus_layer": true
+      },
+      "PDF_Tenká": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 1,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_rozpiska": {
+        "n_line": 0,
+        "n_poly": 55,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 266.75,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__netisk": {
+        "n_line": 0,
+        "n_poly": 25,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1649.5,
+        "n_closed_polys": 25,
+        "closed_areas_m2_top10": [
+          311.85,
+          311.85,
+          311.85,
+          311.85,
+          311.85,
+          311.85,
+          311.85,
+          311.85,
+          311.85,
+          311.85
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_tabulka místností": {
+        "n_line": 0,
+        "n_poly": 9,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 43.65,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_kóty": {
+        "n_line": 0,
+        "n_poly": 13,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 15.17,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "IP_Výškové kóty": {
+        "n_line": 0,
+        "n_poly": 7,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 2.41,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM_ Návrh šrafa": {
+        "n_line": 2,
+        "n_poly": 4,
+        "n_arc": 0,
+        "n_hatch": 52,
+        "total_length_m": 5.6,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {
+          "ANSI35": 4.2,
+          "ANSI32": 8.38,
+          "ANSI31": 1.36,
+          "ANSI34": 59.14,
+          "CONCRETE1": 4.51,
+          "CONCRETE2": 0.55,
+          "BLOCKS": 7.11
+        },
+        "target_geom_layer": true,
+        "hatch_focus_layer": true
+      },
+      "MA_kóty": {
+        "n_line": 8,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 6.16,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__dveře": {
+        "n_line": 0,
+        "n_poly": 4,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 4.87,
+        "n_closed_polys": 3,
+        "closed_areas_m2_top10": [
+          0.1,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__02d_tenka další": {
+        "n_line": 0,
+        "n_poly": 118,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 265.72,
+        "n_closed_polys": 61,
+        "closed_areas_m2_top10": [
+          1.4,
+          1.26,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          0.36,
+          0.36
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "PDF3_Solid Fills": {
+        "n_line": 0,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 81,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__03_velmi tlustá": {
+        "n_line": 0,
+        "n_poly": 101,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 358.7,
+        "n_closed_polys": 31,
+        "closed_areas_m2_top10": [
+          50.07,
+          1.08,
+          1.08,
+          1.08,
+          0.92,
+          0.92,
+          0.7,
+          0.54,
+          0.35,
+          0.31
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__02_tlustá": {
+        "n_line": 0,
+        "n_poly": 43,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 71.78,
+        "n_closed_polys": 10,
+        "closed_areas_m2_top10": [
+          0.18,
+          0.18,
+          0.18,
+          0.18,
+          0.18,
+          0.18,
+          0.18,
+          0.18,
+          0.18,
+          0.18
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ MERENI": {
+        "n_line": 19,
+        "n_poly": 8,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 59.91,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          0.09,
+          0.09
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ KATASTR": {
+        "n_line": 18,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 88.85,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ Bourání": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 36.21,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          1.5,
+          1.5
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ Popisy": {
+        "n_line": 0,
+        "n_poly": 8,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 9.45,
+        "n_closed_polys": 4,
+        "closed_areas_m2_top10": [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ oplocení": {
+        "n_line": 0,
+        "n_poly": 12,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 25.41,
+        "n_closed_polys": 7,
+        "closed_areas_m2_top10": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.1,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM__05_čerchovaná": {
+        "n_line": 0,
+        "n_poly": 18,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 74.37,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "OCEL HEB sloupky rez": {
+        "n_line": 0,
+        "n_poly": 6,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 6.84,
+        "n_closed_polys": 6,
+        "closed_areas_m2_top10": [
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "IP_Popisy bubliny": {
+        "n_line": 0,
+        "n_poly": 6,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 1.75,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_ hydroizolace": {
+        "n_line": 0,
+        "n_poly": 7,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 15.68,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__tenká": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 3.38,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      }
+    },
+    "sklad_situace": {
+      "Z _ MERENI": {
+        "n_line": 85,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.38,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ KATASTR": {
+        "n_line": 2833,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 3.93,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ POPIS": {
+        "n_line": 4,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.01,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ VRSTEV": {
+        "n_line": 165,
+        "n_poly": 0,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.32,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "_ geometrie": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.22,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_ELE_stávající_NN_podzemní": {
+        "n_line": 0,
+        "n_poly": 7,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.15,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__03_velmi tlustá": {
+        "n_line": 0,
+        "n_poly": 6,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.06,
+        "n_closed_polys": 5,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km_rozpiska": {
+        "n_line": 0,
+        "n_poly": 43,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.83,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__netisk": {
+        "n_line": 0,
+        "n_poly": 27,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 47.27,
+        "n_closed_polys": 27,
+        "closed_areas_m2_top10": [
+          3.12,
+          3.12,
+          3.12,
+          2.91,
+          2.91,
+          2.16,
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__02_tlustá": {
+        "n_line": 0,
+        "n_poly": 20,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.03,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_KANALIZACE_splašková_návrh": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_CETIN_stávající_podzemní": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_VODA_stávající": {
+        "n_line": 0,
+        "n_poly": 2,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.03,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_PLYN_stávající": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "Z _ mapa-KN": {
+        "n_line": 0,
+        "n_poly": 2,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.01,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "IP_ Návrh šrafa": {
+        "n_line": 0,
+        "n_poly": 4,
+        "n_arc": 0,
+        "n_hatch": 3,
+        "total_length_m": 0.02,
+        "n_closed_polys": 4,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ Bourání": {
+        "n_line": 12,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.02,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__ rozhedlové trojuhelniky a doprava": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 1,
+        "total_length_m": 0.23,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "_ značky hranice": {
+        "n_line": 0,
+        "n_poly": 3,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.12,
+        "n_closed_polys": 1,
+        "closed_areas_m2_top10": [
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ Popisy": {
+        "n_line": 0,
+        "n_poly": 4,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 2,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ výrazná červená": {
+        "n_line": 0,
+        "n_poly": 7,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.21,
+        "n_closed_polys": 3,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "SM _ oplocení": {
+        "n_line": 0,
+        "n_poly": 11,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.02,
+        "n_closed_polys": 6,
+        "closed_areas_m2_top10": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "sítě_KANALIZACE_dešťová_stav": {
+        "n_line": 0,
+        "n_poly": 1,
+        "n_arc": 0,
+        "n_hatch": 0,
+        "total_length_m": 0.0,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      },
+      "km__ rozhedlové trojuhelniky a doprava 02": {
+        "n_line": 0,
+        "n_poly": 5,
+        "n_arc": 0,
+        "n_hatch": 2,
+        "total_length_m": 0.13,
+        "n_closed_polys": 0,
+        "closed_areas_m2_top10": [],
+        "hatch_areas_m2_by_pattern": {},
+        "target_geom_layer": false,
+        "hatch_focus_layer": false
+      }
+    }
+  },
+  "sklad_external_perimeter_candidates": [
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 29.01,
+      "perim_m": 21.84,
+      "n_verts": 6
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 24.0,
+      "perim_m": 19.6,
+      "n_verts": 4
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 23.09,
+      "perim_m": 18.82,
+      "n_verts": 5
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 21.34,
+      "perim_m": 19.0,
+      "n_verts": 8
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 19.9,
+      "perim_m": 18.66,
+      "n_verts": 4
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 18.7,
+      "perim_m": 18.7,
+      "n_verts": 4
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 17.56,
+      "perim_m": 17.57,
+      "n_verts": 4
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 17.26,
+      "perim_m": 17.54,
+      "n_verts": 6
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 16.64,
+      "perim_m": 16.83,
+      "n_verts": 6
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 16.31,
+      "perim_m": 17.68,
+      "n_verts": 8
+    },
+    {
+      "layer": "IP_obrysy místností",
+      "area_m2": 15.57,
+      "perim_m": 16.12,
+      "n_verts": 7
+    }
+  ],
+  "bourani_qty": {
+    "DASHED_lines": [
+      {
+        "length_m": 1.27,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 14.22,
+        "area_m2_if_closed": null,
+        "n_verts": 4
+      },
+      {
+        "length_m": 8.73,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 3.25,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 5.32,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 5.52,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 4.25,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 4.65,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 2.85,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 1.27,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 14.22,
+        "area_m2_if_closed": null,
+        "n_verts": 4
+      },
+      {
+        "length_m": 8.73,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 3.25,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 5.32,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 5.52,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 4.25,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 4.65,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 2.85,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 1.27,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 14.22,
+        "area_m2_if_closed": null,
+        "n_verts": 4
+      },
+      {
+        "length_m": 8.73,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 3.25,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 5.32,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 5.52,
+        "area_m2_if_closed": null,
+        "n_verts": 3
+      },
+      {
+        "length_m": 4.25,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 4.65,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 2.85,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 0.88,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      },
+      {
+        "length_m": 12.05,
+        "area_m2_if_closed": null,
+        "n_verts": 2
+      }
+    ],
+    "bourani_dims": [
+      2350.0,
+      1000.0,
+      700.0,
+      2750.0,
+      1700.0,
+      350.0,
+      1825.0,
+      700.0,
+      4200.0,
+      900.0,
+      150.0,
+      900.0,
+      1825.0
+    ],
+    "DASHED_total_length_m": 797.63,
+    "DASHED_closed_total_area_m2": 0
+  },
+  "hatch_phase_summary": {
+    "dum_DPZ": {
+      "common|ANSI32": 145.01,
+      "common|WOOD3": 0.3,
+      "common|ANSI31": 161.98,
+      "common|ANSI37": 2.17,
+      "common|ANSI35": 4.02,
+      "návrh|ANSI31": 234.02,
+      "návrh|ANSI37": 3.24,
+      "návrh|ANSI32": 3.45,
+      "návrh|WOOD3": 0.12,
+      "návrh|ANSI35": 11.86,
+      "návrh|HONEYCOMB": 4.57,
+      "návrh|DOTS2": 331.62,
+      "návrh|V_MASONRY300x200": 7.84,
+      "návrh|WOOD1": 0.48,
+      "návrh|CONCRETE1": 3.7,
+      "návrh|GRAVEL1": 0.88,
+      "návrh|BLOCKS": 18.29,
+      "návrh|INSULATION": 2.48
+    },
+    "sklad_DPZ": {
+      "common|ANSI37": 7.41,
+      "common|WOOD3": 0.78,
+      "common|SAND": 3.7,
+      "common|CONCRETE1": 0.21,
+      "návrh|ANSI35": 4.2,
+      "návrh|ANSI32": 8.38,
+      "návrh|ANSI31": 1.36,
+      "návrh|ANSI34": 59.14,
+      "návrh|CONCRETE1": 4.51,
+      "návrh|CONCRETE2": 0.55,
+      "návrh|BLOCKS": 7.11
+    }
+  }
+}

@@ -72,6 +72,87 @@ PDF/Excel upload → Document Classifier (4-tier) → D.1.4 Profession Detector 
 
 ---
 
+## Phase 0a Completeness Audit (MANDATORY) — added 2026-05-18
+
+> Real-world pilot reference: RD Jáchymov (N=5) — see
+> `app/knowledge_base/B5_tech_cards/real_world_examples/rd_jachymov/patterns/`
+> for the 9 corpus patterns extracted from this pilot.
+
+**Rule:** Phase 1 (item generation) gate CANNOT open until
+`outputs/source_completeness_audit.json` returns `gate_status: "OPEN"`
+with 0 blockers.
+
+Phase 1 = generating priced items. Without exhaustive Phase 0a, the
+generator works on a subset of the available sources, ships silent
+drifts, and inflates a fabricated count of "ready" items. RD Jáchymov
+empirical evidence: first-pass extraction probed 11 of 156 DXF layers
+(7 %) and missed 6 verifiable drifts that the user manually caught.
+Pattern 09 (`iterative_layer_probe_user_caught_gaps.md`) documents the
+anti-pattern that motivated this rule.
+
+### Three audit sections
+
+**Section A — PDF inventory (ALL PDFs in `inputs/`).** For every PDF
+record `path / size_bytes / pages / chars_extracted / content_type
+(text_heavy | drawing_heavy | scanned) / S-codes / F-codes / material
+markers / skladba_legend_lines / probe_status`. Any PDF with
+`content_type ∈ {drawing_heavy, scanned}` must be OCR'd
+(`pdftoppm -r 300 -png` → `tesseract -l ces+eng --psm 6`), output to
+`outputs/ocr_pdfs_extracted.json`.
+
+**Section B — DXF all-layers inventory.** For every layer in every DXF:
+`layer_name / n_entities / entity_types / probed / probe_status /
+actionable / decision`. Required terminal states: `probed_extracted`,
+`probed_metadata_only_confirmed` (with explicit `decision: skip …`
+reason), or `probed_empty`. **Zero `probe_status: unknown` allowed.**
+Tier prioritization for actionable layers:
+
+| Tier | Layer class | Tool |
+|---|---|---|
+| 1 | DIMENSION entities | `path_c_tier1_dimensions.py` |
+| 2 | MTEXT + embedded tables | `path_c_tier2_mtext.py` |
+| 3 | Geometry + HATCH + dual catalog | `path_c_tier3_geometry.py` |
+| 4 | INSERT block discovery | `path_c_tier4_5_inserts_metadata.py` |
+| 5 | Metadata layers (skip confirmation) | `path_c_tier4_5_inserts_metadata.py` |
+
+**Section C — Cross-reference matrix.** Sample 6–10 high-stakes data
+points (rozměry, tloušťky vrstev, výšky podlaží, počet otvorů, …) →
+`source × value` matrix across TZ text / DXF DIMENSION / DXF INSERT /
+DXF LWPOLYLINE bbox. Any drift > 0.10 mm OR `data_missing` → flag for
+Phase 0b §3.2 re-parse.
+
+### Gate algorithm
+
+```python
+gate_status = "BLOCKED" if (
+    any(pdf.probe_status == "_ocr_recommended" for pdf in pdfs)
+    OR any(layer.probe_status == "unknown" for layer in dxf_layers)
+) else "OPEN"
+```
+
+Blocked → run OCR pipeline + Path C Tier 1-5, re-audit, repeat. Strict
+no-fabrication policy: items added only when DXF or OCR provides
+deterministic source — never to inflate count toward a target.
+
+### Forbidden
+
+- ❌ Opening Phase 1 gate with `gate_status: BLOCKED`. No exceptions.
+- ❌ Spot-check probing ("probed the obvious layers, ostatní are
+  certainly metadata") — explicit per-layer `probe_status` required.
+- ❌ Skipping Section C — only the matrix proves consistency.
+- ❌ Trusting filename / layer-name keyword match to infer content
+  (Pattern 01 file-swap counter-example).
+
+### Generalization across pilots
+
+Pattern 08 (`completeness_audit_mandatory.md`) is the canonical
+reference; Pattern 05 (`exhaustive_dxf_extraction.md`) covers the
+5-tier prioritization details. Apply to ALL future N-of-K pilots
+regardless of project size — the cost of the audit (one tooling pass)
+is negligible compared to a silent-drift ship.
+
+---
+
 ## 📦 MONOREPO STRUCTURE (NEW - Nov 18)
 
 ### Directory Layout

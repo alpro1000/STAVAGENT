@@ -1,0 +1,642 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-18",
+  "_generated_by": "tools/path_c_tier4_5_inserts_metadata.py",
+  "_purpose": "Path C Tier 4 — extended INSERT block discovery + klempířina symbol categorization.",
+  "_summary": {
+    "total_inserts_across_4_dxf": 1306,
+    "n_mapped_categories": 21,
+    "n_unmapped_blocks": 43,
+    "category_counts": {
+      "unmapped": 875,
+      "plot_dreveny": 133,
+      "kr_krokev": 111,
+      "rezova_znacka": 44,
+      "razitko": 32,
+      "severka": 16,
+      "okno": 16,
+      "wall_block": 15,
+      "nabytek_zidle": 14,
+      "sanit_WC": 7,
+      "sanit_umyvadlo": 7,
+      "nabytek_postel": 6,
+      "kuchyne_indukce": 5,
+      "nabytek_tv": 4,
+      "kuchyne_lednice": 3,
+      "kuchyne_trouba": 3,
+      "kuchyne_drez": 3,
+      "kuchyne_mycka": 3,
+      "nabytek_pohovka": 3,
+      "dvere": 2,
+      "sanit_vana": 2,
+      "sanit_sprcha": 2
+    }
+  },
+  "per_file_summary": {
+    "dum_DPZ": {
+      "n_inserts": 535,
+      "n_unique_blocks": 59
+    },
+    "dum_situace": {
+      "n_inserts": 336,
+      "n_unique_blocks": 25
+    },
+    "sklad_DPZ": {
+      "n_inserts": 90,
+      "n_unique_blocks": 21
+    },
+    "sklad_situace": {
+      "n_inserts": 345,
+      "n_unique_blocks": 23
+    }
+  },
+  "klempirina_breakdown": {
+    "klempir_atika": {
+      "n_inserts": 0,
+      "unique_block_names": []
+    },
+    "klempir_okap": {
+      "n_inserts": 0,
+      "unique_block_names": []
+    },
+    "klempir_svod": {
+      "n_inserts": 0,
+      "unique_block_names": []
+    },
+    "klempir_parapet": {
+      "n_inserts": 0,
+      "unique_block_names": []
+    }
+  },
+  "all_categories_aggregated": {
+    "kr_krokev": {
+      "n_inserts": 111,
+      "unique_block_names": [
+        "KR"
+      ],
+      "sample_positions": [
+        [
+          3783569.0,
+          1969170.0
+        ],
+        [
+          3780369.0,
+          1969170.0
+        ],
+        [
+          3786769.0,
+          1969170.0
+        ],
+        [
+          3791469.0,
+          1969170.0
+        ],
+        [
+          3777919.0,
+          1969170.0
+        ]
+      ]
+    },
+    "dvere": {
+      "n_inserts": 2,
+      "unique_block_names": [
+        "dveře"
+      ],
+      "sample_positions": [
+        [
+          3830325.0,
+          1944033.0
+        ],
+        [
+          3830325.0,
+          1878488.0
+        ]
+      ]
+    },
+    "sanit_WC": {
+      "n_inserts": 7,
+      "unique_block_names": [
+        "WC s nádržkou 1_4",
+        "WC s nádržkou 1_7",
+        "WC_ZAVES_DURAVIT STARCK3"
+      ],
+      "sample_positions": [
+        [
+          3832120.0,
+          1975046.0
+        ],
+        [
+          3862040.0,
+          1974516.0
+        ],
+        [
+          3832120.0,
+          1909501.0
+        ],
+        [
+          3862040.0,
+          1908971.0
+        ],
+        [
+          3831789.0,
+          1843255.0
+        ]
+      ]
+    },
+    "sanit_vana": {
+      "n_inserts": 2,
+      "unique_block_names": [
+        "Vana 01_5"
+      ],
+      "sample_positions": [
+        [
+          3833160.0,
+          1974666.0
+        ],
+        [
+          3833157.0,
+          1909126.0
+        ]
+      ]
+    },
+    "sanit_umyvadlo": {
+      "n_inserts": 7,
+      "unique_block_names": [
+        "Umyvadlo 01_8",
+        "Umyvadlo 01_9",
+        "umyvadlo"
+      ],
+      "sample_positions": [
+        [
+          3833551.0,
+          1975416.0
+        ],
+        [
+          3862190.0,
+          1973851.0
+        ],
+        [
+          3833568.0,
+          1909895.0
+        ],
+        [
+          3862190.0,
+          1908306.0
+        ],
+        [
+          3831790.0,
+          1842714.0
+        ]
+      ]
+    },
+    "kuchyne_indukce": {
+      "n_inserts": 5,
+      "unique_block_names": [
+        "Elektrický sporák 01_42",
+        "indukce"
+      ],
+      "sample_positions": [
+        [
+          3832570.0,
+          1969226.0
+        ],
+        [
+          3832570.0,
+          1903681.0
+        ],
+        [
+          3830775.0,
+          1838980.0
+        ],
+        [
+          3858675.0,
+          1838980.0
+        ],
+        [
+          3893640.0,
+          1840270.0
+        ]
+      ]
+    },
+    "wall_block": {
+      "n_inserts": 15,
+      "unique_block_names": [
+        "WALL_1",
+        "WALL_11",
+        "WALL_15",
+        "WALL_7",
+        "WALL_9"
+      ],
+      "sample_positions": [
+        [
+          3836890.0,
+          1976146.0
+        ],
+        [
+          3830840.0,
+          1971296.0
+        ],
+        [
+          3831940.0,
+          1974046.0
+        ],
+        [
+          3833590.0,
+          1971296.0
+        ],
+        [
+          3866590.0,
+          1966646.0
+        ]
+      ]
+    },
+    "rezova_znacka": {
+      "n_inserts": 44,
+      "unique_block_names": [
+        "řezová značka"
+      ],
+      "sample_positions": [
+        [
+          3832251.0,
+          1966077.0
+        ],
+        [
+          3835448.0,
+          1977102.0
+        ],
+        [
+          3865148.0,
+          1977102.0
+        ],
+        [
+          3891651.0,
+          1966005.0
+        ],
+        [
+          3894848.0,
+          1976882.0
+        ]
+      ]
+    },
+    "razitko": {
+      "n_inserts": 32,
+      "unique_block_names": [
+        "razítko a podpis"
+      ],
+      "sample_positions": [
+        [
+          3848440.0,
+          1966731.0
+        ],
+        [
+          3878140.0,
+          1966731.0
+        ],
+        [
+          3907840.0,
+          1966731.0
+        ],
+        [
+          3818740.0,
+          1966731.0
+        ],
+        [
+          3846665.0,
+          1947663.0
+        ]
+      ]
+    },
+    "sanit_sprcha": {
+      "n_inserts": 2,
+      "unique_block_names": [
+        "Sprch vana_6"
+      ],
+      "sample_positions": [
+        [
+          3862540.0,
+          1975696.0
+        ],
+        [
+          3862540.0,
+          1910151.0
+        ]
+      ]
+    },
+    "severka": {
+      "n_inserts": 16,
+      "unique_block_names": [
+        "severka"
+      ],
+      "sample_positions": [
+        [
+          3846875.0,
+          1834536.0
+        ],
+        [
+          3876575.0,
+          1834536.0
+        ],
+        [
+          3906275.0,
+          1834536.0
+        ],
+        [
+          3817175.0,
+          1834536.0
+        ],
+        [
+          3846875.0,
+          1896281.0
+        ]
+      ]
+    },
+    "nabytek_postel": {
+      "n_inserts": 6,
+      "unique_block_names": [
+        "postel 900 x 2000",
+        "postel 900x2000"
+      ],
+      "sample_positions": [
+        [
+          3834565.0,
+          1843905.0
+        ],
+        [
+          3834565.0,
+          1842105.0
+        ],
+        [
+          3862865.0,
+          1844580.0
+        ],
+        [
+          3866265.0,
+          1840244.0
+        ],
+        [
+          3893965.0,
+          1842280.0
+        ]
+      ]
+    },
+    "nabytek_tv": {
+      "n_inserts": 4,
+      "unique_block_names": [
+        "tv_120"
+      ],
+      "sample_positions": [
+        [
+          3852553.0,
+          1865744.0
+        ],
+        [
+          3817162.0,
+          1815124.0
+        ],
+        [
+          3844563.0,
+          1814590.0
+        ],
+        [
+          3907878.0,
+          1859967.0
+        ]
+      ]
+    },
+    "kuchyne_lednice": {
+      "n_inserts": 3,
+      "unique_block_names": [
+        "lednice"
+      ],
+      "sample_positions": [
+        [
+          4128944.0,
+          1822237.0
+        ],
+        [
+          4156844.0,
+          1822237.0
+        ],
+        [
+          3874896.0,
+          1542102.0
+        ]
+      ]
+    },
+    "kuchyne_trouba": {
+      "n_inserts": 3,
+      "unique_block_names": [
+        "trouba_mikrovlnka"
+      ],
+      "sample_positions": [
+        [
+          4128314.0,
+          1817883.0
+        ],
+        [
+          4156214.0,
+          1817883.0
+        ],
+        [
+          3877218.0,
+          1542731.0
+        ]
+      ]
+    },
+    "kuchyne_drez": {
+      "n_inserts": 3,
+      "unique_block_names": [
+        "drez_2"
+      ],
+      "sample_positions": [
+        [
+          3831396.0,
+          1836828.0
+        ],
+        [
+          3859296.0,
+          1836828.0
+        ],
+        [
+          3895192.0,
+          1839649.0
+        ]
+      ]
+    },
+    "kuchyne_mycka": {
+      "n_inserts": 3,
+      "unique_block_names": [
+        "mycka_nadobi"
+      ],
+      "sample_positions": [
+        [
+          4128875.0,
+          1816841.0
+        ],
+        [
+          4156775.0,
+          1816841.0
+        ],
+        [
+          3872701.0,
+          1542171.0
+        ]
+      ]
+    },
+    "nabytek_zidle": {
+      "n_inserts": 14,
+      "unique_block_names": [
+        "židle_jídelní"
+      ],
+      "sample_positions": [
+        [
+          3856430.0,
+          1816900.0
+        ],
+        [
+          3811705.0,
+          1816904.0
+        ],
+        [
+          3814211.0,
+          1814394.0
+        ],
+        [
+          3856430.0,
+          1857156.0
+        ],
+        [
+          3811705.0,
+          1857156.0
+        ]
+      ]
+    },
+    "nabytek_pohovka": {
+      "n_inserts": 3,
+      "unique_block_names": [
+        "L pohovka II"
+      ],
+      "sample_positions": [
+        [
+          3834255.0,
+          1838698.0
+        ],
+        [
+          3862523.0,
+          1836030.0
+        ],
+        [
+          3890444.0,
+          1836073.0
+        ]
+      ]
+    },
+    "okno": {
+      "n_inserts": 16,
+      "unique_block_names": [
+        "okno 1.NP",
+        "okno 1.NP vzadu",
+        "okno 2.NP",
+        "okno 3.NP",
+        "okno 3.NP vzadu",
+        "okno male 3.NP vzadu",
+        "okno malé vzadu"
+      ],
+      "sample_positions": [
+        [
+          3835915.0,
+          1863988.0
+        ],
+        [
+          3835880.0,
+          1860788.0
+        ],
+        [
+          3834290.0,
+          1860788.0
+        ],
+        [
+          3832740.0,
+          1863651.0
+        ],
+        [
+          3833365.0,
+          1857482.0
+        ]
+      ]
+    },
+    "plot_dreveny": {
+      "n_inserts": 133,
+      "unique_block_names": [
+        "PLOT_DREVENY_04"
+      ],
+      "sample_positions": [
+        [
+          -842861.0,
+          -997637.0
+        ],
+        [
+          -842869.0,
+          -997640.0
+        ],
+        [
+          -842867.0,
+          -997640.0
+        ],
+        [
+          -842863.0,
+          -997638.0
+        ],
+        [
+          -842864.0,
+          -997638.0
+        ]
+      ]
+    }
+  },
+  "unmapped_block_names_top_50": {
+    "bod_000": 461,
+    "název": 32,
+    "investor": 32,
+    "projektant": 32,
+    "část": 32,
+    "hlavní projektant": 32,
+    "projektový stupeň": 32,
+    "datum": 32,
+    "výškový systém": 32,
+    "poznámka DSP": 22,
+    "legenda stav": 16,
+    "PLOT_DROTENY_04": 16,
+    "hlavní vstup": 8,
+    "legenda návrh": 6,
+    "poznámky návrh": 6,
+    "legenda konstrukcí návrh": 6,
+    "BMW_2d": 6,
+    "vstup": 6,
+    "legenda skladby": 5,
+    "poznámky_návrh": 5,
+    "legenda bourání": 5,
+    "legenda skladba konstrukcí bourání": 5,
+    "legena povrchy stav": 4,
+    "SVIET__NA_STOZIARI_04": 4,
+    "STOZIAR_DREVENY_04": 4,
+    "HOM_025": 3,
+    "legenda materiálu": 3,
+    "legenda skladeb": 3,
+    "PSR_Prázdný_dveřní_otvor": 2,
+    "Sp. skříňka 2D_49": 2,
+    "zahrada": 2,
+    "povrchové materiály novrh": 2,
+    "STROM_LISTNATY_05": 2,
+    "STOZIAR_DREVENY_01": 2,
+    "vo_soupe": 2,
+    "po_hydpo": 2,
+    "vo_studn": 2,
+    "BMW": 2,
+    "Dům": 1,
+    "terasa": 1,
+    "zahrada katastr": 1,
+    "zlab rez": 1,
+    "el_sloup": 1
+  }
+}

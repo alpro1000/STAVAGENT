@@ -30,7 +30,7 @@
 // 'puppeteer-core'` would crash with ERR_MODULE_NOT_FOUND before the
 // SKIP_PRERENDER check could run.
 import { createServer } from 'node:http';
-import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -104,12 +104,76 @@ async function applySnapshotIfPresent() {
   console.log(
     `[prerender] Applying snapshot from public/prerendered/ → dist/ ...`,
   );
-  // fs.cp with recursive:true copies the CONTENTS of source into dest.
-  // public/prerendered/index.html → dist/index.html (overrides empty shell)
-  // public/prerendered/en/index.html → dist/en/index.html
-  // public/prerendered/team/index.html → dist/team/index.html
-  // public/prerendered/en/team/index.html → dist/en/team/index.html
-  await cp(PRERENDERED_DIR, DIST_DIR, { recursive: true, force: true });
+
+  // Vite emits content-hashed assets (e.g. /assets/index-BESdIMHV.js). The
+  // committed snapshot bakes in the hashes from whichever build session
+  // produced it. Vercel's vite build can emit DIFFERENT hashes for the same
+  // source if its environment differs (Node version, transitive dep
+  // versions, OS). When that happens, the snapshot's <script src> 404s
+  // against Vercel's actual /assets/*.js, Vercel's `/(.*)` SPA rewrite
+  // returns dist/index.html (text/html MIME), and the browser refuses the
+  // module — the entire app fails to boot ("buttons don't work").
+  //
+  // Defence: graft the fresh build's /assets/* references onto the snapshot
+  // before writing. We match by name-prefix (everything before the final
+  // hash segment) so index-OLD.js → index-NEW.js, chunk-XYZ-OLD.js →
+  // chunk-XYZ-NEW.js, etc. If the hashes already match (happy local case)
+  // the rewrite is a no-op.
+  const freshShell = await readFile(INDEX_HTML, 'utf8');
+  const ASSET_RE = /\/assets\/([^"'\s>)]+\.(?:js|css))/g;
+  const freshAssets = [...new Set(
+    [...freshShell.matchAll(ASSET_RE)].map((m) => m[1]),
+  )];
+
+  function freshFor(oldName) {
+    // index-BESdIMHV.js          → prefix "index"             ext "js"
+    // chunk-JMJ3UQ3L-CMh_dcdV.js → prefix "chunk-JMJ3UQ3L"    ext "js"
+    // index-CqqnmC83.css         → prefix "index"             ext "css"
+    const m = oldName.match(/^(.+)-[A-Za-z0-9_-]+\.(js|css)$/);
+    if (!m) return null;
+    const [, prefix, ext] = m;
+    return (
+      freshAssets.find(
+        (a) => a.startsWith(prefix + '-') && a.endsWith('.' + ext),
+      ) || null
+    );
+  }
+
+  const snapshotFiles = [
+    'index.html',
+    'en/index.html',
+    'team/index.html',
+    'en/team/index.html',
+  ];
+
+  for (const relPath of snapshotFiles) {
+    const sourcePath = join(PRERENDERED_DIR, relPath);
+    const destPath = join(DIST_DIR, relPath);
+    if (!existsSync(sourcePath)) continue;
+    let html = await readFile(sourcePath, 'utf8');
+
+    const staleAssets = [...new Set(
+      [...html.matchAll(ASSET_RE)].map((m) => m[1]),
+    )];
+    let rewrites = 0;
+    for (const oldName of staleAssets) {
+      const newName = freshFor(oldName);
+      if (newName && newName !== oldName) {
+        html = html.split(`/assets/${oldName}`).join(`/assets/${newName}`);
+        rewrites++;
+        console.log(
+          `[prerender]   ${relPath}: ${oldName} → ${newName}`,
+        );
+      }
+    }
+
+    await mkdir(dirname(destPath), { recursive: true });
+    await writeFile(destPath, html);
+    console.log(
+      `[prerender]   wrote ${destPath.replace(DIST_DIR, 'dist')} ` +
+        `(${html.length.toLocaleString('en-US')} bytes, ${rewrites} asset rewrites)`,
+    );
+  }
   console.log('[prerender] Snapshot applied.');
 }
 

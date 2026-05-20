@@ -22,6 +22,7 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
+from docx.shared import RGBColor
 from docx.shared import Cm, Pt, RGBColor
 
 PROJ = Path(__file__).resolve().parent.parent
@@ -116,10 +117,17 @@ OTAZKY = {
         ),
     },
     4: {
-        "title": "Skladby podlah — přesné vrstvy a výrobce",
+        "title": "Skladby podlah — přesné vrstvy a výrobce  [RESOLVED 2026-05-18]",
         "komu": "Architekt SMASH",
         "komu_email": "SMASH architekti s.r.o.",
-        "vaznost": "DŮLEŽITÉ",
+        "vaznost": "INFORMATIVNÍ",
+        "status": "RESOLVED",
+        "status_note": (
+            "VYŘEŠENO 2026-05-18 (Path C Tier 2): 13 S-codes decodováno z TZ řez A-A legendy + "
+            "cross-referenced s DXF S-code markers per element location. Sheet 8 Var_E_Skladby_Vrstev "
+            "obsahuje plné composition vrstev pro všech 13 S-codes (S01–S12b). Výrobce systému zůstává "
+            "otázkou pro investora (PSV Knauf / Rigips / Fermacell — rozhodnutí o dodavateli)."
+        ),
         "o_co_jde": (
             "Technická zpráva uvádí materiály a tloušťky vrstev pro 3 typy skladeb "
             "podlah (na terénu, suchá nad trámovým stropem, mokrá nad ocelobetonem). "
@@ -146,10 +154,19 @@ OTAZKY = {
         ),
     },
     5: {
-        "title": "Výpisy oken, dveří, klempířiny, zámečnictví, truhlářství",
+        "title": "Výpisy oken, dveří, klempířiny, zámečnictví, truhlářství  [PARTIALLY RESOLVED 2026-05-18]",
         "komu": "Architekt SMASH",
         "komu_email": "SMASH architekti s.r.o.",
-        "vaznost": "DŮLEŽITÉ",
+        "vaznost": "STŘEDNĚ DŮLEŽITÉ",
+        "status": "PARTIALLY_RESOLVED",
+        "status_note": (
+            "ČÁSTEČNĚ VYŘEŠENO 2026-05-18 (Path C Tier 4 — INSERT block extrakce z DXF): "
+            "Z DXF se podařilo vytáhnout 7 unique window types s exact bbox rozměry — to nahrazuje "
+            "typický výpis oken pro DSP. Klempířina 173,8 m total z DXF MA_klempíř + SM__klempířina "
+            "layers, per-typ split (atika / okap / svod / parapet) je v Sheet 8 Var_E + Var_B detail. "
+            "ZBÝVÁ: TZ silent o materiálu / fabrice klempířiny — dotaz na výrobce zůstává. "
+            "Dveře vnitřní stále odhad ±20 % (ARS uvádí 'DTD laminované' bez ks/typů)."
+        ),
         "o_co_jde": (
             "Technická zpráva uvádí obecné popisy: „plastová okna trojsklem Uw=0,85, "
             "barva dle investora; venkovní žaluzie v kastlíku s purenitovou izolací; "
@@ -511,6 +528,78 @@ OTAZKY = {
             "7 kusů × 7 m × 18,8 kg/m s confidence 0,90 (vysokou)."
         ),
     },
+    19: {
+        "title": "Strop S09 — „košický plech“ vs „trapéz 40S/160“ (terminologický rozpor)",
+        "komu": "Statik TeAnau s.r.o. (Tvardík, Bendík)",
+        "komu_email": "TeAnau s.r.o.",
+        "vaznost": "STŘEDNĚ DŮLEŽITÉ",
+        "o_co_jde": (
+            "ARS řez S09 (skladba stropu 1.NP/2.NP) uvádí „košický plech“ jako konstrukci "
+            "spřaženého stropu. TZ statika dům §6.3 ale uvádí přesnou specifikaci "
+            "„trapézový plech 40S/160 tl. 0,75 mm + nabetonávka 60 mm z betonu C25/30 XC1“. "
+            "Jde o stejnou konstrukci (jen synonymum), nebo o dvě různé varianty?"
+        ),
+        "co_je_treba": (
+            "Karle, prosím dotaž TeAnau, zda je „košický plech“ a „trapéz 40S/160 + nabetonávka“ "
+            "synonymum (= jedna a tatáž ocelobetonová deska s trny pro spřažení) nebo zda jde "
+            "o dvě různé skladby. Pokud synonymum, sjednotit terminologii v dokumentaci."
+        ),
+        "co_mame": (
+            "Pracovní hypotéza: synonyma. „Košický plech“ je hovorové označení pro trapézový "
+            "plech s trny / vrubovými žebry pro spřažení s nabetonovanou monolitickou deskou — "
+            "typická skladba ocelobetonového stropu v ČR. V rozpočtu položeno jako "
+            "„HSV-4 Ocelobetonový strop — trapéz 40S/160 tl. 0,75 mm + nabetonávka 60 mm C25/30“ "
+            "podle specifické varianty z TZ statika (preferujeme přesnější popis)."
+        ),
+        "vliv": (
+            "Pokud synonymum (předpokládaná varianta): položka HSV-4 ocelobetonový strop "
+            "je správná. Pokud dvě skladby: zhotovitel musí ověřit, která je závazná — "
+            "ARS nebo TZ statika. Standardně preferuje TZ statika."
+        ),
+    },
+    20: {
+        "title": "Verifikace ÚRS kódů — production lookup před cenotvorbou",
+        "komu": "Investor Volný + Karel (rozhodnutí o produkčním ověření)",
+        "komu_email": "JindraVolny@seznam.cz",
+        "vaznost": "STŘEDNĚ DŮLEŽITÉ",
+        "o_co_jde": (
+            "Rozpočet obsahuje 189 položek s navrženými ÚRS kódy generovanými heuristikou "
+            "v Phase 1. V Part 5b (Sheet 9 Var_F_URS_Verification_Trail) jsme ověřili "
+            "12 kódů přes WebSearch (veřejná zrcadla podminky.urs.cz: smlouvy.gov.cz, "
+            "vhodne-uverejneni.cz, docplayer.cz, cs-urs.cz).\n\n"
+            "Výsledek ověření: heuristika odhadne první 6 cifer (rodinu) správně v ~75 % "
+            "případů, ale 9-cifrový leaf je chybný v ~63 % (odlišný distance band, "
+            "materiál, geometrie, nebo lokace). 3 položky verifikovány jako přesné, "
+            "9 položek označeno LEAF CHYBNÝ (viz červeně označený sloupec v Sheet 5/6 "
+            "Var_B_Polozkovy), 4 nahrazeny správnými kódy (HSV6.007 keramické obklady → "
+            "781473810 atd.)."
+        ),
+        "co_je_treba": (
+            "Pro produkční cenotvorbu doporučujeme spustit zbývajících 177 položek "
+            "přes URS_MATCHER service (Perplexity-driven online lookup s ÚRS katalogem 2026/I). "
+            "Náklad: ~3-4 hodiny processing + 30-60 min cleanup ≈ 3-4 tis. Kč extra service.\n\n"
+            "Karle, prosím přepošli Volnému s žádostí o rozhodnutí: ANO objednat full URS "
+            "verification před cenovou nabídkou, NEBO ponechat na zhotoviteli s upozorněním "
+            "v cenové nabídce, že kódy jsou heuristické a vyžadují ověření."
+        ),
+        "co_mame": (
+            "Aktuální stav (po Part 5b WebSearch):\n"
+            "  • 4 položky urs_status=matched_websearch_verified ✓ (confidence 0,90–0,95)\n"
+            "  • 9 položek urs_status=wrong_leaf_disambiguation_needed ⚠ (confidence snížena "
+            "na 0,50, 6-ciferná rodina v urs_code_family_6digit)\n"
+            "  • 176 položek urs_status=needs_production_lookup (confidence 0,65, čeká "
+            "na URS_MATCHER service run)\n\n"
+            "Excel Sheet 9 Var_F obsahuje plný audit trail per kód: verdict (matched / "
+            "wrong leaf / correct replacement), verified URS popis, item popis, "
+            "correct_code_hint pro disambiguation."
+        ),
+        "vliv": (
+            "Pokud URS verification objednán: cenová nabídka má production-grade ÚRS kódy "
+            "(~95 % top-1 acceptance), zhotovitel ji může bez úprav předložit. "
+            "Pokud NE: cena platí, ale zhotovitel musí v provádění nahradit ~120 chybných "
+            "leaves vlastní inženýrskou cestou — rezerva 5-8 % v ceně doporučena."
+        ),
+    },
 }
 
 
@@ -677,6 +766,16 @@ def main() -> int:
         meta.cell(1, 1).text = q["vaznost"]
         set_cell_bg(meta.cell(1, 1), vaznost_color(q["vaznost"]))
         meta.cell(1, 1).paragraphs[0].runs[0].bold = True
+
+        # Status banner — for RESOLVED / PARTIALLY_RESOLVED questions
+        if q.get("status"):
+            p = doc.add_paragraph()
+            status_label = q["status"].replace("_", " ")
+            r = p.add_run(f"✓ STATUS: {status_label}")
+            r.bold = True
+            r.font.color.rgb = RGBColor(0x0F, 0x51, 0x32) if q["status"] == "RESOLVED" else RGBColor(0xA0, 0x40, 0x00)
+            if q.get("status_note"):
+                doc.add_paragraph(q["status_note"])
 
         # O co jde
         p = doc.add_paragraph()

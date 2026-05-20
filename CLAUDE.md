@@ -1,8 +1,32 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.30.0
-**Last Updated:** 2026-05-18
+**Version:** 4.32.0
+**Last Updated:** 2026-05-19
 **Repository:** STAVAGENT (Monorepo)
+
+---
+
+## 🚨 Mandatory reading at session start
+
+Před JAKOUKOLIV prací přečti v tomto pořadí:
+
+1. `docs/steering/conventions.md` — jak pracovat (mantra, naming, gates, communication)
+2. `docs/steering/product.md` — co stavíme a pro koho
+3. `docs/steering/tech.md` — stack, AI tier, infrastructure, MCP
+4. `docs/steering/structure.md` — repo layout, kam co patří
+5. `docs/steering/domain.md` — construction rules, OTSKP/ÚRS, skruž, rebar matrix
+6. `docs/soul.md` — aktuální stav, recent decisions, session log
+
+Pokud kterýkoliv soubor chybí nebo je outdated → **STOP** a informuj Alexandra.
+
+Po session **POVINNĚ** přidej entry do `docs/soul.md` §9 (Session log):
+```markdown
+## YYYY-MM-DD — Session: {topic}
+**Rozhodnuto:** ...
+**Odmítnuto:** ...
+**Otevřené otázky:** ...
+**Co dál:** ...
+```
 
 ---
 
@@ -11,6 +35,10 @@
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing nine domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.32.0 (2026-05-19 — SDD workflow + steering integration):** Repo přijal Spec-Driven Development workflow s online claude.ai + Claude Code hybrid (firewall blokuje terminal na práci). Nový `docs/steering/` (5 canonical context souborů: product / tech / structure / domain / conventions) + `docs/soul.md` (living memory) + `docs/templates/` (3-file spec + 4-file bug šablony) + `docs/handoff/` (session snapshots) + `docs/audit_project_knowledge.md` (migration map). Mandatory reading block + workflow discipline pravidla přidána do tohoto CLAUDE.md (hlavička + Session Setup). `docs/CALCULATOR_PHILOSOPHY.md` (root) + `docs/normy/navody/CALCULATOR_PHILOSOPHY.md` deprecated → obsah nyní v `docs/steering/domain.md` §1. Cleanup orphaned root files (13 byte-identical duplicates `git rm`'d, 3 unique files moved from `data/peri-pdfs/` → `docs/reference/` + `scripts/` + `docs/specs/element/`, `data/` folder removed). N+1 corpus structure: `test-data/{project}/` pro RD_Jachymov_dum + SO_250 + hk212_hala + libuse + most-2062-1-zihle + most-litovel; `test-data/tz/` pro golden test markdownů; KB study material (Litovel diplomka — TKP 4 + ČSN 73 6244 + VL 4) marked separately v `soul.md` §2.4.
+>
+> **Changelog — v4.31.0 (2026-05-18 — RD Jáchymov N=5 pilot + Phase 0a Completeness Audit MANDATORY):** Residential renovation + nadstavba pilot (RD Fibichova 733, DSP stupeň, dům 260219 + sklad 260217) shipped to zhotovitel Karel Šmíd via 8-sheet Excel `Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-18.xlsx` (65.1 KB). Final items.json: **189 položek** (97 HSV / 48 PSV / 25 TZB / 19 VRN), confidence distribution 0.99=17 / 0.95=25 / 0.90=23 / 0.85=39 / 0.80=16 / 0.75=69, **strict zero under 0.70**. Every position carries `source` + `mnozstvi_formula` + `mnozstvi_confidence` + `_data_quality` (31 items `dxf_deterministic`, 18 with `_recalc_reason`). Excel views: Souhrn (investor), Var_A_dum+sklad (kapitola aggregate), Var_C_hybrid (subkapitola), Var_B_polozkovy (per-item audit trail), Var_D_per_podlazi (projektant coordination), Var_E_skladby_vrstev (statik/TI). **NEW MANDATORY RULE — Phase 0a Completeness Audit** codified into `concrete-agent/CLAUDE.md` between Universal Parser and Monorepo Structure: Phase 1 (item generation) gate cannot open until `outputs/source_completeness_audit.json` returns `gate_status: OPEN` with 0 blockers. 3 audit sections — A) every PDF in `inputs/` gets `probe_status` (drawing-heavy/scanned PDFs trigger OCR via `pdftoppm -r 300 -png` → `tesseract -l ces+eng --psm 6`); B) every DXF layer gets terminal `probe_status` (probed_extracted / probed_metadata_only_confirmed / probed_empty), zero `unknown` allowed, 5-tier prioritization (Tier 1 DIMENSIONs → Tier 2 MTEXT + embedded tables → Tier 3 geometry + HATCH + dual catalog → Tier 4 INSERT discovery → Tier 5 metadata skip-confirmation); C) cross-reference matrix on 6–10 high-stakes data points across TZ text / DXF DIMENSION / INSERT / LWPOLYLINE bbox, drift > 0.10 mm flags Phase 0b §3.2 re-parse. **Empirical motivator:** RD Jáchymov first pass probed 11 of 156 DXF layers (7 %), shipped 6 silent drifts (ETICS 200→160 mm, PIR 180→160 mm, klempířina 4-way DXF split, obklady per-koupelna výška, per-podlaží světlé výšky, špalety perimeter) — all user-caught. Cure: 156/156 layers probed via Path C 5-tier exhaustive sweep (785 DIMENSIONs + 2268 MTEXT + 1306 INSERTs + 31 metadata layers + 6 OCR'd PDFs). Pilot artefakty at `test-data/RD_Jachymov_dum/` retained as canonical N=5 baseline (companion to Žihle 2062-1 mostový pilot N=4). **9 corpus patterns** committed to `concrete-agent/packages/core-backend/app/knowledge_base/B5_tech_cards/real_world_examples/rd_jachymov/patterns/`: 01 file_swap_detection (SHA-verified swap detection via Rdt fingerprint drift), 02 tz_validator_iterative_refinement (4 Czech regex weakness classes), 03 multi_view_items_json (single source N projections — items.json upstream, Excel downstream), 04 workflow_gate_vs_catalog_grouping (`_gate` field parallel to `kapitola_group`), 05 exhaustive_dxf_extraction (5-tier prioritization), 06 embedded_table_extraction_dxf_mtext (`^I` literal caret-I tab, NOT ASCII `\t`), 07 honest_detail_fallback_dsp_scope (partially superseded by 05 — fallback applies post-exhaustive-extraction), **08 completeness_audit_mandatory** (CRITICAL — Phase 0a algorithm canonical reference), **09 iterative_layer_probe_user_caught_gaps** (ANTI-PATTERN preserved as negative example). Tooling: `tools/phase0a_completeness_audit.py`, `tools/path_c_part1_ocr.py`, `tools/path_c_tier{1,2,3,4_5}_*.py`. Dual catalog inventory (URS201801 39 741 codes + KROS TSKP 11 994 codes, 0 overlap = complementary) staged at `outputs/catalog_cache_inventory.json` for Part 5b URS matching (4-stage TSKP fuzzy search per backlog `otskp_search_algorithm.md`, 80 % top-1 / 95 % top-3 acceptance target). Branch `claude/rd-jachymov-phase-0b-foundation` shipped as PR #1177 — squash-merged into main (against earlier "use merge-commit" preference; per-tier atomic audit trail preserved on branch tip `61830ba` until branch deletion). Pivotal generalization: **Completeness ≠ correctness** — 100 % correct extraction across 7 % source coverage still ships 93 % blind spots. Phase 0a now mandatory for ALL future N+1 pilots regardless of size; cost of audit is negligible compared to silent-drift ship.
 >
 > **Changelog — v4.30.0 (2026-05-18 — MCP OAuth + RFC 9728 + CORS hardening):** MCP Server backend migrated SQLite → Postgres (Cloud SQL via `/cloudsql/INSTANCE/.s.PGSQL.5432` Unix socket); auth state lives in `mcp_api_keys` + `mcp_credit_log` + `mcp_oauth_codes` (migrations 007 + 008). OAuth 2.0 extended from `client_credentials` only → adds `authorization_code` grant with mandatory PKCE S256 (RFC 7636; `code_challenge` required, never optional — non-optional PKCE is the CSRF invariant on the authz flow). RFC 8414 `/.well-known/oauth-authorization-server` + RFC 9728 `/.well-known/oauth-protected-resource` + OIDC `/.well-known/openid-configuration` discovery handlers share one `_oauth_discovery_payload`; `issuer`/`authorization_endpoint`/`token_endpoint` URLs built from `X-Forwarded-Proto` per-request via `_external_base_url_from_scope` so they emit `https://` behind Cloud Run's edge TLS termination. `consume_code` ordering hardened against timing oracles (row exists → expired → redirect_uri match → PKCE method valid → PKCE digest match → used_at). `redirect_uri` allow-list: `https://chatgpt.com/connector/oauth/`, `https://claude.ai/api/mcp/auth_callback`; localhost gated by `MCP_OAUTH_ALLOW_LOCALHOST_REDIRECT=1` (tests only). Per-IP rate limit on `/oauth/authorize` (10/60s). `MCPAuthChallengeMiddleware` emits 401 + RFC 6750 `WWW-Authenticate: Bearer` for unauthenticated GET/HEAD/POST/PUT/PATCH/DELETE on `/mcp/*` (OPTIONS deliberately excluded so preflight reaches CORSMiddleware). `BareOptionsAllowMiddleware` returns 204 + CORS headers for bare OPTIONS from allow-listed origin (Starlette CORSMiddleware only short-circuits when `Access-Control-Request-Method` present). `ProxyHeadersMiddleware` (uvicorn) added globally + Dockerfile CMD `--proxy-headers --forwarded-allow-ips=*` so `scope["scheme"]` rewrites to https before route dispatch — fixes Claude.ai mixed-content rejection on `/mcp` → `/mcp/` redirect. Double-layer CORS on the FastMCP mount: `app.mount("/mcp", CORSMiddleware(MCPAuthChallengeMiddleware(MCPOriginMiddleware(_mcp_http_app)), …))` so preflight + auth challenge + origin echo all compose. Explicit allow-list (no wildcard with credentials): `claude.ai`, `chatgpt.com`, `chat.openai.com`, plus `stavagent.cz` family + localhost; `expose_headers=["WWW-Authenticate"]` so browsers can read the Bearer challenge. App-side `app/db/startup_migrations.py` replaces dead cloudbuild psql step (Unix socket unavailable on Cloud Build VM → silent no-op for years); session-level `pg_advisory_lock(8479_3162_5045_1287)` single-writer + `_open_connection(dsn)` with `connect_timeout=10` + 3-retry on transient OperationalError + `statement_timeout=30000`; `_resolve_dsn` strips `+asyncpg` and trailing whitespace from Secret Manager values; `_CRITICAL_SCHEMA` drift check on `mcp_api_keys` columns. Migration 003 trailing-comma + 006 inline `UNIQUE(... COALESCE(...))` → `CREATE UNIQUE INDEX` fixes unblocked Cloud Run 240s startup probe. `psycopg2` thread-local pool gains `del _db_pool[tid]` on reconnect to plug the closed-connection leak. Knowledge integration audit + GCS bucket inventory shipped at `docs/audits/knowledge_audit/2026-05-14_inventory_with_gcs.md` (272 lines, Top-5 integrations roadmap, separate audit branch). MCP test surface 17 → 93 (compat + endpoints + auth_postgres + oauth_pkce suites combined): discovery happy/bad-input, PKCE S256 happy/wrong-verifier/code-reuse/expired/redirect_uri-mismatch, rate limit, allow-list, anonymous GET/HEAD on `/mcp/` → 401+WWW-Authenticate, bare OPTIONS → 204, CORS origin echo + expose-headers, http→https redirect. Shared module-level constants `_CORS_ALLOW_ORIGINS`, `_CORS_ALLOW_ORIGIN_REGEX`, `_CORS_EXPOSE_HEADERS` keep mount-CORS and global-CORS in lockstep.
 >
@@ -45,8 +73,10 @@
 **Před úpravou kalkulátoru, golden tests, acceptance criteria, nebo UI textů** — přečti:
 
 ```
-docs/CALCULATOR_PHILOSOPHY.md
+docs/steering/domain.md §1 (Calculator philosophy)
 ```
+
+> **Pozn.:** `docs/CALCULATOR_PHILOSOPHY.md` (root) + `docs/normy/navody/CALCULATOR_PHILOSOPHY.md` byly **deprecated** 2026-05-19 — obsah nyní v `docs/steering/domain.md` §1. Pokud najdeš starý link kdekoliv v repu, oprav na nový.
 
 **TL;DR pozicování:**
 
@@ -146,7 +176,7 @@ Python FastAPI. **120 endpoints**, **34 test files**, **~61K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 KB: 42 JSON files (~40MB), 21 prompt files, 23 SQL schemas.
 
-**Subsystems:** Multi-Role Expert (4 roles), Workflows A/B/C, Document Accumulator (20 ep), Multi-Format Parser v5.0 (XLSX/XML/PDF/DXF/OCR), Add-Document Pipeline (14 doc types), NKB 3-layer, NormIngestionPipeline (chunked: L1→chunk→per-chunk[L2+L3a]→merge→L3b), NKB Audit (15 sources), Unified Item Layer, Soupis Assembler, Scenario B, Section Extraction Engine v2 (28 extractors, negative-context filter), Calculator Suggestions (fact→param mapping, warnings, conflicts, write-through persistence), Chunked Extraction (document_chunker + parsed_document_adapter + extraction_to_facts_bridge), Drive OAuth2, Agents, Chat, **MCP Server v1.0** (9 tools, FastMCP, mounted at `/mcp`).
+**Subsystems:** Multi-Role Expert (4 roles), Workflows A/B/C, Document Accumulator (20 ep), Multi-Format Parser v5.0 (XLSX/XML/PDF/DXF/OCR), Add-Document Pipeline (14 doc types), NKB 3-layer, NormIngestionPipeline (chunked: L1→chunk→per-chunk[L2+L3a]→merge→L3b), NKB Audit (15 sources), Unified Item Layer, Soupis Assembler, Scenario B, Section Extraction Engine v2 (28 extractors, negative-context filter), Calculator Suggestions (fact→param mapping, warnings, conflicts, write-through persistence), Chunked Extraction (document_chunker + parsed_document_adapter + extraction_to_facts_bridge), Drive OAuth2, Agents, Chat, **MCP Server v1.0** (9 tools, FastMCP, mounted at `/mcp`), **Phase 0a Completeness Audit (MANDATORY pre-Phase-1 gate)** with 9 KB corpus patterns at `app/knowledge_base/B5_tech_cards/real_world_examples/rd_jachymov/patterns/` (08_completeness_audit_mandatory.md = canonical algorithm, 09_iterative_layer_probe_user_caught_gaps.md = ANTI-PATTERN).
 - **MCP Server** — `app/mcp/server.py` + `app/mcp/tools/` (9 tools): find_otskp_code, find_urs_code, classify_construction_element, calculate_concrete_works, parse_construction_budget, analyze_construction_document, create_work_breakdown, get_construction_advisor, search_czech_construction_norms. FastMCP 3.x sub-app mounted at `/mcp` via `CORSMiddleware(MCPAuthChallengeMiddleware(MCPOriginMiddleware(_mcp_http_app)))` double-wrap. `/mcp/health` + `/api/v1/mcp/tools` REST listing.
 - **MCP Auth (Postgres)** — `app/mcp/auth.py` + `app/mcp/routes.py` + `app/mcp/oauth_codes.py`: bcrypt passwords, psycopg2 thread-local pool against Cloud SQL Postgres (`mcp_api_keys` + `mcp_credit_log` + `mcp_oauth_codes`, migrations 007 + 008), API keys (`sk-stavagent-{hex48}`), 200 free credits, per-tool billing (0-20 credits), atomic `UPDATE WHERE credits >= cost RETURNING`, per-IP rate limit (10/60s). OAuth 2.0 grants: `client_credentials` (ChatGPT GPT Actions) + `authorization_code` with mandatory PKCE S256 (Claude.ai connector). RFC 8414 + RFC 9728 + OIDC discovery at `/.well-known/oauth-authorization-server` + `/.well-known/oauth-protected-resource` + `/.well-known/openid-configuration`. `redirect_uri` allow-list: chatgpt.com + claude.ai prefixes; localhost gated by `MCP_OAUTH_ALLOW_LOCALHOST_REDIRECT=1`. REST wrappers at `/api/v1/mcp/tools/*` auto-generate OpenAPI for GPT Actions. Lemon Squeezy webhook at `/api/v1/mcp/billing/webhook`.
 - **MCP Middleware stack (`app/main.py`)** — `ProxyHeadersMiddleware` (uvicorn, X-Forwarded-Proto → `scope["scheme"]`) + `MCPAuthChallengeMiddleware` (401 + RFC 6750 `WWW-Authenticate: Bearer` on GET/HEAD/POST/PUT/PATCH/DELETE for `/mcp/*`; OPTIONS excluded) + `BareOptionsAllowMiddleware` (204 + CORS headers for bare OPTIONS from allow-listed origin) + `MCPOriginMiddleware` (origin echo for mounted sub-app). Shared `_CORS_ALLOW_ORIGINS` + `_CORS_ALLOW_ORIGIN_REGEX` + `_CORS_EXPOSE_HEADERS=["WWW-Authenticate"]` keep mount-CORS and global-CORS in lockstep. Dockerfile CMD `--proxy-headers --forwarded-allow-ips=*`.
@@ -306,6 +336,47 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 ```
 > ⚠️ Эти ключи не верифицированы против актуальной Claude Code docs — если харнес их игнорирует, проверь `/help` или попроси Claude настроить SessionStart hook вместо этого.
 
+## 📋 Workflow discipline (Spec-Driven Development)
+
+Tento repo používá SDD workflow s gibridním online/offline modelem:
+
+| Kde | Co se dělá |
+|---|---|
+| claude.ai online (na práci) | Spec creation, planning, requirements, design |
+| Claude Code (doma) | Implementation, tests, refactoring, bugs |
+| Git repo | Bridge — všechny artefakty v `docs/` |
+
+**Životní cyklus feature:**
+1. Spec se vytvoří v `docs/specs/{feature-name}/{requirements,design,tasks}.md`
+2. Claude Code implementuje podle `tasks.md` (Gates = commits)
+3. Po dokončení → update `docs/soul.md` §9
+
+**Životní cyklus bug:**
+1. Bug se reportuje v `docs/bugs/{bug-id}/report.md`
+2. Claude Code píše `analyze.md` → `fix.md`
+3. Po deployi → `verify.md` + update `docs/soul.md` §9
+
+**Update pravidla pro context docs:**
+
+| Když | Co update |
+|---|---|
+| Architectural decision (new tool/DB/AI provider) | `docs/steering/tech.md` |
+| Změna repo layoutu | `docs/steering/structure.md` |
+| Doménové pravidlo (nová norma, terminologie) | `docs/steering/domain.md` |
+| Workflow změna | `docs/steering/conventions.md` |
+| Nový freelance / corpus case | `docs/soul.md` §2.3 nebo §2.4 |
+| Po každé session | `docs/soul.md` §9 — Session log entry |
+
+**Pravidla pro task writing:**
+- ❌ NESPECIFIKUJ jména proměnných, souborů, tříd, tabulek
+- ✅ Popisuj v termínech business logiky + architektury
+- Claude Code odvodí naming z existujících konvencí v repu
+- Detail v `docs/steering/conventions.md` §9
+
+**Šablony pro nové specs/bugs:** `docs/templates/_TEMPLATE_spec/` + `docs/templates/_TEMPLATE_bug/`
+
+---
+
 **Key rules:**
 - Determinism > AI: if regex can do it, don't use LLM
 - Confidence: never overwrite higher with lower
@@ -445,6 +516,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [x] ~~**Change DB password** — `StavagentPortal2026!` leaked in git history~~ ✅ **Rotated** (Apr 2026). Historical string remains in git history but is no longer valid against any environment.
 
 ### TODO
+- [ ] **P0: RD Jáchymov Part 5b — URS/KROS catalog matching** — load `test-data/RD_Jachymov_dum/outputs/catalog_cache_inventory.json` (URS201801 39 741 codes tokenized + KROS TSKP 11 994 readable Czech, 0 overlap), run 4-stage TSKP fuzzy search per `concrete-agent` backlog `otskp_search_algorithm.md` against 189 položek. Acceptance: 80 % top-1, 95 % top-3 match rate. Item.json field: `urs_code_proposed` → `urs_status: matched|needs_production_lookup|no_match` + `urs_confidence`. Branch `claude/rd-jachymov-phase-0b-foundation` still on remote with full per-tier audit trail.
 - [ ] **P0: Resource Ceiling Phase 2 — Group A (pozemní vodorovné)** — B4 default_ceilings YAML pro `stropni_deska`, `zakladova_deska`, `zakladovy_pas`, `zakladova_patka`, `podkladni_beton`, `pruvlak`. Mirror TS constants v `RESOURCE_CEILING_DEFAULTS`. Golden test scenarios (low/medium/INFEASIBLE per typ) per task §6. Acceptance: každý typ vrátí `resource_ceiling.source` ≠ 'auto_derived' default.
 - [ ] **P0: Resource Ceiling UI form (Expert panel)** — Q6 interview answer "Extend Expert panel" v `CalculatorFormFields.tsx`. Add inputs pro 6 professions (tesaři/železáři/betonáři/vibrátoři/finišéři/řízení) + cranes + vibrators + MSS-available + deadline_days + no_weekends. Auto-fill banner *"Použity typické zdroje pro <element>: X lidí, Y souprav, Z čerpadel. Upravit?"* na první otevření. Render `resource_violations[]` jako červený banner s ⛔ KRITICKÉ messages + ℹ️ recovery hints.
 - [x] ~~**P0: Deploy MCP** — verify `/mcp` endpoint on Cloud Run~~ ✅ **Deployed (May 2026).** Postgres backend live, `/mcp/health` + `/api/v1/mcp/tools` reachable, OAuth discovery emits `https://` URLs, Claude.ai connector + ChatGPT custom GPT both pass handshake.

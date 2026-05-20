@@ -54,7 +54,7 @@ def test_mcp_server_imports():
     assert mcp.name == "STAVAGENT"
 
 
-# ── Test: All 10 tools are registered ───────────────────────────────────────
+# ── Test: All 11 tools are registered ───────────────────────────────────────
 
 EXPECTED_TOOLS = [
     "find_otskp_code",
@@ -67,6 +67,7 @@ EXPECTED_TOOLS = [
     "create_work_breakdown",
     "get_construction_advisor",
     "search_czech_construction_norms",
+    "uep_run_extraction",
 ]
 
 

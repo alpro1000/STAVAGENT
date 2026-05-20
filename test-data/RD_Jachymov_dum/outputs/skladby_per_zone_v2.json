@@ -1,0 +1,330 @@
+{
+  "_schema_version": "2.0",
+  "_generated_at": "2026-05-18",
+  "_source": "Cross-validated: TZ ARS dum §3.2 prose + TZ statika dum §4 + PDF řez D.1.1.2.2.21 (PŘÍČNÝ ŘEZ A-A — návrh, legendou skladeb na výkresu) + DXF IP_Výškové kóty layer 103 KR INSERT bloků s KOTA atributem + DXF km Obklady layer bbox extents",
+  "_v1_to_v2_changes": [
+    "Per-podlaží světlé výšky — TZ silent fallback REPLACED s exact DXF/řez values (1.PP 2100, 1.NP 2795, 2.NP 2865, 3.NP 2630 mm) — zdroj: D.1.1.2.2.21 řez A-A kotování + DXF SM_kóty layer DIMENSION values matching",
+    "ETICS EPS tloušťka — řez A-A skladba S01 ukazuje 160 mm (NE prior 200 mm fallback per PBŘ 'max 200 mm'). 200 mm byla MAX hodnota z PBŘ; real applied je 160 mm.",
+    "S-code legenda zexpandovaná z 12 generických na 13 přesných S-codes (S01..S12b) per řez D.1.1.2.2.21",
+    "Obklad výška: NEúniformní per koupelna (16/2.45/2.6-2.7 m různé per stěnu) ze km Obklady bbox heights",
+    "Krov skladba S10: PIR 160 mm explicit (řez), s celoplošným bedněním prken 25 mm pod krytinou + falcovaný plech Al",
+    "Strop ocelobeton S09: 'košický plech' s trny 40 mm + zmonolitnění 60 mm + EPS kročejová 40 mm + bet. mazanina 60 mm + nivelace+nášlap 40 mm — total tl. ~240 mm (nikoli prior 60 mm jen nabetonávka)"
+  ],
+
+  "per_podlazi_vysky_DXF_explicit": {
+    "_source": "DXF řez D.1.1.2.2.21 + IP_Výškové kóty layer KR blocks s KOTA attribute + SM_kóty DIMENSION layer (609 dimensions, světlé výšky 2100/2795/2865/2630 mm potvrzeny)",
+    "data_quality": "dxf_deterministic",
+    "values_světlé_mm": {
+      "1.PP": 2100,
+      "1.NP": 2795,
+      "2.NP": 2865,
+      "3.NP": 2630
+    },
+    "konstrukční_přechody_mm": {
+      "1.PP_strop": 350,
+      "1.NP_strop": 405,
+      "2.NP_strop": 500,
+      "3.NP_nadezdívka": 280
+    },
+    "kotování_FF_z_řez_A-A_meter": {
+      "-2,450": "Suterén dno (1.PP podlaha)",
+      "-0,975": "Anglický dvorek úroveň",
+      "-0,200": "Terén exteriér",
+      "+0,000 (Balt po vyrovnání)": "Strop 1.PP / Podlaha 1.NP — baseline",
+      "+2,080": "Opěrná zeď horní hrana",
+      "+2,795": "Strop 1.NP (1.NP svetlá)",
+      "+3,200": "Podlaha 2.NP",
+      "+6,065": "Strop 2.NP (2.NP svetlá nad +3,200 + 2865)",
+      "+6,565": "Podlaha 3.NP (= požární výška dle PBŘ)",
+      "+6,825": "NK strop",
+      "+8,440": "Horní úroveň 3.NP",
+      "+8,900": "Krov pozednice",
+      "+9,600": "Krov střední vaznice HEA160",
+      "+11,100": "Krov hřeben spodní",
+      "+12,750": "Krov hřeben horní (max)"
+    },
+    "celková_výška_dum_m": 13.0,
+    "Σ_svetlé_výšky_m": "2.10 + 2.795 + 2.865 + 2.63 = 10.39 m | +přechody 1.535 m + krov_střecha 2.36 m = 14.29 (over 13.0 m by 1.3 m due to zápichu pod terén u 1.PP -2.450 vs +0.000 baseline)"
+  },
+
+  "elements": [
+    {
+      "element_type": "S01 — obvodová stěna omítka (1.NP, 2.NP, suterén nad terénem)",
+      "scode": "S01",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda 'S01 obvodová stěna - omítka'",
+      "composition_layers": [
+        {"vrstva": "Povrch dle tabulky místností (výmalba / obklad)", "tloušťka_mm": null, "source": "PDF řez S01"},
+        {"vrstva": "Vnitřní omítka", "tloušťka_mm": "10-15", "source": "PDF řez S01"},
+        {"vrstva": "Zdivo: smíšené - cihla plná (keramická)", "tloušťka_mm": 450, "source": "PDF řez S01"},
+        {"vrstva": "Omítka - břizolit (exteriérová)", "tloušťka_mm": "10-15", "source": "PDF řez S01"},
+        {"vrstva": "Kontaktní zateplovací systém ETICS:", "tloušťka_mm": null, "source": "PDF řez S01"},
+        {"vrstva": "  • Penetrační nátěr", "tloušťka_mm": null, "source": "PDF řez S01"},
+        {"vrstva": "  • Lepící hmota", "tloušťka_mm": "cca 10", "source": "PDF řez S01"},
+        {"vrstva": "  • EPS grey (λ=0,032 W/mK), mechanicky kotvené", "tloušťka_mm": 160, "source": "PDF řez S01 EXPLICIT — NE prior 200 mm fallback"},
+        {"vrstva": "  • Lepící stěrka s výztuží", "tloušťka_mm": "cca 5", "source": "PDF řez S01"},
+        {"vrstva": "  • Penetrační nátěr", "tloušťka_mm": null, "source": "PDF řez S01"},
+        {"vrstva": "  • Tenkovrstvá probarvená silikonová omítka", "tloušťka_mm": 2, "source": "PDF řez S01"}
+      ],
+      "tz_explicit": true,
+      "dxf_cross_validation": "External perimeter 38.70 m (DXF km_R_návrh_tlustá 2)",
+      "applies_to_area_m2": 276.7,
+      "_critical_change": "ETICS tloušťka 160 mm (z řez explicit) vs prior 200 mm fallback z PBŘ 'max'. ETICS je o ~20 % tenčí, ovlivňuje materiál + cenu."
+    },
+    {
+      "element_type": "S02 — obvodová stěna společná řadového domu (štítová)",
+      "scode": "S02",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S02",
+      "composition_layers": [
+        {"vrstva": "Výmalba", "tloušťka_mm": null, "source": "PDF řez S02"},
+        {"vrstva": "Vnitřní omítka", "tloušťka_mm": "10-15", "source": "PDF řez S02"},
+        {"vrstva": "Smíšené zdivo - cihla plná (keramická)", "tloušťka_mm": 300, "source": "PDF řez S02"},
+        {"vrstva": "Vnitřní omítka (druhá strana)", "tloušťka_mm": "10-15", "source": "PDF řez S02"}
+      ],
+      "tz_explicit": true,
+      "_note": "Štítové stěny zachovány (sousedi), bez ETICS — pouze interiérová úprava obou stran. Plocha nepřispívá k ETICS m²."
+    },
+    {
+      "element_type": "S03 — suterénní stěna (1.PP)",
+      "scode": "S03",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S03 + S03a + S03b",
+      "composition_layers": [
+        {"vrstva": "Vnitřní omítka", "tloušťka_mm": "10-15", "source": "PDF řez S03"},
+        {"vrstva": "Smíšené zdivo - cihla plná (keramická)", "tloušťka_mm": 600, "source": "PDF řez S03"},
+        {"vrstva": "Sanační zateplení soklu (exteriérová strana):", "tloušťka_mm": null, "source": "PDF řez S03"},
+        {"vrstva": "  • Lepící tmel (př. Lepstyr plus)", "tloušťka_mm": null, "source": "PDF řez S03"},
+        {"vrstva": "  • Sanační izolační deska (př. Styrcon 200)", "tloušťka_mm": null, "source": "PDF řez S03"},
+        {"vrstva": "  • Armovací vrstva, tkanina, penetrace", "tloušťka_mm": null, "source": "PDF řez S03"},
+        {"vrstva": "S03a (pod úrovní terénu): drenážní vrstva - nopová folie", "tloušťka_mm": 20, "source": "PDF řez S03a"},
+        {"vrstva": "S03b (nad úrovní terénu): provětrávaná mezera s kotevním roštěm", "tloušťka_mm": 40, "source": "PDF řez S03b"},
+        {"vrstva": "S03b: keramický obklad", "tloušťka_mm": 20, "source": "PDF řez S03b"}
+      ],
+      "tz_explicit": true,
+      "_split_a_vs_b": "S03a = pod terénem (drenáž+nopová folie), S03b = nad terénem (provětrávaná fasáda + keramický sokl obklad). Kritické pro sanační detail."
+    },
+    {
+      "element_type": "S04 — podlaha na terénu v suterénu",
+      "scode": "S04",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S04",
+      "composition_layers": [
+        {"vrstva": "Epoxidová stěrka", "tloušťka_mm": null, "source": "PDF řez S04"},
+        {"vrstva": "Penetrace podkladu", "tloušťka_mm": null, "source": "PDF řez S04"},
+        {"vrstva": "Beton", "tloušťka_mm": 100, "source": "PDF řez S04"},
+        {"vrstva": "Štěrkopískový podsyp", "tloušťka_mm": 50, "source": "PDF řez S04"},
+        {"vrstva": "Rostlý terén / zemina", "tloušťka_mm": null, "source": "PDF řez S04"}
+      ],
+      "tz_explicit": true,
+      "applies_to_rooms": "1.PP (0.01..0.04 — sklep, technic, sušárna)",
+      "total_area_m2": 32.4
+    },
+    {
+      "element_type": "S05 — podlaha na terénu v přízemí (1.NP)",
+      "scode": "S05",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S05 + TZ ARS §3.2.4 confirms",
+      "composition_layers": [
+        {"vrstva": "Nášlapná vrstva dle tabulky místností (vinyl / dlažba)", "tloušťka_mm": 15, "source": "PDF řez S05"},
+        {"vrstva": "Samonivelační stěrka", "tloušťka_mm": "cca 5", "source": "PDF řez S05"},
+        {"vrstva": "Betonový potěr, vyztužený kari sítí 150/150/6", "tloušťka_mm": 50, "source": "PDF řez S05"},
+        {"vrstva": "Tepelná izolace podlahový EPS 150 (λ=0,035 W/mK)", "tloušťka_mm": 120, "source": "PDF řez S05 — EXPLICIT, NE fabrication"},
+        {"vrstva": "Hydroizolační pás z modif. asfaltu", "tloušťka_mm": 4, "source": "PDF řez S05"},
+        {"vrstva": "Asfaltová penetrace", "tloušťka_mm": null, "source": "PDF řez S05"},
+        {"vrstva": "Betonová deska, vyztužená", "tloušťka_mm": 120, "source": "PDF řez S05"},
+        {"vrstva": "Zhutněné štěrkové lože (vč. odvětrání radonu)", "tloušťka_mm": 150, "source": "PDF řez S05"},
+        {"vrstva": "Zhutněný terén", "tloušťka_mm": null, "source": "PDF řez S05"}
+      ],
+      "tz_explicit": true,
+      "applies_to_rooms": "1.NP (1.01..1.08)",
+      "total_area_m2": 59.5,
+      "_critical_confirmation": "EPS 150 tl. 120 mm — TZ ARS §3.2.4 + PDF řez S05 oba EXPLICIT. Pre-baked confidence 0.85 ✓"
+    },
+    {
+      "element_type": "S06 — strop klenba mezi suterénem a přízemím",
+      "scode": "S06",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S06",
+      "composition_layers": [
+        {"vrstva": "Nášlapná vrstva", "tloušťka_mm": 20, "source": "PDF řez S06"},
+        {"vrstva": "Hustá perlitbetonová plastická hmota TB2", "tloušťka_mm": 50, "source": "PDF řez S06"},
+        {"vrstva": "Zásyp perlitbetnovou směsí TB1 (λ=0,040 W/mK)", "tloušťka_mm": "80-180", "source": "PDF řez S06"},
+        {"vrstva": "Ocelové nosníky + klenba z cihel plných", "tloušťka_mm": 150, "source": "PDF řez S06"},
+        {"vrstva": "Vnitřní omítka", "tloušťka_mm": "10-15", "source": "PDF řez S06"},
+        {"vrstva": "Výmalba", "tloušťka_mm": null, "source": "PDF řez S06"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2_approx": 50
+    },
+    {
+      "element_type": "S07 — strop trámový mezi 1.NP a 2.NP",
+      "scode": "S07",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S07",
+      "composition_layers": [
+        {"vrstva": "Nášlapná vrstva", "tloušťka_mm": 20, "source": "PDF řez S07"},
+        {"vrstva": "Roznášecí vrstva - sádrovláknité dílce (př. Fermacell 2E22)", "tloušťka_mm": 25, "source": "PDF řez S07"},
+        {"vrstva": "Desky kročejové izolace (př. Isover T-P)", "tloušťka_mm": 30, "source": "PDF řez S07"},
+        {"vrstva": "Vyrovnávací a zátěžová vrstva - suchý podsyp keramzit/liapor zásyp", "tloušťka_mm": 50, "source": "PDF řez S07"},
+        {"vrstva": "Separační geotextilie", "tloušťka_mm": null, "source": "PDF řez S07"},
+        {"vrstva": "Prkenný záklop na trámech (zachován)", "tloušťka_mm": 20, "source": "PDF řez S07"},
+        {"vrstva": "Stropní trámy", "tloušťka_mm": 180, "source": "PDF řez S07"},
+        {"vrstva": "  Vložená izolace z minerální vaty mezi trámy", "tloušťka_mm": "100-180", "source": "PDF řez S07"},
+        {"vrstva": "SDK požární podhled s odolností min. RE 30 DP2", "tloušťka_mm": 80, "source": "PDF řez S07"},
+        {"vrstva": "Výmalba", "tloušťka_mm": null, "source": "PDF řez S07"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2": 59.5
+    },
+    {
+      "element_type": "S08 — strop cihelná klenba mezi patry",
+      "scode": "S08",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S08",
+      "composition_layers": [
+        {"vrstva": "Nášlapná vrstva", "tloušťka_mm": 20, "source": "PDF řez S08"},
+        {"vrstva": "Roznášecí vrstva sádrovláknité dílce (Fermacell 2E22)", "tloušťka_mm": 25, "source": "PDF řez S08"},
+        {"vrstva": "Desky kročejové izolace (Isover T-P)", "tloušťka_mm": 30, "source": "PDF řez S08"},
+        {"vrstva": "Suchý podsyp keramzit/liapor + dřevěný rošt", "tloušťka_mm": 50, "source": "PDF řez S08"},
+        {"vrstva": "Separační vrstva", "tloušťka_mm": null, "source": "PDF řez S08"},
+        {"vrstva": "Cihelná klenba", "tloušťka_mm": 150, "source": "PDF řez S08"},
+        {"vrstva": "Výmalba", "tloušťka_mm": null, "source": "PDF řez S08"}
+      ],
+      "tz_explicit": true
+    },
+    {
+      "element_type": "S09 — strop ocelobeton mezi 2.NP a 3.NP (košický plech)",
+      "scode": "S09",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S09 + statika §4 confirms IPE180+HEA180/200",
+      "composition_layers": [
+        {"vrstva": "Nivelace + nášlapná vrstva", "tloušťka_mm": 40, "source": "PDF řez S09"},
+        {"vrstva": "Betonová mazanina s kari sítí", "tloušťka_mm": 60, "source": "PDF řez S09"},
+        {"vrstva": "Kročejová izolace EPS", "tloušťka_mm": 40, "source": "PDF řez S09"},
+        {"vrstva": "Zmonolitnění košického plechu (beton)", "tloušťka_mm": 60, "source": "PDF řez S09"},
+        {"vrstva": "Košický plech s trny", "tloušťka_mm": 40, "source": "PDF řez S09 — NE prior 'trapéz 40S/160 tl. 0,75 mm' z TZ! Řez ukazuje košický plech 40 mm."},
+        {"vrstva": "Ocelové nosníky / stropnice (dle statiky IPE180)", "tloušťka_mm": "180/200", "source": "PDF řez S09 + statika §4"},
+        {"vrstva": "  Prostor mezi vyplněn tep. izolací minerální vatou", "tloušťka_mm": "180/200", "source": "PDF řez S09"},
+        {"vrstva": "SDK požární podhled s odolností min. RE 30 DP2", "tloušťka_mm": 60, "source": "PDF řez S09"},
+        {"vrstva": "Výmalba", "tloušťka_mm": null, "source": "PDF řez S09"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2": 104.4,
+      "_critical_change_vs_prior": "Pre-baked + statika TZ used 'trapéz 40S/160 tl. 0,75 mm + nabetonávka 60 mm'. Řez S09 ukazuje 'košický plech s trny 40 mm + zmonolitnění 60 mm + EPS kročejová 40 mm + bet. mazanina 60 mm + nivelace+nášlap 40 mm' = total tl. ~240 mm složení. Trapéz 40S/160 je STATIKA forma (nosný plech), košický plech je terminologie ARS pro výtahový/sotřezní plech. Možná synonymně nebo dvě varianty — k ověření TeAnau."
+    },
+    {
+      "element_type": "S10 — šikmá střecha (krov nadkrokevní)",
+      "scode": "S10",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S10 + TZ ARS §3.2.3",
+      "composition_layers": [
+        {"vrstva": "Hliníková falcovaná krytina, pásy cca 500 mm", "tloušťka_mm": null, "source": "PDF řez S10"},
+        {"vrstva": "Pojistná hydroizolační folie pod hliníkovou krytinu", "tloušťka_mm": null, "source": "PDF řez S10"},
+        {"vrstva": "Celoplošné bednění - prkna", "tloušťka_mm": 25, "source": "PDF řez S10"},
+        {"vrstva": "Distanční kontralať (60×40 mm) + vzduch. mezera", "tloušťka_mm": 40, "source": "PDF řez S10"},
+        {"vrstva": "Doplňková hydroizolační vrstva (př. Top depdek cover pro)", "tloušťka_mm": 2, "source": "PDF řez S10"},
+        {"vrstva": "Tepelná izolace PIR", "tloušťka_mm": 160, "source": "PDF řez S10 EXPLICIT — NE prior odhad 180 mm"},
+        {"vrstva": "  PIR izolace s hliník. vložkou (λ=0,022 W/mK)", "tloušťka_mm": null, "source": "PDF řez S10"},
+        {"vrstva": "Parotěsnící vrstva (př. Top depdek AL barrier)", "tloušťka_mm": 2, "source": "PDF řez S10"},
+        {"vrstva": "Obkladová palubka (zezdola krov)", "tloušťka_mm": 20, "source": "PDF řez S10"},
+        {"vrstva": "Krokve", "tloušťka_mm": 180, "source": "PDF řez S10"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2_approx": 141,
+      "_critical_change_vs_prior": "PIR tloušťka 160 mm (řez explicit) vs prior 180 mm (TZ obecné)."
+    },
+    {
+      "element_type": "S11 — lehký strop vloženého mezipatra (biodeska)",
+      "scode": "S11",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S11",
+      "composition_layers": [
+        {"vrstva": "Dřevěná biodeska osazená pružně na kleštiny", "tloušťka_mm": null, "source": "PDF řez S11"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2_approx": 25,
+      "_data_quality": "tz_explicit_minimal — biodeska pouze sama, ne kompletní skladba (vrstvy podlaha+izolace+nášlap nutno doplnit)."
+    },
+    {
+      "element_type": "S12a — obvodová stěna podkroví, fasáda omítka",
+      "scode": "S12a",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S12 + S12a",
+      "composition_layers": [
+        {"vrstva": "Povrch dle tabulky místností (výmalba, obklad)", "tloušťka_mm": null, "source": "PDF řez S12"},
+        {"vrstva": "Vnitřní omítka sádrová stříkaná", "tloušťka_mm": "10-15", "source": "PDF řez S12"},
+        {"vrstva": "Keramická děrovaná broušená cihla (Porotherm 30)", "tloušťka_mm": 300, "source": "PDF řez S12 + statika §4"},
+        {"vrstva": "Kontaktní zateplovací systém ETICS:", "tloušťka_mm": null, "source": "PDF řez S12a"},
+        {"vrstva": "  • Penetrační nátěr", "tloušťka_mm": null, "source": "PDF řez S12a"},
+        {"vrstva": "  • Lepící hmota", "tloušťka_mm": "cca 10", "source": "PDF řez S12a"},
+        {"vrstva": "  • EPS grey (λ=0,032 W/mK), mechanicky kotvené", "tloušťka_mm": 160, "source": "PDF řez S12a — same 160 mm jako S01"},
+        {"vrstva": "  • Lepící stěrka s výztuží", "tloušťka_mm": "cca 5", "source": "PDF řez S12a"},
+        {"vrstva": "  • Penetrační nátěr", "tloušťka_mm": null, "source": "PDF řez S12a"},
+        {"vrstva": "  • Tenkovrstvá probarvená silikonová omítka", "tloušťka_mm": 2, "source": "PDF řez S12a"}
+      ],
+      "tz_explicit": true,
+      "_critical_change": "ETICS 160 mm (same as S01) — confirms tloušťka konzistentní napříč fasádou domu."
+    },
+    {
+      "element_type": "S12b — obvodová stěna podkroví, fasáda falcovaný plech (provětrávaná)",
+      "scode": "S12b",
+      "tz_source": "PDF řez D.1.1.2.2.21 — legenda S12b",
+      "composition_layers": [
+        {"vrstva": "Povrch interier dle tabulky místností (výmalba, obklad)", "tloušťka_mm": null, "source": "PDF řez S12"},
+        {"vrstva": "Vnitřní omítka sádrová stříkaná", "tloušťka_mm": "10-15", "source": "PDF řez S12"},
+        {"vrstva": "Keramická děrovaná broušená cihla (Porotherm 30)", "tloušťka_mm": 300, "source": "PDF řez S12"},
+        {"vrstva": "Provětrávaná fasáda vč. zateplení:", "tloušťka_mm": null, "source": "PDF řez S12b"},
+        {"vrstva": "  • Fasádní miner. izolace (λ=0,035 W/mK) + kotvy fasády", "tloušťka_mm": 180, "source": "PDF řez S12b — NE EPS jako S12a, ale MW 180 mm!"},
+        {"vrstva": "  • Paropropustná fasádní folie s UV odolnostní", "tloušťka_mm": null, "source": "PDF řez S12b"},
+        {"vrstva": "  • Svislý nosný rastr 40×60 mm ochranný nátěr + provětrávaná mezera", "tloušťka_mm": 40, "source": "PDF řez S12b"},
+        {"vrstva": "  • Celoplošné bednění - prkna", "tloušťka_mm": 25, "source": "PDF řez S12b"},
+        {"vrstva": "  • Hliníková falcovaná krytina, pásy cca 500 mm", "tloušťka_mm": null, "source": "PDF řez S12b"}
+      ],
+      "tz_explicit": true,
+      "applies_to_area_m2_approx": 24,
+      "_note": "Vikýře — provětrávaná fasáda s minerální vatou (NE EPS) + falcovaný plech."
+    }
+  ],
+
+  "anglicky_dvorek_terasa_composition_from_rez": {
+    "_source": "PDF řez D.1.1.2.2.21 — řez C-C section",
+    "podlaha_anglicky_dvorek": {
+      "vrstvy": [
+        {"vrstva": "Betonová dlažba", "tloušťka_mm": 50},
+        {"vrstva": "Kladecí vrstva - kamenná drť 4-8 mm", "tloušťka_mm": 40},
+        {"vrstva": "Podkladní nosná vrstva - kamenná drť 4-8 mm", "tloušťka_mm": 150},
+        {"vrstva": "Zhutněná zemní pláň (30 MPa)", "tloušťka_mm": null}
+      ]
+    },
+    "terasa_za_opernou_zdi": {
+      "vrstvy": [
+        {"vrstva": "Terasová dřevěná prkna (garapa)", "tloušťka_mm": 25},
+        {"vrstva": "Podkladní rošt z dřevěných hranolů", "tloušťka_mm": 50},
+        {"vrstva": "Rektifikovatelné terče pro terasu", "tloušťka_mm": 50},
+        {"vrstva": "Betonové dlaždice", "tloušťka_mm": 50},
+        {"vrstva": "Štěrkový podsyp 16/32 mm", "tloušťka_mm": 100},
+        {"vrstva": "Hrubý podsyp 4/8 mm", "tloušťka_mm": 150},
+        {"vrstva": "Geotextilie", "tloušťka_mm": null}
+      ]
+    }
+  },
+
+  "obklad_vyska_dxf_km_obklady_layer": {
+    "_source": "DXF km Obklady layer — 11 LWPOLYLINEs bbox extents",
+    "_finding": "Obklady NEJSOU uniformní 2.0 m — DXF ukazuje 3 výškové kategorie",
+    "data_quality": "dxf_deterministic — replaces prior tz_silent_fallback_csn_2.0m",
+    "categories_mm": {
+      "1600 (parapet level)": "2 polygons — pravděpodobně okolí umyvadla / WC",
+      "2450 (sprcha plný)": "1 polygon — sprchový kout do stropu",
+      "2610-2715 (celokeramický)": "6 polygons — koupelny s plnou výškou obkladu po strop"
+    },
+    "interpretation": "Některé koupelny mají obklad pouze do 1.6 m (kolem umyvadla), jiné mají sprchový kout do 2.45 m, a 3.NP koupelna může mít celokeramický obklad 2.6-2.7 m. Per-koupelna split obklad výšky je NEUNIFORMNÍ."
+  },
+
+  "klempirina_dxf_real_lengths": {
+    "_source": "DXF MA_klempíř (30 entities, 75.4 m) + SM__ klempířina (45 entities, 98.4 m)",
+    "total_length_m": 173.8,
+    "_finding": "Klempířina je o 70 % více než prior estimate 102 bm (oplechování+parapety+svody+vikýře). DXF má real lengths layered."
+  },
+
+  "_cross_validation_notes_v2": [
+    "ETICS tloušťka 160 mm (PDF řez S01+S12a explicit) vs prior 200 mm fallback (PBŘ 'max 200 mm'). Reality: 160 mm aplikováno, ne max.",
+    "PIR střecha 160 mm (PDF řez S10) vs prior 180 mm odhad TZ.",
+    "EPS 150 podlahový 120 mm — TZ ARS §3.2.4 + PDF řez S05 oba EXPLICIT. NEFABRIKACE confirmed.",
+    "Per-podlaží výšky z DXF + PDF řez deterministic: 1.PP 2.10 m, 1.NP 2.795 m, 2.NP 2.865 m, 3.NP 2.63 m. NE fallback CSN.",
+    "Strop ocelobeton S09: 'košický plech' terminologie ARS vs 'trapéz 40S/160' statika. Možná synonymně nebo skutečně dvě různé vrstvy. K ověření TeAnau.",
+    "Obklady NEUNIFORMNÍ — 3 výškové kategorie (1.6 / 2.45 / 2.6-2.7 m) per koupelna ze km Obklady DXF layer bbox heights.",
+    "Klempířina 173.8 m total (DXF MA_klempíř + SM__ klempířina) vs prior estimate 102 bm. +70 % více práce.",
+    "S03 suteréní stěna: split S03a (pod terénem, drenáž+nopová folie) vs S03b (nad terénem, provětrávaná fasáda + keramický sokl obklad). Kritické pro sanační detail.",
+    "Anglický dvorek + terasa garapa mají vlastní compositions z řez C-C (předtím chybělo)."
+  ]
+}

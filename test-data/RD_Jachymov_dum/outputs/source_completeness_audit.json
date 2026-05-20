@@ -1,0 +1,6100 @@
+{
+  "_schema_version": "1.0",
+  "_generated_by": "tools/phase0a_completeness_audit.py",
+  "_generated_at": "2026-05-18",
+  "_purpose": "Phase 0a MANDATORY completeness audit before Phase 0b §3.1. Per N=5 RD Jáchymov pilot 6 silent drifts where data WAS available but extractor missed. This audit enforces 0 unprobed sources before Phase 1 generation gates open.",
+  "_phase_1_gate_status": "BLOCKED",
+  "_phase_1_gate_blockers": [
+    "5 PDFs need OCR or unreadable",
+    "95 DXF layers unprobed actionable"
+  ],
+  "section_A_pdf_inventory": {
+    "_purpose": "Inventory ALL PDFs in inputs/ tree (NOT just TZ texts). Per PDF: filename, content type, extracted text length, S-codes / F-codes / materials found.",
+    "subsections": {
+      "tz": {
+        "n_files": 7,
+        "records": [
+          {
+            "path": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+            "size_bytes": 434746,
+            "pages": 3,
+            "chars_extracted": 5421,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 5421 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+            "size_bytes": 2201627,
+            "pages": 10,
+            "chars_extracted": 20426,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S3"
+            ],
+            "fcodes_found": [
+              "F4"
+            ],
+            "material_markers_found": [
+              "C16/20",
+              "C25/30",
+              "IPE180",
+              "S235"
+            ],
+            "scodes_count": 1,
+            "fcodes_count": 1,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 20426 chars extracted",
+              "1 S-codes found: ['3']",
+              "1 F-codes found",
+              "4 material markers (EPS/PIR/IPE/HEA/etc.)"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+            "size_bytes": 476150,
+            "pages": 8,
+            "chars_extracted": 20094,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 20094 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+            "size_bytes": 2221763,
+            "pages": 12,
+            "chars_extracted": 28496,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S3"
+            ],
+            "fcodes_found": [
+              "F4"
+            ],
+            "material_markers_found": [
+              "C25/30",
+              "HEA160",
+              "HEA200",
+              "IPE180",
+              "IPN160",
+              "Porotherm 30",
+              "S235",
+              "UPE100",
+              "UPE200"
+            ],
+            "scodes_count": 1,
+            "fcodes_count": 1,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 28496 chars extracted",
+              "1 S-codes found: ['3']",
+              "1 F-codes found",
+              "9 material markers (EPS/PIR/IPE/HEA/etc.)"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+            "size_bytes": 1255410,
+            "pages": 13,
+            "chars_extracted": 35940,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 35940 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/tz/common/A - průvodní list _ EAR.pdf",
+            "size_bytes": 449507,
+            "pages": 4,
+            "chars_extracted": 4717,
+            "content_type": "mixed",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 4717 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+            "size_bytes": 598424,
+            "pages": 19,
+            "chars_extracted": 45731,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 45731 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          }
+        ]
+      },
+      "vykresy_pdf": {
+        "n_files": 31,
+        "records": [
+          {
+            "path": "inputs/vykresy_pdf/260217_sklad/D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf",
+            "size_bytes": 462543,
+            "pages": 1,
+            "chars_extracted": 3046,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S2"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 1,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 3046 chars extracted",
+              "1 S-codes found: ['2']"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.01.R2 - Půdorys střechy _ EAR.pdf",
+            "size_bytes": 489874,
+            "pages": 1,
+            "chars_extracted": 1854,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1854 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+            "size_bytes": 471059,
+            "pages": 1,
+            "chars_extracted": 3139,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 3139 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+            "size_bytes": 454332,
+            "pages": 1,
+            "chars_extracted": 2748,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 2748 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "size_bytes": 450708,
+            "pages": 1,
+            "chars_extracted": 4529,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 14,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4529 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "14 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "size_bytes": 444612,
+            "pages": 1,
+            "chars_extracted": 4359,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 14,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4359 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "14 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "size_bytes": 450523,
+            "pages": 1,
+            "chars_extracted": 4138,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 13,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4138 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "13 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "size_bytes": 443428,
+            "pages": 1,
+            "chars_extracted": 4197,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 12,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4197 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "12 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "size_bytes": 463849,
+            "pages": 1,
+            "chars_extracted": 5322,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 14,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 5322 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "14 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "size_bytes": 458422,
+            "pages": 1,
+            "chars_extracted": 5098,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 14,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 5098 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "14 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "size_bytes": 458969,
+            "pages": 1,
+            "chars_extracted": 4845,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 13,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4845 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "13 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "size_bytes": 443930,
+            "pages": 1,
+            "chars_extracted": 4848,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 12,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4848 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "12 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "size_bytes": 498250,
+            "pages": 1,
+            "chars_extracted": 8506,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S03a",
+              "S03b",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10",
+              "S11",
+              "S12",
+              "S12a",
+              "S12b"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "EPS 150",
+              "EPS 40"
+            ],
+            "scodes_count": 16,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 20,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 8506 chars extracted",
+              "16 S-codes found: ['01', '02', '03', '03a', '03b']...",
+              "2 material markers (EPS/PIR/IPE/HEA/etc.)",
+              "20 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "size_bytes": 487053,
+            "pages": 1,
+            "chars_extracted": 8584,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S03a",
+              "S03b",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10",
+              "S11",
+              "S12",
+              "S12a",
+              "S12b"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "EPS 150",
+              "EPS 40"
+            ],
+            "scodes_count": 16,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 20,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 8584 chars extracted",
+              "16 S-codes found: ['01', '02', '03', '03a', '03b']...",
+              "2 material markers (EPS/PIR/IPE/HEA/etc.)",
+              "20 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "size_bytes": 492348,
+            "pages": 1,
+            "chars_extracted": 8327,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S03a",
+              "S03b",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10",
+              "S11",
+              "S12",
+              "S12a",
+              "S12b"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "EPS 150",
+              "EPS 40"
+            ],
+            "scodes_count": 16,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 21,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 8327 chars extracted",
+              "16 S-codes found: ['01', '02', '03', '03a', '03b']...",
+              "2 material markers (EPS/PIR/IPE/HEA/etc.)",
+              "21 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "size_bytes": 499378,
+            "pages": 1,
+            "chars_extracted": 8504,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S03a",
+              "S03b",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10",
+              "S11",
+              "S12",
+              "S12a",
+              "S12b"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "EPS 150",
+              "EPS 40"
+            ],
+            "scodes_count": 16,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 20,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 8504 chars extracted",
+              "16 S-codes found: ['01', '02', '03', '03a', '03b']...",
+              "2 material markers (EPS/PIR/IPE/HEA/etc.)",
+              "20 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "size_bytes": 454304,
+            "pages": 1,
+            "chars_extracted": 8354,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S03a",
+              "S03b",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10",
+              "S11",
+              "S12",
+              "S12a",
+              "S12b"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "EPS 150",
+              "EPS 40",
+              "HEA 160"
+            ],
+            "scodes_count": 16,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 16,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 8354 chars extracted",
+              "16 S-codes found: ['01', '02', '03', '03a', '03b']...",
+              "3 material markers (EPS/PIR/IPE/HEA/etc.)",
+              "16 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "size_bytes": 435984,
+            "pages": 1,
+            "chars_extracted": 4230,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 17,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4230 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "17 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "size_bytes": 443046,
+            "pages": 1,
+            "chars_extracted": 4677,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S01",
+              "S02",
+              "S03",
+              "S04",
+              "S05",
+              "S06",
+              "S07",
+              "S08",
+              "S09",
+              "S10"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 10,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 14,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 4677 chars extracted",
+              "10 S-codes found: ['01', '02', '03', '04', '05']...",
+              "14 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+            "size_bytes": 751470,
+            "pages": 1,
+            "chars_extracted": 8754,
+            "content_type": "text_heavy",
+            "scodes_found": [
+              "S03a",
+              "S05",
+              "S09",
+              "S10",
+              "S11"
+            ],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "EPS 150",
+              "EPS40"
+            ],
+            "scodes_count": 5,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 5,
+            "likely_has_skladba_legend": true,
+            "useful_data_summary": [
+              "text 8754 chars extracted",
+              "5 S-codes found: ['03a', '05', '09', '10', '11']",
+              "2 material markers (EPS/PIR/IPE/HEA/etc.)",
+              "5 skladba legend rows detected"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.01 - Pohled - stav _ EAR.pdf",
+            "size_bytes": 442652,
+            "pages": 1,
+            "chars_extracted": 1725,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1725 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.02 - Pohled - stav _ EAR.pdf",
+            "size_bytes": 449294,
+            "pages": 1,
+            "chars_extracted": 1753,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1753 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.11 - Pohled - bourání _ EAR.pdf",
+            "size_bytes": 442852,
+            "pages": 1,
+            "chars_extracted": 1725,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1725 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.12 - Pohled - bourání _ EAR.pdf",
+            "size_bytes": 475046,
+            "pages": 1,
+            "chars_extracted": 1753,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1753 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.21 - Pohled - návrh _ EAR.pdf",
+            "size_bytes": 462253,
+            "pages": 1,
+            "chars_extracted": 1900,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1900 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.22 - Pohled - návrh _ EAR.pdf",
+            "size_bytes": 462968,
+            "pages": 1,
+            "chars_extracted": 1941,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 1941 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.2.2 - statický výpočet _ EAR.pdf",
+            "size_bytes": 19816116,
+            "pages": 77,
+            "chars_extracted": 158670,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [
+              "B 500B",
+              "C16/20",
+              "C25/30",
+              "HEA 160",
+              "HEA 180",
+              "HEA 200",
+              "HEA160",
+              "HEA180",
+              "IPE 180",
+              "IPE 200",
+              "IPE180",
+              "S 235",
+              "S235",
+              "UPE 100",
+              "UPE 200"
+            ],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 158670 chars extracted",
+              "15 material markers (EPS/PIR/IPE/HEA/etc.)"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf",
+            "size_bytes": 316850,
+            "pages": 1,
+            "chars_extracted": 0,
+            "content_type": "scanned_image_or_empty",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "scanned_needs_ocr"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf",
+            "size_bytes": 331741,
+            "pages": 1,
+            "chars_extracted": 0,
+            "content_type": "scanned_image_or_empty",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "scanned_needs_ocr"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf",
+            "size_bytes": 357089,
+            "pages": 1,
+            "chars_extracted": 0,
+            "content_type": "scanned_image_or_empty",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "scanned_needs_ocr"
+          },
+          {
+            "path": "inputs/vykresy_pdf/260219_dum/D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf",
+            "size_bytes": 359389,
+            "pages": 1,
+            "chars_extracted": 0,
+            "content_type": "scanned_image_or_empty",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "scanned_needs_ocr"
+          }
+        ]
+      },
+      "situace": {
+        "n_files": 3,
+        "records": [
+          {
+            "path": "inputs/situace/C.01 - Situační výkres širších vztahů _ EAR.pdf",
+            "size_bytes": 723654,
+            "pages": 1,
+            "chars_extracted": 175,
+            "content_type": "drawing_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "drawing_heavy_partial_text"
+          },
+          {
+            "path": "inputs/situace/C.02 - Katastrální situační výkres _ EAR.pdf",
+            "size_bytes": 480075,
+            "pages": 1,
+            "chars_extracted": 499,
+            "content_type": "mixed",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/situace/C.03.R2 - Koordinační situační výkres _ EAR.pdf",
+            "size_bytes": 516842,
+            "pages": 1,
+            "chars_extracted": 3027,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 3027 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          }
+        ]
+      },
+      "dokladova_cast": {
+        "n_files": 10,
+        "records": [
+          {
+            "path": "inputs/dokladova_cast/01.02 - JES.pdf",
+            "size_bytes": 399435,
+            "pages": 3,
+            "chars_extracted": 8888,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 8888 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+            "size_bytes": 372110,
+            "pages": 4,
+            "chars_extracted": 15359,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 15359 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/02.07 - MU Jáchymov - nabytí právní moci.pdf",
+            "size_bytes": 308310,
+            "pages": 1,
+            "chars_extracted": 2547,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 2547 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/03.02 - město Jáchymov - Souhlas.pdf",
+            "size_bytes": 171757,
+            "pages": 1,
+            "chars_extracted": 846,
+            "content_type": "mixed",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/03.03 - město Jáchymov - Vyjádření k žádosti.pdf",
+            "size_bytes": 38854,
+            "pages": 1,
+            "chars_extracted": 0,
+            "content_type": "scanned_image_or_empty",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "scanned_needs_ocr"
+          },
+          {
+            "path": "inputs/dokladova_cast/05.02 - Stanovisko PČR_sig.pdf",
+            "size_bytes": 235099,
+            "pages": 2,
+            "chars_extracted": 3093,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 3093 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/05.02b - PČR - RD Jáchymov - dodatek PD č.1_sig.pdf",
+            "size_bytes": 1401865,
+            "pages": 4,
+            "chars_extracted": 2279,
+            "content_type": "mixed",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 2279 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/05.02c - PČR - C.03.R1 - Koordinační situační výkres_sig.pdf",
+            "size_bytes": 231196,
+            "pages": 1,
+            "chars_extracted": 3065,
+            "content_type": "text_heavy",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 3065 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/06.01 - TI - DTM mapa.pdf",
+            "size_bytes": 1237802,
+            "pages": 1,
+            "chars_extracted": 389,
+            "content_type": "mixed",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "no useful data detected — drawing-heavy or scanned"
+            ],
+            "probe_status": "probed_extracted"
+          },
+          {
+            "path": "inputs/dokladova_cast/E.01 - dodatek PD č.1.pdf",
+            "size_bytes": 1308009,
+            "pages": 4,
+            "chars_extracted": 2279,
+            "content_type": "mixed",
+            "scodes_found": [],
+            "fcodes_found": [],
+            "material_markers_found": [],
+            "scodes_count": 0,
+            "fcodes_count": 0,
+            "skladba_legend_lines": 0,
+            "likely_has_skladba_legend": false,
+            "useful_data_summary": [
+              "text 2279 chars extracted"
+            ],
+            "probe_status": "probed_extracted"
+          }
+        ]
+      }
+    },
+    "_summary": {
+      "total_pdfs": 51,
+      "scanned_needs_ocr": 5,
+      "unreadable_error": 0,
+      "fully_probed": 46
+    }
+  },
+  "section_B_dxf_layers": {
+    "_purpose": "Exhaustive DXF layer probe. Per file, iterate ALL layers (not subset). Per layer: entity_count, entity_types, sample_data, probe_status. 0 unprobed allowed for Phase 1 gate.",
+    "subsections": {
+      "dum_DPZ": {
+        "path": "inputs/vykresy_dxf/260219_dum/RD Jachymov dum _ DPZ _ 10.dxf",
+        "total_layers": 53,
+        "summary": {
+          "probed_extracted_in_pipeline": 21,
+          "probed_metadata_only_skip": 6,
+          "empty_layer_skip": 5,
+          "unprobed_actionable": 19
+        },
+        "layers": [
+          {
+            "name": "0",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Defpoints",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "IP_zařizováky",
+            "entity_count": 18,
+            "entity_types": {
+              "LWPOLYLINE": 9,
+              "INSERT": 9
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_inserts",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 8,
+                "closed": false,
+                "bbox_mm": [
+                  1489.8,
+                  2498.8
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  264.1,
+                  1878.9
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1035.6,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "IP__netisk",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM__04_čárkovaná",
+            "entity_count": 90,
+            "entity_types": {
+              "LWPOLYLINE": 90
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  1274.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  12049.6
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  12049.6
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM__06_dvojčerchovaná",
+            "entity_count": 136,
+            "entity_types": {
+              "LINE": 65,
+              "LWPOLYLINE": 56,
+              "ARC": 15
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "IP_obrysy místností",
+            "entity_count": 109,
+            "entity_types": {
+              "LWPOLYLINE": 109
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "_ geometrie",
+            "entity_count": 13,
+            "entity_types": {
+              "LWPOLYLINE": 12,
+              "DIMENSION": 1
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM_Popisy",
+            "entity_count": 124,
+            "entity_types": {
+              "LWPOLYLINE": 62,
+              "MTEXT": 62
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  1045.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": true,
+                "bbox_mm": [
+                  150.0,
+                  75.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": true,
+                "bbox_mm": [
+                  100.0,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_šrafy",
+            "entity_count": 141,
+            "entity_types": {
+              "HATCH": 62,
+              "LWPOLYLINE": 70,
+              "MTEXT": 9
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "PDF_Tenká",
+            "entity_count": 1,
+            "entity_types": {
+              "HATCH": 1
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM_rozpiska",
+            "entity_count": 804,
+            "entity_types": {
+              "LWPOLYLINE": 341,
+              "MTEXT": 192,
+              "INSERT": 271
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__netisk",
+            "entity_count": 87,
+            "entity_types": {
+              "LWPOLYLINE": 87
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_tabulka místností",
+            "entity_count": 144,
+            "entity_types": {
+              "MTEXT": 14,
+              "LWPOLYLINE": 130
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_R_návrh_velmi tlustá",
+            "entity_count": 209,
+            "entity_types": {
+              "LWPOLYLINE": 203,
+              "LINE": 2,
+              "CIRCLE": 4
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_R_návrh_šrafa",
+            "entity_count": 298,
+            "entity_types": {
+              "HATCH": 86,
+              "LWPOLYLINE": 127,
+              "INSERT": 48,
+              "CIRCLE": 15,
+              "TEXT": 15,
+              "ARC": 7
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_kóty",
+            "entity_count": 224,
+            "entity_types": {
+              "LWPOLYLINE": 130,
+              "MTEXT": 94
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "IP_Výškové kóty",
+            "entity_count": 176,
+            "entity_types": {
+              "INSERT": 103,
+              "LWPOLYLINE": 73
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM_ Návrh šrafa",
+            "entity_count": 42,
+            "entity_types": {
+              "INSERT": 1,
+              "HATCH": 10,
+              "LWPOLYLINE": 31
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "dveře",
+                "attrs": {}
+              },
+              {
+                "type": "HATCH",
+                "pattern": "BLOCKS"
+              },
+              {
+                "type": "HATCH",
+                "pattern": "DOTS2"
+              }
+            ]
+          },
+          {
+            "name": "km_R_návrh_tlustá",
+            "entity_count": 775,
+            "entity_types": {
+              "LINE": 10,
+              "LWPOLYLINE": 731,
+              "ARC": 3,
+              "INSERT": 16,
+              "CIRCLE": 12,
+              "MTEXT": 3
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "MA_kóty",
+            "entity_count": 136,
+            "entity_types": {
+              "LINE": 36,
+              "INSERT": 36,
+              "MTEXT": 37,
+              "LWPOLYLINE": 27
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "INSERT",
+                "block_name": "řezová značka",
+                "attrs": {}
+              },
+              {
+                "type": "MTEXT",
+                "text": "{\\fCentury Gothic|b1|i0|c238|p34;A}"
+              }
+            ]
+          },
+          {
+            "name": "MA_klempíř",
+            "entity_count": 30,
+            "entity_types": {
+              "LINE": 20,
+              "ARC": 3,
+              "LWPOLYLINE": 7
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM_koty nepouzite",
+            "entity_count": 91,
+            "entity_types": {
+              "DIMENSION": 63,
+              "MTEXT": 28
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_dimensions",
+            "sample_data": [
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 600.0
+              },
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 1140.0
+              },
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 460.0
+              }
+            ]
+          },
+          {
+            "name": "km Obklady",
+            "entity_count": 11,
+            "entity_types": {
+              "LWPOLYLINE": 11
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_R_návrh_tlustá 2",
+            "entity_count": 486,
+            "entity_types": {
+              "LWPOLYLINE": 465,
+              "LINE": 16,
+              "ARC": 3,
+              "INSERT": 2
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_R_návrh_velmi tlustá 2",
+            "entity_count": 125,
+            "entity_types": {
+              "LINE": 3,
+              "LWPOLYLINE": 122
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_R_návrh_šrafa 2",
+            "entity_count": 83,
+            "entity_types": {
+              "HATCH": 41,
+              "INSERT": 8,
+              "LWPOLYLINE": 11,
+              "ARC": 3,
+              "LINE": 20
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM__dveře",
+            "entity_count": 103,
+            "entity_types": {
+              "LWPOLYLINE": 102,
+              "LINE": 1
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM_kóty",
+            "entity_count": 609,
+            "entity_types": {
+              "DIMENSION": 609
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM__návrh_nábytek",
+            "entity_count": 3,
+            "entity_types": {
+              "LWPOLYLINE": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  8150.0,
+                  2212.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  8150.0,
+                  2212.5
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  8150.0,
+                  2212.4
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM__03b_tlustá nosné stěny",
+            "entity_count": 371,
+            "entity_types": {
+              "LWPOLYLINE": 347,
+              "LINE": 24
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM__02b_tenka okna 1",
+            "entity_count": 76,
+            "entity_types": {
+              "LWPOLYLINE": 76
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 6,
+                "closed": true,
+                "bbox_mm": [
+                  1685.0,
+                  450.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 6,
+                "closed": true,
+                "bbox_mm": [
+                  1665.0,
+                  450.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 6,
+                "closed": true,
+                "bbox_mm": [
+                  1545.0,
+                  450.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM__02d_tenka další",
+            "entity_count": 295,
+            "entity_types": {
+              "LWPOLYLINE": 218,
+              "LINE": 77
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM__02e_tenka schody",
+            "entity_count": 204,
+            "entity_types": {
+              "LINE": 188,
+              "ARC": 2,
+              "LWPOLYLINE": 14
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "PDF3_Solid Fills",
+            "entity_count": 81,
+            "entity_types": {
+              "HATCH": 81
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority_hatch",
+            "sample_data": [
+              {
+                "type": "HATCH",
+                "pattern": "SOLID"
+              },
+              {
+                "type": "HATCH",
+                "pattern": "SOLID"
+              },
+              {
+                "type": "HATCH",
+                "pattern": "SOLID"
+              }
+            ]
+          },
+          {
+            "name": "SMA_okna",
+            "entity_count": 243,
+            "entity_types": {
+              "LWPOLYLINE": 243
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SMA_popisy",
+            "entity_count": 337,
+            "entity_types": {
+              "LWPOLYLINE": 38,
+              "MTEXT": 151,
+              "CIRCLE": 148
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  266.8,
+                  5308.2
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  266.8,
+                  6968.2
+                ]
+              },
+              {
+                "type": "MTEXT",
+                "text": "\\fCentury Gothic|b0|i0|c238;ŘEZ A-A"
+              }
+            ]
+          },
+          {
+            "name": "SMA_rozpiska",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SMA_šrafy",
+            "entity_count": 10,
+            "entity_types": {
+              "LWPOLYLINE": 10
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2840.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  5190.0,
+                  450.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  130.0,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_čísla místností",
+            "entity_count": 89,
+            "entity_types": {
+              "MTEXT": 89
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "Vnější zdi",
+            "entity_count": 1,
+            "entity_types": {
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "PSR_Prázdný_dveřní_otvor",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Textové bloky",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Zdi.model",
+            "entity_count": 15,
+            "entity_types": {
+              "INSERT": 15
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_inserts",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "WALL_1",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "WALL_7",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "WALL_9",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Oblouky a kružnice.2D",
+            "entity_count": 6,
+            "entity_types": {
+              "ARC": 6
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "ARC"
+              },
+              {
+                "type": "ARC"
+              },
+              {
+                "type": "ARC"
+              }
+            ]
+          },
+          {
+            "name": "km_R_návrh_ zateplení",
+            "entity_count": 142,
+            "entity_types": {
+              "LWPOLYLINE": 139,
+              "MTEXT": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 5,
+                "closed": false,
+                "bbox_mm": [
+                  720.0,
+                  310.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 6,
+                "closed": false,
+                "bbox_mm": [
+                  995.0,
+                  310.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 6,
+                "closed": false,
+                "bbox_mm": [
+                  2130.0,
+                  310.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM _ Popisy",
+            "entity_count": 4,
+            "entity_types": {
+              "MTEXT": 4
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "_ poznamka draft",
+            "entity_count": 1,
+            "entity_types": {
+              "MTEXT": 1
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "stafaz",
+            "entity_count": 3,
+            "entity_types": {
+              "INSERT": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "HOM_025",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "HOM_025",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "HOM_025",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "SM__ klempířina",
+            "entity_count": 45,
+            "entity_types": {
+              "LWPOLYLINE": 17,
+              "ARC": 13,
+              "LINE": 15
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM__Popisy bubliny",
+            "entity_count": 145,
+            "entity_types": {
+              "MTEXT": 92,
+              "LEADER": 26,
+              "LWPOLYLINE": 27
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_ hydroizolace",
+            "entity_count": 24,
+            "entity_types": {
+              "LWPOLYLINE": 24
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  625.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  625.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  625.0,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM_kóty bourání",
+            "entity_count": 13,
+            "entity_types": {
+              "DIMENSION": 13
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_rozpiska",
+            "entity_count": 22,
+            "entity_types": {
+              "INSERT": 22
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          }
+        ]
+      },
+      "dum_situace": {
+        "path": "inputs/vykresy_dxf/260219_dum/RD Jachymov dum _ situace 02.dxf",
+        "total_layers": 43,
+        "summary": {
+          "probed_extracted_in_pipeline": 1,
+          "probed_metadata_only_skip": 5,
+          "empty_layer_skip": 3,
+          "unprobed_actionable": 32
+        },
+        "layers": [
+          {
+            "name": "0",
+            "entity_count": 2,
+            "entity_types": {
+              "IMAGE": 1,
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "IMAGE"
+              },
+              {
+                "type": "INSERT",
+                "block_name": "zahrada katastr",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ MERENI",
+            "entity_count": 82,
+            "entity_types": {
+              "INSERT": 1,
+              "LINE": 76,
+              "LWPOLYLINE": 5
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "STOZIAR_DREVENY_01",
+                "attrs": {}
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ KATASTR",
+            "entity_count": 3012,
+            "entity_types": {
+              "LINE": 2833,
+              "TEXT": 93,
+              "CIRCLE": 86
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ POPIS",
+            "entity_count": 74,
+            "entity_types": {
+              "INSERT": 69,
+              "TEXT": 5
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "SVIET__NA_STOZIARI_04",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "SVIET__NA_STOZIARI_04",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "PLOT_DREVENY_04",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ STROM",
+            "entity_count": 1,
+            "entity_types": {
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "STROM_LISTNATY_05",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ VRSTEV",
+            "entity_count": 205,
+            "entity_types": {
+              "LINE": 165,
+              "TEXT": 40
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ BODPOL",
+            "entity_count": 225,
+            "entity_types": {
+              "INSERT": 225
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_inserts",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "bod_000",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "bod_000",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "bod_000",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ BOD__SLO",
+            "entity_count": 232,
+            "entity_types": {
+              "TEXT": 232
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "TEXT",
+                "text": "101"
+              },
+              {
+                "type": "TEXT",
+                "text": "4"
+              },
+              {
+                "type": "TEXT",
+                "text": "3"
+              }
+            ]
+          },
+          {
+            "name": "Z _ V__KA",
+            "entity_count": 221,
+            "entity_types": {
+              "TEXT": 221
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "TEXT",
+                "text": "66.30"
+              },
+              {
+                "type": "TEXT",
+                "text": "61.80"
+              },
+              {
+                "type": "TEXT",
+                "text": "61.80"
+              }
+            ]
+          },
+          {
+            "name": "Defpoints",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "_ geometrie",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Km_koty ZPF",
+            "entity_count": 20,
+            "entity_types": {
+              "DIMENSION": 20
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_dimensions",
+            "sample_data": [
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 0.2
+              },
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 2.4
+              },
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 0.4
+              }
+            ]
+          },
+          {
+            "name": "sítě_ELE_stávající_NN_podzemní",
+            "entity_count": 9,
+            "entity_types": {
+              "LWPOLYLINE": 9
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 11,
+                "closed": false,
+                "bbox_mm": [
+                  56.1,
+                  31.2
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.4,
+                  0.6
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.5,
+                  0.9
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_rozpiska",
+            "entity_count": 131,
+            "entity_types": {
+              "MTEXT": 61,
+              "LWPOLYLINE": 43,
+              "INSERT": 27
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__netisk",
+            "entity_count": 27,
+            "entity_types": {
+              "LWPOLYLINE": 27
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__02_tlustá",
+            "entity_count": 21,
+            "entity_types": {
+              "LWPOLYLINE": 21
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 7,
+                "closed": true,
+                "bbox_mm": [
+                  9.9,
+                  8.8
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_kóty",
+            "entity_count": 5,
+            "entity_types": {
+              "INSERT": 5
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "sítě_VODA_návrh",
+            "entity_count": 2,
+            "entity_types": {
+              "LWPOLYLINE": 1,
+              "MTEXT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "MTEXT",
+                "text": "VŠ"
+              }
+            ]
+          },
+          {
+            "name": "sítě_KANALIZACE_splašková_návrh",
+            "entity_count": 3,
+            "entity_types": {
+              "LWPOLYLINE": 1,
+              "MTEXT": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "MTEXT",
+                "text": "AK"
+              },
+              {
+                "type": "MTEXT",
+                "text": "Š"
+              }
+            ]
+          },
+          {
+            "name": "sítě_ELE_návrh",
+            "entity_count": 4,
+            "entity_types": {
+              "MTEXT": 3,
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "MTEXT",
+                "text": "EP"
+              },
+              {
+                "type": "MTEXT",
+                "text": "RE"
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sítě_KANALIZACE_dešťová_návrh",
+            "entity_count": 3,
+            "entity_types": {
+              "LWPOLYLINE": 1,
+              "MTEXT": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "MTEXT",
+                "text": "AK"
+              },
+              {
+                "type": "MTEXT",
+                "text": "Š"
+              }
+            ]
+          },
+          {
+            "name": "km_požárně nebezpečný prostor",
+            "entity_count": 8,
+            "entity_types": {
+              "ARC": 4,
+              "LINE": 2,
+              "LWPOLYLINE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "ARC"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "ARC"
+              }
+            ]
+          },
+          {
+            "name": "sítě_CETIN_stávající_podzemní",
+            "entity_count": 2,
+            "entity_types": {
+              "LWPOLYLINE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  10.4,
+                  10.7
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sítě_VODA_stávající",
+            "entity_count": 8,
+            "entity_types": {
+              "LWPOLYLINE": 5,
+              "INSERT": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": false,
+                "bbox_mm": [
+                  27.0,
+                  15.2
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "INSERT",
+                "block_name": "vo_soupe",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "sítě_PLYN_stávající",
+            "entity_count": 5,
+            "entity_types": {
+              "LWPOLYLINE": 5
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  24.2,
+                  13.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  4.6
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Z _ mapa-KN",
+            "entity_count": 2,
+            "entity_types": {
+              "LWPOLYLINE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "IP_ Návrh šrafa",
+            "entity_count": 4,
+            "entity_types": {
+              "INSERT": 2,
+              "HATCH": 1,
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "BMW_2d",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "BMW_2d",
+                "attrs": {}
+              },
+              {
+                "type": "HATCH",
+                "pattern": "BRICK_STRBOND"
+              }
+            ]
+          },
+          {
+            "name": "SM _ Bourání",
+            "entity_count": 3,
+            "entity_types": {
+              "LINE": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "km__ rozhedlové trojuhelniky a doprava",
+            "entity_count": 7,
+            "entity_types": {
+              "LWPOLYLINE": 5,
+              "HATCH": 1,
+              "MTEXT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  5.6,
+                  13.1
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 15,
+                "closed": false,
+                "bbox_mm": [
+                  65.2,
+                  25.5
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 15,
+                "closed": false,
+                "bbox_mm": [
+                  67.3,
+                  26.5
+                ]
+              }
+            ]
+          },
+          {
+            "name": "_ značky hranice",
+            "entity_count": 3,
+            "entity_types": {
+              "LWPOLYLINE": 3
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM _ Popisy",
+            "entity_count": 6,
+            "entity_types": {
+              "CIRCLE": 2,
+              "LWPOLYLINE": 4
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "CIRCLE"
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.8,
+                  1.9
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": true,
+                "bbox_mm": [
+                  0.1,
+                  0.1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM _ výrazná červená",
+            "entity_count": 9,
+            "entity_types": {
+              "LWPOLYLINE": 6,
+              "CIRCLE": 2,
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              },
+              {
+                "type": "CIRCLE"
+              }
+            ]
+          },
+          {
+            "name": "SM _ oplocení",
+            "entity_count": 10,
+            "entity_types": {
+              "LWPOLYLINE": 10
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  1.3,
+                  0.9
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  1.8,
+                  0.8
+                ]
+              }
+            ]
+          },
+          {
+            "name": "_ poznamka draft",
+            "entity_count": 3,
+            "entity_types": {
+              "MTEXT": 3
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "sítě_KANALIZACE_dešťová_stav",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sítě_KANALIZACE_splašková_stav",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km__ rozhedlové trojuhelniky a doprava 02",
+            "entity_count": 12,
+            "entity_types": {
+              "LWPOLYLINE": 5,
+              "HATCH": 2,
+              "MTEXT": 3,
+              "DIMENSION": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_dimensions",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 15,
+                "closed": false,
+                "bbox_mm": [
+                  67.3,
+                  26.5
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  24.5,
+                  5.1
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  22.3,
+                  12.5
+                ]
+              }
+            ]
+          },
+          {
+            "name": "_Popis",
+            "entity_count": 1,
+            "entity_types": {
+              "MTEXT": 1
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM_sit srafa",
+            "entity_count": 4,
+            "entity_types": {
+              "HATCH": 4
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Obrysy situace další",
+            "entity_count": 2,
+            "entity_types": {
+              "LWPOLYLINE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_R_návrh_tlustá",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_R_návrh_ zateplení",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "pbs odstupy",
+            "entity_count": 1,
+            "entity_types": {
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "terasa",
+                "attrs": {}
+              }
+            ]
+          }
+        ]
+      },
+      "sklad_DPZ": {
+        "path": "inputs/vykresy_dxf/260217_sklad/RD Ja_chymov vjezd _ DPZ _ 02.dxf",
+        "total_layers": 39,
+        "summary": {
+          "probed_extracted_in_pipeline": 9,
+          "probed_metadata_only_skip": 6,
+          "empty_layer_skip": 5,
+          "unprobed_actionable": 18
+        },
+        "layers": [
+          {
+            "name": "0",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Defpoints",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "IP_rozpiska",
+            "entity_count": 8,
+            "entity_types": {
+              "TEXT": 3,
+              "LWPOLYLINE": 5
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "IP__netisk",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM__06_dvojčerchovaná",
+            "entity_count": 28,
+            "entity_types": {
+              "LWPOLYLINE": 28
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 7,
+                "closed": true,
+                "bbox_mm": [
+                  7722.8,
+                  7000.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "IP_obrysy místností",
+            "entity_count": 47,
+            "entity_types": {
+              "LWPOLYLINE": 47
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "_ geometrie",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM_Popisy",
+            "entity_count": 6,
+            "entity_types": {
+              "LINE": 4,
+              "TEXT": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "TEXT",
+                "text": "2°"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "km_šrafy",
+            "entity_count": 13,
+            "entity_types": {
+              "HATCH": 13
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "PDF_Tenká",
+            "entity_count": 1,
+            "entity_types": {
+              "HATCH": 1
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_rozpiska",
+            "entity_count": 149,
+            "entity_types": {
+              "LWPOLYLINE": 55,
+              "MTEXT": 49,
+              "INSERT": 45
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__netisk",
+            "entity_count": 25,
+            "entity_types": {
+              "LWPOLYLINE": 25
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_tabulka místností",
+            "entity_count": 12,
+            "entity_types": {
+              "MTEXT": 3,
+              "LWPOLYLINE": 9
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km_kóty",
+            "entity_count": 37,
+            "entity_types": {
+              "INSERT": 4,
+              "MTEXT": 20,
+              "LWPOLYLINE": 13
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "IP_Výškové kóty",
+            "entity_count": 15,
+            "entity_types": {
+              "INSERT": 8,
+              "LWPOLYLINE": 7
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM_ Návrh šrafa",
+            "entity_count": 62,
+            "entity_types": {
+              "INSERT": 4,
+              "LINE": 2,
+              "LWPOLYLINE": 4,
+              "HATCH": 52
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "BMW",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "BMW_2d",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "BMW_2d",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "MA_kóty",
+            "entity_count": 24,
+            "entity_types": {
+              "LINE": 8,
+              "INSERT": 8,
+              "MTEXT": 8
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "INSERT",
+                "block_name": "řezová značka",
+                "attrs": {}
+              },
+              {
+                "type": "MTEXT",
+                "text": "{\\fCentury Gothic|b1|i0|c238|p34;A}"
+              }
+            ]
+          },
+          {
+            "name": "SM__dveře",
+            "entity_count": 4,
+            "entity_types": {
+              "LWPOLYLINE": 4
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM_kóty",
+            "entity_count": 65,
+            "entity_types": {
+              "DIMENSION": 65
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "SM__02d_tenka další",
+            "entity_count": 119,
+            "entity_types": {
+              "LWPOLYLINE": 118,
+              "INSERT": 1
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "PDF3_Solid Fills",
+            "entity_count": 81,
+            "entity_types": {
+              "HATCH": 81
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority_hatch",
+            "sample_data": [
+              {
+                "type": "HATCH",
+                "pattern": "SOLID"
+              },
+              {
+                "type": "HATCH",
+                "pattern": "SOLID"
+              },
+              {
+                "type": "HATCH",
+                "pattern": "SOLID"
+              }
+            ]
+          },
+          {
+            "name": "SMA_rozpiska",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_čísla místností",
+            "entity_count": 24,
+            "entity_types": {
+              "MTEXT": 24
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "km__03_velmi tlustá",
+            "entity_count": 101,
+            "entity_types": {
+              "LWPOLYLINE": 101
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  1800.0,
+                  600.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  1800.0,
+                  600.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  1800.0,
+                  600.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Vnější zdi",
+            "entity_count": 1,
+            "entity_types": {
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "PSR_Prázdný_dveřní_otvor",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Textové bloky",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__02_tlustá",
+            "entity_count": 45,
+            "entity_types": {
+              "LWPOLYLINE": 43,
+              "CIRCLE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Z _ MERENI",
+            "entity_count": 35,
+            "entity_types": {
+              "LINE": 19,
+              "LWPOLYLINE": 8,
+              "MTEXT": 8
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ KATASTR",
+            "entity_count": 27,
+            "entity_types": {
+              "LINE": 18,
+              "TEXT": 4,
+              "CIRCLE": 4,
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ POPIS",
+            "entity_count": 19,
+            "entity_types": {
+              "INSERT": 19
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_inserts",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "PLOT_DREVENY_04",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "PLOT_DREVENY_04",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "PLOT_DREVENY_04",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "SM _ Bourání",
+            "entity_count": 5,
+            "entity_types": {
+              "LWPOLYLINE": 5
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 11,
+                "closed": false,
+                "bbox_mm": [
+                  4415.2,
+                  9259.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2500.0,
+                  598.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  750.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM _ Popisy",
+            "entity_count": 15,
+            "entity_types": {
+              "CIRCLE": 4,
+              "LWPOLYLINE": 8,
+              "MTEXT": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "CIRCLE"
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  2000.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": true,
+                "bbox_mm": [
+                  150.0,
+                  75.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM _ oplocení",
+            "entity_count": 12,
+            "entity_types": {
+              "LWPOLYLINE": 12
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  1000.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  1000.0,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2000.0,
+                  100.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM__05_čerchovaná",
+            "entity_count": 18,
+            "entity_types": {
+              "LWPOLYLINE": 18
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  7000.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  7000.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.0,
+                  7000.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "OCEL HEB sloupky rez",
+            "entity_count": 6,
+            "entity_types": {
+              "LWPOLYLINE": 6
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 12,
+                "closed": true,
+                "bbox_mm": [
+                  200.0,
+                  180.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 12,
+                "closed": true,
+                "bbox_mm": [
+                  200.0,
+                  180.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 12,
+                "closed": true,
+                "bbox_mm": [
+                  200.0,
+                  180.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "_ poznamka draft",
+            "entity_count": 4,
+            "entity_types": {
+              "MTEXT": 4
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "IP_Popisy bubliny",
+            "entity_count": 12,
+            "entity_types": {
+              "MTEXT": 4,
+              "LEADER": 2,
+              "LWPOLYLINE": 6
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km_ hydroizolace",
+            "entity_count": 7,
+            "entity_types": {
+              "LWPOLYLINE": 7
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 18,
+                "closed": false,
+                "bbox_mm": [
+                  213.7,
+                  76.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 97,
+                "closed": false,
+                "bbox_mm": [
+                  1200.0,
+                  27.2
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  3919.2,
+                  15.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km__tenká",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  3151.1,
+                  1068.3
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "sklad_situace": {
+        "path": "inputs/vykresy_dxf/260217_sklad/RD Ja_chymov vjezd _ situace 04.dxf",
+        "total_layers": 35,
+        "summary": {
+          "probed_extracted_in_pipeline": 1,
+          "probed_metadata_only_skip": 5,
+          "empty_layer_skip": 1,
+          "unprobed_actionable": 26
+        },
+        "layers": [
+          {
+            "name": "0",
+            "entity_count": 1,
+            "entity_types": {
+              "IMAGE": 1
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Z _ MERENI",
+            "entity_count": 91,
+            "entity_types": {
+              "INSERT": 1,
+              "LINE": 85,
+              "LWPOLYLINE": 5
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_geometry",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "STOZIAR_DREVENY_01",
+                "attrs": {}
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ KATASTR",
+            "entity_count": 3012,
+            "entity_types": {
+              "LINE": 2833,
+              "TEXT": 93,
+              "CIRCLE": 86
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ POPIS",
+            "entity_count": 82,
+            "entity_types": {
+              "INSERT": 69,
+              "LINE": 4,
+              "TEXT": 9
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "SVIET__NA_STOZIARI_04",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "SVIET__NA_STOZIARI_04",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "PLOT_DREVENY_04",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ STROM",
+            "entity_count": 1,
+            "entity_types": {
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "STROM_LISTNATY_05",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ VRSTEV",
+            "entity_count": 205,
+            "entity_types": {
+              "LINE": 165,
+              "TEXT": 40
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "Z _ BODPOL",
+            "entity_count": 236,
+            "entity_types": {
+              "INSERT": 236
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "medium_priority_inserts",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "bod_000",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "bod_000",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "bod_000",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "Z _ BOD__SLO",
+            "entity_count": 232,
+            "entity_types": {
+              "TEXT": 232
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "TEXT",
+                "text": "101"
+              },
+              {
+                "type": "TEXT",
+                "text": "4"
+              },
+              {
+                "type": "TEXT",
+                "text": "3"
+              }
+            ]
+          },
+          {
+            "name": "Z _ V__KA",
+            "entity_count": 233,
+            "entity_types": {
+              "TEXT": 233
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "TEXT",
+                "text": "66.30"
+              },
+              {
+                "type": "TEXT",
+                "text": "61.80"
+              },
+              {
+                "type": "TEXT",
+                "text": "61.80"
+              }
+            ]
+          },
+          {
+            "name": "Defpoints",
+            "entity_count": 0,
+            "entity_types": {},
+            "probe_status": "empty_layer",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "_ geometrie",
+            "entity_count": 5,
+            "entity_types": {
+              "LWPOLYLINE": 5
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "Km_koty ZPF",
+            "entity_count": 10,
+            "entity_types": {
+              "DIMENSION": 10
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_dimensions",
+            "sample_data": [
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 0.2
+              },
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 2.4
+              },
+              {
+                "type": "DIMENSION",
+                "measurement_mm": 0.4
+              }
+            ]
+          },
+          {
+            "name": "sítě_ELE_stávající_NN_podzemní",
+            "entity_count": 7,
+            "entity_types": {
+              "LWPOLYLINE": 7
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 11,
+                "closed": false,
+                "bbox_mm": [
+                  56.1,
+                  31.2
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.4,
+                  0.6
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sítě_ELE_stávající_NN_nadzemní",
+            "entity_count": 1,
+            "entity_types": {
+              "INSERT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "el_sloup",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "km__03_velmi tlustá",
+            "entity_count": 6,
+            "entity_types": {
+              "LWPOLYLINE": 6
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 7,
+                "closed": true,
+                "bbox_mm": [
+                  9.9,
+                  8.8
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_rozpiska",
+            "entity_count": 126,
+            "entity_types": {
+              "MTEXT": 56,
+              "LWPOLYLINE": 43,
+              "INSERT": 27
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__netisk",
+            "entity_count": 27,
+            "entity_types": {
+              "LWPOLYLINE": 27
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "km__02_tlustá",
+            "entity_count": 20,
+            "entity_types": {
+              "LWPOLYLINE": 20
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km_kóty",
+            "entity_count": 5,
+            "entity_types": {
+              "INSERT": 5
+            },
+            "probe_status": "probed_extracted",
+            "extraction_priority": "covered_in_pipeline",
+            "sample_data": []
+          },
+          {
+            "name": "sítě_KANALIZACE_splašková_návrh",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sítě_ELE_návrh",
+            "entity_count": 2,
+            "entity_types": {
+              "MTEXT": 2
+            },
+            "probe_status": "probed_no_useful_data",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "sítě_CETIN_stávající_podzemní",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sítě_VODA_stávající",
+            "entity_count": 5,
+            "entity_types": {
+              "LWPOLYLINE": 2,
+              "INSERT": 3
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "INSERT",
+                "block_name": "vo_soupe",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "po_hydpo",
+                "attrs": {}
+              }
+            ]
+          },
+          {
+            "name": "sítě_PLYN_stávající",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Z _ mapa-KN",
+            "entity_count": 2,
+            "entity_types": {
+              "LWPOLYLINE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "IP_ Návrh šrafa",
+            "entity_count": 9,
+            "entity_types": {
+              "INSERT": 2,
+              "HATCH": 3,
+              "LWPOLYLINE": 4
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "INSERT",
+                "block_name": "BMW_2d",
+                "attrs": {}
+              },
+              {
+                "type": "INSERT",
+                "block_name": "BMW_2d",
+                "attrs": {}
+              },
+              {
+                "type": "HATCH",
+                "pattern": "BRICK_STRBOND"
+              }
+            ]
+          },
+          {
+            "name": "SM _ Bourání",
+            "entity_count": 13,
+            "entity_types": {
+              "LINE": 12,
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              },
+              {
+                "type": "LINE"
+              }
+            ]
+          },
+          {
+            "name": "km__ rozhedlové trojuhelniky a doprava",
+            "entity_count": 7,
+            "entity_types": {
+              "LWPOLYLINE": 5,
+              "HATCH": 1,
+              "MTEXT": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  5.6,
+                  13.1
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 15,
+                "closed": false,
+                "bbox_mm": [
+                  65.2,
+                  25.5
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 15,
+                "closed": false,
+                "bbox_mm": [
+                  67.3,
+                  26.5
+                ]
+              }
+            ]
+          },
+          {
+            "name": "_ značky hranice",
+            "entity_count": 3,
+            "entity_types": {
+              "LWPOLYLINE": 3
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "SM _ Popisy",
+            "entity_count": 8,
+            "entity_types": {
+              "CIRCLE": 2,
+              "LWPOLYLINE": 4,
+              "MTEXT": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_text",
+            "sample_data": [
+              {
+                "type": "CIRCLE"
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.8,
+                  1.9
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": true,
+                "bbox_mm": [
+                  0.1,
+                  0.1
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM _ výrazná červená",
+            "entity_count": 9,
+            "entity_types": {
+              "LWPOLYLINE": 7,
+              "CIRCLE": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 7,
+                "closed": true,
+                "bbox_mm": [
+                  12.0,
+                  12.5
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 4,
+                "closed": true,
+                "bbox_mm": [
+                  2.5,
+                  0.6
+                ]
+              }
+            ]
+          },
+          {
+            "name": "SM _ oplocení",
+            "entity_count": 11,
+            "entity_types": {
+              "LWPOLYLINE": 11
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 3,
+                "closed": false,
+                "bbox_mm": [
+                  1.3,
+                  0.9
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  0.9,
+                  0.4
+                ]
+              }
+            ]
+          },
+          {
+            "name": "_ poznamka draft",
+            "entity_count": 3,
+            "entity_types": {
+              "MTEXT": 3
+            },
+            "probe_status": "probed_metadata_only",
+            "extraction_priority": "skip",
+            "sample_data": []
+          },
+          {
+            "name": "sítě_KANALIZACE_dešťová_stav",
+            "entity_count": 1,
+            "entity_types": {
+              "LWPOLYLINE": 1
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "low_priority",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  2.5,
+                  0.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "km__ rozhedlové trojuhelniky a doprava 02",
+            "entity_count": 12,
+            "entity_types": {
+              "LWPOLYLINE": 5,
+              "HATCH": 2,
+              "MTEXT": 3,
+              "DIMENSION": 2
+            },
+            "probe_status": "unprobed",
+            "extraction_priority": "high_priority_dimensions",
+            "sample_data": [
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 15,
+                "closed": false,
+                "bbox_mm": [
+                  67.3,
+                  26.5
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  24.5,
+                  5.1
+                ]
+              },
+              {
+                "type": "LWPOLYLINE",
+                "n_verts": 2,
+                "closed": false,
+                "bbox_mm": [
+                  22.3,
+                  12.5
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_summary": {
+      "total_layers_across_4_dxf": 170,
+      "probed_extracted_in_pipeline": 32,
+      "probed_metadata_only_skip": 22,
+      "empty_layer_skip": 14,
+      "unprobed_actionable_BLOCKS_PHASE_1": 95
+    }
+  },
+  "section_C_cross_document_markers": {
+    "_purpose": "Cross-document marker detection. For each unique S-code / F-code / material marker, identify legenda location (definition) + uses (citations). Marker is decodable if both legenda + uses exist.",
+    "markers": {
+      "S2": {
+        "type": "skladba_code",
+        "n_total_occurrences": 1,
+        "n_sources": 1,
+        "has_legend_in_some_doc": false,
+        "decodable": false,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260217_sklad/D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S3": {
+        "type": "skladba_code",
+        "n_total_occurrences": 3,
+        "n_sources": 2,
+        "has_legend_in_some_doc": false,
+        "decodable": false,
+        "occurrences": [
+          {
+            "source": "PDF:tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+            "count": 1,
+            "has_legend_context": false
+          },
+          {
+            "source": "PDF:tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+            "count": 2,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S4": {
+        "type": "skladba_code",
+        "n_total_occurrences": 7,
+        "n_sources": 1,
+        "has_legend_in_some_doc": false,
+        "decodable": false,
+        "occurrences": [
+          {
+            "source": "PDF:_superseded/2026-05-16_unsorted_audit/D.2.2 - statický výpočet.pdf",
+            "count": 7,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S01": {
+        "type": "skladba_code",
+        "n_total_occurrences": 58,
+        "n_sources": 17,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 22,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:sklad_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S02": {
+        "type": "skladba_code",
+        "n_total_occurrences": 53,
+        "n_sources": 17,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 18,
+            "has_legend_context": false
+          },
+          {
+            "source": "DXF:sklad_DPZ",
+            "count": 2,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S03": {
+        "type": "skladba_code",
+        "n_total_occurrences": 25,
+        "n_sources": 16,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 5,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S04": {
+        "type": "skladba_code",
+        "n_total_occurrences": 22,
+        "n_sources": 17,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          },
+          {
+            "source": "DXF:sklad_DPZ",
+            "count": 2,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S05": {
+        "type": "skladba_code",
+        "n_total_occurrences": 22,
+        "n_sources": 18,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          },
+          {
+            "source": "DXF:sklad_DPZ",
+            "count": 1,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S06": {
+        "type": "skladba_code",
+        "n_total_occurrences": 26,
+        "n_sources": 16,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 4,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 6,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S07": {
+        "type": "skladba_code",
+        "n_total_occurrences": 20,
+        "n_sources": 16,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S08": {
+        "type": "skladba_code",
+        "n_total_occurrences": 15,
+        "n_sources": 15,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          }
+        ]
+      },
+      "S09": {
+        "type": "skladba_code",
+        "n_total_occurrences": 22,
+        "n_sources": 17,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": false
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 4,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S10": {
+        "type": "skladba_code",
+        "n_total_occurrences": 32,
+        "n_sources": 18,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": false
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:_superseded/2026-05-16_unsorted_audit/D.2.2 - statický výpočet.pdf",
+            "count": 7,
+            "has_legend_context": false
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 6,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S11": {
+        "type": "skladba_code",
+        "n_total_occurrences": 7,
+        "n_sources": 7,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": false
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 1,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S12": {
+        "type": "skladba_code",
+        "n_total_occurrences": 7,
+        "n_sources": 6,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 2,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S82": {
+        "type": "skladba_code",
+        "n_total_occurrences": 7,
+        "n_sources": 1,
+        "has_legend_in_some_doc": false,
+        "decodable": false,
+        "occurrences": [
+          {
+            "source": "PDF:_superseded/2026-05-16_unsorted_audit/D.2.2 - statický výpočet.pdf",
+            "count": 7,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S93": {
+        "type": "skladba_code",
+        "n_total_occurrences": 5,
+        "n_sources": 1,
+        "has_legend_in_some_doc": false,
+        "decodable": false,
+        "occurrences": [
+          {
+            "source": "PDF:_superseded/2026-05-16_unsorted_audit/D.2.2 - statický výpočet.pdf",
+            "count": 5,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S96": {
+        "type": "skladba_code",
+        "n_total_occurrences": 1,
+        "n_sources": 1,
+        "has_legend_in_some_doc": false,
+        "decodable": false,
+        "occurrences": [
+          {
+            "source": "PDF:_superseded/2026-05-16_unsorted_audit/D.2.2 - statický výpočet.pdf",
+            "count": 1,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S03a": {
+        "type": "skladba_code",
+        "n_total_occurrences": 10,
+        "n_sources": 8,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 1,
+            "has_legend_context": false
+          },
+          {
+            "source": "DXF:sklad_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S03b": {
+        "type": "skladba_code",
+        "n_total_occurrences": 13,
+        "n_sources": 7,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 4,
+            "has_legend_context": false
+          },
+          {
+            "source": "DXF:sklad_DPZ",
+            "count": 2,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S12a": {
+        "type": "skladba_code",
+        "n_total_occurrences": 10,
+        "n_sources": 6,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 3,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          }
+        ]
+      },
+      "S12b": {
+        "type": "skladba_code",
+        "n_total_occurrences": 9,
+        "n_sources": 6,
+        "has_legend_in_some_doc": true,
+        "decodable": true,
+        "occurrences": [
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+            "count": 1,
+            "has_legend_context": true
+          },
+          {
+            "source": "PDF:vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+            "count": 2,
+            "has_legend_context": true
+          },
+          {
+            "source": "DXF:dum_DPZ",
+            "count": 3,
+            "has_legend_context": false
+          }
+        ]
+      }
+    },
+    "_summary": {
+      "total_unique_scodes": 22,
+      "total_unique_fcodes": 1,
+      "scodes_decodable": 16,
+      "scodes_undecodable_no_legend_or_uses": 6,
+      "fcodes_found": [
+        "F4"
+      ]
+    }
+  }
+}
