@@ -17,6 +17,7 @@ small Revit-shaped gbXML sample through the extractor and assert:
 
 from __future__ import annotations
 
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
@@ -222,3 +223,54 @@ def test_registry_routes_gbxml_to_extractor(tmp_path: Path) -> None:
     assert detect_format(p) == SourceFormat.XML_GBXML
     ex = get_extractor(p)
     assert isinstance(ex, GbxmlExtractor)
+
+
+def test_gbxml_extractor_tolerates_malformed_namespace(tmp_path: Path) -> None:
+    """Regression: a tag that starts with `{` but lacks the closing `}`
+    must NOT crash the iterparse loop with ValueError. The namespace
+    extraction is best-effort — it silently falls back to None and the
+    `gbxml_namespace_missing` decode warning fires.
+
+    We simulate the malformed-tag condition by patching ElementTree
+    just for the first start-event: the real iterparse would never
+    emit such a tag (ET rejects the XML at parse time), but a future
+    upstream change could expose the same surface (e.g. a custom
+    pull-parser layer). Locking it down here closes the Amazon Q
+    PR #1192 review comment without depending on actual malformed XML
+    that ET would refuse to load.
+    """
+
+    from unittest.mock import patch
+
+    p = tmp_path / "rd.xml"
+    p.write_text(_GBXML_SAMPLE, encoding="utf-8")
+
+    # Real iterparse with no patching — should pass through cleanly
+    # (this is the regression baseline; the patched-iterparse test
+    # below proves the guard fires).
+    baseline = GbxmlExtractor().extract(p)
+    assert baseline.extractor_error is None
+
+    # Patched iterparse — first start-event surfaces a malformed tag.
+    original_iterparse = ET.iterparse
+
+    def _mangled_iterparse(*args, **kwargs):
+        emitted_root = False
+        for event, elem in original_iterparse(*args, **kwargs):
+            if not emitted_root and event == "start":
+                # Pretend the root tag has an unbalanced `{` prefix.
+                elem.tag = "{http://www.gbxml.org/schema-MANGLED"
+                emitted_root = True
+            yield event, elem
+
+    with patch.object(ET, "iterparse", _mangled_iterparse):
+        result = GbxmlExtractor().extract(p)
+
+    # Extractor still completes — no ValueError leaked.
+    assert result.extractor_error is None
+    # Namespace recorded as None (best-effort fallback).
+    assert result.data["namespace"] is None
+    # The missing-namespace warning still surfaces so the operator
+    # can investigate the malformed root.
+    codes = [w["code"] for w in result.decode_warnings]
+    assert "gbxml_namespace_missing" in codes

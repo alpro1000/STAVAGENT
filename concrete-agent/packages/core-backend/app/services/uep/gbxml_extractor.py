@@ -149,7 +149,17 @@ class GbxmlExtractor(BaseExtractor):
                     raw_data["schema_version"] = (
                         elem.attrib.get("version") or elem.attrib.get("Version")
                     )
-                    ns = elem.tag[1 : elem.tag.index("}")] if elem.tag.startswith("{") else None
+                    # Namespace extraction is best-effort — a malformed
+                    # `{…` tag missing the closing brace would otherwise
+                    # crash `str.index("}")` with ValueError mid-stream.
+                    # We use the `"}" in tag` guard pattern already
+                    # established in `_localname` rather than try/except,
+                    # so exception-as-control-flow stays out of the hot
+                    # iterparse loop. Closes Amazon Q PR #1192 review
+                    # comment on this line.
+                    ns: str | None = None
+                    if elem.tag.startswith("{") and "}" in elem.tag:
+                        ns = elem.tag[1 : elem.tag.index("}")]
                     raw_data["namespace"] = ns
                     if ns:
                         seen_gbxml_namespace = any(hint in ns for hint in _GBXML_NS_HINTS)
