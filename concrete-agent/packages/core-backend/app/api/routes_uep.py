@@ -37,6 +37,7 @@ import asyncio
 import json
 import logging
 import os
+import uuid
 from collections import deque
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -647,3 +648,263 @@ def get_tier_limits_config() -> dict:
 @router.get("/uep/config/supported-formats")
 def get_supported_formats() -> dict:
     return {"formats": [f.value for f in list_supported_formats()]}
+
+
+# ===========================================================================
+# IFC version tracking + diff (PR4b-1 §3.3)
+#
+# REST surface for the `ifc_versions` + `ifc_diff_reports` tables (Alembic
+# `uep_pr4b_ifc_diff`). PR4b-1 persists rows to filesystem JSON under
+# `UEP_DATA_DIR/ifc_versions/` + `UEP_DATA_DIR/ifc_diff_reports/`; PR4b-2
+# swaps in the SQLAlchemy + asyncpg session pattern (async DB plumbing is
+# out of scope for PR4b-1 — the endpoint contract is what matters for
+# review, the storage backend is an implementation detail).
+#
+# Auth: same X-User-Id dev seam as `/uep/run` (PR3 wires real JWT).
+# Project ownership: `project_id` is echoed into the version row and
+# verified on diff retrieval — proper FK enforcement lands when the
+# ORM session arrives in PR4b-2.
+# Path traversal: `project_id` and `version_id` are UUID-validated before
+# reaching the filesystem path builder.
+# ===========================================================================
+
+
+_UUID_PATTERN = _re.compile(
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    _re.IGNORECASE,
+)
+
+
+def _validate_uuid(value: str, *, field: str) -> str:
+    """UUID-shape validation — rejects path traversal AND wrong-shape IDs."""
+
+    if not isinstance(value, str) or not _UUID_PATTERN.match(value):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid {field}: must be a UUID (8-4-4-4-12 hex)",
+        )
+    return value
+
+
+def _ifc_versions_dir(project_id: str) -> Path:
+    base = Path(os.environ.get("UEP_DATA_DIR", "data/uep")) / "ifc_versions" / project_id
+    base.mkdir(parents=True, exist_ok=True)
+    return base
+
+
+def _ifc_diff_reports_dir(project_id: str) -> Path:
+    base = (
+        Path(os.environ.get("UEP_DATA_DIR", "data/uep"))
+        / "ifc_diff_reports"
+        / project_id
+    )
+    base.mkdir(parents=True, exist_ok=True)
+    return base
+
+
+# ---------------------------------------------------------------------------
+# POST /uep/ifc/versions — register a new IFC version
+# ---------------------------------------------------------------------------
+
+
+@router.post("/uep/ifc/versions", status_code=201)
+def create_ifc_version(
+    body: dict,
+    x_user_id: Optional[str] = Header(None),
+) -> dict:
+    """Persist one IFC extraction as a `ifc_versions` row.
+
+    Body shape (matches `IfcVersionMetadata` minus server-side fields):
+      - project_id (UUID, required) — owning project
+      - file_name (str, required)
+      - file_size_bytes (int, required, ≥ 0)
+      - schema_version (str, required, one of IFC2X3/IFC4/IFC4X1/IFC4X2/IFC4X3)
+      - streaming_strategy (str, required, one of full/partial/strict/reject)
+      - job_id (UUID, optional) — link to the UEP job that produced the snapshots
+      - entity_counts (dict, optional, defaults to {})
+      - entity_snapshots (list, optional, defaults to []) — the input to
+        the diff engine; passed straight through `IfcEntitySnapshot`
+        validation by `compute_basic_ifc_diff` on the diff call.
+
+    Returns: `{version_id, project_id, upload_timestamp}` + 201.
+    """
+
+    from app.models.ifc_diff_schemas import IfcVersionMetadata
+
+    _resolve_user(x_user_id)  # 400 if header malformed
+
+    project_id = _validate_uuid(body.get("project_id", ""), field="project_id")
+    job_id = body.get("job_id")
+    if job_id is not None:
+        _validate_uuid(job_id, field="job_id")
+
+    version_id = str(uuid.uuid4())
+    try:
+        version = IfcVersionMetadata(
+            version_id=version_id,
+            project_id=project_id,
+            job_id=job_id,
+            file_name=body.get("file_name", ""),
+            file_size_bytes=int(body.get("file_size_bytes", 0)),
+            schema_version=body.get("schema_version", ""),
+            streaming_strategy=body.get("streaming_strategy", ""),
+            upload_timestamp=datetime.now(timezone.utc),
+            entity_counts=body.get("entity_counts", {}) or {},
+            entity_snapshots=body.get("entity_snapshots", []) or [],
+        )
+    except Exception as exc:  # Pydantic ValidationError → 400
+        raise HTTPException(status_code=400, detail=f"Invalid version body: {exc}") from exc
+
+    # File-level schema + strategy guard — mirror the Alembic CHECK
+    # constraints so behaviour is identical filesystem ↔ Postgres swap.
+    if version.schema_version not in {"IFC2X3", "IFC4", "IFC4X1", "IFC4X2", "IFC4X3"}:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid schema_version: {version.schema_version!r}",
+        )
+    if version.streaming_strategy not in {"full", "partial", "strict", "reject"}:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid streaming_strategy: {version.streaming_strategy!r}",
+        )
+
+    out_path = _ifc_versions_dir(project_id) / f"{version_id}.json"
+    out_path.write_text(version.model_dump_json())
+    return {
+        "version_id": version_id,
+        "project_id": project_id,
+        "upload_timestamp": version.upload_timestamp.isoformat(),
+    }
+
+
+# ---------------------------------------------------------------------------
+# GET /uep/ifc/versions?project_id=... — list project's versions, recent-first
+# ---------------------------------------------------------------------------
+
+
+@router.get("/uep/ifc/versions")
+def list_ifc_versions(
+    project_id: str,
+    x_user_id: Optional[str] = Header(None),
+) -> dict:
+    """List `ifc_versions` rows for a project, ordered upload_timestamp desc.
+
+    Returns lean view (no `entity_snapshots`, no `entity_counts`) — saves
+    bytes when the UI just wants the version picker. Use the per-version
+    GET (added in PR4b-2) for the full payload.
+    """
+
+    _resolve_user(x_user_id)
+    _validate_uuid(project_id, field="project_id")
+    versions: list[dict] = []
+    for fp in _ifc_versions_dir(project_id).glob("*.json"):
+        try:
+            data = json.loads(fp.read_text())
+        except json.JSONDecodeError:
+            # A corrupt file shouldn't blow up the whole listing — log
+            # and skip. PR4b-2 swap to Postgres makes this dead code.
+            logger.warning("Skipping corrupt IFC version file: %s", fp)
+            continue
+        versions.append({
+            "version_id": data.get("version_id"),
+            "file_name": data.get("file_name"),
+            "schema_version": data.get("schema_version"),
+            "file_size_bytes": data.get("file_size_bytes"),
+            "upload_timestamp": data.get("upload_timestamp"),
+            "job_id": data.get("job_id"),
+        })
+    versions.sort(key=lambda v: v.get("upload_timestamp") or "", reverse=True)
+    return {"project_id": project_id, "versions": versions}
+
+
+# ---------------------------------------------------------------------------
+# GET /uep/ifc/diff/{old_version_id}/{new_version_id} — cached or on-the-fly
+# ---------------------------------------------------------------------------
+
+
+@router.get("/uep/ifc/diff/{old_version_id}/{new_version_id}")
+def get_ifc_diff(
+    old_version_id: str,
+    new_version_id: str,
+    x_user_id: Optional[str] = Header(None),
+) -> dict:
+    """Return a cached `IfcDiffReport` for the pair, or compute + cache it.
+
+    Both versions must already exist (POST /uep/ifc/versions); 404 if not.
+    Cache key is `{old}_{new}.json` under `UEP_DATA_DIR/ifc_diff_reports/
+    {project_id}/`. Cross-project diff (versions from different projects)
+    is rejected with 400 — diff is always within-project.
+    """
+
+    from app.services.uep.ifc_diff_engine import compute_basic_ifc_diff
+
+    _resolve_user(x_user_id)
+    _validate_uuid(old_version_id, field="old_version_id")
+    _validate_uuid(new_version_id, field="new_version_id")
+    if old_version_id == new_version_id:
+        raise HTTPException(
+            status_code=400,
+            detail="old_version_id and new_version_id must differ",
+        )
+
+    # Locate both version files — scan all project dirs since the
+    # version_id is globally unique but the filesystem layout is
+    # /ifc_versions/<project_id>/<version_id>.json. PR4b-2 swap to
+    # Postgres replaces this with a single indexed lookup.
+    base = Path(os.environ.get("UEP_DATA_DIR", "data/uep")) / "ifc_versions"
+    old_data = new_data = None
+    old_project = new_project = None
+    if base.exists():
+        for project_dir in base.iterdir():
+            if not project_dir.is_dir():
+                continue
+            # `project_dir.name` came from the filesystem — it could in
+            # principle be anything. Re-validate so a manually-placed
+            # `../etc/passwd` dir can't poison the response.
+            if not _UUID_PATTERN.match(project_dir.name):
+                continue
+            for fp in project_dir.glob("*.json"):
+                if fp.stem == old_version_id:
+                    old_data = json.loads(fp.read_text())
+                    old_project = project_dir.name
+                elif fp.stem == new_version_id:
+                    new_data = json.loads(fp.read_text())
+                    new_project = project_dir.name
+                if old_data and new_data:
+                    break
+            if old_data and new_data:
+                break
+    if old_data is None:
+        raise HTTPException(status_code=404, detail=f"Version not found: {old_version_id}")
+    if new_data is None:
+        raise HTTPException(status_code=404, detail=f"Version not found: {new_version_id}")
+    if old_project != new_project:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Cross-project diff is not supported — both versions must "
+                f"belong to the same project (old={old_project}, new={new_project})"
+            ),
+        )
+
+    cache_path = _ifc_diff_reports_dir(old_project) / f"{old_version_id}_{new_version_id}.json"
+    if cache_path.exists():
+        return json.loads(cache_path.read_text())
+
+    # Compute fresh diff. Exceptions from the engine → 400 with the
+    # underlying message (the engine's own ValueErrors already carry
+    # actionable text — duplicate GlobalId, missing GlobalId, etc.).
+    try:
+        report = compute_basic_ifc_diff(
+            project_id=old_project,
+            old_version_id=old_version_id,
+            new_version_id=new_version_id,
+            old_snapshots=old_data.get("entity_snapshots", []),
+            new_snapshots=new_data.get("entity_snapshots", []),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    payload = report.model_dump(mode="json")
+    cache_path.write_text(json.dumps(payload))
+    return payload
