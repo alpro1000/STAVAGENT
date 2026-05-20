@@ -1,6 +1,6 @@
 {
-  "version": "0.2",
-  "doc": "Generic consumption rates fallback for Libuše finishing-works freelance project. Rates here are used ONLY when projektová dokumentace does not provide an explicit rate (Phase 6.6 Case 2 + Case 4). Every entry MUST carry `source` field with explicit attribution. Inline rates are FORBIDDEN in decomposition pairing code — they all live here.",
+  "version": "0.3",
+  "doc": "Generic consumption rates fallback for Libuše finishing-works freelance project. Rates here are used ONLY when projektová dokumentace does not provide an explicit rate (Phase 6.6 Case 2 + Case 4). Every entry MUST carry `source` field with explicit attribution. Inline rates are FORBIDDEN in decomposition pairing code — they all live here. GATE 5a added optional `citation_norm` / `citation_source` / `citation_url` fields (hand-curated ČSN refs offline; URL populated by enrich_generic_rates.py when PPLX_API_KEY available).",
   "rates": {
     "penetrace_univerzalni": {
       "popis_template": "Penetrace univerzální — disperzní",
@@ -10,7 +10,10 @@
       "MJ_consumed": "l",
       "MJ_applied_to": "m2",
       "rate": 0.2,
-      "source": "Industry standard pro penetrace disperzní (typická spotřeba 0,15–0,25 l/m²)"
+      "source": "Industry standard pro penetrace disperzní (typická spotřeba 0,15–0,25 l/m²)",
+      "citation_norm": "ČSN 73 3450",
+      "citation_source": "ČSN 73 3450 Provádění keramických obkladů a dlažeb (penetrace podkladu)",
+      "citation_url": null
     },
     "lepidlo_flexibilni_c2te": {
       "popis_template": "Lepidlo flexibilní C2TE — disperzní",
@@ -20,7 +23,10 @@
       "MJ_consumed": "kg",
       "MJ_applied_to": "m2",
       "rate": 5.0,
-      "source": "Industry standard pro lepidlo C2TE pod keramickou dlažbu (typická spotřeba 4–6 kg/m²)"
+      "source": "Industry standard pro lepidlo C2TE pod keramickou dlažbu (typická spotřeba 4–6 kg/m²)",
+      "citation_norm": "ČSN EN 12004",
+      "citation_source": "ČSN EN 12004 Lepidla pro keramické dlaždice a obklady — klasifikace a požadavky",
+      "citation_url": null
     },
     "sparovaci_hmota_keramicka": {
       "popis_template": "Spárovací hmota — keramika",
@@ -30,7 +36,10 @@
       "MJ_consumed": "kg",
       "MJ_applied_to": "m2",
       "rate": 0.5,
-      "source": "Industry standard pro spárovací hmotu (typická spotřeba 0,3–0,6 kg/m² podle formátu dlažby)"
+      "source": "Industry standard pro spárovací hmotu (typická spotřeba 0,3–0,6 kg/m² podle formátu dlažby)",
+      "citation_norm": "ČSN EN 13888",
+      "citation_source": "ČSN EN 13888 Spárovací hmoty pro keramické obklady a dlaždice",
+      "citation_url": null
     },
     "lepidlo_na_vinyl": {
       "popis_template": "Lepidlo na vinyl — disperzní",
@@ -40,7 +49,10 @@
       "MJ_consumed": "kg",
       "MJ_applied_to": "m2",
       "rate": 0.3,
-      "source": "Industry standard pro lepidlo na povlakové podlahy (0,25–0,35 kg/m²)"
+      "source": "Industry standard pro lepidlo na povlakové podlahy (0,25–0,35 kg/m²)",
+      "citation_norm": "ČSN 74 4505",
+      "citation_source": "ČSN 74 4505 Podlahy — společná ustanovení (povlakové podlahy)",
+      "citation_url": null
     },
     "samonivelacni_sterka": {
       "popis_template": "Samonivelační stěrka 3 mm",
@@ -50,7 +62,10 @@
       "MJ_consumed": "kg",
       "MJ_applied_to": "m2",
       "rate": 4.5,
-      "source": "Industry standard pro samonivelační stěrku 3 mm (1,5 kg/m² na 1 mm tloušťky)"
+      "source": "Industry standard pro samonivelační stěrku 3 mm (1,5 kg/m² na 1 mm tloušťky)",
+      "citation_norm": "ČSN EN 13813",
+      "citation_source": "ČSN EN 13813 Stavební maltové směsi pro podlahy — vlastnosti a požadavky",
+      "citation_url": null
     },
     "barva_disperzni_per_vrstva": {
       "popis_template": "Malba disperzní — 1× vrstva",
@@ -60,7 +75,10 @@
       "MJ_consumed": "l",
       "MJ_applied_to": "m2",
       "rate": 0.15,
-      "source": "Industry standard pro malby disperzní (0,12–0,18 l/m² per vrstva; 2 vrstvy standard)"
+      "source": "Industry standard pro malby disperzní (0,12–0,18 l/m² per vrstva; 2 vrstvy standard)",
+      "citation_norm": "ČSN 73 3300",
+      "citation_source": "ČSN 73 3300 Provádění nátěrů stavebních konstrukcí (vč. ČSN EN 13300 klasifikace)",
+      "citation_url": null
     },
     "tmel_akrylatovy_sparovani": {
       "popis_template": "Tmel akrylátový — spárování / dilatace",
@@ -70,7 +88,10 @@
       "MJ_consumed": "kg",
       "MJ_applied_to": "m2",
       "rate": 0.05,
-      "source": "Industry standard pro tmely akrylátové (~50 g/m² při spárování rohů)"
+      "source": "Industry standard pro tmely akrylátové (~50 g/m² při spárování rohů)",
+      "citation_norm": "ČSN EN ISO 11600",
+      "citation_source": "ČSN EN ISO 11600 Tmely pro spojování ve stavebnictví — klasifikace",
+      "citation_url": null
     },
     "tmel_protipozarni_prostup": {
       "popis_template": "Tmel požárně-odolný — utěsnění prostupu",
@@ -80,7 +101,10 @@
       "MJ_consumed": "kg",
       "MJ_applied_to": "ks",
       "rate": 0.5,
-      "source": "ČSN 73 0810 + industry standard pro prostupy (~0,3–0,7 kg per prostup podle průměru)"
+      "source": "ČSN 73 0810 + industry standard pro prostupy (~0,3–0,7 kg per prostup podle průměru)",
+      "citation_norm": "ČSN 73 0810 + ČSN EN 1366-3",
+      "citation_source": "ČSN 73 0810 Požární bezpečnost staveb (společná ustanovení) + ČSN EN 1366-3 Zkoušky požární odolnosti — prostupy instalací",
+      "citation_url": null
     },
     "manzeta_protipozarni_prostup": {
       "popis_template": "Manžeta protipožární — prostup",
@@ -90,7 +114,10 @@
       "MJ_consumed": "ks",
       "MJ_applied_to": "ks",
       "rate": 1.0,
-      "source": "ČSN 73 0810 — 1 manžeta na hořlavý prostup"
+      "source": "ČSN 73 0810 — 1 manžeta na hořlavý prostup",
+      "citation_norm": "ČSN 73 0810 + ČSN EN 1366-3",
+      "citation_source": "ČSN 73 0810 Požární bezpečnost staveb + ČSN EN 1366-3 Zkoušky požární odolnosti — prostupy hořlavých potrubí",
+      "citation_url": null
     },
     "objimka_protipozarni_prostup": {
       "popis_template": "Objímka protipožární — prostup (pouze hořlavé potrubí)",
@@ -100,7 +127,10 @@
       "MJ_consumed": "ks",
       "MJ_applied_to": "ks",
       "rate": 1.0,
-      "source": "ČSN 73 0810 — pouze pokud PBŘS specifies (typicky pro plastové potrubí)"
+      "source": "ČSN 73 0810 — pouze pokud PBŘS specifies (typicky pro plastové potrubí)",
+      "citation_norm": "ČSN 73 0810",
+      "citation_source": "ČSN 73 0810 Požární bezpečnost staveb — společná ustanovení (objímky pro hořlavé potrubí dle PBŘS)",
+      "citation_url": null
     },
     "vyztuzna_tkanina_omitka": {
       "popis_template": "Výztužná tkanina (perlinka) — omítka",
@@ -110,7 +140,10 @@
       "MJ_consumed": "m2",
       "MJ_applied_to": "m2",
       "rate": 1.1,
-      "source": "Industry standard pro perlinku (10 % overlap)"
+      "source": "Industry standard pro perlinku (10 % overlap)",
+      "citation_norm": "ČSN 73 3450",
+      "citation_source": "ČSN 73 3450 Provádění keramických obkladů a dlažeb (armovací síťovina)",
+      "citation_url": null
     },
     "narozni_lista_omitka": {
       "popis_template": "Nárožní lišta — omítka",
@@ -120,7 +153,10 @@
       "MJ_consumed": "bm",
       "MJ_applied_to": "m2",
       "rate": 0.1,
-      "source": "Industry standard pro ochranné nárožní lišty (cca 1 m lišty na 10 m² omítky)"
+      "source": "Industry standard pro ochranné nárožní lišty (cca 1 m lišty na 10 m² omítky)",
+      "citation_norm": "ČSN 73 3450",
+      "citation_source": "ČSN 73 3450 Provádění keramických obkladů a dlažeb (zakončovací prvky)",
+      "citation_url": null
     }
   }
 }

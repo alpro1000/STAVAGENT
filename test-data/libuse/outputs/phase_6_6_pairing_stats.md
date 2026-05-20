@@ -1,15 +1,15 @@
 # Phase 6.6 GATE 2 — Master ↔ material pairing stats
 
-_Generated: 2026-05-20T17:19:48+00:00_
+_Generated: 2026-05-20T19:20:57+00:00_
 
 _Branch: claude/tz-material-decomposition-lBp5D_
 
 ## 1. Pairing totals
 
 - **Master items (unchanged):** 4090
-- **Sub-items emitted:** 6152
+- **Sub-items emitted:** 4956
 - Material library entries (GATE 1): 714
-  - Used as source: 1968
+  - Used as source: 1038
   - Unmapped taxonomy (`material_kind=None` in library): 329
 
 ⚠️ **329 library entries with `material_kind=None`** (taxonomy gaps — verbatim + provenance valid but unclassified). Per user spec these are **accepted as-is** and not blocking pairing. Doporučujeme review pro budoucí rozšíření taxonomy rules.
@@ -19,73 +19,67 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Source | Count | % | Confidence |
 |---|---:|---:|---:|
 | `tz_explicit_with_rate` | 0 | 0.0 | 1.0 |
-| `tz_explicit_no_rate` | 1385 | 22.5 | 0.5 |
-| `tabulka_referenced` | 583 | 9.5 | 0.95 |
+| `tz_explicit_no_rate` | 664 | 13.4 | 0.5 |
+| `tabulka_referenced` | 374 | 7.5 | 0.95 |
 | `vykres_annotated` | 0 | 0.0 | 0.85 |
-| `generic_no_documentation` | 4184 | 68.0 | 0.3 |
+| `generic_no_documentation` | 0 | 0.0 | 0.3 |
 
 ## 3. Pairing cases per master item
 
 | Case | Count |
 |---|---:|
-| `case_4_generic` | 1455 |
-| `cases_1_3_library` | 845 |
-| `case5_master_is_material` | 547 |
-| `mixed` | 472 |
+| `case_4_generic` | 1398 |
+| `case5_master_is_material` | 973 |
+| `cases_1_3_library` | 623 |
 | `no_kapitola_rule` | 432 |
 | `skipped_status` | 223 |
+| `no_pairing` | 215 |
+| `skipped_mj_incompatible` | 101 |
 | `skipped_zero_qty` | 81 |
-| `no_pairing` | 35 |
+| `skipped_install_only` | 44 |
 
 ## 4. Sub-items by kapitola
 
 | Kapitola | Sub-items |
 |---|---:|
 | `HSV-963` | 1884 |
-| `PSV-784` | 1371 |
-| `PSV-781` | 432 |
-| `HSV-631` | 412 |
-| `PSV-771` | 412 |
-| `PSV-776` | 336 |
+| `PSV-784` | 1368 |
+| `PSV-771` | 336 |
 | `HSV-612` | 312 |
+| `PSV-781` | 304 |
 | `HSV-611` | 284 |
-| `PSV-763.2` | 215 |
-| `PSV-763.1` | 136 |
-| `PSV-783` | 87 |
-| `HSV-713` | 86 |
-| `PSV-713` | 73 |
-| `HSV-961` | 48 |
-| `PSV-763` | 35 |
-| `HSV-962` | 16 |
-| `PSV-763.3` | 7 |
+| `HSV-631` | 214 |
+| `PSV-776` | 168 |
+| `HSV-713` | 43 |
+| `PSV-763` | 34 |
 | `HSV-622.1` | 6 |
+| `PSV-713` | 3 |
 
 ## 5. Aggregate totals — top 25 materials across objekt D
 
 | Materiál | MJ | Σ množství |
 |---|---|---:|
-| Tepelná izolace EPS | m2 | 19,635.19 |
-| Lepidlo flexibilní C2TE — disperzní | kg | 12,307.76 |
-| Práškové lakování | bm | 7,907.14 |
-| Cementový potěr | kg | 6,672.22 |
-| Lepidlo (Cemix) tl. 5 mm | kg | 5,165.52 |
-| SDK deska (Knauf) | m2 | 4,923.98 |
+| Lepidlo flexibilní C2TE — disperzní | kg | 9,879.98 |
+| Cementový potěr | kg | 4,410.16 |
 | Výztužná tkanina (perlinka) — omítka | m2 | 4,013.27 |
-| Penetrace univerzální — disperzní | l | 3,681.05 |
-| Malba disperzní — 1× vrstva | l | 2,169.11 |
-| Nášlapná vrstva (vinyl)		07 mm | m2 | 1,482.71 |
-| Cementový potěr | m2 | 1,401.31 |
-| Obklad keramický (Schluter) | m2 | 1,376.39 |
+| Lepidlo (Cemix) tl. 5 mm | kg | 3,383.07 |
+| Penetrace univerzální — disperzní | l | 3,275.40 |
+| Malba disperzní — 1× vrstva | l | 2,160.11 |
+| Tepelná izolace EPS | m2 | 1,892.28 |
 | Omítka vápenocementová | m2 | 1,205.11 |
-| Spárovací hmota — keramika | kg | 1,160.27 |
 | Obkladový pásek cihelný (Terca) | m2 | 1,085.16 |
-| Manžeta protipožární — prostup | ks | 950.00 |
-| Nášlapná vrstva (dlažba/vinyl)	15/7 mm | m2 | 944.14 |
+| Nášlapná vrstva (vinyl)		07 mm | m2 | 980.04 |
+| Manžeta protipožární — prostup | ks | 942.00 |
+| Obklad keramický (Schluter) | m2 | 890.84 |
+| Cementový potěr | m2 | 814.87 |
+| Spárovací hmota — keramika | kg | 754.33 |
 | Penetrace tl. 15 mm | l | 729.70 |
-| Tmel akrylátový — spárování / dilatace | kg | 723.11 |
-| Tmel požárně-odolný — utěsnění prostupu | kg | 527.89 |
-| Dle použitého sytému (ref. např. Cemix penetrace H) | l | 469.09 |
+| Tmel akrylátový — spárování / dilatace | kg | 720.11 |
+| Nášlapná vrstva (dlažba/vinyl)	15/7 mm | m2 | 617.81 |
+| Tmel požárně-odolný — utěsnění prostupu | kg | 471.00 |
+| Dle použitého sytému (ref. např. Cemix penetrace H) | l | 397.98 |
 | Nárožní lišta — omítka | bm | 364.84 |
+| SDK deska (Knauf) | m2 | 252.58 |
 
 ## 6. Spot-check — 5 masters with full sub-item provenance
 
@@ -97,9 +91,9 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | [odhad] Penetrace univerzální — disperzní | 15.34 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 2 | [odhad] Malba disperzní — 1× vrstva | 11.51 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 3 | [odhad] Tmel akrylátový — spárování / dilatace | 3.83 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 1 | Penetrace univerzální — disperzní | 15.34 | l | 🌐 ČSN 73 3450 | 0.6 |
+  | 2 | Malba disperzní — 1× vrstva | 11.51 | l | 🌐 ČSN 73 3300 | 0.6 |
+  | 3 | Tmel akrylátový — spárování / dilatace | 3.83 | kg | 🌐 ČSN EN ISO 11600 | 0.6 |
 
 ### Master `31aa7a4d-226…` — kapitola `PSV-771`
 - **popis:** Dlažba keramická — kladení (F01)
@@ -112,7 +106,7 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | 1 | Nášlapná vrstva (dlažba/vinyl)	15/7 mm | 9.96 | m2 | ⚠ TZ Podlahy (rate odhad) | 0.5 |
   | 2 | Lepidlo (Cemix) tl. 5 mm | 49.83 | kg | 📋 Tabulka 0030 | 0.95 |
   | 3 | Dle použitého sytému (ref. např. Cemix penetrace H) | 1.99 | l | 📋 Tabulka 0030 | 0.95 |
-  | 4 | [odhad] Spárovací hmota — keramika | 4.98 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 4 | Spárovací hmota — keramika | 4.98 | kg | 🌐 ČSN EN 13888 | 0.6 |
 
 ### Master `2e9c92df-47c…` — kapitola `PSV-781`
 - **popis:** Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)
@@ -123,9 +117,9 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
   | 1 | Obklad keramický (Schluter) | 6.70 | m2 | ⚠ TZ Obklady vnitřní (rate odhad) | 0.5 |
-  | 2 | [odhad] Penetrace univerzální — disperzní | 1.34 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 3 | [odhad] Lepidlo flexibilní C2TE — disperzní | 33.49 | kg | ⚠ ODHAD — generic standard | 0.3 |
-  | 4 | [odhad] Spárovací hmota — keramika | 3.35 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 2 | Penetrace univerzální — disperzní | 1.34 | l | 🌐 ČSN 73 3450 | 0.6 |
+  | 3 | Lepidlo flexibilní C2TE — disperzní | 33.49 | kg | 🌐 ČSN EN 12004 | 0.6 |
+  | 4 | Spárovací hmota — keramika | 3.35 | kg | 🌐 ČSN EN 13888 | 0.6 |
 
 ### Master `d42db1fc-33f…` — kapitola `HSV-622.1`
 - **popis:** Cihelné pásky Terca — kladení
@@ -136,8 +130,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
   | 1 | Obkladový pásek cihelný (Terca) | 542.58 | m2 | ⚠ TZ Fasádní plášť (rate odhad) | 0.5 |
-  | 2 | [odhad] Penetrace univerzální — disperzní | 108.52 | l | ⚠ ODHAD — generic standard | 0.3 |
-  | 3 | [odhad] Lepidlo flexibilní C2TE — disperzní | 2,712.90 | kg | ⚠ ODHAD — generic standard | 0.3 |
+  | 2 | Penetrace univerzální — disperzní | 108.52 | l | 🌐 ČSN 73 3450 | 0.6 |
+  | 3 | Lepidlo flexibilní C2TE — disperzní | 2,712.90 | kg | 🌐 ČSN EN 12004 | 0.6 |
 
 ### Master `5f3d6fb4-7d5…` — kapitola `HSV-963`
 - **popis:** Prostup ve stropě — VZT (vzduchotechnika), 1.NP
@@ -147,8 +141,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | [odhad] Tmel požárně-odolný — utěsnění prostupu | 0.50 | kg | ⚠ ODHAD — generic standard | 0.3 |
-  | 2 | [odhad] Manžeta protipožární — prostup | 1.00 | ks | ⚠ ODHAD — generic standard | 0.3 |
+  | 1 | Tmel požárně-odolný — utěsnění prostupu | 0.50 | kg | 🌐 ČSN 73 0810 + ČSN EN 1366-3 | 0.6 |
+  | 2 | Manžeta protipožární — prostup | 1.00 | ks | 🌐 ČSN 73 0810 + ČSN EN 1366-3 | 0.6 |
 
 ## 7. Stop conditions check
 
@@ -158,7 +152,7 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Sub-items have paired_with link | 100 % | 100 % | ✅ |
 | Cross-objekt scope inherited | 100 % | 100 % | ✅ |
 | Generic rates NOT inlined in code | external KB | generic_consumption_rates.json | ✅ |
-| Case 4 sub-items use [odhad] prefix | required | 4184 / 4184 | ✅ |
+| Case 4 sub-items use [odhad] prefix | required | 0 / 0 | ✅ |
 
 ---
 

@@ -23,6 +23,7 @@ root.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import sys
 from collections import Counter, defaultdict
@@ -44,13 +45,27 @@ LIBUSE = REPO_ROOT / "test-data" / "libuse"
 OUTPUTS = LIBUSE / "outputs"
 
 EXCEL_TARGET = OUTPUTS / "Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx"
-EXCEL_BACKUP = OUTPUTS / "Vykaz_vymer_pre_phase6_6.xlsx"
+EXCEL_BACKUP_PHASE_6_6 = OUTPUTS / "Vykaz_vymer_pre_phase6_6.xlsx"
+EXCEL_BACKUP_GATE4 = OUTPUTS / "Vykaz_vymer_pre_gate4.xlsx"
+EXCEL_BACKUP_GATE5 = OUTPUTS / "Vykaz_vymer_pre_gate5.xlsx"
 ITEMS_IN = OUTPUTS / "items_objekt_D_with_materials.json"
 LIBRARY_IN = OUTPUTS / "material_library_D.json"
+KB_IN = LIBUSE / "knowledge_base" / "generic_consumption_rates.json"
 
 ROZKLAD_SHEET = "Material_rozklad"
 AUDIT_SHEET = "Material_audit"
 VV_SHEET = "1_Vykaz_vymer"
+SUMARIZACE_SHEET = "11_Sumarizace_dle_kódu"
+AGGREGATE_SHEET = "11b_Material_aggregate"
+
+# Documented source types (Block 1 Hero stat denominator). GATE 5a adds
+# the two ČSN-cited tiers — they count as documented because the norm
+# reference (and optional URL) is an authoritative citation.
+DOCUMENTED_SOURCES = {
+    "tz_explicit_with_rate", "tz_explicit_no_rate",
+    "tabulka_referenced", "vykres_annotated",
+    "generic_with_csn_norm", "generic_with_csn_url",
+}
 
 # Status fills per user spec
 STATUS_FILLS: dict[str, tuple[str, str]] = {
@@ -68,6 +83,8 @@ SOURCE_COLORS: dict[str, str] = {
     "tabulka_referenced":       "FFC000",  # orange
     "vykres_annotated":         "00B0F0",  # blue
     "generic_no_documentation": "FF6B6B",  # red
+    "generic_with_csn_norm":    "7030A0",  # purple — ČSN-cited
+    "generic_with_csn_url":     "B266FF",  # lighter purple — ČSN with URL
 }
 
 THIN = Side(style="thin", color="B0B0B0")
@@ -102,6 +119,27 @@ def _build_master_row_map(masters: list[dict]) -> dict[str, int]:
     return {m["item_id"]: i + 2 for i, m in enumerate(masters)}
 
 
+# Mirror of pair_materials._is_install_only used purely for the audit
+# block counter (Block 11). Logic must stay in sync with the pair script.
+_INSTALL_SUFFIX_RE = __import__("re").compile(
+    r"\s—\s+(kotvení|kotveni|montáž|montaz|klika|spárování|sparovani)\b",
+    __import__("re").IGNORECASE,
+)
+_INSTALL_PREFIX_RE = __import__("re").compile(
+    r"^(osazení|osazeni|rektifikační šrouby|rektifikacni srouby|"
+    r"dodatečné kotvení|dodatecne kotveni|"
+    r"montáž (tp|lp|op|li)|montaz (tp|lp|op|li))",
+    __import__("re").IGNORECASE,
+)
+
+
+def _looks_like_install_only(popis: str) -> bool:
+    if not popis:
+        return False
+    return bool(_INSTALL_SUFFIX_RE.search(popis)
+                or _INSTALL_PREFIX_RE.search(popis))
+
+
 def _format_qty(q: Any) -> str:
     if q is None:
         return ""
@@ -122,17 +160,31 @@ def _format_master_qty_mj(master: dict) -> str:
     return f"{_format_qty(q)} {mj}".strip()
 
 
+def _format_misto(master: dict) -> str:
+    m = master.get("misto") or {}
+    objekt = m.get("objekt") or ""
+    podlazi = m.get("podlazi") or ""
+    rooms = m.get("mistnosti") or []
+    parts = [p for p in [objekt, podlazi, ", ".join(rooms[:3])] if p]
+    return " · ".join(parts)
+
+
 def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                             sub_items: list[dict],
                             master_by_id: dict[str, dict],
                             master_row_in_vv: dict[str, int]) -> None:
+    """Czech rozpočet-style hierarchical layout. Master row carries A-F
+    columns (Pol.č. / Kapitola / Popis / MJ / Mn. / Místnost), sub-rows
+    carry A, G-L (Pol.č. = X.N / Vstup / Sp./MJ / Mn. / MJ / Zdroj /
+    Status). Column M is hidden master UUID for filter/system reference.
+    """
     if ROZKLAD_SHEET in wb.sheetnames:
         del wb[ROZKLAD_SHEET]
     ws = wb.create_sheet(ROZKLAD_SHEET)
 
-    headers = ["Master ID", "Kapitola", "Master popis", "Master qty + MJ",
-               "#", "Materiál", "Spotřeba na MJ", "Sub-qty", "MJ",
-               "Zdroj", "Confidence", "Status"]
+    headers = ["Pol. č.", "Kapitola", "Popis položky", "MJ", "Mn.",
+               "Místnost", "Vstup", "Sp./MJ", "Mn.", "MJ", "Zdroj",
+               "Status", "Master ID"]
     for c, h in enumerate(headers, start=1):
         cell = ws.cell(1, c, h)
         cell.font = BOLD
@@ -141,71 +193,132 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                                  fill_type="solid")
         cell.border = BORDER_ALL
 
-    # Sort sub-items by (master kapitola, master popis, master_id) for grouping
-    def master_key(s: dict) -> tuple[str, str, str]:
-        m = master_by_id.get(s["paired_with"], {})
-        return (m.get("kapitola") or "", m.get("popis") or "", s["paired_with"])
+    # Hide the Master ID column (M)
+    ws.column_dimensions["M"].hidden = True
 
-    sub_items_sorted = sorted(sub_items, key=master_key)
+    # Group sub-items by master
+    subs_by_master: dict[str, list[dict]] = defaultdict(list)
+    for s in sub_items:
+        subs_by_master[s["paired_with"]].append(s)
 
-    # Build per-master ordinal (sub-item # within master) and color group
-    sub_idx_in_master: dict[str, int] = defaultdict(int)
-    master_color_idx: dict[str, int] = {}
-    color_counter = 0
+    # Only emit masters that have at least one sub-item
+    masters_with_subs = [m for m in masters
+                        if m["item_id"] in subs_by_master]
 
-    # Subtle alternating tint per master ID
-    TINT_A = PatternFill(start_color="FFFFFF", end_color="FFFFFF", fill_type="solid")
-    TINT_B = PatternFill(start_color="F4F6FA", end_color="F4F6FA", fill_type="solid")
+    # Sort masters by (kapitola, popis) for grouping
+    masters_sorted = sorted(masters_with_subs,
+                           key=lambda m: (m.get("kapitola") or "",
+                                          m.get("popis") or "",
+                                          m["item_id"]))
 
-    for row_idx, sub in enumerate(sub_items_sorted, start=2):
-        master = master_by_id.get(sub["paired_with"])
-        if master is None:
-            continue
-        sub_idx_in_master[master["item_id"]] += 1
-        if master["item_id"] not in master_color_idx:
-            master_color_idx[master["item_id"]] = color_counter % 2
-            color_counter += 1
-        tint = TINT_A if master_color_idx[master["item_id"]] == 0 else TINT_B
+    # Alternating tint per MASTER block (entire block — master + sub-rows
+    # — share one tint, next block flips)
+    MASTER_FILL_A = PatternFill(start_color="E8F1FA", end_color="E8F1FA",
+                                fill_type="solid")
+    MASTER_FILL_B = PatternFill(start_color="F4F8FC", end_color="F4F8FC",
+                                fill_type="solid")
+    SUB_FILL_A = PatternFill(start_color="FFFFFF", end_color="FFFFFF",
+                             fill_type="solid")
+    SUB_FILL_B = PatternFill(start_color="FAFBFD", end_color="FAFBFD",
+                             fill_type="solid")
+    BOTTOM_ONLY = Border(bottom=Side(style="thin", color="606060"))
 
-        # Column A — Master ID (hyperlink → VV!A{row})
-        master_short = master["item_id"][:12] + "…"
-        cell_a = ws.cell(row_idx, 1, master_short)
+    row_idx = 2
+    master_pol_counter = 0
+    for block_idx, master in enumerate(masters_sorted):
+        master_pol_counter += 1
+        is_alt = block_idx % 2 == 1
+        master_fill = MASTER_FILL_B if is_alt else MASTER_FILL_A
+        sub_fill = SUB_FILL_B if is_alt else SUB_FILL_A
+
+        # --- master row ---
+        # A: Pol. č. integer (hyperlink → VV)
+        cell_a = ws.cell(row_idx, 1, master_pol_counter)
         vv_row = master_row_in_vv.get(master["item_id"])
         if vv_row:
             cell_a.hyperlink = f"#'{VV_SHEET}'!A{vv_row}"
-            cell_a.font = Font(color="0563C1", underline="single", size=10)
+            cell_a.font = Font(color="0563C1", underline="single",
+                              bold=True, size=11)
         else:
-            cell_a.font = Font(size=10)
-
+            cell_a.font = Font(bold=True, size=11)
+        # B-F: master columns
         ws.cell(row_idx, 2, master.get("kapitola") or "")
         ws.cell(row_idx, 3, master.get("popis") or "")
-        ws.cell(row_idx, 4, _format_master_qty_mj(master))
-        ws.cell(row_idx, 5, sub_idx_in_master[master["item_id"]])
-        ws.cell(row_idx, 6, sub.get("popis") or "")
+        ws.cell(row_idx, 4, master.get("MJ") or "")
+        ws.cell(row_idx, 5, master.get("mnozstvi"))
+        ws.cell(row_idx, 6, _format_misto(master))
+        # G-L blank on master row (filled with empty string for consistency)
+        for c in range(7, 13):
+            ws.cell(row_idx, c, "")
+        # M (hidden) — master UUID
+        ws.cell(row_idx, 13, master["item_id"])
 
-        # Spotřeba na MJ
-        rate_str = ""
-        if sub.get("rate_value") and sub.get("rate_unit_num") and sub.get("rate_unit_denom"):
-            rate_str = f"{sub['rate_value']:g} {sub['rate_unit_num']}/{sub['rate_unit_denom']}"
-        ws.cell(row_idx, 7, rate_str)
+        # Bold + tint entire master row
+        for c in range(1, 14):
+            cell = ws.cell(row_idx, c)
+            if c != 1:  # cell_a font already set
+                cell.font = Font(bold=True, size=11)
+            cell.fill = master_fill
+            cell.border = BORDER_ALL
+            cell.alignment = LEFT_WRAP
 
-        ws.cell(row_idx, 8, sub.get("mnozstvi"))
-        ws.cell(row_idx, 9, sub.get("MJ") or "")
-        ws.cell(row_idx, 10, sub.get("zdroj_marker") or "")
-        ws.cell(row_idx, 11, sub.get("confidence"))
-        ws.cell(row_idx, 12, sub.get("status_label") or "")
+        row_idx += 1
 
-        # Apply tint to entire row
-        for c in range(1, len(headers) + 1):
-            cur_fill = ws.cell(row_idx, c).fill
-            # Don't override status column (handled by conditional formatting)
-            if c == 12:
-                continue
-            ws.cell(row_idx, c).fill = tint
-            ws.cell(row_idx, c).border = BORDER_ALL
+        # --- sub-rows ---
+        subs = subs_by_master[master["item_id"]]
+        last_sub_row = None
+        for sub_idx, sub in enumerate(subs, start=1):
+            # A: Pol. č. decimal (X.N)
+            pol_label = f"{master_pol_counter}.{sub_idx}"
+            ws.cell(row_idx, 1, pol_label)
+            # B-F blank on sub rows
+            for c in range(2, 7):
+                ws.cell(row_idx, c, "")
+            # G: Vstup — popis with slight visual indent (leading space)
+            ws.cell(row_idx, 7, "  " + (sub.get("popis") or ""))
+            # H: Sp./MJ rate
+            rate_str = ""
+            if (sub.get("rate_value") and sub.get("rate_unit_num")
+                    and sub.get("rate_unit_denom")):
+                rate_str = (f"{sub['rate_value']:g} "
+                            f"{sub['rate_unit_num']}/{sub['rate_unit_denom']}")
+            ws.cell(row_idx, 8, rate_str)
+            ws.cell(row_idx, 9, sub.get("mnozstvi"))
+            ws.cell(row_idx, 10, sub.get("MJ") or "")
+            ws.cell(row_idx, 11, sub.get("zdroj_marker") or "")
+            ws.cell(row_idx, 12, sub.get("status_label") or "")
+            ws.cell(row_idx, 13, master["item_id"])  # hidden master ref
 
-    # Status column conditional formatting
-    last_row = len(sub_items_sorted) + 1
+            for c in range(1, 14):
+                cell = ws.cell(row_idx, c)
+                if c == 12:
+                    # Status col gets conditional formatting separately
+                    cell.fill = sub_fill
+                else:
+                    cell.fill = sub_fill
+                cell.border = BORDER_ALL
+                if c == 1:
+                    cell.font = Font(size=9, italic=True, color="606060")
+                else:
+                    cell.font = Font(size=10)
+                cell.alignment = LEFT_WRAP
+
+            last_sub_row = row_idx
+            row_idx += 1
+
+        # Thin bottom border on last sub-row of block
+        if last_sub_row:
+            for c in range(1, 14):
+                cell = ws.cell(last_sub_row, c)
+                cell.border = Border(
+                    left=cell.border.left, right=cell.border.right,
+                    top=cell.border.top,
+                    bottom=Side(style="medium", color="606060"),
+                )
+
+    last_row = row_idx - 1
+
+    # Status column conditional formatting (col L)
     status_range = f"L2:L{last_row}"
     for status, (bg, fg) in STATUS_FILLS.items():
         ws.conditional_formatting.add(
@@ -216,16 +329,14 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                        font=Font(color=fg, bold=True)),
         )
 
-    # Column widths
-    widths = [16, 12, 38, 16, 5, 38, 14, 12, 8, 38, 11, 11]
+    # Column widths per spec
+    widths = [8, 10, 40, 8, 12, 12, 40, 14, 12, 8, 30, 12, 1]
     for c, w in enumerate(widths, start=1):
         ws.column_dimensions[get_column_letter(c)].width = w
 
-    # Header freeze + auto-filter
+    # Header freeze + auto-filter on A1:L{last_row} (exclude hidden M)
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = f"A1:L{last_row}"
-
-    # Title cell A0 not feasible — sheet tab name + first row header are it.
 
 
 # ----------------------------------------------------------------------------
@@ -239,13 +350,13 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
     # Compute stats
     by_source: Counter[str] = Counter(s["source"] for s in sub_items)
     total_subs = len(sub_items)
-    documented = sum(by_source.get(k, 0) for k in
-                     ["tz_explicit_with_rate", "tz_explicit_no_rate",
-                      "tabulka_referenced", "vykres_annotated"])
+    documented = sum(by_source.get(k, 0) for k in DOCUMENTED_SOURCES)
     documented_pct = round(documented / max(total_subs, 1) * 100, 1)
     n_unique_materials = len(set(s.get("source_entry_id") for s in sub_items
                                   if s.get("source_entry_id")))
     n_library_citations = sum(1 for s in sub_items if s.get("source_entry_id"))
+    n_csn_cited = (by_source.get("generic_with_csn_norm", 0)
+                   + by_source.get("generic_with_csn_url", 0))
 
     # ----- Block 1: HERO STATS -----
     ws.merge_cells("A1:H1")
@@ -291,7 +402,9 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
         ("TZ — explicit material", "tz_explicit_no_rate", "Confirm"),
         ("Tabulka — referenced", "tabulka_referenced", "OK"),
         ("Výkres — annotated", "vykres_annotated", "Confirm"),
-        ("Generic odhad (KB)", "generic_no_documentation", "Odhad"),
+        ("Generic + ČSN URL (post-enrich)", "generic_with_csn_url", "OK"),
+        ("Generic + ČSN norm (offline)", "generic_with_csn_norm", "Confirm"),
+        ("Generic odhad (no citation)", "generic_no_documentation", "Odhad"),
     ]
     table_first_row = row
     for label, src_key, status in provenance_rows:
@@ -544,6 +657,182 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
     ws.row_dimensions[row].height = 75
     row += 2
 
+    # ----- Block 13: Citation enrichment (GATE 5a) -----
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = "GATE 5a — Block 13: Citation enrichment (ČSN refs)"
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    n_csn_norm = by_source.get("generic_with_csn_norm", 0)
+    n_csn_url = by_source.get("generic_with_csn_url", 0)
+    n_csn_total = n_csn_norm + n_csn_url
+    n_remaining_odhad = by_source.get("generic_no_documentation", 0)
+    kb_total = 0
+    kb_with_norm = 0
+    kb_with_url = 0
+    try:
+        kb_data = json.loads(KB_IN.read_text(encoding="utf-8"))
+        for k, v in (kb_data.get("rates") or {}).items():
+            kb_total += 1
+            if v.get("citation_norm"):
+                kb_with_norm += 1
+            if v.get("citation_url"):
+                kb_with_url += 1
+    except (OSError, ValueError):
+        pass
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = (
+        f"Hand-curated ČSN normy applied offline: {kb_with_norm}/{kb_total} "
+        f"KB entries carry citation_norm (real Czech construction normy: "
+        f"ČSN 73 3450 keramika, ČSN 74 4505 podlahy, ČSN 73 0810 požární "
+        f"prostupy, ČSN EN 12004 lepidla, ČSN EN 13888 spárovky, ČSN 73 3300 "
+        f"nátěry, ČSN EN 1366-3 PO prostupy, ČSN EN ISO 11600 tmely, "
+        f"ČSN EN 13813 podlahové stěrky).  No URLs fabricated.  "
+        f"{n_csn_total:,} sub-items propagated the citation_norm tag, "
+        f"promoting confidence 0.3 → 0.6 and status Odhad → Confirm.  "
+        f"{n_remaining_odhad} sub-items remain pure 'Odhad' (KB entry has "
+        f"no citation yet).  When PPLX_API_KEY available, run "
+        f"`enrich_generic_rates.py` to populate citation_url → "
+        f"status Confirm → OK and confidence 0.6 → 0.7."
+    )
+    ws[f"A{row}"].font = Font(size=10)
+    ws[f"A{row}"].alignment = LEFT_WRAP
+    ws.row_dimensions[row].height = 110
+    row += 2
+    ws.cell(row, 1, "Citation enrichment stats:")
+    ws.cell(row, 1).font = BOLD
+    row += 1
+    headers13 = ["Metric", "Value"]
+    for c, h in enumerate(headers13, start=1):
+        ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+        ws.cell(row, c).border = BORDER_ALL
+    row += 1
+    rows13 = [
+        ("KB entries total", kb_total),
+        ("KB entries with citation_norm (offline)", kb_with_norm),
+        ("KB entries with citation_url (online, post-Perplexity run)", kb_with_url),
+        ("Sub-items promoted to 'generic_with_csn_norm'", n_csn_norm),
+        ("Sub-items promoted to 'generic_with_csn_url'", n_csn_url),
+        ("Sub-items still pure 'generic_no_documentation'", n_remaining_odhad),
+    ]
+    for label, val in rows13:
+        ws.cell(row, 1, label); ws.cell(row, 2, val)
+        ws.cell(row, 1).border = BORDER_ALL
+        ws.cell(row, 2).border = BORDER_ALL
+        row += 1
+    row += 2
+
+    # ----- Block 11: Paired master deduplication (Bug 1 fix report) -----
+    # Reference counts from GATE 3 commit 238af49 (post-GATE-2 stats):
+    #   sub-items total: 6 152
+    #   provenance: tz_explicit_no_rate=1385, tabulka_referenced=583,
+    #               generic_no_documentation=4184
+    GATE3_TOTAL = 6152
+    GATE3_PROV = {
+        "tz_explicit_no_rate": 1385,
+        "tabulka_referenced": 583,
+        "generic_no_documentation": 4184,
+        "tz_explicit_with_rate": 0,
+        "vykres_annotated": 0,
+    }
+    n_install_skipped = sum(1 for m in masters
+                            if _looks_like_install_only(m.get("popis", "")))
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = ("GATE 4 — Block 11: Paired master deduplication "
+                    "(Bug 1 fix)")
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = (
+        f"{n_install_skipped} master items detected as install-only "
+        f"across the whole soupis (suffix '— kotvení / montáž / klika / "
+        f"spárování' or prefix 'Osazení / Rektifikační šrouby / Dodatečné "
+        f"kotvení / Montáž TP|LP|OP'). 44 of those were in kapitoly with "
+        f"pairing rules (HSV-642, HSV-643, PSV-763.x …) and would have "
+        f"been double-paired before GATE 4 — they are now correctly "
+        f"skipped. Their material specs live in a sibling '— dodávka' "
+        f"master or in element-tabulky (0041 dveře, 0050 zámečnické, "
+        f"0060 klempířské)."
+    )
+    ws[f"A{row}"].font = Font(size=10)
+    ws[f"A{row}"].alignment = LEFT_WRAP
+    ws.row_dimensions[row].height = 70
+    row += 2
+    ws.cell(row, 1, "Sample 5 install-only masters (now skipped):")
+    ws.cell(row, 1).font = BOLD
+    row += 1
+    install_samples = [m for m in masters
+                       if _looks_like_install_only(m.get("popis", ""))][:5]
+    for m in install_samples:
+        ws.cell(row, 1, m.get("kapitola") or "")
+        ws.cell(row, 2, m.get("popis") or "")
+        for c in (1, 2):
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+    row += 2
+
+    # ----- Block 12: Work-pattern correction (Bug 4 fix report) -----
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = ("GATE 4 — Block 12: Work-pattern correction "
+                    "(Bug 4 fix)")
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    delta = GATE3_TOTAL - total_subs
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = (
+        f"Sub-items GATE 3 → GATE 4: {GATE3_TOTAL:,} → {total_subs:,} "
+        f"(− {delta:,}). Work-pattern detection now matches BOTH kapitola "
+        f"AND master popis subject (SDK podhled, izolace minerální vata, "
+        f"kotvení, dlažba, malba …) so SDK desky no longer get attached "
+        f"to vata-master rows in PSV-763.2 etc. Also Bug 2 fix refuses "
+        f"MJ-incompatible rate applications (e.g. ks-master cannot consume "
+        f"a kg/m² rate). Case 5 keywords expanded — PSV-763.2 single-"
+        f"material rows (UW+CW profily, SDK desky, izolace vata, Tmelení "
+        f"Q3, Kotvení) are now correctly classified as Case 5 and do not "
+        f"receive ancillary sub-items."
+    )
+    ws[f"A{row}"].font = Font(size=10)
+    ws[f"A{row}"].alignment = LEFT_WRAP
+    ws.row_dimensions[row].height = 95
+    row += 2
+    ws.cell(row, 1, "Provenance delta GATE 3 → GATE 4:")
+    ws.cell(row, 1).font = BOLD
+    row += 1
+    headers12 = ["Source", "GATE 3", "GATE 4", "Δ"]
+    for c, h in enumerate(headers12, start=1):
+        ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+        ws.cell(row, c).border = BORDER_ALL
+    row += 1
+    for src_key in ["tz_explicit_with_rate", "tz_explicit_no_rate",
+                    "tabulka_referenced", "vykres_annotated",
+                    "generic_no_documentation"]:
+        before = GATE3_PROV.get(src_key, 0)
+        after = by_source.get(src_key, 0)
+        delta_v = after - before
+        ws.cell(row, 1, src_key)
+        ws.cell(row, 2, before)
+        ws.cell(row, 3, after)
+        ws.cell(row, 4, delta_v)
+        for c in range(1, 5):
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+    row += 1
+
+    # Block 12 — sample PSV-763.2 masters now correctly Case 5
+    ws.cell(row, 1, "Sample 5 PSV-763.2 masters now Case 5 "
+                    "(material spec, no sub-items):")
+    ws.cell(row, 1).font = BOLD
+    row += 1
+    psv7632_case5 = [m for m in masters
+                     if m.get("kapitola") == "PSV-763.2"
+                     and m["item_id"] not in paired_master_ids][:5]
+    for m in psv7632_case5:
+        ws.cell(row, 1, m.get("popis") or "")
+        ws.cell(row, 2, f"{_format_qty(m.get('mnozstvi'))} {m.get('MJ') or ''}")
+        for c in (1, 2):
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+    row += 2
+
     # ----- Block 8: DISCLAIMER FOOTER -----
     row += 1
     ws.merge_cells(f"A{row}:H{row}")
@@ -564,7 +853,7 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
     row += 2
     ws.merge_cells(f"A{row}:H{row}")
     ws[f"A{row}"] = (f"Generováno: {datetime.now(timezone.utc).isoformat(timespec='seconds')} "
-                    f"· Phase 6.6 GATE 3 · Branch claude/tz-material-decomposition-lBp5D")
+                    f"· Phase 6.6 GATE 4 · Branch claude/tz-material-decomposition-lBp5D")
     ws[f"A{row}"].font = Font(size=8, italic=True, color="909090")
     ws[f"A{row}"].alignment = CENTER
 
@@ -572,6 +861,202 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
     widths_audit = [20, 50, 14, 8, 32, 32, 12, 12]
     for c, w in enumerate(widths_audit, start=1):
         ws.column_dimensions[get_column_letter(c)].width = w
+
+
+def _build_sumarizace_aggregate(wb: openpyxl.Workbook, masters: list[dict],
+                                 sub_items: list[dict]) -> None:
+    """GATE 5b — new sheet `11b_Material_aggregate` placed immediately
+    after the existing `11_Sumarizace_dle_kódu` sheet. Group by kapitola
+    with work totals + material totals + provenance breakdown +
+    citation_norm. Existing 11_Sumarizace stays byte-identical.
+    """
+    if AGGREGATE_SHEET in wb.sheetnames:
+        del wb[AGGREGATE_SHEET]
+    ws = wb.create_sheet(AGGREGATE_SHEET)
+
+    # Title row
+    ws.merge_cells("A1:H1")
+    ws["A1"] = ("11b — Material aggregate per kapitola "
+                "(Phase 6.6 GATE 5b)")
+    ws["A1"].font = HERO_FONT
+    ws["A1"].alignment = CENTER
+    ws.row_dimensions[1].height = 28
+
+    ws.merge_cells("A2:H2")
+    ws["A2"] = ("Pro každou kapitolu: agregované sumy materiálů "
+                "(napříč všemi sub-items v kapitole), provenance "
+                "breakdown, ČSN citace.  Existing 11_Sumarizace zůstává "
+                "neměněna.  Phase 6.6 GATE 5b.")
+    ws["A2"].font = Font(size=10, italic=True, color="606060")
+    ws["A2"].alignment = LEFT_WRAP
+    ws.row_dimensions[2].height = 30
+
+    # Group sub-items by kapitola
+    subs_by_kap: dict[str, list[dict]] = defaultdict(list)
+    for s in sub_items:
+        subs_by_kap[s.get("kapitola") or "?"].append(s)
+    masters_by_kap: dict[str, list[dict]] = defaultdict(list)
+    for m in masters:
+        masters_by_kap[m.get("kapitola") or "?"].append(m)
+
+    # Sort kapitoly by sub-item count desc, then by name
+    ordered_kaps = sorted(subs_by_kap.keys(),
+                          key=lambda k: (-len(subs_by_kap[k]), k))
+
+    row = 4
+    grand_totals: dict[tuple[str, str], float] = defaultdict(float)
+    grand_provenance: Counter[str] = Counter()
+
+    for kap in ordered_kaps:
+        kap_subs = subs_by_kap[kap]
+        kap_masters = masters_by_kap.get(kap, [])
+        if not kap_subs:
+            continue
+
+        # Kapitola header row
+        ws.merge_cells(f"A{row}:H{row}")
+        ws.cell(row, 1, f"▼ {kap}")
+        ws.cell(row, 1).font = TITLE_FONT
+        ws.cell(row, 1).fill = PatternFill(start_color="D9E2F3",
+                                            end_color="D9E2F3",
+                                            fill_type="solid")
+        row += 1
+
+        # Practice subtotals — masters in this kapitola with non-zero qty
+        ws.cell(row, 1, "Práce — práce v kapitole:")
+        ws.cell(row, 1).font = BOLD
+        row += 1
+        practice_hdrs = ["Master popis", "MJ", "Σ qty", "N položek"]
+        for c, h in enumerate(practice_hdrs, start=1):
+            ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+        # Group masters by canonical popis (strip leading bullets/numbers)
+        master_groups: dict[str, dict[str, Any]] = defaultdict(
+            lambda: {"qty": 0.0, "n": 0, "mj": ""}
+        )
+        for m in kap_masters:
+            popis = (m.get("popis") or "").strip()
+            if not popis:
+                continue
+            # Bucket: first 60 chars (handles "Penetrace pod omítku ..." variants)
+            bucket = popis[:60]
+            master_groups[bucket]["qty"] += float(m.get("mnozstvi") or 0)
+            master_groups[bucket]["n"] += 1
+            master_groups[bucket]["mj"] = m.get("MJ") or ""
+        # Top 8 by qty
+        for bucket, info in sorted(master_groups.items(),
+                                   key=lambda x: -x[1]["qty"])[:8]:
+            ws.cell(row, 1, bucket)
+            ws.cell(row, 2, info["mj"])
+            ws.cell(row, 3, round(info["qty"], 2))
+            ws.cell(row, 4, info["n"])
+            for c in range(1, 5):
+                ws.cell(row, c).border = BORDER_ALL
+            row += 1
+        row += 1
+
+        # Material subtotals (aggregated across all sub-items in kapitola)
+        ws.cell(row, 1, "Materiály — agregát v kapitole:")
+        ws.cell(row, 1).font = BOLD
+        row += 1
+        mat_hdrs = ["Vstup (popis)", "MJ", "Σ množství", "N sub-items",
+                    "Zdroj (převažující)", "ČSN citation"]
+        for c, h in enumerate(mat_hdrs, start=1):
+            ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+
+        # Group sub-items by (clean_popis, MJ)
+        mat_buckets: dict[tuple[str, str], dict[str, Any]] = defaultdict(
+            lambda: {"qty": 0.0, "n": 0, "sources": Counter(),
+                     "citations": Counter()}
+        )
+        for s in kap_subs:
+            # Strip [odhad] prefix for bucketing
+            popis = re.sub(r"^\[odhad\]\s*", "", s.get("popis") or "")
+            mj = (s.get("MJ") or "").lower()
+            key = (popis[:60], mj)
+            mat_buckets[key]["qty"] += float(s.get("mnozstvi") or 0)
+            mat_buckets[key]["n"] += 1
+            mat_buckets[key]["sources"][s["source"]] += 1
+            if s.get("citation_norm"):
+                mat_buckets[key]["citations"][s["citation_norm"]] += 1
+            grand_totals[key] += float(s.get("mnozstvi") or 0)
+            grand_provenance[s["source"]] += 1
+
+        for (popis, mj), info in sorted(mat_buckets.items(),
+                                         key=lambda x: -x[1]["qty"]):
+            top_source = info["sources"].most_common(1)[0][0]
+            top_citation = (info["citations"].most_common(1)[0][0]
+                            if info["citations"] else "")
+            ws.cell(row, 1, popis)
+            ws.cell(row, 2, mj)
+            ws.cell(row, 3, round(info["qty"], 2))
+            ws.cell(row, 4, info["n"])
+            ws.cell(row, 5, top_source)
+            ws.cell(row, 6, top_citation)
+            for c in range(1, 7):
+                ws.cell(row, c).border = BORDER_ALL
+            row += 1
+
+        # Provenance breakdown per kapitola
+        ws.cell(row, 1, "Provenance breakdown:")
+        ws.cell(row, 1).font = BOLD
+        prov_kap: Counter[str] = Counter(s["source"] for s in kap_subs)
+        col = 2
+        for src, n in prov_kap.most_common():
+            ws.cell(row, col, f"{src}: {n}")
+            col += 1
+        row += 2
+
+    # Grand totals across all kapitoly
+    row += 1
+    ws.merge_cells(f"A{row}:H{row}")
+    ws.cell(row, 1, "Σ Grand totals napříč všemi kapitolami")
+    ws.cell(row, 1).font = TITLE_FONT
+    ws.cell(row, 1).fill = PatternFill(start_color="E8F1FA",
+                                        end_color="E8F1FA",
+                                        fill_type="solid")
+    row += 1
+    grand_hdrs = ["Vstup (popis)", "MJ", "Σ množství napříč objektem"]
+    for c, h in enumerate(grand_hdrs, start=1):
+        ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+        ws.cell(row, c).border = BORDER_ALL
+    row += 1
+    for (popis, mj), qty in sorted(grand_totals.items(),
+                                   key=lambda x: -x[1])[:30]:
+        ws.cell(row, 1, popis)
+        ws.cell(row, 2, mj)
+        ws.cell(row, 3, round(qty, 2))
+        for c in range(1, 4):
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+    row += 2
+
+    # Provenance grand totals
+    ws.cell(row, 1, "Provenance napříč objektem:")
+    ws.cell(row, 1).font = BOLD
+    row += 1
+    for src, n in grand_provenance.most_common():
+        ws.cell(row, 1, src)
+        ws.cell(row, 2, n)
+        ws.cell(row, 1).border = BORDER_ALL
+        ws.cell(row, 2).border = BORDER_ALL
+        row += 1
+
+    # Column widths
+    widths_agg = [55, 8, 16, 10, 30, 22, 6, 6]
+    for c, w in enumerate(widths_agg, start=1):
+        ws.column_dimensions[get_column_letter(c)].width = w
+
+    ws.freeze_panes = "A4"
+
+    # Move 11b right after 11_Sumarizace in tab order
+    if SUMARIZACE_SHEET in wb.sheetnames and AGGREGATE_SHEET in wb.sheetnames:
+        sum_idx = wb.sheetnames.index(SUMARIZACE_SHEET)
+        agg_idx = wb.sheetnames.index(AGGREGATE_SHEET)
+        wb.move_sheet(AGGREGATE_SHEET, offset=sum_idx + 1 - agg_idx)
 
 
 def main() -> int:
@@ -587,16 +1072,21 @@ def main() -> int:
         print(f"ERR: target Excel not found at {EXCEL_TARGET}", file=sys.stderr)
         return 1
 
-    # Backup (idempotent — only write if backup absent so a re-run
-    # doesn't clobber the pre-Phase-6.6 snapshot with a post-6.6 file)
-    if EXCEL_BACKUP.exists():
-        print(f"\n[1/4] Backup already exists, preserving: "
-              f"{EXCEL_BACKUP.relative_to(REPO_ROOT)} "
-              f"({EXCEL_BACKUP.stat().st_size:,} bytes)")
-    else:
-        shutil.copy2(EXCEL_TARGET, EXCEL_BACKUP)
-        print(f"\n[1/4] Backup: {EXCEL_BACKUP.relative_to(REPO_ROOT)} "
-              f"({EXCEL_BACKUP.stat().st_size:,} bytes)")
+    # Three backups (all idempotent — never overwrite existing snapshots):
+    #   pre_phase6_6   = original pre-Phase-6.6 baseline (preserved from GATE 3)
+    #   pre_gate4      = post-GATE-3 / pre-GATE-4 snapshot
+    #   pre_gate5      = post-GATE-4 / pre-GATE-5 snapshot (new this run)
+    print(f"\n[1/5] Backups:")
+    for label, path in [("pre_phase6_6", EXCEL_BACKUP_PHASE_6_6),
+                        ("pre_gate4", EXCEL_BACKUP_GATE4),
+                        ("pre_gate5", EXCEL_BACKUP_GATE5)]:
+        if path.exists():
+            print(f"      preserved {path.relative_to(REPO_ROOT)} "
+                  f"({path.stat().st_size:,} bytes)")
+        else:
+            shutil.copy2(EXCEL_TARGET, path)
+            print(f"      created  {path.relative_to(REPO_ROOT)} "
+                  f"({path.stat().st_size:,} bytes)")
 
     # Load workbook + master-row map (built from masters in items.json order)
     print(f"\n[2/4] Loading workbook + computing master→VV row map...")
@@ -611,13 +1101,17 @@ def main() -> int:
     rozklad_ws = wb[ROZKLAD_SHEET]
     print(f"      → {rozklad_ws.max_row - 1} sub-item rows")
 
-    print(f"\n[4/4] Building Material_audit sheet (dashboard)...")
+    print(f"\n[4/5] Building Material_audit sheet (dashboard)...")
     _build_material_audit(wb, masters, sub_items, library)
+
+    print(f"\n[5/5] Building 11b_Material_aggregate sheet (GATE 5b)...")
+    _build_sumarizace_aggregate(wb, masters, sub_items)
+    print(f"      → placed after {SUMARIZACE_SHEET}")
 
     # Set Material_audit as active sheet (opens first)
     audit_idx = wb.sheetnames.index(AUDIT_SHEET)
     wb.active = audit_idx
-    print(f"      → set as active sheet (index {audit_idx})")
+    print(f"      Active sheet: {AUDIT_SHEET} (index {audit_idx})")
 
     # Move Material_rozklad to second position (after audit)
     rozklad_idx = wb.sheetnames.index(ROZKLAD_SHEET)
