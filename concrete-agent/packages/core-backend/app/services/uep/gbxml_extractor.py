@@ -153,9 +153,11 @@ class GbxmlExtractor(BaseExtractor):
                     raw_data["namespace"] = ns
                     if ns:
                         seen_gbxml_namespace = any(hint in ns for hint in _GBXML_NS_HINTS)
-                    elif local.lower() == "gbxml":
-                        # Namespace-less variants exist in unit-test fixtures.
-                        seen_gbxml_namespace = True
+                    # Namespace-less <gbXML> roots still parse (the local-name
+                    # routing below works regardless), but we leave
+                    # `seen_gbxml_namespace` False so the decode_warning fires
+                    # downstream — a missing namespace is a real schema
+                    # smell worth surfacing to the operator.
                     continue
                 if event != "end":
                     continue
