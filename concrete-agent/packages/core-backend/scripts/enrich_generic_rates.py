@@ -23,6 +23,24 @@ the entry keeps ``citation_url: null`` — Phase 6.6 pairing then keeps
 the sub-item at confidence 0.6 with status "Confirm" rather than
 inventing a link.
 
+KNOWN ISSUE (2026-05-20): a first end-to-end run with a real
+PPLX_API_KEY returned 0/12 URLs.  Auth + queries succeed but the
+``citations`` array comes back empty.  Likely causes (need verification):
+
+  1. The shared ``PerplexityClient`` falls through to a method that
+     does not pass ``return_citations=True`` on the request body.
+  2. The selected model is a base ``sonar`` variant rather than a
+     ``sonar-online`` / ``sonar-pro`` model — only the online variants
+     attach web-search citations.
+  3. The response parser only inspects ``codes[0].url`` and ignores
+     a top-level ``citations`` array on the raw response payload.
+
+Fix path: instrument the PerplexityClient call, log the raw response,
+verify which method is invoked (``search_norms`` vs ``generic_query``
+vs ``search_kros_code``), then either switch the method or wrap a
+direct ``api/v1/chat/completions`` call with ``model='sonar-pro'`` +
+``return_citations=True`` inside this script.
+
 Items file and pairing output stay untouched — to surface enriched
 URLs in the Excel deliverable, re-run::
 
@@ -128,13 +146,29 @@ async def _enrich(kb_path: Path, dry_run: bool) -> int:
     print(f"\n{successes}/{len(targets)} entries got a citation URL.")
     if dry_run:
         print("--dry-run set; KB not written.")
-    else:
-        kb["version"] = "0.4"
-        kb_path.write_text(json.dumps(kb, ensure_ascii=False, indent=2),
-                           encoding="utf-8")
-        print(f"Updated {kb_path.relative_to(REPO_ROOT)}.")
-        print("Re-run phase_6_6_pair_materials.py + phase_6_6_excel.py to "
-              "surface URLs in deliverable.")
+        return 0
+    if successes == 0:
+        # Nothing to persist — skip version bump + write so the KB stays
+        # byte-identical to the committed offline-curated version.
+        print("No URLs returned by Perplexity — KB not modified.")
+        print("TODO: investigate why citation URLs come back empty.")
+        print("      Likely fixes: pass return_citations=True / use a")
+        print("      sonar-online model / extract citations[] from raw")
+        print("      response. See enrich_generic_rates.py docstring.")
+        return 1
+    kb["version"] = "0.4"
+    # Resolve to absolute so relative_to() works regardless of how the
+    # caller passed --kb-path (relative or absolute).
+    kb_path_abs = kb_path.resolve()
+    kb_path_abs.write_text(json.dumps(kb, ensure_ascii=False, indent=2),
+                            encoding="utf-8")
+    try:
+        rel = kb_path_abs.relative_to(REPO_ROOT)
+    except ValueError:
+        rel = kb_path_abs
+    print(f"Updated {rel}.")
+    print("Re-run phase_6_6_pair_materials.py + phase_6_6_excel.py to "
+          "surface URLs in deliverable.")
     return 0
 
 
