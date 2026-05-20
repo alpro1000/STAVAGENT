@@ -29,6 +29,104 @@ Skenuje celý repo a najde všechny endpointy/funkce volané při výběru eleme
 5. **Test files** — všechny test files související s calculator (unit + integration + golden)
 6. **Golden tests v `test-data/tz/`** — inventář všech existujících golden testů, mapping per element_type, identifikace těch které pokrývají rimsa (SO-202, SO-203, SO-207, SO-250, VP4-FORESTINA)
 
+### Phase A6 — Field visibility audit per element=rimsa (NEW)
+
+**Cíl:** Identifikovat každé pole které se zobrazuje v Monolit-Planner UI pro element=rimsa a klasifikovat zda je RELEVANTNÍ pro tento element.
+
+**Pre-context:** PR #1145 (`docs/audits/calculator_field_audit/2026-05-14_full_ui_walkthrough.md`) už identifikoval generic problémy:
+- Orphaned UI fields (`use_retarder`, `concrete_consistency`)
+- Duplicate Výška fields (D7 vs E1)
+- Smart defaults dead code (helpers.ts not wired)
+- Geometry inputs flat (no hierarchy)
+- Tabulka porovnání bednění obsahuje stropní systémy pro říms ⚠️
+
+**Co Phase A6 dělá specificky pro rimsa:**
+
+1. Otevřít Monolit-Planner (`kalkulator.stavagent.cz/planner`), vybrat element_type=rimsa
+2. Vyfotit screenshot celého formuláře
+3. Pro každé viditelné pole klasifikovat:
+
+| Klasifikace | Co znamená | Akce |
+|---|---|---|
+| ✅ **Relevant** | Pole má smysl pro říms | Zachovat |
+| ⚠️ **Hidden but relevant** | Mělo by být viditelné, je skryté za toggle | Odhalit |
+| ❌ **Irrelevant** | Pro říms nedává smysl (např. `pile_diameter_mm` pro říms) | Skrýt pro element=rimsa |
+| 🔄 **Duplicate** | Stejná hodnota se zadává 2× | Sjednotit |
+| 💀 **Dead code** | Pole exists v UI ale není wired do engine | Odstranit nebo wire |
+
+4. Output: tabulka per UI sekce (geometrie / materiály / bednění / výztuž / harmonogram / output) s klasifikací každého pole
+
+5. Zvláštní check: **Tabulka porovnání bednění** musí být filtrovaná podle element=rimsa:
+   - SHOW: T-bednění, Římsový vozík T, Římsový vozík TU, Místní traditionální
+   - HIDE: Frami Xlife, Framax Xlife, MAXIMO, VARIO GT 24, Dokaflex, SKYDECK, Top 50, Staxo 100 (žádný z těchto není pro říms)
+
+**Acceptance test pro Phase A6:**
+- UI pro element=rimsa zobrazuje POUZE relevantní fieldy
+- Tabulka porovnání bednění obsahuje POUZE bednění vhodné pro říms
+- Žádné `pile_*` fieldy nejsou viditelné
+- Žádné `nk_subtype` fieldy nejsou viditelné (to je pro mostovkova_deska)
+- Žádné `prestress_*` fieldy nejsou viditelné
+
+### Phase A7 — Knowledge base inventory (NEW)
+
+**Cíl:** Identifikovat každý zdroj znalostí který se aktuálně používá při výpočtu pro element=rimsa a každou hodnotu která je hardcoded místo aby byla v `B*` souborech.
+
+**Reálná runtime cesta** (potvrzeno z STAVAGENT_Chat_Handoff_2026-05-11.md):
+```
+concrete-agent/packages/core-backend/app/knowledge_base/
+```
+
+**Inventory steps:**
+
+1. **Skenuje existující obsah `B*` složek:**
+   - List všech `.yaml` v `B4_production_benchmarks/default_ceilings/` — které element_types mají coverage?
+   - List všech `.yaml` v `B5_tech_cards/` — formwork systems coverage
+   - List všech `.yaml` v `B7_regulations/` — které ČSN/TKP/DIN normy jsou extrahované
+   - List všech `.yaml` v `B9_validation/conflicts/` — known conflicts
+
+2. **Per element=rimsa identifikuje gaps:**
+   - `B4_production_benchmarks/default_ceilings/rimsa.yaml` — exists nebo missing?
+   - `B5_tech_cards/formwork_vendor/doka_2024/T_bedneni.yaml` — exists?
+   - `B5_tech_cards/rimsa/extracted.yaml` — exists nebo missing?
+   - `B7_regulations/tkp_18_rsd_2024/extracted.yaml` — má říms-relevant data?
+
+3. **Skenuje engine kód pro hardcoded matrices:**
+   - Find `REBAR_RATES_MATRIX` declarations v calculator engines
+   - Find `CURING_DAYS_TABLE` / `T_WINDOW_HOURS` / `EXPOSURE_MIN_CURING_DAYS`
+   - Find hardcoded DOKA/PERI productivity numbers
+   - Find hardcoded element defaults (rimsa ratio 130, range 100-160, etc.)
+   - Find hardcoded TKP/ČSN/DIN constants in kódu
+
+4. **Output v markdown reportu:**
+
+```markdown
+## KB Coverage Report
+
+### Existing files relevant to rimsa
+- [ ] B4_production_benchmarks/default_ceilings/operne_zdi.yaml  ← reference pattern
+- [x] B4_production_benchmarks/default_ceilings/mostovkova_deska.yaml
+- [ ] B4_production_benchmarks/default_ceilings/rimsa.yaml         ← MISSING, create
+- [ ] B5_tech_cards/formwork_vendor/doka_2024/T_bedneni.yaml       ← MISSING, create
+
+### Hardcoded matrices found in engine code
+- File: <path>:<line> — Constant: REBAR_RATES_MATRIX[rimsa]=130
+  - Bug ticket: P1, migrate to B4_production_benchmarks/default_ceilings/rimsa.yaml
+- File: <path>:<line> — Constant: CURING_DAYS_TABLE[class=4][temp=15]=9
+  - Bug ticket: P1, migrate to B7_regulations/tkp_18_rsd_2024/extracted.yaml
+- ... (additional findings)
+
+### Recommendation
+Create rimsa.yaml + DOKA T-bednění tech card before refactor.
+Add bug tickets for each hardcoded matrix (do NOT migrate in this task — separate effort).
+```
+
+**Acceptance test pro Phase A7:**
+- KB Coverage Report wykazuje stav VŠECH knowledge sources relevant for rimsa
+- `rimsa.yaml` v `B4_production_benchmarks/default_ceilings/` je vytvořen s defaults (rebar ratio 140, range 100-180, max cycle 6m, curing class 4, exposures XF4/XD3, formwork T-bednění recommended)
+- DOKA T-bednění tech card vytvořena v `B5_tech_cards/formwork_vendor/doka_2024/T_bedneni.yaml` s productivity (setup 1.0, relocate 0.5, strip 0.4 h/bm)
+- Bug tickety vytvořeny v BACKLOG.md pro hardcoded matrices (out-of-scope migration)
+- Calculator response obsahuje source attribution pro každou použitou hodnotu
+
 ### Phase B — Architecture analysis
 
 Po Phase A identifikuje:
@@ -235,6 +333,99 @@ rimsa: ratio_kg_m3 = 140 (range 100-180)
 ```
 
 Source: SO 206 DOKA nabídka 540045359 + tabulka výztuže (138 kg/m³ skutečná), + REBAR_NORMS_COMPREHENSIVE_AUDIT.md.
+
+### 9. Resource caps validation (P1 — NEW)
+
+**Princip:** Calculator nesmí akceptovat nesmyslné zdrojové vstupy. Globální resource caps fungují jako sanity guard.**Caps to validate (warn or error):**
+
+| Resource | Soft warn | Hard error | Důvod |
+|---|---|---|---|
+| crew_size_formwork | > 8 | > 20 | Bednění crew typ. 4, max 8 paralelně |
+| crew_size_rebar | > 6 | > 15 | Vazači typ. 3, max 6 paralelně per úsek |
+| crew_size_concrete | > 12 | > 30 | Betonáž crew typ. 5, max 12 (ukládka+vibrace+finiš) |
+| num_formwork_sets (rimsa) | > 4 | > 10 | Pro říms max 4 sety bednění reálné |
+| num_pumps | > 3 | > 5 | Pro most: typ. 1-2 pumpy, max 3 paralelně |
+| shift_length_h | > 10 | > 12 | Zákoník práce §83 |
+| working_days_per_week | > 6 | > 7 | §92 nepřetržitý odpočinek v týdnu |
+| total_workers_on_site | > 30 (rimsa) | > 100 (most/rimsa) | Site capacity, koordinace |
+
+**Behavior:**
+- Soft warn → response obsahuje warning array, výpočet proběhne
+- Hard error → return 400 s odůvodněním a referencí na normu
+
+**UI hint:** Pokud uživatel zadá crew_size=50, UI ukáže červený warning "50 vazačů na 1 říms je nereálné. Doporučená hodnota: 3-6. Pokračovat?"
+
+**MCP behavior:** Stejný validation v `calculate_concrete_works`, warnings/errors v response.
+
+**Source:** Empirické limity z N=5 production pilots (Žihle, Libuše, hk212, SO 206, RD Jáchymov).
+
+### 10. Knowledge base integration check (P1 — sanity, NEW)
+
+**Cíl:** Audit zda calculator pro element=rimsa skutečně volá knowledge base layers (L1-L4), nebo zda hardcoduje hodnoty.
+
+**Reálná runtime cesta v repo:**
+```
+concrete-agent/packages/core-backend/app/knowledge_base/
+├── B0_sources/
+├── B1_otksp/
+├── B2_csn_en_206/
+├── B3_current_prices/
+├── B4_production_benchmarks/      ← name v reálu (ne "B4_productivity")
+│   └── default_ceilings/
+│       ├── operne_zdi.yaml         ✓ exists
+│       ├── mostovkova_deska.yaml   ✓ exists
+│       └── rimsa.yaml              ❓ MUST CREATE
+├── B5_tech_cards/
+│   ├── ZS_templates/               ← active (Zihle sprint)
+│   └── formwork_vendor/            ← MUST CREATE for DOKA T-bednění
+├── B6_research_papers/
+├── B7_regulations/
+├── B8_company_specific/
+└── B9_validation/
+```
+
+**Known P0 bug per `KNOWLEDGE_PLACEMENT_GUIDE.md` (z STAVAGENT_Chat_Handoff_2026-05-11.md):**
+
+Engine kód obsahuje hardcoded matrices které **by měly být v `B*` souborech**:
+
+| Hardcoded v engine | Měla by být v KB | Pro říms znamená |
+|---|---|---|
+| `REBAR_RATES_MATRIX` | `B4_production_benchmarks/rebar_rates/methvin_calibrated.yaml` | říms D10/D12 ratio 22 h/t (calibrated) |
+| `T_WINDOW_HOURS` | `B5_tech_cards/formwork_vendor/doka_2024/` | T-bednění setup/relocate/strip |
+| `CURING_DAYS_TABLE` | `B7_regulations/tkp_18_rsd_2024/extracted.yaml` | TKP18 §7.8.3 class 4 = 9 dnů |
+| `EXPOSURE_MIN_CURING_DAYS` | `B7_regulations/csn_en_13670_provadeni/` | XF4 floor 7 dnů |
+| DIN 18218 k-factors | `B7_regulations/din_18218_2010_frischbetondruck/` | lateral pressure |
+| Element defaults (rimsa) | `B4_production_benchmarks/default_ceilings/rimsa.yaml` | ratio 130→140, range 100-180, cycle max 6m |
+
+**Audit per knowledge layer:**
+
+| Layer | Co kontrolujeme | Expected behavior |
+|---|---|---|
+| L1 Element YAML | Calculator čte `B5_tech_cards/rimsa/extracted.yaml`? | YES — pre-flight load při výběru element_type=rimsa |
+| L2 Norms B7 | TKP18 maturity tables, ČSN EN 13670 strip strengths | YES — lookup z `B7_regulations/`, ne hardcoded v engine |
+| L3 Research B6 | fib Bulletin 48 (formwork), Nečas mosty II | Optional — pro AI Advisor hints |
+| L4 Productivity B4 | methvin.co rebar rates | YES — calibrated source z `B4_production_benchmarks/` |
+| L5 RAG | Semantic search v učebnicích | NOT IN SCOPE (separátní task) |
+| L6 Validation B9 | Conflict rules | YES — cross-check warnings |
+
+**Acceptance:**
+- Calculator response obsahuje `sources[]` array s referencemi (např. `["TKP 18 §7.8.3", "methvin.co D12 rebar", "DOKA katalog 2024 T-bednění"]`)
+- Pokud reference chybí → hardcoded hodnota → bug ticket
+- Audit trail per element vidí všechny knowledge sources použité
+- **Soubor `B4_production_benchmarks/default_ceilings/rimsa.yaml` musí být vytvořen** s defaults pro říms (ratio, range, cycle limits, exposures, curing class)
+
+**Migration scope (P1, ne P0):**
+Tento task **NE** dělá full migraci všech hardcoded matrices do KB. To je separátní big effort. **Tento task:**
+- Vytvoří `rimsa.yaml` v `B4_production_benchmarks/default_ceilings/`
+- Identifikuje a zaloguje VŠECHNY hardcoded references použité při výpočtu říms
+- Zatím READ z hardcoded path zachová, ale PŘIDÁ sekundární lookup ze YAML
+- Vytvoří bug tickety pro každou hardcoded reference (Phase A7 output)
+
+**Out of scope (deferred to separate task):**
+- Full migration hardcoded matrices → KB YAML files (P1 separátní task)
+- L5 RAG layer (pgvector + embeddings + RAG endpoint) → `TASK_Knowledge_L5_RAG_v1.md`
+- Učebnice mostů ingestion z GCS bucket → součást L5 RAG task
+- Multi-persona AI Advisor (Rozpočtář/Stavbyvedoucí/Projektant) → `TASK_AI_Advisor_Triangulation_v1.md`
 
 ---
 
@@ -493,6 +684,26 @@ shared_logic_assessment:
 - Pricing of dilatation seals, anchors, isolation — those stay as separate budget items (out of calculator scope)
 - I18n / multilanguage UI
 - Geometry calculator module (separate task)
+- **Agent composability layer** (atomic_calculate as primitive used by UI + MCP) → `TASK_MCP_Composable_Agent_Layer_v1.md`
+- **Sborné position decomposition** for agent workflow → covered by `TASK_MCP_Composable_Agent_Layer_v1.md`
+
+---
+
+## UI vs MCP behavior boundary (clarification)
+
+This task focuses on **single calc primitive** (atomic_calculate) used by both UI and MCP. The differences in UX behavior are explicitly NOT in scope:
+
+| Aspect | This task delivers | Separate task delivers |
+|---|---|---|
+| Field visibility (UI) | ✅ Phase A6 filter pro element=rimsa | — |
+| Resource caps validation | ✅ Section 9 (used by both UI + MCP) | — |
+| Knowledge base integration | ✅ Section 10 (KB lookup, ne hardcoded) | — |
+| MCP composable tools (calculate_partial, aggregate_partials) | ❌ Not here | `TASK_MCP_Composable_Agent_Layer_v1.md` |
+| Sborné position decomposition | ❌ Not here | `TASK_MCP_Composable_Agent_Layer_v1.md` |
+| Agent session memory | ❌ Not here | `TASK_MCP_Composable_Agent_Layer_v1.md` |
+| Commit routing (Planner vs Registry TOV) | ❌ Not here | `TASK_MCP_Composable_Agent_Layer_v1.md` |
+
+**Rationale:** Říms task delivers a clean atomic primitive. The Composable Agent Layer task uses that primitive to enable agent workflows. Without říms task first, agent layer would inherit broken scheduler.
 
 ---
 
@@ -510,9 +721,11 @@ shared_logic_assessment:
 |---|---|---|
 | Day 1 AM | **Phase A: Endpoint discovery + Phase B: Architecture analysis** | Markdown report + user confirmation |
 | Day 1 AM | **Phase A2: Golden test inventory** — number existujících testů v `test-data/tz/`, mapping per element_type, identify expected values for říms-related tests | Updated audit report |
+| Day 1 AM | **Phase A6: Field visibility audit** per element=rimsa (rozšíření PR #1145) | Screenshot + classification report |
+| Day 1 AM | **Phase A7: Knowledge base inventory** v `concrete-agent/packages/core-backend/app/knowledge_base/` | KB Coverage Report + bug tickets |
 | Day 1 PM | Phase C: Scheduler core refactor (discrete shifts + cyclic phases) | Code + unit tests pass |
-| Day 2 AM | Phase D: T-bednění productivity calibration + crew parallelism fix | Code + tests pass |
-| Day 2 PM | Phase E: UI Monolit-Planner refactor (length-based input for rimsa) | UI screenshots + e2e tests |
+| Day 2 AM | Phase D: T-bednění productivity calibration + crew parallelism fix + create `rimsa.yaml` + `T_bedneni.yaml` v KB | Code + tests pass + KB files |
+| Day 2 PM | Phase E: UI Monolit-Planner refactor (length-based input for rimsa + field visibility filter + bednění dropdown filter) | UI screenshots + e2e tests |
 | Day 3 AM | Phase F: MCP tool parameter additions + Core Engine API alignment | API tests + MCP integration tests |
 | Day 3 PM | **Phase G: Regression run proti všem 5 golden testům** v `test-data/tz/` + bonus SO 206 mini-test + docs update | All tests green + PR description |
 
@@ -522,6 +735,58 @@ shared_logic_assessment:
 3. If diff > tolerance (typicky ±2 % volumes, ±15 % costs, ±10 % schedule) → fix or update expected values (s odůvodněním)
 4. Optional: přidat SO 206 mini-check do `test-data/tz/SO-206_rimsa_minicheck.md`
 5. Generate PR description s diff summary
+
+---
+
+## CONTEXT FOR CLAUDE CODE — what to read first (priority order)
+
+Před Phase A skenováním Claude Code MUSÍ přečíst v tomto pořadí:
+
+### Architecture & conventions
+1. `concrete-agent/README.md`
+2. `concrete-agent/packages/core-backend/app/` — top-level layout
+3. `concrete-agent/packages/core-backend/app/parsers/` — existing patterns
+4. `concrete-agent/packages/core-backend/app/services/`
+5. `concrete-agent/packages/core-backend/app/schemas/`
+6. `concrete-agent/packages/core-backend/app/ai/ai_reasoner.py`
+7. `concrete-agent/packages/core-backend/app/knowledge_base/B*` — **kritické**
+8. `Monolit-Planner/shared/src/calculators/planner-orchestrator.ts` — orchestrator
+9. `Monolit-Planner/shared/src/calculators/resource-ceiling.ts` — resource validation patterns
+10. `Monolit-Planner/shared/src/calculators/` — všech 7 enginů
+
+### Knowledge & policies
+11. `KNOWLEDGE_PLACEMENT_GUIDE.md` — kam patří nová knowledge
+12. `STAVAGENT_PATTERNS.md` — 8 codified patterns
+13. `STAVAGENT_ClaudeCode_Session_Mantra.md` — task writing principles
+14. `CALCULATOR_PHILOSOPHY.md` — design principles
+15. `calculator_element_logic_v4_FINAL.md` — element logic
+16. `calculator_complete_pipeline.md` — pipeline overview + GAP analysis
+17. `REBAR_NORMS_COMPREHENSIVE_AUDIT.md` — rebar norms source of truth
+18. `SKRUZ_TERMINOLOGIE_KANONICKA.md` — terminology
+
+### Element & formwork
+19. `STAVAGENT_Complete_Element_Catalog.md` — 22+ element types
+20. `rimsa_element_spec_v2_DOKA_PERI.md` — current rimsa spec
+21. `formwork_catalog_PERI_DOKA_2025.md` — formwork catalog
+22. `CODEX_TASK_GEOMETRY_CALCULATOR.md` — geometry module
+
+### Golden tests in `test-data/tz/`
+23. `test-data/tz/SO-202_D6_most_golden_test.md` — most reference
+24. `test-data/tz/SO-203_D6_most_golden_test_v2.md` — most v2
+25. `test-data/tz/SO-207_D6_estakada_golden_test_v2.md` — MSS reference
+26. `test-data/tz/SO-250_golden_test.md` — **primary rimsa test** ⭐ (525 bm říms, D6 Olšová Vrata-Žalmanov stejná stavba)
+27. `test-data/tz/VP4_FORESTINA_operna_zed_golden_test.md` — opěrná zeď
+
+### Existing audits (already in repo)
+28. `docs/audits/calculator_field_audit/2026-05-14_full_ui_walkthrough.md` (PR #1145)
+29. `docs/audits/calculator_resource_ceiling/2026-05-07_phase0_audit.md` (PR #1110)
+30. `docs/audits/smartextractor_so250/2026-05-14_extractor_coverage.md` (PR #1143)
+31. `docs/audits/smartextractor_variant_b/FINDINGS_SO_FAR_2026-05-10.md`
+
+### Recent handoffs (for current state)
+32. `STAVAGENT_Chat_Handoff_2026-05-11.md` — current branch status, test counts, known bugs
+33. `CLAUDE.md` (root) — current sprint state + session setup
+34. `next-session.md` (if exists) — last session's handoff
 
 ---
 
