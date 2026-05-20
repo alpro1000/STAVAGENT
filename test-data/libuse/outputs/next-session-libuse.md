@@ -1,5 +1,76 @@
 # Libuše Objekt D — Next Session Handoff
 
+Last updated: 2026-05-20 (Phase 6.6 GATE 1+2+3 complete — material library
+extracted, 6 152 sub-items paired, Excel dashboard delivered)
+
+---
+
+## ⭐ Phase 6.6 — TZ-driven material decomposition (2026-05-20)
+
+**Status:** ✅ GATE 1 + GATE 2 + GATE 3 complete. Branch
+`claude/tz-material-decomposition-lBp5D` pushed.
+
+### Artifacts added (additive — main VV untouched)
+
+| Artifact | Path | Size |
+|---|---|---:|
+| Material library | `outputs/material_library_D.json` | 511 KB |
+| Coverage report | `outputs/phase_6_6_coverage_report.md` | 7.5 KB |
+| Pairing stats | `outputs/phase_6_6_pairing_stats.md` | ~7 KB |
+| Items + sub-items | `outputs/items_objekt_D_with_materials.json` | 11 MB |
+| Generic rates KB | `knowledge_base/generic_consumption_rates.json` | 4.5 KB |
+| **Augmented Excel** | `outputs/Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx` | 1.6 MB |
+| Pre-6.6 backup | `outputs/Vykaz_vymer_pre_phase6_6.xlsx` | 1.2 MB |
+
+### Scripts added (`concrete-agent/packages/core-backend/scripts/`)
+
+- `phase_6_6_material_library.py`  — GATE 1: TZ + tabulky + výkresy scanner
+- `phase_6_6_pair_materials.py`    — GATE 2: master-material pairing
+- `phase_6_6_excel.py`             — GATE 3: Material_rozklad + Material_audit
+
+### Final Excel layout (15 sheets, `Material_audit` opens first)
+
+```
+ 1. Material_audit       ← ACTIVE on open (dashboard)
+ 2. Material_rozklad     (6 152 sub-items, hyperlinked to VV)
+ 3. 0_Souhrn             (unchanged)
+ 4. 1_Vykaz_vymer        (unchanged, 4 091 rows)
+ …
+15. 13_Filter_view_plus  (unchanged)
+```
+
+### Headline numbers
+
+- **4 090** master items unchanged. `items_objekt_D_complete.json`
+  SHA stays `373685ed…` — Phase 6.6 wrote to a NEW file
+  (`items_objekt_D_with_materials.json`) so PROBE 1-17 audit trail
+  is untouched.
+- **714** material library entries extracted (33 % carry explicit
+  manufacturer).
+- **6 152** material sub-items paired.
+- **32 %** of sub-items have documented source provenance (TZ +
+  tabulky); 68 % `[odhad]` from generic KB rates.
+- **553** Case 5 masters (themselves material specs — no sub-items
+  by design).
+- **699** orphan library entries (most are vykres-annotated detail
+  principles — intentional, not auto-paired).
+
+### Known synthesis trade-offs (for VELTON review)
+
+- Some popis like `Penetrace tl. 15 mm` synthesized `tl. 15 mm`
+  from a TZ paragraph where the dimension referred to omítka.
+  Full quote in `source_verbatim` field. Qty correct.
+- 12 canonical library entries cited across 1 968 paired sub-items
+  — same Tabulka 0030 layer spec reused for many masters of the
+  same kapitola. Honest reuse, not double-counting.
+- HSV-963 prostupy (1 884 subs) + PSV-784 malby (1 371) drive the
+  68 % `[odhad]` ratio. Both kapitoly are KB-only by design — TZ
+  doesn't specify consumption per prostup or per m² malby.
+
+---
+
+## Original 2026-05-06 handoff context (preserved below)
+
 Last updated: 2026-05-06 (post-merge admin hygiene + PROBE 7 verification
 + review_checklist.md added; PR #1066 **already merged 2026-05-05 08:56
 UTC** to main)
