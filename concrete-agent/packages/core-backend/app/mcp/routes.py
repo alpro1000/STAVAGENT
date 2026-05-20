@@ -398,6 +398,29 @@ TOOL_DESCRIPTIONS = {
         "discovery → extrakce → coverage matrix → reconciliation. Vrátí job_id "
         "pro polling stavu."
     ),
+    "uep_get_job": (
+        "Vrátí aktuální stav UEP úlohy (queued / running / succeeded / "
+        "failed / cancelled) + fázi + progress + počty zpracovaných souborů."
+    ),
+    "uep_list_supported_formats": (
+        "Vypíše source formáty, pro které je v aktuálním deploymentu "
+        "registrován extractor (dxf, pdf_tz, dwg, ifc, xml_unixml, xml_landxml)."
+    ),
+    "uep_get_coverage_matrix": (
+        "Vrátí YAML coverage matici pro daný project_type (residential / "
+        "bridge / road / industrial) — kategorie + required_fields + expected "
+        "sources, podle docs §3.2."
+    ),
+    "uep_get_reconciliation_rules": (
+        "Vrátí kompaktní souhrn reconciliation pravidel pro project_type "
+        "(id + description + severity + tolerance). Plný YAML lze získat přes "
+        "REST /api/v1/uep/config/reconciliation-rules."
+    ),
+    "uep_get_dwg_conversion_status": (
+        "Probe běhového prostředí — kontroluje dostupnost ODA File Converter "
+        "+ LibreDWG binárek na PATH. Vrací status fallback řetězce + operátorské "
+        "doporučení pro deployment."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -413,6 +436,11 @@ TOOL_ORDER = [
     "get_construction_advisor",
     "search_czech_construction_norms",
     "uep_run_extraction",
+    "uep_get_job",
+    "uep_list_supported_formats",
+    "uep_get_coverage_matrix",
+    "uep_get_reconciliation_rules",
+    "uep_get_dwg_conversion_status",
 ]
 
 
