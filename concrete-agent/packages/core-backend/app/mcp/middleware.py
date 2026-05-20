@@ -365,12 +365,28 @@ class BareOptionsAllowMiddleware:
             await self.app(scope, receive, send)
             return
 
-        # Bare OPTIONS from allow-listed origin → 204 + CORS headers.
+        # Bare OPTIONS from allow-listed origin → 204 + full CORS headers
+        # matching what a real preflight (Access-Control-Request-Method
+        # present) would have received from Starlette's CORSMiddleware
+        # downstream. We have to inject the entire set ourselves because
+        # CORSMiddleware's short-circuit path doesn't fire for bare
+        # OPTIONS — that's the whole point of this middleware.
+        #
+        # Header values mirror the /mcp mount CORS config (Gate 5) plus
+        # the wider parent-app allow-list, so anonymous probes from
+        # allow-listed brokers see consistent CORS metadata regardless
+        # of which endpoint they targeted.
         from starlette.responses import Response
         cors_headers = {
-            "access-control-allow-origin": origin,
-            "access-control-allow-credentials": "true",
-            "vary": "Origin",
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods":
+                "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers":
+                "Authorization, Content-Type, Mcp-Session-Id, "
+                "X-Requested-With",
+            "Access-Control-Max-Age": "86400",
+            "Vary": "Origin",
         }
         response = Response(status_code=204, headers=cors_headers)
         await response(scope, receive, send)
