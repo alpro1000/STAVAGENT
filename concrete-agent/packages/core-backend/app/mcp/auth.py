@@ -631,6 +631,18 @@ def mint_token_pair(
     conn = _get_db()
     cur = conn.cursor()
     try:
+        # SQL injection defence (Amazon Q review on PR-B):
+        # `INTERVAL '%s seconds'` interpolates the integer into the SQL
+        # *literal* — psycopg2's %s placeholder normally goes through
+        # parameter binding, but the surrounding single-quotes turn it
+        # back into string formatting. Refactored to
+        # `%s * INTERVAL '1 second'` — the integer flows through proper
+        # bind on its own, then Postgres multiplies a constant interval
+        # by it. Same wall-clock result, no interpolation surface.
+        # Constants today (3600 / 7_776_000) come from module-level
+        # ints so the original was practically safe, but the bind-only
+        # form prevents a future caller from accidentally parameterising
+        # the TTL with user input.
         cur.execute(
             """
             INSERT INTO mcp_oauth_tokens (
@@ -643,9 +655,9 @@ def mint_token_pair(
                 %s, %s,
                 %s, %s,
                 %s, %s,
-                NOW() + INTERVAL '%s seconds',
+                NOW() + (%s * INTERVAL '1 second'),
                 CASE WHEN %s::text IS NULL THEN NULL
-                     ELSE NOW() + INTERVAL '%s seconds' END,
+                     ELSE NOW() + (%s * INTERVAL '1 second') END,
                 %s
             )
             RETURNING id
