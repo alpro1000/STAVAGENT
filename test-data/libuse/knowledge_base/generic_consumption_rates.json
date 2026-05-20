@@ -76,8 +76,8 @@
       "MJ_applied_to": "m2",
       "rate": 0.15,
       "source": "Industry standard pro malby disperzní (0,12–0,18 l/m² per vrstva; 2 vrstvy standard)",
-      "citation_norm": "ČSN 73 3300",
-      "citation_source": "ČSN 73 3300 Provádění nátěrů stavebních konstrukcí (vč. ČSN EN 13300 klasifikace)",
+      "citation_norm": "ČSN EN 13300",
+      "citation_source": "ČSN EN 13300 Nátěrové hmoty — Vodou ředitelné nátěrové hmoty a nátěrové systémy pro vnitřní stěny a stropy — Klasifikace",
       "citation_url": null
     },
     "tmel_akrylatovy_sparovani": {
