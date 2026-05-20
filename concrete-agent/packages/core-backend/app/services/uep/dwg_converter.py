@@ -319,9 +319,20 @@ def convert_dwg_to_dxf(dwg_path: Path, work_dir: Path) -> ConversionResult:
     # the extractor records DWG_CONVERSION_FAILED in the coverage
     # report and the operator gets a notification (PR3 ships the
     # in-process log path; SES notification is PR4).
+    #
+    # Defensive lookup by tool name instead of negative-index slicing
+    # so the log line stays sound even if a future refactor adds an
+    # extra attempts.append() between the ODA + LibreDWG branches
+    # (Amazon Q PR #1188 finding #4). Empty-list fallback is dead
+    # under current control flow but cheap insurance.
+    def _last_error(tool: str) -> str:
+        for a in reversed(attempts):
+            if a.tool == tool:
+                return a.error or "<no error captured>"
+        return "<no attempt recorded>"
     logger.error(
         "[uep.dwg] BOTH conversions failed for %s: oda=%s, libredwg=%s",
-        dwg_path, attempts[-2].error, attempts[-1].error,
+        dwg_path, _last_error("oda"), _last_error("libredwg"),
     )
     return ConversionResult(
         success=False,

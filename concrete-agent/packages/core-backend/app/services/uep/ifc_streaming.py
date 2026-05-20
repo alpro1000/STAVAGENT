@@ -88,6 +88,12 @@ class RssAbortGuard:
         self._stop_event = threading.Event()
         self._thread: threading.Thread | None = None
         self._peak_rss = 0
+        # Class invariant — _proc is set in start() iff psutil imports
+        # successfully. Initialising to None here removes the implicit
+        # "attribute may not exist" hazard for static analysers and
+        # makes the _loop guard below explicit (Amazon Q PR #1188
+        # findings #2 + #3).
+        self._proc: object | None = None
 
     @property
     def peak_rss_bytes(self) -> int:
@@ -119,6 +125,12 @@ class RssAbortGuard:
         self.stop()
 
     def _loop(self) -> None:
+        # Defensive — start() only spawns this thread when psutil
+        # imported and self._proc was set, so under normal flow this
+        # branch is unreachable. Guards against future refactors
+        # decoupling start() from _loop (Amazon Q PR #1188 #3).
+        if self._proc is None:
+            return
         while not self._stop_event.is_set():
             try:
                 rss = self._proc.memory_info().rss  # type: ignore[attr-defined]

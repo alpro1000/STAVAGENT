@@ -86,6 +86,17 @@ class IfcExtractor(BaseExtractor):
             )
 
         strategy = pick_streaming_strategy(size)
+        # Defensive — the size guard above already rejects > 2 GB, so
+        # `pick_streaming_strategy` should never return REJECT here. We
+        # surface a clear ExtractorError instead of falling through to
+        # `ifcopenshell.open` and risking an OOM if the constants are
+        # ever desynchronised (Amazon Q PR #1188 finding #1).
+        if strategy == StreamingStrategy.REJECT:
+            raise ExtractorError(
+                f"IFC file size {size / 1024**3:.2f} GB resolved to "
+                "REJECT strategy after the upfront size guard — refusing "
+                "to load (defensive; should be unreachable)."
+            )
         decode_warnings: list[dict[str, Any]] = [{
             "code": "ifc_streaming_strategy",
             "message": f"chosen strategy={strategy.value} for {size / 1024**2:.1f} MB",
