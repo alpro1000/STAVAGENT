@@ -580,6 +580,18 @@ _ALLOWED_PROJECT_TYPES: set[str] = {
     "bridge",
     "road",
     "industrial",
+    # PR4a hierarchical MEP base + 7 D.1.4 subtypes. The base matrix
+    # is introspectable via the config endpoint but is not selected
+    # as a primary project type — subtype matrices `extends: mep_base`
+    # and load it transparently via coverage_engine.load_matrix().
+    "mep_base",
+    "mep_d14_silnoproud",
+    "mep_d14_slaboproud",
+    "mep_d14_zti",
+    "mep_d14_vzt",
+    "mep_d14_ut",
+    "mep_d14_plyn",
+    "mep_d14_mar",
 }
 
 
