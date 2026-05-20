@@ -1,0 +1,5 @@
+{
+  "version": "0.1",
+  "doc": "Generic consumption rates fallback for Libuše finishing-works freelance project. Rates here are used ONLY when TZ does not provide an explicit rate (Phase 6.6 Case 2 + Case 4). Every entry MUST carry `source` (industry standard, ČSN, výrobce TL, or 'typical industry experience'). Inline rates are FORBIDDEN in decomposition pairing code — they all live here.",
+  "rates": {}
+}
