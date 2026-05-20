@@ -1,0 +1,193 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_vzt (D.1.4.3 vzduchotechnika)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` with VZT-specific categories per vyhláška 499/2006
+# D.1.4.3 + ČSN EN 12831 + ČSN 73 0540 + nařízení vlády 361/2007 Sb.
+# (hygiena pracovního prostředí).
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (VZT bullet)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_vzt
+extends: mep_base
+description: >
+  D.1.4.3 vzduchotechnika — větrání nucené i přirozené, klimatizace,
+  rekuperace, distribuce vzduchu, regulace tlakových poměrů.
+
+requirements:
+
+  - category: norm_references
+    label_cs: Citované normy ČSN EN 12831 / ČSN 73 0540 / NV 361/2007 Sb.
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN EN 12831 (tepelné ztráty), ČSN 73 0540-2 (požadavky na
+      tepelnou ochranu — výpočet průtoku), ČSN EN 13779 (kvalita
+      vnitřního vzduchu pro nevýrobní budovy). NV 361/2007 Sb.
+      (hygiena pracovního prostředí).
+
+  - category: hvac_zone
+    label_cs: VZT zóny (rozdělení podle kategorie prostor IDA 1-4)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_gbxml]
+    optional: false
+    notes: >
+      Subtype overriduje base na required — VZT projekt musí mít
+      explicitní zónové rozdělení. IDA 1-4 (vysoká/střední/mírná/
+      nízká kvalita vzduchu) per ČSN EN 13779.
+
+  # ─── A. Průtoky a dimenze ──────────────────────────────────────────
+
+  - category: vzt_air_flow_rates
+    label_cs: Průtoky vzduchu (m³/h přívod + odvod per zóna)
+    required_fields: [value]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Per zónu / per místnost: přívod + odvod (m³/h), bilance
+      (typicky podtlak v koupelnách / WC, přetlak v obytných
+      místnostech).
+
+  - category: vzt_pressure_losses
+    label_cs: Tlakové ztráty potrubí (Pa pro dimenzování ventilátorů)
+    required_fields: [value]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Sumární tlakové ztráty (Δp) per úsek potrubí pro výběr
+      ventilátorů. Externí tlak (Pa) na ventilátor + interní
+      ztráta jednotky.
+
+  - category: vzt_duct_specifications
+    label_cs: Specifikace VZT potrubí (Spiro / 4-hran / pružné, materiál, izolace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Kruhové (Spiro pozinkované), čtyřhranné nebo pružné napojovací.
+      Tepelná izolace (vnitřní / venkovní) + akustická izolace,
+      ČSN 12 7010.
+
+  - category: vzt_air_velocities
+    label_cs: Rychlosti vzduchu v potrubí + výustkách (m/s — hygienické limity)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Max. rychlost v hlavním potrubí ≤ 5 m/s (akustika), ve
+      výustkách ≤ 0.2 m/s (hygiena, ČSN EN 13779).
+
+  # ─── B. VZT jednotky a rekuperace ─────────────────────────────────────
+
+  - category: vzt_air_handling_units
+    label_cs: VZT jednotky (typ + výkon + filtrace + ohřev / chlazení)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Per VZT zóna: typ jednotky (kompaktní / sektorová),
+      průtok m³/h, statický tlak Pa, filtrace (F7 přívod / F5
+      odtah), ohřev (TUV / elektro), chlazení (DX / chilled water).
+
+  - category: vzt_heat_recovery
+    label_cs: Rekuperace (typ výměníku + účinnost — ZZT)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Účinnost η ≥ 73 % (ČSN 73 0540-2 čl. 7.2 — kritérium UR-3),
+      typ (deskový / rotační / kapilární / glykolový okruh).
+      Bypass pro letní provoz.
+
+  - category: vzt_air_filters
+    label_cs: Filtrace vzduchu (F5/F7/F9 + HEPA pro speciální prostory)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      F7 přívod (běžné kanceláře), F9 pro náročnější (zdravotnictví,
+      laboratoře), HEPA H13 / H14 (čisté prostory).
+
+  # ─── C. Distribuce vzduchu ───────────────────────────────────────────
+
+  - category: vzt_air_diffusers
+    label_cs: Koncové prvky (anemostaty + vyústky + dýzy + tlumiče)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Typy + Δp na výustku + zvukový výkon. Vyústky v podhledu
+      vs. lineární štěrbinové; uvážit přístupnost pro čištění.
+
+  - category: vzt_noise_attenuators
+    label_cs: Tlumiče hluku v rozvodech (LWA per úsek)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Tlumič na sání + výtlaku jednotky, příp. na hlavních
+      odbočkách. Cíl LWA(A) ≤ 30 dB v obytných místnostech
+      (NV 272/2011 Sb.).
+
+  - category: vzt_fire_dampers
+    label_cs: Požární klapky (PK + servopohony + signalizace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Klapky v každém prostupu požárním úsekem (ČSN 73 0810
+      čl. 8.3). Servopohony se zpětnou vazbou na EPS.
+
+  # ─── D. Chlazení a klimatizace ───────────────────────────────────────
+
+  - category: vzt_cooling_system
+    label_cs: Chlazení (DX / chilled water / VRF + výkony kW)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      DX (přímý odpar — split/multisplit/VRF), chilled water
+      (chiller + fan coils). ÚR výkony per zóna, ČSN EN 14511
+      (COP/EER).
+
+  - category: vzt_dehumidification_humidification
+    label_cs: Odvlhčování / vlhčení (kondenzátory + parní zvlhčovače)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Pro speciální prostory (archivy / muzea / klimatizované
+      operační sály). Optional u běžných projektů.
+
+  # ─── E. Regulace a hygiena ───────────────────────────────────────────
+
+  - category: vzt_co2_demand_control
+    label_cs: Regulace dle CO₂ (DCV — demand controlled ventilation)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      CO₂ čidlo per zóna, regulace průtoku 30-100 %. ČSN EN 13779
+      tabulka 11 — IDA 2 spodní hranice. Optional u RD.
+
+  - category: vzt_pressure_balance
+    label_cs: Tlaková bilance (přetlak / podtlak per zóna)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Bilance přívodu vs. odvodu — podtlak v koupelnách / WC
+      / kuchyni (zabraňuje šíření pachů), přetlak v obytných
+      místnostech.
+
+  - category: vzt_kitchen_extraction
+    label_cs: Odsávání pachů z kuchyně (digestor + bypass + zpětná klapka)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Digestor s odvodem do venku (preferováno) nebo cirkulační
+      s uhlíkovým filtrem. Bypass v rekuperátoru pro letní obtok.

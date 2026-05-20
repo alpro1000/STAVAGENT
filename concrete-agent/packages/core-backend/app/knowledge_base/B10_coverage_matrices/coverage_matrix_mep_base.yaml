@@ -1,0 +1,205 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_base (D.1.4 sdílené kategorie)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Hierarchical parent matrix for the seven D.1.4 sub-discipline matrices
+# (silnoproud / slaboproud / ZTI / VZT / ÚT / plyn / MaR) per PR4a §3.1.
+#
+# This file is NEVER selected as a project's primary matrix directly —
+# every D.1.4 subtype matrix uses `extends: mep_base` so its evaluation
+# inherits every category here, then overrides or extends with
+# subtype-specific rows.
+#
+# Categories below are the cross-cutting items every MEP discipline
+# shares: norm citations, rozvaděč locations, kabelové trasy,
+# coordination with other professions, safety classification, building
+# storey assignments. Energy / thermal categories (thermal_insulation,
+# building_envelope, hvac_zone) feed the ÚT/VZT subtypes via the gbXML
+# adapter (PR4a §3.2).
+#
+# Field shape (validated against app.models.uep_schemas.CoverageRequirement):
+#   category:         coverage-matrix key (must equal the `category` on facts)
+#   label_cs:         human-readable Czech label (renders in coverage report)
+#   required_fields:  fact `field` names that must be present for `pokryto`
+#                     (empty list = "any fact in this category counts")
+#   expected_sources: source formats that could legitimately fill this row
+#                     (drives source-route diagnostics; not a hard filter)
+#   optional:         when true, `chybi` does NOT block the gate
+#   project_types:    auto-derives from `project_type` below if omitted
+#   notes:            free-form context for next maintainer
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1
+# Reference: vyhláška 499/2006 D.1.4 (technika prostředí staveb)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_base
+description: >
+  Sdílené D.1.4 kategorie pro 7 sub-disciplín (silnoproud / slaboproud /
+  ZTI / VZT / ÚT / plyn / MaR). Subtype matice toto rozšiřují
+  (`extends: mep_base`) o discipline-specific rows.
+
+requirements:
+
+  # ─── A. Project identification & metadata (sdíleno se všemi D.1.x) ─────
+
+  - category: project_identification
+    label_cs: Identifikační údaje stavby
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Investor, název stavby, místo, autorizovaný projektant D.1.4,
+      číslo zakázky. Subtype TZ je typicky samostatný dokument s
+      vlastní hlavičkou — coverage gate jej kontroluje per discipline.
+
+  - category: norm_references
+    label_cs: Citované normy ČSN EN
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Každá D.1.4 disciplína musí citovat aspoň 3-5 norem. Subtype
+      matice overridují popis s discipline-specific normami (ČSN 33
+      2000 silnoproud, ČSN 12831 VZT, ČSN 75 5455 ZTI, …).
+
+  - category: referenced_documents
+    label_cs: Soupis odkazovaných dokumentů a výkresů
+    required_fields: [document]
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Cross-check výkresů, na které TZ odkazuje. Optional — některé
+      menší D.1.4 dokumenty kreslí přímo do TZ.
+
+  # ─── B. Equipment locations & sdílená infrastruktura ──────────────────
+
+  - category: rozvadec_locations
+    label_cs: Umístění rozvaděčů (RH, R+, RC, R-DT, …)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc]
+    optional: false
+    notes: >
+      Sdílená infrastruktura mezi silnoproudem (RH, R+), slaboproudem
+      (R-DT EPS / R-KAM kamery) a MaR (R-MaR). Lokace + dimenzování
+      patří do D.1.4.
+
+  - category: cable_routing
+    label_cs: Kabelové trasy a žlaby
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Kabelové žlaby (KV/KZ), kanály, prostupy, šachty. Sdíleno
+      silnoproud + slaboproud + MaR; ZTI/VZT mají samostatné
+      trasy (potrubí), kreslí se na stejných výkresech.
+
+  - category: penetrations_through_constructions
+    label_cs: Prostupy konstrukcemi (PBZ, PO, akustika)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Prostupy zděnými / monolitickými konstrukcemi s ochranou:
+      protipožární ucpávky (ČSN 73 0810), akustické pružné spáry,
+      těsnost vůči vodě (mokrý prostor / venkovní zdiva).
+
+  # ─── C. Storey assignment & coordination ──────────────────────────────
+
+  - category: storey_assignment
+    label_cs: Přiřazení rozvodů k podlažím (1.NP / 2.NP / …)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc, xml_gbxml]
+    optional: false
+    notes: >
+      Každý D.1.4 prvek musí mít přiřazené podlaží. Gate kontroluje
+      konzistenci mezi TZ tabulkou a DXF / IFC storey rozdělením.
+
+  - category: coordination_with_professions
+    label_cs: Koordinace s dalšími profesemi (statika, ARCH, ostatní D.1.4)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Sekce koordinace (typicky kap. 2 každého D.1.4 TZ) — kolize
+      s konstrukcí (statika), prostorové nároky (ARCH), návaznost
+      na jiné profese (např. silnoproud × VZT motory).
+
+  # ─── D. Energy / thermal envelope (drives ÚT/VZT subtypes) ────────────
+
+  - category: thermal_insulation
+    label_cs: Tepelná izolace obálky (ETICS / minerální / střecha)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_gbxml]
+    optional: false
+    notes: >
+      ETICS / interior insulation podle ČSN 73 0540. Cross-checked
+      proti gbXML <Construction U-value> + TZ specifikaci. Sdíleno
+      s residential matricí — duplicitní záměrně, protože D.1.4 ÚT
+      počítá teplotní ztráty z této vrstvy.
+
+  - category: building_envelope
+    label_cs: Stavební obálka (stěny, střecha, podlahy, výplně)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, ifc, xml_gbxml]
+    optional: false
+    notes: >
+      U-hodnoty, tloušťky vrstev, otvory. Zdroj pro výpočet TT (tepelně
+      technický posudek). gbXML <Surface constructionIdRef> je
+      preferovaný strukturovaný zdroj; TZ kontroluje shodu.
+
+  - category: hvac_zone
+    label_cs: Tepelné / klimatické zóny (rozdělení budovy)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_gbxml]
+    optional: true
+    notes: >
+      Tepelně-zonální rozdělení (např. obytná zóna 20°C, chodby 15°C,
+      garáž 10°C). Optional — malé RD mívají 1 zónu, ale gbXML
+      <Zone> existuje vždy pro energetický model. ÚT subtype tuto
+      řádku overriduje na required.
+
+  # ─── E. Safety classification & risk ──────────────────────────────────
+
+  - category: safety_classification
+    label_cs: Bezpečnostní klasifikace (PB, PO, EZS, hygiena)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Sdílené bezpečnostní třídění: požárně bezpečnostní (ČSN 73 0810),
+      ochrana před úrazem el. proudem (ČSN 33 2000-4-41), hygiena
+      (vyhl. 268/2009 Sb.). Každá subtype matice tuto řádku
+      konkretizuje (silnoproud → třída ochrany, slaboproud → kategorie EPS).
+
+  - category: ip_protection_class
+    label_cs: Krytí IP / IK zařízení (IP44, IP65, …)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Mostly silnoproud + slaboproud zařízení; ZTI/VZT motorové
+      pohony také. Optional na úrovni base — subtype matice
+      override-ují per discipline.
+
+  # ─── F. Provoz & ovládání (BMS interface, common) ─────────────────────
+
+  - category: bms_interface
+    label_cs: Rozhraní na BMS (Building Management System)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Které prvky se napojují na BMS — typicky VZT/ÚT/chl/EPS/MaR.
+      Pure MaR projekt overriduje řádku na required; ostatní subtype
+      ji mohou nechat optional.
+
+  - category: commissioning_and_handover
+    label_cs: Uvedení do provozu a předání (provozní zkoušky)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Postup uvedení do provozu, požadované zkoušky před předáním,
+      revizní protokoly. Optional — větší dodavatelé si toto řeší
+      v rámci smluvních dodacích podmínek.

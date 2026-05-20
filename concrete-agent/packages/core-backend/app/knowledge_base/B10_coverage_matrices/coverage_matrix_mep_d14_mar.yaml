@@ -1,0 +1,198 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_mar (D.1.4.6 měření a regulace)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` with MaR-specific categories per vyhláška 499/2006
+# D.1.4.6 + ČSN EN ISO 16484 (BMS — automatizace budov).
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (MaR bullet)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_mar
+extends: mep_base
+description: >
+  D.1.4.6 měření a regulace — BMS (Building Management System) +
+  čidla (teplota, vlhkost, CO₂, presence) + regulátory + akční členy
+  + komunikační protokoly (KNX, BACnet, Modbus).
+
+requirements:
+
+  - category: norm_references
+    label_cs: Citované normy ČSN EN ISO 16484 / ČSN EN 50090 / KNX standard
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN EN ISO 16484 (BMS architektura), ČSN EN 50090 (HBES —
+      KNX), ČSN EN ISO 16484-5 (BACnet), MODBUS RTU/TCP spec.
+
+  - category: bms_interface
+    label_cs: Rozhraní BMS — overridováno na required
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Subtype overriduje base na required. MaR projekt definuje
+      BMS interface pro VZT/ÚT/ZTI/EPS/EZS — bez toho není
+      smysl projektu.
+
+  # ─── A. BMS architektura ──────────────────────────────────────────
+
+  - category: mar_bms_topology
+    label_cs: BMS topologie (centralizovaná / decentralizovaná / hybridní)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Centrální server vs. distribuované DDC (Direct Digital
+      Controllers) per zóna. Hybridní = centralizace na úrovni
+      podlaží, decentrální per místnost.
+
+  - category: mar_bms_server
+    label_cs: BMS server / SCADA (HW + SW + počet datapoints)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Server / dotyková obrazovka, SW (Niagara, Desigo CC,
+      Honeywell EBI), počet datapoints (DP), kapacita SQL
+      historizace.
+
+  - category: mar_communication_protocols
+    label_cs: Komunikační protokoly (KNX / BACnet IP / Modbus / M-Bus)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Per okruh: KNX (osvětlení / žaluzie / drobná regulace),
+      BACnet (VZT / ÚT — velké systémy), Modbus (čerpadla /
+      střídače FVE), M-Bus (vodoměry / kalorimetry).
+
+  - category: mar_field_bus_network
+    label_cs: Topologie sběrnic (TP1 / Ethernet / IP) + délky
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      KNX TP1 (28 V SELV, 4×2×0.8 mm STP), Ethernet PoE (Cat6a),
+      MS/TP BACnet RS-485 (max 1200 m / segment).
+
+  # ─── B. Čidla a vstupní body ──────────────────────────────────────
+
+  - category: mar_temperature_sensors
+    label_cs: Teplotní čidla (prostorová + venkovní + potrubní)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      PT1000 / Ni1000 / KTY81 — per regulační okruh ÚT, per VZT
+      zóna (přívod/odtah/místnost). Venkovní pro ekvitermní
+      regulaci.
+
+  - category: mar_humidity_sensors
+    label_cs: Čidla vlhkosti (relativní + rosný bod)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Pro VZT zóny s nastavovanou vlhkostí (archivy / muzea /
+      bazény). Standard u větších VZT systémů.
+
+  - category: mar_co2_sensors
+    label_cs: Čidla CO₂ (pro DCV regulaci větrání)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      NDIR (infračervený absorpční) — 0-2000 ppm. Per zóna pro
+      DCV (demand controlled ventilation). Návaznost na
+      vzt_co2_demand_control.
+
+  - category: mar_occupancy_sensors
+    label_cs: Čidla přítomnosti (PIR / ultrasonik / dual)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Pro osvětlení (KNX/DALI vypínání bez pohybu po N min) +
+      VZT (snížení průtoku v prázdné místnosti) + EZS.
+
+  - category: mar_pressure_sensors
+    label_cs: Tlakové snímače (Δp pro VZT filtry + ÚT okruhy)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Δp na VZT filtrech (alarm při zanesení), Δp v ÚT okruzích
+      pro řízení čerpadel (ekvitermně).
+
+  # ─── C. Regulátory a akční členy ──────────────────────────────────
+
+  - category: mar_controllers_ddc
+    label_cs: Programovatelné regulátory (DDC + počet DI/DO/AI/AO)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Per technologická skupina: počet vstupů/výstupů (DI digital
+      input, DO digital output, AI analog input, AO analog output).
+      Volně programovatelné nebo aplikační (konfigurovatelné).
+
+  - category: mar_servo_actuators
+    label_cs: Servopohony (klapky VZT + regulační ventily ÚT)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Klapky VZT (Belimo 0-10V / Modbus), 3-cestné mixovací
+      ventily ÚT, požární klapky se zpětnou vazbou.
+
+  - category: mar_frequency_drives
+    label_cs: Frekvenční měniče (FM) pro čerpadla a ventilátory
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Pro proměnný objemový tok (VAV — variable air volume,
+      proměnný průtok v ÚT). Komunikace přes Modbus / BACnet.
+
+  # ─── D. Vizualizace a uživatelské rozhraní ────────────────────────
+
+  - category: mar_visualization_hmi
+    label_cs: Vizualizace BMS (SCADA + grafické obrazovky)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Schémata technologií, trendy, alarmy, historizace, uživatelské
+      role + přístupová práva. Web vizualizace + dotyková obrazovka
+      v technické místnosti.
+
+  - category: mar_room_controllers
+    label_cs: Pokojové ovládače (termostat + tablo + senzory v jednom)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      KNX / BACnet room controllers — ovládání světel, žaluzií,
+      ÚT, VZT z jednoho prvku per místnost.
+
+  - category: mar_alarm_management
+    label_cs: Alarm management (priority + e-mail / SMS / push notifikace)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      3-4 prioritní úrovně (kritický / vysoký / informativní /
+      ladění), notifikace per uživatelská skupina + retence
+      kvitací.
+
+  - category: mar_data_historization
+    label_cs: Historizace dat (trendy + retence + reporting)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      SQL databáze (typicky retence 2 roky), trend grafy,
+      automatický reporting (denní / týdenní / měsíční CSV).
