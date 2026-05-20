@@ -1,6 +1,6 @@
 # Phase 6.6 GATE 2 — Master ↔ material pairing stats
 
-_Generated: 2026-05-20T19:20:57+00:00_
+_Generated: 2026-05-20T19:42:32+00:00_
 
 _Branch: claude/tz-material-decomposition-lBp5D_
 
@@ -92,7 +92,7 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
   | 1 | Penetrace univerzální — disperzní | 15.34 | l | 🌐 ČSN 73 3450 | 0.6 |
-  | 2 | Malba disperzní — 1× vrstva | 11.51 | l | 🌐 ČSN 73 3300 | 0.6 |
+  | 2 | Malba disperzní — 1× vrstva | 11.51 | l | 🌐 ČSN EN 13300 | 0.6 |
   | 3 | Tmel akrylátový — spárování / dilatace | 3.83 | kg | 🌐 ČSN EN ISO 11600 | 0.6 |
 
 ### Master `31aa7a4d-226…` — kapitola `PSV-771`
