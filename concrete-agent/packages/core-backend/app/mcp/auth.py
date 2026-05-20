@@ -49,6 +49,13 @@ TOOL_COSTS = {
     "parse_construction_budget": 5,
     "analyze_construction_document": 10,
     "uep_run_extraction": 15,  # PR2 §3.5 — UEP universal extraction pipeline
+    # PR3 — read-only inspection. Free: cost gate guards batch extraction,
+    # not config lookups. Auth still enforced at the transport layer.
+    "uep_get_job": 0,
+    "uep_list_supported_formats": 0,
+    "uep_get_coverage_matrix": 0,
+    "uep_get_reconciliation_rules": 0,
+    "uep_get_dwg_conversion_status": 0,
     "create_work_breakdown": 20,
 }
 

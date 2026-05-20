@@ -1,0 +1,251 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — road (silnice / komunikace / parkoviště)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Calibrated against SO 250 SÚSPK alignment + pavement reference set
+# (test-data/silnice/SO_250/*). Layered structure follows vyhláška
+# 104/1997 + TKP PK 5 (vozovky) + TKP PK 6 (kamenivo) + TKP PK 7
+# (asfaltové směsi).
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.2 + §15.8
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: road
+description: >
+  28 coverage requirements for road / silniční komunikace projects.
+  Calibrated from SO 250 SÚSPK + ŘSD reference.
+
+requirements:
+
+  # ─── A. Project identification + norms ────────────────────────────────────
+
+  - category: project_identification
+    label_cs: Identifikační údaje stavby (číslo stavby, název, investor)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: ŘSD / SÚSPK / kraj / obec — investor + autorizovaný projektant.
+
+  - category: norm_references
+    label_cs: Citované normy (ČSN 73 6110 + TKP PK 5/6/7)
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Minimum: ČSN 73 6110 (projektování silnic) + TKP PK 5 (vozovky).
+      Coverage gate flags ≤ 3 norms.
+
+  - category: tkp_pk_pavement
+    label_cs: TKP PK 5/6/7 pavement layer specifications
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: referenced_documents
+    label_cs: Soupis odkazovaných výkresů (situace + podélný profil + řezy)
+    required_fields: [document]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  # ─── B. Alignment & geometry ──────────────────────────────────────────────
+
+  - category: road_alignment
+    label_cs: Směrové vedení (staničení, oblouky, přímky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, xml_landxml]
+    optional: false
+    notes: >
+      LandXML <Alignment staStart length> is the primary source.
+      DXF polyline fallback when LandXML absent.
+
+  - category: longitudinal_profile
+    label_cs: Podélný profil (sklon, vrcholové / údolnicové zaoblení)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg]
+    optional: false
+
+  - category: road_cross_section
+    label_cs: Příčný řez (šířkové uspořádání, šířka jízdního pruhu, sklony)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg]
+    optional: false
+    notes: >
+      Mandatory: šířka jízdního pruhu (3.00 / 3.25 / 3.50 m), sklon
+      příčný (2.5 % standard), kategorie silnice (S 7.5 / S 9.5 …).
+
+  - category: site_situation
+    label_cs: Koordinační situace + vyznačení parcel
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, xml_landxml]
+    optional: false
+
+  - category: dimensions
+    label_cs: Rozměry (délka úseku, šířka v koruně, plocha vozovky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, xml_landxml]
+    optional: false
+
+  # ─── C. Pavement structure ────────────────────────────────────────────────
+
+  - category: pavement_layers
+    label_cs: Skladba vozovky (ACO/ACL/ACP + MZK/ŠCM/ŠD + podloží)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Mandatory: vrstvy + tloušťky + kvalita. SO 250 sample
+      pavement: ACO 11+ 40mm + ACL 16+ 60mm + ACP 22S 80mm + MZK
+      150mm + ŠD 200mm.
+
+  - category: road_bearing_capacity
+    label_cs: Únosnost podloží (CBR, Edef, modul deformace)
+    required_fields: []
+    expected_sources: [pdf_tz, pdf_geology]
+    optional: false
+    notes: >
+      Mandatory per ČSN 73 6133. Edef2 ≥ 45 MPa pro pláň silnice
+      I/II třídy.
+
+  - category: pavement_class
+    label_cs: Třída dopravního zatížení (TDZ I-VI)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+
+  # ─── D. Drainage & utilities ──────────────────────────────────────────────
+
+  - category: storm_drainage
+    label_cs: Odvodnění (vpusti, šachty, dešťová kanalizace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: utility_connections
+    label_cs: Přípojky / přeložky sítí (vodovod / kanalizace / elektro / plyn)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  # ─── E. Road equipment & safety ───────────────────────────────────────────
+
+  - category: road_markings
+    label_cs: Vodorovné dopravní značení (V1-V13, plocha m²)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: road_signage
+    label_cs: Svislé dopravní značení (IS, IP, IZ)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: road_safety_barriers
+    label_cs: Svodidla (úrovňová / mostní, třída zadržení N2/H2/H4)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Optional pro nižší kategorie silnic. Mandatory pro I. třídu +
+      mostní úseky.
+
+  - category: curbs_borders
+    label_cs: Obrubníky (silniční / parkovací, výška)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  - category: pedestrian_facilities
+    label_cs: Chodník + přechod pro chodce + signalizace
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  # ─── F. Materials ─────────────────────────────────────────────────────────
+
+  - category: asphalt_mix_specification
+    label_cs: Specifikace asfaltových směsí (ACO 11+, ACL 16+, ACP 22S)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      TKP PK 7 — typ směsi + zrnitost + obsah PMB / B 50/70.
+
+  - category: aggregate_specification
+    label_cs: Kamenivo (frakce, kvalita, MZK/ŠCM/ŠD)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+
+  - category: concrete_grade
+    label_cs: Třída betonu (obrubníky, šachty, CB kryt)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Optional — most road projects are asphalt-only. CB kryt
+      (cementobetonový kryt) vyžaduje C30/37 XF4.
+
+  - category: exposure_class
+    label_cs: Třída expozice betonových prvků (XF2/XF4)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+
+  # ─── G. Quantities ────────────────────────────────────────────────────────
+
+  - category: quantities
+    label_cs: Výkaz výměr (m³ asf. směsí, t kamenivo, m² plocha vozovky)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_unixml, xlsx_soupis]
+    optional: false
+
+  # ─── H. DXF inventory ─────────────────────────────────────────────────────
+
+  - category: dxf_meta
+    label_cs: DXF metadata (entity count, units, bbox)
+    required_fields: [entity_count_total, layer_count]
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: layer_inventory
+    label_cs: Vrstvy výkresů (osy, hrany, kóty, vrstvy vozovky)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: closed_polygons
+    label_cs: Uzavřené polygony (parcely, plochy vozovky, zelené plochy)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: text_inventory
+    label_cs: Texty (staničení, čísla parcel, kóty)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  # ─── I. Environment & geotechnics ─────────────────────────────────────────
+
+  - category: geological_conditions
+    label_cs: IGP + Edef + radon
+    required_fields: []
+    expected_sources: [pdf_geology, pdf_tz]
+    optional: false
+
+  - category: earthworks
+    label_cs: Zemní práce (výkop, násyp, vrstevnice)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, xml_landxml]
+    optional: false
+    notes: >
+      Road projects ALWAYS have earthworks; LandXML Surface delta
+      drives volume calculations.
+
+  - category: environmental_impact
+    label_cs: Vyhodnocení vlivu na ŽP (EIA / EVL / NATURA 2000)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true

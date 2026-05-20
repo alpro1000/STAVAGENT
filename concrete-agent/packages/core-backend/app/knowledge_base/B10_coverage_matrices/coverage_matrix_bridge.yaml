@@ -1,0 +1,340 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — bridge (mostní objekty)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Calibrated against the Žihle 2062-1 D&B pilot (most ev. č. 2062-1 u obce
+# Žihle, SÚSPK 2026, integrální rám 5-pole 5+5×20+5 = 130 m, 154 položek
+# napříč SO 001 / 180 / 201 / 290 / 801 / VRN, 10 585 736 Kč). The matrix
+# also covers SO 207 (předpjatá mostovka jednostranné) and SO 202/203
+# (continuous-pour decks) reference projects from test-data/tz/.
+#
+# Field shape matches CoverageRequirement (see residential YAML for
+# annotated examples). Categories grouped by ČSN 73 6201 chapters +
+# vyhláška 104/1997 + TKP PK 18 (mostní objekty).
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.2 + §15.7
+# Reference: docs/STAVAGENT_PATTERNS.md (Žihle 2062-1 pattern set)
+# Reference: test-data/most-2062-1-zihle/* (corpus calibration)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: bridge
+description: >
+  35 coverage requirements for mostní objekty (silniční mosty / nadjezdy /
+  estakády). Calibrated from Žihle 2062-1 + SO 202/203/207 reference pilots.
+
+requirements:
+
+  # ─── A. Project identification + norms ────────────────────────────────────
+
+  - category: project_identification
+    label_cs: Identifikační údaje mostu (číslo mostu, název, investor)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Most ev. č. (4-místné číslo), investor (ŘSD / SÚSPK / kraj),
+      autorizovaný projektant ČKAIT, číslo zakázky.
+
+  - category: norm_references
+    label_cs: Citované normy (ČSN 73 6201 + TKP PK)
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Žihle pilot cited 14 norms. Minimum for bridge = ČSN 73 6201
+      (mostní konstrukce) + TKP PK 18 (mostní objekty) + ČSN EN
+      1992-2 (concrete bridges). Coverage gate flags ≤ 3.
+
+  - category: referenced_documents
+    label_cs: Soupis odkazovaných výkresů (PDPS / DPS)
+    required_fields: [document]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Bridge projects ALWAYS reference outline + detail + reinforcement
+      drawings. Missing = TZ is a stub.
+
+  - category: tkp_pk_references
+    label_cs: Technické kvalitativní podmínky pozemních komunikací
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      TKP PK 1 (obecné) + TKP PK 18 (mostní). PDP / DPS bez TKP =
+      neprojektově nezpůsobilý dokument.
+
+  # ─── B. Bridge geometry (the core invariant) ──────────────────────────────
+
+  - category: bridge_span_geometry
+    label_cs: Rozpětí mostu (počet polí × délka, šířka, šikmost, podjezd)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+    notes: >
+      Span pattern "15+4×20+15", nk_width, road_class width, skew angle,
+      vertical clearance. Žihle: 5+5×20+5 = 130 m. Without geometry the
+      kalkulátor cannot derive volume — blocking.
+
+  - category: site_situation
+    label_cs: Koordinační situace (staničení, parcely, vlastnické vztahy)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, xml_landxml]
+    optional: false
+    notes: >
+      Žihle Povodí Vltavy parcels 1836+385/13 (Mladotický potok) — P0
+      blocker for DUR if missing.
+
+  - category: dimensions
+    label_cs: Rozměry konstrukce (tloušťka mostovky, výška opěr/pilířů)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+
+  # ─── C. Bridge substructure ──────────────────────────────────────────────
+
+  - category: foundation_system
+    label_cs: Založení (piloty / patky / studny — Ø + L + počet)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+    notes: >
+      Pile geometry mandatory for kalkulátor pile_diameter_mm +
+      pile_length_m + count inputs. Geology (XA class) drives
+      `pilota` rebar_index per v3 §15.3.
+
+  - category: bridge_substructure
+    label_cs: Spodní stavba (opěry, pilíře, úložné prahy, závěrné zídky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+    notes: >
+      Multiple sub-elements per Most: opery_ulozne_prahy, driky_piliru,
+      kridla_opery, zaklady_piliru, mostni_zavirne_zidky,
+      prechodova_deska. Each = separate calculator element type.
+
+  - category: wall_system
+    label_cs: Opěrné zdi / křídla opěr / kotvení svahu
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: true
+    notes: >
+      Some bridges have wing walls integrated with abutments; others
+      use opérné zdi as separate elements. Optional — RD / smaller
+      mostky may have none.
+
+  # ─── D. Bridge superstructure (deck / NK) ────────────────────────────────
+
+  - category: bridge_superstructure
+    label_cs: Nosná konstrukce mostovky (deska / komora / trám / spřažený)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+    notes: >
+      Subtypes per v3 §9: deskovy, dvoutram, vicetram, komora, ramovy,
+      spřažený, podzemni_radová. Calculator nk_classification field
+      maps to construction_sequence.
+
+  - category: prestress_system
+    label_cs: Předpínací systém (kabely Y1860, jednostranné/oboustranné, injektáž)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Optional — short spans (< 16 m) often železobetonové. For
+      předpjaté NK: cable count, profile (Ø15.7), wait+stressing+
+      grouting per v4.18 calculator formula. SO-207 reference.
+
+  - category: bridge_bearings
+    label_cs: Mostní ložiska (pevná / pohyblivá, počet, nosnost)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Integrální mostky (Žihle) HAVE NO bearings → ZD §4.4.l exclusion.
+      Optional flag, but the absence drives the integrální / rámový
+      classification downstream.
+
+  - category: bridge_expansion_joints
+    label_cs: Mostní závěr (typ, šířka, počet)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Same exclusion rule as bearings — integrální mostky bez závěru.
+      Žihle ZD explicitly excluded 93152.
+
+  # ─── E. Deck finishes ─────────────────────────────────────────────────────
+
+  - category: bridge_deck_finishes
+    label_cs: Římsy + izolace + vozovkové vrstvy
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Římsa (kalkulátor rimsa element), hydroizolace AIP (PVC nebo
+      mPVC), ochranná vrstva AB 11+, ložní vrstva ACL 16, obrusná
+      vrstva ACO 11. Coverage gate blocks if 0 finishes — most je
+      undelivered.
+
+  - category: waterproofing_system
+    label_cs: Hydroizolační systém mostovky (typ + tloušťka + záruka)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN 73 6242 hydroizolace mostovek. Mandatory per TKP PK 21.
+
+  - category: pavement_layers
+    label_cs: Skladba vozovky na mostě (vrstvy + tloušťky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  # ─── F. Materials ─────────────────────────────────────────────────────────
+
+  - category: concrete_grade
+    label_cs: Třída betonu (mostovka, opěry, pilíře, římsy)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Mostovka obvykle C35/45 nebo vyšší; opěry C30/37; římsy C30/37
+      XF4. ČSN EN 206.
+
+  - category: exposure_class
+    label_cs: Třída expozice (XF2/XF3/XF4 mosty + XD3 řez. soli)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Bridge concrete almost always XF4 (mostovka) + XD3 (rezistence
+      proti rozmrazovacím solím). Coverage gate blocks if missing —
+      durability spec.
+
+  - category: reinforcement
+    label_cs: Třída výztuže (B500B + prestress Y1860)
+    required_fields: [steel_grade]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: special_requirements
+    label_cs: Speciální požadavky (vodotěsnost, požárka mostu, hlukové bariéry)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+
+  # ─── G. Quantities & cost ────────────────────────────────────────────────
+
+  - category: quantities
+    label_cs: Výkaz výměr (m³ beton, m² bednění, t výztuž, ks ložiska)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_unixml, xlsx_soupis]
+    optional: false
+    notes: >
+      Žihle: 154 položek across 6 SO. Bridge totals: 2-5× residential
+      density per m². Coverage gate blocks if 0 quantities.
+
+  # ─── H. Construction technology ──────────────────────────────────────────
+
+  - category: construction_technology
+    label_cs: Stavební postup (pevná skruž / MSS / posuvná skruž / CFT)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Drives kalkulátor formwork selection (Top 50 / MSS / VARIOKIT).
+      Without technology choice the cost estimate is ±50 %.
+
+  - category: temporary_works
+    label_cs: Provizoria + objížďky + ZS / DIO
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Žihle SO 180 provizorium + SO 801 ZS detailní. Bridge build
+      always needs DIO (dopravně inženýrské opatření).
+
+  # ─── I. DXF / drawing inventory ──────────────────────────────────────────
+
+  - category: dxf_meta
+    label_cs: DXF metadata (entity count, units, bbox)
+    required_fields: [entity_count_total, layer_count]
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: layer_inventory
+    label_cs: Vrstvy výkresů (most + spodní stavba + DPS + výztuž)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: closed_polygons
+    label_cs: Uzavřené polygony (průřezy, půdorysy, vzorové řezy)
+    required_fields: []
+    expected_sources: [dxf, dwg, ifc]
+    optional: false
+
+  - category: text_inventory
+    label_cs: Texty (čísla podpěr, kóty, číslo mostu)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: dimensions_drawn
+    label_cs: Kótování v DPS (DIMENSION entity)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: true
+
+  # ─── J. Geology / hydro ──────────────────────────────────────────────────
+
+  - category: geological_conditions
+    label_cs: IGP (Inženýrsko-geologický průzkum)
+    required_fields: []
+    expected_sources: [pdf_geology, pdf_tz]
+    optional: false
+    notes: >
+      Mostní stavby PODLE ČSN 73 1001 vyžadují IGP — pile design +
+      foundation bearing capacity. PR3 has placeholder pdf_geology.
+
+  - category: hydrology
+    label_cs: Hydrologie + Q100 + povodí + návrh průtoku
+    required_fields: []
+    expected_sources: [pdf_tz, pdf_geology]
+    optional: true
+    notes: >
+      Mostní stavby přes vodní tok vyžadují stanovisko správce
+      povodí. Žihle: Povodí Vltavy — Mladotický potok.
+
+  # ─── K. Environment & safety ─────────────────────────────────────────────
+
+  - category: utility_connections
+    label_cs: Přeložky sítí na mostě (kabelovody, plynovod, vodovod)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  - category: river_authority_consent
+    label_cs: Souhlas správce vodního toku (Povodí, ZVHS)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Optional flag, but absence is a P0 blocker for DUR (jako
+      Žihle Povodí Vltavy). Drives operator escalation.
+
+  - category: fire_safety
+    label_cs: Požárně bezpečnostní řešení (PBŘ pro mostní objekt)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Optional — silniční mosty obvykle nepotřebují PBŘ (mimo
+      podjezdy nad železnicí + tunely).
+
+  - category: bridge_drainage
+    label_cs: Odvodnění mostu (svody, vpusti, mostní žlaby)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false

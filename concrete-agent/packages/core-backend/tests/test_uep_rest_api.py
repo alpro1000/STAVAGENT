@@ -102,12 +102,15 @@ def test_coverage_matrix_config_residential(client) -> None:
     assert r.status_code == 200
 
 
-def test_coverage_matrix_config_unknown_type(client) -> None:
-    # `bridge` is in the allow-list (PR3 ships the YAML); for PR2 the
-    # YAML doesn't exist so we get a 404 from the path-not-exists
-    # check (NOT from the allow-list).
+def test_coverage_matrix_config_bridge_now_loads(client) -> None:
+    # PR3 ships the bridge / road / industrial matrices (calibrated
+    # from Žihle / SO 250 / hk212). They live next to the residential
+    # YAML under app/knowledge_base/B10_coverage_matrices/.
     r = client.get("/api/v1/uep/config/coverage-matrices/bridge")
-    assert r.status_code == 404
+    assert r.status_code == 200
+    body = r.json()
+    assert body["project_type"] == "bridge"
+    assert len(body["requirements"]) >= 25
 
 
 def test_coverage_matrix_config_rejects_path_traversal(client) -> None:
