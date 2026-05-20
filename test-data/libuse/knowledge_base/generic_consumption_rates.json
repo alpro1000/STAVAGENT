@@ -1,5 +1,126 @@
 {
-  "version": "0.1",
-  "doc": "Generic consumption rates fallback for Libuše finishing-works freelance project. Rates here are used ONLY when TZ does not provide an explicit rate (Phase 6.6 Case 2 + Case 4). Every entry MUST carry `source` (industry standard, ČSN, výrobce TL, or 'typical industry experience'). Inline rates are FORBIDDEN in decomposition pairing code — they all live here.",
-  "rates": {}
+  "version": "0.2",
+  "doc": "Generic consumption rates fallback for Libuše finishing-works freelance project. Rates here are used ONLY when projektová dokumentace does not provide an explicit rate (Phase 6.6 Case 2 + Case 4). Every entry MUST carry `source` field with explicit attribution. Inline rates are FORBIDDEN in decomposition pairing code — they all live here.",
+  "rates": {
+    "penetrace_univerzalni": {
+      "popis_template": "Penetrace univerzální — disperzní",
+      "category_keywords": ["penetrac"],
+      "material_kind": "penetrace",
+      "applies_to_kapitoly": ["PSV-771", "PSV-776", "PSV-781", "PSV-784", "HSV-611", "HSV-612", "HSV-622.1", "HSV-622.2", "HSV-622.3", "HSV-631"],
+      "MJ_consumed": "l",
+      "MJ_applied_to": "m2",
+      "rate": 0.2,
+      "source": "Industry standard pro penetrace disperzní (typická spotřeba 0,15–0,25 l/m²)"
+    },
+    "lepidlo_flexibilni_c2te": {
+      "popis_template": "Lepidlo flexibilní C2TE — disperzní",
+      "category_keywords": ["lepidl", "lepidlo flex"],
+      "material_kind": "lepidlo",
+      "applies_to_kapitoly": ["PSV-771", "PSV-781", "HSV-622.1"],
+      "MJ_consumed": "kg",
+      "MJ_applied_to": "m2",
+      "rate": 5.0,
+      "source": "Industry standard pro lepidlo C2TE pod keramickou dlažbu (typická spotřeba 4–6 kg/m²)"
+    },
+    "sparovaci_hmota_keramicka": {
+      "popis_template": "Spárovací hmota — keramika",
+      "category_keywords": ["spárovac", "sparovaci"],
+      "material_kind": "sparovaci_hmota",
+      "applies_to_kapitoly": ["PSV-771", "PSV-781"],
+      "MJ_consumed": "kg",
+      "MJ_applied_to": "m2",
+      "rate": 0.5,
+      "source": "Industry standard pro spárovací hmotu (typická spotřeba 0,3–0,6 kg/m² podle formátu dlažby)"
+    },
+    "lepidlo_na_vinyl": {
+      "popis_template": "Lepidlo na vinyl — disperzní",
+      "category_keywords": ["lepidlo vinyl"],
+      "material_kind": "lepidlo",
+      "applies_to_kapitoly": ["PSV-776"],
+      "MJ_consumed": "kg",
+      "MJ_applied_to": "m2",
+      "rate": 0.3,
+      "source": "Industry standard pro lepidlo na povlakové podlahy (0,25–0,35 kg/m²)"
+    },
+    "samonivelacni_sterka": {
+      "popis_template": "Samonivelační stěrka 3 mm",
+      "category_keywords": ["samonivelác", "samonivela"],
+      "material_kind": "cementovy_poter",
+      "applies_to_kapitoly": ["PSV-776"],
+      "MJ_consumed": "kg",
+      "MJ_applied_to": "m2",
+      "rate": 4.5,
+      "source": "Industry standard pro samonivelační stěrku 3 mm (1,5 kg/m² na 1 mm tloušťky)"
+    },
+    "barva_disperzni_per_vrstva": {
+      "popis_template": "Malba disperzní — 1× vrstva",
+      "category_keywords": ["malb", "vymal"],
+      "material_kind": "malba_interier",
+      "applies_to_kapitoly": ["PSV-784"],
+      "MJ_consumed": "l",
+      "MJ_applied_to": "m2",
+      "rate": 0.15,
+      "source": "Industry standard pro malby disperzní (0,12–0,18 l/m² per vrstva; 2 vrstvy standard)"
+    },
+    "tmel_akrylatovy_sparovani": {
+      "popis_template": "Tmel akrylátový — spárování / dilatace",
+      "category_keywords": ["tmel akryl"],
+      "material_kind": "tmel_tesnici",
+      "applies_to_kapitoly": ["PSV-784", "PSV-781", "PSV-771"],
+      "MJ_consumed": "kg",
+      "MJ_applied_to": "m2",
+      "rate": 0.05,
+      "source": "Industry standard pro tmely akrylátové (~50 g/m² při spárování rohů)"
+    },
+    "tmel_protipozarni_prostup": {
+      "popis_template": "Tmel požárně-odolný — utěsnění prostupu",
+      "category_keywords": ["tmel protipo", "protipozar"],
+      "material_kind": "tmel_protipozarni",
+      "applies_to_kapitoly": ["HSV-963", "HSV-962", "HSV-961"],
+      "MJ_consumed": "kg",
+      "MJ_applied_to": "ks",
+      "rate": 0.5,
+      "source": "ČSN 73 0810 + industry standard pro prostupy (~0,3–0,7 kg per prostup podle průměru)"
+    },
+    "manzeta_protipozarni_prostup": {
+      "popis_template": "Manžeta protipožární — prostup",
+      "category_keywords": ["manžet", "manzet"],
+      "material_kind": "manzeta_protipozarni",
+      "applies_to_kapitoly": ["HSV-963", "HSV-962"],
+      "MJ_consumed": "ks",
+      "MJ_applied_to": "ks",
+      "rate": 1.0,
+      "source": "ČSN 73 0810 — 1 manžeta na hořlavý prostup"
+    },
+    "objimka_protipozarni_prostup": {
+      "popis_template": "Objímka protipožární — prostup (pouze hořlavé potrubí)",
+      "category_keywords": ["objímk", "objimk"],
+      "material_kind": "objimka_protipozarni",
+      "applies_to_kapitoly": ["HSV-963"],
+      "MJ_consumed": "ks",
+      "MJ_applied_to": "ks",
+      "rate": 1.0,
+      "source": "ČSN 73 0810 — pouze pokud PBŘS specifies (typicky pro plastové potrubí)"
+    },
+    "vyztuzna_tkanina_omitka": {
+      "popis_template": "Výztužná tkanina (perlinka) — omítka",
+      "category_keywords": ["perlinka", "výztužná tkanina", "vyztuzna tkanina"],
+      "material_kind": "perlinka",
+      "applies_to_kapitoly": ["HSV-611", "HSV-612", "HSV-622.2"],
+      "MJ_consumed": "m2",
+      "MJ_applied_to": "m2",
+      "rate": 1.1,
+      "source": "Industry standard pro perlinku (10 % overlap)"
+    },
+    "narozni_lista_omitka": {
+      "popis_template": "Nárožní lišta — omítka",
+      "category_keywords": ["nárožní", "narozni", "ochrann"],
+      "material_kind": "lista_zakoncovaci",
+      "applies_to_kapitoly": ["HSV-611", "HSV-612"],
+      "MJ_consumed": "bm",
+      "MJ_applied_to": "m2",
+      "rate": 0.1,
+      "source": "Industry standard pro ochranné nárožní lišty (cca 1 m lišty na 10 m² omítky)"
+    }
+  }
 }
