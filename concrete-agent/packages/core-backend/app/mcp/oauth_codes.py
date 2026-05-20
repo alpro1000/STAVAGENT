@@ -89,6 +89,7 @@ def generate_code(
     state: Optional[str] = None,
     ttl_seconds: int = DEFAULT_CODE_TTL_SECONDS,
     code_challenge_method: str = "S256",
+    oauth_client_id: Optional[str] = None,
 ) -> str:
     """Generate + store a short-lived authorization code.
 
@@ -108,21 +109,32 @@ def generate_code(
     conn = mcp_auth._get_db()
     try:
         cur = conn.cursor()
+        # oauth_client_id (NULLABLE FK to mcp_oauth_clients) added in
+        # migration 010. Legacy ChatGPT flow where the third party uses
+        # the user's api_key directly as client_id passes None here, so
+        # the column stays NULL → /token routes that code through the
+        # backward-compat path (no mcp_oauth_tokens row written).
+        # DCR-issued clients pass their dcr-{hex24} so /token can bind
+        # the minted access_token to (oauth_client_id, user_api_key).
         cur.execute(
             "INSERT INTO mcp_oauth_codes "
             "(code, client_id, redirect_uri, code_challenge, "
-            " code_challenge_method, state, created_at, expires_at) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            " code_challenge_method, state, created_at, expires_at, "
+            " oauth_client_id) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (code, client_id, redirect_uri, code_challenge,
-             code_challenge_method, state, now, expires_at),
+             code_challenge_method, state, now, expires_at,
+             oauth_client_id),
         )
         conn.commit()
     except psycopg2.Error:
         conn.rollback()
         raise
     logger.info(
-        "[MCP/OAuth] code issued client_id=%s redirect_uri=%s ttl=%ds",
-        _redact_key(client_id), redirect_uri, ttl_seconds,
+        "[MCP/OAuth] code issued client_id=%s oauth_client_id=%s "
+        "redirect_uri=%s ttl=%ds",
+        _redact_key(client_id), oauth_client_id or "legacy",
+        redirect_uri, ttl_seconds,
     )
     return code
 
@@ -135,7 +147,12 @@ def consume_code(
     """Atomically validate + mark code as used.
 
     Returns:
-        {"ok": True, "client_id": <api_key>} on success.
+        {"ok": True, "client_id": <api_key>, "oauth_client_id": <dcr-id-or-None>}
+        on success. `oauth_client_id` is the dcr-{hex24} that the
+        authorize endpoint stored on the code row, or None for legacy
+        flows where the third party uses the user api_key directly.
+        /token uses it to decide whether to mint an mcp_oauth_tokens row.
+
         {"ok": False, "error": "<code>", "error_description": "..."}
         with one of the RFC 6749 §5.2 error codes:
           - invalid_grant: code unknown / used / expired / verifier mismatch
@@ -153,7 +170,8 @@ def consume_code(
         # (would let a stolen code be replayed once before mark_used wins).
         cur.execute(
             "SELECT client_id, redirect_uri, code_challenge, "
-            "       code_challenge_method, expires_at, used_at "
+            "       code_challenge_method, expires_at, used_at, "
+            "       oauth_client_id "
             "FROM mcp_oauth_codes "
             "WHERE code = %s "
             "FOR UPDATE",
@@ -209,7 +227,11 @@ def consume_code(
         conn.rollback()
         raise
 
-    return {"ok": True, "client_id": row["client_id"]}
+    return {
+        "ok": True,
+        "client_id": row["client_id"],
+        "oauth_client_id": row["oauth_client_id"],
+    }
 
 
 def _redact_key(key: str) -> str:

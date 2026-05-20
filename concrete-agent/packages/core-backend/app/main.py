@@ -7,6 +7,7 @@ import os
 import re
 import time
 from contextlib import asynccontextmanager
+from typing import Optional
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -46,275 +47,19 @@ except Exception as exc:  # noqa: BLE001 — MCP must never block the API boot
     _mcp_init_error = exc
 
 
-# Allow-list for the MCP /mcp/ endpoint. Currently runs in dry-run mode:
-# non-whitelisted origins are logged but NOT rejected. Flip
-# MCP_ORIGIN_ENFORCE=1 to start returning 403.
-_MCP_ALLOWED_ORIGIN_PREFIXES = (
-    "https://claude.ai",
-    "https://chat.openai.com",
-    "https://chatgpt.com",
-    "http://localhost",
-    "http://127.0.0.1",
+# Middlewares for the /mcp mount live in app/mcp/middleware.py so they
+# can be imported by tests without pulling the full FastAPI app graph
+# (KB loader, fastmcp, etc.). Re-exported here for backward-compat with
+# any external code still importing them from app.main.
+from app.mcp.middleware import (
+    _MCP_ALLOWED_ORIGIN_PREFIXES,
+    _MCP_ORIGIN_ENFORCE,
+    _origin_allowed,
+    _external_base_url_from_scope,
+    MCPOriginMiddleware,
+    MCPAuthChallengeMiddleware,
+    BareOptionsAllowMiddleware,
 )
-_MCP_ORIGIN_ENFORCE = os.getenv("MCP_ORIGIN_ENFORCE", "").lower() in {"1", "true", "yes"}
-
-
-def _origin_allowed(origin: str) -> bool:
-    if not origin:
-        return True  # No Origin header → non-browser client (Claude Desktop, curl)
-    return any(origin.startswith(prefix) for prefix in _MCP_ALLOWED_ORIGIN_PREFIXES)
-
-
-class MCPOriginMiddleware:
-    """ASGI middleware that logs (and optionally blocks) non-whitelisted Origin
-    headers on the /mcp/ endpoint. Required by Anthropic Connectors Directory.
-    """
-
-    def __init__(self, app):
-        self.app = app
-
-    async def __call__(self, scope, receive, send):
-        if scope["type"] == "http":
-            origin = ""
-            for k, v in scope.get("headers", []):
-                if k == b"origin":
-                    origin = v.decode("latin-1")
-                    break
-            if origin and not _origin_allowed(origin):
-                if _MCP_ORIGIN_ENFORCE:
-                    logger.warning(f"[MCP/Origin] BLOCKED: {origin}")
-                    from starlette.responses import JSONResponse
-                    response = JSONResponse(
-                        {"error": "origin_not_allowed", "origin": origin},
-                        status_code=403,
-                    )
-                    await response(scope, receive, send)
-                    return
-                logger.warning(
-                    f"[MCP/Origin] non-whitelisted origin {origin!r} "
-                    f"(dry-run: allowing — set MCP_ORIGIN_ENFORCE=1 to block)"
-                )
-        await self.app(scope, receive, send)
-
-
-class MCPAuthChallengeMiddleware:
-    """RFC 9728 §5.3 — emit `WWW-Authenticate` on every 401 from /mcp/,
-    pointing clients at the protected-resource metadata.
-
-    Two responsibilities:
-
-    1. **Active 401 gate** — any non-OPTIONS request without an
-       `Authorization` header is rejected immediately with a 401
-       carrying the challenge. ChatGPT and Claude.ai use this
-       challenge to discover where to find the OAuth metadata.
-
-       This INCLUDES anonymous `GET /mcp/`. Claude.ai's connector
-       probe does an unauthenticated GET before running OAuth and
-       expects to see `401 + WWW-Authenticate` as the signal that
-       auth is required. Without the GET gate, FastMCP itself
-       responds 406 ("Not Acceptable: Client must accept
-       text/event-stream") because the probe doesn't send the
-       SSE `Accept` header — and 406 makes Claude.ai treat the
-       server as unreachable instead of starting the OAuth flow.
-
-    2. **Passive 401 augmentation** — if the wrapped FastMCP app
-       itself responds 401 (because the bearer token failed an
-       internal validation), inject the same `WWW-Authenticate`
-       header into the response on its way out.
-
-    `OPTIONS` is the one method that bypasses the gate, so browser
-    CORS preflights still succeed without an `Authorization` header
-    (the actual POST/GET that follows will be gated).
-    """
-
-    # Everything except OPTIONS is gated. The auth check runs BEFORE
-    # the request reaches FastMCP — so for an anonymous GET, the 401
-    # fires here and the Accept-header check inside FastMCP never
-    # runs. Once a real client adds `Authorization`, the request flows
-    # through to FastMCP and FastMCP's own Accept negotiation kicks
-    # in (which is correct for authenticated MCP traffic).
-    _GATE_METHODS = {"GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"}
-
-    def __init__(self, app):
-        self.app = app
-
-    def _challenge_header(self, scope) -> str:
-        base = _external_base_url_from_scope(scope)
-        resource_metadata = f"{base}/.well-known/oauth-protected-resource"
-        # RFC 6750 §3 + RFC 9728 §5.3 — quote attribute values, comma-
-        # separated. `error="invalid_token"` per RFC 6750 §3.1 when an
-        # invalid/absent token is the reason for the 401.
-        return (
-            f'Bearer realm="STAVAGENT MCP", '
-            f'resource_metadata="{resource_metadata}", '
-            f'error="invalid_token"'
-        )
-
-    async def __call__(self, scope, receive, send):
-        if scope["type"] != "http":
-            await self.app(scope, receive, send)
-            return
-
-        method = scope.get("method", "").upper()
-        headers = {k.decode("latin-1").lower(): v.decode("latin-1")
-                   for k, v in scope.get("headers", [])}
-        has_auth = "authorization" in headers and bool(headers["authorization"].strip())
-
-        # Active gate — unauthenticated write requests get the 401
-        # challenge directly. Skip the wrapped FastMCP app entirely.
-        if method in self._GATE_METHODS and not has_auth:
-            from starlette.responses import JSONResponse
-            challenge = self._challenge_header(scope)
-            response = JSONResponse(
-                {
-                    "error": "invalid_token",
-                    "error_description": (
-                        "MCP endpoint requires an OAuth 2.0 bearer token. "
-                        "See /.well-known/oauth-protected-resource for the "
-                        "authorization server."
-                    ),
-                },
-                status_code=401,
-                headers={"WWW-Authenticate": challenge},
-            )
-            await response(scope, receive, send)
-            return
-
-        # Passive augmentation — wrap `send` so we can inject the
-        # challenge header onto any 401 the inner app produces.
-        async def send_with_challenge(message):
-            if message["type"] == "http.response.start" and message.get("status") == 401:
-                headers_list = list(message.get("headers", []))
-                # Don't duplicate if the inner app already set one.
-                has_www_auth = any(
-                    k.lower() == b"www-authenticate" for k, _ in headers_list
-                )
-                if not has_www_auth:
-                    challenge = self._challenge_header(scope)
-                    headers_list.append(
-                        (b"www-authenticate", challenge.encode("latin-1"))
-                    )
-                    message = {**message, "headers": headers_list}
-            await send(message)
-
-        await self.app(scope, receive, send_with_challenge)
-
-
-class BareOptionsAllowMiddleware:
-    """Return 204 + CORS headers for `OPTIONS` requests that AREN'T a
-    real CORS preflight.
-
-    Why this exists
-    ===============
-
-    Starlette's `CORSMiddleware` short-circuits OPTIONS requests with
-    a 200 + CORS headers — but only when the request looks like a real
-    preflight, i.e. it carries `Access-Control-Request-Method` (per
-    the Fetch spec). Anything else falls through to route dispatch,
-    which 405s because no FastAPI route (and no FastMCP route on the
-    `/mcp/` mount) registers an OPTIONS handler.
-
-    Some legitimate clients send bare OPTIONS without
-    `Access-Control-Request-Method`:
-
-      - `curl -X OPTIONS …` for a health probe
-      - Intermediary proxies / gateways that strip the request-method
-        header on retry
-      - Some MCP client implementations probing `/mcp/` for liveness
-
-    Without an OPTIONS handler, those clients see 405 + no CORS
-    headers → browser surfaces a `CORS_ERROR` and Claude.ai treats
-    the server as unreachable.
-
-    What this middleware does
-    =========================
-
-      1. Pass through anything that isn't an HTTP OPTIONS request.
-      2. Pass through OPTIONS requests that ARE real preflights
-         (Access-Control-Request-Method present) — Starlette's
-         `CORSMiddleware` further down the stack handles them with
-         its normal 200 + CORS-headers response.
-      3. For bare OPTIONS from an allow-listed `Origin`, short-circuit
-         with a `204 No Content` and the same CORS headers that
-         CORSMiddleware would have set on a preflight (so the browser
-         is happy regardless of which path the request took).
-      4. Bare OPTIONS without `Origin`, or with a non-allow-listed
-         origin, still pass through (returning 405 is correct for
-         non-CORS clients hitting routes that don't define OPTIONS).
-
-    Ordering
-    ========
-
-    Added to the app middleware stack AFTER `CORSMiddleware` (so the
-    last-added-first-running rule places this OUTSIDE CORSMiddleware
-    in the request flow). Real preflights are inspected by this
-    middleware first, get the request-method header, are passed
-    through to CORSMiddleware, and respond with 200. Bare OPTIONS
-    short-circuit here.
-    """
-
-    def __init__(self, app, allow_origins, allow_origin_regex=None):
-        self.app = app
-        self.allow_origins = set(allow_origins or [])
-        self.allow_origin_regex = (
-            re.compile(allow_origin_regex) if allow_origin_regex else None
-        )
-
-    def _origin_allowed(self, origin: str) -> bool:
-        if not origin:
-            return False
-        if origin in self.allow_origins:
-            return True
-        if self.allow_origin_regex and self.allow_origin_regex.fullmatch(origin):
-            return True
-        return False
-
-    async def __call__(self, scope, receive, send):
-        if scope["type"] != "http" or scope.get("method") != "OPTIONS":
-            await self.app(scope, receive, send)
-            return
-
-        headers = {
-            k.decode("latin-1").lower(): v.decode("latin-1")
-            for k, v in scope.get("headers", [])
-        }
-        # Real CORS preflight — let CORSMiddleware handle it
-        if "access-control-request-method" in headers:
-            await self.app(scope, receive, send)
-            return
-
-        origin = headers.get("origin", "")
-        if not self._origin_allowed(origin):
-            # No origin or not allow-listed → don't short-circuit;
-            # original 405 behaviour is fine for non-CORS clients.
-            await self.app(scope, receive, send)
-            return
-
-        # Bare OPTIONS from allow-listed origin → 204 + CORS headers.
-        # Methods + headers + max-age mirror what a real preflight
-        # would have returned via CORSMiddleware (same allow lists,
-        # 24 h cache). `Mcp-Session-Id` is explicit because some MCP
-        # transports use it and CORSMiddleware's `Access-Control-
-        # Allow-Headers: *` doesn't apply to credentialed requests in
-        # all browsers.
-        from starlette.responses import Response
-
-        response = Response(
-            status_code=204,
-            headers={
-                "Access-Control-Allow-Origin": origin,
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Methods":
-                    "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS",
-                "Access-Control-Allow-Headers":
-                    "Authorization, Content-Type, Mcp-Session-Id, "
-                    "X-Requested-With",
-                "Access-Control-Max-Age": "86400",
-                "Vary": "Origin",
-            },
-        )
-        await response(scope, receive, send)
-
 
 # ── Application lifespan (replaces deprecated @app.on_event decorators) ──────
 
@@ -589,22 +334,10 @@ def _external_base_url(request) -> str:
     return str(base_url).rstrip("/")
 
 
-def _external_base_url_from_scope(scope) -> str:
-    """ASGI-scope variant of `_external_base_url` for use inside
-    middleware where no Starlette `Request` object is constructed.
-
-    Reads `x-forwarded-proto` + `host` from the raw header list
-    (`scope["headers"]` is `list[tuple[bytes, bytes]]`).
-    """
-    headers = {k.decode("latin-1").lower(): v.decode("latin-1")
-               for k, v in scope.get("headers", [])}
-    forwarded_proto = headers.get("x-forwarded-proto", "").split(",")[0].strip().lower()
-    if forwarded_proto in ("http", "https"):
-        scheme = forwarded_proto
-    else:
-        scheme = scope.get("scheme") or "http"
-    host = headers.get("host") or "localhost"
-    return f"{scheme}://{host}"
+# `_external_base_url_from_scope` re-exported from app.mcp.middleware at
+# top of file. Local request-based variant `_external_base_url` above
+# stays here because it's only used by the OAuth discovery endpoints
+# which construct a Starlette Request.
 
 
 def _oauth_discovery_payload(request) -> dict:
@@ -614,6 +347,13 @@ def _oauth_discovery_payload(request) -> dict:
         "issuer": base,
         "authorization_endpoint": f"{base}/api/v1/mcp/oauth/authorize",
         "token_endpoint": f"{base}/api/v1/mcp/oauth/token",
+        # RFC 7591 §1.1 Dynamic Client Registration — advertised so the
+        # Anthropic broker (claude.ai) + ChatGPT broker self-register
+        # without a human pasting credentials. Without this field, the
+        # connector falls back to "Couldn't reach the MCP server"
+        # because brokers have no path to obtain a client_id /
+        # client_secret on their own.
+        "registration_endpoint": f"{base}/api/v1/mcp/oauth/register",
         "grant_types_supported": ["authorization_code", "client_credentials"],
         "response_types_supported": ["code"],
         "code_challenge_methods_supported": ["S256"],
@@ -709,14 +449,27 @@ async def oauth_protected_resource(request: Request):
 # (both layers compute the same value), so the double-wrap is safe.
 if _mcp_http_app is not None:
     mcp_inner = MCPAuthChallengeMiddleware(MCPOriginMiddleware(_mcp_http_app))
+    # /mcp mount CORS — tightened to the brokers that actually talk to it.
+    # Claude.ai connectors + ChatGPT custom GPTs run inside iframes / web
+    # popups; their browser stacks enforce per-mount CORS regardless of
+    # the parent app's wider allow-list. Explicit methods + headers
+    # match exactly what the brokers send during preflight (so we never
+    # have to widen further) and satisfy the
+    # `allow_credentials=True` + non-wildcard constraint without
+    # leaning on Starlette's wildcard-translation behaviour.
+    _MCP_MOUNT_CORS_ORIGINS = [
+        "https://claude.ai",
+        "https://chatgpt.com",
+        "https://chat.openai.com",
+    ]
     mcp_with_cors = CORSMiddleware(
         app=mcp_inner,
-        allow_origin_regex=_CORS_ALLOW_ORIGIN_REGEX,
-        allow_origins=_CORS_ALLOW_ORIGINS,
+        allow_origins=_MCP_MOUNT_CORS_ORIGINS,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Authorization", "Content-Type", "Mcp-Session-Id"],
         expose_headers=_CORS_EXPOSE_HEADERS,
+        max_age=86400,
     )
     app.mount("/mcp", mcp_with_cors)
     from app.mcp.auth import TOOL_COSTS as _MCP_TOOL_COSTS
