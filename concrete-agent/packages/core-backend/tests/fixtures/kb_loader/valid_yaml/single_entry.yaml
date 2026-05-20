@@ -1,0 +1,10 @@
+# B4-shape: single root mapping
+element_type: operne_zdi
+source: kb_default
+confidence: 0.85
+workforce:
+  num_workers_total: 12
+  num_carpenters: 4
+equipment:
+  num_pumps: 1
+  num_cranes: 1

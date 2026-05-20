@@ -1,0 +1,14 @@
+# B7-shape: nested structure with deeply-keyed groups
+source:
+  norm_id: csn_73_6244
+  title: "ČSN 73 6244 — Přechody mostů pozemních komunikací"
+  edition_year: 2010
+clanek_1_predmet:
+  description: "Norma stanovuje požadavky..."
+  scope:
+    - "Mostní přechod"
+    - "Přechodové desky, závěrné zídky"
+clanek_5_materialy:
+  zasyp_oper:
+    material: "drcený štěrk fr. 0/32"
+    min_proctor_pct: 95
