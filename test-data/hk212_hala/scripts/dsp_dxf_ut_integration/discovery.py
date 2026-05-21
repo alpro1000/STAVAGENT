@@ -9,18 +9,18 @@ Reads:
     app/knowledge_base/B5_steel_profile_weights/csn_en_10025_10210.json   (kg/m catalog)
 
 Writes:
-    outputs/dilenska_ut_integration/dilenska_razitka.json
-    outputs/dilenska_ut_integration/dilenska_kusovnik.json
-    outputs/dilenska_ut_integration/ut_zarizeni_list.json
-    outputs/dilenska_ut_integration/2966_1_extracted.json
-    outputs/dilenska_ut_integration/energetical_balance_update.md
-    outputs/dilenska_ut_integration/discovery_report.md
+    outputs/dsp_dxf_ut_integration/dsp_dxf_razitka.json
+    outputs/dsp_dxf_ut_integration/dsp_dxf_kusovnik.json
+    outputs/dsp_dxf_ut_integration/ut_zarizeni_list.json
+    outputs/dsp_dxf_ut_integration/2966_1_extracted.json
+    outputs/dsp_dxf_ut_integration/energetical_balance_update.md
+    outputs/dsp_dxf_ut_integration/discovery_report.md
 
 NO modification of items_hk212_etap1.json — that's Stage D after user ratification.
 NO outbound HTTP calls (sandbox-blocked anyway, would fail).
 
 Run:
-    python test-data/hk212_hala/scripts/dilenska_ut_integration/discovery.py
+    python test-data/hk212_hala/scripts/dsp_dxf_ut_integration/discovery.py
 """
 
 from __future__ import annotations
@@ -40,7 +40,7 @@ DXF_DIR = REPO_ROOT / "test-data/hk212_hala/inputs/vykresy_dxf"
 DILENSKA_PATH = DXF_DIR / "Hala HK_ Úprava dveří.dxf"
 UT_PATH = DXF_DIR / "UT_HALAHK_DPS.dxf"
 B5_CATALOG = REPO_ROOT / "concrete-agent/packages/core-backend/app/knowledge_base/B5_steel_profile_weights/csn_en_10025_10210.json"
-OUT_DIR = REPO_ROOT / "test-data/hk212_hala/outputs/dilenska_ut_integration"
+OUT_DIR = REPO_ROOT / "test-data/hk212_hala/outputs/dsp_dxf_ut_integration"
 
 # Ghost razítko entities to filter (legacy LIMA DRSLAVICE template)
 GHOST_RAZITKO_TOKENS = {"LIMA", "DRSLAVICE", "Tichák", "Fojtů"}
@@ -682,11 +682,11 @@ def main() -> int:
     logger.info(f"Reading dílenská: {DILENSKA_PATH.name}")
     doc_dil = ezdxf.readfile(DILENSKA_PATH, errors="ignore")
     razitka_dil = extract_razitka(doc_dil, "dilenska_Mach_Micanek", logger)
-    (OUT_DIR / "dilenska_razitka.json").write_text(
+    (OUT_DIR / "dsp_dxf_razitka.json").write_text(
         json.dumps(razitka_dil, indent=2, ensure_ascii=False), encoding="utf-8")
 
     kusovnik = extract_kusovnik(doc_dil, b5, logger)
-    (OUT_DIR / "dilenska_kusovnik.json").write_text(
+    (OUT_DIR / "dsp_dxf_kusovnik.json").write_text(
         json.dumps(kusovnik, indent=2, ensure_ascii=False), encoding="utf-8")
 
     logger.info(f"Reading ÚT: {UT_PATH.name}")

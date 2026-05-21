@@ -1,6 +1,6 @@
 # HK212 — Dílenská OK + ÚT DPS discovery report
 
-_Generated: 2026-05-21T19:30:24.080923+00:00_
+_Generated: 2026-05-21T20:14:25.375184+00:00_
 
 _Source: ezdxf 1.4.3 (deterministic), no AI calls, no outbound HTTP_
 

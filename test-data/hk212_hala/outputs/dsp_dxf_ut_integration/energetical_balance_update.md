@@ -1,6 +1,6 @@
 # HK212 — Energetická bilance ÚT vs TZ B
 
-_Extracted: 2026-05-21T19:30:24.080610+00:00_
+_Extracted: 2026-05-21T20:14:25.374851+00:00_
 
 _Source: UT_HALAHK_DPS.dxf (DXF INSERT counting via ezdxf), no AI_
 
