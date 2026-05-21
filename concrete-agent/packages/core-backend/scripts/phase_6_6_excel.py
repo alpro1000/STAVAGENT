@@ -100,6 +100,12 @@ SMALL_ITALIC = Font(size=9, italic=True, color="606060")
 
 CENTER = Alignment(horizontal="center", vertical="center", wrap_text=True)
 LEFT_WRAP = Alignment(horizontal="left", vertical="top", wrap_text=True)
+# Data-cell alignment for Material_rozklad — wrap_text=False keeps row
+# heights at the default (~15 px).  Excel auto-expands rows when
+# wrap_text=True is applied to short popis values that contain Czech accents
+# or a couple of "—" separators, producing 60+ px rows on 90 k cells.
+# Header cells continue using CENTER (wrap=True).
+LEFT_NOWRAP = Alignment(horizontal="left", vertical="center", wrap_text=False)
 
 
 def _load_data() -> tuple[list[dict], list[dict], list[dict]]:
@@ -141,6 +147,30 @@ def _looks_like_install_only(popis: str) -> bool:
         return False
     return bool(_INSTALL_SUFFIX_RE.search(popis)
                 or _INSTALL_PREFIX_RE.search(popis))
+
+
+# Mirror of pair_materials.CASE5_PRIMARY_KEYWORDS — used only by
+# Material_rozklad GATE 7 placeholder copy to classify why a master has no
+# sub-items.  Keep the two lists in sync when pair script gains new keys.
+CASE5_PRIMARY_KEYWORDS = (
+    "penetrace pod", "penetrace univerzá", "lepidlo flexib", "lepidlo na",
+    "spárovací hmot", "sparovaci hmot",
+    "samonivelační stěr", "samonivelacni ster",
+    "kari síť", "kari sit", "pe fólie", "pe folie",
+    "asfaltový pás", "asfaltovy pas", "armovací síť", "armovaci sit",
+    "tmel ", "akrylový ",
+    "uw + cw profil", "ud + cd profil", "uw+cw profil",
+    "cd profil", "cw profil",
+    "sdk desky", "sdk deska", "izolace minerální vata",
+    "izolace mineralni vata", "izolace minerá",
+    "tmelení q", "tmeleni q", "pur pěna", "pur pena",
+    "závěsy posuvné", "zavesy posuvne",
+    "parozábrana fólie", "parozabrana folie",
+    "difuzní fólie", "difuzni folie",
+    "latě ", "kontralatě", "hřebenáče", "hrebenace",
+    "kročejová izolace", "krocejova izolace",
+    "polystyrenbeton", "polystyrén beton", "polystyren beton",
+)
 
 
 def _format_qty(q: Any) -> str:
@@ -204,12 +234,12 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
     for s in sub_items:
         subs_by_master[s["paired_with"]].append(s)
 
-    # Only emit masters that have at least one sub-item
-    masters_with_subs = [m for m in masters
-                        if m["item_id"] in subs_by_master]
-
-    # Sort masters by (kapitola, popis) for grouping
-    masters_sorted = sorted(masters_with_subs,
+    # GATE 7 — iterate ALL master items, not only those with sub-items.
+    # Earlier pass filtered to ~1 210 of 4 090 masters which silently hid
+    # Case 5 / install-only / no_pairing / no_kapitola_rule rows from the
+    # VELTON deliverable.  Master rows without sub-items now render as a
+    # single line with an explanatory placeholder in the Zdroj column.
+    masters_sorted = sorted(masters,
                            key=lambda m: (m.get("kapitola") or "",
                                           m.get("popis") or "",
                                           m["item_id"]))
@@ -263,13 +293,49 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                 cell.font = Font(bold=True, size=11)
             cell.fill = master_fill
             cell.border = BORDER_ALL
-            cell.alignment = LEFT_WRAP
+            cell.alignment = LEFT_NOWRAP
 
         row_idx += 1
 
         # --- sub-rows ---
-        subs = subs_by_master[master["item_id"]]
+        # GATE 7 — when master has no sub-items (Case 5 standalone material,
+        # install-only sibling row, MJ-incompatible, or no_kapitola_rule),
+        # emit a single explanatory placeholder so the row count covers ALL
+        # 4 090 masters instead of silently dropping ~70 % of them.
+        subs = subs_by_master.get(master["item_id"], [])
         last_sub_row = None
+        if not subs:
+            popis_lower = (master.get("popis") or "").lower()
+            if any(kw in popis_lower for kw in CASE5_PRIMARY_KEYWORDS):
+                placeholder = "(Case 5 — master JE materiál, žádný sub-rozklad)"
+            elif (_INSTALL_SUFFIX_RE.search(master.get("popis") or "")
+                  or _INSTALL_PREFIX_RE.search(master.get("popis") or "")):
+                placeholder = ("(install-only — materiál v sourozenecké "
+                                "položce — dodávka)")
+            elif not master.get("kapitola"):
+                placeholder = "(bez kapitoly — no_kapitola_rule)"
+            else:
+                placeholder = "(no_pairing — žádný odpovídající KB nebo TZ vstup)"
+            pol_label = f"{master_pol_counter}.0"
+            ws.cell(row_idx, 1, pol_label)
+            for c in range(2, 7):
+                ws.cell(row_idx, c, "")
+            ws.cell(row_idx, 7, "  " + placeholder)
+            ws.cell(row_idx, 8, "")
+            ws.cell(row_idx, 9, "")
+            ws.cell(row_idx, 10, "")
+            ws.cell(row_idx, 11, "—")
+            ws.cell(row_idx, 12, "—")
+            ws.cell(row_idx, 13, master["item_id"])
+            for c in range(1, 14):
+                cell = ws.cell(row_idx, c)
+                cell.fill = sub_fill
+                cell.border = BORDER_ALL
+                cell.font = (Font(size=9, italic=True, color="606060") if c == 1
+                             else Font(size=10, italic=True, color="909090"))
+                cell.alignment = LEFT_NOWRAP
+            last_sub_row = row_idx
+            row_idx += 1
         for sub_idx, sub in enumerate(subs, start=1):
             # A: Pol. č. decimal (X.N)
             pol_label = f"{master_pol_counter}.{sub_idx}"
@@ -304,7 +370,7 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                     cell.font = Font(size=9, italic=True, color="606060")
                 else:
                     cell.font = Font(size=10)
-                cell.alignment = LEFT_WRAP
+                cell.alignment = LEFT_NOWRAP
 
             last_sub_row = row_idx
             row_idx += 1
