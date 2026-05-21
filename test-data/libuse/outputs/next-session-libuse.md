@@ -67,46 +67,7 @@ enrichment counts), Block 17 (critical pairing fixes — C1/C2/C3).
 
 ## ⭐ Phase 6.6 — TZ-driven material decomposition (2026-05-20)
 
-**Status:** ✅ GATE 1 + 2 + 3 + 4 + 5 + 6 + **GATE 7** complete.
-
-### GATE 7 (2026-05-21) — Material_rozklad source fixes
-
-Two bugs in `_build_material_rozklad` were patched only via post-
-processing in previous runs. Source fix needed for future Phase 6.6
-runs on other projects (Žihle, hk212, RD Jáchymov).
-
-**Bug 1 — wrap_text=True applied to all data cells.** Excel auto-
-expands row heights when wrap_text is True even for short popis values
-(60+ px rows on 90 k data cells = unreadable). Fix: new module-level
-`LEFT_NOWRAP` alignment (`horizontal=left, vertical=center,
-wrap_text=False`) applied to data cells. Header row keeps `CENTER`
-(wrap=True) so multi-word labels stay on two lines.
-
-**Bug 2 — Material_rozklad only rendered masters with sub-items**
-(~2 021 of 4 090 = 49 %). Case 5 / install-only / no_pairing /
-no_kapitola_rule masters silently dropped from VELTON deliverable.
-Fix: iterate ALL masters; when no sub-items, emit single placeholder
-sub-row with explanatory copy in Vstup column:
-- "(Case 5 — master JE materiál, žádný sub-rozklad)" — popis matches
-  `CASE5_PRIMARY_KEYWORDS` (32 keywords mirrored from pair script)
-- "(install-only — materiál v sourozenecké položce — dodávka)" —
-  popis matches `_INSTALL_SUFFIX_RE` or `_INSTALL_PREFIX_RE`
-- "(bez kapitoly — no_kapitola_rule)" — master.kapitola is None
-- "(no_pairing — žádný odpovídající KB nebo TZ vstup)" — fallback
-
-Result: Material_rozklad row count **6 978 → 11 116** (4 090 masters
-+ 2 069 placeholder rows + 4 956 sub rows). All 4 090 masters now
-present.
-
-**Repo audit:** other `wrap_text=True` usages in phase_6/phase_8
-scripts inspected — all on single narrative cells with explicit row
-heights (audit notes, dashboards) where wrap is correct. No similar
-mass-data wrap bugs remain.
-
-**Invariants preserved:** items SHA `373685edbe427d02…` ✅,
-11_Sumarizace 4 845, 11b 236, 11c 5 820 — all untouched.
-
-
+**Status:** ✅ GATE 1 + 2 + 3 + 4 + 5 + **GATE 6** complete.
 Branch `claude/tz-material-decomposition-lBp5D` pushed.
 
 ### GATE 6 (2026-05-20 night) — 11c_AVK_smeta flat sheet for VELTON
