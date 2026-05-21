@@ -673,6 +673,156 @@ PR4c (UI), PR4d (perf) remain queued.
 
 ---
 
+### 2026-05-20 — Session: UEP PR4b-1 — IFC diff foundation (extractor + engine + REST)
+
+**Topic:** First half of the PR4b split agreed mid-session (Q19 = B,
+"deterministic diff complete, AI narrative as PR5"). PR4b-1 ships
+the foundation: schemas + Alembic tables + per-entity snapshot
+capture in the IFC extractor + basic diff engine (add / remove /
+modify by GlobalId + per-IfcType counts) + REST endpoints + 31-test
+suite. PR4b-2 (next session) layers quantity deltas, material
+composition diff, property set diff, severity classification rules,
+and the `uep_get_ifc_diff` MCP tool wrapper on top — all of those
+fit inside `IfcDiffReport.report_payload` (open JSONB dict) plus the
+flat `severity` column, so the table schema does not change again.
+
+**Rozhodnuto:**
+- **PR4b split into PR4b-1 + PR4b-2.** Audit at session start
+  surfaced that PR3 had not actually shipped the "basic diff" the
+  task §3.3 referenced ("extend basic diff from PR3 with…") — no
+  `ifc_diff` module, no `ifc_diff_reports` table, no
+  `uep_get_ifc_diff` MCP tool. So PR4b is genuinely "build the diff
+  from scratch", not "extend". Split keeps the foundation reviewable
+  (~1.4k LOC, 4 commits, no DB session machinery) and pushes the
+  advanced layers + MCP tool wrapper into PR4b-2 where they belong.
+- **`payload_hash` over canonical-JSON SHA-256** as the "modified"
+  detector. Hash covers `{ifc_type, name, object_type, storey,
+  quantities, material_layers, property_sets}` — drift in any of
+  those flips the bucket. `global_id` + `payload_hash` itself are
+  EXCLUDED from the hash (identity is keyed by GlobalId so a GlobalId
+  change is an add+remove pair, not "modified"; chicken-and-egg for
+  the hash field).
+- **`_coerce_number` filters `bool`** before float conversion. `bool`
+  is an `int` subclass in Python — without the guard `True` would
+  silently become `1.0` in an IfcElementQuantity NetArea dict. Caught
+  during the smoke pass; covered by `TestCoercion::test_bool_filtered`.
+- **Material layer ORDER matters** — `_compute_payload_hash` includes
+  the layers list AS-IS (no sort). Vrstva 1 then 2 is a different
+  wall stack than 2 then 1, even with identical thicknesses. Test
+  `test_material_layer_order_matters` enforces it.
+- **GlobalId change ≠ "modified".** A rebuilt wall with a new GlobalId
+  is an add (new gid) + remove (old gid). Treating it as "modified"
+  would lose the identity-loss signal. Test
+  `test_global_id_change_is_add_plus_remove` enforces it.
+- **Cross-project IFC diff explicitly rejected (400).** Versions from
+  different projects can't be diffed — diff payload would leak
+  schema details about the other project. Enforced in the REST
+  endpoint before the engine runs.
+- **`_USER_ID_PATTERN` + `_UUID_PATTERN` for path-traversal hardening.**
+  Every path parameter (project_id, old/new version_id) is regex-
+  validated as UUID 8-4-4-4-12 BEFORE reaching the filesystem
+  builder. The diff endpoint additionally re-validates
+  `project_dir.name` while scanning so a manually-placed
+  `../etc/passwd` dir under `UEP_DATA_DIR/ifc_versions/` cannot
+  poison the response.
+- **Filesystem storage backend in PR4b-1, SQLAlchemy + asyncpg in
+  PR4b-2.** Endpoint contract + auth + path traversal are the review
+  surface; storage layer is an implementation detail that swaps
+  cleanly behind the Pydantic types. Filesystem rows survive
+  container restarts via `UEP_DATA_DIR` mount, so the surface IS
+  production-shaped, not a stub.
+- **Mount fix shipped opportunistically.** `routes_uep.router` was
+  never registered in `app/api/__init__.py` (PR2 + PR3 added the file
+  but never wired it in) — entire UEP REST surface was 404 in
+  production since merge. Including the router in this PR is
+  required for the new IFC endpoints to be reachable; the same line
+  ALSO un-buries the PR2 + PR3 endpoints. Side-effect-only fix to a
+  pre-existing mount bug; no behaviour change for any other module.
+
+**Odmítnuto:**
+- Real IFC corpus calibration — no sample IFC in `test-data/` yet.
+  All 31 tests use synthetic snapshot dicts that mirror exactly the
+  shape `_emit_entity_snapshots` produces; the diff math is exercised
+  independently of vendor IFC variants. Integration test against a
+  real Allplan / Revit / ArchiCAD export deferred until a sample
+  lands. When it does, vendor-specific drift (e.g. Allplan not
+  emitting `IfcRelContainedInSpatialStructure` for IfcSite) will be
+  recorded as corpus patterns under
+  `app/knowledge_base/B5_tech_cards/real_world_examples/ifc/` —
+  mirror of the RD Jáchymov pattern files.
+- Severity classification rules — PR4b-1 emits
+  `IfcChangeSeverity.UNSCORED` on every report. The 5-tier rule
+  table in task §3.3 (cosmetic / minor < 5% / moderate 5-20% /
+  major > 20% / scope_change) needs the quantity-delta aggregation
+  layer to operate on — that aggregation is the first PR4b-2
+  commit, so severity rules naturally follow it.
+- AI narrative — locked out of PR4b entirely per Q19 = B. PR5.
+- MCP tool `uep_get_ifc_diff` — PR4b-2. The REST endpoint already
+  surfaces the same payload, so PR4b-2's wrapper is thin.
+- Per-version GET endpoint (full payload incl. `entity_snapshots`) —
+  list endpoint serves the lean view (no snapshots, no counts) for
+  the UI picker; the full-payload GET pairs better with the MCP
+  tool wrapper, so it ships in PR4b-2.
+- GIN index on `ifc_versions.entity_snapshots` JSONB — PR4b-2 will
+  decide based on the actual severity-rule access patterns. PR4b-1's
+  diff engine scans linearly, no JSONB-path queries.
+- `IfcEntityChange.change_kind` as Enum (consistency with
+  `SourceFormat` / `CoverageStatus` in the same module) — flagged
+  during the audit as a minor inconsistency. Deferred to PR4b-2
+  alongside the other small enum work (e.g. lifting "added" /
+  "removed" / "modified" string literals into `IfcChangeKind`).
+
+**Otevřené otázky:**
+- gbXML / IFC real-export samples still missing from the corpus.
+  Same blocker as PR4a (gbXML); will be the first task on PR4b-2
+  whenever a sample lands.
+- `ifc_versions.entity_snapshots` JSONB ceiling — 50k walls × ~200 B
+  per snapshot = ~10 MB JSONB, well under Postgres' 1 GiB row
+  limit. Confirmed acceptable for realistic models; revisit if a
+  pilot crosses 200k IfcRoot instances.
+- SQLAlchemy ORM models + asyncpg session pattern not yet present
+  in repo (PR4b-1 storage is filesystem). PR4b-2 introduces the
+  async session — design choice between `Depends(get_db_session)`
+  or a context-manager helper carries forward; both work, lean
+  toward `Depends` for FastAPI native injection.
+- `streaming_strategy` CHECK in the Alembic migration includes
+  `'reject'` even though extractor never persists that value (an
+  extraction that resolves to REJECT raises before writing).
+  Harmless to allow but imprecise; could tighten in PR4b-2 if it
+  comes up in review.
+
+**Co dál:**
+1. Push branch + open PR.
+2. PR4b-2 — quantity deltas + material composition diff + property
+   set diff (all land in `IfcDiffReport.report_payload`) + severity
+   classification rules (flip `IfcChangeSeverity` from `UNSCORED`)
+   + `uep_get_ifc_diff` MCP tool + per-version GET endpoint
+   + SQLAlchemy ORM + asyncpg session swap-in (filesystem →
+   Postgres).
+3. PR4c — UI viewers (coverage / reconciliation / IFC diff /
+   derivation audit) per AC 15-20.
+4. PR4d — performance optimization per AC 21-25.
+
+**Test count delta (PR4b-1):**
+- `tests/test_uep_ifc_diff.py` — 31 new tests, 5 classes
+  (TestPayloadHash, TestCoercion, TestSnapshotSchema,
+   TestDiffEngineBasic, TestCategoryCounts, TestGuardRails).
+- 31/31 passing in 1.02 s, runs without `ifcopenshell` (synthetic
+  dicts mirror the extractor output shape).
+- No regression on PR3 / PR4a suites (verified via re-run on the
+  branch).
+
+**Acceptance criteria status (per TASK_UEP_PR4.md §4):**
+- AC 13 (`ifc_diff_reports` table extended via Alembic) ✅
+- AC 8 (per-category counts) ✅ — basic `IfcCategoryCount` per
+  IfcType implemented
+- AC 9-12, 14 (quantity / material / property / severity, MCP tool)
+  → PR4b-2 (foundation ready; layers slot into `report_payload`
+  + flat `severity` column without further migration)
+- Rest (UI, perf, docs cross-cuts) → PR4c / PR4d
+
+---
+
 ## 10. Document metadata
 
 | Field | Value |

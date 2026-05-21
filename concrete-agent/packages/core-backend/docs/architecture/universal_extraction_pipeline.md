@@ -190,3 +190,161 @@ estimated_cost_credits}` or `{error, ...}` on validation failure.
   `uep_list_supported_formats`, `uep_get_coverage_matrix`,
   `uep_get_derivation_rule`, `uep_get_dwg_conversion_status`,
   `uep_list_ifc_versions`, `uep_get_ifc_diff`, `uep_check_user_quota`).
+
+---
+
+## §15.3 — IFC diff engine (PR4b-1 foundation, PR4b-2 advanced)
+
+PR4b-1 ships the foundation: per-entity snapshot capture inside the
+IFC extractor + Alembic tables (`ifc_versions`, `ifc_diff_reports`)
++ basic deterministic diff engine + 3 REST endpoints + 31 tests.
+PR4b-2 layers quantity deltas, material composition diff, property
+set diff, severity classification rules, and the
+`uep_get_ifc_diff` MCP tool on top — all of those slot into
+`IfcDiffReport.report_payload` (open JSONB dict) + the flat
+`severity` column without further migration.
+
+### Schemas (`app/models/ifc_diff_schemas.py`)
+
+| Type | Role |
+|------|------|
+| `IfcEntitySnapshot` | One per IfcRoot instance: global_id + ifc_type + name + object_type + storey + quantities + material_layers + property_sets + sha-256 `payload_hash`. |
+| `IfcVersionMetadata` | One per upload — file/schema/strategy + entity_counts + entity_snapshots list. Backed by the `ifc_versions` table. |
+| `IfcDiffReport` | Top-level diff record (one per (old, new) pair). Carries `add/remove/modify` lists, `IfcCategoryCount[]`, flat counts + severity, open `report_payload` dict. |
+| `IfcCategoryCount` | One row per IfcType observed in either side, with old/new/delta. Row kept even when one bucket is 0 (surfaces "everything of type X removed"). |
+| `IfcEntityChange` | Per-entity audit-trail row: change_kind, ifc_type, global_id, old_snapshot, new_snapshot. |
+| `IfcChangeSeverity` | Enum: `unscored` (PR4b-1 default) / `cosmetic` / `minor` / `moderate` / `major` / `scope_change` (PR4b-2). |
+
+### Diff algorithm (`app/services/uep/ifc_diff_engine.py`)
+
+Pure-function module, one public entry point:
+
+```python
+compute_basic_ifc_diff(
+    *, project_id, old_version_id, new_version_id,
+    old_snapshots, new_snapshots
+) -> IfcDiffReport
+```
+
+Keyword-only parameters so callers can't swap old/new by accident.
+
+Identity model — **GlobalId only** (per IFC4 §5.1.3.1.7, the only
+stable carrier across Revit / Allplan / ArchiCAD round-trips).
+Name / ObjectPlacement / IsDefinedBy order are all volatile.
+
+Modified detection — `payload_hash` (SHA-256 over canonical-JSON of
+`{ifc_type, name, object_type, storey, quantities, material_layers,
+property_sets}`) is recomputed on every extraction. Drift in any of
+those flips the hash → "modified" bucket. `global_id` +
+`payload_hash` itself are EXCLUDED from the hash (identity is keyed
+by GlobalId; chicken-and-egg for the hash field).
+
+Three buckets:
+- `added`   — GlobalId ∈ new \ old
+- `removed` — GlobalId ∈ old \ new
+- `modified` — GlobalId ∈ old ∩ new with `payload_hash` drift
+- Same GlobalId + same hash → unchanged, **skipped** from the report
+  (otherwise the dashboard would drown in noise).
+- GlobalId change is NOT "modified" — it's an add + remove pair (the
+  entity has lost identity).
+
+Guard rails — `ValueError` on:
+- `old_version_id == new_version_id` (no-op comparison; UI bug
+  protection)
+- empty GlobalId on either side (extractor contract violation —
+  silent drop would inflate the OTHER side's add/remove bucket)
+- duplicate GlobalId in one extraction (IFC contract violation)
+
+### Extractor extension (`app/services/uep/ifc_extractor.py`)
+
+`_emit_entity_snapshots(model)` traverses 12 IfcRoot subtypes
+(`IfcSite`, `IfcBuilding`, `IfcBuildingStorey`, `IfcSpace`,
+`IfcWall`, `IfcWallStandardCase`, `IfcSlab`, `IfcBeam`, `IfcColumn`,
+`IfcFooting`, `IfcDoor`, `IfcWindow`) and for each builds an
+`IfcEntitySnapshot`-shaped dict. Stored in
+`PerSourceExtraction.data["entity_snapshots"]`.
+
+Defensive — `ifcopenshell.util.element` is preferred (handles schema
+variants for us), but every helper has a manual `IsDefinedBy` /
+`HasAssociations` / `ContainedInStructure` fallback for older
+ifcopenshell wheels or schema gaps. Allplan / Revit / ArchiCAD all
+emit slightly different `IfcRel*` wiring; we record what we find
+and skip the rest without raising.
+
+### REST endpoints (`app/api/routes_uep.py`)
+
+| Method | Path | Purpose |
+|---|---|---|
+| `POST` | `/api/v1/uep/ifc/versions` | Persist one IFC extraction as a `ifc_versions` row. Body: project_id + file/schema/strategy + entity_counts + entity_snapshots. Returns 201 + `{version_id, project_id, upload_timestamp}`. |
+| `GET` | `/api/v1/uep/ifc/versions?project_id=<UUID>` | List project's versions, recent-first. Lean view (no snapshots) — UI picker. |
+| `GET` | `/api/v1/uep/ifc/diff/{old}/{new}` | Cached diff if exists, computed + cached if not. Cross-project diff rejected with 400. |
+
+Auth — same X-User-Id dev seam as `/uep/run` (PR3 wires real JWT).
+Path traversal — all path parameters UUID-validated before reaching
+filesystem builders.
+
+### Storage (filesystem in PR4b-1, Postgres in PR4b-2)
+
+PR4b-1 persists rows to JSON files under
+`UEP_DATA_DIR/ifc_versions/{project_id}/{version_id}.json` and
+`UEP_DATA_DIR/ifc_diff_reports/{project_id}/{old}_{new}.json`. The
+filesystem backend mirrors the Alembic CHECK constraints (schema +
+strategy enums) so the swap is behaviour-preserving — only the
+storage layer changes. PR4b-2 introduces the SQLAlchemy + asyncpg
+session pattern (paired with the MCP tool wrapper that also needs
+DB access).
+
+### Example diff payload
+
+```json
+{
+  "diff_id": "8f3a7c12-...",
+  "project_id": "...",
+  "old_version_id": "...",
+  "new_version_id": "...",
+  "generated_at": "2026-05-20T10:00:00Z",
+  "severity": "unscored",
+  "total_added": 1,
+  "total_removed": 1,
+  "total_modified": 1,
+  "category_counts": [
+    {"ifc_type": "IfcSlab", "old_count": 1, "new_count": 0, "delta": -1},
+    {"ifc_type": "IfcWall", "old_count": 2, "new_count": 3, "delta":  1}
+  ],
+  "entity_changes": [
+    {"change_kind": "added",    "ifc_type": "IfcWall", "global_id": "W3", "old_snapshot": null, "new_snapshot": {...}},
+    {"change_kind": "removed",  "ifc_type": "IfcSlab", "global_id": "S1", "old_snapshot": {...}, "new_snapshot": null},
+    {"change_kind": "modified", "ifc_type": "IfcWall", "global_id": "W2", "old_snapshot": {...}, "new_snapshot": {...}}
+  ],
+  "report_payload": {},
+  "diff_engine_version": "1.0"
+}
+```
+
+### PR4b-2 hooks
+
+PR4b-2 fills `report_payload` with:
+- `quantity_deltas_by_type` — `{IfcWall: {total_area_m2: {from, to, delta, pct}}, ...}`
+- `material_composition_changes` — per-entity `IfcMaterialLayerSet` layer-level diff
+- `property_set_changes` — per-entity `IfcPropertySet` value-level diff
+- `severity_rules_fired` — list of rule IDs that produced the flat `severity` flip
+
+Flat `severity` column flips from `unscored` to one of
+{cosmetic, minor, moderate, major, scope_change} per the rule table
+in task §3.3.
+
+`uep_get_ifc_diff` MCP tool wrapper lands alongside — thin shim over
+the REST endpoint above.
+
+### PR4b-1 commit chain
+
+| Commit | Subject |
+|---|---|
+| `77e195a` | feat(uep): PR4b-1 — IFC diff schemas + ifc_versions/ifc_diff_reports tables |
+| `12774a4` | feat(uep): capture per-entity snapshots in IFC extractor for PR4b diff |
+| `6bf76b9` | feat(uep): add basic IFC diff engine — add/remove/modify by GlobalId + per-type counts |
+| `45a76fb` | test(uep): PR4b-1 IFC diff foundation — 31 tests covering hash + coercion + diff math + counts + guard rails |
+| `bff8adc` | feat(uep): IFC version + diff REST endpoints + mount routes_uep router |
+| (this commit) | docs: PR4b-1 §15.3 cross-ref in UEP arch doc + soul.md §9 entry |
+
+Reference: `docs/tasks/TASK_UEP_PR4.md` §3.3 + AC 8, 13.
