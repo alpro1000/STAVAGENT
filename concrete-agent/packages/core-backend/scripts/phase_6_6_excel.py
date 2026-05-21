@@ -1600,8 +1600,7 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
         # Cena blank — VELTON may enter work-rate per MJ; Stoimost auto.
         ws.cell(row, COL_CENA, "")
         ws.cell(row, COL_STOIMOST,
-                f"=IF({cena_col}{row}=\"\",\"\","
-                f"G{row}*{cena_col}{row})")
+                f'=IF({cena_col}{row}="","",G{row}*{cena_col}{row})')
         ws.cell(row, COL_ZDROJ, "—")
         ws.cell(row, COL_STATUS, "—")
         for c in range(1, NCOLS + 1):
@@ -1752,8 +1751,7 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
             ws.cell(row, 11, mj)
             ws.cell(row, COL_CENA, "")
             ws.cell(row, COL_STOIMOST,
-                    f"=IF({cena_col}{row}=\"\",\"\","
-                    f"J{row}*{cena_col}{row})")
+                    f'=IF({cena_col}{row}="","",J{row}*{cena_col}{row})')
             ws.cell(row, COL_ZDROJ, "—")
             ws.cell(row, COL_STATUS, "—")
             for c in range(1, NCOLS + 1):
@@ -1817,8 +1815,7 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
             ws.cell(row, 11, mj_sub)
             ws.cell(row, COL_CENA, "")
             ws.cell(row, COL_STOIMOST,
-                    f"=IF({cena_col}{row}=\"\",\"\","
-                    f"J{row}*{cena_col}{row})")
+                    f'=IF({cena_col}{row}="","",J{row}*{cena_col}{row})')
             ws.cell(row, COL_ZDROJ, top_zdroj)
             ws.cell(row, COL_STATUS, top_status)
             for c in range(1, NCOLS + 1):
@@ -1881,8 +1878,7 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
                 # reference; Stoimost = Mn × inherited Cena.
                 ws.cell(row, COL_CENA, f"={cena_col}{mat_row_idx}")
                 ws.cell(row, COL_STOIMOST,
-                        f"=IF({cena_col}{row}=\"\",\"\","
-                        f"J{row}*{cena_col}{row})")
+                        f'=IF({cena_col}{row}="","",J{row}*{cena_col}{row})')
                 ws.cell(row, COL_ZDROJ, loc_zdroj or skl_str)
                 ws.cell(row, COL_STATUS, loc_status or "—")
                 for c in range(1, NCOLS + 1):
