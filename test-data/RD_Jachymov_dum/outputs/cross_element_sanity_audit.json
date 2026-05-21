@@ -1,0 +1,118 @@
+{
+  "chain_sanit": {
+    "wc": [
+      3.0,
+      3
+    ],
+    "umyvadlo": [
+      30.0,
+      4
+    ],
+    "sprcha": [
+      29.0,
+      2
+    ],
+    "vana": [
+      1.0,
+      1
+    ],
+    "drez": [
+      17,
+      2
+    ],
+    "pass": false
+  },
+  "chain_okna": {
+    "okna_ks": [
+      0,
+      16
+    ],
+    "parapety_ks": [
+      32,
+      16
+    ],
+    "parapety_bm": [
+      20.8,
+      20.8
+    ],
+    "oplech_parapet_ks": [
+      16,
+      16
+    ],
+    "spalet_bm": [
+      82.2,
+      85
+    ],
+    "pass_okna": false,
+    "pass_parapety": true,
+    "pass_spalet": true
+  },
+  "chain_dvere": {
+    "vstupni": [
+      2,
+      2
+    ],
+    "vnitrni": [
+      15,
+      15
+    ],
+    "fire_rated": [
+      1,
+      1
+    ],
+    "demont_okn": [
+      16,
+      16
+    ],
+    "demont_vstup_dver": [
+      2,
+      2
+    ],
+    "demont_vnitr_dver": [
+      15,
+      15
+    ],
+    "pass": true
+  },
+  "chain_krov": {
+    "krokve_bm": [
+      156.0,
+      466
+    ],
+    "klestiny_bm": [
+      110.0,
+      138
+    ],
+    "pozednice_bm": [
+      19.4,
+      40
+    ],
+    "hea_count": [
+      784,
+      3
+    ],
+    "pass_krokve": false,
+    "pass_klestiny": true,
+    "pass_pozednice": false
+  },
+  "chain_material": {
+    "etics_priprava": [
+      276.7,
+      277
+    ],
+    "etics_eps": [
+      276.7,
+      277
+    ],
+    "etics_omitka": [
+      290.2,
+      290
+    ],
+    "podlahy_dum": [
+      217.4,
+      219.3
+    ],
+    "pass_etics_balance": true,
+    "pass_podlahy": true
+  }
+}
