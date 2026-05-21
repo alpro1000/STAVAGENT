@@ -136,6 +136,13 @@ CASE5_PRIMARY_KEYWORDS = [
     "cementový potěr", "cementovy poter", "potěr cementový",
     "poter cementovy", "anhydritový potěr", "anhydritovy poter",
     "betonová stěrka", "betonova sterka",
+    # GATE 8.2 — additional penetrace master forms (CASE5 only catches
+    # "penetrace pod" / "penetrace univerzá" — these patterns match the
+    # other variants seen on Libuše: "Penetrace stěn pod malbu",
+    # "Penetrace stropů", "Penetrace podhledu pod malbu (CF20)" etc.)
+    "penetrace stěn", "penetrace sten",
+    "penetrace stropů", "penetrace stropu",
+    "penetrace podhled",
     # GATE 8c C1 — every "— dodávka" master IS the physical material
     # being delivered (the "— kladení" / "— montáž" sibling carries the
     # install work).  Adding a generic substring catches all variants
@@ -292,6 +299,23 @@ INSTALL_PREFIX_RE = re.compile(
 # Bug 4 — work-focus rules: master popis keyword → allowed material_kind set
 # Pairing intersects this with kapitola needs to suppress off-topic ancillaries.
 WORK_FOCUS_RULES: list[tuple[re.Pattern[str], set[str]]] = [
+    # GATE 8.2 — Vrstva-chain coordinated kinds (MUST precede generic
+    # malba / nátěr rule).  In a "Penetrace stěn / Malba 1. nátěr /
+    # Malba 2. nátěr / Tmel akrylátový" 4-master chain on the same
+    # surface, the same penetrace + tmel sub-items were being attached
+    # to EVERY master → counted 3× in 11c.  Narrow each master to its
+    # own canonical primary kind so cascade prevention can deduplicate.
+    #
+    # "1. nátěr / 1. vrstva" — primary paint pass; gets paint volume +
+    #   1× tmel application (the spárování + dilatace step).  Penetrace
+    #   intentionally excluded — owned by "Penetrace pod X" master.
+    (re.compile(r"\b1\.\s*nátěr|\bprvní\s+nátěr|\b1\.\s*nater|\b1\.\s*vrstva", re.I),
+     {"malba_interier", "vymalba", "tmel_tesnici"}),
+    # "2. / 3. nátěr / vrstva" — paint volume ONLY.  Penetrace + tmel
+    #   counted on 1. nátěr already; subsequent coats add paint only.
+    (re.compile(r"\b[2-9]\.\s*nátěr|\bdruh\w+\s+nátěr|\btřet\w+\s+nátěr|"
+                 r"\b[2-9]\.\s*nater|\b[2-9]\.\s*vrstva", re.I),
+     {"malba_interier", "vymalba"}),
     (re.compile(r"\bsdk\s+desk|\bsadrokart\w*\s+desk|\bsdk\b(?!\s+podhled)", re.I),
      {"sdk_deska", "perlinka", "tmel_tesnici"}),
     (re.compile(r"\bprofil[yo]\b|\b(ud|cd|uw|cw)\s+profil|\b(uw|cw)\s*\+", re.I),
@@ -492,6 +516,18 @@ def _normalize_master_stem(popis: str) -> str:
 # Used to skip library candidates whose kind matches a separate master.
 _KEYWORD_TO_KIND: list[tuple[str, str]] = [
     # Longest / most specific first
+    # GATE 8.2 — penetrace master kinds so cascade can deduplicate
+    # penetrace sub-items across vrstva-chain siblings (Penetrace stěn
+    # pod malbu + Malba 1./2. nátěr in same kapitola).  When a master
+    # with kind=penetrace exists, OTHER masters in same kapitola/G-group
+    # get their penetrace sub-items skipped by GATE 8c C2 cascade.
+    ("penetrace pod",          "penetrace"),
+    ("penetrace stěn",         "penetrace"),
+    ("penetrace sten",         "penetrace"),
+    ("penetrace stropů",       "penetrace"),
+    ("penetrace stropu",       "penetrace"),
+    ("penetrace podhled",      "penetrace"),
+    ("penetrace univerzá",     "penetrace"),
     ("polystyrenbeton",        "polystyrenbeton"),
     ("cementový potěr",        "cementovy_poter"),
     ("cementovy poter",        "cementovy_poter"),

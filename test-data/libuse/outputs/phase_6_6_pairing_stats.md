@@ -1,15 +1,15 @@
 # Phase 6.6 GATE 2 — Master ↔ material pairing stats
 
-_Generated: 2026-05-21T09:07:44+00:00_
+_Generated: 2026-05-21T14:12:32+00:00_
 
 _Branch: claude/tz-material-decomposition-lBp5D_
 
 ## 1. Pairing totals
 
 - **Master items (unchanged):** 4090
-- **Sub-items emitted:** 5930
+- **Sub-items emitted:** 5100
 - Material library entries (GATE 1): 714
-  - Used as source: 423
+  - Used as source: 197
   - Unmapped taxonomy (`material_kind=None` in library): 329
 
 ⚠️ **329 library entries with `material_kind=None`** (taxonomy gaps — verbatim + provenance valid but unclassified). Per user spec these are **accepted as-is** and not blocking pairing. Doporučujeme review pro budoucí rozšíření taxonomy rules.
@@ -19,8 +19,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Source | Count | % | Confidence |
 |---|---:|---:|---:|
 | `tz_explicit_with_rate` | 0 | 0.0 | 1.0 |
-| `tz_explicit_no_rate` | 293 | 4.9 | 0.5 |
-| `tabulka_referenced` | 130 | 2.2 | 0.95 |
+| `tz_explicit_no_rate` | 118 | 2.3 | 0.5 |
+| `tabulka_referenced` | 79 | 1.5 | 0.95 |
 | `vykres_annotated` | 0 | 0.0 | 0.85 |
 | `generic_no_documentation` | 0 | 0.0 | 0.3 |
 
@@ -28,8 +28,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 
 | Case | Count |
 |---|---:|
-| `case_4_generic` | 1275 |
-| `case5_master_is_material` | 1240 |
+| `case5_master_is_material` | 1328 |
+| `case_4_generic` | 1187 |
 | `no_kapitola_rule` | 406 |
 | `cases_1_3_library` | 316 |
 | `no_pairing_promoted_case5` | 298 |
@@ -45,12 +45,12 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Kapitola | Sub-items |
 |---|---:|
 | `HSV-963` | 1884 |
-| `PSV-784` | 1156 |
+| `PSV-784` | 613 |
 | `HSV-631` | 377 |
-| `HSV-612` | 361 |
-| `PSV-771` | 318 |
-| `PSV-781` | 292 |
-| `HSV-611` | 291 |
+| `PSV-771` | 267 |
+| `HSV-612` | 257 |
+| `PSV-781` | 232 |
+| `HSV-611` | 220 |
 | `PSV-763.2` | 215 |
 | `PSV-776` | 168 |
 | `PSV-763.1` | 136 |
@@ -82,18 +82,18 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Výztužná tkanina (perlinka) — omítka | m2 | 4,013.27 |
 | Pronájem lešení fasádní × 4 měsíce | m2 | 3,352.00 |
 | Lepidlo flexibilní pro cihelné pásky | kg | 2,712.90 |
-| Penetrace univerzální — disperzní | l | 2,366.37 |
 | Samonivelační stěrka 3 mm (F03) | kg | 2,205.08 |
 | Spárovací hmota Polyblend S | kg | 2,170.32 |
 | Průběžný úklid během prací × 4 měsíce | m2 | 2,112.32 |
 | Lepidlo (Cemix) tl. 5 mm | kg | 1,991.07 |
 | Žárové zinkování ocelových LP## (zábradlí, schodiště) | kg | 1,956.66 |
 | Vyleštění dlažby + obkladů | m2 | 1,911.00 |
-| Malba disperzní — 1× vrstva | l | 1,603.71 |
 | Ocelové sloupky IPE120 — krov 3.NP | kg | 1,152.00 |
 | Omítka vápenocementová | m2 | 1,133.37 |
+| Malba disperzní — 1× vrstva | l | 1,099.00 |
 | Základní nátěr ŽB stěn — Sikagard 552W Aquaprimer (přilnavos | m2 | 1,089.08 |
 | Bezprašný nátěr ŽB stěn — Sikagard 555W Elastic (transparent | m2 | 1,089.08 |
+| Hmoždinky pod minerální vatu (F15) | ks | 1,072.00 |
 
 ## 6. Spot-check — 5 masters with full sub-item provenance
 
@@ -101,13 +101,11 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 - **popis:** Penetrace stěn pod malbu vápenná (F19)
 - **master qty:** 76.71 m2
 - **misto:** {"objekt": "D", "podlazi": "1.PP", "mistnosti": ["S.D.09"]}
-- **sub-items (3):**
+- **sub-items (1):**
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | Penetrace univerzální — disperzní | 15.34 | l | 🌐 ČSN 73 3450 | 0.6 |
-  | 2 | Malba disperzní — 1× vrstva | 11.51 | l | 🌐 ČSN EN 13300 | 0.6 |
-  | 3 | Tmel akrylátový — spárování / dilatace | 3.83 | kg | 🌐 ČSN EN ISO 11600 | 0.6 |
+  | 1 | Penetrace stěn pod malbu vápenná (F19) | 15.34 | l | 🌐 ČSN 73 3450 | 0.7 |
 
 ### Master `dd1bc458-c0b…` — kapitola `PSV-771`
 - **popis:** Penetrace pod dlažbu (F01)
