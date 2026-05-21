@@ -7,8 +7,57 @@ extracted, 6 152 sub-items paired, Excel dashboard delivered)
 
 ## ⭐ Phase 6.6 — TZ-driven material decomposition (2026-05-20)
 
-**Status:** ✅ GATE 1 + GATE 2 + GATE 3 + GATE 4 + **GATE 5** complete.
+**Status:** ✅ GATE 1 + 2 + 3 + 4 + 5 + **GATE 6** complete.
 Branch `claude/tz-material-decomposition-lBp5D` pushed.
+
+### GATE 6 (2026-05-20 night) — 11c_AVK_smeta flat sheet for VELTON
+
+New parallel view `11c_AVK_smeta` placed immediately after
+`11b_Material_aggregate` (and consequently right after
+`11_Sumarizace_dle_kódu`). VELTON (бывшая Velton Telecom, UA) привычны
+к АВК-style flat кошторису где работа + материал + локация в одной
+denormalized таблице.
+
+**Layout:** 13 columns × 5 819 data rows.
+
+```
+A: Pol. č.        — G040 / G040.M1 / G040.L1 hierarchical
+B: G-kód          — repeats per group
+C: Typ            — PRÁCE / MATERIÁL / LOKACE
+D: Kapitola       E: Popis práce     F: MJ
+G: Σ Mn.          H: Vstup/Místnost  I: Sp./MJ
+J: Mn.            K: MJ              L: Zdroj
+M: Status
+```
+
+**Row distribution:**
+- 754 PRÁCE rows (one per G-group, blue tint #E8F1FA, bold)
+- 975 MATERIÁL rows (aggregated by Vstup across all master instances in
+  group, numbered M1/M2/M3…, green tint #E8F4E8, Status fills per ladder)
+- 4 090 LOKACE rows (one per master instance, numbered L1…LN, gray tint
+  #F8F8F8, location text "• D · 1.PP · S.D.09" mirrors 11_Sumarizace)
+
+**G001 sample (Malba disperzní — dodávka barvy):**
+- 1 PRÁCE row, Σ 3 860.808 m²
+- 3 MATERIÁL rows (Penetrace 741.883 l + Malba 556.403 l + Tmel
+  akrylátový 185.486 kg, all 🌐 ČSN + Confirm)
+- 131 LOKACE rows (one per S.D.xx + D.1.S.xx instance)
+
+**Preserved (byte-identical):**
+- `11_Sumarizace_dle_kódu` (4 845 rows, hierarchical)
+- `11b_Material_aggregate` (236 rows, per-kapitola totals)
+- `Material_rozklad` (6 978 sub-item rows)
+- `items_objekt_D_complete.json` SHA `373685edbe427d02…` ✅
+
+**Dashboard Block 14 added** — 11c row distribution + 3 sample G-groups
+with full decomposition + row ranges.
+
+**Backup:** `Vykaz_vymer_pre_gate6.xlsx` (1.7 MB) added to chain.
+
+**Final sheet order (17 sheets, Material_audit ACTIVE):**
+1. Material_audit  2. Material_rozklad  3. 0_Souhrn  4. 1_Vykaz_vymer
+5-12. existing sheets  13. 11_Sumarizace  **14. 11b_Material_aggregate**
+**15. 11c_AVK_smeta** ← NEW  16-17. 12 + 13 Filter views.
 
 ### GATE 5 (2026-05-20 evening) — Citation enrichment + Sumarizace aggregator
 
