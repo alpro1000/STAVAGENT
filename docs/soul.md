@@ -332,6 +332,42 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-21 — Session: Bootstrap Claude Code Skills + Discipline Infrastructure
+
+**Topic:** Phase 1 audit + Phase 2 bootstrap of `.claude/skills/` directory per task `docs/tasks/2026-05-20-rimsa-mcp-agent/stavagent-session-discipline-SKILL.md`. Foundation for upcoming říms calibration task (TASK_Rimsa_Calibration_FullStack_v1.md).
+
+**Rozhodnuto:**
+- **Skills location:** Project-local `.claude/skills/` (versioned in git, synced into Project Knowledge weekly per skill §7).
+- **Root vs docs/:** Keep existing files in `docs/` (no duplication). `docs/STAVAGENT_ClaudeCode_Session_Mantra.md`, `docs/STAVAGENT_PATTERNS.md`, `docs/KNOWLEDGE_PLACEMENT_GUIDE.md` stay canonical at their existing paths. Skills reference these `docs/` paths, not phantom root duplicates.
+- **process.md:** Not created. `docs/steering/conventions.md` is canonical for process/workflow content (already covers task structure §9, workflow §11, gates §7, communication §8). Sync list in `stavagent-session-discipline` §7 reflects this.
+- **Skill scope:** Two skills bootstrapped — `stavagent-session-discipline` (verbatim from upload, 8 rules) + `stavagent-claude-code-tasks` (codified from `conventions.md` §9-§10). `stavagent-schema-designer` skipped (not in task scope).
+- **CLAUDE.md update:** Added single section under Mandatory reading block referencing `.claude/skills/`. No rewrite of existing content.
+
+**Odmítnuto:**
+- Creating root-level mantra/patterns/knowledge_placement files. Task spec suggested it but existing canonical paths win — no parallel structures rule.
+- Creating new `docs/steering/process.md`. Content already in `conventions.md`.
+- Backfilling historical session logs into §9 (start from this entry).
+- Migrating `stavagent-schema-designer` from Project Knowledge — out of scope, needs separate session.
+
+**Otevřené otázky:** —
+
+**Co dál:**
+- Sync `.claude/skills/` to Project Knowledge on claude.ai (manual, weekly cadence per skill §7).
+- Begin říms calibration task with the new skill infrastructure active.
+- Optionally migrate `stavagent-schema-designer` in a follow-up session if Alexandra confirms scope.
+
+**Files changed:**
+- `.claude/skills/stavagent-session-discipline/SKILL.md` (new, ~210 lines, verbatim from upload with corrected paths to `docs/`)
+- `.claude/skills/stavagent-claude-code-tasks/SKILL.md` (new, ~240 lines, codified from conventions.md §9)
+- `.claude/skills/README.md` (new, ~85 lines, directory index)
+- `CLAUDE.md` (+8 lines, skill reference under Mandatory reading block)
+- `docs/soul.md` §9 (this entry)
+- `next-session.md` (overwrite — handoff for říms calibration)
+
+**Branch:** `claude/bootstrap-code-skills-ecPCE`
+
+---
+
 ### 2026-05-20 — Session: MCP Dynamic Client Registration (RFC 7591) + YAML loader
 
 **Topic:** Two-PR work session closing TASK_DCR_KBYamlLoader.md (DCR endpoint missing + YAML loader skip), three subsequent CI-fix commits triggered by post-merge Amazon Q review, and post-deploy verification (V1-V4). Spanned 9 gates of gate-based implementation plus 1 deploy runbook gate. Ended with post-deploy V1 503 caused by `gcloud --set-env-vars` wiping VPC connector + REDIS_URL on force rebuilds; fixed via explicit `--update-env-vars` re-apply.

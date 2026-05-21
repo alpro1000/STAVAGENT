@@ -1,7 +1,10 @@
 node_modules/
 package-lock.json
 *.db
-.claude/
+
+# Claude Code project state — ignore local settings, track shared skills
+.claude/*
+!.claude/skills/
 
 # URS cache — derived locally by scripts/urs_cache/, ~140 MB
 data/urs_cache.db
