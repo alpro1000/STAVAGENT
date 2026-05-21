@@ -50,6 +50,7 @@ EXCEL_BACKUP_GATE4 = OUTPUTS / "Vykaz_vymer_pre_gate4.xlsx"
 EXCEL_BACKUP_GATE5 = OUTPUTS / "Vykaz_vymer_pre_gate5.xlsx"
 EXCEL_BACKUP_GATE6 = OUTPUTS / "Vykaz_vymer_pre_gate6.xlsx"
 EXCEL_BACKUP_GATE8 = OUTPUTS / "Vykaz_vymer_pre_gate8.xlsx"
+EXCEL_BACKUP_GATE8_1 = OUTPUTS / "Vykaz_vymer_pre_gate8_1.xlsx"
 ITEMS_IN = OUTPUTS / "items_objekt_D_with_materials.json"
 LIBRARY_IN = OUTPUTS / "material_library_D.json"
 KB_IN = LIBUSE / "knowledge_base" / "generic_consumption_rates.json"
@@ -1090,11 +1091,17 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
             f"auto-recalculates.  PRÁCE Stoimost uses Σ Mn × work-rate "
             f"(blank, VELTON enters).  Total rows {avk_stats['total_rows']:,} "
             f"({avk_stats['n_prace']:,} PRÁCE + {avk_stats['n_materialy']:,} "
-            f"MATERIÁL + {avk_stats['n_lokace']:,} LOKACE)."
+            f"MATERIÁL + {avk_stats['n_lokace']:,} LOKACE).  "
+            f"GATE 8.1 hotfix: LOKACE Σ Mn. (col G) = per-room area "
+            f"in master.MJ units (not master.qty), so VELTON sees "
+            f"area + rate + consumption on one row.  Popis práce (col E) "
+            f"on MATERIÁL/LOKACE rows combines master + material name "
+            f"when distinct (e.g. 'Omítka… — Nárožní lišta'); self-"
+            f"material masters keep single popis."
         )
         ws[f"A{row}"].font = Font(size=10)
         ws[f"A{row}"].alignment = LEFT_WRAP
-        ws.row_dimensions[row].height = 100
+        ws.row_dimensions[row].height = 130
         row += 2
 
     # ----- Block 11: Paired master deduplication (Bug 1 fix report) -----
@@ -1701,9 +1708,13 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
                 ws.cell(row, 2, gid)
                 ws.cell(row, 3, "LOKACE")
                 ws.cell(row, 4, kapitola)
+                # GATE 8.1 — VRN Popis stays master-only (service); no
+                # material differentiation to append.
                 ws.cell(row, 5, popis)
                 ws.cell(row, 6, mj)
-                ws.cell(row, 7, round(total, 3))
+                # GATE 8.1 FIX 1 — VRN LOKACE Σ Mn. = per-instance qty
+                # (room qty) rather than master.qty across the group.
+                ws.cell(row, 7, round(float(m.get("mnozstvi") or 0), 3))
                 ws.cell(row, 8, _write_misto_short(m.get("misto") or {}))
                 ws.cell(row, 9, "")
                 ws.cell(row, 10, round(float(m.get("mnozstvi") or 0), 3))
@@ -1787,11 +1798,17 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
             mat_row_idx = row
             display_popis = (popis if popis_clean == "__self_material__"
                               else b["popis_full"])
+            # GATE 8.1 FIX 2 — combined Popis práce when material distinct
+            # from master (e.g. master "Omítka..." + material "Nárožní
+            # lišta — omítka" → "Omítka… — Nárožní lišta…").  Self-material
+            # case keeps single popis.
+            combined_popis = (popis if display_popis == popis
+                               else f"{popis} — {display_popis}")
             ws.cell(row, 1, f"{gid}.M{m_idx}")
             ws.cell(row, 2, gid)
             ws.cell(row, 3, "MATERIÁL")
             ws.cell(row, 4, kapitola)
-            ws.cell(row, 5, popis)
+            ws.cell(row, 5, combined_popis)
             ws.cell(row, 6, mj)
             ws.cell(row, 7, round(total, 3))
             ws.cell(row, 8, display_popis)
@@ -1849,9 +1866,13 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
                 ws.cell(row, 2, gid)
                 ws.cell(row, 3, "LOKACE")
                 ws.cell(row, 4, kapitola)
-                ws.cell(row, 5, popis)
+                # GATE 8.1 FIX 2 — combined Popis práce (matches parent MATERIÁL)
+                ws.cell(row, 5, combined_popis)
                 ws.cell(row, 6, mj)
-                ws.cell(row, 7, round(total, 3))
+                # GATE 8.1 FIX 1 — Σ Mn. = room area in master.MJ units,
+                # not master.qty.  Gives VELTON three values: area + rate
+                # + consumption on one LOKACE row.
+                ws.cell(row, 7, round(float(m.get("mnozstvi") or 0), 3))
                 ws.cell(row, 8, loc_misto)
                 ws.cell(row, 9, rate_str)
                 ws.cell(row, 10, round(loc_qty, 3))
@@ -1951,7 +1972,8 @@ def main() -> int:
                         ("pre_gate4", EXCEL_BACKUP_GATE4),
                         ("pre_gate5", EXCEL_BACKUP_GATE5),
                         ("pre_gate6", EXCEL_BACKUP_GATE6),
-                        ("pre_gate8", EXCEL_BACKUP_GATE8)]:
+                        ("pre_gate8", EXCEL_BACKUP_GATE8),
+                        ("pre_gate8_1", EXCEL_BACKUP_GATE8_1)]:
         if path.exists():
             print(f"      preserved {path.relative_to(REPO_ROOT)} "
                   f"({path.stat().st_size:,} bytes)")
