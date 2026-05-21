@@ -1,15 +1,15 @@
 # Phase 6.6 GATE 2 — Master ↔ material pairing stats
 
-_Generated: 2026-05-20T19:42:32+00:00_
+_Generated: 2026-05-21T09:07:44+00:00_
 
 _Branch: claude/tz-material-decomposition-lBp5D_
 
 ## 1. Pairing totals
 
 - **Master items (unchanged):** 4090
-- **Sub-items emitted:** 4956
+- **Sub-items emitted:** 5930
 - Material library entries (GATE 1): 714
-  - Used as source: 1038
+  - Used as source: 423
   - Unmapped taxonomy (`material_kind=None` in library): 329
 
 ⚠️ **329 library entries with `material_kind=None`** (taxonomy gaps — verbatim + provenance valid but unclassified). Per user spec these are **accepted as-is** and not blocking pairing. Doporučujeme review pro budoucí rozšíření taxonomy rules.
@@ -19,8 +19,8 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 | Source | Count | % | Confidence |
 |---|---:|---:|---:|
 | `tz_explicit_with_rate` | 0 | 0.0 | 1.0 |
-| `tz_explicit_no_rate` | 664 | 13.4 | 0.5 |
-| `tabulka_referenced` | 374 | 7.5 | 0.95 |
+| `tz_explicit_no_rate` | 293 | 4.9 | 0.5 |
+| `tabulka_referenced` | 130 | 2.2 | 0.95 |
 | `vykres_annotated` | 0 | 0.0 | 0.85 |
 | `generic_no_documentation` | 0 | 0.0 | 0.3 |
 
@@ -28,58 +28,72 @@ _Branch: claude/tz-material-decomposition-lBp5D_
 
 | Case | Count |
 |---|---:|
-| `case_4_generic` | 1398 |
-| `case5_master_is_material` | 973 |
-| `cases_1_3_library` | 623 |
-| `no_kapitola_rule` | 432 |
-| `skipped_status` | 223 |
-| `no_pairing` | 215 |
-| `skipped_mj_incompatible` | 101 |
-| `skipped_zero_qty` | 81 |
+| `case_4_generic` | 1275 |
+| `case5_master_is_material` | 1240 |
+| `no_kapitola_rule` | 406 |
+| `cases_1_3_library` | 316 |
+| `no_pairing_promoted_case5` | 298 |
+| `skipped_status` | 212 |
+| `skipped_zero_qty` | 107 |
+| `skipped_mj_incompatible` | 95 |
+| `rate_from_popis_universal` | 86 |
 | `skipped_install_only` | 44 |
+| `vrn_services` | 11 |
 
 ## 4. Sub-items by kapitola
 
 | Kapitola | Sub-items |
 |---|---:|
 | `HSV-963` | 1884 |
-| `PSV-784` | 1368 |
-| `PSV-771` | 336 |
-| `HSV-612` | 312 |
-| `PSV-781` | 304 |
-| `HSV-611` | 284 |
-| `HSV-631` | 214 |
+| `PSV-784` | 1156 |
+| `HSV-631` | 377 |
+| `HSV-612` | 361 |
+| `PSV-771` | 318 |
+| `PSV-781` | 292 |
+| `HSV-611` | 291 |
+| `PSV-763.2` | 215 |
 | `PSV-776` | 168 |
+| `PSV-763.1` | 136 |
+| `HSV-642` | 97 |
+| `PSV-783` | 87 |
+| `PSV-766` | 86 |
+| `PSV-767` | 75 |
+| `PSV-713` | 74 |
 | `HSV-713` | 43 |
+| `PSV-764` | 41 |
+| `OP-detail` | 35 |
 | `PSV-763` | 34 |
-| `HSV-622.1` | 6 |
-| `PSV-713` | 3 |
+| `HSV-961` | 20 |
 
 ## 5. Aggregate totals — top 25 materials across objekt D
 
 | Materiál | MJ | Σ množství |
 |---|---|---:|
-| Lepidlo flexibilní C2TE — disperzní | kg | 9,879.98 |
-| Cementový potěr | kg | 4,410.16 |
+| Cementový potěr F5 tl. 58 mm (FF31) | kg | 35,888.05 |
+| Cementový potěr F5 tl. 50 mm (FF30) | kg | 18,778.21 |
+| Cementový potěr F5 tl. 58 mm (FF21) | kg | 18,013.93 |
+| Tondach bobrovka — počet kusů | ks | 10,944.00 |
+| Cementový potěr F5 tl. 50 mm (FF03) | kg | 9,293.02 |
+| Cementový potěr F5 tl. 50 mm (FF20) | kg | 7,662.49 |
+| Příprava povrchů pro malby (broušení + hladění) | m2 | 6,757.00 |
+| Lepidlo flexibilní C2TE — disperzní | kg | 5,701.49 |
+| Výztužná stěrka pod finální vrstvu | kg | 5,506.13 |
+| Talířové hmoždinky | ks | 4,720.00 |
 | Výztužná tkanina (perlinka) — omítka | m2 | 4,013.27 |
-| Lepidlo (Cemix) tl. 5 mm | kg | 3,383.07 |
-| Penetrace univerzální — disperzní | l | 3,275.40 |
-| Malba disperzní — 1× vrstva | l | 2,160.11 |
-| Tepelná izolace EPS | m2 | 1,892.28 |
-| Omítka vápenocementová | m2 | 1,205.11 |
-| Obkladový pásek cihelný (Terca) | m2 | 1,085.16 |
-| Nášlapná vrstva (vinyl)		07 mm | m2 | 980.04 |
-| Manžeta protipožární — prostup | ks | 942.00 |
-| Obklad keramický (Schluter) | m2 | 890.84 |
-| Cementový potěr | m2 | 814.87 |
-| Spárovací hmota — keramika | kg | 754.33 |
-| Penetrace tl. 15 mm | l | 729.70 |
-| Tmel akrylátový — spárování / dilatace | kg | 720.11 |
-| Nášlapná vrstva (dlažba/vinyl)	15/7 mm | m2 | 617.81 |
-| Tmel požárně-odolný — utěsnění prostupu | kg | 471.00 |
-| Dle použitého sytému (ref. např. Cemix penetrace H) | l | 397.98 |
-| Nárožní lišta — omítka | bm | 364.84 |
-| SDK deska (Knauf) | m2 | 252.58 |
+| Pronájem lešení fasádní × 4 měsíce | m2 | 3,352.00 |
+| Lepidlo flexibilní pro cihelné pásky | kg | 2,712.90 |
+| Penetrace univerzální — disperzní | l | 2,366.37 |
+| Samonivelační stěrka 3 mm (F03) | kg | 2,205.08 |
+| Spárovací hmota Polyblend S | kg | 2,170.32 |
+| Průběžný úklid během prací × 4 měsíce | m2 | 2,112.32 |
+| Lepidlo (Cemix) tl. 5 mm | kg | 1,991.07 |
+| Žárové zinkování ocelových LP## (zábradlí, schodiště) | kg | 1,956.66 |
+| Vyleštění dlažby + obkladů | m2 | 1,911.00 |
+| Malba disperzní — 1× vrstva | l | 1,603.71 |
+| Ocelové sloupky IPE120 — krov 3.NP | kg | 1,152.00 |
+| Omítka vápenocementová | m2 | 1,133.37 |
+| Základní nátěr ŽB stěn — Sikagard 552W Aquaprimer (přilnavos | m2 | 1,089.08 |
+| Bezprašný nátěr ŽB stěn — Sikagard 555W Elastic (transparent | m2 | 1,089.08 |
 
 ## 6. Spot-check — 5 masters with full sub-item provenance
 
@@ -95,43 +109,35 @@ _Branch: claude/tz-material-decomposition-lBp5D_
   | 2 | Malba disperzní — 1× vrstva | 11.51 | l | 🌐 ČSN EN 13300 | 0.6 |
   | 3 | Tmel akrylátový — spárování / dilatace | 3.83 | kg | 🌐 ČSN EN ISO 11600 | 0.6 |
 
-### Master `31aa7a4d-226…` — kapitola `PSV-771`
-- **popis:** Dlažba keramická — kladení (F01)
+### Master `dd1bc458-c0b…` — kapitola `PSV-771`
+- **popis:** Penetrace pod dlažbu (F01)
 - **master qty:** 9.965 m2
 - **misto:** {"objekt": "D", "podlazi": "1.NP", "mistnosti": ["D.1.S.02"]}
-- **sub-items (4):**
+- **sub-items (1):**
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | Nášlapná vrstva (dlažba/vinyl)	15/7 mm | 9.96 | m2 | ⚠ TZ Podlahy (rate odhad) | 0.5 |
-  | 2 | Lepidlo (Cemix) tl. 5 mm | 49.83 | kg | 📋 Tabulka 0030 | 0.95 |
-  | 3 | Dle použitého sytému (ref. např. Cemix penetrace H) | 1.99 | l | 📋 Tabulka 0030 | 0.95 |
-  | 4 | Spárovací hmota — keramika | 4.98 | kg | 🌐 ČSN EN 13888 | 0.6 |
+  | 1 | Penetrace pod dlažbu (F01) | 1.99 | l | 🌐 ČSN 73 3450 | 0.7 |
 
-### Master `2e9c92df-47c…` — kapitola `PSV-781`
-- **popis:** Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)
-- **master qty:** 6.699 m2
+### Master `d68d1ba8-f15…` — kapitola `PSV-781`
+- **popis:** Penetrace pod hydroizolaci stěn (F06)
+- **master qty:** 22.33 m2
 - **misto:** {"objekt": "D", "podlazi": "1.NP", "mistnosti": ["D.1.1.03"]}
-- **sub-items (4):**
+- **sub-items (1):**
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | Obklad keramický (Schluter) | 6.70 | m2 | ⚠ TZ Obklady vnitřní (rate odhad) | 0.5 |
-  | 2 | Penetrace univerzální — disperzní | 1.34 | l | 🌐 ČSN 73 3450 | 0.6 |
-  | 3 | Lepidlo flexibilní C2TE — disperzní | 33.49 | kg | 🌐 ČSN EN 12004 | 0.6 |
-  | 4 | Spárovací hmota — keramika | 3.35 | kg | 🌐 ČSN EN 13888 | 0.6 |
+  | 1 | Penetrace pod hydroizolaci stěn (F06) | 4.47 | l | 🌐 ČSN 73 3450 | 0.7 |
 
-### Master `d42db1fc-33f…` — kapitola `HSV-622.1`
-- **popis:** Cihelné pásky Terca — kladení
+### Master `1d721a72-5d6…` — kapitola `HSV-622.1`
+- **popis:** Penetrace pod cihelné pásky
 - **master qty:** 542.58 m2
 - **misto:** {"objekt": "D", "podlazi": "fasáda", "mistnosti": []}
-- **sub-items (3):**
+- **sub-items (1):**
 
   | # | Popis | Sub qty | MJ | Zdroj | Conf |
   |--:|---|---:|---|---|---:|
-  | 1 | Obkladový pásek cihelný (Terca) | 542.58 | m2 | ⚠ TZ Fasádní plášť (rate odhad) | 0.5 |
-  | 2 | Penetrace univerzální — disperzní | 108.52 | l | 🌐 ČSN 73 3450 | 0.6 |
-  | 3 | Lepidlo flexibilní C2TE — disperzní | 2,712.90 | kg | 🌐 ČSN EN 12004 | 0.6 |
+  | 1 | Penetrace pod cihelné pásky | 108.52 | l | 🌐 ČSN 73 3450 | 0.7 |
 
 ### Master `5f3d6fb4-7d5…` — kapitola `HSV-963`
 - **popis:** Prostup ve stropě — VZT (vzduchotechnika), 1.NP

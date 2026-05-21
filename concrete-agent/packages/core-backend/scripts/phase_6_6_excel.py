@@ -49,6 +49,7 @@ EXCEL_BACKUP_PHASE_6_6 = OUTPUTS / "Vykaz_vymer_pre_phase6_6.xlsx"
 EXCEL_BACKUP_GATE4 = OUTPUTS / "Vykaz_vymer_pre_gate4.xlsx"
 EXCEL_BACKUP_GATE5 = OUTPUTS / "Vykaz_vymer_pre_gate5.xlsx"
 EXCEL_BACKUP_GATE6 = OUTPUTS / "Vykaz_vymer_pre_gate6.xlsx"
+EXCEL_BACKUP_GATE8 = OUTPUTS / "Vykaz_vymer_pre_gate8.xlsx"
 ITEMS_IN = OUTPUTS / "items_objekt_D_with_materials.json"
 LIBRARY_IN = OUTPUTS / "material_library_D.json"
 KB_IN = LIBUSE / "knowledge_base" / "generic_consumption_rates.json"
@@ -68,6 +69,10 @@ DOCUMENTED_SOURCES = {
     "tz_explicit_with_rate", "tz_explicit_no_rate",
     "tabulka_referenced", "vykres_annotated",
     "generic_with_csn_norm", "generic_with_csn_url",
+    # GATE 8b — rate extracted from project popis, KB lookup with ČSN,
+    # and master-as-material self-reference all count as documented
+    # (master popis IS authoritative project documentation).
+    "rate_from_popis", "case5_kb_rate", "case5_self_reference",
 }
 
 # Status fills per user spec
@@ -88,6 +93,10 @@ SOURCE_COLORS: dict[str, str] = {
     "generic_no_documentation": "FF6B6B",  # red
     "generic_with_csn_norm":    "7030A0",  # purple — ČSN-cited
     "generic_with_csn_url":     "B266FF",  # lighter purple — ČSN with URL
+    "rate_from_popis":          "008080",  # teal — rate from project popis
+    "case5_kb_rate":            "9966CC",  # medium purple — Case 5 KB
+    "case5_self_reference":     "20B2AA",  # light sea green — master=material
+    "vrn_services":             "B0B0B0",  # gray — services (no material)
 }
 
 THIN = Side(style="thin", color="B0B0B0")
@@ -306,8 +315,10 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
         last_sub_row = None
         if not subs:
             popis_lower = (master.get("popis") or "").lower()
+            # GATE 8a A3 — Case 5 sub-rows duplicate master popis instead
+            # of a generic placeholder.  Treats master AS the material.
             if any(kw in popis_lower for kw in CASE5_PRIMARY_KEYWORDS):
-                placeholder = "(Case 5 — master JE materiál, žádný sub-rozklad)"
+                placeholder = master.get("popis") or "(Case 5 — master = materiál)"
             elif (_INSTALL_SUFFIX_RE.search(master.get("popis") or "")
                   or _INSTALL_PREFIX_RE.search(master.get("popis") or "")):
                 placeholder = ("(install-only — materiál v sourozenecké "
@@ -318,8 +329,10 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                 placeholder = "(no_pairing — žádný odpovídající KB nebo TZ vstup)"
             pol_label = f"{master_pol_counter}.0"
             ws.cell(row_idx, 1, pol_label)
-            for c in range(2, 7):
+            for c in range(2, 6):
                 ws.cell(row_idx, c, "")
+            # GATE 8a A1 — repeat master Místnost on sub-row for filter/sort
+            ws.cell(row_idx, 6, _format_misto(master))
             ws.cell(row_idx, 7, "  " + placeholder)
             ws.cell(row_idx, 8, "")
             ws.cell(row_idx, 9, "")
@@ -340,9 +353,11 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
             # A: Pol. č. decimal (X.N)
             pol_label = f"{master_pol_counter}.{sub_idx}"
             ws.cell(row_idx, 1, pol_label)
-            # B-F blank on sub rows
-            for c in range(2, 7):
+            # B-E blank on sub rows
+            for c in range(2, 6):
                 ws.cell(row_idx, c, "")
+            # GATE 8a A1 — repeat master Místnost on sub-row (col F)
+            ws.cell(row_idx, 6, _format_misto(master))
             # G: Vstup — popis with slight visual indent (leading space)
             ws.cell(row_idx, 7, "  " + (sub.get("popis") or ""))
             # H: Sp./MJ rate
@@ -852,6 +867,162 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
             row += 1
         row += 2
 
+    # ----- GATE 8 — Blocks 15 / 16 / 17 -----
+    # Block 15: UX polish (A1 Místnost, A2 outline, A3 placeholder swap)
+    # Block 16: Case 5 rate enrichment (B1 popis-rate, B2 KB, B3 apply, B4 VRN)
+    # Block 17: Critical pairing fixes (C1 dodávka, C2 cascade, C3 Case 5 extend)
+    n_rate_from_popis = by_source.get("rate_from_popis", 0)
+    n_case5_kb_rate = by_source.get("case5_kb_rate", 0)
+    n_case5_self_ref = by_source.get("case5_self_reference", 0)
+    n_vrn = by_source.get("vrn_services", 0)
+    pairing_meta = {}
+    try:
+        items_blob = json.loads(ITEMS_IN.read_text(encoding="utf-8"))
+        pairing_meta = items_blob.get("metadata", {})
+    except (OSError, ValueError):
+        pass
+    n_cascade = int(pairing_meta.get("phase_6_6_b_cascade_skips", 0))
+    case_labels = pairing_meta.get("phase_6_6_b_case_labels", {}) or {}
+
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = "GATE 8 — FINAL — Phase 6.6 closure (UX + Case 5 + pairing fixes)"
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = (
+        "GATE 8 ships three coordinated changes that close Phase 6.6:  "
+        "(a) UX polish — Místnost propagation to sub-rows, 11c LOKACE "
+        "outline groups, Case 5 placeholder replaced with master popis;  "
+        "(b) Case 5 rate enrichment — regex rate extraction from master "
+        "popis (B1, status OK 0.95), KB lookup with ČSN citation (B3, "
+        "status Confirm 0.7), master-as-material self-reference (status "
+        "OK 0.9), VRN administrative services exception (B4, status —);  "
+        "(c) Critical pairing fixes — dodávka pairs reclassified Case 5 "
+        "(C1), cross-layer sub-item cascade prevention via material_kind "
+        "(C2), cementový potěr / anhydrit / betonová stěrka added to "
+        "Case 5 keywords (C3)."
+    )
+    ws[f"A{row}"].font = Font(size=10)
+    ws[f"A{row}"].alignment = LEFT_WRAP
+    ws.row_dimensions[row].height = 120
+    row += 2
+
+    # Block 15 — UX polish
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = "Block 15 — GATE 8a UX polish"
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    rows15 = [
+        ("A1 — Místnost propagated to all Material_rozklad sub-rows",
+         "filtrace/sort dle místnosti napříč všemi sub-items"),
+        ("A2 — 11c_AVK_smeta LOKACE rows collapsed (outline level 1)",
+         "PRÁCE + MATERIÁL viditelné, LOKACE expand by [+]"),
+        ("A3 — Case 5 placeholder → master popis verbatim",
+         "master JE materiál — Vstup col duplikuje master popis"),
+    ]
+    for label, descr in rows15:
+        ws.cell(row, 1, label); ws.cell(row, 1).border = BORDER_ALL
+        ws.merge_cells(start_row=row, start_column=2,
+                       end_row=row, end_column=6)
+        ws.cell(row, 2, descr)
+        for c in range(2, 7):
+            ws.cell(row, c).border = BORDER_ALL
+        ws.cell(row, 2).alignment = LEFT_WRAP
+        row += 1
+    row += 1
+
+    # Block 16 — Case 5 rate enrichment
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = "Block 16 — GATE 8b Case 5 rate enrichment"
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    ws.cell(row, 1, "Source").font = BOLD
+    ws.cell(row, 2, "Count").font = BOLD
+    ws.cell(row, 3, "Status").font = BOLD
+    for c in range(1, 4):
+        ws.cell(row, c).border = BORDER_ALL
+    row += 1
+    rows16 = [
+        ("rate_from_popis (B1 — regex from master popis)",
+         n_rate_from_popis, "OK · conf 0.95"),
+        ("case5_kb_rate (B3 — KB lookup, ČSN citation)",
+         n_case5_kb_rate, "Confirm · conf 0.7"),
+        ("case5_self_reference (master = materiál, 1:1)",
+         n_case5_self_ref, "OK · conf 0.9"),
+        ("vrn_services (B4 — VRN administrativní)",
+         n_vrn, "— · conf 1.0"),
+    ]
+    for label, val, status in rows16:
+        ws.cell(row, 1, label); ws.cell(row, 2, val); ws.cell(row, 3, status)
+        for c in range(1, 4):
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+    row += 1
+
+    # KB enrichment summary
+    kb_added_keys = [
+        "asfaltovy_pas_bituman", "asfaltovy_pas_radon_bariera",
+        "betonova_sterka_strukturovana", "bezprasny_nater_zb",
+        "tenkovrstva_silikon_omitka", "tondach_bobrovka",
+        "hrebenace_tondach", "cementovy_poter_50mm",
+        "cementovy_poter_58mm", "anhydritovy_poter",
+    ]
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = (
+        f"GATE 8b B2 — KB enriched with {len(kb_added_keys)} new entries "
+        f"(all carry citation_norm — no schema violations).  Categories: "
+        f"asfaltové pásy, betonové stěrky, bezprašné nátěry, tenkovrstvé "
+        f"silikonové omítky, Tondach krytina + hřebenáče, cementové "
+        f"potěry 50/58 mm, anhydritové potěry."
+    )
+    ws[f"A{row}"].font = Font(size=10)
+    ws[f"A{row}"].alignment = LEFT_WRAP
+    ws.row_dimensions[row].height = 50
+    row += 2
+
+    # Block 17 — Critical pairing fixes
+    ws.merge_cells(f"A{row}:H{row}")
+    ws[f"A{row}"] = "Block 17 — GATE 8c Critical pairing fixes"
+    ws[f"A{row}"].font = TITLE_FONT
+    row += 1
+    rows17 = [
+        ("C1 — dodávka pairs reclassified Case 5",
+         "Every '— dodávka' suffix master treated as standalone material "
+         "(physical delivery, no further decomposition)."),
+        ("C2 — Cross-layer cascade prevention",
+         f"{n_cascade} sub-items skipped because their material_kind "
+         f"already appears as a separate priced master (e.g. Vinyl "
+         f"Gerflor kladení no longer gets Cementový potěr sub-item — "
+         f"potěr is its own G007 master)."),
+        ("C3 — Case 5 keyword expansion",
+         "Added: cementový potěr / potěr cementový, anhydritový potěr, "
+         "betonová stěrka, polystyrenbeton, plus universal '— dodávka' "
+         "catch-all.  All such masters now emit a single sub-item with "
+         "extracted/KB rate instead of cascading library entries."),
+    ]
+    for label, descr in rows17:
+        ws.cell(row, 1, label); ws.cell(row, 1).border = BORDER_ALL
+        ws.merge_cells(start_row=row, start_column=2,
+                       end_row=row, end_column=6)
+        ws.cell(row, 2, descr)
+        for c in range(2, 7):
+            ws.cell(row, c).border = BORDER_ALL
+        ws.cell(row, 2).alignment = LEFT_WRAP
+        ws.row_dimensions[row].height = 32
+        row += 1
+    row += 1
+
+    # Pairing case label breakdown
+    ws.cell(row, 1, "GATE 8 — pair-script case label distribution:")
+    ws.cell(row, 1).font = BOLD
+    row += 1
+    for label, val in sorted(case_labels.items(), key=lambda x: -x[1]):
+        ws.cell(row, 1, label); ws.cell(row, 2, val)
+        ws.cell(row, 1).border = BORDER_ALL
+        ws.cell(row, 2).border = BORDER_ALL
+        row += 1
+    row += 2
+
     # ----- Block 11: Paired master deduplication (Bug 1 fix report) -----
     # Reference counts from GATE 3 commit 238af49 (post-GATE-2 stats):
     #   sub-items total: 6 152
@@ -1349,7 +1520,13 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
                     b["popis_full"] = popis_full
 
         if not mat_buckets:
-            # Case 5 — master IS the material; emit single placeholder M1
+            # GATE 8a A3 — master IS the material; duplicate master popis
+            # verbatim in Vstup col rather than show a generic placeholder.
+            # Sp./MJ + Mn. stay 1:1 master values (the master itself is
+            # the consumed material).  Status "—" because GATE 8b should
+            # have emitted a real sub-item for this master; reaching this
+            # branch means an early skip blocked it (deprecated, etc.) —
+            # keep visible in 11c as a placeholder row.
             ws.cell(row, 1, f"{gid}.M1")
             ws.cell(row, 2, gid)
             ws.cell(row, 3, "MATERIÁL")
@@ -1357,11 +1534,10 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
             ws.cell(row, 5, popis)
             ws.cell(row, 6, mj)
             ws.cell(row, 7, round(float(total), 3))
-            ws.cell(row, 8, "Bez vstupních materiálů (master JE materiál — "
-                            "viz tabulka)")
+            ws.cell(row, 8, popis)
             ws.cell(row, 9, "")
-            ws.cell(row, 10, "")
-            ws.cell(row, 11, "")
+            ws.cell(row, 10, round(float(total), 3))
+            ws.cell(row, 11, mj)
             ws.cell(row, 12, "—")
             ws.cell(row, 13, "—")
             for c in range(1, 14):
@@ -1436,6 +1612,11 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
                 cell.fill = LOC_FILL
                 cell.alignment = LEFT_NOWRAP
                 cell.border = BORDER_ALL
+            # GATE 8a A2 — collapse LOKACE rows under their PRÁCE / MATERIÁL
+            # parent.  Outline level 1, hidden by default; mirrors the
+            # 11_Sumarizace_dle_kódu pattern Alexander finds intuitive.
+            ws.row_dimensions[row].outline_level = 1
+            ws.row_dimensions[row].hidden = True
             n_loc += 1
             row += 1
 
@@ -1448,6 +1629,12 @@ def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
                 "n_materials": len(mat_buckets),
                 "row_range": (prace_row, row - 1),
             })
+
+    # GATE 8a A2 — outline summary ABOVE detail rows so the LOKACE
+    # group toggle appears next to the PRÁCE/MATERIÁL parent rows,
+    # matching the 11_Sumarizace_dle_kódu layout.
+    ws.sheet_properties.outlinePr.summaryBelow = False
+    ws.sheet_properties.outlinePr.summaryRight = False
 
     # Column widths tuned for AVK reading flow
     widths_avk = [12, 8, 10, 11, 50, 7, 10, 55, 18, 10, 7, 24, 10]
@@ -1495,7 +1682,8 @@ def main() -> int:
     for label, path in [("pre_phase6_6", EXCEL_BACKUP_PHASE_6_6),
                         ("pre_gate4", EXCEL_BACKUP_GATE4),
                         ("pre_gate5", EXCEL_BACKUP_GATE5),
-                        ("pre_gate6", EXCEL_BACKUP_GATE6)]:
+                        ("pre_gate6", EXCEL_BACKUP_GATE6),
+                        ("pre_gate8", EXCEL_BACKUP_GATE8)]:
         if path.exists():
             print(f"      preserved {path.relative_to(REPO_ROOT)} "
                   f"({path.stat().st_size:,} bytes)")

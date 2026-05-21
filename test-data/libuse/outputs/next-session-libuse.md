@@ -1,7 +1,67 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-20 (Phase 6.6 GATE 1+2+3 complete — material library
-extracted, 6 152 sub-items paired, Excel dashboard delivered)
+Last updated: 2026-05-21 (**Phase 6.6 GATE 8 FINAL complete** — Case 5
+rate enrichment + UX polish + critical pairing fixes shipped, ready
+for VELTON spot-check + merge).
+
+## ⭐ Phase 6.6 FINAL closure — all 8 GATEs complete (2026-05-21)
+
+**GATE 8 (FINAL):**
+
+- **8a UX:** Místnost on sub-rows, 11c LOKACE collapsed (outline level
+  1), Case 5 placeholder → master popis verbatim.
+- **8b Case 5 rates:**  86 masters got `rate_from_popis` (B1 regex
+  from popis), 541 got `case5_kb_rate` (B3 KB lookup with ČSN),
+  1 403 got `case5_self_reference` (master = materiál 1:1),
+  11 got `vrn_services` (B4 administrative).  KB extended by 10 new
+  entries (all carry `citation_norm`).
+- **8c Critical pairing:** dodávka pairs reclassified Case 5 (C1),
+  cross-layer cascade prevention via material_kind comparison (C2 —
+  150 sub-items skipped), Case 5 keyword expansion (C3).
+
+**Source distribution after GATE 8 (sub-items 5 919 total):**
+
+```
+generic_with_csn_norm        3 466   (Case 4 ČSN-cited)
+case5_self_reference         1 403   NEW — master = materiál 1:1
+case5_kb_rate                  541   NEW — KB lookup
+tz_explicit_no_rate            293   (Case 1-3 library)
+tabulka_referenced             130   (Case 1-3 library)
+rate_from_popis                 86   NEW — regex from popis
+vrn_services                    11   NEW — VRN administrativní
+```
+
+**Spot-check verification (all PASS):**
+
+- G050 Vinyl Gerflor — kladení: Cementový potěr sub-item REMOVED ✅
+- G052 Vinyl Gerflor — dodávka: Case 5 self-reference, status OK ✅
+- G025 Sikafloor 0.1 kg/m²: rate 0.1 extracted from popis ✅
+- VRN-* (11 masters): all get "(služby — bez materiálu)" ✅
+- Material_rozklad sub-rows: Místnost inherited from master ✅
+- 11c LOKACE: 4 090 rows collapsed via outline level 1 ✅
+
+**Invariants:**
+
+- `items_objekt_D_complete.json` SHA: **373685ed…** ✅ unchanged
+- `1_Vykaz_vymer`: 4 091 rows byte-identical ✅
+- `11_Sumarizace_dle_kódu`: 4 845 rows byte-identical ✅
+- `Material_rozklad`: regenerated, 10 479 rows (was 11 116 GATE 7 —
+  fewer placeholder rows because GATE 8 emits real sub-items for
+  Case 5 / VRN / no_pairing instead of empty placeholders)
+- `11b_Material_aggregate`: 1 309 rows (was 236 GATE 7) — auto-
+  aggregator buckets multiplied due to new sub-item sources; this
+  is expected reflection of richer data, not a regression
+- `11c_AVK_smeta`: 5 858 rows, LOKACE collapsed by default
+
+**Dashboard:** new Block 15 (UX polish stats), Block 16 (Case 5 rate
+enrichment counts), Block 17 (critical pairing fixes — C1/C2/C3).
+
+**Backup chain:** `pre_phase6_6` + `pre_gate4` + `pre_gate5` +
+`pre_gate6` + `pre_gate8` (5 snapshots).
+
+---
+
+## Original handoff context (preserved below from prior gates)
 
 ---
 
