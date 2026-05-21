@@ -1,0 +1,1600 @@
+{
+  "file": "Hala HK_ Úprava dveří.dxf",
+  "extracted_at": "2026-05-21T19:30:19.717188+00:00",
+  "summary": {
+    "total_INSERT_instances": 152,
+    "unique_blocks": 90,
+    "profile_lines": 67,
+    "unclassified_blocks": 22,
+    "workshop_codes_distinct": 36,
+    "ram_pohled_labels": 17,
+    "DIMENSION_entities": 391
+  },
+  "profile_rollup": [
+    {
+      "family": "JEKL_JAKL_square",
+      "size_key": "60x60x4",
+      "count": 24,
+      "kg_per_m": 6.86,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "JAKL60",
+          "count": 18,
+          "ambiguous": true,
+          "assumed_thickness_mm": 4
+        },
+        {
+          "block_name": "JEKL60",
+          "count": 6,
+          "ambiguous": true,
+          "assumed_thickness_mm": 4
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "450",
+      "count": 17,
+      "kg_per_m": 77.6,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE450",
+          "count": 17,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "270",
+      "count": 9,
+      "kg_per_m": 36.1,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE270",
+          "count": 9,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "JEKL_JAKL_square",
+      "size_key": "100x100x5",
+      "count": 3,
+      "kg_per_m": 14.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "JEKL100",
+          "count": 3,
+          "ambiguous": true,
+          "assumed_thickness_mm": 5
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "L_equal_angle",
+      "size_key": "50x50x5",
+      "count": 3,
+      "kg_per_m": 3.77,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "L50",
+          "count": 3,
+          "ambiguous": true,
+          "assumed_thickness_mm": 5
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "400",
+      "count": 2,
+      "kg_per_m": 66.3,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE400",
+          "count": 2,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "100",
+      "count": 1,
+      "kg_per_m": 16.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA100",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "120",
+      "count": 1,
+      "kg_per_m": 19.9,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA120",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "140",
+      "count": 1,
+      "kg_per_m": 24.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA140",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "160",
+      "count": 1,
+      "kg_per_m": 30.4,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA160",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "180",
+      "count": 1,
+      "kg_per_m": 35.5,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA180",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "200",
+      "count": 1,
+      "kg_per_m": 42.3,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA200",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "220",
+      "count": 1,
+      "kg_per_m": 50.5,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA220",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "240",
+      "count": 1,
+      "kg_per_m": 60.3,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA240",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "260",
+      "count": 1,
+      "kg_per_m": 68.2,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA260",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "280",
+      "count": 1,
+      "kg_per_m": 76.4,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA280",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "300",
+      "count": 1,
+      "kg_per_m": 88.3,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA300",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "320",
+      "count": 1,
+      "kg_per_m": 97.6,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA320",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "340",
+      "count": 1,
+      "kg_per_m": 105.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA340",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "360",
+      "count": 1,
+      "kg_per_m": 112.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA360",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "400",
+      "count": 1,
+      "kg_per_m": 125.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEA400",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "600",
+      "count": 1,
+      "kg_per_m": 122.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "ipe600",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "450",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "hea450",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "500",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "heb500",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "120",
+      "count": 1,
+      "kg_per_m": 26.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb120",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "140",
+      "count": 1,
+      "kg_per_m": 33.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb140",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "160",
+      "count": 1,
+      "kg_per_m": 42.6,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb160",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "180",
+      "count": 1,
+      "kg_per_m": 51.2,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb180",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "200",
+      "count": 1,
+      "kg_per_m": 61.3,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb200",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "220",
+      "count": 1,
+      "kg_per_m": 71.5,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb220",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "240",
+      "count": 1,
+      "kg_per_m": 83.2,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb240",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "260",
+      "count": 1,
+      "kg_per_m": 93.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb260",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "280",
+      "count": 1,
+      "kg_per_m": 103.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb280",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "300",
+      "count": 1,
+      "kg_per_m": 117.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb300",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "320",
+      "count": 1,
+      "kg_per_m": 127.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb320",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "340",
+      "count": 1,
+      "kg_per_m": 134.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb340",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "360",
+      "count": 1,
+      "kg_per_m": 142.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb360",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "400",
+      "count": 1,
+      "kg_per_m": 155.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "heb400",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "450",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "heb450",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "500",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "hea500",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "300",
+      "count": 1,
+      "kg_per_m": 42.2,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE300",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "330",
+      "count": 1,
+      "kg_per_m": 49.1,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE330",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "240",
+      "count": 1,
+      "kg_per_m": 30.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE240",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "220",
+      "count": 1,
+      "kg_per_m": 26.2,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE220",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "200",
+      "count": 1,
+      "kg_per_m": 22.4,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE200",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "180",
+      "count": 1,
+      "kg_per_m": 18.8,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE180",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "160",
+      "count": 1,
+      "kg_per_m": 15.8,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE160",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "360",
+      "count": 1,
+      "kg_per_m": 57.1,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE360",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "500",
+      "count": 1,
+      "kg_per_m": 90.7,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "ipe500",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "IPE",
+      "size_key": "550",
+      "count": 1,
+      "kg_per_m": 106.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "IPE550",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "40",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U40",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "60",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U60",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "80",
+      "count": 1,
+      "kg_per_m": 8.64,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U80",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "100",
+      "count": 1,
+      "kg_per_m": 10.6,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U100",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "120",
+      "count": 1,
+      "kg_per_m": 13.4,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U120",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "140",
+      "count": 1,
+      "kg_per_m": 16.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U140",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "160",
+      "count": 1,
+      "kg_per_m": 18.8,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U160",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "180",
+      "count": 1,
+      "kg_per_m": 22.0,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U180",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "200",
+      "count": 1,
+      "kg_per_m": 25.3,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "U200",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "220",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U220",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "240",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U240",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "260",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U260",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "280",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U280",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "U",
+      "size_key": "300",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "U300",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEB",
+      "size_key": "100",
+      "count": 1,
+      "kg_per_m": 20.4,
+      "_catalog_hit": true,
+      "examples": [
+        {
+          "block_name": "HEB100",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "600",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "hea600",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    },
+    {
+      "family": "HEA",
+      "size_key": "550",
+      "count": 1,
+      "kg_per_m": null,
+      "_catalog_hit": false,
+      "examples": [
+        {
+          "block_name": "hea550",
+          "count": 1,
+          "ambiguous": false,
+          "assumed_thickness_mm": null
+        }
+      ],
+      "_note": "kg_total deferred to Stage D after DIMENSION-based length extraction per task §9 rule 4 (NEVER hardcode length)"
+    }
+  ],
+  "unclassified_blocks_top20": [
+    "11× LOGO",
+    "1× A$C0FAB22CB",
+    "2× A$C7F48221E",
+    "1× IPN80",
+    "1× IPN100",
+    "1× IPN120",
+    "1× IPN140",
+    "1× IPN160",
+    "1× IPN180",
+    "1× IPN200",
+    "1× IPN220",
+    "1× IPN240",
+    "1× IPN260",
+    "1× IPN280",
+    "1× IPN300",
+    "1× IPN320",
+    "1× IPN340",
+    "1× IPN360",
+    "1× IPN380",
+    "1× IPN400"
+  ],
+  "workshop_part_codes": [
+    {
+      "code": "142.Z.13-20",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "172.Z.13-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "202.Z.14-27",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "232.Z.14-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "262.Z.15-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "302.Z.20-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "342.Z.23-35",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "402.Z.25-32",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "142.C.13-20",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "172.C.13-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "202.C.14-27",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "232.C.14-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "262.C.15-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "302.C.20-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "342.C.23-30",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "200.E.20-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "230.E.20-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "270.E.25-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "330.E.25-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "142.M.13-20",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "150.M.15-20",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "165.M.15-20",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "172.M.13-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "202.M.14-27",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "220.M.15-20",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "232.M.14-25",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "262.M.15-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "302.M.20-29",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "342.M.23-30",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "122.Z.13-18",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "452.Z.27-32",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "170.E.20-23",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "420.E.27-32",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "122.C.13-18",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "402.C.25-30",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    },
+    {
+      "code": "402.M.25-30",
+      "first_seen_in_layer": "Popis",
+      "first_seen_at": "Model"
+    }
+  ],
+  "ram_pohled_labels": [
+    {
+      "label": "PŮDORYS",
+      "loc": "Model",
+      "pos": [
+        31860.16941453854,
+        32314.32381002183
+      ]
+    },
+    {
+      "label": "PŮDORYS",
+      "loc": "Model",
+      "pos": [
+        801.8298496436037,
+        59765.50230763678
+      ]
+    },
+    {
+      "label": "PŮDORYS 1.NP",
+      "loc": "Model",
+      "pos": [
+        101450.0000000318,
+        32330.00000000002
+      ]
+    },
+    {
+      "label": "RÁM OSA \"02\"",
+      "loc": "Model",
+      "pos": [
+        205627.5,
+        110820.5140221285
+      ]
+    },
+    {
+      "label": "RÁM OSA \"03\" - \"05\"",
+      "loc": "Model",
+      "pos": [
+        176442.5000000001,
+        93463.19359567021
+      ]
+    },
+    {
+      "label": "RÁM OSA \"06\"",
+      "loc": "Model",
+      "pos": [
+        205642.5000000001,
+        93463.19359567021
+      ]
+    },
+    {
+      "label": "RÁM OSA \"01\"",
+      "loc": "Model",
+      "pos": [
+        176427.5,
+        110820.5140221285
+      ]
+    },
+    {
+      "label": "POHLED OSA \"F\"",
+      "loc": "Model",
+      "pos": [
+        259330.0000000001,
+        93463.19359567021
+      ]
+    },
+    {
+      "label": "POHLED OSA \"06\"",
+      "loc": "Model",
+      "pos": [
+        233900.0000000002,
+        93463.19359567021
+      ]
+    },
+    {
+      "label": "POHLED OSA \"01\"",
+      "loc": "Model",
+      "pos": [
+        233900.0000000001,
+        110820.5140221285
+      ]
+    },
+    {
+      "label": "POHLED OSA \"A\"",
+      "loc": "Model",
+      "pos": [
+        259330.0000000001,
+        110820.5140221285
+      ]
+    },
+    {
+      "label": "PŮDORYS",
+      "loc": "Model",
+      "pos": [
+        144601.8298496436,
+        114064.7839781923
+      ]
+    },
+    {
+      "label": "KONSTRUKCE STŘECHY",
+      "loc": "Model",
+      "pos": [
+        144601.8298496436,
+        72065.14314291452
+      ]
+    },
+    {
+      "label": "PŮDORYS STŘECHY",
+      "loc": "Model",
+      "pos": [
+        144601.8298496436,
+        30065.50230763678
+      ]
+    },
+    {
+      "label": "PŮDORYS",
+      "loc": "Model",
+      "pos": [
+        163360.5285792608,
+        74313.9646276607
+      ]
+    },
+    {
+      "label": "KONSTRUKCE STŘECHY",
+      "loc": "Model",
+      "pos": [
+        163360.5285792608,
+        32314.32381002184
+      ]
+    },
+    {
+      "label": "PŮDORYS STŘECHY",
+      "loc": "Model",
+      "pos": [
+        163360.5285792608,
+        -9685.317025255892
+      ]
+    }
+  ],
+  "layer_entity_counts_top20": [
+    [
+      "Popis",
+      920
+    ],
+    [
+      "TENKA",
+      762
+    ],
+    [
+      "Koty",
+      392
+    ],
+    [
+      "TLUSTE",
+      383
+    ],
+    [
+      "osy",
+      327
+    ],
+    [
+      "SRAFY",
+      202
+    ],
+    [
+      "PROFILY",
+      169
+    ],
+    [
+      "0",
+      162
+    ],
+    [
+      "NETISK",
+      101
+    ],
+    [
+      "IZOLACE",
+      41
+    ],
+    [
+      "1xČERCHA",
+      28
+    ],
+    [
+      "ČARKOVANA",
+      24
+    ],
+    [
+      "LOGO",
+      13
+    ],
+    [
+      "ozn-rezu",
+      10
+    ],
+    [
+      "04_srafy",
+      8
+    ],
+    [
+      "2xČERCHA",
+      3
+    ],
+    [
+      "TEČKOVANÁ",
+      1
+    ],
+    [
+      "DEMOLICE",
+      1
+    ]
+  ],
+  "dimension_summary": {
+    "total": 391,
+    "by_layer": [
+      [
+        "Koty",
+        391
+      ]
+    ],
+    "value_distribution_top20": [
+      [
+        1000,
+        82
+      ],
+      [
+        120,
+        24
+      ],
+      [
+        4220,
+        24
+      ],
+      [
+        778,
+        18
+      ],
+      [
+        6100,
+        16
+      ],
+      [
+        5000,
+        16
+      ],
+      [
+        4780,
+        12
+      ],
+      [
+        2940,
+        12
+      ],
+      [
+        19315,
+        12
+      ],
+      [
+        2915,
+        10
+      ],
+      [
+        1555,
+        10
+      ],
+      [
+        4000,
+        9
+      ],
+      [
+        220,
+        8
+      ],
+      [
+        6165,
+        8
+      ],
+      [
+        3000,
+        8
+      ],
+      [
+        6195,
+        8
+      ],
+      [
+        190,
+        8
+      ],
+      [
+        27970,
+        8
+      ],
+      [
+        1200,
+        8
+      ],
+      [
+        2000,
+        5
+      ]
+    ]
+  }
+}

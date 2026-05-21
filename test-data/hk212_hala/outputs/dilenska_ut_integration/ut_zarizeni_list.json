@@ -1,0 +1,208 @@
+{
+  "file": "UT_HALAHK_DPS.dxf",
+  "extracted_at": "2026-05-21T19:30:24.072697+00:00",
+  "devices": [
+    {
+      "device_key": "Dalap_E-HP_9kW",
+      "vendor": "DALAP",
+      "category": "tepelné čerpadlo vzduch-vzduch",
+      "count": 4,
+      "topny_kw_per_unit": 9.0,
+      "topny_kw_total": 36.0,
+      "matched_blocks": [
+        {
+          "source": "TEXT_label",
+          "occurrences": 4,
+          "_note": "device identifier present as TEXT/MTEXT entity, not as INSERT block name"
+        }
+      ],
+      "_note": ""
+    },
+    {
+      "device_key": "ECOSUN_S+_12",
+      "vendor": "FENIX (ECOSUN)",
+      "category": "sálavý infrapanel",
+      "count": 40,
+      "topny_kw_per_unit": 1.2,
+      "topny_kw_total": 48.0,
+      "matched_blocks": [
+        {
+          "source": "TEXT_label",
+          "occurrences": 40,
+          "_note": "device identifier present as TEXT/MTEXT entity, not as INSERT block name"
+        }
+      ],
+      "_note": "ECOSUN S+ 12 = 1200 W = 1.2 kW typicky; v originálu může být uvedeno 12 kW (verify)"
+    },
+    {
+      "device_key": "PT_Vents_UET-15D",
+      "vendor": "PT Ventilation",
+      "category": "VZT rekuperační jednotka",
+      "count": 4,
+      "topny_kw_per_unit": 0.0,
+      "topny_kw_total": 0.0,
+      "matched_blocks": [
+        {
+          "source": "TEXT_label",
+          "occurrences": 4,
+          "_note": "device identifier present as TEXT/MTEXT entity, not as INSERT block name"
+        }
+      ],
+      "_note": "VZT primary, ne topný zdroj"
+    },
+    {
+      "device_key": "LENS_ARENA_60x120_W",
+      "vendor": "LENS",
+      "category": "LED svítidlo (reference podklad pro EL D.1.4)",
+      "count": 36,
+      "topny_kw_per_unit": 0.0,
+      "topny_kw_total": 0.0,
+      "matched_blocks": [
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40003",
+          "count": 15
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40004",
+          "count": 3
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40002",
+          "count": 1
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40001",
+          "count": 1
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40000",
+          "count": 2
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_4000K",
+          "count": 2
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40010",
+          "count": 1
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40005",
+          "count": 6
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40009",
+          "count": 1
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40008",
+          "count": 1
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40007",
+          "count": 2
+        },
+        {
+          "source": "INSERT_block_name",
+          "block_name": "LENS_ARENA_60__120_W_40006",
+          "count": 1
+        }
+      ],
+      "_note": "elektro scope, ne ÚT"
+    }
+  ],
+  "pipe_LWPOLYLINE_per_layer": {},
+  "layer_count_top20": [
+    [
+      "156",
+      2319
+    ],
+    [
+      "213",
+      778
+    ],
+    [
+      "98",
+      360
+    ],
+    [
+      "1",
+      346
+    ],
+    [
+      "4",
+      262
+    ],
+    [
+      "30",
+      208
+    ],
+    [
+      "127",
+      202
+    ],
+    [
+      "0",
+      158
+    ],
+    [
+      "130",
+      146
+    ],
+    [
+      "3",
+      143
+    ],
+    [
+      "122",
+      138
+    ],
+    [
+      "41",
+      135
+    ],
+    [
+      "31",
+      134
+    ],
+    [
+      "87",
+      119
+    ],
+    [
+      "42",
+      111
+    ],
+    [
+      "128",
+      101
+    ],
+    [
+      "2",
+      93
+    ],
+    [
+      "208",
+      85
+    ],
+    [
+      "97",
+      74
+    ],
+    [
+      "6",
+      64
+    ]
+  ]
+}
