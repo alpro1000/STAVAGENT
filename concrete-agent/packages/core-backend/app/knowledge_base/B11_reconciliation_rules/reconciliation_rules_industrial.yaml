@@ -1,0 +1,159 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Reconciliation Rules — industrial (průmyslové haly)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Calibrated from hk212_hala steel-frame reference. Steel-frame haly
+# have tighter tolerances on connection details + průmyslové podlahy
+# because regál + technologie point loads are sensitive to slab spec.
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.3
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: industrial
+description: >
+  10 reconciliation rules for industrial / průmyslové haly. ±1 % portal
+  frame geometry, exact for steel grade + concrete class + load capacity.
+
+rules:
+
+  - id: industrial_portal_frame_geometry
+    description: >
+      Rozpon × osová vzdálenost × výška pod vazníkem — TZ vs DXF /
+      IFC. ±1 % (steel-frame geometry is precision-engineered).
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 1.0
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: industrial_steel_grade_tz_vs_drawing
+    description: >
+      Třída oceli (S235JR / S355J0 / S420N) — TZ vs DPS legenda.
+      Exact match per ČSN EN 1090.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: industrial_floor_slab_thickness
+    description: >
+      Tloušťka průmyslové podlahy — TZ vs DPS. Exact (load capacity
+      computation depends on slab thickness).
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: industrial_floor_load_capacity
+    description: >
+      Únosnost podlahy (kN/m² + bodové od regálů) — TZ vs technologické
+      zadání + statický výpočet. Exact.
+    left_source: pdf_tz
+    right_source: passport_schema
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: passport_wins
+    severity: critical
+
+  - id: industrial_concrete_class_tz_vs_drawing
+    description: Třída betonu (základy + podlaha) — TZ vs DPS. Exact.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: industrial_steel_tonnage_tz_vs_soupis
+    description: >
+      Tonáž oceli OK (t) — TZ vs UNIXML soupis. ±3 % (steel-frame
+      production tolerance + brutto vs netto).
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 3.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: industrial_cladding_area_tz_vs_soupis
+    description: >
+      Plocha opláštění stěn + střechy — TZ vs soupis. ±2 %.
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: industrial_door_count_tz_vs_drawing
+    description: >
+      Počet průmyslových vrat / sekčních + rolovacích + požárních —
+      TZ vs DXF block count. Exact (kontrakt s dodavatelem vrat).
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: industrial_fire_compartment_area
+    description: >
+      Plocha požárního úseku — TZ PBŘ vs DXF. ±2 % (kompartmentace
+      drives EPS + sprinkler design).
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: industrial_atex_zone_classification
+    description: >
+      ATEX zóny (1/2/21/22 per ČSN EN 60079) — TZ vs DPS. Exact;
+      mismatch = osobní bezpečnost.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical

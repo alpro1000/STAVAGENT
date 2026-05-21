@@ -1,0 +1,239 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Derivation Rules — universal registry (PR2)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Loaded by `app/services/uep/derivation_registry.py` and validated against
+# `app/models/derivation_schemas.DerivationRuleSet`.
+#
+# Server-side enforcement: `apply_derivation(rule_id, ...)` refuses any
+# rule_id not in this file. No "compute arbitrary formula" tool exists.
+#
+# Formula scope is restricted: only Python expression syntax, the input
+# placeholders, and the helpers exposed by `_SAFE_GLOBALS` in
+# derivation_registry.py (`pi`, `ceil`, `floor`, `min`, `max`, `sqrt`,
+# `abs`, `round`, `sin`, `cos`, `tan`, `radians`, `degrees`).
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §6
+# Reference: docs/tasks/TASK_UEP_PR2.md §3.2
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+description: >
+  15 universal derivation rules covering wall / ceiling / floor / roof /
+  staircase / opening / formwork / excavation / rebar / parapet / perimeter.
+
+rules:
+
+  # ─── 1. Wall area from perimeter × height ────────────────────────────────
+
+  - id: wall_area_from_perimeter_height
+    output_quantity: wall_area_m2
+    output_unit: m2
+    formula: "perimeter_m * height_m"
+    required_inputs:
+      - { name: perimeter_m, unit: m, description: "Inner / outer wall perimeter" }
+      - { name: height_m,    unit: m, description: "Wall height (světlá výška + nadezdívka)" }
+    confidence_formula: "min(input_confidences) * 0.95"
+    validity_conditions: "Rectangular floor plan; pro nepravidelné půdorysy použijte explicit perimeter."
+    references: ["ČSN 73 0801 — geometric measurements"]
+    description: >
+      Approximate wall area from a closed perimeter × story height.
+      Subtract opening area separately via opening_area_subtraction.
+
+  # ─── 2. Tile partial-height area (with explicit tile_height) ─────────────
+
+  - id: tile_partial_height_area
+    output_quantity: tile_area_m2
+    output_unit: m2
+    formula: "perimeter_m * tile_height_m"
+    required_inputs:
+      - { name: perimeter_m,    unit: m, description: "Room perimeter" }
+      - { name: tile_height_m,  unit: m, description: "Tile height above floor (must be explicit from TZ)" }
+    confidence_formula: "min(input_confidences) * 0.90"
+    validity_conditions: >
+      tile_height_m MUST come from TZ explicit cite (e.g. 'obklady do
+      výšky 2.0 m'). Pattern 7 (STAVAGENT_PATTERNS.md) — never derive
+      tile height from ceiling height.
+    references: ["TKP18 §3.6.2"]
+    description: "Wall-tile area when TZ specifies tile band height explicitly."
+
+  # ─── 3. Ceiling area (flat ceiling only) ─────────────────────────────────
+
+  - id: ceiling_area_from_floor
+    output_quantity: ceiling_area_m2
+    output_unit: m2
+    formula: "floor_area_m2"
+    required_inputs:
+      - { name: floor_area_m2, unit: m2, description: "Floor area (m²)" }
+    confidence_formula: "min(input_confidences) * 0.92"
+    validity_conditions: >
+      Flat ceiling. For sloped / vaulted ceilings the area is larger
+      than floor and this rule is INVALID — use dedicated geometry.
+    references: ["ČSN 73 0801"]
+
+  # ─── 4. Concrete volume — rectangular prism ──────────────────────────────
+
+  - id: concrete_volume_rectangular
+    output_quantity: concrete_volume_m3
+    output_unit: m3
+    formula: "length_m * width_m * thickness_m"
+    required_inputs:
+      - { name: length_m,    unit: m, description: "Length" }
+      - { name: width_m,     unit: m, description: "Width" }
+      - { name: thickness_m, unit: m, description: "Thickness / depth" }
+    confidence_formula: "min(input_confidences) * 0.98"
+    validity_conditions: "Rectangular prism shape."
+    references: ["TKP18 §1.4"]
+
+  # ─── 5. Concrete volume — cylindrical column ─────────────────────────────
+
+  - id: concrete_volume_cylindrical
+    output_quantity: concrete_volume_m3
+    output_unit: m3
+    formula: "pi * (diameter_m / 2) ** 2 * length_m"
+    required_inputs:
+      - { name: diameter_m, unit: m, description: "Column / pile diameter" }
+      - { name: length_m,   unit: m, description: "Element length" }
+    confidence_formula: "min(input_confidences) * 0.98"
+    validity_conditions: "Right circular cylinder (typ. piloty Ø, kruhové sloupy)."
+    references: ["TKP18 §1.4"]
+
+  # ─── 6. Rebar mass from concrete volume × norm ───────────────────────────
+
+  - id: rebar_kg_from_volume_norm
+    output_quantity: reinforcement_mass_kg
+    output_unit: kg
+    formula: "concrete_volume_m3 * rebar_density_kg_m3"
+    required_inputs:
+      - { name: concrete_volume_m3,    unit: m3, description: "Element concrete volume" }
+      - { name: rebar_density_kg_m3,   unit: kg, description: "Density per element type (B-KB rebar matrix lookup)" }
+    confidence_formula: "min(input_confidences) * 0.85"
+    validity_conditions: >
+      density_kg_m3 must come from the B-KB rebar matrix; using a
+      generic 100 kg/m³ default for bridge slabs underestimates by 30 %.
+    references: ["Methvin April 2026 + RSMeans cross-validation"]
+
+  # ─── 7. Formwork area — rectangular footprint ────────────────────────────
+
+  - id: formwork_area_rectangular
+    output_quantity: formwork_area_m2
+    output_unit: m2
+    formula: "2 * (length_m + width_m) * height_m"
+    required_inputs:
+      - { name: length_m, unit: m }
+      - { name: width_m,  unit: m }
+      - { name: height_m, unit: m }
+    confidence_formula: "min(input_confidences) * 0.95"
+    validity_conditions: "Sides of rectangular prism only; top / bottom not included."
+    references: ["TKP18 §1.4"]
+
+  # ─── 8. Roof area from footprint × pitch ─────────────────────────────────
+
+  - id: roof_area_from_footprint_pitch
+    output_quantity: roof_area_m2
+    output_unit: m2
+    formula: "footprint_m2 / cos(radians(pitch_deg))"
+    required_inputs:
+      - { name: footprint_m2, unit: m2, description: "Horizontal footprint of the roof" }
+      - { name: pitch_deg,    unit: '°', description: "Roof pitch in degrees" }
+    confidence_formula: "min(input_confidences) * 0.93"
+    validity_conditions: "Plain pitched roof. Hipped / mansard roofs need decomposition."
+    references: ["ČSN 73 1901"]
+
+  # ─── 9. Opening area subtraction ─────────────────────────────────────────
+
+  - id: opening_area_subtraction
+    output_quantity: wall_net_area_m2
+    output_unit: m2
+    formula: "wall_gross_area_m2 - openings_total_m2"
+    required_inputs:
+      - { name: wall_gross_area_m2,   unit: m2 }
+      - { name: openings_total_m2,    unit: m2, description: "Sum of door + window opening areas" }
+    confidence_formula: "min(input_confidences) * 0.95"
+    validity_conditions: "openings_total_m2 includes both windows and doors; only above-floor net."
+    references: ["TKP18 §3.4"]
+
+  # ─── 10. Linear count from polyline length ───────────────────────────────
+
+  - id: linear_count_from_polyline_length
+    output_quantity: linear_count_ks
+    output_unit: ks
+    formula: "ceil(polyline_length_m / spacing_m)"
+    required_inputs:
+      - { name: polyline_length_m, unit: m, description: "Total length of the line" }
+      - { name: spacing_m,         unit: m, description: "Spacing between items" }
+    confidence_formula: "min(input_confidences) * 0.92"
+    validity_conditions: "Use ceil — pylons / lampy / kotvení always round up."
+    references: ["TKP18 §11.x lighting / fencing"]
+
+  # ─── 11. Staircase step count from height / riser ────────────────────────
+
+  - id: staircase_step_count_from_height_riser
+    output_quantity: step_count_ks
+    output_unit: ks
+    formula: "ceil(total_rise_m / riser_height_m)"
+    required_inputs:
+      - { name: total_rise_m,    unit: m, description: "Floor-to-floor rise" }
+      - { name: riser_height_m,  unit: m, description: "Per-step riser (typ. 0.16–0.18 m)" }
+    confidence_formula: "min(input_confidences) * 0.95"
+    validity_conditions: "Straight or quarter-turn stairs; spiral needs different formula."
+    references: ["ČSN 73 4130"]
+
+  # ─── 12. Plinth area from perimeter × height ─────────────────────────────
+
+  - id: plinth_area_from_perimeter_height
+    output_quantity: plinth_area_m2
+    output_unit: m2
+    formula: "perimeter_m * plinth_height_m"
+    required_inputs:
+      - { name: perimeter_m,      unit: m }
+      - { name: plinth_height_m,  unit: m, description: "Plinth (sokl) band height, typ. 0.3–0.6 m" }
+    confidence_formula: "min(input_confidences) * 0.94"
+    validity_conditions: "Constant-height plinth around building perimeter."
+    references: ["TKP18 §3.6.4"]
+
+  # ─── 13. Parapet volume from length × section ────────────────────────────
+
+  - id: parapet_volume_from_length_section
+    output_quantity: parapet_volume_m3
+    output_unit: m3
+    formula: "length_m * cross_section_m2"
+    required_inputs:
+      - { name: length_m,         unit: m }
+      - { name: cross_section_m2, unit: m2, description: "Parapet cross-section area (typ. 0.05–0.20 m²)" }
+    confidence_formula: "min(input_confidences) * 0.96"
+    validity_conditions: "Constant cross section along the length."
+    references: ["TKP18 §1.4"]
+
+  # ─── 14. Excavation volume from footprint × depth ────────────────────────
+
+  - id: excavation_volume_from_footprint_depth
+    output_quantity: excavation_volume_m3
+    output_unit: m3
+    formula: "footprint_m2 * depth_m * (1 + slope_factor)"
+    required_inputs:
+      - { name: footprint_m2, unit: m2 }
+      - { name: depth_m,      unit: m }
+    optional_inputs:
+      - { name: slope_factor, unit: ks, description: "Slope safety addition (0 = vertical, 0.2 = 1:5 slope, default 0)" }
+    confidence_formula: "min(input_confidences) * 0.90"
+    validity_conditions: >
+      slope_factor=0 only for shored excavations; otherwise pick from
+      geological report. PR3 will auto-derive slope_factor from
+      pdf_geology IGP.
+    references: ["ČSN EN 1997-1 §3.1.3"]
+
+  # ─── 15. External perimeter total from polygon ───────────────────────────
+
+  - id: external_perimeter_total_from_polygon
+    output_quantity: perimeter_m
+    output_unit: m
+    formula: "polygon_perimeter_m"
+    required_inputs:
+      - { name: polygon_perimeter_m, unit: m, description: "Sum of polygon edge lengths (DXF open_polylines fact)" }
+    confidence_formula: "min(input_confidences) * 0.98"
+    validity_conditions: >
+      Polygon must be the outer envelope, not the room boundary.
+      Identity rule — useful as the upstream of wall_area_from_perimeter_height
+      so the audit trail records 'perimeter came from DXF polygon edges'.
+    references: ["ČSN 73 0801"]

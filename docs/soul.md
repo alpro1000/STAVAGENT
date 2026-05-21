@@ -332,6 +332,87 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-21 — Session: Bootstrap Claude Code Skills + Discipline Infrastructure
+
+**Topic:** Phase 1 audit + Phase 2 bootstrap of `.claude/skills/` directory per task `docs/tasks/2026-05-20-rimsa-mcp-agent/stavagent-session-discipline-SKILL.md`. Foundation for upcoming říms calibration task (TASK_Rimsa_Calibration_FullStack_v1.md).
+
+**Rozhodnuto:**
+- **Skills location:** Project-local `.claude/skills/` (versioned in git, synced into Project Knowledge weekly per skill §7).
+- **Root vs docs/:** Keep existing files in `docs/` (no duplication). `docs/STAVAGENT_ClaudeCode_Session_Mantra.md`, `docs/STAVAGENT_PATTERNS.md`, `docs/KNOWLEDGE_PLACEMENT_GUIDE.md` stay canonical at their existing paths. Skills reference these `docs/` paths, not phantom root duplicates.
+- **process.md:** Not created. `docs/steering/conventions.md` is canonical for process/workflow content (already covers task structure §9, workflow §11, gates §7, communication §8). Sync list in `stavagent-session-discipline` §7 reflects this.
+- **Skill scope:** Two skills bootstrapped — `stavagent-session-discipline` (verbatim from upload, 8 rules) + `stavagent-claude-code-tasks` (codified from `conventions.md` §9-§10). `stavagent-schema-designer` skipped (not in task scope).
+- **CLAUDE.md update:** Added single section under Mandatory reading block referencing `.claude/skills/`. No rewrite of existing content.
+
+**Odmítnuto:**
+- Creating root-level mantra/patterns/knowledge_placement files. Task spec suggested it but existing canonical paths win — no parallel structures rule.
+- Creating new `docs/steering/process.md`. Content already in `conventions.md`.
+- Backfilling historical session logs into §9 (start from this entry).
+- Migrating `stavagent-schema-designer` from Project Knowledge — out of scope, needs separate session.
+
+**Otevřené otázky:** —
+
+**Co dál:**
+- Sync `.claude/skills/` to Project Knowledge on claude.ai (manual, weekly cadence per skill §7).
+- Begin říms calibration task with the new skill infrastructure active.
+- Optionally migrate `stavagent-schema-designer` in a follow-up session if Alexandra confirms scope.
+
+**Files changed:**
+- `.claude/skills/stavagent-session-discipline/SKILL.md` (new, ~210 lines, verbatim from upload with corrected paths to `docs/`)
+- `.claude/skills/stavagent-claude-code-tasks/SKILL.md` (new, ~240 lines, codified from conventions.md §9)
+- `.claude/skills/README.md` (new, ~85 lines, directory index)
+- `CLAUDE.md` (+8 lines, skill reference under Mandatory reading block)
+- `docs/soul.md` §9 (this entry)
+- `next-session.md` (overwrite — handoff for říms calibration)
+
+**Branch:** `claude/bootstrap-code-skills-ecPCE`
+
+---
+
+### 2026-05-20 — Session: MCP Dynamic Client Registration (RFC 7591) + YAML loader
+
+**Topic:** Two-PR work session closing TASK_DCR_KBYamlLoader.md (DCR endpoint missing + YAML loader skip), three subsequent CI-fix commits triggered by post-merge Amazon Q review, and post-deploy verification (V1-V4). Spanned 9 gates of gate-based implementation plus 1 deploy runbook gate. Ended with post-deploy V1 503 caused by `gcloud --set-env-vars` wiping VPC connector + REDIS_URL on force rebuilds; fixed via explicit `--update-env-vars` re-apply.
+
+**Rozhodnuto:**
+- **PR #1189 (DCR)** — branch `claude/mcp-dynamic-client-registration-x7Kb2`, 12 commits, ~5K LOC, 177 tests (3.49s). Architecture per Q1-Q6 interview: separate `mcp_oauth_clients` table (Variant B, not extending `mcp_api_keys`) + `mcp_oauth_codes` extended via migration 010 with NULLABLE `oauth_client_id` column + new `mcp_oauth_tokens` table (sat-{hex48} access + srt-{hex48} refresh, 1h/90d TTLs per OAuth canon). FK target asymmetry intentional: `mcp_oauth_tokens.user_api_key → mcp_api_keys(api_key)` for hot-path no-JOIN bearer lookup; `mcp_oauth_clients.created_by_user_id → mcp_api_keys(id)` for cold-path /token resolution.
+- **Token formats** (Q3): `dcr-{hex24}` 96-bit client_id + `dcs-{hex48}` 192-bit client_secret + `sat-{hex48}` access + `srt-{hex48}` refresh — distinct prefixes for middleware dual-prefix routing. SHA-256+salt for client_secret (not bcrypt — 192-bit entropy on secret itself, verified every /token call).
+- **Hybrid DCR auth** (Q2 sub-q a): public DCR (no Authorization on /register) → `created_by_user_id=NULL` → client_credentials issues `user_api_key=NULL` token → paid tools return 402 `user_consent_required`. Authenticated DCR (Bearer sk-stavagent-* on /register) → binds, credits attribute. authorization_code flow always full-user-bound via consent form.
+- **/authorize inline HTML consent form** (Gate 4.5) — minimal styled page, no JS, no external assets, XSS-escaped via `html.escape()` on every interpolated string. User pastes sk-stavagent-{hex48} api_key → POST → 303 redirect with code bound to (user_api_key, oauth_client_id). MVP shortcut; replace with Portal SSO cookie + auto-consent before Claude Directory submission.
+- **Refresh-token rotation** per OAuth 2.0 BCP §4.14: rotate revokes old + mints new with `rotated_from=old.id`. Replay of revoked refresh → WITH RECURSIVE chain revoke of all descendants.
+- **Redis-backed rate limit** (Gate 6) — atomic Lua INCR-with-conditional-EXPIRE, 10/IP/h, X-Forwarded-For leftmost IP, `MCP_RATE_LIMIT_WHITELIST` env bypass, fail-closed 503 on Redis outage (NOT in-memory fallback — explicit DoS-gate failure mode rejection). Audit row `status='rate_limited'` written on 429 path.
+- **Dual-prefix Bearer routing in middleware** (Gate 5) — `sat-*` → `mcp_oauth_tokens` lookup with revoked + expiry checks; `sk-stavagent-*` → legacy `mcp_api_keys`; anything else → 401. AuthContext attached to `scope["state"]["mcp_auth"]` for downstream tool wrappers. Module extracted to `app/mcp/middleware.py` so tests don't need full FastAPI app graph.
+- **CORS tightening on /mcp mount** — explicit `allow_methods=["GET","POST","OPTIONS"]` + `allow_headers=["Authorization","Content-Type","Mcp-Session-Id"]` + `max_age=86400`, NOT wildcard (incompatible with `allow_credentials=True`). Parent app CORS untouched (Portal/Kiosk APIs use wider allow-list).
+- **PR #1190 (YAML loader)** — branch `claude/review-kb-yaml-loader-wR7If`, 1 commit, +500 LOC, 18 tests. `_load_yaml()` via `yaml.safe_load` (NEVER `yaml.load` — security). Dispatcher extended with `.yaml/.yml` between `.json` and `.csv`. `_SKIP_FILES = {".gitkeep", ".DS_Store", "Thumbs.db"}` + `_SKIP_SUFFIXES = {".zip", ".tmp", ".bak"}` silent skip with one aggregated `📦 Skipped N archive/temp file(s)` log line per category. `metadata.yaml` symmetric with `metadata.json` (YAML wins conflict with WARNING-level log signal, not INFO).
+- **Three post-merge CI fixes** triggered by Amazon Q + manual CI failures:
+  - **Gate A — migrations CI glob** (`.github/workflows/test-mcp-compatibility.yml`): replaced hardcoded `psql -f 007.sql; psql -f 008.sql` with `for migration in $(ls migrations/*.sql | sort)` to mirror runtime `startup_migrations.py`. Added Redis 7-alpine service container + REDIS_URL env. Added 5 new DCR test files to pytest run.
+  - **Gate B — restored CORS headers on bare OPTIONS** in `app/mcp/middleware.py`: Gate 5 extraction had trimmed `BareOptionsAllowMiddleware` 204 response from 6 headers down to 3, breaking `test_bare_options_includes_credentials_methods_headers_max_age`. Restored full set: ACAO + ACA-Credentials + ACA-Methods + ACA-Headers + Max-Age + Vary.
+  - **SQL injection bind refactor** in `mint_token_pair`: `NOW() + INTERVAL '%s seconds'` → `NOW() + (%s * INTERVAL '1 second')`. The single-quoted `%s` in INTERVAL literal is string interpolation (not bind); the `(%s * INTERVAL '1 second')` form routes the integer through proper psycopg2 parameter binding. Practical risk today is zero (call sites are module-level int constants), defensive against future user-input TTL.
+- **9-step deploy runbook** at `docs/deployment/dcr_yaml_deploy_runbook.md` (773 lines) — pre-deploy checklist, mandatory merge order (YAML first, DCR second), migration chain verification, env var setup, two-step deploy with traffic flip, 5 startup log signals, 10 curl smoke tests, end-to-end claude.ai manual test, rollback procedure with DDL revert + Redis bucket clear, operational notes with TTL table + monitoring metrics, 6 post-deploy TODOs (CSRF, async last_used_at, Portal SSO, separate auth bucket, token cleanup job, Directory advertise-gating).
+- **Post-deploy verification V1-V4** (TASK_PostDeploy_Verify.md). V2 ✅ (isolation leak closed — `Portal JWT required`), V3 ✅ (YAML loaded with valid dict values in B4 + B5 + B6 + B7 per local main checkout). V1 initially ❌ 503 because `gcloud builds submit` reads `cloudbuild-concrete.yaml` which lacks `--vpc-connector` + REDIS_URL → each force rebuild wipes them. Fixed via `gcloud run services update --vpc-connector=stavagent-vpc-connector --vpc-egress=private-ranges-only --update-env-vars=REDIS_URL=redis://10.229.246.227:6379` (revision 00372-bxh). V1 retest ✅ 201 + `dcr-4a3e8e117a5e67164098c830`. V4 ✅ retroactively via production logs at 09:11–09:19: three successful `POST /mcp/ 200` with `Processing request of type CallToolRequest` — real claude.ai-side tool calls already exercised the full chain before V4 was even run.
+
+**Odmítnuto:**
+- **Token storage as JWT** (Gate 4 alt T2) — stateless but no revocation list without separate DB; defeats refresh-rotation forensics.
+- **Composite Bearer format `sat-...sk-stavagent-...` dot-separated** (Gate 4 alt T3) — hack avoiding new table; less RFC-compliant, harder middleware code.
+- **Extending `mcp_api_keys` with nullable DCR-metadata columns** (Q1 Variant A) — concept-mixed (user vs OAuth client are different abstractions); declined for clean separation.
+- **Async `update_token_last_used`** for the middleware hot path — psycopg2 is sync, needs asyncio.create_task + bounded thread-pool wrapper; deferred as MVP TODO (Gate 5). Current sync path is ~5-10ms on Cloud SQL primary-key UPDATE, acceptable because dominated by FastMCP tool execution.
+- **Login + session-cookie consent UI for /authorize** (Q in Gate 4.5) — inline HTML form is MVP shortcut; proper Portal SSO + auto-consent is post-Directory-submission work.
+- **Bcrypt on client_secret** — 192-bit entropy makes slow hashing wasted CPU; SHA-256+128-bit-salt with constant-time compare is the right primitive.
+- **Permanent fix for cloudbuild-concrete.yaml** (add `--vpc-connector` + `REDIS_URL` to deploy step) — task §"ЧТО НЕ ВХОДИТ" explicitly excluded touching cloudbuild yaml. Deferred to separate PR. Without it, every force rebuild reintroduces the 503 regression until the manual `gcloud run services update` is re-applied.
+- **Refactoring `_print_summary` counter quirk in kb_loader** — cosmetic, per task explicit exclusion.
+
+**Otevřené otázky:**
+- **B5 / B6 / B7 entry counts in production startup log are 5–18× lower than local main checkout** (production: B5=3, B6=7, B7=5; local V3: B5=54, B6=30, B7=16). Suggests `.dockerignore` / `.gcloudignore` excludes most KB files from Cloud Build context. B4 matches local count (10 / 2 YAML). Tools user actually exercises (find_otskp_code, calculate_concrete_works) don't need the missing entries, so not a blocker. Track in separate task — diff `.dockerignore` vs KB tree, confirm which nested paths are excluded, decide if they should be shipped.
+- Should `cloudbuild-concrete.yaml` get explicit `--vpc-connector` + `REDIS_URL` flags so force rebuilds preserve them? Yes — but separate task; current session's task explicitly excluded cloudbuild changes.
+- CSRF token on /authorize POST consent form — api_key acts as combined auth+CSRF today (192-bit secret unguessable by attacker); proper CSRF token + session cookie pair tracked alongside Portal SSO migration.
+- Will `MCP_RATE_LIMIT_WHITELIST` env get wiped on next force rebuild same way REDIS_URL was? Currently empty default, so no observable failure mode — but same `--set-env-vars` overwrite mechanism applies. Track separately.
+
+**Co dál:**
+- **Permanent fix PR for cloudbuild-concrete.yaml** — add `--vpc-connector=stavagent-vpc-connector`, `--vpc-egress=private-ranges-only`, and `--update-env-vars=REDIS_URL=...` to the deploy step so force rebuilds preserve VPC + Redis automatically. ~10 min work, single yaml edit.
+- **Diagnose B5/B6/B7 KB shipping mismatch** — `git ls-files` count vs production startup log count divergence. Likely `.gcloudignore` or `.dockerignore` rule excluding most of the tree.
+- **Celery beat job for `mcp_oauth_tokens` cleanup** (runbook §10.5) — rows accumulate forever. Schedule daily 03:00 UTC, delete where `refresh_expires_at < NOW() - 30 days AND revoked_at < NOW() - 30 days`.
+- **Portal SSO migration** for /authorize auto-consent (runbook §10.3) — replaces inline HTML form with one-click "Authorize" after Portal cookie established. Unblocks Claude Directory submission alongside CSRF token (§10.1).
+- **Separate authenticated-DCR rate-limit bucket** (runbook §10.4) — current per-IP bucket lumps anonymous + authenticated requests from same NAT.
+- **Sync this `soul.md` entry to claude.ai Project Knowledge** per workflow item #5 — was not synced this session.
+
 ### 2026-05-19 — Session: Landing CTA + CZ/EN terminology + prerender hash drift
 
 **Topic:** Tři navazující landing-page PRs uzavřené v jedné session: #1136 (CTA route fix + manual prerender), #1138/#1183 (CZ/EN terminology audit + prerender hash drift fix). Začalo CTA "Vyzkoušet zdarma" → /register redirectem na /, skončilo production "buttons don't work" emergency po merge — root cause hash drift mezi committed snapshotem a vite-buildem.
@@ -482,6 +563,263 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 2. První pilotní spec: `docs/specs/cross-user-isolation/` (P0, před Cemex)
 3. Druhý pilotní spec: `docs/specs/mcp-policy-engine/` (Cemex)
 4. Až bude pilot fungovat → batch migrace ostatních TASK_*.md
+
+---
+
+### 2026-05-20 — Session: UEP PR4a — MEP D.1.4 matrices + gbXML adapter
+
+**Topic:** UEP PR4a per `docs/tasks/TASK_UEP_PR4.md` §3.1 + §3.2
+(Q16 = C hierarchical). Adds detailed coverage matrices for D.1.4
+silnoproud / slaboproud / ZTI / VZT / ÚT / plyn / MaR (7 disciplines),
+a hierarchical `mep_base` parent shared across all subtypes, the gbXML
+extractor (energy / HVAC exchange format), and multi-subtype detection
+in `project_type_detector`. Scope-locked to PR4a; PR4b (full IFC diff),
+PR4c (UI), PR4d (perf) remain queued.
+
+**Rozhodnuto:**
+- **Q16 = C hierarchical** confirmed: each subtype YAML declares
+  `extends: mep_base` and inherits all 15 base rows; `load_matrix()`
+  resolves the parent transparently, dedupes by category, and
+  subtype rows REPLACE base rows on conflict.
+- `load_matrices_for_subtypes(["mep_d14_silnoproud", "mep_d14_zti",
+  "mep_d14_vzt"])` returns the unioned category list for projects
+  bundling multiple D.1.4 disciplines (canonical Czech residential
+  D&B pattern).
+- `ProjectTypeDetection.mep_subtypes: list[str]` populated whenever
+  ANY D.1.4 signal fires — independent of umbrella `top_choice` so a
+  residential project with an embedded D.1.4 silnoproud TZ surfaces
+  both `top_choice="residential"` AND
+  `mep_subtypes=["mep_d14_silnoproud"]`.
+- gbXML extractor mirrors LandXML iterparse pattern (≤200 MB memory
+  bound per v3 §15.4). Emits `space_inventory` + `surface_inventory`
+  + `hvac_zone` + reuses `norm_references` for Construction/Material
+  layers — these feed `mep_d14_vzt` / `mep_d14_ut` matrices.
+- `_ALLOWED_PROJECT_TYPES` in `routes_uep.py` extended 4 → 12 (the
+  path-traversal allow-list from Amazon Q PR #1186 hotfix).
+
+**Odmítnuto:**
+- Real gbXML corpus calibration — STOP-condition #2 mentioned the
+  option but corpus has none; synthetic Revit-shaped fixture in
+  `test_uep_gbxml_extractor.py` is sufficient for PR4a scope (basic
+  spaces/surfaces/HVAC zones). Real-export calibration left for PR4b
+  when a corpus sample lands.
+- Separate top-level `subtype_matrix_dir` config — `load_matrix()`
+  resolves `extends:` from the same directory as the subtype YAML
+  (or `base_dir=` override for tests). Adding a config key would be
+  overengineering for one matrix folder.
+- Changing `CoverageRequirement` model shape — hierarchical merge
+  happens at YAML-load layer; the runtime model is unchanged, so
+  all PR1-3 evaluation paths work without code change.
+- IFC diff engine (PR4b), UI viewers (PR4c), perf optimization
+  (PR4d), AI narrative (PR5), MCP tool additions for MEP subtypes —
+  scope-locked out of PR4a per task split decision in §6.
+
+**Otevřené otázky:**
+- Reconciliation rules for MEP subtypes — `/uep/config/reconciliation-rules?project_type=mep_d14_*`
+  will 404 until PR4 §3.x adds the rule YAMLs. Not blocking PR4a
+  (the config endpoint surfaces 404 cleanly).
+- `job_runner.py` currently calls `matrix_path_for(info.project_type)`
+  with a single string — when `JobInfo.project_type == "mep_only"`
+  the coverage gate cannot yet apply multiple subtype matrices. The
+  hook for this is `load_matrices_for_subtypes` but `job_runner`
+  isn't yet wired to consume `mep_subtypes` from the detection pass.
+  Followup ticket: extend `JobInfo` schema or thread the subtypes
+  through `start_job()` body.
+- gbXML reference samples — no real Revit / OpenStudio export in
+  `test-data/`. PR4b calibration should request a sample upload from
+  Alexander before extending the adapter (currently sufficient for
+  unit tests + smoke checks; production usage will need calibration
+  pass against ≥1 real export).
+- D.1.4 reconciliation rules + derivation rules YAMLs (CKZ, drift
+  thresholds per discipline) — out of PR4a, queued for PR4b/c.
+
+**Co dál:**
+1. Push branch `claude/uep-pr4a-matrices-adapter-1OEjF` + open PR
+   with title "feat(uep): PR4a — MEP D.1.4 hierarchical matrices +
+   gbXML adapter".
+2. Wire `mep_subtypes` from `detect_project_type` into `JobInfo` /
+   `start_job()` so `job_runner` can call `load_matrices_for_subtypes`
+   when subtypes detected (small follow-up commit on the same PR or
+   separate PR4a-jobrunner ticket).
+3. PR4b — full IFC diff engine (quantity deltas, material changes,
+   severity), per task §3.3 + Q19 = B.
+4. PR4b also: collect a real gbXML sample for calibration pass + add
+   a discipline-aware filename test fixture (multi-discipline pack
+   currently relies on user-friendly naming; production uploads from
+   Allplan / Revit often strip the D.1.4.x prefix).
+5. Reconciliation + derivation rules YAMLs per MEP subtype (deferred
+   from PR4a to PR4b/c).
+
+**Test count delta (PR4a):**
+- gbXML extractor: 8 new (`test_uep_gbxml_extractor.py`)
+- Hierarchical coverage: 12 new (`test_uep_coverage_hierarchical.py`)
+- MEP matrices smoke: 11 new (`test_uep_coverage_matrices_pr4a.py`)
+- Multi-subtype detection: 11 new (`test_uep_project_type_detector_multi_subtype.py`)
+- **Total: 42 new tests**, 81 tests pass in the relevant UEP module
+  set. Zero PR3 regressions.
+
+**Acceptance criteria status (per TASK_UEP_PR4.md §4):**
+- AC 1 (7 subtype matrices) ✅
+- AC 2 (mep_base shared base) ✅
+- AC 3 (≥15 categories per subtype) ✅ (28-32 per subtype after merge)
+- AC 4 (multi-subtype aggregation) ✅
+- AC 5 (project type detection updated) ✅
+- AC 6 (gbXML parses spaces/surfaces/HVAC zones) ✅
+- AC 7 (integration with VZT/ÚT matrices) ✅ via shared
+  `hvac_zone` + `space_inventory` + `surface_inventory` categories
+- AC 26 (MEP matrix tests per subtype) ✅
+- AC 27 (gbXML adapter tests) ✅
+- AC 8-25, 28-33 (IFC diff full, UI, performance, docs) → PR4b/c/d
+
+---
+
+### 2026-05-20 — Session: UEP PR4b-1 — IFC diff foundation (extractor + engine + REST)
+
+**Topic:** First half of the PR4b split agreed mid-session (Q19 = B,
+"deterministic diff complete, AI narrative as PR5"). PR4b-1 ships
+the foundation: schemas + Alembic tables + per-entity snapshot
+capture in the IFC extractor + basic diff engine (add / remove /
+modify by GlobalId + per-IfcType counts) + REST endpoints + 31-test
+suite. PR4b-2 (next session) layers quantity deltas, material
+composition diff, property set diff, severity classification rules,
+and the `uep_get_ifc_diff` MCP tool wrapper on top — all of those
+fit inside `IfcDiffReport.report_payload` (open JSONB dict) plus the
+flat `severity` column, so the table schema does not change again.
+
+**Rozhodnuto:**
+- **PR4b split into PR4b-1 + PR4b-2.** Audit at session start
+  surfaced that PR3 had not actually shipped the "basic diff" the
+  task §3.3 referenced ("extend basic diff from PR3 with…") — no
+  `ifc_diff` module, no `ifc_diff_reports` table, no
+  `uep_get_ifc_diff` MCP tool. So PR4b is genuinely "build the diff
+  from scratch", not "extend". Split keeps the foundation reviewable
+  (~1.4k LOC, 4 commits, no DB session machinery) and pushes the
+  advanced layers + MCP tool wrapper into PR4b-2 where they belong.
+- **`payload_hash` over canonical-JSON SHA-256** as the "modified"
+  detector. Hash covers `{ifc_type, name, object_type, storey,
+  quantities, material_layers, property_sets}` — drift in any of
+  those flips the bucket. `global_id` + `payload_hash` itself are
+  EXCLUDED from the hash (identity is keyed by GlobalId so a GlobalId
+  change is an add+remove pair, not "modified"; chicken-and-egg for
+  the hash field).
+- **`_coerce_number` filters `bool`** before float conversion. `bool`
+  is an `int` subclass in Python — without the guard `True` would
+  silently become `1.0` in an IfcElementQuantity NetArea dict. Caught
+  during the smoke pass; covered by `TestCoercion::test_bool_filtered`.
+- **Material layer ORDER matters** — `_compute_payload_hash` includes
+  the layers list AS-IS (no sort). Vrstva 1 then 2 is a different
+  wall stack than 2 then 1, even with identical thicknesses. Test
+  `test_material_layer_order_matters` enforces it.
+- **GlobalId change ≠ "modified".** A rebuilt wall with a new GlobalId
+  is an add (new gid) + remove (old gid). Treating it as "modified"
+  would lose the identity-loss signal. Test
+  `test_global_id_change_is_add_plus_remove` enforces it.
+- **Cross-project IFC diff explicitly rejected (400).** Versions from
+  different projects can't be diffed — diff payload would leak
+  schema details about the other project. Enforced in the REST
+  endpoint before the engine runs.
+- **`_USER_ID_PATTERN` + `_UUID_PATTERN` for path-traversal hardening.**
+  Every path parameter (project_id, old/new version_id) is regex-
+  validated as UUID 8-4-4-4-12 BEFORE reaching the filesystem
+  builder. The diff endpoint additionally re-validates
+  `project_dir.name` while scanning so a manually-placed
+  `../etc/passwd` dir under `UEP_DATA_DIR/ifc_versions/` cannot
+  poison the response.
+- **Filesystem storage backend in PR4b-1, SQLAlchemy + asyncpg in
+  PR4b-2.** Endpoint contract + auth + path traversal are the review
+  surface; storage layer is an implementation detail that swaps
+  cleanly behind the Pydantic types. Filesystem rows survive
+  container restarts via `UEP_DATA_DIR` mount, so the surface IS
+  production-shaped, not a stub.
+- **Mount fix shipped opportunistically.** `routes_uep.router` was
+  never registered in `app/api/__init__.py` (PR2 + PR3 added the file
+  but never wired it in) — entire UEP REST surface was 404 in
+  production since merge. Including the router in this PR is
+  required for the new IFC endpoints to be reachable; the same line
+  ALSO un-buries the PR2 + PR3 endpoints. Side-effect-only fix to a
+  pre-existing mount bug; no behaviour change for any other module.
+
+**Odmítnuto:**
+- Real IFC corpus calibration — no sample IFC in `test-data/` yet.
+  All 31 tests use synthetic snapshot dicts that mirror exactly the
+  shape `_emit_entity_snapshots` produces; the diff math is exercised
+  independently of vendor IFC variants. Integration test against a
+  real Allplan / Revit / ArchiCAD export deferred until a sample
+  lands. When it does, vendor-specific drift (e.g. Allplan not
+  emitting `IfcRelContainedInSpatialStructure` for IfcSite) will be
+  recorded as corpus patterns under
+  `app/knowledge_base/B5_tech_cards/real_world_examples/ifc/` —
+  mirror of the RD Jáchymov pattern files.
+- Severity classification rules — PR4b-1 emits
+  `IfcChangeSeverity.UNSCORED` on every report. The 5-tier rule
+  table in task §3.3 (cosmetic / minor < 5% / moderate 5-20% /
+  major > 20% / scope_change) needs the quantity-delta aggregation
+  layer to operate on — that aggregation is the first PR4b-2
+  commit, so severity rules naturally follow it.
+- AI narrative — locked out of PR4b entirely per Q19 = B. PR5.
+- MCP tool `uep_get_ifc_diff` — PR4b-2. The REST endpoint already
+  surfaces the same payload, so PR4b-2's wrapper is thin.
+- Per-version GET endpoint (full payload incl. `entity_snapshots`) —
+  list endpoint serves the lean view (no snapshots, no counts) for
+  the UI picker; the full-payload GET pairs better with the MCP
+  tool wrapper, so it ships in PR4b-2.
+- GIN index on `ifc_versions.entity_snapshots` JSONB — PR4b-2 will
+  decide based on the actual severity-rule access patterns. PR4b-1's
+  diff engine scans linearly, no JSONB-path queries.
+- `IfcEntityChange.change_kind` as Enum (consistency with
+  `SourceFormat` / `CoverageStatus` in the same module) — flagged
+  during the audit as a minor inconsistency. Deferred to PR4b-2
+  alongside the other small enum work (e.g. lifting "added" /
+  "removed" / "modified" string literals into `IfcChangeKind`).
+
+**Otevřené otázky:**
+- gbXML / IFC real-export samples still missing from the corpus.
+  Same blocker as PR4a (gbXML); will be the first task on PR4b-2
+  whenever a sample lands.
+- `ifc_versions.entity_snapshots` JSONB ceiling — 50k walls × ~200 B
+  per snapshot = ~10 MB JSONB, well under Postgres' 1 GiB row
+  limit. Confirmed acceptable for realistic models; revisit if a
+  pilot crosses 200k IfcRoot instances.
+- SQLAlchemy ORM models + asyncpg session pattern not yet present
+  in repo (PR4b-1 storage is filesystem). PR4b-2 introduces the
+  async session — design choice between `Depends(get_db_session)`
+  or a context-manager helper carries forward; both work, lean
+  toward `Depends` for FastAPI native injection.
+- `streaming_strategy` CHECK in the Alembic migration includes
+  `'reject'` even though extractor never persists that value (an
+  extraction that resolves to REJECT raises before writing).
+  Harmless to allow but imprecise; could tighten in PR4b-2 if it
+  comes up in review.
+
+**Co dál:**
+1. Push branch + open PR.
+2. PR4b-2 — quantity deltas + material composition diff + property
+   set diff (all land in `IfcDiffReport.report_payload`) + severity
+   classification rules (flip `IfcChangeSeverity` from `UNSCORED`)
+   + `uep_get_ifc_diff` MCP tool + per-version GET endpoint
+   + SQLAlchemy ORM + asyncpg session swap-in (filesystem →
+   Postgres).
+3. PR4c — UI viewers (coverage / reconciliation / IFC diff /
+   derivation audit) per AC 15-20.
+4. PR4d — performance optimization per AC 21-25.
+
+**Test count delta (PR4b-1):**
+- `tests/test_uep_ifc_diff.py` — 31 new tests, 5 classes
+  (TestPayloadHash, TestCoercion, TestSnapshotSchema,
+   TestDiffEngineBasic, TestCategoryCounts, TestGuardRails).
+- 31/31 passing in 1.02 s, runs without `ifcopenshell` (synthetic
+  dicts mirror the extractor output shape).
+- No regression on PR3 / PR4a suites (verified via re-run on the
+  branch).
+
+**Acceptance criteria status (per TASK_UEP_PR4.md §4):**
+- AC 13 (`ifc_diff_reports` table extended via Alembic) ✅
+- AC 8 (per-category counts) ✅ — basic `IfcCategoryCount` per
+  IfcType implemented
+- AC 9-12, 14 (quantity / material / property / severity, MCP tool)
+  → PR4b-2 (foundation ready; layers slot into `report_payload`
+  + flat `severity` column without further migration)
+- Rest (UI, perf, docs cross-cuts) → PR4c / PR4d
 
 ---
 

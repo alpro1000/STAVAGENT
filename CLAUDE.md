@@ -28,6 +28,13 @@ Po session **POVINNĚ** přidej entry do `docs/soul.md` §9 (Session log):
 **Co dál:** ...
 ```
 
+**Action-oriented skill summaries:** `.claude/skills/` obsahuje
+project-local skills (`stavagent-session-discipline`,
+`stavagent-claude-code-tasks`) které jsou distilled actionable verze
+steering docs. Steering docs jsou canonical — pokud se rozcházejí,
+steering vyhrává a skill se znovu distilluje. Viz
+[`.claude/skills/README.md`](.claude/skills/README.md).
+
 ---
 
 > **English TL;DR for external readers**

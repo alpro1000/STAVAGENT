@@ -1,0 +1,2 @@
+# Valid YAML — proves the malformed sibling doesn't break category load
+key: value

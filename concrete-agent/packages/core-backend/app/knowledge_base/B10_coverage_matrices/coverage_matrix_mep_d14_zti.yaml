@@ -1,0 +1,195 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_zti (D.1.4.4 zdravotechnika)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` with ZTI-specific categories per vyhláška 499/2006
+# D.1.4.4 + ČSN 75 5455 (vnitřní vodovod) + ČSN 75 6760 (vnitřní
+# kanalizace).
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (ZTI bullet)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_zti
+extends: mep_base
+description: >
+  D.1.4.4 zdravotechnika — vodovod (studená / teplá voda),
+  kanalizace (splašková / dešťová), zařizovací předměty, čerpací
+  technika, retence dešťových vod.
+
+requirements:
+
+  - category: norm_references
+    label_cs: Citované normy ČSN 75 5455 / ČSN 75 6760 / ČSN EN 806
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN 75 5455 (vnitřní vodovod), ČSN 75 6760 (vnitřní
+      kanalizace), ČSN EN 806 (vnitřní rozvody pro lidskou spotřebu),
+      ČSN 75 5409 (vodovodní přípojky). Minimum 3 normy.
+
+  # ─── A. Vnitřní vodovod ─────────────────────────────────────────────
+
+  - category: zti_water_supply_dn
+    label_cs: Dimenze vodovodního potrubí (DN 15–80)
+    required_fields: [value]
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      DN profily podle Q (l/s) a tlakových ztrát. Hlavní přívod
+      typicky DN25–32 pro RD; bytovka DN50+.
+
+  - category: zti_water_supply_pipe_material
+    label_cs: Materiály potrubí (PEX / PPR / Cu / nerez)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      PEX-Al-PEX vrstvené, PPR (PN20), měď nebo nerez pro
+      cirkulaci TUV. ČSN EN ISO 22391 (PE-RT).
+
+  - category: zti_water_supply_pressure
+    label_cs: Tlaky v rozvodech (statický / dynamický / hydrant)
+    required_fields: [value]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Statický tlak v nejnepříznivějším výtoku (typicky 100 kPa
+      min), dynamický (300 kPa max u nejnižšího patra).
+
+  - category: zti_water_flow_rates
+    label_cs: Průtoky vody (l/s pro výpočet dimenzí)
+    required_fields: [value]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Qa (jmenovitý), Qmax (špičkový) — výpočet podle ČSN 75 5455
+      tabulky výtokových armatur.
+
+  - category: zti_hot_water_preparation
+    label_cs: Příprava teplé vody (zásobníkový ohřev / průtočný / kombinovaný)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Zdroj ohřevu (zemní plyn / elektřina / TČ / FVE), objem
+      zásobníku, ČSN 06 0830 (TUV — ochrana před legionellou,
+      teplota ≥ 55 °C v cirkulaci).
+
+  - category: zti_hot_water_circulation
+    label_cs: Cirkulace TUV (čerpadlo + zónové ventily)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Cirkulace zkracuje dobu doteku TUV — povinná pro budovy
+      s > 1 ZP rozvodu. Optional pro malé RD.
+
+  # ─── B. Vnitřní kanalizace ──────────────────────────────────────────
+
+  - category: zti_drainage_dn
+    label_cs: Dimenze kanalizačního potrubí (DN 50–200)
+    required_fields: [value]
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      DN připojovacích a svislých potrubí podle ČSN EN 12056-2
+      (gravitační systémy). DN50 (umyvadla) až DN125 (WC svislé),
+      DN150-200 svodné.
+
+  - category: zti_drainage_pipe_material
+    label_cs: Materiály kanalizace (PP-HT / PE-HD / litina)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      PP-HT pro vnitřní rozvody, PE-HD pro venkovní, litinové
+      kameninové trouby pro speciální požadavky (akustika v
+      bytovkách / chemická odolnost).
+
+  - category: zti_drainage_slopes
+    label_cs: Spády svodných potrubí (1–3 %)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Min. 1% (DN150+), max. 3% (DN50). ČSN EN 12056-2.
+
+  - category: zti_drainage_ventilation
+    label_cs: Větrací potrubí kanalizace (PV nad střechu / přivzdušňovací ventily)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Hlavní větrací potrubí nad střechu nebo přivzdušňovací
+      ventily (HL900N) v atikách. ČSN EN 12056-2 odst. 5.
+
+  - category: zti_drainage_traps
+    label_cs: Zápachové uzávěrky (sifony, gully, podlahové vpusti)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+
+  # ─── C. Dešťové vody ─────────────────────────────────────────────────
+
+  - category: zti_rainwater_drainage
+    label_cs: Dešťová kanalizace (žlaby + svody + retence + zasakování)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Návrh podle ČSN 75 6101 + ČSN 75 9010 (zasakování). Retence
+      / akumulace + bezpečnostní přepad.
+
+  - category: zti_rainwater_retention
+    label_cs: Retence dešťových vod (akumulace + zasakovací objekt)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Povinná dle ÚP většiny obcí. Akumulace pro využití (zalévání)
+      nebo zasakovací objekt (vsakovací box / drén).
+
+  # ─── D. Zařizovací předměty a armatury ────────────────────────────────
+
+  - category: zti_sanitary_fixtures
+    label_cs: Zařizovací předměty (WC + umyvadla + vany + sprchy)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Soupis ZP per místnost. Soulad s blokem koupelny (D.1.1
+      architektura) + bezbariérovost (vyhl. 398/2009).
+
+  - category: zti_fixtures_attribute_specification
+    label_cs: Specifikace ZP (typ + barva + slohovost + EU label)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Detailní výpis pro výkaz výměr — typ klozetu (závěsný /
+      stojící), barva, slohovost (eko-A / standard). Většinou
+      řeší dodavatel ve fázi DPS.
+
+  # ─── E. Vodovodní přípojka a vodoměr ─────────────────────────────────
+
+  - category: zti_water_connection
+    label_cs: Vodovodní přípojka (DN + materiál + délka + sklepní HV)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Přípojka od hlavního řadu k hlavnímu uzávěru vody (HUV)
+      ve sklepě / technické místnosti. DN, materiál (PE100),
+      délka, vodoměrná sestava.
+
+  - category: zti_pumping_stations
+    label_cs: Čerpací technika (přečerpávací stanice splašků / vodárna / cirkulační čerpadlo)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Volitelné podle topografie pozemku. Přečerpávání splašků
+      do veřejné stoky (pokud spád neumožňuje gravitaci),
+      domovní vodárna (studna).

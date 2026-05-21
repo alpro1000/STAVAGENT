@@ -1,8 +1,32 @@
 FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y \
+# System deps:
+#   libpq-dev + gcc     → psycopg2 wheel build
+#   libgl1 libglu1-mesa → ifcopenshell native (PR3 §3.2)
+#   libxml2 libxslt1.1  → lxml runtime
+#   libredwg-tools      → DWG fallback `dwg2dxf` (PR3 §3.1 fallback B —
+#                         tried after ODAFileConverter; without it the
+#                         DwgExtractor escalates with DWG_CONVERSION_FAILED).
+#                         The Debian package name is libredwg-tools; binary is
+#                         /usr/bin/dwg2dxf (discovered via PATH).
+#   ca-certificates +   → ODA File Converter download (PR3 §3.1 fallback A).
+#   curl + unzip          ODA distributes Linux as a tarball/deb; the Cloud
+#                         Build pipeline mounts the binary into the image
+#                         under $UEP_DWG_ODA_BINARY (defaulting to
+#                         "ODAFileConverter" on PATH). EULA acceptance is
+#                         build-time, not runtime — STAVAGENT_ClaudeCode_
+#                         Session_Mantra has the operator step list.
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     gcc \
+    libgl1 \
+    libglu1-mesa \
+    libxml2 \
+    libxslt1.1 \
+    libredwg-tools \
+    ca-certificates \
+    curl \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

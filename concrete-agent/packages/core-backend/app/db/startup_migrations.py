@@ -81,6 +81,34 @@ _CRITICAL_SCHEMA: dict[str, set[str]] = {
         "credits", "is_active",
         "total_credits_used", "total_credits_purchased",
     },
+    # Columns referenced by app.mcp.auth.register_oauth_client +
+    # app.mcp.routes.oauth_register (DCR endpoint, RFC 7591). Adding here
+    # so a hand-edit that drops one of these fails fast at startup with a
+    # clear log line instead of waiting for the first /register call to
+    # hit psycopg2.errors.UndefinedColumn.
+    "mcp_oauth_clients": {
+        "id", "client_id", "client_secret_hash", "client_secret_salt",
+        "client_name", "redirect_uris", "grant_types", "scope",
+        "software_id", "software_version",
+        "registration_source", "registered_ip", "registered_user_agent",
+        "created_by_user_id", "is_active", "last_used_at", "registered_at",
+    },
+    "mcp_oauth_registration_log": {
+        "id", "oauth_client_id", "client_name", "status",
+        "error_code", "error_description",
+        "request_payload_hash", "registered_ip", "registered_user_agent",
+        "created_at",
+    },
+    # Columns referenced by app.mcp.auth.{mint_token_pair,
+    # lookup_refresh_token, rotate_refresh_token, revoke_refresh_chain}
+    # — DCR token issuance + refresh rotation (BCP §4.14).
+    "mcp_oauth_tokens": {
+        "id", "access_token", "refresh_token",
+        "oauth_client_id", "user_api_key",
+        "grant_type", "scope",
+        "issued_at", "access_expires_at", "refresh_expires_at",
+        "revoked_at", "rotated_from", "last_used_at",
+    },
 }
 
 

@@ -97,6 +97,24 @@ def test_environment_detection():
     print(f"   Is production: {is_prod}")
 
 
+def test_yaml_import():
+    """KB loader depends on PyYAML for .yaml/.yml entry loading
+    (B4 default_ceilings, B6 chapter outlines, B7 regulation INDEX
+    files). Fail-fast smoke check so CI catches a missing
+    `PyYAML==6.0.2` in requirements.txt before the runtime KB load
+    starts hitting `_load_yaml` and crashing."""
+    try:
+        import yaml
+        # SafeLoader is the only loader we accept (yaml.load without
+        # one executes arbitrary Python). Verify the helper exists.
+        assert hasattr(yaml, "safe_load"), "yaml.safe_load missing — wrong PyYAML?"
+        # Trivial round-trip sanity check
+        assert yaml.safe_load("foo: 1\nbar: [a, b]") == {"foo": 1, "bar": ["a", "b"]}
+        print(f"✅ PyYAML imported (version: {yaml.__version__})")
+    except ImportError as e:
+        pytest.fail(f"PyYAML not installed: {e}. Add PyYAML==6.0.2 to requirements.txt")
+
+
 if __name__ == "__main__":
     # Run tests when called directly
     pytest.main([__file__, "-v", "--tb=short"])

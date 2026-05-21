@@ -1,0 +1,283 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — industrial (průmyslové haly / sklady / výroba)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Calibrated against hk212_hala reference set (test-data/hk212_hala/*) —
+# steel-frame industrial hall, drátkobeton industrial floor, sendvičové
+# panely, sectional doors + loading docks, ATEX-zone signage.
+#
+# Norms: ČSN EN 1090 (ocelové konstrukce), ČSN 73 1101 (zděné konstrukce),
+# ČSN 73 2480 (industriální podlahy), ČSN 73 0840 (požární bezpečnost
+# průmyslových staveb), NV 375/2017 (požadavky na strojní zařízení).
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.2 + §15.9
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: industrial
+description: >
+  32 coverage requirements for industrial / průmyslové stavby (skladové
+  haly, výrobní haly, logistická centra, technologické linky).
+
+requirements:
+
+  # ─── A. Project identification + norms ────────────────────────────────────
+
+  - category: project_identification
+    label_cs: Identifikační údaje (investor, technolog. zadání, kategorie haly)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: norm_references
+    label_cs: Citované normy (ČSN EN 1090 + ČSN 73 1101 + ČSN 73 2480)
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: referenced_documents
+    label_cs: Soupis odkazovaných výkresů (architektonický + statický + TZB)
+    required_fields: [document]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: technology_requirements
+    label_cs: Požadavky technologie (NV 375/2017, prostorové nároky)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Průmyslové haly se navrhují PROTI technologii (linka, dopravník,
+      regály, autoklávy). Chybějící popis technologie = neslučitelný
+      podklad pro projekt.
+
+  # ─── B. Building geometry ─────────────────────────────────────────────────
+
+  - category: portal_frame_geometry
+    label_cs: Geometrie rámu haly (rozpon × osová vzdálenost × výška)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+    notes: >
+      hk212 hala: rozpon 24 m, osová vzdálenost 6 m, výška pod
+      vazníkem 7.5 m. Drives steel-frame quantity calculation.
+
+  - category: dimensions
+    label_cs: Hlavní rozměry haly (délka × šířka × výška / SH)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+
+  - category: site_situation
+    label_cs: Koordinační situace + napojení na sítě
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg]
+    optional: false
+
+  # ─── C. Structural systems ────────────────────────────────────────────────
+
+  - category: steel_frame
+    label_cs: Ocelový rám (sloupy + vazníky + ztužidla, profily HEB/IPE/RHS)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+    notes: >
+      Mandatory pro každou ocelovou halu. Profile + spec material
+      (S235JR / S355J0 / S420N) per ČSN EN 1090.
+
+  - category: foundation_system
+    label_cs: Založení (patky / pasy / piloty pod sloupy haly)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+
+  - category: wall_system
+    label_cs: Stěny haly (zděné parapety, ŽB stěny, sendvičové panely)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+
+  - category: roof_system
+    label_cs: Střecha (sklon, krytina, izolace, světlíky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf, dwg, ifc]
+    optional: false
+
+  # ─── D. Envelope ──────────────────────────────────────────────────────────
+
+  - category: cladding_walls
+    label_cs: Opláštění stěn (sendvičové panely / trapézový plech / fasáda)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: cladding_roof
+    label_cs: Krytina střechy + izolace + parozábrana
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: industrial_doors
+    label_cs: Vrata + dveře (sekční vrata, rolovací, požární)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Pattern 8 (door-vs-gate hazard, STAVAGENT_PATTERNS.md): hk212
+      kombinuje sekční vrata + únikové dveře + technologickou bránu.
+
+  - category: loading_docks
+    label_cs: Rampy + nakládací mola (počet, šířka, hloubka, vyrovnávač)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Logistická centra MUSÍ mít rampy; výrobní haly NEMUSÍ.
+
+  - category: windows_doors_specification
+    label_cs: Specifikace oken/dveří (rozměry / materiál / požární odolnost)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  # ─── E. Industrial floor ──────────────────────────────────────────────────
+
+  - category: industrial_floor_slab
+    label_cs: Průmyslová podlaha (vsypový beton / drátkobeton / dilatace)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      ČSN 73 2480. Specify: drátkobeton (kg/m³ vláken), nášlapná
+      vrstva (PU, epoxid), dilatační síť (raster + typ).
+
+  - category: floor_load_capacity
+    label_cs: Únosnost podlahy (kN/m² rovnoměrná + bodové od regálů)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Mandatory pro skladové haly (regály) + výrobní haly (stroje).
+      Typical 50 kN/m² rovnoměrné + 200 kN bodové.
+
+  # ─── F. Materials ─────────────────────────────────────────────────────────
+
+  - category: concrete_grade
+    label_cs: Třída betonu (základy + podlaha + parapet)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: exposure_class
+    label_cs: Třída expozice (XC1 vnitřní; XA1/XA2 podlaha)
+    required_fields: [class]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: reinforcement
+    label_cs: Třída výztuže (B500B + drátky pro DK podlahu)
+    required_fields: [steel_grade]
+    expected_sources: [pdf_tz]
+    optional: false
+
+  - category: steel_specification
+    label_cs: Specifikace oceli ocelové konstrukce (S235JR / S355J0)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+
+  # ─── G. TZB / industrial MEP ─────────────────────────────────────────────
+
+  - category: industrial_lighting
+    label_cs: Osvětlení (lux, LED, nouzové, ATEX zóny)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: industrial_ventilation
+    label_cs: Vzduchotechnika (technologická / sociální / odsávání)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: heating_system
+    label_cs: Vytápění (sálavé panely / teplovzdušné jednotky)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  - category: cooling_chl
+    label_cs: Chlazení (CHL pro výrobní procesy)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+
+  - category: electrical_strong
+    label_cs: Silnoproud (3-fázové vývody pro technologii, hl. rozvaděč)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: electrical_weak
+    label_cs: Slaboproud (EZS, EPS, KIS, BMS)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  # ─── H. Fire & safety ─────────────────────────────────────────────────────
+
+  - category: fire_safety
+    label_cs: Požárně bezpečnostní řešení (ČSN 73 0840 průmysl)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Mandatory + ČSN 73 0840 (specifické pro průmyslové stavby).
+      Coverage gate blocks if missing.
+
+  - category: fire_compartmentation
+    label_cs: Požární úseky + EPS + SHZ (sprinklery)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+
+  - category: hazard_zones
+    label_cs: ATEX zóny / nebezpečné prostory (ČSN EN 60079)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Optional — applicable only to provozy s výbušnou atmosférou
+      (čerpací stanice, sklady hořlavin, chem. výroba).
+
+  # ─── I. Quantities & DXF ─────────────────────────────────────────────────
+
+  - category: quantities
+    label_cs: Výkaz výměr (m³ beton, t ocel, m² podlaha + opláštění)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_unixml, xlsx_soupis]
+    optional: false
+
+  - category: dxf_meta
+    label_cs: DXF metadata (entity count, units, bbox)
+    required_fields: [entity_count_total, layer_count]
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: layer_inventory
+    label_cs: Vrstvy výkresů (rám + opláštění + technologie + požárka)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: text_inventory
+    label_cs: Texty + popisky (osy, kóty, ID místností)
+    required_fields: []
+    expected_sources: [dxf, dwg]
+    optional: false
+
+  - category: geological_conditions
+    label_cs: IGP + Edef + radon
+    required_fields: []
+    expected_sources: [pdf_geology, pdf_tz]
+    optional: false

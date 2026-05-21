@@ -1,0 +1,182 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_ut (D.1.4.5 ústřední vytápění)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` with ÚT-specific categories per vyhláška 499/2006
+# D.1.4.5 + ČSN 06 0310 (ústřední vytápění) + ČSN EN 12831 (tepelné
+# ztráty).
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (ÚT bullet)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_ut
+extends: mep_base
+description: >
+  D.1.4.5 ústřední vytápění — zdroj tepla (kotel / TČ / dálkové
+  vytápění / elektrokotel), otopná soustava (teplovodní 60/45 °C
+  nebo nízkoteplotní 35/28 °C), otopná tělesa, podlahové vytápění,
+  regulace.
+
+requirements:
+
+  - category: norm_references
+    label_cs: Citované normy ČSN 06 0310 / ČSN EN 12831 / TNI 07-0302
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN 06 0310 (ÚV — projektování), ČSN EN 12831 (tepelné
+      ztráty), TNI 07-0302 (energetická náročnost), ČSN EN 1264
+      (podlahové vytápění).
+
+  - category: hvac_zone
+    label_cs: Topné zóny (rozdělení podle vnitřních teplot 15-22 °C)
+    required_fields: []
+    expected_sources: [pdf_tz, xml_gbxml]
+    optional: false
+    notes: >
+      Subtype overriduje base na required. Obytná zóna 20 °C,
+      chodby 15 °C, koupelny 24 °C, garáž 5 °C nezámrzná.
+
+  # ─── A. Tepelné ztráty a výkon ─────────────────────────────────────
+
+  - category: ut_heat_losses_kw
+    label_cs: Tepelné ztráty objektu (kW celkem + per zóna)
+    required_fields: [value]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Výpočet podle ČSN EN 12831. Q celkem + Q transmisi +
+      Q infiltrace + Q větrání. Vstupní data pro dimenzi zdroje.
+
+  - category: ut_heat_source_type
+    label_cs: Zdroj tepla (kotel plynový / TČ / dálkové vytápění / elektrokotel / kombinace)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Hlavní + záložní zdroj (bivalentní u TČ — elektrokotel
+      jako záloha). Příkon (kW), účinnost / COP.
+
+  - category: ut_heat_source_specification
+    label_cs: Specifikace zdroje (značka / typ / palivo / akumulace)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Konkrétní model (PROTHERM Panther, Daikin Altherma), palivo
+      (zemní plyn / propan / elektřina / vzduch-voda), akumulační
+      nádrž (volume v l).
+
+  # ─── B. Otopná soustava ────────────────────────────────────────────
+
+  - category: ut_distribution_system
+    label_cs: Otopná soustava (teplovodní / nízkoteplotní + teplotní spád)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Teplotní spád: 60/45 °C (radiátory), 50/35 °C (kombinace),
+      35/28 °C (čisté podlahové), návrhový spád PT.
+
+  - category: ut_pipe_specifications
+    label_cs: Potrubí (Cu / PEX-Al-PEX / nerez + DN + tlaková řada)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Měděná pájená, PEX-Al-PEX lisované, alupex se závitovými
+      fittingy. DN15-50 podle průtoku, izolace AF/Armaflex.
+
+  - category: ut_circulation_pumps
+    label_cs: Oběhová čerpadla (Wilo / Grundfos — elektronicky řízená)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Elektronicky řízená čerpadla (EEI ≤ 0.23 dle ErP) —
+      povinné po 2015. Sekundární okruhy + ohřev TUV.
+
+  - category: ut_expansion_vessel
+    label_cs: Expanzní nádoba + pojistný ventil + odvzdušnění
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      EN s membránou (volume podle objemu vody v soustavě),
+      pojistný ventil 3 bar (RD) / 2.5 bar (kondenzační kotle),
+      odvzdušňovací ventily na nejvyšších bodech.
+
+  # ─── C. Otopná tělesa ─────────────────────────────────────────────
+
+  - category: ut_radiators
+    label_cs: Otopná tělesa (deskové / žebříkové + výkony + ventily)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Deskové stěnové (Korado RADIK / Purmo), koupelnové žebříkové.
+      Výkon Q (W) per teleso, termostatický ventil + uzavírací
+      ventil. Optional pokud projekt pouze podlahové vytápění.
+
+  - category: ut_underfloor_heating
+    label_cs: Podlahové vytápění (rozdělovač + okruhy + krok + topný spirál)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Rozdělovač / sběrač per podlaží, počet okruhů, délka
+      vinutí (typicky 100-120 m per okruh), krok (15/20/30 cm).
+      ČSN EN 1264.
+
+  - category: ut_thermostatic_control
+    label_cs: Regulace per místnost (TRV / prostorové termostaty)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Termostatické ventily na radiátorech (TRV), prostorové
+      termostaty na podlahovkách. Smart termostaty (KNX / Wi-Fi)
+      s plánovači.
+
+  # ─── D. TUV (návaznost na ZTI) ────────────────────────────────────
+
+  - category: ut_dhw_preparation
+    label_cs: Ohřev TUV (zásobníkový / průtočný / kombinovaný + objem)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Návaznost na zti_hot_water_preparation. Specifikuje
+      tepelný výkon ohřevu (kW) + objem zásobníku (l).
+
+  - category: ut_solar_thermal
+    label_cs: Solární kolektory (kolektorová plocha + výkon)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: true
+    notes: >
+      Plochá / vakuová trubice, plocha kolektorového pole, výkon
+      v kWh/rok. Volitelné — alternativa k TČ pro RD.
+
+  # ─── E. Regulace a měření spotřeby ────────────────────────────────
+
+  - category: ut_central_control
+    label_cs: Centrální regulace (ekvitermní / smart) + BMS interface
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Ekvitermní regulace s venkovním čidlem, smart termostat
+      (Tado, Honeywell), případně KNX / BACnet pro integraci s
+      MaR. Subtype overriduje base bms_interface na required.
+
+  - category: ut_heat_metering
+    label_cs: Měření spotřeby tepla (kalorimetry, IRTN — individuální)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Pro bytové domy povinné podle vyhl. 269/2015 Sb.
+      (rozdělování spotřeby tepla). Optional u RD.

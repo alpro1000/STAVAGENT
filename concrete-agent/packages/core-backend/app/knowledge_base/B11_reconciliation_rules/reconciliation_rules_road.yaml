@@ -1,0 +1,144 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Reconciliation Rules — road (silnice / komunikace)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Calibrated from SO 250 SÚSPK reference + ČSN 73 6133 (pláň silnic).
+# Higher tolerance bands than bridge because earthworks volumes
+# legitimately vary against design due to in-situ adjustments.
+#
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.3
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: road
+description: >
+  9 reconciliation rules for road projects. ±3 % geometry / earthworks,
+  exact for pavement-layer thickness and traffic load class.
+
+rules:
+
+  - id: road_alignment_length_tz_vs_landxml
+    description: >
+      Délka trasy v TZ vs LandXML Alignment length. ±1 % — alignment
+      length is a contract-grade number.
+    left_source: pdf_tz
+    right_source: xml_landxml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 1.0
+    on_match: confirm_and_boost_confidence
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: road_cross_section_width_tz_vs_drawing
+    description: Šířkové uspořádání — TZ vs DXF, ±2 %.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 2.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: road_pavement_layer_thickness
+    description: >
+      Tloušťka vrstev (ACO/ACL/MZK/ŠD) — TZ vs DPS. Exact, per layer.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: road_pavement_class_tz_vs_soupis
+    description: >
+      Třída dopravního zatížení (TDZ I-VI) — TZ vs soupis specifikace.
+      Exact.
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: category
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: road_asphalt_volume_tz_vs_soupis
+    description: >
+      Objem asfaltových směsí (t / m³) — TZ vs UNIXML soupis. ±3 %.
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 3.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: road_earthworks_volume_tz_vs_landxml
+    description: >
+      Výkop / násyp (m³) — TZ vs LandXML Surface delta. ±5 % tolerance
+      because in-situ úprava is normal during stavební dozor.
+    left_source: pdf_tz
+    right_source: xml_landxml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 5.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: road_storm_drainage_count_tz_vs_drawing
+    description: Počet vpusti — TZ vs DXF block count. ±1 vpust.
+    left_source: pdf_tz
+    right_source: dxf
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: absolute
+      value: 1
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: important
+
+  - id: road_bearing_capacity_edef
+    description: >
+      Edef2 ≥ 45 MPa per ČSN 73 6133. IGP report vs TZ specification.
+      Exact (TZ should cite the IGP value).
+    left_source: pdf_geology
+    right_source: pdf_tz
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: exact
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: critical
+
+  - id: road_markings_area_tz_vs_soupis
+    description: >
+      Plocha vodorovného značení — TZ vs soupis. ±5 % (značení
+      tendrově oceňováno paušálem, drobné odchylky).
+    left_source: pdf_tz
+    right_source: xml_unixml
+    join_on: field
+    compare_field: value
+    tolerance:
+      type: percentage
+      value: 5.0
+    on_match: confirm
+    on_mismatch: flag_conflict
+    severity: informational

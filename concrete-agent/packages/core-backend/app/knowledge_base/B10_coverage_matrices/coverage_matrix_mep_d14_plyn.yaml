@@ -1,0 +1,182 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Coverage Matrix — mep_d14_plyn (D.1.4 plynovod)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Extends `mep_base` with plyn-specific categories per vyhláška 499/2006
+# D.1.4 + ČSN EN 1775 (vnitřní plynovody) + TPG 704 01 (odběrná plynová
+# zařízení).
+#
+# Reference: docs/tasks/TASK_UEP_PR4.md §3.1 (plyn bullet)
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+project_type: mep_d14_plyn
+extends: mep_base
+description: >
+  D.1.4 plynovod — vnitřní plynové rozvody, hlavní uzávěr plynu (HUP),
+  plynoměr, spotřebiče (kotel / sporák / krb), provedení podle TPG
+  704 01.
+
+requirements:
+
+  - category: norm_references
+    label_cs: Citované normy ČSN EN 1775 / TPG 704 01 / TPG 704 03
+    required_fields: [citation]
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      ČSN EN 1775 (vnitřní plynovody do PE 5 bar), TPG 704 01
+      (odběrná plynová zařízení), TPG 704 03 (domovní plynovody),
+      TPG 909 02 (instalace spotřebičů).
+
+  # ─── A. Plynovodní přípojka a HUP ─────────────────────────────────
+
+  - category: plyn_connection
+    label_cs: Plynovodní přípojka (DN + materiál PE / ocel + délka)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Přípojka od distribučního řadu k HUP. PE100 SDR11 + přechod
+      na ocel (ohnutí), DN25-50 typicky pro RD.
+
+  - category: plyn_main_shutoff_valve
+    label_cs: Hlavní uzávěr plynu (HUP — umístění + bezpečný přístup)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      HUP musí být přístupný z venku (typicky kovová skříňka na
+      fasádě) nebo v technické místnosti s vyznačením. TPG 905 01.
+
+  - category: plyn_gas_meter
+    label_cs: Plynoměr (typ + jmenovitý průtok + umístění)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Membránový (G4-G25 pro RD/bytovku), rotorový (větší
+      objekty). Vždy v dobře větraném prostoru, signální
+      kabel pro smart meter (volitelně).
+
+  # ─── B. Vnitřní rozvody ───────────────────────────────────────────
+
+  - category: plyn_indoor_pipes_dn
+    label_cs: Dimenze vnitřních potrubí (DN 15-50)
+    required_fields: [value]
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      DN podle průtoku a tlakové ztráty. DN15 (přívod ke sporáku),
+      DN20-32 (kotel), DN50+ (větší výkony).
+
+  - category: plyn_indoor_pipe_material
+    label_cs: Materiály vnitřních rozvodů (ocel černá svařovaná / měď tvrdě pájená)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Černá ocel (svařování / závitové spoje s těsnicí
+      hmotou), měď tvrdě pájená (lépe v interiéru, hygienicky
+      vhodnější). Lisovací nepovoleno pro plyn.
+
+  - category: plyn_pressure_class
+    label_cs: Tlaková třída rozvodu (≤ 5 kPa nízkotlaké, ≤ 0.4 MPa středotlaké)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Vnitřní rozvody typicky NTL ≤ 5 kPa za regulátorem (RZ).
+      STL od plynoměru po regulátor (≤ 0.4 MPa).
+
+  - category: plyn_pressure_regulator
+    label_cs: Regulátor tlaku (RZ — STL/NTL redukce)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Mezi STL přípojkou a NTL vnitřním rozvodem. Typicky
+      součást plynoměrné sestavy.
+
+  # ─── C. Spotřebiče ─────────────────────────────────────────────────
+
+  - category: plyn_appliances
+    label_cs: Plynové spotřebiče (kotel / sporák / krb / průtokový ohřívač)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Soupis spotřebičů s výkonem (kW) + kategorií provedení
+      (B11BS / C13 / C33 — typ odběru spalovacího vzduchu).
+      Vstup pro výpočet odběru a dimenze přípojky.
+
+  - category: plyn_appliance_classification
+    label_cs: Kategorie spotřebičů (A / B / C — provedení)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      A — bez odvodu spalin (sporák), B — odvod spalin do komína,
+      C — uzavřená komora (kondenzační kotle s C13/C33 koaxiálním
+      potrubím).
+
+  - category: plyn_combustion_air_supply
+    label_cs: Přívod spalovacího vzduchu (pro B-typy spotřebičů)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      U otevřených komor (B11BS) — výpočet potřebného přívodu
+      vzduchu z interiéru, ČSN 12 7010. Pro C-typy odpadá.
+
+  # ─── D. Odvod spalin a větrání ─────────────────────────────────────
+
+  - category: plyn_flue_gas_system
+    label_cs: Odvod spalin (komín / koaxiální / fasádní)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Klasický komín (kámen / izolovaný nerezový), koaxiální
+      C13/C33 (kondenzační kotle), fasádní vývod. Materiál
+      odolný kondenzátu pro kondenzační kotle.
+
+  - category: plyn_room_ventilation
+    label_cs: Větrání místnosti se spotřebiči (přívod / odvod vzduchu)
+    required_fields: []
+    expected_sources: [pdf_tz, dxf]
+    optional: false
+    notes: >
+      Pro plynovou kotelnu / kuchyni se sporákem — přívod
+      spalovacího vzduchu + odvod (komín / VZT).
+
+  # ─── E. Bezpečnost ─────────────────────────────────────────────────
+
+  - category: plyn_gas_detectors
+    label_cs: Detektory úniku plynu (methan + CO)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Volitelné pro RD, povinné v některých kotelnách s vyšším
+      výkonem. Detektor CH4 nad spotřebičem, detektor CO v
+      úrovni dýchání.
+
+  - category: plyn_emergency_shutoff
+    label_cs: Bezpečnostní uzávěr (BS / SAV — automatický uzávěr s detektorem plynu)
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: true
+    notes: >
+      Automatický uzávěr napojený na detektor plynu nebo EPS.
+      Povinné u větších kotelen, optional u RD.
+
+  - category: plyn_pressure_test_certificate
+    label_cs: Tlaková zkouška + revize plynového zařízení
+    required_fields: []
+    expected_sources: [pdf_tz]
+    optional: false
+    notes: >
+      Tlaková zkouška před uvedením do provozu (ČSN EN 1775),
+      revize plynového zařízení autorizovaným technikem
+      (vyhl. 85/1978 Sb.) — předání s protokolem.

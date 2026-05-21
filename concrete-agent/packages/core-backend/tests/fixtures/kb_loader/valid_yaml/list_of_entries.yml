@@ -1,0 +1,13 @@
+# B5-shape: top-level list of entries (also tests .yml extension, not just .yaml)
+- code: "121-01-001"
+  name: "Beton C20/25"
+  unit: "m3"
+  base_price: 2450
+- code: "121-01-002"
+  name: "Beton C25/30"
+  unit: "m3"
+  base_price: 2650
+- code: "121-01-003"
+  name: "Beton C30/37"
+  unit: "m3"
+  base_price: 2900

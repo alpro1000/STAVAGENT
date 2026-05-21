@@ -1,0 +1,55 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# UEP Tier Limits — concurrent / daily / per-project / burst
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Seeded by `app/services/uep/concurrency_validator.py:seed_tier_limits()`
+# at app startup. The `tier_limits` DB table is the runtime source of
+# truth — this YAML is the canonical seed.
+#
+# Field shape validated against
+# app/models/uep_job_schemas.TierLimits.
+#
+# Numbers come from PR2 task §2 Q8 ("Tier model + concurrency"):
+#
+#   Tier             | Concurrent | Daily | Per-project | Burst (15 min)
+#   -----------------|-----------:|------:|------------:|---------------:
+#   Free             |          1 |     5 |           1 |              2
+#   Starter  (100cr) |          2 |    25 |           1 |              5
+#   Pro      (500cr) |          5 |   100 |           1 |             15
+#   Business (2000cr)|         10 |     0 |           1 |             30
+#   Enterprise       |         50 |     0 |           5 |            100
+#
+# `daily_jobs = 0` means unlimited (Business + Enterprise). Enterprise
+# is the seed default; user_tier_overrides table can raise per-user.
+#
+# Reference: docs/tasks/TASK_UEP_PR2.md §2 Q8
+# Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §15.2
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+tiers:
+  - tier: free
+    concurrent_jobs: 1
+    daily_jobs: 5
+    per_project_jobs: 1
+    burst_15min: 2
+  - tier: starter
+    concurrent_jobs: 2
+    daily_jobs: 25
+    per_project_jobs: 1
+    burst_15min: 5
+  - tier: pro
+    concurrent_jobs: 5
+    daily_jobs: 100
+    per_project_jobs: 1
+    burst_15min: 15
+  - tier: business
+    concurrent_jobs: 10
+    daily_jobs: 0   # unlimited
+    per_project_jobs: 1
+    burst_15min: 30
+  - tier: enterprise
+    concurrent_jobs: 50
+    daily_jobs: 0   # unlimited
+    per_project_jobs: 5
+    burst_15min: 100

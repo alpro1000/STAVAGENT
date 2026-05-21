@@ -54,7 +54,7 @@ def test_mcp_server_imports():
     assert mcp.name == "STAVAGENT"
 
 
-# ── Test: All 10 tools are registered ───────────────────────────────────────
+# ── Test: All 16 tools are registered ───────────────────────────────────────
 
 EXPECTED_TOOLS = [
     "find_otskp_code",
@@ -67,6 +67,13 @@ EXPECTED_TOOLS = [
     "create_work_breakdown",
     "get_construction_advisor",
     "search_czech_construction_norms",
+    "uep_run_extraction",
+    # PR3 — 5 read-only inspection tools (Tools 11-15 in server.py).
+    "uep_get_job",
+    "uep_list_supported_formats",
+    "uep_get_coverage_matrix",
+    "uep_get_reconciliation_rules",
+    "uep_get_dwg_conversion_status",
 ]
 
 
