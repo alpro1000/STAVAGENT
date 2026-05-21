@@ -29,7 +29,7 @@ import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import openpyxl  # type: ignore[import-not-found]
 from openpyxl.chart import BarChart, DoughnutChart, Reference  # type: ignore[import-not-found]
@@ -48,15 +48,18 @@ EXCEL_TARGET = OUTPUTS / "Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx"
 EXCEL_BACKUP_PHASE_6_6 = OUTPUTS / "Vykaz_vymer_pre_phase6_6.xlsx"
 EXCEL_BACKUP_GATE4 = OUTPUTS / "Vykaz_vymer_pre_gate4.xlsx"
 EXCEL_BACKUP_GATE5 = OUTPUTS / "Vykaz_vymer_pre_gate5.xlsx"
+EXCEL_BACKUP_GATE6 = OUTPUTS / "Vykaz_vymer_pre_gate6.xlsx"
 ITEMS_IN = OUTPUTS / "items_objekt_D_with_materials.json"
 LIBRARY_IN = OUTPUTS / "material_library_D.json"
 KB_IN = LIBUSE / "knowledge_base" / "generic_consumption_rates.json"
+GROUPS_IN = OUTPUTS / "urs_query_groups.json"
 
 ROZKLAD_SHEET = "Material_rozklad"
 AUDIT_SHEET = "Material_audit"
 VV_SHEET = "1_Vykaz_vymer"
 SUMARIZACE_SHEET = "11_Sumarizace_dle_kódu"
 AGGREGATE_SHEET = "11b_Material_aggregate"
+AVK_SHEET = "11c_AVK_smeta"
 
 # Documented source types (Block 1 Hero stat denominator). GATE 5a adds
 # the two ČSN-cited tiers — they count as documented because the norm
@@ -97,6 +100,12 @@ SMALL_ITALIC = Font(size=9, italic=True, color="606060")
 
 CENTER = Alignment(horizontal="center", vertical="center", wrap_text=True)
 LEFT_WRAP = Alignment(horizontal="left", vertical="top", wrap_text=True)
+# Data-cell alignment for Material_rozklad — wrap_text=False keeps row
+# heights at the default (~15 px).  Excel auto-expands rows when
+# wrap_text=True is applied to short popis values that contain Czech accents
+# or a couple of "—" separators, producing 60+ px rows on 90 k cells.
+# Header cells continue using CENTER (wrap=True).
+LEFT_NOWRAP = Alignment(horizontal="left", vertical="center", wrap_text=False)
 
 
 def _load_data() -> tuple[list[dict], list[dict], list[dict]]:
@@ -138,6 +147,30 @@ def _looks_like_install_only(popis: str) -> bool:
         return False
     return bool(_INSTALL_SUFFIX_RE.search(popis)
                 or _INSTALL_PREFIX_RE.search(popis))
+
+
+# Mirror of pair_materials.CASE5_PRIMARY_KEYWORDS — used only by
+# Material_rozklad GATE 7 placeholder copy to classify why a master has no
+# sub-items.  Keep the two lists in sync when pair script gains new keys.
+CASE5_PRIMARY_KEYWORDS = (
+    "penetrace pod", "penetrace univerzá", "lepidlo flexib", "lepidlo na",
+    "spárovací hmot", "sparovaci hmot",
+    "samonivelační stěr", "samonivelacni ster",
+    "kari síť", "kari sit", "pe fólie", "pe folie",
+    "asfaltový pás", "asfaltovy pas", "armovací síť", "armovaci sit",
+    "tmel ", "akrylový ",
+    "uw + cw profil", "ud + cd profil", "uw+cw profil",
+    "cd profil", "cw profil",
+    "sdk desky", "sdk deska", "izolace minerální vata",
+    "izolace mineralni vata", "izolace minerá",
+    "tmelení q", "tmeleni q", "pur pěna", "pur pena",
+    "závěsy posuvné", "zavesy posuvne",
+    "parozábrana fólie", "parozabrana folie",
+    "difuzní fólie", "difuzni folie",
+    "latě ", "kontralatě", "hřebenáče", "hrebenace",
+    "kročejová izolace", "krocejova izolace",
+    "polystyrenbeton", "polystyrén beton", "polystyren beton",
+)
 
 
 def _format_qty(q: Any) -> str:
@@ -201,12 +234,12 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
     for s in sub_items:
         subs_by_master[s["paired_with"]].append(s)
 
-    # Only emit masters that have at least one sub-item
-    masters_with_subs = [m for m in masters
-                        if m["item_id"] in subs_by_master]
-
-    # Sort masters by (kapitola, popis) for grouping
-    masters_sorted = sorted(masters_with_subs,
+    # GATE 7 — iterate ALL master items, not only those with sub-items.
+    # Earlier pass filtered to ~1 210 of 4 090 masters which silently hid
+    # Case 5 / install-only / no_pairing / no_kapitola_rule rows from the
+    # VELTON deliverable.  Master rows without sub-items now render as a
+    # single line with an explanatory placeholder in the Zdroj column.
+    masters_sorted = sorted(masters,
                            key=lambda m: (m.get("kapitola") or "",
                                           m.get("popis") or "",
                                           m["item_id"]))
@@ -260,13 +293,49 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                 cell.font = Font(bold=True, size=11)
             cell.fill = master_fill
             cell.border = BORDER_ALL
-            cell.alignment = LEFT_WRAP
+            cell.alignment = LEFT_NOWRAP
 
         row_idx += 1
 
         # --- sub-rows ---
-        subs = subs_by_master[master["item_id"]]
+        # GATE 7 — when master has no sub-items (Case 5 standalone material,
+        # install-only sibling row, MJ-incompatible, or no_kapitola_rule),
+        # emit a single explanatory placeholder so the row count covers ALL
+        # 4 090 masters instead of silently dropping ~70 % of them.
+        subs = subs_by_master.get(master["item_id"], [])
         last_sub_row = None
+        if not subs:
+            popis_lower = (master.get("popis") or "").lower()
+            if any(kw in popis_lower for kw in CASE5_PRIMARY_KEYWORDS):
+                placeholder = "(Case 5 — master JE materiál, žádný sub-rozklad)"
+            elif (_INSTALL_SUFFIX_RE.search(master.get("popis") or "")
+                  or _INSTALL_PREFIX_RE.search(master.get("popis") or "")):
+                placeholder = ("(install-only — materiál v sourozenecké "
+                                "položce — dodávka)")
+            elif not master.get("kapitola"):
+                placeholder = "(bez kapitoly — no_kapitola_rule)"
+            else:
+                placeholder = "(no_pairing — žádný odpovídající KB nebo TZ vstup)"
+            pol_label = f"{master_pol_counter}.0"
+            ws.cell(row_idx, 1, pol_label)
+            for c in range(2, 7):
+                ws.cell(row_idx, c, "")
+            ws.cell(row_idx, 7, "  " + placeholder)
+            ws.cell(row_idx, 8, "")
+            ws.cell(row_idx, 9, "")
+            ws.cell(row_idx, 10, "")
+            ws.cell(row_idx, 11, "—")
+            ws.cell(row_idx, 12, "—")
+            ws.cell(row_idx, 13, master["item_id"])
+            for c in range(1, 14):
+                cell = ws.cell(row_idx, c)
+                cell.fill = sub_fill
+                cell.border = BORDER_ALL
+                cell.font = (Font(size=9, italic=True, color="606060") if c == 1
+                             else Font(size=10, italic=True, color="909090"))
+                cell.alignment = LEFT_NOWRAP
+            last_sub_row = row_idx
+            row_idx += 1
         for sub_idx, sub in enumerate(subs, start=1):
             # A: Pol. č. decimal (X.N)
             pol_label = f"{master_pol_counter}.{sub_idx}"
@@ -301,7 +370,7 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
                     cell.font = Font(size=9, italic=True, color="606060")
                 else:
                     cell.font = Font(size=10)
-                cell.alignment = LEFT_WRAP
+                cell.alignment = LEFT_NOWRAP
 
             last_sub_row = row_idx
             row_idx += 1
@@ -342,7 +411,8 @@ def _build_material_rozklad(wb: openpyxl.Workbook, masters: list[dict],
 # ----------------------------------------------------------------------------
 
 def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
-                          sub_items: list[dict], library: list[dict]) -> None:
+                          sub_items: list[dict], library: list[dict],
+                          avk_stats: Optional[dict] = None) -> None:
     if AUDIT_SHEET in wb.sheetnames:
         del wb[AUDIT_SHEET]
     ws = wb.create_sheet(AUDIT_SHEET, 0)  # Insert as first sheet
@@ -721,6 +791,67 @@ def _build_material_audit(wb: openpyxl.Workbook, masters: list[dict],
         row += 1
     row += 2
 
+    # ----- Block 14: 11c_AVK_smeta layout summary (GATE 6) -----
+    if avk_stats:
+        ws.merge_cells(f"A{row}:H{row}")
+        ws[f"A{row}"] = "GATE 6 — Block 14: 11c_AVK_smeta layout (AVK-style flat)"
+        ws[f"A{row}"].font = TITLE_FONT
+        row += 1
+        ws.merge_cells(f"A{row}:H{row}")
+        ws[f"A{row}"] = (
+            f"AVK-style flat sheet '11c_AVK_smeta' shipped — work + material + "
+            f"location decomposed in one denormalized table optimized for "
+            f"VELTON's АВК workflow (Ukrainian/RU автоматизированный выпуск "
+            f"кошторису).  Each of the {avk_stats['n_groups']:,} ÚRS G-groups "
+            f"emits one PRÁCE row, N aggregated MATERIÁL rows, and one LOKACE "
+            f"row per individual master instance.  11_Sumarizace_dle_kódu (4 845 "
+            f"rows, hierarchical) + 11b_Material_aggregate (kapitola totals) + "
+            f"Material_rozklad (per-master decomposition) zůstávají untouched "
+            f"— 11c je čistý dodatečný view stejných dat."
+        )
+        ws[f"A{row}"].font = Font(size=10)
+        ws[f"A{row}"].alignment = LEFT_WRAP
+        ws.row_dimensions[row].height = 95
+        row += 2
+        ws.cell(row, 1, "11c_AVK_smeta row distribution:")
+        ws.cell(row, 1).font = BOLD
+        row += 1
+        for c, h in enumerate(["Typ řádku", "Count"], start=1):
+            ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+        rows14 = [
+            ("G-groups (PRÁCE — master)", avk_stats["n_prace"]),
+            ("MATERIÁL (aggregated across all instances per group)",
+             avk_stats["n_materialy"]),
+            ("LOKACE (one per master instance)", avk_stats["n_lokace"]),
+            ("Total data rows", avk_stats["total_rows"]),
+        ]
+        for label, val in rows14:
+            ws.cell(row, 1, label); ws.cell(row, 2, val)
+            ws.cell(row, 1).border = BORDER_ALL
+            ws.cell(row, 2).border = BORDER_ALL
+            row += 1
+        row += 1
+        ws.cell(row, 1, "Sample G-groups with full decomposition:")
+        ws.cell(row, 1).font = BOLD
+        row += 1
+        for c, h in enumerate(["G-kód", "Popis", "Lokací", "Materiálů",
+                                "Rozsah řádků v 11c"], start=1):
+            ws.cell(row, c, h); ws.cell(row, c).font = BOLD
+            ws.cell(row, c).border = BORDER_ALL
+        row += 1
+        for sg in avk_stats.get("sample_groups", []):
+            ws.cell(row, 1, sg["group_id"])
+            ws.cell(row, 2, sg["popis"][:60])
+            ws.cell(row, 3, sg["n_locations"])
+            ws.cell(row, 4, sg["n_materials"])
+            ws.cell(row, 5, f"{sg['row_range'][0]}–{sg['row_range'][1]}")
+            for c in range(1, 6):
+                ws.cell(row, c).border = BORDER_ALL
+            row += 1
+        row += 2
+
     # ----- Block 11: Paired master deduplication (Bug 1 fix report) -----
     # Reference counts from GATE 3 commit 238af49 (post-GATE-2 stats):
     #   sub-items total: 6 152
@@ -1059,6 +1190,290 @@ def _build_sumarizace_aggregate(wb: openpyxl.Workbook, masters: list[dict],
         wb.move_sheet(AGGREGATE_SHEET, offset=sum_idx + 1 - agg_idx)
 
 
+def _write_misto_short(misto: dict) -> str:
+    """Format master location as '• D · 1.NP · D.1.S.01' — mirrors
+    phase_8_list11_sumarizace.write_misto() so 11c LOKACE rows match
+    the LOKACE detail rows in 11_Sumarizace verbatim."""
+    if not misto:
+        return "—"
+    parts = [misto.get("objekt") or "", misto.get("podlazi") or ""]
+    mistnosti = misto.get("mistnosti") or []
+    if mistnosti:
+        parts.append(",".join(mistnosti))
+    rendered = " · ".join(p for p in parts if p)
+    return f"• {rendered}" if rendered else "—"
+
+
+def _write_skladba_short(skl: dict) -> str:
+    if not skl:
+        return ""
+    pairs = []
+    for k, v in skl.items():
+        if isinstance(v, (str, int, float)):
+            pairs.append(f"{k}={v}")
+    return "; ".join(pairs[:3])
+
+
+def _build_avk_smeta(wb: openpyxl.Workbook, masters: list[dict],
+                    sub_items: list[dict],
+                    master_by_id: dict[str, dict]) -> dict:
+    """GATE 6 — AVK-style flat denormalized sheet `11c_AVK_smeta`
+    placed immediately after `11b_Material_aggregate`.  Per spec:
+      1. Each G-group emits 1 PRÁCE (master) row.
+      2. Sub-items aggregated by Vstup popis across all master
+         instances in the G-group → 1 MATERIÁL row per unique Vstup
+         (numbered M1, M2, …).
+      3. Each master instance in the G-group → 1 LOKACE row
+         (numbered L1, L2, …).
+
+    Returns stats dict for the dashboard Block 14.
+    """
+    if not GROUPS_IN.exists():
+        raise FileNotFoundError(
+            f"urs_query_groups.json missing at {GROUPS_IN} — required for "
+            f"11c_AVK_smeta G-group structure."
+        )
+    groups = json.loads(GROUPS_IN.read_text(encoding="utf-8"))["groups"]
+    groups_sorted = sorted(groups, key=lambda g: g["group_id"])
+
+    # Pre-index sub-items by master_id for O(1) lookup
+    subs_by_master: dict[str, list[dict]] = defaultdict(list)
+    for s in sub_items:
+        subs_by_master[s.get("paired_with") or ""].append(s)
+
+    if AVK_SHEET in wb.sheetnames:
+        del wb[AVK_SHEET]
+    ws = wb.create_sheet(AVK_SHEET)
+
+    headers = ["Pol. č.", "G-kód", "Typ", "Kapitola", "Popis práce",
+               "MJ", "Σ Mn.", "Vstup/Místnost", "Sp./MJ", "Mn.", "MJ",
+               "Zdroj", "Status"]
+    for c, h in enumerate(headers, start=1):
+        cell = ws.cell(1, c, h)
+        cell.font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+        cell.alignment = Alignment(horizontal="center", vertical="center",
+                                    wrap_text=True)
+        cell.fill = PatternFill(start_color="4472C4", end_color="4472C4",
+                                 fill_type="solid")
+        cell.border = BORDER_ALL
+    ws.row_dimensions[1].height = 30
+    ws.freeze_panes = "A2"
+
+    # Color palette per Typ (data rows — wrap_text deliberately False)
+    PRACE_FILL = PatternFill(start_color="E8F1FA", end_color="E8F1FA",
+                              fill_type="solid")
+    MAT_FILL = PatternFill(start_color="E8F4E8", end_color="E8F4E8",
+                            fill_type="solid")
+    LOC_FILL = PatternFill(start_color="F8F8F8", end_color="F8F8F8",
+                            fill_type="solid")
+    STATUS_FILLS_LOCAL: dict[str, PatternFill] = {
+        "OK":      PatternFill(start_color="C6EFCE", end_color="C6EFCE",
+                                fill_type="solid"),
+        "Confirm": PatternFill(start_color="FFEB9C", end_color="FFEB9C",
+                                fill_type="solid"),
+        "Odhad":   PatternFill(start_color="FFC09A", end_color="FFC09A",
+                                fill_type="solid"),
+        "no_match": PatternFill(start_color="FFC7CE", end_color="FFC7CE",
+                                 fill_type="solid"),
+    }
+    LEFT_NOWRAP = Alignment(horizontal="left", vertical="center",
+                             wrap_text=False)
+
+    row = 2
+    n_prace = 0
+    n_mat = 0
+    n_loc = 0
+    sample_groups: list[dict] = []  # populated for Block 14
+
+    for g in groups_sorted:
+        gid = g["group_id"]
+        master_ids = g.get("items_ids") or []
+        popis = g.get("popis_canonical") or ""
+        mj = g.get("MJ") or ""
+        total = g.get("total_mnozstvi") or 0
+        kapitola = g.get("kapitola") or ""
+
+        # ----- PRÁCE row -----
+        prace_row = row
+        ws.cell(row, 1, gid)
+        ws.cell(row, 2, gid)
+        ws.cell(row, 3, "PRÁCE")
+        ws.cell(row, 4, kapitola)
+        ws.cell(row, 5, popis)
+        ws.cell(row, 6, mj)
+        ws.cell(row, 7, round(float(total), 3))
+        ws.cell(row, 8, "— (souhrn práce —)")
+        ws.cell(row, 9, "")
+        ws.cell(row, 10, round(float(total), 3))
+        ws.cell(row, 11, mj)
+        ws.cell(row, 12, "—")
+        ws.cell(row, 13, "—")
+        for c in range(1, 14):
+            cell = ws.cell(row, c)
+            cell.fill = PRACE_FILL
+            cell.font = BOLD
+            cell.alignment = LEFT_NOWRAP
+            cell.border = BORDER_ALL
+        n_prace += 1
+        row += 1
+
+        # ----- Aggregate MATERIÁL rows across all masters in group -----
+        # Bucket sub-items by (popis_clean, MJ); collect rate + status +
+        # zdroj + citation_norm; majority wins on metadata.
+        mat_buckets: dict[tuple[str, str], dict[str, Any]] = defaultdict(
+            lambda: {"qty": 0.0, "rate_value": None, "rate_unit_num": None,
+                     "rate_unit_denom": None, "zdroj_counter": Counter(),
+                     "status_counter": Counter(), "popis_full": "",
+                     "citation_counter": Counter()}
+        )
+        for mid in master_ids:
+            for s in subs_by_master.get(mid, []):
+                # Preserve [odhad] prefix in popis verbatim — drop only
+                # for bucketing key (so [odhad] X and X collapse together)
+                popis_full = s.get("popis") or ""
+                popis_clean = re.sub(r"^\[odhad\]\s*", "", popis_full)
+                key = (popis_clean[:80], (s.get("MJ") or "").lower())
+                b = mat_buckets[key]
+                b["qty"] += float(s.get("mnozstvi") or 0)
+                if b["rate_value"] is None and s.get("rate_value") is not None:
+                    b["rate_value"] = s.get("rate_value")
+                    b["rate_unit_num"] = s.get("rate_unit_num")
+                    b["rate_unit_denom"] = s.get("rate_unit_denom")
+                b["zdroj_counter"][s.get("zdroj_marker") or ""] += 1
+                b["status_counter"][s.get("status_label") or ""] += 1
+                # Prefer non-odhad popis variant when multiple seen
+                if not b["popis_full"] or (
+                    b["popis_full"].startswith("[odhad]")
+                    and not popis_full.startswith("[odhad]")
+                ):
+                    b["popis_full"] = popis_full
+
+        if not mat_buckets:
+            # Case 5 — master IS the material; emit single placeholder M1
+            ws.cell(row, 1, f"{gid}.M1")
+            ws.cell(row, 2, gid)
+            ws.cell(row, 3, "MATERIÁL")
+            ws.cell(row, 4, kapitola)
+            ws.cell(row, 5, popis)
+            ws.cell(row, 6, mj)
+            ws.cell(row, 7, round(float(total), 3))
+            ws.cell(row, 8, "Bez vstupních materiálů (master JE materiál — "
+                            "viz tabulka)")
+            ws.cell(row, 9, "")
+            ws.cell(row, 10, "")
+            ws.cell(row, 11, "")
+            ws.cell(row, 12, "—")
+            ws.cell(row, 13, "—")
+            for c in range(1, 14):
+                cell = ws.cell(row, c)
+                cell.fill = MAT_FILL
+                cell.alignment = LEFT_NOWRAP
+                cell.border = BORDER_ALL
+            n_mat += 1
+            row += 1
+        else:
+            # Stable ordering: highest Σ qty first
+            for m_idx, ((popis_clean, mj_sub), b) in enumerate(
+                sorted(mat_buckets.items(), key=lambda x: -x[1]["qty"]),
+                start=1,
+            ):
+                top_zdroj = (b["zdroj_counter"].most_common(1)[0][0]
+                             if b["zdroj_counter"] else "")
+                top_status = (b["status_counter"].most_common(1)[0][0]
+                              if b["status_counter"] else "")
+                rate_str = ""
+                if (b["rate_value"] is not None and b["rate_unit_num"]
+                        and b["rate_unit_denom"]):
+                    rate_str = (f"{b['rate_value']} {b['rate_unit_num']}/"
+                                f"{b['rate_unit_denom']}")
+                ws.cell(row, 1, f"{gid}.M{m_idx}")
+                ws.cell(row, 2, gid)
+                ws.cell(row, 3, "MATERIÁL")
+                ws.cell(row, 4, kapitola)
+                ws.cell(row, 5, popis)
+                ws.cell(row, 6, mj)
+                ws.cell(row, 7, round(float(total), 3))
+                ws.cell(row, 8, b["popis_full"])
+                ws.cell(row, 9, rate_str)
+                ws.cell(row, 10, round(b["qty"], 3))
+                ws.cell(row, 11, mj_sub)
+                ws.cell(row, 12, top_zdroj)
+                ws.cell(row, 13, top_status)
+                for c in range(1, 14):
+                    cell = ws.cell(row, c)
+                    cell.fill = MAT_FILL
+                    cell.alignment = LEFT_NOWRAP
+                    cell.border = BORDER_ALL
+                # Status color stripe on col M
+                if top_status in STATUS_FILLS_LOCAL:
+                    ws.cell(row, 13).fill = STATUS_FILLS_LOCAL[top_status]
+                n_mat += 1
+                row += 1
+
+        # ----- LOKACE rows -----
+        for l_idx, mid in enumerate(master_ids, start=1):
+            m = master_by_id.get(mid)
+            if not m:
+                continue
+            misto_str = _write_misto_short(m.get("misto") or {})
+            skl_str = _write_skladba_short(m.get("skladba_ref") or {})
+            urs_status = m.get("urs_status") or "—"
+            ws.cell(row, 1, f"{gid}.L{l_idx}")
+            ws.cell(row, 2, gid)
+            ws.cell(row, 3, "LOKACE")
+            ws.cell(row, 4, kapitola)
+            ws.cell(row, 5, popis)
+            ws.cell(row, 6, mj)
+            ws.cell(row, 7, round(float(total), 3))
+            ws.cell(row, 8, misto_str)
+            ws.cell(row, 9, "")
+            ws.cell(row, 10, round(float(m.get("mnozstvi") or 0), 3))
+            ws.cell(row, 11, m.get("MJ") or mj)
+            ws.cell(row, 12, skl_str)
+            ws.cell(row, 13, urs_status)
+            for c in range(1, 14):
+                cell = ws.cell(row, c)
+                cell.fill = LOC_FILL
+                cell.alignment = LEFT_NOWRAP
+                cell.border = BORDER_ALL
+            n_loc += 1
+            row += 1
+
+        # Capture first 3 groups as sample (with material rows) for Block 14
+        if len(sample_groups) < 3 and mat_buckets:
+            sample_groups.append({
+                "group_id": gid,
+                "popis": popis,
+                "n_locations": len(master_ids),
+                "n_materials": len(mat_buckets),
+                "row_range": (prace_row, row - 1),
+            })
+
+    # Column widths tuned for AVK reading flow
+    widths_avk = [12, 8, 10, 11, 50, 7, 10, 55, 18, 10, 7, 24, 10]
+    for c, w in enumerate(widths_avk, start=1):
+        ws.column_dimensions[get_column_letter(c)].width = w
+
+    # Auto-filter over all data rows
+    last_col_letter = get_column_letter(13)
+    ws.auto_filter.ref = f"A1:{last_col_letter}{row - 1}"
+
+    # Move 11c right after 11b in tab order
+    if AGGREGATE_SHEET in wb.sheetnames and AVK_SHEET in wb.sheetnames:
+        agg_idx = wb.sheetnames.index(AGGREGATE_SHEET)
+        avk_idx = wb.sheetnames.index(AVK_SHEET)
+        wb.move_sheet(AVK_SHEET, offset=agg_idx + 1 - avk_idx)
+
+    return {
+        "n_groups": len(groups_sorted),
+        "n_prace": n_prace,
+        "n_materialy": n_mat,
+        "n_lokace": n_loc,
+        "total_rows": row - 2,  # exclude header
+        "sample_groups": sample_groups,
+    }
+
+
 def main() -> int:
     print("Phase 6.6 GATE 3 — Excel generator")
     print("=" * 60)
@@ -1076,10 +1491,11 @@ def main() -> int:
     #   pre_phase6_6   = original pre-Phase-6.6 baseline (preserved from GATE 3)
     #   pre_gate4      = post-GATE-3 / pre-GATE-4 snapshot
     #   pre_gate5      = post-GATE-4 / pre-GATE-5 snapshot (new this run)
-    print(f"\n[1/5] Backups:")
+    print(f"\n[1/6] Backups:")
     for label, path in [("pre_phase6_6", EXCEL_BACKUP_PHASE_6_6),
                         ("pre_gate4", EXCEL_BACKUP_GATE4),
-                        ("pre_gate5", EXCEL_BACKUP_GATE5)]:
+                        ("pre_gate5", EXCEL_BACKUP_GATE5),
+                        ("pre_gate6", EXCEL_BACKUP_GATE6)]:
         if path.exists():
             print(f"      preserved {path.relative_to(REPO_ROOT)} "
                   f"({path.stat().st_size:,} bytes)")
@@ -1089,24 +1505,38 @@ def main() -> int:
                   f"({path.stat().st_size:,} bytes)")
 
     # Load workbook + master-row map (built from masters in items.json order)
-    print(f"\n[2/4] Loading workbook + computing master→VV row map...")
+    print(f"\n[2/6] Loading workbook + computing master→VV row map...")
     wb = openpyxl.load_workbook(str(EXCEL_TARGET))
     master_row_in_vv = _build_master_row_map(masters)
     master_by_id = {m["item_id"]: m for m in masters}
     print(f"      Loaded {len(wb.sheetnames)} sheets, mapped "
           f"{len(master_row_in_vv)} masters")
 
-    print(f"\n[3/4] Building Material_rozklad sheet...")
+    print(f"\n[3/6] Building Material_rozklad sheet...")
     _build_material_rozklad(wb, masters, sub_items, master_by_id, master_row_in_vv)
     rozklad_ws = wb[ROZKLAD_SHEET]
     print(f"      → {rozklad_ws.max_row - 1} sub-item rows")
 
-    print(f"\n[4/5] Building Material_audit sheet (dashboard)...")
-    _build_material_audit(wb, masters, sub_items, library)
+    print(f"\n[4/6] Building 11c_AVK_smeta sheet (GATE 6)...")
+    avk_stats = _build_avk_smeta(wb, masters, sub_items, master_by_id)
+    print(f"      → {avk_stats['n_groups']} G-groups → "
+          f"{avk_stats['n_prace']} PRÁCE + "
+          f"{avk_stats['n_materialy']} MATERIÁL + "
+          f"{avk_stats['n_lokace']} LOKACE = "
+          f"{avk_stats['total_rows']} total rows")
 
-    print(f"\n[5/5] Building 11b_Material_aggregate sheet (GATE 5b)...")
+    print(f"\n[5/6] Building Material_audit sheet (dashboard)...")
+    _build_material_audit(wb, masters, sub_items, library,
+                          avk_stats=avk_stats)
+
+    print(f"\n[6/6] Building 11b_Material_aggregate sheet (GATE 5b)...")
     _build_sumarizace_aggregate(wb, masters, sub_items)
     print(f"      → placed after {SUMARIZACE_SHEET}")
+    # Re-place 11c after 11b (sumarizace_aggregate move may have shifted order)
+    if AGGREGATE_SHEET in wb.sheetnames and AVK_SHEET in wb.sheetnames:
+        agg_idx = wb.sheetnames.index(AGGREGATE_SHEET)
+        avk_idx = wb.sheetnames.index(AVK_SHEET)
+        wb.move_sheet(AVK_SHEET, offset=agg_idx + 1 - avk_idx)
 
     # Set Material_audit as active sheet (opens first)
     audit_idx = wb.sheetnames.index(AUDIT_SHEET)
