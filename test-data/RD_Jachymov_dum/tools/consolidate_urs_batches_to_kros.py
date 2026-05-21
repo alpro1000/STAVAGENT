@@ -57,12 +57,12 @@ ALIASES = {
     "kapitola":         ["source_kapitola", "Kapitola", "old_kapitola"],
     "subkapitola":      ["subkapitola", "old_subkapitola", "source_subkapitola"],
     "old_name":         ["old_name"],
-    "old_code":         ["old_urs_code", "old_code_navrh"],
+    "old_code":         ["old_urs_code", "old_code_navrh", "old_code"],
     "old_popis":        ["old_description", "old_popis"],
     "old_mj":           ["old_mj", "old_MJ"],
     "old_qty":          ["old_qty", "old_quantity", "old_mnozstvi"],
     "split_item":       ["split_item", "split_description"],
-    "query":            ["STAVAGENT_query", "stavegent_query"],
+    "query":            ["STAVAGENT_query", "stavegent_query", "stagagent_query"],
     "status":           ["status", "quality_status"],
     "note":             ["note", "status_note"],
 }
@@ -175,6 +175,126 @@ def normalize_status(s, c1_code: str | None) -> str:
         return "MATCH"
     # Otherwise treat as PARTIAL if candidates exist, else NO_MATCH
     return "PARTIAL" if c1_code else "NO_MATCH"
+
+
+# ── Dedup + collision detection ────────────────────────────────────────────
+def dedup_within_objekt(items: list[dict]) -> tuple[list[dict], dict]:
+    """Group items by (objekt, popis-normalized, MJ). Same popis+MJ → merge qty.
+
+    Returns (deduped_items, stats).
+    """
+    by_key: dict[tuple, list[dict]] = defaultdict(list)
+    for it in items:
+        popis_n = norm((it.get("split_item") or it.get("old_popis") or it.get("old_name") or ""))[:80]
+        mj_n = normalize_mj(it.get("old_mj"))
+        key = (it.get("objekt"), popis_n, mj_n)
+        by_key[key].append(it)
+    deduped = []
+    n_merged = 0
+    n_kept = 0
+    for key, group in by_key.items():
+        if len(group) == 1:
+            deduped.append(group[0])
+            n_kept += 1
+        else:
+            # Merge — keep first, sum qty, comment list
+            primary = group[0]
+            total_qty = sum(g.get("old_qty", 0) or 0 for g in group)
+            other_ids = [str(g.get("derived_item_id", "")) for g in group[1:]]
+            primary["old_qty"] = total_qty
+            primary["_merged_from"] = other_ids
+            primary["_merge_count"] = len(group)
+            existing_note = primary.get("note", "")
+            primary["note"] = (
+                f"[MERGED {len(group)} items: " + ", ".join(other_ids) + "] " +
+                existing_note
+            )
+            deduped.append(primary)
+            n_merged += len(group) - 1
+    return deduped, {"n_input": len(items), "n_output": len(deduped),
+                     "n_merged_eliminated": n_merged, "n_unique": n_kept}
+
+
+def detect_url_collisions(items: list[dict]) -> dict:
+    """Identify URS codes used by multiple items (potential category overlap)."""
+    by_code = defaultdict(list)
+    for it in items:
+        code = (it.get("selection", {}).get("selected_code") or "").strip()
+        if code:
+            by_code[code].append(it)
+    collisions = {code: lst for code, lst in by_code.items() if len(lst) > 1}
+    return collisions
+
+
+# ── items.json merge — pull items NOT in batches (audit v2 additions, etc.)
+def merge_items_json_only(derived: list[dict], items_json: list[dict]) -> list[dict]:
+    """Add items that exist in items.json but were not present in URS batches.
+
+    These are: 15 audit v2 added items (D06 demontáže + J12 fire-rated + R08
+    voda + parapety oplech + sanit per-fixture splits + výmalba per-podlaží).
+    Plus any items.json item whose popis doesn't match any derived item.
+    """
+    # Build lookup of derived popis tokens
+    derived_token_sets = []
+    for d in derived:
+        text = (d.get("split_item") or "") + " " + (d.get("old_popis") or "") + " " + (d.get("old_name") or "")
+        derived_token_sets.append(tokenize_czech(text))
+
+    out = list(derived)
+    n_added = 0
+    for it in items_json:
+        if it.get("status_flag") == "deprecated_audit_v2":
+            continue
+        # Build search tokens
+        popis = it.get("popis") or it.get("popis_was_fabricated") or ""
+        item_tok = tokenize_czech(popis)
+        if not item_tok or len(item_tok) < 3:
+            continue
+        # Check if matches any derived item (≥ 0.5 Jaccard)
+        matched = False
+        for d_tok in derived_token_sets:
+            if not d_tok:
+                continue
+            jaccard = len(item_tok & d_tok) / len(item_tok | d_tok)
+            if jaccard >= 0.5:
+                matched = True
+                break
+        if matched:
+            continue
+        # Not matched — add from items.json as separate derived item
+        urs_code = it.get("urs_code_proposed")
+        urs_status = it.get("urs_status", "needs_production_lookup")
+        new_d = {
+            "batch": "ITEMS_JSON_ONLY",
+            "source_row_id": it.get("id"),
+            "derived_item_id": it.get("id"),
+            "kapitola": it.get("kapitola") or "",
+            "subkapitola": it.get("subkapitola") or "",
+            "old_name": it.get("subkapitola") or "",
+            "old_code": urs_code or "",
+            "old_popis": popis,
+            "old_mj": it.get("mj") or "",
+            "old_qty": it.get("mnozstvi") or 0,
+            "split_item": popis,
+            "query": "",
+            "status_raw": urs_status,
+            "status": "MATCH" if urs_status == "matched_websearch_verified" else "PARTIAL" if urs_code else "NO_MATCH",
+            "note": it.get("urs_verification_note") or "",
+            "candidates": [
+                {"rank": 1, "code": urs_code or "", "description": popis,
+                 "unit": it.get("mj") or "", "confidence": it.get("urs_confidence") or 0.65,
+                 "source": "items_json_audit_v2"}
+            ] if urs_code else [],
+            "objekt": it.get("objekt", "260219_dum"),
+            "_objekt_routed_by": "items_json_source",
+            "_data_quality": it.get("_data_quality"),
+            "_audit_gap_fixed": it.get("_audit_gap_fixed"),
+            "_items_json_only": True,
+        }
+        out.append(new_d)
+        derived_token_sets.append(item_tok)
+        n_added += 1
+    return out, n_added
 
 
 # ── Multi-factor candidate scoring ────────────────────────────────────────
@@ -338,7 +458,14 @@ def parse_batch(path: Path) -> list[dict]:
 
 # ── Objekt assignment (dum vs sklad) — cross-ref to items.json ────────────
 def assign_objekt_to_items(items: list[dict], items_json: list[dict]) -> None:
-    """Match each derived item to items.json popis to infer dum vs sklad."""
+    """Match each derived item to items.json popis to infer dum vs sklad.
+
+    Priority order:
+      1. batch filename contains 'SKLAD' → force 260217_sklad (authoritative)
+      2. items.json popis match by 5-token Jaccard → use that objekt
+      3. kapitola or popis explicit 'sklad'/'parking' keyword → 260217_sklad
+      4. Default → 260219_dum
+    """
     # Build lookup: norm(popis_words first 5) → objekt
     popis_to_objekt = {}
     for it in items_json:
@@ -350,24 +477,35 @@ def assign_objekt_to_items(items: list[dict], items_json: list[dict]) -> None:
             if tokens:
                 key = " ".join(sorted(tokens)[:5])
                 popis_to_objekt[key] = it.get("objekt", "260219_dum")
-    # Match each derived item
+
     for d in items:
-        # Try direct kapitola check first — some batches have "(sklad)" or distinct sklad markers in old_name
-        kap_l = (d.get("kapitola") or "").lower() + " " + (d.get("old_name") or "").lower()
-        if "sklad" in kap_l:
+        # 1. Authoritative — batch filename contains SKLAD
+        batch_id = (d.get("batch") or "").upper()
+        if "SKLAD" in batch_id:
             d["objekt"] = "260217_sklad"
+            d["_objekt_routed_by"] = "batch_sklad_filename"
             continue
-        # Fallback to popis match
+        # 2. items.json popis match
         candidate_text = (d.get("old_popis") or "") + " " + (d.get("old_name") or "") + " " + (d.get("split_item") or "")
         tok = tokenize_czech(candidate_text)
-        if not tok:
-            d["objekt"] = "260219_dum"
+        key = " ".join(sorted(tok)[:5]) if tok else ""
+        json_match = popis_to_objekt.get(key)
+        if json_match:
+            d["objekt"] = json_match
+            d["_objekt_routed_by"] = "items_json_match"
             continue
-        key = " ".join(sorted(tok)[:5])
-        d["objekt"] = popis_to_objekt.get(key, "260219_dum")
-        # If still ambiguous, look for sklad / parking keywords in popis
-        if "sklad" in norm(candidate_text) or "parking" in norm(candidate_text):
+        # 3. Explicit keyword in kapitola or popis (but NOT 'kamenných zídek' false positives)
+        kap_lower = (d.get("kapitola") or "").lower()
+        text_norm = norm(candidate_text)
+        if ("sklad" in kap_lower or
+            (("objekt skladu" in text_norm or "podlahu skladu" in text_norm or "parking" in text_norm)
+             and "stavba" not in text_norm[:30])):
             d["objekt"] = "260217_sklad"
+            d["_objekt_routed_by"] = "kapitola_or_popis_kw"
+            continue
+        # 4. Default
+        d["objekt"] = "260219_dum"
+        d["_objekt_routed_by"] = "default_dum"
 
 
 # ── TKP family / section name mapping for KROS layout ─────────────────────
@@ -785,11 +923,12 @@ def write_urs_audit(wb: Workbook, items: list[dict]) -> None:
 
 
 def main() -> int:
-    # ── 1. Load batches ────────────────────────────────────────────────────
-    print(f"[1/4] Loading 15 batches from {BATCH_DIR.name}/...", file=sys.stderr)
+    # ── 1. Load batches (dum + sklad) ──────────────────────────────────────
+    print(f"[1/8] Loading batches from {BATCH_DIR.name}/...", file=sys.stderr)
     batch_files = sorted(BATCH_DIR.glob("URS_STAVAGENT_batch_*.xlsx"))
-    if len(batch_files) != 15:
-        print(f"WARN: expected 15 batches, found {len(batch_files)}", file=sys.stderr)
+    sklad_files = sorted(BATCH_DIR.glob("URS_STAVAGENT_SKLAD_batch_*.xlsx"))
+    batch_files.extend(sklad_files)
+    print(f"  dum batches: {len(batch_files) - len(sklad_files)}, sklad batches: {len(sklad_files)}", file=sys.stderr)
     all_items = []
     for bf in batch_files:
         items = parse_batch(bf)
@@ -797,15 +936,28 @@ def main() -> int:
         print(f"  {bf.name}: {len(items)} derived items", file=sys.stderr)
     print(f"  TOTAL: {len(all_items)} derived items", file=sys.stderr)
 
-    # ── 2. Assign objekt (dum vs sklad) via items.json cross-ref ───────────
-    print(f"[2/4] Assigning objekt (dum vs sklad)...", file=sys.stderr)
+    # ── 2. Assign objekt (dum vs sklad) via SKLAD-filename + items.json ────
+    print(f"[2/8] Assigning objekt (dum vs sklad)...", file=sys.stderr)
     items_json = json.loads(ITEMS_JSON.read_text())["items"]
     assign_objekt_to_items(all_items, items_json)
     objekt_dist = Counter(it.get("objekt") for it in all_items)
+    routing_dist = Counter(it.get("_objekt_routed_by") for it in all_items)
     print(f"  Distribution: {dict(objekt_dist)}", file=sys.stderr)
+    print(f"  Routed by: {dict(routing_dist)}", file=sys.stderr)
 
-    # ── 3. Multi-factor candidate selection ────────────────────────────────
-    print(f"[3/4] Multi-factor candidate scoring...", file=sys.stderr)
+    # ── 3. Merge items.json-only items (audit v2 adds not in batches) ──────
+    print(f"[3/8] Merging items.json-only entries (audit v2 adds)...", file=sys.stderr)
+    all_items, n_merged = merge_items_json_only(all_items, items_json)
+    print(f"  Added {n_merged} items from items.json (no batch coverage)", file=sys.stderr)
+
+    # ── 4. Dedup within objekt ──────────────────────────────────────────────
+    print(f"[4/8] Deduplication within objekt...", file=sys.stderr)
+    all_items, dedup_stats = dedup_within_objekt(all_items)
+    print(f"  Dedup: {dedup_stats['n_input']} → {dedup_stats['n_output']} "
+          f"({dedup_stats['n_merged_eliminated']} merged)", file=sys.stderr)
+
+    # ── 5. Multi-factor candidate selection ────────────────────────────────
+    print(f"[5/8] Multi-factor candidate scoring...", file=sys.stderr)
     for it in all_items:
         it["selection"] = select_best(it)
     sel_dist = Counter(it["selection"]["selection_reason"].split(" ")[0] for it in all_items)
@@ -813,10 +965,28 @@ def main() -> int:
     review_count = sum(1 for it in all_items if it["selection"]["needs_review"])
     print(f"  Needing review: {review_count}", file=sys.stderr)
 
-    # ── 4. Generate KROS Excel ─────────────────────────────────────────────
-    print(f"[4/4] Writing KROS-format Excel...", file=sys.stderr)
+    # ── 6. URS code collision detection ────────────────────────────────────
+    print(f"[6/8] URS code collision check...", file=sys.stderr)
+    collisions = detect_url_collisions(all_items)
+    print(f"  Codes used by ≥2 items: {len(collisions)}", file=sys.stderr)
+    if collisions:
+        for code, lst in list(collisions.items())[:5]:
+            ids = [str(it.get("derived_item_id", "")) for it in lst]
+            print(f"    {code}: {len(lst)} items → {ids[:5]}", file=sys.stderr)
+    # Annotate items s collision
+    for code, lst in collisions.items():
+        for it in lst:
+            it["_url_collision"] = {"code": code, "n_items_sharing": len(lst),
+                                     "other_ids": [str(o.get("derived_item_id", "")) for o in lst]}
+
+    # ── 7. Final routing report + 8. Generate KROS Excel ───────────────────
+    print(f"[7/8] Final SO routing snapshot...", file=sys.stderr)
     dum_items = [it for it in all_items if it.get("objekt") == "260219_dum"]
     sklad_items = [it for it in all_items if it.get("objekt") == "260217_sklad"]
+    print(f"  SO 260219 Dum: {len(dum_items)} items", file=sys.stderr)
+    print(f"  SO 260217 Sklad+parking: {len(sklad_items)} items", file=sys.stderr)
+
+    print(f"[8/8] Writing KROS-format Excel...", file=sys.stderr)
 
     wb = Workbook()
     default = wb.active
