@@ -1,7 +1,22 @@
 # HK212 Session Handoff — 2026-05-22 (Step 3 polygonization + areas)
 
-Branch: `claude/hk212-step3-polygonization-areas`
-Status: **shipped + pushed**; parallel to `claude/hk212-dilenska-ok-ut-dps-integration` (NOT touched per user lock).
+Branch: `claude/hk212-dilenska-ok-ut-dps-integration` (Step 3 merged in via no-ff at commit `43f7ba19`)
+Status: **shipped + pushed + merged**. Step 3 branch `claude/hk212-step3-polygonization-areas` preserved on remote with 3 atomic commits (debug story).
+
+## Full session arc — 2026-05-22 commits on dilenska branch
+
+```
+43f7ba19  Merge step3 → dilenska (no-ff, preserves debug story)
+├── 5bdfa22e  step3: slope disambiguation (5.65°=vrata) + kapitola audit (P0 Kingspan missing)
+├── 0065cae9  step3: handoff doc + acceptance scorecard
+└── d1bbde80  step3: polygonization + 9 metrics + items_with_geometry.json
+0b22136f  stage-d: 22 items dropped + HSV-3 _length_source + 4 ABMV closures
+75221920  task2 step 2: full geometry extraction
+a74c8ed2  task2 step 1.5: A-GENM dossier + dictionary ratification
+5064753f  task2 step 1: layer dictionary auto-detect (100% coverage)
+b23fff07  rename: dilenska→dsp_dxf housekeeping
+2a6c9034  stage A/B/C: B5 catalog + UT discovery (prior session)
+```
 
 ## What's new vs prior handoff
 
@@ -85,9 +100,26 @@ Status: **shipped + pushed**; parallel to `claude/hk212-dilenska-ok-ut-dps-integ
 
 ## Where it goes from here
 
-- **Merge step3-polygonization branch → dilenska branch?** Cherry-pick or merge-commit — your choice.
-- **Apply HSV-3 mass reconciliation** using step3 perimeter (103.5 m) × cross-section to refine foundation kg/m³.
-- **Use 538.5 m² zastavěná in HSV-1 výkop figura** (currently 222.75 m³ from formula 495 m² × 0.45 m → updates to 538.5 m² × 0.45 m ≈ 242 m³, but defer to user review since 495 came from RE-RUN §3.10).
+### Immediate blocker (P0 — must resolve before Stage E)
+
+🚨 **Kingspan/sendvičové opláštění chybí entirely in items.json.** Audit doc `outputs/phase_1_etap1/kapitola_coverage_audit.md` defines 8 návrh PSV-OPL-001..008 položek with quantities derived from Step 3 metrics:
+- střecha 558.8 m² × ~1500 Kč/m² ≈ 837 tis CZK
+- fasáda 537 m² × ~1500 Kč/m² ≈ 805 tis CZK
+- + kotvící prvky + lemy + dilatace + doprava + statika
+- ≈ 2.0–2.5 mil CZK = 30–40 % typického bid value
+
+TZ explicitly mentions Kingspan (ABMV_13 = `closed_fabricated`), HSV-9-004 mentions "lešení pro montáž opláštění (Kingspan)" — but actual položky were lost between TZ parse and Phase 1 etap1 composition. Stage E benchmark vs example_vv corpus = meaningless until this resolved.
+
+### After P0 resolved
+
+- **Stage E** — benchmark proti example_vv corpus (7 výkazů + 6 PDF výkresů). Options (a) schema-only, (b) coverage, (c) full fuzzy — recommended (b).
+- **HSV-3 mass reconciliation** — use Step 3 perimeter 103.5 m × foundation cross-section to refine kg/m³ vs statika-sourced 10263 kg IPE 400.
+- **HSV-1 výkop figura** — currently 222.75 m³ from RE-RUN §3.10 formula `495 m² × 0.45 m`. Step 3 says zastavěná = 538.5 m². Either update HSV-1-001 → 538.5 × 0.45 ≈ 242 m³, OR keep RE-RUN value + add ABMV pro 538 vs 495 reconciliation. Defer to user.
+
+### Bonus follow-ups (separate tasks)
+- `dedup_dxf_replicas.py` standalone util — currently inlined in step3
+- shapely.polygonize() per-room floor breakdown — partially deferred (total = footprint fallback)
+- Block-name pseudo-schedule parser — separate task
 
 ## File map (this session adds)
 ```
