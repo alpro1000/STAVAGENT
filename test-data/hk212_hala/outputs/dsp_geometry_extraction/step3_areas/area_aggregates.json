@@ -38,10 +38,10 @@
     "confidence": 0.85
   },
   "fasada_netto": {
-    "value_m2": 536.4,
-    "source": "brutto − otvory plocha (windows 30 + vrata 4 + dveře 4)",
+    "value_m2": 528.5,
+    "source": "brutto − otvory plocha (windows 30 + vrata 4 + dveře 4) — vrata 3.5×4.0 per TZ ARS DPZ D.1.1 p4 (ABMV_2 resolved 2026-05-22)",
     "confidence": 0.85,
-    "otvory_plocha_m2": 86.8,
+    "otvory_plocha_m2": 94.8,
     "otvory_breakdown": {
       "windows": {
         "count_distinct_physical_est": 30,
@@ -53,7 +53,7 @@
       "vrata_sekcni": {
         "count": 4,
         "size_m": [
-          3.0,
+          3.5,
           4.0
         ]
       },
@@ -64,6 +64,15 @@
           2.1
         ]
       }
+    },
+    "_f1_propagated": true,
+    "_f1_propagation_date": "2026-05-22T07:25:36.029578+00:00",
+    "_f1_history": {
+      "old_otvory_m2": 86.8,
+      "old_netto_m2": 536.4,
+      "delta_otvory_m2": 8.02,
+      "delta_netto_m2": -7.92,
+      "reason": "ABMV_2 closed 2026-05-22 — vrata 3.0×4.0 (DXF block) → 3.5×4.0 (TZ ARS); Step 3 propagation missed last session"
     }
   },
   "vyska_budovy": {

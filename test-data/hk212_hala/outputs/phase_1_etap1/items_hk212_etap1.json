@@ -187,7 +187,8 @@
         "step_D_ABMV_17_closed": true,
         "step_E_geotechnical_summary_added": true
       }
-    }
+    },
+    "fix_f1_applied": "2026-05-22T07:25:36.029578+00:00"
   },
   "items": [
     {
@@ -8203,8 +8204,8 @@
       "SO": "SO-01",
       "popis": "Dodávka Kingspan KS1000 AWP obvodový sendvičový panel tl. 200 mm (alt. 150 mm), výplň MW (minerální vata), EW 15 DP1, RAL bílá + modrá — dle TZ ARS DPZ D.1.1",
       "mj": "m²",
-      "mnozstvi": 536.4,
-      "_qty_formula": "fasáda netto Step3: obvod 103.5 m × výška 6.02 m − otvory 86.8 m²",
+      "mnozstvi": 528.5,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
       "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
       "raw_description": "Kingspan obvodový panel tl. 200 mm MW bílá+modrá",
       "confidence": 0.9,
@@ -8223,12 +8224,12 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "obvodové opláštění Kingspan — TZ ARS DPZ D.1.1 kap. B + statika D.1.2",
-        "formula": "fasáda netto Step3: obvod 103.5 m × výška 6.02 m − otvory 86.8 m²",
+        "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
         "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
             "label": "fasada_netto_m2",
-            "value": 536.4,
+            "value": 528.5,
             "unit": "m²"
           },
           {
@@ -8238,8 +8239,13 @@
           },
           {
             "label": "otvory_m2",
-            "value": 86.8,
+            "value": 94.82,
             "unit": "m²"
+          },
+          {
+            "label": "vrata_size_m",
+            "value": "3.5 × 4.0",
+            "unit": ""
           }
         ],
         "reference": [
@@ -8252,11 +8258,16 @@
             "type": "step3_metric",
             "metric": "fasada_netto",
             "value": 536.4
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_2",
+            "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
           }
         ],
-        "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m².",
-        "computed_quantity": 536.4,
-        "declared_quantity": 536.4,
+        "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated.",
+        "computed_quantity": 528.5,
+        "declared_quantity": 528.5,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.9,
@@ -8271,8 +8282,8 @@
       "SO": "SO-01",
       "popis": "Montáž obvodového opláštění Kingspan — samořezné šrouby + EPDM těsnicí podložka, kotvení k ocelové konstrukci — dle TZ ARS DPZ D.1.1",
       "mj": "m²",
-      "mnozstvi": 536.4,
-      "_qty_formula": "fasáda netto Step3 = 536.4 m² (shodné s PSV-OPL-001)",
+      "mnozstvi": 528.5,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
       "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
       "raw_description": "montáž Kingspan obvodového opláštění samořezné šrouby EPDM",
       "confidence": 0.9,
@@ -8289,13 +8300,28 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "montáž obvodové opláštění Kingspan — TZ ARS DPZ D.1.1",
-        "formula": "fasáda netto Step3 = 536.4 m²",
+        "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
         "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
             "label": "fasada_netto_m2",
-            "value": 536.4,
+            "value": 528.5,
             "unit": "m²"
+          },
+          {
+            "label": "fasada_brutto_m2",
+            "value": 623.3,
+            "unit": "m²"
+          },
+          {
+            "label": "otvory_m2",
+            "value": 94.82,
+            "unit": "m²"
+          },
+          {
+            "label": "vrata_size_m",
+            "value": "3.5 × 4.0",
+            "unit": ""
           }
         ],
         "reference": [
@@ -8303,11 +8329,16 @@
             "type": "tz_section",
             "section": "D.1.1",
             "raw": "TZ ARS DPZ D.1.1"
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_2",
+            "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
           }
         ],
-        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m².",
-        "computed_quantity": 536.4,
-        "declared_quantity": 536.4,
+        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated.",
+        "computed_quantity": 528.5,
+        "declared_quantity": 528.5,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.9,

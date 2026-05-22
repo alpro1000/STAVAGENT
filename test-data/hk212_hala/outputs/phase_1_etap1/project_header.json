@@ -8,10 +8,12 @@
     "strecha_brutto_m2": 556.5,
     "strecha_netto_m2": 558.8,
     "fasada_brutto_m2": 623.3,
-    "fasada_netto_m2": 536.4,
+    "fasada_netto_m2": 528.5,
     "podlaha_total_m2": 538.5,
     "objem_vykopu_m3": 99.3,
-    "_source": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json"
+    "_source": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+    "_f1_propagated": true,
+    "_f1_note": "fasada_netto recompute 536.4 → 528.5 per ABMV_2 closure (vrata 3.5×4.0)"
   },
   "geotechnical_summary": {
     "_igp_source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda",
