@@ -1,0 +1,2585 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-22T04:11:42.898330+00:00",
+    "files_processed": 8,
+    "active_categories": 29,
+    "dictionary_source": "layer_dictionary_ratified.json",
+    "drops_applied": [
+      "0",
+      "NETISK"
+    ]
+  },
+  "by_category": {
+    "dimensions": {
+      "entity_count": 1637,
+      "entity_types": {
+        "DIMENSION": 781,
+        "INSERT": 84,
+        "MTEXT": 208,
+        "LINE": 392,
+        "CIRCLE": 86,
+        "HATCH": 86
+      },
+      "total_length_units": 385571.179,
+      "total_area_units2": 1519745.446,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Výškové kóty - Výšková kóta - Základová-780896-1NP": 1,
+        "Výškové kóty - Výšková kóta - Základová-780896-3NP": 2,
+        "Výškové kóty - Horní-314756-Řez 2": 2,
+        "Výškové kóty - Horní-314756-Řez 3": 2,
+        "Výškové kóty - Horní-314756-Řez 4": 3,
+        "Výškové kóty - Horní-314756-Řez 5": 3,
+        "Výškové kóty - Výšková kóta - Základová-780896-základy": 32,
+        "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje": 1,
+        "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP": 5,
+        "Výškové kóty - Horní-314756-A-VYKOP": 8,
+        "Výškové kóty - Dolní-314757-A-VYKOP": 2,
+        "Výškové kóty - Horní-314756-C_VYKOP": 7,
+        "Výškové kóty - Dolní-314757-C_VYKOP": 6,
+        "Výškové kóty - Dolní-314757-B_VYKOP": 3,
+        "Výškové kóty - Horní-314756-B_VYKOP": 6
+      },
+      "n_sheets_seen": 8,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf",
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "G-ANNO-DIMS",
+          "pos": [
+            190279.41,
+            138709.98
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "G-ANNO-DIMS-1",
+          "pos": [
+            190400.87,
+            139073.21
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "G-ANNO-DIMS-1",
+          "pos": [
+            184474.48,
+            154117.47
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "G-ANNO-DIMS-1",
+          "pos": [
+            184923.08,
+            154458.73
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "G-ANNO-DIMS-1",
+          "pos": [
+            193312.47,
+            154078.74
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "G-ANNO-DIMS-1",
+          "pos": [
+            193761.06,
+            154420.01
+          ]
+        }
+      ]
+    },
+    "annotation": {
+      "entity_count": 1249,
+      "entity_types": {
+        "LINE": 335,
+        "INSERT": 80,
+        "MTEXT": 182,
+        "TEXT": 495,
+        "LWPOLYLINE": 32,
+        "LEADER": 124,
+        "CIRCLE": 1
+      },
+      "total_length_units": 5019013.074,
+      "total_area_units2": 36460486167.088,
+      "closed_loop_count": 18,
+      "block_inserts": {
+        "Řez - Velká značka-308779-1NP": 4,
+        "Family - ___-887816-1NP": 1,
+        "Popisek revize - Popisek revize-490849-1NP": 1,
+        "Řez - Velká značka-308779-3NP": 4,
+        "Family - ___-894245-3NP": 1,
+        "Popiska materiálu - Popis-329410-Řez 2": 5,
+        "Popiska materiálu - Popis-329410-Řez 3": 8,
+        "Popiska materiálu - Popis-329410-Řez 4": 6,
+        "Popiska materiálu - Popis-329410-Řez 5": 5,
+        "Řez - Velká značka-308779-základy": 10,
+        "Řez - Velká značka-308779-1NP _ stroje": 4,
+        "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY": 4,
+        "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP": 18,
+        "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP": 3,
+        "Řez - Velká značka-308779-VÝKOP": 6
+      },
+      "n_sheets_seen": 8,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf",
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "G-ANNO-SYMB-1",
+          "pos": [
+            201000.14,
+            128432.74
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "G-ANNO-SYMB-1",
+          "pos": [
+            180321.5,
+            128432.74
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "G-ANNO-SYMB",
+          "pos": [
+            -202125.13,
+            128432.74
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "G-ANNO-SYMB-2",
+          "pos": [
+            200972.43,
+            129419.5
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "G-ANNO-SYMB",
+          "pos": [
+            179122.71,
+            128432.74
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "G-ANNO-SYMB-2",
+          "pos": [
+            179761.95,
+            129419.5
+          ]
+        }
+      ]
+    },
+    "walls": {
+      "entity_count": 992,
+      "entity_types": {
+        "LINE": 860,
+        "HATCH": 132
+      },
+      "total_length_units": 2067806.427,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 5,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-WALL-1",
+          "pos": [
+            200158.19,
+            147562.89
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-WALL-1",
+          "pos": [
+            200148.19,
+            148135.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-WALL-1",
+          "pos": [
+            200008.19,
+            148135.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-WALL-1",
+          "pos": [
+            199958.19,
+            147607.89
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-WALL-1",
+          "pos": [
+            200158.19,
+            152334.79
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-WALL-1",
+          "pos": [
+            199958.19,
+            153181.69
+          ]
+        }
+      ]
+    },
+    "gutters_downpipes": {
+      "entity_count": 983,
+      "entity_types": {
+        "ARC": 272,
+        "LINE": 373,
+        "SPLINE": 251,
+        "INSERT": 20,
+        "HATCH": 38,
+        "LWPOLYLINE": 17,
+        "ELLIPSE": 12
+      },
+      "total_length_units": 33231.894,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy": 1,
+        "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-základy": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP": 1,
+        "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP": 1
+      },
+      "n_sheets_seen": 6,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "ARC",
+          "layer": "A-GENM-1",
+          "pos": [
+            200197.5,
+            126029.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "ARC",
+          "layer": "A-GENM-1",
+          "pos": [
+            200197.5,
+            126029.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "ARC",
+          "layer": "A-GENM-1",
+          "pos": [
+            200197.5,
+            126029.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "ARC",
+          "layer": "A-GENM-1",
+          "pos": [
+            200197.5,
+            126029.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "ARC",
+          "layer": "A-GENM-1",
+          "pos": [
+            200197.58,
+            126029.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "ARC",
+          "layer": "A-GENM-1",
+          "pos": [
+            200246.72,
+            126049.47
+          ]
+        }
+      ]
+    },
+    "linework_thin_detail": {
+      "entity_count": 762,
+      "entity_types": {
+        "LINE": 658,
+        "INSERT": 1,
+        "ARC": 15,
+        "LWPOLYLINE": 88
+      },
+      "total_length_units": 1620492.59,
+      "total_area_units2": 578615550.0,
+      "closed_loop_count": 20,
+      "block_inserts": {
+        "A$C0FAB22CB": 1
+      },
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TENKA",
+          "pos": [
+            30499.64,
+            32800.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TENKA",
+          "pos": [
+            30299.64,
+            32800.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TENKA",
+          "pos": [
+            23498.82,
+            32500.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TENKA",
+          "pos": [
+            25998.0,
+            32500.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TENKA",
+          "pos": [
+            35299.64,
+            33100.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TENKA",
+          "pos": [
+            27998.0,
+            32500.0
+          ]
+        }
+      ]
+    },
+    "axis_grid": {
+      "entity_count": 687,
+      "entity_types": {
+        "INSERT": 144,
+        "MTEXT": 144,
+        "LINE": 157,
+        "TEXT": 121,
+        "CIRCLE": 121
+      },
+      "total_length_units": 3725892.48,
+      "total_area_units2": 34211943.998,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Osnova - 6mm-307864-1NP": 24,
+        "Osnova - 6mm-307864-3NP": 24,
+        "Osnova - 6mm-307864-základy": 24,
+        "Osnova - 6mm-307864-1NP _ stroje": 24,
+        "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY": 24,
+        "Osnova - 6mm-307864-VÝKOP": 24
+      },
+      "n_sheets_seen": 7,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf",
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-GRID-IDEN",
+          "pos": [
+            181218.19,
+            158968.27
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "S-GRID-IDEN-1",
+          "pos": [
+            180965.33,
+            159342.85
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-GRID-IDEN",
+          "pos": [
+            181218.19,
+            119750.82
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "S-GRID-IDEN-1",
+          "pos": [
+            180965.33,
+            120125.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "S-GRID-1",
+          "pos": [
+            181218.19,
+            139359.55
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-GRID-IDEN",
+          "pos": [
+            183988.19,
+            158968.27
+          ]
+        }
+      ]
+    },
+    "annotation_detail": {
+      "entity_count": 595,
+      "entity_types": {
+        "LINE": 579,
+        "INSERT": 16
+      },
+      "total_length_units": 1825319.467,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "IPE - IPE180-485023-3NP": 1,
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-3NP": 1,
+        "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-3NP": 3,
+        "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-3NP": 3,
+        "Rampa - Rampa-818641-3NP": 1,
+        "Rampa - Rampa-819336-3NP": 1,
+        "Rampa - Rampa-823350-3NP": 1,
+        "Rampa - Rampa-823366-3NP": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-3NP": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V1-3NP": 1,
+        "IPE - IPE180-485027-3NP": 1,
+        "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-1NP _ stroje": 1
+      },
+      "n_sheets_seen": 7,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-DETL-MBND",
+          "pos": [
+            198890.69,
+            154026.78
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-DETL-MBND",
+          "pos": [
+            198890.69,
+            153876.78
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-DETL-MBND",
+          "pos": [
+            200635.69,
+            153404.07
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-DETL-MBND",
+          "pos": [
+            200785.69,
+            153479.07
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-DETL-MBND",
+          "pos": [
+            198895.69,
+            124914.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-DETL-MBND",
+          "pos": [
+            198895.69,
+            124764.39
+          ]
+        }
+      ]
+    },
+    "linework_thick_outline": {
+      "entity_count": 383,
+      "entity_types": {
+        "LINE": 184,
+        "TEXT": 44,
+        "CIRCLE": 7,
+        "LWPOLYLINE": 148
+      },
+      "total_length_units": 1451524.146,
+      "total_area_units2": 1033216626.599,
+      "closed_loop_count": 4,
+      "block_inserts": {},
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TLUSTE",
+          "pos": [
+            20999.64,
+            32300.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TLUSTE",
+          "pos": [
+            20999.64,
+            32800.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "TEXT",
+          "layer": "TLUSTE",
+          "pos": [
+            31860.17,
+            32314.32
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TLUSTE",
+          "pos": [
+            31249.64,
+            32200.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TLUSTE",
+          "pos": [
+            31249.64,
+            33400.0
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TLUSTE",
+          "pos": [
+            39999.64,
+            32800.0
+          ]
+        }
+      ]
+    },
+    "foundation": {
+      "entity_count": 349,
+      "entity_types": {
+        "LINE": 349
+      },
+      "total_length_units": 201988.868,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 2,
+      "sheets_seen": [
+        "A105_zaklady.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A105_zaklady.dxf",
+          "type": "LINE",
+          "layer": "S-FNDN",
+          "pos": [
+            180915.53,
+            146365.39
+          ]
+        },
+        {
+          "file": "A105_zaklady.dxf",
+          "type": "LINE",
+          "layer": "S-FNDN",
+          "pos": [
+            181654.44,
+            146365.39
+          ]
+        },
+        {
+          "file": "A105_zaklady.dxf",
+          "type": "LINE",
+          "layer": "S-FNDN",
+          "pos": [
+            181843.19,
+            146990.39
+          ]
+        },
+        {
+          "file": "A105_zaklady.dxf",
+          "type": "LINE",
+          "layer": "S-FNDN",
+          "pos": [
+            181654.44,
+            147615.39
+          ]
+        },
+        {
+          "file": "A105_zaklady.dxf",
+          "type": "LINE",
+          "layer": "S-FNDN",
+          "pos": [
+            180915.53,
+            147615.39
+          ]
+        },
+        {
+          "file": "A105_zaklady.dxf",
+          "type": "LINE",
+          "layer": "S-FNDN",
+          "pos": [
+            199133.19,
+            146990.39
+          ]
+        }
+      ]
+    },
+    "topography_situace": {
+      "entity_count": 322,
+      "entity_types": {
+        "INSERT": 4,
+        "LINE": 228,
+        "SPLINE": 9,
+        "LWPOLYLINE": 78,
+        "HATCH": 3
+      },
+      "total_length_units": 969112.067,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "HK_TEREN_SESAZENI_dwg-918098-Řez 2": 1,
+        "HK_TEREN_SESAZENI_dwg-918098-Řez 3": 1,
+        "HK_TEREN_SESAZENI_dwg-918098-Řez 4": 1,
+        "HK_TEREN_SESAZENI_dwg-918098-Řez 5": 1
+      },
+      "n_sheets_seen": 2,
+      "sheets_seen": [
+        "A104_pohledy.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "HK_TEREN_SESAZENI_dwg-1",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "HK_TEREN_SESAZENI_dwg-1",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "HK_TEREN_SESAZENI_dwg-1",
+          "pos": [
+            115455.99,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "HK_TEREN_SESAZENI_dwg-1",
+          "pos": [
+            -240214.2,
+            0.0
+          ]
+        },
+        {
+          "file": "A201_vykopy.dxf",
+          "type": "LINE",
+          "layer": "C-TOPO-MAJR",
+          "pos": [
+            194790.06,
+            157100.86
+          ]
+        },
+        {
+          "file": "A201_vykopy.dxf",
+          "type": "LINE",
+          "layer": "C-TOPO-MAJR",
+          "pos": [
+            201389.93,
+            158680.77
+          ]
+        }
+      ]
+    },
+    "hatch_fill": {
+      "entity_count": 268,
+      "entity_types": {
+        "HATCH": 108,
+        "LINE": 131,
+        "CIRCLE": 29
+      },
+      "total_length_units": 1067427.893,
+      "total_area_units2": 227765.467,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 6,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "SRAFY",
+          "pos": [
+            49945.5,
+            40224.22
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "SRAFY",
+          "pos": [
+            158650.0,
+            23685.18
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "SRAFY",
+          "pos": [
+            158650.0,
+            22685.18
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "SRAFY",
+          "pos": [
+            158650.0,
+            21685.18
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "SRAFY",
+          "pos": [
+            158650.0,
+            20685.18
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "SRAFY",
+          "pos": [
+            158650.0,
+            19685.18
+          ]
+        }
+      ]
+    },
+    "floor": {
+      "entity_count": 266,
+      "entity_types": {
+        "LINE": 246,
+        "HATCH": 10,
+        "INSERT": 10
+      },
+      "total_length_units": 597635.289,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Rampa - Rampa-819336-Řez 2": 1,
+        "Rampa - Rampa-823350-Řez 2": 1,
+        "Rampa - Rampa-823366-Řez 2": 1,
+        "Rampa - Rampa-818641-Řez 3": 1,
+        "Rampa - Rampa-819336-Řez 3": 1,
+        "Rampa - Rampa-823350-Řez 3": 1,
+        "Rampa - Rampa-823350-Řez 4": 1,
+        "Rampa - Rampa-823366-Řez 4": 1,
+        "Rampa - Rampa-818641-Řez 5": 1,
+        "Rampa - Rampa-819336-Řez 5": 1
+      },
+      "n_sheets_seen": 5,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-FLOR",
+          "pos": [
+            185984.79,
+            125829.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-FLOR",
+          "pos": [
+            194985.69,
+            125829.01
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-FLOR",
+          "pos": [
+            199608.19,
+            151710.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-FLOR",
+          "pos": [
+            194995.69,
+            152931.37
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-FLOR",
+          "pos": [
+            186001.94,
+            152931.37
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "LINE",
+          "layer": "A-FLOR",
+          "pos": [
+            181391.94,
+            152931.37
+          ]
+        }
+      ]
+    },
+    "steel_profile_generic": {
+      "entity_count": 169,
+      "entity_types": {
+        "INSERT": 137,
+        "LWPOLYLINE": 32
+      },
+      "total_length_units": 14200.155,
+      "total_area_units2": 425648.0,
+      "closed_loop_count": 32,
+      "block_inserts": {
+        "JEKL100": 3,
+        "L50": 3,
+        "JAKL60": 18,
+        "JEKL60": 6,
+        "HEA100": 1,
+        "HEA120": 1,
+        "HEA140": 1,
+        "HEA160": 1,
+        "HEA180": 1,
+        "HEA200": 1,
+        "HEA220": 1,
+        "HEA240": 1,
+        "HEA260": 1,
+        "HEA280": 1,
+        "HEA300": 1,
+        "HEA320": 1,
+        "HEA340": 1,
+        "HEA360": 1,
+        "HEA400": 1,
+        "ipe600": 1,
+        "hea450": 1,
+        "heb500": 1,
+        "heb120": 1,
+        "heb140": 1,
+        "heb160": 1,
+        "heb180": 1,
+        "heb200": 1,
+        "heb220": 1,
+        "heb240": 1,
+        "heb260": 1,
+        "heb280": 1,
+        "heb300": 1,
+        "heb320": 1,
+        "heb340": 1,
+        "heb360": 1,
+        "heb400": 1,
+        "heb450": 1,
+        "hea500": 1,
+        "IPE300": 1,
+        "IPE270": 9,
+        "IPE330": 1,
+        "IPE240": 1,
+        "IPE220": 1,
+        "IPE200": 1,
+        "IPE180": 1,
+        "IPE160": 1,
+        "IPE360": 1,
+        "IPE400": 2,
+        "IPE450": 17,
+        "ipe500": 1,
+        "IPE550": 1,
+        "U40": 1,
+        "U60": 1,
+        "U80": 1,
+        "U100": 1,
+        "U120": 1,
+        "U140": 1,
+        "U160": 1,
+        "U180": 1,
+        "U200": 1,
+        "U220": 1,
+        "U240": 1,
+        "U260": 1,
+        "U280": 1,
+        "U300": 1,
+        "HEB100": 1,
+        "IPN80": 1,
+        "IPN100": 1,
+        "IPN120": 1,
+        "IPN140": 1,
+        "IPN160": 1,
+        "IPN180": 1,
+        "IPN200": 1,
+        "IPN220": 1,
+        "IPN240": 1,
+        "IPN260": 1,
+        "IPN280": 1,
+        "IPN300": 1,
+        "IPN320": 1,
+        "IPN340": 1,
+        "IPN360": 1,
+        "IPN380": 1,
+        "IPN400": 1,
+        "IPN450": 1,
+        "hea600": 1,
+        "hea550": 1
+      },
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "PROFILY",
+          "pos": [
+            45741.54,
+            33482.37
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "PROFILY",
+          "pos": [
+            46101.62,
+            33488.03
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "PROFILY",
+          "pos": [
+            45448.79,
+            33491.61
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "PROFILY",
+          "pos": [
+            47270.93,
+            46132.08
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "PROFILY",
+          "pos": [
+            48370.93,
+            46132.08
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "PROFILY",
+          "pos": [
+            45523.73,
+            36060.65
+          ]
+        }
+      ]
+    },
+    "windows": {
+      "entity_count": 147,
+      "entity_types": {
+        "INSERT": 147
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "OKNO_1k - Okno Hala 1000x1000-586513-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V1-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V2-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V3-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V4-1NP": 3,
+        "OKNO_1k - Okno Hala 1000x1000-V5-1NP": 3,
+        "OKNO_1k - Okno Hala 1000x1000-V6-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V8-1NP": 7,
+        "OKNO_1k - Okno Hala 1000x1000-V9-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V10-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V11-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V12-1NP": 3,
+        "OKNO_1k - Okno Hala 1000x1000-V13-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V14-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V15-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V16-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V17-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V18-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V19-1NP": 2,
+        "OKNO_1k - Okno Hala 1000x1000-V20-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-796436-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V21-1NP": 1,
+        "OKNO_1k - Okno Hala 1000x1000-586513-Řez 2": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2": 4,
+        "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2": 10,
+        "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2": 3,
+        "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3": 9,
+        "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3": 3,
+        "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3": 3,
+        "OKNO_1k - Okno Hala 1000x1000-796436-Řez 3": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V21-Řez 3": 1,
+        "OKNO_1k - Okno Hala 1000x1000-796436-Řez 4": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V27-Řez 4": 1,
+        "OKNO_1k - Okno Hala 1000x1000-586513-Řez 5": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V39-Řez 5": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V41-Řez 5": 1,
+        "OKNO_1k - Okno Hala 1000x1000-796436-Řez 5": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V44-Řez 5": 1,
+        "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje": 33,
+        "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje": 2,
+        "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V1-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V2-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V3-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY": 6,
+        "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY": 5,
+        "OKNO_1k - Okno Hala 1000x1000-V6-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY": 7,
+        "OKNO_1k - Okno Hala 1000x1000-V9-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V10-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V11-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V12-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V13-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V14-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V15-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V16-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V17-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V18-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "OKNO_1k - Okno Hala 1000x1000-V19-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 4,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-GLAZ",
+          "pos": [
+            180942.18,
+            129075.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-GLAZ",
+          "pos": [
+            180942.18,
+            131075.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-GLAZ",
+          "pos": [
+            180915.69,
+            133845.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-GLAZ",
+          "pos": [
+            180915.69,
+            135845.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-GLAZ",
+          "pos": [
+            180915.69,
+            136845.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-GLAZ",
+          "pos": [
+            180915.69,
+            132845.39
+          ]
+        }
+      ]
+    },
+    "structural_columns": {
+      "entity_count": 141,
+      "entity_types": {
+        "INSERT": 141
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Sloup IPE - 374558-1NP": 1,
+        "M_S profily_ sloup - 374564-1NP": 1,
+        "M_S profily_ sloup - 374570-1NP": 1,
+        "M_S profily_ sloup - 374571-1NP": 1,
+        "M_S profily_ sloup - 374572-1NP": 1,
+        "Sloup IPE - 374573-1NP": 1,
+        "Sloup IPE - 387892-1NP": 1,
+        "Sloup IPE - 387893-1NP": 1,
+        "Sloup IPE - 387934-1NP": 1,
+        "Sloup IPE - 387935-1NP": 1,
+        "Sloup IPE - 387971-1NP": 1,
+        "Sloup IPE - 387972-1NP": 1,
+        "Sloup IPE - 388008-1NP": 1,
+        "Sloup IPE - 388009-1NP": 1,
+        "Sloup IPE - 388045-1NP": 1,
+        "Sloup IPE - 388046-1NP": 1,
+        "M_S profily_ sloup - 388383-1NP": 1,
+        "M_S profily_ sloup - 388384-1NP": 1,
+        "M_S profily_ sloup - 388385-1NP": 1,
+        "M_S profily_ sloup - 388386-1NP": 1,
+        "Sloup IPE - 396249-1NP": 1,
+        "Sloup IPE - 400226-1NP": 1,
+        "Sloup IPE - 400484-1NP": 1,
+        "Sloup IPE - 400880-1NP": 1,
+        "Sloup IPE - 401579-1NP": 1,
+        "Sloup IPE - 401588-1NP": 1,
+        "Sloup IPE - 401597-1NP": 1,
+        "Sloup IPE - 487110-1NP": 1,
+        "Sloup IPE - 487111-1NP": 1,
+        "Sloup IPE - 502209-1NP": 1,
+        "Sloup IPE - 502210-1NP": 1,
+        "Sloup IPE - 502301-1NP": 1,
+        "Sloup IPE - 502302-1NP": 1,
+        "Sloup IPE - 506871-1NP": 1,
+        "Sloup IPE - 507568-1NP": 1,
+        "Sloup IPE - 507725-1NP": 1,
+        "Sloup IPE - 507857-1NP": 1,
+        "Sloup IPE - 507956-1NP": 1,
+        "Sloup IPE - 508019-1NP": 1,
+        "Sloup IPE - 508076-1NP": 1,
+        "Sloup IPE - 508146-1NP": 1,
+        "Sloup IPE - 508228-1NP": 1,
+        "Sloup IPE - 508229-1NP": 1,
+        "Sloup IPE - 508303-1NP": 1,
+        "Sloup IPE - 387971-Řez 2": 1,
+        "Sloup IPE - 388008-Řez 2": 1,
+        "Sloup IPE - 387972-Řez 3": 1,
+        "Sloup IPE - 388009-Řez 3": 1,
+        "M_S profily_ sloup - 374564-Řez 4": 1,
+        "M_S profily_ sloup - 374570-Řez 4": 1,
+        "M_S profily_ sloup - 374572-Řez 4": 1,
+        "M_S profily_ sloup - 388384-Řez 5": 1,
+        "M_S profily_ sloup - 388385-Řez 5": 1,
+        "Sloup IPE - 374558-1NP _ stroje": 1,
+        "M_S profily_ sloup - 374564-1NP _ stroje": 1,
+        "M_S profily_ sloup - 374570-1NP _ stroje": 1,
+        "M_S profily_ sloup - 374571-1NP _ stroje": 1,
+        "M_S profily_ sloup - 374572-1NP _ stroje": 1,
+        "Sloup IPE - 374573-1NP _ stroje": 1,
+        "Sloup IPE - 387892-1NP _ stroje": 1,
+        "Sloup IPE - 387893-1NP _ stroje": 1,
+        "Sloup IPE - 387934-1NP _ stroje": 1,
+        "Sloup IPE - 387935-1NP _ stroje": 1,
+        "Sloup IPE - 387971-1NP _ stroje": 1,
+        "Sloup IPE - 387972-1NP _ stroje": 1,
+        "Sloup IPE - 388008-1NP _ stroje": 1,
+        "Sloup IPE - 388009-1NP _ stroje": 1,
+        "Sloup IPE - 388045-1NP _ stroje": 1,
+        "Sloup IPE - 388046-1NP _ stroje": 1,
+        "M_S profily_ sloup - 388383-1NP _ stroje": 1,
+        "M_S profily_ sloup - 388384-1NP _ stroje": 1,
+        "M_S profily_ sloup - 388385-1NP _ stroje": 1,
+        "M_S profily_ sloup - 388386-1NP _ stroje": 1,
+        "Sloup IPE - 396249-1NP _ stroje": 1,
+        "Sloup IPE - 400226-1NP _ stroje": 1,
+        "Sloup IPE - 400484-1NP _ stroje": 1,
+        "Sloup IPE - 400880-1NP _ stroje": 1,
+        "Sloup IPE - 401579-1NP _ stroje": 1,
+        "Sloup IPE - 401588-1NP _ stroje": 1,
+        "Sloup IPE - 401597-1NP _ stroje": 1,
+        "Sloup IPE - 487110-1NP _ stroje": 1,
+        "Sloup IPE - 487111-1NP _ stroje": 1,
+        "Sloup IPE - 502209-1NP _ stroje": 1,
+        "Sloup IPE - 502210-1NP _ stroje": 1,
+        "Sloup IPE - 502301-1NP _ stroje": 1,
+        "Sloup IPE - 502302-1NP _ stroje": 1,
+        "Sloup IPE - 506871-1NP _ stroje": 1,
+        "Sloup IPE - 507568-1NP _ stroje": 1,
+        "Sloup IPE - 507725-1NP _ stroje": 1,
+        "Sloup IPE - 507857-1NP _ stroje": 1,
+        "Sloup IPE - 507956-1NP _ stroje": 1,
+        "Sloup IPE - 508019-1NP _ stroje": 1,
+        "Sloup IPE - 508076-1NP _ stroje": 1,
+        "Sloup IPE - 508146-1NP _ stroje": 1,
+        "Sloup IPE - 508228-1NP _ stroje": 1,
+        "Sloup IPE - 508229-1NP _ stroje": 1,
+        "Sloup IPE - 508303-1NP _ stroje": 1,
+        "Sloup IPE - 374558-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 374564-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 374570-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 374571-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 374572-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 374573-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 387892-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 387893-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 387934-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 387935-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 387971-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 387972-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 388008-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 388009-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 388045-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 388046-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 388383-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 388384-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 388385-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_S profily_ sloup - 388386-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 396249-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 400226-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 400484-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 400880-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 401579-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 401588-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 401597-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 487110-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 487111-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 502209-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 502210-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 502301-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 502302-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 506871-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 507568-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 507725-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 507857-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 507956-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 508019-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 508076-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 508146-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 508228-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 508229-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Sloup IPE - 508303-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 4,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-COLS",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-COLS",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-COLS",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-COLS",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-COLS",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-COLS",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "roof": {
+      "entity_count": 127,
+      "entity_types": {
+        "LINE": 111,
+        "HATCH": 16
+      },
+      "total_length_units": 833866.893,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 2,
+      "sheets_seen": [
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A102_pudorys_strechy.dxf",
+          "type": "LINE",
+          "layer": "A-ROOF",
+          "pos": [
+            180618.19,
+            139395.39
+          ]
+        },
+        {
+          "file": "A102_pudorys_strechy.dxf",
+          "type": "LINE",
+          "layer": "A-ROOF",
+          "pos": [
+            190488.19,
+            139395.39
+          ]
+        },
+        {
+          "file": "A102_pudorys_strechy.dxf",
+          "type": "LINE",
+          "layer": "A-ROOF",
+          "pos": [
+            190488.19,
+            153490.39
+          ]
+        },
+        {
+          "file": "A102_pudorys_strechy.dxf",
+          "type": "LINE",
+          "layer": "A-ROOF",
+          "pos": [
+            190488.19,
+            125300.39
+          ]
+        },
+        {
+          "file": "A102_pudorys_strechy.dxf",
+          "type": "LINE",
+          "layer": "A-ROOF",
+          "pos": [
+            200358.19,
+            139395.39
+          ]
+        },
+        {
+          "file": "A102_pudorys_strechy.dxf",
+          "type": "LINE",
+          "layer": "A-ROOF-OTLN",
+          "pos": [
+            180555.69,
+            153490.39
+          ]
+        }
+      ]
+    },
+    "existing_utility_pipe": {
+      "entity_count": 79,
+      "entity_types": {
+        "INSERT": 16,
+        "LINE": 31,
+        "LWPOLYLINE": 32
+      },
+      "total_length_units": 192303.83,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 2": 1,
+        "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 2": 1,
+        "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 3": 1,
+        "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 3": 1,
+        "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V19-Řez 3": 1,
+        "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V20-Řez 3": 1,
+        "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 5": 1,
+        "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 5": 1,
+        "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V42-Řez 5": 1,
+        "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V43-Řez 5": 1,
+        "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-776681-základy": 2,
+        "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-776420-základy": 2,
+        "Z_PIF_UN_Tegra_Shaft_Pipe_Wavin__nested_ - Var_-777689-základy": 1,
+        "Z_PIF_UN_Tegra_Elbow_Base_Wavin__nested_ - Var_-V1-základy": 1
+      },
+      "n_sheets_seen": 3,
+      "sheets_seen": [
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Trubky-tvarovka",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Trubky-tvarovka",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Trubky-tvarovka",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Trubky-tvarovka",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Trubky-tvarovka",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Trubky-tvarovka",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        }
+      ]
+    },
+    "centerline": {
+      "entity_count": 56,
+      "entity_types": {
+        "LINE": 42,
+        "LWPOLYLINE": 14
+      },
+      "total_length_units": 680096.078,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "1xČERCHA",
+          "pos": [
+            45445.5,
+            40224.22
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "2xČERCHA",
+          "pos": [
+            45945.5,
+            40224.22
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "ČARKOVANA",
+          "pos": [
+            46445.5,
+            40224.22
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "TEČKOVANÁ",
+          "pos": [
+            50445.5,
+            40224.22
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "1xČERCHA",
+          "pos": [
+            55058.72,
+            42839.49
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LWPOLYLINE",
+          "layer": "1xČERCHA",
+          "pos": [
+            54717.05,
+            44839.49
+          ]
+        }
+      ]
+    },
+    "structural_beams": {
+      "entity_count": 45,
+      "entity_types": {
+        "INSERT": 45
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Kruhové tyče - 390062-1NP": 1,
+        "IPE - 489591-1NP": 1,
+        "IPE - 500084-1NP": 1,
+        "IPE - 500435-1NP": 1,
+        "IPE - 500572-1NP": 1,
+        "Kruhové tyče - 503362-1NP": 1,
+        "Kruhové tyče - 504078-1NP": 1,
+        "Kruhové tyče - 504742-1NP": 1,
+        "Kruhové tyče - 505106-1NP": 1,
+        "Kruhové tyče - 505107-1NP": 1,
+        "Kruhové tyče - 505273-1NP": 1,
+        "Kruhové tyče - 505274-1NP": 1,
+        "IPE - 568342-1NP": 1,
+        "IPE - IPE160-854151-Řez 2": 1,
+        "C profil - C150X19_3-854068-Řez 2": 1,
+        "IPE - IPE160-854659-Řez 3": 1,
+        "C profil - C150X19_3-854695-Řez 3": 1,
+        "Kruhové tyče - 390062-1NP _ stroje": 1,
+        "IPE - 489591-1NP _ stroje": 1,
+        "IPE - 500084-1NP _ stroje": 1,
+        "IPE - 500435-1NP _ stroje": 1,
+        "IPE - 500572-1NP _ stroje": 1,
+        "Kruhové tyče - 503362-1NP _ stroje": 1,
+        "Kruhové tyče - 504078-1NP _ stroje": 1,
+        "Kruhové tyče - 504742-1NP _ stroje": 1,
+        "Kruhové tyče - 505106-1NP _ stroje": 1,
+        "Kruhové tyče - 505107-1NP _ stroje": 1,
+        "Kruhové tyče - 505273-1NP _ stroje": 1,
+        "Kruhové tyče - 505274-1NP _ stroje": 1,
+        "IPE - 568342-1NP _ stroje": 1,
+        "IPE - 888049-1NP _ stroje": 1,
+        "Kruhové tyče - 390062-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "IPE - 489591-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "IPE - 500084-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "IPE - 500435-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "IPE - 500572-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 503362-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 504078-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 504742-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 505106-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 505107-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 505273-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Kruhové tyče - 505274-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "IPE - 568342-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "IPE - 888049-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 4,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-BEAM",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-BEAM",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-BEAM",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-BEAM",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-BEAM",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "S-BEAM",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "insulation": {
+      "entity_count": 41,
+      "entity_types": {
+        "LINE": 20,
+        "LWPOLYLINE": 21
+      },
+      "total_length_units": 269094.889,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "IZOLACE",
+          "pos": [
+            47445.5,
+            40224.22
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LWPOLYLINE",
+          "layer": "IZOLACE",
+          "pos": [
+            166722.5,
+            108609.46
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "IZOLACE",
+          "pos": [
+            168232.5,
+            107289.46
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LWPOLYLINE",
+          "layer": "IZOLACE",
+          "pos": [
+            150565.0,
+            108624.46
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LWPOLYLINE",
+          "layer": "IZOLACE",
+          "pos": [
+            168247.5,
+            102021.96
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LWPOLYLINE",
+          "layer": "IZOLACE",
+          "pos": [
+            149052.5,
+            108224.46
+          ]
+        }
+      ]
+    },
+    "doors": {
+      "entity_count": 28,
+      "entity_types": {
+        "INSERT": 28
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP": 2,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 2": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 3": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-Řez 4": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-Řez 4": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 4": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V28-Řez 4": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-Řez 5": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V40-Řez 5": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 5": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V45-Řez 5": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje": 2,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje": 2,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP _ stroje - KOTVÍCÍ BODY": 1,
+        "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY": 2
+      },
+      "n_sheets_seen": 4,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-DOOR-HDLN",
+          "pos": [
+            194979.2,
+            153284.19
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-DOOR-HDLN",
+          "pos": [
+            185995.69,
+            153279.19
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-DOOR-HDLN",
+          "pos": [
+            194995.69,
+            125514.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-DOOR-HDLN",
+          "pos": [
+            185990.69,
+            125514.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-DOOR-FRAM",
+          "pos": [
+            200051.84,
+            150710.39
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "A-DOOR-FRAM",
+          "pos": [
+            180948.53,
+            128000.39
+          ]
+        }
+      ]
+    },
+    "external_reference": {
+      "entity_count": 14,
+      "entity_types": {
+        "INSERT": 14
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 2": 1,
+        "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 2": 1,
+        "212_HK_situace_03_dwg-886969-Řez 2": 1,
+        "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 3": 1,
+        "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 3": 1,
+        "212_HK_situace_03_dwg-886969-Řez 3": 1,
+        "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 4": 1,
+        "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 4": 1,
+        "212_HK_situace_03_dwg-886969-Řez 4": 1,
+        "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 5": 1,
+        "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 5": 1,
+        "212_HK_situace_03_dwg-886969-Řez 5": 1,
+        "2966-1_navrh dispozice stroju-HK_02_dwg-876232-1NP _ stroje": 1,
+        "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 3,
+      "sheets_seen": [
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "212_HK_situace_03_dwg-1",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "212_HK_situace_03_dwg-1",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        }
+      ]
+    },
+    "title_block": {
+      "entity_count": 13,
+      "entity_types": {
+        "INSERT": 13
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "LOGO": 11,
+        "A$C7F48221E": 2
+      },
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "LOGO",
+          "pos": [
+            42607.9,
+            15759.2
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "LOGO",
+          "pos": [
+            30843.23,
+            8333.01
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "LOGO",
+          "pos": [
+            26921.62,
+            4697.5
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "LOGO",
+          "pos": [
+            39215.81,
+            33518.39
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "LOGO",
+          "pos": [
+            113725.21,
+            37266.31
+          ]
+        },
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "INSERT",
+          "layer": "LOGO",
+          "pos": [
+            10500.82,
+            53975.0
+          ]
+        }
+      ]
+    },
+    "area_identifier": {
+      "entity_count": 12,
+      "entity_types": {
+        "MTEXT": 12
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 3,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "A-AREA-IDEN-1",
+          "pos": [
+            190124.79,
+            141487.71
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "A-AREA-IDEN-1",
+          "pos": [
+            190298.56,
+            142448.6
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "A-AREA-IDEN-1",
+          "pos": [
+            188676.84,
+            141982.75
+          ]
+        },
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "MTEXT",
+          "layer": "A-AREA-IDEN-1",
+          "pos": [
+            192337.02,
+            141982.75
+          ]
+        },
+        {
+          "file": "A106_stroje.dxf",
+          "type": "MTEXT",
+          "layer": "A-AREA-IDEN-1",
+          "pos": [
+            28206.38,
+            141487.71
+          ]
+        },
+        {
+          "file": "A106_stroje.dxf",
+          "type": "MTEXT",
+          "layer": "A-AREA-IDEN-1",
+          "pos": [
+            28380.15,
+            142448.6
+          ]
+        }
+      ]
+    },
+    "structural_generic": {
+      "entity_count": 12,
+      "entity_types": {
+        "INSERT": 12
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Rámový roh_ šroubovaný s náběhem - 387987-Řez 2": 1,
+        "Rámový roh_ šroubovaný s náběhem - 388024-Řez 2": 1,
+        "Rámový roh_ šroubovaný s náběhem - 387988-Řez 3": 1,
+        "Rámový roh_ šroubovaný s náběhem - 388025-Řez 3": 1,
+        "Patní deska s ořezem - 388233-Řez 4": 1,
+        "Patní deska s ořezem - 388242-Řez 4": 1,
+        "Patní deska s ořezem - 388251-Řez 4": 1,
+        "Patní deska s ořezem - 388260-Řez 4": 1,
+        "Patní deska s ořezem - 388404-Řez 5": 1,
+        "Patní deska s ořezem - 388405-Řez 5": 1,
+        "Patní deska s ořezem - 388406-Řez 5": 1,
+        "Patní deska s ořezem - 388407-Řez 5": 1
+      },
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "A104_pohledy.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "S-FSTN",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "S-FSTN",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "S-FSTN",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "S-FSTN",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "S-FSTN",
+          "pos": [
+            115455.99,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "S-FSTN",
+          "pos": [
+            115455.99,
+            0.0
+          ]
+        }
+      ]
+    },
+    "tzb_ut_vzt": {
+      "entity_count": 6,
+      "entity_types": {
+        "INSERT": 6
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP": 1,
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 3": 1,
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 4": 1,
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 5": 1,
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje": 1,
+        "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 4,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "pos": [
+            201557.27,
+            147271.29
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "pos": [
+            -244306.7,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "pos": [
+            115455.99,
+            0.0
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "pos": [
+            -240214.2,
+            0.0
+          ]
+        },
+        {
+          "file": "A106_stroje.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "pos": [
+            39638.86,
+            147271.29
+          ]
+        },
+        {
+          "file": "A107_stroje_kotvici_body.dxf",
+          "type": "INSERT",
+          "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+          "pos": [
+            39638.86,
+            147271.29
+          ]
+        }
+      ]
+    },
+    "plumbing_generic": {
+      "entity_count": 4,
+      "entity_types": {
+        "INSERT": 4
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Umyvadlo - 50x40 cm-459123-1NP": 1,
+        "Umyvadlo - 50x40 cm-459123-Řez 2": 1,
+        "Umyvadlo - 50x40 cm-459123-1NP _ stroje": 1,
+        "Umyvadlo - 50x40 cm-459123-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 4,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "P-SANR-FIXT",
+          "pos": [
+            181042.18,
+            126429.01
+          ]
+        },
+        {
+          "file": "A104_pohledy.dxf",
+          "type": "INSERT",
+          "layer": "P-SANR-FIXT",
+          "pos": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "file": "A106_stroje.dxf",
+          "type": "INSERT",
+          "layer": "P-SANR-FIXT",
+          "pos": [
+            19123.77,
+            126429.01
+          ]
+        },
+        {
+          "file": "A107_stroje_kotvici_body.dxf",
+          "type": "INSERT",
+          "layer": "P-SANR-FIXT",
+          "pos": [
+            19123.77,
+            126429.01
+          ]
+        }
+      ]
+    },
+    "electrical_generic": {
+      "entity_count": 3,
+      "entity_types": {
+        "INSERT": 3
+      },
+      "total_length_units": 0.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {
+        "Rozvaděč nastenny  - Typ 1-584972-1NP": 1,
+        "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje": 1,
+        "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje - KOTVÍCÍ BODY": 1
+      },
+      "n_sheets_seen": 3,
+      "sheets_seen": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "A101_pudorys_1np.dxf",
+          "type": "INSERT",
+          "layer": "E-ELEC-FIXT",
+          "pos": [
+            198413.01,
+            153279.19
+          ]
+        },
+        {
+          "file": "A106_stroje.dxf",
+          "type": "INSERT",
+          "layer": "E-ELEC-FIXT",
+          "pos": [
+            36494.6,
+            153279.19
+          ]
+        },
+        {
+          "file": "A107_stroje_kotvici_body.dxf",
+          "type": "INSERT",
+          "layer": "E-ELEC-FIXT",
+          "pos": [
+            36494.6,
+            153279.19
+          ]
+        }
+      ]
+    },
+    "demolition": {
+      "entity_count": 1,
+      "entity_types": {
+        "LINE": 1
+      },
+      "total_length_units": 1000.0,
+      "total_area_units2": 0.0,
+      "closed_loop_count": 0,
+      "block_inserts": {},
+      "n_sheets_seen": 1,
+      "sheets_seen": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "sample_positions": [
+        {
+          "file": "Hala HK_ Úprava dveří.dxf",
+          "type": "LINE",
+          "layer": "DEMOLICE",
+          "pos": [
+            46945.5,
+            40224.22
+          ]
+        }
+      ]
+    }
+  }
+}
