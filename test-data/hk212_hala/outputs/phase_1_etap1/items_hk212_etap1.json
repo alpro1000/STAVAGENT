@@ -249,6 +249,35 @@
           "PSV-OPL-012"
         ],
         "items_removed": []
+      },
+      {
+        "date": "2026-05-22",
+        "source": "User request — KROS code granularity for výměna aktivní zóny",
+        "summary": "HSV-1-028 split into 6 sub-items (a-f) per real workflow: odstranění → odvoz → dovoz → rozprostření+hutnění → Edef2 zkouška → geodet kontrola",
+        "reason": "Granular KROS code mapping pre user fill — single consolidated 265.61 m³ line cannot map to one KROS code (5 different code groups apply)",
+        "previous_count": 133,
+        "new_count": 138,
+        "items_modified": [],
+        "items_added": [
+          "HSV-1-028a",
+          "HSV-1-028b",
+          "HSV-1-028c",
+          "HSV-1-028d",
+          "HSV-1-028e",
+          "HSV-1-028f"
+        ],
+        "items_removed": [
+          "HSV-1-028"
+        ],
+        "removed_item_snapshot": {
+          "id": "HSV-1-028",
+          "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+          "mj": "m³",
+          "mnozstvi": 265.61,
+          "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+          "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
+          "confidence": 0.85
+        }
       }
     ]
   },
@@ -2248,62 +2277,58 @@
       }
     },
     {
-      "id": "HSV-1-028",
+      "id": "HSV-1-028a",
       "kapitola": "HSV-1",
       "SO": "SO-01",
-      "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+      "popis": "Odstranění navážek GT1 z aktivní zóny — výkop + naložení na dopravní prostředek",
       "mj": "m³",
       "mnozstvi": 265.61,
       "urs_code": null,
       "urs_alternatives": [],
       "urs_status": "needs_review",
       "urs_match_score": null,
+      "kros_hint": "122xxx (odstranění zeminy z aktivní zóny)",
       "skladba_ref": null,
-      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
-      "raw_description": "výměna aktivní zóny — odstranění navážek + štěrk hutněný 0.5 m Edef2 ≥ 45 MPa",
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Odstranění navážek GT1 z aktivní zóny — výkop + naložení na dopravní prostředek",
       "confidence": 0.85,
       "subdodavatel_chapter": "zemni_prace",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "IGP",
       "_completeness": 0.9,
-      "_qty_formula": "A105 deska plocha 19.04 × 27.90 = 531.22 m² × 0.5 m vrstva = 265.61 m³ (jedna operace — odstranění NEBO nahrazení)",
+      "_qty_formula": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³",
       "_export_wrapper_hint": null,
       "_price_source": "user_skipped_pricing",
       "audit_trail": {
         "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
-        "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
-        "formula_parsed_method": "product_dual_operation",
+        "formula": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³",
+        "formula_parsed_method": "user_split_decomposition",
         "inputs": [
+          {
+            "label": "krok_role",
+            "value": "1) výkop navážek",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
           {
             "label": "deska_area_m2",
             "value": 531.22,
-            "unit": "m²"
-          },
-          {
-            "label": "deska_source",
-            "value": "A105 měřené 19.04 × 27.90",
-            "unit": ""
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
           },
           {
             "label": "mocnost_vymeny_m",
             "value": 0.5,
-            "unit": "m"
-          },
-          {
-            "label": "operace_odstraneni_m3",
-            "value": 265.61,
-            "unit": "m³"
-          },
-          {
-            "label": "operace_nahrazeni_m3",
-            "value": 265.61,
-            "unit": "m³"
+            "unit": "m (IGP §4.4)"
           },
           {
             "label": "edef2_min_MPa",
             "value": 45.0,
-            "unit": "MPa"
+            "unit": "MPa (ČSN 72 1006)"
           }
         ],
         "reference": [
@@ -2333,17 +2358,666 @@
             "type": "drawing_measurement",
             "code": "A105",
             "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
           }
         ],
-        "poznamka": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef2/Edef1 < 2.2 (ČSN 72 1006). Vrstva 0.5 m × zastavěná 538.5 m² = 269.25 m³ na operaci. Item tracks single layer; total earth work = 2× (odstr. + nahraz.) = 538.5 m³. | REWORK 2026-05-24: 269.25 m³ (Step 3 zastavěná 538.5 × 0.5) → 265.61 m³ (A105 deska 531.22 × 0.5). Reason: výměna aktivní zóny vychází z plochy desky + obvodový pas, NE z full zastavěné (která zahrnuje převis střechy). A105 měřené.",
+        "poznamka": "Sub-item 1) výkop navážek ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
         "computed_quantity": 265.61,
         "declared_quantity": 265.61,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
-        "extraction_method": "igp_geometric_derivation",
-        "data_source_hint": "IGP+Step3",
-        "extracted_at": "2026-05-22T07:23:50.291052+00:00"
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 1) výkop navážek — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028b",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odvoz vytěžených navážek GT1 na skládku (vč. poplatku skládkovné)",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "162xxx (odvoz) + skládkovné dle reálné vzdálenosti",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Odvoz vytěžených navážek GT1 na skládku (vč. poplatku skládkovné)",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "2) odvoz na skládku",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 2) odvoz na skládku ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 2) odvoz na skládku — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028c",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Dovoz hutného štěrku frakce 0/63 (alt. 0/125) na staveniště",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "162xxx (dovoz materiálu) — frakce per finální výběr dodavatele",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Dovoz hutného štěrku frakce 0/63 (alt. 0/125) na staveniště",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "3) dovoz hutného štěrku",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 3) dovoz hutného štěrku ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 3) dovoz hutného štěrku — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028d",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Rozprostření štěrku po vrstvách max 300 mm + hutnění vibračním válcem / pěchem (ČSN 72 1006)",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "174xxx (zhutněné násypy)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Rozprostření štěrku po vrstvách max 300 mm + hutnění vibračním válcem / pěchem (ČSN 72 1006)",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "4) rozprostření + hutnění",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 4) rozprostření + hutnění ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 4) rozprostření + hutnění — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028e",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Statická zatěžovací zkouška Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2), min 3 měřená místa",
+      "mj": "ks",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "935xxx (zatěžovací zkouška)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Statická zatěžovací zkouška Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2), min 3 měřená místa",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "5) Edef2 kontrolní zkouška",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 5) Edef2 kontrolní zkouška ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 3.0,
+        "declared_quantity": 3.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 3.0,
+            "mj": "ks",
+            "method": "Sub-item 5) Edef2 kontrolní zkouška — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028f",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Geodetická kontrola roviny aktivní zóny po hutnění",
+      "mj": "m²",
+      "mnozstvi": 531.22,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "933xxx (geodetické práce — kontrolní zaměření)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Geodetická kontrola roviny aktivní zóny po hutnění",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "6) geodetická kontrola roviny",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 6) geodetická kontrola roviny ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 531.22,
+        "declared_quantity": 531.22,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 531.22,
+            "mj": "m²",
+            "method": "Sub-item 6) geodetická kontrola roviny — first appearance",
+            "status": "current"
+          }
+        ]
       }
     },
     {
