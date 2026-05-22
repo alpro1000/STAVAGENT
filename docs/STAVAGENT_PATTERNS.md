@@ -433,9 +433,67 @@ When starting nový D&B bridge tender:
 
 ---
 
+## Pattern 8: Re-read TZ Before Generating New Položky
+
+**Source:** HK212 hala (2026-05-22) — Kingspan opláštění P0 blocker resolution
+
+### Problem
+Při generování nových položek (kapitola chybí, P0 blocker) → tendence okamžitě sestavit položky
+z paměti nebo z generic placeholders (audit doc says "~1500 Kč/m²", "TBD", "PSV-OPL-001..008").
+Výsledek: positions s vague popisy, wrong confidence (0.50), missing TZ spec details.
+
+### Solution
+**VŽDY** před generováním nových položek:
+1. Přečti TZ (nebo aktuální výseky TZ) pro danou kapitolu
+2. Extrahuj konkrétní specifikace (tloušťka, materiál, RAL, norma, rozměry, kotvení)
+3. Teprve pak piš položky s `confidence: 0.90` a `source: "TZ_ARS_DPZ"`
+
+### HK212 Example
+**Wrong (generic placeholder from audit doc):**
+```json
+{
+  "id": "PSV-OPL-001",
+  "popis": "Dodávka Kingspan K-roc střešní sendvičový panel tl. 150 mm, RAL šedá",
+  "confidence": 0.50,
+  "source": "audit_doc_placeholder"
+}
+```
+
+**Right (TZ ARS DPZ read first):**
+```json
+{
+  "id": "PSV-OPL-001",
+  "popis": "Dodávka Kingspan KS1000 AWP obvodový sendvičový panel tl. 200 mm (alt. 150 mm), výplň MW (minerální vata), EW 15 DP1, RAL bílá + modrá — dle TZ ARS DPZ D.1.1",
+  "confidence": 0.90,
+  "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+  "_price_source": "user_skipped_pricing"
+}
+```
+
+### TZ details captured in HK212 (missed without re-read)
+- Panel thickness: **200 mm** (not generic 150 mm) — alternativa 150 mm explicitly noted
+- Fill: **MW = minerální vata** (not IPN/PIR — ABMV_13 confirmed K-roc = MW)
+- Colour: **bílá + modrá** (not generic RAL šedá)
+- Fire: **EW 15 DP1** (not DP3 — PBŘ wins over TZ B per ABMV_6)
+- Fastening: **samořezné šrouby + EPDM těsnicí podložka**
+- Roof thickness: explicitly **_review_thickness: true** (TZ ARS neuvádí)
+
+### Invariant
+- `confidence: 0.90` vyžaduje přímý TZ link v `source` nebo `audit_trail.reference`
+- `_price_source: "user_skipped_pricing"` flag když investor řekl "ceny neřeš"
+- Všechny geometrické qty vychází z Step 3 area metrics (ne z TZ textových "cca X m²")
+
+### Related
+- HK212 hala: `outputs/phase_1_etap1/items_hk212_etap1.json` PSV-OPL-001..008
+- ABMV_13: KS FR/FF K-roc vs IPN → MW confirmed (never use IPN/PIR for HK212)
+- `scripts/phase_1_etap1/stage_e_add_opl.py` — reference implementation
+
+---
+
 ## References
 
 - Žihle 2062-1 pilot completion: commits 213a061d (master soupis), 218f03a2 (TZ + status), b5002206 (defensive programming)
 - Architectural decisions: `docs/architecture/decisions/ADR-001` through `ADR-006`
 - Backlog tickety: `backlog/calculator_prompt_extension.md`, `backlog/otskp_search_algorithm.md` + 4 new
 - KB enrichment: `concrete-agent/.../knowledge_base/B5_tech_cards/real_world_examples/zihle_2062_1/` (template)
+- HK212 hala pilot: `test-data/hk212_hala/` — Pattern 8 source + full Phase 1 etap1 pipeline

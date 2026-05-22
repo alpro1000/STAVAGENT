@@ -62,7 +62,7 @@
       "id": "ABMV_2",
       "category": "design_clarification",
       "severity": "critical",
-      "status": "open",
+      "status": "resolved",
       "title": "Šířka sekčních vrat: 3000 vs 3500 mm",
       "summary_cs": "TZ B a TZ D.1.1 uvádí 4× sekční vrata 3500×4000 mm. DXF A101 obsahuje block 'M_Vrata_výsuvná_sekční - 3000X4000 MM'.",
       "blocks_vv": [
@@ -74,7 +74,10 @@
         "a101_dxf": "4 INSERT blocks 'M_Vrata_ výsuvná_ sekční - 3000X4000 MM'",
         "pbr_p18": "table row 'vrata 2 4,000 3,500 28,00' (4 × 3.5 m orientation)",
         "drift_confirmed": true
-      }
+      },
+      "resolution_note": "TZ ARS DPZ D.1.1 p.4 + PBŘ p.18 confirm 4× vrata 3500 × 4000 mm. DXF block name 'M_Vrata_výsuvná_sekční - 3000X4000 MM' is legacy block library template (wrong dimension in block name). TZ wins per 3-source matrix (TZ_D.1.1 + PBŘ vs DXF block name = 2:1). PSV-76x-005 popis updated → 3500 × 4000 mm. Stage E patch 2026-05-22.",
+      "resolution_date": "2026-05-22",
+      "resolution_source": "TZ_ARS_DPZ D.1.1 + PBR_p18 + Stage_E_patch"
     },
     {
       "id": "ABMV_3",

@@ -100,15 +100,27 @@ b23fff07  rename: dilenska→dsp_dxf housekeeping
 
 ## Where it goes from here
 
-### Immediate blocker (P0 — must resolve before Stage E)
+### Immediate blocker (P0 — ✅ RESOLVED Stage E 2026-05-22)
 
-🚨 **Kingspan/sendvičové opláštění chybí entirely in items.json.** Audit doc `outputs/phase_1_etap1/kapitola_coverage_audit.md` defines 8 návrh PSV-OPL-001..008 položek with quantities derived from Step 3 metrics:
-- střecha 558.8 m² × ~1500 Kč/m² ≈ 837 tis CZK
-- fasáda 537 m² × ~1500 Kč/m² ≈ 805 tis CZK
-- + kotvící prvky + lemy + dilatace + doprava + statika
-- ≈ 2.0–2.5 mil CZK = 30–40 % typického bid value
+✅ **Kingspan/sendvičové opláštění — 8 PSV-OPL položek přidáno** via `stage_e_add_opl.py`.
+Total items: 119 → **127**.
 
-TZ explicitly mentions Kingspan (ABMV_13 = `closed_fabricated`), HSV-9-004 mentions "lešení pro montáž opláštění (Kingspan)" — but actual položky were lost between TZ parse and Phase 1 etap1 composition. Stage E benchmark vs example_vv corpus = meaningless until this resolved.
+| ID | mj | Mn. | Popis (zkráceno) | Conf |
+|---|---|---:|---|---:|
+| PSV-OPL-001 | m² | 536.4 | Kingspan KS1000 AWP obvodový panel tl. 200 mm MW | 0.90 |
+| PSV-OPL-002 | m² | 536.4 | Montáž obvodového opláštění (samořezné šrouby + EPDM) | 0.90 |
+| PSV-OPL-003 | m² | 558.8 | Kingspan střešní panel pro šikmé střechy MW (_review_thickness) | 0.90 |
+| PSV-OPL-004 | m² | 558.8 | Montáž střešního opláštění | 0.90 |
+| PSV-OPL-005 | bm | 207.0 | Klempířské lemy + přechody (pozink plech; _review_qty) | 0.75 |
+| PSV-OPL-006 | kpl | 1 | Spojovací materiál + těsnění + EPDM podložky | 0.85 |
+| PSV-OPL-007 | paušál | 1 | Doprava sendvičových panelů na stavbu | 0.85 |
+| PSV-OPL-008 | paušál | 1 | Statické posouzení uchycení Kingspan k OK + revize | 0.85 |
+
+`_price_source: "user_skipped_pricing"` on all 8. Source: `TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers`.
+
+**Also resolved in Stage E:**
+- **ABMV_2 closed** → TZ ARS DPZ D.1.1 wins: vrata **3500 × 4000 mm** (DXF block name 3000 = legacy template). PSV-76x-005 popis updated. ABMV_2 status = `resolved`.
+- **STAVAGENT_PATTERNS.md Pattern 8 added** — "Re-read TZ before generating new položky"
 
 ### After P0 resolved
 
@@ -130,9 +142,18 @@ outputs/dsp_geometry_extraction/step3_areas/
 └── step3_summary_report.md
 
 outputs/phase_1_etap1/
-├── items_hk212_etap1_with_geometry.json   ← NEW (annotated copy)
+├── items_hk212_etap1.json                  ← MODIFIED (Stage E: +8 PSV-OPL, vrata 3500mm)
+├── items_hk212_etap1_with_geometry.json   ← NEW (annotated copy, Step 3)
 └── project_header.json                     ← NEW (geometric_summary block)
+
+outputs/
+└── abmv_email_queue.json                   ← MODIFIED (ABMV_2 resolved)
 
 scripts/dsp_geometry_extraction/
 └── step3_polygonization.py
+
+scripts/phase_1_etap1/
+└── stage_e_add_opl.py                      ← NEW (Stage E P0 fix)
+
+docs/STAVAGENT_PATTERNS.md                  ← MODIFIED (Pattern 8 added)
 ```
