@@ -1,0 +1,129 @@
+#,Fáze,Krok,Kapitola,ID,Položka,MJ,Mnozstvi,Pozn.
+1,1,Geodetické vytýčení + vytýčení sítí,VRN,VRN-014,Geodetické zaměření před zahájením stavby — vytýčení,paušál,1.0,
+2,1,Geodetické vytýčení + vytýčení sítí,VRN,VRN-017,Vytýčení stávajících sítí na povrchu před zahájením výkopů,bm,200.0,
+3,1,Vyjádření správců sítí,VRN,VRN-016,Vyjádření správců sítí — komplet pro 8-12 sítí (RWE/CETIN/ČEZ/Opatovice/Pošta/atd.),kpl,1.0,
+4,1,Oplocení staveniště,VRN,VRN-004,"Oplocení staveniště — provizorní, výška 2 m, vstupní brána",bm,150.0,
+5,1,Zařízení staveniště — buňky,VRN,VRN-001,Zařízení staveniště — buňka kancelář stavbyvedoucího + technika,měsíc,4,
+6,1,Zařízení staveniště — buňky,VRN,VRN-002,Zařízení staveniště — buňka sociální / šatna / WC,měsíc,4,
+7,1,Zařízení staveniště — buňky,VRN,VRN-003,Zařízení staveniště — buňka sklad materiálu + nářadí,měsíc,4,
+8,1,Mobilní WC pro pracovníky,VRN,VRN-007,WC mobilní pro pracovníky — 2 ks,měsíc,8,
+9,1,Přípojky pro stavbu (voda + elektro),VRN,VRN-005,Vodovodní přípojka pro stavbu — vytvoření + měření spotřeby,paušál,1.0,
+10,1,Přípojky pro stavbu (voda + elektro),VRN,VRN-006,Elektrická přípojka pro stavbu — staveništní rozvaděč + měření,paušál,1.0,
+11,1,BOZP plán + koordinátor,VRN,VRN-009,Plán BOZP + dokumentace bezpečnosti práce,paušál,1.0,
+12,1,BOZP plán + koordinátor,VRN,VRN-008,BOZP koordinace na stavbě — koordinátor BOZP průběžně,měsíc,4,
+13,1,Pojištění stavby,VRN,VRN-010,Pojištění stavby + odpovědnostní pojistka,paušál,1.0,
+14,1,Kácení dřevin + frézování pařezů,HSV-1,HSV-1-020,"Kácení vzrostlých stromů Ø < 80 cm — bříza, dub červený",ks,2.0,
+15,1,Kácení dřevin + frézování pařezů,HSV-1,HSV-1-021,"Kácení drobných dřevin a semenáčků — javor klen, dub letní",ks,5.0,
+16,1,Kácení dřevin + frézování pařezů,HSV-1,HSV-1-022,Frézování pařezů po kácení dřevin,ks,7.0,
+17,1,Kácení dřevin + frézování pařezů,HSV-1,HSV-1-023,Odvoz dřevní hmoty po kácení a likvidace,m³,6.0,
+18,1,Odstranění asfaltové vrstvy + odvoz suti,HSV-1,HSV-1-025,"Odstranění stávající asfaltové vrstvy + podkladu, tl. do 250 mm",m²,540.0,ABMV:ABMV_17
+19,1,Odstranění asfaltové vrstvy + odvoz suti,HSV-1,HSV-1-026,Nakládání stavební suti na dopravní prostředek,t,80.0,ABMV:ABMV_17
+20,1,Odstranění asfaltové vrstvy + odvoz suti,HSV-1,HSV-1-027,Odvoz stavební suti k recyklaci — vč. skládkovného,t,80.0,ABMV:ABMV_17
+21,2,Hlavní výkop figury pod desku,HSV-1,HSV-1-001,"Hloubení figury pod základovou desku + sejmutí navážek aktivní zóny, hor. tř. 1, stroj.",m³,210.0,
+22,2,Ruční výkop v ochranných pásmech sítí,HSV-1,HSV-1-006,"Ruční výkop v ochranných pásmech stávajících sítí DN300, hor. tř. 3",m³,30.0,ABMV:ABMV_17
+23,2,Ruční výkop v ochranných pásmech sítí,HSV-1,HSV-1-007,Příplatek za stížené podmínky — ruční výkop u stávajících sítí,m³,30.0,ABMV:ABMV_17
+24,2,Obetonování stávajícího potrubí (po odkrytí),HSV-1,HSV-1-009,Obetonování stávajícího potrubí splaškové kanalizace DN300 betonem C16/20,m³,5.0,ABMV:ABMV_17
+25,2,Obetonování stávajícího potrubí (po odkrytí),HSV-1,HSV-1-010,Obetonování stávajícího potrubí dešťové kanalizace DN300 betonem C16/20,m³,5.0,ABMV:ABMV_17
+26,2,Dohloubky pro patky a pasy,HSV-1,HSV-1-002,"Hloubení dohloubek pro patky rámové, hor. tř. 3, do 1 m hloubky",m³,31.5,ABMV:ABMV_17
+27,2,Dohloubky pro patky a pasy,HSV-1,HSV-1-003,"Hloubení dohloubek pro patky štítové, hor. tř. 3, do 0.5 m hloubky",m³,1.28,ABMV:ABMV_17
+28,2,Dohloubky pro patky a pasy,HSV-1,HSV-1-005,"Hloubení rýh pro krátké pasy mezi patkami, hor. tř. 3, do 0.6 m hloubky",m³,7.2,ABMV:ABMV_17
+29,2,Atypický základ (varianta pilota) + pažení,HSV-1,HSV-1-004,Hloubení atypického základu — varianta jako pilota Ø800 / L=8 m,m³,12.0,"ABMV:ABMV_11,ABMV_17"
+30,2,Atypický základ (varianta pilota) + pažení,HSV-1,HSV-1-008,Pažení výkopů hloubky nad 1.3 m — atypický základ,m²,20.0,"ABMV:ABMV_11,ABMV_17"
+31,2,Výkopy pro nové přípojky,HSV-1,HSV-1-011,Pomocné výkopy pro novou přípojku vodovod DN150 LT,m³,8.0,ABMV:ABMV_17
+32,2,Výkopy pro nové přípojky,HSV-1,HSV-1-012,Pomocné výkopy pro novou areálovou kanalizaci DN200,m³,49.2,ABMV:ABMV_17
+33,2,Nakládání + vodorovné přemístění + odvoz zeminy,HSV-1,HSV-1-016,Nakládání zeminy hor. tř. 1-4 na dopravní prostředek,m³,350.0,ABMV:ABMV_17
+34,2,Nakládání + vodorovné přemístění + odvoz zeminy,HSV-1,HSV-1-017,"Vodorovné přemístění zeminy do 5000 m, sklon do 5 %",m³,350.0,ABMV:ABMV_17
+35,2,Nakládání + vodorovné přemístění + odvoz zeminy,HSV-1,HSV-1-018,Odvoz výkopu na deponii / skládku — kontejnerová doprava,m³,350.0,ABMV:ABMV_17
+36,2,Nakládání + vodorovné přemístění + odvoz zeminy,HSV-1,HSV-1-019,Skládkovné — uložení vytěžené zeminy na řízené skládce,t,630.0,ABMV:ABMV_17
+37,3,Výměna aktivní zóny pláně,HSV-1,HSV-1-028,"Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",m³,265.61,
+38,3,Štěrkové lože + zhutnění podloží,HSV-1,HSV-1-013,"Štěrkové lože pod základovou deskou, tl. 250 mm, frakce 0/63",m³,123.75,ABMV:ABMV_17
+39,3,Štěrkové lože + zhutnění podloží,HSV-1,HSV-1-014,"Zhutnění podloží Edef,2 ≥ 45 MPa, Edef2/Ede < 1.75",m²,495.0,ABMV:ABMV_17
+40,3,Hydroizolace plošná pod desku,HSV-2,HSV-2-018,Hydroizolace plošná pod podlahovou desku — 1× SBS modifikovaný asfaltový pás,m²,495.0,
+41,3,Výztuž patek a pasů,HSV-2,HSV-2-009,Výztuž patek a pasů ze svařovaných sítí + vázaná B500B,kg,600.0,
+42,3,Patky rámové — bednění + beton + odbednění,HSV-2,HSV-2-002,Bednění patek rámových dvoustupňových — zřízení,m²,66.0,
+43,3,Patky rámové — bednění + beton + odbednění,HSV-2,HSV-2-001,"Beton patek rámových C16/20 XC0 prostý, dvoustupňové",m³,22.875,
+44,3,Patky rámové — bednění + beton + odbednění,HSV-2,HSV-2-003,Bednění patek rámových dvoustupňových — odstranění,m²,66.0,
+45,3,Patky štítové — bednění + beton + odbednění,HSV-2,HSV-2-005,Bednění patek štítových — zřízení,m²,30.72,
+46,3,Patky štítové — bednění + beton + odbednění,HSV-2,HSV-2-004,"Beton patek štítových C16/20 XC0 prostý, dvoustupňové",m³,6.144,
+47,3,Patky štítové — bednění + beton + odbednění,HSV-2,HSV-2-006,Bednění patek štítových — odstranění,m²,30.72,
+48,3,Pasy ŽB — bednění + beton,HSV-2,HSV-2-008,Bednění pasů — zřízení,m²,36.0,
+49,3,Pasy ŽB — bednění + beton,HSV-2,HSV-2-007,Beton krátkých pasů v rozích a propojení mezi patkami C16/20 XC0,m³,7.2,
+50,3,Zásyp výkopů kolem patek,HSV-1,HSV-1-015,"Zásyp výkopů kolem patek + okolo obetonovaných sítí, zhutněný",m³,30.0,ABMV:ABMV_17
+51,3,VARIANTA — pilota Ø800 / L=8 m (alternativa),HSV-2,HSV-2-010,VARIANTA — pilota Ø800 / L=8 m C25/30 XC4 vrtná,ks,1.0,
+52,3,VARIANTA — pilota Ø800 / L=8 m (alternativa),HSV-2,HSV-2-011,VARIANTA — vrtání piloty Ø800 do hor. tř. 3-4,bm,8.0,
+53,3,VARIANTA — pilota Ø800 / L=8 m (alternativa),HSV-2,HSV-2-012,VARIANTA — výztuž piloty 8× R25 podélná + třmínky Ø10 á 200 B500B,kg,380.0,
+54,3,Podlahová deska — bednění + výztuž + distance + beton,HSV-2,HSV-2-014,Bednění obvodové desky — zřízení,bm,95.0,
+55,3,Podlahová deska — bednění + výztuž + distance + beton,HSV-2,HSV-2-016,Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — dolní vrstva,kg,2098.3,
+56,3,Podlahová deska — bednění + výztuž + distance + beton,HSV-2,HSV-2-017,"Distanční podložky výztuže desky — plast / beton, krytí 30 mm",ks,2475.0,
+57,3,Podlahová deska — bednění + výztuž + distance + beton,HSV-2,HSV-2-015,Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — horní vrstva,kg,2098.3,
+58,3,Podlahová deska — bednění + výztuž + distance + beton,HSV-2,HSV-2-013,"Beton podlahové desky C25/30 XC4, tl. 200 mm — strojně rovnaný povrch",m³,106.24,rev:beton-class
+59,4,Doprava OK na stavbu,HSV-3,HSV-3-011,Doprava ocelové konstrukce na stavbu (default 50 km),t·km,1400,
+60,4,Kotvení sloupů ke patkám,HSV-3,HSV-3-009,"Kotvení sloupů ke patkám — chemická kotva M20 nebo zalité šrouby, výztužná deska",ks,176.0,
+61,4,Pomocné lešení OK,HSV-9,HSV-9-002,"Pomocné lešení pro montáž ocelové konstrukce, výška do 6 m",m³,200.0,
+62,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-001,"Specifikace + dodávka sloupy IPE 400 S235 jakost J0, EXC2 dle ČSN EN 1090-2",kg,10263.24,
+63,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-002,"Specifikace + dodávka sloupy HEA 200 S235 jakost J0, štítové, EXC2",kg,1455.12,
+64,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-003,Specifikace + dodávka příčlí IPE 450 S235 s náběhem (sklon 5.25°),kg,9474.96,
+65,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-004,Specifikace + dodávka vaznice IPE 160 S235 jakost J0,kg,5195.04,
+66,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-005,Specifikace + dodávka vaznice krajní UPE 160 S235 jakost J0,kg,1030.24,ABMV:ABMV_15
+67,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-006,Specifikace + dodávka ztužidla stěnová L 70/70/6 S235,kg,327.68,
+68,4,"Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",HSV-3,HSV-3-007,Specifikace + dodávka ztužidla střešní z kruhových tyčí Ø20 S235,kg,237.12,
+69,4,Styčníkové plechy + spojovací materiál,HSV-3,HSV-3-008,Styčníkové plechy + spojovací materiál šroubový grade 8.8 — celk. paušál 6%,kg,1450.0,
+70,4,Montáž OK — kompletace rámové haly,HSV-3,HSV-3-010,"Montáž ocelové konstrukce — kompletní rámová hala, dle ČSN EN 1090-2 EXC2 tol. cl. 1",t,28.0,
+71,4,Demontáž pomocného lešení po montáži OK,HSV-9,HSV-9-003,Demontáž pomocného lešení po dokončení montáže,m³,200.0,
+72,4,Povrchové úpravy OK (antikoroze + protipožární),HSV-3,HSV-3-012,"Antikorozní nátěr 2-vrstvý dle ISO 12944, korozní katego­rie C2, P1, životnost 15 let",m²,850.0,
+73,4,Povrchové úpravy OK (antikoroze + protipožární),HSV-3,HSV-3-013,Protipožární nátěr — interiérové prvky R 15 DP1,m²,850.0,
+74,4,Revize OK + protokol EXC2,HSV-3,HSV-3-014,"Revize ocelové konstrukce + protokol o předání, EXC2 ČSN EN 1090-2",paušál,1.0,
+75,5,Pomocné lešení pro opláštění (pojízdné),HSV-9,HSV-9-004,Pomocné lešení pro montáž opláštění (Kingspan) a klempířiny — pojízdné,m³,120.0,
+76,5,Doprava sendvičových panelů Kingspan,PSV-OPL,PSV-OPL-007,Doprava sendvičových panelů Kingspan na stavbu — paušál,paušál,1.0,
+77,5,Stěnové panely KS NF 200 mm — dodávka + montáž,PSV-OPL,PSV-OPL-001,"Kingspan KS NF 200 mm, jádro minerální vata (MW) per TZ ARS p4 + PBR §3 + ABMV_13 closure, plech vnější/vnitřní 0.6/0.4 mm, profilace M (Micro)/Q (Minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Hradec Králové (Kingspan ČR), barva bílá + modrá (RAL standard)",m²,528.5,ABMV:ABMV_13
+78,5,Stěnové panely KS NF 200 mm — dodávka + montáž,PSV-OPL,PSV-OPL-002,"Montáž obvodového opláštění Kingspan KS NF 200 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6,1 m per statika), per TZ ARS D.1.1 p4 montážní předpis výrobce",m²,528.5,
+79,5,Střešní panely KS FF-ROC 200 mm — dodávka + montáž,PSV-OPL,PSV-OPL-003,"Kingspan KS FF-ROC tl. 200 mm, jádro ROC (Rockwool — minerální vata), pro šikmé střechy sklon 5.25°, plech vnější/vnitřní 0.6/0.5 mm, profilace trapéz 34 mm/Q (minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Lipsko (Kingspan Polská republika), vaznice rozteč max 1.5 m per statika",m²,558.8,ABMV:ABMV_13
+80,5,Střešní panely KS FF-ROC 200 mm — dodávka + montáž,PSV-OPL,PSV-OPL-004,"Montáž střešního opláštění Kingspan KS FF-ROC 200 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů, uložení prosté/spojité (2-3 polí) na vaznicích rozteč max 1.5 m per statika TZ D.1.2",m²,558.8,
+81,5,Spojovací materiál + EPDM těsnění Kingspan,PSV-OPL,PSV-OPL-006,Spojovací materiál + těsnění + EPDM podložky Kingspan systém — paušál pro celý objem opláštění,kpl,1.0,
+82,5,Klempířské lemy přechody střecha–fasáda,PSV-OPL,PSV-OPL-005,"Klempířské lemy + přechody střecha–fasáda, pozinkovaný plech — atika, úžlabí, nároží, parapety, krycí lišty — dle TZ ARS DPZ D.1.1",bm,207.0,rev:qty
+83,5,Statické posouzení uchycení Kingspan,PSV-OPL,PSV-OPL-008,Statické posouzení uchycení Kingspan k ocelové konstrukci + revizní zpráva — paušál,paušál,1.0,
+84,6,Doprava klempířiny na stavbu,PSV-78x,PSV-78x-012,Doprava klempířiny + materiálu na stavbu — paušál,paušál,1.0,
+85,6,Atikové oplechování + úžlabí + nároží,PSV-78x,PSV-78x-007,"Atikové oplechování titanzinek tl. 0.7 mm, rš 500 mm — po obvodu střechy",bm,95.0,
+86,6,Atikové oplechování + úžlabí + nároží,PSV-78x,PSV-78x-008,Lemování úžlabí střechy titanzinek — diagonální linie,bm,15.0,
+87,6,Atikové oplechování + úžlabí + nároží,PSV-78x,PSV-78x-009,Lemování nároží titanzinek — vertikální rohy fasády,bm,25.2,
+88,6,Tmelení spár klempířských konstrukcí,PSV-78x,PSV-78x-010,Krytí spár klempířských konstrukcí — silikonový tmel,bm,120.0,
+89,6,Lindab svody — dodávka + montáž,PSV-78x,PSV-78x-001,"Dodávka Lindab Round Downpipe 150/100 Antique White, vč. kolen a spojek",ks,4.0,ABMV:ABMV_20
+90,6,Lindab svody — dodávka + montáž,PSV-78x,PSV-78x-002,"Montáž svodů Lindab — příchytky, kotvení do fasády",kpl,4.0,ABMV:ABMV_20
+91,6,Wavin Tegra střešní vpusti — dodávka + montáž,PSV-78x,PSV-78x-003,Wavin Tegra střešní vpust Round Iron Cover + Concrete Ring DN300,ks,3.0,
+92,6,Wavin Tegra střešní vpusti — dodávka + montáž,PSV-78x,PSV-78x-004,"Montáž střešních vpustí Wavin Tegra — osazení, napojení na svody",ks,3.0,
+93,6,MEA Mearin liniový žlab + mřížka,PSV-78x,PSV-78x-005,MEA Mearin Plus 3000 NW300 liniový žlab — podél JZ a SZ fasády,bm,30.0,
+94,6,MEA Mearin liniový žlab + mřížka,PSV-78x,PSV-78x-006,Mřížka MEA Mearin Plus 3000 + osazovací rám — pochozí provedení,bm,30.0,
+95,6,"Ostatní oplechování (parapety, lemy)",PSV-78x,PSV-78x-011,"Ostatní oplechování — parapety střešních vpustí, lemy prostupů",bm,25.0,
+96,7,Okna plastová — dodávka + montáž + parapet + lemy,PSV-76x,PSV-76x-001,"Dodávka okno plastové 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá",ks,21.0,
+97,7,Okna plastová — dodávka + montáž + parapet + lemy,PSV-76x,PSV-76x-002,"Montáž okna plastového do osazovacího otvoru, vč. kotvení a pěny",ks,21.0,
+98,7,Okna plastová — dodávka + montáž + parapet + lemy,PSV-76x,PSV-76x-003,"Vnější parapet pozinkovaný plech, š. 200 mm, s krytkami",bm,22.05,
+99,7,Okna plastová — dodávka + montáž + parapet + lemy,PSV-76x,PSV-76x-004,Vnější okenní lemy plastové — rohové + nadokenní,bm,63.0,
+100,7,Sekční vrata 3500×4000 — dodávka + pohon + montáž,PSV-76x,PSV-76x-005,"Dodávka sekční vrata 3500 × 4000 mm (š × v) s tepelněizolační výplní, motorická",ks,4.0,
+101,7,Sekční vrata 3500×4000 — dodávka + pohon + montáž,PSV-76x,PSV-76x-006,Elektrický pohon vrat sekčních s dálkovým ovládáním + nouzové odblokování,ks,4.0,
+102,7,Sekční vrata 3500×4000 — dodávka + pohon + montáž,PSV-76x,PSV-76x-007,Nouzové ruční odblokování vrat sekčních — pro výpadek el.,ks,4.0,
+103,7,Sekční vrata 3500×4000 — dodávka + pohon + montáž,PSV-76x,PSV-76x-008,"Montáž sekčních vrat — osazení do otvoru, ukotvení, nastavení",ks,4.0,
+104,7,Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh,PSV-76x,PSV-76x-009,"Dodávka vnější dvoukřídlé dveře 1050 × 2100 mm, izol. plnostěnné, klika a zámek",ks,2.0,
+105,7,Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh,PSV-76x,PSV-76x-010,"Montáž vnějších 2-křídlých dveří — osazení, kotvení, pěna",ks,2.0,
+106,7,Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh,PSV-76x,PSV-76x-011,Kompletní zámkový systém + klika pro vnější 2-křídlé dveře,kpl,2.0,
+107,7,Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh,PSV-76x,PSV-76x-012,Práh + lemování ostění vnějších dveří — pozink plech,kpl,2.0,
+108,8,Penetrace soklu,PSV-71x,PSV-71x-001,Penetrace soklu — penetrační nátěr pod hydroizolaci,m²,28.5,
+109,8,Hydroizolace svislá soklu — SBS pás,PSV-71x,PSV-71x-002,"Hydroizolace svislá soklu — SBS modifikovaný asfaltový pás, natavený",m²,28.5,
+110,8,Hydroizolační lišty rohové + napojení,PSV-71x,PSV-71x-003,Hydroizolační lišty rohové + napojení svislé na vodorovnou pásku,bm,95.0,
+111,8,Ochranná vrstva — nopová folie HDPE,PSV-71x,PSV-71x-004,"Ochranná vrstva hydroizolace — nopová folie HDPE, š. 0.5 m",m²,47.5,
+112,9,Penetrace + primer pod stěrku,PSV-77x,PSV-77x-001,Penetrace + primer pod průmyslovou stěrku podlahy,m²,495.0,
+113,9,Epoxidová / PU stěrka 4–5 mm,PSV-77x,PSV-77x-002,"Průmyslová epoxidová / PU stěrka podlahy tl. 4-5 mm, zatížení 1600 kg/m²",m²,495.0,ABMV:ABMV_10
+114,9,Lokální zesílení anchorage zón strojů,PSV-77x,PSV-77x-003,Lokální zesílení podlahy v anchorage zónách strojů — vyšší tl. stěrky 8 mm,m²,30.0,"ABMV:ABMV_3,ABMV_16"
+115,9,Dilatace + lemy + protiskluz,PSV-77x,PSV-77x-004,"Dilatační lišty podlahy — kovové, řezané spáry á 6 m",bm,60.0,
+116,9,Dilatace + lemy + protiskluz,PSV-77x,PSV-77x-005,Lemovací úhelníky podlahy — pozink po obvodu stěrky,bm,95.0,
+117,9,Dilatace + lemy + protiskluz,PSV-77x,PSV-77x-006,Protiskluzový posyp křemičitým pískem — pro PU variantu,m²,495.0,ABMV:ABMV_10
+118,10,Přesun hmot HSV vodorovně,HSV-9,HSV-9-001,"Přesun hmot HSV vodorovně — beton, výztuž, ocel, klempířina",t·km,200.0,
+119,10,Doprava materiálu na stavbu — paušál,VRN,VRN-013,Doprava materiálu na stavbu vodorovně — paušál pro veškerou montáž,t·km,1500.0,
+120,11,"Revize TZB (elektro, hydrant, hromosvod)",VRN,VRN-020,Revize elektroinstalace + protokol,paušál,1.0,
+121,11,"Revize TZB (elektro, hydrant, hromosvod)",VRN,VRN-021,Revize hydrantového systému + tlaková zkouška,paušál,1.0,
+122,11,"Revize TZB (elektro, hydrant, hromosvod)",VRN,VRN-022,"Revize hromosvodu / LPS — měření ekvipotenciality, zemniče, svody",paušál,1.0,
+123,11,Likvidace odpadů O + N,VRN,VRN-011,Likvidace odpadů kategorie O (běžný) — kontejner + odvoz + skládkovné,m³,30.0,
+124,11,Likvidace odpadů O + N,VRN,VRN-012,"Likvidace odpadů kategorie N (nebezpečné — barvy, oleje, tmely)",m³,2.0,
+125,11,Geodetické zaměření DSPS,VRN,VRN-015,Geodetické zaměření skutečného provedení (DSPS) — po dokončení stavby,paušál,1.0,
+126,11,Předávací protokoly + kolaudace,VRN,VRN-018,Předávací protokoly + dokumentace skutečného provedení (DSPS),paušál,1.0,
+127,11,Předávací protokoly + kolaudace,VRN,VRN-019,Kolaudační řízení — příprava + účast na jednání + revize dokumentace,paušál,1.0,
+128,11,Náhradní výsadba dřevin (po dokončení),HSV-1,HSV-1-024,Náhradní výsadba dřevin per rozhodnutí orgánu životního prostředí,ks,2.0,
