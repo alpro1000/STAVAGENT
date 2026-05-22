@@ -300,6 +300,7 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
                     "mj": src.get("mj", ""),
                     "mnozstvi": src.get("mnozstvi", ""),
                     "confidence": src.get("confidence", ""),
+                    "vzorec": make_vzorec(src),
                     "_review_concrete_class": src.get("_review_concrete_class"),
                     "_review_qty": src.get("_review_qty"),
                     "_vyjasneni_ref": src.get("_vyjasneni_ref"),
@@ -310,6 +311,68 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
     if len(out) != 128:
         raise SystemExit(f"FATAL: expected 128 ordered rows, got {len(out)}")
     return out
+
+
+VZOREC_MAX_LEN = 220
+_REF_TYPE_LABELS = {
+    "drawing": "výkres",
+    "drawing_measurement": "měřeno",
+    "tz_section": "TZ",
+    "statika_section": "statika",
+    "phase_ref": "phase",
+    "step3_metric": "Step3",
+    "dxf_layer": "DXF",
+    "abmv_closure": "ABMV",
+    "abmv_reopen": "ABMV",
+}
+
+
+def _format_ref(ref: dict) -> str:
+    rtype = ref.get("type", "")
+    label = _REF_TYPE_LABELS.get(rtype, rtype or "ref")
+    code = ref.get("code") or ref.get("section") or ref.get("document") or ""
+    if not code or code == "?":
+        return label
+    return f"{label}:{code}"
+
+
+def make_vzorec(src: dict) -> str:
+    """Build Vzorec / Zdroj výměry cell text from items.json _audit_trail."""
+    at = src.get("audit_trail")
+    if not isinstance(at, dict):
+        return "(zdroj nenalezen — manual verify)"
+    formula = at.get("formula", "").strip()
+    if not formula:
+        return "(zdroj nenalezen — manual verify)"
+
+    refs = at.get("reference") or []
+    ref_parts: list[str] = []
+    seen: set[str] = set()
+    for ref in refs:
+        if not isinstance(ref, dict):
+            continue
+        formatted = _format_ref(ref)
+        if formatted and formatted not in seen:
+            seen.add(formatted)
+            ref_parts.append(formatted)
+        if len(ref_parts) >= 3:
+            break
+
+    text = formula
+    if ref_parts:
+        text = f"{text}  [{', '.join(ref_parts)}]"
+
+    journey = at.get("_analytical_journey")
+    if isinstance(journey, list) and journey:
+        last = journey[-1]
+        prev_val = last.get("value_m3") or last.get("value")
+        prev_method = last.get("method", "")
+        if prev_val is not None and prev_method:
+            text = f"{text}  · was {prev_val}: {prev_method[:60]}"
+
+    if len(text) > VZOREC_MAX_LEN:
+        text = text[: VZOREC_MAX_LEN - 1].rstrip() + "…"
+    return text
 
 
 def make_pozn(row: dict) -> str:
@@ -332,7 +395,8 @@ def write_xlsx(rows: list[dict], path: Path) -> None:
     ws = wb.active
     ws.title = "Postup stavby"
 
-    headers = ["#", "Krok", "Fáze", "Kapitola", "ID", "Položka (popis)", "MJ", "Mnozstvi", "Pozn."]
+    headers = ["#", "Krok", "Fáze", "Kapitola", "ID", "Položka (popis)", "MJ", "Mnozstvi",
+               "Vzorec / Zdroj výměry", "Pozn."]
     ws.append(headers)
 
     header_fill = PatternFill("solid", fgColor="1F2937")
@@ -396,6 +460,7 @@ def write_xlsx(rows: list[dict], path: Path) -> None:
             r["popis"],
             r["mj"],
             r["mnozstvi"],
+            r["vzorec"],
             pozn,
         ])
         row_idx = ws.max_row
@@ -418,7 +483,7 @@ def write_xlsx(rows: list[dict], path: Path) -> None:
             c.border = border
             if row_fill is not None:
                 c.fill = row_fill
-            if col_idx == 6:
+            if col_idx in (6, 9, 10):
                 c.alignment = Alignment(wrap_text=True, vertical="top")
             elif col_idx in (1, 3, 7, 8):
                 c.alignment = Alignment(horizontal="center", vertical="top")
@@ -426,7 +491,7 @@ def write_xlsx(rows: list[dict], path: Path) -> None:
                 c.alignment = Alignment(vertical="top")
 
     # Column widths
-    widths = {1: 5, 2: 4, 3: 6, 4: 10, 5: 14, 6: 70, 7: 8, 8: 11, 9: 30}
+    widths = {1: 5, 2: 4, 3: 6, 4: 10, 5: 14, 6: 60, 7: 8, 8: 11, 9: 55, 10: 26}
     for col_idx, w in widths.items():
         ws.column_dimensions[get_column_letter(col_idx)].width = w
 
@@ -437,11 +502,12 @@ def write_xlsx(rows: list[dict], path: Path) -> None:
 def write_csv(rows: list[dict], path: Path) -> None:
     with path.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["#", "Fáze", "Krok", "Kapitola", "ID", "Položka", "MJ", "Mnozstvi", "Pozn."])
+        w.writerow(["#", "Fáze", "Krok", "Kapitola", "ID", "Položka", "MJ", "Mnozstvi",
+                    "Vzorec / Zdroj výměry", "Pozn."])
         for r in rows:
             w.writerow([
                 r["_sequence_position"], r["_phase"], r["_krok"], r["kapitola"],
-                r["id"], r["popis"], r["mj"], r["mnozstvi"], make_pozn(r),
+                r["id"], r["popis"], r["mj"], r["mnozstvi"], r["vzorec"], make_pozn(r),
             ])
 
 
@@ -453,6 +519,7 @@ def write_json(rows: list[dict], items_by_id: dict, path: Path) -> None:
         src["_phase"] = r["_phase"]
         src["_phase_title"] = r["_phase_title"]
         src["_krok"] = r["_krok"]
+        src["_vzorec_display"] = r["vzorec"]
         out.append(src)
     path.write_text(json.dumps({"items": out, "count": len(out)},
                                ensure_ascii=False, indent=2), encoding="utf-8")
@@ -491,9 +558,12 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
 
 ## Soubory
-- `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1
+- `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1, includes Vzorec / Zdroj výměry column
 - `hk212_sequential_list.csv` — flat CSV mirror pro grep / diff
-- `hk212_sequential_list.json` — items.json fields + `_sequence_position` + `_phase` + `_krok`
+- `hk212_sequential_list.json` — items.json fields + `_sequence_position` + `_phase` + `_krok` + `_vzorec_display`
+
+## Sloupec "Vzorec / Zdroj výměry"
+Každý řádek nese stručný výpočet kvantity + zdrojové reference (výkres / TZ / statika / Step3 / phase ref) extrahované z `items_hk212_etap1.json` field `audit_trail.formula` + `audit_trail.reference`. Pokud zdroj nelze odvodit, řádek nese `(zdroj nenalezen — manual verify)`. Text je truncated na ~220 znaků; plné detaily (vstupy + krok-za-krok + analytical_journey) zůstávají v `items.json` audit_trail.
 
 ## ABMV open ({len(abmv_open)})
 {', '.join(sorted(abmv_open)) if abmv_open else '(žádné)'}
@@ -597,6 +667,10 @@ def main() -> None:
     phases = [r["_phase"] for r in rows]
     for prev, cur in zip(phases, phases[1:]):
         assert cur >= prev, f"phase regression: {prev} → {cur}"
+    empty_vzorec = [r["id"] for r in rows if not r["vzorec"]]
+    assert not empty_vzorec, f"empty vzorec for: {empty_vzorec}"
+    fallback_vzorec = [r["id"] for r in rows if r["vzorec"].startswith("(zdroj nenalezen")]
+    print(f"  vzorec coverage: {128 - len(fallback_vzorec)}/128 with formula, {len(fallback_vzorec)} fallback")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_xlsx(rows, OUT_DIR / "hk212_sequential_list.xlsx")

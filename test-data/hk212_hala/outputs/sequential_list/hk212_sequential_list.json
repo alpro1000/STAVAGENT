@@ -57,7 +57,8 @@
       "_sequence_position": 1,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Geodetické vytýčení + vytýčení sítí"
+      "_krok": "Geodetické vytýčení + vytýčení sítí",
+      "_vzorec_display": "paušál (Rožmitál URS 00511 R)"
     },
     {
       "id": "VRN-017",
@@ -122,7 +123,8 @@
       "_sequence_position": 2,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Geodetické vytýčení + vytýčení sítí"
+      "_krok": "Geodetické vytýčení + vytýčení sítí",
+      "_vzorec_display": "placeholder ~200 bm trasování sítí na pozemku"
     },
     {
       "id": "VRN-016",
@@ -193,7 +195,8 @@
       "_sequence_position": 3,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Vyjádření správců sítí"
+      "_krok": "Vyjádření správců sítí",
+      "_vzorec_display": "1 kpl pro všech 8-12 správců sítí (per RE-RUN §6)  [výkres:C3]"
     },
     {
       "id": "VRN-004",
@@ -258,7 +261,8 @@
       "_sequence_position": 4,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Oplocení staveniště"
+      "_krok": "Oplocení staveniště",
+      "_vzorec_display": "placeholder ~150 bm (perimetr staveniště + pomocné plochy)"
     },
     {
       "id": "VRN-001",
@@ -328,7 +332,8 @@
       "_sequence_position": 5,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Zařízení staveniště — buňky"
+      "_krok": "Zařízení staveniště — buňky",
+      "_vzorec_display": "4 měsíců × 1 ks"
     },
     {
       "id": "VRN-002",
@@ -398,7 +403,8 @@
       "_sequence_position": 6,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Zařízení staveniště — buňky"
+      "_krok": "Zařízení staveniště — buňky",
+      "_vzorec_display": "4 měsíců × 1 ks"
     },
     {
       "id": "VRN-003",
@@ -468,7 +474,8 @@
       "_sequence_position": 7,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Zařízení staveniště — buňky"
+      "_krok": "Zařízení staveniště — buňky",
+      "_vzorec_display": "4 měsíců × 1 ks"
     },
     {
       "id": "VRN-007",
@@ -538,7 +545,8 @@
       "_sequence_position": 8,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Mobilní WC pro pracovníky"
+      "_krok": "Mobilní WC pro pracovníky",
+      "_vzorec_display": "2 ks × 4 měsíců"
     },
     {
       "id": "VRN-005",
@@ -597,7 +605,8 @@
       "_sequence_position": 9,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Přípojky pro stavbu (voda + elektro)"
+      "_krok": "Přípojky pro stavbu (voda + elektro)",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "VRN-006",
@@ -656,7 +665,8 @@
       "_sequence_position": 10,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Přípojky pro stavbu (voda + elektro)"
+      "_krok": "Přípojky pro stavbu (voda + elektro)",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "VRN-009",
@@ -715,7 +725,8 @@
       "_sequence_position": 11,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "BOZP plán + koordinátor"
+      "_krok": "BOZP plán + koordinátor",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "VRN-008",
@@ -780,7 +791,8 @@
       "_sequence_position": 12,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "BOZP plán + koordinátor"
+      "_krok": "BOZP plán + koordinátor",
+      "_vzorec_display": "4 měsíců"
     },
     {
       "id": "VRN-010",
@@ -839,7 +851,8 @@
       "_sequence_position": 13,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Pojištění stavby"
+      "_krok": "Pojištění stavby",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "HSV-1-020",
@@ -915,7 +928,8 @@
       "_sequence_position": 14,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Kácení dřevin + frézování pařezů"
+      "_krok": "Kácení dřevin + frézování pařezů",
+      "_vzorec_display": "2 ks (TZ B m.7.b)  [výkres:C3, TZ:chapter]"
     },
     {
       "id": "HSV-1-021",
@@ -991,7 +1005,8 @@
       "_sequence_position": 15,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Kácení dřevin + frézování pařezů"
+      "_krok": "Kácení dřevin + frézování pařezů",
+      "_vzorec_display": "placeholder 5 ks (TZ B m.7.b)  [výkres:C3, TZ:B]"
     },
     {
       "id": "HSV-1-022",
@@ -1061,7 +1076,8 @@
       "_sequence_position": 16,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Kácení dřevin + frézování pařezů"
+      "_krok": "Kácení dřevin + frézování pařezů",
+      "_vzorec_display": "2 vzrostlé + 5 drobné = 7 pařezů"
     },
     {
       "id": "HSV-1-023",
@@ -1126,7 +1142,8 @@
       "_sequence_position": 17,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Kácení dřevin + frézování pařezů"
+      "_krok": "Kácení dřevin + frézování pařezů",
+      "_vzorec_display": "placeholder ~6 m³ dřevní hmoty"
     },
     {
       "id": "HSV-1-025",
@@ -1203,7 +1220,8 @@
       "_sequence_position": 18,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Odstranění asfaltové vrstvy + odvoz suti"
+      "_krok": "Odstranění asfaltové vrstvy + odvoz suti",
+      "_vzorec_display": "placeholder ~540 m² (z C3 situace + plocha pod halou)  [výkres:C3, phase:Phase 0b RE-RUN §3.10]"
     },
     {
       "id": "HSV-1-026",
@@ -1270,7 +1288,8 @@
       "_sequence_position": 19,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Odstranění asfaltové vrstvy + odvoz suti"
+      "_krok": "Odstranění asfaltové vrstvy + odvoz suti",
+      "_vzorec_display": "placeholder 540 m² × 0.25 m × 2 t/m³ × 30% = ~80 t"
     },
     {
       "id": "HSV-1-027",
@@ -1331,7 +1350,8 @@
       "_sequence_position": 20,
       "_phase": 1,
       "_phase_title": "PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE",
-      "_krok": "Odstranění asfaltové vrstvy + odvoz suti"
+      "_krok": "Odstranění asfaltové vrstvy + odvoz suti",
+      "_vzorec_display": "= nakládání suti"
     },
     {
       "id": "HSV-1-001",
@@ -1492,7 +1512,8 @@
       "_sequence_position": 21,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Hlavní výkop figury pod desku"
+      "_krok": "Hlavní výkop figury pod desku",
+      "_vzorec_display": "Zone-by-zone: 100 + 24 + 54 + 7 + 25 = 210 m³ (main_floor + perimeter_pas + patky_pits + kanalizace + svahy_rezerva)  [výkres:A102, TZ:10.g, phase:Phase 0b RE-RUN §3.10]  · was TBD: DXF layer scan A106/A201 for exact po…"
     },
     {
       "id": "HSV-1-006",
@@ -1585,7 +1606,8 @@
       "_sequence_position": 22,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Ruční výkop v ochranných pásmech sítí"
+      "_krok": "Ruční výkop v ochranných pásmech sítí",
+      "_vzorec_display": "2 křížení × 5 m délka × 1.5 m š × 2.0 m h  [výkres:A201, TZ:10.g]"
     },
     {
       "id": "HSV-1-007",
@@ -1646,7 +1668,8 @@
       "_sequence_position": 23,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Ruční výkop v ochranných pásmech sítí"
+      "_krok": "Ruční výkop v ochranných pásmech sítí",
+      "_vzorec_display": "= ruční výkop u sítí (m³)"
     },
     {
       "id": "HSV-1-009",
@@ -1724,7 +1747,8 @@
       "_sequence_position": 24,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Obetonování stávajícího potrubí (po odkrytí)"
+      "_krok": "Obetonování stávajícího potrubí (po odkrytí)",
+      "_vzorec_display": "placeholder ~5 m³ (úsek 5 m × tlouš. 0.3 m × š. 0.8 m + ofset)  [výkres:A201, TZ:10.g]"
     },
     {
       "id": "HSV-1-010",
@@ -1802,7 +1826,8 @@
       "_sequence_position": 25,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Obetonování stávajícího potrubí (po odkrytí)"
+      "_krok": "Obetonování stávajícího potrubí (po odkrytí)",
+      "_vzorec_display": "placeholder ~5 m³ (úsek 5 m × 0.3 × 0.8 + ofset)  [výkres:A201, TZ:10.g]"
     },
     {
       "id": "HSV-1-002",
@@ -1890,7 +1915,8 @@
       "_sequence_position": 26,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Dohloubky pro patky a pasy"
+      "_krok": "Dohloubky pro patky a pasy",
+      "_vzorec_display": "14 ks × 1.5 m × 1.5 m × 1.0 m (od úr. figury -0.45 do -1.45/-1.90)  [výkres:A105]"
     },
     {
       "id": "HSV-1-003",
@@ -1978,7 +2004,8 @@
       "_sequence_position": 27,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Dohloubky pro patky a pasy"
+      "_krok": "Dohloubky pro patky a pasy",
+      "_vzorec_display": "8 ks × 0.8 × 0.8 × 0.25 m (od figury -0.45 do -0.70)  [výkres:A105]"
     },
     {
       "id": "HSV-1-005",
@@ -2065,7 +2092,8 @@
       "_sequence_position": 28,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Dohloubky pro patky a pasy"
+      "_krok": "Dohloubky pro patky a pasy",
+      "_vzorec_display": "~30 bm × 0.4 m × 0.6 m (krátké propojovací pasy)  [výkres:A105, phase:Phase 0b RE-RUN §3.10]"
     },
     {
       "id": "HSV-1-004",
@@ -2139,7 +2167,8 @@
       "_sequence_position": 29,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Atypický základ (varianta pilota) + pažení"
+      "_krok": "Atypický základ (varianta pilota) + pažení",
+      "_vzorec_display": "placeholder 12 m³ (vrt + zaplnění; variantní řešení per A105 mtext)  [výkres:A105]"
     },
     {
       "id": "HSV-1-008",
@@ -2216,7 +2245,8 @@
       "_sequence_position": 30,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Atypický základ (varianta pilota) + pažení"
+      "_krok": "Atypický základ (varianta pilota) + pažení",
+      "_vzorec_display": "placeholder 20 m² (perimetr atypického základu × hloubka)  [csn, phase:Phase 0b RE-RUN §3.10]"
     },
     {
       "id": "HSV-1-011",
@@ -2293,7 +2323,8 @@
       "_sequence_position": 31,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Výkopy pro nové přípojky"
+      "_krok": "Výkopy pro nové přípojky",
+      "_vzorec_display": "cca 16 m × 0.5 m š × 1.0 m h (TZ B m.10.g + RE-RUN §6)"
     },
     {
       "id": "HSV-1-012",
@@ -2370,7 +2401,8 @@
       "_sequence_position": 32,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Výkopy pro nové přípojky"
+      "_krok": "Výkopy pro nové přípojky",
+      "_vzorec_display": "82 m gravitační × 0.5 m š × 1.2 m h"
     },
     {
       "id": "HSV-1-016",
@@ -2442,7 +2474,8 @@
       "_sequence_position": 33,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy"
+      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy",
+      "_vzorec_display": "= celkový objem výkopu 350 m³ (Phase 0b baseline)  [phase:Phase 0b RE-RUN §3.10]"
     },
     {
       "id": "HSV-1-017",
@@ -2514,7 +2547,8 @@
       "_sequence_position": 34,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy"
+      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy",
+      "_vzorec_display": "= 350 m³ × 1 (default 5 km deponie)"
     },
     {
       "id": "HSV-1-018",
@@ -2581,7 +2615,8 @@
       "_sequence_position": 35,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy"
+      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy",
+      "_vzorec_display": "= 350 m³"
     },
     {
       "id": "HSV-1-019",
@@ -2653,7 +2688,8 @@
       "_sequence_position": 36,
       "_phase": 2,
       "_phase_title": "ZEMNÍ PRÁCE",
-      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy"
+      "_krok": "Nakládání + vodorovné přemístění + odvoz zeminy",
+      "_vzorec_display": "350 m³ × 1.8 t/m³ (zhutněná zemina)"
     },
     {
       "id": "HSV-1-028",
@@ -2756,7 +2792,8 @@
       "_sequence_position": 37,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Výměna aktivní zóny pláně"
+      "_krok": "Výměna aktivní zóny pláně",
+      "_vzorec_display": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]"
     },
     {
       "id": "HSV-1-013",
@@ -2834,7 +2871,8 @@
       "_sequence_position": 38,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Štěrkové lože + zhutnění podloží"
+      "_krok": "Štěrkové lože + zhutnění podloží",
+      "_vzorec_display": "495 m² × 0.25 m  [TZ:B]"
     },
     {
       "id": "HSV-1-014",
@@ -2901,7 +2939,8 @@
       "_sequence_position": 39,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Štěrkové lože + zhutnění podloží"
+      "_krok": "Štěrkové lože + zhutnění podloží",
+      "_vzorec_display": "= plocha desky  [TZ:B]"
     },
     {
       "id": "HSV-2-018",
@@ -2966,7 +3005,8 @@
       "_sequence_position": 40,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Hydroizolace plošná pod desku"
+      "_krok": "Hydroizolace plošná pod desku",
+      "_vzorec_display": "= plocha desky  [TZ:B]"
     },
     {
       "id": "HSV-2-009",
@@ -3031,7 +3071,8 @@
       "_sequence_position": 41,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Výztuž patek a pasů"
+      "_krok": "Výztuž patek a pasů",
+      "_vzorec_display": "placeholder 600 kg per RE-RUN §3.4 statika dimensioning"
     },
     {
       "id": "HSV-2-002",
@@ -3127,7 +3168,8 @@
       "_sequence_position": 42,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Patky rámové — bednění + beton + odbednění"
+      "_krok": "Patky rámové — bednění + beton + odbednění",
+      "_vzorec_display": "10 × (3.6 + 3.0) = 66.0 m²  [výkres:A105, TZ:D.1.2 (statika) — Návrh opláštění, měřeno:A105]"
     },
     {
       "id": "HSV-2-001",
@@ -3252,7 +3294,8 @@
       "_sequence_position": 43,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Patky rámové — bednění + beton + odbednění"
+      "_krok": "Patky rámové — bednění + beton + odbednění",
+      "_vzorec_display": "10 × (1.5²×0.6 + 1.25²×0.6) = 10 × (1.35 + 0.9375) = 22.875 m³  [výkres:A105, TZ:D.1.1 p3, statika:D.1.2 p29-30]"
     },
     {
       "id": "HSV-2-003",
@@ -3322,7 +3365,8 @@
       "_sequence_position": 44,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Patky rámové — bednění + beton + odbednění"
+      "_krok": "Patky rámové — bednění + beton + odbednění",
+      "_vzorec_display": "= HSV-2-002 = 66.0 m²  [TZ:D.1.2 (statika) — Návrh opláštění, měřeno:A105]"
     },
     {
       "id": "HSV-2-005",
@@ -3413,7 +3457,8 @@
       "_sequence_position": 45,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Patky štítové — bednění + beton + odbednění"
+      "_krok": "Patky štítové — bednění + beton + odbednění",
+      "_vzorec_display": "8 × 4 × 0.8 × 1.2 = 30.72 m²  [výkres:A105, tz_typo_resolution]"
     },
     {
       "id": "HSV-2-004",
@@ -3504,7 +3549,8 @@
       "_sequence_position": 46,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Patky štítové — bednění + beton + odbednění"
+      "_krok": "Patky štítové — bednění + beton + odbednění",
+      "_vzorec_display": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³  [výkres:A105, tz_typo_resolution]"
     },
     {
       "id": "HSV-2-006",
@@ -3569,7 +3615,8 @@
       "_sequence_position": 47,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Patky štítové — bednění + beton + odbednění"
+      "_krok": "Patky štítové — bednění + beton + odbednění",
+      "_vzorec_display": "= HSV-2-005 = 30.72 m²  [tz_typo_resolution]"
     },
     {
       "id": "HSV-2-008",
@@ -3640,7 +3687,8 @@
       "_sequence_position": 48,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Pasy ŽB — bednění + beton"
+      "_krok": "Pasy ŽB — bednění + beton",
+      "_vzorec_display": "~30 bm × 2 × 0.6 m boční plocha = 36 m²  [výkres:A105]"
     },
     {
       "id": "HSV-2-007",
@@ -3711,7 +3759,8 @@
       "_sequence_position": 49,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Pasy ŽB — bednění + beton"
+      "_krok": "Pasy ŽB — bednění + beton",
+      "_vzorec_display": "~30 bm × 0.4 × 0.6 m = 7.2 m³  [výkres:A105]"
     },
     {
       "id": "HSV-1-015",
@@ -3783,7 +3832,8 @@
       "_sequence_position": 50,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Zásyp výkopů kolem patek"
+      "_krok": "Zásyp výkopů kolem patek",
+      "_vzorec_display": "placeholder ~30 m³ (zásypy okolo patek + nad obetonovanými sítěmi)  [phase:Phase 0b RE-RUN §3.10]"
     },
     {
       "id": "HSV-2-010",
@@ -3859,7 +3909,8 @@
       "_sequence_position": 51,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)"
+      "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)",
+      "_vzorec_display": "1 ks pilota Ø800 × 8 m délka  [výkres:A105, igp_section:4.3]"
     },
     {
       "id": "HSV-2-011",
@@ -3940,7 +3991,8 @@
       "_sequence_position": 52,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)"
+      "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)",
+      "_vzorec_display": "1 ks × 8 m délka  [výkres:A105, igp_section:4.3]"
     },
     {
       "id": "HSV-2-012",
@@ -4026,7 +4078,8 @@
       "_sequence_position": 53,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)"
+      "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)",
+      "_vzorec_display": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder  [výkres:A105, igp_section:4.3]"
     },
     {
       "id": "HSV-2-014",
@@ -4097,7 +4150,8 @@
       "_sequence_position": 54,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Podlahová deska — bednění + výztuž + distance + beton"
+      "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
+      "_vzorec_display": "obvod desky ~95 bm  [výkres:A101]"
     },
     {
       "id": "HSV-2-016",
@@ -4162,7 +4216,8 @@
       "_sequence_position": 55,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Podlahová deska — bednění + výztuž + distance + beton"
+      "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
+      "_vzorec_display": "= HSV-2-015 = 2098.3 kg  [měřeno:A105]"
     },
     {
       "id": "HSV-2-017",
@@ -4232,7 +4287,8 @@
       "_sequence_position": 56,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Podlahová deska — bednění + výztuž + distance + beton"
+      "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
+      "_vzorec_display": "495 m² × 5 ks/m² (typická hustota)"
     },
     {
       "id": "HSV-2-015",
@@ -4308,7 +4364,8 @@
       "_sequence_position": 57,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Podlahová deska — bednění + výztuž + distance + beton"
+      "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
+      "_vzorec_display": "531.22 × 3.95 = 2098.3 kg  [měřeno:A105]"
     },
     {
       "id": "HSV-2-013",
@@ -4410,7 +4467,8 @@
       "_sequence_position": 58,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Podlahová deska — bednění + výztuž + distance + beton"
+      "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
+      "_vzorec_display": "531.22 × 0.20 = 106.24 m³  [TZ:B, měřeno:A105, ABMV]"
     },
     {
       "id": "HSV-3-011",
@@ -4484,7 +4542,8 @@
       "_sequence_position": 59,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Doprava OK na stavbu"
+      "_krok": "Doprava OK na stavbu",
+      "_vzorec_display": "28 t × 50 km"
     },
     {
       "id": "HSV-3-009",
@@ -4569,7 +4628,8 @@
       "_sequence_position": 60,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Kotvení sloupů ke patkám"
+      "_krok": "Kotvení sloupů ke patkám",
+      "_vzorec_display": "(36 + 8) sloupů × 4 kotvy/sloup = 176 ks  [výkres:A105]"
     },
     {
       "id": "HSV-9-002",
@@ -4634,7 +4694,8 @@
       "_sequence_position": 61,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Pomocné lešení OK"
+      "_krok": "Pomocné lešení OK",
+      "_vzorec_display": "placeholder ~200 m³ prostorové lešení pro halu 28×19×6 m"
     },
     {
       "id": "HSV-3-001",
@@ -4719,7 +4780,8 @@
       "_sequence_position": 62,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "36 ks × 4.3 m × 66.3 kg/m = 10 263 kg  [výkres:A101]"
     },
     {
       "id": "HSV-3-002",
@@ -4804,7 +4866,8 @@
       "_sequence_position": 63,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "8 ks × 4.3 m × 42.3 kg/m = 1 455 kg  [výkres:A101]"
     },
     {
       "id": "HSV-3-003",
@@ -4888,7 +4951,8 @@
       "_sequence_position": 64,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "6 rámů × 18.5 m × 77.6 kg/m × 1.1 (náběh) = 9 478 kg"
     },
     {
       "id": "HSV-3-004",
@@ -4980,7 +5044,8 @@
       "_sequence_position": 65,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "12 řad × 27.4 m × 15.8 kg/m = 5 195 kg  [TZ:D.1.2 (statika) — vaznice rozteč]"
     },
     {
       "id": "HSV-3-005",
@@ -5061,7 +5126,8 @@
       "_sequence_position": 66,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "2 ks × 27.4 m × 18.8 kg/m = 1 030 kg"
     },
     {
       "id": "HSV-3-006",
@@ -5140,7 +5206,8 @@
       "_sequence_position": 67,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "8 ks × 6.4 m × 6.4 kg/m = 328 kg"
     },
     {
       "id": "HSV-3-007",
@@ -5225,7 +5292,8 @@
       "_sequence_position": 68,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)"
+      "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
+      "_vzorec_display": "8 ks × 12 m × 2.47 kg/m = 237 kg  [výkres:A101]"
     },
     {
       "id": "HSV-3-008",
@@ -5299,7 +5367,8 @@
       "_sequence_position": 69,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Styčníkové plechy + spojovací materiál"
+      "_krok": "Styčníkové plechy + spojovací materiál",
+      "_vzorec_display": "~6% × součet OK 27 985 kg ≈ 1 450 kg  [csn]"
     },
     {
       "id": "HSV-3-010",
@@ -5368,7 +5437,8 @@
       "_sequence_position": 70,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Montáž OK — kompletace rámové haly"
+      "_krok": "Montáž OK — kompletace rámové haly",
+      "_vzorec_display": "součet OK profilů + kotev = ~28 t"
     },
     {
       "id": "HSV-9-003",
@@ -5427,7 +5497,8 @@
       "_sequence_position": 71,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Demontáž pomocného lešení po montáži OK"
+      "_krok": "Demontáž pomocného lešení po montáži OK",
+      "_vzorec_display": "= pomocné lešení"
     },
     {
       "id": "HSV-3-012",
@@ -5502,7 +5573,8 @@
       "_sequence_position": 72,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Povrchové úpravy OK (antikoroze + protipožární)"
+      "_krok": "Povrchové úpravy OK (antikoroze + protipožární)",
+      "_vzorec_display": "celk. povrch profilů ~30 m²/t × 28 t = 850 m²  [výkres:C2]"
     },
     {
       "id": "HSV-3-013",
@@ -5565,7 +5637,8 @@
       "_sequence_position": 73,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Povrchové úpravy OK (antikoroze + protipožární)"
+      "_krok": "Povrchové úpravy OK (antikoroze + protipožární)",
+      "_vzorec_display": "= antikor plocha (interiérové prvky stejně)"
     },
     {
       "id": "HSV-3-014",
@@ -5633,7 +5706,8 @@
       "_sequence_position": 74,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
-      "_krok": "Revize OK + protokol EXC2"
+      "_krok": "Revize OK + protokol EXC2",
+      "_vzorec_display": "paušál  [csn]"
     },
     {
       "id": "HSV-9-004",
@@ -5698,7 +5772,8 @@
       "_sequence_position": 75,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Pomocné lešení pro opláštění (pojízdné)"
+      "_krok": "Pomocné lešení pro opláštění (pojízdné)",
+      "_vzorec_display": "placeholder ~120 m³ pojízdné lešení pro obvodový plášť"
     },
     {
       "id": "PSV-OPL-007",
@@ -5747,7 +5822,8 @@
       "_sequence_position": 76,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Doprava sendvičových panelů Kingspan"
+      "_krok": "Doprava sendvičových panelů Kingspan",
+      "_vzorec_display": "paušál  [TZ:D.1.1]"
     },
     {
       "id": "PSV-OPL-001",
@@ -5839,7 +5915,8 @@
       "_sequence_position": 77,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Stěnové panely KS NF 200 mm — dodávka + montáž"
+      "_krok": "Stěnové panely KS NF 200 mm — dodávka + montáž",
+      "_vzorec_display": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²  [TZ:D.1.1, Step3, ABMV]"
     },
     {
       "id": "PSV-OPL-002",
@@ -5919,7 +5996,8 @@
       "_sequence_position": 78,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Stěnové panely KS NF 200 mm — dodávka + montáž"
+      "_krok": "Stěnové panely KS NF 200 mm — dodávka + montáž",
+      "_vzorec_display": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²  [TZ:D.1.1, ABMV, TZ:D.1.2 (statika) — Návrh opláštění]"
     },
     {
       "id": "PSV-OPL-003",
@@ -6006,7 +6084,8 @@
       "_sequence_position": 79,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Střešní panely KS FF-ROC 200 mm — dodávka + montáž"
+      "_krok": "Střešní panely KS FF-ROC 200 mm — dodávka + montáž",
+      "_vzorec_display": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²  [TZ:D.1.1, DXF, Step3]"
     },
     {
       "id": "PSV-OPL-004",
@@ -6066,7 +6145,8 @@
       "_sequence_position": 80,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Střešní panely KS FF-ROC 200 mm — dodávka + montáž"
+      "_krok": "Střešní panely KS FF-ROC 200 mm — dodávka + montáž",
+      "_vzorec_display": "střecha netto Step3 = 558.8 m²  [TZ:D.1.1, TZ:D.1.2 (statika) — Návrh opláštění]"
     },
     {
       "id": "PSV-OPL-006",
@@ -6115,7 +6195,8 @@
       "_sequence_position": 81,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Spojovací materiál + EPDM těsnění Kingspan"
+      "_krok": "Spojovací materiál + EPDM těsnění Kingspan",
+      "_vzorec_display": "paušál  [TZ:D.1.1]"
     },
     {
       "id": "PSV-OPL-005",
@@ -6181,7 +6262,8 @@
       "_sequence_position": 82,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Klempířské lemy přechody střecha–fasáda"
+      "_krok": "Klempířské lemy přechody střecha–fasáda",
+      "_vzorec_display": "2 × obvod budovy 103.5 m = 207.0 bm (hrubý odhad atika + parapety)  [TZ:D.1.1, Step3]"
     },
     {
       "id": "PSV-OPL-008",
@@ -6230,7 +6312,8 @@
       "_sequence_position": 83,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
-      "_krok": "Statické posouzení uchycení Kingspan"
+      "_krok": "Statické posouzení uchycení Kingspan",
+      "_vzorec_display": "paušál  [TZ:D.1.1]"
     },
     {
       "id": "PSV-78x-012",
@@ -6289,7 +6372,8 @@
       "_sequence_position": 84,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Doprava klempířiny na stavbu"
+      "_krok": "Doprava klempířiny na stavbu",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "PSV-78x-007",
@@ -6360,7 +6444,8 @@
       "_sequence_position": 85,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Atikové oplechování + úžlabí + nároží"
+      "_krok": "Atikové oplechování + úžlabí + nároží",
+      "_vzorec_display": "obvod střechy 95.0 bm  [TZ:B]"
     },
     {
       "id": "PSV-78x-008",
@@ -6425,7 +6510,8 @@
       "_sequence_position": 86,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Atikové oplechování + úžlabí + nároží"
+      "_krok": "Atikové oplechování + úžlabí + nároží",
+      "_vzorec_display": "placeholder ~15 bm (úžlabí pultové střechy 5.25°)"
     },
     {
       "id": "PSV-78x-009",
@@ -6495,7 +6581,8 @@
       "_sequence_position": 87,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Atikové oplechování + úžlabí + nároží"
+      "_krok": "Atikové oplechování + úžlabí + nároží",
+      "_vzorec_display": "4 nároží × 6.3 m výška"
     },
     {
       "id": "PSV-78x-010",
@@ -6560,7 +6647,8 @@
       "_sequence_position": 88,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Tmelení spár klempířských konstrukcí"
+      "_krok": "Tmelení spár klempířských konstrukcí",
+      "_vzorec_display": "placeholder ~120 bm (spáry mezi všemi klempířskými prvky)"
     },
     {
       "id": "PSV-78x-001",
@@ -6633,7 +6721,8 @@
       "_sequence_position": 89,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Lindab svody — dodávka + montáž"
+      "_krok": "Lindab svody — dodávka + montáž",
+      "_vzorec_display": "4 ks (A104 DXF count working, ABMV_20: A101=3 vs A104=4)  [výkres:A104]"
     },
     {
       "id": "PSV-78x-002",
@@ -6700,7 +6789,8 @@
       "_sequence_position": 90,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Lindab svody — dodávka + montáž"
+      "_krok": "Lindab svody — dodávka + montáž",
+      "_vzorec_display": "4 kpl (jeden na každý svod)"
     },
     {
       "id": "PSV-78x-003",
@@ -6771,7 +6861,8 @@
       "_sequence_position": 91,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Wavin Tegra střešní vpusti — dodávka + montáž"
+      "_krok": "Wavin Tegra střešní vpusti — dodávka + montáž",
+      "_vzorec_display": "3 ks (A101 INSERT Wavin × 3 dle DXF parse)  [výkres:A101]"
     },
     {
       "id": "PSV-78x-004",
@@ -6830,7 +6921,8 @@
       "_sequence_position": 92,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Wavin Tegra střešní vpusti — dodávka + montáž"
+      "_krok": "Wavin Tegra střešní vpusti — dodávka + montáž",
+      "_vzorec_display": "= dodávka"
     },
     {
       "id": "PSV-78x-005",
@@ -6901,7 +6993,8 @@
       "_sequence_position": 93,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "MEA Mearin liniový žlab + mřížka"
+      "_krok": "MEA Mearin liniový žlab + mřížka",
+      "_vzorec_display": "~30.0 bm podél JZ + SZ fasády (RE-RUN §3.7)  [výkres:A105]"
     },
     {
       "id": "PSV-78x-006",
@@ -6960,7 +7053,8 @@
       "_sequence_position": 94,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "MEA Mearin liniový žlab + mřížka"
+      "_krok": "MEA Mearin liniový žlab + mřížka",
+      "_vzorec_display": "= liniový žlab"
     },
     {
       "id": "PSV-78x-011",
@@ -7025,7 +7119,8 @@
       "_sequence_position": 95,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
-      "_krok": "Ostatní oplechování (parapety, lemy)"
+      "_krok": "Ostatní oplechování (parapety, lemy)",
+      "_vzorec_display": "placeholder ~25 bm (vpusti + prostupy)"
     },
     {
       "id": "PSV-76x-001",
@@ -7096,7 +7191,8 @@
       "_sequence_position": 96,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy"
+      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy",
+      "_vzorec_display": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)  [výkres:A101]"
     },
     {
       "id": "PSV-76x-002",
@@ -7155,7 +7251,8 @@
       "_sequence_position": 97,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy"
+      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy",
+      "_vzorec_display": "= dodávka okna"
     },
     {
       "id": "PSV-76x-003",
@@ -7225,7 +7322,8 @@
       "_sequence_position": 98,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy"
+      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy",
+      "_vzorec_display": "21 ks × 1.05 m (šířka okna + přesah)"
     },
     {
       "id": "PSV-76x-004",
@@ -7295,7 +7393,8 @@
       "_sequence_position": 99,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy"
+      "_krok": "Okna plastová — dodávka + montáž + parapet + lemy",
+      "_vzorec_display": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)"
     },
     {
       "id": "PSV-76x-005",
@@ -7371,7 +7470,8 @@
       "_sequence_position": 100,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž"
+      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
+      "_vzorec_display": "4 ks (DXF A101 INSERT 'Vrata sekční' = 4)  [výkres:A101, TZ:3.2]"
     },
     {
       "id": "PSV-76x-006",
@@ -7436,7 +7536,8 @@
       "_sequence_position": 101,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž"
+      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
+      "_vzorec_display": "4 ks pohon (jeden na každá vrata)"
     },
     {
       "id": "PSV-76x-007",
@@ -7501,7 +7602,8 @@
       "_sequence_position": 102,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž"
+      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
+      "_vzorec_display": "4 ks ruční odblok"
     },
     {
       "id": "PSV-76x-008",
@@ -7560,7 +7662,8 @@
       "_sequence_position": 103,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž"
+      "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
+      "_vzorec_display": "= dodávka vrat"
     },
     {
       "id": "PSV-76x-009",
@@ -7631,7 +7734,8 @@
       "_sequence_position": 104,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh"
+      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
+      "_vzorec_display": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')  [výkres:A101]"
     },
     {
       "id": "PSV-76x-010",
@@ -7690,7 +7794,8 @@
       "_sequence_position": 105,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh"
+      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
+      "_vzorec_display": "= dodávka dveří"
     },
     {
       "id": "PSV-76x-011",
@@ -7755,7 +7860,8 @@
       "_sequence_position": 106,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh"
+      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
+      "_vzorec_display": "2 kpl"
     },
     {
       "id": "PSV-76x-012",
@@ -7820,7 +7926,8 @@
       "_sequence_position": 107,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
-      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh"
+      "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
+      "_vzorec_display": "2 kpl"
     },
     {
       "id": "PSV-71x-001",
@@ -7890,7 +7997,8 @@
       "_sequence_position": 108,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
-      "_krok": "Penetrace soklu"
+      "_krok": "Penetrace soklu",
+      "_vzorec_display": "95.0 bm × 0.3 m = 28.5 m²"
     },
     {
       "id": "PSV-71x-002",
@@ -7966,7 +8074,8 @@
       "_sequence_position": 109,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
-      "_krok": "Hydroizolace svislá soklu — SBS pás"
+      "_krok": "Hydroizolace svislá soklu — SBS pás",
+      "_vzorec_display": "95.0 bm × 0.3 m = 28.5 m²  [TZ:B]"
     },
     {
       "id": "PSV-71x-003",
@@ -8031,7 +8140,8 @@
       "_sequence_position": 110,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
-      "_krok": "Hydroizolační lišty rohové + napojení"
+      "_krok": "Hydroizolační lišty rohové + napojení",
+      "_vzorec_display": "obvod 95.0 bm"
     },
     {
       "id": "PSV-71x-004",
@@ -8101,7 +8211,8 @@
       "_sequence_position": 111,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
-      "_krok": "Ochranná vrstva — nopová folie HDPE"
+      "_krok": "Ochranná vrstva — nopová folie HDPE",
+      "_vzorec_display": "95.0 bm × 0.5 m"
     },
     {
       "id": "PSV-77x-001",
@@ -8166,7 +8277,8 @@
       "_sequence_position": 112,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
-      "_krok": "Penetrace + primer pod stěrku"
+      "_krok": "Penetrace + primer pod stěrku",
+      "_vzorec_display": "495.0 m² (celá plocha podlahy)"
     },
     {
       "id": "PSV-77x-002",
@@ -8239,7 +8351,8 @@
       "_sequence_position": 113,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
-      "_krok": "Epoxidová / PU stěrka 4–5 mm"
+      "_krok": "Epoxidová / PU stěrka 4–5 mm",
+      "_vzorec_display": "495.0 m²  [TZ:podlaha]"
     },
     {
       "id": "PSV-77x-003",
@@ -8313,7 +8426,8 @@
       "_sequence_position": 114,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
-      "_krok": "Lokální zesílení anchorage zón strojů"
+      "_krok": "Lokální zesílení anchorage zón strojů",
+      "_vzorec_display": "placeholder ~30 m² (3 stroje × ~10 m² každé anchorage zóna)  [výkres:A107]"
     },
     {
       "id": "PSV-77x-004",
@@ -8378,7 +8492,8 @@
       "_sequence_position": 115,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
-      "_krok": "Dilatace + lemy + protiskluz"
+      "_krok": "Dilatace + lemy + protiskluz",
+      "_vzorec_display": "placeholder ~60 bm (pole dilatace á 6 m na 495 m² ploše)"
     },
     {
       "id": "PSV-77x-005",
@@ -8443,7 +8558,8 @@
       "_sequence_position": 116,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
-      "_krok": "Dilatace + lemy + protiskluz"
+      "_krok": "Dilatace + lemy + protiskluz",
+      "_vzorec_display": "obvod desky 95 bm"
     },
     {
       "id": "PSV-77x-006",
@@ -8510,7 +8626,8 @@
       "_sequence_position": 117,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
-      "_krok": "Dilatace + lemy + protiskluz"
+      "_krok": "Dilatace + lemy + protiskluz",
+      "_vzorec_display": "495.0 m² (pokud zvolena PU varianta)"
     },
     {
       "id": "HSV-9-001",
@@ -8575,7 +8692,8 @@
       "_sequence_position": 118,
       "_phase": 10,
       "_phase_title": "OSTATNÍ + PŘESUN HMOT",
-      "_krok": "Přesun hmot HSV vodorovně"
+      "_krok": "Přesun hmot HSV vodorovně",
+      "_vzorec_display": "placeholder 200 t·km (in-site přesuny, default)"
     },
     {
       "id": "VRN-013",
@@ -8640,7 +8758,8 @@
       "_sequence_position": 119,
       "_phase": 10,
       "_phase_title": "OSTATNÍ + PŘESUN HMOT",
-      "_krok": "Doprava materiálu na stavbu — paušál"
+      "_krok": "Doprava materiálu na stavbu — paušál",
+      "_vzorec_display": "placeholder ~1500 t·km (30 t materiálů × 50 km)"
     },
     {
       "id": "VRN-020",
@@ -8704,7 +8823,8 @@
       "_sequence_position": 120,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Revize TZB (elektro, hydrant, hromosvod)"
+      "_krok": "Revize TZB (elektro, hydrant, hromosvod)",
+      "_vzorec_display": "paušál (Rožmitál 00523 R precedent)  [csn]"
     },
     {
       "id": "VRN-021",
@@ -8768,7 +8888,8 @@
       "_sequence_position": 121,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Revize TZB (elektro, hydrant, hromosvod)"
+      "_krok": "Revize TZB (elektro, hydrant, hromosvod)",
+      "_vzorec_display": "paušál  [csn]"
     },
     {
       "id": "VRN-022",
@@ -8832,7 +8953,8 @@
       "_sequence_position": 122,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Revize TZB (elektro, hydrant, hromosvod)"
+      "_krok": "Revize TZB (elektro, hydrant, hromosvod)",
+      "_vzorec_display": "paušál  [csn]"
     },
     {
       "id": "VRN-011",
@@ -8897,7 +9019,8 @@
       "_sequence_position": 123,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Likvidace odpadů O + N"
+      "_krok": "Likvidace odpadů O + N",
+      "_vzorec_display": "placeholder ~30 m³ stavebního odpadu kat. O"
     },
     {
       "id": "VRN-012",
@@ -8962,7 +9085,8 @@
       "_sequence_position": 124,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Likvidace odpadů O + N"
+      "_krok": "Likvidace odpadů O + N",
+      "_vzorec_display": "placeholder ~2 m³ kat. N"
     },
     {
       "id": "VRN-015",
@@ -9021,7 +9145,8 @@
       "_sequence_position": 125,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Geodetické zaměření DSPS"
+      "_krok": "Geodetické zaměření DSPS",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "VRN-018",
@@ -9080,7 +9205,8 @@
       "_sequence_position": 126,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Předávací protokoly + kolaudace"
+      "_krok": "Předávací protokoly + kolaudace",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "VRN-019",
@@ -9139,7 +9265,8 @@
       "_sequence_position": 127,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Předávací protokoly + kolaudace"
+      "_krok": "Předávací protokoly + kolaudace",
+      "_vzorec_display": "paušál"
     },
     {
       "id": "HSV-1-024",
@@ -9210,7 +9337,8 @@
       "_sequence_position": 128,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
-      "_krok": "Náhradní výsadba dřevin (po dokončení)"
+      "_krok": "Náhradní výsadba dřevin (po dokončení)",
+      "_vzorec_display": "2 ks (per TZ B m.7.b náhradní výsadba)  [TZ:7.b]"
     }
   ],
   "count": 128
