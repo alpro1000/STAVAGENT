@@ -6,7 +6,7 @@
     "catalog": "URS201801.csv (39742 stemmed rows)",
     "export_wrapper_default": "KROS Komplet",
     "kapitola_modules_loaded": [
-      "HSV-1 (27 items)",
+      "HSV-1 (28 items)",
       "HSV-2 (18 items)",
       "HSV-3 (14 items)",
       "HSV-9 (4 items)",
@@ -17,7 +17,7 @@
       "PSV-OPL (8 items)",
       "VRN (22 items)"
     ],
-    "total_items": 127,
+    "total_items": 128,
     "status_counts": {
       "matched_medium": 33,
       "needs_review": 82,
@@ -170,6 +170,23 @@
         "PSV-OPL-007",
         "PSV-OPL-008"
       ]
+    },
+    "phase_1_igp_applied": "2026-05-22T07:23:50.291052+00:00",
+    "phase_1_igp_summary": {
+      "applied_at": "2026-05-22T07:23:50.291052+00:00",
+      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda",
+      "actions": {
+        "step_A_ABMV_11_closed": true,
+        "step_B_pilot_items_flagged": [
+          "HSV-2-010",
+          "HSV-2-011",
+          "HSV-2-012"
+        ],
+        "step_C_new_item": "HSV-1-028",
+        "step_D_HSV_1_001_recompute": "222.75 → 323.1 m³",
+        "step_D_ABMV_17_closed": true,
+        "step_E_geotechnical_summary_added": true
+      }
     }
   },
   "items": [
@@ -177,9 +194,9 @@
       "id": "HSV-1-001",
       "kapitola": "HSV-1",
       "SO": "SO-01",
-      "popis": "Hloubení figury pod základovou desku, stroj. v hor. tř. 3",
+      "popis": "Hloubení figury pod základovou desku + sejmutí navážek aktivní zóny, hor. tř. 1, stroj.",
       "mj": "m³",
-      "mnozstvi": 222.75,
+      "mnozstvi": 323.1,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -201,32 +218,30 @@
       "urs_status": "matched_medium",
       "urs_match_score": 0.667,
       "skladba_ref": null,
-      "source": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10",
+      "source": "A102 zastavěná 28.19×19.74 + IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §3.3 + Step 3",
       "raw_description": "figura pod deskou — výkop pro polštář a desku",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zemni_prace",
-      "_vyjasneni_ref": [
-        "ABMV_17"
-      ],
+      "_vyjasneni_ref": [],
       "_status_flag": null,
-      "_data_source": "TZ+DXF",
+      "_data_source": "TZ+DXF+IGP",
       "_completeness": 1.0,
-      "_qty_formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
+      "_qty_formula": "538.5 m² × 0.6 m sejmutí navážek (IGP §3.3 min. mocnost)",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
+        "formula": "538.5 m² × 0.6 m sejmutí navážek (IGP §3.3 min. mocnost)",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
+            "label": "zastavena_plocha_m2",
+            "value": 538.5,
+            "unit": "m²"
           },
           {
-            "label": "operand_2",
-            "value": 0.45,
-            "unit": ""
+            "label": "mocnost_navazek_min_m",
+            "value": 0.6,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -243,16 +258,26 @@
           {
             "type": "phase_ref",
             "section": "Phase 0b RE-RUN §3.10"
+          },
+          {
+            "type": "igp_section",
+            "section": "3.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §3.3 mocnost navážek 0.6–2.2 m"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
           }
         ],
-        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace]",
-        "computed_quantity": 222.75,
-        "declared_quantity": 222.75,
+        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace] | STAGE-PHASE1 IGP RECOMPUTE 2026-05-24: original 495 m² × 0.45 m = 222.75 m³ replaced by 538.5 m² × 0.6 m = 323.1 m³ per IGP §3.3 (navážky 0.6 m min). ABMV_17 closed.",
+        "computed_quantity": 323.1,
+        "declared_quantity": 323.1,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
+        "extraction_method": "igp_geometric_recompute",
+        "data_source_hint": "TZ+DXF+IGP",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
     },
@@ -2094,6 +2119,95 @@
       }
     },
     {
+      "id": "HSV-1-028",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+      "mj": "m³",
+      "mnozstvi": 269.25,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
+      "raw_description": "výměna aktivní zóny — odstranění navážek + štěrk hutněný 0.5 m Edef2 ≥ 45 MPa",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "538.5 m² × 0.5 m vrstva = 269.25 m³ (jedna vrstva: odstranění NEBO nahrazení)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "538.5 m² × 0.5 m = 269.25 m³ × 2 operace (odstranění + nahrazení)",
+        "formula_parsed_method": "product_dual_operation",
+        "inputs": [
+          {
+            "label": "zastavena_plocha_m2",
+            "value": 538.5,
+            "unit": "m²"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m"
+          },
+          {
+            "label": "operace_odstraneni_m3",
+            "value": 269.25,
+            "unit": "m³"
+          },
+          {
+            "label": "operace_nahrazeni_m3",
+            "value": 269.25,
+            "unit": "m³"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          }
+        ],
+        "poznamka": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef2/Edef1 < 2.2 (ČSN 72 1006). Vrstva 0.5 m × zastavěná 538.5 m² = 269.25 m³ na operaci. Item tracks single layer; total earth work = 2× (odstr. + nahraz.) = 538.5 m³.",
+        "computed_quantity": 269.25,
+        "declared_quantity": 269.25,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "igp_geometric_derivation",
+        "data_source_hint": "IGP+Step3",
+        "extracted_at": "2026-05-22T07:23:50.291052+00:00"
+      }
+    },
+    {
       "id": "HSV-2-001",
       "kapitola": "HSV-2",
       "SO": "SO-01",
@@ -2766,12 +2880,10 @@
       "skladba_ref": null,
       "source": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m'",
       "raw_description": "pilota Ø800 / L=8m variant",
-      "confidence": 0.5,
+      "confidence": 0.4,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [
-        "ABMV_11"
-      ],
-      "_status_flag": "variant_pending_IGP",
+      "_vyjasneni_ref": [],
+      "_status_flag": "alternative_variant_per_IGP_not_required",
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks pilota Ø800 × 8 m délka",
@@ -2792,9 +2904,14 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "igp_section",
+            "section": "4.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton]",
+        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
         "computed_quantity": 1.0,
         "declared_quantity": 1.0,
         "match_delta_pct": 0.0,
@@ -2835,12 +2952,10 @@
       "skladba_ref": null,
       "source": "A105 + variant pilota L=8m",
       "raw_description": "vrtání piloty",
-      "confidence": 0.5,
+      "confidence": 0.4,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [
-        "ABMV_11"
-      ],
-      "_status_flag": "variant_pending_IGP",
+      "_vyjasneni_ref": [],
+      "_status_flag": "alternative_variant_per_IGP_not_required",
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks × 8 m délka",
@@ -2866,9 +2981,14 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "igp_section",
+            "section": "4.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton]",
+        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
         "computed_quantity": 8.0,
         "declared_quantity": 8.0,
         "match_delta_pct": 0.0,
@@ -2909,12 +3029,10 @@
       "skladba_ref": null,
       "source": "statika D.1.2 + A105 výztuž piloty",
       "raw_description": "výztuž piloty R25 + třmínky",
-      "confidence": 0.5,
+      "confidence": 0.4,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [
-        "ABMV_11"
-      ],
-      "_status_flag": "variant_pending_IGP",
+      "_vyjasneni_ref": [],
+      "_status_flag": "alternative_variant_per_IGP_not_required",
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder",
@@ -2945,9 +3063,14 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "igp_section",
+            "section": "4.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton]",
+        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
         "computed_quantity": 247.04,
         "declared_quantity": 380.0,
         "match_delta_pct": 34.99,

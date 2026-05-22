@@ -12,5 +12,39 @@
     "podlaha_total_m2": 538.5,
     "objem_vykopu_m3": 99.3,
     "_source": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json"
+  },
+  "geotechnical_summary": {
+    "_igp_source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda",
+    "_igp_document": "inputs/dokumentace/IGP_ALTAGEO_526026.md",
+    "_igp_date": "2026-04-13",
+    "geotechnicka_kategorie": 1,
+    "rdt_kPa": 250,
+    "rdt_source": "IGP §4.3.1 plošné založení do GT2 (písčité štěrky G3 G-F)",
+    "hpv_ustalena_m_pt": [
+      1.65,
+      1.8
+    ],
+    "hpv_neovlivni_zaklady": true,
+    "hpv_source": "IGP §4.2 + §5 závěr",
+    "navazky_mocnost_m": [
+      0.6,
+      2.2
+    ],
+    "navazky_klasifikace": "GT1 — ČSN P 73 1005 třída Y (nevhodný typ základové půdy)",
+    "navazky_source": "IGP §3.3",
+    "geotechnicke_typy": {
+      "GT1": "antropogenní navážky (nevhodná)",
+      "GT2": "písčité štěrky G3 G-F, středně ulehlé, Rdt=250 kPa, Edef=50-60 MPa",
+      "GT3": "písky S3 S-F, Rdt=200 kPa, Edef=16-18 MPa",
+      "GT4": "silně zvětralé slínovce R5, Rdt=250 kPa, povrch 3.5-3.8 m p.t."
+    },
+    "zalozeni_design_primary": "plošné na patkách do GT2 (IGP §4.3.1)",
+    "zalozeni_design_alternative": "piloty do GT4 R5 (IGP §4.3.2 — alternativa only)",
+    "trida_tezitelnosti": "I (výkopové práce v navážkách + kvartér)",
+    "edef2_zhutneni_min_MPa": 45,
+    "vymena_aktivni_zony_recommended": true,
+    "aktivni_zona_doporuceni": "IGP §4.4 — odstranit navážky z aktivní zóny, nahradit hutněným štěrkem, Edef2 ≥ 45 MPa",
+    "cerpani_vody_required": false,
+    "cerpani_vody_reason": "HPV 1.7-1.8 m p.t. > patky hloubka 1.2 m → voda neovlivní (IGP §4.2)"
   }
 }

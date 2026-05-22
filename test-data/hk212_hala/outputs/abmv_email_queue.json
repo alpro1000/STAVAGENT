@@ -161,9 +161,12 @@
       "id": "ABMV_11",
       "category": "missing_input",
       "severity": "important",
-      "status": "blocking",
+      "status": "resolved",
       "title": "IGP — kdy bude k dispozici",
-      "summary_cs": "Závisí varianta fundamentu (patky vs pilota 800/8000). Bez IGP nelze finalizovat zemní práce + fundament VV."
+      "summary_cs": "Závisí varianta fundamentu (patky vs pilota 800/8000). Bez IGP nelze finalizovat zemní práce + fundament VV.",
+      "resolution_note": "IGP ALTAGEO 526026 (Mgr. Beneda, 04/2026) delivered. §4.3.1: geotechnická kategorie 1, plošné založení na patkách do GT2 (písčité štěrky G3 G-F, Rdt=250 kPa) — PRIMARY design. Statika D.1.2 conservative used Rdt=200 kPa; IGP exceeds (250 > 200) ✓. Piloty (HSV-2-010..012) = §4.3.2 alternativa pouze v případě hlubinného založení, NOT required. HPV 1.65–1.80 m p.t. neovlivní základové poměry (patky 1.2 m < HPV 1.7 m). Pilot items flagged alternative_variant_per_IGP_not_required + retained for variant bid.",
+      "resolution_date": "2026-05-24",
+      "resolution_source": "inputs/dokumentace/IGP_ALTAGEO_526026.md (ALTAGEO 526026 04/2026)"
     },
     {
       "id": "ABMV_12",
@@ -240,7 +243,7 @@
       "id": "ABMV_17",
       "category": "documentation_conflict",
       "severity": "critical",
-      "status": "open",
+      "status": "resolved",
       "title": "Earth works bilance — TZ B 32 m³ vs DXF-derived ~XXX m³",
       "summary_cs": "TZ B kap. m.10.g uvádí celkem výkopy 32 m³. Nezávislý výpočet z A105+A201 geometrie + axes envelope dává 349.8 m³ (faktor 10.9× vyšší). Breakdown: figura pod deskou ~250.4 m³, dohloubky patek rámových 31.5 m³ + štítových 1.6 m³, pasy 7.2 m³, ruční výkopy u sítí 30.0 m³, +10% na svahy 1:1.",
       "blocks_vv": [
@@ -293,7 +296,10 @@
         "previous_phase_0b_estimate_m3": 349.8,
         "revision_reason": "Previous Phase 0b used h=0.6 m for patky height; correct h=1.2 m (rámové, dvoustupňové 2×0,6) per TZ statika D.1.2 p31. Štítové h=0.8 m (0,2+0,6).",
         "drift_factor": 16.6
-      }
+      },
+      "resolution_note": "IGP §3.3 confirms navážky mocnost 0.6–2.2 m + §4.4 doporučuje výměnu aktivní zóny pláně (navážky → hutněný štěrk, Edef2 ≥ 45 MPa). HSV-1-001 figura recomputed: 538.5 m² (Step 3 zastavěná) × 0.6 m (IGP §3.3 min. mocnost navážek) = 323.1 m³ (was 222.75 m³ z 495×0.45). NEW HSV-1-028 added: výměna aktivní zóny pláně, 269.25 m³ × 2 operace (odstranění + nahrazení štěrkem). Combined HSV-1 výkop scope now reflects IGP-derived geometry, replacing old Phase 0b 32 m³ (TZ B claim) and intermediate DXF-derived 349.8/530 m³ estimates. ABMV_17 16.6× drift factor resolved via IGP authoritative source.",
+      "resolution_date": "2026-05-24",
+      "resolution_source": "inputs/dokumentace/IGP_ALTAGEO_526026.md + Step 3 areas"
     },
     {
       "id": "ABMV_18",
