@@ -591,6 +591,89 @@ Applies to ANY auto-match / auto-classify pipeline in STAVAGENT (KROS, URS, elem
 
 ---
 
+## Pattern 14: Forward-Tracked `_analytical_journey` on Item Mutations
+
+**Source:** HK212 Úprava dveří revision (PR #1213, 2026-05-22). Reinforced by SO-202 mostovka thickness rework (v4.27) and RD Jáchymov Phase 1 IGP recompute.
+
+### Problem
+When projektant ships a revision (new výkres, ABMV closure, geometry recompute, statika quote update), naive item updates **overwrite** the previous `mnozstvi` / `formula` / `popis`. Reviewer who opens the new soupis sees only the final number — has no way to verify:
+- Where the previous value came from
+- What evidence triggered the change
+- Whether the change is consistent with prior reconciliation (Pattern 3)
+- Whether the change reverts a previously-resolved ABMV
+
+Result: each revision creates a fresh "tender-ready" snapshot whose history is invisible. Diff between snapshots requires git archaeology + cross-referencing audit_2026_*.md files. Backward fixes (e.g. F-3 patky over-fix correction) lose their rationale once squashed.
+
+### Anti-pattern
+- Naked `it["mnozstvi"] = new_value` without preserving the old value
+- `audit_trail.formula = new_formula` replacing the old formula string
+- Treating `items.json` as a snapshot, not a log
+- Recomputing from raw inputs each time, losing the chain of reasoning that produced intermediate values
+- Adding a one-off `audit_2026_MM_DD.md` per revision (drifts, gets forgotten, doesn't co-locate with the item)
+
+### Correct pattern
+
+1. **Per-item: append-only `_analytical_journey` array inside `audit_trail`.**
+   ```jsonc
+   "audit_trail": {
+     "formula": "<current formula>",
+     "computed_quantity": 510.81,
+     "declared_quantity": 510.81,
+     // ...
+     "_analytical_journey": [
+       {"date": "2026-05-14", "value": 536.4, "method": "Phase 1 placeholder", "status": "superseded"},
+       {"date": "2026-05-22", "previous": {"mnozstvi": 528.5, "formula": "623.3 brutto − 94.82 m² otvory = 528.5", "popis": "KS NF 200 mm"},
+                              "reason": "Úprava dveří revision — KS NF 200 → NF 120 + new FR 150 zone",
+                              "source": "Úprava dveří drawings + user manual measurement"}
+     ]
+   }
+   ```
+   Each mutation pushes one entry. The current values live at the top level of `audit_trail`; the array is the immutable log of what came before.
+
+2. **Per-file: `metadata.revisions[]` block** for cross-item forward audit.
+   ```jsonc
+   "metadata": {
+     "revisions": [
+       {"date": "2026-05-22", "source": "Hala HK_Úprava dveří drawings",
+        "summary": "Window count 21→34, Kingspan wall NF200→NF120 + new FR150, …",
+        "items_modified": ["PSV-76x-001", "PSV-76x-002", "PSV-OPL-001", "..."],
+        "items_added":    ["PSV-76x-013", "PSV-OPL-009", "PSV-OPL-010", "..."],
+        "items_removed":  []}
+     ]
+   }
+   ```
+   Lets a reviewer diff the file at the revision level without walking every item.
+
+3. **Add new `reference` entry** when source changes — don't overwrite. Old refs stay (drawing A101 measurement was real once; Úprava dveří is the new authority but A101 history matters for traceability).
+
+4. **Confidence may rise or fall** per revision. Update both `it["confidence"]` and `audit_trail["confidence"]` to the new value; the journey preserves the prior.
+
+5. **Items added in a revision** get a `_analytical_journey: [{"status": "current", "method": "<revision> — first appearance"}]` initial entry so the timeline always starts somewhere.
+
+### HK212 evidence — PSV-OPL-001 four-step journey
+
+| # | Date | Value | Source | Status |
+|---|---|---|---|---|
+| 1 | 2026-05-04 | placeholder 536.4 m² | Phase 1 KS1000 AWP guess (Step3 brutto, no openings) | superseded |
+| 2 | 2026-05-14 | 528.5 m² | Stage E ABMV_2 closure — vrata 3.5×4.0 per TZ ARS DPZ D.1.1 | superseded |
+| 3 | 2026-05-14 | 528.5 m² (popis revised) | TZ statika D.1.2 quote ratified — KS NF 200 mm specs (vendor: Kingspan Hradec Králové) | superseded |
+| 4 | 2026-05-22 | **510.81 m²** | Úprava dveří — KS 1000 NF **120 mm** + split off new PSV-OPL-009/010 KS 1000 FR 150 mm 82.25 m² | **current** |
+
+Each step preserves prior. Reviewer opens `items.json` → walks the journey end-to-end → sees full forensic trail without ever leaving the file.
+
+### Rule
+**Never overwrite `mnozstvi`, `formula`, or `popis` without pushing the prior state onto `audit_trail._analytical_journey`. Never modify `audit_trail.reference[]` destructively — append.** Backward fixes (F-3 patky 14→10 correction, F-1 vrata stale dimension closure, ABMV_18 beton class reopen) stay permanently visible. The file is a log, not a snapshot.
+
+### Generalization
+Applies to ANY structured project memory in STAVAGENT (`items_*.json`, `master_soupis_*.yaml`, `area_aggregates.json`, `project.json` outputs from Phase B). The discipline is cheap (one array append + one metadata entry) and compounds: at revision N=10, a single `git log` + journey walk reconstructs the complete fact lineage without manual archaeology. Without this, every revision quietly erases the prior, and Pattern 3 triangulation collapses to "current value only."
+
+Combines with:
+- **Pattern 2 (Audit trail mandatory)** — `_analytical_journey` is the temporal dimension of audit trail
+- **Pattern 3 (Triangulation)** — journey entries can carry alternate-source values from concurrent reconciliation
+- **Pattern 13 (Synthetic acceptance metrics)** — confidence transitions in the journey expose when domain QA flipped a Tier-1 to a lower tier
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation
