@@ -100,10 +100,13 @@
       "id": "ABMV_4",
       "category": "documentation_metadata",
       "severity": "important",
-      "status": "open",
+      "status": "resolved",
       "title": "Stupeň PD — sjednocení DPS/DPZ/DSP",
       "summary_cs": "TZ A+B → DPS; výkresy ARS + TZ D.1.1 → DPZ; TZ statika D.1.2 → DSP. Předpokládáme překlep v TZ A+B (ARS = DPZ).",
-      "working_assumption": "ARS = DPZ, statika = DSP"
+      "working_assumption": "ARS = DPZ, statika = DSP",
+      "resolution_note": "Direct PDF inspection 2026-05-23/24 confirms: 03_ars_d11_TZ.pdf p1 title page says 'Dokumentace pro povolení záměru - DPZ' ✓. 04_statika_d12_TZ_uplna.pdf footer says 'Technická zpráva a statický výpočet 6/2025' (DSP-grade workshop detail per Stage A dossier) ✓. TZ A+B reference to 'DPS' confirmed as typo. Working_assumption confirmed: ARS = DPZ, statika = DSP. No item mutation needed (none reference ABMV_4).",
+      "resolution_date": "2026-05-24",
+      "resolution_source": "inputs/tz/03_ars_d11_TZ.pdf p1 + inputs/tz/04_statika_d12_TZ_uplna.pdf footer + Stage A dossier"
     },
     {
       "id": "ABMV_5",
@@ -193,7 +196,10 @@
       "id": "ABMV_14",
       "category": "minor",
       "severity": "minor",
-      "status": "working_assumption",
+      "status": "closed_superseded",
+      "_superseded_by": "ABMV_20",
+      "_superseded_note": "Same topic (Lindab svody count 3 vs 4) addressed in ABMV_20 with full evidence row (TZ B p14+p23 + A101 + A104). ABMV_14 closed 2026-05-24 to deduplicate queue. PSV-78x-001 mnozstvi=4 follows ABMV_20 working_assumption.",
+      "_closure_date": "2026-05-24",
       "title": "Počet svodů dešťové vody: 3 vs 4",
       "summary_cs": "TZ B → 4 svody DN100. A101+A105 ukazují 3 Lindab Round Downpipe + 3 Wavin vpusti.",
       "working_assumption": "3 (DXF má přednost)"
