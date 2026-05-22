@@ -305,9 +305,9 @@
       "id": "ABMV_18",
       "category": "documentation_inconsistency",
       "severity": "important",
-      "status": "open",
+      "status": "resolved",
       "title": "Beton třídy v 06_zaklady_titul vs TZ statika D.1.2",
-      "summary_cs": "Titul-list pro výkres A105 ZÁKLADY (`06_zaklady_titul.pdf` p01) uvádí ŽB DESKA C16/20-XC0 a PILOTA C30/37-XC2. TZ statika D.1.2 p29 + p32 však říká deska C25/30 XC4 a pilota C25/30 XC4. Inkonzistence v rámci stejné PD.",
+      "summary_cs": "Titul-list pro výkres A105 ZÁKLADY (`06_zaklady_titul.pdf` p01) uvádí ŽB DESKA C16/20-XC0 a PILOTA C30/37-XC2. TZ statika D.1.2 p28 + p31 však říká deska C25/30 XC4 a pilota C25/30 XC4. Inkonzistence v rámci stejné PD.",
       "blocks_vv": [
         "HSV-3 železobeton základová deska",
         "HSV-3 pilota"
@@ -315,9 +315,12 @@
       "working_assumption": "C25/30 XC4 pro deskovou + pilotovou variantu (statika wins).",
       "evidence": {
         "06_zaklady_titul_p01": "ŽB DESKA C16/20-XC0; PILOTA C30/37-XC2",
-        "04_statika_d12_TZ_uplna_p29": "Základová deska beton C25/30 XC4",
-        "04_statika_d12_TZ_uplna_p32": "Pilota C25/30 XC4 + 8×R25 B500B"
-      }
+        "04_statika_d12_TZ_uplna_p28": "Základová deska beton C25/30 XC4, výška 200 mm, Kari Ø8 100/100 B500B krytí 30 mm",
+        "04_statika_d12_TZ_uplna_p31": "Pilota Ø800 L=8.0 m C25/30 XC4 + 8×R25 B500B + třmínky R10 á 200 mm"
+      },
+      "resolution_note": "Statika D.1.2 direct re-read 2026-05-24 (Phase 2 F-4): p28 deska C25/30 XC4 ✓ (matches items.json HSV-2-013); p30 patky C16/20 XC0 ✓ (matches HSV-2-001/004/007 + TZ ARS D.1.1 p3); p31 pilota Ø800 C25/30 XC4 + 8×R25 B500B ✓ (matches HSV-2-010..012). Titul-list 06_zaklady_titul.pdf p01 is the SOLE outlier saying DESKA C16/20 + PILOTA C30/37 — disregarded per statika authority. Working_assumption confirmed: deska + pilota = C25/30 XC4; patky = C16/20 XC0 (statika scope only covers deska + pilota; patky beton class authoritative from TZ ARS D.1.1 p3, NOT addressed in statika for class). items.json already correct, NO mutation needed.",
+      "resolution_date": "2026-05-24",
+      "resolution_source": "inputs/tz/04_statika_d12_TZ_uplna.pdf p28 + p30 + p31 (direct read) + inputs/tz/03_ars_d11_TZ.pdf p3"
     },
     {
       "id": "ABMV_19",
