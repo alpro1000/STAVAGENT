@@ -57,6 +57,22 @@ CONFIDENCE: dict[str, float] = {
     # by enrich_generic_rates.py).
     "generic_with_csn_norm":   0.6,
     "generic_with_csn_url":    0.7,
+    # GATE 8b — Case 5 / no_pairing master rate enrichment.
+    # rate_from_popis: regex-extracted rate string in master popis itself
+    #   (e.g. "Sikafloor 2540 W (0.2 kg/m²; F11 vrstva 2)") — highest
+    #   confidence because the rate comes from the project document.
+    # case5_kb_rate:   KB rate looked up by material keyword in popis when
+    #   no inline rate available.  ČSN norm reference attached.
+    # vrn_services:    VRN-* administrative items (BOZP, autorský dozor) —
+    #   no material consumption, decomposition pointless.
+    "rate_from_popis":         0.95,
+    "case5_kb_rate":           0.7,
+    "vrn_services":            1.0,
+    # case5_self_reference — Case 5 master where neither regex nor KB
+    # lookup found a rate but the master IS already a complete material
+    # spec (e.g. "Vinyl Gerflor Creation 30 — dodávka", "Dveře D04 —
+    # dodávka").  qty m²/ks → m²/ks 1:1 by definition; status OK.
+    "case5_self_reference":    0.9,
 }
 
 ZDROJ_MARKER: dict[str, str] = {
@@ -67,6 +83,10 @@ ZDROJ_MARKER: dict[str, str] = {
     "generic_no_documentation": "⚠ ODHAD — generic standard",
     "generic_with_csn_norm":   "🌐 {norm}",
     "generic_with_csn_url":    "🌐 {norm}",
+    "rate_from_popis":         "📋 TZ popis (rate ze specifikace)",
+    "case5_kb_rate":           "🌐 {norm}",
+    "vrn_services":            "—",
+    "case5_self_reference":    "📋 master = materiál (1:1)",
 }
 
 STATUS_FOR_SOURCE: dict[str, str] = {
@@ -77,6 +97,10 @@ STATUS_FOR_SOURCE: dict[str, str] = {
     "generic_no_documentation": "Odhad",
     "generic_with_csn_norm":    "Confirm",
     "generic_with_csn_url":     "OK",
+    "rate_from_popis":          "OK",
+    "case5_kb_rate":             "Confirm",
+    "vrn_services":              "—",
+    "case5_self_reference":      "OK",
 }
 
 
@@ -108,6 +132,22 @@ CASE5_PRIMARY_KEYWORDS = [
     "hřebenáče", "hrebenace",
     "kročejová izolace", "krocejova izolace",
     "polystyrenbeton", "polystyrén beton", "polystyren beton",
+    # GATE 8c C3 — cementový potěr / anhydrit / sterka families
+    "cementový potěr", "cementovy poter", "potěr cementový",
+    "poter cementovy", "anhydritový potěr", "anhydritovy poter",
+    "betonová stěrka", "betonova sterka",
+    # GATE 8.2 — additional penetrace master forms (CASE5 only catches
+    # "penetrace pod" / "penetrace univerzá" — these patterns match the
+    # other variants seen on Libuše: "Penetrace stěn pod malbu",
+    # "Penetrace stropů", "Penetrace podhledu pod malbu (CF20)" etc.)
+    "penetrace stěn", "penetrace sten",
+    "penetrace stropů", "penetrace stropu",
+    "penetrace podhled",
+    # GATE 8c C1 — every "— dodávka" master IS the physical material
+    # being delivered (the "— kladení" / "— montáž" sibling carries the
+    # install work).  Adding a generic substring catches all variants
+    # (Dveře — dodávka, Vinyl — dodávka, Dlažba — dodávka …).
+    "— dodávka", "— dodavka",
 ]
 
 # Work-type to material-kind needs map. Each entry tells the pairer which
@@ -259,6 +299,23 @@ INSTALL_PREFIX_RE = re.compile(
 # Bug 4 — work-focus rules: master popis keyword → allowed material_kind set
 # Pairing intersects this with kapitola needs to suppress off-topic ancillaries.
 WORK_FOCUS_RULES: list[tuple[re.Pattern[str], set[str]]] = [
+    # GATE 8.2 — Vrstva-chain coordinated kinds (MUST precede generic
+    # malba / nátěr rule).  In a "Penetrace stěn / Malba 1. nátěr /
+    # Malba 2. nátěr / Tmel akrylátový" 4-master chain on the same
+    # surface, the same penetrace + tmel sub-items were being attached
+    # to EVERY master → counted 3× in 11c.  Narrow each master to its
+    # own canonical primary kind so cascade prevention can deduplicate.
+    #
+    # "1. nátěr / 1. vrstva" — primary paint pass; gets paint volume +
+    #   1× tmel application (the spárování + dilatace step).  Penetrace
+    #   intentionally excluded — owned by "Penetrace pod X" master.
+    (re.compile(r"\b1\.\s*nátěr|\bprvní\s+nátěr|\b1\.\s*nater|\b1\.\s*vrstva", re.I),
+     {"malba_interier", "vymalba", "tmel_tesnici"}),
+    # "2. / 3. nátěr / vrstva" — paint volume ONLY.  Penetrace + tmel
+    #   counted on 1. nátěr already; subsequent coats add paint only.
+    (re.compile(r"\b[2-9]\.\s*nátěr|\bdruh\w+\s+nátěr|\btřet\w+\s+nátěr|"
+                 r"\b[2-9]\.\s*nater|\b[2-9]\.\s*vrstva", re.I),
+     {"malba_interier", "vymalba"}),
     (re.compile(r"\bsdk\s+desk|\bsadrokart\w*\s+desk|\bsdk\b(?!\s+podhled)", re.I),
      {"sdk_deska", "perlinka", "tmel_tesnici"}),
     (re.compile(r"\bprofil[yo]\b|\b(ud|cd|uw|cw)\s+profil|\b(uw|cw)\s*\+", re.I),
@@ -337,6 +394,17 @@ def _mj_compatible(master_mj: str, rate_denom: Optional[str]) -> bool:
     return (master_mj or "").lower() == rate_denom.lower()
 
 
+def _mj_equivalent(a: Optional[str], b: Optional[str]) -> bool:
+    """GATE 8b — MJ equivalence with ASCII / Unicode form folding.
+    Treats 'm2' == 'm²', 'M2' == 'm2', etc.  Used for the popis-rate
+    short-circuit where the popis denom comes from a regex that captures
+    either form.
+    """
+    if not a or not b:
+        return False
+    return (a.lower().replace("²", "2") == b.lower().replace("²", "2"))
+
+
 def _normalize(s: str) -> str:
     return (s.replace("á", "a").replace("é", "e").replace("í", "i")
              .replace("ó", "o").replace("ú", "u").replace("ů", "u")
@@ -355,6 +423,208 @@ def _is_case5_master(popis: str) -> bool:
     return any(kw in norm for kw in CASE5_PRIMARY_KEYWORDS)
 
 
+def _is_vrn_master(kapitola: Optional[str]) -> bool:
+    """GATE 8b B4 — VRN-* kapitol = administrative services with no
+    material consumption (BOZP, autorský dozor, koordinátor, …)."""
+    return bool(kapitola) and kapitola.upper().startswith("VRN")
+
+
+# GATE 8b B1 — extract explicit consumption rate from master popis.
+# Examples caught:
+#   "Sikafloor 2540 W (0.2 kg/m²; F11 vrstva 2)"  → 0.2 kg/m²
+#   "Sikagard 555W Elastic 0.15 l/m²"             → 0.15 l/m²
+#   "epoxidový nátěr 0,1 kg/m²"                   → 0.1 kg/m²
+_RATE_FROM_POPIS_RE = re.compile(
+    r"(?P<val>\d+(?:[.,]\d+)?)\s*"
+    r"(?P<num>kg|l|g|ks|m2|m²|bm)\s*/\s*"
+    r"(?P<denom>m2|m²|bm)",
+    re.IGNORECASE,
+)
+# Thickness in mm — used as a hint for KB potěr/stěrka 50mm vs 58mm
+# lookup but NOT mistaken for a rate.  Kept distinct.
+_THICKNESS_MM_RE = re.compile(r"(?:tl\.?\s*|tlou[sš][tť]ka\s*)(\d+)\s*mm",
+                              re.IGNORECASE)
+
+
+def _extract_rate_from_popis(popis: str) -> Optional[dict[str, Any]]:
+    """GATE 8b B1 — return {value, unit_num, unit_denom} when master popis
+    embeds an explicit consumption rate, else None.
+
+    Pulls the FIRST match only to avoid pairing the wrong rate when popis
+    lists multiple (e.g. compound bilayer description).  The full popis
+    stays in source_verbatim for audit.
+    """
+    if not popis:
+        return None
+    m = _RATE_FROM_POPIS_RE.search(popis)
+    if not m:
+        return None
+    raw_val = m.group("val").replace(",", ".")
+    try:
+        val = float(raw_val)
+    except ValueError:
+        return None
+    if val <= 0 or val > 1000:  # sanity bounds — rates like "5000 kg/m²" never legit
+        return None
+    return {
+        "value": val,
+        "unit_num": m.group("num").replace("m2", "m²").lower(),
+        "unit_denom": m.group("denom").replace("m2", "m²").lower(),
+    }
+
+
+def _extract_thickness_mm(popis: str) -> Optional[int]:
+    """Return mm thickness when master popis contains 'tl. NN mm'."""
+    if not popis:
+        return None
+    m = _THICKNESS_MM_RE.search(popis)
+    if not m:
+        return None
+    try:
+        return int(m.group(1))
+    except ValueError:
+        return None
+
+
+def _normalize_master_stem(popis: str) -> str:
+    """GATE 8c C2 — normalize master popis to a comparable stem for the
+    cross-layer cascade.  Drops install/dodávka suffixes, F-tags,
+    location markers, dimensions — keeps only the material-name root.
+    """
+    if not popis:
+        return ""
+    s = _normalize(popis)
+    # Drop install/dodávka suffix variants ("— kladení (F01)" etc.)
+    s = re.sub(r"\s*—\s*(kladeni|polozeni|montaz|dodavka|kotveni|"
+                r"sparovani|klika|rektifikace)\b.*$", "", s)
+    # Drop F-tag references — "(F01)", "(F11 vrstva 2)", "F03", "F5",
+    # "FF01" (Libuše uses 1-2 digit F-codes; double-F is also seen)
+    s = re.sub(r"\s*\(?\bf{1,2}\d{1,2}\b.*?\)?", "", s)
+    # Drop thickness/dimension suffixes
+    s = re.sub(r"\s*\(?\btl\.?\s*\d+\s*mm\)?", "", s)
+    # Drop "(paired with …)" annotations that earlier audit phases added
+    s = re.sub(r"\s*\(paired with [^)]*\)", "", s)
+    # Drop rate parens (we don't want them in the stem comparator)
+    s = re.sub(r"\([^)]*\d+[.,]?\d*\s*(kg|l|g|ks|m²|m2)\s*/.*?\)", "", s)
+    # Collapse whitespace + strip terminal punctuation
+    s = re.sub(r"\s+", " ", s).strip(" -—:;.")
+    return s
+
+
+# GATE 8c C2 — keyword → material_kind classifier so we can detect when a
+# master in the items file IS already a standalone item for a given kind.
+# Used to skip library candidates whose kind matches a separate master.
+_KEYWORD_TO_KIND: list[tuple[str, str]] = [
+    # Longest / most specific first
+    # GATE 8.2 — penetrace master kinds so cascade can deduplicate
+    # penetrace sub-items across vrstva-chain siblings (Penetrace stěn
+    # pod malbu + Malba 1./2. nátěr in same kapitola).  When a master
+    # with kind=penetrace exists, OTHER masters in same kapitola/G-group
+    # get their penetrace sub-items skipped by GATE 8c C2 cascade.
+    ("penetrace pod",          "penetrace"),
+    ("penetrace stěn",         "penetrace"),
+    ("penetrace sten",         "penetrace"),
+    ("penetrace stropů",       "penetrace"),
+    ("penetrace stropu",       "penetrace"),
+    ("penetrace podhled",      "penetrace"),
+    ("penetrace univerzá",     "penetrace"),
+    ("polystyrenbeton",        "polystyrenbeton"),
+    ("cementový potěr",        "cementovy_poter"),
+    ("cementovy poter",        "cementovy_poter"),
+    ("potěr cementov",         "cementovy_poter"),
+    ("anhydritový potěr",      "anhydritovy_poter"),
+    ("anhydritovy poter",      "anhydritovy_poter"),
+    ("vinyl gerflor",          "vinyl_dilce"),
+    ("vinyl",                  "vinyl_dilce"),
+    ("dlažba keramic",         "dlazba_keramicka"),
+    ("dlazba keramic",         "dlazba_keramicka"),
+    ("obklad keramic",         "obklad_keramicky"),
+    ("obklad cihel",           "obklad_cihelny_terca"),
+    ("terca",                  "obklad_cihelny_terca"),
+    ("samonivelační stěr",     "samonivelacni_sterka"),
+    ("samonivelacni ster",     "samonivelacni_sterka"),
+    ("tondach",                "krytina_keramicka"),
+    ("bobrovka",               "krytina_keramicka"),
+    ("hřebenáč",               "hrebenace"),
+    ("hrebenac",               "hrebenace"),
+    ("asfaltový pás",          "asfaltovy_pas"),
+    ("asfaltovy pas",          "asfaltovy_pas"),
+    ("kročejová izolace",      "krocejova_izolace"),
+    ("krocejova izolace",      "krocejova_izolace"),
+    ("minerální vat",          "mineralni_vata"),
+    ("mineralni vat",          "mineralni_vata"),
+    ("eps",                    "eps_polystyren"),
+    ("polystyrén",             "eps_polystyren"),
+    ("polystyren",             "eps_polystyren"),
+    ("xps",                    "xps_extrudovany_polystyren"),
+    ("pir izolac",             "pir_izolace"),
+    ("malb",                   "malba_interier"),
+    ("vymalb",                 "malba_interier"),
+    ("omítk",                  "omitka_vapenocementova"),
+    ("omitk",                  "omitka_vapenocementova"),
+    ("epoxid",                 "epoxidova_uprava"),
+    ("sikafloor",              "epoxidova_uprava"),
+    ("anti-graffiti",          "anti_graffiti"),
+    ("antigraffit",            "anti_graffiti"),
+    ("sdk desk",               "sdk_deska"),
+    ("sdk deska",              "sdk_deska"),
+    ("sádrokart",              "sdk_deska"),
+    ("sadrokart",              "sdk_deska"),
+]
+
+
+def _classify_master_kind(popis: str) -> Optional[str]:
+    """GATE 8c C2 — best-effort material_kind for a master popis.  Used
+    to (a) skip cross-layer sub-items whose kind matches another master
+    AND (b) distinguish current master's own kind from candidate's kind
+    so a master pairing its own kind doesn't self-cascade.
+
+    Returns the first matching kind (most specific keyword tested first)
+    or None when popis has no recognized material noun.
+    """
+    norm = _normalize(popis or "")
+    for kw, kind in _KEYWORD_TO_KIND:
+        if _normalize(kw) in norm:
+            return kind
+    return None
+
+
+def _lookup_kb_rate_by_popis(popis: str, kapitola: str,
+                              rates_kb: dict[str, dict[str, Any]]
+                              ) -> Optional[dict[str, Any]]:
+    """GATE 8b B3 — find a KB rate whose category_keywords appear in the
+    master popis (substring on the normalized form) AND kapitola is in
+    its applies_to_kapitoly allow-list.  Returns the entry dict or None.
+
+    Disambiguator: when multiple KB entries match (e.g. cementový potěr
+    50mm vs 58mm), prefer the one whose thickness keyword matches the
+    extracted thickness (e.g. "tl. 50 mm" → cementovy_poter_50mm).
+    """
+    if not popis:
+        return None
+    norm = _normalize(popis)
+    candidates: list[dict[str, Any]] = []
+    for entry in rates_kb.values():
+        if kapitola not in entry.get("applies_to_kapitoly", []):
+            continue
+        for kw in entry.get("category_keywords", []):
+            if _normalize(kw) in norm:
+                candidates.append(entry)
+                break
+    if not candidates:
+        return None
+    if len(candidates) == 1:
+        return candidates[0]
+    # Thickness disambiguation for potěr/stěrka family
+    thickness = _extract_thickness_mm(popis)
+    if thickness:
+        for cand in candidates:
+            template = _normalize(cand.get("popis_template") or "")
+            if f"{thickness} mm" in template or f"{thickness}mm" in template:
+                return cand
+    return candidates[0]
+
+
 def _index_library(library: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     """Index library entries by kapitola for fast lookup."""
     index: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -371,7 +641,8 @@ def _format_zdroj_marker(source_type: str, section: Optional[str],
                         document: Optional[str],
                         citation_norm: Optional[str] = None) -> str:
     template = ZDROJ_MARKER[source_type]
-    if source_type in {"generic_with_csn_norm", "generic_with_csn_url"}:
+    if source_type in {"generic_with_csn_norm", "generic_with_csn_url",
+                        "case5_kb_rate"}:
         return template.format(norm=citation_norm or "ČSN (n/a)")
     if "{section}" not in template:
         return template
@@ -488,9 +759,119 @@ def _candidate_library_matches(master: dict[str, Any],
     return matches
 
 
+def _build_case5_subitem(master: dict[str, Any], source_type: str,
+                          rate_value: Optional[float],
+                          rate_unit_num: Optional[str],
+                          rate_unit_denom: Optional[str],
+                          mnozstvi_value: float, MJ_subitem: str,
+                          mnozstvi_formula: str,
+                          citation_norm: Optional[str] = None,
+                          citation_source: Optional[str] = None,
+                          citation_url: Optional[str] = None,
+                          override_verbatim: Optional[str] = None,
+                          ) -> dict[str, Any]:
+    """GATE 8b — emit single sub-item for Case 5 / no_pairing / VRN where
+    the master IS itself the material.  Sub-item's popis duplicates the
+    master popis verbatim (per GATE 8a A3) — treats the master as the
+    material being consumed.
+    """
+    verbatim = override_verbatim or master.get("popis") or ""
+    section = master.get("misto", {}).get("section_ref")
+    document = master.get("misto", {}).get("document_ref")
+    citation_norm_emit = citation_norm
+    sub = {
+        "item_id": _new_id("sub"),
+        "item_role": "material_subitem",
+        "paired_with": master["item_id"],
+        "kapitola": master.get("kapitola"),
+        "popis": verbatim,
+        "source_verbatim": verbatim,
+        "MJ": MJ_subitem,
+        "mnozstvi": round(mnozstvi_value, 3),
+        "misto": master.get("misto"),
+        "source": source_type,
+        "confidence": CONFIDENCE[source_type],
+        "qty_confidence": CONFIDENCE[source_type],
+        "zdroj_marker": _format_zdroj_marker(source_type, section,
+                                              document, citation_norm_emit),
+        "status_label": STATUS_FOR_SOURCE[source_type],
+        "mnozstvi_formula": mnozstvi_formula,
+        "rate_value": rate_value,
+        "rate_unit_num": rate_unit_num,
+        "rate_unit_denom": rate_unit_denom,
+        "source_entry_id": None,
+        "citation_norm": citation_norm,
+        "citation_source": citation_source,
+        "citation_url": citation_url,
+        "phase": "6.6_B",
+    }
+    return sub
+
+
+def _emit_case5_master_subitem(master: dict[str, Any], kapitola: str,
+                                master_qty: float, master_mj: str,
+                                rates_kb: dict[str, dict[str, Any]],
+                                ) -> list[dict[str, Any]]:
+    """GATE 8b B1 + B3 — emit ONE sub-item for a Case 5 master,
+    treating the master itself as the consumed material.
+      1. Try regex rate from popis (B1) — source rate_from_popis (OK, 0.95)
+      2. Else lookup KB rate by popis keywords (B3) — source case5_kb_rate
+         (Confirm/0.7) with ČSN citation
+      3. Else fall back to 1:1 master.qty (no_pairing-style placeholder,
+         source generic_no_documentation, 0.3)
+    """
+    popis = master.get("popis", "")
+    # B1 — rate in popis
+    rate = _extract_rate_from_popis(popis)
+    if rate and _mj_equivalent(master_mj, rate["unit_denom"]):
+        sub_qty = master_qty * rate["value"]
+        formula = (f"master.qty {master_qty} {master_mj} × "
+                    f"{rate['value']} {rate['unit_num']}/{rate['unit_denom']} "
+                    f"(rate ze specifikace v projektu)")
+        return [_build_case5_subitem(
+            master=master, source_type="rate_from_popis",
+            rate_value=rate["value"], rate_unit_num=rate["unit_num"],
+            rate_unit_denom=rate["unit_denom"],
+            mnozstvi_value=sub_qty, MJ_subitem=rate["unit_num"],
+            mnozstvi_formula=formula,
+        )]
+    # B3 — KB lookup by popis keyword
+    kb_entry = _lookup_kb_rate_by_popis(popis, kapitola, rates_kb)
+    if kb_entry and master_mj == kb_entry["MJ_applied_to"].lower():
+        sub_qty = master_qty * float(kb_entry["rate"])
+        formula = (f"master.qty {master_qty} {master_mj} × "
+                    f"{kb_entry['rate']} {kb_entry['MJ_consumed']}"
+                    f"/{kb_entry['MJ_applied_to']} (KB lookup)")
+        return [_build_case5_subitem(
+            master=master, source_type="case5_kb_rate",
+            rate_value=float(kb_entry["rate"]),
+            rate_unit_num=kb_entry["MJ_consumed"],
+            rate_unit_denom=kb_entry["MJ_applied_to"],
+            mnozstvi_value=sub_qty, MJ_subitem=kb_entry["MJ_consumed"],
+            mnozstvi_formula=formula,
+            citation_norm=kb_entry.get("citation_norm"),
+            citation_source=kb_entry.get("citation_source"),
+            citation_url=kb_entry.get("citation_url"),
+        )]
+    # Fallback — master IS the complete material specification; emit 1:1
+    # row with case5_self_reference source.  Status OK because the
+    # master popis itself IS the authoritative material reference
+    # (vinyl, doors, prefab elements typically sold per m² / ks 1:1).
+    formula = (f"master.qty {master_qty} {master_mj} × 1:1 "
+                f"(master = materiál; 1:1 self-reference)")
+    return [_build_case5_subitem(
+        master=master, source_type="case5_self_reference",
+        rate_value=None, rate_unit_num=None, rate_unit_denom=None,
+        mnozstvi_value=master_qty, MJ_subitem=master_mj,
+        mnozstvi_formula=formula,
+    )]
+
+
 def _pair_master(master: dict[str, Any],
                 library_by_kap: dict[str, list[dict[str, Any]]],
                 rates_kb: dict[str, dict[str, Any]],
+                master_stems: Optional[set[str]] = None,
+                master_kinds: Optional[set[str]] = None,
                 ) -> tuple[list[dict[str, Any]], str]:
     """Pair a single master item with material sub-items.
 
@@ -498,31 +879,85 @@ def _pair_master(master: dict[str, Any],
       'case5_master_is_material' | 'cases_1_3_library' | 'case_4_generic' |
       'mixed' | 'skipped_install_only' | 'skipped_mj_incompatible' |
       'no_pairing' | etc.
+
+    GATE 8c: ``master_stems`` is the set of normalized master-popis stems
+    across ALL masters in the items file.  Used to skip cross-layer sub-
+    items (e.g. Vinyl Gerflor kladení getting "Cementový potěr" sub-item
+    when potěr is a separate master item).
     """
+    popis = master.get("popis", "")
+    kapitola = master.get("kapitola")
+
+    # GATE 8b B4 — VRN-* administrative items always emit the "(služby —
+    # bez materiálu)" placeholder, regardless of upstream status.
+    # Checked BEFORE SKIP_STATUSES because VRN entries typically carry
+    # status="to_be_negotiated_with_investor" which would otherwise
+    # bypass pairing entirely.  Spec requires every VRN master to render
+    # with the services placeholder so VELTON sees the line in 11c +
+    # Material_rozklad.
+    if _is_vrn_master(kapitola):
+        sub = _build_case5_subitem(
+            master=master, source_type="vrn_services",
+            rate_value=None, rate_unit_num=None, rate_unit_denom=None,
+            mnozstvi_value=0.0, MJ_subitem="",
+            mnozstvi_formula="VRN — administrativní služby, bez materiálu",
+            override_verbatim="(služby — bez materiálu)",
+        )
+        return [sub], "vrn_services"
+
     status = master.get("status", "")
     if status in SKIP_STATUSES:
         return [], "skipped_status"
 
-    popis = master.get("popis", "")
     if "[DEPRECATED" in popis or "[PROBE 14f" in popis or "[odhad]" in popis:
         return [], "skipped_marker"
 
-    kapitola = master.get("kapitola")
-    if kapitola not in KAPITOLA_NEEDS:
-        return [], "no_kapitola_rule"
-
-    needs = KAPITOLA_NEEDS[kapitola]
     master_qty = float(master.get("mnozstvi", 0) or 0)
     master_mj = (master.get("MJ") or "").lower()
 
     if master_qty <= 0:
         return [], "skipped_zero_qty"
 
-    # Case 5 — master IS itself a material spec (penetrace, lepidlo, etc.)
-    if _is_case5_master(popis):
-        return [], "case5_master_is_material"
+    if kapitola not in KAPITOLA_NEEDS:
+        # GATE 8b B3 — no_kapitola_rule masters get same Case 5 treatment
+        # as a graceful fallback (emits 1:1 generic_no_documentation
+        # sub-item with master popis so it surfaces in deliverable).
+        return _emit_case5_master_subitem(master, kapitola or "",
+                                          master_qty, master_mj,
+                                          rates_kb), "no_kapitola_rule"
 
-    # Bug 1 — install-only master (sibling "— dodávka" carries the materials)
+    needs = KAPITOLA_NEEDS[kapitola]
+
+    # GATE 8b B1 — UNIVERSAL rate-in-popis short-circuit.  When master
+    # popis carries an explicit consumption rate ("Sikafloor 2540 W
+    # (0.1 kg/m²)") emit a single rate_from_popis sub-item and skip the
+    # library/Case 4 pipeline.  This always wins over library matches
+    # because popis rate is authoritative project documentation.
+    popis_rate = _extract_rate_from_popis(popis)
+    if popis_rate and _mj_equivalent(master_mj, popis_rate["unit_denom"]):
+        sub_qty = master_qty * popis_rate["value"]
+        formula = (f"master.qty {master_qty} {master_mj} × "
+                    f"{popis_rate['value']} {popis_rate['unit_num']}/"
+                    f"{popis_rate['unit_denom']} (rate ze specifikace v projektu)")
+        return ([_build_case5_subitem(
+            master=master, source_type="rate_from_popis",
+            rate_value=popis_rate["value"],
+            rate_unit_num=popis_rate["unit_num"],
+            rate_unit_denom=popis_rate["unit_denom"],
+            mnozstvi_value=sub_qty, MJ_subitem=popis_rate["unit_num"],
+            mnozstvi_formula=formula,
+        )], "rate_from_popis_universal")
+
+    # Case 5 — master IS itself a material spec.  GATE 8b emits a real
+    # sub-item with extracted/KB rate instead of returning empty list.
+    if _is_case5_master(popis):
+        return (_emit_case5_master_subitem(master, kapitola, master_qty,
+                                            master_mj, rates_kb),
+                "case5_master_is_material")
+
+    # Bug 1 (GATE 4) — install-only master (sibling "— dodávka" carries
+    # the materials).  Returns empty so post-processing renders a brief
+    # placeholder per GATE 7.
     if _is_install_only(popis):
         return [], "skipped_install_only"
 
@@ -538,6 +973,12 @@ def _pair_master(master: dict[str, Any],
 
     sub_items: list[dict[str, Any]] = []
     n_mj_skips = 0
+    n_cascade_skips = 0  # GATE 8c C2 counter
+
+    # GATE 8c C2 — current master's own material_kind so cascade doesn't
+    # skip when a candidate's kind legitimately matches the master itself.
+    own_kind = _classify_master_kind(popis)
+    own_stem = _normalize_master_stem(popis)
 
     # Cases 1-3: library-matched candidates (filtered by work_focus via
     # relevant_kinds intersection)
@@ -545,7 +986,19 @@ def _pair_master(master: dict[str, Any],
                                                  library_by_kap)
     library_covered_kinds: set[str] = set()
     for entry in library_matches:
-        kind = entry.get("material_kind")
+        # GATE 8c C2 — refuse cross-layer sub-items: if this candidate's
+        # material_kind is present as a standalone master elsewhere in
+        # the items file AND it differs from the current master's own
+        # kind, skip the sub-item.  Prevents double-counting (Vinyl
+        # Gerflor kladení getting Cementový potěr sub-item when G007 is
+        # already a separate cementový potěr master).
+        entry_kind = entry.get("material_kind")
+        if (master_kinds and entry_kind and entry_kind in master_kinds
+                and entry_kind != own_kind):
+            n_cascade_skips += 1
+            continue
+
+        kind = entry_kind
         if kind:
             library_covered_kinds.add(kind)
 
@@ -630,6 +1083,12 @@ def _pair_master(master: dict[str, Any],
         if master_mj != kb_entry["MJ_applied_to"].lower():
             n_mj_skips += 1
             continue
+        # GATE 8c C2 — skip KB fallback when its material_kind is present
+        # as a standalone master and differs from current master's kind.
+        if (master_kinds and kb_kind and kb_kind in master_kinds
+                and kb_kind != own_kind):
+            n_cascade_skips += 1
+            continue
         sub_qty = master_qty * float(kb_entry["rate"])
         formula = (f"master.qty {master_qty} {master_mj} × "
                    f"{kb_entry['rate']} {kb_entry['MJ_consumed']}"
@@ -662,11 +1121,24 @@ def _pair_master(master: dict[str, Any],
                       not has_undoc_generic
                       else "case_4_generic" if not library_matches
                       else "mixed")
+        # Stash cascade counter on first sub-item for main-loop aggregation
+        if n_cascade_skips and sub_items:
+            sub_items[0]["_cascade_skips_from_master"] = n_cascade_skips
         return sub_items, case_label
 
     if n_mj_skips > 0:
         return [], "skipped_mj_incompatible"
-    return [], "no_pairing"
+
+    # GATE 8b B3 — no_pairing masters get a Case 5-style sub-item so they
+    # surface in the deliverable rather than vanishing into a placeholder.
+    # If KB lookup or popis-rate extraction succeeds, the master gains a
+    # priced row; otherwise emits a 1:1 generic_no_documentation row.
+    emitted = _emit_case5_master_subitem(master, kapitola, master_qty,
+                                          master_mj, rates_kb)
+    if emitted and emitted[0]["source"] != "generic_no_documentation":
+        # Real rate found via B1 or B3 — promote case label.
+        return emitted, "no_pairing_promoted_case5"
+    return emitted, "no_pairing"
 
 
 def _find_kb_rate_for_kind(kind: Optional[str], kapitola: str,
@@ -922,14 +1394,41 @@ def main() -> int:
     unmapped_library_count = sum(1 for m in library if not m.get("material_kind"))
     library_by_kap = _index_library(library)
 
+    # GATE 8c C2 — precompute (a) normalized stems and (b) material_kinds
+    # of ALL masters so the pairing loop can skip cross-layer sub-items
+    # (e.g. Vinyl Gerflor — kladení getting "Cementový potěr" sub-item
+    # when a separate Cementový potěr master already exists).
+    master_stems: set[str] = set()
+    master_kinds: set[str] = set()
+    for it in items:
+        if it.get("item_role") in (None, "master"):
+            stem = _normalize_master_stem(it.get("popis") or "")
+            if stem:
+                master_stems.add(stem)
+            kind = _classify_master_kind(it.get("popis") or "")
+            if kind:
+                master_kinds.add(kind)
+    print(f"  Master stems indexed:   {len(master_stems)} unique")
+    print(f"  Master kinds indexed:   {len(master_kinds)} unique  "
+          f"({', '.join(sorted(master_kinds))[:120]}{'…' if len(master_kinds) > 8 else ''})")
+
     print(f"\n[1/2] Pairing masters with library + KB rates...")
     pairing_cases: Counter[str] = Counter()
     all_sub_items: list[dict[str, Any]] = []
+    total_cascade_skips = 0
     for master in items:
-        subs, case_label = _pair_master(master, library_by_kap, rates_kb)
+        subs, case_label = _pair_master(master, library_by_kap, rates_kb,
+                                        master_stems=master_stems,
+                                        master_kinds=master_kinds)
         pairing_cases[case_label] += 1
+        # GATE 8c C2 — drain the cascade counter stashed on first sub-item
+        for s in subs:
+            if "_cascade_skips_from_master" in s:
+                total_cascade_skips += s.pop("_cascade_skips_from_master")
         all_sub_items.extend(subs)
     print(f"      → {len(all_sub_items)} sub-items emitted")
+    print(f"      → {total_cascade_skips} cross-layer sub-items skipped "
+          f"(GATE 8c C2 cascade)")
     for c, n in sorted(pairing_cases.items(), key=lambda x: -x[1]):
         print(f"        {c:30s}  {n}")
 
@@ -946,6 +1445,9 @@ def main() -> int:
             "items_count": len(items) + len(all_sub_items),
             "master_count": len(items),
             "subitem_count": len(all_sub_items),
+            # GATE 8 stats for dashboard Blocks 15/16/17
+            "phase_6_6_b_cascade_skips": total_cascade_skips,
+            "phase_6_6_b_case_labels": dict(pairing_cases),
         },
         "items": items + all_sub_items,
     }

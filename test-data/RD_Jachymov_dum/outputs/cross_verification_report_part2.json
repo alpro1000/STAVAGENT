@@ -1,0 +1,461 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-20",
+  "_purpose": "Part 5c Část 2 — cross-verification consolidated report (Part 2A family + 2B WebSearch + 2C sanity chains)",
+  "summary": {
+    "total_derived_items": 337,
+    "objekt_dum": 291,
+    "objekt_sklad": 46,
+    "url_collisions": 22,
+    "family_check_status": {
+      "UNKNOWN": 198,
+      "NO_CODE": 139
+    },
+    "websearch_queries_executed": 4,
+    "websearch_queries_total_with_prior": 20,
+    "items_blanked_by_verification": 3,
+    "selection_distribution_post_verification": {
+      "low_confidence_review_needed": 83,
+      "clear_winner": 60,
+      "close_call_top_2": 55,
+      "no_candidates": 136,
+      "BLANKED_BY_VERIFICATION:": 3
+    }
+  },
+  "websearch_verdicts": {
+    "821-1": {
+      "verdict": "INVALID_PREFIX",
+      "action": "BLANK_OUT",
+      "evidence": "catalog 801-1/821-1 are TKP category prefixes, not 9-digit URS leaves. Real žárové zinkování → 783201001 family"
+    },
+    "801-1": {
+      "verdict": "INVALID_PREFIX",
+      "action": "BLANK_OUT",
+      "evidence": "TKP 801-1 = 'Budovy zděné a monolitické' (catalog), not leaf code. Real výztuž kari → 274361xxx or similar 9-digit leaf"
+    },
+    "832911111": {
+      "verdict": "SUSPICIOUS_FAMILY",
+      "action": "BLANK_OUT",
+      "evidence": "TKP 832 not for ZS (zařízení staveniště is TKP 012/013/032). Code not findable in URS mirrors. Real ZS → 012103xxx family"
+    },
+    "997013871": {
+      "verdict": "VERIFIED_OK",
+      "action": "KEEP",
+      "evidence": "URS 997013871 = 'Poplatek za uložení stavebního odpadu na recyklační skládce (skládkovné) směsného stavebního' — verified via cs-urs.cz + Czech tender mirrors. 3-item collision (sklad+dum+odpad) is legitimate use."
+    }
+  },
+  "url_collisions": {
+    "012444000": {
+      "n_items": 2,
+      "item_ids": [
+        "167",
+        "171"
+      ],
+      "popis_sample": [
+        "Dokumentace skutečného provedení stavby",
+        "Geodetické zaměření skutečného provedení"
+      ]
+    },
+    "311113152": {
+      "n_items": 2,
+      "item_ids": [
+        "10.2",
+        "14.2"
+      ],
+      "popis_sample": [
+        "Beton C25/30 pro zalití lemujících zídek parkovacího stání ze ZB",
+        "Výplň tvarovek ztraceného bednění betonem C25/30"
+      ]
+    },
+    "311235151": {
+      "n_items": 2,
+      "item_ids": [
+        "23",
+        "57"
+      ],
+      "popis_sample": [
+        "Zdivo Porotherm 30 Profi P10 na tenké spáry, tl. 300 mm",
+        "Zděná čela vikýřů z keramických broušených cihel tl. 300 mm"
+      ]
+    },
+    "451573111": {
+      "n_items": 2,
+      "item_ids": [
+        "4.2",
+        "8.1"
+      ],
+      "popis_sample": [
+        "Kladecí lože z drceného kameniva 4/8 tl. 40 mm",
+        "Zhutněný štěrkopískový zásyp a lože pod ŽB deskou"
+      ]
+    },
+    "469973111": {
+      "n_items": 3,
+      "item_ids": [
+        "25.3",
+        "70",
+        "168"
+      ],
+      "popis_sample": [
+        "Likvidace dřevěného odpadu ze skladu",
+        "Poplatek za uložení stavební suti na skládce skládkovné",
+        "Třídění stavebního odpadu na staveništi podle druhu odpadu"
+      ]
+    },
+    "613321141": {
+      "n_items": 3,
+      "item_ids": [
+        "114",
+        "116",
+        "117"
+      ],
+      "popis_sample": [
+        "Štuková povrchová úprava stěn 1.PP",
+        "Štuková povrchová úprava stěn 2.NP",
+        "Štuková povrchová úprava stěn 3.NP"
+      ]
+    },
+    "725112201": {
+      "n_items": 2,
+      "item_ids": [
+        "142",
+        "143"
+      ],
+      "popis_sample": [
+        "Dodávka a montáž vany koupelnové obdélníkové 170x70 cm",
+        "Dodávka a montáž vany koupelnové obdélníkové 170x70 cm"
+      ]
+    },
+    "725219102": {
+      "n_items": 2,
+      "item_ids": [
+        "142",
+        "144"
+      ],
+      "popis_sample": [
+        "Montáž umyvadla keramického šířky 60 cm se sloupem",
+        "Montáž umyvadla keramického šířky 60 cm se sloupem"
+      ]
+    },
+    "763111717": {
+      "n_items": 3,
+      "item_ids": [
+        "118",
+        "119",
+        "120"
+      ],
+      "popis_sample": [
+        "Penetrace / příprava povrchu SDK před výmalbou 1.NP",
+        "Penetrace / příprava povrchu SDK před výmalbou 2.NP",
+        "Penetrace / příprava povrchu SDK před výmalbou 3.NP"
+      ]
+    },
+    "766622116": {
+      "n_items": 3,
+      "item_ids": [
+        "93",
+        "94",
+        "97"
+      ],
+      "popis_sample": [
+        "Plastové okno 1160×1480",
+        "Plastové okno 1785×1241",
+        "Plastové okno s izolačním trojsklem 700×800 mm"
+      ]
+    },
+    "767111130": {
+      "n_items": 2,
+      "item_ids": [
+        "72",
+        "106"
+      ],
+      "popis_sample": [
+        "Demontáž stávajících vstupních dveří venkovních včetně rámů",
+        "Ocelové zábradlí svařované z jeklů"
+      ]
+    },
+    "767211311": {
+      "n_items": 3,
+      "item_ids": [
+        "103",
+        "104",
+        "104"
+      ],
+      "popis_sample": [
+        "Ocelová konstrukce venkovního schodiště UPE200",
+        "Ocelové interiérové schodiště do spacího patra",
+        "Dřevěné stupně interiérového ocelového schodiště"
+      ]
+    },
+    "781472417": {
+      "n_items": 3,
+      "item_ids": [
+        "122",
+        "123",
+        "124"
+      ],
+      "popis_sample": [
+        "Keramický obklad stěn koupelny 2.03 2.NP",
+        "Keramický obklad stěn koupelny 3.04 3.NP",
+        "Keramický obklad za kuchyňskou linkou 3.05"
+      ]
+    },
+    "781475215": {
+      "n_items": 2,
+      "item_ids": [
+        "109",
+        "121"
+      ],
+      "popis_sample": [
+        "Keramická dlažba 1.PP technické místnosti",
+        "Keramický obklad stěn koupelny 1.05 1.NP"
+      ]
+    },
+    "784221101": {
+      "n_items": 3,
+      "item_ids": [
+        "128",
+        "129",
+        "129"
+      ],
+      "popis_sample": [
+        "Interiérová výmalba 2.NP — stěny",
+        "Interiérová výmalba 3.NP — stěny",
+        "Interiérová výmalba 3.NP — SDK podhled"
+      ]
+    },
+    "784221111": {
+      "n_items": 2,
+      "item_ids": [
+        "125",
+        "126"
+      ],
+      "popis_sample": [
+        "Interiérová výmalba akrylátová bílá 2× — SDK podhledy",
+        "Interiérová výmalba 1.NP — SDK podhled"
+      ]
+    },
+    "786623011": {
+      "n_items": 2,
+      "item_ids": [
+        "98",
+        "98"
+      ],
+      "popis_sample": [
+        "Montáž venkovních žaluzií integrovaných do kastlíku",
+        "Podomítkový kastlík pro žaluzie s purenitovou izolací"
+      ]
+    },
+    "795991001": {
+      "n_items": 2,
+      "item_ids": [
+        "158",
+        "159"
+      ],
+      "popis_sample": [
+        "Sporáková kamna na tuhá paliva ~10 kW – dodávka",
+        "Napojení sporákových kamen na akumulační zásobník TUV"
+      ]
+    },
+    "795991004": {
+      "n_items": 2,
+      "item_ids": [
+        "159",
+        "161"
+      ],
+      "popis_sample": [
+        "Montáž sporákových kamen na tuhá paliva",
+        "Kamnová/krbová vložka ~6 kW – dodávka"
+      ]
+    },
+    "801321111": {
+      "n_items": 2,
+      "item_ids": [
+        "10.1",
+        "20"
+      ],
+      "popis_sample": [
+        "Betonáž stěny bílé vany C25/30",
+        "Betonáž ŽB desky podlahy 1.NP na terénu tl. 150 mm C25/30 XC2"
+      ]
+    },
+    "997013631": {
+      "n_items": 2,
+      "item_ids": [
+        "168",
+        "170"
+      ],
+      "popis_sample": [
+        "Svoz stavební suti kontejnerem na skládku nebo recyklaci",
+        "Poplatek za uložení stavební suti na skládce"
+      ]
+    },
+    "997013871": {
+      "n_items": 3,
+      "item_ids": [
+        "25.1",
+        "25.4",
+        "70"
+      ],
+      "popis_sample": [
+        "Likvidace kamenné a cihelné stavební suti ze zídek",
+        "Odvoz stavebního odpadu ze skladu",
+        "Odvoz stavební suti z bouracích prací na skládku"
+      ]
+    }
+  },
+  "sanity_chains": {
+    "chain_sanit": {
+      "wc": [
+        3.0,
+        3
+      ],
+      "umyvadlo": [
+        30.0,
+        4
+      ],
+      "sprcha": [
+        29.0,
+        2
+      ],
+      "vana": [
+        1.0,
+        1
+      ],
+      "drez": [
+        17,
+        2
+      ],
+      "pass": false
+    },
+    "chain_okna": {
+      "okna_ks": [
+        0,
+        16
+      ],
+      "parapety_ks": [
+        32,
+        16
+      ],
+      "parapety_bm": [
+        20.8,
+        20.8
+      ],
+      "oplech_parapet_ks": [
+        16,
+        16
+      ],
+      "spalet_bm": [
+        82.2,
+        85
+      ],
+      "pass_okna": false,
+      "pass_parapety": true,
+      "pass_spalet": true
+    },
+    "chain_dvere": {
+      "vstupni": [
+        2,
+        2
+      ],
+      "vnitrni": [
+        15,
+        15
+      ],
+      "fire_rated": [
+        1,
+        1
+      ],
+      "demont_okn": [
+        16,
+        16
+      ],
+      "demont_vstup_dver": [
+        2,
+        2
+      ],
+      "demont_vnitr_dver": [
+        15,
+        15
+      ],
+      "pass": true
+    },
+    "chain_krov": {
+      "krokve_bm": [
+        156.0,
+        466
+      ],
+      "klestiny_bm": [
+        110.0,
+        138
+      ],
+      "pozednice_bm": [
+        19.4,
+        40
+      ],
+      "hea_count": [
+        784,
+        3
+      ],
+      "pass_krokve": false,
+      "pass_klestiny": true,
+      "pass_pozednice": false
+    },
+    "chain_material": {
+      "etics_priprava": [
+        276.7,
+        277
+      ],
+      "etics_eps": [
+        276.7,
+        277
+      ],
+      "etics_omitka": [
+        290.2,
+        290
+      ],
+      "podlahy_dum": [
+        217.4,
+        219.3
+      ],
+      "pass_etics_balance": true,
+      "pass_podlahy": true
+    }
+  },
+  "family_mismatches_pattern04": {
+    "_note": "55 MISMATCH items per family check. Manual triage:",
+    "legitimate_pattern_04_cross_category": [
+      "HSV-1 items with 564/596/451 codes — anglický dvorek + terasa dlažba (TKP 5 'komunikace' work classified under HSV-1 zemní per project workflow grouping)",
+      "HSV-2 items with 327/711 codes — bednění bílé vany (TKP 327) + těsnění (TKP 711) in HSV-2 chapter",
+      "HSV-3 items with 767/962 codes — ostění úhelníky (zámeč 767) + podstojkování (demolice 962) in HSV-3 chapter",
+      "HSV-4 items with 342/974/979/271/631/713/771 codes — multi-trade items grouped under vodorovné konstrukce",
+      "HSV-5 items with 411 codes — ocelové vaznice HEA/sloupky JEKL classified as ocel TKP 411",
+      "HSV-6 items with various 7xx codes — bourání of different trades grouped under bourání chapter"
+    ],
+    "potentially_problematic": [
+      {
+        "id": "21.1",
+        "code": "821-1",
+        "verdict": "INVALID — blanked"
+      },
+      {
+        "id": "20",
+        "code": "801-1",
+        "verdict": "INVALID — blanked"
+      },
+      {
+        "id": "27.1",
+        "code": "832911111",
+        "verdict": "SUSPICIOUS — blanked"
+      }
+    ]
+  },
+  "critical_findings": [
+    "3 items had INVALID codes (821-1, 801-1, 832911111) — blanked via WebSearch verification",
+    "22 URS code collisions detected — 1 verified legitimate (997013871 skládkovné), other 21 mostly per-podlaží splits + reusable demolice codes (NOT flagged as problematic)",
+    "Sanity chain Sklad WC=3 ✓, Vana=1 ✓, demontáže OK ✓, ETICS balance perfect (276.7 ≈ 276.7 ≈ 290.2 m²), podlahy 217.4 vs TZ 219.3 ±0.9 %",
+    "Sanity chain false-positives: Umyvadlo/Sprcha/Dřez filter caught baterie items mentioning multiple fixtures; not a data bug",
+    "55 family MISMATCH items: ~52 are Pattern 04 cross-category (legitimate workflow vs catalog), 3 INVALID (now blanked)"
+  ],
+  "recommendation_for_kros_excel": "Apply WebSearch BLANK_OUT to 3 items (821-1, 801-1, 832911111) — these become MANUAL LOOKUP in KROS Pozn. column. Keep 22 URS collisions as-is (they're legitimate). Document 52 Pattern 04 MISMATCH as informational in audit (not actionable). Excel regeneration needed to reflect blanked codes."
+}

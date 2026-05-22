@@ -34,6 +34,7 @@ from app.api.routes_items import router as items_router
 from app.api.routes_scenario_b import router as scenario_b_router
 from app.api.routes_soupis import router as soupis_router
 from app.api.routes_calculator_suggestions import router as calculator_suggestions_router
+from app.api.routes_uep import router as uep_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -66,5 +67,6 @@ api_router.include_router(items_router)                # /api/v1/items/* (Unifie
 api_router.include_router(scenario_b_router)           # /api/v1/scenario-b/* (TZ → Výkaz výměr)
 api_router.include_router(soupis_router)               # /api/v1/soupis/* (TZ → Soupis prací pipeline)
 api_router.include_router(calculator_suggestions_router)  # /api/v1/extraction/calculator-suggestions
+api_router.include_router(uep_router)                  # /api/v1/uep/* (Universal Extraction Pipeline — jobs + IFC diff)
 
 __all__ = ["api_router"]
