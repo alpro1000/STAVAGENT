@@ -399,6 +399,46 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-21 — Session: Říms calibration — Phase A discovery audit
+
+**Topic:** Phase A (audit only, no code) of `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`. Covered Phase A.1 (endpoint discovery), A.2 (golden test inventory), A.3 (UI components), A.5 (test inventory), A.6 (field visibility per element=rimsa), A.7 (KB inventory + hardcoded matrices), and B (architecture analysis prep). Spawned 5 parallel `Explore` subagents to keep the breadth manageable. Single deliverable: `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`.
+
+**Rozhodnuto:**
+- Říms workflow spans **~35 surfaces across 5 services** (concrete-agent MCP tools + FastAPI, Monolit-Planner backend routes + shared calculators, frontend UI). At least 21 are rimsa-aware, 4 partial, 10 unaware.
+- **3 independent sources of truth for rimsa values** — Python MCP `classifier.py` (rebar 130, difficulty 1.4), TS `element-classifier.ts` ELEMENT_CATALOG (rebar 120, difficulty 1.15), B4 YAML stubs (missing). Task target: rebar 140. ⇒ DRY violation table in §B.1 of the audit.
+- **Curing-class wiring bug suspected** — `DEFAULT_CURING_CLASS[rimsa]=4` exists in `maturity.ts:611` but is not threaded through `planner-orchestrator.ts:1652`. Net effect: rimsa likely computes ~5 d @ 15 °C instead of TKP18 §7.8.3-required 9 d. Needs 15-min direct repro before Phase C.
+- **12 hardcoded matrices** in TS engines that should live in `B*` KB YAML (`EXPOSURE_MIN_CURING_DAYS`, `CURING_DAYS_TABLE`, `DEFAULT_CURING_CLASS`, `T_WINDOW_HOURS`, `ELEMENT_DEFAULTS`, `RECOMMENDED_EXPOSURE`, k-factors, `PILE_PRODUCTIVITY_TABLE`, `ELEMENT_CATALOG`, `REQUIRED_FIELDS`, `SANITY_RANGES`, `FORMWORK_SYSTEMS`). Each = one bug ticket. Per task §10, full migration is out of scope — only `rimsa.yaml` + `T_bedneni.yaml` get created in Phase D.
+- **Refactor blast radius mapped.** Per-tact cycling + integer-shift refactor in `element-scheduler.ts` is HIGH-risk for `mostovkova_deska` (MSS coupling), `stena`, `sloup`, `stropni_deska`; MEDIUM for 8 types; LOW for 2; N/A for pilota (early bypass).
+- **8 open questions** raised for Alexandra at the bottom of the audit, gating Phase C.
+
+**Odmítnuto:**
+- Writing any engine code, creating any YAML, opening any PR. Phase A is explicitly read-only.
+- Migrating the 12 hardcoded matrices into KB YAML now (out of scope per task §10).
+- Trusting subagent claims about `getSuitableSystemsForElement` line numbers (two subagents reported divergent ranges `1029–1040` vs `1150–1168`); audit notes the divergence and defers cross-check to Phase C.
+- Treating `test-data/tz/SO-250_golden_test.md` as present (it's not — actual location is `test-data/SO_250/tz/SO-250.md`, spec-only, not a Vitest fixture). Flagged as Q1.
+- Treating SO-206 fixture as expected (no `SO-206_*` file in repo). Flagged as Q2.
+
+**Otevřené otázky:** All 8 listed at the bottom of `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`. Headline:
+- Q1: SO-250 path mismatch — relocate or update task?
+- Q3: Source-of-truth resolution (Python MCP vs TS catalog vs B4 YAML) for Phase C
+- Q4: Curing-class bug — direct repro before Phase C or trust subagent?
+- Q5: Scheduler refactor gated behind opt-in flag per element, or one clean refactor?
+- Q7: 30-min directed read of `mcp/tools/calculator.py` to settle MCP/Monolit boundary?
+
+**Co dál:**
+- Alexandra reviews audit + answers 8 open questions
+- Phase C kicks off (scheduler core refactor) per task spec, with answers in hand
+- Bug ticket file `backlog/calc_hardcoded_to_kb.md` to be opened by Phase D session, not now
+
+**Files changed:**
+- `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md` (new, ~400 lines)
+- `docs/soul.md` §9 (this entry)
+- `next-session.md` (overwrite with říms Phase A handoff)
+
+**Branch:** `claude/rimsa-calibration-phase-a` (created from `claude/bootstrap-code-skills-ecPCE`)
+
+---
+
 ### 2026-05-21 — Session: Bootstrap Claude Code Skills + Discipline Infrastructure
 
 **Topic:** Phase 1 audit + Phase 2 bootstrap of `.claude/skills/` directory per task `docs/tasks/2026-05-20-rimsa-mcp-agent/stavagent-session-discipline-SKILL.md`. Foundation for upcoming říms calibration task (TASK_Rimsa_Calibration_FullStack_v1.md).
