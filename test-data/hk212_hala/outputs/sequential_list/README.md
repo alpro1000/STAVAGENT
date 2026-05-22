@@ -23,9 +23,12 @@
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
 
 ## Soubory
-- `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1
+- `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1, includes Vzorec / Zdroj výměry column
 - `hk212_sequential_list.csv` — flat CSV mirror pro grep / diff
-- `hk212_sequential_list.json` — items.json fields + `_sequence_position` + `_phase` + `_krok`
+- `hk212_sequential_list.json` — items.json fields + `_sequence_position` + `_phase` + `_krok` + `_vzorec_display`
+
+## Sloupec "Vzorec / Zdroj výměry"
+Každý řádek nese stručný výpočet kvantity + zdrojové reference (výkres / TZ / statika / Step3 / phase ref) extrahované z `items_hk212_etap1.json` field `audit_trail.formula` + `audit_trail.reference`. Pokud zdroj nelze odvodit, řádek nese `(zdroj nenalezen — manual verify)`. Text je truncated na ~220 znaků; plné detaily (vstupy + krok-za-krok + analytical_journey) zůstávají v `items.json` audit_trail.
 
 ## ABMV open (8)
 ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_3
