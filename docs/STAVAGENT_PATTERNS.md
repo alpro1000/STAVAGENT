@@ -544,6 +544,53 @@ Branch is safe to delete when:
 
 ---
 
+## Pattern 13: Synthetic Acceptance Metrics Mask Correctness
+
+**Source:** HK212 soupis_praci retrospective (2026-05-24, post PR #1208).
+
+### Problem
+Auto-match pipeline hit its synthetic acceptance gate (61.7 % Tier 1 above 60 % target) and was declared "tender-ready" — but a fresh-eyes read of the shipped XLSX found systematic false positives at Tier 1 confidence 0.85:
+- `763158122` "Podlaha ze **sádrokartonových desek**" mapped to PSV-77x industrial floor (objekt has epoxy stěrka, no SDK floor exists)
+- `127401401` "Hloubení rýh **pod vodou** pro nábřežní zdi" mapped to plain trench excavation (no water, no waterfront walls)
+- `985121101` "Tryskání **degradovaného** betonu" (historical reconstruction code) mapped to surface prep on new hala
+- `155132111` "Protierozní **geobuňky na svazích**" (roadwork) mapped to Kingspan cladding line
+- `711331383` "Izolace **mostovek**" (bridge deck waterproofing) mapped to sokl HI
+- `342191211` "Opláštění z **polyesterované fólie**" mapped to Kingspan PUR/PIR sandwich
+- `311311971` "**Nadzákladové zdi** do ztraceného bednění C 8/10" mapped to floor slab 106 m³ (4× in same kapitola with different mnozstvi)
+
+Each was matched on a single shared keyword (`podlaha`, `hloubení`, `beton`, `geo`, `izolace`, `opláštění`, `základ`) without validating that the KROS chapter (763 SDK ≠ 776 industrial floors; 127 water-trench ≠ 132 dry trench; 985 reno ≠ new build; 155 road slopes ≠ wall cladding; 711 bridge ≠ sokl; 342 foil ≠ 315 sandwich; 311 wall ≠ 313 slab) was even applicable.
+
+### Anti-pattern
+- Threshold-only acceptance: "X % at Tier 1 ≥ N" treats Tier 1 as ground truth.
+- No sampling QA gate: nobody read N representative rows per kapitola before stamping "tender-ready".
+- Trusting that the matcher's `confidence` field reflects domain correctness when matcher itself has no chapter / material / structural context filter.
+- Iterating on the metric (44.5 % → 57 % → 61.7 %) without iterating on **what counts as a correct match**.
+
+### Correct pattern
+1. **Domain QA gate runs in parallel to synthetic threshold gate.** Sample ≥ N rows per kapitola (N = 3–5 for small kapitol, 5–10 for large), human spot-check chapter + material + structural fit. Tier 1 badge is allowed only when BOTH gates pass.
+2. **Matcher itself filters by chapter context** before keyword scoring: negative-context skip (like CORE `_safe_search()` skipping stávající / demolice), positive-context whitelist (only allow KROS codes in the parent chapter buckets compatible with the target chapter).
+3. **Sanity sentinels in QA set** — handful of obvious wrong codes (mostovky for non-bridge, sádrokarton for industrial, nábřežní zdi for non-water) that the matcher MUST NOT return at Tier 1 confidence. Pipeline fails if any sentinel comes back ≥ 0.70.
+4. **Hard rule on duplicates** — same KROS code repeated in same kapitola with different mnozstvi is a flag, not a feature; needs explanation field or explicit allow-list (e.g. "patky × 2 stage" with separation rationale per Pattern 6).
+
+### HK212 evidence
+- 61.7 % Tier 1 acceptance hit — pipeline declared YELLOW (bid-stage usable), shipped to handoff
+- Fresh-eyes audit (next session, same XLSX) found ≥ 7 systematic false positives at Tier 1 0.85
+- soupis_praci/ retired, replaced by sequential_list/ — flat ordered list, no codes, manual fill
+- Root cause flagged for matcher fix: chapter-context filter missing in `pricing/otskp_engine.py` + Monolit-Planner classifier
+
+### Rule
+A synthetic acceptance gate is a **necessary but not sufficient** condition for "tender-ready". Pair every threshold gate with:
+- Human domain sampling (N rows per kapitola)
+- Sanity sentinels (known-wrong codes that must not score Tier 1)
+- Duplicate-detection gate (same code repeated in same kapitola → flag)
+
+Without all three, the matcher's `confidence` field is uncalibrated and "Tier 1 X %" measures nothing.
+
+### Generalization
+Applies to ANY auto-match / auto-classify pipeline in STAVAGENT (KROS, URS, element classifier, exposure-class extractor, calculator-suggestions): a metric over its own confidence field is self-referential. The validation must come from outside the system (human spot-check, sanity sentinels, cross-source triangulation per Pattern 3).
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation

@@ -352,6 +352,39 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-24 — Session: HK212 soupis_praci retired → sequential_list (cleanup + retrospective)
+
+**Topic:** Cleanup pass after fresh-eyes review of `hk212_soupis_praci.xlsx` exposed systematic KROS auto-match false positives. `soupis_praci/` removed from main; replaced by `sequential_list/` (shipped via PR #1210) — flat ordered list of 128 items in logical construction sequence with NO codes (manual user-fill workflow).
+
+**Rozhodnuto:**
+- **Retire `test-data/hk212_hala/outputs/soupis_praci/`** — 6 files removed from main: `hk212_soupis_praci.xlsx`, `hk212_soupis_praci.json`, `kros_match_report.md`, `kros_match_results.json`, `preflight_inventory.md`, `HANDOFF_TENDER_READY.md`.
+- **`sequential_list/` already shipped** via PR #1210 (squash commit `309e2ee0` on main) — single XLSX + CSV + JSON re-ordering all 128 items.json items into 11 construction phases (PŘÍPRAVA → ZEMNÍ → ZÁKLADY → OK → KINGSPAN → KLEMPÍŘ → VÝPLNĚ → IZOLACE → PODLAHA → PŘESUN → KOLAUDACE), 68 sub-step kroky. No codes, no prices, no classification.
+- **`items_hk212_etap1.json` is canonical** — 128 items unchanged across both retire + sequential ship.
+
+**Odmítnuto:**
+- Patching the broken matcher in-place (root cause is matcher logic, not data — would take weeks of negative-context filter work and Tier-assignment audit; flat-list pivot is days)
+- Keeping `soupis_praci/` as historical reference (causes confusion + risk of being shipped to investor by mistake; retrospective lives in soul.md + Pattern 13 instead)
+- Re-running matcher with tighter thresholds (61.7 % Tier 1 was already at the target — the bug is that Tier 1 0.85 confidence was assigned to obviously wrong matches, not that confidence was too low)
+
+**Otevřené otázky (root-cause carry-forward):**
+- Matcher false-positive pattern: KROS code `763158122` "Podlaha ze sádrokartonových desek" matched stěrka podlahy in PSV-77x at Tier 1 conf 0.85 — keyword-only `podlaha` match without chapter / material / structural context filter.
+- 7 cross-domain contamination examples shipped at 0.85: `985121101` tryskání degradovaného betonu (historical reno → new hala), `127401401` hloubení rýh pod vodou pro nábřežní zdi (no water on parcel), `155132111` protierozní geobuňky (roadwork → cladding), `711331383` izolace mostovek (bridge → sokl HI), `342191211` polyester foil opláštění (Kingspan PUR/PIR ≠ folie), `311311971` nadzákladové zdi do ztraceného bednění C 8/10 repeated 4× including 106 m³ that was actually the floor slab.
+- Tier-assignment logic apparently does not validate chapter context — a code matched on word `podlaha` lands in any chapter with "podlaha" in its name regardless of code's actual KROS chapter (763 = SDK, ≠ industrial floor 776xxx).
+
+**Co dál:**
+- **Pattern 13 added — "Synthetic acceptance metrics mask correctness."** (Pattern 11 + 12 already taken by KROS FTS + squash-merge orphans from prior session — see STAVAGENT_PATTERNS.md.) Hitting "61.7 % Tier 1 above 60 % target" said nothing about whether Tier 1 matches were correct. Domain validation (human spot-check on N representative rows per kapitola, checking chapter + material + structural fit) is required alongside any synthetic threshold gate. Threshold gates without domain check ship false positives at "confident" tier.
+- Lesson generalized: any auto-match pipeline (KROS, URS, classifier, …) must have a chapter-context filter in matcher itself (negative-context skip like CORE `_safe_search()` does for stávající/demolice) AND a sampling QA gate on output before "Tier 1" badge is allowed.
+- **Workflow pivot:** for HK212 + next pilots until matcher fixed, ship `sequential_list/` (no codes) + leave KROS/URS fill to user. No more `soupis_praci/` outputs from auto-matcher until chapter-context filter lands.
+- Future task: backlog item to add negative-context + chapter-bucket filter to KROS matcher (concrete-agent `pricing/otskp_engine.py` + Monolit-Planner classifier), with N-row domain QA gate before Tier 1 confidence allowed.
+
+**Branches / PRs:**
+- `claude/hk212-sequential-list` → PR #1210 → main `309e2ee0` (sequential_list ship, auto-merged)
+- `claude/hk212-cleanup-soupis-praci` (this cleanup commit — soupis_praci removal + Pattern 13 + this soul.md entry) → PR to follow
+
+**Session retrospective:** `test-data/hk212_hala/outputs/sequential_list/HANDOFF_SEQUENTIAL.md` + `docs/STAVAGENT_PATTERNS.md` §Pattern 13
+
+---
+
 ### 2026-05-24 — Session: HK212 IGP integration + Kingspan + patky rework + Soupis prací pipeline
 
 **Topic:** Major HK212 finalization session — IGP delivered (ALTAGEO 526026), TZ statika Kingspan quote integrated, A105 patky geometry rework (correction of F-3 over-fix), soupis prací end-to-end pipeline (preflight → KROS FTS matching → Excel + JSON). Merged via PR #1208 squash.
