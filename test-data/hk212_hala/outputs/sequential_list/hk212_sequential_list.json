@@ -2692,62 +2692,58 @@
       "_vzorec_display": "350 m³ × 1.8 t/m³ (zhutněná zemina)"
     },
     {
-      "id": "HSV-1-028",
+      "id": "HSV-1-028a",
       "kapitola": "HSV-1",
       "SO": "SO-01",
-      "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+      "popis": "Odstranění navážek GT1 z aktivní zóny — výkop + naložení na dopravní prostředek",
       "mj": "m³",
       "mnozstvi": 265.61,
       "urs_code": null,
       "urs_alternatives": [],
       "urs_status": "needs_review",
       "urs_match_score": null,
+      "kros_hint": "122xxx (odstranění zeminy z aktivní zóny)",
       "skladba_ref": null,
-      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
-      "raw_description": "výměna aktivní zóny — odstranění navážek + štěrk hutněný 0.5 m Edef2 ≥ 45 MPa",
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Odstranění navážek GT1 z aktivní zóny — výkop + naložení na dopravní prostředek",
       "confidence": 0.85,
       "subdodavatel_chapter": "zemni_prace",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "IGP",
       "_completeness": 0.9,
-      "_qty_formula": "A105 deska plocha 19.04 × 27.90 = 531.22 m² × 0.5 m vrstva = 265.61 m³ (jedna operace — odstranění NEBO nahrazení)",
+      "_qty_formula": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³",
       "_export_wrapper_hint": null,
       "_price_source": "user_skipped_pricing",
       "audit_trail": {
         "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
-        "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
-        "formula_parsed_method": "product_dual_operation",
+        "formula": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³",
+        "formula_parsed_method": "user_split_decomposition",
         "inputs": [
+          {
+            "label": "krok_role",
+            "value": "1) výkop navážek",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
           {
             "label": "deska_area_m2",
             "value": 531.22,
-            "unit": "m²"
-          },
-          {
-            "label": "deska_source",
-            "value": "A105 měřené 19.04 × 27.90",
-            "unit": ""
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
           },
           {
             "label": "mocnost_vymeny_m",
             "value": 0.5,
-            "unit": "m"
-          },
-          {
-            "label": "operace_odstraneni_m3",
-            "value": 265.61,
-            "unit": "m³"
-          },
-          {
-            "label": "operace_nahrazeni_m3",
-            "value": 265.61,
-            "unit": "m³"
+            "unit": "m (IGP §4.4)"
           },
           {
             "label": "edef2_min_MPa",
             "value": 45.0,
-            "unit": "MPa"
+            "unit": "MPa (ČSN 72 1006)"
           }
         ],
         "reference": [
@@ -2777,23 +2773,697 @@
             "type": "drawing_measurement",
             "code": "A105",
             "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
           }
         ],
-        "poznamka": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef2/Edef1 < 2.2 (ČSN 72 1006). Vrstva 0.5 m × zastavěná 538.5 m² = 269.25 m³ na operaci. Item tracks single layer; total earth work = 2× (odstr. + nahraz.) = 538.5 m³. | REWORK 2026-05-24: 269.25 m³ (Step 3 zastavěná 538.5 × 0.5) → 265.61 m³ (A105 deska 531.22 × 0.5). Reason: výměna aktivní zóny vychází z plochy desky + obvodový pas, NE z full zastavěné (která zahrnuje převis střechy). A105 měřené.",
+        "poznamka": "Sub-item 1) výkop navážek ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
         "computed_quantity": 265.61,
         "declared_quantity": 265.61,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
-        "extraction_method": "igp_geometric_derivation",
-        "data_source_hint": "IGP+Step3",
-        "extracted_at": "2026-05-22T07:23:50.291052+00:00"
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 1) výkop navážek — first appearance",
+            "status": "current"
+          }
+        ]
       },
       "_sequence_position": 37,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
-      "_krok": "Výměna aktivní zóny pláně",
-      "_vzorec_display": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]"
+      "_krok": "Výměna aktivní zóny — odstr. navážek → odvoz → dovoz štěrku → hutnění → Edef2 → geodet",
+      "_vzorec_display": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]  · was 265.61: Sub-item 1) výkop navážek — first appearance"
+    },
+    {
+      "id": "HSV-1-028b",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odvoz vytěžených navážek GT1 na skládku (vč. poplatku skládkovné)",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "162xxx (odvoz) + skládkovné dle reálné vzdálenosti",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Odvoz vytěžených navážek GT1 na skládku (vč. poplatku skládkovné)",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "2) odvoz na skládku",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 2) odvoz na skládku ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 2) odvoz na skládku — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_sequence_position": 38,
+      "_phase": 3,
+      "_phase_title": "ZÁKLADY",
+      "_krok": "Výměna aktivní zóny — odstr. navážek → odvoz → dovoz štěrku → hutnění → Edef2 → geodet",
+      "_vzorec_display": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]  · was 265.61: Sub-item 2) odvoz na skládku — first appearance"
+    },
+    {
+      "id": "HSV-1-028c",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Dovoz hutného štěrku frakce 0/63 (alt. 0/125) na staveniště",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "162xxx (dovoz materiálu) — frakce per finální výběr dodavatele",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Dovoz hutného štěrku frakce 0/63 (alt. 0/125) na staveniště",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "3) dovoz hutného štěrku",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 3) dovoz hutného štěrku ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 3) dovoz hutného štěrku — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_sequence_position": 39,
+      "_phase": 3,
+      "_phase_title": "ZÁKLADY",
+      "_krok": "Výměna aktivní zóny — odstr. navážek → odvoz → dovoz štěrku → hutnění → Edef2 → geodet",
+      "_vzorec_display": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]  · was 265.61: Sub-item 3) dovoz hutného štěrku — first appearance"
+    },
+    {
+      "id": "HSV-1-028d",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Rozprostření štěrku po vrstvách max 300 mm + hutnění vibračním válcem / pěchem (ČSN 72 1006)",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "174xxx (zhutněné násypy)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Rozprostření štěrku po vrstvách max 300 mm + hutnění vibračním válcem / pěchem (ČSN 72 1006)",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "4) rozprostření + hutnění",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 4) rozprostření + hutnění ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 4) rozprostření + hutnění — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_sequence_position": 40,
+      "_phase": 3,
+      "_phase_title": "ZÁKLADY",
+      "_krok": "Výměna aktivní zóny — odstr. navážek → odvoz → dovoz štěrku → hutnění → Edef2 → geodet",
+      "_vzorec_display": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]  · was 265.61: Sub-item 4) rozprostření + hutnění —…"
+    },
+    {
+      "id": "HSV-1-028e",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Statická zatěžovací zkouška Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2), min 3 měřená místa",
+      "mj": "ks",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "935xxx (zatěžovací zkouška)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Statická zatěžovací zkouška Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2), min 3 měřená místa",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "5) Edef2 kontrolní zkouška",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 5) Edef2 kontrolní zkouška ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 3.0,
+        "declared_quantity": 3.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 3.0,
+            "mj": "ks",
+            "method": "Sub-item 5) Edef2 kontrolní zkouška — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_sequence_position": 41,
+      "_phase": 3,
+      "_phase_title": "ZÁKLADY",
+      "_krok": "Výměna aktivní zóny — odstr. navážek → odvoz → dovoz štěrku → hutnění → Edef2 → geodet",
+      "_vzorec_display": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]  · was 3.0: Sub-item 5) Edef2 kontrolní zkouška — first…"
+    },
+    {
+      "id": "HSV-1-028f",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Geodetická kontrola roviny aktivní zóny po hutnění",
+      "mj": "m²",
+      "mnozstvi": 531.22,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "933xxx (geodetické práce — kontrolní zaměření)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Geodetická kontrola roviny aktivní zóny po hutnění",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "6) geodetická kontrola roviny",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 6) geodetická kontrola roviny ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 531.22,
+        "declared_quantity": 531.22,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 531.22,
+            "mj": "m²",
+            "method": "Sub-item 6) geodetická kontrola roviny — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_sequence_position": 42,
+      "_phase": 3,
+      "_phase_title": "ZÁKLADY",
+      "_krok": "Výměna aktivní zóny — odstr. navážek → odvoz → dovoz štěrku → hutnění → Edef2 → geodet",
+      "_vzorec_display": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)  [igp_section:4.4, igp_document:inputs/dokumentace/IGP_ALTAGEO_526026.md, Step3]  · was 531.22: Sub-item 6) geodetická kontrola roviny — first appearance"
     },
     {
       "id": "HSV-1-013",
@@ -2868,7 +3538,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 38,
+      "_sequence_position": 43,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Štěrkové lože + zhutnění podloží",
@@ -2936,7 +3606,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 39,
+      "_sequence_position": 44,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Štěrkové lože + zhutnění podloží",
@@ -3002,7 +3672,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 40,
+      "_sequence_position": 45,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Hydroizolace plošná pod desku",
@@ -3068,7 +3738,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 41,
+      "_sequence_position": 46,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Výztuž patek a pasů",
@@ -3165,7 +3835,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 42,
+      "_sequence_position": 47,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Patky rámové — bednění + beton + odbednění",
@@ -3291,7 +3961,7 @@
         "extracted_at": "2026-05-14T06:35:18.127569+00:00",
         "_audit_fix_f3_date": "2026-05-24"
       },
-      "_sequence_position": 43,
+      "_sequence_position": 48,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Patky rámové — bednění + beton + odbednění",
@@ -3362,7 +4032,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 44,
+      "_sequence_position": 49,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Patky rámové — bednění + beton + odbednění",
@@ -3454,7 +4124,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 45,
+      "_sequence_position": 50,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Patky štítové — bednění + beton + odbednění",
@@ -3546,7 +4216,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 46,
+      "_sequence_position": 51,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Patky štítové — bednění + beton + odbednění",
@@ -3612,7 +4282,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 47,
+      "_sequence_position": 52,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Patky štítové — bednění + beton + odbednění",
@@ -3684,7 +4354,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 48,
+      "_sequence_position": 53,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Pasy ŽB — bednění + beton",
@@ -3756,7 +4426,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 49,
+      "_sequence_position": 54,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Pasy ŽB — bednění + beton",
@@ -3829,7 +4499,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 50,
+      "_sequence_position": 55,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Zásyp výkopů kolem patek",
@@ -3906,7 +4576,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 51,
+      "_sequence_position": 56,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)",
@@ -3988,7 +4658,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 52,
+      "_sequence_position": 57,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)",
@@ -4075,7 +4745,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 53,
+      "_sequence_position": 58,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "VARIANTA — pilota Ø800 / L=8 m (alternativa)",
@@ -4147,7 +4817,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 54,
+      "_sequence_position": 59,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
@@ -4213,7 +4883,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 55,
+      "_sequence_position": 60,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
@@ -4284,7 +4954,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 56,
+      "_sequence_position": 61,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
@@ -4361,7 +5031,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 57,
+      "_sequence_position": 62,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
@@ -4464,7 +5134,7 @@
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
       "_review_concrete_class": true,
-      "_sequence_position": 58,
+      "_sequence_position": 63,
       "_phase": 3,
       "_phase_title": "ZÁKLADY",
       "_krok": "Podlahová deska — bednění + výztuž + distance + beton",
@@ -4539,7 +5209,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 59,
+      "_sequence_position": 64,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Doprava OK na stavbu",
@@ -4625,7 +5295,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 60,
+      "_sequence_position": 65,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Kotvení sloupů ke patkám",
@@ -4691,7 +5361,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 61,
+      "_sequence_position": 66,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Pomocné lešení OK",
@@ -4777,7 +5447,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 7.0,
       "_length_method": "B5 default for 'IPE 400' as sloupy = 7.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 62,
+      "_sequence_position": 67,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -4863,7 +5533,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 7.0,
       "_length_method": "B5 default for 'HEA 200' as sloupy štítové = 7.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 63,
+      "_sequence_position": 68,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -4948,7 +5618,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 9.6,
       "_length_method": "B5 default for 'IPE 450' as příčle = 9.6 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 64,
+      "_sequence_position": 69,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -5041,7 +5711,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 6.0,
       "_length_method": "B5 default for 'IPE 160' as vaznice = 6.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 65,
+      "_sequence_position": 70,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -5123,7 +5793,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 6.0,
       "_length_method": "B5 default for 'UPE 160' as vaznice krajní = 6.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 66,
+      "_sequence_position": 71,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -5203,7 +5873,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 4.0,
       "_length_method": "B5 default for 'L 70/70/6' as ztužidla stěnová = 4.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 67,
+      "_sequence_position": 72,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -5289,7 +5959,7 @@
       "_length_confidence": 0.7,
       "_length_value_m": 6.0,
       "_length_method": "B5 default for 'Ø20' as ztužidla střešní = 6.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)",
-      "_sequence_position": 68,
+      "_sequence_position": 73,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Dodávka prvků OK (sloupy, příčle, vaznice, ztužidla)",
@@ -5364,7 +6034,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 69,
+      "_sequence_position": 74,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Styčníkové plechy + spojovací materiál",
@@ -5434,7 +6104,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 70,
+      "_sequence_position": 75,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Montáž OK — kompletace rámové haly",
@@ -5494,7 +6164,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 71,
+      "_sequence_position": 76,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Demontáž pomocného lešení po montáži OK",
@@ -5570,7 +6240,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 72,
+      "_sequence_position": 77,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Povrchové úpravy OK (antikoroze + protipožární)",
@@ -5634,7 +6304,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 73,
+      "_sequence_position": 78,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Povrchové úpravy OK (antikoroze + protipožární)",
@@ -5703,7 +6373,7 @@
       "_length_confidence": null,
       "_length_value_m": null,
       "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept",
-      "_sequence_position": 74,
+      "_sequence_position": 79,
       "_phase": 4,
       "_phase_title": "NOSNÁ OCELOVÁ KONSTRUKCE",
       "_krok": "Revize OK + protokol EXC2",
@@ -5769,7 +6439,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 75,
+      "_sequence_position": 80,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Pomocné lešení pro opláštění (pojízdné)",
@@ -5819,7 +6489,7 @@
         "data_source_hint": "TZ_ARS_DPZ",
         "extracted_at": "2026-05-22T06:30:51.307602+00:00"
       },
-      "_sequence_position": 76,
+      "_sequence_position": 81,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Doprava sendvičových panelů Kingspan",
@@ -5930,7 +6600,7 @@
           }
         ]
       },
-      "_sequence_position": 77,
+      "_sequence_position": 82,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Stěnové panely KS 1000 NF 120 mm — dodávka + montáž",
@@ -6029,7 +6699,7 @@
           }
         ]
       },
-      "_sequence_position": 78,
+      "_sequence_position": 83,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Stěnové panely KS 1000 NF 120 mm — dodávka + montáž",
@@ -6095,7 +6765,7 @@
       },
       "_review_concrete_class": null,
       "_review_qty": null,
-      "_sequence_position": 79,
+      "_sequence_position": 84,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Stěnové panely KS 1000 FR 150 mm (rohové zóny) — dodávka + montáž",
@@ -6156,7 +6826,7 @@
       },
       "_review_concrete_class": null,
       "_review_qty": null,
-      "_sequence_position": 80,
+      "_sequence_position": 85,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Stěnové panely KS 1000 FR 150 mm (rohové zóny) — dodávka + montáž",
@@ -6262,7 +6932,7 @@
           }
         ]
       },
-      "_sequence_position": 81,
+      "_sequence_position": 86,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Střešní panely KS 1000 RW 160 mm (hlavní střecha) — dodávka + montáž",
@@ -6341,7 +7011,7 @@
           }
         ]
       },
-      "_sequence_position": 82,
+      "_sequence_position": 87,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Střešní panely KS 1000 RW 160 mm (hlavní střecha) — dodávka + montáž",
@@ -6402,7 +7072,7 @@
       },
       "_review_concrete_class": null,
       "_review_qty": null,
-      "_sequence_position": 83,
+      "_sequence_position": 88,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Střešní panely KS 1000 FF 175 mm (zóna) — dodávka + montáž",
@@ -6463,7 +7133,7 @@
       },
       "_review_concrete_class": null,
       "_review_qty": null,
-      "_sequence_position": 84,
+      "_sequence_position": 89,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Střešní panely KS 1000 FF 175 mm (zóna) — dodávka + montáž",
@@ -6513,7 +7183,7 @@
         "data_source_hint": "TZ_ARS_DPZ",
         "extracted_at": "2026-05-22T06:30:51.307602+00:00"
       },
-      "_sequence_position": 85,
+      "_sequence_position": 90,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Spojovací materiál + EPDM těsnění Kingspan",
@@ -6598,7 +7268,7 @@
           }
         ]
       },
-      "_sequence_position": 86,
+      "_sequence_position": 91,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Klempířské lemy přechody střecha–fasáda",
@@ -6648,7 +7318,7 @@
         "data_source_hint": "TZ_ARS_DPZ",
         "extracted_at": "2026-05-22T06:30:51.307602+00:00"
       },
-      "_sequence_position": 87,
+      "_sequence_position": 92,
       "_phase": 5,
       "_phase_title": "OPLÁŠTĚNÍ KINGSPAN",
       "_krok": "Statické posouzení uchycení Kingspan",
@@ -6708,7 +7378,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 88,
+      "_sequence_position": 93,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Doprava klempířiny na stavbu",
@@ -6780,7 +7450,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 89,
+      "_sequence_position": 94,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Atikové oplechování + úžlabí + nároží",
@@ -6846,7 +7516,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 90,
+      "_sequence_position": 95,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Atikové oplechování + úžlabí + nároží",
@@ -6917,7 +7587,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 91,
+      "_sequence_position": 96,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Atikové oplechování + úžlabí + nároží",
@@ -6983,7 +7653,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 92,
+      "_sequence_position": 97,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Tmelení spár klempířských konstrukcí",
@@ -7057,7 +7727,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 93,
+      "_sequence_position": 98,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Lindab svody — dodávka + montáž",
@@ -7125,7 +7795,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 94,
+      "_sequence_position": 99,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Lindab svody — dodávka + montáž",
@@ -7197,7 +7867,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 95,
+      "_sequence_position": 100,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Wavin Tegra střešní vpusti — dodávka + montáž",
@@ -7257,7 +7927,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 96,
+      "_sequence_position": 101,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Wavin Tegra střešní vpusti — dodávka + montáž",
@@ -7329,7 +7999,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 97,
+      "_sequence_position": 102,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "MEA Mearin liniový žlab + mřížka",
@@ -7389,7 +8059,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 98,
+      "_sequence_position": 103,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "MEA Mearin liniový žlab + mřížka",
@@ -7455,7 +8125,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 99,
+      "_sequence_position": 104,
       "_phase": 6,
       "_phase_title": "KLEMPÍŘSKÉ + ODVODNĚNÍ STŘECHY",
       "_krok": "Ostatní oplechování (parapety, lemy)",
@@ -7545,7 +8215,7 @@
           }
         ]
       },
-      "_sequence_position": 100,
+      "_sequence_position": 105,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Okna plastová — dodávka (fixní + otvíravé) + montáž + parapet + lemy",
@@ -7606,7 +8276,7 @@
       },
       "_review_concrete_class": null,
       "_review_qty": null,
-      "_sequence_position": 101,
+      "_sequence_position": 106,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Okna plastová — dodávka (fixní + otvíravé) + montáž + parapet + lemy",
@@ -7685,7 +8355,7 @@
           }
         ]
       },
-      "_sequence_position": 102,
+      "_sequence_position": 107,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Okna plastová — dodávka (fixní + otvíravé) + montáž + parapet + lemy",
@@ -7775,7 +8445,7 @@
           }
         ]
       },
-      "_sequence_position": 103,
+      "_sequence_position": 108,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Okna plastová — dodávka (fixní + otvíravé) + montáž + parapet + lemy",
@@ -7865,7 +8535,7 @@
           }
         ]
       },
-      "_sequence_position": 104,
+      "_sequence_position": 109,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Okna plastová — dodávka (fixní + otvíravé) + montáž + parapet + lemy",
@@ -7942,7 +8612,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 105,
+      "_sequence_position": 110,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
@@ -8008,7 +8678,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 106,
+      "_sequence_position": 111,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
@@ -8074,7 +8744,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 107,
+      "_sequence_position": 112,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
@@ -8134,7 +8804,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 108,
+      "_sequence_position": 113,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Sekční vrata 3500×4000 — dodávka + pohon + montáž",
@@ -8224,7 +8894,7 @@
           }
         ]
       },
-      "_sequence_position": 109,
+      "_sequence_position": 114,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
@@ -8284,7 +8954,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 110,
+      "_sequence_position": 115,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
@@ -8350,7 +9020,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 111,
+      "_sequence_position": 116,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
@@ -8416,7 +9086,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 112,
+      "_sequence_position": 117,
       "_phase": 7,
       "_phase_title": "VÝPLNĚ OTVORŮ",
       "_krok": "Vnější 2-křídlé dveře — dodávka + montáž + zámek + práh",
@@ -8487,7 +9157,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 113,
+      "_sequence_position": 118,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
       "_krok": "Penetrace soklu",
@@ -8564,7 +9234,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 114,
+      "_sequence_position": 119,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
       "_krok": "Hydroizolace svislá soklu — SBS pás",
@@ -8630,7 +9300,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 115,
+      "_sequence_position": 120,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
       "_krok": "Hydroizolační lišty rohové + napojení",
@@ -8701,7 +9371,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 116,
+      "_sequence_position": 121,
       "_phase": 8,
       "_phase_title": "IZOLACE + SOKL",
       "_krok": "Ochranná vrstva — nopová folie HDPE",
@@ -8767,7 +9437,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 117,
+      "_sequence_position": 122,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
       "_krok": "Penetrace + primer pod stěrku",
@@ -8841,7 +9511,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 118,
+      "_sequence_position": 123,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
       "_krok": "Epoxidová / PU stěrka 4–5 mm",
@@ -8916,7 +9586,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 119,
+      "_sequence_position": 124,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
       "_krok": "Lokální zesílení anchorage zón strojů",
@@ -8982,7 +9652,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 120,
+      "_sequence_position": 125,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
       "_krok": "Dilatace + lemy + protiskluz",
@@ -9048,7 +9718,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 121,
+      "_sequence_position": 126,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
       "_krok": "Dilatace + lemy + protiskluz",
@@ -9116,7 +9786,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 122,
+      "_sequence_position": 127,
       "_phase": 9,
       "_phase_title": "PODLAHA PRŮMYSLOVÁ",
       "_krok": "Dilatace + lemy + protiskluz",
@@ -9182,7 +9852,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 123,
+      "_sequence_position": 128,
       "_phase": 10,
       "_phase_title": "OSTATNÍ + PŘESUN HMOT",
       "_krok": "Přesun hmot HSV vodorovně",
@@ -9248,7 +9918,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 124,
+      "_sequence_position": 129,
       "_phase": 10,
       "_phase_title": "OSTATNÍ + PŘESUN HMOT",
       "_krok": "Doprava materiálu na stavbu — paušál",
@@ -9313,7 +9983,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 125,
+      "_sequence_position": 130,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Revize TZB (elektro, hydrant, hromosvod)",
@@ -9378,7 +10048,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 126,
+      "_sequence_position": 131,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Revize TZB (elektro, hydrant, hromosvod)",
@@ -9443,7 +10113,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 127,
+      "_sequence_position": 132,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Revize TZB (elektro, hydrant, hromosvod)",
@@ -9509,7 +10179,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 128,
+      "_sequence_position": 133,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Likvidace odpadů O + N",
@@ -9575,7 +10245,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 129,
+      "_sequence_position": 134,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Likvidace odpadů O + N",
@@ -9635,7 +10305,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 130,
+      "_sequence_position": 135,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Geodetické zaměření DSPS",
@@ -9695,7 +10365,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 131,
+      "_sequence_position": 136,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Předávací protokoly + kolaudace",
@@ -9755,7 +10425,7 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 132,
+      "_sequence_position": 137,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Předávací protokoly + kolaudace",
@@ -9827,12 +10497,12 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_sequence_position": 133,
+      "_sequence_position": 138,
       "_phase": 11,
       "_phase_title": "DOKONČENÍ + REVIZE + ODEVZDÁNÍ",
       "_krok": "Náhradní výsadba dřevin (po dokončení)",
       "_vzorec_display": "2 ks (per TZ B m.7.b náhradní výsadba)  [TZ:7.b]"
     }
   ],
-  "count": 133
+  "count": 138
 }
