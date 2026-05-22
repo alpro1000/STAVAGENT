@@ -188,7 +188,26 @@
         "step_E_geotechnical_summary_added": true
       }
     },
-    "fix_f1_applied": "2026-05-22T07:25:36.029578+00:00"
+    "fix_f1_applied": "2026-05-22T07:25:36.029578+00:00",
+    "update_kingspan_specs_applied_2026_05_24": "2026-05-22T08:40:46.305705+00:00",
+    "kingspan_statika_update_summary": {
+      "applied_at": "2026-05-22T08:40:46.305705+00:00",
+      "source_quote": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m.",
+      "items_updated": [
+        "PSV-OPL-001",
+        "PSV-OPL-002",
+        "PSV-OPL-003",
+        "PSV-OPL-004",
+        "HSV-2-001",
+        "HSV-2-002",
+        "HSV-2-003",
+        "HSV-2-004",
+        "HSV-2-005",
+        "HSV-2-006",
+        "HSV-3-004"
+      ],
+      "new_abmv": "ABMV_21"
+    }
   },
   "items": [
     {
@@ -2214,7 +2233,7 @@
       "SO": "SO-01",
       "popis": "Beton patek rámových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 37.8,
+      "mnozstvi": 27.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2237,37 +2256,37 @@
       "urs_match_score": 0.333,
       "skladba_ref": null,
       "source": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 + RE-RUN §3.3 + §3.4",
-      "raw_description": "patky rámové C16/20 dvoustupňové 1.5×1.5×(2×0.6)",
+      "raw_description": "patky rámové C16/20 dvoustupňové 1.5×1.5×(2×0.6); 10 ks per statika rozteč 6.1 m × 5 rámů",
       "confidence": 0.85,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF+statika",
       "_completeness": 1.0,
-      "_qty_formula": "14 ks × 1.5 × 1.5 × 1.2 m (dvoustupňová 2×0.6) = 37.8 m³",
+      "_qty_formula": "10 ks × 1.5 × 1.5 × 1.2 m (dvoustupňová 2×0.6) = 27.0 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 1.5 × 1.5 × 1.2 m (dvoustupňová 2×0.6 per TZ ARS D.1.1 p3 + statika D.1.2 p30) = 37.8 m³",
+        "formula": "10 ks × 1.5 × 1.5 × 1.2 m = 27.0 m³ (rámových sloupů 5 rámů × 2 sloupy/rám)",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1_count",
-            "value": 14.0,
+            "label": "count_patek_ramovych",
+            "value": 10,
             "unit": "ks"
           },
           {
-            "label": "operand_2_B_m",
+            "label": "B_m",
             "value": 1.5,
             "unit": "m"
           },
           {
-            "label": "operand_3_L_m",
+            "label": "L_m",
             "value": 1.5,
             "unit": "m"
           },
           {
-            "label": "operand_4_H_m_total",
+            "label": "H_m_total",
             "value": 1.2,
             "unit": "m"
           }
@@ -2291,11 +2310,20 @@
           {
             "type": "bednění_consistency_check",
             "raw": "HSV-2-002 patky rámové bednění = 100.8 m². Per patka 4×1.5×1.2 = 7.2 m². 100.8/7.2 = 14 patek ✓"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh ztužení / Vzdálenost rámů",
+            "raw": "Vzdálenost rámů bude 6,1 m. Hala 28.18 m délka / 6.1 m rozteč = 4 fields + krajní → 5 rámů × 2 sloupy = 10 patek rámových."
+          },
+          {
+            "type": "user_drawing_count",
+            "raw": "A105 PŮDORYS ZÁKLADŮ — user manual count of 1500×1500 patky on axes A + F across rows 1-6 = 10 patek (excl. A3 atypical/pilota variant). Geometric consistency: 4 × 6.1 m = 24.4 m + krajní (3.78 m) = 28.18 m ✓ matches TZ ARS"
           }
         ],
-        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix.",
-        "computed_quantity": 37.8,
-        "declared_quantity": 37.8,
+        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix. | RECOMPUTE 2026-05-24: count 14 (F-3 fix bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). mnozstvi 37.8 → 27.0 m³. F-3 fix used bednění 100.8 m² ÷ 7.2 m²/patka = 14, but 100.8 m² was likely over-counted; statika rozteč is authoritative for count.",
+        "computed_quantity": 27.0,
+        "declared_quantity": 27.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.95,
@@ -2311,7 +2339,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — zřízení",
       "mj": "m²",
-      "mnozstvi": 100.8,
+      "mnozstvi": 72.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2341,37 +2369,32 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
+      "_qty_formula": "10 ks × 4 strany × 1.5 m × 1.2 m výška = 72.0 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
+        "formula": "10 ks × 4 × 1.5 × 1.2 m = 72.0 m²",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 14.0,
+            "label": "count_patek",
+            "value": 10,
+            "unit": "ks"
+          },
+          {
+            "label": "strany",
+            "value": 4,
             "unit": ""
           },
           {
-            "label": "operand_2",
-            "value": 4.0,
-            "unit": ""
-          },
-          {
-            "label": "operand_3",
+            "label": "sirka_m",
             "value": 1.5,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_4",
-            "value": 0.6,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 2.0,
-            "unit": ""
+            "label": "vyska_total_m",
+            "value": 1.2,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -2379,11 +2402,16 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
           }
         ],
-        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 100.8,
-        "declared_quantity": 100.8,
+        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek per statika rozteč rámů 6.1 m × 5 rámů. Mnozstvi 100.8 → 72.0 m².",
+        "computed_quantity": 72.0,
+        "declared_quantity": 72.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.95,
@@ -2398,7 +2426,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — odstranění",
       "mj": "m²",
-      "mnozstvi": 100.8,
+      "mnozstvi": 72.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2428,17 +2456,23 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= bednění zřízení",
+      "_qty_formula": "= HSV-2-002 bednění zřízení (10 patek) = 72.0 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= bednění zřízení",
+        "formula": "= HSV-2-002 zřízení = 72.0 m²",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 100.8,
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          }
+        ],
+        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek (symmetric s HSV-2-002). 100.8 → 72.0 m².",
+        "computed_quantity": 72.0,
+        "declared_quantity": 72.0,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
@@ -2453,7 +2487,7 @@
       "SO": "SO-01",
       "popis": "Beton patek štítových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 4.096,
+      "mnozstvi": 6.144,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2476,39 +2510,39 @@
       "urs_match_score": 0.333,
       "skladba_ref": null,
       "source": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks",
-      "raw_description": "patky štítové C16/20",
+      "raw_description": "patky štítové C16/20 dvoustupňové 0.8×0.8×(2×0.6=1.2)",
       "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
+      "_qty_formula": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³ (dvoustupňová 2×0.6, A105 HH/SH measured)",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
+        "formula": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
+            "label": "count_stitove",
+            "value": 8,
+            "unit": "ks"
           },
           {
-            "label": "operand_2",
+            "label": "B_m",
             "value": 0.8,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_3",
+            "label": "L_m",
             "value": 0.8,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_4",
-            "value": 0.8,
-            "unit": ""
+            "label": "H_m_total",
+            "value": 1.2,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -2516,14 +2550,19 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_typo_resolution",
+            "abmv_id": "ABMV_21",
+            "raw": "TZ ARS p3 '0,8×0,8×(0,2×0,6m)' interpreted as typo (missing × before 0,2; should read 2×0,6). A105 HH/SH measured H = 1.2 m. ABMV_21 resolved 2026-05-24."
           }
         ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 4.096,
-        "declared_quantity": 4.096,
+        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: H 0.8 m (TZ ARS literal typo) → 1.2 m (A105 measured + statika consistency). Mnozstvi 4.096 → 6.144 m³. See ABMV_21.",
+        "computed_quantity": 6.144,
+        "declared_quantity": 6.144,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.85,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
@@ -2535,7 +2574,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek štítových — zřízení",
       "mj": "m²",
-      "mnozstvi": 20.8,
+      "mnozstvi": 30.72,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2565,37 +2604,32 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
+      "_qty_formula": "8 ks × 4 strany × 0.8 m × 1.2 m výška = 30.72 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
+        "formula": "8 × 4 × 0.8 × 1.2 = 30.72 m²",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 8.0,
+            "label": "count",
+            "value": 8,
+            "unit": "ks"
+          },
+          {
+            "label": "strany",
+            "value": 4,
             "unit": ""
           },
           {
-            "label": "operand_2",
+            "label": "sirka",
             "value": 0.8,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_3",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 3.2,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 2.0,
-            "unit": ""
+            "label": "vyska",
+            "value": 1.2,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -2603,11 +2637,16 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_typo_resolution",
+            "abmv_id": "ABMV_21",
+            "raw": "Štítové patky H = 1.2 m per ABMV_21 (A105 measured + dvoustupňová 2×0.6 interpretation)"
           }
         ],
-        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 32.768,
-        "declared_quantity": 20.8,
+        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: H 0.8 → 1.2 m per ABMV_21. Mnozstvi 20.8 → 30.72 m².",
+        "computed_quantity": 30.72,
+        "declared_quantity": 30.72,
         "match_delta_pct": 57.54,
         "match_within_tolerance": false,
         "confidence": 0.7,
@@ -2622,7 +2661,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek štítových — odstranění",
       "mj": "m²",
-      "mnozstvi": 20.8,
+      "mnozstvi": 30.72,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2652,17 +2691,23 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= bednění zřízení",
+      "_qty_formula": "= HSV-2-005 zřízení = 30.72 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= bednění zřízení",
+        "formula": "= HSV-2-005 = 30.72 m²",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 20.8,
+        "reference": [
+          {
+            "type": "tz_typo_resolution",
+            "abmv_id": "ABMV_21",
+            "raw": "Štítové patky H = 1.2 m per ABMV_21"
+          }
+        ],
+        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: symmetric s HSV-2-005. 20.8 → 30.72 m².",
+        "computed_quantity": 30.72,
+        "declared_quantity": 30.72,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
@@ -3785,8 +3830,14 @@
             "unit": ""
           }
         ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz]",
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — vaznice rozteč",
+            "raw": "Vaznice budou vzdálené max 1,5 m (statika TZ D.1.2)"
+          }
+        ],
+        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz] | FLAG 2026-05-24: cross-check vs statika 1.5 m rozteč + Step 3 střecha 558.8 m². Estimate: ~13 vaznic × 28.18 m × 15.8 kg/m = 5,789 kg. Current 5,195 kg = drift +11.4 %. NO qty mutation this commit — HSV-3 mass reconciliation task (PROFILY DXF geometry extraction) will resolve definitively.",
         "computed_quantity": 5195.04,
         "declared_quantity": 5195.04,
         "match_delta_pct": 0.0,
@@ -3794,7 +3845,14 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_review_mass_drift": {
+          "estimate_kg": 5789,
+          "current_kg": 5195.04,
+          "drift_pct": 11.4,
+          "method": "statika 1.5 m vaznic rozteč × Step 3 plocha 558.8 m² / délka 28.18 m × IPE 160 15.8 kg/m",
+          "resolution_task": "HSV-3 PROFILY DXF geometry extraction (Step 4 deferred)"
+        }
       },
       "_length_source": "default_estimate",
       "_length_confidence": 0.7,
@@ -8217,13 +8275,13 @@
       "id": "PSV-OPL-001",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Dodávka Kingspan KS1000 AWP obvodový sendvičový panel tl. 200 mm (alt. 150 mm), výplň MW (minerální vata), EW 15 DP1, RAL bílá + modrá — dle TZ ARS DPZ D.1.1",
+      "popis": "Kingspan KS NF 200 mm, jádro minerální vata (MW) per TZ ARS p4 + PBR §3 + ABMV_13 closure, plech vnější/vnitřní 0.6/0.4 mm, profilace M (Micro)/Q (Minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Hradec Králové (Kingspan ČR), barva bílá + modrá (RAL standard)",
       "mj": "m²",
       "mnozstvi": 528.5,
       "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
-      "raw_description": "Kingspan obvodový panel tl. 200 mm MW bílá+modrá",
-      "confidence": 0.9,
+      "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
+      "raw_description": "Kingspan KS NF 200 mm MW 0.6/0.4 S280GD EN 14509",
+      "confidence": 0.95,
       "_price_source": "user_skipped_pricing",
       "_vyjasneni_ref": [
         "ABMV_13"
@@ -8278,14 +8336,24 @@
             "type": "abmv_closure",
             "abmv_id": "ABMV_2",
             "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_13",
+            "raw": "K-roc MW vs IPN: closed_fabricated 2026-05-13. MW confirmed across TZ ARS + PBR + statika."
           }
         ],
-        "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated.",
+        "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: popis spec hardened per statika TZ D.1.2 verbatim — KS NF 200 mm Hradec Králové (NOT generic KS1000 AWP). Removed 'alt. 150 mm' (statika confirms 200 mm jediný variant). Confidence 0.90 → 0.95 — 4 consistent sources (TZ ARS + PBR + statika + ABMV_13 closure).",
         "computed_quantity": 528.5,
         "declared_quantity": 528.5,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.9,
+        "confidence": 0.95,
         "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ_ARS_DPZ",
         "extracted_at": "2026-05-22T06:30:51.307602+00:00"
@@ -8295,11 +8363,11 @@
       "id": "PSV-OPL-002",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Montáž obvodového opláštění Kingspan — samořezné šrouby + EPDM těsnicí podložka, kotvení k ocelové konstrukci — dle TZ ARS DPZ D.1.1",
+      "popis": "Montáž obvodového opláštění Kingspan KS NF 200 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6,1 m per statika), per TZ ARS D.1.1 p4 montážní předpis výrobce",
       "mj": "m²",
       "mnozstvi": 528.5,
       "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+      "source": "TZ statika D.1.2 (rozteč rámů 6.1 m) + TZ ARS D.1.1 p4 (EPDM šrouby) + Step3",
       "raw_description": "montáž Kingspan obvodového opláštění samořezné šrouby EPDM",
       "confidence": 0.9,
       "_price_source": "user_skipped_pricing",
@@ -8349,9 +8417,14 @@
             "type": "abmv_closure",
             "abmv_id": "ABMV_2",
             "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
           }
         ],
-        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated.",
+        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: rozteč rámů 6.1 m per statika TZ D.1.2 added to popis. Confidence 0.90 → 0.90 (unchanged, montáž has slightly less spec authority than dodávka).",
         "computed_quantity": 528.5,
         "declared_quantity": 528.5,
         "match_delta_pct": 0.0,
@@ -8366,15 +8439,14 @@
       "id": "PSV-OPL-003",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Dodávka Kingspan střešní sendvičový panel pro šikmé střechy, plnění MW (minerální vata), EW 15 DP1, sklon 5,25° — tloušťka dle statiky (TZ ARS neuvádí explicitně, _review_thickness)",
+      "popis": "Kingspan KS FF-ROC tl. 200 mm, jádro ROC (Rockwool — minerální vata), pro šikmé střechy sklon 5.25°, plech vnější/vnitřní 0.6/0.5 mm, profilace trapéz 34 mm/Q (minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Lipsko (Kingspan Polská republika), vaznice rozteč max 1.5 m per statika",
       "mj": "m²",
       "mnozstvi": 558.8,
       "_qty_formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
-      "raw_description": "Kingspan střešní panel MW šikmé střechy sklon 5.25°",
-      "confidence": 0.9,
+      "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
+      "raw_description": "Kingspan KS FF-ROC 200 mm ROC šikmé střechy sklon 5.25°",
+      "confidence": 0.95,
       "_price_source": "user_skipped_pricing",
-      "_review_thickness": true,
       "_vyjasneni_ref": [
         "ABMV_13"
       ],
@@ -8423,14 +8495,24 @@
             "type": "step3_metric",
             "metric": "strecha_netto",
             "value": 558.8
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_13",
+            "raw": "K-roc MW: closed_fabricated 2026-05-13. ROC = Rockwool = MW. Consistent across all sources."
           }
         ],
-        "poznamka": "TZ ARS DPZ D.1.1: Kingspan pro šikmé střechy s MW, sklon 5,25°. EW 15 DP1 per PBŘ ABMV_6. Výška v hřebeni 7,1 m. _review_thickness=True: TZ ARS neuvádí explicitní tloušťku střešního panelu — ověřit u projektanta / statika D.1.2. Qty = Step3 střecha netto 558.8 m².",
+        "poznamka": "TZ ARS DPZ D.1.1: Kingspan pro šikmé střechy s MW, sklon 5,25°. EW 15 DP1 per PBŘ ABMV_6. Výška v hřebeni 7,1 m. _review_thickness=True: TZ ARS neuvádí explicitní tloušťku střešního panelu — ověřit u projektanta / statika D.1.2. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: _review_thickness flag REMOVED — statika TZ D.1.2 explicitly specifies 'KINGSPAN KS FF-ROC tl. 200 mm'. ROC = Rockwool = MW core. Confidence 0.90 → 0.95 (statika direct product specification with tloušťka).",
         "computed_quantity": 558.8,
         "declared_quantity": 558.8,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.9,
+        "confidence": 0.95,
         "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ_ARS_DPZ",
         "extracted_at": "2026-05-22T06:30:51.307602+00:00"
@@ -8440,11 +8522,11 @@
       "id": "PSV-OPL-004",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Montáž střešního opláštění Kingspan — kotvení k ocelové konstrukci, samořezné šrouby, těsnění přesahů — dle TZ ARS DPZ D.1.1",
+      "popis": "Montáž střešního opláštění Kingspan KS FF-ROC 200 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů, uložení prosté/spojité (2-3 polí) na vaznicích rozteč max 1.5 m per statika TZ D.1.2",
       "mj": "m²",
       "mnozstvi": 558.8,
       "_qty_formula": "střecha netto Step3 = 558.8 m² (shodné s PSV-OPL-003)",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+      "source": "TZ statika D.1.2 (vaznice rozteč 1.5 m) + TZ ARS D.1.1 p4 + Step3",
       "raw_description": "montáž Kingspan střešní opláštění kotvení šrouby",
       "confidence": 0.9,
       "_price_source": "user_skipped_pricing",
@@ -8474,9 +8556,14 @@
             "type": "tz_section",
             "section": "D.1.1",
             "raw": "TZ ARS DPZ D.1.1"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
           }
         ],
-        "poznamka": "TZ ARS DPZ D.1.1: montáž kotvením k OK. Qty = Step3 střecha netto 558.8 m².",
+        "poznamka": "TZ ARS DPZ D.1.1: montáž kotvením k OK. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: vaznice rozteč max 1.5 m per statika TZ D.1.2 added. Confidence 0.90 → 0.90 unchanged.",
         "computed_quantity": 558.8,
         "declared_quantity": 558.8,
         "match_delta_pct": 0.0,

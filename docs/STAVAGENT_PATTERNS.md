@@ -429,6 +429,47 @@ Výsledek: positions s vague popisy, wrong confidence (0.50), missing TZ spec de
 
 ---
 
+## Pattern 10: Vendor Datasheet ≠ Project Specification
+
+**Source:** HK212 hala (2026-05-24) — Kingspan KS NF datasheet "izolační jádro: IPN" vs project MW spec
+
+### Symptom
+Vendor generic product family datasheet (e.g. Kingspan KS NF) describes default variant
+(e.g. IPN core), which conflicts with project documentation specifying a custom variant
+(e.g. MW core). Naïve reading triggers a new ABMV escalation.
+
+### Anti-pattern
+Escalate to new ABMV without first checking:
+1. Previous session ABMV closures for same topic
+2. Project-specific TZ documentation (architectural + structural + požární)
+3. Vendor capability for custom variants
+
+### Correct pattern
+Vendor datasheet = product family description, NOT project specification. Project TZ
+(3 design disciplines consistent) wins over vendor template.
+
+### HK212 example
+ABMV_13 closed (`closed_fabricated`) — MW won over IPN claim. Later session uploaded
+KS NF datasheet showing "izolační jádro: IPN" — vendor template ≠ HK212 custom MW variant.
+**No new ABMV created.** Project spec verified across:
+- TZ ARS D.1.1 p4: "Plášť... Kingspan tl. 200 mm s výplní z minerální vaty"
+- PBR §3: "sendvičové desky (Kingspan)" — no PUR/IPN/PIR mentions
+- TZ statika D.1.2: "KS FF-ROC" + "KS NF" (both available with MW variants from Kingspan ČR Hradec Králové)
+
+### Rule
+Before escalating vendor-vs-project conflict, run:
+```bash
+grep -i "ABMV_.*kingspan\|ABMV_.*panel\|ABMV_.*opláštění" outputs/abmv_email_queue.json
+```
+for prior closures. If `closed_fabricated` exists with project-spec winner, vendor
+datasheet is informational only — populate audit_trail reference but skip ABMV.
+
+### Related
+- ABMV_13 (HK212): K-roc MW vs IPN closed_fabricated 2026-05-13
+- Pattern 9: Re-read TZ before generating new položky (TZ wins over vendor templates)
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation

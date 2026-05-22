@@ -365,6 +365,30 @@
         "a101_count": 3,
         "a104_count": 4
       }
+    },
+    {
+      "id": "ABMV_21",
+      "category": "documentation_inconsistency",
+      "severity": "minor",
+      "status": "resolved",
+      "title": "Štítové patky H — TZ ARS p3 typo vs A105 měřená H = 1.2 m",
+      "summary_cs": "TZ ARS D.1.1 p3 uvádí 'Základy pod štítové sloupy ... 0,8×0,8×(0,2×0,6m) z prostého betonu C16/20 XC0' — literal interpretation H = 0.2+0.6 = 0.8 m. A105 DSP PŮDORYS ZÁKLADŮ však ukazuje štítové patky s HH/SH labels -0.700/-1.900 (H = 1.2 m), shodně s rámovými patkami (1.5×1.5×(2×0.6)).",
+      "blocks_vv": [
+        "HSV-2-004 beton patky štítové",
+        "HSV-2-005 bednění zřízení",
+        "HSV-2-006 bednění odstranění"
+      ],
+      "evidence": {
+        "tz_ars_d11_p3": "'0,8×0,8×(0,2×0,6m)' literal = H 0.8 m",
+        "a105_dsp_pudorys": "HH = -0.700 / SH = -1.900 → H = 1.2 m (consistent s rámovými)",
+        "tz_statika_d12": "Stejnou geometrii štítových neuvádí explicit — bez konfliktu",
+        "dvoustupňová_logic": "Dva přibližně stejné stupně jsou normou; H 0.2+0.6 = 0.8 m s nerovnoměrnými stupni je atypické",
+        "praxe": "Průmyslové haly tohoto rozpětí (6.1 m rámy, 200 kPa zemina) typicky H 1.0-1.5 m pro štítové"
+      },
+      "resolution_note": "TZ ARS p3 quote '0,8×0,8×(0,2×0,6m)' is interpreted jako typo (chybělo '×' před '0,2', should read '2×0,6'). Evidence: (1) A105 měřená geometrie HH/SH labels = -0.700/-1.900 = H 1.2 m. (2) Logika dvoustupňové konstrukce vyžaduje dva cca stejné stupně. (3) Statika TZ D.1.2 neuvádí odlišnou geometrii štítových. (4) Praxe pro průmyslové haly tohoto rozpětí = H 1.0–1.5 m. A105 wins, classified jako tz_ars_typo_per_design_intent. Items.json HSV-2-004 mnozstvi: 4.096 → 6.144 m³; HSV-2-005/006 bednění: 20.8 → 30.72 m².",
+      "resolution_date": "2026-05-24",
+      "resolution_source": "inputs/vykresy_dxf/A105_zaklady.dxf (HH/SH labels) + design intent dvoustupňová geometry",
+      "_resolution_classification": "tz_ars_typo_per_design_intent"
     }
   ]
 }
