@@ -207,6 +207,22 @@
         "HSV-3-004"
       ],
       "new_abmv": "ABMV_21"
+    },
+    "rework_patky_vykop_deska_2026_05_24_applied": "2026-05-22T08:47:35.361360+00:00",
+    "rework_2026_05_24_summary": {
+      "applied_at": "2026-05-22T08:47:35.361360+00:00",
+      "items_updated": [
+        "HSV-2-001",
+        "HSV-2-002",
+        "HSV-2-003",
+        "HSV-1-001",
+        "HSV-1-028",
+        "HSV-2-013",
+        "HSV-2-015",
+        "HSV-2-016"
+      ],
+      "new_abmv": "ABMV_22 (A201 bilance unfilled)",
+      "reopened_abmv": "ABMV_5 (deska class 2:2 split)"
     }
   },
   "items": [
@@ -216,7 +232,7 @@
       "SO": "SO-01",
       "popis": "Hloubení figury pod základovou desku + sejmutí navážek aktivní zóny, hor. tř. 1, stroj.",
       "mj": "m³",
-      "mnozstvi": 323.1,
+      "mnozstvi": 210.0,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -238,30 +254,55 @@
       "urs_status": "matched_medium",
       "urs_match_score": 0.667,
       "skladba_ref": null,
-      "source": "A102 zastavěná 28.19×19.74 + IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §3.3 + Step 3",
+      "source": "A201_vykopy + A105_zaklady (HH/SH labels) + user zone-by-zone 2026-05-24",
       "raw_description": "figura pod deskou — výkop pro polštář a desku",
-      "confidence": 0.85,
+      "confidence": 0.75,
       "subdodavatel_chapter": "zemni_prace",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF+IGP",
       "_completeness": 1.0,
-      "_qty_formula": "538.5 m² × 0.6 m sejmutí navážek (IGP §3.3 min. mocnost)",
+      "_qty_formula": "Zone-by-zone per A201_vykopy + A105 (deska HH/SH labels): (1) Main floor -0.485 → 425 m² × 0.235 m = 100 m³ + (2) Perimeter pas -1.300 → 60 m² × 0.4 m = 24 m³ + (3) Patky pits -1.900 → 90 m² × 0.6 m = 54 m³ + (4) Kanalizace zone -1.620 → 10 m² × 0.7 m = 7 m³; subtotal 185 m³ + svahy 1:1 + dokopávky rezerva 25 m³ = 210 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "538.5 m² × 0.6 m sejmutí navážek (IGP §3.3 min. mocnost)",
+        "formula": "Zone-by-zone: 100 + 24 + 54 + 7 + 25 = 210 m³ (main_floor + perimeter_pas + patky_pits + kanalizace + svahy_rezerva)",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "zastavena_plocha_m2",
-            "value": 538.5,
-            "unit": "m²"
+            "label": "zone_1_main_floor",
+            "value": "425 m² × 0.235 m",
+            "unit": "100 m³"
           },
           {
-            "label": "mocnost_navazek_min_m",
-            "value": 0.6,
-            "unit": "m"
+            "label": "zone_2_perimeter_pas",
+            "value": "60 m² × 0.4 m",
+            "unit": "24 m³"
+          },
+          {
+            "label": "zone_3_patky_pits_incremental",
+            "value": "90 m² × 0.6 m",
+            "unit": "54 m³"
+          },
+          {
+            "label": "zone_4_kanalizace",
+            "value": "10 m² × 0.7 m",
+            "unit": "7 m³"
+          },
+          {
+            "label": "subtotal",
+            "value": 185,
+            "unit": "m³"
+          },
+          {
+            "label": "svahy_1to1_rezerva",
+            "value": 25,
+            "unit": "m³"
+          },
+          {
+            "label": "total",
+            "value": 210,
+            "unit": "m³"
           }
         ],
         "reference": [
@@ -288,17 +329,58 @@
             "type": "step3_metric",
             "metric": "zastavena_plocha",
             "value": 538.5
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A201",
+            "raw": "A201_vykopy.dxf — paperspace BILANCE ZEMINY label (@749.2,-71.6) found but ZERO filled numerical values (Step 0 outcome B 2026-05-24). User zone-by-zone analysis substitutes projektant fill."
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "A105 HH/SH labels: deska -0.485 (level after sejmutí navážek + lože), pas -1.300, patky bottom -1.900, kanalizace zone -1.620"
           }
         ],
-        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace] | STAGE-PHASE1 IGP RECOMPUTE 2026-05-24: original 495 m² × 0.45 m = 222.75 m³ replaced by 538.5 m² × 0.6 m = 323.1 m³ per IGP §3.3 (navážky 0.6 m min). ABMV_17 closed.",
-        "computed_quantity": 323.1,
-        "declared_quantity": 323.1,
+        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace] | STAGE-PHASE1 IGP RECOMPUTE 2026-05-24: original 495 m² × 0.45 m = 222.75 m³ replaced by 538.5 m² × 0.6 m = 323.1 m³ per IGP §3.3 (navážky 0.6 m min). ABMV_17 closed. | REWORK 2026-05-24 zone-by-zone: 323.1 m³ (IGP §3.3 flat 538.5×0.6) → 210.0 m³ (user A201 zone analysis). Reason: flat formula over-counts because ~60 % plochy je at -0.485 m (sejmutí navážky), zbytek je incremental at pas/patky/kanalizace. Zone-by-zone = realistic; ABMV_22 flags need for projektant final fill.",
+        "computed_quantity": 210.0,
+        "declared_quantity": 210.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.75,
         "extraction_method": "igp_geometric_recompute",
         "data_source_hint": "TZ+DXF+IGP",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-14",
+            "value_m3": 222.75,
+            "method": "RE-RUN §3.10: 495 m² × 0.45 m flat",
+            "status": "superseded"
+          },
+          {
+            "date": "2026-05-24 (Phase 1 IGP)",
+            "value_m3": 323.1,
+            "method": "IGP §3.3: 538.5 m² × 0.6 m sejmutí navážek flat",
+            "status": "superseded"
+          },
+          {
+            "date": "2026-05-24 (ChatGPT estimate)",
+            "value_m3": 65,
+            "method": "REJECTED — undercounted main floor as ~121 m² instead of ~425 m²"
+          },
+          {
+            "date": "2026-05-24 (this commit)",
+            "value_m3": 210,
+            "method": "A106/A201 zone-by-zone per A201 paperspace + A105 HH/SH labels",
+            "status": "ACCEPTED"
+          },
+          {
+            "date": "pending",
+            "value_m3": "TBD",
+            "method": "DXF layer scan A106/A201 for exact polygon areas per zone",
+            "status": "future_refinement"
+          }
+        ]
       }
     },
     {
@@ -2144,7 +2226,7 @@
       "SO": "SO-01",
       "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
       "mj": "m³",
-      "mnozstvi": 269.25,
+      "mnozstvi": 265.61,
       "urs_code": null,
       "urs_alternatives": [],
       "urs_status": "needs_review",
@@ -2158,18 +2240,23 @@
       "_status_flag": null,
       "_data_source": "IGP",
       "_completeness": 0.9,
-      "_qty_formula": "538.5 m² × 0.5 m vrstva = 269.25 m³ (jedna vrstva: odstranění NEBO nahrazení)",
+      "_qty_formula": "A105 deska plocha 19.04 × 27.90 = 531.22 m² × 0.5 m vrstva = 265.61 m³ (jedna operace — odstranění NEBO nahrazení)",
       "_export_wrapper_hint": null,
       "_price_source": "user_skipped_pricing",
       "audit_trail": {
         "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
-        "formula": "538.5 m² × 0.5 m = 269.25 m³ × 2 operace (odstranění + nahrazení)",
+        "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
         "formula_parsed_method": "product_dual_operation",
         "inputs": [
           {
-            "label": "zastavena_plocha_m2",
-            "value": 538.5,
+            "label": "deska_area_m2",
+            "value": 531.22,
             "unit": "m²"
+          },
+          {
+            "label": "deska_source",
+            "value": "A105 měřené 19.04 × 27.90",
+            "unit": ""
           },
           {
             "label": "mocnost_vymeny_m",
@@ -2178,12 +2265,12 @@
           },
           {
             "label": "operace_odstraneni_m3",
-            "value": 269.25,
+            "value": 265.61,
             "unit": "m³"
           },
           {
             "label": "operace_nahrazeni_m3",
-            "value": 269.25,
+            "value": 265.61,
             "unit": "m³"
           },
           {
@@ -2214,11 +2301,16 @@
           {
             "type": "csn",
             "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
           }
         ],
-        "poznamka": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef2/Edef1 < 2.2 (ČSN 72 1006). Vrstva 0.5 m × zastavěná 538.5 m² = 269.25 m³ na operaci. Item tracks single layer; total earth work = 2× (odstr. + nahraz.) = 538.5 m³.",
-        "computed_quantity": 269.25,
-        "declared_quantity": 269.25,
+        "poznamka": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef2/Edef1 < 2.2 (ČSN 72 1006). Vrstva 0.5 m × zastavěná 538.5 m² = 269.25 m³ na operaci. Item tracks single layer; total earth work = 2× (odstr. + nahraz.) = 538.5 m³. | REWORK 2026-05-24: 269.25 m³ (Step 3 zastavěná 538.5 × 0.5) → 265.61 m³ (A105 deska 531.22 × 0.5). Reason: výměna aktivní zóny vychází z plochy desky + obvodový pas, NE z full zastavěné (která zahrnuje převis střechy). A105 měřené.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
@@ -2233,7 +2325,7 @@
       "SO": "SO-01",
       "popis": "Beton patek rámových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 27.0,
+      "mnozstvi": 22.875,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2256,18 +2348,18 @@
       "urs_match_score": 0.333,
       "skladba_ref": null,
       "source": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 + RE-RUN §3.3 + §3.4",
-      "raw_description": "patky rámové C16/20 dvoustupňové 1.5×1.5×(2×0.6); 10 ks per statika rozteč 6.1 m × 5 rámů",
+      "raw_description": "patky rámové C16/20 dvoustupňové pyramida (dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6); 10 ks per A105 + statika rozteč 6.1 m",
       "confidence": 0.85,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF+statika",
       "_completeness": 1.0,
-      "_qty_formula": "10 ks × 1.5 × 1.5 × 1.2 m (dvoustupňová 2×0.6) = 27.0 m³",
+      "_qty_formula": "10 ks × [dolní 1.5×1.5×0.6 (1.35 m³) + horní 1.25×1.25×0.6 (0.9375 m³)] = 10 × 2.2875 m³ = 22.875 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "10 ks × 1.5 × 1.5 × 1.2 m = 27.0 m³ (rámových sloupů 5 rámů × 2 sloupy/rám)",
+        "formula": "10 × (1.5²×0.6 + 1.25²×0.6) = 10 × (1.35 + 0.9375) = 22.875 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
@@ -2276,19 +2368,24 @@
             "unit": "ks"
           },
           {
-            "label": "B_m",
-            "value": 1.5,
-            "unit": "m"
+            "label": "dolni_stupen_BxLxH_m",
+            "value": "1.5 × 1.5 × 0.6",
+            "unit": "m³"
           },
           {
-            "label": "L_m",
-            "value": 1.5,
-            "unit": "m"
+            "label": "horni_stupen_BxLxH_m",
+            "value": "1.25 × 1.25 × 0.6",
+            "unit": "m³"
           },
           {
-            "label": "H_m_total",
-            "value": 1.2,
-            "unit": "m"
+            "label": "per_patek_m3",
+            "value": 2.2875,
+            "unit": "m³"
+          },
+          {
+            "label": "total_m3",
+            "value": 22.875,
+            "unit": "m³"
           }
         ],
         "reference": [
@@ -2319,14 +2416,24 @@
           {
             "type": "user_drawing_count",
             "raw": "A105 PŮDORYS ZÁKLADŮ — user manual count of 1500×1500 patky on axes A + F across rows 1-6 = 10 patek (excl. A3 atypical/pilota variant). Geometric consistency: 4 × 6.1 m = 24.4 m + krajní (3.78 m) = 28.18 m ✓ matches TZ ARS"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "A105 PŮDORYS ZÁKLADŮ — patky rámové 1500×1500 outer; dvoustupňová s horním stupněm zúženým na ~1250×1250 (pyramida tvar). HH/SH labels -0.700/-1.300/-1.900 → 2 × 0.6 m stupně. User manual recount: 10 patek (5 rámů × 2 osy A+F)."
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika)",
+            "raw": "Vzdálenost rámů 6,1 m → 5 rámů × 2 sloupy = 10 patek rámových. Geometric: 4×6.1 + krajní 3.78 = 28.18 m ✓ matches TZ ARS"
           }
         ],
-        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix. | RECOMPUTE 2026-05-24: count 14 (F-3 fix bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). mnozstvi 37.8 → 27.0 m³. F-3 fix used bednění 100.8 m² ÷ 7.2 m²/patka = 14, but 100.8 m² was likely over-counted; statika rozteč is authoritative for count.",
-        "computed_quantity": 27.0,
-        "declared_quantity": 27.0,
+        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix. | RECOMPUTE 2026-05-24: count 14 (F-3 fix bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). mnozstvi 37.8 → 27.0 m³. F-3 fix used bednění 100.8 m² ÷ 7.2 m²/patka = 14, but 100.8 m² was likely over-counted; statika rozteč is authoritative for count. | REWORK 2026-05-24: 37.8 m³ → 22.875 m³. Previous F-3 fix (37.8) used cube approximation 1.5×1.5×1.2 per patek (F-3 over-fix). Correct geometry is DVOUSTUPŇOVÁ PYRAMIDA: dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6 = 2.2875 m³/patek. Per A105 měřená geometrie + design intent (úspora betonu při zachování ložné plochy).",
+        "computed_quantity": 22.875,
+        "declared_quantity": 22.875,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.92,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF+statika",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00",
@@ -2339,7 +2446,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — zřízení",
       "mj": "m²",
-      "mnozstvi": 72.0,
+      "mnozstvi": 66.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2369,11 +2476,11 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "10 ks × 4 strany × 1.5 m × 1.2 m výška = 72.0 m²",
+      "_qty_formula": "10 ks × [dolní 4×1.5×0.6 (3.6 m²) + horní 4×1.25×0.6 (3.0 m²)] = 10 × 6.6 = 66.0 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "10 ks × 4 × 1.5 × 1.2 m = 72.0 m²",
+        "formula": "10 × (3.6 + 3.0) = 66.0 m²",
         "formula_parsed_method": "product",
         "inputs": [
           {
@@ -2382,19 +2489,19 @@
             "unit": "ks"
           },
           {
-            "label": "strany",
-            "value": 4,
-            "unit": ""
+            "label": "bednění_dolní_m2_per_patek",
+            "value": 3.6,
+            "unit": "m²"
           },
           {
-            "label": "sirka_m",
-            "value": 1.5,
-            "unit": "m"
+            "label": "bednění_horní_m2_per_patek",
+            "value": 3.0,
+            "unit": "m²"
           },
           {
-            "label": "vyska_total_m",
-            "value": 1.2,
-            "unit": "m"
+            "label": "total_m2_per_patek",
+            "value": 6.6,
+            "unit": "m²"
           }
         ],
         "reference": [
@@ -2407,14 +2514,19 @@
             "type": "tz_section",
             "section": "D.1.2 (statika) — Návrh opláštění",
             "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Dvoustupňová pyramida — bednění 4 strany dolního + 4 strany horního stupně. Per patek = 6.6 m²."
           }
         ],
-        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek per statika rozteč rámů 6.1 m × 5 rámů. Mnozstvi 100.8 → 72.0 m².",
-        "computed_quantity": 72.0,
-        "declared_quantity": 72.0,
+        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek per statika rozteč rámů 6.1 m × 5 rámů. Mnozstvi 100.8 → 72.0 m². | REWORK 2026-05-24: 100.8 m² → 72 m² (count 14→10) → 66 m² (dvoustupňová pyramida 6.6 m²/patek vs prismatic 7.2). Previous commit was based on prismatic shape; pyramida geometry per A105 reduces side area by ~9 %.",
+        "computed_quantity": 66.0,
+        "declared_quantity": 66.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.85,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
@@ -2426,7 +2538,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — odstranění",
       "mj": "m²",
-      "mnozstvi": 72.0,
+      "mnozstvi": 66.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2456,11 +2568,11 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= HSV-2-002 bednění zřízení (10 patek) = 72.0 m²",
+      "_qty_formula": "= HSV-2-002 zřízení (dvoustupňová pyramida 10 patek) = 66.0 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= HSV-2-002 zřízení = 72.0 m²",
+        "formula": "= HSV-2-002 = 66.0 m²",
         "formula_parsed_method": "verbal",
         "inputs": [],
         "reference": [
@@ -2468,11 +2580,16 @@
             "type": "tz_section",
             "section": "D.1.2 (statika) — Návrh opláštění",
             "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Symmetric s HSV-2-002 (zřízení bednění)"
           }
         ],
-        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek (symmetric s HSV-2-002). 100.8 → 72.0 m².",
-        "computed_quantity": 72.0,
-        "declared_quantity": 72.0,
+        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek (symmetric s HSV-2-002). 100.8 → 72.0 m². | REWORK 2026-05-24: symmetric s HSV-2-002. 72.0 → 66.0 m².",
+        "computed_quantity": 66.0,
+        "declared_quantity": 66.0,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
@@ -3148,7 +3265,7 @@
       "SO": "SO-01",
       "popis": "Beton podlahové desky C25/30 XC4, tl. 200 mm — strojně rovnaný povrch",
       "mj": "m³",
-      "mnozstvi": 99.0,
+      "mnozstvi": 106.24,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -3178,22 +3295,37 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "495 m² × 0.2 m = 99 m³",
+      "_qty_formula": "A105 deska 19.04 × 27.90 m = 531.22 m² × 0.20 m = 106.24 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 0.2 m = 99 m³",
+        "formula": "531.22 × 0.20 = 106.24 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
+            "label": "deska_B_m",
+            "value": 19.04,
+            "unit": "m"
           },
           {
-            "label": "operand_2",
+            "label": "deska_L_m",
+            "value": 27.9,
+            "unit": "m"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m²"
+          },
+          {
+            "label": "tloustka_m",
             "value": 0.2,
-            "unit": ""
+            "unit": "m"
+          },
+          {
+            "label": "volume_m3",
+            "value": 106.24,
+            "unit": "m³"
           }
         ],
         "reference": [
@@ -3201,18 +3333,29 @@
             "type": "tz_section",
             "section": "B",
             "raw": "TZ B"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "A105 vnější rozměry desky 19.04 × 27.90 m. TZ ARS p2 'podlahová 495 m²' = podlaha excluding obvodový pas; A105 = full deska včetně přesahu = 531 m². 7 % rozdíl."
+          },
+          {
+            "type": "abmv_reopen",
+            "abmv_id": "ABMV_5",
+            "raw": "ABMV_5 re-opened 2026-05-24 (needs_design_clarification): 2:2 split between A101+A105 (C30/37 XC2) vs TZ ARS+statika (C25/30 XC4). _review_concrete_class flag set."
           }
         ],
-        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 99.0,
-        "declared_quantity": 99.0,
+        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 99.0 m³ (495 × 0.20) → 106.24 m³ (A105 měřené 531.22 × 0.20). Reason: TZ ARS 'podlahová 495 m²' is interior area; A105 full deska 531 m² includes obvodový pas. _review_concrete_class flag added per ABMV_5 re-open.",
+        "computed_quantity": 106.24,
+        "declared_quantity": 106.24,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_review_concrete_class": true
     },
     {
       "id": "HSV-2-014",
@@ -3287,7 +3430,7 @@
       "SO": "SO-01",
       "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — horní vrstva",
       "mj": "kg",
-      "mnozstvi": 1955.25,
+      "mnozstvi": 2098.3,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -3317,28 +3460,34 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
+      "_qty_formula": "A105 deska 531.22 m² × 3.95 kg/m² (Kari Ø8 oka 100/100 single vrstva) = 2098.3 kg",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
+        "formula": "531.22 × 3.95 = 2098.3 kg",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m²"
           },
           {
-            "label": "operand_2",
+            "label": "kari_kg_per_m2",
             "value": 3.95,
-            "unit": ""
+            "unit": "kg/m² Ø8 100/100"
           }
         ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 1955.25,
-        "declared_quantity": 1955.25,
+        "reference": [
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Scale to A105 měřené deska 531.22 m² (was 495 m²)."
+          }
+        ],
+        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 1955.25 → 2098.3 kg per A105 měřené deska area 531.22 m².",
+        "computed_quantity": 2098.3,
+        "declared_quantity": 2098.3,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
@@ -3353,7 +3502,7 @@
       "SO": "SO-01",
       "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — dolní vrstva",
       "mj": "kg",
-      "mnozstvi": 1955.25,
+      "mnozstvi": 2098.3,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -3383,17 +3532,23 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= horní vrstva",
+      "_qty_formula": "= HSV-2-015 horní vrstva = 2098.3 kg",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= horní vrstva",
+        "formula": "= HSV-2-015 = 2098.3 kg",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 1955.25,
+        "reference": [
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Symmetric horní vrstva. Scale na 531.22 m²."
+          }
+        ],
+        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 1955.25 → 2098.3 kg symmetric s HSV-2-015.",
+        "computed_quantity": 2098.3,
+        "declared_quantity": 2098.3,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,

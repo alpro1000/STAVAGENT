@@ -112,10 +112,23 @@
       "id": "ABMV_5",
       "category": "documentation_conflict",
       "severity": "important",
-      "status": "working_assumption",
+      "status": "needs_design_clarification",
       "title": "Třída betonu základové desky",
       "summary_cs": "Legenda A101 → C30/37-XC2. TZ B + TZ D.1.2 → C25/30 XC4. Statika má přednost.",
-      "working_assumption": "C25/30 XC4"
+      "working_assumption": "C25/30 XC4 (statika, structural authority) — PENDING projektant confirmation",
+      "_reopen_date": "2026-05-24",
+      "_reopen_reason": "Audit + A105 verification 2026-05-24: 2:2 split confirmed. A101 legend + A105 legend = C30/37 XC2 (2 drawings). TZ ARS + TZ statika D.1.2 = C25/30 XC4 (2 TZ docs). Real 2:2 split, not statika-wins-2:1. items.json HSV-2-013 retains C25/30 (statika authority for structural) + _review_concrete_class flag added. Projektant Volka / Doležal must verify intent for tender finalization.",
+      "_2_2_split_evidence": {
+        "drawings_C30_37_XC2": [
+          "A101 legend",
+          "A105 legend"
+        ],
+        "tz_C25_30_XC4": [
+          "TZ ARS D.1.1 p3",
+          "TZ statika D.1.2 p28"
+        ],
+        "06_zaklady_titul_p01": "C16/20-XC0 — discarded (titul-list typo per ABMV_18 closure)"
+      }
     },
     {
       "id": "ABMV_6",
@@ -389,6 +402,32 @@
       "resolution_date": "2026-05-24",
       "resolution_source": "inputs/vykresy_dxf/A105_zaklady.dxf (HH/SH labels) + design intent dvoustupňová geometry",
       "_resolution_classification": "tz_ars_typo_per_design_intent"
+    },
+    {
+      "id": "ABMV_22",
+      "category": "missing_specification",
+      "severity": "minor",
+      "status": "open",
+      "title": "A201 BILANCE ZEMINY — placeholder header bez vyplněné hodnoty",
+      "summary_cs": "Step 0 verification 2026-05-24: A201_vykopy.dxf paperspace Layout1 obsahuje TEXT label 'BILANCE ZEMINY:' (@749.2, -71.6) ale ZERO filled numerical values found in nearby text. Surrounding texts = view labels (A_VYKOP/B_VYKOP/C_VYKOP) + elevation reference +0.000 = 234.690 mnm Bpv + POZNÁMKA paragraphs only. Projektant Volka / Doležal must complete final bilance pro tender finalization.",
+      "blocks_vv": [
+        "HSV-1 výkopová bilance final precision",
+        "VRN odvoz zeminy final volume"
+      ],
+      "working_assumption": "User zone-by-zone analysis 2026-05-24: 210 m³ ± 15 % range (185-235 m³). Components: main floor -0.485 (100 m³) + perimeter pas -1.300 (24 m³) + patky pits -1.900 (54 m³) + kanalizace -1.620 (7 m³) + svahy/rezerva (25 m³). Bid-stage acceptable, final precision pending DXF layer parse OR projektant fill.",
+      "evidence": {
+        "a201_paperspace_layout1": "BILANCE ZEMINY label found at (749.2, -71.6) — no nearby filled values",
+        "step0_scan_date": "2026-05-24",
+        "user_zone_analysis_total_m3": 210,
+        "alternative_estimates_history": {
+          "phase_0b_re_run": 222.75,
+          "igp_phase1_flat": 323.1,
+          "chatgpt_undercount": 65
+        }
+      },
+      "resolution_pending": "Projektant fill A201 bilance table OR DXF polygon layer scan",
+      "_created_date": "2026-05-24",
+      "_blocker_priority": "low (bid-stage acceptable, final precision pending)"
     }
   ]
 }
