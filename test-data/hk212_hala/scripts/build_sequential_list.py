@@ -1,6 +1,6 @@
 """HK212 sequential construction list generator.
 
-Reads items_hk212_etap1.json (128 items), re-orders them in logical Czech
+Reads items_hk212_etap1.json (133 items), re-orders them in logical Czech
 construction sequence (11 phases per task §2), emits XLSX + CSV + JSON +
 README + HANDOFF. No code matching, no classification, no invention —
 flat ordered list for manual KROS/URS + price assignment.
@@ -144,12 +144,20 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
             ("Pomocné lešení pro opláštění (pojízdné)", ["HSV-9-004"]),
             ("Doprava sendvičových panelů Kingspan", ["PSV-OPL-007"]),
             (
-                "Stěnové panely KS NF 200 mm — dodávka + montáž",
+                "Stěnové panely KS 1000 NF 120 mm — dodávka + montáž",
                 ["PSV-OPL-001", "PSV-OPL-002"],
             ),
             (
-                "Střešní panely KS FF-ROC 200 mm — dodávka + montáž",
+                "Stěnové panely KS 1000 FR 150 mm (rohové zóny) — dodávka + montáž",
+                ["PSV-OPL-009", "PSV-OPL-010"],
+            ),
+            (
+                "Střešní panely KS 1000 RW 160 mm (hlavní střecha) — dodávka + montáž",
                 ["PSV-OPL-003", "PSV-OPL-004"],
+            ),
+            (
+                "Střešní panely KS 1000 FF 175 mm (zóna) — dodávka + montáž",
+                ["PSV-OPL-011", "PSV-OPL-012"],
             ),
             ("Spojovací materiál + EPDM těsnění Kingspan", ["PSV-OPL-006"]),
             ("Klempířské lemy přechody střecha–fasáda", ["PSV-OPL-005"]),
@@ -186,9 +194,10 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
         "VÝPLNĚ OTVORŮ",
         [
             (
-                "Okna plastová — dodávka + montáž + parapet + lemy",
+                "Okna plastová — dodávka (fixní + otvíravé) + montáž + parapet + lemy",
                 [
                     "PSV-76x-001",
+                    "PSV-76x-013",
                     "PSV-76x-002",
                     "PSV-76x-003",
                     "PSV-76x-004",
@@ -308,8 +317,8 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
     missing = set(items_by_id) - seen
     if missing:
         raise SystemExit(f"FATAL: {len(missing)} items.json IDs missing from SEQUENCE: {sorted(missing)}")
-    if len(out) != 128:
-        raise SystemExit(f"FATAL: expected 128 ordered rows, got {len(out)}")
+    if len(out) != 133:
+        raise SystemExit(f"FATAL: expected 133 ordered rows, got {len(out)}")
     return out
 
 
@@ -535,12 +544,12 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
     review_conc = [it["id"] for it in items_by_id.values() if it.get("_review_concrete_class")]
     body = f"""# HK212 Sequential Construction List
 
-128 položek v logickém pořadí výstavby (fáze 1–11).
+133 položek v logickém pořadí výstavby (fáze 1–11).
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (128 items)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (133 items)
 **Branch:** `claude/hk212-sequential-list` (parallel — source branch `dilenska-ok-ut-dps-integration` not found in remote; generated from current main tip with HK212 work already integrated)
 **Generated:** {date.today().isoformat()}
 
@@ -606,7 +615,7 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 **Date:** {date.today().isoformat()}
 
 ## Counts
-- 128 items v logickém stavebním pořadí
+- 133 items v logickém stavebním pořadí
 - 11 fází (od příprava staveniště po kolaudaci)
 - 0 items added, 0 skipped, 0 invented
 - 0 modifications to `items_hk212_etap1.json`
@@ -621,7 +630,7 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 - confidence < 0.70: {low_conf} items (yellow-tinted v XLSX)
 
 ## Validation (§6)
-- ✔ row count = 128 (excl. separator rows)
+- ✔ row count = 133 (excl. separator rows)
 - ✔ each items.json id appears exactly once
 - ✔ no id missing from output
 - ✔ phases ordered 1→11 monotonically
@@ -660,9 +669,9 @@ def main() -> None:
     rows = build_ordered_rows(items_by_id)
 
     # Validation
-    assert len(rows) == 128, len(rows)
+    assert len(rows) == 133, len(rows)
     ids = [r["id"] for r in rows]
-    assert len(set(ids)) == 128, "duplicate IDs in output"
+    assert len(set(ids)) == 133, "duplicate IDs in output"
     assert set(ids) == set(items_by_id), "ID set mismatch"
     phases = [r["_phase"] for r in rows]
     for prev, cur in zip(phases, phases[1:]):
@@ -670,7 +679,7 @@ def main() -> None:
     empty_vzorec = [r["id"] for r in rows if not r["vzorec"]]
     assert not empty_vzorec, f"empty vzorec for: {empty_vzorec}"
     fallback_vzorec = [r["id"] for r in rows if r["vzorec"].startswith("(zdroj nenalezen")]
-    print(f"  vzorec coverage: {128 - len(fallback_vzorec)}/128 with formula, {len(fallback_vzorec)} fallback")
+    print(f"  vzorec coverage: {133 - len(fallback_vzorec)}/133 with formula, {len(fallback_vzorec)} fallback")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_xlsx(rows, OUT_DIR / "hk212_sequential_list.xlsx")
@@ -679,7 +688,7 @@ def main() -> None:
     write_readme(rows, items_by_id, OUT_DIR / "README.md")
     write_handoff(rows, items_by_id, OUT_DIR / "HANDOFF_SEQUENTIAL.md")
 
-    print(f"OK — 128 items in 11 phases written to {OUT_DIR}")
+    print(f"OK — 133 items in 11 phases written to {OUT_DIR}")
     for p in sorted({r["_phase"] for r in rows}):
         n = sum(1 for r in rows if r["_phase"] == p)
         print(f"  FÁZE {p}: {n}")

@@ -223,7 +223,34 @@
       ],
       "new_abmv": "ABMV_22 (A201 bilance unfilled)",
       "reopened_abmv": "ABMV_5 (deska class 2:2 split)"
-    }
+    },
+    "revisions": [
+      {
+        "date": "2026-05-22",
+        "source": "Hala HK_ Úprava dveří drawings",
+        "summary": "Window count 21→34 (29 fix + 5 otvíravé), Kingspan wall NF200→NF120 (510.81 m²) + new FR150 (82.25 m²), Kingspan roof FF-ROC200→RW160 (500.60 m²) + new FF175 (58.20 m²), obvod 103.5→94.57 m, klempířské lemy 207→189.14 bm, dveře vnější popis +plastové",
+        "items_modified": [
+          "PSV-76x-001",
+          "PSV-76x-002",
+          "PSV-76x-003",
+          "PSV-76x-004",
+          "PSV-76x-009",
+          "PSV-OPL-001",
+          "PSV-OPL-002",
+          "PSV-OPL-003",
+          "PSV-OPL-004",
+          "PSV-OPL-005"
+        ],
+        "items_added": [
+          "PSV-76x-013",
+          "PSV-OPL-009",
+          "PSV-OPL-010",
+          "PSV-OPL-011",
+          "PSV-OPL-012"
+        ],
+        "items_removed": []
+      }
+    ]
   },
   "items": [
     {
@@ -5234,9 +5261,9 @@
       "id": "PSV-76x-001",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Dodávka okno plastové 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá",
+      "popis": "Dodávka okno plastové fixní 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá",
       "mj": "ks",
-      "mnozstvi": 21.0,
+      "mnozstvi": 29.0,
       "urs_code": "68536770",
       "urs_alternatives": [
         {
@@ -5260,7 +5287,7 @@
       "skladba_ref": null,
       "source": "DXF A101 INSERT OKNO_1k × 21 + RE-RUN §3.5 otvory",
       "raw_description": "okno plast 1000x1000 šedá",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -5270,7 +5297,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+        "formula": "29 ks fixních (z 34 oken celkem; 5 otvíravých v PSV-76x-013) — Úprava dveří POHLED OSA A/F/06/01",
         "formula_parsed_method": "single_value",
         "inputs": [
           {
@@ -5284,26 +5311,44 @@
             "type": "drawing",
             "code": "A101",
             "document": "vykresy_dxf/A101_pudorys_1np.dxf"
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "DXF A101 INSERT OKNO_1k × 21 + RE-RUN §3.5 otvory · (okno plast 1000x1000 šedá) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 21.0,
-        "declared_quantity": 21.0,
+        "computed_quantity": 29.0,
+        "declared_quantity": 29.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 21.0,
+              "formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+              "popis": "Dodávka okno plastové 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
       "id": "PSV-76x-002",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Montáž okna plastového do osazovacího otvoru, vč. kotvení a pěny",
+      "popis": "Montáž okna plastového 1000 × 1000 mm (fixní i otvíravé) do osazovacího otvoru, vč. kotvení a pěny",
       "mj": "ks",
-      "mnozstvi": 21.0,
+      "mnozstvi": 34.0,
       "urs_code": "48477262",
       "urs_alternatives": [
         {
@@ -5327,7 +5372,7 @@
       "skladba_ref": null,
       "source": "standardní pár dodávka+montáž",
       "raw_description": "montáž okna plast",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -5337,19 +5382,38 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "= dodávka okna",
+        "formula": "34 ks celkem (29 fixní + 5 otvíravé) — Úprava dveří POHLED OSA A/F/06/01",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
         "poznamka": "standardní pár dodávka+montáž · (montáž okna plast) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": null,
-        "declared_quantity": 21.0,
+        "computed_quantity": 34.0,
+        "declared_quantity": 34.0,
         "match_delta_pct": null,
         "match_within_tolerance": false,
-        "confidence": 0.6,
+        "confidence": 0.85,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 21.0,
+              "formula": "= dodávka okna",
+              "popis": "Montáž okna plastového do osazovacího otvoru, vč. kotvení a pěny"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -5358,7 +5422,7 @@
       "SO": "SO-01",
       "popis": "Vnější parapet pozinkovaný plech, š. 200 mm, s krytkami",
       "mj": "bm",
-      "mnozstvi": 22.05,
+      "mnozstvi": 35.7,
       "urs_code": "916232122",
       "urs_alternatives": [
         {
@@ -5382,7 +5446,7 @@
       "skladba_ref": null,
       "source": "standardní vnější parapet pod okno",
       "raw_description": "parapet pozink vnější",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -5392,7 +5456,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks × 1.05 m (šířka okna + přesah)",
+        "formula": "34 ks × 1.05 m (šířka okna + přesah) = 35.7 bm — Úprava dveří 34 oken",
         "formula_parsed_method": "product",
         "inputs": [
           {
@@ -5406,16 +5470,35 @@
             "unit": ""
           }
         ],
-        "reference": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
         "poznamka": "standardní vnější parapet pod okno · (parapet pozink vnější) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 22.05,
-        "declared_quantity": 22.05,
+        "computed_quantity": 35.7,
+        "declared_quantity": 35.7,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 22.05,
+              "formula": "21 ks × 1.05 m (šířka okna + přesah)",
+              "popis": "Vnější parapet pozinkovaný plech, š. 200 mm, s krytkami"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -5424,7 +5507,7 @@
       "SO": "SO-01",
       "popis": "Vnější okenní lemy plastové — rohové + nadokenní",
       "mj": "bm",
-      "mnozstvi": 63.0,
+      "mnozstvi": 102.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -5458,7 +5541,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
+        "formula": "34 ks × 3 bm (perimetr 3 stran, parapet samostatně) = 102 bm — Úprava dveří 34 oken",
         "formula_parsed_method": "product",
         "inputs": [
           {
@@ -5472,16 +5555,35 @@
             "unit": ""
           }
         ],
-        "reference": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
         "poznamka": "standardní detail osazení · (okenní lemy plast) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 63.0,
-        "declared_quantity": 63.0,
+        "computed_quantity": 102.0,
+        "declared_quantity": 102.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.85,
+        "confidence": 0.5,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 63.0,
+              "formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
+              "popis": "Vnější okenní lemy plastové — rohové + nadokenní"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -5737,7 +5839,7 @@
       "id": "PSV-76x-009",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Dodávka vnější dvoukřídlé dveře 1050 × 2100 mm, izol. plnostěnné, klika a zámek",
+      "popis": "Dodávka vnější dvoukřídlé dveře plastové 1050 × 2100 mm, izol. plnostěnné, klika a zámek",
       "mj": "ks",
       "mnozstvi": 2.0,
       "urs_code": null,
@@ -5773,7 +5875,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
+        "formula": "2 ks (Úprava dveří potvrzeno) — materiál plastové dle user expectation, čeká finální potvrzení projektantem",
         "formula_parsed_method": "single_value",
         "inputs": [
           {
@@ -5787,6 +5889,12 @@
             "type": "drawing",
             "code": "A101",
             "document": "vykresy_dxf/A101_pudorys_1np.dxf"
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "DXF A101 + RE-RUN §3.5 · (vnější dveře 2-křídlé 1050x2100) · [sub: zamecnik_vrata_okna]",
@@ -5794,10 +5902,22 @@
         "declared_quantity": 2.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.5,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 2.0,
+              "formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
+              "popis": "Dodávka vnější dvoukřídlé dveře 1050 × 2100 mm, izol. plnostěnné, klika a zámek"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -5976,6 +6096,62 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
+    },
+    {
+      "id": "PSV-76x-013",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Dodávka okno plastové otvíravé 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá, kování pro mikroventilaci",
+      "mj": "ks",
+      "mnozstvi": 5.0,
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Dodávka okno plastové otvíravé 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá, kování pro mikroventilaci",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+      "_export_wrapper_hint": null,
+      "audit_trail": {
+        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
+        "formula": "5 ks otvíravých z 34 oken celkem — Úprava dveří POHLED OSA A/F/06/01 user-confirmed split",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "Úprava dveří revision 2026-05-22 — separated from PSV-76x-001 because otvíravé varianta má vyšší cenu (+30-50 %)",
+        "computed_quantity": 5.0,
+        "declared_quantity": 5.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 5.0,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     },
     {
       "id": "PSV-77x-001",
@@ -8430,13 +8606,13 @@
       "id": "PSV-OPL-001",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Kingspan KS NF 200 mm, jádro minerální vata (MW) per TZ ARS p4 + PBR §3 + ABMV_13 closure, plech vnější/vnitřní 0.6/0.4 mm, profilace M (Micro)/Q (Minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Hradec Králové (Kingspan ČR), barva bílá + modrá (RAL standard)",
+      "popis": "Kingspan KS 1000 NF 120 mm, jádro minerální vata (MW), per Úprava dveří + TZ ARS DPZ D.1.1 — alternativně k orig. 200 mm",
       "mj": "m²",
-      "mnozstvi": 528.5,
+      "mnozstvi": 510.81,
       "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
       "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
       "raw_description": "Kingspan KS NF 200 mm MW 0.6/0.4 S280GD EN 14509",
-      "confidence": 0.95,
+      "confidence": 0.9,
       "_price_source": "user_skipped_pricing",
       "_vyjasneni_ref": [
         "ABMV_13"
@@ -8452,7 +8628,7 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "obvodové opláštění Kingspan — TZ ARS DPZ D.1.1 kap. B + statika D.1.2",
-        "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
+        "formula": "fasáda brutto Úprava dveří: 94.57 m obvod × 6.085 m okap + 17.58 m² štíty = 593.06 m² brutto − 82.25 m² FR zóny (rohy s dveřmi) = 510.81 m² (bez vyřezání otvorů — sendvič ordered celý)",
         "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
@@ -8501,26 +8677,44 @@
             "type": "abmv_closure",
             "abmv_id": "ABMV_13",
             "raw": "K-roc MW vs IPN: closed_fabricated 2026-05-13. MW confirmed across TZ ARS + PBR + statika."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: popis spec hardened per statika TZ D.1.2 verbatim — KS NF 200 mm Hradec Králové (NOT generic KS1000 AWP). Removed 'alt. 150 mm' (statika confirms 200 mm jediný variant). Confidence 0.90 → 0.95 — 4 consistent sources (TZ ARS + PBR + statika + ABMV_13 closure).",
-        "computed_quantity": 528.5,
-        "declared_quantity": 528.5,
+        "computed_quantity": 510.81,
+        "declared_quantity": 510.81,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.9,
         "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 528.5,
+              "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
+              "popis": "Kingspan KS NF 200 mm, jádro minerální vata (MW) per TZ ARS p4 + PBR §3 + ABMV_13 closure, plech vnější/vnitřní 0.6/0.4 mm, profilace M (Micro)/Q (Minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Hradec Králové (Kingspan ČR), barva bílá + modrá (RAL standard)"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
       "id": "PSV-OPL-002",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Montáž obvodového opláštění Kingspan KS NF 200 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6,1 m per statika), per TZ ARS D.1.1 p4 montážní předpis výrobce",
+      "popis": "Montáž obvodového opláštění Kingspan KS 1000 NF 120 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6.1 m)",
       "mj": "m²",
-      "mnozstvi": 528.5,
+      "mnozstvi": 510.81,
       "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
       "source": "TZ statika D.1.2 (rozteč rámů 6.1 m) + TZ ARS D.1.1 p4 (EPDM šrouby) + Step3",
       "raw_description": "montáž Kingspan obvodového opláštění samořezné šrouby EPDM",
@@ -8538,7 +8732,7 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "montáž obvodové opláštění Kingspan — TZ ARS DPZ D.1.1",
-        "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
+        "formula": "= dodávka PSV-OPL-001 = 510.81 m²",
         "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
@@ -8577,30 +8771,48 @@
             "type": "tz_section",
             "section": "D.1.2 (statika) — Návrh opláštění",
             "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: rozteč rámů 6.1 m per statika TZ D.1.2 added to popis. Confidence 0.90 → 0.90 (unchanged, montáž has slightly less spec authority than dodávka).",
-        "computed_quantity": 528.5,
-        "declared_quantity": 528.5,
+        "computed_quantity": 510.81,
+        "declared_quantity": 510.81,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.9,
         "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 528.5,
+              "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
+              "popis": "Montáž obvodového opláštění Kingspan KS NF 200 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6,1 m per statika), per TZ ARS D.1.1 p4 montážní předpis výrobce"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
       "id": "PSV-OPL-003",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Kingspan KS FF-ROC tl. 200 mm, jádro ROC (Rockwool — minerální vata), pro šikmé střechy sklon 5.25°, plech vnější/vnitřní 0.6/0.5 mm, profilace trapéz 34 mm/Q (minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Lipsko (Kingspan Polská republika), vaznice rozteč max 1.5 m per statika",
+      "popis": "Kingspan KS 1000 RW 160 mm, jádro PIR, pro šikmé střechy sklon 5.25°, hlavní střecha (mimo zónu FF 175)",
       "mj": "m²",
-      "mnozstvi": 558.8,
+      "mnozstvi": 500.6,
       "_qty_formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
       "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
       "raw_description": "Kingspan KS FF-ROC 200 mm ROC šikmé střechy sklon 5.25°",
-      "confidence": 0.95,
+      "confidence": 0.85,
       "_price_source": "user_skipped_pricing",
       "_vyjasneni_ref": [
         "ABMV_13"
@@ -8616,7 +8828,7 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "střešní opláštění Kingspan — TZ ARS DPZ D.1.1 + A102 pudorys střechy",
-        "formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
+        "formula": "střecha total 558.8 m² − FF 175 zóna 58.20 m² (57.95 m² projection / cos 5.25°) = 500.6 m² — Úprava dveří section view",
         "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
@@ -8660,30 +8872,48 @@
             "type": "abmv_closure",
             "abmv_id": "ABMV_13",
             "raw": "K-roc MW: closed_fabricated 2026-05-13. ROC = Rockwool = MW. Consistent across all sources."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "TZ ARS DPZ D.1.1: Kingspan pro šikmé střechy s MW, sklon 5,25°. EW 15 DP1 per PBŘ ABMV_6. Výška v hřebeni 7,1 m. _review_thickness=True: TZ ARS neuvádí explicitní tloušťku střešního panelu — ověřit u projektanta / statika D.1.2. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: _review_thickness flag REMOVED — statika TZ D.1.2 explicitly specifies 'KINGSPAN KS FF-ROC tl. 200 mm'. ROC = Rockwool = MW core. Confidence 0.90 → 0.95 (statika direct product specification with tloušťka).",
-        "computed_quantity": 558.8,
-        "declared_quantity": 558.8,
+        "computed_quantity": 500.6,
+        "declared_quantity": 500.6,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.85,
         "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 558.8,
+              "formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
+              "popis": "Kingspan KS FF-ROC tl. 200 mm, jádro ROC (Rockwool — minerální vata), pro šikmé střechy sklon 5.25°, plech vnější/vnitřní 0.6/0.5 mm, profilace trapéz 34 mm/Q (minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Lipsko (Kingspan Polská republika), vaznice rozteč max 1.5 m per statika"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
       "id": "PSV-OPL-004",
       "kapitola": "PSV-OPL",
       "SO": "SO-01",
-      "popis": "Montáž střešního opláštění Kingspan KS FF-ROC 200 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů, uložení prosté/spojité (2-3 polí) na vaznicích rozteč max 1.5 m per statika TZ D.1.2",
+      "popis": "Montáž střešního opláštění Kingspan KS 1000 RW 160 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů",
       "mj": "m²",
-      "mnozstvi": 558.8,
+      "mnozstvi": 500.6,
       "_qty_formula": "střecha netto Step3 = 558.8 m² (shodné s PSV-OPL-003)",
       "source": "TZ statika D.1.2 (vaznice rozteč 1.5 m) + TZ ARS D.1.1 p4 + Step3",
       "raw_description": "montáž Kingspan střešní opláštění kotvení šrouby",
-      "confidence": 0.9,
+      "confidence": 0.85,
       "_price_source": "user_skipped_pricing",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -8697,7 +8927,7 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "montáž střešní opláštění Kingspan — TZ ARS DPZ D.1.1",
-        "formula": "střecha netto Step3 = 558.8 m²",
+        "formula": "= dodávka PSV-OPL-003 = 500.6 m²",
         "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
@@ -8716,17 +8946,35 @@
             "type": "tz_section",
             "section": "D.1.2 (statika) — Návrh opláštění",
             "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "TZ ARS DPZ D.1.1: montáž kotvením k OK. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: vaznice rozteč max 1.5 m per statika TZ D.1.2 added. Confidence 0.90 → 0.90 unchanged.",
-        "computed_quantity": 558.8,
-        "declared_quantity": 558.8,
+        "computed_quantity": 500.6,
+        "declared_quantity": 500.6,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.9,
+        "confidence": 0.85,
         "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 558.8,
+              "formula": "střecha netto Step3 = 558.8 m²",
+              "popis": "Montáž střešního opláštění Kingspan KS FF-ROC 200 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů, uložení prosté/spojité (2-3 polí) na vaznicích rozteč max 1.5 m per statika TZ D.1.2"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -8735,7 +8983,7 @@
       "SO": "SO-01",
       "popis": "Klempířské lemy + přechody střecha–fasáda, pozinkovaný plech — atika, úžlabí, nároží, parapety, krycí lišty — dle TZ ARS DPZ D.1.1",
       "mj": "bm",
-      "mnozstvi": 207.0,
+      "mnozstvi": 189.14,
       "_qty_formula": "2 × obvod budovy 103.5 m (atika + parapety); _review_qty=True",
       "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
       "raw_description": "klempíř lemy přechody pozinkovaný plech atika úžlabí nároží",
@@ -8754,7 +9002,7 @@
       "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
         "lokalizace": "klempířské lemy opláštění — TZ ARS DPZ D.1.1",
-        "formula": "2 × obvod budovy 103.5 m = 207.0 bm (hrubý odhad atika + parapety)",
+        "formula": "2 × obvod budovy 94.57 m (Úprava dveří) = 189.14 bm (hrubý odhad atika + parapety)",
         "formula_parsed_method": "estimate_perimeter_derived",
         "inputs": [
           {
@@ -8778,17 +9026,35 @@
             "type": "step3_metric",
             "metric": "obvod_budovy",
             "value": 103.5
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "TZ ARS DPZ D.1.1: pozinkovaný plech — atika, lemování, parapety, krycí lišty, úžlabí, nároží, okapy. _review_qty=True: výkaz lemů vyžaduje klempířský podrobný výkaz (TBD). Odhad 207 bm = 2× obvod 103.5 m.",
-        "computed_quantity": 207.0,
-        "declared_quantity": 207.0,
+        "computed_quantity": 189.14,
+        "declared_quantity": 189.14,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.75,
         "extraction_method": "estimate_perimeter_derived",
         "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 207.0,
+              "formula": "2 × obvod budovy 103.5 m = 207.0 bm (hrubý odhad atika + parapety)",
+              "popis": "Klempířské lemy + přechody střecha–fasáda, pozinkovaný plech — atika, úžlabí, nároží, parapety, krycí lišty — dle TZ ARS DPZ D.1.1"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -8925,6 +9191,235 @@
         "data_source_hint": "TZ_ARS_DPZ",
         "extracted_at": "2026-05-22T06:30:51.307602+00:00"
       }
+    },
+    {
+      "id": "PSV-OPL-009",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Kingspan KS 1000 FR 150 mm, jádro PIR (fire-resistant), 2 rohové zóny u vstupních dveří (45.69 + 36.56 m²) — Úprava dveří",
+      "mj": "m²",
+      "mnozstvi": 82.25,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Kingspan KS 1000 FR 150 mm, jádro PIR (fire-resistant), 2 rohové zóny u vstupních dveří (45.69 + 36.56 m²) — Úprava dveří",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "obvodové opláštění Kingspan — TZ ARS DPZ D.1.1 kap. B + statika D.1.2",
+        "formula": "45.69 m² + 36.56 m² = 82.25 m² (2 šrafované rohové zóny v POHLED F a POHLED 01 — user manual měření)",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          },
+          {
+            "type": "tz_section",
+            "section": "B p.8",
+            "raw": "Kingspan tl. 200 mm, alternativně 150 mm dle"
+          }
+        ],
+        "poznamka": "FR jádro per Úprava dveří značení — odlišný materiál od NF 120 mm (PIR vs MW)",
+        "computed_quantity": 82.25,
+        "declared_quantity": 82.25,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 82.25,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
+    },
+    {
+      "id": "PSV-OPL-010",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Montáž Kingspan KS 1000 FR 150 mm — 2 rohové zóny (45.69 + 36.56 m²), kotvení samořeznými šrouby + EPDM podložka",
+      "mj": "m²",
+      "mnozstvi": 82.25,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Montáž Kingspan KS 1000 FR 150 mm — 2 rohové zóny (45.69 + 36.56 m²), kotvení samořeznými šrouby + EPDM podložka",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "montáž obvodové opláštění Kingspan — TZ ARS DPZ D.1.1",
+        "formula": "= dodávka PSV-OPL-009 = 82.25 m²",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "Montážní práce identické s NF panelem, FR pouze materiálová odlišnost",
+        "computed_quantity": 82.25,
+        "declared_quantity": 82.25,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 82.25,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
+    },
+    {
+      "id": "PSV-OPL-011",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Kingspan KS 1000 FF 175 mm, jádro FF (Rockwool), zóna ve střeše — Úprava dveří section view",
+      "mj": "m²",
+      "mnozstvi": 58.2,
+      "_qty_formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Kingspan KS 1000 FF 175 mm, jádro FF (Rockwool), zóna ve střeše — Úprava dveří section view",
+      "confidence": 0.75,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.85,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "střešní opláštění Kingspan — TZ ARS DPZ D.1.1 + A102 pudorys střechy",
+        "formula": "57.95 m² projection (user měřeno) / cos(5.25°) = 58.20 m² (slope-corrected)",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "2. typ střešního panelu vedle hlavního RW 160 mm — image 1 section view ukazuje oba typy paralelně",
+        "computed_quantity": 58.2,
+        "declared_quantity": 58.2,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.75,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 58.2,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
+    },
+    {
+      "id": "PSV-OPL-012",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Montáž Kingspan KS 1000 FF 175 mm — zóna 58.20 m² ve střeše",
+      "mj": "m²",
+      "mnozstvi": 58.2,
+      "_qty_formula": "střecha netto Step3 = 558.8 m² (shodné s PSV-OPL-003)",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Montáž Kingspan KS 1000 FF 175 mm — zóna 58.20 m² ve střeše",
+      "confidence": 0.75,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "montáž střešní opláštění Kingspan — TZ ARS DPZ D.1.1",
+        "formula": "= dodávka PSV-OPL-011 = 58.20 m²",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "Montážní práce identické s RW panelem",
+        "computed_quantity": 58.2,
+        "declared_quantity": 58.2,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.75,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 58.2,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     }
   ]
 }

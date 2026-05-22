@@ -1,11 +1,11 @@
 # HK212 Sequential Construction List
 
-128 položek v logickém pořadí výstavby (fáze 1–11).
+133 položek v logickém pořadí výstavby (fáze 1–11).
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (128 items)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (133 items)
 **Branch:** `claude/hk212-sequential-list` (parallel — source branch `dilenska-ok-ut-dps-integration` not found in remote; generated from current main tip with HK212 work already integrated)
 **Generated:** 2026-05-22
 

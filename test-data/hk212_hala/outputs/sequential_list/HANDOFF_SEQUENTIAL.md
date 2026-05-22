@@ -6,7 +6,7 @@
 **Date:** 2026-05-22
 
 ## Counts
-- 128 items v logickém stavebním pořadí
+- 133 items v logickém stavebním pořadí
 - 11 fází (od příprava staveniště po kolaudaci)
 - 0 items added, 0 skipped, 0 invented
 - 0 modifications to `items_hk212_etap1.json`
@@ -16,9 +16,9 @@
 - FÁZE 2: 16 items
 - FÁZE 3: 22 items
 - FÁZE 4: 16 items
-- FÁZE 5: 9 items
+- FÁZE 5: 13 items
 - FÁZE 6: 12 items
-- FÁZE 7: 12 items
+- FÁZE 7: 13 items
 - FÁZE 8: 4 items
 - FÁZE 9: 6 items
 - FÁZE 10: 2 items
@@ -31,7 +31,7 @@
 - confidence < 0.70: 80 items (yellow-tinted v XLSX)
 
 ## Validation (§6)
-- ✔ row count = 128 (excl. separator rows)
+- ✔ row count = 133 (excl. separator rows)
 - ✔ each items.json id appears exactly once
 - ✔ no id missing from output
 - ✔ phases ordered 1→11 monotonically
