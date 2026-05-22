@@ -352,6 +352,69 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-24 — Session: HK212 IGP integration + Kingspan + patky rework + Soupis prací pipeline
+
+**Topic:** Major HK212 finalization session — IGP delivered (ALTAGEO 526026), TZ statika Kingspan quote integrated, A105 patky geometry rework (correction of F-3 over-fix), soupis prací end-to-end pipeline (preflight → KROS FTS matching → Excel + JSON). Merged via PR #1208 squash.
+
+**Rozhodnuto:**
+- **IGP integration**: ABMV_11 + ABMV_17 closed (geotech kategorie 1, Rdt=250 kPa, plošné založení primary). Pilot items HSV-2-010..012 flagged `alternative_variant_per_IGP_not_required` (retained for variant bid). New HSV-1-028 výměna aktivní zóny 269.25 m³. HSV-1-001 figura 222.75 → 323.1 → 210 m³ (3-pass refinement: theoretical → IGP flat → zone-by-zone A201 + A105).
+- **Kingspan specs hardened** per statika D.1.2 quote: KS NF 200 mm Hradec Králové (stěnové), KS FF-ROC 200 mm Lipsko (střešní). `_review_thickness` removed (statika explicit). Confidence 0.90 → 0.95.
+- **Patky pyramida correction** (F-3 over-fix → A105 reality): rámové 14 (bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). Dvoustupňová PYRAMIDA (dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6), NOT prismatic 1.5²×1.2. HSV-2-001 beton: 37.8 → 27.0 → 22.875 m³. Štítové H=1.2m typo resolved (ABMV_21 new + resolved).
+- **Deska scope** via A105 měřené 19.04 × 27.90 = 531.22 m² (vs TZ ARS podlahová 495 m²). HSV-2-013: 99.0 → 106.24 m³. KARI ×2 vrstvy: 1955.25 → 2098.3 kg each.
+- **ABMV_5 re-opened**: 2:2 split (A101+A105 = C30/37 vs TZ ARS+statika = C25/30). `_review_concrete_class` flag.
+- **ABMV_22 new**: A201 BILANCE ZEMINY label present ale unfilled — user zone-by-zone analysis substitutes.
+- **Soupis prací pipeline** (4-phase atomic): preflight inventory + KROS FTS5 matching + 13-sheet XLSX + handoff. **61.7 % Tier 1** above 60 % target. Iterations: 44.5 % (strict MJ) → 57 % (MJ-first) → 61.7 % (+ equivalence classes).
+- **Verdict 🟡 YELLOW** — bid-stage usable; 3 critical ABMV (3, 19, 5) require resolution před tender submission.
+
+**Odmítnuto:**
+- Pilot variant addition to bid (HSV-2-010..012 stay flagged alternative)
+- Stage E benchmark vs example_vv corpus this session
+- PDF rekapitulace (reportlab missing — deferred P3)
+- Cena fill (user directive: separate workflow)
+- HSV-3 IPE 160 mass drift +11.4 % bump (flagged only — PROFILY DXF deferred)
+- Amazon Q false-positive suggestions (MD5 for non-crypto dedup, missing zero-guard for fixed-128 input, `json.load(open(...))` style — alarmist scanner noise, not real bugs)
+
+**Otevřené otázky:**
+- 3 critical ABMV blocking tender: ABMV_3 stroje specs (HIGH cost), ABMV_19 plochy 3-source drift (MEDIUM VRN poplatky), ABMV_5 beton class 2:2 split (MEDIUM ~10-15 tis CZK)
+- 12 unresolved ABMV total (3 critical, 7 important, 2 minor)
+- HSV-3 PROFILY DXF geometry reconciliation deferred
+- Klempíř lemy detail výkaz needed (PSV-OPL-005 + PSV-78x both `_review_qty`)
+
+**Co dál:**
+- Send to SOLAR DISPOREC po investor resolution 3 critical ABMV + cena fill
+- 2 new patterns ratified: **Pattern 11** (KROS FTS + MJ equivalence), **Pattern 12** (squash merge branch cleanup)
+
+**Branches:**
+- `claude/hk212-dilenska-ok-ut-dps-integration` (15 commits IGP + Kingspan + rework + F-1..F-5 fixes) — squash-merged into soupis-praci-final → PR #1208 → main `9493cdd7`. Stale ghost-banner pending manual delete (Pattern 12).
+- `claude/hk212-soupis-praci-final` (4 phase commits + merge conflict resolution) — squash-merged PR #1208.
+
+**Session retrospective:** `test-data/hk212_hala/outputs/soupis_praci/HANDOFF_TENDER_READY.md`
+
+---
+
+### 2026-05-23 — Session: HK212 fresh-eyes read-only audit
+
+**Topic:** Read-only audit cross-checking items.json (127 items at time of audit), Step 3 area_aggregates, ABMV queue proti TZ ARS D.1.1 + PBR table 10 II. SPB + STAVAGENT_PATTERNS.md. Single deliverable: `test-data/hk212_hala/outputs/audit_2026_05_23_fresh_eyes.md`.
+
+**Rozhodnuto (5 findings):**
+- **F-1 P0** — `area_aggregates.json vrata_sekcni.size_m` stale `[3.0, 4.0]` po ABMV_2 closure → PSV-OPL-001/002 mn 536.4 should be **528.5** m². +9.2 % otvory drift unflagged.
+- **F-2 P1** — ABMV_1 closure premature: PBR = 21 ks stropní (61.2 kW); DXF Stage C = 40 ks (84 kW). 19 ks ghost. User instruction: SKIP this session.
+- **F-3 P1** — HSV-2-001 patky inconsistency: beton 18.9 m³ implies 7 patek, bednění 100.8 m² implies 14. Fix to 14 (later corrected 2026-05-24 to 10 per A105 manual count + dvoustupňová pyramida geometry).
+- **F-4 P1** — ABMV_18 evidence: TZ ARS p3 patky = C16/20 XC0 explicitly; ABMV_18 working_assumption claims statika says C25/30 for patky — unsupported. items.json correct, ABMV closed.
+- **F-5 P2** — Pattern 8 numbering duplicate in STAVAGENT_PATTERNS.md. Rename second to Pattern 9 + move před Anti-patterns.
+
+**Odmítnuto:**
+- Any mutation of items.json (read-only audit)
+- Re-opening ABMV_1 (user directive)
+
+**Otevřené otázky:** Phase 2.1 readiness 🟡 YELLOW pending P0+P1 (~2 h work to GREEN)
+
+**Co dál:** all 5 findings resolved 2026-05-24 except F-2 (deferred per user). F-3 second iteration after A105 evidence delivered correct count.
+
+**Branch:** `claude/hk212-dilenska-ok-ut-dps-integration` (audit commit `2e256524`)
+
+---
+
 ### 2026-05-22 — Session: HK212 Stage A→E + Step 3 polygonization (P0 Kingspan resolved)
 
 **Topic:** HK212 hala (Hradec Králové, SOLAR DISPOREC) — full pipeline from DXF discovery housekeeping through Stage E Kingspan P0 blocker resolution. 12 commits on `claude/hk212-dilenska-ok-ut-dps-integration` branch, ~30K LOC modifications across 5 phases. Companion branch `claude/hk212-step3-polygonization-areas` preserved for debug story (3 atomic commits).
