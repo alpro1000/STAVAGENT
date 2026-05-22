@@ -20,7 +20,8 @@ Status: **shipped + pushed**; parallel to `claude/hk212-dilenska-ok-ut-dps-integ
 | `podlaha_total` | **538.5 m²** | footprint fallback (industrial hala = single open floor) | 0.75 ⚠ |
 
 ### DIMENSION mining harvest
-- Sklon střechy: **5.25°** (15 hits on A102, canonical) + 5.65° (12 hits on A101, secondary — likely overhang)
+- Sklon střechy: **5.25°** (15 hits on A102 pudorys střechy — canonical, used in `strecha_netto` calc ✓)
+- 5.65° (12 hits on A101) — **úhel otevírání vrat sekčních** (gate opening angle for sectional doors, NOT a roof slope). Originally misidentified as "overhang slope". `strecha_netto` calc used the correct 5.25° — no recompute needed.
 - 2174 TEXT/MTEXT/DIMENSION entities scanned across 8 sheets
 - Výkop dims: 0 explicit "VÝKOP a×b" patterns → defaulted
 

@@ -1,4 +1,4 @@
-# HK212 Step 3 Summary — 2026-05-22T05:42:44.179964+00:00
+# HK212 Step 3 Summary — 2026-05-22T05:55:58.179863+00:00
 
 ## Acceptance criteria check
 
@@ -25,8 +25,9 @@
 
 ## DIMENSION mining
 
-- Slopes found: `{5.25: 15, 5.65: 12, 2.0: 9, 10.0: 1, 30.0: 1}`
-- Canonical sklon: **5.25°**
+- All slope hits (debug): `{5.25: 15, 5.65: 12, 2.0: 9, 10.0: 1, 30.0: 1}`
+- **Canonical sklon střechy (A102 only): 5.25°**
+  - per user (chat 2026-05-22): 5.65° hits on A101 = **úhel otevírání vrat sekčních** (gate opening angle), NOT a roof slope. Filtered to A102 = pudorys střechy only.
 - Per-sheet scanned: `{'A101_pudorys_1np.dxf': 106, 'A102_pudorys_strechy.dxf': 50, 'A104_pohledy.dxf': 35, 'A105_zaklady.dxf': 163, 'A106_stroje.dxf': 129, 'A107_stroje_kotvici_body.dxf': 148, 'A201_vykopy.dxf': 305, 'Hala HK_ Úprava dveří.dxf': 1238}`
 
 ## Remaining gaps (deferred)

@@ -1,5 +1,5 @@
 # HK212 Step 3 — Cross-sheet dedup log
-_Generated: 2026-05-22T05:42:44.179710+00:00_
+_Generated: 2026-05-22T05:55:58.179503+00:00_
 
 ## Walls (footprint source)
 

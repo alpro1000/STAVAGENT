@@ -562,16 +562,24 @@ def main() -> int:
     for sheet, doc in docs.items():
         dim_findings[sheet] = mine_dimensions(doc)
 
-    # Aggregate sklon
+    # Aggregate sklon (filter to A102 = pudorys střechy = canonical roof source).
+    # Per user (chat 2026-05-22): 5.25° = actual sklon střechy (on A102),
+    # 5.65° = úhel otevírání vrat sekčních (gate opening angle on A101),
+    # NOT a roof slope. Filter to A102 hits only for roof_slope.
     all_slopes = []
     for sheet, f in dim_findings.items():
         for s in f.get("slopes_deg", []):
             all_slopes.append({"sheet": sheet, **s})
-    # The expected canonical sklon = 5.25° (per A102 pudorys střechy)
+    # All slope hits (debug audit)
     slope_counts = Counter(round(s["value"], 2) for s in all_slopes)
-    logger.info(f"  slopes found: {dict(slope_counts.most_common(5))}")
-    if slope_counts:
-        canonical_slope_deg = slope_counts.most_common(1)[0][0]
+    logger.info(f"  slopes found (ALL sheets): {dict(slope_counts.most_common(5))}")
+    # Canonical roof slope = most common on A102 only
+    a102_slopes = [s for s in all_slopes if s["sheet"] == "A102_pudorys_strechy.dxf"]
+    a102_slope_counts = Counter(round(s["value"], 2) for s in a102_slopes)
+    if a102_slope_counts:
+        canonical_slope_deg = a102_slope_counts.most_common(1)[0][0]
+        logger.info(f"  canonical sklon střechy (A102 only): {canonical_slope_deg}° "
+                     f"(NOT 5.65° = úhel otevírání vrat sekčních on A101)")
     else:
         canonical_slope_deg = None
 
@@ -857,8 +865,11 @@ def main() -> int:
                               f"{v.get('confidence',0)} | "
                               f"{'⚠️' if v.get('_review_flag') else ''} |\n")
     summary_lines.append("\n## DIMENSION mining\n\n")
-    summary_lines.append(f"- Slopes found: `{dict(Counter(round(s['value'], 2) for s in all_slopes).most_common(5))}`\n")
-    summary_lines.append(f"- Canonical sklon: **{canonical_slope_deg}°**\n")
+    summary_lines.append(f"- All slope hits (debug): `{dict(slope_counts.most_common(5))}`\n")
+    summary_lines.append(f"- **Canonical sklon střechy (A102 only): {canonical_slope_deg}°**\n")
+    summary_lines.append(f"  - per user (chat 2026-05-22): 5.65° hits on A101 = "
+                          f"**úhel otevírání vrat sekčních** (gate opening angle), "
+                          f"NOT a roof slope. Filtered to A102 = pudorys střechy only.\n")
     summary_lines.append(f"- Per-sheet scanned: `{ {s: f['scanned_text_entities'] for s,f in dim_findings.items()} }`\n")
 
     summary_lines.append("\n## Remaining gaps (deferred)\n\n")
