@@ -2214,7 +2214,7 @@
       "SO": "SO-01",
       "popis": "Beton patek rámových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 18.9,
+      "mnozstvi": 37.8,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2236,40 +2236,40 @@
       "urs_status": "needs_review",
       "urs_match_score": 0.333,
       "skladba_ref": null,
-      "source": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4",
-      "raw_description": "patky rámové C16/20",
-      "confidence": 0.5,
+      "source": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 + RE-RUN §3.3 + §3.4",
+      "raw_description": "patky rámové C16/20 dvoustupňové 1.5×1.5×(2×0.6)",
+      "confidence": 0.85,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
-      "_data_source": "TZ+DXF",
+      "_data_source": "TZ+DXF+statika",
       "_completeness": 1.0,
-      "_qty_formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
+      "_qty_formula": "14 ks × 1.5 × 1.5 × 1.2 m (dvoustupňová 2×0.6) = 37.8 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
+        "formula": "14 ks × 1.5 × 1.5 × 1.2 m (dvoustupňová 2×0.6 per TZ ARS D.1.1 p3 + statika D.1.2 p30) = 37.8 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
+            "label": "operand_1_count",
             "value": 14.0,
-            "unit": ""
+            "unit": "ks"
           },
           {
-            "label": "operand_2",
+            "label": "operand_2_B_m",
             "value": 1.5,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_3",
+            "label": "operand_3_L_m",
             "value": 1.5,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_4",
-            "value": 0.6,
-            "unit": ""
+            "label": "operand_4_H_m_total",
+            "value": 1.2,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -2277,17 +2277,32 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.1 p3",
+            "raw": "TZ ARS D.1.1: 'Sloupy rámu budou založeny na dvoustupňových patkách o rozměrech 1,5x1,5x(2x0,6m) z prostého betonu C16/20 XC0'"
+          },
+          {
+            "type": "statika_section",
+            "section": "D.1.2 p29-30",
+            "raw": "Statika výpočet patka: B=1.5, L=1.5, H=1.2 m, materiál C16/20 XC0, Rdt=200 kPa, σEd=190.16 kPa Vyhovuje"
+          },
+          {
+            "type": "bednění_consistency_check",
+            "raw": "HSV-2-002 patky rámové bednění = 100.8 m². Per patka 4×1.5×1.2 = 7.2 m². 100.8/7.2 = 14 patek ✓"
           }
         ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4 · (patky rámové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 18.9,
-        "declared_quantity": 18.9,
+        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix.",
+        "computed_quantity": 37.8,
+        "declared_quantity": 37.8,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "data_source_hint": "TZ+DXF+statika",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_audit_fix_f3_date": "2026-05-24"
       }
     },
     {
