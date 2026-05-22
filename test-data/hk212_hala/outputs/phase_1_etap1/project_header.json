@@ -1,0 +1,16 @@
+{
+  "geometric_summary": {
+    "_step3_generated_at": "2026-05-22T05:42:44.206725+00:00",
+    "zastavena_plocha_m2": 538.5,
+    "obvod_budovy_m": 103.5,
+    "vyska_budovy_m": 6.02,
+    "sklon_strechy_deg": 5.25,
+    "strecha_brutto_m2": 556.5,
+    "strecha_netto_m2": 558.8,
+    "fasada_brutto_m2": 623.3,
+    "fasada_netto_m2": 536.4,
+    "podlaha_total_m2": 538.5,
+    "objem_vykopu_m3": 99.3,
+    "_source": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json"
+  }
+}

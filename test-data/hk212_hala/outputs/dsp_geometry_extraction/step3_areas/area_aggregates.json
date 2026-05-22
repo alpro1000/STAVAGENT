@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-22T05:42:44.179165+00:00",
+    "method": "Step 3 polygonize + trigonometric + DIMENSION mining",
+    "confidence_ladder_source": "step3 spec"
+  },
+  "zastavena_plocha": {
+    "value_m2": 538.5,
+    "source": "polygonize(walls+foundation outlines, A101+A106+A107+A105 deduped) → largest disjoint MultiPolygon part; cross-validated 100% vs convex_hull (540.9 m²)",
+    "confidence": 0.9,
+    "_review_flag": false,
+    "cross_check": {
+      "convex_hull_m2": 540.9,
+      "coverage_ratio": 0.995
+    }
+  },
+  "obvod_budovy": {
+    "value_m": 103.5,
+    "source": "footprint polygon perimeter",
+    "confidence": 0.88
+  },
+  "strecha_brutto": {
+    "value_m2": 556.5,
+    "source": "polygonize(roof, A102)",
+    "confidence": 0.88
+  },
+  "strecha_netto": {
+    "value_m2": 558.8,
+    "source": "brutto / cos(5.25°)",
+    "confidence": 0.85,
+    "sklon_deg": 5.25,
+    "sklon_source": "DIMENSION mining A102",
+    "sklon_confidence": 0.95
+  },
+  "fasada_brutto": {
+    "value_m2": 623.3,
+    "source": "obvod (103.5 m) × výška (6.0 m)",
+    "confidence": 0.85
+  },
+  "fasada_netto": {
+    "value_m2": 536.4,
+    "source": "brutto − otvory plocha (windows 30 + vrata 4 + dveře 4)",
+    "confidence": 0.85,
+    "otvory_plocha_m2": 86.8,
+    "otvory_breakdown": {
+      "windows": {
+        "count_distinct_physical_est": 30,
+        "size_m": [
+          1.0,
+          1.0
+        ]
+      },
+      "vrata_sekcni": {
+        "count": 4,
+        "size_m": [
+          3.0,
+          4.0
+        ]
+      },
+      "dvere_dvoukridle": {
+        "count": 4,
+        "size_m": [
+          1.05,
+          2.1
+        ]
+      }
+    }
+  },
+  "vyska_budovy": {
+    "value_m": 6.02,
+    "source": "A104 pohledy bbox vertical extent (6.02 m)",
+    "confidence": 0.75,
+    "_review_flag": false
+  },
+  "objem_vykopu": {
+    "value_m3": 99.3,
+    "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+    "confidence": 0.6,
+    "_review_flag": true,
+    "length_m": 103.5,
+    "sirka_m": 0.8,
+    "hloubka_m": 1.2
+  },
+  "podlaha_total": {
+    "value_m2": 538.5,
+    "source": "footprint area (industrial hala — single open floor)",
+    "confidence": 0.75,
+    "_review_flag": true,
+    "per_room_breakdown": "not implemented Step 3 — floor LINEs don't form closed polylines; per-room split would require cluster-by-bbox + room-label MTEXT proximity match"
+  }
+}
