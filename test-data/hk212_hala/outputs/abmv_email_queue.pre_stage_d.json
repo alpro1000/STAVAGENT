@@ -43,7 +43,7 @@
       "id": "ABMV_1",
       "category": "design_clarification",
       "severity": "critical",
-      "status": "resolved_with_caveats",
+      "status": "open",
       "title": "Energetická bilance vs. technologie strojů",
       "summary_cs": "TZ B uvádí Pvyp = 60,5 kW, jistič 3×100 A. Výkres A106 ukazuje stroje DRIFT_E1, DEFRAME, filtrační jednotka s příkonem cca 80 kW/stroj. Při souběhu provozu navržené dimenzování nestačí.",
       "blocks_vv": [
@@ -53,10 +53,7 @@
       ],
       "addressee": [
         "Volka"
-      ],
-      "resolution_note": "Stage C ÚT discovery extracted P_topny_total = 84.0 kW from UT_HALAHK_DPS.dxf zařízení list. Devices: DALAP Dalap_E-HP_9kW × 4 (9.0 kW/unit = 36.0 kW); FENIX (ECOSUN) ECOSUN_S+_12 × 40 (1.2 kW/unit = 48.0 kW); PT Ventilation PT_Vents_UET-15D × 4 (0 kW/unit = 0 kW); LENS LENS_ARENA_60x120_W × 36 (0 kW/unit = 0 kW). Heating bilance covered; cooling + VZT electric load NOT in DXF (VZT D.1.4 still missing per ABMV_12). LED svítidla a VZT rekuperační jednotky listed at 0 kW (reference only — actual EL spotřeba waits on EL D.1.4).",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/ut_zarizeni_list.json"
+      ]
     },
     {
       "id": "ABMV_2",
@@ -166,12 +163,9 @@
       "id": "ABMV_12",
       "category": "missing_input",
       "severity": "important",
-      "status": "working_assumption_partial",
+      "status": "open",
       "title": "TZB profesní PD (D.1.4)",
-      "summary_cs": "VZT, ÚT, EL, ZTI pouze koncepčně v TZ B. Budou samostatné výkresy a tabulky?",
-      "resolution_note": "ÚT D.1.4 extracted via Stage C: DALAP Dalap_E-HP_9kW × 4 (9.0 kW/unit = 36.0 kW); FENIX (ECOSUN) ECOSUN_S+_12 × 40 (1.2 kW/unit = 48.0 kW); PT Ventilation PT_Vents_UET-15D × 4 (0 kW/unit = 0 kW); LENS LENS_ARENA_60x120_W × 36 (0 kW/unit = 0 kW), P_topny_total = 84.0 kW. No DPS razítko per Stage A dossier — DXF stupeň = DSP. VZT D.1.4 + ZTI D.1.4 + MAR D.1.4 still missing — assumed concept-level per Phase 0b. VZT/M items dropped from etap-1 scope (Stage D 22-item removal).",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/{ut_razitka,ut_zarizeni_list,energetical_balance_update}.{json,md}"
+      "summary_cs": "VZT, ÚT, EL, ZTI pouze koncepčně v TZ B. Budou samostatné výkresy a tabulky?"
     },
     {
       "id": "ABMV_13",
@@ -196,7 +190,7 @@
       "id": "ABMV_15",
       "category": "minor",
       "severity": "minor",
-      "status": "resolved",
+      "status": "open",
       "title": "Krajní vaznice: C150×19,3 vs UPE160",
       "summary_cs": "TZ B → UPE160 S235. A104 DXF → C150×19,3 S235.",
       "rerun_evidence": {
@@ -205,16 +199,13 @@
         "k01_konstrukce_titul_p01": "19× explicit label 'KRAJNÍ VAZNICE UPE160'",
         "a104_pohledy_dxf": "2 INSERT blocks 'C profil - C150X19_3' (Řez 2 + Řez 3)",
         "resolution": "TZ wins by 22:2 ratio — A104 C150 = legacy block library symbols"
-      },
-      "resolution_note": "Kusovník DXF rozbor (Stage B) confirms UPE 160 as krajní vaznice (NOT C150×19.3 per RE-RUN §9.4 working assumption). Profile_rollup entry: UPE 160 with catalog_hit=True, kg/m=18.8. Item HSV-3-005 mnozstvi=1030.24 kg retained as written.",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/dsp_dxf_kusovnik.json"
+      }
     },
     {
       "id": "ABMV_16",
       "category": "missing_input",
       "severity": "critical",
-      "status": "resolved_external_xref_confirmed",
+      "status": "open",
       "title": "Externí dokument '2966-1 návrh dispozice strojů HK'",
       "summary_cs": "A104 DXF obsahuje external reference '2966-1_navrh dispozice stroju-HK_dwg'. Dokument není v inputs. Jeho dodání by uzavřelo ABMV #1 + #3 najednou.",
       "related": [
@@ -228,10 +219,7 @@
         "a107_stroje_kotvici_body_dxf": "1 INSERT `...HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY`",
         "total_references": 10,
         "phase0b_prev_x01_drift_was_wrong": "Previous Phase 0b reported '0 XREFs found' — that was correct (these are INSERT blocks not XREF blocks), but conclusion '2966-1 NOT found' was WRONG; the reference exists as block names"
-      },
-      "resolution_note": "External document '2966-1 návrh dispozice strojů HK' confirmed as DXF external xref: 3 layers ('212_HK_situace_03_dwg-1', '2966-1_navrh dispozice stroju-HK_02_dwg-1', '2966-1_navrh dispozice stroju-HK_dwg-1') across A106_stroje + A107_stroje_kotvici_body. Reclassified as `external_reference` in ratified layer dictionary (Task 2 Step 1.5). Cross-ref to Stage A razítka odkazů — same document referenced 2× in title block.",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_geometry_extraction/{layer_dictionary_ratified,dictionary_decisions}.{json,md}"
+      }
     },
     {
       "id": "ABMV_17",
