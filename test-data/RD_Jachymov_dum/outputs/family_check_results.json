@@ -1,0 +1,816 @@
+{
+  "_status": "Part 2A complete",
+  "_total_items": 337,
+  "status_distribution": {
+    "OK": 257,
+    "NO_KAPITOLA_DERIVABLE": 4,
+    "MISMATCH": 55,
+    "NO_CODE": 21
+  },
+  "mismatch_items": [
+    {
+      "id": "4.1",
+      "kapitola_used": "HSV-1",
+      "code": "596212353",
+      "fam_3digit": "596",
+      "expected": [
+        "1"
+      ],
+      "popis": "Kladení betonové dlažby tl. 50 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "4.2",
+      "kapitola_used": "HSV-1",
+      "code": "451573111",
+      "fam_3digit": "451",
+      "expected": [
+        "1"
+      ],
+      "popis": "Kladecí lože z drceného kameniva 4/8 tl. 40 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "4.3",
+      "kapitola_used": "HSV-1",
+      "code": "564871011",
+      "fam_3digit": "564",
+      "expected": [
+        "1"
+      ],
+      "popis": "Podkladní nosná vrstva z drceného kameniva tl. 150 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "4.4",
+      "kapitola_used": "HSV-1",
+      "code": "561121115",
+      "fam_3digit": "561",
+      "expected": [
+        "1"
+      ],
+      "popis": "Zhutnění zemní pláně pod dlažbu",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "5.1",
+      "kapitola_used": "HSV-1",
+      "code": "564831111",
+      "fam_3digit": "564",
+      "expected": [
+        "1"
+      ],
+      "popis": "Montáž rektifikovatelných terčů",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "5.2",
+      "kapitola_used": "HSV-1",
+      "code": "636311113",
+      "fam_3digit": "636",
+      "expected": [
+        "1"
+      ],
+      "popis": "Kladení betonových dlaždic tl. 50 mm na terče",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "5.3",
+      "kapitola_used": "HSV-1",
+      "code": "457532112",
+      "fam_3digit": "457",
+      "expected": [
+        "1"
+      ],
+      "popis": "Štěrkový podsyp 16/32 tl. 100 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "5.4",
+      "kapitola_used": "HSV-1",
+      "code": "564952111",
+      "fam_3digit": "564",
+      "expected": [
+        "1"
+      ],
+      "popis": "Hrubý podsyp 4/8 tl. 150 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "5.5",
+      "kapitola_used": "HSV-1",
+      "code": "632481215",
+      "fam_3digit": "632",
+      "expected": [
+        "1"
+      ],
+      "popis": "Položení separační geotextilie",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "8.1",
+      "kapitola_used": "HSV-1",
+      "code": "451573111",
+      "fam_3digit": "451",
+      "expected": [
+        "1"
+      ],
+      "popis": "Zhutněný štěrkopískový zásyp a lože pod ŽB deskou",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "10.1",
+      "kapitola_used": "HSV-2",
+      "code": "801321111",
+      "fam_3digit": "801",
+      "expected": [
+        "2",
+        "273",
+        "274",
+        "275",
+        "278",
+        "279"
+      ],
+      "popis": "Betonáž stěny bílé vany C25/30",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "11.1",
+      "kapitola_used": "HSV-2",
+      "code": "327351211",
+      "fam_3digit": "327",
+      "expected": [
+        "2",
+        "273",
+        "274",
+        "275",
+        "278",
+        "279"
+      ],
+      "popis": "Systémové oboustranné bednění stěn bílé vany",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "11.2",
+      "kapitola_used": "HSV-2",
+      "code": "711481121",
+      "fam_3digit": "711",
+      "expected": [
+        "2",
+        "273",
+        "274",
+        "275",
+        "278",
+        "279"
+      ],
+      "popis": "Těsnění pracovních spár bobtnavým bentonitovým páskem",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "25.2",
+      "kapitola_used": "HSV-3",
+      "code": "713421311",
+      "fam_3digit": "713",
+      "expected": [
+        "3"
+      ],
+      "popis": "Kari síť v uložení překladů",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "26.1",
+      "kapitola_used": "HSV-3",
+      "code": "767131120",
+      "fam_3digit": "767",
+      "expected": [
+        "3"
+      ],
+      "popis": "Zesílení ostění úhelníky L100/10",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "27.1",
+      "kapitola_used": "HSV-3",
+      "code": "962081120",
+      "fam_3digit": "962",
+      "expected": [
+        "3"
+      ],
+      "popis": "Dočasné podstojkování stávajících stropů",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "34.1",
+      "kapitola_used": "HSV-4",
+      "code": "342213131",
+      "fam_3digit": "342",
+      "expected": [
+        "4",
+        "41",
+        "42",
+        "43"
+      ],
+      "popis": "Protipožární SDK podhled EI 30",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "35.1",
+      "kapitola_used": "HSV-4",
+      "code": "974031150",
+      "fam_3digit": "974",
+      "expected": [
+        "4",
+        "41",
+        "42",
+        "43"
+      ],
+      "popis": "Ruční odstranění zásypu z cihelné klenby",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "35.2",
+      "kapitola_used": "HSV-4",
+      "code": "979083111",
+      "fam_3digit": "979",
+      "expected": [
+        "4",
+        "41",
+        "42",
+        "43"
+      ],
+      "popis": "Odvoz zásypu/suti z klenby na skládku",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "36.1",
+      "kapitola_used": "HSV-4",
+      "code": "271223111",
+      "fam_3digit": "271",
+      "expected": [
+        "4",
+        "41",
+        "42",
+        "43"
+      ],
+      "popis": "Lehký zásyp klenby perlitbetonem",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "57",
+      "kapitola_used": "HSV-5",
+      "code": "311235151",
+      "fam_3digit": "311",
+      "expected": [
+        "5",
+        "6",
+        "7"
+      ],
+      "popis": "Zděná čela vikýřů z keramických broušených cihel tl. 300 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "59",
+      "kapitola_used": "HSV-6",
+      "code": "762811110",
+      "fam_3digit": "762",
+      "expected": [
+        "79",
+        "9",
+        "96",
+        "97",
+        "98"
+      ],
+      "popis": "Bourání kompletního dřevěného krovu ručně včetně vaznicové soustavy",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "60",
+      "kapitola_used": "HSV-6",
+      "code": "764001843",
+      "fam_3digit": "764",
+      "expected": [
+        "79",
+        "9",
+        "96",
+        "97",
+        "98"
+      ],
+      "popis": "Demontáž stávající plechové střešní krytiny ručně",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "132",
+      "kapitola_used": "M-21",
+      "code": "210010011",
+      "fam_3digit": "210",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Demontáž stávajících silnoproudých kabelů a vodičů",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "132",
+      "kapitola_used": "M-21",
+      "code": "210010011",
+      "fam_3digit": "210",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Demontáž bytového rozvaděče",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "134",
+      "kapitola_used": "M-21",
+      "code": "460824114",
+      "fam_3digit": "460",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Montáž ochranných trubek pro elektrické kabely v budově",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "135",
+      "kapitola_used": "M-21",
+      "code": "210810050",
+      "fam_3digit": "210",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Montáž domovního vypínače pro světelný okruh",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "136",
+      "kapitola_used": "M-21",
+      "code": "210202013",
+      "fam_3digit": "210",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Montáž venkovního svítidla u vstupu",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "137",
+      "kapitola_used": "M-21",
+      "code": "210800099",
+      "fam_3digit": "210",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Osazení jističe a rezervy v rozvaděči pro budoucí fotovoltaický střídač",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "138",
+      "kapitola_used": "M-21",
+      "code": "580107011",
+      "fam_3digit": "580",
+      "expected": [
+        "7",
+        "741",
+        "742",
+        "743"
+      ],
+      "popis": "Výchozí revize elektrické instalace dle ČSN 33 2000-6 a revizní zpráva",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "139",
+      "kapitola_used": "PSV-72",
+      "code": "892241111",
+      "fam_3digit": "892",
+      "expected": [
+        "7",
+        "721",
+        "722",
+        "723",
+        "724",
+        "725"
+      ],
+      "popis": "Tlaková zkouška vodovodního potrubí a přípojky",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "142",
+      "kapitola_used": "PSV-72",
+      "code": "642-11",
+      "fam_3digit": "642",
+      "expected": [
+        "7",
+        "721",
+        "722",
+        "723",
+        "724",
+        "725"
+      ],
+      "popis": "Dodávka a montáž klozetu WC standardního",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "154",
+      "kapitola_used": "PSV-72",
+      "code": "823372110",
+      "fam_3digit": "823",
+      "expected": [
+        "7",
+        "721",
+        "722",
+        "723",
+        "724",
+        "725"
+      ],
+      "popis": "Kuchyňský dřez nerezový",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "161",
+      "kapitola_used": "PSV-73",
+      "code": "314272314",
+      "fam_3digit": "314",
+      "expected": [
+        "7",
+        "731",
+        "732",
+        "733",
+        "734",
+        "735",
+        "736"
+      ],
+      "popis": "Připojení lokálního topidla na komín kouřovodem",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "164",
+      "kapitola_used": "PSV-73",
+      "code": "380316132",
+      "fam_3digit": "380",
+      "expected": [
+        "7",
+        "731",
+        "732",
+        "733",
+        "734",
+        "735",
+        "736"
+      ],
+      "popis": "Čištění komínu a kouřovodu",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "164",
+      "kapitola_used": "PSV-73",
+      "code": "953751121",
+      "fam_3digit": "953",
+      "expected": [
+        "7",
+        "731",
+        "732",
+        "733",
+        "734",
+        "735",
+        "736"
+      ],
+      "popis": "Vložkování komínu nerezovou vložkou DN160",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "111",
+      "kapitola_used": "PSV-77",
+      "code": "632451214",
+      "fam_3digit": "632",
+      "expected": [
+        "7",
+        "771",
+        "772",
+        "773",
+        "774",
+        "775",
+        "776",
+        "777"
+      ],
+      "popis": "Cementový podlahový potěr tl. 50 mm",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "111",
+      "kapitola_used": "PSV-77",
+      "code": "631313511",
+      "fam_3digit": "631",
+      "expected": [
+        "7",
+        "771",
+        "772",
+        "773",
+        "774",
+        "775",
+        "776",
+        "777"
+      ],
+      "popis": "Výztuž potěru kari sítí 4/100/100",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "114",
+      "kapitola_used": "PSV-78",
+      "code": "612341321",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Vnitřní VC jádrová omítka stěn 1.PP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "114",
+      "kapitola_used": "PSV-78",
+      "code": "613321141",
+      "fam_3digit": "613",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Štuková povrchová úprava stěn 1.PP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "115",
+      "kapitola_used": "PSV-78",
+      "code": "622321111",
+      "fam_3digit": "622",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Vnitřní VC jádrová omítka stěn 1.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "115",
+      "kapitola_used": "PSV-78",
+      "code": "612311141",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Štuková povrchová úprava stěn 1.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "116",
+      "kapitola_used": "PSV-78",
+      "code": "612321132",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Vnitřní VC jádrová omítka stěn 2.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "116",
+      "kapitola_used": "PSV-78",
+      "code": "613321141",
+      "fam_3digit": "613",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Štuková povrchová úprava stěn 2.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "117",
+      "kapitola_used": "PSV-78",
+      "code": "622311141",
+      "fam_3digit": "622",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Vnitřní VC jádrová omítka stěn 3.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "117",
+      "kapitola_used": "PSV-78",
+      "code": "613321141",
+      "fam_3digit": "613",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Štuková povrchová úprava stěn 3.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "118",
+      "kapitola_used": "PSV-78",
+      "code": "612471141",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Tmelení spár SDK Q3 1.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "119",
+      "kapitola_used": "PSV-78",
+      "code": "612471141",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Tmelení spár SDK Q3 2.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "120",
+      "kapitola_used": "PSV-78",
+      "code": "612471141",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Tmelení spár SDK Q3 3.NP",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "125",
+      "kapitola_used": "PSV-78",
+      "code": "612121211",
+      "fam_3digit": "612",
+      "expected": [
+        "7",
+        "781",
+        "782",
+        "783",
+        "784"
+      ],
+      "popis": "Interiérová výmalba akrylátová bílá 2× — stěny",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "168",
+      "kapitola_used": "VRN",
+      "code": "469973111",
+      "fam_3digit": "469",
+      "expected": [
+        "0",
+        "00",
+        "01",
+        "99",
+        "997"
+      ],
+      "popis": "Třídění stavebního odpadu na staveništi podle druhu odpadu",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "170",
+      "kapitola_used": "VRN",
+      "code": "469972111",
+      "fam_3digit": "469",
+      "expected": [
+        "0",
+        "00",
+        "01",
+        "99",
+        "997"
+      ],
+      "popis": "Odvoz stavební suti na skládku nebo místo zpracování",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "173",
+      "kapitola_used": "VRN",
+      "code": "Příloha 09",
+      "fam_3digit": "",
+      "expected": [
+        "0",
+        "00",
+        "01",
+        "99",
+        "997"
+      ],
+      "popis": "Pojištění odpovědnosti zhotovitele",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "174",
+      "kapitola_used": "VRN",
+      "code": "913921131",
+      "fam_3digit": "913",
+      "expected": [
+        "0",
+        "00",
+        "01",
+        "99",
+        "997"
+      ],
+      "popis": "Dopravní opatření pro krátkodobý zábor",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "181",
+      "kapitola_used": "VRN",
+      "code": "119003224",
+      "fam_3digit": "119",
+      "expected": [
+        "0",
+        "00",
+        "01",
+        "99",
+        "997"
+      ],
+      "popis": "Dočasné potrubí vody pro provoz staveniště",
+      "objekt": "260219_dum"
+    }
+  ],
+  "no_kapitola_items": [
+    {
+      "id": "21.1",
+      "code": "821-1",
+      "popis": "Žárové zinkování ocelových nosníků IPE180 a pororoštů",
+      "objekt": "260217_sklad"
+    },
+    {
+      "id": "27.1",
+      "code": "832911111",
+      "popis": "Podíl na zařízení staveniště pro sklad — stavební buňky a provoz",
+      "objekt": "260217_sklad"
+    },
+    {
+      "id": "20",
+      "code": "801321111",
+      "popis": "Betonáž ŽB desky podlahy 1.NP na terénu tl. 150 mm C25/30 XC2",
+      "objekt": "260219_dum"
+    },
+    {
+      "id": "20",
+      "code": "801-1",
+      "popis": "Výztuž ŽB desky kari síť 6/150/150 podle agregované položky",
+      "objekt": "260219_dum"
+    }
+  ]
+}
