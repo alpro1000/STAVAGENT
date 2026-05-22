@@ -470,6 +470,80 @@ datasheet is informational only — populate audit_trail reference but skip ABMV
 
 ---
 
+## Pattern 11: Catalog FTS5 Matching with MJ Equivalence Classes
+
+**Source:** HK212 hala soupis_praci pipeline (2026-05-24) — KROS catalog matching plateau at 44.5 % → 61.7 % Tier 1.
+
+### Problem
+Direct fuzzy text match (TF-IDF / Levenshtein) of construction položek against KROS/URS catalog plateaus at ~45 % usable matches because:
+1. **Czech text** is hard for naïve fuzzy (diacritics, declensions, slovesné tvary, abbreviations)
+2. **Strict MJ matching** ignores semantic equivalence — `kg` vs `t` are same physical concept just scaled 1000×; `bm` vs `m` are both length
+
+### Solution
+1. **SQLite FTS5 index** on normalized popis column (already in `kros_catalog.db` as `kros_fts` table). Better than TF-IDF for Czech morphology. Use `bm25()` rank.
+2. **MJ equivalence classes** instead of strict equality:
+   ```python
+   MJ_EQUIV_CLASS = {
+       "kg": "mass", "t": "mass",
+       "m": "length", "bm": "length",
+       "m2": "area", "m3": "volume",
+       "kus": "count", "ks": "count",
+       "mesic": "time", "soubor": "lump",
+   }
+   ```
+3. **Two-pass candidate selection** — prefer MJ-matching candidates even if not #1 by raw FTS rank, fall back to overall best only if no MJ match exists.
+4. **Tiered confidence**:
+   - exact code match → 0.95
+   - FTS bm25 < −8 + MJ match + třída match → 0.85
+   - MJ match + medium FTS → 0.75
+   - weak FTS + MJ → 0.70
+   - below threshold → Tier 2 (custom položka with nearest-KROS reference)
+
+### HK212 results
+- Iteration 1 (strict MJ): 44.5 % Tier 1 — below 60 % target ❌
+- Iteration 2 (MJ-first selection): 57.0 %
+- Iteration 3 (+ MJ equivalence classes): **61.7 %** ✅
+
+### Invariant
+Tier 1 threshold ≥ 0.70 confidence. Tier 2 = custom položka `{PROJECT}-{KAPITOLA}-{seq}` with `_reference_kros_code: <nearest>` for tender reviewer context.
+
+### Related
+- HK212: `test-data/hk212_hala/scripts/soupis_praci/phase_b_kros_match.py` — reference implementation
+- `test-data/kros_catalog.db` — 9,173 items + FTS5 index ready
+
+---
+
+## Pattern 12: Squash Merge Orphans Source Branch Ref
+
+**Source:** HK212 soupis_praci_final merge (PR #1208, 2026-05-24).
+
+### Problem
+After GitHub squash-merge, source branch shows "ahead of main by N commits" with persistent "Compare & pull request" banner — because individual commit SHAs from squashed branch are NOT present in `main` history. Looks like ghost-PR pending.
+
+### Anti-pattern
+- Re-opening another PR thinking work is missing
+- Force-pushing the source branch to "fix" the ahead count
+- Merging a second time
+
+### Correct pattern
+**After every successful squash-merge:**
+1. Verify content is in main: `git diff origin/main origin/<branch> --stat` — branch should be **behind main** (because squash applied changes, main has additional commits since).
+2. Delete the source branch on remote: GitHub UI → Branches → 🗑.
+3. Local cleanup: `git branch -D <branch>` after confirming squash commit on main contains the work.
+
+### HK212 evidence
+- Branch `claude/hk212-dilenska-ok-ut-dps-integration` (16 commits) was rolled into `claude/hk212-soupis-praci-final` (superset, 20 commits)
+- PR #1208 squash-merged soupis-praci-final → main as single commit `9493cdd7`
+- dilenska branch retained ghost-banner until manual delete
+
+### Rule
+Branch is safe to delete when:
+- `git diff origin/main origin/<branch>` shows source has only stale `next-session.md` or similar carry-forward files
+- No new commits since the squash-merged tip
+- PR shows status `Merged`
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation
