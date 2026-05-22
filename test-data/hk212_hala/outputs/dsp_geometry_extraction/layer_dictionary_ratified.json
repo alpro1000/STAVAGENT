@@ -1,0 +1,1696 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-21T20:19:27.858049+00:00",
+    "method": "fuzzy regex match against Czech construction conventions + ArchiCAD A-*/S-* schema (per task §4.S.2)",
+    "stop_gate_threshold": "task §6 #3 — STOP if classified < 50 %",
+    "classified_count": 96,
+    "total_layers": 96,
+    "coverage_pct": 100.0,
+    "per_category_distinct_layers": {
+      "annotation": 14,
+      "annotation_detail": 8,
+      "hatch_fill": 6,
+      "walls": 6,
+      "topography_situace": 6,
+      "existing_utility_pipe": 6,
+      "dimensions": 5,
+      "roof": 5,
+      "centerline": 4,
+      "doors": 4,
+      "floor": 4,
+      "axis_grid": 4,
+      "user_custom_numbered": 3,
+      "archicad_massive_ambiguous": 3,
+      "foundation": 2,
+      "default": 1,
+      "area_identifier": 1,
+      "windows": 1,
+      "demolition": 1,
+      "electrical_generic": 1,
+      "insulation": 1,
+      "title_block": 1,
+      "non_print_helper": 1,
+      "tzb_ut_vzt": 1,
+      "plumbing_generic": 1,
+      "steel_profile_generic": 1,
+      "structural_beams": 1,
+      "structural_columns": 1,
+      "structural_generic": 1,
+      "linework_thin_detail": 1,
+      "linework_thick_outline": 1
+    },
+    "ratified_at": "2026-05-22T04:09:15.705435+00:00",
+    "ratification_summary": {
+      "reclassified_layers": 6,
+      "dropped_from_aggregation_layers": 2,
+      "active_layers_for_aggregation": 94,
+      "per_category_distinct_layers": {
+        "annotation": 14,
+        "annotation_detail": 8,
+        "hatch_fill": 6,
+        "walls": 6,
+        "topography_situace": 6,
+        "existing_utility_pipe": 6,
+        "dimensions": 5,
+        "roof": 5,
+        "centerline": 4,
+        "doors": 4,
+        "floor": 4,
+        "axis_grid": 4,
+        "external_reference": 3,
+        "gutters_downpipes": 3,
+        "foundation": 2,
+        "default": 1,
+        "area_identifier": 1,
+        "windows": 1,
+        "demolition": 1,
+        "electrical_generic": 1,
+        "insulation": 1,
+        "title_block": 1,
+        "non_print_helper": 1,
+        "tzb_ut_vzt": 1,
+        "plumbing_generic": 1,
+        "steel_profile_generic": 1,
+        "structural_beams": 1,
+        "structural_columns": 1,
+        "structural_generic": 1,
+        "linework_thin_detail": 1,
+        "linework_thick_outline": 1
+      }
+    }
+  },
+  "classified_layers": [
+    {
+      "layer": "0",
+      "category": "default",
+      "confidence": 0.5,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 162,
+      "entity_types": {
+        "TEXT": 87,
+        "LWPOLYLINE": 1,
+        "LINE": 73,
+        "INSERT": 1
+      },
+      "drop_from_aggregation": true,
+      "drop_reason": "DXF default — mixed template residue, low value for aggregation"
+    },
+    {
+      "layer": "04_srafy",
+      "category": "hatch_fill",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 8,
+      "entity_types": {
+        "HATCH": 8
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "1xČERCHA",
+      "category": "centerline",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 28,
+      "entity_types": {
+        "LINE": 25,
+        "LWPOLYLINE": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "212_HK_situace_03_dwg-1",
+      "category": "external_reference",
+      "confidence": 0.85,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      },
+      "ratification_note": "External xref: situace 1:200 — keep for cross-ref",
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "category": "external_reference",
+      "confidence": 0.85,
+      "sheets": [
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 5,
+      "entity_types": {
+        "INSERT": 5
+      },
+      "ratification_note": "External xref: 2966-1 dispozice strojů (existing layout) — Stage A",
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "category": "external_reference",
+      "confidence": 0.85,
+      "sheets": [
+        "A104_pohledy.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 5,
+      "entity_types": {
+        "INSERT": 5
+      },
+      "ratification_note": "External xref: 2966-1 dispozice strojů (existing layout) — Stage A",
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "2xČERCHA",
+      "category": "centerline",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "LINE": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "category": "dimensions",
+      "confidence": 0.95,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 390,
+      "entity_types": {
+        "DIMENSION": 390
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ANNO-IDEN",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 48,
+      "entity_types": {
+        "LINE": 24,
+        "INSERT": 24
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ANNO-IDEN-1",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 23,
+      "entity_types": {
+        "MTEXT": 23
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ANNO-NOTE",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 21,
+      "entity_types": {
+        "INSERT": 21
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-AREA-IDEN-1",
+      "category": "area_identifier",
+      "confidence": 0.85,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 12,
+      "entity_types": {
+        "MTEXT": 12
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-1",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 11,
+      "entity_types": {
+        "LINE": 11
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-2",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 10,
+      "entity_types": {
+        "LINE": 10
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-3",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 8,
+      "entity_types": {
+        "LINE": 8
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-4",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "LINE": 2
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-5",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "LINE": 2
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-MBND",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 329,
+      "entity_types": {
+        "LINE": 313,
+        "INSERT": 16
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-THIN",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 7,
+      "total_entities": 165,
+      "entity_types": {
+        "LINE": 165
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DETL-THIN-1",
+      "category": "annotation_detail",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 68,
+      "entity_types": {
+        "LINE": 68
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DOOR",
+      "category": "doors",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 6,
+      "entity_types": {
+        "INSERT": 6
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DOOR-FRAM",
+      "category": "doors",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 6,
+      "entity_types": {
+        "INSERT": 6
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DOOR-GLAZ-2",
+      "category": "doors",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-DOOR-HDLN",
+      "category": "doors",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 12,
+      "entity_types": {
+        "INSERT": 12
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-FLOR",
+      "category": "floor",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 188,
+      "entity_types": {
+        "LINE": 188
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-FLOR-1",
+      "category": "floor",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 8,
+      "entity_types": {
+        "HATCH": 8
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-FLOR-3",
+      "category": "floor",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "HATCH": 2
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-FLOR-LEVL",
+      "category": "floor",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 68,
+      "entity_types": {
+        "LINE": 58,
+        "INSERT": 10
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-GENM",
+      "category": "gutters_downpipes",
+      "confidence": 0.85,
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "INSERT": 1
+      },
+      "ratification_note": "MEARIN Plus3000 NW300 drainage channel at základy (per agenm_targeted_scan.json)",
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-GENM-1",
+      "category": "gutters_downpipes",
+      "confidence": 0.85,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 774,
+      "entity_types": {
+        "ARC": 268,
+        "LINE": 225,
+        "SPLINE": 216,
+        "HATCH": 38,
+        "INSERT": 3,
+        "LWPOLYLINE": 12,
+        "ELLIPSE": 12
+      },
+      "ratification_note": "Lindab Round Downpipe System 150/100 geometry (ARC/SPLINE/HATCH exploded from block)",
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-GENM-2",
+      "category": "gutters_downpipes",
+      "confidence": 0.85,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 208,
+      "entity_types": {
+        "INSERT": 16,
+        "LINE": 148,
+        "SPLINE": 35,
+        "LWPOLYLINE": 5,
+        "ARC": 4
+      },
+      "ratification_note": "Lindab Round Downpipe System 150/100 INSERTs + drawing geometry on A104_pohledy",
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-GLAZ",
+      "category": "windows",
+      "confidence": 0.85,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 147,
+      "entity_types": {
+        "INSERT": 147
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ROOF",
+      "category": "roof",
+      "confidence": 0.9,
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 29,
+      "entity_types": {
+        "LINE": 29
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ROOF-1",
+      "category": "roof",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "HATCH": 2
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ROOF-2",
+      "category": "roof",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "HATCH": 4
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ROOF-OTLN",
+      "category": "roof",
+      "confidence": 0.9,
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 82,
+      "entity_types": {
+        "LINE": 82
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-ROOF-OTLN-1",
+      "category": "roof",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 10,
+      "entity_types": {
+        "HATCH": 10
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL",
+      "category": "walls",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 586,
+      "entity_types": {
+        "LINE": 586
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL-1",
+      "category": "walls",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 348,
+      "entity_types": {
+        "LINE": 274,
+        "HATCH": 74
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL-2",
+      "category": "walls",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 17,
+      "entity_types": {
+        "HATCH": 17
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL-3",
+      "category": "walls",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 15,
+      "entity_types": {
+        "HATCH": 15
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL-4",
+      "category": "walls",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 23,
+      "entity_types": {
+        "HATCH": 23
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL-5",
+      "category": "walls",
+      "confidence": 0.9,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "HATCH": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "A-WALL-PATT-1",
+      "category": "hatch_fill",
+      "confidence": 0.85,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 40,
+      "entity_types": {
+        "HATCH": 40
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "C-TOPO",
+      "category": "topography_situace",
+      "confidence": 0.9,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 176,
+      "entity_types": {
+        "LINE": 131,
+        "SPLINE": 5,
+        "LWPOLYLINE": 40
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "C-TOPO-1",
+      "category": "topography_situace",
+      "confidence": 0.9,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 65,
+      "entity_types": {
+        "LINE": 58,
+        "LWPOLYLINE": 7
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "C-TOPO-2",
+      "category": "topography_situace",
+      "confidence": 0.9,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 71,
+      "entity_types": {
+        "LINE": 36,
+        "SPLINE": 4,
+        "LWPOLYLINE": 31
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "C-TOPO-MAJR",
+      "category": "topography_situace",
+      "confidence": 0.9,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "LINE": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "C-TOPO-PATT-1",
+      "category": "topography_situace",
+      "confidence": 0.9,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "HATCH": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "DEMOLICE",
+      "category": "demolition",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "LINE": 1
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "E-ELEC-FIXT",
+      "category": "electrical_generic",
+      "confidence": 0.7,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 3,
+      "entity_types": {
+        "INSERT": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-DIMS",
+      "category": "dimensions",
+      "confidence": 0.95,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 7,
+      "total_entities": 527,
+      "entity_types": {
+        "INSERT": 84,
+        "LINE": 299,
+        "MTEXT": 144
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-DIMS-1",
+      "category": "dimensions",
+      "confidence": 0.95,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 226,
+      "entity_types": {
+        "MTEXT": 64,
+        "LINE": 92,
+        "CIRCLE": 35,
+        "HATCH": 35
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-DIMS-2",
+      "category": "dimensions",
+      "confidence": 0.95,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 102,
+      "entity_types": {
+        "CIRCLE": 51,
+        "HATCH": 51
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-REVC",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A102_pudorys_strechy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "INSERT": 1
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-REVC-1",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "INSERT": 1
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-REVC-IDEN",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "LINE": 1,
+        "INSERT": 1,
+        "MTEXT": 1
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-SYMB",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 32,
+      "entity_types": {
+        "INSERT": 32
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-SYMB-1",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 32,
+      "entity_types": {
+        "LINE": 32
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-SYMB-2",
+      "category": "annotation",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 32,
+      "entity_types": {
+        "MTEXT": 32
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-TEXT",
+      "category": "annotation",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 7,
+      "total_entities": 76,
+      "entity_types": {
+        "MTEXT": 76
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-TEXT-1",
+      "category": "annotation",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 38,
+      "entity_types": {
+        "MTEXT": 38
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "G-ANNO-TEXT-2",
+      "category": "annotation",
+      "confidence": 0.9,
+      "sheets": [
+        "A106_stroje.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 12,
+      "entity_types": {
+        "MTEXT": 12
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "HK_TEREN_SESAZENI_dwg-1",
+      "category": "topography_situace",
+      "confidence": 0.8,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "IZOLACE",
+      "category": "insulation",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 41,
+      "entity_types": {
+        "LINE": 20,
+        "LWPOLYLINE": 21
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Koty",
+      "category": "dimensions",
+      "confidence": 0.95,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 392,
+      "entity_types": {
+        "LINE": 1,
+        "DIMENSION": 391
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "LOGO",
+      "category": "title_block",
+      "confidence": 0.9,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 13,
+      "entity_types": {
+        "INSERT": 13
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "NETISK",
+      "category": "non_print_helper",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 101,
+      "entity_types": {
+        "LINE": 1,
+        "TEXT": 100
+      },
+      "drop_from_aggregation": true,
+      "drop_reason": "Czech 'non-print' construction-aid layer — explicitly not meant for output"
+    },
+    {
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "category": "tzb_ut_vzt",
+      "confidence": 0.85,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 6,
+      "entity_types": {
+        "INSERT": 6
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "category": "existing_utility_pipe",
+      "confidence": 0.8,
+      "sheets": [
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 13,
+      "entity_types": {
+        "INSERT": 13
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "P-SANR-FIXT",
+      "category": "plumbing_generic",
+      "confidence": 0.7,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "PROFILY",
+      "category": "steel_profile_generic",
+      "confidence": 0.8,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 169,
+      "entity_types": {
+        "INSERT": 137,
+        "LWPOLYLINE": 32
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Popis",
+      "category": "annotation",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 920,
+      "entity_types": {
+        "TEXT": 493,
+        "LWPOLYLINE": 32,
+        "LEADER": 124,
+        "LINE": 270,
+        "CIRCLE": 1
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-BEAM",
+      "category": "structural_beams",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 45,
+      "entity_types": {
+        "INSERT": 45
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-COLS",
+      "category": "structural_columns",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 141,
+      "entity_types": {
+        "INSERT": 141
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-FNDN",
+      "category": "foundation",
+      "confidence": 0.9,
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 201,
+      "entity_types": {
+        "LINE": 201
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-FNDN-1",
+      "category": "foundation",
+      "confidence": 0.9,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 148,
+      "entity_types": {
+        "LINE": 148
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-FSTN",
+      "category": "structural_generic",
+      "confidence": 0.75,
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 12,
+      "entity_types": {
+        "INSERT": 12
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-GRID-1",
+      "category": "axis_grid",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 72,
+      "entity_types": {
+        "LINE": 72
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-GRID-IDEN",
+      "category": "axis_grid",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 144,
+      "entity_types": {
+        "INSERT": 144
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "S-GRID-IDEN-1",
+      "category": "axis_grid",
+      "confidence": 0.9,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 144,
+      "entity_types": {
+        "MTEXT": 144
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "SRAFY",
+      "category": "hatch_fill",
+      "confidence": 0.85,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 202,
+      "entity_types": {
+        "LINE": 131,
+        "HATCH": 42,
+        "CIRCLE": 29
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Stávající dešťová kan__Trubky-1",
+      "category": "existing_utility_pipe",
+      "confidence": 0.8,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 6,
+      "entity_types": {
+        "LINE": 6
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Stávající dešťová kan__Trubky-2",
+      "category": "existing_utility_pipe",
+      "confidence": 0.8,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 33,
+      "entity_types": {
+        "LINE": 13,
+        "LWPOLYLINE": 20
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Stávající splašková kan__Trubky-1",
+      "category": "existing_utility_pipe",
+      "confidence": 0.8,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 5,
+      "entity_types": {
+        "LINE": 5
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Stávající splašková kan__Trubky-2",
+      "category": "existing_utility_pipe",
+      "confidence": 0.8,
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 19,
+      "entity_types": {
+        "LINE": 7,
+        "LWPOLYLINE": 12
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "TENKA",
+      "category": "linework_thin_detail",
+      "confidence": 0.75,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 762,
+      "entity_types": {
+        "LINE": 658,
+        "INSERT": 1,
+        "ARC": 15,
+        "LWPOLYLINE": 88
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "TEČKOVANÁ",
+      "category": "centerline",
+      "confidence": 0.75,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "LINE": 1
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "TLUSTE",
+      "category": "linework_thick_outline",
+      "confidence": 0.75,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 383,
+      "entity_types": {
+        "LINE": 184,
+        "TEXT": 44,
+        "CIRCLE": 7,
+        "LWPOLYLINE": 148
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Trubky-tvarovka",
+      "category": "existing_utility_pipe",
+      "confidence": 0.8,
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "INSERT": 3
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Vlastní 1_A-DETL-GENF",
+      "category": "hatch_fill",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 7,
+      "entity_types": {
+        "HATCH": 7
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Vlastní 1_A-DETL-GENF-1",
+      "category": "hatch_fill",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 7,
+      "entity_types": {
+        "HATCH": 7
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "Vlastní 1_A-DETL-GENF-2",
+      "category": "hatch_fill",
+      "confidence": 0.8,
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 4,
+      "entity_types": {
+        "HATCH": 4
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "osy",
+      "category": "axis_grid",
+      "confidence": 0.9,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 327,
+      "entity_types": {
+        "LINE": 85,
+        "TEXT": 121,
+        "CIRCLE": 121
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "ozn-rezu",
+      "category": "annotation",
+      "confidence": 0.75,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 10,
+      "entity_types": {
+        "TEXT": 2,
+        "LINE": 8
+      },
+      "drop_from_aggregation": false
+    },
+    {
+      "layer": "ČARKOVANA",
+      "category": "centerline",
+      "confidence": 0.75,
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 24,
+      "entity_types": {
+        "LINE": 13,
+        "LWPOLYLINE": 11
+      },
+      "drop_from_aggregation": false
+    }
+  ],
+  "ratification_audit": [
+    {
+      "layer": "0",
+      "action": "drop_from_aggregation",
+      "category": "default",
+      "note": "DXF default — mixed template residue, low value for aggregation"
+    },
+    {
+      "layer": "212_HK_situace_03_dwg-1",
+      "action": "reclassify",
+      "old_category": "user_custom_numbered",
+      "old_confidence": 0.4,
+      "new_category": "external_reference",
+      "new_confidence": 0.85,
+      "note": "External xref: situace 1:200 — keep for cross-ref"
+    },
+    {
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "action": "reclassify",
+      "old_category": "user_custom_numbered",
+      "old_confidence": 0.4,
+      "new_category": "external_reference",
+      "new_confidence": 0.85,
+      "note": "External xref: 2966-1 dispozice strojů (existing layout) — Stage A"
+    },
+    {
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "action": "reclassify",
+      "old_category": "user_custom_numbered",
+      "old_confidence": 0.4,
+      "new_category": "external_reference",
+      "new_confidence": 0.85,
+      "note": "External xref: 2966-1 dispozice strojů (existing layout) — Stage A"
+    },
+    {
+      "layer": "A-GENM",
+      "action": "reclassify",
+      "old_category": "archicad_massive_ambiguous",
+      "old_confidence": 0.5,
+      "new_category": "gutters_downpipes",
+      "new_confidence": 0.85,
+      "note": "MEARIN Plus3000 NW300 drainage channel at základy (per agenm_targeted_scan.json)"
+    },
+    {
+      "layer": "A-GENM-1",
+      "action": "reclassify",
+      "old_category": "archicad_massive_ambiguous",
+      "old_confidence": 0.5,
+      "new_category": "gutters_downpipes",
+      "new_confidence": 0.85,
+      "note": "Lindab Round Downpipe System 150/100 geometry (ARC/SPLINE/HATCH exploded from block)"
+    },
+    {
+      "layer": "A-GENM-2",
+      "action": "reclassify",
+      "old_category": "archicad_massive_ambiguous",
+      "old_confidence": 0.5,
+      "new_category": "gutters_downpipes",
+      "new_confidence": 0.85,
+      "note": "Lindab Round Downpipe System 150/100 INSERTs + drawing geometry on A104_pohledy"
+    },
+    {
+      "layer": "NETISK",
+      "action": "drop_from_aggregation",
+      "category": "non_print_helper",
+      "note": "Czech 'non-print' construction-aid layer — explicitly not meant for output"
+    }
+  ]
+}
