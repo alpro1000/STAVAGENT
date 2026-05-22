@@ -43,7 +43,7 @@
       "id": "ABMV_1",
       "category": "design_clarification",
       "severity": "critical",
-      "status": "resolved_with_caveats",
+      "status": "open",
       "title": "Energetická bilance vs. technologie strojů",
       "summary_cs": "TZ B uvádí Pvyp = 60,5 kW, jistič 3×100 A. Výkres A106 ukazuje stroje DRIFT_E1, DEFRAME, filtrační jednotka s příkonem cca 80 kW/stroj. Při souběhu provozu navržené dimenzování nestačí.",
       "blocks_vv": [
@@ -53,16 +53,13 @@
       ],
       "addressee": [
         "Volka"
-      ],
-      "resolution_note": "Stage C ÚT discovery extracted P_topny_total = 84.0 kW from UT_HALAHK_DPS.dxf zařízení list. Devices: DALAP Dalap_E-HP_9kW × 4 (9.0 kW/unit = 36.0 kW); FENIX (ECOSUN) ECOSUN_S+_12 × 40 (1.2 kW/unit = 48.0 kW); PT Ventilation PT_Vents_UET-15D × 4 (0 kW/unit = 0 kW); LENS LENS_ARENA_60x120_W × 36 (0 kW/unit = 0 kW). Heating bilance covered; cooling + VZT electric load NOT in DXF (VZT D.1.4 still missing per ABMV_12). LED svítidla a VZT rekuperační jednotky listed at 0 kW (reference only — actual EL spotřeba waits on EL D.1.4).",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/ut_zarizeni_list.json"
+      ]
     },
     {
       "id": "ABMV_2",
       "category": "design_clarification",
       "severity": "critical",
-      "status": "resolved",
+      "status": "open",
       "title": "Šířka sekčních vrat: 3000 vs 3500 mm",
       "summary_cs": "TZ B a TZ D.1.1 uvádí 4× sekční vrata 3500×4000 mm. DXF A101 obsahuje block 'M_Vrata_výsuvná_sekční - 3000X4000 MM'.",
       "blocks_vv": [
@@ -74,10 +71,7 @@
         "a101_dxf": "4 INSERT blocks 'M_Vrata_ výsuvná_ sekční - 3000X4000 MM'",
         "pbr_p18": "table row 'vrata 2 4,000 3,500 28,00' (4 × 3.5 m orientation)",
         "drift_confirmed": true
-      },
-      "resolution_note": "TZ ARS DPZ D.1.1 p.4 + PBŘ p.18 confirm 4× vrata 3500 × 4000 mm. DXF block name 'M_Vrata_výsuvná_sekční - 3000X4000 MM' is legacy block library template (wrong dimension in block name). TZ wins per 3-source matrix (TZ_D.1.1 + PBŘ vs DXF block name = 2:1). PSV-76x-005 popis updated → 3500 × 4000 mm. Stage E patch 2026-05-22.",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "TZ_ARS_DPZ D.1.1 + PBR_p18 + Stage_E_patch"
+      }
     },
     {
       "id": "ABMV_3",
@@ -100,35 +94,19 @@
       "id": "ABMV_4",
       "category": "documentation_metadata",
       "severity": "important",
-      "status": "resolved",
+      "status": "open",
       "title": "Stupeň PD — sjednocení DPS/DPZ/DSP",
       "summary_cs": "TZ A+B → DPS; výkresy ARS + TZ D.1.1 → DPZ; TZ statika D.1.2 → DSP. Předpokládáme překlep v TZ A+B (ARS = DPZ).",
-      "working_assumption": "ARS = DPZ, statika = DSP",
-      "resolution_note": "Direct PDF inspection 2026-05-23/24 confirms: 03_ars_d11_TZ.pdf p1 title page says 'Dokumentace pro povolení záměru - DPZ' ✓. 04_statika_d12_TZ_uplna.pdf footer says 'Technická zpráva a statický výpočet 6/2025' (DSP-grade workshop detail per Stage A dossier) ✓. TZ A+B reference to 'DPS' confirmed as typo. Working_assumption confirmed: ARS = DPZ, statika = DSP. No item mutation needed (none reference ABMV_4).",
-      "resolution_date": "2026-05-24",
-      "resolution_source": "inputs/tz/03_ars_d11_TZ.pdf p1 + inputs/tz/04_statika_d12_TZ_uplna.pdf footer + Stage A dossier"
+      "working_assumption": "ARS = DPZ, statika = DSP"
     },
     {
       "id": "ABMV_5",
       "category": "documentation_conflict",
       "severity": "important",
-      "status": "needs_design_clarification",
+      "status": "working_assumption",
       "title": "Třída betonu základové desky",
       "summary_cs": "Legenda A101 → C30/37-XC2. TZ B + TZ D.1.2 → C25/30 XC4. Statika má přednost.",
-      "working_assumption": "C25/30 XC4 (statika, structural authority) — PENDING projektant confirmation",
-      "_reopen_date": "2026-05-24",
-      "_reopen_reason": "Audit + A105 verification 2026-05-24: 2:2 split confirmed. A101 legend + A105 legend = C30/37 XC2 (2 drawings). TZ ARS + TZ statika D.1.2 = C25/30 XC4 (2 TZ docs). Real 2:2 split, not statika-wins-2:1. items.json HSV-2-013 retains C25/30 (statika authority for structural) + _review_concrete_class flag added. Projektant Volka / Doležal must verify intent for tender finalization.",
-      "_2_2_split_evidence": {
-        "drawings_C30_37_XC2": [
-          "A101 legend",
-          "A105 legend"
-        ],
-        "tz_C25_30_XC4": [
-          "TZ ARS D.1.1 p3",
-          "TZ statika D.1.2 p28"
-        ],
-        "06_zaklady_titul_p01": "C16/20-XC0 — discarded (titul-list typo per ABMV_18 closure)"
-      }
+      "working_assumption": "C25/30 XC4"
     },
     {
       "id": "ABMV_6",
@@ -177,23 +155,17 @@
       "id": "ABMV_11",
       "category": "missing_input",
       "severity": "important",
-      "status": "resolved",
+      "status": "blocking",
       "title": "IGP — kdy bude k dispozici",
-      "summary_cs": "Závisí varianta fundamentu (patky vs pilota 800/8000). Bez IGP nelze finalizovat zemní práce + fundament VV.",
-      "resolution_note": "IGP ALTAGEO 526026 (Mgr. Beneda, 04/2026) delivered. §4.3.1: geotechnická kategorie 1, plošné založení na patkách do GT2 (písčité štěrky G3 G-F, Rdt=250 kPa) — PRIMARY design. Statika D.1.2 conservative used Rdt=200 kPa; IGP exceeds (250 > 200) ✓. Piloty (HSV-2-010..012) = §4.3.2 alternativa pouze v případě hlubinného založení, NOT required. HPV 1.65–1.80 m p.t. neovlivní základové poměry (patky 1.2 m < HPV 1.7 m). Pilot items flagged alternative_variant_per_IGP_not_required + retained for variant bid.",
-      "resolution_date": "2026-05-24",
-      "resolution_source": "inputs/dokumentace/IGP_ALTAGEO_526026.md (ALTAGEO 526026 04/2026)"
+      "summary_cs": "Závisí varianta fundamentu (patky vs pilota 800/8000). Bez IGP nelze finalizovat zemní práce + fundament VV."
     },
     {
       "id": "ABMV_12",
       "category": "missing_input",
       "severity": "important",
-      "status": "working_assumption_partial",
+      "status": "open",
       "title": "TZB profesní PD (D.1.4)",
-      "summary_cs": "VZT, ÚT, EL, ZTI pouze koncepčně v TZ B. Budou samostatné výkresy a tabulky?",
-      "resolution_note": "ÚT D.1.4 extracted via Stage C: DALAP Dalap_E-HP_9kW × 4 (9.0 kW/unit = 36.0 kW); FENIX (ECOSUN) ECOSUN_S+_12 × 40 (1.2 kW/unit = 48.0 kW); PT Ventilation PT_Vents_UET-15D × 4 (0 kW/unit = 0 kW); LENS LENS_ARENA_60x120_W × 36 (0 kW/unit = 0 kW), P_topny_total = 84.0 kW. No DPS razítko per Stage A dossier — DXF stupeň = DSP. VZT D.1.4 + ZTI D.1.4 + MAR D.1.4 still missing — assumed concept-level per Phase 0b. VZT/M items dropped from etap-1 scope (Stage D 22-item removal).",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/{ut_razitka,ut_zarizeni_list,energetical_balance_update}.{json,md}"
+      "summary_cs": "VZT, ÚT, EL, ZTI pouze koncepčně v TZ B. Budou samostatné výkresy a tabulky?"
     },
     {
       "id": "ABMV_13",
@@ -209,10 +181,7 @@
       "id": "ABMV_14",
       "category": "minor",
       "severity": "minor",
-      "status": "closed_superseded",
-      "_superseded_by": "ABMV_20",
-      "_superseded_note": "Same topic (Lindab svody count 3 vs 4) addressed in ABMV_20 with full evidence row (TZ B p14+p23 + A101 + A104). ABMV_14 closed 2026-05-24 to deduplicate queue. PSV-78x-001 mnozstvi=4 follows ABMV_20 working_assumption.",
-      "_closure_date": "2026-05-24",
+      "status": "working_assumption",
       "title": "Počet svodů dešťové vody: 3 vs 4",
       "summary_cs": "TZ B → 4 svody DN100. A101+A105 ukazují 3 Lindab Round Downpipe + 3 Wavin vpusti.",
       "working_assumption": "3 (DXF má přednost)"
@@ -221,7 +190,7 @@
       "id": "ABMV_15",
       "category": "minor",
       "severity": "minor",
-      "status": "resolved",
+      "status": "open",
       "title": "Krajní vaznice: C150×19,3 vs UPE160",
       "summary_cs": "TZ B → UPE160 S235. A104 DXF → C150×19,3 S235.",
       "rerun_evidence": {
@@ -230,16 +199,13 @@
         "k01_konstrukce_titul_p01": "19× explicit label 'KRAJNÍ VAZNICE UPE160'",
         "a104_pohledy_dxf": "2 INSERT blocks 'C profil - C150X19_3' (Řez 2 + Řez 3)",
         "resolution": "TZ wins by 22:2 ratio — A104 C150 = legacy block library symbols"
-      },
-      "resolution_note": "Kusovník DXF rozbor (Stage B) confirms UPE 160 as krajní vaznice (NOT C150×19.3 per RE-RUN §9.4 working assumption). Profile_rollup entry: UPE 160 with catalog_hit=True, kg/m=18.8. Item HSV-3-005 mnozstvi=1030.24 kg retained as written.",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/dsp_dxf_kusovnik.json"
+      }
     },
     {
       "id": "ABMV_16",
       "category": "missing_input",
       "severity": "critical",
-      "status": "resolved_external_xref_confirmed",
+      "status": "open",
       "title": "Externí dokument '2966-1 návrh dispozice strojů HK'",
       "summary_cs": "A104 DXF obsahuje external reference '2966-1_navrh dispozice stroju-HK_dwg'. Dokument není v inputs. Jeho dodání by uzavřelo ABMV #1 + #3 najednou.",
       "related": [
@@ -253,16 +219,13 @@
         "a107_stroje_kotvici_body_dxf": "1 INSERT `...HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY`",
         "total_references": 10,
         "phase0b_prev_x01_drift_was_wrong": "Previous Phase 0b reported '0 XREFs found' — that was correct (these are INSERT blocks not XREF blocks), but conclusion '2966-1 NOT found' was WRONG; the reference exists as block names"
-      },
-      "resolution_note": "External document '2966-1 návrh dispozice strojů HK' confirmed as DXF external xref: 3 layers ('212_HK_situace_03_dwg-1', '2966-1_navrh dispozice stroju-HK_02_dwg-1', '2966-1_navrh dispozice stroju-HK_dwg-1') across A106_stroje + A107_stroje_kotvici_body. Reclassified as `external_reference` in ratified layer dictionary (Task 2 Step 1.5). Cross-ref to Stage A razítka odkazů — same document referenced 2× in title block.",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_geometry_extraction/{layer_dictionary_ratified,dictionary_decisions}.{json,md}"
+      }
     },
     {
       "id": "ABMV_17",
       "category": "documentation_conflict",
       "severity": "critical",
-      "status": "resolved",
+      "status": "open",
       "title": "Earth works bilance — TZ B 32 m³ vs DXF-derived ~XXX m³",
       "summary_cs": "TZ B kap. m.10.g uvádí celkem výkopy 32 m³. Nezávislý výpočet z A105+A201 geometrie + axes envelope dává 349.8 m³ (faktor 10.9× vyšší). Breakdown: figura pod deskou ~250.4 m³, dohloubky patek rámových 31.5 m³ + štítových 1.6 m³, pasy 7.2 m³, ruční výkopy u sítí 30.0 m³, +10% na svahy 1:1.",
       "blocks_vv": [
@@ -315,18 +278,15 @@
         "previous_phase_0b_estimate_m3": 349.8,
         "revision_reason": "Previous Phase 0b used h=0.6 m for patky height; correct h=1.2 m (rámové, dvoustupňové 2×0,6) per TZ statika D.1.2 p31. Štítové h=0.8 m (0,2+0,6).",
         "drift_factor": 16.6
-      },
-      "resolution_note": "IGP §3.3 confirms navážky mocnost 0.6–2.2 m + §4.4 doporučuje výměnu aktivní zóny pláně (navážky → hutněný štěrk, Edef2 ≥ 45 MPa). HSV-1-001 figura recomputed: 538.5 m² (Step 3 zastavěná) × 0.6 m (IGP §3.3 min. mocnost navážek) = 323.1 m³ (was 222.75 m³ z 495×0.45). NEW HSV-1-028 added: výměna aktivní zóny pláně, 269.25 m³ × 2 operace (odstranění + nahrazení štěrkem). Combined HSV-1 výkop scope now reflects IGP-derived geometry, replacing old Phase 0b 32 m³ (TZ B claim) and intermediate DXF-derived 349.8/530 m³ estimates. ABMV_17 16.6× drift factor resolved via IGP authoritative source.",
-      "resolution_date": "2026-05-24",
-      "resolution_source": "inputs/dokumentace/IGP_ALTAGEO_526026.md + Step 3 areas"
+      }
     },
     {
       "id": "ABMV_18",
       "category": "documentation_inconsistency",
       "severity": "important",
-      "status": "resolved",
+      "status": "open",
       "title": "Beton třídy v 06_zaklady_titul vs TZ statika D.1.2",
-      "summary_cs": "Titul-list pro výkres A105 ZÁKLADY (`06_zaklady_titul.pdf` p01) uvádí ŽB DESKA C16/20-XC0 a PILOTA C30/37-XC2. TZ statika D.1.2 p28 + p31 však říká deska C25/30 XC4 a pilota C25/30 XC4. Inkonzistence v rámci stejné PD.",
+      "summary_cs": "Titul-list pro výkres A105 ZÁKLADY (`06_zaklady_titul.pdf` p01) uvádí ŽB DESKA C16/20-XC0 a PILOTA C30/37-XC2. TZ statika D.1.2 p29 + p32 však říká deska C25/30 XC4 a pilota C25/30 XC4. Inkonzistence v rámci stejné PD.",
       "blocks_vv": [
         "HSV-3 železobeton základová deska",
         "HSV-3 pilota"
@@ -334,12 +294,9 @@
       "working_assumption": "C25/30 XC4 pro deskovou + pilotovou variantu (statika wins).",
       "evidence": {
         "06_zaklady_titul_p01": "ŽB DESKA C16/20-XC0; PILOTA C30/37-XC2",
-        "04_statika_d12_TZ_uplna_p28": "Základová deska beton C25/30 XC4, výška 200 mm, Kari Ø8 100/100 B500B krytí 30 mm",
-        "04_statika_d12_TZ_uplna_p31": "Pilota Ø800 L=8.0 m C25/30 XC4 + 8×R25 B500B + třmínky R10 á 200 mm"
-      },
-      "resolution_note": "Statika D.1.2 direct re-read 2026-05-24 (Phase 2 F-4): p28 deska C25/30 XC4 ✓ (matches items.json HSV-2-013); p30 patky C16/20 XC0 ✓ (matches HSV-2-001/004/007 + TZ ARS D.1.1 p3); p31 pilota Ø800 C25/30 XC4 + 8×R25 B500B ✓ (matches HSV-2-010..012). Titul-list 06_zaklady_titul.pdf p01 is the SOLE outlier saying DESKA C16/20 + PILOTA C30/37 — disregarded per statika authority. Working_assumption confirmed: deska + pilota = C25/30 XC4; patky = C16/20 XC0 (statika scope only covers deska + pilota; patky beton class authoritative from TZ ARS D.1.1 p3, NOT addressed in statika for class). items.json already correct, NO mutation needed.",
-      "resolution_date": "2026-05-24",
-      "resolution_source": "inputs/tz/04_statika_d12_TZ_uplna.pdf p28 + p30 + p31 (direct read) + inputs/tz/03_ars_d11_TZ.pdf p3"
+        "04_statika_d12_TZ_uplna_p29": "Základová deska beton C25/30 XC4",
+        "04_statika_d12_TZ_uplna_p32": "Pilota C25/30 XC4 + 8×R25 B500B"
+      }
     },
     {
       "id": "ABMV_19",
@@ -378,56 +335,6 @@
         "a101_count": 3,
         "a104_count": 4
       }
-    },
-    {
-      "id": "ABMV_21",
-      "category": "documentation_inconsistency",
-      "severity": "minor",
-      "status": "resolved",
-      "title": "Štítové patky H — TZ ARS p3 typo vs A105 měřená H = 1.2 m",
-      "summary_cs": "TZ ARS D.1.1 p3 uvádí 'Základy pod štítové sloupy ... 0,8×0,8×(0,2×0,6m) z prostého betonu C16/20 XC0' — literal interpretation H = 0.2+0.6 = 0.8 m. A105 DSP PŮDORYS ZÁKLADŮ však ukazuje štítové patky s HH/SH labels -0.700/-1.900 (H = 1.2 m), shodně s rámovými patkami (1.5×1.5×(2×0.6)).",
-      "blocks_vv": [
-        "HSV-2-004 beton patky štítové",
-        "HSV-2-005 bednění zřízení",
-        "HSV-2-006 bednění odstranění"
-      ],
-      "evidence": {
-        "tz_ars_d11_p3": "'0,8×0,8×(0,2×0,6m)' literal = H 0.8 m",
-        "a105_dsp_pudorys": "HH = -0.700 / SH = -1.900 → H = 1.2 m (consistent s rámovými)",
-        "tz_statika_d12": "Stejnou geometrii štítových neuvádí explicit — bez konfliktu",
-        "dvoustupňová_logic": "Dva přibližně stejné stupně jsou normou; H 0.2+0.6 = 0.8 m s nerovnoměrnými stupni je atypické",
-        "praxe": "Průmyslové haly tohoto rozpětí (6.1 m rámy, 200 kPa zemina) typicky H 1.0-1.5 m pro štítové"
-      },
-      "resolution_note": "TZ ARS p3 quote '0,8×0,8×(0,2×0,6m)' is interpreted jako typo (chybělo '×' před '0,2', should read '2×0,6'). Evidence: (1) A105 měřená geometrie HH/SH labels = -0.700/-1.900 = H 1.2 m. (2) Logika dvoustupňové konstrukce vyžaduje dva cca stejné stupně. (3) Statika TZ D.1.2 neuvádí odlišnou geometrii štítových. (4) Praxe pro průmyslové haly tohoto rozpětí = H 1.0–1.5 m. A105 wins, classified jako tz_ars_typo_per_design_intent. Items.json HSV-2-004 mnozstvi: 4.096 → 6.144 m³; HSV-2-005/006 bednění: 20.8 → 30.72 m².",
-      "resolution_date": "2026-05-24",
-      "resolution_source": "inputs/vykresy_dxf/A105_zaklady.dxf (HH/SH labels) + design intent dvoustupňová geometry",
-      "_resolution_classification": "tz_ars_typo_per_design_intent"
-    },
-    {
-      "id": "ABMV_22",
-      "category": "missing_specification",
-      "severity": "minor",
-      "status": "open",
-      "title": "A201 BILANCE ZEMINY — placeholder header bez vyplněné hodnoty",
-      "summary_cs": "Step 0 verification 2026-05-24: A201_vykopy.dxf paperspace Layout1 obsahuje TEXT label 'BILANCE ZEMINY:' (@749.2, -71.6) ale ZERO filled numerical values found in nearby text. Surrounding texts = view labels (A_VYKOP/B_VYKOP/C_VYKOP) + elevation reference +0.000 = 234.690 mnm Bpv + POZNÁMKA paragraphs only. Projektant Volka / Doležal must complete final bilance pro tender finalization.",
-      "blocks_vv": [
-        "HSV-1 výkopová bilance final precision",
-        "VRN odvoz zeminy final volume"
-      ],
-      "working_assumption": "User zone-by-zone analysis 2026-05-24: 210 m³ ± 15 % range (185-235 m³). Components: main floor -0.485 (100 m³) + perimeter pas -1.300 (24 m³) + patky pits -1.900 (54 m³) + kanalizace -1.620 (7 m³) + svahy/rezerva (25 m³). Bid-stage acceptable, final precision pending DXF layer parse OR projektant fill.",
-      "evidence": {
-        "a201_paperspace_layout1": "BILANCE ZEMINY label found at (749.2, -71.6) — no nearby filled values",
-        "step0_scan_date": "2026-05-24",
-        "user_zone_analysis_total_m3": 210,
-        "alternative_estimates_history": {
-          "phase_0b_re_run": 222.75,
-          "igp_phase1_flat": 323.1,
-          "chatgpt_undercount": 65
-        }
-      },
-      "resolution_pending": "Projektant fill A201 bilance table OR DXF polygon layer scan",
-      "_created_date": "2026-05-24",
-      "_blocker_priority": "low (bid-stage acceptable, final precision pending)"
     }
   ]
 }

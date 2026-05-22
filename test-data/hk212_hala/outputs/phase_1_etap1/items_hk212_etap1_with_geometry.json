@@ -6,18 +6,17 @@
     "catalog": "URS201801.csv (39742 stemmed rows)",
     "export_wrapper_default": "KROS Komplet",
     "kapitola_modules_loaded": [
-      "HSV-1 (28 items)",
-      "HSV-2 (18 items)",
-      "HSV-3 (14 items)",
-      "HSV-9 (4 items)",
-      "PSV-71x (4 items)",
-      "PSV-76x (12 items)",
-      "PSV-77x (6 items)",
-      "PSV-78x (12 items)",
-      "PSV-OPL (8 items)",
-      "VRN (22 items)"
+      "kap_hsv1 (27 items)",
+      "kap_hsv2 (18 items)",
+      "kap_hsv3 (14 items)",
+      "kap_hsv9 (4 items)",
+      "kap_psv71x (4 items)",
+      "kap_psv76x (12 items)",
+      "kap_psv77x (6 items)",
+      "kap_psv78x (12 items)",
+      "kap_vrn (22 items)"
     ],
-    "total_items": 128,
+    "total_items": 119,
     "status_counts": {
       "matched_medium": 33,
       "needs_review": 82,
@@ -155,74 +154,11 @@
       "abmv_patched": 4,
       "rationale_doc": "outputs/phase_1_etap1/stage_d_audit.md"
     },
-    "stage_e_applied": "2026-05-22T06:30:51.307602+00:00",
-    "stage_e_summary": {
-      "applied_at": "2026-05-22T06:30:51.307602+00:00",
-      "psv_76x_005_vrata_patched": "3000→3500 mm per TZ ARS DPZ",
-      "psv_opl_items_added": 8,
-      "psv_opl_ids": [
-        "PSV-OPL-001",
-        "PSV-OPL-002",
-        "PSV-OPL-003",
-        "PSV-OPL-004",
-        "PSV-OPL-005",
-        "PSV-OPL-006",
-        "PSV-OPL-007",
-        "PSV-OPL-008"
-      ]
-    },
-    "phase_1_igp_applied": "2026-05-22T07:23:50.291052+00:00",
-    "phase_1_igp_summary": {
-      "applied_at": "2026-05-22T07:23:50.291052+00:00",
-      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda",
-      "actions": {
-        "step_A_ABMV_11_closed": true,
-        "step_B_pilot_items_flagged": [
-          "HSV-2-010",
-          "HSV-2-011",
-          "HSV-2-012"
-        ],
-        "step_C_new_item": "HSV-1-028",
-        "step_D_HSV_1_001_recompute": "222.75 → 323.1 m³",
-        "step_D_ABMV_17_closed": true,
-        "step_E_geotechnical_summary_added": true
-      }
-    },
-    "fix_f1_applied": "2026-05-22T07:25:36.029578+00:00",
-    "update_kingspan_specs_applied_2026_05_24": "2026-05-22T08:40:46.305705+00:00",
-    "kingspan_statika_update_summary": {
-      "applied_at": "2026-05-22T08:40:46.305705+00:00",
-      "source_quote": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m.",
-      "items_updated": [
-        "PSV-OPL-001",
-        "PSV-OPL-002",
-        "PSV-OPL-003",
-        "PSV-OPL-004",
-        "HSV-2-001",
-        "HSV-2-002",
-        "HSV-2-003",
-        "HSV-2-004",
-        "HSV-2-005",
-        "HSV-2-006",
-        "HSV-3-004"
-      ],
-      "new_abmv": "ABMV_21"
-    },
-    "rework_patky_vykop_deska_2026_05_24_applied": "2026-05-22T08:47:35.361360+00:00",
-    "rework_2026_05_24_summary": {
-      "applied_at": "2026-05-22T08:47:35.361360+00:00",
-      "items_updated": [
-        "HSV-2-001",
-        "HSV-2-002",
-        "HSV-2-003",
-        "HSV-1-001",
-        "HSV-1-028",
-        "HSV-2-013",
-        "HSV-2-015",
-        "HSV-2-016"
-      ],
-      "new_abmv": "ABMV_22 (A201 bilance unfilled)",
-      "reopened_abmv": "ABMV_5 (deska class 2:2 split)"
+    "step3_geometry_annotated": {
+      "applied_at": "2026-05-22T05:42:44.192666+00:00",
+      "n_annotated": 79,
+      "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+      "policy": "annotation only; no mnozstvi mutation per spec"
     }
   },
   "items": [
@@ -230,9 +166,9 @@
       "id": "HSV-1-001",
       "kapitola": "HSV-1",
       "SO": "SO-01",
-      "popis": "Hloubení figury pod základovou desku + sejmutí navážek aktivní zóny, hor. tř. 1, stroj.",
+      "popis": "Hloubení figury pod základovou desku, stroj. v hor. tř. 3",
       "mj": "m³",
-      "mnozstvi": 210.0,
+      "mnozstvi": 222.75,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -254,55 +190,32 @@
       "urs_status": "matched_medium",
       "urs_match_score": 0.667,
       "skladba_ref": null,
-      "source": "A201_vykopy + A105_zaklady (HH/SH labels) + user zone-by-zone 2026-05-24",
+      "source": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10",
       "raw_description": "figura pod deskou — výkop pro polštář a desku",
       "confidence": 0.75,
       "subdodavatel_chapter": "zemni_prace",
-      "_vyjasneni_ref": [],
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
       "_status_flag": null,
-      "_data_source": "TZ+DXF+IGP",
+      "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "Zone-by-zone per A201_vykopy + A105 (deska HH/SH labels): (1) Main floor -0.485 → 425 m² × 0.235 m = 100 m³ + (2) Perimeter pas -1.300 → 60 m² × 0.4 m = 24 m³ + (3) Patky pits -1.900 → 90 m² × 0.6 m = 54 m³ + (4) Kanalizace zone -1.620 → 10 m² × 0.7 m = 7 m³; subtotal 185 m³ + svahy 1:1 + dokopávky rezerva 25 m³ = 210 m³",
+      "_qty_formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "Zone-by-zone: 100 + 24 + 54 + 7 + 25 = 210 m³ (main_floor + perimeter_pas + patky_pits + kanalizace + svahy_rezerva)",
+        "formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "zone_1_main_floor",
-            "value": "425 m² × 0.235 m",
-            "unit": "100 m³"
+            "label": "operand_1",
+            "value": 495.0,
+            "unit": ""
           },
           {
-            "label": "zone_2_perimeter_pas",
-            "value": "60 m² × 0.4 m",
-            "unit": "24 m³"
-          },
-          {
-            "label": "zone_3_patky_pits_incremental",
-            "value": "90 m² × 0.6 m",
-            "unit": "54 m³"
-          },
-          {
-            "label": "zone_4_kanalizace",
-            "value": "10 m² × 0.7 m",
-            "unit": "7 m³"
-          },
-          {
-            "label": "subtotal",
-            "value": 185,
-            "unit": "m³"
-          },
-          {
-            "label": "svahy_1to1_rezerva",
-            "value": 25,
-            "unit": "m³"
-          },
-          {
-            "label": "total",
-            "value": 210,
-            "unit": "m³"
+            "label": "operand_2",
+            "value": 0.45,
+            "unit": ""
           }
         ],
         "reference": [
@@ -319,68 +232,32 @@
           {
             "type": "phase_ref",
             "section": "Phase 0b RE-RUN §3.10"
-          },
-          {
-            "type": "igp_section",
-            "section": "3.3",
-            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §3.3 mocnost navážek 0.6–2.2 m"
-          },
-          {
-            "type": "step3_metric",
-            "metric": "zastavena_plocha",
-            "value": 538.5
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A201",
-            "raw": "A201_vykopy.dxf — paperspace BILANCE ZEMINY label (@749.2,-71.6) found but ZERO filled numerical values (Step 0 outcome B 2026-05-24). User zone-by-zone analysis substitutes projektant fill."
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "A105 HH/SH labels: deska -0.485 (level after sejmutí navážek + lože), pas -1.300, patky bottom -1.900, kanalizace zone -1.620"
           }
         ],
-        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace] | STAGE-PHASE1 IGP RECOMPUTE 2026-05-24: original 495 m² × 0.45 m = 222.75 m³ replaced by 538.5 m² × 0.6 m = 323.1 m³ per IGP §3.3 (navážky 0.6 m min). ABMV_17 closed. | REWORK 2026-05-24 zone-by-zone: 323.1 m³ (IGP §3.3 flat 538.5×0.6) → 210.0 m³ (user A201 zone analysis). Reason: flat formula over-counts because ~60 % plochy je at -0.485 m (sejmutí navážky), zbytek je incremental at pas/patky/kanalizace. Zone-by-zone = realistic; ABMV_22 flags need for projektant final fill.",
-        "computed_quantity": 210.0,
-        "declared_quantity": 210.0,
+        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace]",
+        "computed_quantity": 222.75,
+        "declared_quantity": 222.75,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.75,
-        "extraction_method": "igp_geometric_recompute",
-        "data_source_hint": "TZ+DXF+IGP",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
-        "_analytical_journey": [
-          {
-            "date": "2026-05-14",
-            "value_m3": 222.75,
-            "method": "RE-RUN §3.10: 495 m² × 0.45 m flat",
-            "status": "superseded"
-          },
-          {
-            "date": "2026-05-24 (Phase 1 IGP)",
-            "value_m3": 323.1,
-            "method": "IGP §3.3: 538.5 m² × 0.6 m sejmutí navážek flat",
-            "status": "superseded"
-          },
-          {
-            "date": "2026-05-24 (ChatGPT estimate)",
-            "value_m3": 65,
-            "method": "REJECTED — undercounted main floor as ~121 m² instead of ~425 m²"
-          },
-          {
-            "date": "2026-05-24 (this commit)",
-            "value_m3": 210,
-            "method": "A106/A201 zone-by-zone per A201 paperspace + A105 HH/SH labels",
-            "status": "ACCEPTED"
-          },
-          {
-            "date": "pending",
-            "value_m3": "TBD",
-            "method": "DXF layer scan A106/A201 for exact polygon areas per zone",
-            "status": "future_refinement"
-          }
-        ]
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
+        "data_source_hint": "TZ+DXF",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -465,6 +342,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -549,6 +432,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -619,6 +508,16 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "obvod_budovy_for_zaklad",
+          "value_m": 103.5,
+          "note": "outer perimeter — multiply with foundation cross-section for kg/m³"
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -702,6 +601,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -791,6 +696,21 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -848,6 +768,21 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -921,6 +856,21 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -995,6 +945,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1069,6 +1025,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1142,6 +1104,21 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1215,6 +1192,21 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1289,6 +1281,16 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "obvod_budovy_for_zaklad",
+          "value_m": 103.5,
+          "note": "outer perimeter — multiply with foundation cross-section for kg/m³"
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1352,6 +1354,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1420,6 +1428,21 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1488,6 +1511,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1556,6 +1585,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1619,6 +1654,21 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "objem_vykopu",
+          "value_m3": 99.3,
+          "source": "délka (103.5 m) × šířka (0.8 m) × hloubka (1.2 m) — width+depth: default_estimate",
+          "confidence": 0.6,
+          "_review_flag": true,
+          "length_m": 103.5,
+          "sirka_m": 0.8,
+          "hloubka_m": 1.2
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1687,6 +1737,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1759,6 +1815,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1831,6 +1893,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1897,6 +1965,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -1958,6 +2032,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2025,6 +2105,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2098,6 +2184,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2161,6 +2253,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2218,105 +2316,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "HSV-1-028",
-      "kapitola": "HSV-1",
-      "SO": "SO-01",
-      "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
-      "mj": "m³",
-      "mnozstvi": 265.61,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "skladba_ref": null,
-      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
-      "raw_description": "výměna aktivní zóny — odstranění navážek + štěrk hutněný 0.5 m Edef2 ≥ 45 MPa",
-      "confidence": 0.85,
-      "subdodavatel_chapter": "zemni_prace",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "IGP",
-      "_completeness": 0.9,
-      "_qty_formula": "A105 deska plocha 19.04 × 27.90 = 531.22 m² × 0.5 m vrstva = 265.61 m³ (jedna operace — odstranění NEBO nahrazení)",
-      "_export_wrapper_hint": null,
-      "_price_source": "user_skipped_pricing",
-      "audit_trail": {
-        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
-        "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
-        "formula_parsed_method": "product_dual_operation",
-        "inputs": [
-          {
-            "label": "deska_area_m2",
-            "value": 531.22,
-            "unit": "m²"
-          },
-          {
-            "label": "deska_source",
-            "value": "A105 měřené 19.04 × 27.90",
-            "unit": ""
-          },
-          {
-            "label": "mocnost_vymeny_m",
-            "value": 0.5,
-            "unit": "m"
-          },
-          {
-            "label": "operace_odstraneni_m3",
-            "value": 265.61,
-            "unit": "m³"
-          },
-          {
-            "label": "operace_nahrazeni_m3",
-            "value": 265.61,
-            "unit": "m³"
-          },
-          {
-            "label": "edef2_min_MPa",
-            "value": 45.0,
-            "unit": "MPa"
-          }
-        ],
-        "reference": [
-          {
-            "type": "igp_section",
-            "section": "4.4",
-            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
-          },
-          {
-            "type": "igp_document",
-            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
-          },
-          {
-            "type": "step3_metric",
-            "metric": "zastavena_plocha",
-            "value": 538.5
-          },
-          {
-            "type": "csn",
-            "standard": "ČSN 6133"
-          },
-          {
-            "type": "csn",
-            "standard": "ČSN 72 1006"
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
-          }
-        ],
-        "poznamka": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef2/Edef1 < 2.2 (ČSN 72 1006). Vrstva 0.5 m × zastavěná 538.5 m² = 269.25 m³ na operaci. Item tracks single layer; total earth work = 2× (odstr. + nahraz.) = 538.5 m³. | REWORK 2026-05-24: 269.25 m³ (Step 3 zastavěná 538.5 × 0.5) → 265.61 m³ (A105 deska 531.22 × 0.5). Reason: výměna aktivní zóny vychází z plochy desky + obvodový pas, NE z full zastavěné (která zahrnuje převis střechy). A105 měřené.",
-        "computed_quantity": 265.61,
-        "declared_quantity": 265.61,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "igp_geometric_derivation",
-        "data_source_hint": "IGP+Step3",
-        "extracted_at": "2026-05-22T07:23:50.291052+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2325,7 +2330,7 @@
       "SO": "SO-01",
       "popis": "Beton patek rámových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 22.875,
+      "mnozstvi": 18.9,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2347,45 +2352,40 @@
       "urs_status": "needs_review",
       "urs_match_score": 0.333,
       "skladba_ref": null,
-      "source": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 + RE-RUN §3.3 + §3.4",
-      "raw_description": "patky rámové C16/20 dvoustupňové pyramida (dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6); 10 ks per A105 + statika rozteč 6.1 m",
-      "confidence": 0.85,
+      "source": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4",
+      "raw_description": "patky rámové C16/20",
+      "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
-      "_data_source": "TZ+DXF+statika",
+      "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "10 ks × [dolní 1.5×1.5×0.6 (1.35 m³) + horní 1.25×1.25×0.6 (0.9375 m³)] = 10 × 2.2875 m³ = 22.875 m³",
+      "_qty_formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "10 × (1.5²×0.6 + 1.25²×0.6) = 10 × (1.35 + 0.9375) = 22.875 m³",
+        "formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "count_patek_ramovych",
-            "value": 10,
-            "unit": "ks"
+            "label": "operand_1",
+            "value": 14.0,
+            "unit": ""
           },
           {
-            "label": "dolni_stupen_BxLxH_m",
-            "value": "1.5 × 1.5 × 0.6",
-            "unit": "m³"
+            "label": "operand_2",
+            "value": 1.5,
+            "unit": ""
           },
           {
-            "label": "horni_stupen_BxLxH_m",
-            "value": "1.25 × 1.25 × 0.6",
-            "unit": "m³"
+            "label": "operand_3",
+            "value": 1.5,
+            "unit": ""
           },
           {
-            "label": "per_patek_m3",
-            "value": 2.2875,
-            "unit": "m³"
-          },
-          {
-            "label": "total_m3",
-            "value": 22.875,
-            "unit": "m³"
+            "label": "operand_4",
+            "value": 0.6,
+            "unit": ""
           }
         ],
         "reference": [
@@ -2393,51 +2393,23 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.1 p3",
-            "raw": "TZ ARS D.1.1: 'Sloupy rámu budou založeny na dvoustupňových patkách o rozměrech 1,5x1,5x(2x0,6m) z prostého betonu C16/20 XC0'"
-          },
-          {
-            "type": "statika_section",
-            "section": "D.1.2 p29-30",
-            "raw": "Statika výpočet patka: B=1.5, L=1.5, H=1.2 m, materiál C16/20 XC0, Rdt=200 kPa, σEd=190.16 kPa Vyhovuje"
-          },
-          {
-            "type": "bednění_consistency_check",
-            "raw": "HSV-2-002 patky rámové bednění = 100.8 m². Per patka 4×1.5×1.2 = 7.2 m². 100.8/7.2 = 14 patek ✓"
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh ztužení / Vzdálenost rámů",
-            "raw": "Vzdálenost rámů bude 6,1 m. Hala 28.18 m délka / 6.1 m rozteč = 4 fields + krajní → 5 rámů × 2 sloupy = 10 patek rámových."
-          },
-          {
-            "type": "user_drawing_count",
-            "raw": "A105 PŮDORYS ZÁKLADŮ — user manual count of 1500×1500 patky on axes A + F across rows 1-6 = 10 patek (excl. A3 atypical/pilota variant). Geometric consistency: 4 × 6.1 m = 24.4 m + krajní (3.78 m) = 28.18 m ✓ matches TZ ARS"
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "A105 PŮDORYS ZÁKLADŮ — patky rámové 1500×1500 outer; dvoustupňová s horním stupněm zúženým na ~1250×1250 (pyramida tvar). HH/SH labels -0.700/-1.300/-1.900 → 2 × 0.6 m stupně. User manual recount: 10 patek (5 rámů × 2 osy A+F)."
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika)",
-            "raw": "Vzdálenost rámů 6,1 m → 5 rámů × 2 sloupy = 10 patek rámových. Geometric: 4×6.1 + krajní 3.78 = 28.18 m ✓ matches TZ ARS"
           }
         ],
-        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix. | RECOMPUTE 2026-05-24: count 14 (F-3 fix bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). mnozstvi 37.8 → 27.0 m³. F-3 fix used bednění 100.8 m² ÷ 7.2 m²/patka = 14, but 100.8 m² was likely over-counted; statika rozteč is authoritative for count. | REWORK 2026-05-24: 37.8 m³ → 22.875 m³. Previous F-3 fix (37.8) used cube approximation 1.5×1.5×1.2 per patek (F-3 over-fix). Correct geometry is DVOUSTUPŇOVÁ PYRAMIDA: dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6 = 2.2875 m³/patek. Per A105 měřená geometrie + design intent (úspora betonu při zachování ložné plochy).",
-        "computed_quantity": 22.875,
-        "declared_quantity": 22.875,
+        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4 · (patky rámové C16/20) · [sub: GD_zaklady_beton]",
+        "computed_quantity": 18.9,
+        "declared_quantity": 18.9,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.92,
+        "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF+statika",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
-        "_audit_fix_f3_date": "2026-05-24"
+        "data_source_hint": "TZ+DXF",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2446,7 +2418,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — zřízení",
       "mj": "m²",
-      "mnozstvi": 66.0,
+      "mnozstvi": 100.8,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2476,32 +2448,37 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "10 ks × [dolní 4×1.5×0.6 (3.6 m²) + horní 4×1.25×0.6 (3.0 m²)] = 10 × 6.6 = 66.0 m²",
+      "_qty_formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "10 × (3.6 + 3.0) = 66.0 m²",
+        "formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "count_patek",
-            "value": 10,
-            "unit": "ks"
+            "label": "operand_1",
+            "value": 14.0,
+            "unit": ""
           },
           {
-            "label": "bednění_dolní_m2_per_patek",
-            "value": 3.6,
-            "unit": "m²"
+            "label": "operand_2",
+            "value": 4.0,
+            "unit": ""
           },
           {
-            "label": "bednění_horní_m2_per_patek",
-            "value": 3.0,
-            "unit": "m²"
+            "label": "operand_3",
+            "value": 1.5,
+            "unit": ""
           },
           {
-            "label": "total_m2_per_patek",
-            "value": 6.6,
-            "unit": "m²"
+            "label": "operand_4",
+            "value": 0.6,
+            "unit": ""
+          },
+          {
+            "label": "operand_5",
+            "value": 2.0,
+            "unit": ""
           }
         ],
         "reference": [
@@ -2509,27 +2486,23 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh opláštění",
-            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "Dvoustupňová pyramida — bednění 4 strany dolního + 4 strany horního stupně. Per patek = 6.6 m²."
           }
         ],
-        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek per statika rozteč rámů 6.1 m × 5 rámů. Mnozstvi 100.8 → 72.0 m². | REWORK 2026-05-24: 100.8 m² → 72 m² (count 14→10) → 66 m² (dvoustupňová pyramida 6.6 m²/patek vs prismatic 7.2). Previous commit was based on prismatic shape; pyramida geometry per A105 reduces side area by ~9 %.",
-        "computed_quantity": 66.0,
-        "declared_quantity": 66.0,
+        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton]",
+        "computed_quantity": 100.8,
+        "declared_quantity": 100.8,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.85,
+        "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2538,7 +2511,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — odstranění",
       "mj": "m²",
-      "mnozstvi": 66.0,
+      "mnozstvi": 100.8,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2568,34 +2541,29 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= HSV-2-002 zřízení (dvoustupňová pyramida 10 patek) = 66.0 m²",
+      "_qty_formula": "= bednění zřízení",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= HSV-2-002 = 66.0 m²",
+        "formula": "= bednění zřízení",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh opláštění",
-            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "Symmetric s HSV-2-002 (zřízení bednění)"
-          }
-        ],
-        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek (symmetric s HSV-2-002). 100.8 → 72.0 m². | REWORK 2026-05-24: symmetric s HSV-2-002. 72.0 → 66.0 m².",
-        "computed_quantity": 66.0,
-        "declared_quantity": 66.0,
+        "reference": [],
+        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton]",
+        "computed_quantity": null,
+        "declared_quantity": 100.8,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2604,7 +2572,7 @@
       "SO": "SO-01",
       "popis": "Beton patek štítových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 6.144,
+      "mnozstvi": 4.096,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2627,39 +2595,39 @@
       "urs_match_score": 0.333,
       "skladba_ref": null,
       "source": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks",
-      "raw_description": "patky štítové C16/20 dvoustupňové 0.8×0.8×(2×0.6=1.2)",
+      "raw_description": "patky štítové C16/20",
       "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³ (dvoustupňová 2×0.6, A105 HH/SH measured)",
+      "_qty_formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³",
+        "formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "count_stitove",
-            "value": 8,
-            "unit": "ks"
+            "label": "operand_1",
+            "value": 8.0,
+            "unit": ""
           },
           {
-            "label": "B_m",
+            "label": "operand_2",
             "value": 0.8,
-            "unit": "m"
+            "unit": ""
           },
           {
-            "label": "L_m",
+            "label": "operand_3",
             "value": 0.8,
-            "unit": "m"
+            "unit": ""
           },
           {
-            "label": "H_m_total",
-            "value": 1.2,
-            "unit": "m"
+            "label": "operand_4",
+            "value": 0.8,
+            "unit": ""
           }
         ],
         "reference": [
@@ -2667,22 +2635,23 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "tz_typo_resolution",
-            "abmv_id": "ABMV_21",
-            "raw": "TZ ARS p3 '0,8×0,8×(0,2×0,6m)' interpreted as typo (missing × before 0,2; should read 2×0,6). A105 HH/SH measured H = 1.2 m. ABMV_21 resolved 2026-05-24."
           }
         ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: H 0.8 m (TZ ARS literal typo) → 1.2 m (A105 measured + statika consistency). Mnozstvi 4.096 → 6.144 m³. See ABMV_21.",
-        "computed_quantity": 6.144,
-        "declared_quantity": 6.144,
+        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton]",
+        "computed_quantity": 4.096,
+        "declared_quantity": 4.096,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.85,
+        "confidence": 0.95,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2691,7 +2660,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek štítových — zřízení",
       "mj": "m²",
-      "mnozstvi": 30.72,
+      "mnozstvi": 20.8,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2721,32 +2690,37 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "8 ks × 4 strany × 0.8 m × 1.2 m výška = 30.72 m²",
+      "_qty_formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "8 × 4 × 0.8 × 1.2 = 30.72 m²",
+        "formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "count",
-            "value": 8,
-            "unit": "ks"
-          },
-          {
-            "label": "strany",
-            "value": 4,
+            "label": "operand_1",
+            "value": 8.0,
             "unit": ""
           },
           {
-            "label": "sirka",
+            "label": "operand_2",
             "value": 0.8,
-            "unit": "m"
+            "unit": ""
           },
           {
-            "label": "vyska",
-            "value": 1.2,
-            "unit": "m"
+            "label": "operand_3",
+            "value": 0.8,
+            "unit": ""
+          },
+          {
+            "label": "operand_4",
+            "value": 3.2,
+            "unit": ""
+          },
+          {
+            "label": "operand_5",
+            "value": 2.0,
+            "unit": ""
           }
         ],
         "reference": [
@@ -2754,22 +2728,23 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "tz_typo_resolution",
-            "abmv_id": "ABMV_21",
-            "raw": "Štítové patky H = 1.2 m per ABMV_21 (A105 measured + dvoustupňová 2×0.6 interpretation)"
           }
         ],
-        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: H 0.8 → 1.2 m per ABMV_21. Mnozstvi 20.8 → 30.72 m².",
-        "computed_quantity": 30.72,
-        "declared_quantity": 30.72,
+        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton]",
+        "computed_quantity": 32.768,
+        "declared_quantity": 20.8,
         "match_delta_pct": 57.54,
         "match_within_tolerance": false,
         "confidence": 0.7,
         "extraction_method": "qty_formula_mismatch",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2778,7 +2753,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek štítových — odstranění",
       "mj": "m²",
-      "mnozstvi": 30.72,
+      "mnozstvi": 20.8,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2808,29 +2783,29 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= HSV-2-005 zřízení = 30.72 m²",
+      "_qty_formula": "= bednění zřízení",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= HSV-2-005 = 30.72 m²",
+        "formula": "= bednění zřízení",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [
-          {
-            "type": "tz_typo_resolution",
-            "abmv_id": "ABMV_21",
-            "raw": "Štítové patky H = 1.2 m per ABMV_21"
-          }
-        ],
-        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: symmetric s HSV-2-005. 20.8 → 30.72 m².",
-        "computed_quantity": 30.72,
-        "declared_quantity": 30.72,
+        "reference": [],
+        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton]",
+        "computed_quantity": null,
+        "declared_quantity": 20.8,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2898,6 +2873,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -2965,6 +2946,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3026,6 +3013,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3058,10 +3051,12 @@
       "skladba_ref": null,
       "source": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m'",
       "raw_description": "pilota Ø800 / L=8m variant",
-      "confidence": 0.4,
+      "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [],
-      "_status_flag": "alternative_variant_per_IGP_not_required",
+      "_vyjasneni_ref": [
+        "ABMV_11"
+      ],
+      "_status_flag": "variant_pending_IGP",
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks pilota Ø800 × 8 m délka",
@@ -3082,14 +3077,9 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "igp_section",
-            "section": "4.3",
-            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
+        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton]",
         "computed_quantity": 1.0,
         "declared_quantity": 1.0,
         "match_delta_pct": 0.0,
@@ -3098,6 +3088,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3130,10 +3126,12 @@
       "skladba_ref": null,
       "source": "A105 + variant pilota L=8m",
       "raw_description": "vrtání piloty",
-      "confidence": 0.4,
+      "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [],
-      "_status_flag": "alternative_variant_per_IGP_not_required",
+      "_vyjasneni_ref": [
+        "ABMV_11"
+      ],
+      "_status_flag": "variant_pending_IGP",
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks × 8 m délka",
@@ -3159,14 +3157,9 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "igp_section",
-            "section": "4.3",
-            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
+        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton]",
         "computed_quantity": 8.0,
         "declared_quantity": 8.0,
         "match_delta_pct": 0.0,
@@ -3175,6 +3168,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3207,10 +3206,12 @@
       "skladba_ref": null,
       "source": "statika D.1.2 + A105 výztuž piloty",
       "raw_description": "výztuž piloty R25 + třmínky",
-      "confidence": 0.4,
+      "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [],
-      "_status_flag": "alternative_variant_per_IGP_not_required",
+      "_vyjasneni_ref": [
+        "ABMV_11"
+      ],
+      "_status_flag": "variant_pending_IGP",
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder",
@@ -3241,14 +3242,9 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
-          },
-          {
-            "type": "igp_section",
-            "section": "4.3",
-            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
+        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton]",
         "computed_quantity": 247.04,
         "declared_quantity": 380.0,
         "match_delta_pct": 34.99,
@@ -3257,6 +3253,12 @@
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3265,7 +3267,7 @@
       "SO": "SO-01",
       "popis": "Beton podlahové desky C25/30 XC4, tl. 200 mm — strojně rovnaný povrch",
       "mj": "m³",
-      "mnozstvi": 106.24,
+      "mnozstvi": 99.0,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -3295,37 +3297,22 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "A105 deska 19.04 × 27.90 m = 531.22 m² × 0.20 m = 106.24 m³",
+      "_qty_formula": "495 m² × 0.2 m = 99 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "531.22 × 0.20 = 106.24 m³",
+        "formula": "495 m² × 0.2 m = 99 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "deska_B_m",
-            "value": 19.04,
-            "unit": "m"
+            "label": "operand_1",
+            "value": 495.0,
+            "unit": ""
           },
           {
-            "label": "deska_L_m",
-            "value": 27.9,
-            "unit": "m"
-          },
-          {
-            "label": "deska_area_m2",
-            "value": 531.22,
-            "unit": "m²"
-          },
-          {
-            "label": "tloustka_m",
+            "label": "operand_2",
             "value": 0.2,
-            "unit": "m"
-          },
-          {
-            "label": "volume_m3",
-            "value": 106.24,
-            "unit": "m³"
+            "unit": ""
           }
         ],
         "reference": [
@@ -3333,21 +3320,11 @@
             "type": "tz_section",
             "section": "B",
             "raw": "TZ B"
-          },
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "A105 vnější rozměry desky 19.04 × 27.90 m. TZ ARS p2 'podlahová 495 m²' = podlaha excluding obvodový pas; A105 = full deska včetně přesahu = 531 m². 7 % rozdíl."
-          },
-          {
-            "type": "abmv_reopen",
-            "abmv_id": "ABMV_5",
-            "raw": "ABMV_5 re-opened 2026-05-24 (needs_design_clarification): 2:2 split between A101+A105 (C30/37 XC2) vs TZ ARS+statika (C25/30 XC4). _review_concrete_class flag set."
           }
         ],
-        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 99.0 m³ (495 × 0.20) → 106.24 m³ (A105 měřené 531.22 × 0.20). Reason: TZ ARS 'podlahová 495 m²' is interior area; A105 full deska 531 m² includes obvodový pas. _review_concrete_class flag added per ABMV_5 re-open.",
-        "computed_quantity": 106.24,
-        "declared_quantity": 106.24,
+        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton]",
+        "computed_quantity": 99.0,
+        "declared_quantity": 99.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
@@ -3355,7 +3332,12 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
-      "_review_concrete_class": true
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
+      }
     },
     {
       "id": "HSV-2-014",
@@ -3422,6 +3404,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3430,7 +3418,7 @@
       "SO": "SO-01",
       "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — horní vrstva",
       "mj": "kg",
-      "mnozstvi": 2098.3,
+      "mnozstvi": 1955.25,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -3460,40 +3448,40 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "A105 deska 531.22 m² × 3.95 kg/m² (Kari Ø8 oka 100/100 single vrstva) = 2098.3 kg",
+      "_qty_formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "531.22 × 3.95 = 2098.3 kg",
+        "formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "deska_area_m2",
-            "value": 531.22,
-            "unit": "m²"
+            "label": "operand_1",
+            "value": 495.0,
+            "unit": ""
           },
           {
-            "label": "kari_kg_per_m2",
+            "label": "operand_2",
             "value": 3.95,
-            "unit": "kg/m² Ø8 100/100"
+            "unit": ""
           }
         ],
-        "reference": [
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "Scale to A105 měřené deska 531.22 m² (was 495 m²)."
-          }
-        ],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 1955.25 → 2098.3 kg per A105 měřené deska area 531.22 m².",
-        "computed_quantity": 2098.3,
-        "declared_quantity": 2098.3,
+        "reference": [],
+        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton]",
+        "computed_quantity": 1955.25,
+        "declared_quantity": 1955.25,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3502,7 +3490,7 @@
       "SO": "SO-01",
       "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — dolní vrstva",
       "mj": "kg",
-      "mnozstvi": 2098.3,
+      "mnozstvi": 1955.25,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -3532,29 +3520,29 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= HSV-2-015 horní vrstva = 2098.3 kg",
+      "_qty_formula": "= horní vrstva",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= HSV-2-015 = 2098.3 kg",
+        "formula": "= horní vrstva",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [
-          {
-            "type": "drawing_measurement",
-            "code": "A105",
-            "raw": "Symmetric horní vrstva. Scale na 531.22 m²."
-          }
-        ],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 1955.25 → 2098.3 kg symmetric s HSV-2-015.",
-        "computed_quantity": 2098.3,
-        "declared_quantity": 2098.3,
+        "reference": [],
+        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton]",
+        "computed_quantity": null,
+        "declared_quantity": 1955.25,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3621,6 +3609,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3682,6 +3676,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -3985,14 +3985,8 @@
             "unit": ""
           }
         ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — vaznice rozteč",
-            "raw": "Vaznice budou vzdálené max 1,5 m (statika TZ D.1.2)"
-          }
-        ],
-        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz] | FLAG 2026-05-24: cross-check vs statika 1.5 m rozteč + Step 3 střecha 558.8 m². Estimate: ~13 vaznic × 28.18 m × 15.8 kg/m = 5,789 kg. Current 5,195 kg = drift +11.4 %. NO qty mutation this commit — HSV-3 mass reconciliation task (PROFILY DXF geometry extraction) will resolve definitively.",
+        "reference": [],
+        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz]",
         "computed_quantity": 5195.04,
         "declared_quantity": 5195.04,
         "match_delta_pct": 0.0,
@@ -4000,14 +3994,7 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
-        "_review_mass_drift": {
-          "estimate_kg": 5789,
-          "current_kg": 5195.04,
-          "drift_pct": 11.4,
-          "method": "statika 1.5 m vaznic rozteč × Step 3 plocha 558.8 m² / délka 28.18 m × IPE 160 15.8 kg/m",
-          "resolution_task": "HSV-3 PROFILY DXF geometry extraction (Step 4 deferred)"
-        }
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       },
       "_length_source": "default_estimate",
       "_length_confidence": 0.7,
@@ -5029,6 +5016,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5101,6 +5094,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5162,6 +5161,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5228,6 +5233,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5295,6 +5306,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5350,6 +5367,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5416,6 +5439,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5482,13 +5511,19 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
       "id": "PSV-76x-005",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Dodávka sekční vrata 3500 × 4000 mm (š × v) s tepelněizolační výplní, motorická",
+      "popis": "Dodávka sekční vrata 3000 × 4000 mm (š × v) s tepelněizolační výplní, motorická",
       "mj": "ks",
       "mnozstvi": 4.0,
       "urs_code": null,
@@ -5512,11 +5547,13 @@
       "urs_status": "needs_review",
       "urs_match_score": 0.375,
       "skladba_ref": null,
-      "source": "TZ_ARS_DPZ (vrata 3500×4000 mm wins) + DXF A101",
-      "raw_description": "vrata sekční 3500×4000 výsuvná",
-      "confidence": 0.9,
+      "source": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2",
+      "raw_description": "vrata sekční 3000×4000 výsuvná",
+      "confidence": 0.5,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
-      "_vyjasneni_ref": [],
+      "_vyjasneni_ref": [
+        "ABMV_2"
+      ],
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
@@ -5545,15 +5582,21 @@
             "raw": "TZ B m.3.2"
           }
         ],
-        "poznamka": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2 · (vrata sekční 3500×4000 výsuvná) · [sub: zamecnik_vrata_okna] | STAGE-E patch: TZ ARS DPZ wins over DXF block name 3000×4000 → 3500×4000 mm.",
+        "poznamka": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2 · (vrata sekční 3000×4000 výsuvná) · [sub: zamecnik_vrata_okna]",
         "computed_quantity": 4.0,
         "declared_quantity": 4.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.9,
-        "extraction_method": "tz_ars_dpz_verified",
+        "confidence": 0.95,
+        "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5615,6 +5658,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5676,6 +5725,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5731,6 +5786,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5798,6 +5859,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5853,6 +5920,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5914,6 +5987,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -5975,6 +6054,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6036,6 +6121,19 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "podlaha_total",
+          "value_m2": 538.5,
+          "source": "footprint area (industrial hala — single open floor)",
+          "confidence": 0.75,
+          "_review_flag": true,
+          "per_room_breakdown": "not implemented Step 3 — floor LINEs don't form closed polylines; per-room split would require cluster-by-bbox + room-label MTEXT proximity match"
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6105,6 +6203,19 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "podlaha_total",
+          "value_m2": 538.5,
+          "source": "footprint area (industrial hala — single open floor)",
+          "confidence": 0.75,
+          "_review_flag": true,
+          "per_room_breakdown": "not implemented Step 3 — floor LINEs don't form closed polylines; per-room split would require cluster-by-bbox + room-label MTEXT proximity match"
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6175,6 +6286,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6236,6 +6353,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6297,6 +6420,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6360,6 +6489,12 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6429,6 +6564,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6492,6 +6633,41 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "fasada_netto",
+          "value_m2": 536.4,
+          "source": "brutto − otvory plocha (windows 30 + vrata 4 + dveře 4)",
+          "confidence": 0.85,
+          "otvory_plocha_m2": 86.8,
+          "otvory_breakdown": {
+            "windows": {
+              "count_distinct_physical_est": 30,
+              "size_m": [
+                1.0,
+                1.0
+              ]
+            },
+            "vrata_sekcni": {
+              "count": 4,
+              "size_m": [
+                3.0,
+                4.0
+              ]
+            },
+            "dvere_dvoukridle": {
+              "count": 4,
+              "size_m": [
+                1.05,
+                2.1
+              ]
+            }
+          }
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6559,6 +6735,12 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6614,6 +6796,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6681,6 +6869,41 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "fasada_netto",
+          "value_m2": 536.4,
+          "source": "brutto − otvory plocha (windows 30 + vrata 4 + dveře 4)",
+          "confidence": 0.85,
+          "otvory_plocha_m2": 86.8,
+          "otvory_breakdown": {
+            "windows": {
+              "count_distinct_physical_est": 30,
+              "size_m": [
+                1.0,
+                1.0
+              ]
+            },
+            "vrata_sekcni": {
+              "count": 4,
+              "size_m": [
+                3.0,
+                4.0
+              ]
+            },
+            "dvere_dvoukridle": {
+              "count": 4,
+              "size_m": [
+                1.05,
+                2.1
+              ]
+            }
+          }
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6736,6 +6959,12 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6803,6 +7032,20 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "strecha_netto",
+          "value_m2": 558.8,
+          "source": "brutto / cos(5.25°)",
+          "confidence": 0.85,
+          "sklon_deg": 5.25,
+          "sklon_source": "DIMENSION mining A102",
+          "sklon_confidence": 0.95
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6864,6 +7107,20 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "strecha_netto",
+          "value_m2": 558.8,
+          "source": "brutto / cos(5.25°)",
+          "confidence": 0.85,
+          "sklon_deg": 5.25,
+          "sklon_source": "DIMENSION mining A102",
+          "sklon_confidence": 0.95
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6930,6 +7187,41 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": {
+          "name": "fasada_netto",
+          "value_m2": 536.4,
+          "source": "brutto − otvory plocha (windows 30 + vrata 4 + dveře 4)",
+          "confidence": 0.85,
+          "otvory_plocha_m2": 86.8,
+          "otvory_breakdown": {
+            "windows": {
+              "count_distinct_physical_est": 30,
+              "size_m": [
+                1.0,
+                1.0
+              ]
+            },
+            "vrata_sekcni": {
+              "count": 4,
+              "size_m": [
+                3.0,
+                4.0
+              ]
+            },
+            "dvere_dvoukridle": {
+              "count": 4,
+              "size_m": [
+                1.05,
+                2.1
+              ]
+            }
+          }
+        },
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -6991,6 +7283,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -7052,6 +7350,12 @@
         "extraction_method": "placeholder_matches_declared",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -7107,6 +7411,12 @@
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+      },
+      "_geometric_source": {
+        "step": "step3_2026_05_22",
+        "output_ref": "outputs/dsp_geometry_extraction/step3_areas/area_aggregates.json",
+        "applicable_metric": null,
+        "note": "Geometric measurement available — current mnozstvi NOT overwritten; see _geometric_source.applicable_metric for the step3 candidate value."
       }
     },
     {
@@ -8424,506 +8734,6 @@
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-001",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Kingspan KS NF 200 mm, jádro minerální vata (MW) per TZ ARS p4 + PBR §3 + ABMV_13 closure, plech vnější/vnitřní 0.6/0.4 mm, profilace M (Micro)/Q (Minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Hradec Králové (Kingspan ČR), barva bílá + modrá (RAL standard)",
-      "mj": "m²",
-      "mnozstvi": 528.5,
-      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
-      "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
-      "raw_description": "Kingspan KS NF 200 mm MW 0.6/0.4 S280GD EN 14509",
-      "confidence": 0.95,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [
-        "ABMV_13"
-      ],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.9,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "obvodové opláštění Kingspan — TZ ARS DPZ D.1.1 kap. B + statika D.1.2",
-        "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
-        "formula_parsed_method": "derived_from_step3_areas",
-        "inputs": [
-          {
-            "label": "fasada_netto_m2",
-            "value": 528.5,
-            "unit": "m²"
-          },
-          {
-            "label": "fasada_brutto_m2",
-            "value": 623.3,
-            "unit": "m²"
-          },
-          {
-            "label": "otvory_m2",
-            "value": 94.82,
-            "unit": "m²"
-          },
-          {
-            "label": "vrata_size_m",
-            "value": "3.5 × 4.0",
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          },
-          {
-            "type": "step3_metric",
-            "metric": "fasada_netto",
-            "value": 536.4
-          },
-          {
-            "type": "abmv_closure",
-            "abmv_id": "ABMV_2",
-            "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh opláštění",
-            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
-          },
-          {
-            "type": "abmv_closure",
-            "abmv_id": "ABMV_13",
-            "raw": "K-roc MW vs IPN: closed_fabricated 2026-05-13. MW confirmed across TZ ARS + PBR + statika."
-          }
-        ],
-        "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: popis spec hardened per statika TZ D.1.2 verbatim — KS NF 200 mm Hradec Králové (NOT generic KS1000 AWP). Removed 'alt. 150 mm' (statika confirms 200 mm jediný variant). Confidence 0.90 → 0.95 — 4 consistent sources (TZ ARS + PBR + statika + ABMV_13 closure).",
-        "computed_quantity": 528.5,
-        "declared_quantity": 528.5,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "tz_ars_dpz_verified",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-002",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Montáž obvodového opláštění Kingspan KS NF 200 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6,1 m per statika), per TZ ARS D.1.1 p4 montážní předpis výrobce",
-      "mj": "m²",
-      "mnozstvi": 528.5,
-      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
-      "source": "TZ statika D.1.2 (rozteč rámů 6.1 m) + TZ ARS D.1.1 p4 (EPDM šrouby) + Step3",
-      "raw_description": "montáž Kingspan obvodového opláštění samořezné šrouby EPDM",
-      "confidence": 0.9,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.9,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "montáž obvodové opláštění Kingspan — TZ ARS DPZ D.1.1",
-        "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
-        "formula_parsed_method": "derived_from_step3_areas",
-        "inputs": [
-          {
-            "label": "fasada_netto_m2",
-            "value": 528.5,
-            "unit": "m²"
-          },
-          {
-            "label": "fasada_brutto_m2",
-            "value": 623.3,
-            "unit": "m²"
-          },
-          {
-            "label": "otvory_m2",
-            "value": 94.82,
-            "unit": "m²"
-          },
-          {
-            "label": "vrata_size_m",
-            "value": "3.5 × 4.0",
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          },
-          {
-            "type": "abmv_closure",
-            "abmv_id": "ABMV_2",
-            "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh opláštění",
-            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
-          }
-        ],
-        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: rozteč rámů 6.1 m per statika TZ D.1.2 added to popis. Confidence 0.90 → 0.90 (unchanged, montáž has slightly less spec authority than dodávka).",
-        "computed_quantity": 528.5,
-        "declared_quantity": 528.5,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.9,
-        "extraction_method": "tz_ars_dpz_verified",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-003",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Kingspan KS FF-ROC tl. 200 mm, jádro ROC (Rockwool — minerální vata), pro šikmé střechy sklon 5.25°, plech vnější/vnitřní 0.6/0.5 mm, profilace trapéz 34 mm/Q (minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Lipsko (Kingspan Polská republika), vaznice rozteč max 1.5 m per statika",
-      "mj": "m²",
-      "mnozstvi": 558.8,
-      "_qty_formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
-      "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
-      "raw_description": "Kingspan KS FF-ROC 200 mm ROC šikmé střechy sklon 5.25°",
-      "confidence": 0.95,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [
-        "ABMV_13"
-      ],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.85,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "střešní opláštění Kingspan — TZ ARS DPZ D.1.1 + A102 pudorys střechy",
-        "formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
-        "formula_parsed_method": "derived_from_step3_areas",
-        "inputs": [
-          {
-            "label": "strecha_brutto_m2",
-            "value": 556.5,
-            "unit": "m²"
-          },
-          {
-            "label": "sklon_stup",
-            "value": 5.25,
-            "unit": "°"
-          },
-          {
-            "label": "strecha_netto_m2",
-            "value": 558.8,
-            "unit": "m²"
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          },
-          {
-            "type": "dxf_layer",
-            "sheet": "A102",
-            "metric": "sklon_stopy 5.25°"
-          },
-          {
-            "type": "step3_metric",
-            "metric": "strecha_netto",
-            "value": 558.8
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh opláštění",
-            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
-          },
-          {
-            "type": "abmv_closure",
-            "abmv_id": "ABMV_13",
-            "raw": "K-roc MW: closed_fabricated 2026-05-13. ROC = Rockwool = MW. Consistent across all sources."
-          }
-        ],
-        "poznamka": "TZ ARS DPZ D.1.1: Kingspan pro šikmé střechy s MW, sklon 5,25°. EW 15 DP1 per PBŘ ABMV_6. Výška v hřebeni 7,1 m. _review_thickness=True: TZ ARS neuvádí explicitní tloušťku střešního panelu — ověřit u projektanta / statika D.1.2. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: _review_thickness flag REMOVED — statika TZ D.1.2 explicitly specifies 'KINGSPAN KS FF-ROC tl. 200 mm'. ROC = Rockwool = MW core. Confidence 0.90 → 0.95 (statika direct product specification with tloušťka).",
-        "computed_quantity": 558.8,
-        "declared_quantity": 558.8,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "tz_ars_dpz_verified",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-004",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Montáž střešního opláštění Kingspan KS FF-ROC 200 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů, uložení prosté/spojité (2-3 polí) na vaznicích rozteč max 1.5 m per statika TZ D.1.2",
-      "mj": "m²",
-      "mnozstvi": 558.8,
-      "_qty_formula": "střecha netto Step3 = 558.8 m² (shodné s PSV-OPL-003)",
-      "source": "TZ statika D.1.2 (vaznice rozteč 1.5 m) + TZ ARS D.1.1 p4 + Step3",
-      "raw_description": "montáž Kingspan střešní opláštění kotvení šrouby",
-      "confidence": 0.9,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.9,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "montáž střešní opláštění Kingspan — TZ ARS DPZ D.1.1",
-        "formula": "střecha netto Step3 = 558.8 m²",
-        "formula_parsed_method": "derived_from_step3_areas",
-        "inputs": [
-          {
-            "label": "strecha_netto_m2",
-            "value": 558.8,
-            "unit": "m²"
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          },
-          {
-            "type": "tz_section",
-            "section": "D.1.2 (statika) — Návrh opláštění",
-            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
-          }
-        ],
-        "poznamka": "TZ ARS DPZ D.1.1: montáž kotvením k OK. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: vaznice rozteč max 1.5 m per statika TZ D.1.2 added. Confidence 0.90 → 0.90 unchanged.",
-        "computed_quantity": 558.8,
-        "declared_quantity": 558.8,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.9,
-        "extraction_method": "tz_ars_dpz_verified",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-005",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Klempířské lemy + přechody střecha–fasáda, pozinkovaný plech — atika, úžlabí, nároží, parapety, krycí lišty — dle TZ ARS DPZ D.1.1",
-      "mj": "bm",
-      "mnozstvi": 207.0,
-      "_qty_formula": "2 × obvod budovy 103.5 m (atika + parapety); _review_qty=True",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
-      "raw_description": "klempíř lemy přechody pozinkovaný plech atika úžlabí nároží",
-      "confidence": 0.75,
-      "_price_source": "user_skipped_pricing",
-      "_review_qty": true,
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.75,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "klempířské lemy opláštění — TZ ARS DPZ D.1.1",
-        "formula": "2 × obvod budovy 103.5 m = 207.0 bm (hrubý odhad atika + parapety)",
-        "formula_parsed_method": "estimate_perimeter_derived",
-        "inputs": [
-          {
-            "label": "obvod_budovy_m",
-            "value": 103.5,
-            "unit": "m"
-          },
-          {
-            "label": "factor",
-            "value": 2.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          },
-          {
-            "type": "step3_metric",
-            "metric": "obvod_budovy",
-            "value": 103.5
-          }
-        ],
-        "poznamka": "TZ ARS DPZ D.1.1: pozinkovaný plech — atika, lemování, parapety, krycí lišty, úžlabí, nároží, okapy. _review_qty=True: výkaz lemů vyžaduje klempířský podrobný výkaz (TBD). Odhad 207 bm = 2× obvod 103.5 m.",
-        "computed_quantity": 207.0,
-        "declared_quantity": 207.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.75,
-        "extraction_method": "estimate_perimeter_derived",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-006",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Spojovací materiál + těsnění + EPDM podložky Kingspan systém — paušál pro celý objem opláštění",
-      "mj": "kpl",
-      "mnozstvi": 1.0,
-      "_qty_formula": "1 kpl paušál",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
-      "raw_description": "Kingspan spojovací materiál těsnění EPDM kotvící prvky",
-      "confidence": 0.85,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.85,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "spojovací materiál opláštění — TZ ARS DPZ D.1.1",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          }
-        ],
-        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložky. Paušál pro celý systém opláštění (střecha + fasáda). Qty TBD u Kingspan systémového dodavatele.",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.85,
-        "extraction_method": "placeholder_lump_sum",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-007",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Doprava sendvičových panelů Kingspan na stavbu — paušál",
-      "mj": "paušál",
-      "mnozstvi": 1.0,
-      "_qty_formula": "1 paušál",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
-      "raw_description": "doprava Kingspan sendvičové panely",
-      "confidence": 0.85,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.85,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "doprava opláštění — standardní položka Kingspan systém",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          }
-        ],
-        "poznamka": "Doprava Kingspan panelů (střecha + fasáda ~536+559 m²) na stavbu. Qty paušál.",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.85,
-        "extraction_method": "placeholder_lump_sum",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
-      }
-    },
-    {
-      "id": "PSV-OPL-008",
-      "kapitola": "PSV-OPL",
-      "SO": "SO-01",
-      "popis": "Statické posouzení uchycení Kingspan k ocelové konstrukci + revizní zpráva — paušál",
-      "mj": "paušál",
-      "mnozstvi": 1.0,
-      "_qty_formula": "1 paušál",
-      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
-      "raw_description": "statické posouzení Kingspan kotvení k OK revize",
-      "confidence": 0.85,
-      "_price_source": "user_skipped_pricing",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "TZ_ARS_DPZ",
-      "_completeness": 0.85,
-      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_review",
-      "urs_match_score": null,
-      "subdodavatel_chapter": "opl_steni_sendvic",
-      "audit_trail": {
-        "lokalizace": "statika opláštění — inženýrský výkon",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
-        "inputs": [],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "D.1.1",
-            "raw": "TZ ARS DPZ D.1.1"
-          }
-        ],
-        "poznamka": "Statické posouzení kotvení Kingspan k ocelové nosné konstrukci + revizní zpráva. Povinné per ČSN EN 14509 + projektant požadavek. Qty paušál.",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.85,
-        "extraction_method": "placeholder_lump_sum",
-        "data_source_hint": "TZ_ARS_DPZ",
-        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
       }
     }
   ]

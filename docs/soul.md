@@ -250,6 +250,26 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 Александр consistently overrides scope reduction recommendations. Claude names pattern explicitly each time before complying.
 
+### 6.6a HK212 corpus patterns (consolidated 2026-05-22)
+
+8 cross-cutting patterns destilované z HK212 Stage A→E (12 commits, ~30K LOC):
+
+1. **"Re-read TZ before generating new položky"** — Phase 0b TZ extrakce se často zapomene v pozdějších stagech (Stage D/E item composition). Před JAKOUKOLIV mutací položky (popis, mnozstvi, source) re-check `inputs/dokumentace/TZ_*.pdf` + PBŘ. Symptom: generic placeholders ("~1500 Kč/m²", "TBD") místo TZ-derived specs (tl. 200mm MW, bílá+modrá, EW 15 DP1, EPDM podložka). Cure: TZ re-read jako mandatory step v Stage E checklist. Pattern 8 v `docs/STAVAGENT_PATTERNS.md`.
+
+2. **"DSP-stage detail trap"** — DSP DXF s workshop-level detail (147 OKNO INSERTs, 28 vrata/dveře blocks, 141 structural_columns s serial čísly) ≠ dílenská. DXF razítka říkají DSP. Confidence stays in DSP range (0.85), NE DPS (0.95). HK212 dilenska → dsp_dxf rename housekeeping commit `b23fff07` reflects to.
+
+3. **"Ghost razítko filter rule"** — Razítka kde `date > 2y older than DXF file mtime` AND akce mismatch (např. "DPS výroba" v DSP-stage DXF) = ghost razítka. DXF files jsou reusable templates (block libraries), staré razítka přežijí. Filter rule v Stage A.
+
+4. **"Layer dictionary ratification gate"** — Auto-detect classifier (regex-based 70+ rules) + STOP gate at <50 % coverage. User confirmation BEFORE aggregation pro: ArchiCAD A-/S-/G-/C-* prefixes, Czech ad hoc names (PROFILY, NETISK, OZN-REZU), user_custom_numbered. HK212: 39.6 % → 100 % po 3 iteracích + Step 1.5 A-GENM dossier (Lindab + MEARIN reveal). Reference: `step1c_finalize_dictionary.py` + `dictionary_decisions.md`.
+
+5. **"Annotate-before-mutate"** — Pro ceny (Stage E) + geometrie (Step 3 — area metrics). Add `_*_source` fields first (e.g. `_length_source`, `_geometric_source`, `_price_source: "user_skipped_pricing"`) → user review → potom mutation. Step 3 HK212: `items_hk212_etap1_with_geometry.json` separate file, original NEMODIFIKOVÁN. Cena = NEVER auto-mutate.
+
+6. **"Profession scope-cut hygiene"** — Při dropování položek (Stage D drop 22 items = 15 VZT + 7 Rpol M-kapitola) log to `delta_report` / metadata.dropped_items s reason. Don't leave concept items hanging. Reason musí být citovaný (Phase 0b §5, D.1.4 missing, ABMV_12).
+
+7. **"Long-session context decay"** — Sessions > 30K LOC outputs / > 8 commits → agent forgets Phase 0b data (TZ ARS DPZ details). Mandatory consolidation checkpoint at session end. Trigger: any PR exceeding 20K LOC modifications → run memory consolidation skill before close. HK212 Stage E forced TZ re-read = symptom of decay.
+
+8. **"Block-name as pseudo-schedule"** — DXF block names carry product specs: `OKNO_1k 1000×1000`, `M_Vrata_sekční 3500×4000`, `Lindab Round 150/100 Antique White`, `MEA Mearin Plus3000 NW300`, `IPE450`, `C150×19_3`. Block names = primary source for material specs, NE TEXT/MTEXT entities (architects often skip ATTRIB fill — HK212 ATTRIB harvest = 0). Block-name pseudo-schedule parser zapsán jako separate task (P3 backlog).
+
 ### 6.6 Session structure (proven)
 
 1. Drop task .md file into repo
@@ -329,6 +349,53 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 > Each session adds a section here. Format:
 > `## YYYY-MM-DD — Session: {topic}` + Rozhodnuto / Odmítnuto / Otevřené otázky / Co dál
+
+---
+
+### 2026-05-22 — Session: HK212 Stage A→E + Step 3 polygonization (P0 Kingspan resolved)
+
+**Topic:** HK212 hala (Hradec Králové, SOLAR DISPOREC) — full pipeline from DXF discovery housekeeping through Stage E Kingspan P0 blocker resolution. 12 commits on `claude/hk212-dilenska-ok-ut-dps-integration` branch, ~30K LOC modifications across 5 phases. Companion branch `claude/hk212-step3-polygonization-areas` preserved for debug story (3 atomic commits).
+
+**Commits (12):**
+- `2a6c9034` Stage A/B/C: B5 steel-profile catalog + UT_HALAHK_DPS DSP discovery
+- `b23fff07` dilenska→dsp_dxf housekeeping rename (DSP-grade DXF confirmation)
+- `5064753f` Task 2 Step 1: layer dictionary auto-detect (100 % coverage achieved)
+- `a74c8ed2` Task 2 Step 1.5: A-GENM dossier (Lindab + MEARIN reveal) + dictionary ratification
+- `75221920` Task 2 Step 2: full geometry extraction across 8 DSP DXFs (29 categories)
+- `0b22136f` Stage D: 22 items dropped (15 VZT + 7 Rpol) + HSV-3 _length_source + 4 ABMV closures
+- `d1bbde80` Step 3: polygonization + 9 area metrics + items.json annotation (separate file)
+- `0065cae9` Step 3: handoff doc + acceptance scorecard
+- `5bdfa22e` Step 3: slope disambiguation fix (5.25° vs 5.65° gate angle) + kapitola coverage audit (P0 Kingspan blocker found)
+- `43f7ba19` Merge step3 → dilenska (no-ff, debug story preserved)
+- `2a02bff5` Handoff doc finalized after merge
+- `af55d317` **Stage E: P0 Kingspan resolved** — 8 PSV-OPL items (TZ ARS DPZ specs) + ABMV_2 vrata 3500mm + Pattern 8
+
+**Rozhodnuto:**
+- DXF stupeň = DSP (NE dílenská) — workshop-level detail v DSP scope. Rename housekeeping done.
+- 9 area metrics canonical from Step 3 polygonization: zastavěná 538.5 m², obvod 103.5 m, střecha brutto 556.5 m² / netto 558.8 m², fasáda brutto 623.3 m² / netto 536.4 m², výška 6.02 m, výkop 99.3 m³ (default w/d), podlaha 538.5 m² fallback.
+- ABMV_2 vrata: TZ ARS DPZ D.1.1 wins (3500 × 4000 mm) over DXF block name template (3000 mm). Confidence 0.5 → 0.90.
+- PSV-OPL kapitola added with 8 items per TZ ARS DPZ concrete specs (NOT generic audit doc placeholders): obvodový Kingspan KS1000 AWP tl. 200mm MW bílá+modrá, střešní MW EW 15 DP1, klempíř lemy, spojovací materiál, doprava, statika. `_price_source: "user_skipped_pricing"` na všech.
+- items.json 141 → 119 (Stage D) → 127 (Stage E).
+- Pattern 8 zapsán do `docs/STAVAGENT_PATTERNS.md`: "Re-read TZ before generating new položky".
+
+**Odmítnuto:**
+- Per-room floor polygonize (deferred — floor LINEs neuzavírají loops, per-room split potřebuje cluster-by-bbox + MTEXT room-label proximity match).
+- `dedup_dxf_replicas.py` standalone util — zatím inlined v `step3_polygonization.py:dedup_lines`.
+- Block-name pseudo-schedule parser — separate task (P3 backlog).
+- Per-record auto-mutation of mnozstvi z geometry metrics. Annotate-before-mutate princip = NEVER auto-mutate. Output je separate `items_*_with_geometry.json` file.
+
+**Otevřené otázky:**
+- HSV-1 výkop figura: 222.75 m³ (z RE-RUN §3.10 formula `495 m² × 0.45`) vs Step 3 zastavěná 538.5 m². Buď update HSV-1-001 → 538.5 × 0.45 ≈ 242 m³, NEBO ABMV pro 538 vs 495 reconciliation. Defer to user.
+- Roof Kingspan tloušťka: TZ ARS neuvádí explicitně → `_review_thickness: True` na PSV-OPL-003. Ověřit u projektanta / statika D.1.2.
+- Klempíř lemy qty: 207 bm = 2× obvod estimate. `_review_qty: True`. Potřebuje klempířský detailní výkaz.
+- HSV-3 mass reconciliation: 10263 kg IPE 400 ze statika vs kusovník 2 schedule INSERTs vs structural_columns 141 real cols. Deferred from Stage D.
+
+**Co dál:**
+- **Stage E benchmark vs example_vv corpus** — 7 výkazů + 6 PDF výkresů. Recommended option (b) coverage. Now meaningful (P0 resolved).
+- **HSV-3 mass reconciliation** — use Step 3 perimeter 103.5 m × foundation cross-section to refine kg/m³.
+- Memory consolidation: 8 patterns destilované do soul.md §6.6a (Re-read TZ, DSP detail trap, Ghost razítko, Layer ratification gate, Annotate-before-mutate, Profession scope-cut hygiene, Long-session context decay, Block-name pseudo-schedule).
+
+**Session retrospective:** `docs/sessions/2026-05-22_HK212_StageABCD_Step3.md`
 
 ---
 

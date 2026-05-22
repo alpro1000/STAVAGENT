@@ -1,0 +1,45 @@
+{
+  "file": "UT_HALAHK_DPS.dxf",
+  "found": true,
+  "extracted_at": "2026-05-21T20:14:25.374431+00:00",
+  "summary": {
+    "total_INSERT_references": 143,
+    "unique_block_defs": 3,
+    "distinct_insert_positions": 2,
+    "aggregated_inner_entity_types": {
+      "LINE": 11808,
+      "LWPOLYLINE": 11
+    },
+    "aggregated_inner_text_samples": [],
+    "aggregated_inner_text_count": 0
+  },
+  "block_def_prefix_groups": [
+    {
+      "prefix": "2966-1_NAVRH_DISPOZICE_<N>",
+      "unique_block_defs": 140,
+      "sample_names": [
+        "2966-1_NAVRH_DISPOZICE_187",
+        "2966-1_NAVRH_DISPOZICE_188",
+        "2966-1_NAVRH_DISPOZICE_189",
+        "2966-1_NAVRH_DISPOZICE_190",
+        "2966-1_NAVRH_DISPOZICE_191"
+      ]
+    },
+    {
+      "prefix": "2966-1_NAVRH_DISPOZICE_S_<N>",
+      "unique_block_defs": 2,
+      "sample_names": [
+        "2966-1_NAVRH_DISPOZICE_S26",
+        "2966-1_NAVRH_DISPOZICE_S26"
+      ]
+    },
+    {
+      "prefix": "2966-1_NAVRH_DISPOZICE_STR",
+      "unique_block_defs": 1,
+      "sample_names": [
+        "2966-1_NAVRH_DISPOZICE_STR"
+      ]
+    }
+  ],
+  "note": "2966-1 block embedded as INSERT — partial resolution of ABMV #16. Separate PDF dokument 2966-1 stále žádaný (block je rendering-only)."
+}

@@ -1,0 +1,52 @@
+# HK212 — Layer Dictionary Ratification
+_Generated: 2026-05-22T04:09:15.705435+00:00_
+## Decisions applied
+- **0** : `default` → `drop_from_aggregation=True`
+  - DXF default — mixed template residue, low value for aggregation
+- **212_HK_situace_03_dwg-1** : `user_custom_numbered` (conf 0.4) → `external_reference` (conf 0.85)
+  - External xref: situace 1:200 — keep for cross-ref
+- **2966-1_navrh dispozice stroju-HK_02_dwg-1** : `user_custom_numbered` (conf 0.4) → `external_reference` (conf 0.85)
+  - External xref: 2966-1 dispozice strojů (existing layout) — Stage A
+- **2966-1_navrh dispozice stroju-HK_dwg-1** : `user_custom_numbered` (conf 0.4) → `external_reference` (conf 0.85)
+  - External xref: 2966-1 dispozice strojů (existing layout) — Stage A
+- **A-GENM** : `archicad_massive_ambiguous` (conf 0.5) → `gutters_downpipes` (conf 0.85)
+  - MEARIN Plus3000 NW300 drainage channel at základy (per agenm_targeted_scan.json)
+- **A-GENM-1** : `archicad_massive_ambiguous` (conf 0.5) → `gutters_downpipes` (conf 0.85)
+  - Lindab Round Downpipe System 150/100 geometry (ARC/SPLINE/HATCH exploded from block)
+- **A-GENM-2** : `archicad_massive_ambiguous` (conf 0.5) → `gutters_downpipes` (conf 0.85)
+  - Lindab Round Downpipe System 150/100 INSERTs + drawing geometry on A104_pohledy
+- **NETISK** : `non_print_helper` → `drop_from_aggregation=True`
+  - Czech 'non-print' construction-aid layer — explicitly not meant for output
+
+## Post-ratification category distribution
+- **annotation**: 14
+- **annotation_detail**: 8
+- **hatch_fill**: 6
+- **walls**: 6
+- **topography_situace**: 6
+- **existing_utility_pipe**: 6
+- **dimensions**: 5
+- **roof**: 5
+- **centerline**: 4
+- **doors**: 4
+- **floor**: 4
+- **axis_grid**: 4
+- **external_reference**: 3
+- **gutters_downpipes**: 3
+- **foundation**: 2
+- **default**: 1
+- **area_identifier**: 1
+- **windows**: 1
+- **demolition**: 1
+- **electrical_generic**: 1
+- **insulation**: 1
+- **title_block**: 1
+- **non_print_helper**: 1
+- **tzb_ut_vzt**: 1
+- **plumbing_generic**: 1
+- **steel_profile_generic**: 1
+- **structural_beams**: 1
+- **structural_columns**: 1
+- **structural_generic**: 1
+- **linework_thin_detail**: 1
+- **linework_thick_outline**: 1
