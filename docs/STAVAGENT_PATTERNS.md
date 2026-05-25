@@ -674,6 +674,143 @@ Combines with:
 
 ---
 
+## Pattern 15: Work-First, Catalog-Last — Sequential Výkaz Výměr Generation
+
+**Source:** HK212 hala soupis_praci retrospective (2026-05-24/25). Pattern 13 ("Synthetic Acceptance Metrics") documented the failure mode that motivates this discipline.
+
+### Problem
+Premature catalog mapping — auto-matching KROS/URS codes during item generation — creates **false positives, duplicates, cross-context contamination** at fake high confidence (cf. Pattern 13 case studies: SDK floor mapped to industrial epoxy, mostovka HI mapped to sokl HI, atd.). The matcher cannot distinguish "right code, wrong context" from "right code, right context" because it has no domain reasoner. Confidence threshold ≥ 0.70 is meaningless when 47 % of Tier 1 matches are domain-wrong.
+
+### Solution — 3-stage workflow
+
+**Stage 1: Work atomization (catalog-blind)**
+- Generate flat sequential list of all stavební works in logical construction order (HK212 = Fáze 1-11)
+- Each item = **atomic work step** (not consolidated blob — split if multiple operations)
+- **Required fields per item:** `id`, `popis`, `mj`, `mnozstvi`
+- **Required audit per item** (per Pattern 2 + 14):
+  - `_formula` — how mnozstvi was computed
+  - `_source` — TZ/výkres reference (e.g. "TZ ARS p3 + A105 měřená geometrie")
+  - `_audit_trail.journey` — Pattern 14 forward-tracked log of mutations
+- **Optional fields:** `_review_flag`, `_vyjasneni_ref` (ABMV link), `_status_flag`
+
+**Stage 2: Decomposition on demand**
+- When item is consolidated and downstream needs granular catalog mapping → split into atomic kroks (`{parent_id}a`, `{parent_id}b`, …)
+- Per krok: `parent_item` reference + `split_decision` rationale + ČSN/IGP/TZ source inheritance
+- Pattern 14 forward audit trail **mandatory** through the split
+
+**Stage 3: Catalog mapping (separate session, after Stages 1+2)**
+- **Manual** code assignment per item — NOT auto-matching
+- Domain expert (přípravář) maps to catalog using domain knowledge + targeted catalog search
+- Catalogs interchangeable: KROS (CZ private) ↔ ÚRS (CZ public) ↔ OTSKP (CZ transport) ↔ BKI (DE) ↔ FIEBDC-3 (ES) ↔ Batiprix (FR) — see Pattern 16
+
+### Standard XLSX output schema (Stage 1)
+
+| # | Krok | Fáze | Kapitola | ID | Popis | MJ | Mnozstvi | Vzorec / Zdroj | Pozn. (review/ABMV) | (Code) | (Cena) |
+|---|---|---|---|---|---|---|---:|---|---|---|---:|
+
+**Code + Cena columns left EMPTY in Stage 1.** Filled only in Stage 3.
+
+### HK212 reference implementation
+- `test-data/hk212_hala/scripts/build_sequential_list.py` — Stage 1 generator
+- `test-data/hk212_hala/scripts/split_hsv1_028.py` — Stage 2 atomization (HSV-1-028 → 028a–f, 6 kroks)
+- `test-data/hk212_hala/outputs/sequential_list/` — XLSX + CSV + JSON output (~138 items po splittingu)
+- 11 Fází (Příprava → Zemní práce → Základy → OK → Opláštění → Výplně → Klempířina → Podlahy → Vnitřní → Dokončovací → VRN)
+- Pattern 14 forward audit trail per item through all stages
+
+### Rule
+**Never run auto-catalog-matcher on freshly generated items.** Always 3-stage workflow with manual catalog phase **last**. Tools that auto-match against KROS/URS are debugging aids, not authoring tools — their output is a suggestion, not a soupis.
+
+### International rationale
+Work atomization is **universal** (digging holes, pouring concrete, welding steel = same physical operation in CZ/DE/ES/FR). Catalogs are **local** (KROS/BKI/FIEBDC differ in code structure, naming granularity, pricing convention). Separating work generation from catalog mapping = the same work ontology powers all markets. See Pattern 16 for the adapter architecture.
+
+### Related
+- Pattern 2 (Audit trail mandatory) — fields per item
+- Pattern 13 (Synthetic metrics) — failure mode this pattern prevents
+- Pattern 14 (Forward-tracked _analytical_journey) — mandatory through Stages 1→2→3
+- Pattern 16 (Universal Work Ontology) — downstream consequence for multi-market expansion
+
+---
+
+## Pattern 16: Universal Work Ontology — Catalog-Agnostic Item Generation
+
+**Source:** HK212 international expansion architectural decision (2026-05-25). Direct consequence of Pattern 15.
+
+### Insight
+Construction work itself is universal across European markets. Steel column installation, concrete pouring, Kingspan panel mounting = same physical operations whether in Czechia, Germany, Spain or France. **What differs is local catalog codes + pricing conventions + tender formats**, not the work.
+
+### Universal work × local catalog matrix
+
+| Concept | CZ | DE | ES | FR |
+|---|---|---|---|---|
+| Construction work ontology | universal | universal | universal | universal |
+| Catalog format | KROS / ÚRS / OTSKP | BKI / Sirados | FIEBDC-3 / Código Estructural | Batiprix |
+| Norms reference | ČSN EN | DIN EN | UNE-EN | NF EN |
+| Pricing convention | Kč/m³ | €/m³ | €/m³ | €/m³ |
+| Tender format | ZZVZ | VOB/B | LCSP | CCAG |
+
+Materials and profiles already Eurocode-unified across markets:
+- Concrete classes: C16/20 = C16/20 = C16/20 = C16/20
+- Steel profiles: IPE 400 = IPE 400 = IPE 400 = IPE 400
+- Sandwich panels: KS NF 200 mm = same product family EU-wide (vendor catalog with national pricing)
+
+### Architectural decision
+STAVAGENT item generation engine produces **catalog-agnostic items** (work + mnozstvi + formula + source). Catalog binding = separate **adapter layer per market**.
+
+```
+items.json (work ontology, universal)
+    │
+    ├─→ czech_kros_adapter.py     → KROS code
+    ├─→ czech_urs_adapter.py      → ÚRS code
+    ├─→ czech_otskp_adapter.py    → OTSKP code (transport)
+    ├─→ german_bki_adapter.py     → BKI position
+    ├─→ spanish_fiebdc_adapter.py → FIEBDC-3 code
+    └─→ french_batiprix_adapter.py→ Batiprix code
+```
+
+Single work definition → N catalog mappings → N markets covered.
+
+### Concrete example
+
+**Work ontology entity:**
+```json
+{
+  "id": "HSV-2-001",
+  "popis": "Beton patek rámových dvoustupňové C16/20 XC0",
+  "mj": "m³",
+  "mnozstvi": 22.875,
+  "_formula": "10 × (1.5²×0.6 + 1.25²×0.6)",
+  "_source": "A105 + statika TZ D.1.2 p30"
+}
+```
+
+**N market mappings:**
+| Adapter | Code | Catalog popis |
+|---|---|---|
+| CZ KROS | 273313811 | Beton základových patek prostý C16/20 |
+| DE BKI | 031.001 | Streifenfundamente Beton C16/20 |
+| ES FIEBDC | E04CA010 | Hormigón armado en zapatas |
+| FR Batiprix | 01.02.01 | Béton fondations isolées |
+
+Same work definition. Single source of truth = work ontology, not catalog code.
+
+### Domain knowledge transfer rule
+Přípravář workflow learned in CZ market (HK212) directly applicable to DE/ES/FR after adapter layer translation. **Work generation phase = identical. Catalog phase = market-specific.** This is the core of STAVAGENT's international expansion strategy.
+
+### Implementation roadmap
+- ✅ **CZ work ontology established** — HK212 (138 items proof + sequential_list output)
+- ⏳ **Universal work_ontology JSON schema** — extract canonical schema from current items.json (separate task)
+- ⏳ **KROS adapter** — formal layer replacing ad-hoc Pattern 11 matching (Stage 3 of Pattern 15)
+- 🔮 **BKI adapter** — German market entry
+- 🔮 **FIEBDC adapter** — Spanish market entry
+- 🔮 **Batiprix adapter** — French market entry
+
+### Related
+- Pattern 15 (Work-First, Catalog-Last) — upstream dependency; this pattern is the international corollary of the same discipline
+- Pattern 11 (KROS FTS matching) — current ad-hoc CZ implementation, to be wrapped as formal `czech_kros_adapter.py`
+- Pattern 13 (Synthetic metrics) — reinforces why adapter layer must be manual / human-reviewed, not auto-matched
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation
