@@ -352,6 +352,36 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-25 — Session: Pattern 15 + 16 codified — Work-First Catalog-Last + Universal Work Ontology
+
+**Topic:** Architectural patterns codification. Pattern 13 (Synthetic Metrics) + Pattern 14 (Forward-tracked _analytical_journey) były přidány paralelně. Tato session přidává Pattern 15 + 16 jako logické rozšíření — workflow discipline + international expansion strategy.
+
+**Rozhodnuto:**
+- **Pattern 15: Work-First, Catalog-Last** — 3-stage workflow (work atomization → decomposition on demand → manual catalog mapping). HK212 sequential_list (138 items, 11 Fází, `build_sequential_list.py` + `split_hsv1_028.py`) je referenční implementace. **Rule: never auto-catalog-match during Stage 1.** Catalog mapping is debugging aid, not authoring tool. Pattern 13 (Synthetic Metrics) failure mode is exactly what this pattern prevents.
+- **Pattern 16: Universal Work Ontology** — architectural principle pro international expansion. Construction work = universal across CZ/DE/ES/FR; what differs = local catalog codes + pricing conventions + tender formats. STAVAGENT item generation produces catalog-agnostic items; catalog binding = adapter layer per market (`czech_kros_adapter.py`, `german_bki_adapter.py`, `spanish_fiebdc_adapter.py`, `french_batiprix_adapter.py`). Same items.json → N catalogs → N markets covered. Domain knowledge transfer rule: přípravář workflow learned in HK212 directly applicable to DE/ES/FR after adapter translation.
+- **Implementation roadmap (Pattern 16):** ✅ CZ work ontology established (HK212 138 items); ⏳ universal work_ontology JSON schema extraction (separate task); ⏳ formal KROS adapter wrapping Pattern 11; 🔮 BKI/FIEBDC/Batiprix adapters.
+- HK212 sequential list workflow (Cesta A) **proven correct** — flat ordered list with NO auto-codes is the only honest output until Stage 3 manual mapping.
+
+**Odmítnuto:**
+- Auto-catalog-matchers as authoring tools (Pattern 13 false-positive failure mode established this is wrong)
+- Forcing single catalog (KROS) on multi-market roadmap (Pattern 16 explicitly decouples)
+- Tight coupling between work generation engine + catalog adapters (architectural decision: separate layers)
+- Generating Pattern 15/16 reference implementations now (HK212 build_sequential_list.py already serves this role)
+
+**Otevřené otázky:**
+- Universal work_ontology JSON schema canonical form — separate task, extract from items.json schema + flag what's CZ-specific vs universal
+- KROS adapter formalization — when to refactor Pattern 11 ad-hoc matching into `czech_kros_adapter.py`
+- First non-CZ market choice — DE (BKI biggest commercial) vs ES (FIEBDC simplest format) vs PL (proximity)
+
+**Co dál:**
+- Apply Pattern 15 to RD Jáchymov + Žihle in retrospect — verify they followed 3-stage workflow naturally
+- Extract universal work_ontology JSON schema as discovery task
+- Next pilot project: validate Pattern 15 Stage 1 → Stage 2 → Stage 3 cleanly separable
+
+**Branch:** `claude/patterns-15-16-work-first` (this commit)
+
+---
+
 ### 2026-05-24 — Session: HK212 soupis_praci retired → sequential_list (cleanup + retrospective)
 
 **Topic:** Cleanup pass after fresh-eyes review of `hk212_soupis_praci.xlsx` exposed systematic KROS auto-match false positives. `soupis_praci/` removed from main; replaced by `sequential_list/` (shipped via PR #1210) — flat ordered list of 128 items in logical construction sequence with NO codes (manual user-fill workflow).
