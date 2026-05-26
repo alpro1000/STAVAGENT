@@ -617,6 +617,43 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-21 — Session: Říms calibration — Phase A closing (gate GREEN)
+
+**Topic:** Alexandra answered 8 open questions; this session closes Phase A by running the two gate-blocking actions (Q4 curing-class repro + Q7 MCP/Monolit boundary read) and shipping the documentation updates (Q1 task path fix, Q6 backlog file, Q8 finding documented). Phase A → Phase C gate is now GREEN.
+
+**Rozhodnuto (per Alexandra's answers):**
+- **Q1:** Task spec amended — SO-250 path corrected from `test-data/tz/SO-250_golden_test.md` to `test-data/SO_250/tz/SO-250.md`. Vitest wiring deferred to Phase G.
+- **Q2:** SO-206 fixture skipped entirely. Stays as DOKA nabídka 540045359 reference only.
+- **Q3:** TS catalog wins for this task. MCP HTTP-delegates. Migration to "B4 YAML wins with CI drift check" deferred to a separate Týden 3 codegen pipeline task.
+- **Q4:** 15-min repro complete. **Subagent claim was wrong** — orchestrator at `planner-orchestrator.ts:1536–1576` DOES thread `curing_class` correctly via `getDefaultCuringClass(elementType)`. But a deeper bug surfaced: TS `CURING_DAYS_TABLE` and Python MCP `CURING_DAYS_TABLE` disagree on class 4 values at 15-25 °C × C30+ (TS=5 d, Python=9 d, task expects 9 d). Phase C fix #1.
+- **Q5:** Scheduler refactor gated behind opt-in `scheduler_mode` flag per element. rimsa defaults to `discrete_cyclic`; everything else stays `legacy`. Expand only after each element has golden test.
+- **Q6:** This task ships `rimsa.yaml` + `T_bedneni.yaml` only. TKP 18 / ČSN EN 13670 / DIN 18218 norm extraction → `backlog/kb_norms_extraction.md` (Týden 3 scope, 3 PRs).
+- **Q7:** 30-min directed read of `concrete-agent/.../mcp/tools/calculator.py` complete. MCP is a soft-fallback wrapper: HTTP-POSTs to `MONOLIT_API_URL/api/calculate` first; falls back to local Python simplified calc on timeout/failure. NOT duplicated business logic — degraded mode. Boundary documented at `docs/architecture/mcp_calculator_boundary.md`.
+- **Q8:** Comparison-table acceptance test dropped — stale expectation. No standalone "tabulka porovnání bednění" component exists in the frontend; filter happens at data-fetch layer via `getSuitableSystemsForElement(rimsa)` short-circuit (returns 3 rimsa systems, hides the rest). Wrong-system display is unreachable.
+
+**Odmítnuto:**
+- Migrating norm matrices into KB now (deferred to Týden 3 per Q6).
+- Trusting the audit subagent's curing-threading claim without source verification — turned out to be wrong; rule applied: "lépe ověř než hádej".
+- Removing the Python MCP fallback. It serves a real graceful-degradation role; just needs the curing table reconciled with the TS engine.
+
+**Otevřené otázky:** None gating Phase C. Phase C kickoff is the next session.
+
+**Co dál:**
+- Phase C kickoff (branch `claude/rimsa-phase-c-scheduler-discrete-XXXXX`) — introduce `scheduler_mode` flag, fix curing table divergence, implement discrete-shift scheduler + cyclic phase model, wire crew parallelism through UI inputs.
+- Phase F note: forward `exposure_class` + `curing_class` in MCP→Monolit HTTP payload (currently dropped on the wire per Q7 finding).
+
+**Files changed:**
+- `docs/audits/rimsa_fullstack/2026-05-20_phase_a_closing.md` (new, ~200 lines — decisions + Q4 repro + Q8 finding)
+- `docs/architecture/mcp_calculator_boundary.md` (new, ~120 lines — Q7 output)
+- `backlog/kb_norms_extraction.md` (new — Q6 Týden 3 ticket, 3-PR split)
+- `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md` (Q1 SO-250 path correction in 2 places)
+- `docs/soul.md` §9 (this entry)
+- `next-session.md` (overwrite — Phase C kickoff handoff)
+
+**Branch:** `claude/rimsa-calibration-phase-a`
+
+---
+
 ### 2026-05-21 — Session: Říms calibration — Phase A discovery audit
 
 **Topic:** Phase A (audit only, no code) of `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`. Covered Phase A.1 (endpoint discovery), A.2 (golden test inventory), A.3 (UI components), A.5 (test inventory), A.6 (field visibility per element=rimsa), A.7 (KB inventory + hardcoded matrices), and B (architecture analysis prep). Spawned 5 parallel `Explore` subagents to keep the breadth manageable. Single deliverable: `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`.
