@@ -43,7 +43,7 @@
       "id": "ABMV_1",
       "category": "design_clarification",
       "severity": "critical",
-      "status": "resolved_with_caveats",
+      "status": "resolved_authoritative",
       "title": "Energetická bilance vs. technologie strojů",
       "summary_cs": "TZ B uvádí Pvyp = 60,5 kW, jistič 3×100 A. Výkres A106 ukazuje stroje DRIFT_E1, DEFRAME, filtrační jednotka s příkonem cca 80 kW/stroj. Při souběhu provozu navržené dimenzování nestačí.",
       "blocks_vv": [
@@ -54,9 +54,22 @@
       "addressee": [
         "Volka"
       ],
-      "resolution_note": "Stage C ÚT discovery extracted P_topny_total = 84.0 kW from UT_HALAHK_DPS.dxf zařízení list. Devices: DALAP Dalap_E-HP_9kW × 4 (9.0 kW/unit = 36.0 kW); FENIX (ECOSUN) ECOSUN_S+_12 × 40 (1.2 kW/unit = 48.0 kW); PT Ventilation PT_Vents_UET-15D × 4 (0 kW/unit = 0 kW); LENS LENS_ARENA_60x120_W × 36 (0 kW/unit = 0 kW). Heating bilance covered; cooling + VZT electric load NOT in DXF (VZT D.1.4 still missing per ABMV_12). LED svítidla a VZT rekuperační jednotky listed at 0 kW (reference only — actual EL spotřeba waits on EL D.1.4).",
-      "resolution_date": "2026-05-22",
-      "resolution_source": "outputs/dsp_dxf_ut_integration/ut_zarizeni_list.json"
+      "resolution_note": "DPS D.1.4.2 VYTÁPĚNÍ (05/2026) §9 confirms authoritative:\n 20 ks ECOSUN S+ 12 × 1.2 kW = 24 kW (NOT 40 ks as DXF Stage C reading)\n 4 ks Dalap E-HP × 9 kW = 36 kW\n Total: 60 kW\n Δ vs TZ B (originally 83 kW expected): -27 % — TZ B included planned technology, ne jen topení.\n Δ vs DXF Stage C reading (84 kW): -29 % — DXF block references were 2× duplicated per panel.\n DPS authoritative.",
+      "resolution_date": "2026-05-26",
+      "resolution_source": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc §9 (D.1.4.2 VYTÁPĚNÍ DPS 05/2026)",
+      "authoritative_values": {
+        "tepelna_ztrata_kw": 11.0,
+        "celkovy_prikon_kw": 60.0,
+        "ecosun_count": 20,
+        "ecosun_kw_per_unit": 1.2,
+        "ecosun_total_kw": 24.0,
+        "dalap_count": 4,
+        "dalap_kw_per_unit": 9.0,
+        "dalap_total_kw": 36.0,
+        "rocni_spotreba_mwh": 46.0,
+        "vnitrni_teplota_c": 18,
+        "plocha_haly_m2": 495
+      }
     },
     {
       "id": "ABMV_2",

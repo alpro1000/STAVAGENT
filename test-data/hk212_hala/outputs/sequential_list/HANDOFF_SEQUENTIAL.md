@@ -2,14 +2,14 @@
 
 **Status:** generated, validated, ready for manual KROS/URS + price assignment.
 
-**Branch:** `claude/hk212-sequential-list`
-**Date:** 2026-05-22
+**Branch:** `claude/hk212-add-vytapeni`
+**Date:** 2026-05-26
 
 ## Counts
-- 138 items v logickém stavebním pořadí
-- 11 fází (od příprava staveniště po kolaudaci)
-- 0 items added, 0 skipped, 0 invented
-- 0 modifications to `items_hk212_etap1.json`
+- 150 items v logickém stavebním pořadí (138 baseline + 12 M-UT vytápění)
+- 12 fází (1–11, vč. nová 9.5 TZB Vytápění mezi Podlaha průmyslová a Ostatní + Přesun hmot)
+- 12 items added (M-UT-001..012), 0 skipped, 0 invented
+- 1 ABMV updated (ABMV_1 → resolved_authoritative, 60 kW DPS)
 
 ## Per-phase distribution
 - FÁZE 1: 20 items
@@ -21,6 +21,7 @@
 - FÁZE 7: 13 items
 - FÁZE 8: 4 items
 - FÁZE 9: 6 items
+- FÁZE 9.5: 12 items
 - FÁZE 10: 2 items
 - FÁZE 11: 9 items
 
@@ -31,10 +32,10 @@
 - confidence < 0.70: 80 items (yellow-tinted v XLSX)
 
 ## Validation (§6)
-- ✔ row count = 138 (excl. separator rows)
+- ✔ row count = 150 (excl. separator rows)
 - ✔ each items.json id appears exactly once
 - ✔ no id missing from output
-- ✔ phases ordered 1→11 monotonically
+- ✔ phases ordered 1→9, 9.5, 10, 11 monotonically
 - ✔ within phase: výztuž → bednění → beton; doprava → montáž; dodávka → instalace
 
 ## Sidecar files
