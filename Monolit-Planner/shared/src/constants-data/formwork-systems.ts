@@ -8,6 +8,7 @@
  */
 
 import type { StructuralElementType } from '../calculators/pour-decision.js';
+import { KB_DOKA_FORMWORK_SYSTEMS } from '../kb-generated/doka-frami-catalog.js';
 
 /**
  * Pour role (2026-04-17, expanded 2026-04-29 Gate 2.1): layer role in the
@@ -153,167 +154,11 @@ export interface FormworkSystemSpec {
  *          PERI product brochures (prospekty): weight, pressure, panel specs.
  */
 export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
-  // ── DOKA ─────────────────────────────────────────────────────────────
-  {
-    name: 'Frami Xlife',
-    manufacturer: 'DOKA',
-    heights: ['0.30', '0.60', '0.90', '1.20', '1.50'],
-    assembly_h_m2: 0.72,
-    disassembly_h_m2: 0.25,
-    disassembly_ratio: 0.35,
-    rental_czk_m2_month: 507.20,
-    unit: 'm2',
-    description: 'Rámové bednění pro základy, opěry, nízké stěny — ruční montáž, vzpěry IB pro h>1.2m',
-    weight_kg_m2: 30,
-    pressure_kn_m2: 80,
-    max_pour_height_m: 3.0,
-    max_panel_weight_kg: 52,
-    needs_crane: false,
-    panel_widths_mm: [300, 450, 600, 750, 900],
-    formwork_category: 'wall',
-    pour_role: 'formwork',
-  },
-  {
-    name: 'Framax Xlife',
-    manufacturer: 'DOKA',
-    heights: ['2.70', '3.00', '3.30', '5.40'],
-    assembly_h_m2: 0.55,
-    disassembly_h_m2: 0.17,
-    disassembly_ratio: 0.30,
-    rental_czk_m2_month: 520.00,
-    unit: 'm2',
-    description: 'Velkoformátové rámové bednění pro vysoké stěny, pilíře — vyžaduje jeřáb (panel 154–259 kg)',
-    weight_kg_m2: 56,
-    // BUG 6: raised 100→120 — Framax Xlife max config (TIE pattern + walers) per DOKA TI
-    pressure_kn_m2: 120,
-    max_pour_height_m: 6.75,
-    max_panel_weight_kg: 350,
-    needs_crane: true,
-    panel_widths_mm: [300, 450, 600, 900, 1200],
-    formwork_category: 'wall',
-    pour_role: 'formwork',
-  },
-  {
-    name: 'Top 50',
-    manufacturer: 'DOKA',
-    heights: ['0.50', '1.00', '1.50', '2.00'],
-    assembly_h_m2: 0.60,
-    disassembly_h_m2: 0.21,
-    disassembly_ratio: 0.35,
-    rental_czk_m2_month: 380.00,
-    unit: 'm2',
-    description: 'Nosníkové bednění Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24',
-    weight_kg_m2: 25,
-    pressure_kn_m2: 75,
-    needs_crane: true,
-    formwork_category: 'slab',
-    // Pour role: formwork (nosníkové). Top 50 is the deck-side form
-    // (Vrstva 1 per canonical doc §9.2), distinct from the falsework
-    // tower below (Staxo 100 = Vrstva 3). Gate 2.1 Gap #8 corrected
-    // from 'falsework' to 'formwork' per DOKA katalog + canonical §9.1.
-    pour_role: 'formwork',
-    formwork_subtype: 'nosnikove',
-  },
-  {
-    name: 'Dokaflex',
-    manufacturer: 'DOKA',
-    heights: ['do 5.50'],
-    assembly_h_m2: 0.45,
-    disassembly_h_m2: 0.14,
-    disassembly_ratio: 0.30,
-    rental_czk_m2_month: 350.00,
-    unit: 'm2',
-    description: 'Flexibilní stropní bednění s nosníky H20 a Europlus stojkami v jednom systému (do ~5 m čisté výšky, budovy)',
-    weight_kg_m2: 18,
-    max_assembly_height_m: 5.5,
-    needs_crane: false,
-    formwork_category: 'slab',
-    // Building slab formwork + integrated props. NE mostovka — tam chybí
-    // dosah (max Europlus ~4–5 m) + reálně se pro most používá Top 50
-    // jako nosníková skruž. Allow-list drží selector mimo mostovka.
-    pour_role: 'formwork_props',
-    applicable_element_types: ['stropni_deska', 'zakladova_deska', 'zakladovy_pas', 'pruvlak'],
-  },
-  {
-    name: 'SL-1 Sloupové',
-    manufacturer: 'DOKA',
-    heights: ['3.00', '4.50', '6.00'],
-    assembly_h_m2: 0.80,
-    disassembly_h_m2: 0.28,
-    disassembly_ratio: 0.35,
-    rental_czk_m2_month: 580.00,
-    unit: 'm2',
-    description: 'Sloupové bednění pro pilíře mostů',
-    weight_kg_m2: 65,
-    pressure_kn_m2: 80,
-    needs_crane: true,
-    formwork_category: 'column',
-    pour_role: 'formwork',
-    applicable_element_types: ['sloup', 'driky_piliru'],
-  },
-  {
-    name: 'Římsové bednění T',
-    manufacturer: 'DOKA',
-    heights: ['libovolná'],
-    assembly_h_m2: 0.38,
-    disassembly_h_m2: 0.10,
-    disassembly_ratio: 0.25,
-    rental_czk_m2_month: 672.00,
-    unit: 'bm',
-    description: 'Konzolové bednění říms mostu (0,30–0,45 h/bm, 672 Kč/bm/měs)',
-    needs_crane: true,
-    formwork_category: 'special',
-    pour_role: 'formwork',
-    applicable_element_types: ['rimsa'],
-  },
-  {
-    name: 'Římsový vozík TU',
-    manufacturer: 'DOKA',
-    heights: ['libovolná'],
-    assembly_h_m2: 0.45,
-    disassembly_h_m2: 0.12,
-    disassembly_ratio: 0.27,
-    rental_czk_m2_month: 850.00,
-    unit: 'bm',
-    description: 'Římsový vozík TU — mosty >150 m, oblouky R≥250 m, takt 4–24 m (672–850 Kč/bm/měs)',
-    needs_crane: true,
-    formwork_category: 'special',
-    pour_role: 'formwork',
-    applicable_element_types: ['rimsa'],
-  },
-  {
-    name: 'Římsový vozík T',
-    manufacturer: 'DOKA',
-    heights: ['libovolná'],
-    assembly_h_m2: 0.42,
-    disassembly_h_m2: 0.11,
-    disassembly_ratio: 0.26,
-    rental_czk_m2_month: 780.00,
-    unit: 'bm',
-    description: 'Římsový vozík T — přímé mosty >150 m, takt max 5 m, protizávaží na mostovce',
-    needs_crane: true,
-    formwork_category: 'special',
-    pour_role: 'formwork',
-    applicable_element_types: ['rimsa'],
-  },
-  // ── Bridge support towers (podpěrné věže) ──────────────────────────
-  {
-    name: 'Staxo 100',
-    manufacturer: 'DOKA',
-    heights: ['5.00', '10.00', '15.00', '20.00'],
-    assembly_h_m2: 0.90,
-    disassembly_h_m2: 0.30,
-    disassembly_ratio: 0.33,
-    rental_czk_m2_month: 380.00,
-    unit: 'm2',
-    description: 'Podpěrné věže Staxo 100 — mosty výška 5–20 m, raster 1.25×1.25 m (stojky pod nosníkovou skruž Top 50)',
-    needs_crane: true,
-    max_assembly_height_m: 20,
-    formwork_category: 'support_tower',
-    // Pour role: props (stojky) — věže pod nosníkovou skruží.
-    pour_role: 'props',
-    applicable_element_types: ['mostovkova_deska', 'rigel', 'stropni_deska', 'pruvlak', 'schodiste'],
-  },
+  // ── DOKA — sourced from kb/doka_frami_catalog.yaml ───────────────────
+  // (Frami Xlife, Framax Xlife, Top 50, Dokaflex, SL-1, Římsové bednění T,
+  //  Římsový vozík TU/T, Staxo 100, DOKA MSS — see KB YAML for full list)
+  ...KB_DOKA_FORMWORK_SYSTEMS,
+  // ── Bridge support towers (PERI) ────────────────────────────────────
   {
     name: 'UP Rosett Flex',
     manufacturer: 'PERI',
@@ -660,26 +505,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
   // forma se přesune, nestaví od nuly. MSS-specific costs jsou
   // spočítány v bridge-technology.ts calculateMSSCost() / Schedule();
   // tento katalog slouží pro selector + UI card sentinel.
-  {
-    name: 'DOKA MSS',
-    manufacturer: 'DOKA',
-    heights: ['libovolná'],
-    // Nhod představují plnou montáž MSS přepočtenou na NK. Per-tact se
-    // krátí faktorem 0.35 v orchestratoru.
-    assembly_h_m2: 1.20,
-    disassembly_h_m2: 0.60,
-    disassembly_ratio: 0.50,
-    // Pronájem je v MSS mobilization/rental modelu (bridge-technology),
-    // ne per m² — v tomto poli 0 aby nic nedvojnásobilo náklady.
-    rental_czk_m2_month: 0,
-    unit: 'm2',
-    description: 'DOKA MSS (Movable Scaffolding System) — posuvná skruž pro mosty velkých rozpětí, integruje bednění + nosníky + stojky v jednom rámu',
-    needs_crane: true,
-    formwork_category: 'special',
-    pour_role: 'mss_integrated',
-    applicable_element_types: ['mostovkova_deska', 'rigel'],
-    mss_reuse_factor: 0.35,
-  },
+  // (DOKA MSS now sourced from kb/doka_frami_catalog.yaml; PERI MSS below.)
   {
     name: 'VARIOKIT Mobile',
     manufacturer: 'PERI',

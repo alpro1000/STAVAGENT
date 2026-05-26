@@ -352,6 +352,50 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-26 — Session: Týden 3 Knowledge Integration top-5 (codegen pipeline + 5 integrations)
+
+**Topic:** Build-time TS codegen pipeline activated — `kb/*.yaml` → `Monolit-Planner/shared/src/kb-generated/*.ts` → engines. Top-5 integrations per audit `2026-05-14_inventory_with_gcs.md` shipped: TKP18 maturity tables, Pokorný/Suchánek pour sequences, DOKA Frami katalog (10 systémů), ČSN EN 12812 / DIN 18218 lateral pressure, ÚRS/OTSKP routing per project_type. Codegen tool = plain Node.js (`scripts/gen-knowledge.mjs`, no transpile). CI drift check (`npm run gen:knowledge:check`) wired do `.github/workflows/monolit-planner-ci.yml` jako pre-test step.
+
+**Rozhodnuto:**
+- **Scope:** Partial Top-5 only (NE full Variant D migration — to je Týden 4+).
+- **Python codegen:** TS-only. Core engine dnes nečte tyto matrices (B2/B3 jsou loaded jen pro LLM context), Python output by byl dead weight.
+- **DIN 18218 zdroj:** ČSN EN 12812 + Pokorný/Suchánek + DOKA/PERI brochury jako free fallback. Nákup DIN 18218 (~€100) odložen.
+- **PR strategy:** 1 velký PR (codegen infra je shared dependency všech 5 tasks; atomic 5 PRs by způsobil merge konflikty na `kb/` struktuře).
+- **Codegen tool stack:** plain Node.js + `js-yaml` (no zod/ajv, manual structural validation). 5 YAMLs = ~30 LOC validator per integration; upgrade na schema lib pokud integration count >10.
+- **Namespacing v `kb-generated/index.ts`:** `export * as TKP18_MATURITY from './tkp18-maturity.js'` per module (per-modul `SOURCE_CITATION` symbol collision jinak crashne index re-export).
+- **Engine wire-up pattern:** import KB constant + alias to existing local name (`const CURING_DAYS_TABLE = KB_CURING_DAYS_TABLE`). Public API stays identical → 1136 existujících testů zelených bez modifikace.
+- **DOKA Frami catalog wiring:** spread `...KB_DOKA_FORMWORK_SYSTEMS` na začátku `FORMWORK_SYSTEMS[]`, PERI/ULMA/NOE/traditional zůstávají inline. 10 DOKA entries (Frami, Framax, Top 50, Dokaflex, SL-1, 3× Římsové, Staxo 100, DOKA MSS) přesunuto verbatim do `kb/doka_frami_catalog.yaml`.
+- **Test counts:** baseline byl ve skutečnosti **1136** (NE 1088 jak píše CLAUDE.md, ani 1158 jak píše task brief). Po session: **1174 testů, 27 files** (1136 + 38 new in `kb-generated.test.ts`).
+
+**Odmítnuto:**
+- Full `kb/` migration všech 9 B-buckets v jedné session — Týden 4+ work.
+- Replace `pour-decision.ts:ELEMENT_DEFAULTS` celý — engine-level Record<StructuralElementType,…> s strict exhaustiveness, refactor je riskantní pro 1088+ existujících testů. Místo toho přidán paralelní `POUR_SEQUENCES` katalog (textbook recommendations), ELEMENT_DEFAULTS zůstává v engine.
+- Acquire DIN 18218 standard — ČSN EN 12812 + literatura kryje real CZ use cases.
+- Husky pre-commit hook na `gen:knowledge` — script je rychlý ale přidává friction; CI drift check stačí.
+- Python codegen — žádný Core consumer dnes neexistuje.
+
+**Otevřené otázky:**
+- Pokud Core (Python) začne v budoucnu konzumovat strukturované matrices (např. pro REST endpoint vracející TKP18 limity), schema lift do `kb/_schema/*.json` (language-neutral) + paralelní Python renderer v `gen-knowledge.mjs` (cca 1-2 dni práce).
+- `tkp18_maturity.yaml` má `default_curing_class_by_element` jako plain `Record<string, 2|3|4>` — engine ho castuje na `Partial<Record<StructuralElementType, CuringClass>>`. Pokud někdy přibude element_type který je v YAML ale ne v `StructuralElementType` union, cast je sice nepravdivý ale runtime OK. Sledovat při Týden 4 element type rozšířeních.
+- Drift check v CI běží ze workspace root (`npm ci || npm install` fallback) — pokud npm ci selže na první-time `package-lock.json` regenerate, install na CI vezme ~30s nav?ic. Akceptováno.
+
+**Co dál:**
+- **Vanilla GPT vs STAVAGENT re-test** (per task POST-TASK section): ověřit, že STAVAGENT teď cituje konkrétní TKP18 čísla s `pjpk.rsd.cz` referencí (data je v `SOURCE_CITATION` exportu).
+- **Týden 4** — kandidáti pro další codegen integrations: B3 PERI katalog (parallel s DOKA, ~17 systémů), B4 production benchmarks (rebar matrix už máme jako TS, OK), B9 equipment specs (pump/crane catalog).
+- **Týden 5** — Geometry Calculator (per task explicit non-goal pro tuto session).
+- **Potenciální follow-up:** přidat husky pre-push hook na `npm run gen:knowledge:check` (kompromis mezi pre-commit friction + pure-CI drift discovery delay).
+
+**Artefakty této session:**
+- `docs/specs/knowledge-codegen-pipeline/{requirements,design,tasks}.md` (spec triple)
+- `docs/architecture/knowledge_codegen_pipeline.md` (1-page reference)
+- `scripts/gen-knowledge.mjs` (codegen tool, ~350 LOC)
+- `kb/` (5 YAML zdrojů)
+- `Monolit-Planner/shared/src/kb-generated/` (6 souborů: 5 generated + index)
+- `Monolit-Planner/shared/src/kb-generated/kb-generated.test.ts` (38 testů)
+- Updated: `package.json` (gen:knowledge scripts + js-yaml dep), `maturity.ts`, `lateral-pressure.ts`, `formwork-systems.ts`, `monolit-planner-ci.yml`
+
+---
+
 ### 2026-05-25 — Session: Pattern 15 + 16 codified — Work-First Catalog-Last + Universal Work Ontology
 
 **Topic:** Architectural patterns codification. Pattern 13 (Synthetic Metrics) + Pattern 14 (Forward-tracked _analytical_journey) były přidány paralelně. Tato session přidává Pattern 15 + 16 jako logické rozšíření — workflow discipline + international expansion strategy.
