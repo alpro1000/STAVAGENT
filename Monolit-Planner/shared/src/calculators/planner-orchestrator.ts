@@ -40,6 +40,7 @@ import { calculateFormwork, calculateThreePhaseFormwork, calculateStrategiesDeta
 import { calculateRebarLite } from './rebar-lite.js';
 import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
+import type { SchedulerMode } from './element-scheduler.js';
 import { findFormworkSystem, findMssSystem, FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod, filterFormworkByPressure } from './lateral-pressure.js';
 import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
@@ -154,6 +155,14 @@ export interface PlannerInput {
   crew_size_rebar?: number;
   /** Shift hours. Default: 10 */
   shift_h?: number;
+  /**
+   * Phase C G2 (2026-05-26): scheduler shape override. When unset, falls
+   * back to SCHEDULER_MODE_DEFAULTS[element_type] (rimsa → discrete_cyclic,
+   * all else → legacy). Not exposed in UI per Q2 decision; available for
+   * MCP / API consumers + tests. Additive — does not change existing call
+   * paths when omitted.
+   */
+  scheduler_mode?: SchedulerMode;
   /** Time utilization factor. Default: 0.8 */
   k?: number;
   /** Wage CZK/h. Default: 398. Used as fallback when trade-specific wages are not set. */

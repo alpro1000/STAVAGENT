@@ -33,6 +33,75 @@ import type { PertParams, MonteCarloResult, ThreePointEstimate } from './pert.js
 import { toThreePoint, runMonteCarlo } from './pert.js';
 import type { ConcreteClass, CementType, ElementType } from './maturity.js';
 import { getStripWaitHours, curingThreePoint } from './maturity.js';
+import type { StructuralElementType } from './pour-decision.js';
+
+// ─── Scheduler mode (Phase C G2 — 2026-05-26) ──────────────────────────────
+//
+// Two scheduler shapes coexist:
+//   'legacy'          — original DAG/RCPSP critical-path scheduler. Backward
+//                       compatible. Used by 22 element types incl.
+//                       mostovkova_deska, opery, driky, stěny, …
+//   'discrete_cyclic' — cyclic phase model for cornice-style elements that
+//                       reuse one formwork set across N tacts. Used by
+//                       rimsa per Phase A audit finding (T-bednění cycle:
+//                       setup → rebar → pour → strip-strength wait →
+//                       relocate × (n-1) → final strip + full cure tail
+//                       on last tact only).
+//
+// Module-level dispatch: scheduleElement() routes by getSchedulerMode(...).
+// Per element override is plumbed through PlannerInput.scheduler_mode.
+
+export type SchedulerMode = 'discrete_cyclic' | 'legacy';
+
+/**
+ * Default scheduler mode per element type. rimsa → 'discrete_cyclic' per
+ * Phase C task spec; all others → 'legacy' (backward compatible). 'other'
+ * defaults to legacy as a safe fallback.
+ *
+ * Adding new element types: explicit assignment is enforced by
+ * `Record<StructuralElementType, SchedulerMode>` exhaustiveness check.
+ */
+export const SCHEDULER_MODE_DEFAULTS: Record<StructuralElementType, SchedulerMode> = {
+  // ─── Bridge elements (mostní prvky) ───
+  zaklady_piliru: 'legacy',
+  zaklady_oper: 'legacy',
+  driky_piliru: 'legacy',
+  rimsa: 'discrete_cyclic',
+  operne_zdi: 'legacy',
+  mostovkova_deska: 'legacy',
+  rigel: 'legacy',
+  opery_ulozne_prahy: 'legacy',
+  kridla_opery: 'legacy',
+  mostni_zavirne_zidky: 'legacy',
+  prechodova_deska: 'legacy',
+  podkladni_beton: 'legacy',
+  podlozkovy_blok: 'legacy',
+  // ─── Building elements (pozemní stavby) ───
+  zakladova_deska: 'legacy',
+  zakladovy_pas: 'legacy',
+  zakladova_patka: 'legacy',
+  stropni_deska: 'legacy',
+  stena: 'legacy',
+  sloup: 'legacy',
+  pruvlak: 'legacy',
+  schodiste: 'legacy',
+  nadrz: 'legacy',
+  podzemni_stena: 'legacy',
+  pilota: 'legacy',
+  other: 'legacy',
+};
+
+/**
+ * Return scheduler mode for an element type. Explicit override (e.g. from
+ * PlannerInput.scheduler_mode) wins; otherwise looks up SCHEDULER_MODE_DEFAULTS.
+ */
+export function getSchedulerMode(
+  elementType: StructuralElementType,
+  override?: SchedulerMode,
+): SchedulerMode {
+  if (override) return override;
+  return SCHEDULER_MODE_DEFAULTS[elementType] ?? 'legacy';
+}
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
