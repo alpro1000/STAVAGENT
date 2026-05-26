@@ -408,8 +408,8 @@
           "dxf_file_ref": true,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "lwpolyline",
-            "polylin"
+            "polylin",
+            "lwpolyline"
           ]
         },
         {
@@ -740,8 +740,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "external",
-            "perimeter"
+            "perimeter",
+            "external"
           ]
         }
       ],
@@ -778,8 +778,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "external",
-            "perimeter"
+            "perimeter",
+            "external"
           ]
         }
       ],
@@ -1001,8 +1001,8 @@
           "dxf_file_ref": true,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "lwpolyline",
-            "polylin"
+            "polylin",
+            "lwpolyline"
           ]
         },
         {
@@ -1243,8 +1243,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "external",
-            "perimeter"
+            "perimeter",
+            "external"
           ]
         }
       ],
@@ -2220,8 +2220,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "lwpolyline",
-            "polylin"
+            "polylin",
+            "lwpolyline"
           ]
         },
         {
@@ -3558,8 +3558,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "bbox",
-            "okna"
+            "okna",
+            "bbox"
           ]
         },
         {
@@ -4880,8 +4880,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "obvod",
-            "rooms"
+            "rooms",
+            "obvod"
           ]
         },
         {
@@ -4926,8 +4926,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "obvod",
-            "rooms"
+            "rooms",
+            "obvod"
           ]
         },
         {
@@ -4972,8 +4972,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "obvod",
-            "rooms"
+            "rooms",
+            "obvod"
           ]
         },
         {
@@ -5018,8 +5018,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "obvod",
-            "rooms"
+            "rooms",
+            "obvod"
           ]
         },
         {
@@ -5178,8 +5178,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "perimeter",
-            "rooms"
+            "rooms",
+            "perimeter"
           ]
         },
         {
@@ -5193,10 +5193,10 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "bbox",
-            "lwpolyline",
             "obklady",
-            "polylin"
+            "polylin",
+            "lwpolyline",
+            "bbox"
           ]
         },
         {
@@ -5225,8 +5225,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "perimeter",
-            "rooms"
+            "rooms",
+            "perimeter"
           ]
         },
         {
@@ -5240,10 +5240,10 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "bbox",
-            "lwpolyline",
             "obklady",
-            "polylin"
+            "polylin",
+            "lwpolyline",
+            "bbox"
           ]
         },
         {
@@ -5272,8 +5272,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "perimeter",
-            "rooms"
+            "rooms",
+            "perimeter"
           ]
         },
         {
@@ -5287,10 +5287,10 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "bbox",
-            "lwpolyline",
             "obklady",
-            "polylin"
+            "polylin",
+            "lwpolyline",
+            "bbox"
           ]
         },
         {
@@ -7117,8 +7117,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "dvere",
-            "polylin"
+            "polylin",
+            "dvere"
           ]
         }
       ],
