@@ -8,14 +8,18 @@ brought back IN bid by investor scope change 2026-05-26.
 
 | Path | Status | Description |
 |---|---|---|
-| `inputs/dokumentace/UT_HalaHK_TZ_DPS.doc` | external (project knowledge) | Full TZ, 8 sekcí, 11 kW tepelná ztráta, 60 kW příkon |
-| `inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf` | external (project knowledge) | TZ + výkaz materiálu, 5 stránek (p.5 = výkaz) |
-| `inputs/dokumentace/UT_HalaHK_PUDORYS_DPS_E.pdf` | external (project knowledge) | Půdorys vytápění, PDF |
+| `inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc` | **in repo** (uploaded 2026-05-26) | Full TZ, 8 sekcí, 11 kW tepelná ztráta, 60 kW příkon |
+| `inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf` | **in repo** (uploaded 2026-05-26) | TZ + výkaz materiálu, 5 stránek (p.5 = výkaz). Signed Ing. Stanislav Jirucha ČKAIT 0009051, 2026.05.25 19:56 |
+| `inputs/vykresy_pdf/UT_HalaHK_PUDORYS_DPS_E.pdf` | **in repo** (uploaded 2026-05-26) | Půdorys vytápění, PDF |
 | `inputs/vykresy_dxf/UT_HALAHK_DPS.dxf` | **in repo** | Půdorys DXF, integrated Stage C (2026-05-22) |
 
-The `.doc` / `.pdf` files live in Claude.ai Project Knowledge for the
-HK212 project; they were NOT committed to git in this session. The DXF
-půdorys is already in the repo from Stage C ÚT discovery.
+All source documents live in `inputs/vykresy_pdf/` per repo convention
+for výkresy + drawing-attached TZ. The DXF půdorys is at
+`inputs/vykresy_dxf/UT_HALAHK_DPS.dxf` from Stage C ÚT discovery.
+
+> **Note:** PR #1226 audit_trail initially pointed at `inputs/dokumentace/`
+> before the investor's actual upload landed. Repathed in follow-up commit
+> 2026-05-26 — TZ §8 + výkaz p.5 fully verified, all 11 encoded facts match.
 
 ## Key authoritative facts (from TZ §8 + §9)
 

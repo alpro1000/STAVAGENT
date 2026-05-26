@@ -56,7 +56,7 @@
       ],
       "resolution_note": "DPS D.1.4.2 VYTÁPĚNÍ (05/2026) §9 confirms authoritative:\n 20 ks ECOSUN S+ 12 × 1.2 kW = 24 kW (NOT 40 ks as DXF Stage C reading)\n 4 ks Dalap E-HP × 9 kW = 36 kW\n Total: 60 kW\n Δ vs TZ B (originally 83 kW expected): -27 % — TZ B included planned technology, ne jen topení.\n Δ vs DXF Stage C reading (84 kW): -29 % — DXF block references were 2× duplicated per panel.\n DPS authoritative.",
       "resolution_date": "2026-05-26",
-      "resolution_source": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc §9 (D.1.4.2 VYTÁPĚNÍ DPS 05/2026)",
+      "resolution_source": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc §9 (D.1.4.2 VYTÁPĚNÍ DPS 05/2026)",
       "authoritative_values": {
         "tepelna_ztrata_kw": 11.0,
         "celkovy_prikon_kw": 60.0,

@@ -304,13 +304,53 @@
         "items_modified": [],
         "items_removed": [],
         "source_documents": [
-          "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc",
-          "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+          "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc",
+          "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
           "inputs/vykresy_dxf/UT_HALAHK_DPS.dxf (Stage C, already integrated)",
-          "inputs/dokumentace/UT_HalaHK_PUDORYS_DPS_E.pdf"
+          "inputs/vykresy_pdf/UT_HalaHK_PUDORYS_DPS_E.pdf"
         ],
         "elektro_scope_exclusion_documented": true,
         "pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference."
+      },
+      {
+        "date": "2026-05-26",
+        "change": "Follow-up to D.1.4.2 VYTÁPĚNÍ commit: repath audit_trail document refs from inputs/dokumentace/ → inputs/vykresy_pdf/ (where investor uploaded TZ + výkaz + půdorys); record TZ verification (all 11 facts match); add 2 clarifying notes for Stage 3 catalog matcher (M-UT-003 řetízky double-count guard, M-UT-007 elektro cross-ref).",
+        "reason": "PR #1226 audit_trail document paths referenced inputs/dokumentace/ but files were uploaded to inputs/vykresy_pdf/ per repo convention for výkresy + drawing-attached TZ documents.",
+        "items_modified": [
+          "M-UT-003",
+          "M-UT-007",
+          "M-UT-001",
+          "M-UT-002",
+          "M-UT-003",
+          "M-UT-004",
+          "M-UT-005",
+          "M-UT-006",
+          "M-UT-007",
+          "M-UT-008",
+          "M-UT-009",
+          "M-UT-010",
+          "M-UT-011",
+          "M-UT-012"
+        ],
+        "items_added": [],
+        "items_removed": [],
+        "tz_verification": {
+          "status": "all_facts_match_dps_2026_05",
+          "verified_facts": [
+            "tepelna_ztrata_11_kw (TZ §3 + §9 Qc=11046 W)",
+            "celkovy_prikon_60_kw (TZ §9)",
+            "ecosun_20_ks_1200w_kat_5401542 (TZ §8 + výkaz p.5 ř.1.1 + §9)",
+            "dalap_e_hp_4_ks_9_kw (TZ §8 + výkaz p.5 ř.2.1 + §9 'Sahara 9 kW')",
+            "vyska_zaves_5m (TZ §8)",
+            "uet_15d_ridici_jednotka (výkaz p.5 ř.2.1)",
+            "termostaty_4_ecosun_sekce_plus_4_dalap (TZ §8)",
+            "rocni_spotreba_46_MWh (TZ §6; §9 table 45803 kWh = 45.8 MWh)",
+            "vnitrni_teplota_18_C (TZ §9 ti)",
+            "dalap_rohy_haly (TZ §8)",
+            "elektro_cross_ref (výkaz p.5 'termostaty viz projekt elektro')"
+          ],
+          "tz_source": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf (5 stránek, podepsal Ing. Stanislav Jirucha ČKAIT 0009051, 2026.05.25 19:56)"
+        }
       }
     ],
     "total_items_actual": 150
@@ -10194,12 +10234,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10276,12 +10316,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10358,12 +10398,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10377,7 +10417,8 @@
         "declared_quantity": 20.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "kros_hint": "731xxx (montáž příslušenství)"
+        "kros_hint": "731xxx (montáž příslušenství)",
+        "poznamka_vykaz_double_count_guard": "Pozor pro Stage 3 catalog matching: výkaz materiálu p.5 ř.1.1 uvádí ECOSUN dodávku 'včetně závěsných řetízků prům délka 5 m/ks' — materiál řetízků je ZAHRNUT v ECOSUN dodávce (M-UT-001, č.kat. 5401542). M-UT-003 zachycuje MONTÁŽ + doplňkový kotevní materiál nad rámec balíčku ECOSUN (731xxx). Nemísit s materiálovou dodávkou — riziko double-count při mapování na Forestina ÚT katalog."
       }
     },
     {
@@ -10445,12 +10486,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10527,12 +10568,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10604,12 +10645,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10686,12 +10727,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10705,7 +10746,8 @@
         "declared_quantity": 8.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "kros_hint": "460xxx (dodávka regulace)"
+        "kros_hint": "460xxx (dodávka regulace)",
+        "poznamka_elektro_cross_reference": "TZ §8 + výkaz p.5 ř.1.1 + ř.2.1 referencují termostaty s poznámkou 'viz projekt elektro'. Per investor scope change 2026-05-26 zůstává dodávka 8 ks termostatů v kapitole M-UT (4× ECOSUN sekce + 4× Dalap). Z elektro profession přichází MaR kabeláž mezi termostatem + UET + topidlem, silové zapojení a revize (viz _scope_exclusion.elektro_profession). Stage 3 catalog matcher: dodávka + osazení termostatu v 460xxx; kabeláž v elektro VV (mimo M-UT)."
       }
     },
     {
@@ -10763,12 +10805,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -10850,12 +10892,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           },
           {
@@ -10932,12 +10974,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -11009,12 +11051,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
@@ -11086,12 +11128,12 @@
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_DPS.doc",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_DPS.doc"
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
           },
           {
             "type": "document",
             "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
-            "document": "inputs/dokumentace/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
             "page": 5
           }
         ],
