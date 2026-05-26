@@ -1,5 +1,20 @@
 # STAVAGENT Product Patterns
 
+<!--
+Pattern numbering audit 2026-05-26:
+Sequential 1..16 validated (no duplicates, no gaps).
+last_number: 16
+next_pattern: 17  ← use this for any new additions.
+
+PROCESS (before adding a new pattern):
+  1. Read this header — note current last_number.
+  2. grep -nE '^## Pattern [0-9]+:' docs/STAVAGENT_PATTERNS.md  (last 5 lines)
+  3. Confirm next_pattern == max(existing) + 1.
+  4. Bump last_number + next_pattern in this header in the same commit.
+Never assign a pattern number from chat / memory / "I think it's N". See
+"Anti-pattern: Pattern number guessing" near the end of this file.
+-->
+
 **Status:** Validated через Žihle 2062-1 pilot (2026-05-07)
 **Audience:** Core team, contributors, future Claude Code sessions
 **Purpose:** Reusable patterns для каждого следующего D&B projektu
@@ -840,6 +855,22 @@ Přípravář workflow learned in CZ market (HK212) directly applicable to DE/ES
 ### ❌ Single vendor quote
 **Why:** No price validation. Confidence remains low.
 **Instead:** Pattern 7 median of 3+ + range documented.
+
+### ❌ Pattern number guessing — assigning a pattern number from chat / memory
+**Why:** Whoever (agent or human) "remembers" the next number is wrong sooner or later. Two sessions adding patterns in parallel both pick "the next one" → duplicate numbers. A session interrupted mid-add → gap. The numbering then drifts and every cross-reference in the file body silently rots.
+
+Recurring HK212 / RD Jáchymov incidents that motivated this entry:
+- "Add Pattern 8" requested twice in different sessions for unrelated content (Door-vs-Gate Classification + Re-read TZ Before Generating Položky) — recovered by promoting one to Pattern 9 after audit
+- Patterns 15 + 16 (Work-First / Universal Work Ontology) initially recorded as 12 + 13 in a session that didn't read the file first — re-numbered during PR review
+- General "I'll just call it Pattern N" without grepping the file → repeated each ~3 sessions
+
+**Instead — mandatory ritual when adding a pattern:**
+1. Read the header block at top of this file → note `last_number`.
+2. `grep -nE '^## Pattern [0-9]+:' docs/STAVAGENT_PATTERNS.md | tail -5` to visually confirm.
+3. Use `last_number + 1`. Bump the header in the same commit.
+4. Never trust a pattern number quoted in chat / commit message / memory without re-grepping.
+
+The numbering invariant — sequential 1..N, no duplicates, no gaps — is cheap to maintain and expensive to fix retroactively (every `see Pattern N` cross-reference has to be hand-walked).
 
 ---
 
