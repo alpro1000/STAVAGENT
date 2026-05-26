@@ -1,14 +1,16 @@
-# next-session.md — Phase D / Phase E (post Phase C ship)
+# next-session.md — Phase D / Phase E (post Phase C + Phase A docs ship)
 
 **Last updated:** 2026-05-26
-**Current branch:** `claude/kind-wright-5nBQ2` (Týden 3 KB codegen + Phase C Rimsa scheduler — consolidated PR pending)
+**Current branch:** `main` (no active feature branch — both PR #1223 and #1224 merged)
 **Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +26 days)
 
 ---
 
-## What was completed in this session (Týden 3 + Phase C consolidated)
+## What was completed (Týden 3 + Phase C + Phase A docs, all merged)
 
-Single branch, two bodies of work, 8 atomic commits, 1 PR pending open.
+Three PRs landed atomically across two sessions:
+
+**PR #1223 — Týden 3 KB codegen + Phase C Rimsa scheduler (consolidated)** ✅ merged
 
 **Týden 3 Knowledge Integration top-5:**
 
@@ -30,6 +32,15 @@ Single branch, two bodies of work, 8 atomic commits, 1 PR pending open.
 
 **Test count: 1136 baseline → 1197 (+61).** All green; tsc clean; codegen drift check clean.
 
+**PR #1224 — Phase A Rimsa audit + Claude Code skills infrastructure + KB backlog** ✅ merged
+
+📁 `.claude/skills/{stavagent-session-discipline, stavagent-claude-code-tasks}/SKILL.md` + README
+📄 `docs/audits/rimsa_fullstack/2026-05-20_phase_a_{discovery,closing}.md` (audit + decisions log, 8 questions answered)
+📄 `backlog/kb_norms_extraction.md` (Týden 3 norm extraction queued: TKP18 + ČSN EN 13670 + DIN 18218)
+📄 `docs/architecture/mcp_calculator_boundary.md` (initial; PR #1223 G6 expanded with Gap 1 fix snippet)
+🔧 `.gitignore` carve-out: `.claude/*` ignored, `!.claude/skills/` tracked
+🔧 `CLAUDE.md` mandatory-reading block updated with skills reference
+
 ---
 
 ## Headline impact
@@ -38,13 +49,14 @@ Single branch, two bodies of work, 8 atomic commits, 1 PR pending open.
 2. **Cyclic scheduler is rimsa-only**; mostovkova_deska and 21 others keep legacy DAG. Mode dispatch via `SCHEDULER_MODE_DEFAULTS` is the lever for future per-element opt-in.
 3. **5 of 13 hardcoded matrices migrated** to kb/ pipeline (CURING_DAYS_TABLE, DEFAULT_CURING_CLASS, getConsistencyKFactor, FORMWORK_SYSTEMS-DOKA, plus pour sequences). 8 remain — tracked in `backlog/calc_hardcoded_to_kb.md`.
 4. **MCP→Monolit silent drop of exposure_class + curing_class** documented at `docs/architecture/mcp_calculator_boundary.md`. P2 post-CSC fix (2 lines + Vitest).
+5. **`.claude/skills/` infrastructure** loads automatically in every Claude Code session opening the repo — session-discipline + task-writing rules now project-versioned, not just Project Knowledge.
 
 ---
 
 ## Open questions for Alexandra (block Phase D)
 
-- **Q1 — rimsa end-to-end behavior validation.** Before Phase C: cyclic mode was inactive; rimsa scheduled via legacy DAG with the buggy 5d curing. After: cyclic mode active with 9d cure. **The actual computed day count for rimsa has shifted.** Existing element-audit smoke test passes (output shape OK) but no SO-250 / SO-206 Vitest fixture asserts specific day counts. **Should we add a `golden-rimsa.test.ts` with reference values from DOKA nabídka 540045359 before opening PR, or land PR first + add golden in a follow-up?**
-- **Q2 — Cold-end calibration aggressiveness.** Phase C G1 raised `C30+ × class 4` cold-end values significantly (e.g. `-5..5°C` band: 14d → 30d). Spec said "match production Python MCP" — but Python MCP source PDF reference is **TKP 18 06/2025** which isn't fully extracted into the YAML citation. Should we verify against the PDF independently before merge (~30 min direct read), or trust spec?
+- **Q1 — rimsa end-to-end behavior validation.** Before Phase C: cyclic mode was inactive; rimsa scheduled via legacy DAG with the buggy 5d curing. After: cyclic mode active with 9d cure. **The actual computed day count for rimsa has shifted.** Existing element-audit smoke test passes (output shape OK) but no SO-250 / SO-206 Vitest fixture asserts specific day counts. **Should we add a `golden-rimsa.test.ts` with reference values from DOKA nabídka 540045359 first, or skip the golden + accept legacy-vs-cyclic drift as expected behavior?**
+- **Q2 — Cold-end calibration aggressiveness.** Phase C G1 raised `C30+ × class 4` cold-end values significantly (e.g. `-5..5°C` band: 14d → 30d). Spec said "match production Python MCP" — but Python MCP source PDF reference is **TKP 18 06/2025** which isn't fully extracted into the YAML citation. Should we verify against the PDF independently (~30 min direct read), or trust spec?
 - **Q3 — DOKA Frami catalog completeness.** 10 DOKA entries migrated to YAML. PERI/ULMA/NOE/traditional formwork systems still inline in `formwork-systems.ts`. Open separate Wave 2 PR (`kb/peri_catalog.yaml`)?
 - **Q4 — `kb/` schema versioning.** Each YAML carries `source_citation:` block but no `schema_version:` field. If we ever rename a key, generated TS breaks at codegen → CI catches but no migration path. Add version field now (cheap insurance) or wait for first break?
 - **Q5 — Python kb_generated parity.** Týden 3 explicitly TS-only (no Core consumer today). If Phase D adds a `/api/curing-table` REST endpoint that Core needs to honor, Python codegen becomes necessary. Pre-emptive design now or defer?
@@ -72,56 +84,9 @@ Per `backlog/calc_hardcoded_to_kb.md`. Estimated 3-5 dev days total. Sub-steerag
 
 ---
 
-## PR ready for open
-
-**Branch:** `claude/kind-wright-5nBQ2`
-**Title:** `FEAT: Týden 3 Knowledge codegen + Phase C Rimsa scheduler (consolidated)`
-**Body outline:**
-
-```
-## Summary
-Two bodies of work shipped atomically on a single branch.
-
-### Týden 3 — Knowledge Integration Top-5
-Build-time codegen pipeline: kb/*.yaml → kb-generated/*.ts. 5 integrations:
-TKP18 maturity, Pokorný/Suchánek pour sequences, DOKA Frami catalog,
-ČSN EN 12812 lateral pressure, ÚRS/OTSKP routing. CI drift check wired.
-
-### Phase C — Rimsa Calibration (G0–G6)
-- G1: C30+ class 4 curing-day calibration (rimsa @ 15°C: 5d → 9d)
-- G2–G3: SchedulerMode infra + scheduleCyclic() body
-- G4: Orchestrator threads cyclic + T-bednění productivity (h/bm × bm)
-- G5: 23 cyclic vitest cases
-- G6: backlog/calc_hardcoded_to_kb.md + docs/architecture/mcp_calculator_boundary.md
-
-## Test plan
-- [x] 1136 baseline tests green
-- [x] +38 KB round-trip tests (Týden 3)
-- [x] +23 cyclic scheduler tests (Phase C G5)
-- [x] tsc clean
-- [x] npm run gen:knowledge:check clean
-- [ ] CI green on push (codegen drift check + monolit planner ci + test shared)
-- [ ] Real-world rimsa validation against DOKA nabídka 540045359 — open as follow-up
-
-## Follow-ups
-- golden-rimsa.test.ts fixture (Phase D Q1)
-- kb/peri_catalog.yaml (Wave 2 migration)
-- MCP exposure_class/curing_class payload fix (P2 post-CSC)
-
-Refs:
-- docs/specs/knowledge-codegen-pipeline/
-- docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md
-- backlog/calc_hardcoded_to_kb.md
-- docs/architecture/{knowledge_codegen_pipeline,mcp_calculator_boundary}.md
-```
-
-Mark Ready when CI green.
-
----
-
 ## In-progress (interrupted)
 
-None. All 8 commits landed atomically. Branch pushed twice (after Týden 3, after G1). Final push will include G2–G6 + G-final.
+None. All work merged. `main` is clean; no active feature branch.
 
 ---
 
@@ -136,9 +101,12 @@ None. All 8 commits landed atomically. Branch pushed twice (after Týden 3, afte
 
 ## Reference for next session
 
+- **Skills loaded automatically:** `.claude/skills/stavagent-session-discipline/SKILL.md` + `.claude/skills/stavagent-claude-code-tasks/SKILL.md`
 - **Phase A audit:** `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`
-- **Phase C closing entry:** `docs/soul.md` §9 (top entry)
+- **Phase A closing decisions:** `docs/audits/rimsa_fullstack/2026-05-20_phase_a_closing.md`
+- **Phase C closing entry:** `docs/soul.md` §9 (top entry — 2026-05-26 Phase C closing)
 - **Codegen architecture:** `docs/architecture/knowledge_codegen_pipeline.md`
 - **MCP→Monolit contract:** `docs/architecture/mcp_calculator_boundary.md`
 - **Hardcoded matrix backlog:** `backlog/calc_hardcoded_to_kb.md`
-- **Branch:** `claude/kind-wright-5nBQ2` (pull, do not branch off other tips)
+- **Norm extraction backlog:** `backlog/kb_norms_extraction.md`
+- **Branch:** start from `main` (PRs #1223 + #1224 both merged)
