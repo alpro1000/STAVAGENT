@@ -1,85 +1,93 @@
-# next-session.md — Říms Calibration Phase C (post-audit)
+# next-session.md — Říms Calibration Phase C (kickoff)
 
 **Last updated:** 2026-05-21
-**Current branch:** `claude/rimsa-calibration-phase-a`
-**Production safety status:** ✅ (no freeze active — Cemex CSC opens 2026-06-21)
+**Current branch:** `claude/rimsa-calibration-phase-a` (Phase A closed, gate GREEN)
+**Production safety status:** ✅ (no freeze — Cemex CSC opens 2026-06-21)
 
 ---
 
-## What was completed in this session (Phase A)
+## What was completed in this session (Phase A closing)
 
-Read-only audit of the entire říms workflow per `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`. Single deliverable:
+Alexandra answered 8 open questions; this session closed the gate by running the two blocking actions (Q4 + Q7) and shipping doc updates (Q1 + Q6 + Q8).
 
-📄 **`docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`** (~400 lines)
+📄 New deliverables:
+- `docs/audits/rimsa_fullstack/2026-05-20_phase_a_closing.md` (~200 lines — decisions + Q4 repro + Q8 finding)
+- `docs/architecture/mcp_calculator_boundary.md` (~120 lines — Q7 boundary read output)
+- `backlog/kb_norms_extraction.md` (Q6 Týden 3 ticket, 3-PR split for TKP 18 / ČSN EN 13670 / DIN 18218)
+- `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md` (Q1 SO-250 path corrected in 2 places)
+- `docs/soul.md` §9 + this `next-session.md`
 
-Covers:
-- **A.1** — Core Engine + MCP endpoints inventory (~35 surfaces across 5 services)
-- **A.2** — Golden test inventory in `test-data/tz/` (SO-202, SO-203, SO-207, VP4-FORESTINA present; SO-250 misfiled at `test-data/SO_250/tz/`; SO-206 missing)
-- **A.3** — UI component inventory (`CalculatorFormFields.tsx`, `useCalculator.ts`, `helpers.ts`, `element-classifier.ts`, `planner-orchestrator.ts`)
-- **A.5** — Test inventory (Vitest shared, pytest concrete-agent, other repos)
-- **A.6** — Field visibility audit per `element_type=rimsa` (✅/⚠️/❌/🔄/💀 classification per field)
-- **A.7** — KB inventory (`B0`–`B13` bucket map + 12-row hardcoded-matrix table with file:line)
-- **B** — Architecture analysis (DRY violations, scheduler shape, blast radius per element type)
+### Headline findings from Q4 + Q7
 
-Plus method changes for next sessions:
-- Bootstrap done in prior session (skills + discipline infra in `.claude/skills/`)
-- Audit synthesised from 5 parallel `Explore` subagents; pattern works for breadth-first audits
+**Q4 repro flipped the bug story:**
+- Audit subagent claimed `curing_class` was not threaded through orchestrator → **WRONG.**
+- Direct source read of `planner-orchestrator.ts:1535–1576` confirms `effectiveCuringClass` IS threaded via `getDefaultCuringClass(elementType)` to BOTH `calculateCuring` call sites.
+- BUT a deeper bug surfaced: TS `CURING_DAYS_TABLE` (`maturity.ts:168–203`) and Python MCP `CURING_DAYS_TABLE` (`calculator.py:48–55`) **disagree on class 4 values** at 15-25 °C × C30+: TS=5 days, Python=9 days, task expects 9 days. Same calculation pipeline gives different answers depending on which branch fires.
 
----
-
-## Headline findings (full list in audit doc)
-
-1. **3 independent sources of truth for rimsa values** (Python MCP `classifier.py`, TS `element-classifier.ts`, B4 YAML stubs). Rebar ratio diverges 130 vs 120 vs (task target 140). Difficulty 1.4 vs 1.15.
-2. **Curing-class wiring bug suspected** — `DEFAULT_CURING_CLASS[rimsa]=4` is defined but `planner-orchestrator.ts:1652` does not thread the class to `getCuringDaysFor()`. Likely cause of ~5 d vs expected 9 d @ 15 °C for rimsa. **Needs 15-min direct repro before Phase C.**
-3. **UI unit mismatch** — UI exposes `formwork_area_m2`; T-bednění is priced/rated in `bm`. Missing `length_per_rimsa_bm`, `cycle_length_bm`, `cross_section_*` widgets. `rental_czk_override` label is wrong unit.
-4. **KB YAML missing for rimsa** — `B4_production_benchmarks/default_ceilings/rimsa.yaml`, `B5_tech_cards/formwork_vendor/doka_2024/T_bedneni.yaml`, `B7_regulations/tkp_18_rsd_2024/extracted.yaml` all absent.
-5. **Scheduler refactor blast radius** — HIGH-risk for `mostovkova_deska` (MSS coupling), `stena`, `sloup`, `stropni_deska`; gated rollout recommended.
-6. **No SO-250 Vitest fixture, no SO-206 fixture** — primary říms validation cases are markdown-only.
-7. **MCP/Monolit boundary uncertain** — could not conclusively determine whether `mcp/tools/calculator.py` HTTP-forwards or computes locally.
-
----
-
-## Open questions for Alexandra (block Phase C)
-
-All 8 in audit §"Open questions". Headline 5:
-- **Q1:** SO-250 path — relocate `test-data/SO_250/tz/SO-250.md` into `test-data/tz/`, or update task path?
-- **Q3:** Single source of truth resolution for Phase C — (a) Python MCP wins, (b) TS catalog wins, (c) B4 YAML wins with CI drift check
-- **Q4:** Curing-class bug — direct repro before Phase C, or trust subagent?
-- **Q5:** Scheduler refactor — opt-in flag per element, or one clean refactor?
-- **Q7:** 30-min directed read of `mcp/tools/calculator.py` to settle MCP/Monolit boundary?
+**Q7 boundary clarified:**
+- MCP `calculate_concrete_works` is a **soft-fallback wrapper**, not a duplicate engine.
+- Primary path: HTTP POST `MONOLIT_API_URL/api/calculate` (10s timeout). Returns full TS 7-engine pipeline result. `source: monolit_planner_api`.
+- Fallback path: local Python simplified calc when API unavailable. Smaller catalog tables, no concrete-group axis in curing. `source: mcp_simplified`.
+- Side finding: MCP→Monolit payload **drops `exposure_class` and `curing_class`** on the wire (`calculator.py:766–786`). TS engine then auto-derives them, so the default behaviour is OK, but explicit user overrides via MCP silently disappear. Phase F item.
 
 ---
 
 ## In-progress (interrupted)
 
-None. Audit is self-contained. Branch pushed but not PR'd.
+None. Phase A is fully closed. Gate GREEN.
 
 ---
 
-## Next session priorities
+## Next session priorities (Phase C)
 
-1. **P0** — Alexandra reviews audit, answers 8 open questions
-2. **P0** — If Q4 answered "repro first": 15-min Vitest probe on `getCuringDaysFor(rimsa, …)` to confirm/deny the wiring bug
-3. **P0** — Phase C kickoff per task spec §1 + §2: discrete shift scheduler + cyclic phase model for multi-tact elements. Branch: `claude/rimsa-phase-c-scheduler-XXXXX`
-4. **P1** — Open `backlog/calc_hardcoded_to_kb.md` tracking issue for the 12 hardcoded matrices identified in §A.7.4 (do NOT migrate, just ticket)
-5. **P2** — If Q1 = "relocate SO-250": move file + create skeleton Vitest fixture `golden-so250.test.ts` (only if Phase C green)
+**Branch:** `claude/rimsa-phase-c-scheduler-discrete-XXXXX`
+
+### P0 (Phase C deliverables per task §1 + §2 + decisions Q4/Q5)
+
+1. **Introduce `scheduler_mode` opt-in flag per element.** Add to `PlannerInput`. Default rimsa → `'discrete_cyclic'`; everything else → `'legacy'`. Wire through orchestrator + element-scheduler. Per Q5 — preserves backward compat for 22 other element types until each has its own golden fixture.
+
+2. **Fix `CURING_DAYS_TABLE` divergence (Phase C fix #1).** Reconcile TS and Python tables. Verification source = TKP 18 §7.8.3 PDF — until KB extraction PR ships (`backlog/kb_norms_extraction.md` PR 1), inline the agreed values in both files and add a `// TODO(codegen, KB:tkp_18_rsd_2024)` marker pointing at the future YAML.
+
+3. **Discrete-shift scheduler.** Replace `round(x*100)/100` at `element-scheduler.ts:260` with `Math.ceil(hours_per_phase_per_tact / shift_h)` returning integer shifts. Per task §1. Wire `shift_length_h` UI input (default 8, error >12 per Zákoník práce §83).
+
+4. **Cyclic phase model for multi-tact elements.** `setup × 1 + relocate × (n-1) + strip × 1`. Last tact has no relocate. Final curing tail = 1 × curing_days on last tact only, no accumulation. Per task §2 (rimsa, operne_zdi, mostovkova_deska MSS, izolacni_stena >6 m).
+
+5. **Crew parallelism wiring.** Confirm `crew_size_formwork`, `crew_size_rebar`, `crew_size_concrete` flow from UI through `useCalculator` → `PlannerInput` → engines. Per task §4. Read-pass first; rebar-lite already divides by crew per Phase B note, but the UI wiring may not surface the values.
+
+### P1
+
+6. **Open backlog tracker** for hardcoded matrices migration: `backlog/calc_hardcoded_to_kb.md` (12 sites, file:line table from Phase A §A.7.4). Do NOT migrate now — just ticket.
+7. **Phase F note (do not implement in Phase C):** forward `exposure_class` + `curing_class` in MCP→Monolit HTTP payload.
+
+### P2
+
+8. **If Phase C green and time permits:** relocate `test-data/SO_250/tz/SO-250.md` → `test-data/tz/` AND create skeleton `golden-so250.test.ts` (Phase G work pulled forward; per Q1 the task spec is already corrected to the current path, so the move is cosmetic).
+
+---
+
+## Open questions for Alexandra
+
+None blocking Phase C. Phase C should ask new questions interactively via `AskUserQuestion` per the `stavagent-claude-code-tasks` skill (5–7 pre-implementation questions, e.g. "minimum shift length floor — 1 shift even for 1-hour work, or threshold?").
 
 ---
 
 ## Production safety status
 
 ✅ No active freeze.
-- Cemex CSC pre-demo window opens **2026-06-21** (currently +31 days).
-- Helsinki Pitch Day Pitch Day pre-window opens **2026-11-02** (+165 days).
+- Cemex CSC pre-demo window opens **2026-06-21** (+31 days).
+- Helsinki Pitch Day pre-window opens **2026-11-02** (+165 days).
 - No active Lemon Squeezy webhook bug.
 
 ---
 
 ## Reference for next session
 
-- **Audit:** `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md` ← start here
-- **Task spec:** `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`
+- **Closing addendum** ⭐ (start here): `docs/audits/rimsa_fullstack/2026-05-20_phase_a_closing.md`
+- **Main audit:** `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`
+- **MCP boundary doc:** `docs/architecture/mcp_calculator_boundary.md`
+- **Task spec (corrected):** `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`
+- **Backlog ticket (Q6):** `backlog/kb_norms_extraction.md`
 - **Skills loaded automatically:** `.claude/skills/stavagent-session-discipline/SKILL.md`, `.claude/skills/stavagent-claude-code-tasks/SKILL.md`
 - **Mantra:** `docs/STAVAGENT_ClaudeCode_Session_Mantra.md`
-- **Patterns:** `docs/STAVAGENT_PATTERNS.md` (8 codified, esp. #2 audit trail + #3 triangulation)
-- **KB placement:** `docs/KNOWLEDGE_PLACEMENT_GUIDE.md` (for Phase D when YAML stubs created)
+- **Patterns:** `docs/STAVAGENT_PATTERNS.md` (esp. #2 audit trail + #3 triangulation)
+- **KB placement:** `docs/KNOWLEDGE_PLACEMENT_GUIDE.md`
