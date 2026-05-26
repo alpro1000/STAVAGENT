@@ -16,8 +16,8 @@
     "extra_universal_vrn": 11,
     "extra_audit_derived": 4
   },
-  "_items_total": 208,
-  "_items_touched_by_evidence": 160,
+  "_items_total": 211,
+  "_items_touched_by_evidence": 163,
   "matrix_a": [
     {
       "tz_evidence_id": "TZ_EV_0001",
@@ -93,7 +93,9 @@
         "260219_dum.HSV6.012",
         "260219_dum.HSV6.013",
         "260219_dum.HSV6.014",
-        "260219_dum.HSV6.015"
+        "260219_dum.HSV6.015",
+        "260219_dum.HSV6.016",
+        "260219_dum.HSV6.017"
       ],
       "candidate_kapitolas": [
         "HSV-6 Bourací práce"
@@ -125,7 +127,8 @@
         "260217_sklad.HSV1.003",
         "260217_sklad.HSV1.004",
         "260217_sklad.HSV1.005",
-        "260217_sklad.HSV1.006"
+        "260217_sklad.HSV1.006",
+        "260219_dum.HSV1.015"
       ],
       "candidate_kapitolas": [
         "HSV-1 Zemní práce"
@@ -414,6 +417,8 @@
         "260219_dum.HSV5.002",
         "260219_dum.HSV5.004",
         "260219_dum.HSV5.006",
+        "260219_dum.HSV6.016",
+        "260219_dum.HSV6.017",
         "260217_sklad.HSV2.001",
         "260217_sklad.HSV2.005",
         "260217_sklad.HSV2.006",
@@ -428,9 +433,7 @@
         "260219_dum.HSV5.009",
         "260219_dum.HSV5.010",
         "260219_dum.HSV5.011",
-        "260219_dum.HSV5.012",
-        "260219_dum.HSV5.013",
-        "260219_dum.HSV5.014"
+        "260219_dum.HSV5.012"
       ],
       "candidate_kapitolas": [
         "HSV-3 Svislé konstrukce",
@@ -1059,7 +1062,8 @@
         "260217_sklad.HSV1.002",
         "260217_sklad.HSV1.003",
         "260217_sklad.HSV1.004",
-        "260217_sklad.HSV1.005"
+        "260217_sklad.HSV1.005",
+        "260219_dum.HSV1.015"
       ],
       "candidate_kapitolas": [
         "PSV-95 Detekce požární",
@@ -1494,6 +1498,7 @@
         "260219_dum.HSV3.006",
         "260219_dum.HSV6.003",
         "260219_dum.HSV6.004",
+        "260219_dum.HSV6.017",
         "260219_dum.HSV2.001",
         "260219_dum.HSV2.004",
         "260219_dum.HSV2.012",
@@ -1504,8 +1509,7 @@
         "260219_dum.HSV4.005",
         "260219_dum.HSV4.006",
         "260219_dum.HSV4.008",
-        "260217_sklad.HSV4.001",
-        "260217_sklad.HSV4.002"
+        "260217_sklad.HSV4.001"
       ],
       "candidate_kapitolas": [
         "HSV-2 Základové a ŽB",
@@ -1549,8 +1553,10 @@
       "severity": "informational",
       "expected_items_logic": "TZ paragraph mentions demolition, earthworks, explicit stávající/zachováno — no new item expected; matched items in kapitolas ['HSV-6 Bourací práce', 'HSV-1 Zemní práce'].",
       "items_found_ids": [
+        "260219_dum.HSV6.017",
         "260219_dum.HSV1.004",
         "260219_dum.HSV1.005",
+        "260219_dum.HSV1.015",
         "260219_dum.HSV6.003",
         "260219_dum.HSV6.006",
         "260219_dum.HSV6.012",
@@ -2563,6 +2569,7 @@
         "260219_dum.HSV6.006",
         "260219_dum.HSV6.012",
         "260219_dum.HSV6.014",
+        "260219_dum.HSV6.017",
         "260219_dum.HSV6.001",
         "260219_dum.HSV6.002",
         "260219_dum.HSV6.003",
@@ -2575,6 +2582,7 @@
         "260219_dum.HSV6.011",
         "260219_dum.HSV6.013",
         "260219_dum.HSV6.015",
+        "260219_dum.HSV6.016",
         "260219_dum.HSV4.001",
         "260219_dum.HSV5.012"
       ],
@@ -2612,7 +2620,8 @@
         "260217_sklad.HSV1.002",
         "260217_sklad.HSV1.003",
         "260217_sklad.HSV1.004",
-        "260217_sklad.HSV1.005"
+        "260217_sklad.HSV1.005",
+        "260219_dum.HSV1.015"
       ],
       "candidate_kapitolas": [
         "PSV-95 Detekce požární",
@@ -2639,6 +2648,7 @@
       "items_found_ids": [
         "260219_dum.HSV6.002",
         "260219_dum.HSV6.008",
+        "260219_dum.HSV6.017",
         "260219_dum.HSV4.010",
         "260219_dum.HSV5.013",
         "260219_dum.HSV6.001",
@@ -2648,15 +2658,14 @@
         "260219_dum.HSV6.006",
         "260219_dum.HSV6.007",
         "260219_dum.HSV6.012",
+        "260219_dum.HSV6.016",
         "260219_dum.HSV4.014",
         "260219_dum.PSV77.001",
         "260219_dum.PSV77.002",
         "260219_dum.PSV77.003",
         "260219_dum.PSV77.004",
         "260219_dum.PSV77.005",
-        "260219_dum.PSV77.006",
-        "260219_dum.PSV77.007",
-        "260217_sklad.PSV77.001"
+        "260219_dum.PSV77.006"
       ],
       "candidate_kapitolas": [
         "HSV-3 Svislé konstrukce",
@@ -5492,6 +5501,7 @@
       "expected_items_logic": "TZ paragraph mentions demolition, ZTI plumbing, heating, explicit stávající/zachováno — no new item expected; matched items in kapitolas ['HSV-6 Bourací práce', 'PSV-72 ZTI', 'PSV-73 Vytápění'].",
       "items_found_ids": [
         "260219_dum.HSV6.012",
+        "260219_dum.HSV6.016",
         "260219_dum.HSV6.001",
         "260219_dum.HSV6.002",
         "260219_dum.HSV6.003",
@@ -5506,6 +5516,7 @@
         "260219_dum.HSV6.013",
         "260219_dum.HSV6.014",
         "260219_dum.HSV6.015",
+        "260219_dum.HSV6.017",
         "260219_dum.PSV73.003"
       ],
       "candidate_kapitolas": [

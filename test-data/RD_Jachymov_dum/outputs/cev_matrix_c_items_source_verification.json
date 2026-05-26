@@ -3,13 +3,13 @@
   "_generated_at": "2026-05-26",
   "_generated_by": "tools/cev_matrices_cd.py",
   "_purpose": "Matrix C — items.json source-field verification.",
-  "_items_total": 208,
+  "_items_total": 211,
   "_summary": {
-    "verified": 161,
-    "partial": 47
+    "verified": 163,
+    "partial": 48
   },
   "_not_verifiable_count": 0,
-  "_partial_count": 47,
+  "_partial_count": 48,
   "matrix_c": [
     {
       "item_id": "260219_dum.HSV1.001",
@@ -408,8 +408,8 @@
           "dxf_file_ref": true,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "polylin",
-            "lwpolyline"
+            "lwpolyline",
+            "polylin"
           ]
         },
         {
@@ -1001,8 +1001,8 @@
           "dxf_file_ref": true,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "polylin",
-            "lwpolyline"
+            "lwpolyline",
+            "polylin"
           ]
         },
         {
@@ -2220,8 +2220,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "polylin",
-            "lwpolyline"
+            "lwpolyline",
+            "polylin"
           ]
         },
         {
@@ -3558,8 +3558,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "okna",
-            "bbox"
+            "bbox",
+            "okna"
           ]
         },
         {
@@ -4269,8 +4269,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "klempirina",
-            "klempir"
+            "klempir",
+            "klempirina"
           ]
         },
         {
@@ -4305,8 +4305,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "klempirina",
-            "klempir"
+            "klempir",
+            "klempirina"
           ]
         },
         {
@@ -4880,8 +4880,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "rooms",
-            "obvod"
+            "obvod",
+            "rooms"
           ]
         },
         {
@@ -4926,8 +4926,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "rooms",
-            "obvod"
+            "obvod",
+            "rooms"
           ]
         },
         {
@@ -4972,8 +4972,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "rooms",
-            "obvod"
+            "obvod",
+            "rooms"
           ]
         },
         {
@@ -5018,8 +5018,8 @@
           "dxf_file_ref": false,
           "structural_entity_ref": false,
           "matched_concepts": [
-            "rooms",
-            "obvod"
+            "obvod",
+            "rooms"
           ]
         },
         {
@@ -5193,10 +5193,10 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "polylin",
-            "lwpolyline",
             "bbox",
-            "obklady"
+            "lwpolyline",
+            "obklady",
+            "polylin"
           ]
         },
         {
@@ -5240,10 +5240,10 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "polylin",
-            "lwpolyline",
             "bbox",
-            "obklady"
+            "lwpolyline",
+            "obklady",
+            "polylin"
           ]
         },
         {
@@ -5287,10 +5287,10 @@
           "dxf_file_ref": false,
           "structural_entity_ref": true,
           "matched_concepts": [
-            "polylin",
-            "lwpolyline",
             "bbox",
-            "obklady"
+            "lwpolyline",
+            "obklady",
+            "polylin"
           ]
         },
         {
@@ -6617,9 +6617,9 @@
     {
       "item_id": "260219_dum.VRN.001",
       "kapitola": "VRN — Průzkumy",
-      "claimed_source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum",
-      "claim_parts_total": 2,
-      "claim_parts_verified": 2,
+      "claimed_source": "TZ ARS dům §3.2.3 + POZN.2.05 z půdorysů návrh + řez A-A návrh (explicit dřevokazný hmyz scope per drawing wording)",
+      "claim_parts_total": 3,
+      "claim_parts_verified": 3,
       "verification_results": [
         {
           "claim_part": "TZ ARS dům §3.2.3",
@@ -6636,14 +6636,26 @@
           ]
         },
         {
-          "claim_part": "explicitně mykologický průzkum",
+          "claim_part": "POZN.2.05 z půdorysů návrh",
           "kind": "other",
           "verifiable": true,
           "matched_in_tz": [
-            "pruzkum"
+            "pudorysu",
+            "navrh"
           ],
           "matched_in_dxf_mtext": [],
           "matched_in_dxf_dimensions": []
+        },
+        {
+          "claim_part": "řez A-A návrh (explicit dřevokazný hmyz scope per drawing wording)",
+          "kind": "drawing_pdf",
+          "verifiable": true,
+          "drawing_refs": [],
+          "rez_labels": [
+            "řez A-A"
+          ],
+          "pohled_keyword": false,
+          "reason": "Drawing reference syntactic check — substantive content verification deferred to Path C tier outputs."
         }
       ],
       "verdict": "VERIFIED",
@@ -7678,6 +7690,128 @@
       ],
       "verdict": "VERIFIED",
       "notes": null
+    },
+    {
+      "item_id": "260219_dum.HSV6.016",
+      "kapitola": "HSV-6 Bourací práce",
+      "claimed_source": "DXF dum_DPZ řez A-A bourání + POZN.1.02 z půdorysů bourání",
+      "claim_parts_total": 2,
+      "claim_parts_verified": 2,
+      "verification_results": [
+        {
+          "claim_part": "DXF dum_DPZ řez A-A bourání",
+          "kind": "dxf",
+          "verifiable": true,
+          "matched_dimension_values": [],
+          "matched_layer_names": [],
+          "dxf_file_ref": true,
+          "structural_entity_ref": false,
+          "matched_concepts": [
+            "rez"
+          ]
+        },
+        {
+          "claim_part": "POZN.1.02 z půdorysů bourání",
+          "kind": "other",
+          "verifiable": true,
+          "matched_in_tz": [
+            "pudorysu",
+            "bourani"
+          ],
+          "matched_in_dxf_mtext": [],
+          "matched_in_dxf_dimensions": []
+        }
+      ],
+      "verdict": "VERIFIED",
+      "notes": null
+    },
+    {
+      "item_id": "260219_dum.HSV6.017",
+      "kapitola": "HSV-6 Bourací práce",
+      "claimed_source": "DXF dum_DPZ řez A-A bourání + POZN.1.03 + půdorys bourání",
+      "claim_parts_total": 3,
+      "claim_parts_verified": 2,
+      "verification_results": [
+        {
+          "claim_part": "DXF dum_DPZ řez A-A bourání",
+          "kind": "dxf",
+          "verifiable": true,
+          "matched_dimension_values": [],
+          "matched_layer_names": [],
+          "dxf_file_ref": true,
+          "structural_entity_ref": false,
+          "matched_concepts": [
+            "rez"
+          ]
+        },
+        {
+          "claim_part": "POZN.1.03",
+          "kind": "other",
+          "verifiable": true,
+          "reason": "No verifiable tokens — short qualifier."
+        },
+        {
+          "claim_part": "půdorys bourání",
+          "kind": "drawing_pdf",
+          "verifiable": false,
+          "drawing_refs": [],
+          "rez_labels": [],
+          "pohled_keyword": false,
+          "reason": "Drawing reference syntactic check — substantive content verification deferred to Path C tier outputs."
+        }
+      ],
+      "verdict": "PARTIAL",
+      "notes": "2 of 3 parts verified. Unverified: ['půdorys bourání']"
+    },
+    {
+      "item_id": "260219_dum.HSV1.015",
+      "kapitola": "HSV-1 Zemní práce",
+      "claimed_source": "TZ ARS dům §3.2 (drenáž za opěrnou stěnou) + POZN.2.02 z půdorysů návrh + řez A-A návrh",
+      "claim_parts_total": 3,
+      "claim_parts_verified": 3,
+      "verification_results": [
+        {
+          "claim_part": "TZ ARS dům §3.2 (drenáž za opěrnou stěnou)",
+          "kind": "tz",
+          "verifiable": true,
+          "pdf_searched": "D_1_1_01_TZ_ARS_dum_EAR.pdf",
+          "tokens_total": 4,
+          "matched_tokens": [
+            "opernou",
+            "stenou"
+          ],
+          "section_refs": [
+            "3.2"
+          ],
+          "section_matched": [
+            "3.2"
+          ]
+        },
+        {
+          "claim_part": "POZN.2.02 z půdorysů návrh",
+          "kind": "other",
+          "verifiable": true,
+          "matched_in_tz": [
+            "pudorysu",
+            "navrh"
+          ],
+          "matched_in_dxf_mtext": [],
+          "matched_in_dxf_dimensions": []
+        },
+        {
+          "claim_part": "řez A-A návrh",
+          "kind": "drawing_pdf",
+          "verifiable": true,
+          "drawing_refs": [],
+          "rez_labels": [
+            "řez A-A"
+          ],
+          "pohled_keyword": false,
+          "reason": "Drawing reference syntactic check — substantive content verification deferred to Path C tier outputs."
+        }
+      ],
+      "verdict": "VERIFIED",
+      "notes": null
     }
   ],
   "matrix_c_not_verifiable_rows": [],
@@ -7916,6 +8050,11 @@
       "item_id": "260219_dum.PSV76.014",
       "claimed_source": "DXF blocks okno* 16 ks + DXF klempir_parapet 16 ks (Path C Tier 4 INSERT discovery)",
       "notes": "1 of 2 parts verified. Unverified: ['DXF blocks okno* 16 ks']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.017",
+      "claimed_source": "DXF dum_DPZ řez A-A bourání + POZN.1.03 + půdorys bourání",
+      "notes": "2 of 3 parts verified. Unverified: ['půdorys bourání']"
     }
   ]
 }

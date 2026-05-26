@@ -5048,7 +5048,7 @@
       "_gate": "VRN",
       "kapitola": "VRN — Průzkumy",
       "subkapitola": "Mykologický průzkum dřeva při bourání",
-      "popis": "Mykologický průzkum stávajícího krovu a dřevěných trámů zhlaví — provádí autorizovaný mykolog při bourání",
+      "popis": "Mykologický průzkum + průzkum výskytu dřevokazného hmyzu stávajícího krovu a dřevěných trámů zhlaví — pro vyloučení narušení dřevěných konstrukcí; provádí autorizovaný mykolog při bourání",
       "mj": "kpl",
       "mnozstvi": 1,
       "mnozstvi_formula": "TZ ARS §3.2.3 — 'při bourání bude proveden mykologický průzkum dřev. trámů (zhlaví)'",
@@ -5059,7 +5059,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum",
+      "source": "TZ ARS dům §3.2.3 + POZN.2.05 z půdorysů návrh + řez A-A návrh (explicit dřevokazný hmyz scope per drawing wording)",
       "subdodavatel": "mykolog",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -5067,7 +5067,9 @@
       ],
       "status_flag": "needs_subdod_mapping",
       "notes": "Subdod 'mykolog' (autorizovaný mykolog dřeva) není v current mapping. Specialty surveyor; FLAG pro batch update.",
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.001",
+      "_audit_gap_fixed": "PER_DRAWING_ENRICHMENT_POZN_2_05",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     },
     {
       "objekt": "260219_dum",
@@ -5874,31 +5876,123 @@
       "_data_quality": "audit_v2_split_per_podlazi",
       "_audit_gap_fixed": "GAP_007",
       "_added_at": "2026-05-19"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání zdiva komínu",
+      "popis": "Bourání vrchní části stávajícího komínu v posledním podlaží (cihelné zdivo, ručně), vč. likvidace cihelné suti",
+      "mj": "m³",
+      "mnozstvi": 6.0,
+      "mnozstvi_formula": "průměr komín 0.50×0.50 × výška nad střechou ~2.4 m = 0.6 m³, × 10 m³ buffer pro suti + manipulace = 6.0 m³",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962024141",
+      "urs_alternatives": [
+        "962024151",
+        "965042141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ řez A-A bourání + POZN.1.02 z půdorysů bourání",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.016",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_02",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání venkovních konstrukcí",
+      "popis": "Bourání stávajících opěrných zídek a venkovního schodiště v zahradě/dvoře — částečné, dle vyznačení v půdorysech bourání",
+      "mj": "m³",
+      "mnozstvi": 8.0,
+      "mnozstvi_formula": "odhad ze řez A-A bourání + půdorys bourání 1.NP/1.PP, ~8 m³ celkem (opěrné zídky + venkovní schodiště zahrada/dvůr)",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": "961044111",
+      "urs_alternatives": [
+        "962031321",
+        "965042141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "DXF dum_DPZ řez A-A bourání + POZN.1.03 + půdorys bourání",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.017",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_03",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Drenáž za bílou vanou",
+      "popis": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovaná + štěrkový obsyp 16/32 + geotextilie + napojení do dešťové kanalizace, L po obvodu BV",
+      "mj": "m",
+      "mnozstvi": 12.0,
+      "mnozstvi_formula": "obvod bílé vany ~10 m + napojení 2 m = 12 m",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "877315111",
+      "urs_alternatives": [
+        "873311111",
+        "899711111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.7,
+      "source": "TZ ARS dům §3.2 (drenáž za opěrnou stěnou) + POZN.2.02 z půdorysů návrh + řez A-A návrh",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.015",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_2_02",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     }
   ],
   "_summary_total": {
-    "items_total": 189,
+    "items_total": 211,
+    "items_active": 207,
+    "items_deprecated": 4,
     "by_kapitola": {
-      "HSV-1 Zemní práce": 14,
+      "HSV-1 Zemní práce": 15,
       "HSV-2 Základové a ŽB": 19,
       "HSV-3 Svislé konstrukce": 10,
       "HSV-4 Vodorovné": 20,
       "HSV-5 Krov + střecha": 16,
-      "HSV-6 Bourací práce": 12,
+      "HSV-6 Bourací práce": 17,
       "HSV-7 Fasáda ETICS": 6,
       "PSV-71 Izolace HI": 3,
       "PSV-71 Izolace TI": 2,
-      "PSV-76 Výplně otvorů": 11,
+      "PSV-76 Výplně otvorů": 13,
       "PSV-76 Klempíř": 4,
       "PSV-76 Zámečnictví": 4,
       "PSV-76 Truhlář": 2,
       "PSV-77 Podlahy": 8,
-      "PSV-78 Povrchové úpravy": 12,
+      "PSV-78 Povrchové úpravy": 16,
       "PSV-95 Detekce požární": 2,
-      "PSV-72 ZTI": 10,
+      "PSV-72 ZTI": 19,
       "PSV-73 Vytápění": 8,
       "M-21 ELI silnoproud": 7,
-      "VRN — Zařízení staveniště": 3,
+      "VRN — Zařízení staveniště": 4,
       "VRN — Doprava + odpad": 5,
       "VRN — BOZP": 1,
       "VRN — Pojištění + zábory": 2,
@@ -5910,11 +6004,13 @@
       "VRN — Společné": 1
     },
     "by_objekt": {
-      "260219_dum": 162,
+      "260219_dum": 184,
       "260217_sklad": 27
     },
     "urs_status_distribution": {
-      "needs_production_lookup": 189
+      "matched_websearch_verified": 8,
+      "needs_production_lookup": 194,
+      "wrong_leaf_disambiguation_needed": 9
     },
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
@@ -5981,5 +6077,30 @@
     "gaps_na": [
       "GAP_001"
     ]
+  },
+  "_per_drawing_audit_fixes_log": {
+    "applied_at": "2026-05-26",
+    "audit_source": "outputs/cev_per_drawing_annotations_audit.json (commit 91ab8d2)",
+    "items_added": [],
+    "items_skipped_idempotent": [
+      "260219_dum.HSV6.016",
+      "260219_dum.HSV6.017",
+      "260219_dum.HSV1.015"
+    ],
+    "vrn_001_prouzkumy_enriched": true,
+    "vrn_001_prouzkumy_before": {
+      "popis": "Mykologický průzkum stávajícího krovu a dřevěných trámů zhlaví — provádí autorizovaný mykolog při bourání",
+      "source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum"
+    },
+    "vrn_001_zs_restored_from_prior_buggy_overwrite": true,
+    "id_collision_note": "id `260219_dum.VRN.001` is reused across 9 VRN sub-kapitolas in items.json — schema-level data integrity issue worth fixing in a future refactor (one canonical id per item). For now, identity is resolved via (id, kapitola) pair when targeting a specific entry.",
+    "gaps_fixed": [
+      "PER_DRAWING_GAP_POZN_1_02",
+      "PER_DRAWING_GAP_POZN_1_03",
+      "PER_DRAWING_GAP_POZN_2_02",
+      "PER_DRAWING_ENRICHMENT_POZN_2_05"
+    ],
+    "items_total_before": 211,
+    "items_total_after": 211
   }
 }

@@ -1,16 +1,16 @@
 {
   "_schema_version": "1.0",
-  "_generated_at": "2026-05-19",
+  "_generated_at": "2026-05-26",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 204,
-  "items_total_incl_deprecated": 208,
-  "issues_found_total": 55,
+  "items_checked": 207,
+  "items_total_incl_deprecated": 211,
+  "issues_found_total": 57,
   "summary_by_dimension": {
-    "urs_family_consistency": 29,
-    "subdodavatel_logical": 26
+    "urs_family_consistency": 30,
+    "subdodavatel_logical": 27
   },
   "summary_by_severity": {
-    "informational": 55
+    "informational": 57
   },
   "issues": [
     {
@@ -809,6 +809,32 @@
       "reason": "Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260217_sklad.VRN.002",
       "popis": "Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (drobné množství)"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code": "877315111",
+      "first_digit": "8",
+      "expected_first_digits": [
+        "1"
+      ],
+      "reason": "URS kód 877315111 prvních digit '8' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV1.015",
+      "popis": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovan"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "VRN_management",
+        "zemni_prace"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV1.015",
+      "popis": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovan"
     }
   ]
 }
