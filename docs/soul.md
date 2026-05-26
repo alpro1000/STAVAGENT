@@ -352,6 +352,42 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-26 — Session: Phase C G1 — TKP18 curing class 4 calibration (post-Týden 3 piggyback)
+
+**Topic:** Phase C of Rimsa Calibration FullStack v1 (per `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`, Phase A audit `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`). G1 = recalibrate `CURING_DAYS_TABLE` row `C30+ × class 4` from `[14, 9, 7, 5, 3]` (cold→hot) to `[30, 18, 13, 9, 5]` to match production Python MCP per Phase A finding #2. Critical bug fix: rimsa @ 15°C now returns 9d (was 5d) — matches docu/spec expectation. Týden 3 codegen pipeline shipped in same session enabled the YAML-first edit pattern (no engine .ts touch).
+
+**Rozhodnuto:**
+- **Path:** Edit `kb/tkp18_maturity.yaml` (NOT maturity.ts directly), regen via `npm run gen:knowledge`. Branch `claude/kind-wright-5nBQ2` carries both Týden 3 codegen + this G1 calibration in one PR. Coordination note's "if Týden 3 not merged → edit maturity.ts directly" path NOT taken because we're already on the Týden 3 branch — Phase C piggybacks naturally.
+- **Value ordering interpretation:** user wrote `[5, 9, 13, 18, 30]` (hot→cold); YAML stores cold→hot per existing convention → reversed to `[30, 18, 13, 9, 5]`. Position 2 (15-25°C optimal band) = 9 days, fixing the rimsa @ 15°C bug per Phase A finding "~5 d vs expected 9 d".
+- **2 maturity tests updated** to reflect new table values:
+  - `maturity.test.ts:218` C30+ class 4 XF2 @15°C: 5→9 (table value now dominates XF2 floor of 5)
+  - `maturity.test.ts:243` C30+ class 4 XF4 @20°C: 7→9 (table value 9 now exceeds XF4 floor 7; previously floor dominated 5<7)
+- All other 1172 tests unchanged & green. **1174 tests green.**
+- Drift check (`npm run gen:knowledge:check`) verified clean post-edit.
+
+**Odmítnuto:**
+- Direct edit of maturity.ts (would bypass the new YAML source-of-truth pattern just shipped in Týden 3, defeating the purpose).
+- Separate branch for Phase C (would force merge-order coordination; piggyback on Týden 3 branch is cleaner because the codegen infra is the enabler of this edit pattern).
+- Reordering generated table to hot→cold (would break existing engine `find(r => temp >= r.temp_min && temp < r.temp_max)` lookup — order is iteration-agnostic but cold→hot is documented convention).
+
+**Otevřené otázky:**
+- **G0 + G2-G6 not in my session context.** User said "Start G0. Proceed with plan." but no Phase C G0-G6 gate plan exists in `docs/tasks/` or `next-session.md`. Executed G0 as preflight verification (branch + baseline values + test coverage scan) and G1 as fully specified. Need user to supply G2-G6 spec before continuing.
+- Phase A finding #2 mentions a SECOND bug: `planner-orchestrator.ts:1652` may not thread `curing_class` to `getCuringDaysFor()`. G1 fixes the TABLE values; if orchestrator still hardcodes class=2 in the lookup chain, rimsa will still return wrong answer end-to-end. Separate gate (G2?) likely needed.
+- After G2-G6 finish: should Týden 3 PR + Phase C be split into two PRs at push time, or merged as one? Currently one branch holds both. Risk: reviewer surface large. Benefit: codegen + calibration ship atomically.
+
+**Co dál:**
+- ⏸️ STOP. Await G0 retrospective confirmation + G2-G6 spec from Alexandra before proceeding.
+- Once spec received: continue on `claude/kind-wright-5nBQ2`. G1 commit hash will anchor the calibration.
+- Re-verify rimsa @ 15°C end-to-end (UI → orchestrator → maturity) once G2 (orchestrator wiring) lands.
+
+**Artefakty této session (G0 + G1):**
+- `kb/tkp18_maturity.yaml` — C30+ class 4 row recalibrated
+- `Monolit-Planner/shared/src/kb-generated/tkp18-maturity.ts` — regenerated
+- `Monolit-Planner/shared/src/calculators/maturity.test.ts` — 2 test expectations updated with Phase C G1 comments
+- This soul.md entry
+
+---
+
 ### 2026-05-26 — Session: Týden 3 Knowledge Integration top-5 (codegen pipeline + 5 integrations)
 
 **Topic:** Build-time TS codegen pipeline activated — `kb/*.yaml` → `Monolit-Planner/shared/src/kb-generated/*.ts` → engines. Top-5 integrations per audit `2026-05-14_inventory_with_gcs.md` shipped: TKP18 maturity tables, Pokorný/Suchánek pour sequences, DOKA Frami katalog (10 systémů), ČSN EN 12812 / DIN 18218 lateral pressure, ÚRS/OTSKP routing per project_type. Codegen tool = plain Node.js (`scripts/gen-knowledge.mjs`, no transpile). CI drift check (`npm run gen:knowledge:check`) wired do `.github/workflows/monolit-planner-ci.yml` jako pre-test step.
