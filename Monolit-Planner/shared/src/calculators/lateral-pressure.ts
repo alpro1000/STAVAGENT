@@ -22,13 +22,19 @@
  */
 
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
+import {
+  RHO_KG_M3 as KB_RHO,
+  G_M_S2 as KB_G,
+  K_FACTORS_BY_CONSISTENCY as KB_K_BY_CONSISTENCY,
+} from '../kb-generated/lateral-pressure-formulas.js';
 
 // ─── Constants ──────────────────────────────────────────────────────────────
+// Source of truth: kb/lateral_pressure.yaml → kb-generated/lateral-pressure-formulas.ts
 
 /** Reinforced concrete density (kg/m³) */
-const RHO = 2400;
+const RHO = KB_RHO;
 /** Gravitational acceleration (m/s²) */
-const G = 9.81;
+const G = KB_G;
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -48,14 +54,9 @@ export type PourMethod = 'pump' | 'crane_bucket' | 'direct' | 'chute';
  */
 export type ConcreteConsistency = 'standard' | 'plastic' | 'scc';
 
-/** Map consistency → DIN 18218 k coefficient */
+/** Map consistency → DIN 18218 k coefficient (source of truth: kb/lateral_pressure.yaml). */
 export function getConsistencyKFactor(consistency: ConcreteConsistency): number {
-  switch (consistency) {
-    case 'standard': return 0.85;
-    case 'plastic':  return 1.00;
-    case 'scc':      return 1.50;
-    default:         return 0.85;
-  }
+  return KB_K_BY_CONSISTENCY[consistency] ?? KB_K_BY_CONSISTENCY.standard;
 }
 
 /** Optional knobs for calculateLateralPressure */

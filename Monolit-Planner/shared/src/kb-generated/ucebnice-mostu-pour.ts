@@ -1,0 +1,31 @@
+/**
+ * AUTO-GENERATED FILE — DO NOT EDIT.
+ * Source: kb/ucebnice_mostu_pour.yaml
+ * Regenerate: npm run gen:knowledge
+ */
+
+/** Recommended pour sequence step. */
+export interface PourSequenceStep {
+  order: number;
+  zone: string;
+  technological_pause_h?: number;
+  note?: string;
+}
+
+/** Per-element pour-sequence specification. */
+export interface PourSequenceSpec {
+  recommended_sequence: PourSequenceStep[];
+  multi_pour_allowed: boolean;
+  /** 'yes' | 'no' | 'unknown' | 'depends_on_project' (project-specific). */
+  working_joints_allowed: string;
+  source_section: string;
+}
+
+export const POUR_SEQUENCES: Record<string, PourSequenceSpec> = {"zaklady_piliru":{"recommended_sequence":[{"order":1,"zone":"podkladní beton C12/15 X0","technological_pause_h":12,"note":"podklad pod hlavní základ"},{"order":2,"zone":"armovaný základ pilíře","note":"celý objem v jednom záběru, hutnění ponornými vibrátory"}],"multi_pour_allowed":false,"working_joints_allowed":"no","source_section":"Pokorný/Suchánek §6.2 — základy pilířů"},"zaklady_oper":{"recommended_sequence":[{"order":1,"zone":"podkladní beton C12/15 X0","technological_pause_h":12},{"order":2,"zone":"armovaný základ opěry","note":"samostatná zachvatka per opěra, bez smejnosti"}],"multi_pour_allowed":false,"working_joints_allowed":"no","source_section":"Pokorný/Suchánek §6.2 — základy opěr"},"driky_piliru":{"recommended_sequence":[{"order":1,"zone":"spodní třetina dříku (0 → h/3)","technological_pause_h":6,"note":"horizontální pracovní šev, kotvení do základu"},{"order":2,"zone":"střední třetina (h/3 → 2h/3)","technological_pause_h":6},{"order":3,"zone":"horní třetina (2h/3 → h)","note":"ukončit pod úrovní úložného prahu"}],"multi_pour_allowed":true,"working_joints_allowed":"yes","source_section":"Pokorný/Suchánek §6.3 — dříky pilířů; horizontální švy zespodu nahoru"},"opery_ulozne_prahy":{"recommended_sequence":[{"order":1,"zone":"dřík opěry","technological_pause_h":12},{"order":2,"zone":"úložný práh (závěrná stěna + uložení)","note":"samostatný záběr, oddělené bednění"}],"multi_pour_allowed":true,"working_joints_allowed":"yes","source_section":"Pokorný/Suchánek §6.4 — opěry"},"kridla_opery":{"recommended_sequence":[{"order":1,"zone":"křídla opěry","note":"VŽDY samostatný záběr, oddělená sada bednění od dříku opěry, pracovní spára k opěře"}],"multi_pour_allowed":false,"working_joints_allowed":"yes","source_section":"Pokorný/Suchánek §6.4 — křídla opěr"},"mostovkova_deska":{"recommended_sequence":[{"order":1,"zone":"celá NK v jednom záběru (pole o jednom poli)","note":"pokud projekt nemá dilatační spáry — monolitický pour, crew relief × multi-shift dle objemu"},{"order":2,"zone":"pole po poli (multi-span)","technological_pause_h":168,"note":"min 7 dnů zrání před napínáním, pak posun MSS / přesun skruže"}],"multi_pour_allowed":true,"working_joints_allowed":"depends_on_project","source_section":"Pokorný/Suchánek §7 — mostovkové desky; multi-span = pole po poli, single-span = monolit"},"rimsa":{"recommended_sequence":[{"order":1,"zone":"lichá pole (1, 3, 5, …)","technological_pause_h":168,"note":"šachovnicový postup, takt 20–30 m"},{"order":2,"zone":"sudá pole (2, 4, 6, …)","note":"po zrání lichých polí, smršťovací spáry minimalizovány"}],"multi_pour_allowed":true,"working_joints_allowed":"yes","source_section":"Pokorný/Suchánek §8 — římsy; šachovnice POVINNÁ pro minimalizaci smršťovacích trhlin"},"operne_zdi":{"recommended_sequence":[{"order":1,"zone":"základ opěrné zdi","technological_pause_h":12},{"order":2,"zone":"lichá pole zdi (8–12 m takty)","technological_pause_h":72,"note":"šachovnicový postup"},{"order":3,"zone":"sudá pole zdi","note":"uzavření smršťovacích spár"}],"multi_pour_allowed":true,"working_joints_allowed":"yes","source_section":"Pokorný/Suchánek §6.7 — opěrné zdi"},"rigel":{"recommended_sequence":[{"order":1,"zone":"celý příčník v jednom záběru","note":"krátký (<10 m) = monolit, dlouhý = podle projektu (dvojfáze 6h pauza)"}],"multi_pour_allowed":true,"working_joints_allowed":"depends_on_project","source_section":"Pokorný/Suchánek §7 — příčníky"},"pilota":{"recommended_sequence":[{"order":1,"zone":"vrtání + paženíck / bentonit","note":"drilling + případně pažnice nebo bentonitová suspenze"},{"order":2,"zone":"armokoš","note":"spuštění armokoše po vyvrtání"},{"order":3,"zone":"betonáž kontraktorem","technological_pause_h":168,"note":"tremie metoda, kontinuální stoupání hladiny"},{"order":4,"zone":"úprava hlavy piloty","note":"po 7 dnech zrání, odbourání kontaminovaného betonu"}],"multi_pour_allowed":false,"working_joints_allowed":"no","source_section":"Pokorný/Suchánek §6.1 — piloty"},"prechodova_deska":{"recommended_sequence":[{"order":1,"zone":"celá deska v jednom záběru","note":"jednoduchá geometrie, monolit za opěrou"}],"multi_pour_allowed":false,"working_joints_allowed":"no","source_section":"Pokorný/Suchánek §8 — přechodové desky"},"podlozkovy_blok":{"recommended_sequence":[{"order":1,"zone":"malý hustě vyztužený ŽB blok","note":"monolit pod ložisko mostu"}],"multi_pour_allowed":false,"working_joints_allowed":"no","source_section":"Pokorný/Suchánek §6.5 — podložiskové bloky"}};
+
+/** Return pour sequence for an element type, or undefined. */
+export function getPourSequence(elementType: string): PourSequenceSpec | undefined {
+  return POUR_SEQUENCES[elementType];
+}
+
+export const SOURCE_CITATION = {"primary_source":"Pokorný, Suchánek: Betonové mosty II","also_see":["TKP18 §7.7 (Postup betonáže)","ČSN EN 13670 §8 (Concreting)","STAVAGENT pilot Žihle 2062-1 D&B (2026-04 to 2026-05) — 154 položek"],"extracted_from":["concrete-agent/packages/core-backend/app/knowledge_base/B6_research_papers/","Monolit-Planner/shared/src/calculators/pour-decision.ts (ELEMENT_DEFAULTS commentary)"],"extraction_date":"2026-05-26"} as const;

@@ -24,6 +24,14 @@
  */
 
 import type { StructuralElementType } from './pour-decision.js';
+import {
+  CURING_DAYS_TABLE as KB_CURING_DAYS_TABLE,
+  EXPOSURE_MIN_CURING_DAYS as KB_EXPOSURE_MIN,
+  TKP18_ABSOLUTE_MIN_DAYS as KB_TKP18_ABSOLUTE_MIN_DAYS,
+  CEMENT_SPEED as KB_CEMENT_SPEED,
+  T_DATUM as KB_T_DATUM,
+  DEFAULT_CURING_CLASS_BY_ELEMENT as KB_DEFAULT_CURING_CLASS,
+} from '../kb-generated/tkp18-maturity.js';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -85,23 +93,10 @@ export interface CuringParams {
  * BUG-Z2 (2026-04-15): TKP18 §7.8.3 minimum curing days by exposure class.
  * These are HARD minima independent of concrete class, temperature, or cement.
  * Freeze-thaw exposure needs time for surface layer to reach freeze-resistance.
+ *
+ * Source of truth: kb/tkp18_maturity.yaml → kb-generated/tkp18-maturity.ts
  */
-const EXPOSURE_MIN_CURING_DAYS: Record<string, number> = {
-  // XF — freeze-thaw (most restrictive)
-  XF1: 5,   // moderate saturation, no de-icing
-  XF2: 5,   // moderate saturation + de-icing
-  XF3: 7,   // high saturation, no de-icing
-  XF4: 7,   // high saturation + de-icing (bridge decks, curbs)
-  // XD — chlorides non-marine
-  XD2: 5,
-  XD3: 7,
-  // XS — chlorides marine
-  XS2: 5,
-  XS3: 7,
-  // XA — chemical attack
-  XA2: 5,
-  XA3: 7,
-};
+const EXPOSURE_MIN_CURING_DAYS: Record<string, number> = KB_EXPOSURE_MIN;
 
 /** Return the TKP18 minimum curing days for a given exposure class (0 if none).
  *  Task 2 (2026-04-20): accepts an array — picks the max across all classes
@@ -164,59 +159,22 @@ const STRIP_STRENGTH_PCT: Record<ElementType, number> = {
  *
  * Values are for CEM I, horizontal elements (slab/beam).
  * Vertical elements (wall/column) get ×0.7 adjustment.
+ *
+ * Source of truth: kb/tkp18_maturity.yaml → kb-generated/tkp18-maturity.ts
  */
-const CURING_DAYS_TABLE: {
-  temp_min: number;
-  temp_max: number;
-  days: Record<string, Record<CuringClass, number>>; // class group → curing class → days
-}[] = [
-  // t < 5°C — very slow hydration
-  { temp_min: -5, temp_max: 5, days: {
-    'C12-C16': { 2: 7,  3: 12, 4: 22 },
-    'C20-C25': { 2: 5,  3: 9,  4: 18 },
-    'C30+':    { 2: 4,  3: 7,  4: 14 },
-  }},
-  // 5°C ≤ t < 10°C
-  { temp_min: 5, temp_max: 10, days: {
-    'C12-C16': { 2: 5,  3: 9,  4: 18 },
-    'C20-C25': { 2: 4,  3: 7,  4: 13 },
-    'C30+':    { 2: 3,  3: 5,  4: 9 },
-  }},
-  // 10°C ≤ t < 15°C
-  { temp_min: 10, temp_max: 15, days: {
-    'C12-C16': { 2: 4,  3: 7,  4: 13 },
-    'C20-C25': { 2: 3,  3: 5,  4: 9 },
-    'C30+':    { 2: 2,  3: 4,  4: 7 },
-  }},
-  // 15°C ≤ t < 25°C — optimal range
-  { temp_min: 15, temp_max: 25, days: {
-    'C12-C16': { 2: 3,   3: 5,   4: 10 },
-    'C20-C25': { 2: 2,   3: 4,   4: 9 },
-    'C30+':    { 2: 1.5, 3: 2.5, 4: 5 },
-  }},
-  // t ≥ 25°C — fast but need wet curing!
-  { temp_min: 25, temp_max: 50, days: {
-    'C12-C16': { 2: 2,   3: 3.5, 4: 7 },
-    'C20-C25': { 2: 1.5, 3: 2.5, 4: 5 },
-    'C30+':    { 2: 1,   3: 1.5, 4: 3 },
-  }},
-];
+const CURING_DAYS_TABLE = KB_CURING_DAYS_TABLE;
 
 /** TKP18 absolute minimum curing for any bridge element (PK). */
-const TKP18_ABSOLUTE_MIN_DAYS = 5;
+const TKP18_ABSOLUTE_MIN_DAYS = KB_TKP18_ABSOLUTE_MIN_DAYS;
 
 /**
  * Cement type speed factor (relative to CEM I = 1.0)
  * CEM III (slag) is ~40% slower in early age
  */
-const CEMENT_SPEED: Record<CementType, number> = {
-  CEM_I: 1.0,
-  CEM_II: 0.85,
-  CEM_III: 0.6,
-};
+const CEMENT_SPEED: Record<CementType, number> = KB_CEMENT_SPEED;
 
 /** Datum temperature for Nurse-Saul maturity (°C) */
-const T_DATUM = -10;
+const T_DATUM = KB_T_DATUM;
 
 // ─── Core Functions ─────────────────────────────────────────────────────────
 
@@ -607,23 +565,12 @@ export function calculateConstructionCuring(params: {
  *   4 = superstructure (mostovka, římsa) — highest demands
  *   3 = substructure (opěry, pilíře, základy pilířů, křídla, závěrné zídky, podložiskový blok)
  *   2 = foundations, lean concrete, building elements, transition slabs
+ *
+ * Source of truth: kb/tkp18_maturity.yaml → kb-generated/tkp18-maturity.ts
+ * (Re-narrowed to StructuralElementType key for engine convenience.)
  */
-export const DEFAULT_CURING_CLASS: Partial<Record<StructuralElementType, CuringClass>> = {
-  // Class 4 — superstructure (NK)
-  mostovkova_deska: 4,
-  rimsa: 4,
-  rigel: 4,
-  // Class 3 — substructure
-  opery_ulozne_prahy: 3,
-  driky_piliru: 3,
-  zaklady_piliru: 3,
-  kridla_opery: 3,
-  mostni_zavirne_zidky: 3,
-  podlozkovy_blok: 3,
-  operne_zdi: 3,
-  // Class 2 — everything else (default)
-  // pilota, podkladni_beton, prechodova_deska, building elements → 2
-};
+export const DEFAULT_CURING_CLASS: Partial<Record<StructuralElementType, CuringClass>> =
+  KB_DEFAULT_CURING_CLASS as Partial<Record<StructuralElementType, CuringClass>>;
 
 /** Get the default curing class for an element type. Returns 2 if not mapped. */
 export function getDefaultCuringClass(elementType: StructuralElementType): CuringClass {

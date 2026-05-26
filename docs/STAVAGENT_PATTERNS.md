@@ -372,6 +372,445 @@ LOW (no buildings) — but applies to ZS sklady, technologické objekty s vraty.
 
 ---
 
+## Pattern 9: Re-read TZ Before Generating New Položky
+
+**Source:** HK212 hala (2026-05-22) — Kingspan opláštění P0 blocker resolution
+
+### Problem
+Při generování nových položek (kapitola chybí, P0 blocker) → tendence okamžitě sestavit položky
+z paměti nebo z generic placeholders (audit doc says "~1500 Kč/m²", "TBD", "PSV-OPL-001..008").
+Výsledek: positions s vague popisy, wrong confidence (0.50), missing TZ spec details.
+
+### Solution
+**VŽDY** před generováním nových položek:
+1. Přečti TZ (nebo aktuální výseky TZ) pro danou kapitolu
+2. Extrahuj konkrétní specifikace (tloušťka, materiál, RAL, norma, rozměry, kotvení)
+3. Teprve pak piš položky s `confidence: 0.90` a `source: "TZ_ARS_DPZ"`
+
+### HK212 Example
+**Wrong (generic placeholder from audit doc):**
+```json
+{
+  "id": "PSV-OPL-001",
+  "popis": "Dodávka Kingspan K-roc střešní sendvičový panel tl. 150 mm, RAL šedá",
+  "confidence": 0.50,
+  "source": "audit_doc_placeholder"
+}
+```
+
+**Right (TZ ARS DPZ read first):**
+```json
+{
+  "id": "PSV-OPL-001",
+  "popis": "Dodávka Kingspan KS1000 AWP obvodový sendvičový panel tl. 200 mm (alt. 150 mm), výplň MW (minerální vata), EW 15 DP1, RAL bílá + modrá — dle TZ ARS DPZ D.1.1",
+  "confidence": 0.90,
+  "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+  "_price_source": "user_skipped_pricing"
+}
+```
+
+### TZ details captured in HK212 (missed without re-read)
+- Panel thickness: **200 mm** (not generic 150 mm) — alternativa 150 mm explicitly noted
+- Fill: **MW = minerální vata** (not IPN/PIR — ABMV_13 confirmed K-roc = MW)
+- Colour: **bílá + modrá** (not generic RAL šedá)
+- Fire: **EW 15 DP1** (not DP3 — PBŘ wins over TZ B per ABMV_6)
+- Fastening: **samořezné šrouby + EPDM těsnicí podložka**
+- Roof thickness: explicitly **_review_thickness: true** (TZ ARS neuvádí)
+
+### Invariant
+- `confidence: 0.90` vyžaduje přímý TZ link v `source` nebo `audit_trail.reference`
+- `_price_source: "user_skipped_pricing"` flag když investor řekl "ceny neřeš"
+- Všechny geometrické qty vychází z Step 3 area metrics (ne z TZ textových "cca X m²")
+
+### Related
+- HK212 hala: `outputs/phase_1_etap1/items_hk212_etap1.json` PSV-OPL-001..008
+- ABMV_13: KS FR/FF K-roc vs IPN → MW confirmed (never use IPN/PIR for HK212)
+- `scripts/phase_1_etap1/stage_e_add_opl.py` — reference implementation
+
+---
+
+## Pattern 10: Vendor Datasheet ≠ Project Specification
+
+**Source:** HK212 hala (2026-05-24) — Kingspan KS NF datasheet "izolační jádro: IPN" vs project MW spec
+
+### Symptom
+Vendor generic product family datasheet (e.g. Kingspan KS NF) describes default variant
+(e.g. IPN core), which conflicts with project documentation specifying a custom variant
+(e.g. MW core). Naïve reading triggers a new ABMV escalation.
+
+### Anti-pattern
+Escalate to new ABMV without first checking:
+1. Previous session ABMV closures for same topic
+2. Project-specific TZ documentation (architectural + structural + požární)
+3. Vendor capability for custom variants
+
+### Correct pattern
+Vendor datasheet = product family description, NOT project specification. Project TZ
+(3 design disciplines consistent) wins over vendor template.
+
+### HK212 example
+ABMV_13 closed (`closed_fabricated`) — MW won over IPN claim. Later session uploaded
+KS NF datasheet showing "izolační jádro: IPN" — vendor template ≠ HK212 custom MW variant.
+**No new ABMV created.** Project spec verified across:
+- TZ ARS D.1.1 p4: "Plášť... Kingspan tl. 200 mm s výplní z minerální vaty"
+- PBR §3: "sendvičové desky (Kingspan)" — no PUR/IPN/PIR mentions
+- TZ statika D.1.2: "KS FF-ROC" + "KS NF" (both available with MW variants from Kingspan ČR Hradec Králové)
+
+### Rule
+Before escalating vendor-vs-project conflict, run:
+```bash
+grep -i "ABMV_.*kingspan\|ABMV_.*panel\|ABMV_.*opláštění" outputs/abmv_email_queue.json
+```
+for prior closures. If `closed_fabricated` exists with project-spec winner, vendor
+datasheet is informational only — populate audit_trail reference but skip ABMV.
+
+### Related
+- ABMV_13 (HK212): K-roc MW vs IPN closed_fabricated 2026-05-13
+- Pattern 9: Re-read TZ before generating new položky (TZ wins over vendor templates)
+
+---
+
+## Pattern 11: Catalog FTS5 Matching with MJ Equivalence Classes
+
+**Source:** HK212 hala soupis_praci pipeline (2026-05-24) — KROS catalog matching plateau at 44.5 % → 61.7 % Tier 1.
+
+### Problem
+Direct fuzzy text match (TF-IDF / Levenshtein) of construction položek against KROS/URS catalog plateaus at ~45 % usable matches because:
+1. **Czech text** is hard for naïve fuzzy (diacritics, declensions, slovesné tvary, abbreviations)
+2. **Strict MJ matching** ignores semantic equivalence — `kg` vs `t` are same physical concept just scaled 1000×; `bm` vs `m` are both length
+
+### Solution
+1. **SQLite FTS5 index** on normalized popis column (already in `kros_catalog.db` as `kros_fts` table). Better than TF-IDF for Czech morphology. Use `bm25()` rank.
+2. **MJ equivalence classes** instead of strict equality:
+   ```python
+   MJ_EQUIV_CLASS = {
+       "kg": "mass", "t": "mass",
+       "m": "length", "bm": "length",
+       "m2": "area", "m3": "volume",
+       "kus": "count", "ks": "count",
+       "mesic": "time", "soubor": "lump",
+   }
+   ```
+3. **Two-pass candidate selection** — prefer MJ-matching candidates even if not #1 by raw FTS rank, fall back to overall best only if no MJ match exists.
+4. **Tiered confidence**:
+   - exact code match → 0.95
+   - FTS bm25 < −8 + MJ match + třída match → 0.85
+   - MJ match + medium FTS → 0.75
+   - weak FTS + MJ → 0.70
+   - below threshold → Tier 2 (custom položka with nearest-KROS reference)
+
+### HK212 results
+- Iteration 1 (strict MJ): 44.5 % Tier 1 — below 60 % target ❌
+- Iteration 2 (MJ-first selection): 57.0 %
+- Iteration 3 (+ MJ equivalence classes): **61.7 %** ✅
+
+### Invariant
+Tier 1 threshold ≥ 0.70 confidence. Tier 2 = custom položka `{PROJECT}-{KAPITOLA}-{seq}` with `_reference_kros_code: <nearest>` for tender reviewer context.
+
+### Related
+- HK212: `test-data/hk212_hala/scripts/soupis_praci/phase_b_kros_match.py` — reference implementation
+- `test-data/kros_catalog.db` — 9,173 items + FTS5 index ready
+
+---
+
+## Pattern 12: Squash Merge Orphans Source Branch Ref
+
+**Source:** HK212 soupis_praci_final merge (PR #1208, 2026-05-24).
+
+### Problem
+After GitHub squash-merge, source branch shows "ahead of main by N commits" with persistent "Compare & pull request" banner — because individual commit SHAs from squashed branch are NOT present in `main` history. Looks like ghost-PR pending.
+
+### Anti-pattern
+- Re-opening another PR thinking work is missing
+- Force-pushing the source branch to "fix" the ahead count
+- Merging a second time
+
+### Correct pattern
+**After every successful squash-merge:**
+1. Verify content is in main: `git diff origin/main origin/<branch> --stat` — branch should be **behind main** (because squash applied changes, main has additional commits since).
+2. Delete the source branch on remote: GitHub UI → Branches → 🗑.
+3. Local cleanup: `git branch -D <branch>` after confirming squash commit on main contains the work.
+
+### HK212 evidence
+- Branch `claude/hk212-dilenska-ok-ut-dps-integration` (16 commits) was rolled into `claude/hk212-soupis-praci-final` (superset, 20 commits)
+- PR #1208 squash-merged soupis-praci-final → main as single commit `9493cdd7`
+- dilenska branch retained ghost-banner until manual delete
+
+### Rule
+Branch is safe to delete when:
+- `git diff origin/main origin/<branch>` shows source has only stale `next-session.md` or similar carry-forward files
+- No new commits since the squash-merged tip
+- PR shows status `Merged`
+
+---
+
+## Pattern 13: Synthetic Acceptance Metrics Mask Correctness
+
+**Source:** HK212 soupis_praci retrospective (2026-05-24, post PR #1208).
+
+### Problem
+Auto-match pipeline hit its synthetic acceptance gate (61.7 % Tier 1 above 60 % target) and was declared "tender-ready" — but a fresh-eyes read of the shipped XLSX found systematic false positives at Tier 1 confidence 0.85:
+- `763158122` "Podlaha ze **sádrokartonových desek**" mapped to PSV-77x industrial floor (objekt has epoxy stěrka, no SDK floor exists)
+- `127401401` "Hloubení rýh **pod vodou** pro nábřežní zdi" mapped to plain trench excavation (no water, no waterfront walls)
+- `985121101` "Tryskání **degradovaného** betonu" (historical reconstruction code) mapped to surface prep on new hala
+- `155132111` "Protierozní **geobuňky na svazích**" (roadwork) mapped to Kingspan cladding line
+- `711331383` "Izolace **mostovek**" (bridge deck waterproofing) mapped to sokl HI
+- `342191211` "Opláštění z **polyesterované fólie**" mapped to Kingspan PUR/PIR sandwich
+- `311311971` "**Nadzákladové zdi** do ztraceného bednění C 8/10" mapped to floor slab 106 m³ (4× in same kapitola with different mnozstvi)
+
+Each was matched on a single shared keyword (`podlaha`, `hloubení`, `beton`, `geo`, `izolace`, `opláštění`, `základ`) without validating that the KROS chapter (763 SDK ≠ 776 industrial floors; 127 water-trench ≠ 132 dry trench; 985 reno ≠ new build; 155 road slopes ≠ wall cladding; 711 bridge ≠ sokl; 342 foil ≠ 315 sandwich; 311 wall ≠ 313 slab) was even applicable.
+
+### Anti-pattern
+- Threshold-only acceptance: "X % at Tier 1 ≥ N" treats Tier 1 as ground truth.
+- No sampling QA gate: nobody read N representative rows per kapitola before stamping "tender-ready".
+- Trusting that the matcher's `confidence` field reflects domain correctness when matcher itself has no chapter / material / structural context filter.
+- Iterating on the metric (44.5 % → 57 % → 61.7 %) without iterating on **what counts as a correct match**.
+
+### Correct pattern
+1. **Domain QA gate runs in parallel to synthetic threshold gate.** Sample ≥ N rows per kapitola (N = 3–5 for small kapitol, 5–10 for large), human spot-check chapter + material + structural fit. Tier 1 badge is allowed only when BOTH gates pass.
+2. **Matcher itself filters by chapter context** before keyword scoring: negative-context skip (like CORE `_safe_search()` skipping stávající / demolice), positive-context whitelist (only allow KROS codes in the parent chapter buckets compatible with the target chapter).
+3. **Sanity sentinels in QA set** — handful of obvious wrong codes (mostovky for non-bridge, sádrokarton for industrial, nábřežní zdi for non-water) that the matcher MUST NOT return at Tier 1 confidence. Pipeline fails if any sentinel comes back ≥ 0.70.
+4. **Hard rule on duplicates** — same KROS code repeated in same kapitola with different mnozstvi is a flag, not a feature; needs explanation field or explicit allow-list (e.g. "patky × 2 stage" with separation rationale per Pattern 6).
+
+### HK212 evidence
+- 61.7 % Tier 1 acceptance hit — pipeline declared YELLOW (bid-stage usable), shipped to handoff
+- Fresh-eyes audit (next session, same XLSX) found ≥ 7 systematic false positives at Tier 1 0.85
+- soupis_praci/ retired, replaced by sequential_list/ — flat ordered list, no codes, manual fill
+- Root cause flagged for matcher fix: chapter-context filter missing in `pricing/otskp_engine.py` + Monolit-Planner classifier
+
+### Rule
+A synthetic acceptance gate is a **necessary but not sufficient** condition for "tender-ready". Pair every threshold gate with:
+- Human domain sampling (N rows per kapitola)
+- Sanity sentinels (known-wrong codes that must not score Tier 1)
+- Duplicate-detection gate (same code repeated in same kapitola → flag)
+
+Without all three, the matcher's `confidence` field is uncalibrated and "Tier 1 X %" measures nothing.
+
+### Generalization
+Applies to ANY auto-match / auto-classify pipeline in STAVAGENT (KROS, URS, element classifier, exposure-class extractor, calculator-suggestions): a metric over its own confidence field is self-referential. The validation must come from outside the system (human spot-check, sanity sentinels, cross-source triangulation per Pattern 3).
+
+---
+
+## Pattern 14: Forward-Tracked `_analytical_journey` on Item Mutations
+
+**Source:** HK212 Úprava dveří revision (PR #1213, 2026-05-22). Reinforced by SO-202 mostovka thickness rework (v4.27) and RD Jáchymov Phase 1 IGP recompute.
+
+### Problem
+When projektant ships a revision (new výkres, ABMV closure, geometry recompute, statika quote update), naive item updates **overwrite** the previous `mnozstvi` / `formula` / `popis`. Reviewer who opens the new soupis sees only the final number — has no way to verify:
+- Where the previous value came from
+- What evidence triggered the change
+- Whether the change is consistent with prior reconciliation (Pattern 3)
+- Whether the change reverts a previously-resolved ABMV
+
+Result: each revision creates a fresh "tender-ready" snapshot whose history is invisible. Diff between snapshots requires git archaeology + cross-referencing audit_2026_*.md files. Backward fixes (e.g. F-3 patky over-fix correction) lose their rationale once squashed.
+
+### Anti-pattern
+- Naked `it["mnozstvi"] = new_value` without preserving the old value
+- `audit_trail.formula = new_formula` replacing the old formula string
+- Treating `items.json` as a snapshot, not a log
+- Recomputing from raw inputs each time, losing the chain of reasoning that produced intermediate values
+- Adding a one-off `audit_2026_MM_DD.md` per revision (drifts, gets forgotten, doesn't co-locate with the item)
+
+### Correct pattern
+
+1. **Per-item: append-only `_analytical_journey` array inside `audit_trail`.**
+   ```jsonc
+   "audit_trail": {
+     "formula": "<current formula>",
+     "computed_quantity": 510.81,
+     "declared_quantity": 510.81,
+     // ...
+     "_analytical_journey": [
+       {"date": "2026-05-14", "value": 536.4, "method": "Phase 1 placeholder", "status": "superseded"},
+       {"date": "2026-05-22", "previous": {"mnozstvi": 528.5, "formula": "623.3 brutto − 94.82 m² otvory = 528.5", "popis": "KS NF 200 mm"},
+                              "reason": "Úprava dveří revision — KS NF 200 → NF 120 + new FR 150 zone",
+                              "source": "Úprava dveří drawings + user manual measurement"}
+     ]
+   }
+   ```
+   Each mutation pushes one entry. The current values live at the top level of `audit_trail`; the array is the immutable log of what came before.
+
+2. **Per-file: `metadata.revisions[]` block** for cross-item forward audit.
+   ```jsonc
+   "metadata": {
+     "revisions": [
+       {"date": "2026-05-22", "source": "Hala HK_Úprava dveří drawings",
+        "summary": "Window count 21→34, Kingspan wall NF200→NF120 + new FR150, …",
+        "items_modified": ["PSV-76x-001", "PSV-76x-002", "PSV-OPL-001", "..."],
+        "items_added":    ["PSV-76x-013", "PSV-OPL-009", "PSV-OPL-010", "..."],
+        "items_removed":  []}
+     ]
+   }
+   ```
+   Lets a reviewer diff the file at the revision level without walking every item.
+
+3. **Add new `reference` entry** when source changes — don't overwrite. Old refs stay (drawing A101 measurement was real once; Úprava dveří is the new authority but A101 history matters for traceability).
+
+4. **Confidence may rise or fall** per revision. Update both `it["confidence"]` and `audit_trail["confidence"]` to the new value; the journey preserves the prior.
+
+5. **Items added in a revision** get a `_analytical_journey: [{"status": "current", "method": "<revision> — first appearance"}]` initial entry so the timeline always starts somewhere.
+
+### HK212 evidence — PSV-OPL-001 four-step journey
+
+| # | Date | Value | Source | Status |
+|---|---|---|---|---|
+| 1 | 2026-05-04 | placeholder 536.4 m² | Phase 1 KS1000 AWP guess (Step3 brutto, no openings) | superseded |
+| 2 | 2026-05-14 | 528.5 m² | Stage E ABMV_2 closure — vrata 3.5×4.0 per TZ ARS DPZ D.1.1 | superseded |
+| 3 | 2026-05-14 | 528.5 m² (popis revised) | TZ statika D.1.2 quote ratified — KS NF 200 mm specs (vendor: Kingspan Hradec Králové) | superseded |
+| 4 | 2026-05-22 | **510.81 m²** | Úprava dveří — KS 1000 NF **120 mm** + split off new PSV-OPL-009/010 KS 1000 FR 150 mm 82.25 m² | **current** |
+
+Each step preserves prior. Reviewer opens `items.json` → walks the journey end-to-end → sees full forensic trail without ever leaving the file.
+
+### Rule
+**Never overwrite `mnozstvi`, `formula`, or `popis` without pushing the prior state onto `audit_trail._analytical_journey`. Never modify `audit_trail.reference[]` destructively — append.** Backward fixes (F-3 patky 14→10 correction, F-1 vrata stale dimension closure, ABMV_18 beton class reopen) stay permanently visible. The file is a log, not a snapshot.
+
+### Generalization
+Applies to ANY structured project memory in STAVAGENT (`items_*.json`, `master_soupis_*.yaml`, `area_aggregates.json`, `project.json` outputs from Phase B). The discipline is cheap (one array append + one metadata entry) and compounds: at revision N=10, a single `git log` + journey walk reconstructs the complete fact lineage without manual archaeology. Without this, every revision quietly erases the prior, and Pattern 3 triangulation collapses to "current value only."
+
+Combines with:
+- **Pattern 2 (Audit trail mandatory)** — `_analytical_journey` is the temporal dimension of audit trail
+- **Pattern 3 (Triangulation)** — journey entries can carry alternate-source values from concurrent reconciliation
+- **Pattern 13 (Synthetic acceptance metrics)** — confidence transitions in the journey expose when domain QA flipped a Tier-1 to a lower tier
+
+---
+
+## Pattern 15: Work-First, Catalog-Last — Sequential Výkaz Výměr Generation
+
+**Source:** HK212 hala soupis_praci retrospective (2026-05-24/25). Pattern 13 ("Synthetic Acceptance Metrics") documented the failure mode that motivates this discipline.
+
+### Problem
+Premature catalog mapping — auto-matching KROS/URS codes during item generation — creates **false positives, duplicates, cross-context contamination** at fake high confidence (cf. Pattern 13 case studies: SDK floor mapped to industrial epoxy, mostovka HI mapped to sokl HI, atd.). The matcher cannot distinguish "right code, wrong context" from "right code, right context" because it has no domain reasoner. Confidence threshold ≥ 0.70 is meaningless when 47 % of Tier 1 matches are domain-wrong.
+
+### Solution — 3-stage workflow
+
+**Stage 1: Work atomization (catalog-blind)**
+- Generate flat sequential list of all stavební works in logical construction order (HK212 = Fáze 1-11)
+- Each item = **atomic work step** (not consolidated blob — split if multiple operations)
+- **Required fields per item:** `id`, `popis`, `mj`, `mnozstvi`
+- **Required audit per item** (per Pattern 2 + 14):
+  - `_formula` — how mnozstvi was computed
+  - `_source` — TZ/výkres reference (e.g. "TZ ARS p3 + A105 měřená geometrie")
+  - `_audit_trail.journey` — Pattern 14 forward-tracked log of mutations
+- **Optional fields:** `_review_flag`, `_vyjasneni_ref` (ABMV link), `_status_flag`
+
+**Stage 2: Decomposition on demand**
+- When item is consolidated and downstream needs granular catalog mapping → split into atomic kroks (`{parent_id}a`, `{parent_id}b`, …)
+- Per krok: `parent_item` reference + `split_decision` rationale + ČSN/IGP/TZ source inheritance
+- Pattern 14 forward audit trail **mandatory** through the split
+
+**Stage 3: Catalog mapping (separate session, after Stages 1+2)**
+- **Manual** code assignment per item — NOT auto-matching
+- Domain expert (přípravář) maps to catalog using domain knowledge + targeted catalog search
+- Catalogs interchangeable: KROS (CZ private) ↔ ÚRS (CZ public) ↔ OTSKP (CZ transport) ↔ BKI (DE) ↔ FIEBDC-3 (ES) ↔ Batiprix (FR) — see Pattern 16
+
+### Standard XLSX output schema (Stage 1)
+
+| # | Krok | Fáze | Kapitola | ID | Popis | MJ | Mnozstvi | Vzorec / Zdroj | Pozn. (review/ABMV) | (Code) | (Cena) |
+|---|---|---|---|---|---|---|---:|---|---|---|---:|
+
+**Code + Cena columns left EMPTY in Stage 1.** Filled only in Stage 3.
+
+### HK212 reference implementation
+- `test-data/hk212_hala/scripts/build_sequential_list.py` — Stage 1 generator
+- `test-data/hk212_hala/scripts/split_hsv1_028.py` — Stage 2 atomization (HSV-1-028 → 028a–f, 6 kroks)
+- `test-data/hk212_hala/outputs/sequential_list/` — XLSX + CSV + JSON output (~138 items po splittingu)
+- 11 Fází (Příprava → Zemní práce → Základy → OK → Opláštění → Výplně → Klempířina → Podlahy → Vnitřní → Dokončovací → VRN)
+- Pattern 14 forward audit trail per item through all stages
+
+### Rule
+**Never run auto-catalog-matcher on freshly generated items.** Always 3-stage workflow with manual catalog phase **last**. Tools that auto-match against KROS/URS are debugging aids, not authoring tools — their output is a suggestion, not a soupis.
+
+### International rationale
+Work atomization is **universal** (digging holes, pouring concrete, welding steel = same physical operation in CZ/DE/ES/FR). Catalogs are **local** (KROS/BKI/FIEBDC differ in code structure, naming granularity, pricing convention). Separating work generation from catalog mapping = the same work ontology powers all markets. See Pattern 16 for the adapter architecture.
+
+### Related
+- Pattern 2 (Audit trail mandatory) — fields per item
+- Pattern 13 (Synthetic metrics) — failure mode this pattern prevents
+- Pattern 14 (Forward-tracked _analytical_journey) — mandatory through Stages 1→2→3
+- Pattern 16 (Universal Work Ontology) — downstream consequence for multi-market expansion
+
+---
+
+## Pattern 16: Universal Work Ontology — Catalog-Agnostic Item Generation
+
+**Source:** HK212 international expansion architectural decision (2026-05-25). Direct consequence of Pattern 15.
+
+### Insight
+Construction work itself is universal across European markets. Steel column installation, concrete pouring, Kingspan panel mounting = same physical operations whether in Czechia, Germany, Spain or France. **What differs is local catalog codes + pricing conventions + tender formats**, not the work.
+
+### Universal work × local catalog matrix
+
+| Concept | CZ | DE | ES | FR |
+|---|---|---|---|---|
+| Construction work ontology | universal | universal | universal | universal |
+| Catalog format | KROS / ÚRS / OTSKP | BKI / Sirados | FIEBDC-3 / Código Estructural | Batiprix |
+| Norms reference | ČSN EN | DIN EN | UNE-EN | NF EN |
+| Pricing convention | Kč/m³ | €/m³ | €/m³ | €/m³ |
+| Tender format | ZZVZ | VOB/B | LCSP | CCAG |
+
+Materials and profiles already Eurocode-unified across markets:
+- Concrete classes: C16/20 = C16/20 = C16/20 = C16/20
+- Steel profiles: IPE 400 = IPE 400 = IPE 400 = IPE 400
+- Sandwich panels: KS NF 200 mm = same product family EU-wide (vendor catalog with national pricing)
+
+### Architectural decision
+STAVAGENT item generation engine produces **catalog-agnostic items** (work + mnozstvi + formula + source). Catalog binding = separate **adapter layer per market**.
+
+```
+items.json (work ontology, universal)
+    │
+    ├─→ czech_kros_adapter.py     → KROS code
+    ├─→ czech_urs_adapter.py      → ÚRS code
+    ├─→ czech_otskp_adapter.py    → OTSKP code (transport)
+    ├─→ german_bki_adapter.py     → BKI position
+    ├─→ spanish_fiebdc_adapter.py → FIEBDC-3 code
+    └─→ french_batiprix_adapter.py→ Batiprix code
+```
+
+Single work definition → N catalog mappings → N markets covered.
+
+### Concrete example
+
+**Work ontology entity:**
+```json
+{
+  "id": "HSV-2-001",
+  "popis": "Beton patek rámových dvoustupňové C16/20 XC0",
+  "mj": "m³",
+  "mnozstvi": 22.875,
+  "_formula": "10 × (1.5²×0.6 + 1.25²×0.6)",
+  "_source": "A105 + statika TZ D.1.2 p30"
+}
+```
+
+**N market mappings:**
+| Adapter | Code | Catalog popis |
+|---|---|---|
+| CZ KROS | 273313811 | Beton základových patek prostý C16/20 |
+| DE BKI | 031.001 | Streifenfundamente Beton C16/20 |
+| ES FIEBDC | E04CA010 | Hormigón armado en zapatas |
+| FR Batiprix | 01.02.01 | Béton fondations isolées |
+
+Same work definition. Single source of truth = work ontology, not catalog code.
+
+### Domain knowledge transfer rule
+Přípravář workflow learned in CZ market (HK212) directly applicable to DE/ES/FR after adapter layer translation. **Work generation phase = identical. Catalog phase = market-specific.** This is the core of STAVAGENT's international expansion strategy.
+
+### Implementation roadmap
+- ✅ **CZ work ontology established** — HK212 (138 items proof + sequential_list output)
+- ⏳ **Universal work_ontology JSON schema** — extract canonical schema from current items.json (separate task)
+- ⏳ **KROS adapter** — formal layer replacing ad-hoc Pattern 11 matching (Stage 3 of Pattern 15)
+- 🔮 **BKI adapter** — German market entry
+- 🔮 **FIEBDC adapter** — Spanish market entry
+- 🔮 **Batiprix adapter** — French market entry
+
+### Related
+- Pattern 15 (Work-First, Catalog-Last) — upstream dependency; this pattern is the international corollary of the same discipline
+- Pattern 11 (KROS FTS matching) — current ad-hoc CZ implementation, to be wrapped as formal `czech_kros_adapter.py`
+- Pattern 13 (Synthetic metrics) — reinforces why adapter layer must be manual / human-reviewed, not auto-matched
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation
@@ -439,3 +878,4 @@ When starting nový D&B bridge tender:
 - Architectural decisions: `docs/architecture/decisions/ADR-001` through `ADR-006`
 - Backlog tickety: `backlog/calculator_prompt_extension.md`, `backlog/otskp_search_algorithm.md` + 4 new
 - KB enrichment: `concrete-agent/.../knowledge_base/B5_tech_cards/real_world_examples/zihle_2062_1/` (template)
+- HK212 hala pilot: `test-data/hk212_hala/` — Pattern 8 source + full Phase 1 etap1 pipeline

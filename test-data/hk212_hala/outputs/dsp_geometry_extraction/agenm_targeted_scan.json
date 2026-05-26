@@ -1,0 +1,1531 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-22T04:08:12.032852+00:00",
+    "layers_scanned": [
+      "A-GENM",
+      "A-GENM-1",
+      "A-GENM-2"
+    ],
+    "files_scanned": [
+      "A101_pudorys_1np.dxf",
+      "A102_pudorys_strechy.dxf",
+      "A104_pohledy.dxf",
+      "A105_zaklady.dxf",
+      "A106_stroje.dxf",
+      "A107_stroje_kotvici_body.dxf",
+      "A201_vykopy.dxf",
+      "Hala HK_ Úprava dveří.dxf"
+    ]
+  },
+  "layers": {
+    "A-GENM": {
+      "total_entities_across_sheets": 1,
+      "sheets_used": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "per_sheet": {
+        "A105_zaklady.dxf": {
+          "total_entities": 1,
+          "entity_types": {
+            "INSERT": 1
+          },
+          "total_length_units": 0.0,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-základy": 1
+          },
+          "bbox_aggregate": [
+            [
+              180701.3737127181,
+              125619.3916404847
+            ],
+            [
+              180701.3737127181,
+              125619.3916404847
+            ]
+          ],
+          "samples": [
+            {
+              "type": "INSERT",
+              "handle": "354",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  180701.3737127181,
+                  125619.3916404847
+                ],
+                [
+                  180701.3737127181,
+                  125619.3916404847
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "EN_MEA MEARIN PLUS_EXPERT_basic - MEARIN Plus3000 - NW300-802455-základy"
+            }
+          ]
+        }
+      }
+    },
+    "A-GENM-2": {
+      "total_entities_across_sheets": 208,
+      "sheets_used": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "per_sheet": {
+        "A101_pudorys_1np.dxf": {
+          "total_entities": 3,
+          "entity_types": {
+            "INSERT": 3
+          },
+          "total_length_units": 0.0,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP": 1
+          },
+          "bbox_aggregate": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "samples": [
+            {
+              "type": "INSERT",
+              "handle": "529",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP"
+            },
+            {
+              "type": "INSERT",
+              "handle": "5BE",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP"
+            },
+            {
+              "type": "INSERT",
+              "handle": "5DD",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP"
+            }
+          ]
+        },
+        "A104_pohledy.dxf": {
+          "total_entities": 196,
+          "entity_types": {
+            "LINE": 148,
+            "SPLINE": 35,
+            "LWPOLYLINE": 5,
+            "INSERT": 4,
+            "ARC": 4
+          },
+          "total_length_units": 14587.69,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4": 1
+          },
+          "bbox_aggregate": [
+            [
+              -244306.6993373838,
+              -750.0000000000027
+            ],
+            [
+              115455.9896975618,
+              4839.234476666788
+            ]
+          ],
+          "samples": [
+            {
+              "type": "LINE",
+              "handle": "FAF",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118242.6044541319,
+                  4838.434476666745
+                ],
+                [
+                  -118242.6044541319,
+                  4836.974733252838
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": -1.46,
+              "length_units": 1.46
+            },
+            {
+              "type": "LINE",
+              "handle": "FB0",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118242.6044541319,
+                  4836.974733252838
+                ],
+                [
+                  -118242.6044541318,
+                  4823.188883710362
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": -13.79,
+              "length_units": 13.79
+            },
+            {
+              "type": "LINE",
+              "handle": "FB1",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118242.6044541318,
+                  4838.456914837025
+                ],
+                [
+                  -118242.6044541318,
+                  4839.234476666745
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.78,
+              "length_units": 0.78
+            },
+            {
+              "type": "LINE",
+              "handle": "FB2",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118242.6044541318,
+                  4839.234476666745
+                ],
+                [
+                  -118242.6044541318,
+                  4838.434476666745
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": -0.8,
+              "length_units": 0.8
+            },
+            {
+              "type": "LINE",
+              "handle": "FB3",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118312.7802675974,
+                  4839.234476666745
+                ],
+                [
+                  -118312.7802675974,
+                  4838.456914837025
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": -0.78,
+              "length_units": 0.78
+            },
+            {
+              "type": "LINE",
+              "handle": "FB4",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118312.7802675974,
+                  4823.188883710362
+                ],
+                [
+                  -118312.7802675974,
+                  4836.974733252838
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 13.79,
+              "length_units": 13.79
+            },
+            {
+              "type": "LINE",
+              "handle": "FB5",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118312.7802675974,
+                  4836.974733252838
+                ],
+                [
+                  -118312.7802675974,
+                  4838.434476666745
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 1.46,
+              "length_units": 1.46
+            },
+            {
+              "type": "LINE",
+              "handle": "FB6",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -118312.7802675974,
+                  4838.434476666745
+                ],
+                [
+                  -118312.7802675974,
+                  4839.234476666745
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.8,
+              "length_units": 0.8
+            }
+          ]
+        },
+        "A106_stroje.dxf": {
+          "total_entities": 3,
+          "entity_types": {
+            "INSERT": 3
+          },
+          "total_length_units": 0.0,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje": 1
+          },
+          "bbox_aggregate": [
+            [
+              -161918.4100760854,
+              0.0
+            ],
+            [
+              -161918.4100760854,
+              0.0
+            ]
+          ],
+          "samples": [
+            {
+              "type": "INSERT",
+              "handle": "F4C",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -161918.4100760854,
+                  0.0
+                ],
+                [
+                  -161918.4100760854,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje"
+            },
+            {
+              "type": "INSERT",
+              "handle": "1148",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -161918.4100760854,
+                  0.0
+                ],
+                [
+                  -161918.4100760854,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje"
+            },
+            {
+              "type": "INSERT",
+              "handle": "126C",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -161918.4100760854,
+                  0.0
+                ],
+                [
+                  -161918.4100760854,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje"
+            }
+          ]
+        },
+        "A107_stroje_kotvici_body.dxf": {
+          "total_entities": 3,
+          "entity_types": {
+            "INSERT": 3
+          },
+          "total_length_units": 0.0,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY": 1
+          },
+          "bbox_aggregate": [
+            [
+              -161918.4100760854,
+              0.0
+            ],
+            [
+              -161918.4100760854,
+              0.0
+            ]
+          ],
+          "samples": [
+            {
+              "type": "INSERT",
+              "handle": "549",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -161918.4100760854,
+                  0.0
+                ],
+                [
+                  -161918.4100760854,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY"
+            },
+            {
+              "type": "INSERT",
+              "handle": "5DE",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -161918.4100760854,
+                  0.0
+                ],
+                [
+                  -161918.4100760854,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY"
+            },
+            {
+              "type": "INSERT",
+              "handle": "5FD",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  -161918.4100760854,
+                  0.0
+                ],
+                [
+                  -161918.4100760854,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY"
+            }
+          ]
+        },
+        "A201_vykopy.dxf": {
+          "total_entities": 3,
+          "entity_types": {
+            "INSERT": 3
+          },
+          "total_length_units": 0.0,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP": 1
+          },
+          "bbox_aggregate": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "samples": [
+            {
+              "type": "INSERT",
+              "handle": "437",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP"
+            },
+            {
+              "type": "INSERT",
+              "handle": "4D6",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP"
+            },
+            {
+              "type": "INSERT",
+              "handle": "676",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP"
+            }
+          ]
+        }
+      }
+    },
+    "A-GENM-1": {
+      "total_entities_across_sheets": 774,
+      "sheets_used": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "per_sheet": {
+        "A101_pudorys_1np.dxf": {
+          "total_entities": 35,
+          "entity_types": {
+            "ARC": 24,
+            "LINE": 7,
+            "SPLINE": 4
+          },
+          "total_length_units": 1358.52,
+          "closed_polyline_count": 0,
+          "block_refs": {},
+          "bbox_aggregate": [
+            [
+              200145.97628585817,
+              125977.384719877
+            ],
+            [
+              200257.60456035545,
+              126080.6279888275
+            ]
+          ],
+          "samples": [
+            {
+              "type": "ARC",
+              "handle": "4FF",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200148.49741575954,
+                  125980.00697651933
+                ],
+                [
+                  200246.49741575948,
+                  126078.00697651927
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "500",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200148.49741575948,
+                  125980.00697651927
+                ],
+                [
+                  200246.49741575954,
+                  126078.00697651933
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "501",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200147.4974157595,
+                  125979.0069765193
+                ],
+                [
+                  200247.4974157595,
+                  126079.0069765193
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "502",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200147.4974157595,
+                  125979.00697651929
+                ],
+                [
+                  200247.4974157595,
+                  126079.00697651932
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "503",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200146.7762858582,
+                  125978.20263871971
+                ],
+                [
+                  200248.3837171234,
+                  126079.81006998489
+                ]
+              ],
+              "width_units": 101.61,
+              "height_units": 101.61,
+              "length_units": 105.3
+            },
+            {
+              "type": "ARC",
+              "handle": "504",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200244.2939096815,
+                  126047.04342410387
+                ],
+                [
+                  200249.1419289055,
+                  126051.89144332791
+                ]
+              ],
+              "width_units": 4.85,
+              "height_units": 4.85,
+              "length_units": 2.54
+            },
+            {
+              "type": "ARC",
+              "handle": "505",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200244.23456067915,
+                  126043.21454418432
+                ],
+                [
+                  200248.09848080788,
+                  126047.07846431308
+                ]
+              ],
+              "width_units": 3.86,
+              "height_units": 3.86,
+              "length_units": 1.41
+            },
+            {
+              "type": "ARC",
+              "handle": "506",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200209.64032428025,
+                  126004.17494692333
+                ],
+                [
+                  200256.79317730537,
+                  126051.32779994846
+                ]
+              ],
+              "width_units": 47.15,
+              "height_units": 47.15,
+              "length_units": 42.14
+            }
+          ]
+        },
+        "A104_pohledy.dxf": {
+          "total_entities": 38,
+          "entity_types": {
+            "HATCH": 38
+          },
+          "total_length_units": 0.0,
+          "closed_polyline_count": 0,
+          "block_refs": {},
+          "bbox_aggregate": null,
+          "samples": [
+            {
+              "type": "HATCH",
+              "handle": "D93",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "D9B",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "DA0",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "DA7",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "DAD",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "DB4",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "DB9",
+              "color": 256,
+              "linetype": "BYLAYER"
+            },
+            {
+              "type": "HATCH",
+              "handle": "DBF",
+              "color": 256,
+              "linetype": "BYLAYER"
+            }
+          ]
+        },
+        "A105_zaklady.dxf": {
+          "total_entities": 7,
+          "entity_types": {
+            "ARC": 4,
+            "INSERT": 3
+          },
+          "total_length_units": 622.04,
+          "closed_polyline_count": 0,
+          "block_refs": {
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy": 1,
+            "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy": 1
+          },
+          "bbox_aggregate": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              200247.49741575954,
+              126079.00697651932
+            ]
+          ],
+          "samples": [
+            {
+              "type": "ARC",
+              "handle": "141",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200148.49741575954,
+                  125980.00697651933
+                ],
+                [
+                  200246.49741575948,
+                  126078.00697651927
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "142",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200148.49741575954,
+                  125980.00697651933
+                ],
+                [
+                  200246.49741575948,
+                  126078.00697651927
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "143",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200147.49741575954,
+                  125979.00697651935
+                ],
+                [
+                  200247.49741575948,
+                  126079.00697651926
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "144",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200147.49741575948,
+                  125979.00697651929
+                ],
+                [
+                  200247.49741575954,
+                  126079.00697651932
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "INSERT",
+              "handle": "265",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-základy"
+            },
+            {
+              "type": "INSERT",
+              "handle": "26D",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-základy"
+            },
+            {
+              "type": "INSERT",
+              "handle": "2DE",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              "width_units": 0.0,
+              "height_units": 0.0,
+              "block_name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-základy"
+            }
+          ]
+        },
+        "A106_stroje.dxf": {
+          "total_entities": 504,
+          "entity_types": {
+            "ARC": 176,
+            "LWPOLYLINE": 12,
+            "LINE": 164,
+            "ELLIPSE": 12,
+            "SPLINE": 140
+          },
+          "total_length_units": 11280.93,
+          "closed_polyline_count": 0,
+          "block_refs": {},
+          "bbox_aggregate": [
+            [
+              38195.78733967411,
+              125972.7069765193
+            ],
+            [
+              38402.71146521307,
+              126085.3069765195
+            ]
+          ],
+          "samples": [
+            {
+              "type": "ARC",
+              "handle": "C31",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38230.08733967412,
+                  125980.00697651933
+                ],
+                [
+                  38328.087339674064,
+                  126078.00697651927
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "C32",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38230.087339674064,
+                  125980.00697651927
+                ],
+                [
+                  38328.08733967412,
+                  126078.00697651933
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "C33",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38229.08733967409,
+                  125979.0069765193
+                ],
+                [
+                  38329.08733967409,
+                  126079.0069765193
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "C34",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38229.087339674086,
+                  125979.00697651929
+                ],
+                [
+                  38329.0873396741,
+                  126079.00697651932
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "C35",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38230.087339674144,
+                  125980.00697651935
+                ],
+                [
+                  38328.08733967404,
+                  126078.00697651926
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "C36",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38230.08733967409,
+                  125980.0069765193
+                ],
+                [
+                  38328.08733967409,
+                  126078.0069765193
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "C37",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38229.08733967409,
+                  125979.0069765193
+                ],
+                [
+                  38329.08733967409,
+                  126079.0069765193
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "C38",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38229.08733967409,
+                  125979.0069765193
+                ],
+                [
+                  38329.08733967409,
+                  126079.0069765193
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            }
+          ]
+        },
+        "A107_stroje_kotvici_body.dxf": {
+          "total_entities": 35,
+          "entity_types": {
+            "ARC": 24,
+            "LINE": 7,
+            "SPLINE": 4
+          },
+          "total_length_units": 1354.65,
+          "closed_polyline_count": 0,
+          "block_refs": {},
+          "bbox_aggregate": [
+            [
+              38227.56620977273,
+              125977.384719877
+            ],
+            [
+              38339.19448427007,
+              126080.6279888275
+            ]
+          ],
+          "samples": [
+            {
+              "type": "ARC",
+              "handle": "51F",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38230.08733967412,
+                  125980.00697651933
+                ],
+                [
+                  38328.087339674064,
+                  126078.00697651927
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "520",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38230.087339674064,
+                  125980.00697651927
+                ],
+                [
+                  38328.08733967412,
+                  126078.00697651933
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "521",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38229.08733967409,
+                  125979.0069765193
+                ],
+                [
+                  38329.08733967409,
+                  126079.0069765193
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "522",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38229.087339674086,
+                  125979.00697651929
+                ],
+                [
+                  38329.0873396741,
+                  126079.00697651932
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "523",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38228.36620977284,
+                  125978.20263871975
+                ],
+                [
+                  38329.97364103793,
+                  126079.81006998484
+                ]
+              ],
+              "width_units": 101.61,
+              "height_units": 101.61,
+              "length_units": 103.45
+            },
+            {
+              "type": "ARC",
+              "handle": "524",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38325.88383359609,
+                  126047.04342410387
+                ],
+                [
+                  38330.73185282013,
+                  126051.89144332791
+                ]
+              ],
+              "width_units": 4.85,
+              "height_units": 4.85,
+              "length_units": 2.54
+            },
+            {
+              "type": "ARC",
+              "handle": "525",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38325.8244845937,
+                  126043.21454418432
+                ],
+                [
+                  38329.688404722445,
+                  126047.07846431308
+                ]
+              ],
+              "width_units": 3.86,
+              "height_units": 3.86,
+              "length_units": 1.41
+            },
+            {
+              "type": "ARC",
+              "handle": "526",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  38291.230248194865,
+                  126004.17494692333
+                ],
+                [
+                  38338.38310121997,
+                  126051.32779994846
+                ]
+              ],
+              "width_units": 47.15,
+              "height_units": 47.15,
+              "length_units": 42.14
+            }
+          ]
+        },
+        "A201_vykopy.dxf": {
+          "total_entities": 155,
+          "entity_types": {
+            "ARC": 40,
+            "LINE": 47,
+            "SPLINE": 68
+          },
+          "total_length_units": 1836.63,
+          "closed_polyline_count": 0,
+          "block_refs": {},
+          "bbox_aggregate": [
+            [
+              200114.1974157595,
+              125972.7069765193
+            ],
+            [
+              200257.60456035545,
+              126085.3069765195
+            ]
+          ],
+          "samples": [
+            {
+              "type": "ARC",
+              "handle": "1FE",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200148.49741575954,
+                  125980.00697651933
+                ],
+                [
+                  200246.49741575948,
+                  126078.00697651927
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "1FF",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200148.49741575948,
+                  125980.00697651927
+                ],
+                [
+                  200246.49741575954,
+                  126078.00697651933
+                ]
+              ],
+              "width_units": 98.0,
+              "height_units": 98.0,
+              "length_units": 153.94
+            },
+            {
+              "type": "ARC",
+              "handle": "200",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200147.4974157595,
+                  125979.0069765193
+                ],
+                [
+                  200247.4974157595,
+                  126079.0069765193
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "ARC",
+              "handle": "201",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200147.4974157595,
+                  125979.00697651929
+                ],
+                [
+                  200247.4974157595,
+                  126079.00697651932
+                ]
+              ],
+              "width_units": 100.0,
+              "height_units": 100.0,
+              "length_units": 157.08
+            },
+            {
+              "type": "LINE",
+              "handle": "202",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200140.9454834496,
+                  126032.5305676684
+                ],
+                [
+                  200140.1423968701,
+                  126032.5305676684
+                ]
+              ],
+              "width_units": -0.8,
+              "height_units": 0.0,
+              "length_units": 0.8
+            },
+            {
+              "type": "LINE",
+              "handle": "203",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200140.1337580457,
+                  126025.6000323956
+                ],
+                [
+                  200140.9366689928,
+                  126025.6000323955
+                ]
+              ],
+              "width_units": 0.8,
+              "height_units": -0.0,
+              "length_units": 0.8
+            },
+            {
+              "type": "ARC",
+              "handle": "204",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200141.51121866828,
+                  126031.03949418296
+                ],
+                [
+                  200151.51121866834,
+                  126041.03949418305
+                ]
+              ],
+              "width_units": 10.0,
+              "height_units": 10.0,
+              "length_units": 6.36
+            },
+            {
+              "type": "ARC",
+              "handle": "205",
+              "color": 256,
+              "linetype": "BYLAYER",
+              "bbox": [
+                [
+                  200142.5044863781,
+                  126041.00284707219
+                ],
+                [
+                  200148.9662634185,
+                  126047.4646241126
+                ]
+              ],
+              "width_units": 6.46,
+              "height_units": 6.46,
+              "length_units": 3.85
+            }
+          ]
+        }
+      }
+    }
+  }
+}

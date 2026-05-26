@@ -1,0 +1,2387 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-22T04:11:42.901250+00:00",
+    "files_processed": 8
+  },
+  "per_file": [
+    {
+      "file": "A101_pudorys_1np.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 3,
+          "viewports": [
+            {
+              "handle": "11AD",
+              "center": [
+                594.0020640938026,
+                -187.6844191553556
+              ],
+              "width": 208.049057485466,
+              "height": 273.4497137982747,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "11AF",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 1578.526263116001,
+              "height": 514.6292519249658,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "11B2",
+              "center": [
+                744.602661552014,
+                -112.171227459268
+              ],
+              "width": 66.69781014136842,
+              "height": 25.42782753005126,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 65,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.1",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;P",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ŮDORYS 1NP",
+              "insert": [
+                813.8357117864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:150",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "03/2026",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A101",
+              "insert": [
+                844.1382407094671,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1NP",
+              "insert": [
+                855.2216782094667,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Poznámka:",
+              "insert": [
+                713.2434696431997,
+                -125.9509534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Zatížení podlahy >= 1600kg/m^ 2",
+              "insert": [
+                713.2434696431997,
+                -128.7290784004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- EW 15 DP1: požární dve",
+              "insert": [
+                713.2434696431997,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ře požár",
+              "insert": [
+                741.686177976533,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "  ",
+              "insert": [
+                750.5497196431996,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "omezující po dobu 15 minut, ",
+              "insert": [
+                751.8726363098663,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "dřevěné, opatřené samozavíračem,",
+              "insert": [
+                713.2434696431997,
+                -134.2853284004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "OCEL:",
+              "insert": [
+                713.2434696431997,
+                -139.8415784004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Konstruk",
+              "insert": [
+                713.2434696431997,
+                -142.6197034004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ční OCEL ČSN EN 10025 S235 - Profily, Styč. plechy",
+              "insert": [
+                724.422115476533,
+                -142.6197034004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Konstrukční OCEL ČSN EN 10025 8.8 - Spoj. Prvky (Svorníky, ",
+              "insert": [
+                713.2434696431997,
+                -145.3978284004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Kolíky, Čepy)",
+              "insert": [
+                713.2434696431997,
+                -148.1759534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "-- Specifikace v TZ STATIKA",
+              "insert": [
+                713.2434696431997,
+                -150.9540784004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "BETON:",
+              "insert": [
+                713.2434696431997,
+                -156.5103284004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Deska ",
+              "insert": [
+                713.2434696431997,
+                -159.2884534004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ČSN EN 206-1 C30/37-XC2 (CZ F.1) - ",
+              "insert": [
+                722.2393029765329,
+                -159.2884534004554
+              ]
+            }
+          ],
+          "entity_types": {
+            "VIEWPORT": 3,
+            "INSERT": 2,
+            "MTEXT": 65,
+            "LINE": 39
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "A102_pudorys_strechy.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 2,
+          "viewports": [
+            {
+              "handle": "3A4",
+              "center": [
+                628.0891143614601,
+                -194.8182006522893
+              ],
+              "width": 318.0612513651315,
+              "height": 285.1642256425467,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "3A6",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 398.7526611630827,
+              "height": 130.0008675892182,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 29,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.2",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;P",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ŮDORYS STŘECHY",
+              "insert": [
+                813.8357117864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:150",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A102",
+              "insert": [
+                843.9082407094671,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "STR",
+              "insert": [
+                854.8916782094668,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Poznámka:",
+              "insert": [
+                746.0987763110707,
+                -120.7015161864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ST",
+              "insert": [
+                746.0987763110707,
+                -123.4796411864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ŘEŠNÍ PLÁŠŤ",
+              "insert": [
+                749.2737763110706,
+                -123.4796411864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "\\fArial|b0|i0|c238|p34|;-",
+              "insert": [
+                746.0987763110707,
+                -126.2577661864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": " požadovaná pož. odolnost",
+              "insert": [
+                746.8925263110706,
+                -126.2577661864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": " E",
+              "insert": [
+                775.9966929777373,
+                -126.2577661864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "\\fArial|b0|i0|c238|p34|;I",
+              "insert": [
+                778.311797144404,
+                -126.2577661864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": " 15 DP1",
+              "insert": [
+                778.9071096444039,
+                -126.2577661864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": " + B",
+              "insert": [
+                787.8367971444039,
+                -126.2577661864607
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "roof",
+              "insert": [
+                792.2685679777373,
+                -127.0735013111561
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Výkaz revizních obláčků",
+              "insert": [
+                776.5185683983927,
+                -138.5068334354886
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Označení",
+              "insert": [
+                752.3719156853233,
+                -145.5235469694785
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Popis",
+              "insert": [
+                783.7518853888691,
+                -145.5235469694785
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "\\fArial|b0|i0|c238|p34|;1",
+              "insert": [
+                745.6785986948471,
+                -152.4237344387715
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Posun dveří vůči původnímu PBŘ, mají\\Pbýt na obou dveřích panikové kliky?",
+              "insert": [
+                760.1452326757997,
+                -152.4237344387715
+              ]
+            }
+          ],
+          "entity_types": {
+            "VIEWPORT": 2,
+            "INSERT": 2,
+            "MTEXT": 29,
+            "LINE": 16
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "A104_pohledy.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 5,
+          "viewports": [
+            {
+              "handle": "F4FE",
+              "center": [
+                588.8363984868167,
+                -58.76894982824687
+              ],
+              "width": 210.6618607060453,
+              "height": 137.9162847124837,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "F500",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 665.0693493884866,
+              "height": 216.8251170420144,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "F503",
+              "center": [
+                592.9217338418648,
+                -138.779573245333
+              ],
+              "width": 212.8477860813051,
+              "height": 109.5035780985306,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "F505",
+              "center": [
+                573.893054517066,
+                -225.5077483263407
+              ],
+              "width": 151.0851325176548,
+              "height": 70.76673300660907,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "F507",
+              "center": [
+                581.2908247334682,
+                -289.364168775599
+              ],
+              "width": 163.6367578149254,
+              "height": 73.12223526208088,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 36,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.4",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "POHLEDY",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:50",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A104",
+              "insert": [
+                843.8082407094672,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "PHLD",
+              "insert": [
+                854.1316782094667,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "POHLED - SZ",
+              "insert": [
+                468.2482942270059,
+                -62.23078534813123
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "POHLED - JV",
+              "insert": [
+                471.7411230632849,
+                -127.2307853481312
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "POHLED - SV",
+              "insert": [
+                474.0699372580225,
+                -197.1881432394679
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "POHLED - JZ",
+              "insert": [
+                476.8929869104442,
+                -269.41116351393
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Výkaz materiálů",
+              "insert": [
+                755.0333637896413,
+                -72.86028167893518
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Ozn.",
+              "insert": [
+                713.2291971229747,
+                -79.8769952129251
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Materiál",
+              "insert": [
+                761.6161887314611,
+                -79.8769952129251
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "01",
+              "insert": [
+                707.1863721811551,
+                -83.32708894757161
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Kingspan NF 100, barva bílá",
+              "insert": [
+                720.3520220647943,
+                -83.32708894757161
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "02",
+              "insert": [
+                707.1863721811551,
+                -86.7771826822181
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Kingspan NF 100, barva modrá",
+              "insert": [
+                720.3520220647943,
+                -86.7771826822181
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "03",
+              "insert": [
+                707.1863721811551,
+                -90.22727641686458
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Sokl: stěrka s výztužnou tkaninou, fasádní nátěr šedé barvy",
+              "insert": [
+                720.3520220647943,
+                -90.22727641686458
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "04",
+              "insert": [
+                707.1863721811551,
+                -93.67737015151108
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Střešní krytina z vlnitého plechu, titanzinek",
+              "insert": [
+                720.3520220647943,
+                -93.67737015151108
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "05",
+              "insert": [
+                707.1863721811551,
+                -97.12746388615757
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-SCHD",
+              "text": "Okapní žlab, FeZn",
+              "insert": [
+                720.3520220647943,
+                -97.12746388615757
+              ]
+            }
+          ],
+          "entity_types": {
+            "VIEWPORT": 5,
+            "INSERT": 1,
+            "MTEXT": 36,
+            "LINE": 49
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "A105_zaklady.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 3,
+          "viewports": [
+            {
+              "handle": "DC5",
+              "center": [
+                610.4592924748673,
+                -199.0614666481296
+              ],
+              "width": 245.7823110737736,
+              "height": 302.4335995926021,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "DC7",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 654.6418468637952,
+              "height": 213.4255550903909,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "DCA",
+              "center": [
+                766.7635742161855,
+                -95.15892771086747
+              ],
+              "width": 66.69781014136842,
+              "height": 43.66761704993031,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 24,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.1",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ZÁKLADY",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:150",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A105",
+              "insert": [
+                843.9082407094671,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ZAK",
+              "insert": [
+                854.7616782094668,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Pozn.: V p",
+              "insert": [
+                732.6903671462451,
+                -122.6767269814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "řípadě křížení potrubí se základovými pasy nebo ",
+              "insert": [
+                744.0013046462451,
+                -122.6767269814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "patkami bude objekt založen na excentrických základových ",
+              "insert": [
+                732.6903671462451,
+                -125.4548519814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "patkách, případně na pilotách. Varianta bude zvolena na základě ",
+              "insert": [
+                732.6903671462451,
+                -128.2329769814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "statického posouzení a geologického průzkumu.",
+              "insert": [
+                732.6903671462451,
+                -131.0111019814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Obetonování trubek min. 100mm z každé strany,",
+              "insert": [
+                732.6903671462451,
+                -136.5673519814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "C16/20 nebo C25/30 (dle statika), v p",
+              "insert": [
+                732.6903671462451,
+                -139.3454769814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "řípadě plast. potr. zasypat ",
+              "insert": [
+                772.9731796462452,
+                -139.3454769814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "boky pískem/šterkopískem a betonovat až poté",
+              "insert": [
+                732.6903671462451,
+                -142.1236019814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Výkres základ",
+              "insert": [
+                732.6903671462451,
+                -147.6798519814341
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ů převzatý od statika",
+              "insert": [
+                747.6393254795785,
+                -147.6798519814341
+              ]
+            }
+          ],
+          "entity_types": {
+            "VIEWPORT": 3,
+            "INSERT": 1,
+            "MTEXT": 24
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "A106_stroje.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 3,
+          "viewports": [
+            {
+              "handle": "7622",
+              "center": [
+                744.602661552014,
+                -112.171227459268
+              ],
+              "width": 66.69781014136842,
+              "height": 25.42782753005126,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "7624",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 831.0371708611833,
+              "height": 270.9337484939281,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "7627",
+              "center": [
+                586.1389487480152,
+                -195.3328386884095
+              ],
+              "width": 248.3322570568067,
+              "height": 311.9574094390638,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 65,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.1",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;P",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ŮDORYS 1NP - STROJE",
+              "insert": [
+                813.8357117864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:150",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A106",
+              "insert": [
+                843.9082407094671,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1NP",
+              "insert": [
+                855.2216782094667,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Poznámka:",
+              "insert": [
+                713.2434696431997,
+                -125.9509534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Zatížení podlahy >= 1600kg/m^ 2",
+              "insert": [
+                713.2434696431997,
+                -128.7290784004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- EW 15 DP1: požární dve",
+              "insert": [
+                713.2434696431997,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ře požár",
+              "insert": [
+                741.686177976533,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "  ",
+              "insert": [
+                750.5497196431996,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "omezující po dobu 15 minut, ",
+              "insert": [
+                751.8726363098663,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "dřevěné, opatřené samozavíračem,",
+              "insert": [
+                713.2434696431997,
+                -134.2853284004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Podjezdná výška: 5m",
+              "insert": [
+                713.2434696431997,
+                -137.0634534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "OCEL:",
+              "insert": [
+                713.2434696431997,
+                -142.6197034004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Konstruk",
+              "insert": [
+                713.2434696431997,
+                -145.3978284004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ční OCEL ČSN EN 10025 S235 - Profily, Styč. plechy",
+              "insert": [
+                724.422115476533,
+                -145.3978284004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Konstrukční OCEL ČSN EN 10025 8.8 - Spoj. Prvky (Svorníky, ",
+              "insert": [
+                713.2434696431997,
+                -148.1759534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Kolíky, Čepy)",
+              "insert": [
+                713.2434696431997,
+                -150.9540784004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "-- Specifikace v TZ STATIKA",
+              "insert": [
+                713.2434696431997,
+                -153.7322034004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "BETON:",
+              "insert": [
+                713.2434696431997,
+                -159.2884534004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Deska ",
+              "insert": [
+                713.2434696431997,
+                -162.0665784004554
+              ]
+            }
+          ],
+          "entity_types": {
+            "LINE": 24,
+            "VIEWPORT": 3,
+            "INSERT": 2,
+            "MTEXT": 65
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "A107_stroje_kotvici_body.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 3,
+          "viewports": [
+            {
+              "handle": "7F73",
+              "center": [
+                744.602661552014,
+                -112.171227459268
+              ],
+              "width": 66.69781014136842,
+              "height": 25.42782753005126,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "7F75",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 348.0441615186326,
+              "height": 113.4689429402439,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "7F78",
+              "center": [
+                590.421729850153,
+                -197.5682699074429
+              ],
+              "width": 248.3322570568067,
+              "height": 311.9574094390638,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 62,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.1",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;P",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ŮDORYS 1NP - STROJE - KOTVÍCÍ",
+              "insert": [
+                813.8357117864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "BODY",
+              "insert": [
+                811.8513367864866,
+                -252.7544112590905
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:150",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A107",
+              "insert": [
+                843.9082407094671,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1NP",
+              "insert": [
+                855.2216782094667,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Poznámka:",
+              "insert": [
+                713.2434696431997,
+                -125.9509534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Zatížení podlahy >= 1600kg/m^ 2",
+              "insert": [
+                713.2434696431997,
+                -128.7290784004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- EW 15 DP1: požární dve",
+              "insert": [
+                713.2434696431997,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ře požár",
+              "insert": [
+                741.686177976533,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "  ",
+              "insert": [
+                750.5497196431996,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "omezující po dobu 15 minut, ",
+              "insert": [
+                751.8726363098663,
+                -131.5072034004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "dřevěné, opatřené samozavíračem,",
+              "insert": [
+                713.2434696431997,
+                -134.2853284004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Podjezdná výška: 5m",
+              "insert": [
+                713.2434696431997,
+                -137.0634534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "OCEL:",
+              "insert": [
+                713.2434696431997,
+                -142.6197034004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Konstruk",
+              "insert": [
+                713.2434696431997,
+                -145.3978284004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ční OCEL ČSN EN 10025 S235 - Profily, Styč. plechy",
+              "insert": [
+                724.422115476533,
+                -145.3978284004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Konstrukční OCEL ČSN EN 10025 8.8 - Spoj. Prvky (Svorníky, ",
+              "insert": [
+                713.2434696431997,
+                -148.1759534004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "Kolíky, Čepy)",
+              "insert": [
+                713.2434696431997,
+                -150.9540784004554
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "-- Specifikace v TZ STATIKA",
+              "insert": [
+                713.2434696431997,
+                -153.7322034004553
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "BETON:",
+              "insert": [
+                713.2434696431997,
+                -159.2884534004554
+              ]
+            }
+          ],
+          "entity_types": {
+            "VIEWPORT": 3,
+            "INSERT": 2,
+            "MTEXT": 62,
+            "LINE": 23
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "A201_vykopy.dxf",
+      "layouts": [
+        {
+          "name": "Layout1",
+          "viewport_count": 5,
+          "viewports": [
+            {
+              "handle": "1730",
+              "center": [
+                568.9029919206514,
+                -184.8279555812718
+              ],
+              "width": 242.719571631217,
+              "height": 306.9209337196585,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "1732",
+              "center": [
+                0.0,
+                0.0
+              ],
+              "width": 990.8009947425442,
+              "height": 323.0197600414564,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "1735",
+              "center": [
+                572.0554466557435,
+                -319.8002495261834
+              ],
+              "width": 183.5145161288369,
+              "height": 24.05561129325309,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "1737",
+              "center": [
+                726.0046037138018,
+                -186.52066970318
+              ],
+              "width": 25.86660028783585,
+              "height": 235.7614820004218,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            },
+            {
+              "handle": "1739",
+              "center": [
+                687.7899075692803,
+                -183.5377562838366
+              ],
+              "width": 36.13956611296668,
+              "height": 241.901639366765,
+              "view_target": [
+                0.0,
+                0.0
+              ],
+              "scale": null
+            }
+          ],
+          "annotation_count": 48,
+          "annotations_sample": [
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "+0,000 = +234,690 mnm Bpv",
+              "insert": [
+                841.1823065296545,
+                -96.74194113296053
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "\\fISOCPEUR|b0|i0|c238|p34|;D",
+              "insert": [
+                811.898333856799,
+                -224.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D.1.1.1",
+              "insert": [
+                811.898333856799,
+                -234.8897981063552
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "VÝKOPY",
+              "insert": [
+                811.8513367864866,
+                -247.8596195924239
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1:150",
+              "insert": [
+                811.898333856799,
+                -262.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                811.898333856799,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "07/2025",
+              "insert": [
+                863.3072507289382,
+                -272.8769034123449
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "A201",
+              "insert": [
+                843.9082407094671,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "ARS",
+              "insert": [
+                834.7577719594669,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "D-SO01",
+              "insert": [
+                821.8377719594667,
+                -282.8173421448776
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "1NP",
+              "insert": [
+                855.2216782094667,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "R00",
+              "insert": [
+                867.3881895946013,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TTLB",
+              "text": "DPZ",
+              "insert": [
+                811.8881973649749,
+                -282.8173421448777
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "POZNÁMKA:",
+              "insert": [
+                749.2422788133163,
+                -213.8285012943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- P",
+              "insert": [
+                749.2422788133163,
+                -219.5831887943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "ři provádění je nutné postupovat podle nejnovější ",
+              "insert": [
+                752.3511329799829,
+                -219.5831887943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "revize výkresové dokumentace.",
+              "insert": [
+                749.2422788133163,
+                -222.3613137943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Před zahájením prací je nutné porovnat výkresy ",
+              "insert": [
+                749.2422788133163,
+                -227.9175637943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "stavebně-konstrukční a architektonicko-stavební části ",
+              "insert": [
+                749.2422788133163,
+                -230.6956887943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "a na případné rozpory upozornit hlavního inženýra ",
+              "insert": [
+                749.2422788133163,
+                -233.4738137943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "projektu a statika.",
+              "insert": [
+                749.2422788133163,
+                -236.2519387943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Po celou dobu trvání výkopových prací je nutné ",
+              "insert": [
+                749.2422788133163,
+                -241.8081887943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "zachovat průjezdnost areálem dle požadavků správce ",
+              "insert": [
+                749.2422788133163,
+                -244.5863137943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "areálu.",
+              "insert": [
+                749.2422788133163,
+                -247.3644387943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Uvedené skutečnosti vycházejí z předpokládaného ",
+              "insert": [
+                749.2422788133163,
+                -252.9206887943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "stavu, který se může v průběhu realizace měnit v ",
+              "insert": [
+                749.2422788133163,
+                -255.6988137943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "závislosti na aktuálním stavu a vývoji situace na ",
+              "insert": [
+                749.2422788133163,
+                -258.4769387943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "staveništi. Dokumentace je platná ke dni jejího vydání ",
+              "insert": [
+                749.2422788133163,
+                -261.2550637943593
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "a podpisu.",
+              "insert": [
+                749.2422788133163,
+                -264.0331887943594
+              ]
+            },
+            {
+              "type": "MTEXT",
+              "layer": "G-ANNO-TEXT",
+              "text": "- Zaměření uvedené v dokumentaci je orientační, ",
+              "insert": [
+                749.2422788133163,
+                -269.5894387943594
+              ]
+            }
+          ],
+          "entity_types": {
+            "IMAGE": 1,
+            "VIEWPORT": 5,
+            "INSERT": 2,
+            "MTEXT": 48
+          }
+        },
+        {
+          "name": "Layout2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    },
+    {
+      "file": "Hala HK_ Úprava dveří.dxf",
+      "layouts": [
+        {
+          "name": "Rozvržení1",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        },
+        {
+          "name": "Rozvržení2",
+          "viewport_count": 0,
+          "viewports": [],
+          "annotation_count": 0,
+          "annotations_sample": [],
+          "entity_types": {}
+        }
+      ]
+    }
+  ]
+}

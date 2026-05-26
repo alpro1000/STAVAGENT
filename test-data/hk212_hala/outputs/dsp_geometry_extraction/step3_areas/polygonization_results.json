@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-22T05:55:58.177745+00:00",
+    "snap_tolerance_mm": 5.0,
+    "min_poly_area_m2": 10.0
+  },
+  "walls": {
+    "input_lines_per_sheet": {
+      "A101_pudorys_1np.dxf": 177,
+      "A106_stroje.dxf": 188,
+      "A107_stroje_kotvici_body.dxf": 178,
+      "A105_zaklady.dxf": 209
+    },
+    "deduped_unique_lines": 679,
+    "total_polygons": 271,
+    "polygonize_ratio": 0.399,
+    "top_polygon_areas_m2": [
+      475.8,
+      25.0,
+      15.6,
+      8.8,
+      8.5,
+      2.1,
+      1.9,
+      1.6,
+      1.5,
+      1.2
+    ],
+    "footprint_m2": 538.5,
+    "footprint_perimeter_m": 103.5,
+    "secondary_parts_area_m2": 42.0,
+    "union_parts_detail": [
+      {
+        "area_m2": 538.46,
+        "exterior_perimeter_m": 103.5,
+        "is_main": true
+      },
+      {
+        "area_m2": 18.71,
+        "exterior_perimeter_m": 82.6,
+        "is_main": false
+      },
+      {
+        "area_m2": 17.74,
+        "exterior_perimeter_m": 75.7,
+        "is_main": false
+      },
+      {
+        "area_m2": 2.94,
+        "exterior_perimeter_m": 11.2,
+        "is_main": false
+      },
+      {
+        "area_m2": 2.62,
+        "exterior_perimeter_m": 11.1,
+        "is_main": false
+      }
+    ],
+    "cross_check_convex_hull_m2": 540.9,
+    "coverage_ratio_vs_hull": 0.995
+  },
+  "roof": {
+    "deduped_unique_lines": 17,
+    "polygons_above_threshold": 2,
+    "polygon_areas_m2": [
+      278.2,
+      278.2
+    ],
+    "roof_brutto_m2": 556.5
+  },
+  "foundation": {
+    "deduped_unique_lines": 245,
+    "total_polygons": 20,
+    "polygons_above_10m2": 0,
+    "total_raw_line_length_m": 146.8,
+    "union_area_m2": 23.9,
+    "outer_perimeter_m": 85.6
+  },
+  "floor": {
+    "deduped_unique_lines": 41,
+    "polygons_above_threshold": 0,
+    "polygon_areas_m2": [],
+    "total_floor_m2": null
+  }
+}

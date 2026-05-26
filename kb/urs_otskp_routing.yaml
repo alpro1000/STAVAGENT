@@ -1,0 +1,53 @@
+# ÚRS/OTSKP/RTS Catalog Routing per project_type
+# Source: STAVAGENT soul.md §2.3 + §2.4 corpus rules + memory:
+#   - veřejná zakázka (Žihle, public infra) → OTSKP primary (povinné per ZD)
+#   - privátní (Libuše, hk212 hala, RD Jáchymov) → URS primary, OTSKP IRRELEVANT
+#   - design_build (Žihle 2062-1 D&B) → URS + OTSKP both columns in soupis
+# Used by: calculator + soupis generators to decide which catalog to query first.
+#
+# Edit values here and run `npm run gen:knowledge` to regenerate TS.
+
+source_citation:
+  source: "STAVAGENT corpus rules from real-world pilots 2026-04 to 2026-05"
+  pilots:
+    verejna_examples:
+      - "Most ev.č. 2062-1 u obce Žihle (SÚSPK) — OTSKP per ZD §4.4.l"
+    privatni_examples:
+      - "RD Fibichova 733 Jáchymov (Karel Šmíd) — URS primary, OTSKP not used"
+      - "Hala hk212 — URS-only"
+      - "RD Libuše"
+    design_build_examples:
+      - "Most 2062-1 Žihle D&B — soupis contains both URS code + OTSKP code per row"
+  extraction_date: "2026-05-26"
+
+routing:
+  verejna:
+    catalog_priority: ["OTSKP", "URS", "RTS"]
+    notes: |
+      Veřejná zakázka: OTSKP je primární (povinné per zadávací dokumentace
+      veřejných zadavatelů typu SÚSPK, ŘSD, kraj/město). URS slouží jako
+      back-fill pro položky neexistující v OTSKP. RTS pouze pro vendor
+      pricing cross-check.
+    source_examples:
+      - "Most ev.č. 2062-1 Žihle (SÚSPK D&B)"
+
+  privatni:
+    catalog_priority: ["URS", "own"]
+    notes: |
+      Privátní zakázka (RD, hala, soukromý investor): OTSKP je IRRELEVANTNÍ
+      — vendor + projektant pracuje v URS. Own/firemní katalog se uplatní
+      pro položky bez URS code (atypické, speciální technologie).
+    source_examples:
+      - "RD Fibichova 733 Jáchymov (Karel Šmíd, 2026-05)"
+      - "Hala hk212 (firma)"
+
+  design_build:
+    catalog_priority: ["URS", "OTSKP"]
+    notes: |
+      D&B (Design & Build) tender: soupis prací obsahuje OBĚ kódové
+      soustavy ve dvou paralelních sloupcích — URS pro projektantovu
+      cenovou kalkulaci + OTSKP per zadávací dokumentace (povinné pro
+      veřejného zadavatele jako SÚSPK/ŘSD). Engine musí vrátit oba
+      kódy pro každou položku.
+    source_examples:
+      - "Most 2062-1 u obce Žihle D&B SÚSPK (2026-04 to 2026-05)"

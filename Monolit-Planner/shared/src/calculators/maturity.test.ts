@@ -206,7 +206,7 @@ describe('Concrete Maturity & Curing Model', () => {
   // ─── Curing class 2/3/4 (TKP18 §7.8.3) ───────────────────────
 
   describe('Curing class 2/3/4', () => {
-    it('class 4 mostovka C35/45 XF2 @15°C → 5 days (from table)', () => {
+    it('class 4 mostovka C35/45 XF2 @15°C → 9 days (per Python MCP production calibration)', () => {
       const result = calculateCuring({
         concrete_class: 'C35/45',
         temperature_c: 15,
@@ -214,8 +214,10 @@ describe('Concrete Maturity & Curing Model', () => {
         curing_class: 4,
         exposure_class: 'XF2',
       });
-      // C30+ at 15-25°C class_4 = 5 days. XF2 floor = 5d. max(5,5) = 5
-      expect(result.min_curing_days).toBe(5);
+      // Phase C G1 calibration (2026-05-26): C30+ at 15-25°C class_4 = 9d
+      // (was 5d, raised to match production Python MCP). XF2 floor = 5d.
+      // max(9, 5) = 9.
+      expect(result.min_curing_days).toBe(9);
       expect(result.curing_class).toBe(4);
     });
 
@@ -231,7 +233,7 @@ describe('Concrete Maturity & Curing Model', () => {
       expect(result.min_curing_days).toBe(9);
     });
 
-    it('class 4 rimsa XF4 @15°C → 7 days (XF4 floor overrides table 5 for C30+)', () => {
+    it('class 4 rimsa XF4 @20°C → 9 days (table value now exceeds XF4 floor)', () => {
       const result = calculateCuring({
         concrete_class: 'C30/37',
         temperature_c: 20,
@@ -239,8 +241,10 @@ describe('Concrete Maturity & Curing Model', () => {
         curing_class: 4,
         exposure_class: 'XF4',
       });
-      // C30+ at 15-25°C class_4 = 5 days. XF4 floor = 7d. max(5,7) = 7
-      expect(result.min_curing_days).toBe(7);
+      // Phase C G1 calibration (2026-05-26): C30+ at 15-25°C class_4 = 9d
+      // (was 5d). XF4 floor = 7d. max(9, 7) = 9. Previously the XF4 floor
+      // dominated (max(5, 7) = 7); now the table value drives the result.
+      expect(result.min_curing_days).toBe(9);
     });
 
     it('class 3 driky_piliru XF4 @15°C → 7 days (XF4 floor)', () => {

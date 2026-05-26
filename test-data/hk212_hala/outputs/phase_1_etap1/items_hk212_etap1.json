@@ -6,47 +6,289 @@
     "catalog": "URS201801.csv (39742 stemmed rows)",
     "export_wrapper_default": "KROS Komplet",
     "kapitola_modules_loaded": [
-      "kap_hsv1 (27 items)",
-      "kap_hsv2 (18 items)",
-      "kap_hsv3 (14 items)",
-      "kap_hsv9 (4 items)",
-      "kap_psv71x (4 items)",
-      "kap_psv76x (12 items)",
-      "kap_psv77x (6 items)",
-      "kap_psv78x (12 items)",
-      "kap_m (7 items)",
-      "kap_vrn (22 items)",
-      "kap_vzt (15 items)"
+      "HSV-1 (28 items)",
+      "HSV-2 (18 items)",
+      "HSV-3 (14 items)",
+      "HSV-9 (4 items)",
+      "PSV-71x (4 items)",
+      "PSV-76x (12 items)",
+      "PSV-77x (6 items)",
+      "PSV-78x (12 items)",
+      "PSV-OPL (8 items)",
+      "VRN (22 items)"
     ],
-    "total_items": 141,
+    "total_items": 128,
     "status_counts": {
-      "matched_medium": 38,
-      "needs_review": 92,
-      "matched_high": 4,
-      "custom_item": 7
+      "matched_medium": 33,
+      "needs_review": 82,
+      "matched_high": 4
     },
-    "match_rate_high_plus_medium": 0.298,
+    "match_rate_high_plus_medium": 0.3109,
     "vyjasneni_ref_distribution": {
       "ABMV_17": 22,
       "ABMV_11": 5,
       "ABMV_15": 1,
       "ABMV_2": 1,
       "ABMV_10": 2,
-      "ABMV_3": 8,
-      "ABMV_16": 8,
-      "ABMV_20": 2,
-      "ABMV_8": 2,
-      "ABMV_1": 1
-    }
+      "ABMV_3": 1,
+      "ABMV_16": 1,
+      "ABMV_20": 2
+    },
+    "stage_d_applied": "stage_d_2026_05_22",
+    "stage_d_summary": {
+      "applied_at": "2026-05-22T05:20:38.361767+00:00",
+      "initial_item_count": 141,
+      "final_item_count": 119,
+      "dropped_items": [
+        {
+          "id": "Rpol-001",
+          "kapitola": "M",
+          "popis": "Chemická kotva M20 × 200 mm pro anchorage strojů (DRIFT_E1, DEFRAME, filtrační)"
+        },
+        {
+          "id": "Rpol-002",
+          "kapitola": "M",
+          "popis": "Lokální výztuž desky pod stroji — B500B vázaná, dopl. nad rámec KARI"
+        },
+        {
+          "id": "Rpol-003",
+          "kapitola": "M",
+          "popis": "Beton lokálního zesílení podlahy pod stroji C25/30 XC4"
+        },
+        {
+          "id": "Rpol-004",
+          "kapitola": "M",
+          "popis": "Bezpečnostní oplocení strojů — Troax-type, výška 2.2 m, mřížová síť, panely modulární"
+        },
+        {
+          "id": "Rpol-005",
+          "kapitola": "M",
+          "popis": "Montáž bezp. oplocení + sloupky kotvené do podlahy + branka pro přístup"
+        },
+        {
+          "id": "Rpol-006",
+          "kapitola": "M",
+          "popis": "Bezpečnostní tabulky + značení — výstrahy, zákazy, BOZP piktogramy"
+        },
+        {
+          "id": "Rpol-007",
+          "kapitola": "M",
+          "popis": "El. připojení strojů — kabel CYKY × přívody + průchodky podlahou"
+        },
+        {
+          "id": "VZT-001",
+          "kapitola": "VZT",
+          "popis": "Rekuperační jednotka venkovní 4000 m³/h s deskovým rekuperátorem + el. ohřev + přímý výparník"
+        },
+        {
+          "id": "VZT-002",
+          "kapitola": "VZT",
+          "popis": "Venkovní kondenzační jednotka chlazení 15 kW pro přímý výparník"
+        },
+        {
+          "id": "VZT-003",
+          "kapitola": "VZT",
+          "popis": "Dveřní clona horizontální 4700 m³/h, š. 2 m, s el. ohřevem"
+        },
+        {
+          "id": "VZT-004",
+          "kapitola": "VZT",
+          "popis": "Potrubí SPIRO pozink Ø 315 mm — hlavní rozvod"
+        },
+        {
+          "id": "VZT-005",
+          "kapitola": "VZT",
+          "popis": "Potrubí SPIRO pozink Ø 250 mm — větve"
+        },
+        {
+          "id": "VZT-006",
+          "kapitola": "VZT",
+          "popis": "Potrubí SPIRO pozink Ø 160 mm — koncové úseky + napojení clon"
+        },
+        {
+          "id": "VZT-007",
+          "kapitola": "VZT",
+          "popis": "Tlumiče hluku v potrubí — kruhové, vč. připojovacích manžet"
+        },
+        {
+          "id": "VZT-008",
+          "kapitola": "VZT",
+          "popis": "Tepelná izolace VZT potrubí — kaučuková tl. 13 mm, parotěsná"
+        },
+        {
+          "id": "VZT-009",
+          "kapitola": "VZT",
+          "popis": "Antivibrační pružná uložení rekuperace + manžety na přípojkách"
+        },
+        {
+          "id": "VZT-010",
+          "kapitola": "VZT",
+          "popis": "Automatická regulace VZT s MaR (měření a regulace) — řízení rekuperace + clon"
+        },
+        {
+          "id": "VZT-011",
+          "kapitola": "VZT",
+          "popis": "Dálkové ovládání + napojení na centrální řízení haly"
+        },
+        {
+          "id": "VZT-012",
+          "kapitola": "VZT",
+          "popis": "Závěsy + příchytky potrubí SPIRO — komplet pro celý rozvod"
+        },
+        {
+          "id": "VZT-013",
+          "kapitola": "VZT",
+          "popis": "Spuštění + zaregulování VZT systému + měření hlučnosti a vzduchových výkonů"
+        },
+        {
+          "id": "VZT-014",
+          "kapitola": "VZT",
+          "popis": "Doprava VZT komponentů — paušál pro veškeré jednotky a potrubí"
+        },
+        {
+          "id": "VZT-015",
+          "kapitola": "VZT",
+          "popis": "Revize VZT + protokol o předání + zapojení do BMS"
+        }
+      ],
+      "hsv3_length_source_patched": 14,
+      "abmv_patched": 4,
+      "rationale_doc": "outputs/phase_1_etap1/stage_d_audit.md"
+    },
+    "stage_e_applied": "2026-05-22T06:30:51.307602+00:00",
+    "stage_e_summary": {
+      "applied_at": "2026-05-22T06:30:51.307602+00:00",
+      "psv_76x_005_vrata_patched": "3000→3500 mm per TZ ARS DPZ",
+      "psv_opl_items_added": 8,
+      "psv_opl_ids": [
+        "PSV-OPL-001",
+        "PSV-OPL-002",
+        "PSV-OPL-003",
+        "PSV-OPL-004",
+        "PSV-OPL-005",
+        "PSV-OPL-006",
+        "PSV-OPL-007",
+        "PSV-OPL-008"
+      ]
+    },
+    "phase_1_igp_applied": "2026-05-22T07:23:50.291052+00:00",
+    "phase_1_igp_summary": {
+      "applied_at": "2026-05-22T07:23:50.291052+00:00",
+      "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda",
+      "actions": {
+        "step_A_ABMV_11_closed": true,
+        "step_B_pilot_items_flagged": [
+          "HSV-2-010",
+          "HSV-2-011",
+          "HSV-2-012"
+        ],
+        "step_C_new_item": "HSV-1-028",
+        "step_D_HSV_1_001_recompute": "222.75 → 323.1 m³",
+        "step_D_ABMV_17_closed": true,
+        "step_E_geotechnical_summary_added": true
+      }
+    },
+    "fix_f1_applied": "2026-05-22T07:25:36.029578+00:00",
+    "update_kingspan_specs_applied_2026_05_24": "2026-05-22T08:40:46.305705+00:00",
+    "kingspan_statika_update_summary": {
+      "applied_at": "2026-05-22T08:40:46.305705+00:00",
+      "source_quote": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m.",
+      "items_updated": [
+        "PSV-OPL-001",
+        "PSV-OPL-002",
+        "PSV-OPL-003",
+        "PSV-OPL-004",
+        "HSV-2-001",
+        "HSV-2-002",
+        "HSV-2-003",
+        "HSV-2-004",
+        "HSV-2-005",
+        "HSV-2-006",
+        "HSV-3-004"
+      ],
+      "new_abmv": "ABMV_21"
+    },
+    "rework_patky_vykop_deska_2026_05_24_applied": "2026-05-22T08:47:35.361360+00:00",
+    "rework_2026_05_24_summary": {
+      "applied_at": "2026-05-22T08:47:35.361360+00:00",
+      "items_updated": [
+        "HSV-2-001",
+        "HSV-2-002",
+        "HSV-2-003",
+        "HSV-1-001",
+        "HSV-1-028",
+        "HSV-2-013",
+        "HSV-2-015",
+        "HSV-2-016"
+      ],
+      "new_abmv": "ABMV_22 (A201 bilance unfilled)",
+      "reopened_abmv": "ABMV_5 (deska class 2:2 split)"
+    },
+    "revisions": [
+      {
+        "date": "2026-05-22",
+        "source": "Hala HK_ Úprava dveří drawings",
+        "summary": "Window count 21→34 (29 fix + 5 otvíravé), Kingspan wall NF200→NF120 (510.81 m²) + new FR150 (82.25 m²), Kingspan roof FF-ROC200→RW160 (500.60 m²) + new FF175 (58.20 m²), obvod 103.5→94.57 m, klempířské lemy 207→189.14 bm, dveře vnější popis +plastové",
+        "items_modified": [
+          "PSV-76x-001",
+          "PSV-76x-002",
+          "PSV-76x-003",
+          "PSV-76x-004",
+          "PSV-76x-009",
+          "PSV-OPL-001",
+          "PSV-OPL-002",
+          "PSV-OPL-003",
+          "PSV-OPL-004",
+          "PSV-OPL-005"
+        ],
+        "items_added": [
+          "PSV-76x-013",
+          "PSV-OPL-009",
+          "PSV-OPL-010",
+          "PSV-OPL-011",
+          "PSV-OPL-012"
+        ],
+        "items_removed": []
+      },
+      {
+        "date": "2026-05-22",
+        "source": "User request — KROS code granularity for výměna aktivní zóny",
+        "summary": "HSV-1-028 split into 6 sub-items (a-f) per real workflow: odstranění → odvoz → dovoz → rozprostření+hutnění → Edef2 zkouška → geodet kontrola",
+        "reason": "Granular KROS code mapping pre user fill — single consolidated 265.61 m³ line cannot map to one KROS code (5 different code groups apply)",
+        "previous_count": 133,
+        "new_count": 138,
+        "items_modified": [],
+        "items_added": [
+          "HSV-1-028a",
+          "HSV-1-028b",
+          "HSV-1-028c",
+          "HSV-1-028d",
+          "HSV-1-028e",
+          "HSV-1-028f"
+        ],
+        "items_removed": [
+          "HSV-1-028"
+        ],
+        "removed_item_snapshot": {
+          "id": "HSV-1-028",
+          "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+          "mj": "m³",
+          "mnozstvi": 265.61,
+          "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+          "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
+          "confidence": 0.85
+        }
+      }
+    ]
   },
   "items": [
     {
       "id": "HSV-1-001",
       "kapitola": "HSV-1",
       "SO": "SO-01",
-      "popis": "Hloubení figury pod základovou desku, stroj. v hor. tř. 3",
+      "popis": "Hloubení figury pod základovou desku + sejmutí navážek aktivní zóny, hor. tř. 1, stroj.",
       "mj": "m³",
-      "mnozstvi": 222.75,
+      "mnozstvi": 210.0,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -68,32 +310,55 @@
       "urs_status": "matched_medium",
       "urs_match_score": 0.667,
       "skladba_ref": null,
-      "source": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10",
+      "source": "A201_vykopy + A105_zaklady (HH/SH labels) + user zone-by-zone 2026-05-24",
       "raw_description": "figura pod deskou — výkop pro polštář a desku",
       "confidence": 0.75,
       "subdodavatel_chapter": "zemni_prace",
-      "_vyjasneni_ref": [
-        "ABMV_17"
-      ],
+      "_vyjasneni_ref": [],
       "_status_flag": null,
-      "_data_source": "TZ+DXF",
+      "_data_source": "TZ+DXF+IGP",
       "_completeness": 1.0,
-      "_qty_formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
+      "_qty_formula": "Zone-by-zone per A201_vykopy + A105 (deska HH/SH labels): (1) Main floor -0.485 → 425 m² × 0.235 m = 100 m³ + (2) Perimeter pas -1.300 → 60 m² × 0.4 m = 24 m³ + (3) Patky pits -1.900 → 90 m² × 0.6 m = 54 m³ + (4) Kanalizace zone -1.620 → 10 m² × 0.7 m = 7 m³; subtotal 185 m³ + svahy 1:1 + dokopávky rezerva 25 m³ = 210 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "výkopy a zemní práce — A201 + A105",
-        "formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
+        "formula": "Zone-by-zone: 100 + 24 + 54 + 7 + 25 = 210 m³ (main_floor + perimeter_pas + patky_pits + kanalizace + svahy_rezerva)",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
+            "label": "zone_1_main_floor",
+            "value": "425 m² × 0.235 m",
+            "unit": "100 m³"
           },
           {
-            "label": "operand_2",
-            "value": 0.45,
-            "unit": ""
+            "label": "zone_2_perimeter_pas",
+            "value": "60 m² × 0.4 m",
+            "unit": "24 m³"
+          },
+          {
+            "label": "zone_3_patky_pits_incremental",
+            "value": "90 m² × 0.6 m",
+            "unit": "54 m³"
+          },
+          {
+            "label": "zone_4_kanalizace",
+            "value": "10 m² × 0.7 m",
+            "unit": "7 m³"
+          },
+          {
+            "label": "subtotal",
+            "value": 185,
+            "unit": "m³"
+          },
+          {
+            "label": "svahy_1to1_rezerva",
+            "value": 25,
+            "unit": "m³"
+          },
+          {
+            "label": "total",
+            "value": 210,
+            "unit": "m³"
           }
         ],
         "reference": [
@@ -110,17 +375,68 @@
           {
             "type": "phase_ref",
             "section": "Phase 0b RE-RUN §3.10"
+          },
+          {
+            "type": "igp_section",
+            "section": "3.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §3.3 mocnost navážek 0.6–2.2 m"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A201",
+            "raw": "A201_vykopy.dxf — paperspace BILANCE ZEMINY label (@749.2,-71.6) found but ZERO filled numerical values (Step 0 outcome B 2026-05-24). User zone-by-zone analysis substitutes projektant fill."
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "A105 HH/SH labels: deska -0.485 (level after sejmutí navážek + lože), pas -1.300, patky bottom -1.900, kanalizace zone -1.620"
           }
         ],
-        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace]",
-        "computed_quantity": 222.75,
-        "declared_quantity": 222.75,
+        "poznamka": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10 · (figura pod deskou — výkop pro polštář a desku) · [sub: zemni_prace] | STAGE-PHASE1 IGP RECOMPUTE 2026-05-24: original 495 m² × 0.45 m = 222.75 m³ replaced by 538.5 m² × 0.6 m = 323.1 m³ per IGP §3.3 (navážky 0.6 m min). ABMV_17 closed. | REWORK 2026-05-24 zone-by-zone: 323.1 m³ (IGP §3.3 flat 538.5×0.6) → 210.0 m³ (user A201 zone analysis). Reason: flat formula over-counts because ~60 % plochy je at -0.485 m (sejmutí navážky), zbytek je incremental at pas/patky/kanalizace. Zone-by-zone = realistic; ABMV_22 flags need for projektant final fill.",
+        "computed_quantity": 210.0,
+        "declared_quantity": 210.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "confidence": 0.75,
+        "extraction_method": "igp_geometric_recompute",
+        "data_source_hint": "TZ+DXF+IGP",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-14",
+            "value_m3": 222.75,
+            "method": "RE-RUN §3.10: 495 m² × 0.45 m flat",
+            "status": "superseded"
+          },
+          {
+            "date": "2026-05-24 (Phase 1 IGP)",
+            "value_m3": 323.1,
+            "method": "IGP §3.3: 538.5 m² × 0.6 m sejmutí navážek flat",
+            "status": "superseded"
+          },
+          {
+            "date": "2026-05-24 (ChatGPT estimate)",
+            "value_m3": 65,
+            "method": "REJECTED — undercounted main floor as ~121 m² instead of ~425 m²"
+          },
+          {
+            "date": "2026-05-24 (this commit)",
+            "value_m3": 210,
+            "method": "A106/A201 zone-by-zone per A201 paperspace + A105 HH/SH labels",
+            "status": "ACCEPTED"
+          },
+          {
+            "date": "pending",
+            "value_m3": "TBD",
+            "method": "DXF layer scan A106/A201 for exact polygon areas per zone",
+            "status": "future_refinement"
+          }
+        ]
       }
     },
     {
@@ -1961,12 +2277,756 @@
       }
     },
     {
+      "id": "HSV-1-028a",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odstranění navážek GT1 z aktivní zóny — výkop + naložení na dopravní prostředek",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "122xxx (odstranění zeminy z aktivní zóny)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Odstranění navážek GT1 z aktivní zóny — výkop + naložení na dopravní prostředek",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "531.22 m² (A105 deska) × 0.5 m (mocnost výměny per IGP §4.4) = 265.61 m³",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "1) výkop navážek",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 1) výkop navážek ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 1) výkop navážek — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028b",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odvoz vytěžených navážek GT1 na skládku (vč. poplatku skládkovné)",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "162xxx (odvoz) + skládkovné dle reálné vzdálenosti",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Odvoz vytěžených navážek GT1 na skládku (vč. poplatku skládkovné)",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= HSV-1-028a vytěžený objem = 265.61 m³ (1 : 1 odvoz vykopaného materiálu)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "2) odvoz na skládku",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 2) odvoz na skládku ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 2) odvoz na skládku — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028c",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Dovoz hutného štěrku frakce 0/63 (alt. 0/125) na staveniště",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "162xxx (dovoz materiálu) — frakce per finální výběr dodavatele",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Dovoz hutného štěrku frakce 0/63 (alt. 0/125) na staveniště",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= objem výměny 265.61 m³ (nahrazení 1 : 1 ekvivalent odstraněného)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "3) dovoz hutného štěrku",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 3) dovoz hutného štěrku ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 3) dovoz hutného štěrku — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028d",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Rozprostření štěrku po vrstvách max 300 mm + hutnění vibračním válcem / pěchem (ČSN 72 1006)",
+      "mj": "m³",
+      "mnozstvi": 265.61,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "174xxx (zhutněné násypy)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Rozprostření štěrku po vrstvách max 300 mm + hutnění vibračním válcem / pěchem (ČSN 72 1006)",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= 265.61 m³ rozprostřeno v ≥ 2 vrstvách po max 0.3 m (ČSN 72 1006 §6.3 míra zhutnění)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "4) rozprostření + hutnění",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 4) rozprostření + hutnění ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 265.61,
+        "declared_quantity": 265.61,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 265.61,
+            "mj": "m³",
+            "method": "Sub-item 4) rozprostření + hutnění — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028e",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Statická zatěžovací zkouška Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2), min 3 měřená místa",
+      "mj": "ks",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "935xxx (zatěžovací zkouška)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Statická zatěžovací zkouška Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2), min 3 měřená místa",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "3 ks (ČSN 72 1006 minimum pro plochu < 1000 m²; deska 531.22 m² → 3 měřená místa)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "5) Edef2 kontrolní zkouška",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 5) Edef2 kontrolní zkouška ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 3.0,
+        "declared_quantity": 3.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 3.0,
+            "mj": "ks",
+            "method": "Sub-item 5) Edef2 kontrolní zkouška — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HSV-1-028f",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Geodetická kontrola roviny aktivní zóny po hutnění",
+      "mj": "m²",
+      "mnozstvi": 531.22,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "kros_hint": "933xxx (geodetické práce — kontrolní zaměření)",
+      "skladba_ref": null,
+      "source": "IGP ALTAGEO §4.4 + ČSN 72 1006 + ČSN 6133 + user split 2026-05-22",
+      "raw_description": "Geodetická kontrola roviny aktivní zóny po hutnění",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "IGP",
+      "_completeness": 0.9,
+      "_qty_formula": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)",
+      "_export_wrapper_hint": null,
+      "_price_source": "user_skipped_pricing",
+      "audit_trail": {
+        "lokalizace": "výkopové práce / úprava pláně — celá plocha haly",
+        "formula": "= A105 deska 19.04 × 27.90 = 531.22 m² (celá plocha aktivní zóny)",
+        "formula_parsed_method": "user_split_decomposition",
+        "inputs": [
+          {
+            "label": "krok_role",
+            "value": "6) geodetická kontrola roviny",
+            "unit": ""
+          },
+          {
+            "label": "parent_consolidated_qty",
+            "value": 265.61,
+            "unit": "m³ (HSV-1-028 původně)"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m² (A105 měřené 19.04 × 27.90)"
+          },
+          {
+            "label": "mocnost_vymeny_m",
+            "value": 0.5,
+            "unit": "m (IGP §4.4)"
+          },
+          {
+            "label": "edef2_min_MPa",
+            "value": 45.0,
+            "unit": "MPa (ČSN 72 1006)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "igp_section",
+            "section": "4.4",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 Zpevněné plochy"
+          },
+          {
+            "type": "igp_document",
+            "document": "inputs/dokumentace/IGP_ALTAGEO_526026.md"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "zastavena_plocha",
+            "value": 538.5
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 6133"
+          },
+          {
+            "type": "csn",
+            "standard": "ČSN 72 1006"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Deska měřená 19.04 × 27.90 = 531.22 m² (full deska včetně přesahu obvodu). NOT TZ ARS p2 'podlahová plocha 495 m²' (excludes okrajový pas + přesah)."
+          },
+          {
+            "type": "user_request",
+            "date": "2026-05-22",
+            "raw": "Rozdělit HSV-1-028 na 6 podpoložek pro KROS code granularitu — user task 2026-05-22"
+          }
+        ],
+        "poznamka": "Sub-item 6) geodetická kontrola roviny ze split HSV-1-028 (výměna aktivní zóny). Zachovává původní geometrickou bázi (A105 531.22 m² × 0.5 m = 265.61 m³). KROS hint per user — uživatel doplní exact catalog code do urs_code.",
+        "computed_quantity": 531.22,
+        "declared_quantity": 531.22,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "user_split_decomposition",
+        "data_source_hint": "IGP+CSN+user_split",
+        "extracted_at": "2026-05-22T13:00:00+00:00",
+        "parent_item": "HSV-1-028",
+        "split_decision": "decomposed for KROS code granularity at user request 2026-05-22",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "ancestor": "HSV-1-028",
+            "ancestor_state": {
+              "mnozstvi": 265.61,
+              "mj": "m³",
+              "popis": "Výměna aktivní zóny pláně — odstranění navážek GT1 + nahrazení hutněným štěrkem tl. 0.5 m, Edef2 ≥ 45 MPa (Edef2/Edef1 < 2.2)",
+              "formula": "531.22 m² × 0.5 m = 265.61 m³ × 2 operace",
+              "poznamka_excerpt": "IGP §4.4: navážky GT1 (mocnost 0.6–2.2 m) jsou ČSN P 73 1005 třída Y — nevhodný typ základové půdy pro zemní pláň. Doporučeno odstranit z aktivní zóny a nahradit hutněným štěrkem. Edef2 ≥ 45 MPa, Edef..."
+            },
+            "method": "Parent HSV-1-028 split into 6 KROS-mappable sub-items (a-f)",
+            "status": "split_origin"
+          },
+          {
+            "date": "2026-05-22",
+            "value": 531.22,
+            "mj": "m²",
+            "method": "Sub-item 6) geodetická kontrola roviny — first appearance",
+            "status": "current"
+          }
+        ]
+      }
+    },
+    {
       "id": "HSV-2-001",
       "kapitola": "HSV-2",
       "SO": "SO-01",
       "popis": "Beton patek rámových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 18.9,
+      "mnozstvi": 22.875,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -1988,40 +3048,45 @@
       "urs_status": "needs_review",
       "urs_match_score": 0.333,
       "skladba_ref": null,
-      "source": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4",
-      "raw_description": "patky rámové C16/20",
-      "confidence": 0.5,
+      "source": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 + RE-RUN §3.3 + §3.4",
+      "raw_description": "patky rámové C16/20 dvoustupňové pyramida (dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6); 10 ks per A105 + statika rozteč 6.1 m",
+      "confidence": 0.85,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
-      "_data_source": "TZ+DXF",
+      "_data_source": "TZ+DXF+statika",
       "_completeness": 1.0,
-      "_qty_formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
+      "_qty_formula": "10 ks × [dolní 1.5×1.5×0.6 (1.35 m³) + horní 1.25×1.25×0.6 (0.9375 m³)] = 10 × 2.2875 m³ = 22.875 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
+        "formula": "10 × (1.5²×0.6 + 1.25²×0.6) = 10 × (1.35 + 0.9375) = 22.875 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 14.0,
-            "unit": ""
+            "label": "count_patek_ramovych",
+            "value": 10,
+            "unit": "ks"
           },
           {
-            "label": "operand_2",
-            "value": 1.5,
-            "unit": ""
+            "label": "dolni_stupen_BxLxH_m",
+            "value": "1.5 × 1.5 × 0.6",
+            "unit": "m³"
           },
           {
-            "label": "operand_3",
-            "value": 1.5,
-            "unit": ""
+            "label": "horni_stupen_BxLxH_m",
+            "value": "1.25 × 1.25 × 0.6",
+            "unit": "m³"
           },
           {
-            "label": "operand_4",
-            "value": 0.6,
-            "unit": ""
+            "label": "per_patek_m3",
+            "value": 2.2875,
+            "unit": "m³"
+          },
+          {
+            "label": "total_m3",
+            "value": 22.875,
+            "unit": "m³"
           }
         ],
         "reference": [
@@ -2029,17 +3094,51 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.1 p3",
+            "raw": "TZ ARS D.1.1: 'Sloupy rámu budou založeny na dvoustupňových patkách o rozměrech 1,5x1,5x(2x0,6m) z prostého betonu C16/20 XC0'"
+          },
+          {
+            "type": "statika_section",
+            "section": "D.1.2 p29-30",
+            "raw": "Statika výpočet patka: B=1.5, L=1.5, H=1.2 m, materiál C16/20 XC0, Rdt=200 kPa, σEd=190.16 kPa Vyhovuje"
+          },
+          {
+            "type": "bednění_consistency_check",
+            "raw": "HSV-2-002 patky rámové bednění = 100.8 m². Per patka 4×1.5×1.2 = 7.2 m². 100.8/7.2 = 14 patek ✓"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh ztužení / Vzdálenost rámů",
+            "raw": "Vzdálenost rámů bude 6,1 m. Hala 28.18 m délka / 6.1 m rozteč = 4 fields + krajní → 5 rámů × 2 sloupy = 10 patek rámových."
+          },
+          {
+            "type": "user_drawing_count",
+            "raw": "A105 PŮDORYS ZÁKLADŮ — user manual count of 1500×1500 patky on axes A + F across rows 1-6 = 10 patek (excl. A3 atypical/pilota variant). Geometric consistency: 4 × 6.1 m = 24.4 m + krajní (3.78 m) = 28.18 m ✓ matches TZ ARS"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "A105 PŮDORYS ZÁKLADŮ — patky rámové 1500×1500 outer; dvoustupňová s horním stupněm zúženým na ~1250×1250 (pyramida tvar). HH/SH labels -0.700/-1.300/-1.900 → 2 × 0.6 m stupně. User manual recount: 10 patek (5 rámů × 2 osy A+F)."
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika)",
+            "raw": "Vzdálenost rámů 6,1 m → 5 rámů × 2 sloupy = 10 patek rámových. Geometric: 4×6.1 + krajní 3.78 = 28.18 m ✓ matches TZ ARS"
           }
         ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4 · (patky rámové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 18.9,
-        "declared_quantity": 18.9,
+        "poznamka": "A105 + TZ ARS D.1.1 p3 + statika D.1.2 p29-30 · patky rámové dvoustupňové 1.5×1.5×(2×0.6 = 1.2 m) C16/20 XC0 · [sub: GD_zaklady_beton] | FIX F-3 (2026-05-24): mnozstvi 18.9 → 37.8 m³. Original formula used H=0.6 (single step) instead of total dvoustupňová H=1.2 m (2×0.6). Bednění HSV-2-002 100.8 m² already implied 14 patek (4×1.5×1.2=7.2 m²/patka → 14 patek ✓). Audit F-3 fix. | RECOMPUTE 2026-05-24: count 14 (F-3 fix bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). mnozstvi 37.8 → 27.0 m³. F-3 fix used bednění 100.8 m² ÷ 7.2 m²/patka = 14, but 100.8 m² was likely over-counted; statika rozteč is authoritative for count. | REWORK 2026-05-24: 37.8 m³ → 22.875 m³. Previous F-3 fix (37.8) used cube approximation 1.5×1.5×1.2 per patek (F-3 over-fix). Correct geometry is DVOUSTUPŇOVÁ PYRAMIDA: dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6 = 2.2875 m³/patek. Per A105 měřená geometrie + design intent (úspora betonu při zachování ložné plochy).",
+        "computed_quantity": 22.875,
+        "declared_quantity": 22.875,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.92,
         "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "data_source_hint": "TZ+DXF+statika",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_audit_fix_f3_date": "2026-05-24"
       }
     },
     {
@@ -2048,7 +3147,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — zřízení",
       "mj": "m²",
-      "mnozstvi": 100.8,
+      "mnozstvi": 66.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2078,37 +3177,32 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
+      "_qty_formula": "10 ks × [dolní 4×1.5×0.6 (3.6 m²) + horní 4×1.25×0.6 (3.0 m²)] = 10 × 6.6 = 66.0 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
+        "formula": "10 × (3.6 + 3.0) = 66.0 m²",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 14.0,
-            "unit": ""
+            "label": "count_patek",
+            "value": 10,
+            "unit": "ks"
           },
           {
-            "label": "operand_2",
-            "value": 4.0,
-            "unit": ""
+            "label": "bednění_dolní_m2_per_patek",
+            "value": 3.6,
+            "unit": "m²"
           },
           {
-            "label": "operand_3",
-            "value": 1.5,
-            "unit": ""
+            "label": "bednění_horní_m2_per_patek",
+            "value": 3.0,
+            "unit": "m²"
           },
           {
-            "label": "operand_4",
-            "value": 0.6,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 2.0,
-            "unit": ""
+            "label": "total_m2_per_patek",
+            "value": 6.6,
+            "unit": "m²"
           }
         ],
         "reference": [
@@ -2116,14 +3210,24 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Dvoustupňová pyramida — bednění 4 strany dolního + 4 strany horního stupně. Per patek = 6.6 m²."
           }
         ],
-        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 100.8,
-        "declared_quantity": 100.8,
+        "poznamka": "A105 + skladba dvoustupňová · (bednění patek rámových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek per statika rozteč rámů 6.1 m × 5 rámů. Mnozstvi 100.8 → 72.0 m². | REWORK 2026-05-24: 100.8 m² → 72 m² (count 14→10) → 66 m² (dvoustupňová pyramida 6.6 m²/patek vs prismatic 7.2). Previous commit was based on prismatic shape; pyramida geometry per A105 reduces side area by ~9 %.",
+        "computed_quantity": 66.0,
+        "declared_quantity": 66.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.85,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
@@ -2135,7 +3239,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek rámových dvoustupňových — odstranění",
       "mj": "m²",
-      "mnozstvi": 100.8,
+      "mnozstvi": 66.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2165,17 +3269,28 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= bednění zřízení",
+      "_qty_formula": "= HSV-2-002 zřízení (dvoustupňová pyramida 10 patek) = 66.0 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= bednění zřízení",
+        "formula": "= HSV-2-002 = 66.0 m²",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 100.8,
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Symmetric s HSV-2-002 (zřízení bednění)"
+          }
+        ],
+        "poznamka": "standardní pár · (bednění patek rámových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: 14 → 10 patek (symmetric s HSV-2-002). 100.8 → 72.0 m². | REWORK 2026-05-24: symmetric s HSV-2-002. 72.0 → 66.0 m².",
+        "computed_quantity": 66.0,
+        "declared_quantity": 66.0,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
@@ -2190,7 +3305,7 @@
       "SO": "SO-01",
       "popis": "Beton patek štítových C16/20 XC0 prostý, dvoustupňové",
       "mj": "m³",
-      "mnozstvi": 4.096,
+      "mnozstvi": 6.144,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2213,39 +3328,39 @@
       "urs_match_score": 0.333,
       "skladba_ref": null,
       "source": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks",
-      "raw_description": "patky štítové C16/20",
+      "raw_description": "patky štítové C16/20 dvoustupňové 0.8×0.8×(2×0.6=1.2)",
       "confidence": 0.5,
       "subdodavatel_chapter": "GD_zaklady_beton",
       "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
+      "_qty_formula": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³ (dvoustupňová 2×0.6, A105 HH/SH measured)",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
+        "formula": "8 ks × 0.8 × 0.8 × 1.2 m = 6.144 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 8.0,
-            "unit": ""
+            "label": "count_stitove",
+            "value": 8,
+            "unit": "ks"
           },
           {
-            "label": "operand_2",
+            "label": "B_m",
             "value": 0.8,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_3",
+            "label": "L_m",
             "value": 0.8,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_4",
-            "value": 0.8,
-            "unit": ""
+            "label": "H_m_total",
+            "value": 1.2,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -2253,14 +3368,19 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_typo_resolution",
+            "abmv_id": "ABMV_21",
+            "raw": "TZ ARS p3 '0,8×0,8×(0,2×0,6m)' interpreted as typo (missing × before 0,2; should read 2×0,6). A105 HH/SH measured H = 1.2 m. ABMV_21 resolved 2026-05-24."
           }
         ],
-        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 4.096,
-        "declared_quantity": 4.096,
+        "poznamka": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks · (patky štítové C16/20) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: H 0.8 m (TZ ARS literal typo) → 1.2 m (A105 measured + statika consistency). Mnozstvi 4.096 → 6.144 m³. See ABMV_21.",
+        "computed_quantity": 6.144,
+        "declared_quantity": 6.144,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.85,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
@@ -2272,7 +3392,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek štítových — zřízení",
       "mj": "m²",
-      "mnozstvi": 20.8,
+      "mnozstvi": 30.72,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2302,37 +3422,32 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
+      "_qty_formula": "8 ks × 4 strany × 0.8 m × 1.2 m výška = 30.72 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
+        "formula": "8 × 4 × 0.8 × 1.2 = 30.72 m²",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 8.0,
+            "label": "count",
+            "value": 8,
+            "unit": "ks"
+          },
+          {
+            "label": "strany",
+            "value": 4,
             "unit": ""
           },
           {
-            "label": "operand_2",
+            "label": "sirka",
             "value": 0.8,
-            "unit": ""
+            "unit": "m"
           },
           {
-            "label": "operand_3",
-            "value": 0.8,
-            "unit": ""
-          },
-          {
-            "label": "operand_4",
-            "value": 3.2,
-            "unit": ""
-          },
-          {
-            "label": "operand_5",
-            "value": 2.0,
-            "unit": ""
+            "label": "vyska",
+            "value": 1.2,
+            "unit": "m"
           }
         ],
         "reference": [
@@ -2340,11 +3455,16 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "tz_typo_resolution",
+            "abmv_id": "ABMV_21",
+            "raw": "Štítové patky H = 1.2 m per ABMV_21 (A105 measured + dvoustupňová 2×0.6 interpretation)"
           }
         ],
-        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 32.768,
-        "declared_quantity": 20.8,
+        "poznamka": "A105 layout · (bednění patek štítových zřízení) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: H 0.8 → 1.2 m per ABMV_21. Mnozstvi 20.8 → 30.72 m².",
+        "computed_quantity": 30.72,
+        "declared_quantity": 30.72,
         "match_delta_pct": 57.54,
         "match_within_tolerance": false,
         "confidence": 0.7,
@@ -2359,7 +3479,7 @@
       "SO": "SO-01",
       "popis": "Bednění patek štítových — odstranění",
       "mj": "m²",
-      "mnozstvi": 20.8,
+      "mnozstvi": 30.72,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -2389,17 +3509,23 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= bednění zřízení",
+      "_qty_formula": "= HSV-2-005 zřízení = 30.72 m²",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= bednění zřízení",
+        "formula": "= HSV-2-005 = 30.72 m²",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
-        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 20.8,
+        "reference": [
+          {
+            "type": "tz_typo_resolution",
+            "abmv_id": "ABMV_21",
+            "raw": "Štítové patky H = 1.2 m per ABMV_21"
+          }
+        ],
+        "poznamka": "standardní pár · (bednění patek štítových odstranění) · [sub: GD_zaklady_beton] | RECOMPUTE 2026-05-24: symmetric s HSV-2-005. 20.8 → 30.72 m².",
+        "computed_quantity": 30.72,
+        "declared_quantity": 30.72,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
@@ -2633,12 +3759,10 @@
       "skladba_ref": null,
       "source": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m'",
       "raw_description": "pilota Ø800 / L=8m variant",
-      "confidence": 0.5,
+      "confidence": 0.4,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [
-        "ABMV_11"
-      ],
-      "_status_flag": "variant_pending_IGP",
+      "_vyjasneni_ref": [],
+      "_status_flag": "alternative_variant_per_IGP_not_required",
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks pilota Ø800 × 8 m délka",
@@ -2659,9 +3783,14 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "igp_section",
+            "section": "4.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton]",
+        "poznamka": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m' · (pilota Ø800 / L=8m variant) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
         "computed_quantity": 1.0,
         "declared_quantity": 1.0,
         "match_delta_pct": 0.0,
@@ -2702,12 +3831,10 @@
       "skladba_ref": null,
       "source": "A105 + variant pilota L=8m",
       "raw_description": "vrtání piloty",
-      "confidence": 0.5,
+      "confidence": 0.4,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [
-        "ABMV_11"
-      ],
-      "_status_flag": "variant_pending_IGP",
+      "_vyjasneni_ref": [],
+      "_status_flag": "alternative_variant_per_IGP_not_required",
       "_data_source": "TZ+DXF",
       "_completeness": 0.65,
       "_qty_formula": "1 ks × 8 m délka",
@@ -2733,9 +3860,14 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "igp_section",
+            "section": "4.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton]",
+        "poznamka": "A105 + variant pilota L=8m · (vrtání piloty) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
         "computed_quantity": 8.0,
         "declared_quantity": 8.0,
         "match_delta_pct": 0.0,
@@ -2776,12 +3908,10 @@
       "skladba_ref": null,
       "source": "statika D.1.2 + A105 výztuž piloty",
       "raw_description": "výztuž piloty R25 + třmínky",
-      "confidence": 0.5,
+      "confidence": 0.4,
       "subdodavatel_chapter": "GD_zaklady_beton",
-      "_vyjasneni_ref": [
-        "ABMV_11"
-      ],
-      "_status_flag": "variant_pending_IGP",
+      "_vyjasneni_ref": [],
+      "_status_flag": "alternative_variant_per_IGP_not_required",
       "_data_source": "TZ+DXF",
       "_completeness": 0.7,
       "_qty_formula": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder",
@@ -2812,9 +3942,14 @@
             "type": "drawing",
             "code": "A105",
             "document": "vykresy_dxf/A105_zaklady.dxf"
+          },
+          {
+            "type": "igp_section",
+            "section": "4.3",
+            "raw": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.3.1 plošné založení primary; §4.3.2 piloty alternative only"
           }
         ],
-        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton]",
+        "poznamka": "statika D.1.2 + A105 výztuž piloty · (výztuž piloty R25 + třmínky) · [sub: GD_zaklady_beton] | PHASE1 IGP 2026-05-24: IGP §4.3.1 confirms plošné založení na patkách do GT2 (Rdt=250 kPa) as PRIMARY design. Pilota = alternativa pouze 'v případě hlubinného založení' (IGP §4.3.2), NOT required by IGP. Item retained for variant bid scenario; confidence reduced 0.5 → 0.40.",
         "computed_quantity": 247.04,
         "declared_quantity": 380.0,
         "match_delta_pct": 34.99,
@@ -2831,7 +3966,7 @@
       "SO": "SO-01",
       "popis": "Beton podlahové desky C25/30 XC4, tl. 200 mm — strojně rovnaný povrch",
       "mj": "m³",
-      "mnozstvi": 99.0,
+      "mnozstvi": 106.24,
       "urs_code": "60511064",
       "urs_alternatives": [
         {
@@ -2861,22 +3996,37 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "495 m² × 0.2 m = 99 m³",
+      "_qty_formula": "A105 deska 19.04 × 27.90 m = 531.22 m² × 0.20 m = 106.24 m³",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 0.2 m = 99 m³",
+        "formula": "531.22 × 0.20 = 106.24 m³",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
+            "label": "deska_B_m",
+            "value": 19.04,
+            "unit": "m"
           },
           {
-            "label": "operand_2",
+            "label": "deska_L_m",
+            "value": 27.9,
+            "unit": "m"
+          },
+          {
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m²"
+          },
+          {
+            "label": "tloustka_m",
             "value": 0.2,
-            "unit": ""
+            "unit": "m"
+          },
+          {
+            "label": "volume_m3",
+            "value": 106.24,
+            "unit": "m³"
           }
         ],
         "reference": [
@@ -2884,18 +4034,29 @@
             "type": "tz_section",
             "section": "B",
             "raw": "TZ B"
+          },
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "A105 vnější rozměry desky 19.04 × 27.90 m. TZ ARS p2 'podlahová 495 m²' = podlaha excluding obvodový pas; A105 = full deska včetně přesahu = 531 m². 7 % rozdíl."
+          },
+          {
+            "type": "abmv_reopen",
+            "abmv_id": "ABMV_5",
+            "raw": "ABMV_5 re-opened 2026-05-24 (needs_design_clarification): 2:2 split between A101+A105 (C30/37 XC2) vs TZ ARS+statika (C25/30 XC4). _review_concrete_class flag set."
           }
         ],
-        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 99.0,
-        "declared_quantity": 99.0,
+        "poznamka": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30 · (deska C25/30 XC4) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 99.0 m³ (495 × 0.20) → 106.24 m³ (A105 měřené 531.22 × 0.20). Reason: TZ ARS 'podlahová 495 m²' is interior area; A105 full deska 531 m² includes obvodový pas. _review_concrete_class flag added per ABMV_5 re-open.",
+        "computed_quantity": 106.24,
+        "declared_quantity": 106.24,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_review_concrete_class": true
     },
     {
       "id": "HSV-2-014",
@@ -2970,7 +4131,7 @@
       "SO": "SO-01",
       "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — horní vrstva",
       "mj": "kg",
-      "mnozstvi": 1955.25,
+      "mnozstvi": 2098.3,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -3000,28 +4161,34 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
+      "_qty_formula": "A105 deska 531.22 m² × 3.95 kg/m² (Kari Ø8 oka 100/100 single vrstva) = 2098.3 kg",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
+        "formula": "531.22 × 3.95 = 2098.3 kg",
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 495.0,
-            "unit": ""
+            "label": "deska_area_m2",
+            "value": 531.22,
+            "unit": "m²"
           },
           {
-            "label": "operand_2",
+            "label": "kari_kg_per_m2",
             "value": 3.95,
-            "unit": ""
+            "unit": "kg/m² Ø8 100/100"
           }
         ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": 1955.25,
-        "declared_quantity": 1955.25,
+        "reference": [
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Scale to A105 měřené deska 531.22 m² (was 495 m²)."
+          }
+        ],
+        "poznamka": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní · (KARI Ø8 100×100 horní) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 1955.25 → 2098.3 kg per A105 měřené deska area 531.22 m².",
+        "computed_quantity": 2098.3,
+        "declared_quantity": 2098.3,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
@@ -3036,7 +4203,7 @@
       "SO": "SO-01",
       "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — dolní vrstva",
       "mj": "kg",
-      "mnozstvi": 1955.25,
+      "mnozstvi": 2098.3,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -3066,17 +4233,23 @@
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
-      "_qty_formula": "= horní vrstva",
+      "_qty_formula": "= HSV-2-015 horní vrstva = 2098.3 kg",
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "základové konstrukce — A105",
-        "formula": "= horní vrstva",
+        "formula": "= HSV-2-015 = 2098.3 kg",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
-        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton]",
-        "computed_quantity": null,
-        "declared_quantity": 1955.25,
+        "reference": [
+          {
+            "type": "drawing_measurement",
+            "code": "A105",
+            "raw": "Symmetric horní vrstva. Scale na 531.22 m²."
+          }
+        ],
+        "poznamka": "statika D.1.2 + RE-RUN §3.4 · (KARI Ø8 100×100 dolní) · [sub: GD_zaklady_beton] | REWORK 2026-05-24: 1955.25 → 2098.3 kg symmetric s HSV-2-015.",
+        "computed_quantity": 2098.3,
+        "declared_quantity": 2098.3,
         "match_delta_pct": null,
         "match_within_tolerance": false,
         "confidence": 0.6,
@@ -3287,7 +4460,11 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 7.0,
+      "_length_method": "B5 default for 'IPE 400' as sloupy = 7.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-002",
@@ -3364,7 +4541,11 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 7.0,
+      "_length_method": "B5 default for 'HEA 200' as sloupy štítové = 7.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-003",
@@ -3440,7 +4621,11 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 9.6,
+      "_length_method": "B5 default for 'IPE 450' as příčle = 9.6 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-004",
@@ -3501,8 +4686,14 @@
             "unit": ""
           }
         ],
-        "reference": [],
-        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz]",
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — vaznice rozteč",
+            "raw": "Vaznice budou vzdálené max 1,5 m (statika TZ D.1.2)"
+          }
+        ],
+        "poznamka": "statika D.1.2 + geom. délka haly + rozteca 1.5 m · (vaznice IPE 160) · [sub: OK_dodavka_montaz] | FLAG 2026-05-24: cross-check vs statika 1.5 m rozteč + Step 3 střecha 558.8 m². Estimate: ~13 vaznic × 28.18 m × 15.8 kg/m = 5,789 kg. Current 5,195 kg = drift +11.4 %. NO qty mutation this commit — HSV-3 mass reconciliation task (PROFILY DXF geometry extraction) will resolve definitively.",
         "computed_quantity": 5195.04,
         "declared_quantity": 5195.04,
         "match_delta_pct": 0.0,
@@ -3510,8 +4701,19 @@
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_review_mass_drift": {
+          "estimate_kg": 5789,
+          "current_kg": 5195.04,
+          "drift_pct": 11.4,
+          "method": "statika 1.5 m vaznic rozteč × Step 3 plocha 558.8 m² / délka 28.18 m × IPE 160 15.8 kg/m",
+          "resolution_task": "HSV-3 PROFILY DXF geometry extraction (Step 4 deferred)"
+        }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 6.0,
+      "_length_method": "B5 default for 'IPE 160' as vaznice = 6.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-005",
@@ -3584,7 +4786,11 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 6.0,
+      "_length_method": "B5 default for 'UPE 160' as vaznice krajní = 6.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-006",
@@ -3655,7 +4861,11 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 4.0,
+      "_length_method": "B5 default for 'L 70/70/6' as ztužidla stěnová = 4.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-007",
@@ -3732,7 +4942,11 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "default_estimate",
+      "_length_confidence": 0.7,
+      "_length_value_m": 6.0,
+      "_length_method": "B5 default for 'Ø20' as ztužidla střešní = 6.0 m per piece (ladder 3 fallback; ladder 1 PROFILY-geom and ladder 2 DIMENSION-spatial not implemented this stage)"
     },
     {
       "id": "HSV-3-008",
@@ -3798,7 +5012,11 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-3-009",
@@ -3875,7 +5093,11 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-3-010",
@@ -3936,7 +5158,11 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-3-011",
@@ -4002,7 +5228,11 @@
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-3-012",
@@ -4069,7 +5299,11 @@
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-3-013",
@@ -4124,7 +5358,11 @@
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-3-014",
@@ -4184,7 +5422,11 @@
         "extraction_method": "placeholder_uncertain",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+      },
+      "_length_source": "not_applicable_service",
+      "_length_confidence": null,
+      "_length_value_m": null,
+      "_length_method": "service item — kg/m³/m²/ks/paušál, no per-piece length concept"
     },
     {
       "id": "HSV-9-001",
@@ -4693,9 +5935,9 @@
       "id": "PSV-76x-001",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Dodávka okno plastové 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá",
+      "popis": "Dodávka okno plastové fixní 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá",
       "mj": "ks",
-      "mnozstvi": 21.0,
+      "mnozstvi": 29.0,
       "urs_code": "68536770",
       "urs_alternatives": [
         {
@@ -4719,7 +5961,7 @@
       "skladba_ref": null,
       "source": "DXF A101 INSERT OKNO_1k × 21 + RE-RUN §3.5 otvory",
       "raw_description": "okno plast 1000x1000 šedá",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -4729,7 +5971,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+        "formula": "29 ks fixních (z 34 oken celkem; 5 otvíravých v PSV-76x-013) — Úprava dveří POHLED OSA A/F/06/01",
         "formula_parsed_method": "single_value",
         "inputs": [
           {
@@ -4743,26 +5985,44 @@
             "type": "drawing",
             "code": "A101",
             "document": "vykresy_dxf/A101_pudorys_1np.dxf"
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "DXF A101 INSERT OKNO_1k × 21 + RE-RUN §3.5 otvory · (okno plast 1000x1000 šedá) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 21.0,
-        "declared_quantity": 21.0,
+        "computed_quantity": 29.0,
+        "declared_quantity": 29.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
-        "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings",
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 21.0,
+              "formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+              "popis": "Dodávka okno plastové 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
       "id": "PSV-76x-002",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Montáž okna plastového do osazovacího otvoru, vč. kotvení a pěny",
+      "popis": "Montáž okna plastového 1000 × 1000 mm (fixní i otvíravé) do osazovacího otvoru, vč. kotvení a pěny",
       "mj": "ks",
-      "mnozstvi": 21.0,
+      "mnozstvi": 34.0,
       "urs_code": "48477262",
       "urs_alternatives": [
         {
@@ -4786,7 +6046,7 @@
       "skladba_ref": null,
       "source": "standardní pár dodávka+montáž",
       "raw_description": "montáž okna plast",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -4796,19 +6056,38 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "= dodávka okna",
+        "formula": "34 ks celkem (29 fixní + 5 otvíravé) — Úprava dveří POHLED OSA A/F/06/01",
         "formula_parsed_method": "verbal",
         "inputs": [],
-        "reference": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
         "poznamka": "standardní pár dodávka+montáž · (montáž okna plast) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": null,
-        "declared_quantity": 21.0,
+        "computed_quantity": 34.0,
+        "declared_quantity": 34.0,
         "match_delta_pct": null,
         "match_within_tolerance": false,
-        "confidence": 0.6,
+        "confidence": 0.85,
         "extraction_method": "verbal_only",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 21.0,
+              "formula": "= dodávka okna",
+              "popis": "Montáž okna plastového do osazovacího otvoru, vč. kotvení a pěny"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -4817,7 +6096,7 @@
       "SO": "SO-01",
       "popis": "Vnější parapet pozinkovaný plech, š. 200 mm, s krytkami",
       "mj": "bm",
-      "mnozstvi": 22.05,
+      "mnozstvi": 35.7,
       "urs_code": "916232122",
       "urs_alternatives": [
         {
@@ -4841,7 +6120,7 @@
       "skladba_ref": null,
       "source": "standardní vnější parapet pod okno",
       "raw_description": "parapet pozink vnější",
-      "confidence": 0.75,
+      "confidence": 0.85,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
       "_vyjasneni_ref": [],
       "_status_flag": null,
@@ -4851,7 +6130,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks × 1.05 m (šířka okna + přesah)",
+        "formula": "34 ks × 1.05 m (šířka okna + přesah) = 35.7 bm — Úprava dveří 34 oken",
         "formula_parsed_method": "product",
         "inputs": [
           {
@@ -4865,16 +6144,35 @@
             "unit": ""
           }
         ],
-        "reference": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
         "poznamka": "standardní vnější parapet pod okno · (parapet pozink vnější) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 22.05,
-        "declared_quantity": 22.05,
+        "computed_quantity": 35.7,
+        "declared_quantity": 35.7,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 22.05,
+              "formula": "21 ks × 1.05 m (šířka okna + přesah)",
+              "popis": "Vnější parapet pozinkovaný plech, š. 200 mm, s krytkami"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -4883,7 +6181,7 @@
       "SO": "SO-01",
       "popis": "Vnější okenní lemy plastové — rohové + nadokenní",
       "mj": "bm",
-      "mnozstvi": 63.0,
+      "mnozstvi": 102.0,
       "urs_code": null,
       "urs_alternatives": [
         {
@@ -4917,7 +6215,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
+        "formula": "34 ks × 3 bm (perimetr 3 stran, parapet samostatně) = 102 bm — Úprava dveří 34 oken",
         "formula_parsed_method": "product",
         "inputs": [
           {
@@ -4931,23 +6229,42 @@
             "unit": ""
           }
         ],
-        "reference": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
         "poznamka": "standardní detail osazení · (okenní lemy plast) · [sub: zamecnik_vrata_okna]",
-        "computed_quantity": 63.0,
-        "declared_quantity": 63.0,
+        "computed_quantity": 102.0,
+        "declared_quantity": 102.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.85,
+        "confidence": 0.5,
         "extraction_method": "qty_formula_parse",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 63.0,
+              "formula": "21 ks × 3 bm (perimetr 3 stran, parapet samostatně)",
+              "popis": "Vnější okenní lemy plastové — rohové + nadokenní"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
       "id": "PSV-76x-005",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Dodávka sekční vrata 3000 × 4000 mm (š × v) s tepelněizolační výplní, motorická",
+      "popis": "Dodávka sekční vrata 3500 × 4000 mm (š × v) s tepelněizolační výplní, motorická",
       "mj": "ks",
       "mnozstvi": 4.0,
       "urs_code": null,
@@ -4971,13 +6288,11 @@
       "urs_status": "needs_review",
       "urs_match_score": 0.375,
       "skladba_ref": null,
-      "source": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2",
-      "raw_description": "vrata sekční 3000×4000 výsuvná",
-      "confidence": 0.5,
+      "source": "TZ_ARS_DPZ (vrata 3500×4000 mm wins) + DXF A101",
+      "raw_description": "vrata sekční 3500×4000 výsuvná",
+      "confidence": 0.9,
       "subdodavatel_chapter": "zamecnik_vrata_okna",
-      "_vyjasneni_ref": [
-        "ABMV_2"
-      ],
+      "_vyjasneni_ref": [],
       "_status_flag": null,
       "_data_source": "TZ+DXF",
       "_completeness": 1.0,
@@ -5006,13 +6321,13 @@
             "raw": "TZ B m.3.2"
           }
         ],
-        "poznamka": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2 · (vrata sekční 3000×4000 výsuvná) · [sub: zamecnik_vrata_okna]",
+        "poznamka": "DXF A101 + RE-RUN §3.5 + TZ B m.3.2 · (vrata sekční 3500×4000 výsuvná) · [sub: zamecnik_vrata_okna] | STAGE-E patch: TZ ARS DPZ wins over DXF block name 3000×4000 → 3500×4000 mm.",
         "computed_quantity": 4.0,
         "declared_quantity": 4.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
-        "extraction_method": "qty_formula_dxf_verified",
+        "confidence": 0.9,
+        "extraction_method": "tz_ars_dpz_verified",
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
@@ -5198,7 +6513,7 @@
       "id": "PSV-76x-009",
       "kapitola": "PSV-76x",
       "SO": "SO-01",
-      "popis": "Dodávka vnější dvoukřídlé dveře 1050 × 2100 mm, izol. plnostěnné, klika a zámek",
+      "popis": "Dodávka vnější dvoukřídlé dveře plastové 1050 × 2100 mm, izol. plnostěnné, klika a zámek",
       "mj": "ks",
       "mnozstvi": 2.0,
       "urs_code": null,
@@ -5234,7 +6549,7 @@
       "_export_wrapper_hint": null,
       "audit_trail": {
         "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
-        "formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
+        "formula": "2 ks (Úprava dveří potvrzeno) — materiál plastové dle user expectation, čeká finální potvrzení projektantem",
         "formula_parsed_method": "single_value",
         "inputs": [
           {
@@ -5248,6 +6563,12 @@
             "type": "drawing",
             "code": "A101",
             "document": "vykresy_dxf/A101_pudorys_1np.dxf"
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
         "poznamka": "DXF A101 + RE-RUN §3.5 · (vnější dveře 2-křídlé 1050x2100) · [sub: zamecnik_vrata_okna]",
@@ -5255,10 +6576,22 @@
         "declared_quantity": 2.0,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.95,
+        "confidence": 0.5,
         "extraction_method": "qty_formula_dxf_verified",
         "data_source_hint": "TZ+DXF",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extracted_at": "2026-05-14T06:35:18.127569+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 2.0,
+              "formula": "2 ks (DXF A101 INSERT 'Vnější dveře dvoukřídlé')",
+              "popis": "Dodávka vnější dvoukřídlé dveře 1050 × 2100 mm, izol. plnostěnné, klika a zámek"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
@@ -5437,6 +6770,62 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
+    },
+    {
+      "id": "PSV-76x-013",
+      "kapitola": "PSV-76x",
+      "SO": "SO-01",
+      "popis": "Dodávka okno plastové otvíravé 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá, kování pro mikroventilaci",
+      "mj": "ks",
+      "mnozstvi": 5.0,
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Dodávka okno plastové otvíravé 1000 × 1000 mm, izol. dvojsklo Ug ≤ 1.1, barva šedá, kování pro mikroventilaci",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "zamecnik_vrata_okna",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "21 ks (V1..V21 z DXF A101 INSERT OKNO_1k)",
+      "_export_wrapper_hint": null,
+      "audit_trail": {
+        "lokalizace": "konstrukce truhlářské / zámečnické — A101 dveře/okna",
+        "formula": "5 ks otvíravých z 34 oken celkem — Úprava dveří POHLED OSA A/F/06/01 user-confirmed split",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "Úprava dveří revision 2026-05-22 — separated from PSV-76x-001 because otvíravé varianta má vyšší cenu (+30-50 %)",
+        "computed_quantity": 5.0,
+        "declared_quantity": 5.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 5.0,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     },
     {
       "id": "PSV-77x-001",
@@ -6569,191 +7958,6 @@
         "data_source_hint": "TZ+DXF",
         "extracted_at": "2026-05-14T06:35:18.127569+00:00"
       }
-    },
-    {
-      "id": "Rpol-001",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "Chemická kotva M20 × 200 mm pro anchorage strojů (DRIFT_E1, DEFRAME, filtrační)",
-      "mj": "ks",
-      "mnozstvi": 48.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "A107 INSERT kotvící body — typ + počet UPŘESNIT (ABMV_3, ABMV_16)",
-      "raw_description": "kotvící body strojů — chem.kotva M20",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.4,
-      "_qty_formula": "3 stroje × ~16 kotev/stroj = 48 ks (placeholder)",
-      "_export_wrapper_hint": null
-    },
-    {
-      "id": "Rpol-002",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "Lokální výztuž desky pod stroji — B500B vázaná, dopl. nad rámec KARI",
-      "mj": "kg",
-      "mnozstvi": 80.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "statika D.1.2 + standardní dodatečná výztuž v anchorage zónách",
-      "raw_description": "lokální dodatečná výztuž pod stroji",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.45,
-      "_qty_formula": "placeholder ~80 kg (3 anchorage zóny × ~25 kg každá)",
-      "_export_wrapper_hint": null
-    },
-    {
-      "id": "Rpol-003",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "Beton lokálního zesílení podlahy pod stroji C25/30 XC4",
-      "mj": "m³",
-      "mnozstvi": 4.5,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "standardní detail zesílení podlahy pod technologií",
-      "raw_description": "beton zesílení pod stroji",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.45,
-      "_qty_formula": "3 stroje × 1.5 m³ (zesílená podloží zóna ~10 m² × 0.15 m)",
-      "_export_wrapper_hint": null
-    },
-    {
-      "id": "Rpol-004",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "Bezpečnostní oplocení strojů — Troax-type, výška 2.2 m, mřížová síť, panely modulární",
-      "mj": "bm",
-      "mnozstvi": 80.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "A106 MTEXT 'BUDE UPŘESNĚNO' × 3 + RE-RUN §3.9",
-      "raw_description": "bezp. oplocení strojů 2.2 m",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16",
-        "ABMV_8"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.35,
-      "_qty_formula": "placeholder ~80 bm (perimetr 3 strojů × ~25 m každý)",
-      "_export_wrapper_hint": null
-    },
-    {
-      "id": "Rpol-005",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "Montáž bezp. oplocení + sloupky kotvené do podlahy + branka pro přístup",
-      "mj": "bm",
-      "mnozstvi": 80.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "standardní pár",
-      "raw_description": "montáž bezp. oplocení",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16",
-        "ABMV_8"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.35,
-      "_qty_formula": "= dodávka oplocení",
-      "_export_wrapper_hint": null
-    },
-    {
-      "id": "Rpol-006",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "Bezpečnostní tabulky + značení — výstrahy, zákazy, BOZP piktogramy",
-      "mj": "kpl",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "ČSN ISO 7010 + BOZP požadavek",
-      "raw_description": "bezp. tabulky + značení",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.45,
-      "_qty_formula": "1 kpl (komplet značení pro 3 stroje)",
-      "_export_wrapper_hint": null
-    },
-    {
-      "id": "Rpol-007",
-      "kapitola": "M",
-      "SO": "SO-10",
-      "popis": "El. připojení strojů — kabel CYKY × přívody + průchodky podlahou",
-      "mj": "kpl",
-      "mnozstvi": 3.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "custom_item",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "A107 + ABMV_1 (80 kW per stroj) + ABMV_3 specifikace",
-      "raw_description": "el. přívody strojů",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "specialista_anchorage_strojaru",
-      "_vyjasneni_ref": [
-        "ABMV_3",
-        "ABMV_16",
-        "ABMV_1"
-      ],
-      "_status_flag": "specifikace_pending_strojaru",
-      "_data_source": "TZ+DXF",
-      "_completeness": 0.4,
-      "_qty_formula": "3 ks (jedno na každý stroj)",
-      "_export_wrapper_hint": null
     },
     {
       "id": "VRN-001",
@@ -8073,936 +9277,823 @@
       }
     },
     {
-      "id": "VZT-001",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Rekuperační jednotka venkovní 4000 m³/h s deskovým rekuperátorem + el. ohřev + přímý výparník",
-      "mj": "ks",
-      "mnozstvi": 1.0,
-      "urs_code": "42914443",
-      "urs_alternatives": [
-        {
-          "code": "42914443",
-          "score": 0.6,
-          "tokens": "cmt/ jednclv m3/h prumslv"
-        },
-        {
-          "code": "42914444",
-          "score": 0.6,
-          "tokens": "cmt/ jednclv m3/h prumslv"
-        },
-        {
-          "code": "42914445",
-          "score": 0.6,
-          "tokens": "cmt/ jednclv m3/h prumslv"
-        }
+      "id": "PSV-OPL-001",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Kingspan KS 1000 NF 120 mm, jádro minerální vata (MW), per Úprava dveří + TZ ARS DPZ D.1.1 — alternativně k orig. 200 mm",
+      "mj": "m²",
+      "mnozstvi": 510.81,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
+      "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
+      "raw_description": "Kingspan KS NF 200 mm MW 0.6/0.4 S280GD EN 14509",
+      "confidence": 0.9,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": [
+        "ABMV_13"
       ],
-      "urs_status": "matched_medium",
-      "urs_match_score": 0.6,
-      "skladba_ref": null,
-      "source": "TZ B kap. B.3.5 §1 — koncepční specifikace",
-      "raw_description": "rekuperační jednotka 4000 m³/h",
-      "confidence": 0.75,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "1 ks (TZ B B.3.5 §1)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 ks (TZ B B.3.5 §1)",
-        "formula_parsed_method": "single_value",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "kap.",
-            "raw": "TZ B kap."
-          }
-        ],
-        "poznamka": "TZ B kap. B.3.5 §1 — koncepční specifikace · (rekuperační jednotka 4000 m³/h) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-002",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Venkovní kondenzační jednotka chlazení 15 kW pro přímý výparník",
-      "mj": "ks",
-      "mnozstvi": 1.0,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
       "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "734261402",
-          "score": 0.433,
-          "tokens": "giacmn kompkt st ventl"
-        },
-        {
-          "code": "734261403",
-          "score": 0.433,
-          "tokens": "giacmn kompkt st ventl"
-        },
-        {
-          "code": "734261406",
-          "score": 0.433,
-          "tokens": "giacmn kompkt st ventl"
-        }
-      ],
+      "urs_alternatives": [],
       "urs_status": "needs_review",
-      "urs_match_score": 0.433,
-      "skladba_ref": null,
-      "source": "TZ B kap. B.3.5 §1",
-      "raw_description": "kondenzační jednotka 15 kW",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "1 ks (TZ B B.3.5 §1)",
-      "_export_wrapper_hint": null,
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 ks (TZ B B.3.5 §1)",
-        "formula_parsed_method": "single_value",
+        "lokalizace": "obvodové opláštění Kingspan — TZ ARS DPZ D.1.1 kap. B + statika D.1.2",
+        "formula": "fasáda brutto Úprava dveří: 94.57 m obvod × 6.085 m okap + 17.58 m² štíty = 593.06 m² brutto − 82.25 m² FR zóny (rohy s dveřmi) = 510.81 m² (bez vyřezání otvorů — sendvič ordered celý)",
+        "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "tz_section",
-            "section": "kap.",
-            "raw": "TZ B kap."
-          }
-        ],
-        "poznamka": "TZ B kap. B.3.5 §1 · (kondenzační jednotka 15 kW) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-003",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Dveřní clona horizontální 4700 m³/h, š. 2 m, s el. ohřevem",
-      "mj": "ks",
-      "mnozstvi": 8.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "42616036",
-          "score": 0.386,
-          "tokens": "dopr elektrmtr em horizntln hydrdnmck jednstpnv jet kolem"
-        },
-        {
-          "code": "42914360",
-          "score": 0.35,
-          "tokens": "csb jednclv m3/h mm prumslv"
-        },
-        {
-          "code": "42914361",
-          "score": 0.35,
-          "tokens": "cbb jednclv m3/h mm prumslv"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.386,
-      "skladba_ref": null,
-      "source": "TZ B B.3.5 §1 + 4 sekční vrata",
-      "raw_description": "dveřní clona 4700 m³/h š. 2m",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "2 ks/vrata × 4 vrata = 8 ks",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "2 ks/vrata × 4 vrata = 8 ks",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "operand_1",
-            "value": 2.0,
-            "unit": ""
+            "label": "fasada_netto_m2",
+            "value": 528.5,
+            "unit": "m²"
           },
           {
-            "label": "operand_2",
-            "value": 4.0,
+            "label": "fasada_brutto_m2",
+            "value": 623.3,
+            "unit": "m²"
+          },
+          {
+            "label": "otvory_m2",
+            "value": 94.82,
+            "unit": "m²"
+          },
+          {
+            "label": "vrata_size_m",
+            "value": "3.5 × 4.0",
             "unit": ""
           }
         ],
         "reference": [
           {
             "type": "tz_section",
-            "section": "B.3.5",
-            "raw": "TZ B B.3.5"
-          }
-        ],
-        "poznamka": "TZ B B.3.5 §1 + 4 sekční vrata · (dveřní clona 4700 m³/h š. 2m) · [sub: VZT_dodavatel]",
-        "computed_quantity": 8.0,
-        "declared_quantity": 8.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-004",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Potrubí SPIRO pozink Ø 315 mm — hlavní rozvod",
-      "mj": "bm",
-      "mnozstvi": 60.0,
-      "urs_code": "735511039",
-      "urs_alternatives": [
-        {
-          "code": "735511039",
-          "score": 0.767,
-          "tokens": "potrb reha rozvdn"
-        },
-        {
-          "code": "735511061",
-          "score": 0.767,
-          "tokens": "potrb reha rozvdn"
-        },
-        {
-          "code": "735511062",
-          "score": 0.767,
-          "tokens": "potrb reha rozvdn"
-        }
-      ],
-      "urs_status": "matched_medium",
-      "urs_match_score": 0.767,
-      "skladba_ref": null,
-      "source": "TZ B B.3.5 §1 koncepčně + standardní dimensioning",
-      "raw_description": "SPIRO Ø 315",
-      "confidence": 0.75,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "placeholder 60 bm (hlavní páteř haly)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 60 bm (hlavní páteř haly)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          },
           {
-            "label": "operand_1",
-            "value": 60.0,
-            "unit": ""
-          }
-        ],
-        "reference": [
+            "type": "step3_metric",
+            "metric": "fasada_netto",
+            "value": 536.4
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_2",
+            "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
+          },
           {
             "type": "tz_section",
-            "section": "B.3.5",
-            "raw": "TZ B B.3.5"
-          }
-        ],
-        "poznamka": "TZ B B.3.5 §1 koncepčně + standardní dimensioning · (SPIRO Ø 315) · [sub: VZT_dodavatel]",
-        "computed_quantity": 60.0,
-        "declared_quantity": 60.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-005",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Potrubí SPIRO pozink Ø 250 mm — větve",
-      "mj": "bm",
-      "mnozstvi": 80.0,
-      "urs_code": "42981040",
-      "urs_alternatives": [
-        {
-          "code": "42981040",
-          "score": 0.7,
-          "tokens": "cast d1 mm potrb pozinkvn spirln troub vinut"
-        },
-        {
-          "code": "42981050",
-          "score": 0.7,
-          "tokens": "cast d1 mm potrb pozinkvn spirln troub vinut"
-        },
-        {
-          "code": "42981054",
-          "score": 0.7,
-          "tokens": "cast d1 mm potrb pozinkvn spirln troub vinut"
-        }
-      ],
-      "urs_status": "matched_medium",
-      "urs_match_score": 0.7,
-      "skladba_ref": null,
-      "source": "standardní dimensioning",
-      "raw_description": "SPIRO Ø 250",
-      "confidence": 0.75,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "placeholder 80 bm (boční větve)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 80 bm (boční větve)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
           {
-            "label": "operand_1",
-            "value": 80.0,
-            "unit": ""
-          }
-        ],
-        "reference": [],
-        "poznamka": "standardní dimensioning · (SPIRO Ø 250) · [sub: VZT_dodavatel]",
-        "computed_quantity": 80.0,
-        "declared_quantity": 80.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-006",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Potrubí SPIRO pozink Ø 160 mm — koncové úseky + napojení clon",
-      "mj": "bm",
-      "mnozstvi": 120.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "42981010",
-          "score": 0.5,
-          "tokens": "cast mm potrb pozinkvn vzduchtchnckh"
-        },
-        {
-          "code": "42981015",
-          "score": 0.5,
-          "tokens": "cast mm potrb pozinkvn vzduchtchnckh"
-        },
-        {
-          "code": "42981019",
-          "score": 0.5,
-          "tokens": "cast mm potrb pozinkvn vzduchtchnckh"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.5,
-      "skladba_ref": null,
-      "source": "standardní dimensioning",
-      "raw_description": "SPIRO Ø 160",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "placeholder 120 bm (přívody k 8 clonám)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 120 bm (přívody k 8 clonám)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_13",
+            "raw": "K-roc MW vs IPN: closed_fabricated 2026-05-13. MW confirmed across TZ ARS + PBR + statika."
+          },
           {
-            "label": "operand_1",
-            "value": 120.0,
-            "unit": ""
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
-        "reference": [],
-        "poznamka": "standardní dimensioning · (SPIRO Ø 160) · [sub: VZT_dodavatel]",
-        "computed_quantity": 120.0,
-        "declared_quantity": 120.0,
+        "poznamka": "TZ ARS DPZ D.1.1: Kingspan KS1000 AWP tl. 200 mm (alt. 150 mm), MW, bílá + modrá. EW 15 DP1 per PBŘ ABMV_6. Tloušťka 200 mm per TZ ARS — alt. 150 mm stale open (ABMV_13 closed: K-roc = MW potvrzeno). Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: popis spec hardened per statika TZ D.1.2 verbatim — KS NF 200 mm Hradec Králové (NOT generic KS1000 AWP). Removed 'alt. 150 mm' (statika confirms 200 mm jediný variant). Confidence 0.90 → 0.95 — 4 consistent sources (TZ ARS + PBR + statika + ABMV_13 closure).",
+        "computed_quantity": 510.81,
+        "declared_quantity": 510.81,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-007",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Tlumiče hluku v potrubí — kruhové, vč. připojovacích manžet",
-      "mj": "ks",
-      "mnozstvi": 4.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "735511039",
-          "score": 0.433,
-          "tokens": "potrb reha rozvdn"
-        },
-        {
-          "code": "735511061",
-          "score": 0.433,
-          "tokens": "potrb reha rozvdn"
-        },
-        {
-          "code": "735511062",
-          "score": 0.433,
-          "tokens": "potrb reha rozvdn"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.433,
-      "skladba_ref": null,
-      "source": "ČSN hlukové limity + standardní design",
-      "raw_description": "tlumiče hluku potrubí",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "placeholder 4 ks (na hlavním rozvodu)",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 4 ks (na hlavním rozvodu)",
-        "formula_parsed_method": "placeholder_first_value",
-        "inputs": [
+        "confidence": 0.9,
+        "extraction_method": "tz_ars_dpz_verified",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
           {
-            "label": "operand_1",
-            "value": 4.0,
-            "unit": ""
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 528.5,
+              "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
+              "popis": "Kingspan KS NF 200 mm, jádro minerální vata (MW) per TZ ARS p4 + PBR §3 + ABMV_13 closure, plech vnější/vnitřní 0.6/0.4 mm, profilace M (Micro)/Q (Minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Hradec Králové (Kingspan ČR), barva bílá + modrá (RAL standard)"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
           }
-        ],
-        "reference": [],
-        "poznamka": "ČSN hlukové limity + standardní design · (tlumiče hluku potrubí) · [sub: VZT_dodavatel]",
-        "computed_quantity": 4.0,
-        "declared_quantity": 4.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        ]
       }
     },
     {
-      "id": "VZT-008",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Tepelná izolace VZT potrubí — kaučuková tl. 13 mm, parotěsná",
+      "id": "PSV-OPL-002",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Montáž obvodového opláštění Kingspan KS 1000 NF 120 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6.1 m)",
       "mj": "m²",
-      "mnozstvi": 180.0,
-      "urs_code": "312342111",
-      "urs_alternatives": [
-        {
-          "code": "312342111",
-          "score": 0.667,
-          "tokens": "izolcnh lehcnh tepeln"
-        },
-        {
-          "code": "312342112",
-          "score": 0.667,
-          "tokens": "izolcnh lehcnh tepeln"
-        },
-        {
-          "code": "312342113",
-          "score": 0.667,
-          "tokens": "izolcnh lehcnh tepeln"
-        }
-      ],
-      "urs_status": "matched_medium",
-      "urs_match_score": 0.667,
-      "skladba_ref": null,
-      "source": "ČSN tepelná izolace VZT + TZ B",
-      "raw_description": "tepelná izolace VZT 13 mm",
-      "confidence": 0.75,
-      "subdodavatel_chapter": "VZT_dodavatel",
+      "mnozstvi": 510.81,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
+      "source": "TZ statika D.1.2 (rozteč rámů 6.1 m) + TZ ARS D.1.1 p4 (EPDM šrouby) + Step3",
+      "raw_description": "montáž Kingspan obvodového opláštění samořezné šrouby EPDM",
+      "confidence": 0.9,
+      "_price_source": "user_skipped_pricing",
       "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "placeholder 180 m² (~70 % povrchu potrubí — venkovní úseky)",
-      "_export_wrapper_hint": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "placeholder 180 m² (~70 % povrchu potrubí — venkovní úseky)",
-        "formula_parsed_method": "placeholder_first_value",
+        "lokalizace": "montáž obvodové opláštění Kingspan — TZ ARS DPZ D.1.1",
+        "formula": "= dodávka PSV-OPL-001 = 510.81 m²",
+        "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 180.0,
+            "label": "fasada_netto_m2",
+            "value": 528.5,
+            "unit": "m²"
+          },
+          {
+            "label": "fasada_brutto_m2",
+            "value": 623.3,
+            "unit": "m²"
+          },
+          {
+            "label": "otvory_m2",
+            "value": 94.82,
+            "unit": "m²"
+          },
+          {
+            "label": "vrata_size_m",
+            "value": "3.5 × 4.0",
             "unit": ""
           }
         ],
         "reference": [
           {
             "type": "tz_section",
-            "section": "B",
-            "raw": "TZ B"
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_2",
+            "raw": "vrata 3.5×4.0 m per TZ ARS DPZ D.1.1 p4 (resolved 2026-05-22)"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
           }
         ],
-        "poznamka": "ČSN tepelná izolace VZT + TZ B · (tepelná izolace VZT 13 mm) · [sub: VZT_dodavatel]",
-        "computed_quantity": 180.0,
-        "declared_quantity": 180.0,
+        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložka. Qty = Step3 fasáda netto 536.4 m². | FIX F-1 (2026-05-24): mnozstvi 536.4 → 528.5 m² propagace ABMV_2 closure (vrata 3.0→3.5 m). Step 3 area_aggregates updated. | UPDATE 2026-05-24: rozteč rámů 6.1 m per statika TZ D.1.2 added to popis. Confidence 0.90 → 0.90 (unchanged, montáž has slightly less spec authority than dodávka).",
+        "computed_quantity": 510.81,
+        "declared_quantity": 510.81,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
-        "confidence": 0.6,
-        "extraction_method": "placeholder_matches_declared",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "confidence": 0.9,
+        "extraction_method": "tz_ars_dpz_verified",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 528.5,
+              "formula": "fasáda netto Step3 v2: 623.3 m² brutto − 94.82 m² otvory (vrata 3.5×4.0 per TZ ARS) = 528.5 m²",
+              "popis": "Montáž obvodového opláštění Kingspan KS NF 200 mm — kotvení samořeznými šrouby + EPDM těsnicí podložkou k ocelové konstrukci (rozteč rámů 6,1 m per statika), per TZ ARS D.1.1 p4 montážní předpis výrobce"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
-      "id": "VZT-009",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Antivibrační pružná uložení rekuperace + manžety na přípojkách",
-      "mj": "kpl",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "741410074",
-          "score": 0.5,
-          "tokens": "do mm2 prurz uloznm vodicm"
-        },
-        {
-          "code": "741410075",
-          "score": 0.5,
-          "tokens": "do mm2 prurz uloznm vodicm"
-        },
-        {
-          "code": "55128010",
-          "score": 0.4,
-          "tokens": "armatr armatrm bar ivar manomtr mr prislsnstv pro"
-        }
+      "id": "PSV-OPL-003",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Kingspan KS 1000 RW 160 mm, jádro PIR, pro šikmé střechy sklon 5.25°, hlavní střecha (mimo zónu FF 175)",
+      "mj": "m²",
+      "mnozstvi": 500.6,
+      "_qty_formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
+      "source": "TZ statika D.1.2 (Návrh opláštění) + TZ ARS D.1.1 p4 + PBR §3 + Step3 areas + ABMV_13 closed_fabricated",
+      "raw_description": "Kingspan KS FF-ROC 200 mm ROC šikmé střechy sklon 5.25°",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": [
+        "ABMV_13"
       ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.85,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
       "urs_status": "needs_review",
-      "urs_match_score": 0.5,
-      "skladba_ref": null,
-      "source": "standardní detail",
-      "raw_description": "antivibrační uložení rekuperace",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "1 kpl (rekuperační jednotka)",
-      "_export_wrapper_hint": null,
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl (rekuperační jednotka)",
-        "formula_parsed_method": "single_value",
+        "lokalizace": "střešní opláštění Kingspan — TZ ARS DPZ D.1.1 + A102 pudorys střechy",
+        "formula": "střecha total 558.8 m² − FF 175 zóna 58.20 m² (57.95 m² projection / cos 5.25°) = 500.6 m² — Úprava dveří section view",
+        "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
+            "label": "strecha_brutto_m2",
+            "value": 556.5,
+            "unit": "m²"
+          },
+          {
+            "label": "sklon_stup",
+            "value": 5.25,
+            "unit": "°"
+          },
+          {
+            "label": "strecha_netto_m2",
+            "value": 558.8,
+            "unit": "m²"
           }
         ],
-        "reference": [],
-        "poznamka": "standardní detail · (antivibrační uložení rekuperace) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          },
+          {
+            "type": "dxf_layer",
+            "sheet": "A102",
+            "metric": "sklon_stopy 5.25°"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "strecha_netto",
+            "value": 558.8
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "abmv_closure",
+            "abmv_id": "ABMV_13",
+            "raw": "K-roc MW: closed_fabricated 2026-05-13. ROC = Rockwool = MW. Consistent across all sources."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "TZ ARS DPZ D.1.1: Kingspan pro šikmé střechy s MW, sklon 5,25°. EW 15 DP1 per PBŘ ABMV_6. Výška v hřebeni 7,1 m. _review_thickness=True: TZ ARS neuvádí explicitní tloušťku střešního panelu — ověřit u projektanta / statika D.1.2. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: _review_thickness flag REMOVED — statika TZ D.1.2 explicitly specifies 'KINGSPAN KS FF-ROC tl. 200 mm'. ROC = Rockwool = MW core. Confidence 0.90 → 0.95 (statika direct product specification with tloušťka).",
+        "computed_quantity": 500.6,
+        "declared_quantity": 500.6,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        "extraction_method": "tz_ars_dpz_verified",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 558.8,
+              "formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
+              "popis": "Kingspan KS FF-ROC tl. 200 mm, jádro ROC (Rockwool — minerální vata), pro šikmé střechy sklon 5.25°, plech vnější/vnitřní 0.6/0.5 mm, profilace trapéz 34 mm/Q (minibox), S280GD/S280GD, dle EN 14509:2013, výrobní závod Lipsko (Kingspan Polská republika), vaznice rozteč max 1.5 m per statika"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
       }
     },
     {
-      "id": "VZT-010",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Automatická regulace VZT s MaR (měření a regulace) — řízení rekuperace + clon",
-      "mj": "kpl",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "043194000",
-          "score": 0.333,
-          "tokens": "cinnst inzenrsk meren"
-        },
-        {
-          "code": "55346534",
-          "score": 0.333,
-          "tokens": "kovov markz prislsnstv stavbn"
-        },
-        {
-          "code": "043103000",
-          "score": 0.25,
-          "tokens": "cinnst inzenrsk meren ostatn"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.333,
-      "skladba_ref": null,
-      "source": "standardní vybavení rekuperační jednotky",
-      "raw_description": "MaR VZT",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
+      "id": "PSV-OPL-004",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Montáž střešního opláštění Kingspan KS 1000 RW 160 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů",
+      "mj": "m²",
+      "mnozstvi": 500.6,
+      "_qty_formula": "střecha netto Step3 = 558.8 m² (shodné s PSV-OPL-003)",
+      "source": "TZ statika D.1.2 (vaznice rozteč 1.5 m) + TZ ARS D.1.1 p4 + Step3",
+      "raw_description": "montáž Kingspan střešní opláštění kotvení šrouby",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
       "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "1 kpl",
-      "_export_wrapper_hint": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl",
-        "formula_parsed_method": "single_value",
+        "lokalizace": "montáž střešní opláštění Kingspan — TZ ARS DPZ D.1.1",
+        "formula": "= dodávka PSV-OPL-003 = 500.6 m²",
+        "formula_parsed_method": "derived_from_step3_areas",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
+            "label": "strecha_netto_m2",
+            "value": 558.8,
+            "unit": "m²"
           }
         ],
-        "reference": [],
-        "poznamka": "standardní vybavení rekuperační jednotky · (MaR VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          },
+          {
+            "type": "tz_section",
+            "section": "D.1.2 (statika) — Návrh opláštění",
+            "raw": "Střešní panely budou navrženy z panelů KINGSPAN KS FF-ROC tl. 200 mm. Panely je možné uložit dle libosti (prostý spojitý o dvou polích nebo třech polích) vaznice budou vzdálené max 1,5 m což vyhoví pro všechny případy zatížení. Stěnové panely budou navrženy z panelů KINGSPAN KS NF 200 mm. ...Vzdálenost rámů bude 6,1 m."
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "TZ ARS DPZ D.1.1: montáž kotvením k OK. Qty = Step3 střecha netto 558.8 m². | UPDATE 2026-05-24: vaznice rozteč max 1.5 m per statika TZ D.1.2 added. Confidence 0.90 → 0.90 unchanged.",
+        "computed_quantity": 500.6,
+        "declared_quantity": 500.6,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
-    },
-    {
-      "id": "VZT-011",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Dálkové ovládání + napojení na centrální řízení haly",
-      "mj": "kpl",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "082103000",
-          "score": 0.333,
-          "tokens": "dals na nakld pracvnk"
-        },
-        {
-          "code": "082203000",
-          "score": 0.333,
-          "tokens": "dals na nakld pracvnk"
-        },
-        {
-          "code": "220860205",
-          "score": 0.333,
-          "tokens": "bednch brevn fixnm jamy kabel napajn ovladch pripjn"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.333,
-      "skladba_ref": null,
-      "source": "standardní vybavení",
-      "raw_description": "dálkové ovládání VZT",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "1 kpl",
-      "_export_wrapper_hint": null,
-      "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl",
-        "formula_parsed_method": "single_value",
-        "inputs": [
+        "extraction_method": "tz_ars_dpz_verified",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
           {
-            "label": "operand_1",
-            "value": 1.0,
-            "unit": ""
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 558.8,
+              "formula": "střecha netto Step3 = 558.8 m²",
+              "popis": "Montáž střešního opláštění Kingspan KS FF-ROC 200 mm — kotvení k ocelové konstrukci samořeznými šrouby + těsnění přesahů, uložení prosté/spojité (2-3 polí) na vaznicích rozteč max 1.5 m per statika TZ D.1.2"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
           }
-        ],
-        "reference": [],
-        "poznamka": "standardní vybavení · (dálkové ovládání VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
-        "declared_quantity": 1.0,
-        "match_delta_pct": 0.0,
-        "match_within_tolerance": true,
-        "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
+        ]
       }
     },
     {
-      "id": "VZT-012",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Závěsy + příchytky potrubí SPIRO — komplet pro celý rozvod",
-      "mj": "kpl",
-      "mnozstvi": 1.0,
-      "urs_code": "735511039",
-      "urs_alternatives": [
-        {
-          "code": "735511039",
-          "score": 0.767,
-          "tokens": "potrb reha rozvdn"
-        },
-        {
-          "code": "735511061",
-          "score": 0.767,
-          "tokens": "potrb reha rozvdn"
-        },
-        {
-          "code": "735511062",
-          "score": 0.767,
-          "tokens": "potrb reha rozvdn"
-        }
-      ],
-      "urs_status": "matched_medium",
-      "urs_match_score": 0.767,
-      "skladba_ref": null,
-      "source": "standardní detail",
-      "raw_description": "závěsy + příchytky SPIRO",
+      "id": "PSV-OPL-005",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Klempířské lemy + přechody střecha–fasáda, pozinkovaný plech — atika, úžlabí, nároží, parapety, krycí lišty — dle TZ ARS DPZ D.1.1",
+      "mj": "bm",
+      "mnozstvi": 189.14,
+      "_qty_formula": "2 × obvod budovy 103.5 m (atika + parapety); _review_qty=True",
+      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+      "raw_description": "klempíř lemy přechody pozinkovaný plech atika úžlabí nároží",
       "confidence": 0.75,
-      "subdodavatel_chapter": "VZT_dodavatel",
+      "_price_source": "user_skipped_pricing",
+      "_review_qty": true,
       "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "1 kpl (komplet pro 260 bm rozvodů)",
-      "_export_wrapper_hint": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.75,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "1 kpl (komplet pro 260 bm rozvodů)",
-        "formula_parsed_method": "single_value",
+        "lokalizace": "klempířské lemy opláštění — TZ ARS DPZ D.1.1",
+        "formula": "2 × obvod budovy 94.57 m (Úprava dveří) = 189.14 bm (hrubý odhad atika + parapety)",
+        "formula_parsed_method": "estimate_perimeter_derived",
         "inputs": [
           {
-            "label": "operand_1",
-            "value": 1.0,
+            "label": "obvod_budovy_m",
+            "value": 103.5,
+            "unit": "m"
+          },
+          {
+            "label": "factor",
+            "value": 2.0,
             "unit": ""
           }
         ],
-        "reference": [],
-        "poznamka": "standardní detail · (závěsy + příchytky SPIRO) · [sub: VZT_dodavatel]",
-        "computed_quantity": 1.0,
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          },
+          {
+            "type": "step3_metric",
+            "metric": "obvod_budovy",
+            "value": 103.5
+          },
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "TZ ARS DPZ D.1.1: pozinkovaný plech — atika, lemování, parapety, krycí lišty, úžlabí, nároží, okapy. _review_qty=True: výkaz lemů vyžaduje klempířský podrobný výkaz (TBD). Odhad 207 bm = 2× obvod 103.5 m.",
+        "computed_quantity": 189.14,
+        "declared_quantity": 189.14,
+        "match_delta_pct": null,
+        "match_within_tolerance": false,
+        "confidence": 0.75,
+        "extraction_method": "estimate_perimeter_derived",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "previous": {
+              "mnozstvi": 207.0,
+              "formula": "2 × obvod budovy 103.5 m = 207.0 bm (hrubý odhad atika + parapety)",
+              "popis": "Klempířské lemy + přechody střecha–fasáda, pozinkovaný plech — atika, úžlabí, nároží, parapety, krycí lišty — dle TZ ARS DPZ D.1.1"
+            },
+            "reason": "Úprava dveří revision 2026-05-22",
+            "source": "Úprava dveří drawings + user manual measurement"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PSV-OPL-006",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Spojovací materiál + těsnění + EPDM podložky Kingspan systém — paušál pro celý objem opláštění",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "_qty_formula": "1 kpl paušál",
+      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+      "raw_description": "Kingspan spojovací materiál těsnění EPDM kotvící prvky",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.85,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "spojovací materiál opláštění — TZ ARS DPZ D.1.1",
+        "formula": "paušál",
+        "formula_parsed_method": "unparseable",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          }
+        ],
+        "poznamka": "TZ ARS DPZ D.1.1: kotvení samořezné šrouby + EPDM těsnicí podložky. Paušál pro celý systém opláštění (střecha + fasáda). Qty TBD u Kingspan systémového dodavatele.",
+        "computed_quantity": null,
         "declared_quantity": 1.0,
+        "match_delta_pct": null,
+        "match_within_tolerance": false,
+        "confidence": 0.85,
+        "extraction_method": "placeholder_lump_sum",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+      }
+    },
+    {
+      "id": "PSV-OPL-007",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Doprava sendvičových panelů Kingspan na stavbu — paušál",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "_qty_formula": "1 paušál",
+      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+      "raw_description": "doprava Kingspan sendvičové panely",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.85,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "doprava opláštění — standardní položka Kingspan systém",
+        "formula": "paušál",
+        "formula_parsed_method": "unparseable",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          }
+        ],
+        "poznamka": "Doprava Kingspan panelů (střecha + fasáda ~536+559 m²) na stavbu. Qty paušál.",
+        "computed_quantity": null,
+        "declared_quantity": 1.0,
+        "match_delta_pct": null,
+        "match_within_tolerance": false,
+        "confidence": 0.85,
+        "extraction_method": "placeholder_lump_sum",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+      }
+    },
+    {
+      "id": "PSV-OPL-008",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Statické posouzení uchycení Kingspan k ocelové konstrukci + revizní zpráva — paušál",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "_qty_formula": "1 paušál",
+      "source": "TZ_ARS_DPZ + Step3 areas + Step2 Lindab/MEARIN dossiers",
+      "raw_description": "statické posouzení Kingspan kotvení k OK revize",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.85,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_review",
+      "urs_match_score": null,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "statika opláštění — inženýrský výkon",
+        "formula": "paušál",
+        "formula_parsed_method": "unparseable",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "D.1.1",
+            "raw": "TZ ARS DPZ D.1.1"
+          }
+        ],
+        "poznamka": "Statické posouzení kotvení Kingspan k ocelové nosné konstrukci + revizní zpráva. Povinné per ČSN EN 14509 + projektant požadavek. Qty paušál.",
+        "computed_quantity": null,
+        "declared_quantity": 1.0,
+        "match_delta_pct": null,
+        "match_within_tolerance": false,
+        "confidence": 0.85,
+        "extraction_method": "placeholder_lump_sum",
+        "data_source_hint": "TZ_ARS_DPZ",
+        "extracted_at": "2026-05-22T06:30:51.307602+00:00"
+      }
+    },
+    {
+      "id": "PSV-OPL-009",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Kingspan KS 1000 FR 150 mm, jádro PIR (fire-resistant), 2 rohové zóny u vstupních dveří (45.69 + 36.56 m²) — Úprava dveří",
+      "mj": "m²",
+      "mnozstvi": 82.25,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Kingspan KS 1000 FR 150 mm, jádro PIR (fire-resistant), 2 rohové zóny u vstupních dveří (45.69 + 36.56 m²) — Úprava dveří",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
+      "audit_trail": {
+        "lokalizace": "obvodové opláštění Kingspan — TZ ARS DPZ D.1.1 kap. B + statika D.1.2",
+        "formula": "45.69 m² + 36.56 m² = 82.25 m² (2 šrafované rohové zóny v POHLED F a POHLED 01 — user manual měření)",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
+        "inputs": [],
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          },
+          {
+            "type": "tz_section",
+            "section": "B p.8",
+            "raw": "Kingspan tl. 200 mm, alternativně 150 mm dle"
+          }
+        ],
+        "poznamka": "FR jádro per Úprava dveří značení — odlišný materiál od NF 120 mm (PIR vs MW)",
+        "computed_quantity": 82.25,
+        "declared_quantity": 82.25,
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "confidence": 0.85,
-        "extraction_method": "qty_formula_parse",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 82.25,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     },
     {
-      "id": "VZT-013",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Spuštění + zaregulování VZT systému + měření hlučnosti a vzduchových výkonů",
-      "mj": "paušál",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "733322211",
-          "score": 0.433,
-          "tokens": "has reha systm"
-        },
-        {
-          "code": "733322212",
-          "score": 0.433,
-          "tokens": "has reha systm"
-        },
-        {
-          "code": "733322213",
-          "score": 0.433,
-          "tokens": "has reha systm"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.433,
-      "skladba_ref": null,
-      "source": "standardní VRN VZT",
-      "raw_description": "spuštění + měření VZT",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
+      "id": "PSV-OPL-010",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Montáž Kingspan KS 1000 FR 150 mm — 2 rohové zóny (45.69 + 36.56 m²), kotvení samořeznými šrouby + EPDM podložka",
+      "mj": "m²",
+      "mnozstvi": 82.25,
+      "_qty_formula": "fasáda netto Step3 v2: obvod 103.5 m × výška 6.02 m − otvory 94.82 m² (vrata 3.5×4.0 per TZ ARS DPZ ABMV_2 resolved)",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Montáž Kingspan KS 1000 FR 150 mm — 2 rohové zóny (45.69 + 36.56 m²), kotvení samořeznými šrouby + EPDM podložka",
+      "confidence": 0.85,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
+        "lokalizace": "montáž obvodové opláštění Kingspan — TZ ARS DPZ D.1.1",
+        "formula": "= dodávka PSV-OPL-009 = 82.25 m²",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
         "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN VZT · (spuštění + měření VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "Montážní práce identické s NF panelem, FR pouze materiálová odlišnost",
+        "computed_quantity": 82.25,
+        "declared_quantity": 82.25,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.85,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 82.25,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     },
     {
-      "id": "VZT-014",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Doprava VZT komponentů — paušál pro veškeré jednotky a potrubí",
-      "mj": "paušál",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "113106191",
-          "score": 0.5,
-          "tokens": "jedntlv komunkc pesi plos pro"
-        },
-        {
-          "code": "113106192",
-          "score": 0.5,
-          "tokens": "jedntlv komunkc pesi plos pro"
-        },
-        {
-          "code": "28617245",
-          "score": 0.5,
-          "tokens": "kombnvn podzmn polyprpln potrb trubk"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.5,
-      "skladba_ref": null,
-      "source": "standardní VRN doprava",
-      "raw_description": "doprava VZT",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
+      "id": "PSV-OPL-011",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Kingspan KS 1000 FF 175 mm, jádro FF (Rockwool), zóna ve střeše — Úprava dveří section view",
+      "mj": "m²",
+      "mnozstvi": 58.2,
+      "_qty_formula": "střecha netto Step3: brutto 556.5 m² / cos(5.25°) = 558.8 m²",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Kingspan KS 1000 FF 175 mm, jádro FF (Rockwool), zóna ve střeše — Úprava dveří section view",
+      "confidence": 0.75,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.85,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
+        "lokalizace": "střešní opláštění Kingspan — TZ ARS DPZ D.1.1 + A102 pudorys střechy",
+        "formula": "57.95 m² projection (user měřeno) / cos(5.25°) = 58.20 m² (slope-corrected)",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
         "inputs": [],
-        "reference": [],
-        "poznamka": "standardní VRN doprava · (doprava VZT) · [sub: VZT_dodavatel]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "2. typ střešního panelu vedle hlavního RW 160 mm — image 1 section view ukazuje oba typy paralelně",
+        "computed_quantity": 58.2,
+        "declared_quantity": 58.2,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.75,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 58.2,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     },
     {
-      "id": "VZT-015",
-      "kapitola": "VZT",
-      "SO": "SO-05",
-      "popis": "Revize VZT + protokol o předání + zapojení do BMS",
-      "mj": "paušál",
-      "mnozstvi": 1.0,
-      "urs_code": null,
-      "urs_alternatives": [
-        {
-          "code": "28661880",
-          "score": 0.25,
-          "tokens": "dvorn kanalzcn kg revizn sacht systm tegr vpust"
-        },
-        {
-          "code": "28661881",
-          "score": 0.25,
-          "tokens": "dvorn kanalzcn revizn sacht systm tegr vpust wavin"
-        },
-        {
-          "code": "28661882",
-          "score": 0.25,
-          "tokens": "dvorn kanalzcn kg revizn sacht systm tegr typ"
-        }
-      ],
-      "urs_status": "needs_review",
-      "urs_match_score": 0.25,
-      "skladba_ref": null,
-      "source": "ČSN VZT + standardní revize",
-      "raw_description": "revize VZT + protokol",
-      "confidence": 0.5,
-      "subdodavatel_chapter": "VZT_dodavatel",
-      "_vyjasneni_ref": [],
-      "_status_flag": "concept_pending_vzt_drawings",
-      "_data_source": "TZ_only",
-      "_completeness": 0.5,
-      "_qty_formula": "paušál",
-      "_export_wrapper_hint": null,
+      "id": "PSV-OPL-012",
+      "kapitola": "PSV-OPL",
+      "SO": "SO-01",
+      "popis": "Montáž Kingspan KS 1000 FF 175 mm — zóna 58.20 m² ve střeše",
+      "mj": "m²",
+      "mnozstvi": 58.2,
+      "_qty_formula": "střecha netto Step3 = 558.8 m² (shodné s PSV-OPL-003)",
+      "source": "uprava_dveri_2026-05-22",
+      "raw_description": "Montáž Kingspan KS 1000 FF 175 mm — zóna 58.20 m² ve střeše",
+      "confidence": 0.75,
+      "_price_source": "user_skipped_pricing",
+      "_vyjasneni_ref": null,
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_DPZ",
+      "_completeness": 0.9,
+      "_export_wrapper_hint": "PSV_sendvicove_opla_teni",
+      "urs_code": "",
+      "urs_alternatives": [],
+      "urs_status": "not_matched",
+      "urs_match_score": 0.0,
+      "subdodavatel_chapter": "opl_steni_sendvic",
       "audit_trail": {
-        "lokalizace": "vzduchotechnika — A106 stroje  ·  SO-05",
-        "formula": "paušál",
-        "formula_parsed_method": "unparseable",
+        "lokalizace": "montáž střešní opláštění Kingspan — TZ ARS DPZ D.1.1",
+        "formula": "= dodávka PSV-OPL-011 = 58.20 m²",
+        "formula_parsed_method": "uprava_dveri_user_measurement",
         "inputs": [],
-        "reference": [],
-        "poznamka": "ČSN VZT + standardní revize · (revize VZT + protokol) · [sub: VZT_dodavatel]",
-        "computed_quantity": null,
-        "declared_quantity": 1.0,
-        "match_delta_pct": null,
-        "match_within_tolerance": false,
-        "confidence": 0.4,
-        "extraction_method": "placeholder_uncertain",
-        "data_source_hint": "TZ_only",
-        "extracted_at": "2026-05-14T06:35:18.127569+00:00"
-      }
+        "reference": [
+          {
+            "type": "drawing",
+            "code": "Hala HK_Úprava dveří",
+            "document": "vykresy_pdf/Hala_HK_Uprava_dveri_2026-05-22.pdf",
+            "raw": "Úprava dveří revision drawings — POHLED OSA A/F/01/06 + section"
+          }
+        ],
+        "poznamka": "Montážní práce identické s RW panelem",
+        "computed_quantity": 58.2,
+        "declared_quantity": 58.2,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "confidence": 0.75,
+        "extraction_method": "uprava_dveri_revision",
+        "data_source_hint": "uprava_dveri_drawings+user_measurement",
+        "extracted_at": "2026-05-22T12:00:00+00:00",
+        "_analytical_journey": [
+          {
+            "date": "2026-05-22",
+            "value": 58.2,
+            "method": "Úprava dveří revision — first appearance",
+            "status": "current"
+          }
+        ]
+      },
+      "_review_concrete_class": null,
+      "_review_qty": null
     }
   ]
 }

@@ -6,10 +6,16 @@ on:
     paths:
       - 'Monolit-Planner/**'
       - '.github/workflows/monolit-planner-ci.yml'
+      - 'kb/**'
+      - 'scripts/gen-knowledge.mjs'
+      - 'package.json'
+      - 'package-lock.json'
   pull_request:
     branches: [ main ]
     paths:
       - 'Monolit-Planner/**'
+      - 'kb/**'
+      - 'scripts/gen-knowledge.mjs'
 
 jobs:
   # Job 1: Lint and Type Check
@@ -33,6 +39,12 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
+
+      - name: Install root dependencies (codegen)
+        run: npm ci || npm install
+
+      - name: Knowledge codegen drift check
+        run: npm run gen:knowledge:check
 
       - name: Install dependencies (shared)
         working-directory: ./Monolit-Planner/shared

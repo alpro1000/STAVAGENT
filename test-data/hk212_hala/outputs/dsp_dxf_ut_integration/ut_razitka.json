@@ -1,0 +1,19 @@
+{
+  "file": "ut_dps",
+  "extracted_at": "2026-05-21T20:14:25.313497+00:00",
+  "current_razitko": {
+    "akce_strings": [],
+    "zakazky_strings": [],
+    "stupne_strings": [],
+    "current_dates": {},
+    "current_persons": [],
+    "ckaity": {},
+    "has_current_HK_signal": false
+  },
+  "ghost_razitko": {
+    "tokens_filtered": {},
+    "ghost_persons": [],
+    "ghost_dates": {},
+    "rule_applied": "task §9 rule 3 — dates with year < 2024 AND tokens like LIMA/DRSLAVICE/Tichák/Fojtů"
+  }
+}

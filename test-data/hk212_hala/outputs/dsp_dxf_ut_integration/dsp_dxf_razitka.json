@@ -1,0 +1,58 @@
+{
+  "file": "dilenska_Mach_Micanek",
+  "extracted_at": "2026-05-21T20:14:18.506387+00:00",
+  "current_razitko": {
+    "akce_strings": [
+      "Akce:"
+    ],
+    "zakazky_strings": [
+      "Zakázka č."
+    ],
+    "stupne_strings": [
+      "DÚR + DSP",
+      "STUPEŇ"
+    ],
+    "current_dates": {
+      "04/2026": 5
+    },
+    "current_persons": [
+      {
+        "name": "Ing. Jan Mičánek",
+        "count": 8
+      },
+      {
+        "name": "Ing. Daniel Mach",
+        "count": 5
+      }
+    ],
+    "ckaity": {
+      "ČKAIT 1302177": 2
+    },
+    "has_current_HK_signal": false
+  },
+  "ghost_razitko": {
+    "tokens_filtered": {
+      "Tichák": 6,
+      "Fojtů": 3,
+      "LIMA": 1,
+      "DRSLAVICE": 1
+    },
+    "ghost_persons": [
+      {
+        "name": "Ing. Tomáš Tichák",
+        "count": 4
+      },
+      {
+        "name": "Ing. Jaroslav Fojtů",
+        "count": 1
+      }
+    ],
+    "ghost_dates": {
+      "03/2007": 2,
+      "03/2006": 1,
+      "04/2019": 1,
+      "10/2021": 2
+    },
+    "rule_applied": "task §9 rule 3 — dates with year < 2024 AND tokens like LIMA/DRSLAVICE/Tichák/Fojtů"
+  }
+}

@@ -91,6 +91,25 @@ STAVAGENT/
 │   ├── RD_Jachymov_dum/          # N=5 corpus case (Phase 0b foundation)
 │   ├── SO_250/                   # SO-250 D6 Žalmanov data
 │   ├── hk212_hala/               # hk212 Hradec Králové data
+│   │   ├── inputs/               # TZ PDFs + DXFs + PBŘ + situace + dokumentace (IGP, etc.)
+│   │   ├── outputs/
+│   │   │   ├── phase_1_etap1/    # items_*.json, ABMV queue, kapitola audit, project_header
+│   │   │   ├── dsp_dxf_ut_integration/   # Stage A/B/C — UT discovery, kusovník, energy bilance
+│   │   │   ├── dsp_geometry_extraction/  # Task 2 + Step 3
+│   │   │   │   ├── layer_dictionary_*.json
+│   │   │   │   ├── extraction_raw.json + extraction_aggregated.json
+│   │   │   │   └── step3_areas/          # polygonization, 9 area metrics
+│   │   │   ├── soupis_praci/             # Final tender deliverable (KROS-matched soupis)
+│   │   │   │   ├── preflight_inventory.md
+│   │   │   │   ├── kros_match_results.json + kros_match_report.md
+│   │   │   │   ├── hk212_soupis_praci.{json,xlsx}
+│   │   │   │   └── HANDOFF_TENDER_READY.md
+│   │   │   └── audit_2026_05_23_fresh_eyes.md   # Fresh-eyes read-only audit
+│   │   ├── handoff/              # session_handoff_*.md
+│   │   └── scripts/
+│   │       ├── dsp_geometry_extraction/  # step1/1b/1c/2/3 (auto-detect → polygonize)
+│   │       ├── phase_1_etap1/    # stage_d_apply_updates, stage_e_add_opl, phase_1_igp_integration, fix_f1, rework_patky_vykop_deska
+│   │       └── soupis_praci/     # phase_a_preflight, phase_b_kros_match, phase_c_generate_outputs
 │   ├── libuse/                   # Libuše VELTON data
 │   ├── most-2062-1-zihle/        # Žihle 2062-1 bridge data
 │   ├── most-litovel/             # Diploma thesis — KB study material (TKP 4 + ČSN 73 6244 + VL 4)

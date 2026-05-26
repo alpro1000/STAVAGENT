@@ -1,0 +1,1462 @@
+{
+  "_meta": {
+    "generated_at": "2026-05-21T20:19:27.855861+00:00",
+    "dxf_files_scanned": 8,
+    "files_excluded": [
+      "UT_HALAHK_DPS.dxf"
+    ],
+    "distinct_layers": 96
+  },
+  "sheets": [
+    {
+      "file": "A101_pudorys_1np.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          175370.3169841089,
+          3478.130795144936,
+          0.0
+        ],
+        "max": [
+          209737.6467688707,
+          159868.273649953,
+          0.0
+        ]
+      },
+      "layer_count": 35,
+      "msp_entity_count": 624,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "A102_pudorys_strechy.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          175370.3169841089,
+          118850.8165802118,
+          0.0
+        ],
+        "max": [
+          207118.8133438705,
+          159868.273649953,
+          0.0
+        ]
+      },
+      "layer_count": 17,
+      "msp_entity_count": 211,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "A104_pohledy.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          -155049.6242283804,
+          -2752.999999999992,
+          0.0
+        ],
+        "max": [
+          -36394.88840774872,
+          7563.379303343556,
+          0.0
+        ]
+      },
+      "layer_count": 37,
+      "msp_entity_count": 1076,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "A105_zaklady.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          172692.11493716,
+          2565.766319150983,
+          0.0
+        ],
+        "max": [
+          213174.6282754182,
+          159868.273649953,
+          0.0
+        ]
+      },
+      "layer_count": 27,
+      "msp_entity_count": 747,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "A106_stroje.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          2166.19708782411,
+          3478.130795144936,
+          0.0
+        ],
+        "max": [
+          48741.75407477948,
+          161002.1803292657,
+          0.0
+        ]
+      },
+      "layer_count": 38,
+      "msp_entity_count": 1295,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "A107_stroje_kotvici_body.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          2166.19708782411,
+          3478.130795144936,
+          0.0
+        ],
+        "max": [
+          44791.19388287961,
+          159868.273649953,
+          0.0
+        ]
+      },
+      "layer_count": 35,
+      "msp_entity_count": 659,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "A201_vykopy.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          175046.7229044091,
+          -19363.46811719768,
+          0.0
+        ],
+        "max": [
+          362619.1032546021,
+          158900.2223147261,
+          0.0
+        ]
+      },
+      "layer_count": 28,
+      "msp_entity_count": 1495,
+      "layouts": [
+        "Layout1",
+        "Layout2",
+        "Model"
+      ]
+    },
+    {
+      "file": "Hala HK_ Úprava dveří.dxf",
+      "dxf_version": "AC1024",
+      "units_code": 4,
+      "ltscale": 1.0,
+      "extents": {
+        "min": [
+          -1.455e-11,
+          -10299.64083527772,
+          -5.0
+        ],
+        "max": [
+          292300.0,
+          115699.2816705555,
+          0.0
+        ]
+      },
+      "layer_count": 18,
+      "msp_entity_count": 3547,
+      "layouts": [
+        "Model",
+        "Rozvržení1",
+        "Rozvržení2"
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "layer": "0",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 162,
+      "entity_types": {
+        "TEXT": 87,
+        "LWPOLYLINE": 1,
+        "LINE": 73,
+        "INSERT": 1
+      }
+    },
+    {
+      "layer": "04_srafy",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 8,
+      "entity_types": {
+        "HATCH": 8
+      }
+    },
+    {
+      "layer": "1xČERCHA",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 28,
+      "entity_types": {
+        "LINE": 25,
+        "LWPOLYLINE": 3
+      }
+    },
+    {
+      "layer": "212_HK_situace_03_dwg-1",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      }
+    },
+    {
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "sheets": [
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 5,
+      "entity_types": {
+        "INSERT": 5
+      }
+    },
+    {
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "sheets": [
+        "A104_pohledy.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 5,
+      "entity_types": {
+        "INSERT": 5
+      }
+    },
+    {
+      "layer": "2xČERCHA",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "LINE": 3
+      }
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 390,
+      "entity_types": {
+        "DIMENSION": 390
+      }
+    },
+    {
+      "layer": "A-ANNO-IDEN",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 48,
+      "entity_types": {
+        "LINE": 24,
+        "INSERT": 24
+      }
+    },
+    {
+      "layer": "A-ANNO-IDEN-1",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 23,
+      "entity_types": {
+        "MTEXT": 23
+      }
+    },
+    {
+      "layer": "A-ANNO-NOTE",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 21,
+      "entity_types": {
+        "INSERT": 21
+      }
+    },
+    {
+      "layer": "A-AREA-IDEN-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 12,
+      "entity_types": {
+        "MTEXT": 12
+      }
+    },
+    {
+      "layer": "A-DETL-1",
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 11,
+      "entity_types": {
+        "LINE": 11
+      }
+    },
+    {
+      "layer": "A-DETL-2",
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 10,
+      "entity_types": {
+        "LINE": 10
+      }
+    },
+    {
+      "layer": "A-DETL-3",
+      "sheets": [
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 8,
+      "entity_types": {
+        "LINE": 8
+      }
+    },
+    {
+      "layer": "A-DETL-4",
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "LINE": 2
+      }
+    },
+    {
+      "layer": "A-DETL-5",
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "LINE": 2
+      }
+    },
+    {
+      "layer": "A-DETL-MBND",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 329,
+      "entity_types": {
+        "LINE": 313,
+        "INSERT": 16
+      }
+    },
+    {
+      "layer": "A-DETL-THIN",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 7,
+      "total_entities": 165,
+      "entity_types": {
+        "LINE": 165
+      }
+    },
+    {
+      "layer": "A-DETL-THIN-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 68,
+      "entity_types": {
+        "LINE": 68
+      }
+    },
+    {
+      "layer": "A-DOOR",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 6,
+      "entity_types": {
+        "INSERT": 6
+      }
+    },
+    {
+      "layer": "A-DOOR-FRAM",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 6,
+      "entity_types": {
+        "INSERT": 6
+      }
+    },
+    {
+      "layer": "A-DOOR-GLAZ-2",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      }
+    },
+    {
+      "layer": "A-DOOR-HDLN",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 12,
+      "entity_types": {
+        "INSERT": 12
+      }
+    },
+    {
+      "layer": "A-FLOR",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 188,
+      "entity_types": {
+        "LINE": 188
+      }
+    },
+    {
+      "layer": "A-FLOR-1",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 8,
+      "entity_types": {
+        "HATCH": 8
+      }
+    },
+    {
+      "layer": "A-FLOR-3",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "HATCH": 2
+      }
+    },
+    {
+      "layer": "A-FLOR-LEVL",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 68,
+      "entity_types": {
+        "LINE": 58,
+        "INSERT": 10
+      }
+    },
+    {
+      "layer": "A-GENM",
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "INSERT": 1
+      }
+    },
+    {
+      "layer": "A-GENM-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 774,
+      "entity_types": {
+        "ARC": 268,
+        "LINE": 225,
+        "SPLINE": 216,
+        "HATCH": 38,
+        "INSERT": 3,
+        "LWPOLYLINE": 12,
+        "ELLIPSE": 12
+      }
+    },
+    {
+      "layer": "A-GENM-2",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 208,
+      "entity_types": {
+        "INSERT": 16,
+        "LINE": 148,
+        "SPLINE": 35,
+        "LWPOLYLINE": 5,
+        "ARC": 4
+      }
+    },
+    {
+      "layer": "A-GLAZ",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 147,
+      "entity_types": {
+        "INSERT": 147
+      }
+    },
+    {
+      "layer": "A-ROOF",
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 29,
+      "entity_types": {
+        "LINE": 29
+      }
+    },
+    {
+      "layer": "A-ROOF-1",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 2,
+      "entity_types": {
+        "HATCH": 2
+      }
+    },
+    {
+      "layer": "A-ROOF-2",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "HATCH": 4
+      }
+    },
+    {
+      "layer": "A-ROOF-OTLN",
+      "sheets": [
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 82,
+      "entity_types": {
+        "LINE": 82
+      }
+    },
+    {
+      "layer": "A-ROOF-OTLN-1",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 10,
+      "entity_types": {
+        "HATCH": 10
+      }
+    },
+    {
+      "layer": "A-WALL",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 586,
+      "entity_types": {
+        "LINE": 586
+      }
+    },
+    {
+      "layer": "A-WALL-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 348,
+      "entity_types": {
+        "LINE": 274,
+        "HATCH": 74
+      }
+    },
+    {
+      "layer": "A-WALL-2",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 17,
+      "entity_types": {
+        "HATCH": 17
+      }
+    },
+    {
+      "layer": "A-WALL-3",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 15,
+      "entity_types": {
+        "HATCH": 15
+      }
+    },
+    {
+      "layer": "A-WALL-4",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 23,
+      "entity_types": {
+        "HATCH": 23
+      }
+    },
+    {
+      "layer": "A-WALL-5",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "HATCH": 3
+      }
+    },
+    {
+      "layer": "A-WALL-PATT-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 40,
+      "entity_types": {
+        "HATCH": 40
+      }
+    },
+    {
+      "layer": "C-TOPO",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 176,
+      "entity_types": {
+        "LINE": 131,
+        "SPLINE": 5,
+        "LWPOLYLINE": 40
+      }
+    },
+    {
+      "layer": "C-TOPO-1",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 65,
+      "entity_types": {
+        "LINE": 58,
+        "LWPOLYLINE": 7
+      }
+    },
+    {
+      "layer": "C-TOPO-2",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 71,
+      "entity_types": {
+        "LINE": 36,
+        "SPLINE": 4,
+        "LWPOLYLINE": 31
+      }
+    },
+    {
+      "layer": "C-TOPO-MAJR",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "LINE": 3
+      }
+    },
+    {
+      "layer": "C-TOPO-PATT-1",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "HATCH": 3
+      }
+    },
+    {
+      "layer": "DEMOLICE",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "LINE": 1
+      }
+    },
+    {
+      "layer": "E-ELEC-FIXT",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 3,
+      "entity_types": {
+        "INSERT": 3
+      }
+    },
+    {
+      "layer": "G-ANNO-DIMS",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 7,
+      "total_entities": 527,
+      "entity_types": {
+        "INSERT": 84,
+        "LINE": 299,
+        "MTEXT": 144
+      }
+    },
+    {
+      "layer": "G-ANNO-DIMS-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 226,
+      "entity_types": {
+        "MTEXT": 64,
+        "LINE": 92,
+        "CIRCLE": 35,
+        "HATCH": 35
+      }
+    },
+    {
+      "layer": "G-ANNO-DIMS-2",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 102,
+      "entity_types": {
+        "CIRCLE": 51,
+        "HATCH": 51
+      }
+    },
+    {
+      "layer": "G-ANNO-REVC",
+      "sheets": [
+        "A102_pudorys_strechy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "INSERT": 1
+      }
+    },
+    {
+      "layer": "G-ANNO-REVC-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "INSERT": 1
+      }
+    },
+    {
+      "layer": "G-ANNO-REVC-IDEN",
+      "sheets": [
+        "A101_pudorys_1np.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "LINE": 1,
+        "INSERT": 1,
+        "MTEXT": 1
+      }
+    },
+    {
+      "layer": "G-ANNO-SYMB",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 32,
+      "entity_types": {
+        "INSERT": 32
+      }
+    },
+    {
+      "layer": "G-ANNO-SYMB-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 32,
+      "entity_types": {
+        "LINE": 32
+      }
+    },
+    {
+      "layer": "G-ANNO-SYMB-2",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 32,
+      "entity_types": {
+        "MTEXT": 32
+      }
+    },
+    {
+      "layer": "G-ANNO-TEXT",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 7,
+      "total_entities": 76,
+      "entity_types": {
+        "MTEXT": 76
+      }
+    },
+    {
+      "layer": "G-ANNO-TEXT-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 5,
+      "total_entities": 38,
+      "entity_types": {
+        "MTEXT": 38
+      }
+    },
+    {
+      "layer": "G-ANNO-TEXT-2",
+      "sheets": [
+        "A106_stroje.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 12,
+      "entity_types": {
+        "MTEXT": 12
+      }
+    },
+    {
+      "layer": "HK_TEREN_SESAZENI_dwg-1",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      }
+    },
+    {
+      "layer": "IZOLACE",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 41,
+      "entity_types": {
+        "LINE": 20,
+        "LWPOLYLINE": 21
+      }
+    },
+    {
+      "layer": "Koty",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 392,
+      "entity_types": {
+        "LINE": 1,
+        "DIMENSION": 391
+      }
+    },
+    {
+      "layer": "LOGO",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 13,
+      "entity_types": {
+        "INSERT": 13
+      }
+    },
+    {
+      "layer": "NETISK",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 101,
+      "entity_types": {
+        "LINE": 1,
+        "TEXT": 100
+      }
+    },
+    {
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 6,
+      "entity_types": {
+        "INSERT": 6
+      }
+    },
+    {
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "sheets": [
+        "A104_pohledy.dxf",
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 2,
+      "total_entities": 13,
+      "entity_types": {
+        "INSERT": 13
+      }
+    },
+    {
+      "layer": "P-SANR-FIXT",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 4,
+      "entity_types": {
+        "INSERT": 4
+      }
+    },
+    {
+      "layer": "PROFILY",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 169,
+      "entity_types": {
+        "INSERT": 137,
+        "LWPOLYLINE": 32
+      }
+    },
+    {
+      "layer": "Popis",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 920,
+      "entity_types": {
+        "TEXT": 493,
+        "LWPOLYLINE": 32,
+        "LEADER": 124,
+        "LINE": 270,
+        "CIRCLE": 1
+      }
+    },
+    {
+      "layer": "S-BEAM",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 45,
+      "entity_types": {
+        "INSERT": 45
+      }
+    },
+    {
+      "layer": "S-COLS",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 141,
+      "entity_types": {
+        "INSERT": 141
+      }
+    },
+    {
+      "layer": "S-FNDN",
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 201,
+      "entity_types": {
+        "LINE": 201
+      }
+    },
+    {
+      "layer": "S-FNDN-1",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 148,
+      "entity_types": {
+        "LINE": 148
+      }
+    },
+    {
+      "layer": "S-FSTN",
+      "sheets": [
+        "A104_pohledy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 12,
+      "entity_types": {
+        "INSERT": 12
+      }
+    },
+    {
+      "layer": "S-GRID-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 72,
+      "entity_types": {
+        "LINE": 72
+      }
+    },
+    {
+      "layer": "S-GRID-IDEN",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 144,
+      "entity_types": {
+        "INSERT": 144
+      }
+    },
+    {
+      "layer": "S-GRID-IDEN-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A102_pudorys_strechy.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf",
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 6,
+      "total_entities": 144,
+      "entity_types": {
+        "MTEXT": 144
+      }
+    },
+    {
+      "layer": "SRAFY",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 202,
+      "entity_types": {
+        "LINE": 131,
+        "HATCH": 42,
+        "CIRCLE": 29
+      }
+    },
+    {
+      "layer": "Stávající dešťová kan__Trubky-1",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 6,
+      "entity_types": {
+        "LINE": 6
+      }
+    },
+    {
+      "layer": "Stávající dešťová kan__Trubky-2",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 33,
+      "entity_types": {
+        "LINE": 13,
+        "LWPOLYLINE": 20
+      }
+    },
+    {
+      "layer": "Stávající splašková kan__Trubky-1",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 5,
+      "entity_types": {
+        "LINE": 5
+      }
+    },
+    {
+      "layer": "Stávající splašková kan__Trubky-2",
+      "sheets": [
+        "A201_vykopy.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 19,
+      "entity_types": {
+        "LINE": 7,
+        "LWPOLYLINE": 12
+      }
+    },
+    {
+      "layer": "TENKA",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 762,
+      "entity_types": {
+        "LINE": 658,
+        "INSERT": 1,
+        "ARC": 15,
+        "LWPOLYLINE": 88
+      }
+    },
+    {
+      "layer": "TEČKOVANÁ",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 1,
+      "entity_types": {
+        "LINE": 1
+      }
+    },
+    {
+      "layer": "TLUSTE",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 383,
+      "entity_types": {
+        "LINE": 184,
+        "TEXT": 44,
+        "CIRCLE": 7,
+        "LWPOLYLINE": 148
+      }
+    },
+    {
+      "layer": "Trubky-tvarovka",
+      "sheets": [
+        "A105_zaklady.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 3,
+      "entity_types": {
+        "INSERT": 3
+      }
+    },
+    {
+      "layer": "Vlastní 1_A-DETL-GENF",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A105_zaklady.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 7,
+      "entity_types": {
+        "HATCH": 7
+      }
+    },
+    {
+      "layer": "Vlastní 1_A-DETL-GENF-1",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A104_pohledy.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 4,
+      "total_entities": 7,
+      "entity_types": {
+        "HATCH": 7
+      }
+    },
+    {
+      "layer": "Vlastní 1_A-DETL-GENF-2",
+      "sheets": [
+        "A101_pudorys_1np.dxf",
+        "A106_stroje.dxf",
+        "A107_stroje_kotvici_body.dxf"
+      ],
+      "n_sheets": 3,
+      "total_entities": 4,
+      "entity_types": {
+        "HATCH": 4
+      }
+    },
+    {
+      "layer": "osy",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 327,
+      "entity_types": {
+        "LINE": 85,
+        "TEXT": 121,
+        "CIRCLE": 121
+      }
+    },
+    {
+      "layer": "ozn-rezu",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 10,
+      "entity_types": {
+        "TEXT": 2,
+        "LINE": 8
+      }
+    },
+    {
+      "layer": "ČARKOVANA",
+      "sheets": [
+        "Hala HK_ Úprava dveří.dxf"
+      ],
+      "n_sheets": 1,
+      "total_entities": 24,
+      "entity_types": {
+        "LINE": 13,
+        "LWPOLYLINE": 11
+      }
+    }
+  ]
+}

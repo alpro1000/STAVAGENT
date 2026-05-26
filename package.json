@@ -4,9 +4,12 @@
   "private": true,
   "description": "STAVAGENT - Multi-service Czech construction planning platform (5 services, deployed independently to Cloud Run + Vercel)",
   "scripts": {
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "gen:knowledge": "node scripts/gen-knowledge.mjs",
+    "gen:knowledge:check": "node scripts/gen-knowledge.mjs --check"
   },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "js-yaml": "^4.1.0"
   }
 }

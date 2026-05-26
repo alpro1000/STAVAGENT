@@ -250,6 +250,26 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 Александр consistently overrides scope reduction recommendations. Claude names pattern explicitly each time before complying.
 
+### 6.6a HK212 corpus patterns (consolidated 2026-05-22)
+
+8 cross-cutting patterns destilované z HK212 Stage A→E (12 commits, ~30K LOC):
+
+1. **"Re-read TZ before generating new položky"** — Phase 0b TZ extrakce se často zapomene v pozdějších stagech (Stage D/E item composition). Před JAKOUKOLIV mutací položky (popis, mnozstvi, source) re-check `inputs/dokumentace/TZ_*.pdf` + PBŘ. Symptom: generic placeholders ("~1500 Kč/m²", "TBD") místo TZ-derived specs (tl. 200mm MW, bílá+modrá, EW 15 DP1, EPDM podložka). Cure: TZ re-read jako mandatory step v Stage E checklist. Pattern 8 v `docs/STAVAGENT_PATTERNS.md`.
+
+2. **"DSP-stage detail trap"** — DSP DXF s workshop-level detail (147 OKNO INSERTs, 28 vrata/dveře blocks, 141 structural_columns s serial čísly) ≠ dílenská. DXF razítka říkají DSP. Confidence stays in DSP range (0.85), NE DPS (0.95). HK212 dilenska → dsp_dxf rename housekeeping commit `b23fff07` reflects to.
+
+3. **"Ghost razítko filter rule"** — Razítka kde `date > 2y older than DXF file mtime` AND akce mismatch (např. "DPS výroba" v DSP-stage DXF) = ghost razítka. DXF files jsou reusable templates (block libraries), staré razítka přežijí. Filter rule v Stage A.
+
+4. **"Layer dictionary ratification gate"** — Auto-detect classifier (regex-based 70+ rules) + STOP gate at <50 % coverage. User confirmation BEFORE aggregation pro: ArchiCAD A-/S-/G-/C-* prefixes, Czech ad hoc names (PROFILY, NETISK, OZN-REZU), user_custom_numbered. HK212: 39.6 % → 100 % po 3 iteracích + Step 1.5 A-GENM dossier (Lindab + MEARIN reveal). Reference: `step1c_finalize_dictionary.py` + `dictionary_decisions.md`.
+
+5. **"Annotate-before-mutate"** — Pro ceny (Stage E) + geometrie (Step 3 — area metrics). Add `_*_source` fields first (e.g. `_length_source`, `_geometric_source`, `_price_source: "user_skipped_pricing"`) → user review → potom mutation. Step 3 HK212: `items_hk212_etap1_with_geometry.json` separate file, original NEMODIFIKOVÁN. Cena = NEVER auto-mutate.
+
+6. **"Profession scope-cut hygiene"** — Při dropování položek (Stage D drop 22 items = 15 VZT + 7 Rpol M-kapitola) log to `delta_report` / metadata.dropped_items s reason. Don't leave concept items hanging. Reason musí být citovaný (Phase 0b §5, D.1.4 missing, ABMV_12).
+
+7. **"Long-session context decay"** — Sessions > 30K LOC outputs / > 8 commits → agent forgets Phase 0b data (TZ ARS DPZ details). Mandatory consolidation checkpoint at session end. Trigger: any PR exceeding 20K LOC modifications → run memory consolidation skill before close. HK212 Stage E forced TZ re-read = symptom of decay.
+
+8. **"Block-name as pseudo-schedule"** — DXF block names carry product specs: `OKNO_1k 1000×1000`, `M_Vrata_sekční 3500×4000`, `Lindab Round 150/100 Antique White`, `MEA Mearin Plus3000 NW300`, `IPE450`, `C150×19_3`. Block names = primary source for material specs, NE TEXT/MTEXT entities (architects often skip ATTRIB fill — HK212 ATTRIB harvest = 0). Block-name pseudo-schedule parser zapsán jako separate task (P3 backlog).
+
 ### 6.6 Session structure (proven)
 
 1. Drop task .md file into repo
@@ -329,6 +349,271 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 > Each session adds a section here. Format:
 > `## YYYY-MM-DD — Session: {topic}` + Rozhodnuto / Odmítnuto / Otevřené otázky / Co dál
+
+---
+
+### 2026-05-26 — Session: Phase C closing (G0–G6 + G-final) — Rimsa calibration + cyclic scheduler
+
+**Topic:** Phase C of Rimsa Calibration FullStack v1 (per `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`, Phase A audit `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`). Single-batch execution G0→G6→G-final on branch `claude/kind-wright-5nBQ2` (piggyback on Týden 3 Knowledge codegen branch — single PR for both bodies of work). All 7 gates shipped atomically; ~470 LOC engine + ~370 LOC tests + ~230 LOC docs. **Tests: 1136 baseline → 1197 (+61 across Týden 3 KB + Phase C cyclic).**
+
+**Rozhodnuto:**
+- **G0 preflight:** Branch state verified (claude/kind-wright-5nBQ2, Týden 3 just committed). Baseline CURING_DAYS_TABLE `C30+ × class 4` = `[14, 9, 7, 5, 3]` cold→hot. 2 maturity tests assert old values. Path = YAML edit (NOT maturity.ts direct) thanks to Týden 3 codegen pipeline.
+- **G1 calibration:** `kb/tkp18_maturity.yaml` C30+ class 4 row → `[30, 18, 13, 9, 5]` cold→hot (= user spec `[5, 9, 13, 18, 30]` hot→cold reversed to file convention). Position 2 (15-25°C band) = 9d, eliminating rimsa @ 15°C bug. Regenerated TS via `npm run gen:knowledge`. 2 maturity tests updated with Phase C G1 comments.
+- **G2 SchedulerMode infrastructure:** `SchedulerMode = 'discrete_cyclic' | 'legacy'` union + `SCHEDULER_MODE_DEFAULTS: Record<StructuralElementType, SchedulerMode>` (rimsa → discrete_cyclic, 22 others → legacy) + `getSchedulerMode(elementType, override?)` helper, all in element-scheduler.ts. Extended PlannerInput with `scheduler_mode?: SchedulerMode` (NO UI exposure per Q2). Follows existing CuringClass/CementType literal-union pattern.
+- **G3 scheduleCyclic body:** ~180 LOC new internal function in element-scheduler.ts. Cycle: SET (first only) → REB → POUR → WAIT (intermediates, strip-strength via calculateCuring(strip_strength_pct=70)) → REL (intermediates) → CURE (last, full TKP18 tail) → STR (last). `toShifts(hours, shift_h=8)` exported helper for hour→shift discretization. Dispatch at `scheduleElement()` first line: cyclic mode routes to scheduleCyclic; legacy bytwise unchanged. Crew parallelism: num_rebar_crews ≥ 2 overlaps REB(T_{i+1}) with WAIT(T_i). Graceful n=1 degradation (no special case needed; loop just skips intermediate accounting).
+- **G4 orchestrator wire-up:** `getSchedulerMode(elementType, input.scheduler_mode)` + when `fwSystem.unit === 'bm'` (T-bednění) compute `cyclicSetupH = fwSystem.assembly_h_m2 × fwArea` + `cyclicStripH = fwSystem.disassembly_h_m2 × fwArea` → pass to scheduleElement with scheduler_mode + shift_h + setup_h + strip_h. Decision logged for audit trail. Legacy elements ignore the new fields.
+- **G5 vitest:** 23 new tests in `scheduler-cyclic.test.ts` covering all 6 spec categories (single-tact, multi-tact, crew parallelism, mode dispatch, strip-strength wait, full cure tail) + toShifts edge cases + output shape parity + critical_path layout + setup_h override.
+- **G6 backlog + MCP boundary docs:** `backlog/calc_hardcoded_to_kb.md` tracks 13 hardcoded matrices from Phase A §A.7.4 (5 already done by Týden 3, 8 open); `docs/architecture/mcp_calculator_boundary.md` documents Phase F finding — calculator.py:766-786 silently drops `exposure_class` + `curing_class` on wire to Monolit `/api/calculate` (P2 post-CSC fix).
+- **G-final consolidation:** This soul.md entry replaces the standalone G1 entry (chronologically same session, semantically one task). next-session.md handoff updated for Phase D (T-bednění productivity calibration) or Phase E (UI cross-section + length_per_rimsa_bm widget).
+
+**Tests delta per gate:**
+| Gate | New tests | Total | Notes |
+|---|---|---|---|
+| G0 | 0 | 1174 | preflight only |
+| G1 | 0 (2 updated) | 1174 | calibration; existing tests modified |
+| G2 | 0 | 1174 | type infra only, no caller |
+| G3 | 0 | 1174 | cyclic body, no caller |
+| G4 | 0 | 1174 | wire-up; element-audit indirectly exercises rimsa cyclic |
+| G5 | **+23** | **1197** | dedicated cyclic suite |
+| G6 | 0 | 1197 | docs only |
+
+**Rejected during Phase C:**
+- G2 orchestrator threading fix — Phase A closing revision (direct read 1535-1576) confirmed threading IS correct; real bug was TS table calibration mismatch (G1).
+- Splitting Týden 3 + Phase C into 2 PRs — codegen infra is the enabler of G1 YAML edit; atomic shipping cleaner for review and revert.
+- Adding `relocate_h_per_bm` to DOKA Frami YAML — heuristic (0.5 × setup) inside scheduleCyclic adequate for sliding T-bednění; per-system calibration is Phase D scope.
+- Cyclic Gantt rendering — orchestrator UI uses tact_details directly; ASCII Gantt deferred.
+
+**Otevřené otázky / risks:**
+- **rimsa end-to-end behavior change.** Before Phase C: rimsa scheduled via legacy DAG with class-4 wait_days = 5d (G1 bug). After: scheduled via cyclic with class-4 = 9d. Existing element-audit smoke test passes (output shape preserved), but the **actual day count for rimsa has shifted**. No production rimsa Vitest fixture asserts specific day counts (Phase A §A.2 noted "no SO-250 Vitest fixture"). **Real-world calibration validation pending** — see next-session.md.
+- Phase C G1 calibration values (cold side: 30d @ -5°C–5°C for C30+ class 4) are aggressive vs ČSN EN 13670 NA.2 baseline (was 14d). Matches production Python MCP per user spec but lacks independent verification against TKP 18 06/2025 source PDF.
+- T-bednění productivity hours pass through `fwSystem.assembly_h_m2` which is documented as "hours per m² OR per bm when unit='bm'". Type-system doesn't enforce; relies on convention. Future: split into `assembly_h_m2?: number` + `assembly_h_bm?: number` fields (low-priority refactor).
+
+**Artefakty této session (Týden 3 + Phase C, 8 commits on `claude/kind-wright-5nBQ2`):**
+- `032c6b7` FEAT(knowledge): codegen pipeline + 5 Top-5 integrations
+- `f842ac2` FIX: TKP18 curing class 4 calibration (G1)
+- `2b6f18e` FEAT(scheduler): SchedulerMode infrastructure (G2)
+- `cd17d96` FEAT(scheduler): cyclic phase model + toShifts (G3)
+- `5b4d85a` FEAT(orchestrator): wire cyclic + T-bednění productivity (G4)
+- `c9f1460` TEST(scheduler): cyclic regression suite (G5)
+- `6456bde` DOCS: backlog + MCP boundary (G6)
+- (G-final commit follows — soul.md + next-session.md)
+
+---
+
+### 2026-05-26 — Session: Týden 3 Knowledge Integration top-5 (codegen pipeline + 5 integrations)
+
+**Topic:** Build-time TS codegen pipeline activated — `kb/*.yaml` → `Monolit-Planner/shared/src/kb-generated/*.ts` → engines. Top-5 integrations per audit `2026-05-14_inventory_with_gcs.md` shipped: TKP18 maturity tables, Pokorný/Suchánek pour sequences, DOKA Frami katalog (10 systémů), ČSN EN 12812 / DIN 18218 lateral pressure, ÚRS/OTSKP routing per project_type. Codegen tool = plain Node.js (`scripts/gen-knowledge.mjs`, no transpile). CI drift check (`npm run gen:knowledge:check`) wired do `.github/workflows/monolit-planner-ci.yml` jako pre-test step.
+
+**Rozhodnuto:**
+- **Scope:** Partial Top-5 only (NE full Variant D migration — to je Týden 4+).
+- **Python codegen:** TS-only. Core engine dnes nečte tyto matrices (B2/B3 jsou loaded jen pro LLM context), Python output by byl dead weight.
+- **DIN 18218 zdroj:** ČSN EN 12812 + Pokorný/Suchánek + DOKA/PERI brochury jako free fallback. Nákup DIN 18218 (~€100) odložen.
+- **PR strategy:** 1 velký PR (codegen infra je shared dependency všech 5 tasks; atomic 5 PRs by způsobil merge konflikty na `kb/` struktuře).
+- **Codegen tool stack:** plain Node.js + `js-yaml` (no zod/ajv, manual structural validation). 5 YAMLs = ~30 LOC validator per integration; upgrade na schema lib pokud integration count >10.
+- **Namespacing v `kb-generated/index.ts`:** `export * as TKP18_MATURITY from './tkp18-maturity.js'` per module (per-modul `SOURCE_CITATION` symbol collision jinak crashne index re-export).
+- **Engine wire-up pattern:** import KB constant + alias to existing local name (`const CURING_DAYS_TABLE = KB_CURING_DAYS_TABLE`). Public API stays identical → 1136 existujících testů zelených bez modifikace.
+- **DOKA Frami catalog wiring:** spread `...KB_DOKA_FORMWORK_SYSTEMS` na začátku `FORMWORK_SYSTEMS[]`, PERI/ULMA/NOE/traditional zůstávají inline. 10 DOKA entries (Frami, Framax, Top 50, Dokaflex, SL-1, 3× Římsové, Staxo 100, DOKA MSS) přesunuto verbatim do `kb/doka_frami_catalog.yaml`.
+- **Test counts:** baseline byl ve skutečnosti **1136** (NE 1088 jak píše CLAUDE.md, ani 1158 jak píše task brief). Po session: **1174 testů, 27 files** (1136 + 38 new in `kb-generated.test.ts`).
+
+**Odmítnuto:**
+- Full `kb/` migration všech 9 B-buckets v jedné session — Týden 4+ work.
+- Replace `pour-decision.ts:ELEMENT_DEFAULTS` celý — engine-level Record<StructuralElementType,…> s strict exhaustiveness, refactor je riskantní pro 1088+ existujících testů. Místo toho přidán paralelní `POUR_SEQUENCES` katalog (textbook recommendations), ELEMENT_DEFAULTS zůstává v engine.
+- Acquire DIN 18218 standard — ČSN EN 12812 + literatura kryje real CZ use cases.
+- Husky pre-commit hook na `gen:knowledge` — script je rychlý ale přidává friction; CI drift check stačí.
+- Python codegen — žádný Core consumer dnes neexistuje.
+
+**Otevřené otázky:**
+- Pokud Core (Python) začne v budoucnu konzumovat strukturované matrices (např. pro REST endpoint vracející TKP18 limity), schema lift do `kb/_schema/*.json` (language-neutral) + paralelní Python renderer v `gen-knowledge.mjs` (cca 1-2 dni práce).
+- `tkp18_maturity.yaml` má `default_curing_class_by_element` jako plain `Record<string, 2|3|4>` — engine ho castuje na `Partial<Record<StructuralElementType, CuringClass>>`. Pokud někdy přibude element_type který je v YAML ale ne v `StructuralElementType` union, cast je sice nepravdivý ale runtime OK. Sledovat při Týden 4 element type rozšířeních.
+- Drift check v CI běží ze workspace root (`npm ci || npm install` fallback) — pokud npm ci selže na první-time `package-lock.json` regenerate, install na CI vezme ~30s nav?ic. Akceptováno.
+
+**Co dál:**
+- **Vanilla GPT vs STAVAGENT re-test** (per task POST-TASK section): ověřit, že STAVAGENT teď cituje konkrétní TKP18 čísla s `pjpk.rsd.cz` referencí (data je v `SOURCE_CITATION` exportu).
+- **Týden 4** — kandidáti pro další codegen integrations: B3 PERI katalog (parallel s DOKA, ~17 systémů), B4 production benchmarks (rebar matrix už máme jako TS, OK), B9 equipment specs (pump/crane catalog).
+- **Týden 5** — Geometry Calculator (per task explicit non-goal pro tuto session).
+- **Potenciální follow-up:** přidat husky pre-push hook na `npm run gen:knowledge:check` (kompromis mezi pre-commit friction + pure-CI drift discovery delay).
+
+**Artefakty této session:**
+- `docs/specs/knowledge-codegen-pipeline/{requirements,design,tasks}.md` (spec triple)
+- `docs/architecture/knowledge_codegen_pipeline.md` (1-page reference)
+- `scripts/gen-knowledge.mjs` (codegen tool, ~350 LOC)
+- `kb/` (5 YAML zdrojů)
+- `Monolit-Planner/shared/src/kb-generated/` (6 souborů: 5 generated + index)
+- `Monolit-Planner/shared/src/kb-generated/kb-generated.test.ts` (38 testů)
+- Updated: `package.json` (gen:knowledge scripts + js-yaml dep), `maturity.ts`, `lateral-pressure.ts`, `formwork-systems.ts`, `monolit-planner-ci.yml`
+
+---
+
+### 2026-05-25 — Session: Pattern 15 + 16 codified — Work-First Catalog-Last + Universal Work Ontology
+
+**Topic:** Architectural patterns codification. Pattern 13 (Synthetic Metrics) + Pattern 14 (Forward-tracked _analytical_journey) były přidány paralelně. Tato session přidává Pattern 15 + 16 jako logické rozšíření — workflow discipline + international expansion strategy.
+
+**Rozhodnuto:**
+- **Pattern 15: Work-First, Catalog-Last** — 3-stage workflow (work atomization → decomposition on demand → manual catalog mapping). HK212 sequential_list (138 items, 11 Fází, `build_sequential_list.py` + `split_hsv1_028.py`) je referenční implementace. **Rule: never auto-catalog-match during Stage 1.** Catalog mapping is debugging aid, not authoring tool. Pattern 13 (Synthetic Metrics) failure mode is exactly what this pattern prevents.
+- **Pattern 16: Universal Work Ontology** — architectural principle pro international expansion. Construction work = universal across CZ/DE/ES/FR; what differs = local catalog codes + pricing conventions + tender formats. STAVAGENT item generation produces catalog-agnostic items; catalog binding = adapter layer per market (`czech_kros_adapter.py`, `german_bki_adapter.py`, `spanish_fiebdc_adapter.py`, `french_batiprix_adapter.py`). Same items.json → N catalogs → N markets covered. Domain knowledge transfer rule: přípravář workflow learned in HK212 directly applicable to DE/ES/FR after adapter translation.
+- **Implementation roadmap (Pattern 16):** ✅ CZ work ontology established (HK212 138 items); ⏳ universal work_ontology JSON schema extraction (separate task); ⏳ formal KROS adapter wrapping Pattern 11; 🔮 BKI/FIEBDC/Batiprix adapters.
+- HK212 sequential list workflow (Cesta A) **proven correct** — flat ordered list with NO auto-codes is the only honest output until Stage 3 manual mapping.
+
+**Odmítnuto:**
+- Auto-catalog-matchers as authoring tools (Pattern 13 false-positive failure mode established this is wrong)
+- Forcing single catalog (KROS) on multi-market roadmap (Pattern 16 explicitly decouples)
+- Tight coupling between work generation engine + catalog adapters (architectural decision: separate layers)
+- Generating Pattern 15/16 reference implementations now (HK212 build_sequential_list.py already serves this role)
+
+**Otevřené otázky:**
+- Universal work_ontology JSON schema canonical form — separate task, extract from items.json schema + flag what's CZ-specific vs universal
+- KROS adapter formalization — when to refactor Pattern 11 ad-hoc matching into `czech_kros_adapter.py`
+- First non-CZ market choice — DE (BKI biggest commercial) vs ES (FIEBDC simplest format) vs PL (proximity)
+
+**Co dál:**
+- Apply Pattern 15 to RD Jáchymov + Žihle in retrospect — verify they followed 3-stage workflow naturally
+- Extract universal work_ontology JSON schema as discovery task
+- Next pilot project: validate Pattern 15 Stage 1 → Stage 2 → Stage 3 cleanly separable
+
+**Branch:** `claude/patterns-15-16-work-first` (this commit)
+
+---
+
+### 2026-05-24 — Session: HK212 soupis_praci retired → sequential_list (cleanup + retrospective)
+
+**Topic:** Cleanup pass after fresh-eyes review of `hk212_soupis_praci.xlsx` exposed systematic KROS auto-match false positives. `soupis_praci/` removed from main; replaced by `sequential_list/` (shipped via PR #1210) — flat ordered list of 128 items in logical construction sequence with NO codes (manual user-fill workflow).
+
+**Rozhodnuto:**
+- **Retire `test-data/hk212_hala/outputs/soupis_praci/`** — 6 files removed from main: `hk212_soupis_praci.xlsx`, `hk212_soupis_praci.json`, `kros_match_report.md`, `kros_match_results.json`, `preflight_inventory.md`, `HANDOFF_TENDER_READY.md`.
+- **`sequential_list/` already shipped** via PR #1210 (squash commit `309e2ee0` on main) — single XLSX + CSV + JSON re-ordering all 128 items.json items into 11 construction phases (PŘÍPRAVA → ZEMNÍ → ZÁKLADY → OK → KINGSPAN → KLEMPÍŘ → VÝPLNĚ → IZOLACE → PODLAHA → PŘESUN → KOLAUDACE), 68 sub-step kroky. No codes, no prices, no classification.
+- **`items_hk212_etap1.json` is canonical** — 128 items unchanged across both retire + sequential ship.
+
+**Odmítnuto:**
+- Patching the broken matcher in-place (root cause is matcher logic, not data — would take weeks of negative-context filter work and Tier-assignment audit; flat-list pivot is days)
+- Keeping `soupis_praci/` as historical reference (causes confusion + risk of being shipped to investor by mistake; retrospective lives in soul.md + Pattern 13 instead)
+- Re-running matcher with tighter thresholds (61.7 % Tier 1 was already at the target — the bug is that Tier 1 0.85 confidence was assigned to obviously wrong matches, not that confidence was too low)
+
+**Otevřené otázky (root-cause carry-forward):**
+- Matcher false-positive pattern: KROS code `763158122` "Podlaha ze sádrokartonových desek" matched stěrka podlahy in PSV-77x at Tier 1 conf 0.85 — keyword-only `podlaha` match without chapter / material / structural context filter.
+- 7 cross-domain contamination examples shipped at 0.85: `985121101` tryskání degradovaného betonu (historical reno → new hala), `127401401` hloubení rýh pod vodou pro nábřežní zdi (no water on parcel), `155132111` protierozní geobuňky (roadwork → cladding), `711331383` izolace mostovek (bridge → sokl HI), `342191211` polyester foil opláštění (Kingspan PUR/PIR ≠ folie), `311311971` nadzákladové zdi do ztraceného bednění C 8/10 repeated 4× including 106 m³ that was actually the floor slab.
+- Tier-assignment logic apparently does not validate chapter context — a code matched on word `podlaha` lands in any chapter with "podlaha" in its name regardless of code's actual KROS chapter (763 = SDK, ≠ industrial floor 776xxx).
+
+**Co dál:**
+- **Pattern 13 added — "Synthetic acceptance metrics mask correctness."** (Pattern 11 + 12 already taken by KROS FTS + squash-merge orphans from prior session — see STAVAGENT_PATTERNS.md.) Hitting "61.7 % Tier 1 above 60 % target" said nothing about whether Tier 1 matches were correct. Domain validation (human spot-check on N representative rows per kapitola, checking chapter + material + structural fit) is required alongside any synthetic threshold gate. Threshold gates without domain check ship false positives at "confident" tier.
+- Lesson generalized: any auto-match pipeline (KROS, URS, classifier, …) must have a chapter-context filter in matcher itself (negative-context skip like CORE `_safe_search()` does for stávající/demolice) AND a sampling QA gate on output before "Tier 1" badge is allowed.
+- **Workflow pivot:** for HK212 + next pilots until matcher fixed, ship `sequential_list/` (no codes) + leave KROS/URS fill to user. No more `soupis_praci/` outputs from auto-matcher until chapter-context filter lands.
+- Future task: backlog item to add negative-context + chapter-bucket filter to KROS matcher (concrete-agent `pricing/otskp_engine.py` + Monolit-Planner classifier), with N-row domain QA gate before Tier 1 confidence allowed.
+
+**Branches / PRs:**
+- `claude/hk212-sequential-list` → PR #1210 → main `309e2ee0` (sequential_list ship, auto-merged)
+- `claude/hk212-cleanup-soupis-praci` (this cleanup commit — soupis_praci removal + Pattern 13 + this soul.md entry) → PR to follow
+
+**Session retrospective:** `test-data/hk212_hala/outputs/sequential_list/HANDOFF_SEQUENTIAL.md` + `docs/STAVAGENT_PATTERNS.md` §Pattern 13
+
+---
+
+### 2026-05-24 — Session: HK212 IGP integration + Kingspan + patky rework + Soupis prací pipeline
+
+**Topic:** Major HK212 finalization session — IGP delivered (ALTAGEO 526026), TZ statika Kingspan quote integrated, A105 patky geometry rework (correction of F-3 over-fix), soupis prací end-to-end pipeline (preflight → KROS FTS matching → Excel + JSON). Merged via PR #1208 squash.
+
+**Rozhodnuto:**
+- **IGP integration**: ABMV_11 + ABMV_17 closed (geotech kategorie 1, Rdt=250 kPa, plošné založení primary). Pilot items HSV-2-010..012 flagged `alternative_variant_per_IGP_not_required` (retained for variant bid). New HSV-1-028 výměna aktivní zóny 269.25 m³. HSV-1-001 figura 222.75 → 323.1 → 210 m³ (3-pass refinement: theoretical → IGP flat → zone-by-zone A201 + A105).
+- **Kingspan specs hardened** per statika D.1.2 quote: KS NF 200 mm Hradec Králové (stěnové), KS FF-ROC 200 mm Lipsko (střešní). `_review_thickness` removed (statika explicit). Confidence 0.90 → 0.95.
+- **Patky pyramida correction** (F-3 over-fix → A105 reality): rámové 14 (bednění math) → 10 (statika rozteč 6.1 m × 5 rámů + A105 manual count). Dvoustupňová PYRAMIDA (dolní 1.5×1.5×0.6 + horní 1.25×1.25×0.6), NOT prismatic 1.5²×1.2. HSV-2-001 beton: 37.8 → 27.0 → 22.875 m³. Štítové H=1.2m typo resolved (ABMV_21 new + resolved).
+- **Deska scope** via A105 měřené 19.04 × 27.90 = 531.22 m² (vs TZ ARS podlahová 495 m²). HSV-2-013: 99.0 → 106.24 m³. KARI ×2 vrstvy: 1955.25 → 2098.3 kg each.
+- **ABMV_5 re-opened**: 2:2 split (A101+A105 = C30/37 vs TZ ARS+statika = C25/30). `_review_concrete_class` flag.
+- **ABMV_22 new**: A201 BILANCE ZEMINY label present ale unfilled — user zone-by-zone analysis substitutes.
+- **Soupis prací pipeline** (4-phase atomic): preflight inventory + KROS FTS5 matching + 13-sheet XLSX + handoff. **61.7 % Tier 1** above 60 % target. Iterations: 44.5 % (strict MJ) → 57 % (MJ-first) → 61.7 % (+ equivalence classes).
+- **Verdict 🟡 YELLOW** — bid-stage usable; 3 critical ABMV (3, 19, 5) require resolution před tender submission.
+
+**Odmítnuto:**
+- Pilot variant addition to bid (HSV-2-010..012 stay flagged alternative)
+- Stage E benchmark vs example_vv corpus this session
+- PDF rekapitulace (reportlab missing — deferred P3)
+- Cena fill (user directive: separate workflow)
+- HSV-3 IPE 160 mass drift +11.4 % bump (flagged only — PROFILY DXF deferred)
+- Amazon Q false-positive suggestions (MD5 for non-crypto dedup, missing zero-guard for fixed-128 input, `json.load(open(...))` style — alarmist scanner noise, not real bugs)
+
+**Otevřené otázky:**
+- 3 critical ABMV blocking tender: ABMV_3 stroje specs (HIGH cost), ABMV_19 plochy 3-source drift (MEDIUM VRN poplatky), ABMV_5 beton class 2:2 split (MEDIUM ~10-15 tis CZK)
+- 12 unresolved ABMV total (3 critical, 7 important, 2 minor)
+- HSV-3 PROFILY DXF geometry reconciliation deferred
+- Klempíř lemy detail výkaz needed (PSV-OPL-005 + PSV-78x both `_review_qty`)
+
+**Co dál:**
+- Send to SOLAR DISPOREC po investor resolution 3 critical ABMV + cena fill
+- 2 new patterns ratified: **Pattern 11** (KROS FTS + MJ equivalence), **Pattern 12** (squash merge branch cleanup)
+
+**Branches:**
+- `claude/hk212-dilenska-ok-ut-dps-integration` (15 commits IGP + Kingspan + rework + F-1..F-5 fixes) — squash-merged into soupis-praci-final → PR #1208 → main `9493cdd7`. Stale ghost-banner pending manual delete (Pattern 12).
+- `claude/hk212-soupis-praci-final` (4 phase commits + merge conflict resolution) — squash-merged PR #1208.
+
+**Session retrospective:** `test-data/hk212_hala/outputs/soupis_praci/HANDOFF_TENDER_READY.md`
+
+---
+
+### 2026-05-23 — Session: HK212 fresh-eyes read-only audit
+
+**Topic:** Read-only audit cross-checking items.json (127 items at time of audit), Step 3 area_aggregates, ABMV queue proti TZ ARS D.1.1 + PBR table 10 II. SPB + STAVAGENT_PATTERNS.md. Single deliverable: `test-data/hk212_hala/outputs/audit_2026_05_23_fresh_eyes.md`.
+
+**Rozhodnuto (5 findings):**
+- **F-1 P0** — `area_aggregates.json vrata_sekcni.size_m` stale `[3.0, 4.0]` po ABMV_2 closure → PSV-OPL-001/002 mn 536.4 should be **528.5** m². +9.2 % otvory drift unflagged.
+- **F-2 P1** — ABMV_1 closure premature: PBR = 21 ks stropní (61.2 kW); DXF Stage C = 40 ks (84 kW). 19 ks ghost. User instruction: SKIP this session.
+- **F-3 P1** — HSV-2-001 patky inconsistency: beton 18.9 m³ implies 7 patek, bednění 100.8 m² implies 14. Fix to 14 (later corrected 2026-05-24 to 10 per A105 manual count + dvoustupňová pyramida geometry).
+- **F-4 P1** — ABMV_18 evidence: TZ ARS p3 patky = C16/20 XC0 explicitly; ABMV_18 working_assumption claims statika says C25/30 for patky — unsupported. items.json correct, ABMV closed.
+- **F-5 P2** — Pattern 8 numbering duplicate in STAVAGENT_PATTERNS.md. Rename second to Pattern 9 + move před Anti-patterns.
+
+**Odmítnuto:**
+- Any mutation of items.json (read-only audit)
+- Re-opening ABMV_1 (user directive)
+
+**Otevřené otázky:** Phase 2.1 readiness 🟡 YELLOW pending P0+P1 (~2 h work to GREEN)
+
+**Co dál:** all 5 findings resolved 2026-05-24 except F-2 (deferred per user). F-3 second iteration after A105 evidence delivered correct count.
+
+**Branch:** `claude/hk212-dilenska-ok-ut-dps-integration` (audit commit `2e256524`)
+
+---
+
+### 2026-05-22 — Session: HK212 Stage A→E + Step 3 polygonization (P0 Kingspan resolved)
+
+**Topic:** HK212 hala (Hradec Králové, SOLAR DISPOREC) — full pipeline from DXF discovery housekeeping through Stage E Kingspan P0 blocker resolution. 12 commits on `claude/hk212-dilenska-ok-ut-dps-integration` branch, ~30K LOC modifications across 5 phases. Companion branch `claude/hk212-step3-polygonization-areas` preserved for debug story (3 atomic commits).
+
+**Commits (12):**
+- `2a6c9034` Stage A/B/C: B5 steel-profile catalog + UT_HALAHK_DPS DSP discovery
+- `b23fff07` dilenska→dsp_dxf housekeeping rename (DSP-grade DXF confirmation)
+- `5064753f` Task 2 Step 1: layer dictionary auto-detect (100 % coverage achieved)
+- `a74c8ed2` Task 2 Step 1.5: A-GENM dossier (Lindab + MEARIN reveal) + dictionary ratification
+- `75221920` Task 2 Step 2: full geometry extraction across 8 DSP DXFs (29 categories)
+- `0b22136f` Stage D: 22 items dropped (15 VZT + 7 Rpol) + HSV-3 _length_source + 4 ABMV closures
+- `d1bbde80` Step 3: polygonization + 9 area metrics + items.json annotation (separate file)
+- `0065cae9` Step 3: handoff doc + acceptance scorecard
+- `5bdfa22e` Step 3: slope disambiguation fix (5.25° vs 5.65° gate angle) + kapitola coverage audit (P0 Kingspan blocker found)
+- `43f7ba19` Merge step3 → dilenska (no-ff, debug story preserved)
+- `2a02bff5` Handoff doc finalized after merge
+- `af55d317` **Stage E: P0 Kingspan resolved** — 8 PSV-OPL items (TZ ARS DPZ specs) + ABMV_2 vrata 3500mm + Pattern 8
+
+**Rozhodnuto:**
+- DXF stupeň = DSP (NE dílenská) — workshop-level detail v DSP scope. Rename housekeeping done.
+- 9 area metrics canonical from Step 3 polygonization: zastavěná 538.5 m², obvod 103.5 m, střecha brutto 556.5 m² / netto 558.8 m², fasáda brutto 623.3 m² / netto 536.4 m², výška 6.02 m, výkop 99.3 m³ (default w/d), podlaha 538.5 m² fallback.
+- ABMV_2 vrata: TZ ARS DPZ D.1.1 wins (3500 × 4000 mm) over DXF block name template (3000 mm). Confidence 0.5 → 0.90.
+- PSV-OPL kapitola added with 8 items per TZ ARS DPZ concrete specs (NOT generic audit doc placeholders): obvodový Kingspan KS1000 AWP tl. 200mm MW bílá+modrá, střešní MW EW 15 DP1, klempíř lemy, spojovací materiál, doprava, statika. `_price_source: "user_skipped_pricing"` na všech.
+- items.json 141 → 119 (Stage D) → 127 (Stage E).
+- Pattern 8 zapsán do `docs/STAVAGENT_PATTERNS.md`: "Re-read TZ before generating new položky".
+
+**Odmítnuto:**
+- Per-room floor polygonize (deferred — floor LINEs neuzavírají loops, per-room split potřebuje cluster-by-bbox + MTEXT room-label proximity match).
+- `dedup_dxf_replicas.py` standalone util — zatím inlined v `step3_polygonization.py:dedup_lines`.
+- Block-name pseudo-schedule parser — separate task (P3 backlog).
+- Per-record auto-mutation of mnozstvi z geometry metrics. Annotate-before-mutate princip = NEVER auto-mutate. Output je separate `items_*_with_geometry.json` file.
+
+**Otevřené otázky:**
+- HSV-1 výkop figura: 222.75 m³ (z RE-RUN §3.10 formula `495 m² × 0.45`) vs Step 3 zastavěná 538.5 m². Buď update HSV-1-001 → 538.5 × 0.45 ≈ 242 m³, NEBO ABMV pro 538 vs 495 reconciliation. Defer to user.
+- Roof Kingspan tloušťka: TZ ARS neuvádí explicitně → `_review_thickness: True` na PSV-OPL-003. Ověřit u projektanta / statika D.1.2.
+- Klempíř lemy qty: 207 bm = 2× obvod estimate. `_review_qty: True`. Potřebuje klempířský detailní výkaz.
+- HSV-3 mass reconciliation: 10263 kg IPE 400 ze statika vs kusovník 2 schedule INSERTs vs structural_columns 141 real cols. Deferred from Stage D.
+
+**Co dál:**
+- **Stage E benchmark vs example_vv corpus** — 7 výkazů + 6 PDF výkresů. Recommended option (b) coverage. Now meaningful (P0 resolved).
+- **HSV-3 mass reconciliation** — use Step 3 perimeter 103.5 m × foundation cross-section to refine kg/m³.
+- Memory consolidation: 8 patterns destilované do soul.md §6.6a (Re-read TZ, DSP detail trap, Ghost razítko, Layer ratification gate, Annotate-before-mutate, Profession scope-cut hygiene, Long-session context decay, Block-name pseudo-schedule).
+
+**Session retrospective:** `docs/sessions/2026-05-22_HK212_StageABCD_Step3.md`
 
 ---
 
