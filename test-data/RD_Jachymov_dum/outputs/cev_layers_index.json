@@ -1,0 +1,148 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_layers_extract.py",
+  "_purpose": "CEV layers 1-5 extraction index — paths + counts. Run completed; next is matrix building.",
+  "layers": {
+    "layer_1_tz": {
+      "file": "outputs/cev_tz_evidence.json",
+      "evidence_total": 217,
+      "pdfs_processed": 17,
+      "top_categories": [
+        [
+          "pozar_pbr",
+          79
+        ],
+        [
+          "tkp_chapter",
+          62
+        ],
+        [
+          "statika",
+          54
+        ],
+        [
+          "stav_zachovano",
+          50
+        ],
+        [
+          "material_beton",
+          43
+        ],
+        [
+          "konstrukce_strecha",
+          26
+        ],
+        [
+          "konstrukce_strop",
+          25
+        ],
+        [
+          "geometrie_rozmery",
+          23
+        ]
+      ]
+    },
+    "layer_2_dxf": {
+      "file": "outputs/cev_dxf_recheck.json",
+      "findings": [
+        "ℹ️ Pre-Path-C gate (source_completeness_audit.json @ 2026-05-18) recorded BLOCKED with 95 unprobed actionable layers. Path C tier outputs (tier1-tier5) generated AFTER that audit are the current authoritative completeness state — see post_path_c_tier_totals.",
+        "✅ All Path C tier counts match v4.31 canonical numbers; Phase 0a fully resolved post-tier-runs."
+      ],
+      "layer_stats": {
+        "dum_DPZ": {
+          "layers_total": 53,
+          "summary_recorded": {
+            "probed_extracted_in_pipeline": 21,
+            "probed_metadata_only_skip": 6,
+            "empty_layer_skip": 5,
+            "unprobed_actionable": 19
+          },
+          "probe_status_counts_recomputed": {
+            "empty_layer": 5,
+            "unprobed": 19,
+            "probed_extracted": 21,
+            "probed_metadata_only": 6,
+            "probed_no_useful_data": 2
+          }
+        },
+        "dum_situace": {
+          "layers_total": 43,
+          "summary_recorded": {
+            "probed_extracted_in_pipeline": 1,
+            "probed_metadata_only_skip": 5,
+            "empty_layer_skip": 3,
+            "unprobed_actionable": 32
+          },
+          "probe_status_counts_recomputed": {
+            "unprobed": 32,
+            "empty_layer": 3,
+            "probed_metadata_only": 5,
+            "probed_extracted": 1,
+            "probed_no_useful_data": 2
+          }
+        },
+        "sklad_DPZ": {
+          "layers_total": 39,
+          "summary_recorded": {
+            "probed_extracted_in_pipeline": 9,
+            "probed_metadata_only_skip": 6,
+            "empty_layer_skip": 5,
+            "unprobed_actionable": 18
+          },
+          "probe_status_counts_recomputed": {
+            "empty_layer": 5,
+            "probed_metadata_only": 6,
+            "unprobed": 18,
+            "probed_extracted": 9,
+            "probed_no_useful_data": 1
+          }
+        },
+        "sklad_situace": {
+          "layers_total": 35,
+          "summary_recorded": {
+            "probed_extracted_in_pipeline": 1,
+            "probed_metadata_only_skip": 5,
+            "empty_layer_skip": 1,
+            "unprobed_actionable": 26
+          },
+          "probe_status_counts_recomputed": {
+            "probed_no_useful_data": 2,
+            "unprobed": 26,
+            "empty_layer": 1,
+            "probed_metadata_only": 5,
+            "probed_extracted": 1
+          }
+        }
+      }
+    },
+    "layer_3_excel": {
+      "file": "outputs/cev_excel_inventory.json",
+      "files_total": 22,
+      "buckets": {
+        "deliverable_kros": 1,
+        "deliverable_audit": 2,
+        "reference_other_project": 1,
+        "urs_batch_sklad": 3,
+        "urs_batch_dum": 15
+      }
+    },
+    "layer_4_word": {
+      "file": "outputs/cev_word_evidence.json",
+      "docs_total": 1,
+      "questions_per_doc": [
+        {
+          "file": "outputs/Otazky_pro_Karla_a_projektanty_2026-05-18.docx",
+          "questions_found": 20
+        }
+      ]
+    },
+    "layer_5_md": {
+      "file": "outputs/cev_md_crosscheck.json",
+      "docs_total": 7,
+      "cross_doc_notes": [
+        "ℹ️ Item-count mentions across MDs include multiple values: ['204', '208'] — confirm whether 208 (total incl. deprecated) vs 204 (active) intent is clear in each doc."
+      ]
+    }
+  }
+}

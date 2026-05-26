@@ -1,0 +1,139 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_layers_extract.py",
+  "_purpose": "Layer 5 of CEV — Markdown outputs key-fact cross-check.",
+  "_docs_total": 7,
+  "documents": [
+    {
+      "file": "outputs/Project_OnePager_RD_Jachymov.md",
+      "size_bytes": 3967,
+      "key_facts": {
+        "items_total_208_or_204": [
+          "204",
+          "208"
+        ],
+        "items_phrase": [
+          "items (URS_MATCHER 15",
+          "položek): zahradní sklad lichoběžník 6,35×3,34"
+        ],
+        "klempir_m": [
+          "8"
+        ]
+      }
+    },
+    {
+      "file": "outputs/Project_Summary_RD_Jachymov.md",
+      "size_bytes": 19976,
+      "key_facts": {
+        "items_total_208_or_204": [
+          "204",
+          "208"
+        ],
+        "items_phrase": [
+          "Items celkem | 208 (204",
+          "active po audit v2 split/dedupe; KROS has 301",
+          "items (84",
+          "items | 301 | URS_MATCHER 15",
+          "items — 177 dum + 27",
+          "items → KROS-format Excel (282 dum + 19",
+          "items, 204",
+          "položek M-21",
+          "položek PSV-72",
+          "položek PSV-73"
+        ],
+        "etics_mm": [
+          "160"
+        ],
+        "klempir_m": [
+          "8"
+        ],
+        "tkp_chapter": [
+          "TKP 8"
+        ]
+      }
+    },
+    {
+      "file": "outputs/items_completeness_report.md",
+      "size_bytes": 16781,
+      "key_facts": {
+        "items_phrase": [
+          "Items total:** 189"
+        ]
+      }
+    },
+    {
+      "file": "outputs/items_completeness_report_v2.md",
+      "size_bytes": 7497,
+      "key_facts": {
+        "items_total_208_or_204": [
+          "208"
+        ],
+        "items_phrase": [
+          "Items:** 208 | **Rooms:** 25",
+          "items_bm_sum` = `20",
+          "items_ks_sum` = `15",
+          "items_ks_sum` = `19",
+          "items_ks_sum` = `24",
+          "items_ks_sum` = `31",
+          "items_ks_sum` = `32"
+        ]
+      }
+    },
+    {
+      "file": "outputs/items_quality_report.md",
+      "size_bytes": 14503,
+      "key_facts": {
+        "items_total_208_or_204": [
+          "204"
+        ],
+        "items_phrase": [
+          "Items checked:** 204"
+        ]
+      }
+    },
+    {
+      "file": "outputs/urs_match_report.md",
+      "size_bytes": 37199,
+      "key_facts": {
+        "items_phrase": [
+          "Items processed:** 189",
+          "items = PE foil + stěrka → different leaf in 711"
+        ]
+      }
+    },
+    {
+      "file": "README.md",
+      "size_bytes": 4459,
+      "key_facts": {
+        "deadline": [
+          "Termín realizace:** 2026–2027"
+        ]
+      }
+    }
+  ],
+  "cross_doc_notes": [
+    "ℹ️ Item-count mentions across MDs include multiple values: ['204', '208'] — confirm whether 208 (total incl. deprecated) vs 204 (active) intent is clear in each doc."
+  ],
+  "items_count_mentions_per_file": {
+    "outputs/Project_OnePager_RD_Jachymov.md": [
+      "204",
+      "208"
+    ],
+    "outputs/Project_Summary_RD_Jachymov.md": [
+      "204",
+      "208"
+    ],
+    "outputs/items_completeness_report_v2.md": [
+      "208"
+    ],
+    "outputs/items_quality_report.md": [
+      "204"
+    ]
+  },
+  "etics_mentions_per_file": {
+    "outputs/Project_Summary_RD_Jachymov.md": [
+      "160"
+    ]
+  }
+}

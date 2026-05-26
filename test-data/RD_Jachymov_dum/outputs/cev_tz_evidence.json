@@ -1,0 +1,2429 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_layers_extract.py",
+  "_purpose": "Layer 1 of CEV — TZ paragraph evidence keyed by category.",
+  "_per_pdf_summary": [
+    {
+      "source_pdf": "inputs/dokladova_cast/01.02 - JES.pdf",
+      "pages": 3,
+      "paragraphs_total": 28,
+      "evidence_added": 1
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+      "pages": 4,
+      "paragraphs_total": 53,
+      "evidence_added": 4
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/02.07 - MU Jáchymov - nabytí právní moci.pdf",
+      "pages": 1,
+      "paragraphs_total": 8,
+      "evidence_added": 0
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/03.02 - město Jáchymov - Souhlas.pdf",
+      "pages": 1,
+      "paragraphs_total": 6,
+      "evidence_added": 0
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/03.03 - město Jáchymov - Vyjádření k žádosti.pdf",
+      "pages": 1,
+      "paragraphs_total": 0,
+      "evidence_added": 0
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/05.02 - Stanovisko PČR_sig.pdf",
+      "pages": 2,
+      "paragraphs_total": 13,
+      "evidence_added": 0
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/05.02b - PČR - RD Jáchymov - dodatek PD č.1_sig.pdf",
+      "pages": 4,
+      "paragraphs_total": 7,
+      "evidence_added": 2
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/05.02c - PČR - C.03.R1 - Koordinační situační výkres_sig.pdf",
+      "pages": 1,
+      "paragraphs_total": 1,
+      "evidence_added": 1
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/06.01 - TI - DTM mapa.pdf",
+      "pages": 1,
+      "paragraphs_total": 1,
+      "evidence_added": 0
+    },
+    {
+      "source_pdf": "inputs/dokladova_cast/E.01 - dodatek PD č.1.pdf",
+      "pages": 4,
+      "paragraphs_total": 7,
+      "evidence_added": 2
+    },
+    {
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "pages": 3,
+      "paragraphs_total": 20,
+      "evidence_added": 14
+    },
+    {
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "pages": 10,
+      "paragraphs_total": 63,
+      "evidence_added": 26
+    },
+    {
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "pages": 8,
+      "paragraphs_total": 34,
+      "evidence_added": 29
+    },
+    {
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "pages": 12,
+      "paragraphs_total": 74,
+      "evidence_added": 32
+    },
+    {
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "pages": 13,
+      "paragraphs_total": 105,
+      "evidence_added": 74
+    },
+    {
+      "source_pdf": "inputs/tz/common/A - průvodní list _ EAR.pdf",
+      "pages": 4,
+      "paragraphs_total": 4,
+      "evidence_added": 3
+    },
+    {
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "pages": 19,
+      "paragraphs_total": 32,
+      "evidence_added": 29
+    }
+  ],
+  "_category_counts": {
+    "pozar_pbr": 79,
+    "tkp_chapter": 62,
+    "statika": 54,
+    "stav_zachovano": 50,
+    "material_beton": 43,
+    "konstrukce_strecha": 26,
+    "konstrukce_strop": 25,
+    "geometrie_rozmery": 23,
+    "bourani_demontaz": 23,
+    "konstrukce_stena": 23,
+    "konstrukce_krov": 21,
+    "konstrukce_podlaha": 20,
+    "instalace_tzb_zti": 17,
+    "material_izolace": 15,
+    "prace_hloubeni": 14,
+    "material_zdivo": 11,
+    "prace_truhlar": 10,
+    "instalace_vytapeni": 10,
+    "instalace_pripojka": 5,
+    "instalace_eli": 4,
+    "skladba_f_code": 4,
+    "instalace_vzt": 4,
+    "prace_klempir": 3,
+    "prace_zamecnik": 3,
+    "skladba_s_code": 2,
+    "prace_betonaz": 1
+  },
+  "_evidence_total": 217,
+  "tz_evidence": [
+    {
+      "evidence_id": "TZ_EV_0001",
+      "source_pdf": "inputs/dokladova_cast/01.02 - JES.pdf",
+      "page": 1,
+      "categories": [
+        "geometrie_rozmery"
+      ],
+      "paragraph_excerpt": "Jako podklad k vyjádření byla předložena p rojektová dokumentace s názvem „ Zahradní sklad a pří- stupové schodiště k RD Fibichova č.p. 733, na parcele 1094/16, k.ú. Jáchymov [656437]“, zpracovaná práv- nickou osobou SMASH architekti s. r. o., se sídlem Vodňanského 1008/2, 169 00 Praha 6 – Břevnov, IČ: 17666902 v září 2025, ID dokumentace SR00X014LETD, verze záměru 2."
+    },
+    {
+      "evidence_id": "TZ_EV_0002",
+      "source_pdf": "inputs/dokladova_cast/02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+      "page": 2,
+      "categories": [
+        "instalace_tzb_zti",
+        "prace_klempir",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3. Stavební uspořádání sjezdu se zřetelem na odvodnění, musí být takové, aby se zabránilo stékání srážkové vody na místní komunikaci II. tř. 2b ul. Dvořákova a nedocházelo tím k jejímu znečištění. Z důvodu umístění stavby na hranicích parcel, bude zachováno stávající řešení nakládání s dešťovou vodou, která bude částečně vsakována okolním terénem a částečně bude svedena svodem na pozemek, kde bud…"
+    },
+    {
+      "evidence_id": "TZ_EV_0003",
+      "source_pdf": "inputs/dokladova_cast/02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+      "page": 2,
+      "categories": [
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "5. Stávající sítě uložené v místě budoucího sjezdu (pokud jsou) ochrání stavebník dle stanovisek jejich vlastníků a správců a v souladu se závaznými předpisy."
+    },
+    {
+      "evidence_id": "TZ_EV_0004",
+      "source_pdf": "inputs/dokladova_cast/02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+      "page": 2,
+      "categories": [
+        "geometrie_rozmery",
+        "bourani_demontaz"
+      ],
+      "paragraph_excerpt": "8. V místě zásahu do ploch zeleně budou odstraněny zbytky stavebního materiálu, na povrch bude rozprostřena humusová vrstva tl. 10 cm a obnovena zeleň."
+    },
+    {
+      "evidence_id": "TZ_EV_0005",
+      "source_pdf": "inputs/dokladova_cast/02.06 - MU Jáchymov - rozhodnutí zřízení vjezdu.pdf",
+      "page": 2,
+      "categories": [
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "9. V průběhu stavby nesmí být ohrožena bezpečnost silničního provozu, výkopek ani stavební materiál nesmí být skladován na vozovce. Vozovka musí být udržována čistá."
+    },
+    {
+      "evidence_id": "TZ_EV_0006",
+      "source_pdf": "inputs/dokladova_cast/05.02b - PČR - RD Jáchymov - dodatek PD č.1_sig.pdf",
+      "page": 1,
+      "categories": [
+        "konstrukce_strecha"
+      ],
+      "paragraph_excerpt": "DODATEK PD Č.1 Identifikační údaje a) název stavby, Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733, na parcele 1094/16, k.ú. Jáchymov [656437] b) místo stavby Karlovarský kraj katastrální území: Jáchymov [656437] parcelní čísla: 1094/16, st. 1022 Fibichova č.p. 733 36251 Jáchymov c) předmět dodatku Doplnění PD o doplňující informace - o rozhledových poměrech a doplnění PD o upřesně…"
+    },
+    {
+      "evidence_id": "TZ_EV_0007",
+      "source_pdf": "inputs/dokladova_cast/05.02b - PČR - RD Jáchymov - dodatek PD č.1_sig.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "instalace_tzb_zti"
+      ],
+      "paragraph_excerpt": "- Parkovací stání je umístěno na střeše navrhovaného objektu skladu, na pozemku investora. Vjezdová brána je rovněž na pozemku investora. Samotné napojení pozemku a komunikace bude provedeno vydlážděním z betonových dlaždic. Spádování je směrem na pozemek investora. Dešťové vody z napojení budou svedeny na pozemek investora a zde likvidovány. Nedojde k stékání dešťových vod na veřejnou komunikaci."
+    },
+    {
+      "evidence_id": "TZ_EV_0008",
+      "source_pdf": "inputs/dokladova_cast/05.02c - PČR - C.03.R1 - Koordinační situační výkres_sig.pdf",
+      "page": 1,
+      "categories": [
+        "material_beton",
+        "geometrie_rozmery",
+        "bourani_demontaz",
+        "instalace_tzb_zti",
+        "instalace_eli",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "66.30 61.80 61.80 61.80 61.80 62.30 62.20 61.70 61.90 61.70 61.60 62.90 62.90 63.10 63.10 63.20 63.30 63.70 63.80 63.90 63.90 64.40 64.50 64.70 64.80 65.00 64.90 65.30 65.40 66.00 65.80 63.20 63.20 63.30 63.40 63.30 63.30 63.10 63.20 63.30 63.10 63.10 63.20 63.20 63.20 63.40 63.20 63.30 63.40 63.50 64.70 64.60 64.50 64.50 64.70 64.90 65.20 65.40 65.10 64.60 64.90 64.80 65.00 65.40 65.50 65.80 65.…"
+    },
+    {
+      "evidence_id": "TZ_EV_0009",
+      "source_pdf": "inputs/dokladova_cast/E.01 - dodatek PD č.1.pdf",
+      "page": 1,
+      "categories": [
+        "konstrukce_strecha"
+      ],
+      "paragraph_excerpt": "DODATEK PD Č.1 Identifikační údaje a) název stavby, Zahradní sklad a přístupové schodiště k RD Fibichova č.p. 733, na parcele 1094/16, k.ú. Jáchymov [656437] b) místo stavby Karlovarský kraj katastrální území: Jáchymov [656437] parcelní čísla: 1094/16, st. 1022 Fibichova č.p. 733 36251 Jáchymov c) předmět dodatku Doplnění PD o doplňující informace - o rozhledových poměrech a doplnění PD o upřesně…"
+    },
+    {
+      "evidence_id": "TZ_EV_0010",
+      "source_pdf": "inputs/dokladova_cast/E.01 - dodatek PD č.1.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "instalace_tzb_zti"
+      ],
+      "paragraph_excerpt": "- Parkovací stání je umístěno na střeše navrhovaného objektu skladu, na pozemku investora. Vjezdová brána je rovněž na pozemku investora. Samotné napojení pozemku a komunikace bude provedeno vydlážděním z betonových dlaždic. Spádování je směrem na pozemek investora. Dešťové vody z napojení budou svedeny na pozemek investora a zde likvidovány. Nedojde k stékání dešťových vod na veřejnou komunikaci."
+    },
+    {
+      "evidence_id": "TZ_EV_0011",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 1,
+      "categories": [
+        "material_beton"
+      ],
+      "paragraph_excerpt": "Navrhovaná stavba je umístěna ve velmi prudkém svahu k jihu se svažujícího pozemku řadového rodinného domu v ulici Fibichova. Přístup ke stavbě je z ulice Dvořákova (na horní straně svažitého pozemku ). Stavbu tvoří opěrná zeď umístěná ve svahu a obvodové konstrukce vymezující prostor skladu. Po východní straně je navržené schodiště propojující úroveň ulice Dvořákova s úrovní zahrady. Na střeše s…"
+    },
+    {
+      "evidence_id": "TZ_EV_0012",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "material_beton",
+        "konstrukce_strecha"
+      ],
+      "paragraph_excerpt": "1.3. Provozní řešení Provoz stavby je uvažován tak, že spodní část stavby je navržen jako sklad zah radní techniky a dalšího vybavení RD a přilehlé zahrady. Střecha skladu je využitelná pro odtavení automobilu a tvoří rovnou plochu nap ojenou na ulici Dvořákova. Obě úrovně, tedy úroveň ulice a úroveň zahrady a skladu propojuje schodiště na hraně pozemku, které je součástí stavby. Další součástí j…"
+    },
+    {
+      "evidence_id": "TZ_EV_0013",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "material_beton",
+        "bourani_demontaz",
+        "prace_hloubeni",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "2.1. Výkopy a zemní práce Při výstavbě stavby budou provedeny standardní výkopy pro betonové základové pasy, které budou založeny v nezámrzné hloubce. Z hlediska zemních prací bude dále po výstavbě vyrovnán terén tak, aby kolem domu byl terén navázán na novou stavbu. Součástí výkopů bude i řešení odstranění stávající kamenné zídky a schodiště na pozemku."
+    },
+    {
+      "evidence_id": "TZ_EV_0014",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "material_beton",
+        "konstrukce_stena",
+        "statika"
+      ],
+      "paragraph_excerpt": "2.2.1. Svislé nosné konstrukce Základní konstrukcí bude opěrná stěna, která bude tvořit hlavní nosnou konstrukci a opření svahu. Bude realizována z prefabrikovaných betonových bloků, umístěných na zámek. Bloky budou osazeny na připravený základ. Bloky budou osazeny autem s hydraulickou rukou. Součástí dodávky bloků bude i statické řešení umístění bloků a opírání terénu. Nové nosné stěny stavby tv…"
+    },
+    {
+      "evidence_id": "TZ_EV_0015",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "konstrukce_stena",
+        "konstrukce_strecha",
+        "bourani_demontaz",
+        "instalace_tzb_zti",
+        "statika"
+      ],
+      "paragraph_excerpt": "2.2.2. Vodorovné nosné konstrukce Základní vodorovnou konstrukcí bude pojízdná střecha skladu. Ta je navržena jako p ropustná konstrukce z ocelového pororoštu. Jednotlivé demontovatelné části ocelového pororoštu budou osazeny na ocelové nosníky. Ty bu dou podpírány nosnými stěnami skladu a opěrnou stěnou. Pod touto propustnou vodorovnou konstrukcí bude vytvořena střecha skladu, která b ude tvořen…"
+    },
+    {
+      "evidence_id": "TZ_EV_0016",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "konstrukce_krov"
+      ],
+      "paragraph_excerpt": "2.2.3. Krov Daný typ stavby nebude osazen krovem."
+    },
+    {
+      "evidence_id": "TZ_EV_0017",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "material_beton",
+        "statika"
+      ],
+      "paragraph_excerpt": "2.2.4. Schodiště Přístupové schodiště na hraně stavby a pozemku bude tvořeno betonovými schod ovými dílci z prefa betonu, které budou osazeny do zavlhlého betonu. Nosnou konstrukcí schodiště bude železobetonová deska ve sklonu schodiště se základovým pasem pod schodištěm ."
+    },
+    {
+      "evidence_id": "TZ_EV_0018",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "konstrukce_stena"
+      ],
+      "paragraph_excerpt": "2.3.1. Příčky Příčky v dané stavbě nejsou uvažovány."
+    },
+    {
+      "evidence_id": "TZ_EV_0019",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "konstrukce_strop"
+      ],
+      "paragraph_excerpt": "2.3.2. Podhledy Strop skladu bude ponechán ze surových bednících prken záklopu bez podhledu."
+    },
+    {
+      "evidence_id": "TZ_EV_0020",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "material_beton",
+        "konstrukce_podlaha"
+      ],
+      "paragraph_excerpt": "2.3.3. Podlahy Podlaha skladu bude tvořena betonovou dlažbou, skládanou do pískového lože s podkladní vrstvou ze štěrkopískové drtě příslušné frakce ."
+    },
+    {
+      "evidence_id": "TZ_EV_0021",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "material_beton"
+      ],
+      "paragraph_excerpt": "2.4.1. Stěny Budou ponechány jako betonové s přirozeným surovým vzhledem."
+    },
+    {
+      "evidence_id": "TZ_EV_0022",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "material_beton",
+        "konstrukce_podlaha"
+      ],
+      "paragraph_excerpt": "2.4.2. Nášlapné vrstvy podlah Ve skladu betonová dlažba. Před skladem rovněž venkovní betonová dlažba. Podlaha / plocha pojezdové části bude tvořena ocelovým pororoštem."
+    },
+    {
+      "evidence_id": "TZ_EV_0023",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "konstrukce_strop"
+      ],
+      "paragraph_excerpt": "2.4.3. Stropy Strop skladu bude ponechán ze surových bednících prken záklopu bez podhledu ."
+    },
+    {
+      "evidence_id": "TZ_EV_0024",
+      "source_pdf": "inputs/tz/260217_sklad/D_1_1_00_TZ_ARS_sklad_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "prace_truhlar"
+      ],
+      "paragraph_excerpt": "2.5.2. Venkovní okna a dveře Do skladu budou osazeny bezpečnostní dveře v ocelové zárubni v úrovni RC3 bezpečnosti. Okna n ejsou uvažována."
+    },
+    {
+      "evidence_id": "TZ_EV_0025",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "3. Nosné konstrukce zahradního skladu ......................................................................................... 6"
+    },
+    {
+      "evidence_id": "TZ_EV_0026",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "4. Technologie pro provedení nosných konstrukcí .......................................................................... 7"
+    },
+    {
+      "evidence_id": "TZ_EV_0027",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "4.2. Požadavky na pažení výkopů ....................................................................................................... 7"
+    },
+    {
+      "evidence_id": "TZ_EV_0028",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "5.1. Materiály nosných konstrukcí...................................................................................................... 8"
+    },
+    {
+      "evidence_id": "TZ_EV_0029",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "5.2. Požadavky na požární odolnost a ochranu konstrukcí ................................................................ 8"
+    },
+    {
+      "evidence_id": "TZ_EV_0030",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "5.3. Zatížení ........................................................................................................................................ 8"
+    },
+    {
+      "evidence_id": "TZ_EV_0031",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 3,
+      "categories": [
+        "material_beton",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "1.3. SEZNAM POUŽITÝCH NOREM [4] ČSN EN 1990 Eurokód: Zásady navrhování konstrukcí [5] ČSN EN 1991-1-1 Eurokód 1: Zatížení konstrukcí - Část 1-1: Obecná zatížení - Objemové tíhy, vlastní tíha a užitná zatížení pozemních staveb [6] ČSN EN 1991-1-3 Eurokód 1: Zatížení konstrukcí – Část 1-3: Obecná zatížení – Zatížení sn ěhem, ZMĚNA Z1 [7] ČSN EN 1991-1-4 Eurokód 1: Zatížení konstrukcí - Část 1-4: Ob…"
+    },
+    {
+      "evidence_id": "TZ_EV_0032",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "str.4 [11] ČSN EN 1996-1-1 Eurokód 6: Navrhování zd ěných konstrukcí - Část 1-1: Obecná pravidla pro vyztužené a nevyztužené zděné konstrukce [12] ČSN EN 1997-1 Eurokód 7: Navrhování geotechnických konstrukcí - Část 1: Obecná pravidla."
+    },
+    {
+      "evidence_id": "TZ_EV_0033",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "1.4. SEZNAM POUŽITÉ LITERATURY [13] Zásady navrhování stavebních konstrukcí. P říručka k ČSN EN 1990, prof. Ing. Milan Holický, Ph.D., DrSc. a doc. Ing. Jana Marková, Ph.D., IC ČKAIT Praha 2007, 1. vydání, ISBN 978-80- 87093-27-6 [14] Navrhování betonových konstrukcí. P říručka k ČSN EN 1992-1-1 a ČSN EN 1992-1-2, prof. Ing. Jaroslav Procházka, CSc., Ing. Ji ří Šmejkal, CSc., prof. Ing. Jan L. Ví…"
+    },
+    {
+      "evidence_id": "TZ_EV_0034",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 4,
+      "categories": [
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "2.1. GEOLOGICKÉ POMĚRY Inženýrskogeologický pr ůzkum lokality nebyl z podn ětu stavebníka zpracován. Pro ú čely návrhu a posouzení základových konstrukcí byly ode čteny informace z geologické mapy a dále byly použity informace z blízkých geologických vrtů. Zájmové území se nachází v oblasti krušnohorského krystalinika, tvo řeného převážně metamorfovanými horninami proterozoického až spodn ě paleo…"
+    },
+    {
+      "evidence_id": "TZ_EV_0035",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 6,
+      "categories": [
+        "skladba_f_code",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "2.2. ZÁKLADOVÉ POMĚRY Zahradní sklad bude založen ve vrstv ě silně zvětralého svoru a pararuly svorového vzhledu. Dle [18] je svor klasifikován jako hornina t řídy R5-R6, která p ři zv ětrávání přechází do t řídy F4-CS pevné až tvrdé konzistence s t ěmito fyzikáln ě mechanickými parametry: =18,5 kN/m3, φef=26°, c ef=10 kPa, tabulková únosnost základové spáry Rdt=300 kPa. Agresivita zemního prost…"
+    },
+    {
+      "evidence_id": "TZ_EV_0036",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 6,
+      "categories": [
+        "material_beton",
+        "geometrie_rozmery",
+        "konstrukce_strop",
+        "statika"
+      ],
+      "paragraph_excerpt": "3. NOSNÉ KONSTRUKCE ZAHRADNÍHO SKLADU Jedná se o novou stavbu skladu zahradní techniky, p řístupového schodiště na pozemek a parkovacího stání umístěného na střeše skladu. Objekt je zasazen do prudkého svahu v horní části pozemku a tvo ří zároveň přístup na pozemek z ulice Dvořákova. Skladovací část je lichob ěžníkového půdorysu cca 6,35 x 3,34 m. Zadní st ěna skladu funguje jako gravitační opěrn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0037",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 7,
+      "categories": [
+        "material_beton",
+        "geometrie_rozmery"
+      ],
+      "paragraph_excerpt": "str.7 Plochu parkovacího stání tvo ří sekundární zast řešení z ocelových válcovaných profil ů IPE180 a pojezdových pororošt ů. Celková délka stání je 7,0 m, z toho cca polovina nad skladem a zbytek nad svažitým terénem sm ěrem ke komunikaci. Ocelové IPE jsou pnuty p řes skládanou st ěnu na dvoustupňové patky se spodní částí z prostého betonu 500 x 500 mm a horní části z tvarovek ztraceného bedněn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0038",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 7,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "4. TECHNOLOGIE PRO PROVEDENÍ NOSNÝCH KONSTRUKCÍ Nové konstrukce mohou být provedeny pouze stavebním podnikatelem s vybavením a zkušenostmi odpovídajícími charakteru stavby. Pracovníci musí být řádně proškoleni a pro vykonávané práce kvalifikováni. Stavba m ůže být podle zákona č. 283/2021 Sb. vedena pouze stavbyvedoucím, který je autorizovanou osobou. Stavebník je podle zákona č. 283/2021 Sb. pov…"
+    },
+    {
+      "evidence_id": "TZ_EV_0039",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 7,
+      "categories": [
+        "skladba_f_code",
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "4.2. POŽADAVKY NA PAŽENÍ VÝKOPŮ Stavební jáma bude svahovaná. P řípustný sklon dočasných výkopů je 1:0,5 v soudržných zeminách t řídy F4. Rýhy pro vedení přípojek a je nutné pažit dle zásad BOZP."
+    },
+    {
+      "evidence_id": "TZ_EV_0040",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 7,
+      "categories": [
+        "material_beton",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "4.4. POŽADAVKY NA KONTROLU A PŘEJÍMKU ZAKRÝVANÝCH KONSTRUKCÍ Kontrolu a p řejímku zakrývaných konstrukcí provádí v rozsahu své p ůsobnosti osoba vykonávající technický dozor investora, a to v sou činnosti se stavebním podnikatelem (dodavatelskou firmou) v souladu se zákonem č. 283/2021 Sb. o územním plánování a stavebním řádu (stavební zákon), § 163, odst. 1d. Dodávka železobetonových konstrukcí …"
+    },
+    {
+      "evidence_id": "TZ_EV_0041",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "material_zdivo",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "str.8 požadavky na ocelové konstrukce“. Ocelové konstrukce jsou za řazeny do výrobní skupiny EXC2 podle ČSN EN 1090-2, stupeň kvality svarů C podle ČSN EN ISO 5817. Dodávka zd ěných konstrukcí se řídí požadavky uvedenými v ČSN EN 1996-2 Eurokód 6: Navrhování zděných konstrukcí - Část 2: Volba materiál ů, konstruování a provád ění zdiva a technologickým předpisem výrobce. Výroba a dodávka d řevěný…"
+    },
+    {
+      "evidence_id": "TZ_EV_0042",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "5. VÝPOČTY A POSOUZENÍ Objekt je dle ČSN EN 1990 za řazen do 3. kategorie (zem ědělské a obdobné stavby) s informativní návrhovou životností 50 let (článek NA.2.1.). Třída následků pro diferenciaci spolehlivosti je CC1. Dle ČSN EN 1991-1-7 není nutné přijímat žádná další speciální opatření proti neidentifikovaným mimořádným zatížením."
+    },
+    {
+      "evidence_id": "TZ_EV_0043",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "material_beton",
+        "material_zdivo",
+        "skladba_s_code",
+        "statika"
+      ],
+      "paragraph_excerpt": "5.1. MATERIÁLY NOSNÝCH KONSTRUKCÍ Nově navržené konstrukce Beton prostý: C16/20 XC0 Beton vyztužených konstrukcí: C25/30 XC3,XF1,XA1-CL0.4-Dmax.22-S3 Zdivo: Tvarovky ztraceného bedn ění Konstrukční ocel: S235 Řezivo: C24 Spojovací prvky: 8.8, povrchová ochrana galvanický pozink"
+    },
+    {
+      "evidence_id": "TZ_EV_0044",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "material_beton",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "5.2. POŽADAVKY NA POŽÁRNÍ ODOLNOST A OCHRANU KONSTRUKCÍ Betonové konstrukce s p ředepsaným krytím spl ňují kritéria požární odolnosti a p ůsobení daného prostředí. Protipožární ochrana d řevěných a ocelových konstrukcí bude provedena na základ ě požadavků Požárně bezpečnostního řešení. Ocelová pojezdová konstrukce se nachází ve vn ějším prostředí, hrozí vznik a rozvoj koroze a je nutné ji chránit…"
+    },
+    {
+      "evidence_id": "TZ_EV_0045",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "konstrukce_strecha",
+        "statika"
+      ],
+      "paragraph_excerpt": "5.3. ZATÍŽENÍ Stálé zatížení Pojezdové pororošty 0,50 kN/m 2 Skladba ploché střechy skladu 0,20 kN/m 2 Zemní tlak 0,50-25,0 kN/m 2 Užitné zatížení Parkovací plochy - kategorie F 2,50 kN/m 2 Klimatické zatížení Zatížením sněhem VII. sněhové oblasti, zatížením větrem III. větrové oblasti a kategorie terénu III. Maximální dynamický tlak větru 605 Pa."
+    },
+    {
+      "evidence_id": "TZ_EV_0046",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 9,
+      "categories": [
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "str.9 Mimořádné zatížení Při návrhu nových konstrukcí není uvažováno s mimořádným zatížením podle ČSN EN 1991-1-7. Seizmické zatížení Není uvažováno. Více viz Statický výpočet."
+    },
+    {
+      "evidence_id": "TZ_EV_0047",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 9,
+      "categories": [
+        "material_beton",
+        "konstrukce_podlaha",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "5.4. POSOUZENÍ Veškeré popsané nové konstrukce vyhoví příslušným ČSN. Statické výpočty vnitřních sil a deformací jsou provedeny na celkovém modelu konstrukce programem Dlubal RFEM 5.39 a ru čním výpo čtem jsou prověřeny díl čí části konstrukce. Všechny prvky konstrukce jsou posouzeny podle mezního stavu únosnosti, porovnáním únosnosti jednotlivých pr ůřezů s vnit řními silami. Dále jsou konstrukc…"
+    },
+    {
+      "evidence_id": "TZ_EV_0048",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 9,
+      "categories": [
+        "material_beton",
+        "statika"
+      ],
+      "paragraph_excerpt": "6. SPECIFICKÉ POŽADAVKY NA VYPRACOVÁNÍ DOKUMENTACE PRO PROVEDENÍ STAVBY Předběžným statickým výpo čtem byla ov ěřena proveditelnost návrhu a dále byly stanoveny rozm ěry (průřezy) hlavních nosných prvků. Podrobnost tohoto projektu plně odpovídá rozsahu dokumentace pro vydání povolení stavby podle vyhlášky č. 131/2024Sb. o dokumentaci staveb; tato projektová dokumentace neslouží pro potřeby vlastn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0049",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 10,
+      "categories": [
+        "material_beton",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "7. PLÁN KONTROLY SPOLEHLIVOSTI KONSTRUKCÍ Jedná se o zahradní sklad s p řevážně železobetonovými a betonovými konstrukcemi. Plán kontroly spolehlivosti konstrukcí není pro tyto konstrukce vyžadován žádnými relevantními normami ani jinými právními předpisy. Kontrola ocelových konstrukcí bude provád ěna podle ČSN 732604 „Ocelové konstrukce – Kontrola a údržba ocelových konstrukcí pozemních a inžený…"
+    },
+    {
+      "evidence_id": "TZ_EV_0050",
+      "source_pdf": "inputs/tz/260217_sklad/D_2_1_TZ_statika_sklad_TeAnau.pdf",
+      "page": 10,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "8. ZÁVĚR Stavba je navržena v souladu s normovými hodnotami tak, aby ú činky zatížení a nep říznivé vlivy prostředí, kterým je vystavena b ěhem výstavby a užívání p ři řádně prováděné běžné údržbě, nemohly způsobit:  náhlé nebo postupné z řícení, pop řípadě jiné destruktivní poškození kterékoliv její části nebo přilehlé stavby  nepřípustné p řetvoření nebo kmitání konstrukce, které m ůže naruši…"
+    },
+    {
+      "evidence_id": "TZ_EV_0051",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 1,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "1.1. Obecné podmínky Tato dokumentace je zpracována v úrovni pro povolení stavby a nenahrazuje dokumentaci pro provádění stavby! Dokumentace je zpracována se znalostí stávajícího stavu terénu v úrovni vizuálního ohledání a z informací dodaných investorem. Veškeré konstrukce budou prováděny a budou splňovat požadavky dané částí D.2 Základní stavebně konstrukční řešení! Všechny použité materiály a …"
+    },
+    {
+      "evidence_id": "TZ_EV_0052",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 1,
+      "categories": [
+        "material_zdivo",
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "1.2. Základní architektonické řešení Jedná se o přestavbu rodinného řadového domu v ulici Fibichova. Akce řeší změn u stávající stavby, respektive její adaptaci na soudobé bydlení pro rodinu investora. Stav stá vajícího domu je poněkud zanedbaný. Stavebně technický stav domu je dobrý. Zdivo nejeví známky vlhkosti ani jiné degradace. Střecha a krov jsou na hraně své životnosti. Z en ergetického hl…"
+    },
+    {
+      "evidence_id": "TZ_EV_0053",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "prace_truhlar",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Navrhovaná stavba nemění stávající kompozici prostorového řešení. V u lici Fibichova jsou situované jednotlivé domy řady řadových domů tak, že klesají spolu s ulicí směrem na jihozápad. Tato koncepce bude dodržena. Nový krov a nové řešení střechy bude dodrž ovat stávající principy v zástavbě, tedy provedení v podobě šikmé střechy s vikýři. Zvý šení domu nenaruší klesající řadu okolních domů. Svou…"
+    },
+    {
+      "evidence_id": "TZ_EV_0054",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_strecha",
+        "bourani_demontaz",
+        "prace_truhlar",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "2.1. Bourací práce V rámci bouracích prací dojde ke kompletnímu bourání stávající střechy a krovové konstrukce. Budou bourány i zděné části nad stropem 2.NP. Schodiště do 3.NP zůstává bez zásahu. Kompletně bude zbourán strop mezi 2.NP a podkrovím, pouze je nutné zajisti t stabilitu schodiště. Štítové stěny (styčné stěny s vedlejšími objekty) budou zachovány. Ve 2.NP a 1.NP budou bourány lehké pří…"
+    },
+    {
+      "evidence_id": "TZ_EV_0055",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "material_beton",
+        "material_izolace",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_podlaha",
+        "bourani_demontaz",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "bouráno část schodiště z 1.PP a vstupní dveře na zahradu. Nově bude vybourán otvor do stěny směrem na zahradu pro nový vstup do suterénu. Obecně při bourání otvorů do nosných a obvodových stěn bude postupo váno dle předpisu statika, včetně způsobu osazování překladů atd. U některých nově zřízený otvorů je uvažováno nejen osazení překladu, ale i vyztužení otvoru ocelovým L profilem (viz část PD st…"
+    },
+    {
+      "evidence_id": "TZ_EV_0056",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "bourani_demontaz",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "2.2. Demontáže Demontovány / bourány budou všechny stávající okenní výplně a dveře. Demontovány budou všechny zařizovací předměty."
+    },
+    {
+      "evidence_id": "TZ_EV_0057",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "bourani_demontaz",
+        "prace_hloubeni",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.1. Výkopy a zemní práce Při výstavbě stavby budou provedeny standardní výkopy pro ŽB opěrnou stěnu v zahradě. Úhlová stěna je umístěna tak, aby její vodorovná část byla pod dvorem, a nikoliv do svahu. Díky tomu jsou optimalizovány objemy hloubené zeminy. Z hlediska zemních prací bude dále po výstavbě vyrovnán terén tak, aby kolem domu a opěrných stěn byl terén navázán na nové stavby. Bilance ze…"
+    },
+    {
+      "evidence_id": "TZ_EV_0058",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "bourani_demontaz"
+      ],
+      "paragraph_excerpt": "3.2.1. Základové konstrukce a spodní stavba Do stávajících základů domu nebude zasahováno. Nebyl proveden geologický průzkum pozemku, únosnost zeminy je uvažována na základě archivních dokumentací a sond v okolí. Před zahájením stavebních, respektive bouracích prací musí být provedeny sondy a zjištěny skutečné základové podmínky stavby, jako skutečný stav podloží, případné násypy apod. Dle zjiště…"
+    },
+    {
+      "evidence_id": "TZ_EV_0059",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "bourani_demontaz",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.2.2. Svislé nosné konstrukce Stávající stěny jsou zděné, z keramických plných cihel. V rámci svislýc h nosných stěn bude provedeno pouze vybourání a rozšíření několika dveřních a okenních o tvorů. Zároveň bude provedeno několik lokálních dozdívek a přizdívek. Nové nosné stěny stavby tvořící obvodové stěny v 3.NP v části nad novým stropem a pod pozednicí. Dále čelní stěny vikýřů. Tyto stěny budo…"
+    },
+    {
+      "evidence_id": "TZ_EV_0060",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_stena"
+      ],
+      "paragraph_excerpt": "tloušťky min. 300 mm (dle PD). Ve 3.NP bude zbudována i vnitřní nosné stěny sloužící pro ztužení objektu a jako nosné prvky krovu. Vnitřní nosné stěny budou buď z keramických bloků nebo je přípustné využit pórobetonové tvárnice. Svislé konstrukce ve 3.NP budou zakončeny ztužujícím ŽB věncem ( dle části D.2 )."
+    },
+    {
+      "evidence_id": "TZ_EV_0061",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "material_izolace",
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_podlaha",
+        "bourani_demontaz",
+        "pozar_pbr",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.2.3. Vodorovné nosné konstrukce Stávající stropy jsou dřevěné trámové se záklopem s rákosem zespodu a prkenným záklopem a zásypem ze škváry z vrchu . Část stropů jsou cihelné klenby (v chodbách). Strop mezi 1.PP a 1.NP je cihelná klenba se zásypem shora. Klenba mezi 1.PP a 1.NP bude zachována. Shora po vyvezení původního zásyp u bude proveden zásyp nový, ze systémové skladby zajišťující vhodné …"
+    },
+    {
+      "evidence_id": "TZ_EV_0062",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 4,
+      "categories": [
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.2.4. Krov a střecha Krov je navržen jako tesařský a je kompletně nový (bez zachování prvků z původního). Svislými nosnými prvky budou sloupky z ocelového jaecklu. Středové vaznice krovu budou rovněž ocelové z HEA profilu. Ocelové konstrukce krovu budou vždy lakované na čern ou barvu. Pod středovými vaznicemi ztužují krov kleštiny složené ze dvou dřevěných hranolů. V prostoru"
+    },
+    {
+      "evidence_id": "TZ_EV_0063",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 5,
+      "categories": [
+        "material_izolace",
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "prace_klempir",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "otevření do krovu a osazení schodiště do krovu je část kleštin vynechána. Krokve krovu jsou v osové vzdálenosti cca 800 mm. V místě vikýřů jsou krokve pod jiným úhlem klesání. Krokve jsou vedle středových vaznic osazeny na pozednice, které jsou umístěné na ztuž ujícím věnci. Věnec probíhá po obvodu v úrovni jak nižší pozednice, tak v úrovni horní části vikýře. Pozednice budou kotveny do ŽB věnce.…"
+    },
+    {
+      "evidence_id": "TZ_EV_0064",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 5,
+      "categories": [
+        "material_beton",
+        "konstrukce_krov",
+        "konstrukce_stena",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.2.5. Schodiště Hlavní objektové schodiště zůstává stávající. Nově bude upraveno schodiště z 1.PP na terén do nového otvoru v obvodové stěně. Před zahájením prací musí být provedeny sondy do stávajícího schodiště a až p odle výsledku sond bude navrženo prodloužení schodiště v přímém směru. Nové schodiště bude provedeno do spacího patra v krovu. Bude ocelové s dřevěnými schody. Další nové schodiš…"
+    },
+    {
+      "evidence_id": "TZ_EV_0065",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 5,
+      "categories": [
+        "material_beton",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "pozar_pbr",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.3.1. Příčky Stávající příčky jsou zděné, ty budou z větší části odbourány. Navrhované příčky musí splňovat požadavky požární odolnosti, požadavk y na akustickou neprůzvučnost a musí mít parametry splňující požadavky na bezpečnost. Příčky budou prováděny jako zděné z porobetonových příčkovek nebo z keramických příčkovek. Všechny příčky budou v dostatečné vzdálenosti pod stropem pružně oddilatová…"
+    },
+    {
+      "evidence_id": "TZ_EV_0066",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 5,
+      "categories": [
+        "material_izolace",
+        "konstrukce_strop",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "3.3.2. Podhledy Strop nad 1.NP bude kryt SDK protipožárním podhledem, který bude krýt nosné dřevěné trámy stropu. Pohled musí splňovat požadavky PBŘ jako celek (rošt, izolace, SDK desky). Bude využita systémová skladba dodavatele prvků suché výstavby. V koupelnách jsou uvažovány SDK podhledy ze SDK do vlhkých prostorů, nad tímto sníženým podhledem bude vedení technologií a zapuštěná světla. Sníže…"
+    },
+    {
+      "evidence_id": "TZ_EV_0067",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 6,
+      "categories": [
+        "material_beton",
+        "material_izolace",
+        "geometrie_rozmery",
+        "bourani_demontaz",
+        "tkp_chapter",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3.3.3. Obvodový plášť Stávající a navrhované stěny budou opatřeny souvrstvím kontaktního zatep lovacího systému ETICS. Stávající stěny z exteriérové strany budou očištěny, ometeny a bude odstraněn a případná poškozená, popraskaná, odlupující se, nebo vypadaná omítka. Případné praskl iny, nebo dutiny budou vyspraveny. V případě, že se na podkladu vyskytují mech, nebo plísně, bude podklad ošetřen f…"
+    },
+    {
+      "evidence_id": "TZ_EV_0068",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 6,
+      "categories": [
+        "material_beton",
+        "bourani_demontaz"
+      ],
+      "paragraph_excerpt": "3.4.1. Stěny Ze stávajících stěn bude odstraněna nesoudržná omítka, či výmalba a obklady. Bude provedeno vyspravení stávajících stěn, cementová stěrka s výztuží a tenkovrstvá štuková omítka."
+    },
+    {
+      "evidence_id": "TZ_EV_0069",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "material_izolace"
+      ],
+      "paragraph_excerpt": "Nové zděné stěny budou opatřeny omítkou jádro + štuk. SDK stěny a předstěny budou přetmeleny a opatřeny výmalbou. V prostoru WC, koupelny a za kuchyňskou linkou bude proveden keramický obklad. V části s mokrým provozem bude provedena nátěrová hydroizolace, zejména za sprchou a vanou."
+    },
+    {
+      "evidence_id": "TZ_EV_0070",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "material_izolace",
+        "konstrukce_podlaha"
+      ],
+      "paragraph_excerpt": "3.4.2. Nášlapné vrstvy podlah Veškeré podlahy musí splňovat požadavky na protiskluznost podlah dané patřičnými předpisy a normami. Nášlapné vrstvy podlah jsou uvažovány jako vinylová podlaha a keramická dlažba. Pod nášlapnými vrstvami bude provedena nivelace. Podkladní vrstvy budou patřičně vyrovnány a v rámci mokrých provozů (koupelny) bude provedena nátěrová hydroizolace."
+    },
+    {
+      "evidence_id": "TZ_EV_0071",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "konstrukce_strop"
+      ],
+      "paragraph_excerpt": "3.4.3. Stropy a podhledy SDK podhledy budou přetmeleny, přebroušeny a provedena interiérová výmalba ."
+    },
+    {
+      "evidence_id": "TZ_EV_0072",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "3.5.1. Vnitřní dveře Požadavky na vnitřní dveře se budou řídit především požadavky vyplývající z části Požárně bezpečnostní řešení. Vnitřní dveře bytu DTD deska, laminovaná."
+    },
+    {
+      "evidence_id": "TZ_EV_0073",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "material_izolace",
+        "prace_truhlar"
+      ],
+      "paragraph_excerpt": "3.5.2. Venkovní okna a dveře Nová okna a vstupní dveře budou plastová, barvy dle výběru investora (Uw=0,85 W/m2K). Součástí oken do ulice Fibichova bude osazení venkovních žaluzií. Ty budou skryté v kastlíku pod omítkou s purenitovou izolací a s podomítkovou vodící lištou."
+    },
+    {
+      "evidence_id": "TZ_EV_0074",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "konstrukce_strecha",
+        "instalace_tzb_zti",
+        "prace_klempir"
+      ],
+      "paragraph_excerpt": "3.5.3. Kle mpířské výrobky Bude provedeno zejména oplechování střechy, venkovních parapetů a dešťové svody. Pzn plech, lak barva dle výběru investora."
+    },
+    {
+      "evidence_id": "TZ_EV_0075",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "prace_truhlar"
+      ],
+      "paragraph_excerpt": "3.5.4. Truhlářské výrobky Truhlářsky budou nově provedeny stupně schodiště do spacího patra v 3.NP. Ze dřeva budou i stupně venkovního schodiště, zajišťující přístup ze zahrady do domu."
+    },
+    {
+      "evidence_id": "TZ_EV_0076",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "material_beton",
+        "prace_truhlar"
+      ],
+      "paragraph_excerpt": "Truhlářsky bude provedena i terasa za opěrnou stěnou na zahradě. Uvažováno je provedení terasových prken z garapy na roznášecí hliníkový rošt, umístěný na rektifikovatelných terčích. Ty budou usazeny na betonové dlaždice ve štěrkopískovém loži."
+    },
+    {
+      "evidence_id": "TZ_EV_0077",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "Pro veškeré konstrukce bude odbornou firmou zpracována kompletní výrobní dokumentace (případně výkres kladení), včetně statického výpočtu a příslušných detailů!"
+    },
+    {
+      "evidence_id": "TZ_EV_0078",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "prace_zamecnik"
+      ],
+      "paragraph_excerpt": "3.5.5. Zámečnické výrobky Jako zámečnický výrobek bude provedeno schodiště z opěrné zídky do objektu ze zahrady. Konstrukce viz dimenze ze stavebně konstrukční části."
+    },
+    {
+      "evidence_id": "TZ_EV_0079",
+      "source_pdf": "inputs/tz/260219_dum/D_1_1_01_TZ_ARS_dum_EAR.pdf",
+      "page": 8,
+      "categories": [
+        "konstrukce_strecha",
+        "prace_zamecnik",
+        "statika"
+      ],
+      "paragraph_excerpt": "Jako zámečnický výrobek bude provedeno i schodiště ve 3.NP na spací patro. Stříška nad vstupním schodištěm bude provedena jako ocelová konstrukce, op láštěna deskami typu Cetris a opatřena falcovanou krytinou – zavěšena do fasády přes ocelová táhla. Obdobná stříška bude i nad vstupní dveřmi z ulice Fibichova. Veškeré zábradlí bude ocelové, rámové, svařované z jaecklů čtvercového průřezu. Ocel bud…"
+    },
+    {
+      "evidence_id": "TZ_EV_0080",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "bourani_demontaz",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3. Stávající a bourané nosné konstrukce......................................................................................... 6"
+    },
+    {
+      "evidence_id": "TZ_EV_0081",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "4. Nově navržené nosné konstrukce ............................................................................................... 7"
+    },
+    {
+      "evidence_id": "TZ_EV_0082",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "5. Technologie pro provedení nosných konstrukcí .......................................................................... 8"
+    },
+    {
+      "evidence_id": "TZ_EV_0083",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "5.2. Požadavky na pažení výkopů ....................................................................................................... 8"
+    },
+    {
+      "evidence_id": "TZ_EV_0084",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "bourani_demontaz"
+      ],
+      "paragraph_excerpt": "5.4. Obecná pravidla pro bourací práce ............................................................................................. 8"
+    },
+    {
+      "evidence_id": "TZ_EV_0085",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "6.1. Materiály nosných konstrukcí.................................................................................................... 10"
+    },
+    {
+      "evidence_id": "TZ_EV_0086",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "6.2. Požadavky na požární odolnost a ochranu konstrukcí .............................................................. 10"
+    },
+    {
+      "evidence_id": "TZ_EV_0087",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 2,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "6.3. Zatížení ...................................................................................................................................... 10"
+    },
+    {
+      "evidence_id": "TZ_EV_0088",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 3,
+      "categories": [
+        "material_beton",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "1.3. SEZNAM POUŽITÝCH NOREM [5] ČSN EN 1990 Eurokód: Zásady navrhování konstrukcí [6] ČSN ISO 13822 Zásady navrhování konstrukcí - Hodnocení existujících konstrukcí [7] ČSN 73 0038 Hodnocení a ověřování existujících konstrukcí – Doplňující ustanovení [8] ČSN EN 1991-1-1 Eurokód 1: Zatížení konstrukcí - Část 1-1: Obecná zatížení - Objemové tíhy, vlastní tíha a užitná zatížení pozemních staveb [9] …"
+    },
+    {
+      "evidence_id": "TZ_EV_0089",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "str.4 [12] ČSN EN 1993-1-1 Eurokód 3: Navrhování ocelových konstrukcí - Část 1-1: Obecná pravidla a pravidla pro pozemní stavby [13] ČSN EN 1995-1-1 Eurokód 5: Navrhování d řevěných konstrukcí - Část 1-1: Obecná pravidla - Společná pravidla a pravidla pro pozemní stavby [14] ČSN EN 1996-1-1 Eurokód 6: Navrhování zd ěných konstrukcí - Část 1-1: Obecná pravidla pro vyztužené a nevyztužené zděné kon…"
+    },
+    {
+      "evidence_id": "TZ_EV_0090",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 4,
+      "categories": [
+        "material_beton",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "1.4. SEZNAM POUŽITÉ LITERATURY [16] Zásady navrhování stavebních konstrukcí. P říručka k ČSN EN 1990, prof. Ing. Milan Holický, Ph.D., DrSc. a doc. Ing. Jana Marková, Ph.D., IC ČKAIT Praha 2007, 1. vydání, ISBN 978-80- 87093-27-6 [17] Příručka pro hodnocení existujících konstrukcí, Projekt CZ.04.3.07/4.2.01/0005 Inovace metod hodnocení existujících stavebních konstrukcí, ČVUT v Praze, Klokner ův …"
+    },
+    {
+      "evidence_id": "TZ_EV_0091",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 4,
+      "categories": [
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "2.1. GEOLOGICKÉ POMĚRY Inženýrskogeologický pr ůzkum lokality nebyl z podn ětu stavebníka zpracován. Pro ú čely návrhu a posouzení základových konstrukcí byly ode čteny informace z geologické mapy a dále byly použity informace z blízkých geologických vrtů. Zájmové území se nachází v oblasti krušnohorského krystalinika, tvo řeného převážně metamorfovanými horninami proterozoického až spodn ě paleo…"
+    },
+    {
+      "evidence_id": "TZ_EV_0092",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 5,
+      "categories": [
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "str.5 1 (ID 726695), vzdálenější, avšak stratigraficky reprezentativní, potvrzuje výskyt siln ě až slabě zvětralých svorů a svorových rul kamberského stá ří do hloubky cca 30 m, p řičemž hladina podzemní vody byla zastižena v hloubce kolem 24 m. Geologická mapa ČGS dále dokládá, že širší okolí je strukturálně složité, s výskytem svor ů, pararul, ortorul a místy amfibolit ů, místn ě porušených tek…"
+    },
+    {
+      "evidence_id": "TZ_EV_0093",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 6,
+      "categories": [
+        "skladba_f_code"
+      ],
+      "paragraph_excerpt": "2.2. ZÁKLADOVÉ POMĚRY Rodinný dům je založen ve vrstv ě silně zvětralého svoru a pararuly svorového vzhledu. Dle [22] je svor klasifikován jako hornina t řídy R5-R6, která p ři zv ětrávání p řechází do t řídy F4-CS pevné až tvrdé konzistence s t ěmito fyzikáln ě mechanickými parametry: =18,5 kN/m3, φef=26°, c ef=10 kPa, tabulková únosnost základové spáry Rdt=350 kPa."
+    },
+    {
+      "evidence_id": "TZ_EV_0094",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 6,
+      "categories": [
+        "material_zdivo",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_strecha",
+        "bourani_demontaz",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "3. STÁVAJÍCÍ A BOURANÉ NOSNÉ KONSTRUKCE Jedná se o částečně podsklepený dvoupodlažní rodinný s neobytným podkrovím sloužící jako půda. Základové konstrukce nebyly odhaleny. Zdivo se předpokládá smíšené, převážně z cihel plných pálených. Stropní konstrukce nebyla odhalena, vychází se z p ředpokladu dřevěného trámového stropu pnutého z fasádních na st řední nosnou st ěnu. Stropní konstrukce schodiš…"
+    },
+    {
+      "evidence_id": "TZ_EV_0095",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 7,
+      "categories": [
+        "material_zdivo",
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_podlaha",
+        "bourani_demontaz",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "str.7 V 2.NP je navržen nový dve řní otvor ve st řední nosné st ěně a dále zv ětšení dvou otvor ů sm ěrem do vnitrobloku. U všech stavebních otvor ů bude nov ě osazen p řeklad z dvojice IPN160. Ve st řední nosné stěně bude ostění směrem ke stávajícímu komínu zesíleno dvojicí ocelových úhelníků L100/10. Ocelové překlady je nutné osazovat postupně, tzn. nejprve odbourat polovinu tloušťky stěny, osa…"
+    },
+    {
+      "evidence_id": "TZ_EV_0096",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 7,
+      "categories": [
+        "material_beton",
+        "material_zdivo",
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_podlaha",
+        "prace_hloubeni",
+        "statika"
+      ],
+      "paragraph_excerpt": "4. NOVĚ NAVRŽENÉ NOSNÉ KONSTRUKCE Ve stropní konstrukci 1.NP bude p řidána nová ocelová stropnice IPE180 v pozici nov ě vyzd ěné p říčky navazujícího patra. Stropní konstrukce 2.NP bude kompletn ě nahrazena novou ocelovou stropní konstrukcí ze stropnic IPE180 v rastru á 1000 mm, kolmo na n ě bude pnut trapézový plech 40S/160 tl. 0,75 mm s nabetonávkou 60 mm nad vlnu. Mezi stropnice budou v místec…"
+    },
+    {
+      "evidence_id": "TZ_EV_0097",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "bourani_demontaz",
+        "statika"
+      ],
+      "paragraph_excerpt": "5. TECHNOLOGIE PRO PROVEDENÍ NOSNÝCH KONSTRUKCÍ Nové konstrukce mohou být provedeny pouze stavebním podnikatelem s vybavením a zkušenostmi odpovídajícími charakteru stavby. Pracovníci musí být řádně proškoleni a pro vykonávané práce kvalifikováni. Stavba m ůže být podle zákona č. 283/2021 Sb. vedena pouze stavbyvedoucím, který je autorizovanou osobou. Demontované stavební konstrukce p ředstavují …"
+    },
+    {
+      "evidence_id": "TZ_EV_0098",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "skladba_f_code",
+        "prace_hloubeni"
+      ],
+      "paragraph_excerpt": "5.2. POŽADAVKY NA PAŽENÍ VÝKOPŮ Stavební jáma bude svahovaná. P řípustný sklon dočasných výkopů je 1:0,5 v soudržných zeminách t řídy F4. Rýhy pro vedení přípojek je nutné pažit dle zásad BOZP."
+    },
+    {
+      "evidence_id": "TZ_EV_0099",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 8,
+      "categories": [
+        "material_zdivo",
+        "konstrukce_strop",
+        "konstrukce_podlaha",
+        "konstrukce_strecha",
+        "bourani_demontaz",
+        "statika"
+      ],
+      "paragraph_excerpt": "5.4. OBECNÁ PRAVIDLA PRO BOURACÍ PRÁCE Bourání bude provád ěno postupným rozebíráním stavebních konstrukcí za použití drobné stavební mechanizace. Nenosné konstrukce se odstra ňují bez statického zajišt ění. Nenosnými konstrukcemi jsou vrstvy podlah, st řešní krytina, podhledy, omítky, obklady, výpln ě otvor ů a p říčky. Nosné konstrukce je možné odstranit po p říslušném zajišt ění demolované kon…"
+    },
+    {
+      "evidence_id": "TZ_EV_0100",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 9,
+      "categories": [
+        "material_beton",
+        "geometrie_rozmery",
+        "prace_betonaz"
+      ],
+      "paragraph_excerpt": "5.5. POŽADAVKY NA VODONEPROPUSTNÉ KONSTRUKCE Opěrná stěna je navržena podle pravidel ČBS 02 pro vodonepropustné konstrukce – bílé vany, které jsou překladem publikace Richtlinie – Wasserundurchlaessige Betonbauwerke – Weisse Wannen, Oesterreichische Vereinigung fuer Beton- und Bautechnik, 03/2009. Třída požadavků na železobetonové konstrukce je A1 (z v ětší části suché), T řída tlaku vody W0 (vod…"
+    },
+    {
+      "evidence_id": "TZ_EV_0101",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 9,
+      "categories": [
+        "material_beton",
+        "material_zdivo",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "5.6. POŽADAVKY NA KONTROLU A PŘEJÍMKU ZAKRÝVANÝCH KONSTRUKCÍ Kontrolu a p řejímku zakrývaných konstrukcí provádí v rozsahu své p ůsobnosti osoba vykonávající technický dozor investora, a to v sou činnosti se stavebním podnikatelem (dodavatelskou firmou) v souladu se zákonem č. 283/2021 Sb. o územním plánování a stavebním řádu (stavební zákon), § 163, odst. 1d. Dodávka železobetonových konstrukcí …"
+    },
+    {
+      "evidence_id": "TZ_EV_0102",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 10,
+      "categories": [
+        "tkp_chapter",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "6. VÝPOČTY A POSOUZENÍ Objekt je dle ČSN EN 1990 za řazen do 4. kategorie (budovy bytové, ob čanské a další b ěžné stavby) s informativní návrhovou životností 50 let ( článek NA.2.1.). Stávající konstrukce jsou posouzeny pro zbytkovou životnost 50 let. Třída následků pro diferenciaci spolehlivosti je CC2a. S ohledem na doporu čenou robustnost konstrukce podle ČSN EN 1991-1-7 je zvolena návrhová s…"
+    },
+    {
+      "evidence_id": "TZ_EV_0103",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 10,
+      "categories": [
+        "material_beton",
+        "material_zdivo",
+        "skladba_s_code",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "6.1. MATERIÁLY NOSNÝCH KONSTRUKCÍ Stávající konstrukce Zdivo Cihla plná pálená P10 na MVC MC5,0 a MC1,0 Řezivo C24 Nově navržené konstrukce Beton chráněných konstrukcí C25/30 XC1-CL0.4-Dmax.22-S3 Beton opěrné stěny – bílá vana C25/30 XC3,XF1,XA1-CL0.4-Dmax.22-S3 Zdivo dozdívky Cihla plná pálená P10 na M10 Zdivo nástavby Porotherm 30 Profi P10 na maltu pro tenké spáry Konstrukční ocel S235 Řezivo …"
+    },
+    {
+      "evidence_id": "TZ_EV_0104",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 10,
+      "categories": [
+        "material_beton",
+        "konstrukce_krov",
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "6.2. POŽADAVKY NA POŽÁRNÍ ODOLNOST A OCHRANU KONSTRUKCÍ Betonové konstrukce s p ředepsaným krytím spl ňují kritéria požární odolnosti a p ůsobení daného prostředí. Ocelový konstrukce schodiště se nachází ve vnějším prostředí a bude ošetřena žárovým zinkováním. Ocelová konstrukce krovu se nenachází ve vn ějším prost ředí, nehrozí vznik a rozvoj koroze a není ji nutné chránit protikorozním nát ěrem…"
+    },
+    {
+      "evidence_id": "TZ_EV_0105",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 10,
+      "categories": [
+        "konstrukce_strop",
+        "konstrukce_podlaha",
+        "konstrukce_strecha",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "6.3. ZATÍŽENÍ Stálé zatížení Skladba střechy s plechovou krytinou a zateplením 0,70 kN/m 2 Skladba podlahy půdy pro přespání 0,30 kN/m 2 Skladba stávající stropní konstrukce s podlahou 1,50 kN/m 2 Vlastní tíha stropní konstrukce 2.NP 2,00 kN/m2 Skladba nové podlahy 3.NP 2,00 kN/m2 Zemní tlak 5,00-30,00 kN/m2"
+    },
+    {
+      "evidence_id": "TZ_EV_0106",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 11,
+      "categories": [
+        "geometrie_rozmery",
+        "konstrukce_stena",
+        "prace_zamecnik",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "str.11 Zděná příčka Ytong tl. 150 mm + omítka 0,15*3,2*5+0,6= 3,00 kN/m Užitné zatížení: Obytné místnosti a terasy - kategorie A 1,50 kN/m 2 Schodiště - kategorie A 3,00 kN/m 2 Půdní prostor pro přespání – kategorie A 0,75 kN/m 2 Zatížení zábradlí a dělících stěn – kategorie A 0,50 kN/m 2 Klimatické zatížení Zatížením sněhem VII. sněhové oblasti, zatížením větrem III. větrové oblasti a kategorie …"
+    },
+    {
+      "evidence_id": "TZ_EV_0107",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 11,
+      "categories": [
+        "material_beton",
+        "konstrukce_podlaha",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "6.4. POSOUZENÍ Veškeré popsané nové konstrukce vyhoví příslušným ČSN. Statické výpočty vnitřních sil a deformací jsou provedeny na celkovém modelu konstrukce programem Dlubal RFEM 5.39 a ru čním výpo čtem jsou prověřeny díl čí části konstrukce. Všechny prvky konstrukce jsou posouzeny podle mezního stavu únosnosti, porovnáním únosnosti jednotlivých pr ůřezů s vnit řními silami. Dále jsou konstrukc…"
+    },
+    {
+      "evidence_id": "TZ_EV_0108",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 11,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "7. SPECIFICKÉ POŽADAVKY NA VYPRACOVÁNÍ DOKUMENTACE PRO PROVEDENÍ STAVBY Předběžným statickým výpo čtem byla ov ěřena proveditelnost návrhu a dále byly stanoveny rozm ěry (průřezy) hlavních nosných prvků. Podrobnost tohoto projektu plně odpovídá rozsahu dokumentace pro vydání povolení stavby podle vyhlášky č. 131/2024Sb. o dokumentaci staveb; tato projektová dokumentace neslouží pro potřeby vlastn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0109",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 12,
+      "categories": [
+        "material_beton"
+      ],
+      "paragraph_excerpt": "str.12 V dokumentaci pro provedení stavby je nutné zejména řešit definitivní pr ůřezy jednotlivých částí konstrukce, podrobné dimenzování železobetonových konstrukcí a jednotlivé konstrukční detaily."
+    },
+    {
+      "evidence_id": "TZ_EV_0110",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 12,
+      "categories": [
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "8. PLÁN KONTROLY SPOLEHLIVOSTI KONSTRUKCÍ Jedná se o rodinný d ům s p řevážně zd ěnými a d řevěnými konstrukcemi. Plán kontroly spolehlivosti konstrukcí není pro tyto konstrukce vyžadován žádnými relevantními normami ani jinými právními předpisy. Kontrola ocelových konstrukcí bude provád ěna podle ČSN 732604 „Ocelové konstrukce – Kontrola a údržba ocelových konstrukcí pozemních a inženýrských sta…"
+    },
+    {
+      "evidence_id": "TZ_EV_0111",
+      "source_pdf": "inputs/tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf",
+      "page": 12,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "9. ZÁVĚR Stavba je navržena v souladu s normovými hodnotami tak, aby ú činky zatížení a nep říznivé vlivy prostředí, kterým je vystavena b ěhem výstavby a užívání p ři řádně prováděné běžné údržbě, nemohly způsobit:  náhlé nebo postupné z řícení, pop řípadě jiné destruktivní poškození kterékoliv její části nebo přilehlé stavby  nepřípustné p řetvoření nebo kmitání konstrukce, které m ůže naruši…"
+    },
+    {
+      "evidence_id": "TZ_EV_0112",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 2,
+      "categories": [
+        "material_izolace",
+        "instalace_vytapeni",
+        "instalace_vzt",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Zpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 2 z 13 leden 2026 Obsah Úvod ................................................................................................................................................................. 3 Seznam použitých podkladů pro zpracování ................................................................................................... 3 Popis …"
+    },
+    {
+      "evidence_id": "TZ_EV_0113",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 3,
+      "categories": [
+        "pozar_pbr",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Úvod Předmětem tohoto požárně bezpečnostního řešení je posouzení stavebních úprav rodinného domu z pohledu požární bezpečnosti staveb. Jedná se o stávající objekt realizovaný před rokem 197 7, tzn. v době před platností kodexu norem PBS. Rozsah požárně bezpečnostního řešení je zpracován dle § 41 odst. 3 a 5 vyhlášky č. 246/2001 Sb., o stanovení podmínek požární bezpečnosti a výkonu státního požár…"
+    },
+    {
+      "evidence_id": "TZ_EV_0114",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 3,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Seznam použitých podkladů pro zpracování1 Vyhláška č. č. 23/2008 Sb., o technických podmínkách požární ochrany staveb, ve znění pozdějších předpisů (dále jen „vyhláška č. 23/2008 Sb.“); Vyhláška č. 246/2001 Sb., o stanovení podmínek požární bezpečnosti a výkonu státního požárního dozoru (vyhláška o požární prevenci), ve znění pozdějších předpisů (dále jen „vyhláška o požární prevenci“); Vyhláška …"
+    },
+    {
+      "evidence_id": "TZ_EV_0115",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 3,
+      "categories": [
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Popis stavby Popis objektu: Projekt řeší stavební úpravy stávajícího objektu rodinného domu. Obje kt bude mít 3 na dzemní a 1 podzemní podlaží. Objekt bude tvořen 3 bytovými jednotkami pro trvalé bydlení. Objekt je součástí stávající řadové zástavby RD (ze dvou stran je v kontaktu se sousedními RD, ze zbylých stran je samostatně stojící). V objektu není navržena garáž ani prostory sloužící veřejn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0116",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 3,
+      "categories": [
+        "material_izolace",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_strecha",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Konstrukce: Obvodové a vnitřní nosné stěny jsou zděné cihelné/keramické. Vnitřní příčky dále budou z plynosilikátových tvárnic, popř. sádrokartonové. Strop nad suterénem a z části v nadzemní části bude tvořen stávající cihelnou klenbou. Stropy v nadzemní části budou dále dřevěné trámové s novým SDK podhledem. Objekt bude zastřešen šikmou střechou s nosným dřevěným krovem, který je navržený jako p…"
+    },
+    {
+      "evidence_id": "TZ_EV_0117",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "instalace_vytapeni",
+        "instalace_vzt",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Zpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 4 z 13 leden 2026 Vytápění a větrání: Objekt bude vytápěn kamny/kotlem na tuhá paliva . Část objektu bude vytápěna elektrokotlem. V bytové jednotce bude dále krb na tuhá paliva. Zdroje vytápění na plyn se nenavrhují. FVE není navržena. Větrání objektu je kombinace přirozeného a nuceného VZT větrání. S amostatná strojovna VZT ve smyslu ČSN 7…"
+    },
+    {
+      "evidence_id": "TZ_EV_0118",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Dle čl. 7.2.8 písm. b) a čl. 7.2.12 písm. b) ČSN 73 0802 se jedná o objekt se smíšeným konstrukčním systémem. Požární výška objektu h = 6,565 m"
+    },
+    {
+      "evidence_id": "TZ_EV_0119",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Kategorizace dle vyhl. č. 460/2021Sb. Památkově chráněný objekt NE Počet nadzemních podlaží 3 Počet podzemních podlaží 1 Zastavěná plocha < 200,0 m2 Výška objektu 6,565 m Výskyt veřejnosti NE Spící osoby ANO Spící veřejnost NE Osoby neschopné evakuace NE Více než 1000 osob NE Více než 100 osob NE Výskyt hořlavých kapalin/plynů (více než 5 m3) NE Výskyt pyrotechniky NE Výskyt hořlavého nebo hoření…"
+    },
+    {
+      "evidence_id": "TZ_EV_0120",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Dle vyhl. č. 460/2021 Sb. je nejhorší varianta využití objektu 3. třídy využití. Dle § 7 se jedná o stavbu kategorie I. Objekt rodinného domu nepodléhá výkonu státního požárního dozoru."
+    },
+    {
+      "evidence_id": "TZ_EV_0121",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Popis koncepce řešení PBS Rodinný dům bude dále posuzován dle ČSN 73 0833 čl. 3.5 písm. a) jako budova skupiny OB1. Celková půdorysná plocha všech podlaží rodinného domu je menší než 600,0 m2 (ve skutečnosti S = 219,3 m2)."
+    },
+    {
+      "evidence_id": "TZ_EV_0122",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "a) Popis a stanovení požadavků na technologie a provoz V objektu rodinného domu se neuvažují žádné technologie, které by měly vliv na požární bezpečnost stavby, výskyt hořlavých kapalin, hořlavých plynů aj."
+    },
+    {
+      "evidence_id": "TZ_EV_0123",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "b) Návrh rozdělení stavby do požárních úseků , stanovení požárního rizika , popř. ekonomického rizika, stanovení stupně požární bezpečnosti b1) Návrh rozdělení do požárních úseků V souladu s čl. 3.6 ČSN 73 0833 můžou až 3 obytné buňky v budově skupiny OB1 tvořit jeden požární úsek. Požární úsek Účel užívaní P1.01/N3 Rodinný dům"
+    },
+    {
+      "evidence_id": "TZ_EV_0124",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 4,
+      "categories": [
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "b2) Stanovení požárního rizika a stupně požární bezpečnosti a posouzení velikosti požárních úseků Požární úsek Výpočtové požární zatížení pv [kg·m-2] SPB Mezní rozměr P1.01/N3 45,75 1) II. 2) 600,0 m2"
+    },
+    {
+      "evidence_id": "TZ_EV_0125",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "pozar_pbr",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Zpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 5 z 13 leden 2026 Pozn.: 1) Výpočtové požární zatížení pv je stanoveno dle Přílohy B ČSN 73 0802. 2) SPB stanoven dle čl. 4.1.1 písm. b) ČSN 73 0833."
+    },
+    {
+      "evidence_id": "TZ_EV_0126",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Požární úsek vyhovuje na mezní rozměry."
+    },
+    {
+      "evidence_id": "TZ_EV_0127",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "konstrukce_strop",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "c) Popis a z hodnocení navržených stavebních konstrukcí a požárních uzávěrů z hlediska jejich požární odolnosti c1) Požadavky na požární odolnost stavebních konstrukcí Požadovaná požární odolnost stavebních konstrukcí jednopodlažního objektu dle tabulky 12 ČSN 73 0802: Pol. Stavební konstrukce podlaží SPB II. 1 Požární stěny a požární stropy"
+    },
+    {
+      "evidence_id": "TZ_EV_0128",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "konstrukce_strop",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "2 Požární uzávěry otvorů v požárních stěnách a požárních stropech podzemní 30DP1 nadzemní 15DP3 poslední 15DP3"
+    },
+    {
+      "evidence_id": "TZ_EV_0129",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "konstrukce_stena"
+      ],
+      "paragraph_excerpt": "3 Obvodové stěny zajišťující stabilitu podzemní 45DP1 nadzemní 30+ poslední 15+ Obvodové stěny nezajišťující stabilitu objektu 30+"
+    },
+    {
+      "evidence_id": "TZ_EV_0130",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "5 Nosné konstrukce uvnitř požárního úseku zajištující stabilitu objektu podzemní 45DP1 nadzemní 30 poslední 15"
+    },
+    {
+      "evidence_id": "TZ_EV_0131",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "6 Nosné konstrukce vně objektu 15"
+    },
+    {
+      "evidence_id": "TZ_EV_0132",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "7 Nosné konstrukce uvnitř PÚ nezajišťující stabilitu objektu 15"
+    },
+    {
+      "evidence_id": "TZ_EV_0133",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "geometrie_rozmery",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Požárně dělící konstrukce výtahových a instalačních šachet do 45 m výšky 30DP2 Požární uzávěry otvorů v konstrukcích výtahových a instalačních šachet do 45 m výšky 15DP2 11 Střešní plášť -"
+    },
+    {
+      "evidence_id": "TZ_EV_0134",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Skutečná požární odolnost je určena podle katalogu výrobce nebo tabulek publikace „Hodnoty požární odolnosti stavebních konstrukcí podle Eurokódu“ (dále jen „publikace“), mezní stavy odpovídají ČSN 73 0810."
+    },
+    {
+      "evidence_id": "TZ_EV_0135",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "geometrie_rozmery",
+        "konstrukce_strop",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "c2) Posouzení požární odolnosti stavebních konstrukcí Požární stěny a požární stropy: - Požární st ěny mezi sousedními objekty RD budou zděné cihelné / keramické tl. min. 300 mm s požární odolností REI 180 DP1 dle tab. 6.1.2 publikace. - Dle čl. 8.2.4 ČSN 73 0802 musí požární stěna vždy převyšovat vnější povrch střešního pláště posuzovaného objektu o min. 300 mm (měřeno kolmo k jeho rovině). Od p…"
+    },
+    {
+      "evidence_id": "TZ_EV_0136",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 5,
+      "categories": [
+        "konstrukce_strop",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Požární uzávěry otvorů v požárních stěnách a požárních stropech:"
+    },
+    {
+      "evidence_id": "TZ_EV_0137",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "geometrie_rozmery",
+        "konstrukce_stena",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Obvodové stěny zajišťující stabilitu objektu: - Obvodové stěny budou zděné cihelné / keramické tl. min. 300 mm s požární odolností REI 180 DP1 dle tab. 6.1.2 publikace."
+    },
+    {
+      "evidence_id": "TZ_EV_0138",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "konstrukce_stena"
+      ],
+      "paragraph_excerpt": "Obvodové stěny nezajišťující stabilitu objektu: - Nevyskytují se."
+    },
+    {
+      "evidence_id": "TZ_EV_0139",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "Nosná konstrukce střechy: - Nosnou konstrukci střechy tvoří dřevěné prvky krovu s následujícími min. průřezy: o krokve min. 80/180 mm – požární odolnost R 20 DP3 dle tab. 5.1.4 publikace – vyhovuje, o kleštiny min. 80/160 mm – požární odolnost R 15 DP3 dle tab. 5.1.4 publikace – vyhovuje, o trámy min. 140/160 mm – požární odolnost R 25 DP3 dle tab. 5.1.4 publikace – vyhovuje, o pozednice min. 160…"
+    },
+    {
+      "evidence_id": "TZ_EV_0140",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "geometrie_rozmery",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "pozar_pbr",
+        "statika",
+        "tkp_chapter",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Nosné konstrukce uvnitř požárního úseku: - Vnitřní nosné stěny budou zděné cihelné / keramické tl. min. 300 mm s požární odolností REI 180 DP1 dle tab. 6.1.2 publikace. - Stropy na 1.PP a částečn ě v nadzemních podlažích tvoří stávající cihelné klenby tl. min. 150 mm s požární odolností REI 90 DP1 dle čl. 5.5.7 ČSN 73 0834. - Dřevěné trámové str opy budou opatřeny požárním SDK podhledem v ucelené…"
+    },
+    {
+      "evidence_id": "TZ_EV_0141",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "Nosné konstrukce vně objektu: - Nevyskytují se."
+    },
+    {
+      "evidence_id": "TZ_EV_0142",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "Nosné konstrukce uvnitř PÚ nezajišťující stabilitu: - Nevyskytují se."
+    },
+    {
+      "evidence_id": "TZ_EV_0143",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Konstrukce schodišť uvnitř požárního úseku: - Schodiště nebudou sloužit pro únik více než 10 osob, požární odolnost není dle čl. 8.9 ČSN 73 0802 vyžadována."
+    },
+    {
+      "evidence_id": "TZ_EV_0144",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Nenosné konstrukce uvnitř PÚ: - Požární odolnost se dle tabulky 12 ČSN 73 0802 nepožaduje."
+    },
+    {
+      "evidence_id": "TZ_EV_0145",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 6,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Střešní plášť: - Požární odolnost se dle tabulky 12 ČSN 73 0802 nepožaduje."
+    },
+    {
+      "evidence_id": "TZ_EV_0146",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Zpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 7 z 13 leden 2026 Požární pásy: - Požární pásy nejsou dle čl. 4.2.3 ČSN 73 0833 vyžadovány – sousední objekty jsou také OB1."
+    },
+    {
+      "evidence_id": "TZ_EV_0147",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "instalace_eli",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Všechny SDK konstrukce s požární odolností budou provedeny odbornou osobou a dle technologických a montážních pokynů výrobce daného systému. Případné prostupy (např. otvory pro elektroinstalaci, svítidla aj.) touto konstrukcí musí být utěsněny dle technolo gických pokynů výrobce daného systému (např. dotmeleny spárovací hmotou Knauf Uniflott). V případě otvorů pro svítidla musí být u opláštění to…"
+    },
+    {
+      "evidence_id": "TZ_EV_0148",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Všechny stavební konstrukce vyhovují požadavkům na požární odolnost dle tabulky 12 ČSN 73 0802."
+    },
+    {
+      "evidence_id": "TZ_EV_0149",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "c3) Požadavky na povrchové úpravy konstrukcí, odkapávání a odpadávání Na povrchové úpravy stavebních konstrukcí dle ČSN 73 0802 čl. 8.14 nejsou stanoveny žádné požadavky. Požární úsek není dle čl. 8.14.3 ČSN 73 0802 zařazen do skupiny U1 nebo U2 (půdorysná plocha připadající na jednu osobu není v požárním úseku menší než 5,0 m2). V objektu nejsou použity materiály, které by v případě požáru odkap…"
+    },
+    {
+      "evidence_id": "TZ_EV_0150",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "material_izolace",
+        "geometrie_rozmery",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "c4) Požadavky na zateplovací systém Objekt bude zateplen kontaktním zateplovacím systémem ETICS s použitím izolantu z fasádního EPS tl. max. 200 mm, vnější povrch bude tvořit omítka. V souladu s čl. 3.1.3.2 ČSN 73 0810 musí vnější zateplovací systém splňovat následující podmínky: - požární výška objektu je h ≤ 12,0 m (vyhovuje) - třída reakce na oheň E pro tepelný izolant (fasádní EPS vyhovuje) -…"
+    },
+    {
+      "evidence_id": "TZ_EV_0151",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "c5) Těsnění prostupů technických a technologických rozvodů Nevyskytují se, jelikož celý objekt tvoří jeden požární úsek."
+    },
+    {
+      "evidence_id": "TZ_EV_0152",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "d) Popis a zhodnocení způsobu evakuace osob, zvířat a popřípadě majetku, stanovení druhu a počtu únikových cest, jejich kapacity, provedení a vybavení Dle čl. 4.3 ČSN 73 0833 se pro evakuaci osob v obytné části považuje postačující nechráněná úniková cesta šířky 0,9 m s šířkou dveří na únikové cestě 0,8 m (minimální skutečná šířka vchodových dveří je 0,9 m). Délky únikových cest se neposuzují. Ún…"
+    },
+    {
+      "evidence_id": "TZ_EV_0153",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 7,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "e) Možnost provedení požárního zásahu e1) Přístupová komunikace a nástupní plochy pro požární techniku Přístupové komunikace Dle čl. 4.4.1 ČSN 73 0833 musí ke všem objektům, nebo souvislé skupině budov skupiny OB1 vést přístupová komunikace se šířkou jízdního pruhu nejméně 3,0 m a končící nejvýše 50,0 m od posuzovaného objektu. Každá neprůjezdná jednopruhová komunikace delší než 50 m musí mít na …"
+    },
+    {
+      "evidence_id": "TZ_EV_0154",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Zpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 8 z 13 leden 2026 Do vzdálenosti do 10,0 m od objektu vede stávající asfaltová průjezdná silniční komunikace šířky min. 3,0 m, ul. Fibichova. Příjezdová komunikace vyhovuje."
+    },
+    {
+      "evidence_id": "TZ_EV_0155",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Nástupní plochy Nástupní plocha není navržena v souladu s čl. 12.4.4 b) ČSN 73 0802 (požární výška objektu h < 12,0 m)."
+    },
+    {
+      "evidence_id": "TZ_EV_0156",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "e2) Vnitřní a vnější zásahové cesty a jejich technické vybavení Vnitřní zásahové cesty se nevyžadují dle čl. 12.5.1 ČSN 73 0802 (protipožární zásah lze vést z vnějších stran objektů). Dle čl. 12.6 ČSN 73 0802 se vnější zásahové cesty nevyžadují."
+    },
+    {
+      "evidence_id": "TZ_EV_0157",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "instalace_tzb_zti",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "e3) Způsob zabezpečení stavby požární vodou Vnější odběrní místo: Dle Tabulky 1 a 2, položky 1 ČSN 73 0873 musí být podzemní, popř. nadzemní hydrant od objektu vzdálen maximálně 200 m a mezi dalším hydrantem nesmí být větší vzdálenost než 400 m. Vnější hydrant musí být napojen na vodovodní řád o nejmenší jmenovité světlosti DN 80, nejmenší povolen ý odběr požární vody z požárního hydrantu je Q = …"
+    },
+    {
+      "evidence_id": "TZ_EV_0158",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "instalace_tzb_zti",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Ve vzdálenosti cca 100 m JZ směrem od objektu se v ul. Fibichova nachází stávající podzemní hydrant napojený na veřejný vodovodní řad min. DN 80. Vnější odběrní místo vyhovuje."
+    },
+    {
+      "evidence_id": "TZ_EV_0159",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Vnitřní odběrní místo Dle čl. 4.4 písm. b) pol. 5) ČSN 73 0873 nemusí být budova skupiny OB1 vybavena vnitřními odběrnými místy."
+    },
+    {
+      "evidence_id": "TZ_EV_0160",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "e4) Umístění napojovacího bodu požární techniky Instalace SHZ se nenavrhuje."
+    },
+    {
+      "evidence_id": "TZ_EV_0161",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "material_izolace",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "e5) Umístění stavby a nástupní plochy mimo ochranné pásmo nadzemního vedení vysokého napětí s vodičem bez izolace pro možné provedení bezpečného zásahu V souladu s přílohou č. 3 vyhlášky č. 23/2008 Sb., o technických podmínkách požární ochrany staveb, ve znění pozdějších předpisů se navrhovaný objekt ani příjezd k němu nenachází v ochranném pásmu nadzemního vedení vysokého napětí s vodiči bez izo…"
+    },
+    {
+      "evidence_id": "TZ_EV_0162",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "pozar_pbr",
+        "statika",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "f) Stanovení odstupových vzdáleností, bezpečnostních vzdáleností Požárně nebezpečný prostor je stanoven dle čl. 10.4.9 ČSN 73 0802. Požárně nebezpečný prostor je vymezen odstupovými vzdálenostmi, které jsou stanoveny dle čl. 10.4.4 ČSN 73 0802 . Hustota tepelného toku je dána výpočtovým požárním zatížením požárního úseku navýšeným o 5,0 kg·m -2 za smíšený konstrukční systém . Obvodové konstrukce …"
+    },
+    {
+      "evidence_id": "TZ_EV_0163",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "geometrie_rozmery",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Kontaktní zateplovací systém s tloušťkou izolantu do 200 mm se dle čl. 3.1.3 ČSN 73 0810 nepovažuje za požárně otevřenou plochu. Kontaktní zateplovací systém bude splňovat požadavky dle části c) této zprávy."
+    },
+    {
+      "evidence_id": "TZ_EV_0164",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 8,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Střešní plášť se nepovažuje za požárně otevřenou plochu a nevyžadují se odstupové vzdálenosti dle čl. 8.15.4 b1) ČSN 73 0802 (požadavky na střešní plášť jsou nulové, přičemž pv < 50,0 kg·m-2). V souladu s čl. 10.4.7 ČSN 73 0802 se nepředpokládá padání hořlavých částí střešního pláště a není nutno stanovovat odstupové vzdálenosti (sklon střešního pláště je menší než 45°)."
+    },
+    {
+      "evidence_id": "TZ_EV_0165",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "konstrukce_stena",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Zpracoval: Bc. Zbyněk Tuček, Ing. Jan Kirschbaum Stránka 9 z 13 leden 2026 Odstupové vzdálenosti jsou stanoveny pouze od SZ obvodové stěny a od JV obvodové stěny v úrovni 3.NP, kde dochází ke zvětšení stávajících POP / ke vzniku nových POP. Ve zbylých částech nevznika jí nové POP , ani se nezvětšují stávající POP, tzn. odstupové vzdálenosti jsou stávající a nově se neposuzují."
+    },
+    {
+      "evidence_id": "TZ_EV_0166",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "Odstupové vzdálenosti: Pohled Výpočtové požární zatížení pv [kg·m-2] Výška plochy h [m] Délka plochy l [m] Požárně otevřená plocha [%] Odstupová vzdálenost dstřed [m] Odstupová vzdálenost dkraj [m] JV, 3.NP 45,75 + 5,0 1,24 5,85 91,5 2,85 1,65 SZ 45,75 + 5,0 8,1 6,72 40,0 5,00 2,65"
+    },
+    {
+      "evidence_id": "TZ_EV_0167",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Požárně nebezpečný prostor je zakreslen v situaci v Příloze B této zprávy. Požárně nebezpečný prostor na západní straně zasahuje na so usední soukromý pozemek parc. č. st. 1016 , na východní straně na sousední soukromý pozemek parc. č. st. 1043 a na jižní straně na sousední veřejný pozemek parc. č. 5145 (ul. Fibichova). V požárně nebezpečném prostoru se nevyskytují jiné objekty, resp. jiné požárn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0168",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "material_izolace",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "g) Posouzení požadavku na zabezpečení stavby požárně bezpečnostními zařízeními g1) Elektrická požární signalizace (EPS) Elektrická požární signalizace není dle čl. 6.6.9 ČSN 73 0802 a čl. 4.2.2 ČSN 73 0875 vyžadována (S <0,3 Smax)."
+    },
+    {
+      "evidence_id": "TZ_EV_0169",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "g2) Zařízení pro odvod kouře a tepla (ZOKT) Zařízení pro odvod kouře a tepla není dle čl. 6.6.11 ČSN 73 0802 vyžadováno."
+    },
+    {
+      "evidence_id": "TZ_EV_0170",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "g3) Samočinné stabilní hasicí zařízení (SSHZ) Stabilní hasicí zařízení není dle čl. 6.6.10 ČSN 73 0802 vyžadováno."
+    },
+    {
+      "evidence_id": "TZ_EV_0171",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "g4) Zařízení autonomní detekce a signalizace Požární úsek RD bude v souladu s § 15 vyhlášky 23/2008 Sb., o technických podmínkách požární ochrany staveb, vybaven zařízením autonomní detekce a signalizace. Zařízení bude umístěno v místnostech č. 1.01, 1.02, 2.04, 3.03. Umístění hlásičů bude dále odpovídat návodu výrobce. Zařízení autonomní detekce bude odpovídat požadavkům přílohy č. 5 (autonomní …"
+    },
+    {
+      "evidence_id": "TZ_EV_0172",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "h) Návrh vyhrazených požárně bezpečnostních zařízení podle písmene g) Nevyžaduje se, vzhledem k rozsahu stavby a jejímu vybavení PBZ."
+    },
+    {
+      "evidence_id": "TZ_EV_0173",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "i) Návrh vyhrazeného požárně bezpečnostního zařízení podle písmene g) nad rámec požadavků uvedených v písmenu h) Nevyžaduje se, vzhledem k rozsahu stavby a jejímu vybavení PBZ."
+    },
+    {
+      "evidence_id": "TZ_EV_0174",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 9,
+      "categories": [
+        "instalace_vytapeni",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "j) Popis a zhodnocení navrženého technického zařízení stavby, popřípadě technologického zařízení z hlediska požadavku požární bezpečnosti j1) Vytápění Objekt bude vytápěn kamny/kotlem na tuhá paliva. Část objektu bude vytápěna elektrokotlem."
+    },
+    {
+      "evidence_id": "TZ_EV_0175",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 10,
+      "categories": [
+        "geometrie_rozmery",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Instalovat do objektu se mohou pouze tepeln á zařízení, která byla schválena z hlediska požární bezpečnosti. Při instalaci a provozování tepelného zařízení je nutné se řídit návodem výrobce, předmětovými normami na příslušné tepelné zařízení a požadavky ČSN 06 1008. Konstrukci a způsob instalace izolační podložky st anoví výrobce v dokumentaci na příslušné tepelné zařízení , popř. bude ochranná p…"
+    },
+    {
+      "evidence_id": "TZ_EV_0176",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 10,
+      "categories": [
+        "geometrie_rozmery",
+        "konstrukce_podlaha",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "V bytové jednotce bude d ále krb na tuhá paliva. Provedení krbu musí odpovídat požadavkům uvedeným v ČSN 73 4230 Krby s otevřeným a uzavíratelným ohništěm. Dle čl. 5.3 ČSN 73 4230 musí být podlaha v místě založení krbu a do vzdálenosti 800 mm před ohništěm a 400 mm do boku ohniště z nehořlavého materiálu nebo musí být zřízena ochranná izolační podložka. Dle čl. 7.1.3 ČSN 73 4230 návrh, montáž a p…"
+    },
+    {
+      "evidence_id": "TZ_EV_0177",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 10,
+      "categories": [
+        "geometrie_rozmery",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "K odtahu spalin bude sloužit zděný komín. Spalinová cesta musí být provedena z materiálů odolných při vyhoření sazí (třída na vyhoření sazí G) dle ČSN EN 1443. Spalinová cesta musí být provedena v souladu s ČSN 73 4201. Komínový plášť bude z konstrukcí druhu DP1. Nejmenší vzdálenost hořlavých stavebních materiálů od komínového pláště pro systémové komíny musí být doložena výrobcem, podle příslušn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0178",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 10,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Dle čl. 6.1.8 ČSN 73 0810 musí být požární bezpečnost spalinové cesty instalovaná ve stavbě doložena zprávou o revizi spalinové cesty."
+    },
+    {
+      "evidence_id": "TZ_EV_0179",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 10,
+      "categories": [
+        "instalace_vzt",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "j2) Vzduchotechnika Větrání objektu je kombinace přirozeného a nuceného VZT větrání. S amostatná strojovna VZT ve smyslu ČSN 73 0872 není v objektu navržena. VZT zařízení větrá pouze jeden požární úsek, nehrozí tedy riziko šíření požáru VZT zařízením na jiné požární úseky. Z hlediska PBS na VZT nevznikají žádné specifické požadavky na instalaci požárních klapek, chráněného VZT potrubí apod."
+    },
+    {
+      "evidence_id": "TZ_EV_0180",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 10,
+      "categories": [
+        "instalace_eli",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "k) Zhodnocení navrženého elektrického zařízení, včetně zhodnocení všech zdrojů napájení elektrické energie, kabelových tras a zhodnocení způsobu vypínání elektrické energie v případě požáru Elektroinstalace musí být provedena do daného prostředí na základě protokolu o určení vnějších vlivů podle ČSN 33 2000-5-51 ed3. Každý objekt musí mít v souladu s čl. 6.1.3 ČSN 73 0848 „HLAVNÍ VYPÍNAČ ELEKTRIC…"
+    },
+    {
+      "evidence_id": "TZ_EV_0181",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 11,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "l) Stanovení počtu a druhů hasicích přístrojů, popřípadě dalšího věcného prostředku požární ochrany a stanovení požadavku na jeho umístění Počet hasicích přístrojů je stanoven dle Přílohy č. 4 vyhlášky č. 23/2008 Sb., o technických podmínkách požární ochrany staveb, ve znění pozdějších předpisů v souladu s čl. 12.8 ČSN 73 0802. Rodinný dům musí být vybaven min. jedním PHP s hasicí schopností 34A,…"
+    },
+    {
+      "evidence_id": "TZ_EV_0182",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 11,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Hasicí přístroj se umístí tak, aby byl snadno viditelný a volně přístupný. V případech, kdy je omezena orientace osob z hlediska rozmístění hasicích přístrojů (např. v nepřehledných, rozlehlých nebo skrytých prostorách) se k označení umístění hasicích přístrojů použije příslušná požární značka (např. dle ČSN ISO 3864-1) umístěná na viditelném místě. Provozuschopnost hasicích přístrojů bude dolože…"
+    },
+    {
+      "evidence_id": "TZ_EV_0183",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 11,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "m) Rozsah a způsob rozmístění výstražné a bezpečnostní značky a tabulky, včetně vyhodnocení nutnosti označení místa, na kterém se nachází věcný prostředek požární ochrany a požárně bezpečnostní zařízení. Dle § 11 odst. 2 a 3 vyhlášky o požární prevenci musí být zřetelně označeno rozvodné zařízení elektrické energie, hlavní vypínače elektrického proudu, uzávěry vody, uzávěry plynu."
+    },
+    {
+      "evidence_id": "TZ_EV_0184",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 11,
+      "categories": [
+        "konstrukce_podlaha",
+        "instalace_vytapeni",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Závěr Souhrn všech nutných úprav a opatření pro dodržení podmínek tohoto požárně bezpečnostního řešení: - V řešeném objektu bude k dispozici minimální počet přenosných hasicích přístrojů dle části l) této zprávy, hasicí přístroj musí být umístěn tak, aby byl snadno viditelný a volně přístupný. Rukojeť hasicího přístroje na svislé konstrukci muže být nejvýše 1,5 m nad podlahou; - Provozuschopnost …"
+    },
+    {
+      "evidence_id": "TZ_EV_0185",
+      "source_pdf": "inputs/tz/260219_dum/D_3_PBR_dum_TUSPO.pdf",
+      "page": 11,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Objekt rodinného domu při splnění tohoto požárně bezpečnostního řešení vyhoví předpisům o požární ochraně. Všechny změny v projektové dokumentaci musí být předem konzultovány se zpracovatelem."
+    },
+    {
+      "evidence_id": "TZ_EV_0186",
+      "source_pdf": "inputs/tz/common/A - průvodní list _ EAR.pdf",
+      "page": 2,
+      "categories": [
+        "konstrukce_podlaha",
+        "pozar_pbr",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "c) jména a příjmení projektantů jednotlivých částí dokumentace včetně čísla, pod kterým jsou zapsáni v evidenci autorizovaných nebo registrovaný ch osob vedené Českou komorou architektů nebo Českou komorou autorizovaných inženýrů a techn iků činných ve výsta vbě, s vyznačeným oborem, popřípadě specializací jejich autorizace, d ) jméno, popřípadě jména a příjmení autorizovaného zeměměřického inžen…"
+    },
+    {
+      "evidence_id": "TZ_EV_0187",
+      "source_pdf": "inputs/tz/common/A - průvodní list _ EAR.pdf",
+      "page": 3,
+      "categories": [
+        "instalace_tzb_zti",
+        "instalace_vytapeni",
+        "instalace_pripojka",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "e) počet nadzemních podlaží, stávající: 3 navrhovaný: beze změny f) způsob využití, stávající: rodinný dům navrhovaný: beze změny g) druh konstrukce, stávající: zděné navrhovaný: beze změny h) způsob vytápění, stávající: kotel na plyn + elektrické přímotopy navrhovaný: Krb s výměníkem + elektrokotel + tepelné čerpadlo vzduch/vzduch i) přípojka vodovodu, stávající: přípojka veřejného vodovodu navr…"
+    },
+    {
+      "evidence_id": "TZ_EV_0188",
+      "source_pdf": "inputs/tz/common/A - průvodní list _ EAR.pdf",
+      "page": 4,
+      "categories": [
+        "prace_hloubeni",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "A.4 Atributy stavby pro stanovení podmínek napojení a provádění činností v ochranných a bezpečnostních pásmech dopravní a technické infrastruktury a) hloubka stavby, stávající: 2,8 m navrhovaný: beze změny b) výška stavby, stávající: 11,10 m navrhovaný: 12,75 m c) předpokládaná kapacita počtu osob ve stavbě, stávající: 8 navrhovaný: beze změny d) plánovaný začátek a konec realizace stavby. začáte…"
+    },
+    {
+      "evidence_id": "TZ_EV_0189",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 1,
+      "categories": [
+        "material_zdivo",
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "B SOUHRNNÁ TECHNICKÁ ZPRÁVA B.1 Celkový popis území a stavby a) základní popis stavby; u změny stavby údaje o je jím současném stavu, závěry stavebně technického, případně stavebně historického průzkum u a výsledky statického posouzení nosných konstrukcí, Jedná se o přestavbu rodinného řadového domu v ulici Fibichova. Akce řeší změnu stávající stavby, respektive její adaptaci na soudobé bydlení p…"
+    },
+    {
+      "evidence_id": "TZ_EV_0190",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 2,
+      "categories": [
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "d) výčet a závěry průzkumů, V rámci předprojektové přípravy byl pozemek a stavba prohlédnut y a bylo vypracováno polohopisné a výškopisné zaměření pozemku. Dále nebyl shledán důvod provádět podrobnější průzkumy. e) informace o nutnosti povolení výjimky z požadavk ů na výstavbu, Nebude žádáno o výjimku. Jedná se o přestavbu stávající stavby ve stejné poloze."
+    },
+    {
+      "evidence_id": "TZ_EV_0191",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "konstrukce_krov",
+        "konstrukce_podlaha",
+        "konstrukce_strecha",
+        "bourani_demontaz",
+        "prace_hloubeni",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "f) stávající ochrana území a stavby podle jiných pr ávních předpisů, včetně rozsahu omezení a podmínek pro ochranu, Objekt se nachází v území s archeologickými nálezy dle koordinačního výkresu UP. Další omezení a podmínky nejsou známé. Navrhovaný objekt se nachází ve vzdálenosti menší než 50 m od hranice lesa. Objekt se nachází v poddolovaném území. g) vliv stavby na okolní stavby a pozemky, ochr…"
+    },
+    {
+      "evidence_id": "TZ_EV_0192",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 3,
+      "categories": [
+        "instalace_tzb_zti",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "k) limitní bilance stavby - potřeby a spotřeby médií a hmot, hospodaření se srá žkovou vodou, celkové produkované množství, druhy a kategorie odp adů a emisí apod., Spotřeba vody a produkce splaškových vod Stavba bude využívat stávající napojení na vodovod a kanalizaci. Z hlediska napojení se stav nemění. Dům je napojen na obecní vodovod a kanalizaci vedoucí v ulici Fibichiova. Hospodaření se srá…"
+    },
+    {
+      "evidence_id": "TZ_EV_0193",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 4,
+      "categories": [
+        "konstrukce_krov",
+        "konstrukce_strecha",
+        "prace_truhlar",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Voda svedená ze strany do zahrady bude částečně retenována ve stávající jímce na pozemku a užívána pro zálivku zahrady. Druhy a kategorie odpadů a emisí Stavba skladu bude během svého provozu vytváří běžný komunální odpad. l) požadavky na kapacity veřejných sítí komunikační ch vedení a elektronického komunikačního zařízení veřejné komunikační sítě, Stavba neklade specifické požadavky na kapacity …"
+    },
+    {
+      "evidence_id": "TZ_EV_0194",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 5,
+      "categories": [
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_podlaha",
+        "konstrukce_strecha",
+        "pozar_pbr",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "B.3 Základní stavebně technické a technologické řešení B 3.1. Celková koncepce stavebně technického a technologického řešení Navrhované stavební úpravy domu budou prováděny za účelem rekonstrukce stávajících stavebních konstrukcí, modernizaci dispozičního řešení a rozšíření obytné plochy. Bude provedena nová střecha s vikýři a zobytnění podkroví, které sloužilo pouze pro skladování ve stávajícím …"
+    },
+    {
+      "evidence_id": "TZ_EV_0195",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 6,
+      "categories": [
+        "material_beton",
+        "material_izolace",
+        "konstrukce_krov",
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "konstrukce_podlaha",
+        "konstrukce_strecha",
+        "instalace_tzb_zti",
+        "instalace_vytapeni",
+        "instalace_pripojka",
+        "statika",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Okenní výplně jsou na hraně životnosti a nesplňují současné energetické pož adavky. Dům je založen na základových pasech. Dům je vybaven standardním TZB pro rodinný dům. b) popis navrženého stavebně technického a konstruk čního řešení. Princip a koncepce domu zůstává stávající. Tzn. nezasahujeme do založení o bjektu a ani do podzemního podlaží. Pouze dojde k zateplení těch podlah, které jsou v ko…"
+    },
+    {
+      "evidence_id": "TZ_EV_0196",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 7,
+      "categories": [
+        "konstrukce_strecha",
+        "instalace_tzb_zti",
+        "instalace_vytapeni",
+        "instalace_vzt",
+        "instalace_eli",
+        "prace_truhlar",
+        "pozar_pbr",
+        "tkp_chapter",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Navrhovaný stav domu ponechává koupelny ve stávající poloze, pouze bude přistavěna 1 koupelna a WC v 3.NP. Koncepce ZTI tedy zůstává shodná se stávajícím řešením domu S dešťovými vodami bude zacházeno rovněž stávajícím způsobem. Neměníme rozsah odvodňovaných ploch. Půdorysný průmět střechy zůstává o stejné ploše jako stávající stav. Odvodňované plochy dvora a zahrady zůstávají rovněž shodné s těm…"
+    },
+    {
+      "evidence_id": "TZ_EV_0197",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 8,
+      "categories": [
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Výskyt veřejnosti NE Spící osoby ANO spící veřejnost NE Osoby neschopné evakuace NE Více než 1000 osob NE Více než 100 osob NE Výskyt hořlavých kapalin/plynů (více než 5 m 3) NE Výskyt pyrotechniky NE Výskyt hořlavého nebo hoření podporujícího plynu NE Stálý úkryt NE Dle vyhl. č. 460/2021 Sb. je nejhorší varianta využití objektu 3. třídy využití. Dle § 7 se jedná o stavbu kategorie I . Objekt rod…"
+    },
+    {
+      "evidence_id": "TZ_EV_0198",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 8,
+      "categories": [
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "Stanovení požárního rizika a stupně požární bezpečnosti a posouzení velikosti požárních úseků Požární úsek Výpočtové požární zatížení p v [kg·m - 2] SPB Mezní rozměr P1.01/N3 45,75 1) II. 2) 600,0 m 2"
+    },
+    {
+      "evidence_id": "TZ_EV_0199",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 8,
+      "categories": [
+        "konstrukce_strop",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Požadavky na požární odolnost stavebních konstrukcí Požadovaná požární odolnost stavebních konstrukcí jednopodlažního objektu dle tabulky 12 ČSN 73 0802: Pol. Stavební konstrukce podlaží SPB II. 1 Požární stěny a požární stropy"
+    },
+    {
+      "evidence_id": "TZ_EV_0200",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 8,
+      "categories": [
+        "konstrukce_strop",
+        "konstrukce_stena",
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "podzemní 45DP1 nadzemní 30+ poslední 15+ mezi objekty 45DP1 2 Požární uzávěry otvorů v požárních stěnách a požárních stropech podzemní 30DP1 nadzemní 15DP3 poslední 15DP3 3 Obvodové stěny zajišťující stabilitu podzemní 45DP1 nadzemní 30+ poslední 15+"
+    },
+    {
+      "evidence_id": "TZ_EV_0201",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 9,
+      "categories": [
+        "konstrukce_stena",
+        "konstrukce_strecha",
+        "pozar_pbr",
+        "statika"
+      ],
+      "paragraph_excerpt": "Obvodové stěny nezajišťující stabilitu objektu 30+ 4 Nosná konstrukce střechy 15 5 Nosné konstrukce uvnitř požárního úseku zajištující stabilitu objektu"
+    },
+    {
+      "evidence_id": "TZ_EV_0202",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 9,
+      "categories": [
+        "statika"
+      ],
+      "paragraph_excerpt": "podzemní 45DP1 nadzemní 30 poslední 15 6 Nosné konstrukce vně objektu 15 7 Nosné konstrukce uvnitř PÚ nezajišťující stabilitu objektu 15 8 Nenosné konstrukce uvnitř PÚ - 9 Schodiště, která nejsou součástí chráněných únikových cest 15DP3 10"
+    },
+    {
+      "evidence_id": "TZ_EV_0203",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Požárně dělící konstrukce výtahových a instalačních šachet do 45 m výšky"
+    },
+    {
+      "evidence_id": "TZ_EV_0204",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "30DP2 Požární uzávěry otvorů v konstrukcích výtahových a instalačních šachet do 45 m výšky"
+    },
+    {
+      "evidence_id": "TZ_EV_0205",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 9,
+      "categories": [
+        "konstrukce_podlaha",
+        "instalace_vytapeni",
+        "pozar_pbr",
+        "tkp_chapter"
+      ],
+      "paragraph_excerpt": "Skutečná požární odolnost je určena podle katalogu výrobce nebo tabulek publikace „Hodnoty požární odolnosti stavebních konstrukcí podle Eurokódu“ (dále jen „publikace“), mezní stavy odpovídají ČSN 73 0810. Závěr Souhrn všech nutných úprav a opatření pro dodržení podmínek požárně bezpečnostního řešení: - V řešeném objektu bude k dispozici minimální počet přenosných hasicích přístrojů . Hasicí pří…"
+    },
+    {
+      "evidence_id": "TZ_EV_0206",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 9,
+      "categories": [
+        "pozar_pbr"
+      ],
+      "paragraph_excerpt": "Rekonstrukce rodinného domu při splnění požárně bezpečnostního řešení vyhoví předpisům o požární ochraně."
+    },
+    {
+      "evidence_id": "TZ_EV_0207",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 10,
+      "categories": [
+        "instalace_tzb_zti",
+        "instalace_vytapeni",
+        "prace_truhlar",
+        "tkp_chapter",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "B.3.7 Úspora energie a tepelná ochrana budovy Zohlednění plnění požadavků na energetickou náročno st, úsporu energie a tepelnou ochranu budov. Tepelně technické vlastnosti stávajících stavebních konstrukcí a navržené konstrukce jsou v souladu s předpisy pro úsporu energií a ochrany tepla. Hodnoty součinitelů prostupu tepla nově navržených konstrukcí splňují doporučené hodnoty dle zákona č. 406/20…"
+    },
+    {
+      "evidence_id": "TZ_EV_0208",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 11,
+      "categories": [
+        "material_izolace",
+        "konstrukce_podlaha",
+        "prace_truhlar",
+        "tkp_chapter",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "B.3.9 Zásady ochrany stavby před negativními účinky vnějšího prostředí Protipovodňová opatření, ochrana před pronikáním ra donu z podloží, před bludnými proudy, před technickou i přírodní seizmicitou, před agresivní a tlakovou podzemní vodou, před hlukem a ostatními účinky - vliv poddolování, výskyt metanu apod. Protipovodňová opatření Stavba se nenachází v záplavovém území. Ochrana před pronikán…"
+    },
+    {
+      "evidence_id": "TZ_EV_0209",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 12,
+      "categories": [
+        "instalace_tzb_zti",
+        "instalace_pripojka",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "technické nebo dopravní infrastruktury, nebo je -li ohrožena bezpečnost, připojovací rozměry, výkonové kapacity a délky. Projekt nepředpokládá změnu napojovacích míst a výkonových kapacit a rozměrů. V rámci dalšího stupně PD bude provedeno jejich ověření. • Vodovod – Stávající budova je napojena stávající přípojkou veřejného vodovodu. Nemění se požadavky na výkonové kapacity a rozměry. • Kanaliza…"
+    },
+    {
+      "evidence_id": "TZ_EV_0210",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 12,
+      "categories": [
+        "konstrukce_podlaha",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Stávající stav: Stávající využití objektu je rodinný dům – dle ukazatele počtu stání náleží do skupiny bydlení. Podlahová plocha: 217,8 m 2 217,8 / 120 = 1,82 stání → stávající požadavek = 2 stání Navrhovaný stav: Navrhovaný stav nemění dosavadní využití objektu Podlahová plocha: 219,3 m 2 219,3 / 120 = 1,82 stání → nový požadavek = 2 stání Výpočet: stávající stav – navrhovaný stav = 2 – 2 = nová…"
+    },
+    {
+      "evidence_id": "TZ_EV_0211",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 13,
+      "categories": [
+        "material_beton",
+        "konstrukce_strecha",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "V návrhu je využit princip běžně využívaný v dané lokalitě, a to že vstup a vjezd na pozemek je z ulice Dvořákova na horní hranu pozemku. Stavba skladu, která je vsunu ta do svahu a její konstrukce tvoří opěrnou stěnu ve svahu, rovněž tvoří svou střechou ro vnou plochu v úrovni ulice Dvořákova. Tato plocha střechy může být využita pro odstavení vozidla. Nově navrhovan á a povolovaná stavba parkov…"
+    },
+    {
+      "evidence_id": "TZ_EV_0212",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 14,
+      "categories": [
+        "bourani_demontaz",
+        "instalace_tzb_zti",
+        "instalace_vytapeni",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "nálezu stavebních materiálů s obsahem nebezpečných látek bude jejich likvidace ohlášena a bude ji provádět renomovaná firma, která zaručí řádný a bezpečný technologický postup demontáže nebezpečných stavebních materiálů. Hluk, vibrace Při stavbě hluk ze stavební činnosti nepřekročí hygienické limity dané nařízením v chráněném venkovním prostoru. Budova nebude při svém provozu vytvářet hluk, vibra…"
+    },
+    {
+      "evidence_id": "TZ_EV_0213",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 15,
+      "categories": [
+        "konstrukce_strecha",
+        "instalace_tzb_zti",
+        "instalace_pripojka",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "B.8 Celkové vodohospodářské řešení Zejména zásobování stavby vodou, způsob zneškodňová ní odpadních vod, využití a nakládání se srážkovými vodami. Při provádění stavebních prací: • Voda pro stavbu bude zajištěna z veřejného vodovodu. • Staveniště bude na stávajícím pozemku odvodněno přirozeným vsakováním vod. Nebude třeba řešit speciální opatření a zřizovat odvodnění staveniště. Při provozu budov…"
+    },
+    {
+      "evidence_id": "TZ_EV_0214",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 16,
+      "categories": [
+        "bourani_demontaz",
+        "instalace_tzb_zti",
+        "instalace_pripojka",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Není předmětem řešení. f) způsob zajištění ochrany stávajících staveb civi lní ochrany v území dotčeném stavbou nebo staveništěm, jejich výčet, umístění a popis možného dotčení jejich funkce a provozuschopnosti. Stavbou není dotčena žádná stávající stavba civilní ochrany. B.10 Zásady organizace výstavby Dodavatel zpracuje vlastní návrh postupu a organizace výstavby včetně návrhu řešení přístupový…"
+    },
+    {
+      "evidence_id": "TZ_EV_0215",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 17,
+      "categories": [
+        "material_beton",
+        "material_zdivo"
+      ],
+      "paragraph_excerpt": "Přebytečné stavební materiály, obaly, odpady z demolice a ostatní stavební odpady budou na místě ihned tříděny dle nebezpečnosti odpadu a odvezeny na vhodnou řízenou skládku. Ke krátkodobému skladování odpadů a přepravě budou použity kontejnery, které musí být zabezpečeny proti manipulaci nepovolanými osobami. Odpad bude podle své kategorie tříděn (Vyhláška č. 8/2021 Sb. „Katalog odpadů“), dočasn…"
+    },
+    {
+      "evidence_id": "TZ_EV_0216",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 18,
+      "categories": [
+        "bourani_demontaz",
+        "prace_hloubeni",
+        "pozar_pbr",
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "Opatření při nakládání s azbestem V dotčených částech stávající budovy nebyla v rámci předběžného ohledání zjištěna přítomnost azbestu (podrobný azbestový průzkum proveden nebyl). V rámci přípravy stavby a následných demoličních pracích bude provedeno podrobné ohledání. Vzhledem k charakte ru stavebních prací, se přítomnost azbestu se nepředpokládá, nicméně v případě nálezu stavebních materiálů s…"
+    },
+    {
+      "evidence_id": "TZ_EV_0217",
+      "source_pdf": "inputs/tz/common/B_Souhrnna_TZ_EAR.pdf",
+      "page": 19,
+      "categories": [
+        "stav_zachovano"
+      ],
+      "paragraph_excerpt": "i) požadavky na postupné uvádění stavby do provozu (užívání), požadavky na průběh a způsob přípravy a realizace výstavby a další specifické po žadavky, Nejsou stanoveny žádné specifické požadavky na výstavbu. j) návrh fází výstavby za účelem provedení kontroln ích prohlídek, 1. Prohlídka stávající stavby před započetím prací 2. Prohlídka hrubé stavby 3. Kolaudace stavby k) dočasné objekty. Dočasn…"
+    }
+  ]
+}
