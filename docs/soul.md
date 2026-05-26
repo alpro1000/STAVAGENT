@@ -352,6 +352,98 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-26 — Session: Phase C closing (G0–G6 + G-final) — Rimsa calibration + cyclic scheduler
+
+**Topic:** Phase C of Rimsa Calibration FullStack v1 (per `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`, Phase A audit `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`). Single-batch execution G0→G6→G-final on branch `claude/kind-wright-5nBQ2` (piggyback on Týden 3 Knowledge codegen branch — single PR for both bodies of work). All 7 gates shipped atomically; ~470 LOC engine + ~370 LOC tests + ~230 LOC docs. **Tests: 1136 baseline → 1197 (+61 across Týden 3 KB + Phase C cyclic).**
+
+**Rozhodnuto:**
+- **G0 preflight:** Branch state verified (claude/kind-wright-5nBQ2, Týden 3 just committed). Baseline CURING_DAYS_TABLE `C30+ × class 4` = `[14, 9, 7, 5, 3]` cold→hot. 2 maturity tests assert old values. Path = YAML edit (NOT maturity.ts direct) thanks to Týden 3 codegen pipeline.
+- **G1 calibration:** `kb/tkp18_maturity.yaml` C30+ class 4 row → `[30, 18, 13, 9, 5]` cold→hot (= user spec `[5, 9, 13, 18, 30]` hot→cold reversed to file convention). Position 2 (15-25°C band) = 9d, eliminating rimsa @ 15°C bug. Regenerated TS via `npm run gen:knowledge`. 2 maturity tests updated with Phase C G1 comments.
+- **G2 SchedulerMode infrastructure:** `SchedulerMode = 'discrete_cyclic' | 'legacy'` union + `SCHEDULER_MODE_DEFAULTS: Record<StructuralElementType, SchedulerMode>` (rimsa → discrete_cyclic, 22 others → legacy) + `getSchedulerMode(elementType, override?)` helper, all in element-scheduler.ts. Extended PlannerInput with `scheduler_mode?: SchedulerMode` (NO UI exposure per Q2). Follows existing CuringClass/CementType literal-union pattern.
+- **G3 scheduleCyclic body:** ~180 LOC new internal function in element-scheduler.ts. Cycle: SET (first only) → REB → POUR → WAIT (intermediates, strip-strength via calculateCuring(strip_strength_pct=70)) → REL (intermediates) → CURE (last, full TKP18 tail) → STR (last). `toShifts(hours, shift_h=8)` exported helper for hour→shift discretization. Dispatch at `scheduleElement()` first line: cyclic mode routes to scheduleCyclic; legacy bytwise unchanged. Crew parallelism: num_rebar_crews ≥ 2 overlaps REB(T_{i+1}) with WAIT(T_i). Graceful n=1 degradation (no special case needed; loop just skips intermediate accounting).
+- **G4 orchestrator wire-up:** `getSchedulerMode(elementType, input.scheduler_mode)` + when `fwSystem.unit === 'bm'` (T-bednění) compute `cyclicSetupH = fwSystem.assembly_h_m2 × fwArea` + `cyclicStripH = fwSystem.disassembly_h_m2 × fwArea` → pass to scheduleElement with scheduler_mode + shift_h + setup_h + strip_h. Decision logged for audit trail. Legacy elements ignore the new fields.
+- **G5 vitest:** 23 new tests in `scheduler-cyclic.test.ts` covering all 6 spec categories (single-tact, multi-tact, crew parallelism, mode dispatch, strip-strength wait, full cure tail) + toShifts edge cases + output shape parity + critical_path layout + setup_h override.
+- **G6 backlog + MCP boundary docs:** `backlog/calc_hardcoded_to_kb.md` tracks 13 hardcoded matrices from Phase A §A.7.4 (5 already done by Týden 3, 8 open); `docs/architecture/mcp_calculator_boundary.md` documents Phase F finding — calculator.py:766-786 silently drops `exposure_class` + `curing_class` on wire to Monolit `/api/calculate` (P2 post-CSC fix).
+- **G-final consolidation:** This soul.md entry replaces the standalone G1 entry (chronologically same session, semantically one task). next-session.md handoff updated for Phase D (T-bednění productivity calibration) or Phase E (UI cross-section + length_per_rimsa_bm widget).
+
+**Tests delta per gate:**
+| Gate | New tests | Total | Notes |
+|---|---|---|---|
+| G0 | 0 | 1174 | preflight only |
+| G1 | 0 (2 updated) | 1174 | calibration; existing tests modified |
+| G2 | 0 | 1174 | type infra only, no caller |
+| G3 | 0 | 1174 | cyclic body, no caller |
+| G4 | 0 | 1174 | wire-up; element-audit indirectly exercises rimsa cyclic |
+| G5 | **+23** | **1197** | dedicated cyclic suite |
+| G6 | 0 | 1197 | docs only |
+
+**Rejected during Phase C:**
+- G2 orchestrator threading fix — Phase A closing revision (direct read 1535-1576) confirmed threading IS correct; real bug was TS table calibration mismatch (G1).
+- Splitting Týden 3 + Phase C into 2 PRs — codegen infra is the enabler of G1 YAML edit; atomic shipping cleaner for review and revert.
+- Adding `relocate_h_per_bm` to DOKA Frami YAML — heuristic (0.5 × setup) inside scheduleCyclic adequate for sliding T-bednění; per-system calibration is Phase D scope.
+- Cyclic Gantt rendering — orchestrator UI uses tact_details directly; ASCII Gantt deferred.
+
+**Otevřené otázky / risks:**
+- **rimsa end-to-end behavior change.** Before Phase C: rimsa scheduled via legacy DAG with class-4 wait_days = 5d (G1 bug). After: scheduled via cyclic with class-4 = 9d. Existing element-audit smoke test passes (output shape preserved), but the **actual day count for rimsa has shifted**. No production rimsa Vitest fixture asserts specific day counts (Phase A §A.2 noted "no SO-250 Vitest fixture"). **Real-world calibration validation pending** — see next-session.md.
+- Phase C G1 calibration values (cold side: 30d @ -5°C–5°C for C30+ class 4) are aggressive vs ČSN EN 13670 NA.2 baseline (was 14d). Matches production Python MCP per user spec but lacks independent verification against TKP 18 06/2025 source PDF.
+- T-bednění productivity hours pass through `fwSystem.assembly_h_m2` which is documented as "hours per m² OR per bm when unit='bm'". Type-system doesn't enforce; relies on convention. Future: split into `assembly_h_m2?: number` + `assembly_h_bm?: number` fields (low-priority refactor).
+
+**Artefakty této session (Týden 3 + Phase C, 8 commits on `claude/kind-wright-5nBQ2`):**
+- `032c6b7` FEAT(knowledge): codegen pipeline + 5 Top-5 integrations
+- `f842ac2` FIX: TKP18 curing class 4 calibration (G1)
+- `2b6f18e` FEAT(scheduler): SchedulerMode infrastructure (G2)
+- `cd17d96` FEAT(scheduler): cyclic phase model + toShifts (G3)
+- `5b4d85a` FEAT(orchestrator): wire cyclic + T-bednění productivity (G4)
+- `c9f1460` TEST(scheduler): cyclic regression suite (G5)
+- `6456bde` DOCS: backlog + MCP boundary (G6)
+- (G-final commit follows — soul.md + next-session.md)
+
+---
+
+### 2026-05-26 — Session: Týden 3 Knowledge Integration top-5 (codegen pipeline + 5 integrations)
+
+**Topic:** Build-time TS codegen pipeline activated — `kb/*.yaml` → `Monolit-Planner/shared/src/kb-generated/*.ts` → engines. Top-5 integrations per audit `2026-05-14_inventory_with_gcs.md` shipped: TKP18 maturity tables, Pokorný/Suchánek pour sequences, DOKA Frami katalog (10 systémů), ČSN EN 12812 / DIN 18218 lateral pressure, ÚRS/OTSKP routing per project_type. Codegen tool = plain Node.js (`scripts/gen-knowledge.mjs`, no transpile). CI drift check (`npm run gen:knowledge:check`) wired do `.github/workflows/monolit-planner-ci.yml` jako pre-test step.
+
+**Rozhodnuto:**
+- **Scope:** Partial Top-5 only (NE full Variant D migration — to je Týden 4+).
+- **Python codegen:** TS-only. Core engine dnes nečte tyto matrices (B2/B3 jsou loaded jen pro LLM context), Python output by byl dead weight.
+- **DIN 18218 zdroj:** ČSN EN 12812 + Pokorný/Suchánek + DOKA/PERI brochury jako free fallback. Nákup DIN 18218 (~€100) odložen.
+- **PR strategy:** 1 velký PR (codegen infra je shared dependency všech 5 tasks; atomic 5 PRs by způsobil merge konflikty na `kb/` struktuře).
+- **Codegen tool stack:** plain Node.js + `js-yaml` (no zod/ajv, manual structural validation). 5 YAMLs = ~30 LOC validator per integration; upgrade na schema lib pokud integration count >10.
+- **Namespacing v `kb-generated/index.ts`:** `export * as TKP18_MATURITY from './tkp18-maturity.js'` per module (per-modul `SOURCE_CITATION` symbol collision jinak crashne index re-export).
+- **Engine wire-up pattern:** import KB constant + alias to existing local name (`const CURING_DAYS_TABLE = KB_CURING_DAYS_TABLE`). Public API stays identical → 1136 existujících testů zelených bez modifikace.
+- **DOKA Frami catalog wiring:** spread `...KB_DOKA_FORMWORK_SYSTEMS` na začátku `FORMWORK_SYSTEMS[]`, PERI/ULMA/NOE/traditional zůstávají inline. 10 DOKA entries (Frami, Framax, Top 50, Dokaflex, SL-1, 3× Římsové, Staxo 100, DOKA MSS) přesunuto verbatim do `kb/doka_frami_catalog.yaml`.
+- **Test counts:** baseline byl ve skutečnosti **1136** (NE 1088 jak píše CLAUDE.md, ani 1158 jak píše task brief). Po session: **1174 testů, 27 files** (1136 + 38 new in `kb-generated.test.ts`).
+
+**Odmítnuto:**
+- Full `kb/` migration všech 9 B-buckets v jedné session — Týden 4+ work.
+- Replace `pour-decision.ts:ELEMENT_DEFAULTS` celý — engine-level Record<StructuralElementType,…> s strict exhaustiveness, refactor je riskantní pro 1088+ existujících testů. Místo toho přidán paralelní `POUR_SEQUENCES` katalog (textbook recommendations), ELEMENT_DEFAULTS zůstává v engine.
+- Acquire DIN 18218 standard — ČSN EN 12812 + literatura kryje real CZ use cases.
+- Husky pre-commit hook na `gen:knowledge` — script je rychlý ale přidává friction; CI drift check stačí.
+- Python codegen — žádný Core consumer dnes neexistuje.
+
+**Otevřené otázky:**
+- Pokud Core (Python) začne v budoucnu konzumovat strukturované matrices (např. pro REST endpoint vracející TKP18 limity), schema lift do `kb/_schema/*.json` (language-neutral) + paralelní Python renderer v `gen-knowledge.mjs` (cca 1-2 dni práce).
+- `tkp18_maturity.yaml` má `default_curing_class_by_element` jako plain `Record<string, 2|3|4>` — engine ho castuje na `Partial<Record<StructuralElementType, CuringClass>>`. Pokud někdy přibude element_type který je v YAML ale ne v `StructuralElementType` union, cast je sice nepravdivý ale runtime OK. Sledovat při Týden 4 element type rozšířeních.
+- Drift check v CI běží ze workspace root (`npm ci || npm install` fallback) — pokud npm ci selže na první-time `package-lock.json` regenerate, install na CI vezme ~30s nav?ic. Akceptováno.
+
+**Co dál:**
+- **Vanilla GPT vs STAVAGENT re-test** (per task POST-TASK section): ověřit, že STAVAGENT teď cituje konkrétní TKP18 čísla s `pjpk.rsd.cz` referencí (data je v `SOURCE_CITATION` exportu).
+- **Týden 4** — kandidáti pro další codegen integrations: B3 PERI katalog (parallel s DOKA, ~17 systémů), B4 production benchmarks (rebar matrix už máme jako TS, OK), B9 equipment specs (pump/crane catalog).
+- **Týden 5** — Geometry Calculator (per task explicit non-goal pro tuto session).
+- **Potenciální follow-up:** přidat husky pre-push hook na `npm run gen:knowledge:check` (kompromis mezi pre-commit friction + pure-CI drift discovery delay).
+
+**Artefakty této session:**
+- `docs/specs/knowledge-codegen-pipeline/{requirements,design,tasks}.md` (spec triple)
+- `docs/architecture/knowledge_codegen_pipeline.md` (1-page reference)
+- `scripts/gen-knowledge.mjs` (codegen tool, ~350 LOC)
+- `kb/` (5 YAML zdrojů)
+- `Monolit-Planner/shared/src/kb-generated/` (6 souborů: 5 generated + index)
+- `Monolit-Planner/shared/src/kb-generated/kb-generated.test.ts` (38 testů)
+- Updated: `package.json` (gen:knowledge scripts + js-yaml dep), `maturity.ts`, `lateral-pressure.ts`, `formwork-systems.ts`, `monolit-planner-ci.yml`
+
+---
+
 ### 2026-05-25 — Session: Pattern 15 + 16 codified — Work-First Catalog-Last + Universal Work Ontology
 
 **Topic:** Architectural patterns codification. Pattern 13 (Synthetic Metrics) + Pattern 14 (Forward-tracked _analytical_journey) były přidány paralelně. Tato session přidává Pattern 15 + 16 jako logické rozšíření — workflow discipline + international expansion strategy.

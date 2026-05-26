@@ -1,0 +1,71 @@
+# Lateral Pressure on Formwork — Constants + k-factor tables
+# Source: ČSN EN 12812 (Falsework) + DIN 18218 ranges (paywalled, not full text)
+#         + Pokorný/Suchánek "Betonové mosty II" lateral-pressure chapter
+#         + verbatim from Monolit-Planner/shared/src/calculators/lateral-pressure.ts
+# Used by: lateral-pressure.ts → calculateLateralPressure() + getConsistencyKFactor()
+#
+# Formula:
+#   p = ρ × g × h × k   (kN/m²)
+#   ρ = reinforced concrete density (kg/m³)
+#   g = gravitational acceleration (m/s²)
+#   h = pour height per stage (m) — NOT total element height if staged
+#   k = pour rate / consistency coefficient
+#
+# Edit values here and run `npm run gen:knowledge` to regenerate TS.
+
+source_citation:
+  primary_norm: "ČSN EN 12812 (Falsework — performance requirements + general design)"
+  secondary_reference: "DIN 18218 (Frischbetondruck auf lotrechte Schalungen) — not full-text, only k ranges via DOKA/PERI brochures"
+  literature_fallback:
+    - "Pokorný, Suchánek: Betonové mosty II — lateral-pressure chapter"
+    - "DOKA Frischbetondruck Technical Information"
+    - "PERI Frischbetondruck katalog ranges"
+  extracted_from:
+    - "Monolit-Planner/shared/src/calculators/lateral-pressure.ts (getConsistencyKFactor)"
+  decision_notes: |
+    Týden 3 (2026-05-26): chose ČSN EN 12812 + literatura instead of buying
+    DIN 18218 (~€100). DOKA/PERI brochure ranges + EN 12812 cover all real
+    use cases in CZ market. Future update if DIN acquired officially.
+  extraction_date: "2026-05-26"
+
+# ─── Physical constants ───────────────────────────────────────────────
+
+constants:
+  rho_kg_m3: 2400      # reinforced concrete density
+  g_m_s2: 9.81         # gravitational acceleration
+  min_stage_height_m: 1.5
+  default_cure_between_stages_h: 12   # vertical elements, between záběry
+
+# ─── k-factor by concrete consistency (DIN 18218) ────────────────────
+# Primary driver. Override-able via explicit k_factor in engine.
+
+k_factors_by_consistency:
+  standard: 0.85    # S1–S2, slow rise ≤ 1 m/h
+  plastic:  1.00    # S3–S4, controlled pump
+  scc:      1.50    # samozhutnitelný (SCC)
+
+# ─── Pour rate (m/h) → k coefficient (ČSN EN 12812) ───────────────────
+# Fallback when consistency not specified. Bands evaluated in order;
+# first match wins.
+
+pour_rate_to_k:
+  - max_rate_m_h: 1.0
+    k: 1.00
+    description: "≤ 1 m/h (gravity, crane bucket, hand pour)"
+  - max_rate_m_h: 2.0
+    k: 1.20
+    description: "1–2 m/h (slow pump, controlled pour)"
+  - max_rate_m_h: 999.0
+    k: 1.50
+    description: "> 2 m/h (fast pump, SCC, high-flow placement)"
+
+# ─── Shape correction factors (Pokorný/Suchánek) ──────────────────────
+# Multiplier on k for non-flat geometry. Engine consumer can use these.
+
+shape_corrections:
+  flat_wall:       1.0
+  abutment_box:    1.2
+  pier_circular:   1.5
+  pier_rectangular: 1.3
+  corner_inner:    1.6
+  corner_outer:    1.8
