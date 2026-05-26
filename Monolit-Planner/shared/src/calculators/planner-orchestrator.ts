@@ -41,6 +41,7 @@ import { calculateRebarLite } from './rebar-lite.js';
 import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
 import type { SchedulerMode } from './element-scheduler.js';
+import { getSchedulerMode } from './element-scheduler.js';
 import { findFormworkSystem, findMssSystem, FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod, filterFormworkByPressure } from './lateral-pressure.js';
 import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
@@ -2012,6 +2013,31 @@ export function planElement(input: PlannerInput): PlannerOutput {
     );
   }
 
+  // Phase C G4 (2026-05-26): resolve scheduler mode + derive cyclic
+  // productivity from the recommended T-bednění catalog entry (rimsa).
+  // Mode default per SCHEDULER_MODE_DEFAULTS[elementType]; override via
+  // input.scheduler_mode. Cyclic productivity reads fwSystem.assembly_h_m2
+  // (which for unit='bm' systems is h/bm) × fwArea (bm) → raw hours; the
+  // scheduler then discretizes via toShifts(hours, shift_h). Relocate has
+  // no dedicated catalog field — scheduler heuristic (0.5 × setup) covers
+  // sliding-form cornice work.
+  const resolvedSchedulerMode = getSchedulerMode(elementType, input.scheduler_mode);
+  const isCyclicMode = resolvedSchedulerMode === 'discrete_cyclic';
+  let cyclicSetupH: number | undefined;
+  let cyclicStripH: number | undefined;
+  if (isCyclicMode && fwSystem.unit === 'bm') {
+    cyclicSetupH = fwSystem.assembly_h_m2 * fwArea;
+    cyclicStripH = fwSystem.disassembly_h_m2 * fwArea;
+  }
+  if (isCyclicMode) {
+    log.push(
+      `Scheduler: discrete_cyclic for ${elementType} (${fwSystem.name})` +
+      (cyclicSetupH != null
+        ? ` — setup ${cyclicSetupH.toFixed(1)} h, strip ${cyclicStripH?.toFixed(1)} h, shift ${shift}h`
+        : ' — using day-based defaults (non-bm formwork)')
+    );
+  }
+
   const scheduleResult = scheduleElement({
     num_tacts: pourDecision.num_tacts,
     num_sets: numSets,
@@ -2026,6 +2052,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
     rebar_lag_pct: 50,
     scheduling_mode: pourDecision.scheduling_mode,
     cure_between_neighbors_days: pourDecision.cure_between_neighbors_h / 24,
+    // Phase C G4: cyclic-mode plumbing (ignored when mode='legacy')
+    scheduler_mode: resolvedSchedulerMode,
+    shift_h: shift,
+    setup_h: cyclicSetupH,
+    strip_h: cyclicStripH,
     // v4.0: Per-záběr durations (variable záběr volumes)
     per_tact_concrete_days: perTactConcreteDays,
     pert_params: input.enable_monte_carlo ? {
