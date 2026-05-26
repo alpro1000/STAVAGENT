@@ -330,6 +330,183 @@ describe('Phase C G3: cyclic ElementScheduleOutput shape parity', () => {
   });
 });
 
+// ─── PR #1223 review regression locks (3 fixes from Amazon Q) ───────────
+
+describe('Phase C G3 — PR review fix #1: multi-crew rebar overlap reduces total schedule', () => {
+  const baseInput: ElementScheduleInput = {
+    num_tacts: 5,
+    num_sets: 1,
+    assembly_days: 3,    // setupShifts = 3
+    rebar_days: 4,       // rebarShifts = 4
+    concrete_days: 1,
+    curing_days: 9,
+    stripping_days: 1,
+    scheduler_mode: 'discrete_cyclic',
+    shift_h: 8,
+  };
+
+  it('overlap savings actually show up in total_days (not just savings_pct ratio)', () => {
+    const single = scheduleElement({ ...baseInput, num_rebar_crews: 1 });
+    const dual = scheduleElement({ ...baseInput, num_rebar_crews: 2 });
+
+    // Per scheduler: overlapPerIntermediate = min(rebarShifts=4, waitShifts default 2) = 2
+    // Number of intermediates = num_tacts - 1 = 4
+    // Expected savings = 4 × 2 = 8 shifts
+    const observedSavings = single.total_days - dual.total_days;
+    expect(observedSavings).toBeGreaterThanOrEqual(4);  // at least (n-1) × 1
+    expect(observedSavings).toBeLessThanOrEqual(12);    // bounded by (n-1) × min(rebar, wait+slack)
+  });
+
+  it('td.rebar[0] reflects overlap — non-first tact rebar starts BEFORE prev relocate end', () => {
+    const dual = scheduleElement({ ...baseInput, num_rebar_crews: 2 });
+    // Without the rebStart=cursor fix, T1.rebar[0] would equal T0.relocate[1]
+    // (sequential after relocate). With the fix, T1.rebar[0] should be earlier
+    // by overlapPerIntermediate shifts.
+    const t0 = dual.tact_details[0];
+    const t1 = dual.tact_details[1];
+    expect(t0.relocate).toBeDefined();
+    // T1's rebar starts at the cursor (which was decremented by overlap)
+    // so it should be < T0.relocate[1]
+    expect(t1.rebar[0]).toBeLessThan(t0.relocate![1]);
+  });
+});
+
+describe('Phase C G3 — PR review fix #2: TactDetail.relocate vs stripping semantic correctness', () => {
+  const sixTactInput: ElementScheduleInput = {
+    num_tacts: 6,
+    num_sets: 1,
+    assembly_days: 3,
+    rebar_days: 2,
+    concrete_days: 1,
+    curing_days: 9,
+    stripping_days: 1,
+    scheduler_mode: 'discrete_cyclic',
+    shift_h: 8,
+  };
+
+  it('intermediate tacts: relocate defined + non-zero-length, stripping zero-length placeholder', () => {
+    const result = scheduleElement(sixTactInput);
+    // Tacts 0..4 are intermediates (last is index 5)
+    for (let i = 0; i < 5; i++) {
+      const td = result.tact_details[i];
+      expect(td.relocate, `tact ${i + 1} should have relocate`).toBeDefined();
+      const relocateDur = td.relocate![1] - td.relocate![0];
+      expect(relocateDur, `tact ${i + 1} relocate should be non-zero`).toBeGreaterThan(0);
+      const stripDur = td.stripping[1] - td.stripping[0];
+      expect(stripDur, `tact ${i + 1} stripping should be zero-length placeholder`).toBe(0);
+    }
+  });
+
+  it('last tact: stripping non-zero, relocate undefined (form is struck, not relocated)', () => {
+    const result = scheduleElement(sixTactInput);
+    const last = result.tact_details[result.tact_details.length - 1];
+    expect(last.relocate, 'last tact should NOT have relocate').toBeUndefined();
+    const stripDur = last.stripping[1] - last.stripping[0];
+    expect(stripDur, 'last tact stripping should be non-zero').toBeGreaterThan(0);
+  });
+
+  it('intermediate relocate immediately follows curing end (no gap)', () => {
+    const result = scheduleElement(sixTactInput);
+    for (let i = 0; i < 5; i++) {
+      const td = result.tact_details[i];
+      expect(td.relocate![0], `tact ${i + 1} relocate.start should equal curing.end`)
+        .toBe(td.curing[1]);
+    }
+  });
+
+  it('n=1 (single tact, also "last"): stripping non-zero, no relocate', () => {
+    const result = scheduleElement({
+      ...sixTactInput,
+      num_tacts: 1,
+    });
+    const t0 = result.tact_details[0];
+    expect(t0.relocate).toBeUndefined();
+    expect(t0.stripping[1] - t0.stripping[0]).toBeGreaterThan(0);
+  });
+});
+
+describe('Phase C G3 — PR review fix #3: sequential_days math matches manual baseline', () => {
+  it('n=6 single-crew: matches setup + (n-1)*relocate + n*(rebar+pour) + (n-1)*wait + finalCure + finalStrip', () => {
+    // Inputs chosen so each shift-converted value is integer + non-trivial
+    const input: ElementScheduleInput = {
+      num_tacts: 6,
+      num_sets: 1,
+      assembly_days: 3,    // setupShifts = 3 (via toShifts(3*8, 8))
+      rebar_days: 2,
+      concrete_days: 1,
+      curing_days: 9,      // finalCureShifts = 9
+      stripping_days: 1,
+      scheduler_mode: 'discrete_cyclic',
+      shift_h: 8,
+      num_rebar_crews: 1,  // no overlap → total == sequential when single-crew
+    };
+    const result = scheduleElement(input);
+
+    // Manual baseline per the corrected formula:
+    //   setup + (n-1)*relocate + n*(rebar+pour) + (n-1)*wait + finalCure + finalStrip
+    const setupShifts = 3;
+    const relocateShifts = Math.max(1, Math.ceil(setupShifts * 0.5));  // 2
+    const rebarShifts = 2;
+    const pourShifts = 1;
+    const waitShifts = 2;  // default fallback (no maturity_params)
+    const finalCureShifts = 9;
+    const finalStripShifts = 1;
+    const n = 6;
+
+    const expectedBaseline = setupShifts
+      + (n - 1) * relocateShifts
+      + n * (rebarShifts + pourShifts)
+      + (n - 1) * waitShifts
+      + finalCureShifts
+      + finalStripShifts;
+
+    expect(result.sequential_days).toBe(expectedBaseline);
+  });
+
+  it('n=6 single-crew: total_days equals sequential_days (no overlap savings possible)', () => {
+    const input: ElementScheduleInput = {
+      num_tacts: 6,
+      num_sets: 1,
+      assembly_days: 3,
+      rebar_days: 2,
+      concrete_days: 1,
+      curing_days: 9,
+      stripping_days: 1,
+      scheduler_mode: 'discrete_cyclic',
+      shift_h: 8,
+      num_rebar_crews: 1,
+    };
+    const result = scheduleElement(input);
+    // Without crew overlap, the cyclic scheduler is purely sequential —
+    // total_days MUST equal sequential_days. If they diverge, something
+    // is double-counting (the bug Fix #3 closed).
+    expect(result.total_days).toBe(result.sequential_days);
+    expect(result.savings_pct).toBe(0);
+  });
+
+  it('n=6 dual-crew: savings_pct reflects ONLY real parallelism, not phantom relocate', () => {
+    const input: ElementScheduleInput = {
+      num_tacts: 6,
+      num_sets: 1,
+      assembly_days: 3,
+      rebar_days: 2,
+      concrete_days: 1,
+      curing_days: 9,
+      stripping_days: 1,
+      scheduler_mode: 'discrete_cyclic',
+      shift_h: 8,
+      num_rebar_crews: 2,
+    };
+    const result = scheduleElement(input);
+
+    // overlapPerIntermediate = min(rebarShifts=2, waitShifts=2) = 2
+    // Real savings = (n-1) × overlap = 5 × 2 = 10 shifts
+    const expectedSavings = 5 * 2;
+    expect(result.savings_days).toBe(expectedSavings);
+    expect(result.total_days).toBe(result.sequential_days - expectedSavings);
+  });
+});
+
 // ─── Direct hours override (Phase C G4 productivity wiring) ──────────────
 
 describe('Phase C G4: cyclic accepts raw-hour productivity overrides', () => {
