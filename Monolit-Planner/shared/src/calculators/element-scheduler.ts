@@ -189,6 +189,19 @@ export interface TactDetail {
   curing: [number, number];
   /** Prestressing [start, finish]. Only present when prestress_days > 0. */
   prestress?: [number, number];
+  /**
+   * Phase C G3 (2026-05-26): formwork relocate event between WAIT(T_i) and
+   * REB(T_{i+1}). Only set for intermediate tacts in `discrete_cyclic` mode
+   * (cornice T-bednění cycle). Legacy DAG scheduler never populates this.
+   * Mutually exclusive with `stripping` per tact in cyclic mode.
+   */
+  relocate?: [number, number];
+  /**
+   * Final formwork strip. Required by legacy scheduler. In `discrete_cyclic`
+   * mode, only the LAST tact carries a non-zero stripping interval; all
+   * earlier tacts have a zero-length placeholder `[t, t]` (form has not
+   * been struck — it slid to the next position via `relocate` instead).
+   */
   stripping: [number, number];
 }
 
@@ -949,22 +962,29 @@ function scheduleCyclic(input: ElementScheduleInput): ElementScheduleOutput {
       postCureCursor = preInterval[1];
     }
 
-    // Last action: strip (last tact) or relocate (intermediate)
+    // Last action — last tact: STRIP. Intermediate tacts: RELOCATE
+    // (separate field per Phase C G6 review; stripping carries a
+    // zero-length placeholder so legacy consumers reading td.stripping
+    // see a no-op interval rather than the relocate's [start, end]).
     let strStart: number;
     let strEnd: number;
+    let relInterval: [number, number] | undefined;
     if (isLast) {
       strStart = postCureCursor;
       strEnd = strStart + finalStripShifts;
     } else {
-      // Relocate after WAIT; apply rebar-overlap savings to the relocate's
-      // effective contribution to the cursor.
+      // Relocate after WAIT; consumes the formwork crew, moves the
+      // sliding T-bednění to the next position.
       const relStart = curEnd;
       const relEnd = relStart + relocateShifts;
-      strStart = relStart;
+      relInterval = [relStart, relEnd];
+      // stripping is a zero-length placeholder — form has not been
+      // struck on this tact, only moved.
+      strStart = relEnd;
       strEnd = relEnd;
     }
 
-    cursor = strEnd;
+    cursor = isLast ? strEnd : (relInterval![1]);
     // If next tact's REB will overlap with this tact's WAIT, the next
     // iteration starts asmStart earlier by overlapPerIntermediate shifts.
     if (!isLast) cursor -= overlapPerIntermediate;
@@ -980,6 +1000,7 @@ function scheduleCyclic(input: ElementScheduleInput): ElementScheduleOutput {
       concrete: [conStart, conEnd],
       curing: [curStart, curEnd],
       ...(preInterval ? { prestress: preInterval } : {}),
+      ...(relInterval ? { relocate: relInterval } : {}),
       stripping: [strStart, strEnd],
     });
   }
