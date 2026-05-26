@@ -32,7 +32,7 @@
 import type { PertParams, MonteCarloResult, ThreePointEstimate } from './pert.js';
 import { toThreePoint, runMonteCarlo } from './pert.js';
 import type { ConcreteClass, CementType, ElementType } from './maturity.js';
-import { getStripWaitHours, curingThreePoint } from './maturity.js';
+import { getStripWaitHours, curingThreePoint, calculateCuring } from './maturity.js';
 import type { StructuralElementType } from './pour-decision.js';
 
 // ─── Scheduler mode (Phase C G2 — 2026-05-26) ──────────────────────────────
@@ -103,6 +103,21 @@ export function getSchedulerMode(
   return SCHEDULER_MODE_DEFAULTS[elementType] ?? 'legacy';
 }
 
+/**
+ * Convert hours of work to integer shift count (cyclic mode discretization).
+ * Always returns ≥ 1 — a zero-hour activity still consumes 1 shift on a real
+ * construction site for setup/cleanup.
+ *
+ * Examples:
+ *   toShifts(19, 8)  → 3 shifts  (T-bednění 0.38 h/bm × 50 bm)
+ *   toShifts(0.5, 8) → 1 shift   (rounded up, never zero)
+ *   toShifts(16, 8)  → 2 shifts  (exact fit)
+ */
+export function toShifts(hours: number, shift_h: number = 8): number {
+  if (shift_h <= 0) return 1;
+  return Math.max(1, Math.ceil(hours / shift_h));
+}
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 export interface ElementScheduleInput {
@@ -144,6 +159,25 @@ export interface ElementScheduleInput {
     cement_type?: CementType;
     element_type?: ElementType;
   };
+
+  // Phase C G3 (2026-05-26): scheduler mode dispatch. When 'discrete_cyclic',
+  // routes to scheduleCyclic() for cornice-style elements (rimsa T-bednění).
+  // Default 'legacy' preserves existing scheduleElement DAG behavior.
+  scheduler_mode?: SchedulerMode;
+
+  // Phase C G3: shift hours per day for cyclic mode toShifts() conversion.
+  // Default 8 in cyclic mode (standard CZ shift); legacy ignores this field.
+  shift_h?: number;
+
+  // Phase C G4: cornice T-bednění productivity hooks. When provided in cyclic
+  // mode, the scheduler uses these in place of derived defaults. All optional —
+  // missing values fall back to (relocate ≈ 0.5 × setup; strip = stripping_days).
+  /** Setup (first-tact assembly) per cycle, hours. */
+  setup_h?: number;
+  /** Relocate (intermediate-tact form move) per cycle, hours. */
+  relocate_h?: number;
+  /** Final strip (last-tact removal), hours. */
+  strip_h?: number;
 }
 
 export interface TactDetail {
@@ -206,6 +240,13 @@ interface Scheduled {
 // ─── Main Scheduler ─────────────────────────────────────────────────────────
 
 export function scheduleElement(input: ElementScheduleInput): ElementScheduleOutput {
+  // Phase C G3 (2026-05-26): dispatch by scheduler_mode. Default 'legacy'
+  // preserves the original DAG/RCPSP behavior used by 22 element types;
+  // 'discrete_cyclic' routes to the cornice T-bednění cycle model.
+  if ((input.scheduler_mode ?? 'legacy') === 'discrete_cyclic') {
+    return scheduleCyclic(input);
+  }
+
   const {
     num_tacts,
     num_sets: rawSets,
@@ -768,4 +809,221 @@ function fillRow(row: string[], range: [number, number], ch: string): void {
 
 function round(v: number): number {
   return Math.round(v * 10) / 10;
+}
+
+// ─── Discrete Cyclic Scheduler (Phase C G3 — 2026-05-26) ───────────────────
+//
+// Cycle model for cornice-style elements (rimsa T-bednění). Single sliding
+// formwork moves position-to-position; setup once, relocate (n-1) times,
+// strip once at the end. Intermediate tacts wait only for strip-strength
+// (~2-3 d via calculateCuring strip_strength_pct=70); last tact carries the
+// full TKP18 class-4 curing tail (typ. 9-30 d per kb/tkp18_maturity.yaml).
+//
+// Geometric layout (n=4 tacts, single rebar crew):
+//
+//   T0: [SET][REB][POUR][WAIT][REL]
+//                                  T1: [REB][POUR][WAIT][REL]
+//                                                            T2: [REB][POUR][WAIT][REL]
+//                                                                                      T_last: [REB][POUR][CURE][STR]
+//
+// With num_rebar_crews ≥ 2, REB(T_{i+1}) overlaps with WAIT(T_i) (rebar crew
+// pre-ties off-form). Savings ≈ (n-1) × min(WAIT, REB).
+//
+// Graceful degradation for n=1: setup + rebar + pour + final-cure + strip.
+// No relocate, no intermediate wait. Output shape unchanged.
+
+function scheduleCyclic(input: ElementScheduleInput): ElementScheduleOutput {
+  const {
+    num_tacts,
+    assembly_days,
+    rebar_days,
+    concrete_days,
+    curing_days,
+    stripping_days,
+    prestress_days = 0,
+    num_rebar_crews = 1,
+  } = input;
+
+  const shift_h = input.shift_h ?? 8;
+
+  if (num_tacts <= 0) {
+    return {
+      total_days: 0, sequential_days: 0, savings_days: 0, savings_pct: 0,
+      tact_details: [], critical_path: [], gantt: '',
+      utilization: { formwork_crews: 0, rebar_crews: 0, sets: [] },
+      bottleneck: null,
+    };
+  }
+
+  // ─── 1. Per-cycle durations (integer shifts, ≥ 1) ──────────────────────
+  // Inputs are in days. asShifts() converts to integer shift count via toShifts
+  // (day-to-hour-to-shift roundtrip stays day-equivalent because the canonical
+  // hour-per-shift cancels with day-to-hour). Productivity inputs in HOURS
+  // (setup_h, relocate_h, strip_h from G4) go directly through toShifts.
+  const asShifts = (days: number) => toShifts(days * shift_h, shift_h);
+
+  const setupShifts = input.setup_h != null
+    ? toShifts(input.setup_h, shift_h)
+    : asShifts(assembly_days);
+
+  const relocateShifts = input.relocate_h != null
+    ? toShifts(input.relocate_h, shift_h)
+    : Math.max(1, Math.ceil(setupShifts * 0.5));  // typical slide-form: half of setup
+
+  const finalStripShifts = input.strip_h != null
+    ? toShifts(input.strip_h, shift_h)
+    : asShifts(stripping_days);
+
+  const rebarShifts = asShifts(rebar_days);
+  const pourShifts = asShifts(concrete_days);
+  const prestressShifts = prestress_days > 0 ? asShifts(prestress_days) : 0;
+
+  // Intermediate strip-strength wait (n-1 times). When maturity_params given,
+  // use calculateCuring with strip_strength_pct=70 — the cornice can be
+  // de-tensioned at 70% f_ck for re-positioning. Otherwise fall back to
+  // a conservative 2-shift default.
+  let waitShifts = 2;
+  if (input.maturity_params) {
+    const mp = input.maturity_params;
+    const stripWait = calculateCuring({
+      concrete_class: mp.concrete_class,
+      temperature_c: mp.temperature_c,
+      cement_type: mp.cement_type ?? 'CEM_I',
+      element_type: mp.element_type ?? 'slab',
+      strip_strength_pct: 70,
+    });
+    waitShifts = asShifts(stripWait.min_curing_days);
+  }
+
+  // Final curing tail (last tact only). Uses input.curing_days, which the
+  // orchestrator computes from maturity model with class 4 for rimsa
+  // (post-G1: 9d @ 15°C, 30d @ 0°C, etc.).
+  const finalCureShifts = asShifts(curing_days);
+
+  // ─── 2. Compute schedule with optional rebar overlap ───────────────────
+  // Sequential baseline: SET + n×(REB+POUR) + (n-1)×(WAIT+REL) + CURE+PRE+STR
+  // Crew overlap: when num_rebar_crews ≥ 2, REB(T_{i+1}) starts during WAIT(T_i),
+  // saving min(REB, WAIT) per intermediate tact.
+  const rebarOverlapsWithWait = num_rebar_crews >= 2;
+  const overlapPerIntermediate = rebarOverlapsWithWait
+    ? Math.min(rebarShifts, waitShifts)
+    : 0;
+
+  const tact_details: TactDetail[] = [];
+  let cursor = 0;
+  let sequential_days_acc = 0;
+
+  for (let t = 0; t < num_tacts; t++) {
+    const isFirst = t === 0;
+    const isLast = t === num_tacts - 1;
+
+    // Assembly = setup (first) or relocate (intermediate / last)
+    const asmDur = isFirst ? setupShifts : relocateShifts;
+    const asmStart = cursor;
+    const asmEnd = asmStart + asmDur;
+
+    // Rebar starts after assembly (or overlapped with previous WAIT for t>0)
+    let rebStart = asmEnd;
+    if (!isFirst && rebarOverlapsWithWait) {
+      // REB of this tact began during previous WAIT — adjust start back.
+      // Cursor already represents the end of previous REL; the overlap was
+      // applied when we shortened the previous WAIT.
+      // (See cursor accounting in WAIT/REL block below.)
+    }
+    const rebEnd = rebStart + rebarShifts;
+
+    // Pour after rebar (sequential — no crew overlap)
+    const conStart = rebEnd;
+    const conEnd = conStart + pourShifts;
+
+    // Curing: intermediate = WAIT, last = full tail (+ prestress before strip if any)
+    const cureDur = isLast ? finalCureShifts : waitShifts;
+    const curStart = conEnd;
+    const curEnd = curStart + cureDur;
+
+    // Prestress (last tact only — cornice rarely prestressed, but supported)
+    let preInterval: [number, number] | undefined;
+    let postCureCursor = curEnd;
+    if (isLast && prestressShifts > 0) {
+      preInterval = [postCureCursor, postCureCursor + prestressShifts];
+      postCureCursor = preInterval[1];
+    }
+
+    // Last action: strip (last tact) or relocate (intermediate)
+    let strStart: number;
+    let strEnd: number;
+    if (isLast) {
+      strStart = postCureCursor;
+      strEnd = strStart + finalStripShifts;
+    } else {
+      // Relocate after WAIT; apply rebar-overlap savings to the relocate's
+      // effective contribution to the cursor.
+      const relStart = curEnd;
+      const relEnd = relStart + relocateShifts;
+      strStart = relStart;
+      strEnd = relEnd;
+    }
+
+    cursor = strEnd;
+    // If next tact's REB will overlap with this tact's WAIT, the next
+    // iteration starts asmStart earlier by overlapPerIntermediate shifts.
+    if (!isLast) cursor -= overlapPerIntermediate;
+
+    sequential_days_acc += asmDur + rebarShifts + pourShifts + cureDur +
+      (isLast ? prestressShifts + finalStripShifts : relocateShifts);
+
+    tact_details.push({
+      tact: t + 1,
+      set: 1, // cornice = single sliding form
+      assembly: [asmStart, asmEnd],
+      rebar: [rebStart, rebEnd],
+      concrete: [conStart, conEnd],
+      curing: [curStart, curEnd],
+      ...(preInterval ? { prestress: preInterval } : {}),
+      stripping: [strStart, strEnd],
+    });
+  }
+
+  const total_days = cursor;
+  const sequential_days = sequential_days_acc;
+  const savings_days = sequential_days - total_days;
+  const savings_pct = sequential_days > 0
+    ? Math.round((savings_days / sequential_days) * 100)
+    : 0;
+
+  // Critical path = the last cycle's strip-finish chain. Simplified for cyclic.
+  const critical_path: string[] = [];
+  for (let t = 0; t < num_tacts; t++) {
+    critical_path.push(`T${t}_REB`, `T${t}_CON`);
+    if (t === num_tacts - 1) {
+      critical_path.push(`T${t}_CUR`);
+      if (prestressShifts > 0) critical_path.push(`T${t}_PRE`);
+      critical_path.push(`T${t}_STR`);
+    } else {
+      critical_path.push(`T${t}_REL`);
+    }
+  }
+
+  // Utilization: cornice uses 1 set continuously; formwork crew busy during
+  // setup+relocate×(n-1)+strip; rebar crew busy n × rebar shifts.
+  const formworkBusy = setupShifts + (num_tacts - 1) * relocateShifts + finalStripShifts;
+  const rebarBusy = num_tacts * rebarShifts;
+  const utilization = {
+    formwork_crews: total_days > 0 ? Math.min(1, formworkBusy / total_days) : 0,
+    rebar_crews: total_days > 0 ? Math.min(1, rebarBusy / total_days / Math.max(1, num_rebar_crews)) : 0,
+    sets: [total_days > 0 ? 1 : 0],
+  };
+
+  return {
+    total_days: round(total_days),
+    sequential_days: round(sequential_days),
+    savings_days: round(savings_days),
+    savings_pct,
+    tact_details,
+    critical_path,
+    gantt: '', // cyclic Gantt rendering deferred — orchestrator UI uses tact_details
+    utilization,
+    bottleneck: null,
+    effective_curing_days: input.maturity_params ? finalCureShifts : undefined,
+  };
 }
