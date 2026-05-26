@@ -827,10 +827,16 @@ function round(v: number): number {
 // ─── Discrete Cyclic Scheduler (Phase C G3 — 2026-05-26) ───────────────────
 //
 // Cycle model for cornice-style elements (rimsa T-bednění). Single sliding
-// formwork moves position-to-position; setup once, relocate (n-1) times,
-// strip once at the end. Intermediate tacts wait only for strip-strength
-// (~2-3 d via calculateCuring strip_strength_pct=70); last tact carries the
-// full TKP18 class-4 curing tail (typ. 9-30 d per kb/tkp18_maturity.yaml).
+// formwork moves position-to-position; setup once at T_0, relocate (n-1)
+// times (post-WAIT, between intermediate tacts), strip once at the end.
+// Intermediate tacts wait only for strip-strength (~2-3 d via calculateCuring
+// strip_strength_pct=70); last tact carries the full TKP18 class-4 curing
+// tail (typ. 9-30 d per kb/tkp18_maturity.yaml).
+//
+// Per-tact work breakdown:
+//   T_0          : SET (setupShifts) + REB + POUR + WAIT + REL  (post-tact)
+//   T_intermediate : (form already in place — no setup) REB + POUR + WAIT + REL
+//   T_last       : (form already in place) REB + POUR + CURE_full + STR
 //
 // Geometric layout (n=4 tacts, single rebar crew):
 //
@@ -841,6 +847,10 @@ function round(v: number): number {
 //
 // With num_rebar_crews ≥ 2, REB(T_{i+1}) overlaps with WAIT(T_i) (rebar crew
 // pre-ties off-form). Savings ≈ (n-1) × min(WAIT, REB).
+//
+// Sequential baseline:
+//   setupShifts + (n-1) × relocateShifts + n × (rebar + pour)
+//   + (n-1) × waitShifts + finalCureShifts + prestressShifts + finalStripShifts
 //
 // Graceful degradation for n=1: setup + rebar + pour + final-cure + strip.
 // No relocate, no intermediate wait. Output shape unchanged.
@@ -930,8 +940,14 @@ function scheduleCyclic(input: ElementScheduleInput): ElementScheduleOutput {
     const isFirst = t === 0;
     const isLast = t === num_tacts - 1;
 
-    // Assembly = setup (first) or relocate (intermediate / last)
-    const asmDur = isFirst ? setupShifts : relocateShifts;
+    // Assembly = setup (first tact only). For non-first tacts the form
+    // is already at this position from the PREVIOUS tact's `relocate`
+    // event — there is no setup work to do, so asmDur=0 (zero-length
+    // placeholder interval). Fix #3 of PR #1223 review: the prior
+    // implementation added a SECOND relocateShifts here on top of the
+    // post-tact relocate, inflating sequential_days by (n-1) × relocate
+    // and double-counting in both the actual schedule and the baseline.
+    const asmDur = isFirst ? setupShifts : 0;
     const asmStart = cursor;
     const asmEnd = asmStart + asmDur;
 
