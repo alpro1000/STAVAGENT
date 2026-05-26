@@ -1,0 +1,1945 @@
+{
+  "_schema_version": "1.1",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_per_drawing_audit.py",
+  "_purpose": "Per-drawing extraction completeness audit. Verifies whether unique annotations on each drawing (POZN refs, demolition markings, stav/návrh callouts, S-code call-outs) are captured in CEV Layer 1 evidence and/or items.json _source field. Boilerplate (skladby legenda, razítko, project info) excluded via cross-drawing line frequency analysis. Mojibake-decoded POZN content cross-matched against items.json kapitola+keyword for concrete gap verdicts.",
+  "drawings_inventoried": 30,
+  "drawings_with_unique_annotations": 25,
+  "boilerplate_threshold_drawings": 12,
+  "boilerplate_top_lines": [
+    {
+      "line": "autorizovanč projektant",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "Ing. arch. Marek Smolka",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "revize datum popis",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "02 - -",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "autorizace: 05394",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "investor",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "název včkresu",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "tel.: +420 732 618 505, email: smolka@smasharch.cz",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "± 0,000 = +662,05 m.n.m.",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "Stavebnú Čpravy",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "00 12/2025 vydánú dokumentace",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "parí",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "razútko/podpis",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "01 - -",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "zpracovatel projektoví dokumentace/generálnú projektant",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "SMASH architekti s.r.o.",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "Fibichova 733, 36251 Jáchymov",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "datum",
+      "appears_in_n_drawings": 21
+    },
+    {
+      "line": "IěO: 17666902",
+      "appears_in_n_drawings": 20
+    },
+    {
+      "line": "S08 strop - klemba mezi patry",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- keramická cihla dutinová",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- oceloví nosnúky + klemba z cihel plnčch 150 mm",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "legenda",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "beton prostč ( viz. řást konstrukřnž stavebný)",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "tepelná izolace - XPS (&=0,035 W/mK), PIR (&=0,022 W/mK)",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "Obvodoví nosní zdivo",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- prkennč záklop na trámech 20 mm",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "SDK konstrukce (po#árný odolnost viz. řást po#árnž bezpeřnostný λe%ený)",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "12/2025",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- stropnú trámy 180 mm",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "obklad",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- rostlč terín / zemina",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- včmalba",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "- beton 100 mm",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "tepelná izolace - EPS, minerálnú vata (viz. skladby konstrukcý)",
+      "appears_in_n_drawings": 15
+    },
+    {
+      "line": "projektovč stupeš",
+      "appears_in_n_drawings": 14
+    },
+    {
+      "line": "dokumentace pro povolenú zámřru",
+      "appears_in_n_drawings": 14
+    },
+    {
+      "line": "projektant Řásti",
+      "appears_in_n_drawings": 13
+    },
+    {
+      "line": "Tato dokumetnace je vypracována v podrobnosti PD pro povolenú zámřru a nenú urŘena pro",
+      "appears_in_n_drawings": 13
+    },
+    {
+      "line": "parc. Ř. 1094/16, st.1022, k.Č. Jáchymov [656437]",
+      "appears_in_n_drawings": 13
+    },
+    {
+      "line": "Řást",
+      "appears_in_n_drawings": 13
+    },
+    {
+      "line": "8150",
+      "appears_in_n_drawings": 12
+    }
+  ],
+  "pozn_decoded_content": {
+    "POZN.1.02": {
+      "ref_id": "POZN.1.02",
+      "raw_samples": [
+        "Zbouránú vrchnú Řásti komúnu v poslednúm podla(cid:35)ú",
+        "Zbouránú vrchnú řásti komúnu v poslednúm podla(cid:37)ú",
+        "Zbouránú vrchnú řásti komúnu v poslednúm podla(cid:37)ú"
+      ],
+      "decoded_samples": [
+        "Zbourání vrchní části komínu v posledním podlaží",
+        "Zbourání vrchní ěásti komínu v posledním podlaží",
+        "Zbourání vrchní ěásti komínu v posledním podlaží"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+        "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+        "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+        "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+        "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf"
+      ],
+      "canonical_decoded": "Zbourání vrchní části komínu v posledním podlaží"
+    },
+    "POZN.1.01": {
+      "ref_id": "POZN.1.01",
+      "raw_samples": [
+        "legenda bouránú\nBouraní / demontovaní konstrukce\nBouránú v nosnčch a obvodovčch střnách\nBouránú lehkčch nenosnčch konstrukcú\n1\nBouránú nábytku a zažizovák(cid:33)"
+      ],
+      "decoded_samples": [
+        "legenda bourání\nBouraní / demontovaní konstrukce\nBourání v nosných a obvodových stěnách\nBourání lehkých nenosných konstrukcí\n1\nBourání nábytku a zažizováků"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf"
+      ],
+      "canonical_decoded": "legenda bourání\nBouraní / demontovaní konstrukce\nBourání v nosných a obvodových stěnách\nBourání lehkých nenosných konstrukcí\n1\nBourání nábytku a zažizováků"
+    },
+    "POZN.1.1": {
+      "ref_id": "POZN.1.1",
+      "raw_samples": [
+        "vč(cid:34)kovč systím Balt po vyrovnánú ± 0,000 = +662,05 m.n.m.\n082x061x5"
+      ],
+      "decoded_samples": [
+        "výěkový systím Balt po vyrovnání ± 0,000 = +662,05 m.n.m.\n082x061x5"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf"
+      ],
+      "canonical_decoded": "výěkový systím Balt po vyrovnání ± 0,000 = +662,05 m.n.m.\n082x061x5"
+    },
+    "POZN.2.01": {
+      "ref_id": "POZN.2.01",
+      "raw_samples": [
+        "novč vstup do domu půes mezipodestu schodiŽtř\n- lehká ocelová konstrukce půisazená k domu",
+        "novč vstup do domu půes mezipodestu schodiŽtř\n- lehká ocelová konstrukce půisazená k domu",
+        "novč vstup do domu půes mezipodestu schodiŽtř\n- lehká ocelová konstrukce půisazená k domu"
+      ],
+      "decoded_samples": [
+        "nový vstup do domu půes mezipodestu schodiŽtě\n- lehká ocelová konstrukce půisazená k domu",
+        "nový vstup do domu půes mezipodestu schodiŽtě\n- lehká ocelová konstrukce půisazená k domu",
+        "nový vstup do domu půes mezipodestu schodiŽtě\n- lehká ocelová konstrukce půisazená k domu"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded": "nový vstup do domu půes mezipodestu schodiŽtě\n- lehká ocelová konstrukce půisazená k domu"
+    },
+    "POZN.2.02": {
+      "ref_id": "POZN.2.02",
+      "raw_samples": [
+        "opřrná střna bude provedena z betonu jako búlá vana, za opřrnou střnou bude\nzůúzena drená(cid:35) a odvod vody\n1.04",
+        "opřrná střna bude provedena z betonu jako búlá vana, za opřrnou střnou bude\nzůúzena drená(cid:35) a odvod vody",
+        "opřrná střna bude provedena z betonu jako búlá vana, za opřrnou střnou bude\nzůúzena drená(cid:35) a odvod vody"
+      ],
+      "decoded_samples": [
+        "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude\nzůízena drenáž a odvod vody\n1.04",
+        "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude\nzůízena drenáž a odvod vody",
+        "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude\nzůízena drenáž a odvod vody"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude\nzůízena drenáž a odvod vody\n1.04"
+    },
+    "POZN.2.03": {
+      "ref_id": "POZN.2.03",
+      "raw_samples": [
+        "posúlenú stropu/podlahy osazenúm noví stropnice - viz Řást statika\nob(cid:33)vací pokoj",
+        "posúlenú stropu/podlahy osazenúm noví stropnice - viz Řást statika",
+        "1000 1160 470 1160 370 1160 580 1160 1090\n1480(700) 1480(700) 1480(700) 1480(700)\n300 5250 150 2150 300\n8150\n003\n0012\n024\n016\n0014\n003\n0024\n016\n0289\n300 1000 300 5565\n04201\n064\n0733\n0031\n003\n0024\n016\n061\n054\n0691\n0252"
+      ],
+      "decoded_samples": [
+        "posílení stropu/podlahy osazením noví stropnice - viz část statika\nobůvací pokoj",
+        "posílení stropu/podlahy osazením noví stropnice - viz část statika",
+        "1000 1160 470 1160 370 1160 580 1160 1090\n1480(700) 1480(700) 1480(700) 1480(700)\n300 5250 150 2150 300\n8150\n003\n0012\n024\n016\n0014\n003\n0024\n016\n0289\n300 1000 300 5565\n04201\n064\n0733\n0031\n003\n0024\n016\n061\n054\n0691\n0252"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded": "1000 1160 470 1160 370 1160 580 1160 1090\n1480(700) 1480(700) 1480(700) 1480(700)\n300 5250 150 2150 300\n8150\n003\n0012\n024\n016\n0014\n003\n0024\n016\n0289\n300 1000 300 5565\n04201\n064\n0733\n0031\n003\n0024\n016\n061\n054\n0691\n0252"
+    },
+    "POZN.2.04": {
+      "ref_id": "POZN.2.04",
+      "raw_samples": [
+        "(cid:36)B ztu(cid:35)ujúcú vřnřc - viz Řást statika\nkuchyn(cid:34)",
+        "(cid:36)B ztu(cid:35)ujúcú vřnřc - viz Řást statika",
+        "(cid:36)B ztu(cid:35)ujúcú vřnřc - viz Řást statika"
+      ],
+      "decoded_samples": [
+        "ŽB ztužující věněc - viz část statika\nkuchyně",
+        "ŽB ztužující věněc - viz část statika",
+        "ŽB ztužující věněc - viz část statika"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded": "JEKL 100x4 JEKL 100x4\nJEKL 100x4 JEKL 100x4\n200/160 200/160\nocelové stropnice - viz stavebnč konstrukýní ýást PD ocelové stropnice - viz stavebnč konstrukýní ýást PD"
+    },
+    "POZN.1.03": {
+      "ref_id": "POZN.1.03",
+      "raw_samples": [
+        "ěásteřní bouránú opšrnčch zúdek a schodi(cid:35)tš"
+      ],
+      "decoded_samples": [
+        "částeění bourání opěrných zídek a schodižtě"
+      ],
+      "occurrence_drawings": [
+        "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf"
+      ],
+      "canonical_decoded": "částeění bourání opěrných zídek a schodižtě"
+    }
+  },
+  "pozn_to_items_verdicts": [
+    {
+      "pozn_ref": "POZN.1.01",
+      "verdict": "META",
+      "summary": "Legenda bourání meta (lists demolition categories) — not a procurement item itself.",
+      "drawn_in_drawings_count": 1,
+      "canonical_decoded_excerpt": "legenda bourání\nBouraní / demontovaní konstrukce\nBourání v nosných a obvodových stěnách\nBourání lehkých nenosných konstrukcí\n1\nBourání nábytku a zažizováků",
+      "matched_items_primary": [],
+      "matched_items_secondary": []
+    },
+    {
+      "pozn_ref": "POZN.1.02",
+      "verdict": "GAP",
+      "summary": "Zbourání vrchní části komínu v posledním podlaží",
+      "drawn_in_drawings_count": 5,
+      "drawn_in_drawings": [
+        "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+        "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+        "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+        "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+        "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf"
+      ],
+      "canonical_decoded_excerpt": "Zbourání vrchní části komínu v posledním podlaží",
+      "expected_kapitolas": [
+        "HSV-6 Bourací práce"
+      ],
+      "matched_items_primary": [],
+      "matched_items_secondary": [],
+      "fix_recommendation": "Add HSV-6 item 'Zbourání vrchní části komínu v posledním podlaží — manuální demolice + likvidace cihelné suti' with qty per DXF or per estimate (~5-10 m³ suti)."
+    },
+    {
+      "pozn_ref": "POZN.1.03",
+      "verdict": "GAP",
+      "summary": "Částečné bourání opěrných zídek a schodiště (zahrada / dvůr)",
+      "drawn_in_drawings_count": 1,
+      "drawn_in_drawings": [
+        "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf"
+      ],
+      "canonical_decoded_excerpt": "částeění bourání opěrných zídek a schodižtě",
+      "expected_kapitolas": [
+        "HSV-6 Bourací práce",
+        "HSV-1 Zemní práce"
+      ],
+      "matched_items_primary": [],
+      "matched_items_secondary": [],
+      "fix_recommendation": "Add HSV-6 item 'Bourání stávajících opěrných zídek + venkovního schodiště (zahrada/dvůr) — částečné' with qty per DXF cross-section. Current HSV6.004 covers trámový strop only."
+    },
+    {
+      "pozn_ref": "POZN.1.1",
+      "verdict": "META",
+      "summary": "Výškový systém Balt: ±0,000 = +662,05 m.n.m. (coordinate datum reference)",
+      "drawn_in_drawings_count": 1,
+      "canonical_decoded_excerpt": "výěkový systím Balt po vyrovnání ± 0,000 = +662,05 m.n.m.\n082x061x5",
+      "matched_items_primary": [],
+      "matched_items_secondary": []
+    },
+    {
+      "pozn_ref": "POZN.2.01",
+      "verdict": "COVERED",
+      "summary": "Nový vstup do domu přes mezipodestu — lehká ocelová konstrukce přisazená k domu",
+      "drawn_in_drawings_count": 6,
+      "drawn_in_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded_excerpt": "nový vstup do domu půes mezipodestu schodiŽtě\n- lehká ocelová konstrukce půisazená k domu",
+      "expected_kapitolas": [
+        "PSV-76 Zámečnictví"
+      ],
+      "matched_items_primary": [
+        "260219_dum.PSV76.001",
+        "260219_dum.PSV76.002"
+      ],
+      "matched_items_secondary": [],
+      "fix_recommendation": null
+    },
+    {
+      "pozn_ref": "POZN.2.02",
+      "verdict": "PARTIAL",
+      "summary": "Opěrná stěna jako bílá vana + drenáž a odvod vody za opěrnou stěnou",
+      "drawn_in_drawings_count": 6,
+      "drawn_in_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded_excerpt": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude\nzůízena drenáž a odvod vody\n1.04",
+      "expected_kapitolas": [
+        "HSV-2 Základové a ŽB",
+        "HSV-1 Zemní práce",
+        "PSV-71 Izolace HI"
+      ],
+      "matched_items_primary": [
+        "260219_dum.HSV2.001",
+        "260219_dum.HSV2.002",
+        "260219_dum.HSV2.003",
+        "260219_dum.HSV2.004",
+        "260219_dum.HSV2.005",
+        "260219_dum.HSV2.006"
+      ],
+      "matched_items_secondary": [],
+      "fix_recommendation": "Add HSV-1 (or PSV-71 Izolace HI) item 'Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 + štěrkový obsyp + geotextilie + napojení do dešťové kanalizace, L≈10 m po obvodu BV per POZN.2.02 z půdorysů návrh + řez A-A."
+    },
+    {
+      "pozn_ref": "POZN.2.03",
+      "verdict": "COVERED",
+      "summary": "Posílení stropu/podlahy osazením nové stropnice (viz statika)",
+      "drawn_in_drawings_count": 7,
+      "drawn_in_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded_excerpt": "1000 1160 470 1160 370 1160 580 1160 1090\n1480(700) 1480(700) 1480(700) 1480(700)\n300 5250 150 2150 300\n8150\n003\n0012\n024\n016\n0014\n003\n0024\n016\n0289\n300 1000 300 5565\n04201\n064\n0733\n0031\n003\n0024\n016\n061\n054\n0691\n0252",
+      "expected_kapitolas": [
+        "HSV-4 Vodorovné"
+      ],
+      "matched_items_primary": [
+        "260219_dum.HSV4.001",
+        "260219_dum.HSV4.002",
+        "260219_dum.HSV4.003",
+        "260219_dum.HSV4.004",
+        "260219_dum.HSV4.005",
+        "260217_sklad.HSV4.001",
+        "260217_sklad.HSV4.002",
+        "260217_sklad.HSV4.004"
+      ],
+      "matched_items_secondary": [],
+      "fix_recommendation": null
+    },
+    {
+      "pozn_ref": "POZN.2.04",
+      "verdict": "COVERED",
+      "summary": "ŽB ztužující věnec (viz statika)",
+      "drawn_in_drawings_count": 7,
+      "drawn_in_drawings": [
+        "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+        "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+        "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+        "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+      ],
+      "canonical_decoded_excerpt": "JEKL 100x4 JEKL 100x4\nJEKL 100x4 JEKL 100x4\n200/160 200/160\nocelové stropnice - viz stavebnč konstrukýní ýást PD ocelové stropnice - viz stavebnč konstrukýní ýást PD",
+      "expected_kapitolas": [
+        "HSV-2 Základové a ŽB",
+        "HSV-4 Vodorovné"
+      ],
+      "matched_items_primary": [
+        "260219_dum.HSV2.007",
+        "260219_dum.HSV2.008",
+        "260219_dum.HSV2.009"
+      ],
+      "matched_items_secondary": [],
+      "fix_recommendation": null
+    },
+    {
+      "pozn_ref": "POZN.2.05",
+      "verdict": "ENRICHMENT",
+      "summary": "Mykologický průzkum + průzkum výskytu dřevokazního hmyzu stávajících trámových stropů",
+      "drawn_in_drawings_count": 0,
+      "drawn_in_drawings": [],
+      "canonical_decoded_excerpt": "",
+      "expected_kapitolas": [
+        "VRN — Průzkumy"
+      ],
+      "matched_items_primary": [
+        "260219_dum.VRN.001"
+      ],
+      "matched_items_secondary": [],
+      "fix_recommendation": "ENRICHMENT: VRN.001 'Mykologický průzkum' should be reworded to 'Mykologický průzkum + průzkum výskytu dřevokazního hmyzu' per POZN.2.05 of návrh drawings. Scope and price likely unchanged (same autorizovaný expert performs both)."
+    }
+  ],
+  "annotations_per_drawing": {
+    "D.1.1.01.R2 - Půdorys střechy _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1854,
+      "unique_actionable_lines_total": 0,
+      "captured_in_cev_layer1": 0,
+      "captured_in_items_source": 0,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 0
+    },
+    "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 3139,
+      "unique_actionable_lines_total": 0,
+      "captured_in_cev_layer1": 0,
+      "captured_in_items_source": 0,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 0
+    },
+    "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 2748,
+      "unique_actionable_lines_total": 0,
+      "captured_in_cev_layer1": 0,
+      "captured_in_items_source": 0,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 0
+    },
+    "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4529,
+      "unique_actionable_lines_total": 12,
+      "captured_in_cev_layer1": 7,
+      "captured_in_items_source": 6,
+      "missing_in_cev_and_items": 5,
+      "missing_samples": [
+        "S01 obvodová stŮna - omýtka",
+        "S03 suteríný stŮna",
+        "S10 &ikmá st$echa",
+        "S06 strop - klemba mezi suterínem a p$ýzemým",
+        "S02 obvodová stŮna - spoleřná stŮna $adovího domu"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4359,
+      "unique_actionable_lines_total": 12,
+      "captured_in_cev_layer1": 7,
+      "captured_in_items_source": 6,
+      "missing_in_cev_and_items": 5,
+      "missing_samples": [
+        "S01 obvodová stŮna - omýtka",
+        "S03 suteríný stŮna",
+        "S10 &ikmá st$echa",
+        "S06 strop - klemba mezi suterínem a p$ýzemým",
+        "S02 obvodová stŮna - spoleřná stŮna $adovího domu"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4138,
+      "unique_actionable_lines_total": 13,
+      "captured_in_cev_layer1": 7,
+      "captured_in_items_source": 7,
+      "missing_in_cev_and_items": 6,
+      "missing_samples": [
+        "S01 obvodoví st#na - omčtka",
+        "S02 obvodoví st#na - spolešní st#na $adovýho domu",
+        "S03 suterýnč st#na",
+        "S06 strop - klemba mezi suterýnem a p$čzemčm",
+        "S02 S02",
+        "S10 &ikmí st$echa"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4197,
+      "unique_actionable_lines_total": 12,
+      "captured_in_cev_layer1": 8,
+      "captured_in_items_source": 8,
+      "missing_in_cev_and_items": 4,
+      "missing_samples": [
+        "S10 &ikmé st$echa",
+        "S02 obvodové stŮna - spoleřné stŮna $adovího domu",
+        "S03 suteríný stŮna",
+        "S06 strop - klemba mezi suterínem a p$ýzemým"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 5322,
+      "unique_actionable_lines_total": 28,
+      "captured_in_cev_layer1": 10,
+      "captured_in_items_source": 9,
+      "missing_in_cev_and_items": 17,
+      "missing_samples": [
+        "Bouránú lehkčch nenosnčch konstrukcú",
+        "Bouránú v nosnčch a obvodovčch střnách bude že\"eno dle stavebnř konstrukŘnú",
+        "S01 obvodová stŮna - omýtka",
+        "Řásti PD. V#dy s d!razem na podepženú navazujúch a souvisejúcúch prvk! (stropy,",
+        "POZN.1.03",
+        "Zbouránú vrchnú Řásti komúnu v poslednúm podla#ú pozn.1.02",
+        "Bouránú v nosnčch a obvodovčch střnách",
+        "Bouránú stávajúcúch opřrnčch střn dvora"
+      ],
+      "pozn_refs_total": 4,
+      "pozn_refs": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 12,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 5098,
+      "unique_actionable_lines_total": 25,
+      "captured_in_cev_layer1": 10,
+      "captured_in_items_source": 9,
+      "missing_in_cev_and_items": 14,
+      "missing_samples": [
+        "Bouránú nábytku a za!izovák\"",
+        "Bouránú lehkčch nenosnčch konstrukcú",
+        "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+        "S01 obvodová stŮna - omýtka",
+        "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+        "S03 suteríný stŮna",
+        "POZN 1.1",
+        "pozn.1.01"
+      ],
+      "pozn_refs_total": 4,
+      "pozn_refs": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 11,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4845,
+      "unique_actionable_lines_total": 27,
+      "captured_in_cev_layer1": 10,
+      "captured_in_items_source": 9,
+      "missing_in_cev_and_items": 16,
+      "missing_samples": [
+        "Bouránú nábytku a za!izovák\"",
+        "Bouránú lehkčch nenosnčch konstrukcú",
+        "S01 obvodoví st#na - omčtka",
+        "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+        "S02 obvodoví st#na - spolešní st#na $adovýho domu",
+        "S03 suterýnč st#na",
+        "S06 strop - klemba mezi suterýnem a p$čzemčm",
+        "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03"
+      ],
+      "pozn_refs_total": 4,
+      "pozn_refs": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 11,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4848,
+      "unique_actionable_lines_total": 24,
+      "captured_in_cev_layer1": 11,
+      "captured_in_items_source": 10,
+      "missing_in_cev_and_items": 12,
+      "missing_samples": [
+        "Bouránú nábytku a za!izovák\"",
+        "Bouránú lehkčch nenosnčch konstrukcú",
+        "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+        "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+        "S10 &ikmé st$echa",
+        "S02 obvodové stŮna - spoleřné stŮna $adovího domu",
+        "Zbouránú vrchnú řásti komúnu v poslednúm podla$ú pozn.1.02",
+        "S03 suteríný stŮna"
+      ],
+      "pozn_refs_total": 3,
+      "pozn_refs": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 11,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 8506,
+      "unique_actionable_lines_total": 39,
+      "captured_in_cev_layer1": 21,
+      "captured_in_items_source": 23,
+      "missing_in_cev_and_items": 16,
+      "missing_samples": [
+        "POZN.2.02",
+        "S01 obvodová stŮna - omýtka",
+        "S03a = pod Črovnú terínu",
+        "S12 obvodová stŮna - podkrový",
+        "pozn.2.01",
+        "pozn.2.02",
+        "S02 obvodová stŮna - spoleřná stŮna žadovího domu",
+        "S10 %ikmá stžecha"
+      ],
+      "pozn_refs_total": 5,
+      "pozn_refs": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S03a",
+        "S03b",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S12a",
+        "S12b"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 3,
+      "distinct_dimension_count": 20
+    },
+    "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 8584,
+      "unique_actionable_lines_total": 41,
+      "captured_in_cev_layer1": 22,
+      "captured_in_items_source": 24,
+      "missing_in_cev_and_items": 17,
+      "missing_samples": [
+        "POZN.2.02",
+        "S01 obvodová stŮna - omýtka",
+        "S03a = pod Črovnú terínu",
+        "S12 obvodová stŮna - podkrový",
+        "pozn.2.01",
+        "pozn.2.02",
+        "S02 obvodová stŮna - spoleřná stŮna žadovího domu",
+        "S10 %ikmá stžecha"
+      ],
+      "pozn_refs_total": 5,
+      "pozn_refs": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S03a",
+        "S03b",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S12a",
+        "S12b"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 3,
+      "distinct_dimension_count": 20
+    },
+    "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 8327,
+      "unique_actionable_lines_total": 39,
+      "captured_in_cev_layer1": 19,
+      "captured_in_items_source": 22,
+      "missing_in_cev_and_items": 17,
+      "missing_samples": [
+        "S10 %ikmí st#echa",
+        "S03a = pod Črovnú terínu",
+        "S06 strop - klemba mezi suterýnem a p#čzemčm",
+        "S11 lehkř strop vlo&enýho mezipatra",
+        "pozn.2.01",
+        "pozn.2.02",
+        "S01 obvodoví stžna - omčtka",
+        "S03b = nad Črovnú terínu"
+      ],
+      "pozn_refs_total": 5,
+      "pozn_refs": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S03a",
+        "S03b",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S12a",
+        "S12b"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 2,
+      "distinct_dimension_count": 20
+    },
+    "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 8504,
+      "unique_actionable_lines_total": 40,
+      "captured_in_cev_layer1": 23,
+      "captured_in_items_source": 25,
+      "missing_in_cev_and_items": 15,
+      "missing_samples": [
+        "POZN.2.02",
+        "S03a = pod Črovnú terínu",
+        "pozn.2.01",
+        "pozn.2.02",
+        "S02 obvodové stŮna - spoleřné stŮna žadovího domu",
+        "- sanaňnú zateplenú soklu",
+        "S03 suteríný stŮna",
+        "S03b = nad Črovnú terínu"
+      ],
+      "pozn_refs_total": 5,
+      "pozn_refs": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S03a",
+        "S03b",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S12a",
+        "S12b"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 2,
+      "distinct_dimension_count": 20
+    },
+    "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 8354,
+      "unique_actionable_lines_total": 38,
+      "captured_in_cev_layer1": 21,
+      "captured_in_items_source": 23,
+      "missing_in_cev_and_items": 15,
+      "missing_samples": [
+        "S01 obvodová stŮna - omýtka",
+        "S03a = pod Črovnú terínu",
+        "S12 obvodová stŮna - podkrový",
+        "pozn.2.01",
+        "pozn.2.02",
+        "S02 obvodová stŮna - spoleřná stŮna žadovího domu",
+        "S10 %ikmá stžecha",
+        "S03 suteríný stŮna"
+      ],
+      "pozn_refs_total": 5,
+      "pozn_refs": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.04",
+        "POZN.2.05"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S03a",
+        "S03b",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S12a",
+        "S12b"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 3,
+      "distinct_dimension_count": 20
+    },
+    "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4230,
+      "unique_actionable_lines_total": 14,
+      "captured_in_cev_layer1": 8,
+      "captured_in_items_source": 7,
+      "missing_in_cev_and_items": 6,
+      "missing_samples": [
+        "S10 +ikmý st&echa",
+        "S06 S07",
+        "S09 S10",
+        "S06 strop - klemba mezi suterČnem a p&čzemčm",
+        "P!ÍřNé !EZ A-A - stývajčcč stav",
+        "S03 suterČnč st$na"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 4677,
+      "unique_actionable_lines_total": 26,
+      "captured_in_cev_layer1": 10,
+      "captured_in_items_source": 8,
+      "missing_in_cev_and_items": 15,
+      "missing_samples": [
+        "Bouránú nábytku a za!izovák\"",
+        "S10 +ikmý st&echa",
+        "S06 S07",
+        "Bouránú lehkčch nenosnčch konstrukcú",
+        "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+        "S09 S10",
+        "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+        "S06 strop - klemba mezi suterČnem a p&čzemčm"
+      ],
+      "pozn_refs_total": 4,
+      "pozn_refs": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.1.01",
+        "POZN.1.02",
+        "POZN.1.03",
+        "POZN1.1"
+      ],
+      "s_codes_called_out": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 11,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 8754,
+      "unique_actionable_lines_total": 17,
+      "captured_in_cev_layer1": 4,
+      "captured_in_items_source": 8,
+      "missing_in_cev_and_items": 7,
+      "missing_samples": [
+        "POZN.2.04POZN.2.04POZN.2.04POZN.2.04POZN.2.04POZN.2.04",
+        "POZN.2.04200/160200/160100/180100/180100/800100/8002x60/180HEA 160HEA 160JEKL 100x4JEKL 100x4",
+        "číslo výkresuměřítko1:50D.1.1.2.2.21název výkresuPŘÍČNÝ ŘEZ A-A - návrh",
+        "POZN.2.02",
+        "POZN.2.05POZN.2.05",
+        "100/180100/1802x60/180HEA 160HEA 160JEKL 100x4JEKL 100x4200/160200/160S12bPOZN.2.04",
+        "S11+12,750+9,600+6,850"
+      ],
+      "pozn_refs_total": 7,
+      "pozn_refs": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.0321003502795405286528655002630280",
+        "POZN.2.04",
+        "POZN.2.04200",
+        "POZN.2.05"
+      ],
+      "pozn_not_captured_anywhere": [
+        "POZN.2.01",
+        "POZN.2.02",
+        "POZN.2.03",
+        "POZN.2.0321003502795405286528655002630280",
+        "POZN.2.04",
+        "POZN.2.04200",
+        "POZN.2.05"
+      ],
+      "s_codes_called_out": [
+        "S03a",
+        "S05",
+        "S09",
+        "S10",
+        "S11"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 2,
+      "distinct_dimension_count": 17
+    },
+    "D.1.1.2.3.01 - Pohled - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1725,
+      "unique_actionable_lines_total": 1,
+      "captured_in_cev_layer1": 1,
+      "captured_in_items_source": 1,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.1.1.2.3.02 - Pohled - stav _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1753,
+      "unique_actionable_lines_total": 1,
+      "captured_in_cev_layer1": 1,
+      "captured_in_items_source": 1,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.1.1.2.3.11 - Pohled - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1725,
+      "unique_actionable_lines_total": 1,
+      "captured_in_cev_layer1": 1,
+      "captured_in_items_source": 1,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.1.1.2.3.12 - Pohled - bourání _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1753,
+      "unique_actionable_lines_total": 1,
+      "captured_in_cev_layer1": 1,
+      "captured_in_items_source": 1,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.1.1.2.3.21 - Pohled - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1900,
+      "unique_actionable_lines_total": 2,
+      "captured_in_cev_layer1": 2,
+      "captured_in_items_source": 2,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 1
+    },
+    "D.1.1.2.3.22 - Pohled - návrh _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 1,
+      "text_chars": 1941,
+      "unique_actionable_lines_total": 2,
+      "captured_in_cev_layer1": 2,
+      "captured_in_items_source": 2,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 1
+    },
+    "D.2.2 - statický výpočet _ EAR.pdf": {
+      "source": "pypdf",
+      "pages": 77,
+      "text_chars": 158670,
+      "unique_actionable_lines_total": 66,
+      "captured_in_cev_layer1": 59,
+      "captured_in_items_source": 36,
+      "missing_in_cev_and_items": 6,
+      "missing_samples": [
+        "Max. proměnný sklon tlakových diagonál 45.00 °",
+        "0,08 < 1,0 VYHOVUJE Tlak rovnoběžně s vlákny s uvážením vzp ěru",
+        "0,72 < 1,0 VYHOVUJE Tlak rovnoběžně s vlákny s uvážením vzp ěru",
+        "Obrázek ZS3 - ZS3: Zemní tlak, Izometrie 32 Obrázek RF-CONCRETE Members PŘ1 - NAVRŽENÉ PLOCHY 64",
+        "1.1 NASTAVENÍ - NELINEÁRNÍ VÝPO ČET (STAV II)1.1 NASTAVENÍ - NELINEÁRNÍ VÝPO ČET (STAV II)",
+        "Min. proměnný sklon tlakových diagonál 45.00 °"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 13,
+      "stavajici_navrh_callout_hits": 32,
+      "distinct_dimension_count": 20
+    },
+    "D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf": {
+      "source": "ocr_reuse",
+      "pages": 1,
+      "text_chars": 1001,
+      "unique_actionable_lines_total": 1,
+      "captured_in_cev_layer1": 0,
+      "captured_in_items_source": 0,
+      "missing_in_cev_and_items": 1,
+      "missing_samples": [
+        "EZ A-A C25/30 XC3,XF1,XA1 - CL 0.4 - Dmax. 22-S3"
+      ],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [
+        "S3"
+      ],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf": {
+      "source": "ocr_reuse",
+      "pages": 1,
+      "text_chars": 1000,
+      "unique_actionable_lines_total": 0,
+      "captured_in_cev_layer1": 0,
+      "captured_in_items_source": 0,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf": {
+      "source": "ocr_reuse",
+      "pages": 1,
+      "text_chars": 1001,
+      "unique_actionable_lines_total": 0,
+      "captured_in_cev_layer1": 0,
+      "captured_in_items_source": 0,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 0,
+      "distinct_dimension_count": 1
+    },
+    "D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf": {
+      "source": "ocr_reuse",
+      "pages": 1,
+      "text_chars": 999,
+      "unique_actionable_lines_total": 2,
+      "captured_in_cev_layer1": 2,
+      "captured_in_items_source": 2,
+      "missing_in_cev_and_items": 0,
+      "missing_samples": [],
+      "pozn_refs_total": 0,
+      "pozn_refs": [],
+      "pozn_not_captured_anywhere": [],
+      "s_codes_called_out": [],
+      "f_codes_called_out": [],
+      "demolition_keyword_hits": 0,
+      "stavajici_navrh_callout_hits": 1,
+      "distinct_dimension_count": 2
+    }
+  },
+  "consolidated_missing_annotations": [
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú lehkčch nenosnčch konstrukcú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch střnách bude že\"eno dle stavebnř konstrukŘnú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN.1.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Zbouránú vrchnú Řásti komúnu v poslednúm podla#ú pozn.1.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch střnách",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú stávajúcúch opřrnčch střn dvora",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN 1.1",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "pozn.1.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN.1.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "ěásteŘní bouránú opřrnčch zúdek a schodi\"tř pozn.1.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú nábytku a zažizovák!",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú nábytku a za!izovák\"",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú lehkčch nenosnčch konstrukcú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN 1.1",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "pozn.1.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Zbouránú vrchnú řásti komúnu v poslednúm podla%ú pozn.1.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú nábytku a za!izovák\"",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú lehkčch nenosnčch konstrukcú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN 1.1",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "pozn.1.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN.1.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Zbouránú vrchnú řásti komúnu v poslednúm podla%ú pozn.1.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú nábytku a za!izovák\"",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú lehkčch nenosnčch konstrukcú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Zbouránú vrchnú řásti komúnu v poslednúm podla$ú pozn.1.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "pozn.1.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.05",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.05",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.05",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.05",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "annotation_excerpt": "pozn.2.05",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú nábytku a za!izovák\"",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú lehkčch nenosnčch konstrukcú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách bude !e#eno dle stavebnš konstrukřnú",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "ěásteřní bouránú opšrnčch zúdek a schodi#tš pozn.1.03",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "P!ÍřNé !EZ A-A - bourýnč",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "Zbouránú vrchnú řásti komúnu v poslednúm podla$ú pozn.1.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "POZN 1.1",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "pozn.1.01",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "annotation_excerpt": "Bouránú v nosnčch a obvodovčch stšnách",
+      "category": "demolition_callout",
+      "impact": "Demolition callout on this drawing not directly cross-referenced in TZ / items.json — verify HSV-6 items capture this scope."
+    },
+    {
+      "drawing": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.04POZN.2.04POZN.2.04POZN.2.04POZN.2.04POZN.2.04",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.04200/160200/160100/180100/180100/800100/8002x60/180HEA 160HEA 160JEKL 100x4JEKL 100x4",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.02",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "annotation_excerpt": "POZN.2.05POZN.2.05",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    },
+    {
+      "drawing": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "annotation_excerpt": "100/180100/1802x60/180HEA 160HEA 160JEKL 100x4JEKL 100x4200/160200/160S12bPOZN.2.04",
+      "category": "pozn_reference",
+      "impact": "POZN reference appears on this drawing but its identifier is not in TZ Layer 1 evidence and not in items.json source field — check whether it pertains to a procurement item."
+    }
+  ],
+  "_summary_counts": {
+    "consolidated_missing_count": 68,
+    "total_unique_actionable_lines": 484,
+    "total_captured_in_cev_layer1": 267,
+    "total_captured_in_items_source": 250,
+    "total_missing_in_cev_and_items": 194,
+    "pozn_gap_count": 2,
+    "pozn_covered_count": 3,
+    "pozn_partial_count": 1,
+    "pozn_enrichment_count": 1,
+    "pozn_meta_count": 2
+  }
+}
