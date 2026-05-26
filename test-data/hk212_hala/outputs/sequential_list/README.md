@@ -1,13 +1,13 @@
 # HK212 Sequential Construction List
 
-138 položek v logickém pořadí výstavby (fáze 1–11).
+150 položek v logickém pořadí výstavby (fáze 1–11, vč. 9.5 TZB Vytápění).
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (138 items)
-**Branch:** `claude/hk212-sequential-list` (parallel — source branch `dilenska-ok-ut-dps-integration` not found in remote; generated from current main tip with HK212 work already integrated)
-**Generated:** 2026-05-22
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (150 items)
+**Branch:** `claude/hk212-add-vytapeni` (12 M-UT items added per investor scope change 2026-05-26)
+**Generated:** 2026-05-26
 
 ## Fáze
 1. PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE
@@ -19,6 +19,7 @@
 7. VÝPLNĚ OTVORŮ
 8. IZOLACE + SOKL
 9. PODLAHA PRŮMYSLOVÁ
+9.5. TZB INSTALACE — VYTÁPĚNÍ (M-UT, 12 items, DPS D.1.4.2)
 10. OSTATNÍ + PŘESUN HMOT
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
 
