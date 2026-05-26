@@ -951,13 +951,24 @@ function scheduleCyclic(input: ElementScheduleInput): ElementScheduleOutput {
     const asmStart = cursor;
     const asmEnd = asmStart + asmDur;
 
-    // Rebar starts after assembly (or overlapped with previous WAIT for t>0)
-    let rebStart = asmEnd;
+    // Rebar starts after assembly (or overlapped with previous WAIT for t>0).
+    // Fix #1 of PR #1223 review: when num_rebar_crews ≥ 2 + non-first tact,
+    // rebStart must be `cursor` so the overlap that was deducted in the
+    // previous iteration's cursor adjustment (cursor -= overlapPerIntermediate)
+    // is reflected in BOTH the schedule total AND the individual tact's rebar
+    // interval. Without this, td.rebar showed a sequential-looking start time
+    // while total_days had the overlap savings — inconsistent output.
+    //
+    // Note: after Fix #3 (asmDur=0 for non-first), asmEnd === cursor for
+    // non-first tacts anyway, so `rebStart = asmEnd` and `rebStart = cursor`
+    // are equivalent in the non-overlap case. The explicit conditional is
+    // retained for documentation and to make the parallel-with-WAIT intent
+    // unambiguous to future maintainers.
+    let rebStart: number;
     if (!isFirst && rebarOverlapsWithWait) {
-      // REB of this tact began during previous WAIT — adjust start back.
-      // Cursor already represents the end of previous REL; the overlap was
-      // applied when we shortened the previous WAIT.
-      // (See cursor accounting in WAIT/REL block below.)
+      rebStart = cursor;
+    } else {
+      rebStart = asmEnd;
     }
     const rebEnd = rebStart + rebarShifts;
 
