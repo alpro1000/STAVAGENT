@@ -1,0 +1,310 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_matrices_cd.py",
+  "_purpose": "Matrix D — cross-document consistency.",
+  "_verdict_counts": {
+    "CONSISTENT": 4,
+    "REVIEW": 2
+  },
+  "facts": [
+    {
+      "fact_id": "D.1",
+      "fact": "Per-podlaží světlé výšky (2100/2795/2865/2630 mm)",
+      "sources_per_value": {
+        "2100": [
+          "skladby_per_zone_v2",
+          "items.json (3 items)"
+        ],
+        "2795": [
+          "skladby_per_zone_v2",
+          "items.json (5 items)"
+        ],
+        "2865": [
+          "skladby_per_zone_v2",
+          "items.json (2 items)"
+        ],
+        "2630": [
+          "skladby_per_zone_v2",
+          "items.json (4 items)"
+        ]
+      },
+      "dxf_per_podlazi_match": {
+        "1.PP": {
+          "target_mm": 2100.0,
+          "n_matches_in_dxf": 4,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_koty nepouzite",
+              "measurement_mm": 2100.0,
+              "position_x": 3829440.0,
+              "position_y": 1862108.0,
+              "nearby_context": [
+                "{\\H0.91667x;A}",
+                "\\H0.91667x;H"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_koty nepouzite",
+              "measurement_mm": 2100.0,
+              "position_x": 3829290.0,
+              "position_y": 1815042.0,
+              "nearby_context": [
+                "\\H0.91667x;E"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2100.0,
+              "position_x": 3780019.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S04",
+                "\\fCentury Gothic|b1|i0|c238|p34;S06"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2100.0,
+              "position_x": 3867590.0,
+              "position_y": 1847735.0,
+              "nearby_context": []
+            }
+          ]
+        },
+        "1.NP": {
+          "target_mm": 2795.0,
+          "n_matches_in_dxf": 1,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2795.0,
+              "position_x": 3783164.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S07"
+              ]
+            }
+          ]
+        },
+        "2.NP": {
+          "target_mm": 2865.0,
+          "n_matches_in_dxf": 2,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2865.0,
+              "position_x": 3786434.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S09",
+                "\\pi-150,l150,xt1;\\c481;\\fCentury Gothic|b0|i0|c238;ocelové s",
+                "POZN.2.04"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2865.0,
+              "position_x": 3786434.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S09",
+                "\\pi-150,l150,xt1;\\c481;\\fCentury Gothic|b0|i0|c238;ocelové s",
+                "POZN.2.04"
+              ]
+            }
+          ]
+        },
+        "3.NP": {
+          "target_mm": 2630.0,
+          "n_matches_in_dxf": 2,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2630.54,
+              "position_x": 3789565.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S11",
+                "100/800",
+                "2x60/180"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2630.0,
+              "position_x": 3806450.0,
+              "position_y": 1847735.0,
+              "nearby_context": []
+            }
+          ]
+        }
+      },
+      "items_per_value": {
+        "2100": [
+          "260217_sklad.HSV2.005",
+          "260219_dum.HSV6.006",
+          "260219_dum.PSV78.001"
+        ],
+        "2795": [
+          "260219_dum.PSV77.001",
+          "260219_dum.PSV78.002",
+          "260219_dum.PSV78.003",
+          "260219_dum.PSV78.004",
+          "260219_dum.PSV78.007"
+        ],
+        "2865": [
+          "260219_dum.HSV2.007",
+          "260219_dum.PSV78.003"
+        ],
+        "2630": [
+          "260219_dum.HSV1.007",
+          "260219_dum.HSV3.002",
+          "260219_dum.PSV78.001",
+          "260219_dum.PSV78.004"
+        ]
+      },
+      "inconsistencies": [],
+      "verdict": "CONSISTENT"
+    },
+    {
+      "fact_id": "D.2",
+      "fact": "Sklad geometrie (6.35 m × 3.34 m + parking 7 m)",
+      "sources_per_key": {
+        "6350": [
+          "items.json"
+        ],
+        "3340": [
+          "items.json"
+        ],
+        "7000": [
+          "items.json"
+        ],
+        "6.35": [
+          "items.json"
+        ],
+        "3.34": [
+          "items.json"
+        ]
+      },
+      "inconsistencies": [],
+      "verdict": "CONSISTENT"
+    },
+    {
+      "fact_id": "D.3",
+      "fact": "ETICS thickness (160 mm canonical per v4.31 changelog; 200 mm was a silent-drift before correction)",
+      "items_etics_count": 6,
+      "mm_applied_in_etics_items": {
+        "160": [
+          "260219_dum.HSV7.002"
+        ],
+        "120": [
+          "260219_dum.HSV7.003"
+        ]
+      },
+      "mm_negation_or_max_context": {
+        "200": [
+          "260219_dum.HSV7.002",
+          "260219_dum.HSV7.002"
+        ]
+      },
+      "dxf_disambiguation_160mm_occurrences": 7,
+      "tz_mentions": {
+        "etics + 160": true,
+        "etics + 200": true
+      },
+      "verdict": "CONSISTENT",
+      "notes": "Applied thickness pulled from 'tl. N mm' pattern, negation/max contexts ('ne 200 mm fallback', 'max 200 mm povolena') ignored. Verdict CONSISTENT: 160 mm applied=True, 200 mm applied=False, 200 mm only in negation/max ctx=True."
+    },
+    {
+      "fact_id": "D.4",
+      "fact": "Klempířina length reconciliation (DXF total vs PSV-76 items sum)",
+      "dxf_total_m": 173.8,
+      "items_sum_m_or_bm": 159.9,
+      "delta_pct": -7.997698504027621,
+      "psv76_klempir_items_count": 4,
+      "klempirina_breakdown_dxf": {
+        "klempir_atika": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        },
+        "klempir_okap": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        },
+        "klempir_svod": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        },
+        "klempir_parapet": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        }
+      },
+      "klempirina_real_lengths_dxf": {
+        "_source": "DXF MA_klempíř (30 entities, 75.4 m) + SM__ klempířina (45 entities, 98.4 m)",
+        "total_length_m": 173.8,
+        "_finding": "Klempířina je o 70 % více než prior estimate 102 bm (oplechování+parapety+svody+vikýře). DXF má real lengths layered."
+      },
+      "verdict": "CONSISTENT"
+    },
+    {
+      "fact_id": "D.5",
+      "fact": "Item count phrasing across MD outputs",
+      "mentions_per_file": {
+        "outputs/Project_OnePager_RD_Jachymov.md": [
+          "204",
+          "208"
+        ],
+        "outputs/Project_Summary_RD_Jachymov.md": [
+          "204",
+          "208"
+        ],
+        "outputs/items_completeness_report_v2.md": [
+          "208"
+        ],
+        "outputs/items_quality_report.md": [
+          "204"
+        ]
+      },
+      "standardized_phrase": "208 total (204 active, 4 deprecated audit-trail)",
+      "files_to_update": [
+        "outputs/Project_OnePager_RD_Jachymov.md",
+        "outputs/Project_Summary_RD_Jachymov.md",
+        "outputs/items_completeness_report_v2.md",
+        "outputs/items_quality_report.md"
+      ],
+      "verdict": "REVIEW",
+      "notes": "Per Alexandra's gate-2 disposition: standardize phrasing '208 total (204 active, 4 deprecated audit-trail)' across all MDs during Matrix D + final docs refresh."
+    },
+    {
+      "fact_id": "D.6",
+      "fact": "Word otázky count + resolution status",
+      "intro_claim": "Tento dokument obsahuje 18 otázek",
+      "actual_count": 20,
+      "resolved_q_numbers_in_headers": [
+        4,
+        5,
+        18,
+        20
+      ],
+      "additional_resolutions_per_gate2": [
+        2,
+        4,
+        18,
+        5
+      ],
+      "verdict": "REVIEW",
+      "notes": "Intro text says '18 otázek' but actual count is 20 — Q19 + Q20 added later. Header-detected RESOLVED: Q4 / Q5-partial / Q18 / Q20. Per Alexandra's gate-2 disposition: Q2 also closed (assumption confirmed). Final state: 17 open / 3 fully resolved (Q2, Q4, Q18, Q20 — count 4 actually) / 1 partial (Q5). Update intro text + summary table during Part 4 File A refresh batch."
+    }
+  ]
+}
