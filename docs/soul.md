@@ -388,7 +388,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - Phase C G1 calibration values (cold side: 30d @ -5°C–5°C for C30+ class 4) are aggressive vs ČSN EN 13670 NA.2 baseline (was 14d). Matches production Python MCP per user spec but lacks independent verification against TKP 18 06/2025 source PDF.
 - T-bednění productivity hours pass through `fwSystem.assembly_h_m2` which is documented as "hours per m² OR per bm when unit='bm'". Type-system doesn't enforce; relies on convention. Future: split into `assembly_h_m2?: number` + `assembly_h_bm?: number` fields (low-priority refactor).
 
-**Artefakty této session (Týden 3 + Phase C, 8 commits on `claude/kind-wright-5nBQ2`):**
+**Artefakty této session (Týden 3 + Phase C + PR review fixes, 12 commits on `claude/kind-wright-5nBQ2`):**
 - `032c6b7` FEAT(knowledge): codegen pipeline + 5 Top-5 integrations
 - `f842ac2` FIX: TKP18 curing class 4 calibration (G1)
 - `2b6f18e` FEAT(scheduler): SchedulerMode infrastructure (G2)
@@ -396,7 +396,37 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - `5b4d85a` FEAT(orchestrator): wire cyclic + T-bednění productivity (G4)
 - `c9f1460` TEST(scheduler): cyclic regression suite (G5)
 - `6456bde` DOCS: backlog + MCP boundary (G6)
-- (G-final commit follows — soul.md + next-session.md)
+- `0a03aed` DOCS: Phase C closing handoff (G-final)
+- `c119cd9` FIX(scheduler): split relocate from stripping field (PR review #2)
+- `995d271` FIX(scheduler): sequential baseline + remove double-counted relocate (PR review #3)
+- `48d8369` FIX(scheduler): explicit rebStart=cursor when overlap + non-first (PR review #1)
+- `1979a39` TEST(scheduler): 9 regression locks for PR review fixes
+
+---
+
+### 2026-05-26 — Session: Phase C PR review fixes (Amazon Q logic errors)
+
+**Topic:** Amazon Q automated review on PR #1223 surfaced 3 real logic errors in `scheduleCyclic()`. All 3 confirmed valid, fixed atomically as 3 separate commits + 1 regression test commit. Tests: 1197 → **1206** (+9 review-lock cases).
+
+**Rozhodnuto:**
+- **Fix #2 (semantic field):** `TactDetail` gains optional `relocate?: [number, number]`. Intermediate tacts in cyclic mode write `relocate=[relStart, relEnd]` + `stripping=[t, t]` zero-length placeholder. Last tact unchanged (stripping non-zero, relocate undefined). Legacy DAG scheduler never sets `relocate` — backward compat preserved. Stripping stays REQUIRED in interface (consumer breakage avoided).
+- **Fix #3 (sequential baseline):** `asmDur = isFirst ? setupShifts : 0` (was: `: relocateShifts`). Root cause was double-counting: each non-first tact had relocate AT START (asmDur) AND AT END (else-branch), giving 2 × relocateShifts per intermediate. Fix means non-first tact's assembly slot is zero-length (form already in place from prev tact's relocate event). Net effect: total_days shrinks by `(n-1) × relocateShifts` for cyclic mode; sequential_days matches manual formula `setup + (n-1)×relocate + n×(rebar+pour) + (n-1)×wait + finalCure + prestress + finalStrip`.
+- **Fix #1 (rebar overlap explicit):** `rebStart = (!isFirst && rebarOverlapsWithWait) ? cursor : asmEnd`. After Fix #3, asmEnd === cursor for non-first anyway (functionally equivalent), but explicit conditional documents the parallel-with-WAIT intent + provides robustness against future refactors that might restore asmDur > 0.
+- **9 regression tests** in `scheduler-cyclic.test.ts`: 2 for Fix #1 (overlap visible in td.rebar + bounded savings), 4 for Fix #2 (intermediate has relocate + zero-strip / last has strip + no-relocate / relocate at curEnd / n=1 degradation), 3 for Fix #3 (manual formula match / single-crew total==sequential / dual-crew savings_days = (n-1) × min(rebar, wait) exact).
+
+**Odmítnuto:**
+- Making `stripping` field optional in TactDetail — would break 4 legacy consumers (PlannerGantt, CalculatorResult CSV, exportPlanXLSX, formulas.ts) that read `td.stripping[0]/[1]` without null checks. Zero-length placeholder is safe (Gantt fillRow handles [t,t] as no-op).
+- Keeping asmDur=relocateShifts for non-first + handling double-count elsewhere — root cause is the model itself (form can't be relocated twice per cycle); fixing it at the source is cleaner than band-aid in accumulator.
+- Bumping CLAUDE.md version to v4.33.0 — PR #1223 not merged yet; version bumps reserved for post-merge state to avoid drift between CLAUDE.md and main.
+
+**Otevřené otázky:**
+- Real-world rimsa validation against DOKA nabídka č. 540045359 — still deferred to Phase D (no Vitest fixture asserts specific day counts; smoke covered via element-audit). After Fix #3, total_days for rimsa shrank further (correct, but more divergent from pre-Phase-C behavior). Real-world calibration matters more than before.
+- Whether the "cursor decremented at end of iteration for overlap" + "rebStart=cursor at start of next iteration" pattern is the right abstraction. Works correctly today but reasoning requires tracing across iterations. Alternative: explicit per-iteration rebar/relocate start times computed up-front, no cursor tracking. Refactor candidate if cyclic gets more complex (Phase E?).
+
+**Co dál:**
+- PR #1223 awaits re-review (Amazon Q + Alexandra) + CI green
+- If review approves: merge. If new findings: another iteration.
+- Phase D (T-bednění productivity calibration, golden-rimsa fixture) starts post-merge per `next-session.md`.
 
 ---
 

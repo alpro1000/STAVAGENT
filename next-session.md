@@ -28,7 +28,13 @@ Single branch, two bodies of work, 8 atomic commits, 1 PR pending open.
 🧪 G5: 23 new cyclic tests in `scheduler-cyclic.test.ts`
 📄 G6: `backlog/calc_hardcoded_to_kb.md` + `docs/architecture/mcp_calculator_boundary.md`
 
-**Test count: 1136 baseline → 1197 (+61).** All green; tsc clean; codegen drift check clean.
+**Test count: 1136 baseline → 1197 → 1206 (+70 net after PR review fixes).** All green; tsc clean; codegen drift check clean.
+
+**PR #1223 review status (Amazon Q automated review, 2026-05-26):** 3 logic errors flagged + fixed atomically:
+- `c119cd9` FIX #2: `TactDetail.relocate?` field added; intermediate tacts no longer abuse `stripping` field for relocate
+- `995d271` FIX #3: `asmDur=0` for non-first tacts; sequential baseline matches manual formula (was double-counting (n-1)×relocate)
+- `48d8369` FIX #1: explicit `rebStart=cursor` when `!isFirst && rebarOverlapsWithWait` (intent + robustness)
+- `1979a39` 9 regression tests lock all 3 fixes
 
 ---
 
