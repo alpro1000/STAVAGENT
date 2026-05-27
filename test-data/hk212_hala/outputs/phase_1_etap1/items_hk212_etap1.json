@@ -403,6 +403,17 @@
           "pomocne_vykopy_pripojek": "HSV-1-011 vodovod DN150 + HSV-1-012 kanalizace DN200 cover labor only; M-VK-005/006/008 add potrubí materiál + montáž + napojení (no double-count)",
           "hydrant": "VRN-021 = revize only — M-VK-010 adds dodávka+montáž"
         }
+      },
+      {
+        "date": "2026-05-27",
+        "change": "Wording fix on M-VK-001 audit_trail — clarify 5.65° + 2.00° are SKLON RAMPY (gradient), NOT angle of sectional gates. Per user correction 2026-05-27.",
+        "reason": "Earlier poznámka 'Sklon 5.65° sekční vrata' could be misread as '5.65° angle of gates' instead of '5.65° slope of ramp at the gate location'. Sectional gates are vertical lifting — no angle.",
+        "items_modified": [
+          "M-VK-001"
+        ],
+        "items_added": [],
+        "items_removed": [],
+        "no_quantity_change": "Rampy areas unchanged: R1=9.20 + R2=11.50 + R3=9.20 + R4=13.42 = 43.32 m². No mnozstvi / mj / popis change. Pure audit_trail wording + label clarification."
       }
     ],
     "total_items_actual": 150
@@ -11232,22 +11243,22 @@
         "formula_parsed_method": "product",
         "inputs": [
           {
-            "label": "R1_sever_4.0×2.3_5.65deg",
+            "label": "R1_sever_4.0×2.3_sklon_5.65deg",
             "value": 9.2,
             "unit": "m²"
           },
           {
-            "label": "R2_jih_5.0×2.3_5.65deg",
+            "label": "R2_jih_5.0×2.3_sklon_5.65deg",
             "value": 11.5,
             "unit": "m²"
           },
           {
-            "label": "R3_jih_4.0×2.3_5.65deg",
+            "label": "R3_jih_4.0×2.3_sklon_5.65deg",
             "value": 9.2,
             "unit": "m²"
           },
           {
-            "label": "R4_zapad_2.2×6.1_2.00deg_bezbarierove",
+            "label": "R4_zapad_2.2×6.1_sklon_2.00deg_bezbarierove",
             "value": 13.42,
             "unit": "m²"
           },
@@ -11287,13 +11298,14 @@
             "stage": "DPS 06/2026"
           }
         ],
-        "poznamka": "Beton C25/30 XF3 (zmrazování/rozmrazování s rozmrazovacími prostředky). Dimenzování per ČSN EN 206 + XF3 expozice. Sklon 5.65° sekční vrata + 2.00° bezbariérová pěší rampa per A101. Okapní pas u ramp included v ploše.",
+        "poznamka": "Beton C25/30 XF3 (zmrazování/rozmrazování s rozmrazovacími prostředky). Dimenzování per ČSN EN 206 + XF3 expozice. Sklon RAMPY 5.65° (~10 % gradient) u sekčních vrat R1/R2/R3 + sklon RAMPY 2.00° (~3.5 % gradient) na bezbariérové pěší rampě R4 per A101. POZN: 5.65° + 2.00° jsou sklony ramp (gradient nájezdu), NE úhly vrat — sekční vrata jsou vertikálně zdvihací bez náklonu. Okapní pas u ramp included v ploše.",
         "confidence": 0.8,
         "extraction_method": "dps_situace_a101_a103",
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "565xxx (komunikace pozemní — beton)"
+        "kros_hint": "565xxx (komunikace pozemní — beton)",
+        "slope_clarification": "5.65° + 2.00° = SKLON RAMPY (gradient nájezdu na podlahu haly), NE úhel vrat. Sekční vrata jsou vertikálně zdvihací bez náklonu. Confirmed by user 2026-05-27."
       }
     },
     {
