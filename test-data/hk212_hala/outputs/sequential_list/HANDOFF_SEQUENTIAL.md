@@ -2,14 +2,14 @@
 
 **Status:** generated, validated, ready for manual KROS/URS + price assignment.
 
-**Branch:** `claude/hk212-add-venkovni-upravy`
+**Branch:** `claude/hk212-vk-final-minimal`
 **Date:** 2026-05-27
 
 ## Counts
-- 169 items v logickém stavebním pořadí (138 baseline + 12 M-UT vytápění + 19 M-VK venkovní úpravy)
+- 168 active items (138 baseline + 12 M-UT vytápění + 18 M-VK venkovní úpravy minimal scope per user decision 2026-05-27)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
-- 31 items added (12 M-UT + 19 M-VK), 0 skipped, 0 invented
-- 1 ABMV updated + 3 ABMV opened (ABMV_23 přeložka, _24 retenční typ, _25 VZT cross-ref)
+- 30 active items added (12 M-UT + 18 M-VK = 14 kept + 4 new), 5 dropped per user decision, 0 invented
+- 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
 
 ## Per-phase distribution
 - FÁZE 1: 20 items
@@ -24,16 +24,16 @@
 - FÁZE 9.5: 12 items
 - FÁZE 10: 2 items
 - FÁZE 11: 9 items
-- FÁZE 12: 19 items
+- FÁZE 12: 18 items
 
 ## Quality flags propagated (from items.json)
-- `_vyjasneni_ref` open ABMV: 10 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_24, ABMV_3
+- `_vyjasneni_ref` open ABMV: 11 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_24, ABMV_3, ABMV_31
 - `_review_qty`: 1 → PSV-OPL-005
 - `_review_concrete_class`: 1 → HSV-2-013
 - confidence < 0.70: 81 items (yellow-tinted v XLSX)
 
 ## Validation (§6)
-- ✔ row count = 169 (excl. separator rows)
+- ✔ row count = 168 (excl. separator rows + dropped items)
 - ✔ each items.json id appears exactly once
 - ✔ no id missing from output
 - ✔ phases ordered 1→9, 9.5, 10, 11, 12 monotonically

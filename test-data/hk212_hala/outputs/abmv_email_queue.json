@@ -497,6 +497,97 @@
       "scope_owner": "VZT_profession",
       "cross_reference": "C.3 značení 'VENKOVNÍ VZT JEDNOTKA S REKUPERA[CÍ]'",
       "created_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "id": "ABMV_26",
+      "category": "design_clarification",
+      "severity": "medium",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Material zpevněných ploch okolo haly",
+      "summary_cs": "Considered: Variant A asfalt 4-layer (ACO 11+ + ACL 16+ + MZK + ŠD) per task §1.3 user preliminary preference. Audit revealed TZ ARS B p09 + p21 explicitly specifies 'chodník pro pěší ze zámkové dlažby šířky 1.5 m', NE asfalt. C.3 KOO situace legenda obsahuje pouze 'STÁVAJÍCÍ VOZOVKA - ASFALT' — žádná položka navržená nová zpevněná plocha.",
+      "resolution_note": "User decision 2026-05-27: minimal scope per documentation conflicts. Pouze beton okapní chodník + 4 rampy + existing liniový žlab. NE asfalt (TZ p21 zachovat SZ existing). NE dlažba 1.5 m (user explicitly excluded, override TZ p09).",
+      "resolution_date": "2026-05-27",
+      "resolution_source": "User decision 2026-05-27 + audit outputs/zpevnene_plochy_audit.md",
+      "items_affected": [
+        "M-VK-013 dropped",
+        "M-VK-014 dropped"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_27",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Plocha zpevněných ploch dimenze",
+      "summary_cs": "Considered: 545 m² celá žlutá zóna z C.3 měření user (parkoviště 125 + manipulace 150 + napojení 50 + okolí 220). After TZ ARS audit: SZ komunikace EXISTING (ZACHOVAT), parkoviště nepodporeno (TZ p21 'bez nárůstu OA'), manipulační drátkobeton není v TZ.",
+      "resolution_note": "User decision 2026-05-27: 545 m² scope dropped entirely. Bid scope = pouze okapní chodník 56 m² (per řezy A103 detail) + rampy 43 m² (per A101). Total venkovní pavement scope = 99 m², NE 545 m² preliminary estimate.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [
+        "M-VK-013..017 all dropped"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_28",
+      "category": "scope_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Manipulační drátkobeton okolo vrat",
+      "summary_cs": "Considered: agent assumption v earlier scenarios — drátkobeton C25/30 XF4 s vlákny pro VZV provoz okolo sekčních vrat (~200 m²). NE TZ explicit spec; user assumption-based extension.",
+      "resolution_note": "User decision 2026-05-27: dropped from scope. NE TZ explicit, NE bid. If SOLAR DISPOREC requests post-bid → change request workflow.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_29",
+      "category": "scope_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Parkoviště 10 stání",
+      "summary_cs": "Considered: 10 kolmá parkovací stání 2.5×5.0 m = 125 m² asfalt + vodorovné značení (M-VK-016) per agent earlier assumption. TZ ARS B p21 explicit: 'Navýšení pohybu osobních vozidel se nepředpokládá. Jako skladníci budou pracovat stávající zaměstnanci.'",
+      "resolution_note": "User decision 2026-05-27: dropped per TZ p21 'bez nárůstu OA'. If SOLAR DISPOREC requests post-bid (e.g. expansion of zaměstnanců) → change request.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [
+        "M-VK-016 dropped"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_30",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Beton expozice XF3 vs XF4 pro okapní chodník",
+      "summary_cs": "Considered: XF3 (zmrazování bez chemikálií) vs XF4 (s chemikáliemi rozmrazovacích solí). Závisí na expozici hala perimetru: pokud hala přiléhá k veřejné solící komunikaci → XF4. Per audit: hala nepřiléhá veřejné komunikaci (pouze stávající areálová obslužná).",
+      "resolution_note": "User decision 2026-05-27: XF3 confirmed per hala neaplikuje rozmrazovací soli na svém perimetru. M-VK-020 beton C25/30 XF3.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [
+        "M-VK-020"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_31",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Material okapního chodníku verification — projektant confirm",
+      "summary_cs": "Okapní chodník 0.7 m × 80 m × 0.20 m calculated as beton C25/30 XF3 + KARI per řezy A103 detail screenshots 2026-05-27 hatching interpretation. TZ ARS silent na material tohoto specific element (TZ p09 mentions only dlažbu 1.5 m, dropped per user). Verify s projektant Volka při execution kick-off.",
+      "blocks_vv": [],
+      "addressee": [
+        "projektant Volka",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-020",
+        "M-VK-021",
+        "M-VK-022",
+        "M-VK-023"
+      ],
+      "resolution_required_before": "execution kick-off (Stage 4)",
+      "created_at": "2026-05-27T20:30:00+00:00"
     }
   ]
 }

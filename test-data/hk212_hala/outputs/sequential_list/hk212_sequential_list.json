@@ -11620,7 +11620,7 @@
       },
       "_sequence_position": 151,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Externí přípojky — výkop + potrubí (paralelně se ZS)",
       "_vzorec_display": "40 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -11695,7 +11695,7 @@
       },
       "_sequence_position": 152,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Externí přípojky — výkop + potrubí (paralelně se ZS)",
       "_vzorec_display": "30 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -11781,7 +11781,7 @@
       },
       "_sequence_position": 153,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Externí přípojky — výkop + potrubí (paralelně se ZS)",
       "_vzorec_display": "40 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -11860,7 +11860,7 @@
       },
       "_sequence_position": 154,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Externí přípojky — výkop + potrubí (paralelně se ZS)",
       "_vzorec_display": "3 ks  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -11946,7 +11946,7 @@
       },
       "_sequence_position": 155,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Přeložka vodovodního řadu (PODMÍNĚNÁ — pending ABMV_23)",
       "_vzorec_display": "1 kpl  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -12032,7 +12032,7 @@
       },
       "_sequence_position": 156,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Retenční nádrž 30 m³ prefab betonová (pending ABMV_24)",
       "_vzorec_display": "1 ks prefab  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -12106,7 +12106,7 @@
       },
       "_sequence_position": 157,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Hydrant podzemní DN80 + napojení",
       "_vzorec_display": "1 ks  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -12180,9 +12180,417 @@
       },
       "_sequence_position": 158,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Rampy 4× (R1-R4) — podklad ŠD + výztuž + bednění + beton + obrubník",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Drcený štěrk podklady (rampy + okapní chodník)",
       "_vzorec_display": "43.32 × 0.20 = 8.66 m³  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
+    },
+    {
+      "id": "M-VK-022",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Drcený štěrk ŠD 32/63 podklad okapního chodníku tl 150 mm",
+      "mj": "m³",
+      "mnozstvi": 8.4,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řezy A103 detail screenshots 2026-05-27 + user měření obvodu A101 + user decision 2026-05-27 (minimal scope override)",
+      "raw_description": "ŠD podklad okapního chodníku",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_31"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_detail+A101_měření+ČSN_73_0210",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 × 0.15 = 8.40 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "564xxx (komunikace — podkladní vrstvy)",
+      "_scope_basis": "User decision 2026-05-27 minimal scope — beton okapní chodník per řezy graphical authority. Material verification pending — viz ABMV_31.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — perimetr haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 × 0.15 = 8.40 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "tloustka_podkladu",
+            "value": 0.15,
+            "unit": "m"
+          },
+          {
+            "label": "objem_sd",
+            "value": 8.4,
+            "unit": "m³"
+          },
+          {
+            "label": "frakce",
+            "value": "32/63 mm",
+            "unit": ""
+          },
+          {
+            "label": "hutneni",
+            "value": "Edef2 ≥ 45 MPa",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řezy A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Hatched concrete 0.7 m × 0.18-0.20 m perimeter element visible in řezy detail screenshots 2026-05-27"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Perimeter dimensions: west 28.868 + east 29.515 + sever 10.192 + jih 11.074 = 79.65 m (po odečtu 4 vstupů)"
+          },
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Legenda silent na material navrženého perimeter elementu — pouze EXISTING asfalt SZ komunikace marked"
+          },
+          {
+            "type": "user_measurement",
+            "code": "Read interaktivního CAD viewer 2026-05-27",
+            "document": "session record 2026-05-27 řez detail screenshots"
+          }
+        ],
+        "poznamka": "Podkladní vrstva ŠD 32/63 mm pod okapní chodník. Hutnění Edef2 ≥ 45 MPa. Funkce: drenáž (proti zdvihu mrazem) + pevný podklad pro beton. Tloušťka 150 mm standardní pro nenáročné venkovní betonové plochy.",
+        "confidence": 0.8,
+        "extraction_method": "user_measurement_riez_detail + ČSN_73_0210_standard_practice",
+        "data_source_hint": "A103_riez_detail + A101_obvod_měření + ČSN_standard",
+        "extracted_at": "2026-05-27T20:30:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
+        "kros_hint": "564xxx (komunikace — podkladní vrstvy)",
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
+      },
+      "_sequence_position": 159,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Drcený štěrk podklady (rampy + okapní chodník)",
+      "_vzorec_display": "80.0 × 0.7 × 0.15 = 8.40 m³  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
+    },
+    {
+      "id": "M-VK-020",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Beton C25/30 XF3 — okapní chodník po obvodu haly (sokl 0.7 m × ~80 m mimo 4 vstupy), tl 200 mm",
+      "mj": "m³",
+      "mnozstvi": 11.2,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řezy A103 detail screenshots 2026-05-27 + user měření obvodu A101 + user decision 2026-05-27 (minimal scope override)",
+      "raw_description": "beton okapní chodník perimetr haly",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_31"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_detail+A101_měření+ČSN_73_0210",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 m × 0.7 m × 0.2 m = 11.20 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "565xxx (komunikace pozemní — beton venkovní)",
+      "_scope_basis": "User decision 2026-05-27 minimal scope — beton okapní chodník per řezy graphical authority. Material verification pending — viz ABMV_31.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — perimetr haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 × 0.2 = 11.20 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m",
+            "rozpis": "79.65 měřeno A101 → 80.0 rounded (sever 10.19 + jih 11.07 + záp 28.87 + vých 29.52 mínus 4 vstupy 12.20 = 79.65)"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 0.7,
+            "unit": "m",
+            "rozpis": "0.7 m per řezy A103 detail screenshots 2026-05-27"
+          },
+          {
+            "label": "tloustka_betonu",
+            "value": 0.2,
+            "unit": "m",
+            "rozpis": "0.183-0.197 m measured z řezů → 0.20 m round-up"
+          },
+          {
+            "label": "objem_betonu",
+            "value": 11.2,
+            "unit": "m³"
+          },
+          {
+            "label": "expozice",
+            "value": "XF3",
+            "unit": "",
+            "rozpis": "Zmrazování/rozmrazování bez chemikálií (hala ne přiléhá veřejné solící komunikaci)"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řezy A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Hatched concrete 0.7 m × 0.18-0.20 m perimeter element visible in řezy detail screenshots 2026-05-27"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Perimeter dimensions: west 28.868 + east 29.515 + sever 10.192 + jih 11.074 = 79.65 m (po odečtu 4 vstupů)"
+          },
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Legenda silent na material navrženého perimeter elementu — pouze EXISTING asfalt SZ komunikace marked"
+          },
+          {
+            "type": "user_measurement",
+            "code": "Read interaktivního CAD viewer 2026-05-27",
+            "document": "session record 2026-05-27 řez detail screenshots"
+          }
+        ],
+        "poznamka": "Beton C25/30 XF3 okapní chodník (sokl) po obvodu haly — drip apron pro odvod vody od fasády + ochrana paty stěny. Šířka 0.7 m, výška 0.18-0.20 m, sklon 1-2% od fasády. Dilatační spáry à ~4 m. Per ČSN 73 0210 + ČSN EN 13670 pro venkovní betonové plochy. TZ ARS B p09 spec 'chodník pro pěší ze zámkové dlažby 1.5 m' explicitly OVERRIDDEN per user decision 2026-05-27 — material interpretation per A103 řezy detail (beton hatching) + minimal scope basis.",
+        "confidence": 0.8,
+        "extraction_method": "user_measurement_riez_detail + ČSN_73_0210_standard_practice",
+        "data_source_hint": "A103_riez_detail + A101_obvod_měření + ČSN_standard",
+        "extracted_at": "2026-05-27T20:30:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
+        "kros_hint": "565xxx (komunikace pozemní — beton venkovní)",
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
+      },
+      "_sequence_position": 160,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Okapní chodník — sokl 0.7 m × 80 m po obvodu haly (beton + výztuž + dilatace, pending ABMV_31)",
+      "_vzorec_display": "80.0 × 0.7 × 0.2 = 11.20 m³  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
+    },
+    {
+      "id": "M-VK-021",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Výztuž KARI síť Q188 + boční bednění + dilatační lišty — okapní chodník",
+      "mj": "m²",
+      "mnozstvi": 56.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řezy A103 detail screenshots 2026-05-27 + user měření obvodu A101 + user decision 2026-05-27 (minimal scope override)",
+      "raw_description": "KARI Q188 + bednění okapního chodníku",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_31"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_detail+A101_měření+ČSN_73_0210",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 = 56.00 m² (1:1 s plochou chodníku)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "631xxx (KARI síť) + 564xxx (bednění)",
+      "_scope_basis": "User decision 2026-05-27 minimal scope — beton okapní chodník per řezy graphical authority. Material verification pending — viz ABMV_31.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — perimetr haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 = 56.00 m²",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "plocha_chodniku",
+            "value": 56.0,
+            "unit": "m²"
+          },
+          {
+            "label": "kari_typ",
+            "value": "Q188 (Ø6 mm, oka 150×150 mm)",
+            "unit": ""
+          },
+          {
+            "label": "bednini",
+            "value": "pouze vnější hrana (vnitřní = stěna haly)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řezy A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Hatched concrete 0.7 m × 0.18-0.20 m perimeter element visible in řezy detail screenshots 2026-05-27"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Perimeter dimensions: west 28.868 + east 29.515 + sever 10.192 + jih 11.074 = 79.65 m (po odečtu 4 vstupů)"
+          },
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Legenda silent na material navrženého perimeter elementu — pouze EXISTING asfalt SZ komunikace marked"
+          },
+          {
+            "type": "user_measurement",
+            "code": "Read interaktivního CAD viewer 2026-05-27",
+            "document": "session record 2026-05-27 řez detail screenshots"
+          }
+        ],
+        "poznamka": "KARI síť Q188 v jedné vrstvě uprostřed tloušťky betonu. Vnější boční bednění (vnitřní hrana = stěna haly, slouží jako vnitřní bednění). Dilatační lišty mezi segmenty à ~4 m (viz separátní položka M-VK-023). Funkce výztuže: prevence náhodných smršťovacích trhlin + diferenciální sedání mezi tuhým halou a stlačitelnou zeminou.",
+        "confidence": 0.8,
+        "extraction_method": "user_measurement_riez_detail + ČSN_73_0210_standard_practice",
+        "data_source_hint": "A103_riez_detail + A101_obvod_měření + ČSN_standard",
+        "extracted_at": "2026-05-27T20:30:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
+        "kros_hint": "631xxx (KARI síť) + 564xxx (bednění)",
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
+      },
+      "_sequence_position": 161,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Okapní chodník — sokl 0.7 m × 80 m po obvodu haly (beton + výztuž + dilatace, pending ABMV_31)",
+      "_vzorec_display": "80.0 × 0.7 = 56.00 m²  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
+    },
+    {
+      "id": "M-VK-023",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Dilatační lišty + těsnění spár mezi segmenty okapního chodníku (à ~4 m)",
+      "mj": "m",
+      "mnozstvi": 20.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řezy A103 detail screenshots 2026-05-27 + user měření obvodu A101 + user decision 2026-05-27 (minimal scope override)",
+      "raw_description": "dilatační lišty okapní chodník 20× á 4 m segment",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_31"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_detail+A101_měření+ČSN_73_0210",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 / 4 = 20 ks dilatací (~1 m každá)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "938xxx (dilatační spáry + těsnění)",
+      "_scope_basis": "User decision 2026-05-27 minimal scope — beton okapní chodník per řezy graphical authority. Material verification pending — viz ABMV_31.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — perimetr haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 / 4 = 20 ks dilatací",
+        "formula_parsed_method": "quotient",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "segment_delka",
+            "value": 4.0,
+            "unit": "m"
+          },
+          {
+            "label": "pocet_dilataci",
+            "value": 20.0,
+            "unit": "ks"
+          },
+          {
+            "label": "material",
+            "value": "polyetylénová pěnová páska 5×10 mm + horní zalévací zálivka",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řezy A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Hatched concrete 0.7 m × 0.18-0.20 m perimeter element visible in řezy detail screenshots 2026-05-27"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Perimeter dimensions: west 28.868 + east 29.515 + sever 10.192 + jih 11.074 = 79.65 m (po odečtu 4 vstupů)"
+          },
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Legenda silent na material navrženého perimeter elementu — pouze EXISTING asfalt SZ komunikace marked"
+          },
+          {
+            "type": "user_measurement",
+            "code": "Read interaktivního CAD viewer 2026-05-27",
+            "document": "session record 2026-05-27 řez detail screenshots"
+          }
+        ],
+        "poznamka": "Dilatační spáry à ~4 m oddělují segmenty okapního chodníku. Nutné kvůli teplotnímu pracování betonu + kontrolovanému umístění trhlin. Materiál: polyetylenová pěnová páska 5×10 mm vložená během betonáže + horní povrchová zálivka (polyuretanová tmel) odolná povětrnostním vlivům + UV. Také rohové dilatace u 4 vstupů.",
+        "confidence": 0.8,
+        "extraction_method": "user_measurement_riez_detail + ČSN_73_0210_standard_practice",
+        "data_source_hint": "A103_riez_detail + A101_obvod_měření + ČSN_standard",
+        "extracted_at": "2026-05-27T20:30:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
+        "kros_hint": "938xxx (dilatační spáry + těsnění)",
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
+      },
+      "_sequence_position": 162,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Okapní chodník — sokl 0.7 m × 80 m po obvodu haly (beton + výztuž + dilatace, pending ABMV_31)",
+      "_vzorec_display": "80.0 / 4 = 20 ks dilatací  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
     },
     {
       "id": "M-VK-002",
@@ -12252,10 +12660,10 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "631xxx (výztuž) + 564xxx (bednění)"
       },
-      "_sequence_position": 159,
+      "_sequence_position": 163,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Rampy 4× (R1-R4) — podklad ŠD + výztuž + bednění + beton + obrubník",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
       "_vzorec_display": "4 lokality rampy = 43.32 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
     {
@@ -12352,10 +12760,10 @@
         "kros_hint": "565xxx (komunikace pozemní — beton)",
         "slope_clarification": "5.65° + 2.00° = SKLON RAMPY (gradient nájezdu na podlahu haly), NE úhel vrat. Sekční vrata jsou vertikálně zdvihací bez náklonu. Confirmed by user 2026-05-27."
       },
-      "_sequence_position": 160,
+      "_sequence_position": 164,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Rampy 4× (R1-R4) — podklad ŠD + výztuž + bednění + beton + obrubník",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
       "_vzorec_display": "(9.2+11.5+9.2+13.42) × 0.15 = 6.50 m³  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
     {
@@ -12426,343 +12834,11 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "916xxx (osazení obrubníku)"
       },
-      "_sequence_position": 161,
-      "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Rampy 4× (R1-R4) — podklad ŠD + výztuž + bednění + beton + obrubník",
-      "_vzorec_display": "~30.0 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
-    },
-    {
-      "id": "M-VK-013",
-      "kapitola": "M-VK",
-      "SO": "SO-13",
-      "popis": "Drcené kamenivo ŠD 32/63 podklad zpevněných ploch tl 200 mm",
-      "mj": "m³",
-      "mnozstvi": 65.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "pending_stage_3",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
-      "raw_description": "podkladní vrstva ŠD 32/63 pod asfalt",
-      "confidence": 0.8,
-      "subdodavatel_chapter": "venkovni_upravy",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
-      "_completeness": 1.0,
-      "_qty_formula": "325.0 m² × 0.20 m = 65.0 m³ (parkoviště 125.0 + manipulace 150.0 + napojení 50.0)",
-      "_export_wrapper_hint": null,
-      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
-      "_kros_hint": "564xxx (komunikace — podkladní vrstvy)",
-      "audit_trail": {
-        "lokalizace": "venkovní úpravy areálu — SO-13",
-        "formula": "325.0 × 0.20 = 65.0 m³",
-        "formula_parsed_method": "product",
-        "inputs": [
-          {
-            "label": "parkovani_kolma_10x_2.5x5.0",
-            "value": 125.0,
-            "unit": "m²"
-          },
-          {
-            "label": "manipulacni_plochy",
-            "value": 150.0,
-            "unit": "m²"
-          },
-          {
-            "label": "komunikacni_napojeni",
-            "value": 50.0,
-            "unit": "m²"
-          },
-          {
-            "label": "asfalt_plocha_total",
-            "value": 325.0,
-            "unit": "m²"
-          },
-          {
-            "label": "podklad_tloustka",
-            "value": 0.2,
-            "unit": "m"
-          }
-        ],
-        "reference": [
-          {
-            "type": "document",
-            "code": "C.3 KOO situace",
-            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A101 půdorys 1NP",
-            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A103 řez A-B",
-            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          }
-        ],
-        "poznamka": "Per user decision 2026-05-27 — full venkovní scope. ŠD 32/63 hutněná Edef2 ≥ 60 MPa pro pojezdové plochy. Geotextilie separační pod ŠD (součást plochy).",
-        "confidence": 0.8,
-        "extraction_method": "dps_situace_a101_a103",
-        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
-        "extracted_at": "2026-05-27T00:00:00+00:00",
-        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "564xxx (komunikace — podkladní vrstvy)"
-      },
-      "_sequence_position": 162,
-      "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Zpevněné plochy — podklad ŠD + asfalt + obrubník + napojení",
-      "_vzorec_display": "325.0 × 0.20 = 65.0 m³  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
-    },
-    {
-      "id": "M-VK-014",
-      "kapitola": "M-VK",
-      "SO": "SO-13",
-      "popis": "Asfaltový beton ACO 11+ tl 50 mm obrusná vrstva — parkoviště + manipulace",
-      "mj": "m²",
-      "mnozstvi": 325.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "pending_stage_3",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
-      "raw_description": "asfalt ACO 11+ obrusná vrstva",
-      "confidence": 0.8,
-      "subdodavatel_chapter": "venkovni_upravy",
-      "_vyjasneni_ref": [],
-      "_status_flag": "acp_underlayer_pending_dpr_detail",
-      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
-      "_completeness": 1.0,
-      "_qty_formula": "parkovani 125.0 + manipulace 150.0 + napojeni 50.0 = 325.0 m²",
-      "_export_wrapper_hint": null,
-      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
-      "_kros_hint": "577xxx (asfaltové vrstvy obrusné)",
-      "audit_trail": {
-        "lokalizace": "venkovní úpravy areálu — SO-13",
-        "formula": "125.0+150.0+50.0 = 325.0 m²",
-        "formula_parsed_method": "direct",
-        "inputs": [
-          {
-            "label": "parkovani_kolma",
-            "value": 125.0,
-            "unit": "m²",
-            "rozpis": "10 stání × 2.5×5.0 m"
-          },
-          {
-            "label": "manipulacni",
-            "value": 150.0,
-            "unit": "m²"
-          },
-          {
-            "label": "komunikacni_napojeni",
-            "value": 50.0,
-            "unit": "m²"
-          },
-          {
-            "label": "tloustka",
-            "value": 0.05,
-            "unit": "m"
-          },
-          {
-            "label": "smes",
-            "value": "ACO 11+ (asfaltobeton obrusný, frakce 11 mm)",
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "document",
-            "code": "C.3 KOO situace",
-            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A101 půdorys 1NP",
-            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A103 řez A-B",
-            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          }
-        ],
-        "poznamka": "Obrusná vrstva pro osobní + lehký nákladní provoz. Spojovací postřik 0.50 kg/m² na podkladní vrstvě, ACO 11+ tl 50 mm hutněný. Pokud nebude podkladní AC vrstva → posoudit ACP 16 jako mezilehlá; zatím pouze 1× obrusná.",
-        "confidence": 0.8,
-        "extraction_method": "dps_situace_a101_a103",
-        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
-        "extracted_at": "2026-05-27T00:00:00+00:00",
-        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "577xxx (asfaltové vrstvy obrusné)"
-      },
-      "_sequence_position": 163,
-      "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Zpevněné plochy — podklad ŠD + asfalt + obrubník + napojení",
-      "_vzorec_display": "125.0+150.0+50.0 = 325.0 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
-    },
-    {
-      "id": "M-VK-015",
-      "kapitola": "M-VK",
-      "SO": "SO-13",
-      "popis": "Obrubník betonový silniční ABO 100×250×1000 mm + lůžko z betonu C16/20",
-      "mj": "m",
-      "mnozstvi": 90.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "pending_stage_3",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
-      "raw_description": "obrubník silniční kolem zpevněných ploch",
-      "confidence": 0.8,
-      "subdodavatel_chapter": "venkovni_upravy",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
-      "_completeness": 1.0,
-      "_qty_formula": "~90.0 bm (rozpis user 80-100 bm midpoint)",
-      "_export_wrapper_hint": null,
-      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
-      "_kros_hint": "916xxx (osazení obrubníku)",
-      "audit_trail": {
-        "lokalizace": "venkovní úpravy areálu — SO-13",
-        "formula": "~90.0 m",
-        "formula_parsed_method": "direct",
-        "inputs": [
-          {
-            "label": "obrubnik",
-            "value": "ABO 100×250×1000 mm",
-            "unit": ""
-          },
-          {
-            "label": "delka_total",
-            "value": 90.0,
-            "unit": "m"
-          },
-          {
-            "label": "luzko",
-            "value": "beton C16/20 + boční opěra",
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "document",
-            "code": "C.3 KOO situace",
-            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A101 půdorys 1NP",
-            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A103 řez A-B",
-            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          }
-        ],
-        "poznamka": "Obrubník silniční na hraně parkoviště + manipulačních ploch. Boční opěra C16/20 na rubové straně. Stage 3 precision per C.3 detail (geo-měření po vytýčení).",
-        "confidence": 0.8,
-        "extraction_method": "dps_situace_a101_a103",
-        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
-        "extracted_at": "2026-05-27T00:00:00+00:00",
-        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "916xxx (osazení obrubníku)"
-      },
-      "_sequence_position": 164,
-      "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Zpevněné plochy — podklad ŠD + asfalt + obrubník + napojení",
-      "_vzorec_display": "~90.0 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
-    },
-    {
-      "id": "M-VK-017",
-      "kapitola": "M-VK",
-      "SO": "SO-13",
-      "popis": "Komunikační napojení na stávající vozovku — vč. úpravy navazujícího pásu asfaltu, frézování styčné spáry, zalévací zálivka",
-      "mj": "m²",
-      "mnozstvi": 50.0,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "pending_stage_3",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
-      "raw_description": "komunikační napojení na stáv. asfalt",
-      "confidence": 0.8,
-      "subdodavatel_chapter": "venkovni_upravy",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
-      "_completeness": 1.0,
-      "_qty_formula": "50.0 m² (napojovací plocha per user decision)",
-      "_export_wrapper_hint": null,
-      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
-      "_kros_hint": "565xxx (napojení komunikací)",
-      "audit_trail": {
-        "lokalizace": "venkovní úpravy areálu — SO-13",
-        "formula": "50.0 m²",
-        "formula_parsed_method": "direct",
-        "inputs": [
-          {
-            "label": "plocha_napojeni",
-            "value": 50.0,
-            "unit": "m²"
-          },
-          {
-            "label": "obsazeno",
-            "value": "frézování spáry + zálivka + sjezd",
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "document",
-            "code": "C.3 KOO situace",
-            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A101 půdorys 1NP",
-            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A103 řez A-B",
-            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          }
-        ],
-        "poznamka": "Připojení nové asfaltové plochy na stávající vozovku (per C.3 — STÁVAJÍCÍ VOZOVKA-ASFALT). Frézování po obvodu spáry, asfaltová zálivka, případně sjezd s obrubníkem snížení.",
-        "confidence": 0.8,
-        "extraction_method": "dps_situace_a101_a103",
-        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
-        "extracted_at": "2026-05-27T00:00:00+00:00",
-        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "565xxx (napojení komunikací)"
-      },
       "_sequence_position": 165,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Zpevněné plochy — podklad ŠD + asfalt + obrubník + napojení",
-      "_vzorec_display": "50.0 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
+      "_vzorec_display": "~30.0 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
     {
       "id": "M-VK-012",
@@ -12840,93 +12916,9 @@
       },
       "_sequence_position": 166,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Liniový žlab pojízdný B125 — venkovní plochy",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Liniový žlab pojízdný B125 — SZ + JZ fasáda (40 m)",
       "_vzorec_display": "40 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
-    },
-    {
-      "id": "M-VK-016",
-      "kapitola": "M-VK",
-      "SO": "SO-13",
-      "popis": "Vodorovné značení parkovacích stání — symbol P + krajní čáry, barva bílá nestripovaná retroflexní",
-      "mj": "ks",
-      "mnozstvi": 10,
-      "urs_code": null,
-      "urs_alternatives": [],
-      "urs_status": "pending_stage_3",
-      "urs_match_score": 0.0,
-      "skladba_ref": null,
-      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
-      "raw_description": "vodorovné značení 10× parkovací stání",
-      "confidence": 0.8,
-      "subdodavatel_chapter": "venkovni_upravy",
-      "_vyjasneni_ref": [],
-      "_status_flag": null,
-      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
-      "_completeness": 1.0,
-      "_qty_formula": "10 ks (10 kolmá stání)",
-      "_export_wrapper_hint": null,
-      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
-      "_kros_hint": "91611xxx (vodorovné značení)",
-      "audit_trail": {
-        "lokalizace": "venkovní úpravy areálu — SO-13",
-        "formula": "10 ks",
-        "formula_parsed_method": "direct",
-        "inputs": [
-          {
-            "label": "pocet_stani",
-            "value": 10,
-            "unit": "ks"
-          },
-          {
-            "label": "rozmer_stani",
-            "value": "2.5 × 5.0",
-            "unit": "m"
-          },
-          {
-            "label": "uprava",
-            "value": "kolmá",
-            "unit": ""
-          },
-          {
-            "label": "barva",
-            "value": "bílá strojně stříkaná retroflexní",
-            "unit": ""
-          }
-        ],
-        "reference": [
-          {
-            "type": "document",
-            "code": "C.3 KOO situace",
-            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A101 půdorys 1NP",
-            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          },
-          {
-            "type": "document",
-            "code": "A103 řez A-B",
-            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
-          }
-        ],
-        "poznamka": "Per user decision 2026-05-27 — 10 kolmá parkovací stání. Značení per TP 65 + ČSN 73 6056. P4 symbol modré (= veřejné parkování) jen pokud potřeba; pro investorský areál typicky bez P4 (jen krajní čáry + číslo).",
-        "confidence": 0.8,
-        "extraction_method": "dps_situace_a101_a103",
-        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
-        "extracted_at": "2026-05-27T00:00:00+00:00",
-        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "91611xxx (vodorovné značení)"
-      },
-      "_sequence_position": 167,
-      "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
-      "_krok": "Vodorovné značení 10× parkovacích stání",
-      "_vzorec_display": "10 ks  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
     {
       "id": "M-VK-019",
@@ -13001,9 +12993,9 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "171xxx (zemní práce — finální úpravy)"
       },
-      "_sequence_position": 168,
+      "_sequence_position": 167,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Vyspádování okolního terénu k odvodnění",
       "_vzorec_display": "300 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
@@ -13081,12 +13073,12 @@
         "kros_hint": "181xxx (terénní úpravy + osetí)",
         "cross_dedup_note": "DIFFERENT from HSV-1-024 (Náhradní výsadba DŘEVIN — replacement trees). M-VK-018 = travní porost na zbytkových plochách. NO overlap."
       },
-      "_sequence_position": 169,
+      "_sequence_position": 168,
       "_phase": 12,
-      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13)",
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Ohumusování + osetí travou zbytkových ploch",
       "_vzorec_display": "500 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     }
   ],
-  "count": 169
+  "count": 168
 }
