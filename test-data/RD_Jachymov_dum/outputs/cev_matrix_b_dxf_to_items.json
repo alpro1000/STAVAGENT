@@ -157,7 +157,7 @@
       "dxf_evidence": {
         "total_skladba_mtext": 97,
         "skladby_decoded": 13,
-        "items_with_explicit_s_code_reference": 3,
+        "items_with_explicit_s_code_reference": 4,
         "items_implementing_skladba_layer_kapitola_count": 80
       },
       "expected_items_logic": "Each decoded S-code skladba is implemented by per-layer items across kapitolas {PSV-78, PSV-71, PSV-77, HSV-5, HSV-7, HSV-3, HSV-2}. Explicit S-code annotation in popis is not required — kapitola coverage is the substantive check.",
@@ -165,6 +165,7 @@
         "260219_dum.HSV2.001",
         "260219_dum.HSV5.009",
         "260219_dum.HSV7.002",
+        "260217_sklad.HSV5.001",
         "260219_dum.HSV2.001",
         "260219_dum.HSV2.002",
         "260219_dum.HSV2.003",
@@ -180,8 +181,7 @@
         "260219_dum.HSV2.013",
         "260217_sklad.HSV2.001",
         "260217_sklad.HSV2.002",
-        "260217_sklad.HSV2.003",
-        "260217_sklad.HSV2.004"
+        "260217_sklad.HSV2.003"
       ],
       "verdict": "COVERED",
       "severity": "informational",

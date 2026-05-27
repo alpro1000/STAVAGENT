@@ -7,16 +7,16 @@
     "covered": 117,
     "na_documented": 100,
     "gap": 0,
-    "extra": 28
+    "extra": 29
   },
   "_gap_by_severity": {},
   "_extras_by_subclass": {
-    "extra_dxf_sourced": 12,
+    "extra_dxf_sourced": 13,
     "extra_tz_implicit": 1,
     "extra_universal_vrn": 11,
     "extra_audit_derived": 4
   },
-  "_items_total": 211,
+  "_items_total": 212,
   "_items_touched_by_evidence": 163,
   "matrix_a": [
     {
@@ -5924,6 +5924,17 @@
       "subclass": "extra_audit_derived",
       "severity": "informational",
       "fix_recommendation": "Derived from earlier audit gap fix (per-podlaží split / GAP_X resolution). Parent item is TZ/DXF-backed; this is a refinement. Acceptable."
+    },
+    {
+      "item_id": "260217_sklad.HSV5.001",
+      "kapitola": "HSV-5 Komunikace + schodiště",
+      "subkapitola": "Sklad mezipodesta schodiště prefa",
+      "popis_excerpt": "Sklad mezipodesta schodiště — prefa betonové stupně (9 ks × 179.5×250 mm) + kladecí vrstva zavlhlého betonu nad ŽB podkladní deskou (S05 sklad skladba)",
+      "source_field": "DXF sklad_DPZ km_tabulka místností room 1.02 + DXF dimension 9×179.5×250 mm + Phase 3.5 sklad S-code mapping (S05 sklad schodiště skladba)",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
     }
   ]
 }
