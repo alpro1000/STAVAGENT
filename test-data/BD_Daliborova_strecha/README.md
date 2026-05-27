@@ -15,9 +15,10 @@
 
 **Klíčová čísla:**
 - v1 (ChatGPT, 73 pol.): **2 196 660 Kč** bez DPH
-- v2 (po auditu, 137 pol.): **3 978 264 Kč** bez DPH / **4 575 004 Kč** s DPH 15 %
-- Δ = +1 781 604 Kč (+81 %) — NE „předražení", ale doplnění 8 chybějících sekcí (zdivo Porotherm, ŽB věnec, ocel U100/U120, SDK + suchá podlaha Fermacell, omítky + ETICS, Cu klempířina, VRN, kompletní demolice)
-- v2 stále **nezahrnuje D.1.4 TZB** (~800 tis. – 1.2 M Kč navíc)
+- v2 (po auditu + pre-statice, 139 pol.): **3 974 133 Kč** bez DPH / **4 570 253 Kč** s DPH 15 %
+- Δ = +1 777 473 Kč (+81 %) — NE „předražení", ale doplnění 8 chybějících sekcí
+- **Pre-statika doplněna** (`calc_traces/statika_assumed.md`) — všechny prvky (krokve, ocel 2×UPN 100 + 2×UPN 120, sloupky, příložka, věnec, IPE 100) posouzeny dle ČSN EN 1990-1995 s margins ≥ 30 %. Cenový dopad pre-statiky: marginal (+2 449 Kč), ALE confidence boost 0.55-0.75 → 0.82-0.92
+- v2 stále **nezahrnuje D.1.4 TZB** (~800 tis. – 1.2 M Kč navíc) ani autorizovaný statický posudek pro DPS
 
 ## Krátký popis
 

@@ -1,22 +1,24 @@
 # Audit report — BD Daliborova 266/24, soupis prací v1 → v2
 
-**Datum:** 2026-05-27
+**Datum:** 2026-05-27 (rev2 — pre-statika doplněna)
 **Vstup:** `inputs/chatgpt_draft/Vykaz_BD_Daliborova_v1_KROS_73poz.xlsx` (73 položek, ~2.20 M Kč)
-**Výstup:** `outputs/audit_2026-05-27/Vykaz_BD_Daliborova_v2_KROS.xlsx` (137 položek, ~3.98 M Kč bez DPH)
-**Metodika:** Pattern 17 (Phase 0a Completeness Audit) + Pattern 20 (Audit v2 10-section) + Pattern 23 (per-drawing extraction) + Pattern 31 (CEV — Cross-Reference, Consolidate, Validate) — viz `docs/STAVAGENT_PATTERNS.md`
+**Výstup:** `outputs/audit_2026-05-27/Vykaz_BD_Daliborova_v2_KROS.xlsx` (139 položek, ~3.97 M Kč bez DPH)
+**Metodika:** Pattern 17 (Phase 0a) + Pattern 20 (Audit v2 10-section) + Pattern 23 (per-drawing) + Pattern 31 (CEV) + **Pre-statika dle ČSN EN 1990-1995 Eurokódů** (`calc_traces/statika_assumed.md`)
 
 ---
 
 ## TL;DR
 
-| | v1 (ChatGPT) | v2 (po auditu) | Δ |
+| | v1 (ChatGPT) | v2 (po auditu + pre-statice) | Δ |
 |---|---|---|---|
-| Položek | 73 | 137 | +64 |
-| Sekcí KROS | 7 (HSV-9/997, PSV-713/762/764/765/766, VRN prázdný) | 19 | +12 |
-| Cena bez DPH | 2 196 660 Kč | 3 978 264 Kč | +1 781 604 Kč |
-| Cena s DPH 15 % | 2 526 160 Kč | 4 575 004 Kč | +2 048 844 Kč |
+| Položek | 73 | 139 | +66 |
+| Sekcí KROS | 7 | 19 | +12 |
+| Cena bez DPH | 2 196 660 Kč | **3 974 133 Kč** | +1 777 473 Kč |
+| Cena s DPH 15 % | 2 526 160 Kč | **4 570 253 Kč** | +2 044 093 Kč |
 | Fatální chyby | 4 (EPS místo MW, duplikace, 105 m³ prkna, špatná pol. okna) | 0 | -4 |
-| Chybějící sekce | 8 (zdivo, ŽB, omítky, SDK, ocel, klempířské Cu, VRN, demolice) | 0 (doplněny) | -8 |
+| Chybějící sekce | 8 (zdivo, ŽB, omítky, SDK, ocel, klempířské Cu, VRN, demolice) | 0 | -8 |
+| Statické dimenzování | nedostupné | **pre-statika dle Eurokódů** (statika_assumed.md) | nový |
+| Průměrné confidence | n/a | 0.78 (vs. 0.65 před pre-statikou) | +0.13 |
 
 **Nárůst ~1.8 M Kč není „předražení". Znamená, že v1 vynechalo:**
 - celé sekce HSV-31 (zdivo Porotherm ~410 tis. Kč), HSV-41 (ŽB věnec + překlady + zesílení trámů ~146 tis. Kč), HSV-6 (omítky + ETICS ~171 tis. Kč),
@@ -206,13 +208,25 @@ Per Pattern 17 (Phase 0a Completeness Audit) nemá smysl produkovat finální na
 
 ### Blockery P0 (kritické)
 
-1. **Statika** — bez ní nelze finálně zafixovat:
-   - krokve (profil 100×180 vs. silnější? rozteč 1.0 m vs. hustější u vikýřů?)
-   - 2× U100 u hřebene (vážně po celé délce 50 bm?)
-   - 2× U120 v zalomení vikýřů (skutečná délka?)
-   - sloupky pod vaznice (počet, profil, kotvení?)
-   - zesílení trámů 180/200 → příložka 100/260: dřevo nebo ocel? délka?
-   - statika věnce + překladů
+1. **✅ Statika — VYŘEŠENO pro fázi nabídky** (`calc_traces/statika_assumed.md`)
+
+   Provedena pre-statika dle Eurokódů (ČSN EN 1990–1995) — návrh všech ocelových a dřevěných prvků s safety margin ≥ 30 %:
+
+   | Prvek | Návrh | Posouzení | Využití |
+   |---|---|---|---|
+   | Krokve hl. střecha 100×180 | 2-polový spojitý nosník 2× 3.08 m | ČSN EN 1995-1-1 | 30 %, průhyb 1/770 |
+   | Krokve vikýře 100×180 | Prostý nosník 3.81 m | ČSN EN 1995-1-1 | 49 %, průhyb 1/400 |
+   | Pozednice 140×160 | Spojitě podepřena | ČKAIT empirie | OK |
+   | 2× UPN 100 vaznice | Spojitý nosník, pole sloupků 3.5 m | ČSN EN 1993-1-1 | 53 %, průhyb 1/300 limit |
+   | 2× UPN 120 zalomení | Pole 2 m | ČSN EN 1993-1-1 | 6 % (rezerva) |
+   | Sloupky trubka 80×60×4 (16 ks, h ≈ 1.8 m) | Tlačený prvek, β=0.7 | ČSN EN 1993-1-1 | 14 % |
+   | Příložka 100/260 z dolní strany trámu | PUR + svorníky M12/500 | ČSN EN 1995-1-1 §7.3 | W +67 %, I +130 % |
+   | Věnec 250×200 + 4Φ12 + třmínky Φ8/200 | Tlak + ohyb od sloupku | ČSN EN 1992-1-1 | 18 % |
+   | IPE 100 nadpraží dveří 1.0 m | Krátký nosník | ČSN EN 1993-1-1 | 6 % |
+
+   **Cenový dopad statického upřesnění: +2 449 Kč** (z 3 978 264 → 3 980 713 Kč) — marginal, ale velký dopad na confidence (z 0.55-0.75 → 0.82-0.92).
+
+   ⚠ **Tato pre-statika je platná pro fázi nabídky a budget plan, NIKOLI pro DPS ani stavební povolení.** Pro DPS NUTNO **autorizovaný statický posudek (ČKAIT IS00)** dle zákona 360/1992 Sb. a 183/2006 Sb. § 159.
 
 2. **Výpis výplní otvorů (D.1.1.3 nebo separate)**:
    - O/002 (2 ks střešní okno) — rozměr, materiál, U-hodnota
