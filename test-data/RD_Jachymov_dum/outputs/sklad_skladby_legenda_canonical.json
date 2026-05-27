@@ -1,0 +1,73 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-27",
+  "_purpose": "Canonical sklad SKLADBY KONSTRUKCÍ legenda ground truth — from user-provided drawing screenshots (D.1.1.02.R1 půdorys suterénu + C.03 koord. situace) cross-validated against DXF S-code call-outs in cev_dxf_full_text_dump.json (km_kóty layer).",
+  "n_codes": 6,
+  "skladby": [
+    {
+      "code": "S01",
+      "name": "podlaha sklad",
+      "layers": [
+        "betonová dlažba 50 mm",
+        "kladecí vrstva - kamenná drť 4-8 mm 40 mm",
+        "podkladní nosná vrstva - kamenná drť 4-8 mm 150 mm",
+        "zhutněná zemní pláň (30 MPa)"
+      ]
+    },
+    {
+      "code": "S02",
+      "name": "stropní konstrukce (parking roof = sklad ceiling)",
+      "layers": [
+        "pojezdový ocelový pororošt 50 mm",
+        "nosná ocelová konstrukce - ocel. nosníky 180 mm",
+        "hydroizolační fólie",
+        "záklop z dřevěných prken 20 mm",
+        "dřevěné nosné trámy - KVH 100/160 160 mm"
+      ]
+    },
+    {
+      "code": "S03a",
+      "name": "obvodová stěna pod úrovní terénu",
+      "layers": [
+        "povrch surový bez omítky",
+        "obvodová stěna (dle legendy materiálů)",
+        "betonové tvárnice ztraceného bednění 250 mm",
+        "asfaltová penetrace",
+        "2× hydroizolační + protiradonový pás z modif. asfaltu 2×4 mm",
+        "drenážní vrstva - nopová folie 20 mm"
+      ]
+    },
+    {
+      "code": "S03b",
+      "name": "obvodová stěna nad úrovní terénu",
+      "layers": [
+        "povrch surový bez omítky",
+        "obvodová stěna (dle legendy materiálů)",
+        "betonové tvárnice ztraceného bednění 250 mm",
+        "povrch surový bez omítky (exterior)"
+      ]
+    },
+    {
+      "code": "S04",
+      "name": "opěrná stěna (zadní, prefa Herkul)",
+      "layers": [
+        "povrch surový bez omítky",
+        "opěrná stěna (dle legendy materiálů)",
+        "betonové prefa bloky usazené na zámek 600 mm",
+        "asfaltová penetrace",
+        "2× hydroizolační + protiradonový pás z modif. asfaltu 2×4 mm",
+        "drenážní vrstva - nopová folie 20 mm"
+      ]
+    },
+    {
+      "code": "S05",
+      "name": "schodiště přístupové ke skladu",
+      "layers": [
+        "schod z betonového prefa bloku",
+        "kladecí vrstva ze zavlhlého betonu",
+        "podkladní betonová deska",
+        "zhutněná zemní pláň"
+      ]
+    }
+  ]
+}

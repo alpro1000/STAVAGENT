@@ -1,6 +1,6 @@
 {
   "_schema_version": "2.0",
-  "_generated_at": "2026-05-26",
+  "_generated_at": "2026-05-27",
   "_generated_by": "tools/completeness_check_v2.py",
   "_items_total": 211,
   "_rooms_total": 25,
@@ -3115,8 +3115,8 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA200",
         "HEA180",
+        "HEA200",
         "HEA160"
       ],
       "items_keyword_hit": true,
@@ -3189,9 +3189,9 @@
       "description": "TZ ARS — opěrná stěna / bílá vana",
       "tz_mention_count": 5,
       "tz_mention_sample": [
-        "bílá vana",
         "opěrná stěn",
-        "opěrné stěn"
+        "Opěrné stěn",
+        "Opěrná stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3216,8 +3216,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasy",
-        "terasa"
+        "terasa",
+        "terasy"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3241,9 +3241,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "Protipožární",
         "protipožární",
-        "EI 90"
+        "Protipožární",
+        "EI 180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3255,9 +3255,9 @@
       "description": "TZ ARS — tepelné čerpadlo (PSV-73)",
       "tz_mention_count": 3,
       "tz_mention_sample": [
+        "TČ",
         "tepelné čerpadl",
-        "multisplit",
-        "TČ"
+        "multisplit"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3269,8 +3269,8 @@
       "description": "TZ ARS — elektrokotel / kotel",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "elektrokotel",
-        "kotel"
+        "kotel",
+        "elektrokotel"
       ],
       "items_keyword_hit": true,
       "status": "covered",

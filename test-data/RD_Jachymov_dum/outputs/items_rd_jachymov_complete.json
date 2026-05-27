@@ -272,7 +272,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV1.001"
+      "id": "260217_sklad.HSV1.001",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -305,7 +306,8 @@
       "popis_was_fabricated": "Hloubení figury pro objekt skladu v lichoběžníku 6.35 × 3.34 m, hl. do 1.2 m",
       "urs_code_proposed_was": "132211101",
       "urs_verification_note": "Korekce 2026-05-19: stejná oprava jako HSV1.003 — 'figura' → 'jám nezapažených'.",
-      "urs_websearch_verified_at": "2026-05-19"
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -333,7 +335,8 @@
       "notes": null,
       "id": "260217_sklad.HSV1.003",
       "urs_verification_note": "WebSearch: same URS leaf as HSV1.002 — exact match",
-      "urs_websearch_verified_at": "2026-05-19"
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -361,7 +364,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV1.004"
+      "id": "260217_sklad.HSV1.004",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -387,7 +391,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV1.005"
+      "id": "260217_sklad.HSV1.005",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -420,7 +427,8 @@
       "urs_code_proposed_was": "162701105",
       "urs_code_family_6digit": "162701",
       "urs_verification_note": "WebSearch verified WRONG LEAF: Same wrong-leaf as HSV1.007 — 9-10 km vs 'do 8 km'. Hint: Wahrscheinlich 162701104 (8-9 km)",
-      "urs_websearch_verified_at": "2026-05-19"
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -835,7 +843,11 @@
       "urs_code_proposed_was": "273313811",
       "urs_code_family_6digit": "271313",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = ZÁKLADY DESKY C 25/30, item = ZÁKLADOVÉ PASY C16/20 XC0. Hint: Základové pasy = TKP 271 (pasy), NOT 273 (desky); class C16/20 leaf needed.",
-      "urs_websearch_verified_at": "2026-05-19"
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": [
+        "S03a",
+        "S03b"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -862,7 +874,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV2.002"
+      "id": "260217_sklad.HSV2.002",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -887,7 +900,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV2.003"
+      "id": "260217_sklad.HSV2.003",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -912,7 +926,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV2.004"
+      "id": "260217_sklad.HSV2.004",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -937,7 +952,11 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV2.005"
+      "id": "260217_sklad.HSV2.005",
+      "realizuje_skladbu": [
+        "S01",
+        "S05"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -962,7 +981,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV2.006"
+      "id": "260217_sklad.HSV2.006",
+      "realizuje_skladbu": [
+        "S05"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1194,7 +1216,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV3.001"
+      "id": "260217_sklad.HSV3.001",
+      "realizuje_skladbu": [
+        "S04"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1219,7 +1244,11 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV3.002"
+      "id": "260217_sklad.HSV3.002",
+      "realizuje_skladbu": [
+        "S03a",
+        "S03b"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1246,7 +1275,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV3.003"
+      "id": "260217_sklad.HSV3.003",
+      "realizuje_skladbu": [
+        "S03a",
+        "S03b"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1667,7 +1700,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV4.001"
+      "id": "260217_sklad.HSV4.001",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1692,7 +1728,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV4.002"
+      "id": "260217_sklad.HSV4.002",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1717,7 +1756,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV4.003"
+      "id": "260217_sklad.HSV4.003",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1744,7 +1786,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV4.004"
+      "id": "260217_sklad.HSV4.004",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1769,7 +1814,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV4.005"
+      "id": "260217_sklad.HSV4.005",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1794,7 +1842,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.HSV4.006"
+      "id": "260217_sklad.HSV4.006",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -4264,7 +4315,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.PSV76.001"
+      "id": "260217_sklad.PSV76.001",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -4294,7 +4346,10 @@
       "urs_code_proposed_was": "771121011",
       "urs_code_family_6digit": "596",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = nátěr penetrační (primer), item = betonová dlažba do pískového lože install. Hint: Betonová dlažba do pískového lože = TKP 596 (chodník) family, NOT 771-1 (primery).",
-      "urs_websearch_verified_at": "2026-05-19"
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -6262,5 +6317,22 @@
       "HSV-7 Fasáda ETICS": 6
     },
     "explicit_review_marker": "Items in skladba-implementing kapitolas without a direct S-code mapping carry realizuje_skladbu=null (explicit reviewed-as-not-applicable, e.g. structural support items that DON'T form a skladba layer themselves)."
+  },
+  "_phase3_5_sklad_skladby_log": {
+    "applied_at": "2026-05-27",
+    "purpose": "Phase 3.5 — sklad S-code traceability. Tags 27 sklad items with realizuje_skladbu against sklad-specific S01-S05/S03a/S03b namespace (distinct from dům řez A-A legenda).",
+    "tagged_skladba_items": 14,
+    "explicit_null_marker_items": 9,
+    "items_reviewed_total": 23,
+    "changes_by_kapitola": {
+      "HSV-1 Zemní práce": 6,
+      "HSV-2 Základové a ŽB": 6,
+      "HSV-3 Svislé konstrukce": 3,
+      "HSV-4 Vodorovné": 6,
+      "PSV-76 Výplně otvorů": 1,
+      "PSV-77 Podlahy": 1
+    },
+    "ground_truth_source": "user drawing screenshots + cev_dxf_full_text_dump.json km_kóty layer",
+    "canonical_legenda_file": "outputs/sklad_skladby_legenda_canonical.json"
   }
 }
