@@ -1,0 +1,212 @@
+{
+  "project": {
+    "name": "Stavební úpravy bytového domu Daliborova 266/24, Praha 15",
+    "short_name": "BD Daliborova",
+    "type": "rekonstrukce + půdní vestavba + nový krov",
+    "stage": "DSP",
+    "doc_part_present": "D.1.1 Architektonicko-stavební část",
+    "created": "2026-05-27",
+    "source": "test-data/BD_Daliborova_strecha/inputs/tz/D.1.1_architektonicko_stavebni_cast.pdf"
+  },
+  "location": {
+    "address": "Daliborova 266/24, Praha 15",
+    "city_district": "Hostivař",
+    "parcel": "669",
+    "kat_uzemi": "Hostivař (732 052)",
+    "plot_area_m2": 690,
+    "confidence": 1.0,
+    "source": "D.1.1 §1, str. 1"
+  },
+  "elevations": {
+    "vstupni_cast_mnm": 250.70,
+    "absolutni_nulа_mnm": 252.450,
+    "hreben_relativni_m": 11.180,
+    "rimsa_vikyre_relativni_m": 9.270,
+    "stavajici_rimsa_relativni_m": 6.680,
+    "podkrovi_relativni_m": 6.350,
+    "confidence": 0.95,
+    "source": "D.1.1 §1 + řez na výkresu str. 6-7"
+  },
+  "existing_state": {
+    "year_built_approx": 1920,
+    "footprint_m": "24.89 × 12.10",
+    "podlazi": "1.PP + 3.NP",
+    "byty_count": 12,
+    "konstrukcni_system": "podélný stěnový dvoutrakt",
+    "nosne_steny_tl_m": "0.3 – 0.6",
+    "material_sten": "plné cihly",
+    "strop_2np": "dřevěné trámy 180/200 mm á 0,7 m",
+    "strop_1pp": "betonový",
+    "strecha_ulicni": "sklon 36,0°, keramická bobrovka, vaznicový krov",
+    "strecha_dvorni": "pultová, sklon 5,22°, povlaková krytina (BEZE ZMĚNY)",
+    "obestaveny_prostor_m3": 3350,
+    "confidence": 1.0,
+    "source": "D.1.1 §3 POPIS KONSTRUKCE"
+  },
+  "new_state": {
+    "byty_count": 14,
+    "new_byty_count": 2,
+    "byty_layout": "3+kk",
+    "byt_34_plocha_m2": 64.48,
+    "byt_35_plocha_m2": 62.55,
+    "uzitna_plocha_nastavba_m2": 127.03,
+    "obestaveny_prostor_m3": 3430,
+    "confidence": 1.0,
+    "source": "D.1.1 §2"
+  },
+  "scope": {
+    "uliční_strecha_uplna_vymena": true,
+    "dvorni_strecha_beze_zmeny": true,
+    "stavajici_hreben_zachovan": true,
+    "boční_štíty_zachovány": true,
+    "komínová_stěna_zachována": true,
+    "světlík_zachován_s_prostupem": true,
+    "vestavba_bytu": 2,
+    "vikyre_count": 2,
+    "confidence": 1.0,
+    "source": "D.1.1 §1 + §3"
+  },
+  "key_dimensions": {
+    "delka_uliční_fasády_m": 25.010,
+    "delka_hrebene_m": 25.010,
+    "plocha_hlavni_strechy_m2": 154.0,
+    "plocha_jednoho_vikyre_m2": 25.6,
+    "rozmer_vikyre_mm": "6780 × 3780",
+    "vikyre_sklon_deg": 7.0,
+    "hlavni_strecha_sklon_deg": 36.2,
+    "plocha_vikyru_celkem_m2": 51.2,
+    "celkova_plocha_krytin_m2": 205.2,
+    "pracovni_vyska_leseni_m": 12.5,
+    "confidence": 0.90,
+    "confidence_note": "rozměry z ChatGPT draftu a TZ textu; ověřit výkresy až dorazí",
+    "source": "D.1.1 + ChatGPT vykaz_strecha_vikire"
+  },
+  "skladba_hlavni_strecha_bobrovka_36deg": [
+    { "n": 1, "vrstva": "Střešní krytina skládaná bobrovka, cihlová", "tl_mm": null },
+    { "n": 2, "vrstva": "Latě + kontralatě", "tl_mm": 90, "rozmer": "50 + 40 mm" },
+    { "n": 3, "vrstva": "Těsnicí páska pod kontralatě Jutatop TPK Super č. 50", "tl_mm": 4 },
+    { "n": 4, "vrstva": "Pojistná difuzně otevřená kontaktní hydroizolace (Dekten Multi Pro)", "tl_mm": null },
+    { "n": 5, "vrstva": "Bednění", "tl_mm": 20 },
+    { "n": 6, "vrstva": "Krokve 100×180 á 1,0 m + min. izolace mezi krokvemi", "tl_mm": 180 },
+    { "n": 7, "vrstva": "Min. izolace mezi trámky 60×60 mm", "tl_mm": 80 },
+    { "n": 8, "vrstva": "Parozábrana", "tl_mm": null },
+    { "n": 9, "vrstva": "SDK podhled na systémovém roštu", "tl_mm_total": "50 + 12.5" },
+    { "n": 10, "vrstva": "Tenkovrstvá sádrová omítka Knauf + 2× bílý malířský nátěr", "tl_mm": null }
+  ],
+  "skladba_vikyr_falc_7deg": [
+    { "n": 1, "vrstva": "Hliníková falcovaná krytina Lindab click, cihlově červená matná", "tl_mm": 1 },
+    { "n": 2, "vrstva": "Strukturovaná podkladní rohož", "tl_mm": 8 },
+    { "n": 3, "vrstva": "Plnoplošné bednění prkna / OSB", "tl_mm": 25 },
+    { "n": 4, "vrstva": "Latě 50×60 mm — větraná mezera", "tl_mm": 60 },
+    { "n": 5, "vrstva": "Difuzní fólie Tyvek", "tl_mm": null },
+    { "n": 6, "vrstva": "Pobití prkna nebo Steico Universal", "tl_mm": 25 },
+    { "n": 7, "vrstva": "Krokve 100×180 á 1,0 m + min. izolace mezi krokvemi", "tl_mm": 180 },
+    { "n": 8, "vrstva": "Min. izolace mezi trámky 60×60 mm", "tl_mm": 80 },
+    { "n": 9, "vrstva": "Parozábrana", "tl_mm": null },
+    { "n": 10, "vrstva": "SDK podhled na systémovém roštu", "tl_mm_total": "50 + 12.5" },
+    { "n": 11, "vrstva": "Tenkovrstvá sádrová omítka Knauf + 2× bílý nátěr", "tl_mm": null }
+  ],
+  "skladba_podlaha_podkrovi_sucha": [
+    { "n": 1, "vrstva": "Stávající dřevěné trámy 180/200 á 0,7 m (zesílené jednostrannou příložkou)", "tl_mm": "180/200" },
+    { "n": 2, "vrstva": "OSB záklop", "tl_mm": 20 },
+    { "n": 3, "vrstva": "Voštinový systém Fermacell", "tl_mm": 60 },
+    { "n": 4, "vrstva": "Min. izolace", "tl_mm": 20 },
+    { "n": 5, "vrstva": "2× Fermacell 2 E 35", "tl_mm": 25 },
+    { "n": 6, "vrstva": "Keramická dlažba lepená / plovoucí podlaha", "tl_mm": 15 }
+  ],
+  "demolice": {
+    "ulicni_krov_kompletni": true,
+    "atikova_nadezdivka": true,
+    "horni_rimsa_ulicni_fasada": true,
+    "bobrovka_a_late_m2": 154,
+    "podlahove_vrstvy_podkrovi": "shora až na holé trámy",
+    "oplechovani_kominu_ks": 5,
+    "napojeni_u_svetliku_ks": 1,
+    "demontaz_stavajicich_stresnich_oken_ks": 6,
+    "pravidlo": "shora dolů, postupně, s dočasným zajištěním proti dešti",
+    "confidence": 0.95,
+    "source": "D.1.1 §BOURACÍ PRÁCE str. 2"
+  },
+  "ocelove_prvky_pozadovane_statikou": {
+    "stredni_vrcholova_vaznice": "ocelová, na ocelových sloupcích",
+    "u100_hreben_bm_predbezne": 50.02,
+    "u100_pocet_profilu": 2,
+    "u100_pozn": "JEN POKUD jde po celé délce hřebene — OVĚŘIT STATIKOU",
+    "u120_zalomeni": "2× U120 v zalomení / podpoře, délka dle statiky",
+    "ipe_100_nadprazi": "v stávající střední podélné stěně pro nové dveřní otvory světlosti 1.0 m",
+    "kotveni": "chemické / mechanické dle statiky",
+    "confidence": 0.70,
+    "blocker": "BEZ STATIKY nelze finálně zafixovat výkazy",
+    "source": "D.1.1 §Nové konstrukce str. 2-3 + ChatGPT poznámky a rizika"
+  },
+  "okna": {
+    "stresni_okno_O_002": 2,
+    "stresni_okno_pozn": "v ploše uliční střechy",
+    "velke_okno_vikyre_ks": 4,
+    "velke_okno_vikyre_pozn": "2 ks v každém vikýři, čelní fasáda vikýře",
+    "demontaz_stavajicich_stresnich_oken_ks": 6,
+    "blocker": "Rozměry a materiál NEČITELNÉ z dodaného PDF — chybí Výpis výplní otvorů",
+    "confidence": 0.50,
+    "source": "D.1.1 + ChatGPT poznámky a rizika"
+  },
+  "zarizeni_staveniste": {
+    "leseni_fasadni_m2": 375,
+    "leseni_pracovni_vyska_m": 12.5,
+    "leseni_delka_m": 25.01,
+    "leseni_pozn": "orientačně 360-375 m², závisí na záboru chodníku",
+    "vytah_typ": "GEDA 300 Z/ZP",
+    "vytah_polozky": ["pronájem den/týden", "doprava na stavbu a zpět", "montáž + demontáž", "revize / uvedení do provozu", "obsluha + denní kontrola", "provozní příslušenství + prodlužovací díly + kotvení + zábrany nástupišť"],
+    "ochranna_sit_a_strisка_kpl": 1,
+    "confidence": 0.85,
+    "source": "ChatGPT draft + TZ doplnění"
+  },
+  "byty_dispozice": {
+    "byt_34_2_5_NP": "3+kk se zádveřím, koupelnou, samostatným WC, pokojem a hlavním obytným pokojem průchozím do ložnice",
+    "byt_35_2_5_NP": "3+kk se zádveřím, koupelnou, samostatným WC, pokojem a hlavním obytným pokojem průchozím do ložnice",
+    "mezibytova_stena": "Porotherm AKU tl. 200 + 250 mm",
+    "vikyrove_celni_zdi": "Porotherm T Profi tl. 440 mm s integrovanou TI",
+    "venec_a_preklady_vikyru_kpl": 2,
+    "schodiste_kamenne_dvouramenne_zachovano": true,
+    "svetlik_zachovan_s_prostupem_pro_ocelovy_profil": true,
+    "confidence": 1.0,
+    "source": "D.1.1 §3"
+  },
+  "blockers_pred_phase_1": [
+    {
+      "id": "B1",
+      "what": "Statika — výkaz krovu, ocelových profilů, kotvení, příložky stropu",
+      "blocks": ["dřevařský výkaz", "ocelový výkaz", "kotevní materiál"],
+      "priority": "P0"
+    },
+    {
+      "id": "B2",
+      "what": "Výpis výplní otvorů (D.1.1.x)",
+      "blocks": ["okna jednotková cena", "klempířské parapety", "ostění a parapety"],
+      "priority": "P0"
+    },
+    {
+      "id": "B3",
+      "what": "PBŘ — typy SDK desek a požární odolnost",
+      "blocks": ["SDK podhledy + příčky + opláštění ocelových konstrukcí"],
+      "priority": "P1"
+    },
+    {
+      "id": "B4",
+      "what": "Výkresová část D.1.1.2 — půdorysy, řezy, pohledy, výpis skladeb",
+      "blocks": ["všechny m² výkazy — ověření z geometrie"],
+      "priority": "P0"
+    },
+    {
+      "id": "B5",
+      "what": "D.1.4 TZB — kanalizace, vodovod, vytápění, elektro pro 2 nové byty",
+      "blocks": ["instalační rozpočet"],
+      "priority": "P1"
+    },
+    {
+      "id": "B6",
+      "what": "Atiková nadezdívka — výška a profil",
+      "blocks": ["demoliční výkaz bm vs m³"],
+      "priority": "P2"
+    }
+  ]
+}
