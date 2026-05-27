@@ -1,10 +1,17 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-05-26:
-Sequential 1..16 validated (no duplicates, no gaps).
-last_number: 16
-next_pattern: 17  ← use this for any new additions.
+Pattern numbering audit 2026-05-26 (expansion pass):
+Sequential 1..36 validated (no duplicates, no gaps).
+last_number: 36
+next_pattern: 37  ← use this for any new additions.
+last_audit: 2026-05-26
+
+Expansion 2026-05-26: 20 new patterns 17..36 added from RD Jáchymov pilot
+CEV session. Patterns 12 + 15 enriched (workflow + freeze-gate detail).
+Pilot-local case studies remain at
+concrete-agent/packages/core-backend/app/knowledge_base/B5_tech_cards/
+  real_world_examples/<pilot>/patterns_validated.md (separate namespace).
 
 PROCESS (before adding a new pattern):
   1. Read this header — note current last_number.
@@ -557,6 +564,29 @@ Branch is safe to delete when:
 - No new commits since the squash-merged tip
 - PR shows status `Merged`
 
+### Branch-lifecycle workflow (added 2026-05-26, RD Jáchymov enrichment, was Pattern S)
+
+The ghost-banner symptom is the surface effect; the root cause is **squash-merge being enabled at the repo level + opening PRs before work is done**. Treat both:
+
+**Repo configuration (one-time):**
+```
+GitHub repo → Settings → General → Pull Requests:
+  ☐ Allow squash merging   (UNCHECK — critical)
+  ☑ Allow merge commits    (keep checked)
+  ☐ Allow rebase merging   (optional)
+
+Default merge strategy: Merge commit
+```
+
+**Branch lifecycle:**
+1. Open PR only when work is truly done (not mid-iteration).
+2. Branch can live days/weeks. Long-running branches are fine if no parallel work touches the same files.
+3. Merge via "Create a merge commit" (NOT squash) — preserves linear history + every commit SHA stays addressable from main.
+4. Delete branch only after acknowledged delivery / shipment confirmation.
+
+**Recurring cycle anti-pattern (RD Jáchymov evidence):**
+Pilot encountered 4× false merge conflicts mid-work because a prior PR had been squash-merged from a snapshot of the same branch, then subsequent commits to the branch produced identical-content collisions on rebase. Each took 10-15 min agent time to resolve. Root cause: squash-merge enabled + PRs opened too early. Disabling squash at repo level + opening PRs only at delivery time fixed the recurring cycle.
+
 ---
 
 ## Pattern 13: Synthetic Acceptance Metrics Mask Correctness
@@ -743,6 +773,34 @@ Work atomization is **universal** (digging holes, pouring concrete, welding stee
 - Pattern 13 (Synthetic metrics) — failure mode this pattern prevents
 - Pattern 14 (Forward-tracked _analytical_journey) — mandatory through Stages 1→2→3
 - Pattern 16 (Universal Work Ontology) — downstream consequence for multi-market expansion
+- Pattern 31 (CEV) — extends Stage 1+2 with 5-layer/4-matrix verification before Stage 3
+- Pattern 32 (Two-file delivery) — File A audit (Stage 1+2 output) separate from File B production (Stage 3 output)
+
+### CEV pre-match consolidation gate (added 2026-05-26, RD Jáchymov enrichment, was Pattern M)
+
+HK212 established the 3-stage discipline. RD Jáchymov pilot extended it with **strict 6-phase sequencing + explicit STOP gates** because the 3-stage version still permitted catalog-matching to start before extraction was verified complete:
+
+```
+Phase 1: EXTRACT         — all documents (TZ + DXF + Excel + Word + MD + external)
+Phase 2: CROSS-REFERENCE — matrices verify completeness
+                           (Matrix A: source → items, B: entities → items,
+                            C: items → sources, D: cross-doc consistency)
+Phase 3: CONSOLIDATE     — finalize items list, FREEZE (single source of truth)
+Phase 4: VALIDATE LIST   — File A audit deliverable with provenance (NO codes yet)
+                           ▸ STOP GATE — explicit human confirmation required
+Phase 5: MATCH CATALOG   — catalog matching against FROZEN list (per-market adapter)
+Phase 6: PRODUCTION      — File B production deliverable with codes filled
+```
+
+Phase 5 cannot start until Phase 4 STOP gate confirms list FROZEN. Phase 6 cannot start until Phase 5 done. **No File B until File A complete.** Frozen-snapshot artefact (`items_consolidated_FROZEN_<date>.json` read-only copy) makes the freeze explicit.
+
+**Why the extra phases:** RD Jáchymov first attempt jumped from Phase 1 to Phase 5 after Audit v2 passed, then CEV (Phase 2 matrices) caught 3 GAPs + 1 ENRICHMENT that would have shipped silently. Cost of CEV ~3-4 hours vs cost of re-deliver to Karel: not comparable.
+
+**Two-file principle (now formalised — Pattern 32 enrichment of HK212 base):**
+- **File A** — audit / worksheet: provenance per item (source, formula, data_quality, confidence, vyjasneni_ref). Multi-sheet (aggregated, detailed, per-podlaží, per-skladba, cross-verification). For investor + projektanti + internal QA.
+- **File B** — production: clean catalog format (code | popis | MJ | qty | unit_price | total | flag). Single sheet per import system requirements. For execution partner direct import.
+
+Both reference same items.json source-of-truth. Different rendering layers, different audiences.
 
 ---
 
@@ -823,6 +881,763 @@ Přípravář workflow learned in CZ market (HK212) directly applicable to DE/ES
 - Pattern 15 (Work-First, Catalog-Last) — upstream dependency; this pattern is the international corollary of the same discipline
 - Pattern 11 (KROS FTS matching) — current ad-hoc CZ implementation, to be wrapped as formal `czech_kros_adapter.py`
 - Pattern 13 (Synthetic metrics) — reinforces why adapter layer must be manual / human-reviewed, not auto-matched
+
+---
+
+## Pattern 17: Phase 0a Completeness Audit (mandatory pre-extraction gate)
+
+**Source:** RD Jáchymov pilot (2026-05-18). Pilot-local case study at `concrete-agent/.../rd_jachymov/patterns/08_completeness_audit_mandatory.md`.
+
+### Problem
+Agent's default extraction behavior leans toward subset — extract what's obvious / asked, skip what isn't. For DPS-grade output (item-level rozpočet), mandatory completeness audit must inventory ALL data sources BEFORE selective extraction. Without it, generator works on a subset → silent drifts → items.json ships incomplete.
+
+### Algorithm
+**Layer 1 — PDF inventory:** enumerate ALL PDFs (`tz/` + `dokladova_cast/` + `vykresy_pdf/` + `situace/`), per PDF detect content type (text / drawing / scanned), extract text or flag for OCR.
+
+**Layer 2 — DXF exhaustive layer probe:** enumerate ALL layers per DXF (NE subset), per layer record `entity_count + entity_types + sample_data + probe_status` (probed_extracted / probed_metadata_only / probed_empty / unprobed). Gate doesn't open until 0 `unprobed_actionable` layers.
+
+**Layer 3 — Cross-document reference detection:** for each unique marker (S-codes, F-codes, materials), search across all docs, link legenda + uses.
+
+### Acceptance gate
+Phase 1 work BLOCKED until completeness audit shows:
+- 0 PDFs without text-probe (or OCR-attempt logged)
+- 0 DXF layers with `unprobed_actionable` status
+- All cross-document markers have legenda + uses both found
+
+### Anti-pattern
+Starting Phase 1 generation without completeness audit done = guaranteed silent drift. "Completeness ≠ correctness" — 100 % correct extraction across 7 % source coverage still ships 93 % blind spots.
+
+### Origin context
+RD Jáchymov first pass probed 11 of 156 DXF layers (7 %), shipped 6 silent drifts (ETICS 200 → 160 mm, PIR 180 → 160 mm, klempířina 4-way DXF split, obklady per-koupelna výška, per-podlaží světlé výšky, špalety perimeter) — all user-caught. Cure: 156/156 layers probed via Path C 5-tier exhaustive sweep.
+
+### Reusable code
+- `tools/phase0a_completeness_audit.py` (~700 LOC reference)
+- `tools/path_c_part1_ocr.py` + `path_c_tier{1,2,3,4_5}_*.py`
+
+### Related
+- Pattern 18 (Iterative deepening) — what catches the gap when Pattern 17 hasn't fired yet
+- Pattern 22 (PDF noise filters) — needed in conjunction during text-probe step
+- Pattern 31 (CEV) — follow-up verification across all source layers post-Phase-0a
+- Pilot-local `rd_jachymov/patterns/08_completeness_audit_mandatory.md` (CRITICAL)
+- Pilot-local `rd_jachymov/patterns/09_iterative_layer_probe_user_caught_gaps.md` (ANTI-PATTERN preserved as negative example)
+
+---
+
+## Pattern 18: Iterative deepening with human-as-QA-gate
+
+**Source:** RD Jáchymov pilot (multi-session 2026-05-18 → 2026-05-26).
+
+### Problem
+Agentic execution optimizes for task completion, not exhaustive verification. Default behavior: stop when "task done" per asked spec. Without human stress-testing, gaps persist that the agent's own self-checks systematically miss.
+
+### Algorithm
+1. Agent completes task per spec.
+2. Agent returns "done" signal.
+3. **Human role (structural, NOT optional): stress-test specific aspects** — "but what about X?", "did you check Y?", "iterate on Z".
+4. Agent finds previously-missed details → applies fix.
+5. Repeat until 2 consecutive iterations find < 3 minor gaps (see Pattern 19).
+
+### Acceptance
+Pilot considered complete only when consecutive iterations converge to zero material gaps.
+
+### Anti-pattern
+Trust agent's "done" signal blindly. Single-pass deliverables consistently miss 5-15 % of scope.
+
+### Origin context
+RD Jáchymov pilot caught **6 categories of silent drifts** only iteratively after user prompting: file-swap (Rdt fingerprint), encoding (mojibake), S-codes (sklad namespace), missed layers (89 % unprobed), fabricated terms (Pattern 30 stems), per-drawing POZN refs (CEV Pattern 23). None would have surfaced from agent self-review.
+
+### Why this matters
+Stress-tester role is **structural**, not optional. Replaces traditional engineering review boards / multi-step approvals at the prototype-pilot stage. Conversational iteration is the QA mechanism.
+
+### Related
+- Pattern 17 (Phase 0a) — what to audit instead of relying on iteration
+- Pattern 19 (Diminishing returns gate) — when to stop iterating
+- Pilot-local `rd_jachymov/patterns/09_iterative_layer_probe_user_caught_gaps.md`
+
+---
+
+## Pattern 19: Diminishing returns gate
+
+**Source:** RD Jáchymov pilot (2026-05-26 — closing-out the CEV iteration).
+
+### Problem
+Iterative audits eventually hit zero gaps. Past that point, additional passes find stylistic issues (terminology refinement, formatting) not material issues (missing scope, wrong qty). Without explicit stop signal, iteration continues unnecessarily — erodes confidence in already-complete deliverables and consumes session budget.
+
+### Algorithm
+1. After each audit pass, count actionable issues found.
+2. If 2 consecutive passes find < 3 minor issues → STOP signal triggered.
+3. Recognize transition: **material findings → stylistic findings**.
+4. Ship and rest.
+
+### Acceptance
+Pilot delivery proceeds when diminishing returns gate triggers.
+
+### Anti-pattern
+Endless iteration past zero gaps wastes time and erodes confidence in already-complete deliverables.
+
+### Origin context
+RD Jáchymov pilot — Audit v2 found 8 actionable gaps → all fixed → Quality pass found 0 actionable → CEV per-drawing audit found 3 GAPs + 1 ENRICHMENT → Phase 3.5-3.7 verified canonical baseline. Stop signal triggered after the consolidate phase.
+
+### Related
+- Pattern 18 (Iterative deepening) — upstream loop this pattern terminates
+- Pattern 31 (CEV) — typically the last substantive audit before this gate fires
+
+---
+
+## Pattern 20: Audit v2 — 10-section completeness methodology
+
+**Source:** RD Jáchymov pilot (2026-05-19 — Audit v2 methodology codification).
+
+### Problem
+Phase 0a (Pattern 17) verifies that sources are probed. Need an orthogonal audit that verifies **works are present** in items.json. Simple TKP / subdodavatel coverage is insufficient — catches < 25 % of real gaps.
+
+### Algorithm — 10 sections per pilot
+
+| Section | Check |
+|---|---|
+| **A** | TKP family coverage (0-9, plus VRN) — each family has ≥ 1 item |
+| **B** | Subdodavatel trade coverage — each mapped trade has ≥ 1 item |
+| **C** | Domain anchor checklist — ~60 typical works per project type, each present |
+| **D** | TZ verb-noun regex scan — "provedení X" / "instalace Y" / "montáž Z" → check items coverage |
+| **E** | Per-podlaží completeness matrix — N podlaží × M elements per floor (typically 4 × 7 = 28 cells) |
+| **F** | Per-room completeness matrix — rooms × attributes (typically 25 × 9 = 225 cells) |
+| **G** | Cross-element consistency chains — e.g. windows ↔ parapets ↔ flashings ↔ jambs |
+| **H** | Material balance check — Σ floor areas vs total floor area ± 5 %, Σ ETICS layers consistent, etc. |
+| **I** | Cost ratio sanity — HSV/PSV/TZB/VRN proportion within typical range (informational, not gate) |
+| **J** | TZ deep scan per critical section — ~18 anchors per project type |
+
+### Acceptance
+Audit v2 green = 0 critical + 0 important gaps.
+
+### Anti-pattern
+Shipping without Audit v2 — sections E-J catch ~80 % of gaps that earlier audits (Pattern 17 source-side + Pattern 21 catalog-side) miss.
+
+### Reusable code
+- `tools/completeness_check_v2.py` (~700 LOC reference)
+- `tools/quality_audit.py` for the 5-dimension parallel quality pass
+
+### Origin context
+RD Jáchymov pilot's Audit v1 (4 sections A-D) caught 2 gaps. Audit v2 (10 sections A-J) caught 8 additional gaps that v1 missed.
+
+### Related
+- Pattern 17 (Phase 0a) — orthogonal source-side audit
+- Pattern 18 (Iterative deepening) — Audit v2 results drive iteration
+- Pattern 31 (CEV) — orthogonal cross-source consistency layer
+- Pattern 33 (Project synthesis) — read after Audit v2 for holistic view
+
+---
+
+## Pattern 21: Multi-factor catalog candidate selection
+
+**Source:** RD Jáchymov + HK212 catalog-matcher review (2026-05-23 → 2026-05-25).
+
+### Problem
+When external catalog matcher (KROS FTS, URS lookup, BKI search) emits 1-N candidates per item with confidence + source, naive "highest confidence wins" fails. Reality requires multi-factor scoring — confidence alone is uncalibrated (Pattern 13).
+
+### Algorithm — composite score per candidate
+
+```
+score = 0.30 × raw_confidence
+      + 0.25 × source_reliability     (trained matcher ≥ web LLM)
+      + 0.20 × unit_match              (exact / compatible / mismatch penalty)
+      + 0.15 × popis_jaccard           (token overlap source query vs candidate description)
+      + 0.10 × note_hint               (explicit candidate mention in note field)
+```
+
+### Decision rules
+- `score > 0.7` + clear gap to #2 → `clear_winner`
+- top-2 Δ < 0.15 → `close_call_top_2` + flag alternative
+- `score < 0.5` → `low_confidence` + flag
+- no candidates → `no_candidates` + blank code + flag MANUAL LOOKUP (per Pattern 26)
+
+### Acceptance
+Output transparent per-item selection rationale (top-N candidates with computed score, selected highlighted, alternative if close call).
+
+### Anti-pattern
+Default candidate_1 always wins. Misses unit mismatches and explicit note hints.
+
+### Origin context
+RD Jáchymov pilot found agent's `note` field explicitly mentioned which candidate to use (operator hint) — naive top-by-confidence ignored this signal.
+
+### Related
+- Pattern 11 (KROS FTS matching) — upstream candidate generator
+- Pattern 13 (Synthetic acceptance metrics) — failure mode this pattern mitigates
+- Pattern 26 (Honest fallback hierarchy) — when scoring returns no acceptable winner
+
+---
+
+## Pattern 22: PDF noise filters mandatory in matrix builders
+
+**Source:** RD Jáchymov pilot CEV Matrix A first-pass (2026-05-26). First pass returned 22 false-positive critical GAPs from extraction noise.
+
+### Problem
+PDF text extraction (pypdf, pdfplumber) introduces noise that triggers false-positive gaps in matrix verification:
+- TOC lines (`1.2.3 Section Name......15`)
+- "Nevyskytují se" / "Není relevantní" boilerplate
+- Numeric coordinate dumps (causes regex catastrophic backtracking)
+- Drawing title block stamps
+- DPS-scope meta lines ("Tato dokumentace nenahrazuje realizační dokumentaci")
+
+### Algorithm — pre-filter every TZ paragraph before matrix matching
+
+```python
+NOISE_FILTERS = [
+    r'^\d+(\.\d+)*\s+\w+.*\.{3,}\d+$',           # TOC line
+    r'^[\d\.\,\s]{20,}$',                        # Numeric coordinate dump
+    r'(?i)nevyskytují se|není relevantní',       # Boilerplate negations
+    r'(?i)tato dokumentace.*neslouží.*realizac', # DPS-scope meta
+    r'^stránka\s+\d+\s+z\s+\d+$',                # Page numbering
+    r'^\w+\s+architekti\s+s\.r\.o\.',            # Stamp variants
+]
+```
+
+Numeric-dump detection should use a token-shape counter, NOT a quantified regex like `(?:\d{1,3}[.,]?\d{0,3}\s+){20,}` — that backtracks catastrophically on long coordinate strings.
+
+### Acceptance
+Matrix builder rejects noise lines before declaring "GAP detected".
+
+### Anti-pattern
+Without filters, every TOC line becomes a "critical gap" — wastes iteration cycles + erodes audit confidence.
+
+### Origin context
+Pilot's first Matrix A pass returned 22 false-positive critical GAPs from extraction noise. Final pass with filters returned 0 GAPs.
+
+### Related
+- Pattern 17 (Phase 0a) — caller of text-probe step
+- Pattern 30 (Czech regex diacritic pitfall) — same regex-discipline class
+- Pattern 31 (CEV) — uses Pattern 22 filters in Matrix A/C builders
+
+---
+
+## Pattern 23: Per-drawing extraction (beyond TZ-only)
+
+**Source:** RD Jáchymov pilot CEV per-drawing audit (2026-05-26).
+
+### Problem
+Standard project-wide legendy appear at bottom of every drawing sheet (sections + plans + elevations + details). Legenda content is identical (project-wide reference). BUT each drawing sheet has **unique annotations + demolition markings + POZN references AROUND legendy**. Pipeline must iterate per-drawing for unique annotations, NOT just main reference drawing.
+
+### Algorithm
+1. Inventory all drawing PDFs per project (typically 10-30 sheets).
+2. Per drawing: extract non-legenda annotations (POZN refs, "stávající" vs "návrh" callouts, demolition markings, local dimensions, material labels at element positions).
+3. Cross-reference with extracted standard legenda — skip duplicates.
+4. Compare unique annotations against items.json + central evidence index.
+5. Flag gaps: drawing-specific POZN reference not mapped to any item.
+
+### Reusable code — mojibake decoder for CZ architectural PDFs
+
+Czech architectural PDFs frequently ship with a custom font with broken ToUnicode CMap — pypdf and pdfplumber both yield mojibake. When OCR isn't available, heuristic substitution recovers readable Czech:
+
+```python
+MOJIBAKE_CZ = {'ú':'í', 'č':'ý', 'ř':'ě', 'š':'ě', 'Ř':'č'}
+# (cid:33) → ů, (cid:34) → š, (cid:35) → ž, (cid:36) → Ž, (cid:37) → ž
+```
+
+Use OCR when available (tesseract ces+eng @ 300 DPI via pdftoppm) — only fall back to mojibake heuristic when OCR tooling absent.
+
+### Acceptance
+Per-drawing audit completes with explicit "all sheets iterated" + gap list.
+
+### Anti-pattern
+Extract primary reference drawing in detail, assume other drawings duplicate. Misses sheet-specific POZN refs + demolition annotations.
+
+### Origin context
+RD Jáchymov pilot — primary řez A-A extracted thoroughly. Per-drawing audit later found POZN.1.02 (komín demolition), POZN.1.03 (opěrné zídky bourání), POZN.2.02 (drenáž za bílou vanou) — 3 real GAPs + 1 ENRICHMENT (mykologický + dřevokazný hmyz survey) missed in TZ-only extraction.
+
+### Related
+- Pattern 17 (Phase 0a) — Layer 1 PDF inventory must include vykresy_pdf, not just tz/
+- Pattern 24 (Multi-namespace S-code/F-code) — drawings are where per-namespace S-code legendy live
+- Pattern 31 (CEV) — per-drawing audit is a CEV addendum pass
+
+---
+
+## Pattern 24: Multi-namespace S-code / F-code handling
+
+**Source:** RD Jáchymov pilot Phase 3.5 (2026-05-26 — sklad S-code namespace discovery).
+
+### Problem
+Multi-objekt projects (main building + sklad + garage + …) may have **separate skladba namespaces per stavební objekt**. Main building uses S01-S12b, secondary objekt uses its own S01-S05 with completely different layer compositions. Naive global numbering merges incorrectly.
+
+### Algorithm
+1. Detect per-SO skladba legendy separately (per Pattern 23 per-drawing audit).
+2. Tag items with namespace-qualified reference: `realizuje_skladbu: "S01_dum"` vs `realizuje_skladbu: "S01_sklad"`. (Or use compound key `{objekt}/S0N` if the namespace is implicit in `objekt` field.)
+3. Var_E (skladby vrstev sheet) lists per-namespace S-codes separately.
+4. Cross-reference per-SO context, never assume global numbering.
+
+### Acceptance
+Each skladba-implementing item explicitly references namespace + S-code.
+
+### Anti-pattern
+Tag sklad items with dům S-code numbers ("S01 must mean obvodová stěna for everyone"). Mis-attributes layer compositions and silently mislabels which works are part of which skladba.
+
+### Origin context
+RD Jáchymov pilot — agent initially tagged only 38 dům items, missed that 27 sklad items have own S01-S05 namespace with different compositions:
+- Sklad S01 = podlaha sklad (NOT obvodová stěna 1.NP/2.NP as in dům)
+- Sklad S02 = stropní konstrukce (NOT společná stěna)
+- Sklad S03a/b = obvodová stěna pod / nad terénem
+- Sklad S04 = opěrná stěna (NOT obvodová stěna 3.NP)
+- Sklad S05 = schodiště
+
+### Related
+- Pattern 23 (Per-drawing extraction) — source of per-namespace legendy
+- Pattern 28 (Schema integrity globally-unique IDs) — same lesson, different field
+
+---
+
+## Pattern 25: Web search as catalog verification fallback
+
+**Source:** RD Jáchymov + HK212 catalog matching (2026-05-23 onwards).
+
+### Problem
+Production catalog API (URS, KROS, BKI) may be blocked via WebFetch (403 / authentication). Direct catalog lookup fails.
+
+### Workaround
+Search engines (Google) index catalog content via public mirrors (government procurement portals, document hosting sites, catalog reseller pages). WebSearch returns snippets + LLM summary which extracts catalog description anchored on code/keyword.
+
+### Algorithm
+1. Query format: `<catalog_id> <code_or_family_digit> <key_noun_from_popis>`
+2. Parse top 5-10 Google results, focus on known mirror domains
+3. Extract catalog description from snippets
+4. Compare item popis vs catalog popis: MATCH / WRONG_LEAF / WRONG_WORK_TYPE / UNCLEAR
+5. Apply fallback hierarchy strictly per Pattern 26 (verified / wrong leaf alt / family only / blank + flag)
+
+### Cost reality
+~ $0.01 per WebSearch (Anthropic API pricing). Budget ~ $0.50-1.00 for 50-80 queries. See Pattern 34 for cost-transparency communication to user.
+
+### Acceptance
+Selective use (NE all items), targeting items already flagged uncertain by matcher (family mismatch, wrong_leaf, low confidence, close call per Pattern 21).
+
+### Anti-pattern
+Brute-force WebSearch on all items wastes budget. Or skip verification entirely → ship wrong codes (Pattern 13 failure mode).
+
+### Forbidden
+Never fabricate catalog code. If nothing found → blank cell + explicit "MANUAL LOOKUP" flag (Pattern 26). Never write "TBD" or fake codes like "999999999".
+
+### Origin context
+Pilot URS WebSearch verified 13 codes selectively, found 6 wrong leafs (family OK but leaf 9-digit wrong, ~63 % rate) + 4 correct replacements. Established generator heuristic accuracy: 6-digit family correct ~75 %, 9-digit leaf wrong ~63 %.
+
+### Related
+- Pattern 11 (KROS FTS matching) — primary matcher; Pattern 25 is verification layer
+- Pattern 21 (Multi-factor selection) — feeds candidates to verify
+- Pattern 26 (Honest fallback hierarchy) — what to do with verification results
+- Pattern 34 (Cost transparency) — explain $0.50-1.00 budget to user
+
+---
+
+## Pattern 26: Honest fallback hierarchy for missing data
+
+**Source:** RD Jáchymov + HK212 catalog-matching iteration (2026-05-23 → 2026-05-26).
+
+### Problem
+When matcher or lookup fails, agent tendency is to fabricate value or use placeholder. Both lie to client.
+
+### Algorithm — 8-level fallback hierarchy
+
+| Case | Action | Visual flag |
+|---|---|---|
+| Exact match | Use confirmed | ✓ green VERIFIED |
+| Better alternative found | Use alt, log original | ⚠ amber "WRONG_LEAF — was X, correct Y" |
+| Family found, leaf unknown | Keep family + "???" leaf | ⚠ amber "FAMILY OK — leaf needs lookup" |
+| Multiple candidates close | Keep top + flag close call | ? gray "VERIFY — close call, alt: Y" |
+| Low confidence (< 0.5) | Keep top + flag | ? gray "REVIEW — low confidence" |
+| Nothing found | **Blank cell** | ❌ red "MANUAL LOOKUP — popis only" |
+| Not searched (high conf existing) | Use existing | (no flag) |
+| Items.json-source-only | Use existing | (gray italic) |
+
+### Forbidden
+- Fabricated codes (random numbers, "999999999", "TBD")
+- Hidden gaps (item silently dropped from rozpočet because no code found)
+- Mismatched family code use (wrong family with note "close enough")
+
+### Acceptance
+Karel / client sees every gap explicitly. Blank cell + flag = honest signal. Fake code = lie.
+
+### Anti-pattern
+"999999999" placeholder, "TBD" text in code column, item silently dropped because no code found.
+
+### Origin context
+RD Jáchymov pilot fixed 9 items where heuristic generated wrong 9-digit leaf (kept 6-digit family + "???" leaf), 122 items left blank with "MANUAL LOOKUP" flag because no candidate found.
+
+### Related
+- Pattern 21 (Multi-factor selection) — upstream scoring
+- Pattern 25 (Web search verification) — last-chance lookup before falling to MANUAL
+- Pilot-local `rd_jachymov/patterns/07_honest_detail_fallback_dsp_scope.md` (DSP-scope variant of the same discipline)
+
+---
+
+## Pattern 27: External LLM cross-validation as Nth source layer
+
+**Source:** RD Jáchymov pilot mid-CEV (2026-05-25 — ChatGPT independent analysis as cross-check).
+
+### Problem
+Internal extraction (TZ + DXF + Excel + Word) may have systematic blind spots. Without external cross-check, gaps persist that the agent's own pipeline systematically misses.
+
+### Algorithm
+1. Run independent external LLM (different model family — ChatGPT, Gemini, etc.) on same source documents.
+2. Compare structural findings (rooms count, skladby count, work blocks count, missing docs identification).
+3. Expected outcome:
+   - ~80-90 % overlap with internal extraction → validates pipeline correctness
+   - ~10-20 % new findings → uncovers gaps in internal extraction
+4. Treat external LLM output as **validation cross-check**, NE replacement for detailed internal items.
+
+### Acceptance
+External LLM findings cross-referenced against internal output. Real gaps integrated, false positives dismissed with rationale.
+
+### Anti-pattern
+Replace internal detailed items with external LLM high-level abstractions (different abstraction levels). Or dismiss external findings without verification (defensive reflex).
+
+### Origin context
+RD Jáchymov pilot — ChatGPT independent analysis confirmed ~80 % of internal findings + flagged 2 real gaps (sklad-specific skladby namespace per Pattern 24, cell numbering anomaly). Both subsequently verified and addressed.
+
+### Related
+- Pattern 3 (Triangulation philosophy) — same principle at item level; Pattern 27 lifts to document level
+- Pattern 31 (CEV) — external LLM is one of the CEV layers
+
+---
+
+## Pattern 28: Schema integrity — globally-unique entity IDs
+
+**Source:** RD Jáchymov pilot Phase 3 (2026-05-26 — VRN.001 collision bug).
+
+### Problem
+Reused entity IDs across sub-namespaces (e.g., `VRN.001` exists in 9 different VRN sub-kapitolas of the same project) lead to first-match overwrite bugs during patch operations. Tooling that resolves an item by ID alone silently overwrites the wrong entry.
+
+### Algorithm
+1. Enforce globally-unique `item.id` at schema validation step.
+2. OR document compound canonical key (e.g., `(id, kapitola, subkapitola)`) and require all patch tools to use it.
+3. Patch tools use compound key for identity resolution, never first-match by partial ID.
+
+### Acceptance
+Schema validator runs before patch operations. Compound key resolution required.
+
+### Anti-pattern
+First-match patching by ID prefix overwrites wrong entry silently. Validator doesn't run → bug ships → caught only on next audit.
+
+### Origin context
+RD Jáchymov pilot patcher overwrote ZS WC popis when intending to update Průzkumy popis — both had ID `VRN.001` under different sub-kapitolas. Caught during re-audit (Pattern 20 Audit v2 re-run), fixed via compound key `(id, kapitola)`. Schema-level fix (globally-unique id) queued as separate refactor.
+
+### Related
+- Pattern 14 (Forward-tracked `_analytical_journey`) — provides audit trail to catch ID-collision bugs early
+- Pattern 24 (Multi-namespace S-codes) — same lesson at a different schema field
+
+---
+
+## Pattern 29: Continuous source provenance per item
+
+**Source:** RD Jáchymov pilot item-generation schema (2026-05-19 onwards).
+
+### Problem
+Items without source attribution become unverifiable. Catalog matching, qty disputes, audit trail, projektant questions — all require traceable origin per item. Patterns 2 (audit trail) + 14 (forward-tracked journey) cover mutation history; this pattern covers initial-creation provenance.
+
+### Algorithm — required fields per item
+
+```yaml
+item_id: <globally unique — see Pattern 28>
+popis: <Czech URS-standard terminology>
+mj: <single canonical unit>
+mnozstvi: <numeric value>
+mnozstvi_formula: <human-readable derivation, e.g. "obvod 38.70 × výška 2.795 - okna 7.2 m²">
+_source: <document reference, e.g. "TZ ARS § 5.5 + DXF dum_DPZ SM_kóty layer">
+_data_quality: <enum: dxf_deterministic / tz_explicit / methvin_empirical / fallback_csn>
+_mnozstvi_conf: <0.0-1.0>
+_vyjasneni_ref: [Q3, Q8, ...]   # open questions affecting this item
+_audit_gap_fixed: <gap ID if added during audit>   # optional
+```
+
+### Acceptance
+Every item has fields populated. Quality pass checks `_source` claims actually verifiable in source documents (CEV Matrix C).
+
+### Anti-pattern
+Items without source ("magic" appearance), or `_source` pointing to non-existent reference.
+
+### Origin context
+RD Jáchymov pilot requires per-item provenance for File A audit deliverable. Matrix C (items → source verification, part of Pattern 31 CEV) validates this layer continuously.
+
+### Related
+- Pattern 2 (Audit trail mandatory) — sibling discipline for mutations
+- Pattern 14 (`_analytical_journey`) — mutation-history sibling
+- Pattern 31 (CEV) — Matrix C verifies _source claims
+- Pattern 32 (Two-file delivery) — File A surfaces these fields as columns
+
+---
+
+## Pattern 30: Czech regex diacritic boundary pitfall
+
+**Source:** RD Jáchymov pilot Quality pass (2026-05-26 — caught 2 false negatives on `č` / `š` boundary).
+
+### Problem
+Python `\w+` matches Czech diakritiku in the matched portion, BUT prefix patterns with explicit Czech characters fail at char-boundary mismatch when the boundary lands on a multi-byte UTF-8 character.
+
+**Example failure:**
+- Pattern: `^Hydroizolac\w+`
+- Target: `Hydroizolační`
+- Failure: position 10 is `č` (U+010D Latin Extended-A), NOT `c` (U+0063)
+- Regex fails despite expectation.
+
+### Algorithm — workarounds
+
+```python
+# WRONG — fails on diacritic boundary
+PATTERN = r'^Hydroizolac\w+'
+
+# RIGHT — use shorter stem before boundary
+PATTERN = r'^Hydroiz\w+'
+
+# RIGHT — explicit alternative
+PATTERN = r'^Hydroizolac[ií]'  # or
+PATTERN = r'^Hydroizolač'      # specify exact char
+
+# RIGHT — unicode-aware library (regex module instead of re)
+import regex
+PATTERN = regex.compile(r'^Hydroizolac\p{L}+')
+```
+
+### Reusable utility
+`czech_regex_helpers.py` — tested patterns for common Czech construction terminology (target).
+
+### Acceptance
+All Czech regex patterns tested against actual terminology before deployment.
+
+### Anti-pattern
+Assume ASCII char-boundary semantics in Czech regex prefix. Bug silently fails extraction — no error, just zero matches where matches were expected.
+
+### Origin context
+RD Jáchymov pilot Quality pass caught 2 false negatives where regex failed on `č` / `š` boundary in stems.
+
+### Related
+- Pattern 22 (PDF noise filters) — same regex-discipline class
+- Pattern 17 (Phase 0a) — text-probe step uses regexes that must follow this discipline
+
+---
+
+## Pattern 31: Comprehensive Extraction Verification (CEV) before catalog matching
+
+**Source:** RD Jáchymov pilot (2026-05-26 — full CEV session).
+
+### Problem
+Extraction may complete per Phase 0a (Pattern 17) + Audit v2 (Pattern 20) + Quality pass, but **cross-source consistency** between TZ / DXF / Excel / Word / MD is not verified. Catalog matching against unverified baseline = matching against potentially-inconsistent data = wasted matching budget + delayed delivery if inconsistency surfaces post-match.
+
+### Algorithm — 5 layers + 4 matrices
+
+**Layers (extract):**
+1. TZ texts — all PDFs in `tz/` + `dokladova_cast/` + `vykresy_pdf/`
+2. DXF files — re-verify all layers + entities
+3. Excel inputs — all batch / source files, all sheets
+4. Word documents — questions, decisions, narratives
+5. Markdown outputs — cross-consistency of summary docs
+
+**Matrices (cross-reference):**
+- **Matrix A** — TZ requirements → items (COVERED / N/A_DOCUMENTED / GAP / EXTRA)
+- **Matrix B** — DXF entities → items (same verdicts)
+- **Matrix C** — items → source verifiability (VERIFIED / PARTIAL / NOT_VERIFIABLE)
+- **Matrix D** — cross-document consistency (same fact mentioned in 2+ docs → consistent?)
+
+### Outcomes
+- **Path A:** all matrices clean → resume catalog matching with confident baseline
+- **Path B:** few gaps found → add items + re-audit subset → then catalog matching
+- **Path C:** significant gaps → halt + escalate
+
+### Acceptance
+CEV final report with explicit Path A/B/C verdict before Phase 5 catalog matching (per Pattern 15 enriched sequence).
+
+### Anti-pattern
+Skip CEV, jump straight from extraction to catalog matching. Discover inconsistencies post-delivery.
+
+### Origin context
+RD Jáchymov pilot's CEV caught 3 GAPs + 1 ENRICHMENT after Audit v2 + Quality pass had already passed. Without CEV, these would have shipped.
+
+### Reusable code (RD Jáchymov reference)
+- `tools/cev_layers_extract.py` — 5-layer extraction
+- `tools/cev_matrices.py` — Matrices A + B
+- `tools/cev_matrices_cd.py` — Matrices C + D
+- `tools/cev_per_drawing_audit.py` — Pattern 23 addendum
+
+### Related
+- Pattern 15 (Work-First, Catalog-Last) — Phase 2 of the strict sequence
+- Pattern 17 (Phase 0a) — orthogonal source-side completeness
+- Pattern 20 (Audit v2) — orthogonal works-side completeness
+- Pattern 22 (PDF noise filters) — used by Matrix A/C builders
+- Pattern 23 (Per-drawing extraction) — addendum pass within CEV
+- Pattern 32 (Two-file delivery) — Phase 4 deliverable that depends on frozen CEV-verified baseline
+
+---
+
+## Pattern 32: Two-file delivery — audit + production separation
+
+**Source:** RD Jáchymov pilot Phase 4 (2026-05-26 — File A audit Excel + Word docx) + HK212 base discipline.
+
+### Problem
+Single deliverable trying to serve both **audit transparency** + **production usage** gets compromised on both fronts. Audit columns clutter the production view; production codes pollute the audit narrative; both audiences end up reading the wrong file.
+
+### Algorithm — two separate files
+
+**File A — Audit / Worksheet** (audit Excel):
+- Multiple sheets for different audience views (aggregated / detailed / per-floor / per-construction / verification trail)
+- Per item: provenance columns (source / formula / data_quality / confidence / vyjasneni_ref / realizuje_skladbu / _audit_gap_fixed)
+- For: investor (high-level), projektanti (technical), internal QA (provenance)
+- Purpose: transparency, decision support, audit trail
+
+**File B — Production** (catalog-system import):
+- Standard catalog format (per system requirements — KROS, BKI, Batiprix, etc.)
+- Clean: code | popis | MJ | qty | unit_price | total | flag
+- Section dividers (chapter hierarchy) + items + formula breakdowns
+- For: execution partner direct import
+- Purpose: production usage, cenotvorba, system integration
+
+**Both files reference same items.json source-of-truth.** Different rendering layers.
+
+### Acceptance
+Both files delivered separately. Different naming convention. Different sheet structures. Same `items.json` upstream.
+
+### Anti-pattern
+Mix provenance columns into production file (pollutes import). Or omit provenance from audit (no transparency).
+
+### Origin context
+RD Jáchymov pilot required both — File A (`Vykaz_vymer_VSE_VARIANTY_<date>.xlsx`) for investor + projektanti, File B (`Vykaz_vymer_KROS_format_<date>.xlsx`) for Karel KROS systém import.
+
+### Related
+- Pattern 15 (Work-First, Catalog-Last) — Phase 4 (File A) vs Phase 6 (File B) sequencing
+- Pattern 16 (Universal work ontology) — same items.json drives N market-specific File B variants
+- Pattern 29 (Continuous source provenance) — provides the columns File A renders
+- Pattern 31 (CEV) — output drives the "Cross_verification" sheet of File A
+
+---
+
+## Pattern 33: Project synthesis before audit decisions
+
+**Source:** RD Jáchymov pilot mid-iteration (2026-05-22 — first Project_Summary.md produced).
+
+### Problem
+Iterative audits find new gaps each pass because agent lacks **holistic project mental model**. Agent only sees individual items, individual TZ sections, individual DXF entities. Without project-level synthesis, decisions become reactive to individual findings → fix one item, audit, find next, fix, audit, …
+
+### Algorithm
+Before fixing / delivering, agent produces a structured project summary:
+
+```
+1. Investiční záměr — investor, lokalita, charakter zakázky, stupeň dokumentace
+2. Stavební objekty — per SO: rozsah, geometrie, podlaží, jednotky
+3. Klíčové konstrukce — per SO: skladby, materiály, specifika
+4. Bourání — demolice m³, demontáže ks
+5. Nové instalace — vytápění, voda, elektro, větrání
+6. Cenové bloky — per kapitola item counts (HSV X / PSV Y / VRN Z)
+7. Otevřené otázky — per projektant breakdown
+8. Stav přípravy — audit chain status
+```
+
+**Two outputs:**
+- Full summary (`Project_Summary.md`) — 8 sections, ~16 KB
+- One-pager (`Project_OnePager.md`) — 1 A4 page for client quick orientation
+
+### Acceptance
+Holistic synthesis forces mental model. Subsequent decisions (fix vs ship, accept vs escalate) become informed instead of reactive.
+
+### Anti-pattern
+Jump from individual finding to immediate fix without project-level context. Pattern of "fix → re-audit → new finding → fix → re-audit" without synthesis.
+
+### Origin context
+RD Jáchymov pilot — after 4 audit layers caught gaps iteratively (Phase 0a + Audit v2 + Quality + per-drawing CEV), user requested project summary. Holistic synthesis enabled informed decision: Path C (hybrid delivery: audit Excel now, KROS file later).
+
+### Related
+- Pattern 18 (Iterative deepening) — Pattern 33 informs when to stop iterating
+- Pattern 19 (Diminishing returns gate) — Pattern 33 is the basis for "is this material or stylistic?"
+
+---
+
+## Pattern 34: Honest cost transparency to user
+
+**Source:** RD Jáchymov pilot mid-session (2026-05-24 — user panic over conflated bills).
+
+### Problem
+User panics seeing "AI used $10-15 budget" assuming separate billing. Agent should clarify cost model to avoid false alarm and to keep budget decisions informed.
+
+### Algorithm — when discussing operational cost
+1. State exact cost per operation (e.g. WebSearch ~ $0.01 per query at Anthropic pricing).
+2. Total for typical task (~ $0.50-0.80 for 50-80 queries).
+3. Billing model: bundled in user's subscription (NOT separate charge).
+4. Compare to user's hesitation source (e.g. separate Google Cloud bill).
+5. Explain unrelated charges separately if user conflates them.
+
+### Acceptance
+User understands real cost magnitude + billing model.
+
+### Anti-pattern
+Vague "budget concerns" without specifics. Or confuse user about which bill covers what.
+
+### Origin context
+RD Jáchymov pilot — user saw "$10-15 budget" in agent comment + received 1000 CZK Google Cloud bill same day. Conflated two separate things. Clarification: WebSearch real cost ~ $0.50, GCP bill = STAVAGENT infrastructure unrelated to AI usage.
+
+### Related
+- Pattern 25 (Web search verification) — primary cost source this pattern explains
+
+---
+
+## Pattern 35: Skill-of-the-pilot encoding for next iterations
+
+**Source:** RD Jáchymov pilot retrospective (2026-05-26 — pattern library expansion session).
+
+### Problem
+Each pilot generates lessons learned. Without explicit codification, lessons evaporate. Future pilots repeat same mistakes. The session that just shipped doesn't have time / context to write up patterns; the next session doesn't know they existed.
+
+### Algorithm
+1. After pilot delivery, identify patterns caught during iteration.
+2. Generalize each pattern (project-agnostic — strip the project-specific instance from the universal pattern).
+3. Write `<NN>_<pattern_name>.md` to pilot-local case studies directory + add corresponding **universal** pattern to master registry (`docs/STAVAGENT_PATTERNS.md`).
+4. Update agent-context files (root + per-area `CLAUDE.md`) with critical patterns as mandatory rules.
+5. Update relevant skill descriptors (`SKILL.md`) where applicable.
+6. Cross-reference pilot-local case study to master pattern (and vice-versa).
+
+### Acceptance
+Patterns codified in 3+ locations (per-pattern case study + master registry + agent context). Next pilot automatically inherits via CLAUDE.md mandatory rules.
+
+### Anti-pattern
+Mental note only. Hope to remember next time. Lessons lost between pilots.
+
+### Origin context
+RD Jáchymov pilot produced 22+ patterns. Each codified in this expansion pass: master registry sections 17-36 + pilot-local case studies in `concrete-agent/.../rd_jachymov/patterns/01..09` + `patterns_validated.md` cross-reference + CLAUDE.md mandatory-rule promotion (Patterns 17, 20, 31, 15, 12).
+
+### Related
+- Pattern 35 is the **meta-pattern** that produces every other pattern entry in this file
+- Pilot-local `rd_jachymov/patterns_validated.md` — validation report sibling
+
+---
+
+## Pattern 36: File staging convention for processed vs canonical inputs
+
+**Source:** RD Jáchymov pilot input handling (2026-05-18 → 2026-05-26).
+
+### Problem
+Source documents arrive in mixed states (versions, drafts, superseded). Without a staging convention, agent processes wrong versions or processes same content multiple times.
+
+### Algorithm — input directory convention
+
+```
+inputs/
+├── tz/                      # Canonical TZ texts (current versions)
+├── dokladova_cast/          # Canonical dokladová část
+├── vykresy_pdf/             # Canonical drawings (current)
+├── situace/                 # Canonical site plans
+├── _reference/              # Reference examples (e.g. other projects' formats)
+├── _superseded/             # Older versions kept for audit trail
+│   └── YYYY-MM-DD_<reason>/ # Per-date subdirs explaining supersedence
+└── meta/                    # Metadata (vyjasnění queue, inventory)
+```
+
+**Per-document attributes:**
+- Version tag in filename
+- Date in supersession subdir
+- Reason note in `meta/`
+
+### Acceptance
+Agent processes only canonical (current) inputs. Audit can re-verify by reviewing supersedence trail.
+
+### Anti-pattern
+Mix canonical + superseded in the same directory. Agent processes outdated version. Or duplicate-processes superseded version.
+
+### Origin context
+RD Jáchymov pilot inputs underwent multiple TZ revisions. Staging convention preserved audit trail while keeping canonical inputs clean.
+
+### Related
+- Pattern 17 (Phase 0a) — Layer 1 PDF inventory uses the canonical staging tree
+- Pattern 28 (Schema integrity) — staging convention is a schema for the filesystem
 
 ---
 

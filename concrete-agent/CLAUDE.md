@@ -153,6 +153,64 @@ is negligible compared to a silent-drift ship.
 
 ---
 
+## Pattern library — universal patterns + pilot-local case studies
+
+This codebase implements universal patterns from the master registry
+[`docs/STAVAGENT_PATTERNS.md`](../docs/STAVAGENT_PATTERNS.md) (36
+patterns sequential as of 2026-05-26).
+
+### Critical mandatory rules (promoted to CLAUDE.md status)
+
+| Master # | Title | Pilot-local cross-ref |
+|---:|---|---|
+| **17** | Phase 0a Completeness Audit (pre-extraction gate) | `app/knowledge_base/B5_tech_cards/real_world_examples/rd_jachymov/patterns/08_completeness_audit_mandatory.md` |
+| **20** | Audit v2 — 10-section completeness methodology | `tools/completeness_check_v2.py` (RD Jáchymov) |
+| **31** | CEV (Comprehensive Extraction Verification) before catalog matching | `tools/cev_layers_extract.py` + `cev_matrices*.py` (RD Jáchymov); sections E-J catch ~80 % of gaps |
+| **15** | Work-First, Catalog-Last — Sequential Výkaz Výměr Generation | Strict 6-phase sequence enforced. No Phase 5 (catalog matching) until Phase 4 STOP gate confirms list FROZEN. No File B until File A complete. |
+| **12** | Squash Merge Orphans (repo settings + branch lifecycle) | Repo configuration: ☐ Allow squash merging (UNCHECK). Default merge strategy = Merge commit. Open PR only when work truly done. |
+
+### Sibling discipline patterns frequently cited in this codebase
+
+| Master # | Title | Where applied |
+|---:|---|---|
+| 2 | Audit Trail Mandatory | Every items.json item carries `_source` + `mnozstvi_formula` + `mnozstvi_confidence` + `_data_quality` |
+| 14 | Forward-Tracked `_analytical_journey` on Item Mutations | `_audit_v2_fixes_applied_log` + `_per_drawing_audit_fixes_log` + `_phase3_consolidate_log` keep mutation history |
+| 21 | Multi-factor catalog candidate selection | `pricing/otskp_engine.py` composite score (confidence + source + unit + jaccard + note_hint) |
+| 22 | PDF noise filters mandatory in matrix builders | CEV Matrix A/C builders use TOC + numeric-dump + boilerplate + DPS-scope filters |
+| 23 | Per-drawing extraction (beyond TZ-only) | `tools/cev_per_drawing_audit.py` + DXF text dump + OCR pipeline; mojibake decoder for CZ font CMap |
+| 24 | Multi-namespace S-code / F-code handling | Sklad has its own S01-S05 separate from dům S01-S12b; `realizuje_skladbu` field tagged with namespace |
+| 26 | Honest fallback hierarchy for missing data | 8-level table; blank cell + "MANUAL LOOKUP" flag rather than fabricated codes |
+| 28 | Schema integrity — globally-unique entity IDs | items.json patch tools resolve identity via `(id, kapitola)` compound key (VRN.001 collision lesson) |
+| 29 | Continuous source provenance per item | Required fields per item (see Pattern 2 sibling) |
+| 30 | Czech regex diacritic boundary pitfall | All Czech regex stems tested against actual terminology; avoid `\w+` boundaries on `č` / `š` |
+| 32 | Two-file delivery — audit + production separation | File A `Vykaz_vymer_VSE_VARIANTY.xlsx` (provenance) vs File B `Vykaz_vymer_KROS_format.xlsx` (production) |
+
+### Pilot-specific patterns and case studies
+
+| Pilot | Patterns directory | Notes |
+|---|---|---|
+| **RD Jáchymov** (N=5) | `app/knowledge_base/B5_tech_cards/real_world_examples/rd_jachymov/patterns/` (9 case studies 01-09) + `patterns_validated.md` (cross-references universal 17-36) | Largest pattern contributor — 20 of 36 master patterns trace origin here |
+| **Žihle 2062-1** (N=4) | `app/knowledge_base/B5_tech_cards/real_world_examples/zihle_2062_1/patterns_validated.md` (validates universal 1-7) | First end-to-end production-shaped pilot |
+| **HK212 hala** (N=3) | inline in master registry as source references (Patterns 8, 13, 14, 15, 16) | Source of Work-First / Catalog-Last + Universal Work Ontology |
+
+### Separate libraries (different topic, different namespace)
+
+- `app/knowledge_base/B5_tech_cards/ZS_templates/PATTERNS.md` — ZS-cost insights using Pattern A/B/C+ letter namespace. NOT integrated with the universal master registry — different domain.
+
+### When adding new patterns
+
+Follow the ritual documented in the header of `docs/STAVAGENT_PATTERNS.md` and codified by Pattern 35 (Skill-of-the-pilot encoding):
+
+1. Read master registry header → note `last_number`.
+2. `grep -nE '^## Pattern [0-9]+:' docs/STAVAGENT_PATTERNS.md | tail -5` to visually confirm.
+3. Use `last_number + 1`. Bump the header in the same commit.
+4. Write the pattern (use existing patterns as template).
+5. If from a pilot, also update the pilot-local `patterns_validated.md` cross-reference table.
+6. If the new pattern is critical, add a row to the "Critical mandatory rules" table above.
+7. Never trust a pattern number quoted in chat / commit message / memory without re-grepping.
+
+---
+
 ## 📦 MONOREPO STRUCTURE (NEW - Nov 18)
 
 ### Directory Layout
