@@ -1,0 +1,81 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-27",
+  "_purpose": "Phase 5C — cross-element sanity chains (informational, no items.json mutation).",
+  "_pattern_compliance": {
+    "pattern_13": "Pair threshold gate with sanity sentinels",
+    "pattern_20": "Audit v2 section G — cross-element consistency chains",
+    "pattern_31": "CEV Matrix D cross-document consistency (post-Phase-5B verification)"
+  },
+  "chains": {
+    "1_okna": {
+      "chain": "Okna (PSV-76 Výplně otvorů ↔ DXF okno INSERT ↔ HSV-6 demontáž)",
+      "psv76_okna_items_count": 8,
+      "psv76_okna_sum_ks": 32,
+      "hsv6_013_demontaz_oken_ks": 16,
+      "dxf_okno_insert_count": 16,
+      "consistency_verdict": "REVIEW",
+      "rationale": "DXF claims 16 okno INSERTs. PSV-76 sum 32 ks (should ≤ 16, allowing for some doors counted as okna). HSV6.013 demontáž 16 ks should equal 16."
+    },
+    "2_sanit": {
+      "chain": "Sanit (PSV-72 ZTI sanit items ↔ DXF sanit INSERT)",
+      "psv72_sanit_items_count": 13,
+      "psv72_sanit_sum_ks": 24.0,
+      "dxf_sanit_breakdown": {
+        "sanit_WC": 7,
+        "sanit_umyvadlo": 7,
+        "sanit_vana": 2,
+        "sanit_sprcha": 2
+      },
+      "dxf_sanit_total": 18,
+      "consistency_verdict": "REVIEW",
+      "rationale": "DXF sanit INSERTs: 18 (WC=7 + umyvadlo=7 + vana=2 + sprcha=2). PSV-72 sanit ks sum: 24.0. Tolerance ±4 ks (item-vs-procurement-grouping variance acceptable)."
+    },
+    "3_krov": {
+      "chain": "Krov (HSV-5 krokve bm ↔ DXF kr_krokev INSERT 111 — combined krokve+sloupky+námětky)",
+      "hsv5_krov_items_count": 16,
+      "krokve_item_id": "260219_dum.HSV5.001",
+      "krokve_bm": 156.0,
+      "dxf_kr_krokev_insert_count": 111,
+      "consistency_verdict": "CONSISTENT_INFORMATIONAL",
+      "rationale": "DXF kr_krokev INSERTs=111 combines krokve+sloupky+námětky per phase 0a tier4 audit. HSV-5 krokve item ~156.0 bm (typical CZ family ~24 krokve × ~6m = ~144 bm for ~150 m² roof). Combined insert count corroborates krov-system completeness without 1:1 mapping."
+    },
+    "4_klempir": {
+      "chain": "Klempířina (PSV-76 Klempíř sum m/bm ↔ DXF MA_klempíř + SM__ klempířina 173.8 m)",
+      "psv76_klempir_items_count": 4,
+      "psv76_klempir_sum_m": 159.9,
+      "dxf_klempir_total_m": 173.8,
+      "delta_pct": -8.0,
+      "consistency_verdict": "CONSISTENT",
+      "rationale": "Delta -8.0% within ±15% tolerance — matches Matrix D.4 verdict (Phase 3 CEV)."
+    },
+    "5_etics": {
+      "chain": "ETICS (HSV-7 ETICS kontaktní 276.7 m² + sokl 13.5 m² ↔ HSV7.006 omítka finální 290.2 m²)",
+      "hsv7_items_count": 6,
+      "kontaktni_m2": 276.7,
+      "omitka_finalni_m2": 290.2,
+      "expected_omitka_sum": 290.2,
+      "consistency_verdict": "CONSISTENT",
+      "rationale": "ETICS chain: kontaktní 276.7 m² + sokl 13.5 m² = expected omítka finální 290.2 m². Actual: 290.2 m². Delta tolerance ±5 m² (rounding in formula)."
+    },
+    "6_sklad_geometry": {
+      "chain": "Sklad room areas (Phase 3.5 DXF km_tabulka místností ↔ items.json)",
+      "podlaha_sklad_PSV77_001_m2": 17.6,
+      "podlaha_sklad_DXF_room_001_m2": 17.6,
+      "parking_pororošt_HSV4_005_m2": 44.6,
+      "parking_DXF_room_101_m2": 44.6,
+      "mezipodesta_HSV5_001_m2": 5.5,
+      "mezipodesta_DXF_room_102_m2": 5.5,
+      "consistency_verdict": "CONSISTENT",
+      "rationale": "Phase 3.5 + Action 1 cross-check verified (3 DXF rooms match items.json exact)."
+    }
+  },
+  "_summary": {
+    "chains_total": 6,
+    "verdicts": {
+      "CONSISTENT": 3,
+      "CONSISTENT_INFORMATIONAL": 1,
+      "REVIEW": 2
+    }
+  }
+}
