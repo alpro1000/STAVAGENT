@@ -1,8 +1,8 @@
 {
   "_schema_version": "2.0",
-  "_generated_at": "2026-05-19",
+  "_generated_at": "2026-05-26",
   "_generated_by": "tools/completeness_check_v2.py",
-  "_items_total": 208,
+  "_items_total": 211,
   "_rooms_total": 25,
   "_sections_present": [
     "A",
@@ -181,14 +181,19 @@
       {
         "tkp_family": "8",
         "label": "Trubní vedení (kanalizace venkovní, vodovod venkovní)",
-        "n_items": 0,
-        "samples": [],
-        "gap_flag": true
+        "n_items": 1,
+        "samples": [
+          {
+            "id": "260219_dum.HSV1.015",
+            "popis": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovan"
+          }
+        ],
+        "gap_flag": false
       },
       {
         "tkp_family": "9",
         "label": "Ostatní konstrukce (bourání, demolice, lešení, přesun hmot, VRN konstrukčního charakteru)",
-        "n_items": 21,
+        "n_items": 23,
         "samples": [
           {
             "id": "260217_sklad.HSV1.001",
@@ -309,7 +314,7 @@
       {
         "trade": "bourani_demolice",
         "label_cz": "Demoliční práce (manuální + odvoz + likvidace)",
-        "n_items": 21,
+        "n_items": 23,
         "kapitoly_expected": [
           "HSV-6"
         ],
@@ -327,7 +332,7 @@
       {
         "trade": "izolater_HI",
         "label_cz": "Izolatér hydroizolace (asfaltové pásy + folie)",
-        "n_items": 7,
+        "n_items": 8,
         "kapitoly_expected": [
           "PSV-71"
         ],
@@ -578,10 +583,11 @@
         "label": "Bourání příček + zdiva",
         "applicable": true,
         "status": "ok",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.HSV3.007",
-          "260219_dum.HSV4.001"
+          "260219_dum.HSV4.001",
+          "260219_dum.HSV6.016"
         ]
       },
       {
@@ -764,10 +770,11 @@
         "label": "Cihelné zdivo + překlady",
         "applicable": true,
         "status": "ok",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.HSV3.003",
-          "260219_dum.HSV3.004"
+          "260219_dum.HSV3.004",
+          "260219_dum.HSV6.016"
         ]
       },
       {
@@ -811,7 +818,7 @@
         "label": "Schodiště (ŽB / dřevěné)",
         "applicable": true,
         "status": "ok",
-        "n_hits": 11,
+        "n_hits": 12,
         "sample_ids": [
           "260217_sklad.HSV1.001",
           "260217_sklad.HSV2.005",
@@ -1157,7 +1164,7 @@
         "label": "Komín / komínové těleso",
         "applicable": true,
         "status": "ok",
-        "n_hits": 4,
+        "n_hits": 5,
         "sample_ids": [
           "260219_dum.HSV3.005",
           "260219_dum.PSV73.002",
@@ -3023,14 +3030,14 @@
     "_status": "INFORMATIONAL_ONLY",
     "_method": "Σ(qty × Methvin průměrná sazba) per kapitola → aggregate per gate",
     "_disclaimer": "Methvin rates have INCONSISTENT UNITS per kapitola (Kč/m³ vs Kč/m² vs Kč/ks) and are aggregated naively — results are NOT reliable for ratio analysis. Treated as informational ballpark only. Real cenotvorba requires unit-aware per-item rates from URS catalog. Verdict 'OUT OF RANGE' for this section is EXPECTED and not treated as a gap in consolidated_gaps.",
-    "total_estimate_czk_ballpark": 64074561.125,
+    "total_estimate_czk_ballpark": 64086961.125,
     "per_kapitola_czk": {
-      "HSV-1": 115245.0,
+      "HSV-1": 120645.0,
       "HSV-2": 12471300.0,
       "HSV-3": 4260000.0,
       "HSV-4": 25547303.025,
       "HSV-5": 4328736.0,
-      "HSV-6": 348155.0,
+      "HSV-6": 355155.0,
       "HSV-7": 1739555.0,
       "PSV-71": 207400.0,
       "PSV-76": 4318500.0,
@@ -3045,8 +3052,8 @@
     "per_gate_breakdown": [
       {
         "gate": "HSV",
-        "estimate_czk": 48810294.025,
-        "pct_of_total": 0.7617733647801087,
+        "estimate_czk": 48822694.025,
+        "pct_of_total": 0.7618194585599489,
         "typical_range_pct": [
           0.45,
           0.55
@@ -3057,7 +3064,7 @@
       {
         "gate": "PSV",
         "estimate_czk": 9711267.1,
-        "pct_of_total": 0.15156197607120167,
+        "pct_of_total": 0.15153265078458655,
         "typical_range_pct": [
           0.25,
           0.35
@@ -3068,7 +3075,7 @@
       {
         "gate": "TZB",
         "estimate_czk": 2436000.0,
-        "pct_of_total": 0.03801820811925226,
+        "pct_of_total": 0.03801085208656787,
         "typical_range_pct": [
           0.15,
           0.2
@@ -3079,7 +3086,7 @@
       {
         "gate": "VRN",
         "estimate_czk": 3117000.0,
-        "pct_of_total": 0.04864645102943731,
+        "pct_of_total": 0.04863703856889657,
         "typical_range_pct": [
           0.05,
           0.1
@@ -3108,9 +3115,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA160",
+        "HEA200",
         "HEA180",
-        "HEA200"
+        "HEA160"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3156,8 +3163,8 @@
       "description": "TZ ARS — komínové těleso (zachované / nové)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Komín",
-        "komín"
+        "komín",
+        "Komín"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3169,8 +3176,8 @@
       "description": "TZ ARS — vikýře (počet, materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "vikýř",
-        "Vikýř"
+        "Vikýř",
+        "vikýř"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3183,8 +3190,8 @@
       "tz_mention_count": 5,
       "tz_mention_sample": [
         "bílá vana",
-        "Opěrné stěn",
-        "opěrná stěn"
+        "opěrná stěn",
+        "opěrné stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3235,7 +3242,7 @@
       "tz_mention_count": 4,
       "tz_mention_sample": [
         "Protipožární",
-        "EI 180",
+        "protipožární",
         "EI 90"
       ],
       "items_keyword_hit": true,
@@ -3249,8 +3256,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "tepelné čerpadl",
-        "TČ",
-        "multisplit"
+        "multisplit",
+        "TČ"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3262,8 +3269,8 @@
       "description": "TZ ARS — elektrokotel / kotel",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "kotel",
-        "elektrokotel"
+        "elektrokotel",
+        "kotel"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3275,8 +3282,8 @@
       "description": "TZ ARS — krb (PSV-73)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "krb",
-        "Krb"
+        "Krb",
+        "krb"
       ],
       "items_keyword_hit": true,
       "status": "covered",

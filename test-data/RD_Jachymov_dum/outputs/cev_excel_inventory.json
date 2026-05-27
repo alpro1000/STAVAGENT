@@ -1,0 +1,1709 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_layers_extract.py",
+  "_purpose": "Layer 3 of CEV — Excel input + deliverable inventory (URS batches, references, deliverables).",
+  "_bucket_counts": {
+    "deliverable_kros": 1,
+    "deliverable_audit": 2,
+    "reference_other_project": 1,
+    "urs_batch_sklad": 3,
+    "urs_batch_dum": 15
+  },
+  "_files_total": 22,
+  "files": [
+    {
+      "file": "outputs/Vykaz_vymer_RD_Jachymov_KROS_format_2026-05-19.xlsx",
+      "category": "deliverable_kros",
+      "sheets": [
+        {
+          "name": "Rekapitulace stavby",
+          "rows": 23,
+          "cols": 8,
+          "header_probe": [
+            "",
+            "",
+            "",
+            "Export STAVAGENT pipeline",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "SO 260219 - Dum",
+          "rows": 392,
+          "cols": 11,
+          "header_probe": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "SO 260217 - Sklad+parking",
+          "rows": 110,
+          "cols": 11,
+          "header_probe": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "Stav polozek - URS verification",
+          "rows": 299,
+          "cols": 7,
+          "header_probe": [
+            "",
+            "STAV POLOŽEK — URS verification",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "URS selection audit",
+          "rows": 718,
+          "cols": 11,
+          "header_probe": [
+            "",
+            "URS SELECTION AUDIT — full multi-factor scoring per item",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": []
+        }
+      ]
+    },
+    {
+      "file": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-18.xlsx",
+      "category": "deliverable_audit",
+      "sheets": [
+        {
+          "name": "Souhrn",
+          "rows": 49,
+          "cols": 6,
+          "header_probe": [
+            "VÝKAZ VÝMĚR — RD Jáchymov Fibichova č.p. 733",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": [
+            "Stavební úpravy a nástavba RD + zahradní sklad / parking / přístupové schodiště",
+            "IDENTIFIKAČNÍ ÚDAJE",
+            "Investor",
+            "Lokace",
+            "Architekt (ARS)"
+          ]
+        },
+        {
+          "name": "Var_A_Agregovany_Dum",
+          "rows": 17,
+          "cols": 7,
+          "header_probe": [
+            "Poř.",
+            "Kapitola (souhrnná)",
+            "Popis kapitoly",
+            "Počet položek",
+            "J. cena paušál (Kč)",
+            "Cena celkem (Kč)",
+            "Poznámka"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_A_Agregovany_Sklad",
+          "rows": 8,
+          "cols": 7,
+          "header_probe": [
+            "Poř.",
+            "Kapitola (souhrnná)",
+            "Popis kapitoly",
+            "Počet položek",
+            "J. cena paušál (Kč)",
+            "Cena celkem (Kč)",
+            "Poznámka"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_C_Hybrid",
+          "rows": 110,
+          "cols": 10,
+          "header_probe": [
+            "Poř.",
+            "Objekt",
+            "Kapitola",
+            "Popis",
+            "MJ",
+            "Množství",
+            "J. cena (Kč)",
+            "Cena celkem (Kč)",
+            "Subdodavatel",
+            "Poznámka"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_B_Polozkovy_Dum",
+          "rows": 163,
+          "cols": 15,
+          "header_probe": [
+            "Poř.",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství",
+            "J. cena (Kč)",
+            "Cena celkem (Kč)",
+            "Subdodavatel"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_B_Polozkovy_Sklad",
+          "rows": 28,
+          "cols": 15,
+          "header_probe": [
+            "Poř.",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství",
+            "J. cena (Kč)",
+            "Cena celkem (Kč)",
+            "Subdodavatel"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_D_PerPodlazi_Mistnost",
+          "rows": 47,
+          "cols": 10,
+          "header_probe": [
+            "VÝKAZ VÝMĚR — PER PODLAŽÍ + PER MÍSTNOST + AUDIT TRAIL (hk212-style)",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": [
+            "Per-místnost data z DXF tabulky místností (km_tabulka místností MTEXT); per-item",
+            "ČÁST A — PER-MÍSTNOST z DXF (návrh fáze)",
+            "Č. místnosti",
+            "1.01",
+            "1.02"
+          ]
+        },
+        {
+          "name": "Var_E_Skladby_Vrstev",
+          "rows": 23,
+          "cols": 7,
+          "header_probe": [
+            "VÝKAZ SKLADEB VRSTEV — TZ-EXPLICIT COMPOSITION PER ELEMENT",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": [
+            "Skladby vrstev pochází VÝHRADNĚ z TZ explicit text (ARS dum + statika dum + B so",
+            "Element type",
+            "S01 — obvodová stěna omítka (1.NP, 2.NP, suterén nad terénem)",
+            "S02 — obvodová stěna společná řadového domu (štítová)",
+            "S03 — suterénní stěna (1.PP)"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-19.xlsx",
+      "category": "deliverable_audit",
+      "sheets": [
+        {
+          "name": "Souhrn",
+          "rows": 49,
+          "cols": 6,
+          "header_probe": [
+            "VÝKAZ VÝMĚR — RD Jáchymov Fibichova č.p. 733",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": [
+            "Stavební úpravy a nástavba RD + zahradní sklad / parking / přístupové schodiště",
+            "IDENTIFIKAČNÍ ÚDAJE",
+            "Investor",
+            "Lokace",
+            "Architekt (ARS)"
+          ]
+        },
+        {
+          "name": "Var_A_Agregovany_Dum",
+          "rows": 17,
+          "cols": 7,
+          "header_probe": [
+            "Poř.",
+            "Kapitola (souhrnná)",
+            "Popis kapitoly",
+            "Počet položek",
+            "J. cena paušál (Kč)",
+            "Cena celkem (Kč)",
+            "Poznámka"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_A_Agregovany_Sklad",
+          "rows": 8,
+          "cols": 7,
+          "header_probe": [
+            "Poř.",
+            "Kapitola (souhrnná)",
+            "Popis kapitoly",
+            "Počet položek",
+            "J. cena paušál (Kč)",
+            "Cena celkem (Kč)",
+            "Poznámka"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_C_Hybrid",
+          "rows": 113,
+          "cols": 10,
+          "header_probe": [
+            "Poř.",
+            "Objekt",
+            "Kapitola",
+            "Popis",
+            "MJ",
+            "Množství",
+            "J. cena (Kč)",
+            "Cena celkem (Kč)",
+            "Subdodavatel",
+            "Poznámka"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_B_Polozkovy_Dum",
+          "rows": 182,
+          "cols": 15,
+          "header_probe": [
+            "Poř.",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství",
+            "J. cena (Kč)",
+            "Cena celkem (Kč)",
+            "Subdodavatel"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_B_Polozkovy_Sklad",
+          "rows": 28,
+          "cols": 15,
+          "header_probe": [
+            "Poř.",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství",
+            "J. cena (Kč)",
+            "Cena celkem (Kč)",
+            "Subdodavatel"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "name": "Var_D_PerPodlazi_Mistnost",
+          "rows": 47,
+          "cols": 10,
+          "header_probe": [
+            "VÝKAZ VÝMĚR — PER PODLAŽÍ + PER MÍSTNOST + AUDIT TRAIL (hk212-style)",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": [
+            "Per-místnost data z DXF tabulky místností (km_tabulka místností MTEXT); per-item",
+            "ČÁST A — PER-MÍSTNOST z DXF (návrh fáze)",
+            "Č. místnosti",
+            "1.01",
+            "1.02"
+          ]
+        },
+        {
+          "name": "Var_E_Skladby_Vrstev",
+          "rows": 23,
+          "cols": 7,
+          "header_probe": [
+            "VÝKAZ SKLADEB VRSTEV — TZ-EXPLICIT COMPOSITION PER ELEMENT",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": [
+            "Skladby vrstev pochází VÝHRADNĚ z TZ explicit text (ARS dum + statika dum + B so",
+            "Element type",
+            "S01 — obvodová stěna omítka (1.NP, 2.NP, suterén nad terénem)",
+            "S02 — obvodová stěna společná řadového domu (štítová)",
+            "S03 — suterénní stěna (1.PP)"
+          ]
+        },
+        {
+          "name": "Var_F_URS_Verification_Trail",
+          "rows": 20,
+          "cols": 8,
+          "header_probe": [
+            "URS kód",
+            "Verdict",
+            "Items používající",
+            "Verified popis (URS)",
+            "MJ",
+            "Item popis (truncated)",
+            "Correct code hint",
+            "Confidence po"
+          ],
+          "first_col_samples": [
+            "121101101",
+            "132201101",
+            "162701105",
+            "711132101",
+            "962081141"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/01-2025-AP - RD Valcha SO1+ SO2.xlsx",
+      "category": "reference_other_project",
+      "sheets": [
+        {
+          "name": "Rekapitulace stavby",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Export Komplet",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "SO 1 - Dům (RD Valcha)",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "SO 2 - Garaž",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "Elektroinstalace - RD Valcha",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "ZTI - RD Valcha",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "Zámková dlažba - RD Valcha",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            ""
+          ],
+          "first_col_samples": []
+        },
+        {
+          "name": "Seznam figur",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [],
+          "first_col_samples": []
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_SKLAD_batch_001_rows_001_012.xlsx",
+      "category": "urs_batch_sklad",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_code",
+            "old_name",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "split_item_id",
+            "split_item",
+            "stagagent_query",
+            "stagagent_result"
+          ],
+          "first_col_samples": [
+            "1",
+            "1",
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Project",
+            "Batch",
+            "Source rows",
+            "Source row count",
+            "Rows after split"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_code",
+            "old_description",
+            "old_mj",
+            "old_quantity"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_SKLAD_batch_002_rows_013_024.xlsx",
+      "category": "urs_batch_sklad",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_code",
+            "old_name",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "split_item_id",
+            "split_item",
+            "stagagent_query",
+            "stagagent_result"
+          ],
+          "first_col_samples": [
+            "13",
+            "13",
+            "14",
+            "14",
+            "15"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Project",
+            "Batch",
+            "Source rows",
+            "Source row count",
+            "Rows after split"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_code",
+            "old_description",
+            "old_mj",
+            "old_quantity"
+          ],
+          "first_col_samples": [
+            "13",
+            "14",
+            "15",
+            "16",
+            "17"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_SKLAD_batch_003_rows_025_027.xlsx",
+      "category": "urs_batch_sklad",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_code",
+            "old_name",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "split_item_id",
+            "split_item",
+            "stagagent_query",
+            "stagagent_result"
+          ],
+          "first_col_samples": [
+            "25",
+            "25",
+            "25",
+            "25",
+            "26"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Project",
+            "Batch",
+            "Source rows",
+            "Source row count",
+            "Rows after split"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_code",
+            "old_description",
+            "old_mj",
+            "old_quantity"
+          ],
+          "first_col_samples": [
+            "25",
+            "26",
+            "27"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_001_rows_001_012.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates_B001",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "batch_id",
+            "source_row_id",
+            "derived_item_id",
+            "source_kapitola",
+            "old_name",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_qty",
+            "split_item"
+          ],
+          "first_col_samples": [
+            "BATCH_001_ROWS_001_012",
+            "BATCH_001_ROWS_001_012",
+            "BATCH_001_ROWS_001_012",
+            "BATCH_001_ROWS_001_012",
+            "BATCH_001_ROWS_001_012"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "metric",
+            "value"
+          ],
+          "first_col_samples": [
+            "batch_id",
+            "source_rows_processed",
+            "derived_items_after_split",
+            "STAVAGENT_called_items",
+            "MATCH"
+          ]
+        },
+        {
+          "name": "Source_rows_001_012",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_002_rows_013_024.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 17,
+          "cols": 35,
+          "header_probe": [
+            "batch_id",
+            "source_row_id",
+            "split_no",
+            "kapitola",
+            "subkapitola_old",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "split_item"
+          ],
+          "first_col_samples": [
+            "002_rows_013_024",
+            "002_rows_013_024",
+            "002_rows_013_024",
+            "002_rows_013_024",
+            "002_rows_013_024"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 14,
+          "cols": 2,
+          "header_probe": [
+            "batch_id",
+            "002_rows_013_024"
+          ],
+          "first_col_samples": [
+            "source_rows",
+            "batch_size_source_rows",
+            "expanded_items",
+            "STAVAGENT_find_urs_code_calls_actual",
+            "manual_codes_added"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 13,
+          "cols": 7,
+          "header_probe": [
+            "source_row_id",
+            "kapitola",
+            "subkapitola",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity"
+          ],
+          "first_col_samples": [
+            "13",
+            "14",
+            "15",
+            "16",
+            "17"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_003_rows_025_036.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "batch_id",
+            "source_row_id",
+            "old_kapitola",
+            "old_subkapitola",
+            "old_urs_code",
+            "old_popis",
+            "old_mj",
+            "old_mnozstvi",
+            "split_item_id",
+            "split_item"
+          ],
+          "first_col_samples": [
+            "003",
+            "003",
+            "003",
+            "003",
+            "003"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "batch_id",
+            "source_rows_start",
+            "source_rows_end",
+            "source_rows_count",
+            "split_items_count"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "Old_URS_code",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "25",
+            "26",
+            "27",
+            "28",
+            "29"
+          ]
+        },
+        {
+          "name": "STAVAGENT_calls",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "call_no",
+            "source_row_id",
+            "split_item_id",
+            "query",
+            "context",
+            "result_summary"
+          ],
+          "first_col_samples": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_004_rows_037_048.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "kapitola",
+            "old_name",
+            "old_code",
+            "old_description",
+            "source_mj",
+            "source_qty",
+            "split_item_no",
+            "split_item_description",
+            "stavaagent_query"
+          ],
+          "first_col_samples": [
+            "37",
+            "38",
+            "38",
+            "38",
+            "39"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Batch",
+            "004"
+          ],
+          "first_col_samples": [
+            "Source rows",
+            "Source rows count",
+            "Split work items",
+            "STAVAGENT find_urs_code calls",
+            "Manual codes added"
+          ]
+        },
+        {
+          "name": "Source_rows_037_048",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "37",
+            "38",
+            "39",
+            "40",
+            "41"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_005_rows_049_060.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_kapitola",
+            "old_subkapitola",
+            "old_urs_kod_navrz",
+            "old_popis",
+            "old_mj",
+            "old_mnozstvi",
+            "split_no",
+            "split_item",
+            "STAVAGENT_query"
+          ],
+          "first_col_samples": [
+            "49",
+            "50",
+            "51",
+            "52",
+            "53"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "metric",
+            "value"
+          ],
+          "first_col_samples": [
+            "batch",
+            "source_rows",
+            "source_row_count",
+            "split_item_count",
+            "STAVAGENT_find_urs_code_calls"
+          ]
+        },
+        {
+          "name": "Source_rows_049_060",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "49",
+            "50",
+            "51",
+            "52",
+            "53"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_006_rows_061_072.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 25,
+          "cols": 34,
+          "header_probe": [
+            "batch",
+            "source_row_id",
+            "kapitola",
+            "subkapitola",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "split_item",
+            "STAVAGENT_called"
+          ],
+          "first_col_samples": [
+            "006",
+            "006",
+            "006",
+            "006",
+            "006"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 13,
+          "cols": 2,
+          "header_probe": [
+            "batch",
+            "006"
+          ],
+          "first_col_samples": [
+            "source_rows",
+            "input_rows",
+            "split_items",
+            "stavagent_calls",
+            "MATCH"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 13,
+          "cols": 7,
+          "header_probe": [
+            "source_row_id",
+            "kapitola",
+            "subkapitola",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity"
+          ],
+          "first_col_samples": [
+            "61",
+            "62",
+            "63",
+            "64",
+            "65"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_007_rows_073_084.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 22,
+          "cols": 32,
+          "header_probe": [
+            "batch_id",
+            "source_row_id",
+            "kapitola",
+            "subkapitola",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "split_item",
+            "STAVAGENT_query"
+          ],
+          "first_col_samples": [
+            "batch_007_rows_073_084",
+            "batch_007_rows_073_084",
+            "batch_007_rows_073_084",
+            "batch_007_rows_073_084",
+            "batch_007_rows_073_084"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 13,
+          "cols": 2,
+          "header_probe": [
+            "batch_id",
+            "batch_007_rows_073_084"
+          ],
+          "first_col_samples": [
+            "source_rows",
+            "batch_size_requested",
+            "source_rows_count",
+            "expanded_items_count",
+            "stavagent_calls"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 13,
+          "cols": 7,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód původní",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "73",
+            "74",
+            "75",
+            "76",
+            "77"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_008_rows_085_096.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "batch_id",
+            "source_row_id",
+            "old_chapter",
+            "old_subchapter",
+            "old_code",
+            "old_description",
+            "old_mj",
+            "old_qty",
+            "split_item",
+            "aggregated_split"
+          ],
+          "first_col_samples": [
+            "008",
+            "008",
+            "008",
+            "008",
+            "008"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows",
+            "Original rows",
+            "Rows after split",
+            "STAVAGENT find_urs_code calls"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_009_rows_097_108.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_name",
+            "old_description",
+            "old_mj",
+            "old_qty",
+            "split_item",
+            "STAVAGENT_query",
+            "status",
+            "note",
+            "candidate_1_code"
+          ],
+          "first_col_samples": [
+            "97",
+            "98",
+            "98",
+            "99",
+            "100"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "metric",
+            "value"
+          ],
+          "first_col_samples": [
+            "batch",
+            "source_rows",
+            "source_row_count",
+            "split_item_count",
+            "successful_STAVAGENT_calls"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "97",
+            "98",
+            "99",
+            "100",
+            "101"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_010_rows_109_120.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_batch_010",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "old_name",
+            "old_urs_code",
+            "old_description",
+            "old_MJ",
+            "old_quantity",
+            "split_item",
+            "STAVAGENT_query",
+            "STAVAGENT_context"
+          ],
+          "first_col_samples": [
+            "109",
+            "110",
+            "111",
+            "111",
+            "111"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows",
+            "Original rows",
+            "Expanded rows after split",
+            "Successful STAVAGENT calls"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_011_rows_121_132.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_batch_011",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "old_kapitola",
+            "old_name",
+            "old_code_navrh",
+            "old_popis",
+            "old_mj",
+            "old_mnozstvi",
+            "split_item",
+            "aggregated_item",
+            "STAVAGENT_query"
+          ],
+          "first_col_samples": [
+            "121",
+            "122",
+            "123",
+            "124",
+            "124"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows",
+            "Original rows",
+            "Output rows after split",
+            "STAVAGENT calls included"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_012_rows_133_144.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "old_name",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "aggregated_item",
+            "split_item",
+            "new_mj"
+          ],
+          "first_col_samples": [
+            "133",
+            "133",
+            "134",
+            "134",
+            "134"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows",
+            "Original source rows",
+            "Rows after split",
+            "STAVAGENT calls included"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "133",
+            "134",
+            "135",
+            "136",
+            "137"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_013_rows_145_156.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "old_subkapitola",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_quantity",
+            "aggregated_item",
+            "split_item",
+            "STAVAGENT_query"
+          ],
+          "first_col_samples": [
+            "145",
+            "146",
+            "146",
+            "146",
+            "147"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows",
+            "Original source rows",
+            "Rows after split",
+            "STAVAGENT calls included"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_014_rows_157_168.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "old_name",
+            "old_urs_code",
+            "old_description",
+            "old_mj",
+            "old_qty",
+            "split_item",
+            "STAVAGENT_query",
+            "candidate_1_code"
+          ],
+          "first_col_samples": [
+            "157",
+            "158",
+            "159",
+            "159",
+            "159"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows",
+            "Input source rows",
+            "Rows after split",
+            "STAVAGENT successful calls included"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "157",
+            "158",
+            "159",
+            "160",
+            "161"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "inputs/_superseded/2026-05-16_unsorted_audit/URS_STAVAGENT_batch_015_rows_169_181.xlsx",
+      "category": "urs_batch_dum",
+      "sheets": [
+        {
+          "name": "URS_candidates",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "old_name",
+            "old_URS_code",
+            "old_description",
+            "old_MJ",
+            "old_qty",
+            "aggregated_item",
+            "split_item",
+            "STAVAGENT_query"
+          ],
+          "first_col_samples": [
+            "169",
+            "169",
+            "170",
+            "170",
+            "170"
+          ]
+        },
+        {
+          "name": "Summary",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "Metric",
+            "Value"
+          ],
+          "first_col_samples": [
+            "Batch",
+            "Source rows requested",
+            "Source rows processed",
+            "Output rows after aggregation split",
+            "STAVAGENT calls represented"
+          ]
+        },
+        {
+          "name": "Source_rows",
+          "rows": 0,
+          "cols": 0,
+          "header_probe": [
+            "source_row_id",
+            "Kapitola",
+            "Subkapitola",
+            "URS kód (navrž.)",
+            "Popis",
+            "MJ",
+            "Množství"
+          ],
+          "first_col_samples": [
+            "169",
+            "170",
+            "171",
+            "172",
+            "173"
+          ]
+        }
+      ]
+    }
+  ]
+}

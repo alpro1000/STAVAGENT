@@ -171,7 +171,7 @@
 
 ## 3. Cenové bloky (KROS hierarchy)
 
-### Souhrn (208 items — 177 dum + 27 sklad + 4 deprecated audit-trail)
+### Souhrn (211 items — 180 dum + 27 sklad + 4 deprecated audit-trail)
 
 #### HSV (Hlavní stavební výroba)
 
@@ -225,7 +225,7 @@
 | 6 | 18 | 0 | Úpravy povrchů (ETICS + omítka) |
 | 7 | 85 | 5 | PSV — izolace, TZB, výplně otvorů, podlahy, omítky |
 | 9 | 19 | 2 | Bourání + ostatní |
-| **Celkem (aktivní)** | **177** | **27** | **204** |
+| **Celkem (aktivní)** | **180** | **27** | **207** |
 
 ---
 
@@ -242,7 +242,7 @@
 | # | Otázka | Komu | Status |
 |---|---|---|---|
 | 1 | Vybrat rozsah rozpočtu — agregovaný / položkový / hybrid | Investor | URGENTNÍ |
-| 2 | Parkovací stání u Dvořákovy — kam patří? | Investor + architekt | DŮLEŽITÉ |
+| 2 | Parkovací stání u Dvořákovy — kam patří? | Investor + architekt | ✅ **RESOLVED** — parking součást 260217 (assumption confirmed per gate-2) |
 | 3 | Chybí výkresy ve výrobním stupni (DPS) | Architekt | DŮLEŽITÉ |
 | 4 | Skladby podlah — přesné vrstvy a výrobce | Architekt | ✅ **RESOLVED** |
 | 5 | Výpisy oken/dveří/klempířiny | Architekt | ⚠ **PARTIALLY RESOLVED** |
@@ -260,9 +260,10 @@
 | 17 | Sloupky krovu — terminologie „jakl" / „jekl" | Statik | INFORMATIVNÍ |
 | 18 | Sklad geometrie — řešeno z DXF | Informativní | ✅ **RESOLVED** |
 | 19 | Strop S09 — „košický plech" vs „trapéz 40S/160" | Statik | STŘEDNĚ DŮLEŽITÉ |
-| 20 | Verifikace ÚRS kódů — production lookup | Investor + zhotovitel | STŘEDNĚ DŮLEŽITÉ |
+| 20 | Verifikace ÚRS kódů — production lookup | Investor + zhotovitel | ✅ **RESOLVED** — Q20 závěr přijat |
+| 21 | Plot dřevěný (133 INSERTs v DXF) — v scope, nebo zahrada-only? | Investor (za Karla) | ℹ️ **WORKING ASSUMPTION: out-of-scope** (per CEV gate-2 disposition) |
 
-**Resolved 2 (Q4 + Q18), partially resolved 1 (Q5), open 17.**
+**Resolved 4 (Q2 + Q4 + Q18 + Q20), partially resolved 1 (Q5), open 15 + 1 nový (Q21 plot dřevěný — out-of-scope working assumption per gate-2).**
 
 ---
 
@@ -281,11 +282,11 @@
 | **Part 5b WebSearch verification** | ✅ done | 13 URS codes verified via Google snippets (podminky.urs.cz mirrors) |
 | **Audit v2 (10 sections)** | ✅ green | 0 critical + 0 important gaps remaining |
 | **Position quality audit (5 dim)** | ✅ green | 0 actionable bugs, 55 informational Pattern 04 cross-category notes |
-| **URS_MATCHER batches 1-15** | ✅ consolidated | 301 derived items → KROS-format Excel (282 dum + 19 sklad — items.json je 204 active po audit v2 split/dedupe; KROS has 301 because URS_MATCHER expanded splits further) |
+| **URS_MATCHER batches 1-15** | ✅ consolidated | 301 derived items → KROS-format Excel (282 dum + 19 sklad — items.json je 207 active (post audit v2 + per-drawing audit) split/dedupe; KROS has 301 because URS_MATCHER expanded splits further) |
 
 ### Konečné deliverables
 
-1. **items.json** (208 items, 204 active) — single source of truth
+1. **items.json** (211 items, 207 active) — single source of truth
 2. **Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-19.xlsx** (73 KB, 9 sheets) — multi-view Excel pro investora + zhotovitele + projektanta + statika
 3. **Vykaz_vymer_RD_Jachymov_KROS_format_2026-05-19.xlsx** (86 KB, 5 sheets) — KROS-style rozpočet pro Karla (301 řádků s multi-factor scored URS codes)
 4. **Otazky_pro_Karla_a_projektanty_2026-05-18.docx** (50 KB, 20 otázek) — outstanding questions
@@ -331,7 +332,7 @@
 
 | Údaj | Hodnota | Zdroj |
 |---|---|---|
-| Items celkem | 208 (204 active) | items.json post audit-v2 |
+| Items celkem | 211 (207 active, 4 deprecated audit-trail) | items.json post audit-v2 |
 | KROS derived items | 301 | URS_MATCHER 15 batches consolidated |
 | Místností | 25 | DXF tabulka místností |
 | Podlahová plocha | 219,3 m² | TZ + DXF cross-verified |
@@ -366,6 +367,6 @@ Rozpočet má **kompletní pokrytí všech identifikovatelných stavebních prac
 - ✅ Stávající přípojky správně označeny jako zachované (TKP 8 N/A)
 - ✅ Bezpečnostní prvky per PBŘ (fire-rated dveře, detekce kouře)
 
-**Pending vyjasnění před finalizací:** 17 otevřených otázek (3 RESOLVED) + URS kód verification 252/301 položek + manual price filling Karlem v KROS systému.
+**Pending vyjasnění před finalizací:** 15 otevřených otázek + 1 nový Q21 (4 RESOLVED + 1 partial) + URS kód verification 252/301 položek + manual price filling Karlem v KROS systému.
 
 Rozpočet je v stavu **ready for tender preparation** po vyřešení Q1 (varianta výběru) + Q6 (vytápění detail) + Q7 (elektro počty).

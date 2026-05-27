@@ -1,0 +1,1256 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_layers_extract.py",
+  "_purpose": "Layer 2 of CEV — confirmatory DXF re-verification against existing Phase 0a + Path C tier artefacts.",
+  "_verdict": "see _findings below",
+  "pre_path_c_audit": {
+    "_generated_at": "2026-05-18",
+    "gate_status": "BLOCKED",
+    "blockers": [
+      "5 PDFs need OCR or unreadable",
+      "95 DXF layers unprobed actionable"
+    ],
+    "section_A_summary": {
+      "total_pdfs": 51,
+      "scanned_needs_ocr": 5,
+      "unreadable_error": 0,
+      "fully_probed": 46
+    },
+    "section_B_summary": {
+      "total_layers_across_4_dxf": 170,
+      "probed_extracted_in_pipeline": 32,
+      "probed_metadata_only_skip": 22,
+      "empty_layer_skip": 14,
+      "unprobed_actionable_BLOCKS_PHASE_1": 95
+    },
+    "section_B_per_dxf": {
+      "dum_DPZ": {
+        "probed_extracted_in_pipeline": 21,
+        "probed_metadata_only_skip": 6,
+        "empty_layer_skip": 5,
+        "unprobed_actionable": 19
+      },
+      "dum_situace": {
+        "probed_extracted_in_pipeline": 1,
+        "probed_metadata_only_skip": 5,
+        "empty_layer_skip": 3,
+        "unprobed_actionable": 32
+      },
+      "sklad_DPZ": {
+        "probed_extracted_in_pipeline": 9,
+        "probed_metadata_only_skip": 6,
+        "empty_layer_skip": 5,
+        "unprobed_actionable": 18
+      },
+      "sklad_situace": {
+        "probed_extracted_in_pipeline": 1,
+        "probed_metadata_only_skip": 5,
+        "empty_layer_skip": 1,
+        "unprobed_actionable": 26
+      }
+    }
+  },
+  "post_path_c_tier_totals": {
+    "tier1_dimensions": {
+      "file": "dxf_dimensions_all_v2.json",
+      "present": true,
+      "summary": {
+        "total_dimensions_extracted": 785,
+        "files_processed": 4,
+        "magnitude_bands": {
+          "small_detail": 186,
+          "medium_dimension": 157,
+          "small_dimension": 191,
+          "tiny_detail": 50,
+          "room_or_span": 70,
+          "podlazi_vyska_or_room_width": 83,
+          "building_dimension_or_long_span": 43,
+          "very_large": 5
+        },
+        "n_unique_dimensions_total": 208
+      }
+    },
+    "tier2_mtext": {
+      "file": "dxf_mtext_classified_v2.json",
+      "present": true,
+      "summary": {
+        "total_mtext_text_entities": 2268,
+        "n_layers_with_mtext": 31,
+        "classification_distribution": {
+          "elevation_or_number": 1156,
+          "other": 632,
+          "metadata_label": 128,
+          "dimension_with_marker": 98,
+          "skladba_code": 97,
+          "room_number": 65,
+          "poznamka_reference": 22,
+          "material_marker": 21,
+          "embedded_table_row": 20,
+          "konstr_callout_general": 15,
+          "konstr_callout_profile": 14
+        }
+      }
+    },
+    "tier3_geometry": {
+      "file": "dxf_geometry_tier3.json",
+      "present": true,
+      "summary": {}
+    },
+    "tier4_inserts": {
+      "file": "dxf_inserts_tier4_extended.json",
+      "present": true,
+      "summary": {
+        "total_inserts_across_4_dxf": 1306,
+        "n_mapped_categories": 21,
+        "n_unmapped_blocks": 43,
+        "category_counts": {
+          "unmapped": 875,
+          "plot_dreveny": 133,
+          "kr_krokev": 111,
+          "rezova_znacka": 44,
+          "razitko": 32,
+          "severka": 16,
+          "okno": 16,
+          "wall_block": 15,
+          "nabytek_zidle": 14,
+          "sanit_WC": 7,
+          "sanit_umyvadlo": 7,
+          "nabytek_postel": 6,
+          "kuchyne_indukce": 5,
+          "nabytek_tv": 4,
+          "kuchyne_lednice": 3,
+          "kuchyne_trouba": 3,
+          "kuchyne_drez": 3,
+          "kuchyne_mycka": 3,
+          "nabytek_pohovka": 3,
+          "dvere": 2,
+          "sanit_vana": 2,
+          "sanit_sprcha": 2
+        }
+      }
+    },
+    "tier5_metadata_skip_confirmed": {
+      "file": "dxf_metadata_tier5_confirmed.json",
+      "present": true,
+      "summary": {
+        "total_metadata_layers_confirmed": 31
+      }
+    },
+    "tier2b_embedded_tables": {
+      "file": "dxf_embedded_tables_extracted.json",
+      "present": true,
+      "summary": {}
+    }
+  },
+  "claimed_vs_actual_numbers": {
+    "dimensions_785": 785,
+    "mtext_2268": 2268,
+    "inserts_1306": 1306,
+    "metadata_31": 31
+  },
+  "source_files_status": {
+    "dxf_comprehensive_extract.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_by": "str[34]",
+        "_generated_at": "str[10]",
+        "_extraction_summary": {
+          "dum_files": "int",
+          "sklad_files": "int",
+          "primary_source": "str[33]"
+        },
+        "dum_DPZ": {
+          "mistnosti": {
+            "_source_layer": "<truncated:str>",
+            "_extraction_method": "<truncated:str>",
+            "_phase_filter": "<truncated:str>",
+            "n_tables_found": "<truncated:int>",
+            "n_tables_parsed": "<truncated:int>",
+            "n_rooms_total": "<truncated:int>",
+            "per_podlazi_summary": "<truncated:dict>",
+            "rooms": "<truncated:list>"
+          },
+          "sanitarni": "list[5]",
+          "kuchyne": "list[4]",
+          "otvory": {
+            "okna": "<truncated:dict>",
+            "dvere_vnitrni": "<truncated:dict>",
+            "vstupni_dvere": "<truncated:dict>"
+          },
+          "konstrukce": {
+            "krokve_KR_blocks": "<truncated:dict>",
+            "vikyre": "<truncated:dict>"
+          },
+          "steny": {
+            "_extraction_method": "<truncated:str>",
+            "categories": "<truncated:dict>",
+            "derived_navrh_estimate": "<truncated:dict>"
+          },
+          "plochy_podlah_per_podlazi": {
+            "1.PP": "<truncated:float>",
+            "1.NP": "<truncated:float>",
+            "2.NP": "<truncated:float>",
+            "3.NP": "<truncated:float>",
+            "total_navrh_m2": "<truncated:float>",
+            "formula": "<truncated:str>",
+            "tz_baseline_m2": "<truncated:float>",
+            "delta_vs_tz_m2": "<truncated:float>",
+            "source": "<truncated:str>",
+            "confidence": "<truncated:float>"
+          },
+          "plochy_podlah_per_material": {
+            "_classification_logic": "<truncated:str>",
+            "results": "<truncated:list>"
+          },
+          "obvod_objektu": {
+            "candidates_load_bearing_layer": "<truncated:list>",
+            "_note": "<truncated:str>",
+            "selected_perimeter_m": "<truncated:NoneType>",
+            "formula": "<truncated:str>",
+            "tz_derived_baseline_m": "<truncated:float>",
+            "source": "<truncated:str>",
+            "confidence": "<truncated:float>"
+          },
+          "strecha": {
+            "pudorysna_plocha_m2": "<truncated:float>",
+            "sklon_deg": "<truncated:float>",
+            "plocha_krytiny_m2": "<truncated:float>",
+            "formula": "<truncated:str>",
+            "source": "<truncated:str>",
+            "confidence": "<truncated:float>"
+          }
+        },
+        "sklad_DPZ": {
+          "dimensions_summary": {
+            "total": "<truncated:int>",
+            "unique_values_mm": "<truncated:list>",
+            "key_findings": "<truncated:dict>",
+            "source": "<truncated:str>",
+            "confidence": "<truncated:float>"
+          },
+          "geometry_sklad": {
+            "lichobeznik_width_m": "<truncated:float>",
+            "lichobeznik_depth_m": "<truncated:float>",
+            "podlaha_m2": "<truncated:float>",
+            "obvod_pasu_m": "<truncated:float>",
+            "formula_podlaha": "<truncated:str>",
+            "formula_obvod": "<truncated:str>",
+            "parking_length_m": "<truncated:float>",
+            "parking_width_m_estimated": "<truncated:float>",
+            "parking_area_m2": "<truncated:float>",
+            "n_IPE180_parking": "<truncated:int>",
+            "formula_IPE180": "<truncated:str>",
+            "source": "<truncated:str>"
+          }
+        }
+      },
+      "size_bytes": 20873
+    },
+    "dxf_all_layers_inventory.json": {
+      "present": true,
+      "shape": {
+        "dum_DPZ": {
+          "total_layers": "int",
+          "layers": "list[48]"
+        },
+        "dum_situace": {
+          "total_layers": "int",
+          "layers": "list[40]"
+        },
+        "sklad_DPZ": {
+          "total_layers": "int",
+          "layers": "list[34]"
+        },
+        "sklad_situace": {
+          "total_layers": "int",
+          "layers": "list[34]"
+        }
+      },
+      "size_bytes": 31344
+    },
+    "dxf_dimensions_all_v2.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_generated_by": "str[32]",
+        "_purpose": "str[206]",
+        "_summary": {
+          "total_dimensions_extracted": "int",
+          "files_processed": "int",
+          "magnitude_bands": {
+            "small_detail": "<truncated:int>",
+            "medium_dimension": "<truncated:int>",
+            "small_dimension": "<truncated:int>",
+            "tiny_detail": "<truncated:int>",
+            "room_or_span": "<truncated:int>",
+            "podlazi_vyska_or_room_width": "<truncated:int>",
+            "building_dimension_or_long_span": "<truncated:int>",
+            "very_large": "<truncated:int>"
+          },
+          "n_unique_dimensions_total": "int"
+        },
+        "per_file_summary": {
+          "dum_DPZ": {
+            "path": "<truncated:str>",
+            "total_dimensions": "<truncated:int>",
+            "per_layer_dimension_counts": "<truncated:dict>"
+          },
+          "dum_situace": {
+            "path": "<truncated:str>",
+            "total_dimensions": "<truncated:int>",
+            "per_layer_dimension_counts": "<truncated:dict>"
+          },
+          "sklad_DPZ": {
+            "path": "<truncated:str>",
+            "total_dimensions": "<truncated:int>",
+            "per_layer_dimension_counts": "<truncated:dict>"
+          },
+          "sklad_situace": {
+            "path": "<truncated:str>",
+            "total_dimensions": "<truncated:int>",
+            "per_layer_dimension_counts": "<truncated:dict>"
+          }
+        },
+        "magnitude_clustering": {
+          "small_detail": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "medium_dimension": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "small_dimension": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "tiny_detail": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "room_or_span": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "podlazi_vyska_or_room_width": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "building_dimension_or_long_span": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          },
+          "very_large": {
+            "count": "<truncated:int>",
+            "n_unique_values": "<truncated:int>",
+            "sample_values_mm": "<truncated:list>"
+          }
+        },
+        "per_podlazi_svetla_vyska_dxf_match": {
+          "1.PP": {
+            "target_mm": "<truncated:float>",
+            "n_matches_in_dxf": "<truncated:int>",
+            "matches": "<truncated:list>"
+          },
+          "1.NP": {
+            "target_mm": "<truncated:float>",
+            "n_matches_in_dxf": "<truncated:int>",
+            "matches": "<truncated:list>"
+          },
+          "2.NP": {
+            "target_mm": "<truncated:float>",
+            "n_matches_in_dxf": "<truncated:int>",
+            "matches": "<truncated:list>"
+          },
+          "3.NP": {
+            "target_mm": "<truncated:float>",
+            "n_matches_in_dxf": "<truncated:int>",
+            "matches": "<truncated:list>"
+          }
+        },
+        "top_10_critical_value_findings": "list[9]",
+        "all_dimensions": "list[785]"
+      },
+      "size_bytes": 178824
+    },
+    "dxf_mtext_classified_v2.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_generated_by": "str[27]",
+        "_summary": {
+          "total_mtext_text_entities": "int",
+          "n_layers_with_mtext": "int",
+          "classification_distribution": {
+            "elevation_or_number": "<truncated:int>",
+            "other": "<truncated:int>",
+            "metadata_label": "<truncated:int>",
+            "dimension_with_marker": "<truncated:int>",
+            "skladba_code": "<truncated:int>",
+            "room_number": "<truncated:int>",
+            "poznamka_reference": "<truncated:int>",
+            "material_marker": "<truncated:int>",
+            "embedded_table_row": "<truncated:int>",
+            "konstr_callout_general": "<truncated:int>",
+            "konstr_callout_profile": "<truncated:int>"
+          }
+        },
+        "per_layer_mtext": {
+          "Z _ BOD__SLO": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "Z _ V__KA": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "SM_rozpiska": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "Z _ KATASTR": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "km_rozpiska": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "SMA_popisy": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "km_kóty": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "km_čísla místností": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "SM__Popisy bubliny": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "Z _ VRSTEV": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "SM_Popisy": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          },
+          "MA_kóty": {
+            "n_entities": "<truncated:int>",
+            "classification_breakdown": "<truncated:dict>",
+            "entries": "<truncated:list>"
+          }
+        },
+        "disambiguation_160mm": {
+          "_description": "str[119]",
+          "occurrences": "list[7]",
+          "verdict_summary": {
+            "ETICS_EPS_tloušťka": "<truncated:int>",
+            "ambiguous": "<truncated:int>"
+          }
+        },
+        "poznamka_references": "list[22]"
+      },
+      "size_bytes": 241078
+    },
+    "dxf_embedded_tables_extracted.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_purpose": "str[71]",
+        "_type_distribution": {
+          "other": "int",
+          "tabulka_mistnosti": "int"
+        },
+        "tables": "list[58]"
+      },
+      "size_bytes": 41868
+    },
+    "dxf_inserts_tier4_extended.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_generated_by": "str[40]",
+        "_purpose": "str[83]",
+        "_summary": {
+          "total_inserts_across_4_dxf": "int",
+          "n_mapped_categories": "int",
+          "n_unmapped_blocks": "int",
+          "category_counts": {
+            "unmapped": "<truncated:int>",
+            "plot_dreveny": "<truncated:int>",
+            "kr_krokev": "<truncated:int>",
+            "rezova_znacka": "<truncated:int>",
+            "razitko": "<truncated:int>",
+            "severka": "<truncated:int>",
+            "okno": "<truncated:int>",
+            "wall_block": "<truncated:int>",
+            "nabytek_zidle": "<truncated:int>",
+            "sanit_WC": "<truncated:int>",
+            "sanit_umyvadlo": "<truncated:int>",
+            "nabytek_postel": "<truncated:int>"
+          }
+        },
+        "per_file_summary": {
+          "dum_DPZ": {
+            "n_inserts": "<truncated:int>",
+            "n_unique_blocks": "<truncated:int>"
+          },
+          "dum_situace": {
+            "n_inserts": "<truncated:int>",
+            "n_unique_blocks": "<truncated:int>"
+          },
+          "sklad_DPZ": {
+            "n_inserts": "<truncated:int>",
+            "n_unique_blocks": "<truncated:int>"
+          },
+          "sklad_situace": {
+            "n_inserts": "<truncated:int>",
+            "n_unique_blocks": "<truncated:int>"
+          }
+        },
+        "klempirina_breakdown": {
+          "klempir_atika": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>"
+          },
+          "klempir_okap": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>"
+          },
+          "klempir_svod": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>"
+          },
+          "klempir_parapet": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>"
+          }
+        },
+        "all_categories_aggregated": {
+          "kr_krokev": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "dvere": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "sanit_WC": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "sanit_vana": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "sanit_umyvadlo": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "kuchyne_indukce": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "wall_block": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "rezova_znacka": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "razitko": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "sanit_sprcha": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "severka": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          },
+          "nabytek_postel": {
+            "n_inserts": "<truncated:int>",
+            "unique_block_names": "<truncated:list>",
+            "sample_positions": "<truncated:list>"
+          }
+        },
+        "unmapped_block_names_top_50": {
+          "bod_000": "int",
+          "název": "int",
+          "investor": "int",
+          "projektant": "int",
+          "část": "int",
+          "hlavní projektant": "int",
+          "projektový stupeň": "int",
+          "datum": "int",
+          "výškový systém": "int",
+          "poznámka DSP": "int",
+          "legenda stav": "int",
+          "PLOT_DROTENY_04": "int"
+        }
+      },
+      "size_bytes": 11527
+    },
+    "dxf_geometry_tier3.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_generated_by": "str[30]",
+        "geometry_per_layer": {
+          "dum_DPZ": {
+            "IP_zařizováky": "<truncated:dict>",
+            "SM__04_čárkovaná": "<truncated:dict>",
+            "SM__06_dvojčerchovaná": "<truncated:dict>",
+            "IP_obrysy místností": "<truncated:dict>",
+            "_ geometrie": "<truncated:dict>",
+            "SM_Popisy": "<truncated:dict>",
+            "km_šrafy": "<truncated:dict>",
+            "PDF_Tenká": "<truncated:dict>",
+            "SM_rozpiska": "<truncated:dict>",
+            "km__netisk": "<truncated:dict>",
+            "km_tabulka místností": "<truncated:dict>",
+            "km_R_návrh_velmi tlustá": "<truncated:dict>"
+          },
+          "dum_situace": {
+            "Z _ MERENI": "<truncated:dict>",
+            "Z _ KATASTR": "<truncated:dict>",
+            "Z _ VRSTEV": "<truncated:dict>",
+            "_ geometrie": "<truncated:dict>",
+            "sítě_ELE_stávající_NN_podzemní": "<truncated:dict>",
+            "km_rozpiska": "<truncated:dict>",
+            "km__netisk": "<truncated:dict>",
+            "km__02_tlustá": "<truncated:dict>",
+            "sítě_VODA_návrh": "<truncated:dict>",
+            "sítě_KANALIZACE_splašková_návrh": "<truncated:dict>",
+            "sítě_ELE_návrh": "<truncated:dict>",
+            "sítě_KANALIZACE_dešťová_návrh": "<truncated:dict>"
+          },
+          "sklad_DPZ": {
+            "IP_rozpiska": "<truncated:dict>",
+            "SM__06_dvojčerchovaná": "<truncated:dict>",
+            "IP_obrysy místností": "<truncated:dict>",
+            "_ geometrie": "<truncated:dict>",
+            "SM_Popisy": "<truncated:dict>",
+            "km_šrafy": "<truncated:dict>",
+            "PDF_Tenká": "<truncated:dict>",
+            "km_rozpiska": "<truncated:dict>",
+            "km__netisk": "<truncated:dict>",
+            "km_tabulka místností": "<truncated:dict>",
+            "km_kóty": "<truncated:dict>",
+            "IP_Výškové kóty": "<truncated:dict>"
+          },
+          "sklad_situace": {
+            "Z _ MERENI": "<truncated:dict>",
+            "Z _ KATASTR": "<truncated:dict>",
+            "Z _ POPIS": "<truncated:dict>",
+            "Z _ VRSTEV": "<truncated:dict>",
+            "_ geometrie": "<truncated:dict>",
+            "sítě_ELE_stávající_NN_podzemní": "<truncated:dict>",
+            "km__03_velmi tlustá": "<truncated:dict>",
+            "km_rozpiska": "<truncated:dict>",
+            "km__netisk": "<truncated:dict>",
+            "km__02_tlustá": "<truncated:dict>",
+            "sítě_KANALIZACE_splašková_návrh": "<truncated:dict>",
+            "sítě_CETIN_stávající_podzemní": "<truncated:dict>"
+          }
+        },
+        "sklad_external_perimeter_candidates": "list[11]",
+        "bourani_qty": {
+          "DASHED_lines": "list[90]",
+          "bourani_dims": "list[13]",
+          "DASHED_total_length_m": "float",
+          "DASHED_closed_total_area_m2": "int"
+        },
+        "hatch_phase_summary": {
+          "dum_DPZ": {
+            "common|ANSI32": "<truncated:float>",
+            "common|WOOD3": "<truncated:float>",
+            "common|ANSI31": "<truncated:float>",
+            "common|ANSI37": "<truncated:float>",
+            "common|ANSI35": "<truncated:float>",
+            "návrh|ANSI31": "<truncated:float>",
+            "návrh|ANSI37": "<truncated:float>",
+            "návrh|ANSI32": "<truncated:float>",
+            "návrh|WOOD3": "<truncated:float>",
+            "návrh|ANSI35": "<truncated:float>",
+            "návrh|HONEYCOMB": "<truncated:float>",
+            "návrh|DOTS2": "<truncated:float>"
+          },
+          "sklad_DPZ": {
+            "common|ANSI37": "<truncated:float>",
+            "common|WOOD3": "<truncated:float>",
+            "common|SAND": "<truncated:float>",
+            "common|CONCRETE1": "<truncated:float>",
+            "návrh|ANSI35": "<truncated:float>",
+            "návrh|ANSI32": "<truncated:float>",
+            "návrh|ANSI31": "<truncated:float>",
+            "návrh|ANSI34": "<truncated:float>",
+            "návrh|CONCRETE1": "<truncated:float>",
+            "návrh|CONCRETE2": "<truncated:float>",
+            "návrh|BLOCKS": "<truncated:float>"
+          }
+        }
+      },
+      "size_bytes": 58371
+    },
+    "dxf_metadata_tier5_confirmed.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_generated_by": "str[40]",
+        "_purpose": "str[82]",
+        "_summary": {
+          "total_metadata_layers_confirmed": "int"
+        },
+        "per_file": {
+          "dum_DPZ": {
+            "n_metadata_layers": "<truncated:int>",
+            "layers": "<truncated:list>"
+          },
+          "dum_situace": {
+            "n_metadata_layers": "<truncated:int>",
+            "layers": "<truncated:list>"
+          },
+          "sklad_DPZ": {
+            "n_metadata_layers": "<truncated:int>",
+            "layers": "<truncated:list>"
+          },
+          "sklad_situace": {
+            "n_metadata_layers": "<truncated:int>",
+            "layers": "<truncated:list>"
+          }
+        }
+      },
+      "size_bytes": 10138
+    },
+    "dxf_unused_data_inventory.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_by": "str[34]",
+        "_generated_at": "str[10]",
+        "_purpose": "str[127]",
+        "_methodology": "str[182]",
+        "_strict_policy": "str[155]",
+        "sections": {
+          "1_per_room_mtext_tabulka": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "n_mtext_tables": "<truncated:int>",
+            "filled_columns": "<truncated:list>",
+            "empty_columns_in_header_but_not_in_data": "<truncated:list>",
+            "rooms_extracted_via_parsing": "<truncated:int>",
+            "actionable_data_per_room": "<truncated:list>",
+            "non_actionable_attempted": "<truncated:list>",
+            "next_step_for_skladba_codes": "<truncated:str>"
+          },
+          "2_per_room_polygons_geometry": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "total_polygons": "<truncated:int>",
+            "rooms_matched": "<truncated:int>",
+            "per_room_geometry": "<truncated:dict>",
+            "actionable_for_items": "<truncated:list>",
+            "non_actionable": "<truncated:list>"
+          },
+          "3_wall_layers_catalog": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "layers": "<truncated:dict>",
+            "actionable": "<truncated:list>",
+            "non_actionable": "<truncated:list>",
+            "alternative_for_pricing": "<truncated:str>"
+          },
+          "4_external_dum_perimeter": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "candidates": "<truncated:list>",
+            "recommended_external_perimeter_m": "<truncated:float>",
+            "tz_baseline_estimate_m": "<truncated:float>",
+            "delta_m": "<truncated:float>",
+            "delta_pct": "<truncated:float>",
+            "actionable_for_items": "<truncated:list>"
+          },
+          "5_window_blocks_exact_sizes": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "window_block_inventory": "<truncated:dict>",
+            "total_window_area_m2": "<truncated:float>",
+            "actionable_for_items": "<truncated:list>",
+            "spalety_total_bm": "<truncated:float>"
+          },
+          "6_per_koupelna_sanit_pip": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "per_room_sanit": "<truncated:dict>",
+            "unmatched_inserts_count": "<truncated:int>",
+            "unmatched_breakdown": "<truncated:dict>",
+            "actionable_for_items": "<truncated:list>",
+            "limitation": "<truncated:str>"
+          },
+          "7_skladba_codes_per_room": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "total_skladba_mtexts": "<truncated:int>",
+            "unique_codes": "<truncated:dict>",
+            "rooms_matched": "<truncated:int>",
+            "unmatched_count": "<truncated:int>",
+            "limitation": "<truncated:str>",
+            "fallback_for_items": "<truncated:str>"
+          },
+          "8_hatch_semantic_patterns": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "all_hatch_patterns": "<truncated:dict>",
+            "semantic_patterns_recognized": "<truncated:dict>",
+            "actionable_for_items": "<truncated:list>",
+            "limitation": "<truncated:str>"
+          },
+          "9_heating_fixtures": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "implication": "<truncated:str>",
+            "fallback_for_items": "<truncated:str>"
+          },
+          "10_doors": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "raw_polyline_count": "<truncated:int>",
+            "actionable": "<truncated:str>",
+            "non_actionable": "<truncated:str>"
+          },
+          "11_ceiling_types_per_podlazi": {
+            "_finding": "<truncated:str>",
+            "_summary": "<truncated:str>",
+            "tz_derived_split": "<truncated:dict>",
+            "actionable_for_items": "<truncated:list>"
+          }
+        },
+        "expansion_feasibility_summary": {
+          "PSV_78_obklady_koupelny": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:bool>",
+            "expected_qty_per_koupelna": "<truncated:str>"
+          },
+          "PSV_78_omitka_vymalba_per_podlazi": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:str>",
+            "method": "<truncated:str>"
+          },
+          "PSV_77_podlahy_per_skladba_zona": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:bool>",
+            "blocker": "<truncated:str>"
+          },
+          "PSV_76_okna_per_typ": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:bool>",
+            "expected_rows": "<truncated:str>"
+          },
+          "PSV_72_sanit_per_koupelna": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:str>",
+            "honest_recommendation": "<truncated:str>"
+          },
+          "HSV_3_pricky_per_podlazi": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:bool>",
+            "blocker": "<truncated:str>",
+            "honest_recommendation": "<truncated:str>"
+          },
+          "HSV_7_etics_per_strana": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:str>",
+            "honest_recommendation": "<truncated:str>"
+          },
+          "PSV_77_SDK_podhledy_per_podlazi": {
+            "from": "<truncated:str>",
+            "to": "<truncated:str>",
+            "data_source": "<truncated:str>",
+            "deterministic": "<truncated:bool>",
+            "expected_qty": "<truncated:str>"
+          }
+        },
+        "total_expected_expansion": {
+          "current_items_count": "int",
+          "deterministic_additions": "str[80]",
+          "soft_additions_needing_assumption": "str[55]",
+          "expected_total_after_full_expansion": "str[103]"
+        },
+        "recommendation": "str[480]"
+      },
+      "size_bytes": 21416
+    },
+    "skladby_per_zone_v2.json": {
+      "present": true,
+      "shape": {
+        "_schema_version": "str[3]",
+        "_generated_at": "str[10]",
+        "_source": "str[236]",
+        "_v1_to_v2_changes": "list[6]",
+        "per_podlazi_vysky_DXF_explicit": {
+          "_source": "str[161]",
+          "data_quality": "str[17]",
+          "values_světlé_mm": {
+            "1.PP": "<truncated:int>",
+            "1.NP": "<truncated:int>",
+            "2.NP": "<truncated:int>",
+            "3.NP": "<truncated:int>"
+          },
+          "konstrukční_přechody_mm": {
+            "1.PP_strop": "<truncated:int>",
+            "1.NP_strop": "<truncated:int>",
+            "2.NP_strop": "<truncated:int>",
+            "3.NP_nadezdívka": "<truncated:int>"
+          },
+          "kotování_FF_z_řez_A-A_meter": {
+            "-2,450": "<truncated:str>",
+            "-0,975": "<truncated:str>",
+            "-0,200": "<truncated:str>",
+            "+0,000 (Balt po vyrovnání)": "<truncated:str>",
+            "+2,080": "<truncated:str>",
+            "+2,795": "<truncated:str>",
+            "+3,200": "<truncated:str>",
+            "+6,065": "<truncated:str>",
+            "+6,565": "<truncated:str>",
+            "+6,825": "<truncated:str>",
+            "+8,440": "<truncated:str>",
+            "+8,900": "<truncated:str>"
+          },
+          "celková_výška_dum_m": "float",
+          "Σ_svetlé_výšky_m": "str[168]"
+        },
+        "elements": "list[13]",
+        "anglicky_dvorek_terasa_composition_from_rez": {
+          "_source": "str[38]",
+          "podlaha_anglicky_dvorek": {
+            "vrstvy": "<truncated:list>"
+          },
+          "terasa_za_opernou_zdi": {
+            "vrstvy": "<truncated:list>"
+          }
+        },
+        "obklad_vyska_dxf_km_obklady_layer": {
+          "_source": "str[50]",
+          "_finding": "str[64]",
+          "data_quality": "str[62]",
+          "categories_mm": {
+            "1600 (parapet level)": "<truncated:str>",
+            "2450 (sprcha plný)": "<truncated:str>",
+            "2610-2715 (celokeramický)": "<truncated:str>"
+          },
+          "interpretation": "str[201]"
+        },
+        "klempirina_dxf_real_lengths": {
+          "_source": "str[76]",
+          "total_length_m": "float",
+          "_finding": "str[117]"
+        },
+        "_cross_validation_notes_v2": "list[9]"
+      },
+      "size_bytes": 22857
+    }
+  },
+  "layer_probe_recap_per_dxf": {
+    "dum_DPZ": {
+      "layers_total": 53,
+      "summary_recorded": {
+        "probed_extracted_in_pipeline": 21,
+        "probed_metadata_only_skip": 6,
+        "empty_layer_skip": 5,
+        "unprobed_actionable": 19
+      },
+      "probe_status_counts_recomputed": {
+        "empty_layer": 5,
+        "unprobed": 19,
+        "probed_extracted": 21,
+        "probed_metadata_only": 6,
+        "probed_no_useful_data": 2
+      }
+    },
+    "dum_situace": {
+      "layers_total": 43,
+      "summary_recorded": {
+        "probed_extracted_in_pipeline": 1,
+        "probed_metadata_only_skip": 5,
+        "empty_layer_skip": 3,
+        "unprobed_actionable": 32
+      },
+      "probe_status_counts_recomputed": {
+        "unprobed": 32,
+        "empty_layer": 3,
+        "probed_metadata_only": 5,
+        "probed_extracted": 1,
+        "probed_no_useful_data": 2
+      }
+    },
+    "sklad_DPZ": {
+      "layers_total": 39,
+      "summary_recorded": {
+        "probed_extracted_in_pipeline": 9,
+        "probed_metadata_only_skip": 6,
+        "empty_layer_skip": 5,
+        "unprobed_actionable": 18
+      },
+      "probe_status_counts_recomputed": {
+        "empty_layer": 5,
+        "probed_metadata_only": 6,
+        "unprobed": 18,
+        "probed_extracted": 9,
+        "probed_no_useful_data": 1
+      }
+    },
+    "sklad_situace": {
+      "layers_total": 35,
+      "summary_recorded": {
+        "probed_extracted_in_pipeline": 1,
+        "probed_metadata_only_skip": 5,
+        "empty_layer_skip": 1,
+        "unprobed_actionable": 26
+      },
+      "probe_status_counts_recomputed": {
+        "probed_no_useful_data": 2,
+        "unprobed": 26,
+        "empty_layer": 1,
+        "probed_metadata_only": 5,
+        "probed_extracted": 1
+      }
+    }
+  },
+  "entity_totals": {
+    "dum_DPZ.sanitarni": 5,
+    "dum_DPZ.kuchyne": 4
+  },
+  "unused_data_inventory_excerpt": {
+    "_schema_version": "str[3]",
+    "_generated_by": "str[34]",
+    "_generated_at": "str[10]",
+    "_purpose": "str[127]",
+    "_methodology": "str[182]",
+    "_strict_policy": "str[155]",
+    "sections": {
+      "1_per_room_mtext_tabulka": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "n_mtext_tables": "<truncated:int>",
+        "filled_columns": "<truncated:list>",
+        "empty_columns_in_header_but_not_in_data": "<truncated:list>",
+        "rooms_extracted_via_parsing": "<truncated:int>",
+        "actionable_data_per_room": "<truncated:list>",
+        "non_actionable_attempted": "<truncated:list>",
+        "next_step_for_skladba_codes": "<truncated:str>"
+      },
+      "2_per_room_polygons_geometry": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "total_polygons": "<truncated:int>",
+        "rooms_matched": "<truncated:int>",
+        "per_room_geometry": "<truncated:dict>",
+        "actionable_for_items": "<truncated:list>",
+        "non_actionable": "<truncated:list>"
+      },
+      "3_wall_layers_catalog": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "layers": "<truncated:dict>",
+        "actionable": "<truncated:list>",
+        "non_actionable": "<truncated:list>",
+        "alternative_for_pricing": "<truncated:str>"
+      },
+      "4_external_dum_perimeter": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "candidates": "<truncated:list>",
+        "recommended_external_perimeter_m": "<truncated:float>",
+        "tz_baseline_estimate_m": "<truncated:float>",
+        "delta_m": "<truncated:float>",
+        "delta_pct": "<truncated:float>",
+        "actionable_for_items": "<truncated:list>"
+      },
+      "5_window_blocks_exact_sizes": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "window_block_inventory": "<truncated:dict>",
+        "total_window_area_m2": "<truncated:float>",
+        "actionable_for_items": "<truncated:list>",
+        "spalety_total_bm": "<truncated:float>"
+      },
+      "6_per_koupelna_sanit_pip": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "per_room_sanit": "<truncated:dict>",
+        "unmatched_inserts_count": "<truncated:int>",
+        "unmatched_breakdown": "<truncated:dict>",
+        "actionable_for_items": "<truncated:list>",
+        "limitation": "<truncated:str>"
+      },
+      "7_skladba_codes_per_room": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "total_skladba_mtexts": "<truncated:int>",
+        "unique_codes": "<truncated:dict>",
+        "rooms_matched": "<truncated:int>",
+        "unmatched_count": "<truncated:int>",
+        "limitation": "<truncated:str>",
+        "fallback_for_items": "<truncated:str>"
+      },
+      "8_hatch_semantic_patterns": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "all_hatch_patterns": "<truncated:dict>",
+        "semantic_patterns_recognized": "<truncated:dict>",
+        "actionable_for_items": "<truncated:list>",
+        "limitation": "<truncated:str>"
+      },
+      "9_heating_fixtures": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "implication": "<truncated:str>",
+        "fallback_for_items": "<truncated:str>"
+      },
+      "10_doors": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "raw_polyline_count": "<truncated:int>",
+        "actionable": "<truncated:str>",
+        "non_actionable": "<truncated:str>"
+      },
+      "11_ceiling_types_per_podlazi": {
+        "_finding": "<truncated:str>",
+        "_summary": "<truncated:str>",
+        "tz_derived_split": "<truncated:dict>",
+        "actionable_for_items": "<truncated:list>"
+      }
+    },
+    "expansion_feasibility_summary": {
+      "PSV_78_obklady_koupelny": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:bool>",
+        "expected_qty_per_koupelna": "<truncated:str>"
+      },
+      "PSV_78_omitka_vymalba_per_podlazi": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:str>",
+        "method": "<truncated:str>"
+      },
+      "PSV_77_podlahy_per_skladba_zona": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:bool>",
+        "blocker": "<truncated:str>"
+      },
+      "PSV_76_okna_per_typ": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:bool>",
+        "expected_rows": "<truncated:str>"
+      },
+      "PSV_72_sanit_per_koupelna": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:str>",
+        "honest_recommendation": "<truncated:str>"
+      },
+      "HSV_3_pricky_per_podlazi": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:bool>",
+        "blocker": "<truncated:str>",
+        "honest_recommendation": "<truncated:str>"
+      },
+      "HSV_7_etics_per_strana": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:str>",
+        "honest_recommendation": "<truncated:str>"
+      },
+      "PSV_77_SDK_podhledy_per_podlazi": {
+        "from": "<truncated:str>",
+        "to": "<truncated:str>",
+        "data_source": "<truncated:str>",
+        "deterministic": "<truncated:bool>",
+        "expected_qty": "<truncated:str>"
+      }
+    },
+    "total_expected_expansion": {
+      "current_items_count": "int",
+      "deterministic_additions": "str[80]",
+      "soft_additions_needing_assumption": "str[55]",
+      "expected_total_after_full_expansion": "str[103]"
+    },
+    "recommendation": "str[480]"
+  },
+  "_findings": [
+    "ℹ️ Pre-Path-C gate (source_completeness_audit.json @ 2026-05-18) recorded BLOCKED with 95 unprobed actionable layers. Path C tier outputs (tier1-tier5) generated AFTER that audit are the current authoritative completeness state — see post_path_c_tier_totals.",
+    "✅ All Path C tier counts match v4.31 canonical numbers; Phase 0a fully resolved post-tier-runs."
+  ]
+}
