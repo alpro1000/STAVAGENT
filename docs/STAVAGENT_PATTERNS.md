@@ -1,14 +1,18 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-05-26 (expansion pass):
-Sequential 1..36 validated (no duplicates, no gaps).
-last_number: 36
-next_pattern: 37  ← use this for any new additions.
+Pattern numbering audit 2026-05-26 (parallel-sync pass):
+Sequential 1..37 validated (no duplicates, no gaps).
+last_number: 37
+next_pattern: 38  ← use this for any new additions.
 last_audit: 2026-05-26
 
 Expansion 2026-05-26: 20 new patterns 17..36 added from RD Jáchymov pilot
 CEV session. Patterns 12 + 15 enriched (workflow + freeze-gate detail).
+Pattern 37 added same day from parallel-session-sync incident (task spec
+asked for "Pattern 17" against a stale memory of last_number=16; header
+showed 36; reconciled by promoting to 37 per Pattern 37 itself — see its
+Origin context).
 Pilot-local case studies remain at
 concrete-agent/packages/core-backend/app/knowledge_base/B5_tech_cards/
   real_world_examples/<pilot>/patterns_validated.md (separate namespace).
@@ -1638,6 +1642,67 @@ RD Jáchymov pilot inputs underwent multiple TZ revisions. Staging convention pr
 ### Related
 - Pattern 17 (Phase 0a) — Layer 1 PDF inventory uses the canonical staging tree
 - Pattern 28 (Schema integrity) — staging convention is a schema for the filesystem
+
+---
+
+## Pattern 37: Parallel session sync verification
+
+**Source:** STAVAGENT 2026-05-26 — recurring duplicate-work incident across PATTERNS.md / soup.md / items.json. The task spec that produced THIS pattern entry is itself the fourth example below.
+
+### Symptom
+Multiple Claude Code sessions work on the same repo in parallel. Session A adds Pattern X to `main` while Session B has Pattern X already queued from an older snapshot of `origin/main`. Result: duplicate commits, duplicate branches, duplicate PRs, time wasted on already-done work, and — when both sessions touch the same numbered counter (Pattern N, item N, anchor N) — conflicts that aren't visible as `git merge` conflicts because both sessions touched different *bytes* of the file.
+
+### Anti-pattern
+Start a new task assuming the local working copy or your conversational memory reflects current `origin/main`. Skip `git fetch` because "I was just here". Trust task-spec numbers ("add Pattern N") without grepping the actual file. Branch off a stale `main`.
+
+### Correct pattern
+Before any task that touches shared resources — `docs/STAVAGENT_PATTERNS.md`, `docs/soul.md`, `docs/steering/*.md`, `test-data/<pilot>/outputs/.../items.json`, `concrete-agent/CLAUDE.md` — run a 30-second sync ritual:
+
+```bash
+git fetch origin
+git log origin/main --oneline -10                           # what landed recently?
+grep -n "Pattern X\b" docs/STAVAGENT_PATTERNS.md            # does target number exist?
+grep -nE '^## Pattern [0-9]+:' docs/STAVAGENT_PATTERNS.md | tail -5   # current max
+git ls-remote origin 'refs/heads/claude/*' | head -30       # work-in-flight elsewhere?
+# Optional: list open PRs in same scope (via gh / GitHub MCP)
+```
+
+Check for:
+1. **Recent commits** to shared files since last local fetch (PATTERNS.md, soul.md, structure.md, items.json, CLAUDE.md).
+2. **Open PRs** touching the same scope (their head branches are still on remote — diff them against `origin/main`).
+3. **Active `claude/*` branches** — work-in-flight by parallel sessions, not yet merged.
+4. **Task-spec numbers vs. file reality** — the task says "Pattern N" or "item N", but the file might already be past N.
+
+Only after verification → proceed. If conflict detected → reconcile **before** committing: bump the number to the next free slot, rename branch, update PR description. Do NOT silently overwrite, do NOT add a duplicate-numbered entry, do NOT renumber existing patterns (cross-references rot).
+
+### Acceptance
+- Every shared-file task starts with a `git fetch` + at least one `grep` against the actual file.
+- Task spec numbers are treated as advisory — the file's `last_number` header wins.
+- Conflict reconciliation is documented in the commit message (which number was requested, which was used, why).
+
+### Origin context — four real incidents
+
+1. **Pattern 8 / 13 numbering drift** — Section Engine session + RD Jáchymov session both added patterns concurrently. Discovered during a later audit; resolved retroactively in PR #1228 (numbering audit + `last_number` header).
+2. **Pattern 15 + 16 duplicate effort** — main user session prepared a "draft Pattern 15 + 16" task while a parallel session shipped PR #1221 first. ~30 min of duplicated drafting; the user-side draft was then abandoned, not merged.
+3. **Branch `dilenska-ok-ut-dps-integration` auto-deleted post-merge** — a follow-up session looked for this branch to continue work, didn't find it, and started fresh from `main` not realizing the work was already integrated. Several hours of "where did my work go?" before the audit.
+4. **This entry itself** — task spec asked to *"add Pattern 17"* and verify *`last_number: 16`*. Header showed `last_number: 36` (PR #1231 had landed Patterns 17..36 between the task being written and the agent picking it up). Reconciled by promoting the entry to Pattern 37 and bumping the header — exactly what the pattern prescribes. The spec was written against a snapshot ~24 h stale.
+
+### Implementation hint — pre-commit hook
+Add a git pre-commit hook `check-shared-files.sh` that:
+- Detects modifications to `docs/STAVAGENT_PATTERNS.md`, `docs/soul.md`, `docs/steering/*.md`, `concrete-agent/CLAUDE.md`, `**/items*.json` in the staged diff.
+- Verifies `.git/FETCH_HEAD` is younger than 10 minutes (i.e. `git fetch` was run recently).
+- If a shared file is modified AND fetch is stale → exit 1 with: *"Run `git fetch origin` and verify origin/main before committing changes to shared file <path>"*.
+- Bypass via `--no-verify` only if the operator explicitly accepts the risk (logs to commit trailer).
+
+A heavier variant uses GitHub MCP to list open PRs whose head branches touch the same paths and refuses to commit if any are not yet merged or closed. Reserve for the highest-traffic shared files (PATTERNS.md, soul.md).
+
+### Anti-pattern
+Treating "I just rebased an hour ago" as good enough. With 50+ active `claude/*` branches in this repo, the half-life of `origin/main` is measured in minutes for high-traffic shared files. Always re-fetch immediately before a shared-file edit.
+
+### Related
+- Pattern 12 (Squash Merge Orphans) — branches auto-delete post-merge, leaving stale local refs; mitigated by the same fetch-first discipline
+- Anti-pattern **Pattern number guessing** (near end of file) — the failure mode that motivates the `last_number` header that motivates this pattern
+- Pattern 14 (Forward-Tracked `_analytical_journey`) — same shape: explicit state-of-the-world check before mutation, instead of relying on memory
 
 ---
 
