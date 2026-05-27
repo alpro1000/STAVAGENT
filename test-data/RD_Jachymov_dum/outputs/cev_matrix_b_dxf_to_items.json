@@ -1,0 +1,419 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_matrices.py",
+  "_purpose": "Matrix B — DXF entities → items.json verdicts.",
+  "_summary": {
+    "covered": 7,
+    "na_documented": 6,
+    "gap": 0,
+    "extra": 0
+  },
+  "_gap_or_extra_by_severity": {},
+  "matrix_b": [
+    {
+      "dxf_entity_id": "DXF_PP_SVETLA_VYSKA",
+      "source_file": "dxf_dimensions_all_v2.json",
+      "entity_kind": "per_podlazi_svetla_vyska_dxf_match",
+      "dxf_evidence": {
+        "1.PP": {
+          "target_mm": 2100.0,
+          "n_matches_in_dxf": 4,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_koty nepouzite",
+              "measurement_mm": 2100.0,
+              "position_x": 3829440.0,
+              "position_y": 1862108.0,
+              "nearby_context": [
+                "{\\H0.91667x;A}",
+                "\\H0.91667x;H"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_koty nepouzite",
+              "measurement_mm": 2100.0,
+              "position_x": 3829290.0,
+              "position_y": 1815042.0,
+              "nearby_context": [
+                "\\H0.91667x;E"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2100.0,
+              "position_x": 3780019.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S04",
+                "\\fCentury Gothic|b1|i0|c238|p34;S06"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2100.0,
+              "position_x": 3867590.0,
+              "position_y": 1847735.0,
+              "nearby_context": []
+            }
+          ]
+        },
+        "1.NP": {
+          "target_mm": 2795.0,
+          "n_matches_in_dxf": 1,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2795.0,
+              "position_x": 3783164.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S07"
+              ]
+            }
+          ]
+        },
+        "2.NP": {
+          "target_mm": 2865.0,
+          "n_matches_in_dxf": 2,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2865.0,
+              "position_x": 3786434.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S09",
+                "\\pi-150,l150,xt1;\\c481;\\fCentury Gothic|b0|i0|c238;ocelové s",
+                "POZN.2.04"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2865.0,
+              "position_x": 3786434.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S09",
+                "\\pi-150,l150,xt1;\\c481;\\fCentury Gothic|b0|i0|c238;ocelové s",
+                "POZN.2.04"
+              ]
+            }
+          ]
+        },
+        "3.NP": {
+          "target_mm": 2630.0,
+          "n_matches_in_dxf": 2,
+          "matches": [
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2630.54,
+              "position_x": 3789565.0,
+              "position_y": 1838929.0,
+              "nearby_context": [
+                "\\fCentury Gothic|b1|i0|c238|p34;S11",
+                "100/800",
+                "2x60/180"
+              ]
+            },
+            {
+              "file": "dum_DPZ",
+              "layer": "SM_kóty",
+              "measurement_mm": 2630.0,
+              "position_x": 3806450.0,
+              "position_y": 1847735.0,
+              "nearby_context": []
+            }
+          ]
+        }
+      },
+      "expected_items_logic": "Per-podlaží světlé výšky (2100/2795/2865/2630) drive omítka stěn area per podlaží + skladba volume.",
+      "items_found_ids": [
+        "260219_dum.PSV78.001",
+        "260219_dum.PSV78.002",
+        "260219_dum.PSV78.003",
+        "260219_dum.PSV78.004",
+        "260219_dum.PSV78.012.1_PP",
+        "260219_dum.PSV78.012.1_NP",
+        "260219_dum.PSV78.012.2_NP",
+        "260219_dum.PSV78.012.3_NP"
+      ],
+      "verdict": "COVERED",
+      "severity": "informational",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_SKLADBA_CODES",
+      "source_file": "dxf_mtext_classified_v2.json + skladby_per_zone_v2.json",
+      "entity_kind": "skladba_code (S01-S12b)",
+      "dxf_evidence": {
+        "total_skladba_mtext": 97,
+        "skladby_decoded": 13,
+        "items_with_explicit_s_code_reference": 3,
+        "items_implementing_skladba_layer_kapitola_count": 80
+      },
+      "expected_items_logic": "Each decoded S-code skladba is implemented by per-layer items across kapitolas {PSV-78, PSV-71, PSV-77, HSV-5, HSV-7, HSV-3, HSV-2}. Explicit S-code annotation in popis is not required — kapitola coverage is the substantive check.",
+      "items_found_ids": [
+        "260219_dum.HSV2.001",
+        "260219_dum.HSV5.009",
+        "260219_dum.HSV7.002",
+        "260219_dum.HSV2.001",
+        "260219_dum.HSV2.002",
+        "260219_dum.HSV2.003",
+        "260219_dum.HSV2.004",
+        "260219_dum.HSV2.005",
+        "260219_dum.HSV2.006",
+        "260219_dum.HSV2.007",
+        "260219_dum.HSV2.008",
+        "260219_dum.HSV2.009",
+        "260219_dum.HSV2.010",
+        "260219_dum.HSV2.011",
+        "260219_dum.HSV2.012",
+        "260219_dum.HSV2.013",
+        "260217_sklad.HSV2.001",
+        "260217_sklad.HSV2.002",
+        "260217_sklad.HSV2.003",
+        "260217_sklad.HSV2.004"
+      ],
+      "verdict": "COVERED",
+      "severity": "informational",
+      "fix_recommendation": "Optional improvement: add explicit \"realizuje S{NN}\" annotation in mnozstvi_formula for traceability — currently only 3 items cite S-codes directly. Not a procurement gap."
+    },
+    {
+      "dxf_entity_id": "DXF_KLEMPIRINA",
+      "source_file": "dxf_inserts_tier4_extended.json",
+      "entity_kind": "klempirina_breakdown (DXF MA_klempíř INSERTs + 173.8 m total)",
+      "dxf_evidence": {
+        "klempir_atika": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        },
+        "klempir_okap": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        },
+        "klempir_svod": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        },
+        "klempir_parapet": {
+          "n_inserts": 0,
+          "unique_block_names": []
+        }
+      },
+      "expected_items_logic": "DXF total klempířina 173.8 m must be split across PSV-76 Klempíř items.",
+      "items_found_ids": [
+        "260219_dum.PSV76.001",
+        "260219_dum.PSV76.002",
+        "260219_dum.PSV76.003",
+        "260219_dum.PSV76.004"
+      ],
+      "items_found_total_qty_m": 159.9,
+      "verdict": "COVERED",
+      "severity": "important",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_OKNA_INSERT",
+      "source_file": "dxf_inserts_tier4_extended.json",
+      "entity_kind": "okno INSERT blocks",
+      "dxf_evidence": {
+        "dxf_okno_inserts": 16
+      },
+      "expected_items_logic": "DXF okno INSERT count should be consumed by PSV-76 Výplně otvorů items.",
+      "items_found_ids": [
+        "260219_dum.PSV76.001",
+        "260219_dum.PSV76.002",
+        "260219_dum.PSV76.003",
+        "260219_dum.PSV76.004",
+        "260219_dum.PSV76.005",
+        "260219_dum.PSV76.006",
+        "260219_dum.PSV76.007",
+        "260219_dum.PSV76.014"
+      ],
+      "items_total_qty": 32,
+      "verdict": "COVERED",
+      "severity": "important",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_KROKVE_INSERT",
+      "source_file": "dxf_inserts_tier4_extended.json",
+      "entity_kind": "kr_krokev INSERT blocks (111)",
+      "dxf_evidence": {
+        "dxf_krokev_inserts": 111
+      },
+      "expected_items_logic": "111 krokev INSERTs ↔ HSV-5 krov tesařský — verify count consistency with item mnozstvi (bm).",
+      "items_found_ids": [
+        "260219_dum.HSV5.001"
+      ],
+      "items_total_bm": 156.0,
+      "verdict": "COVERED",
+      "severity": "important",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_SANIT_INSERT",
+      "source_file": "dxf_inserts_tier4_extended.json",
+      "entity_kind": "sanit INSERT blocks (WC + umyvadlo + vana + sprcha)",
+      "dxf_evidence": {
+        "sanit_WC": 7,
+        "sanit_umyvadlo": 7,
+        "sanit_vana": 2,
+        "sanit_sprcha": 2
+      },
+      "expected_items_logic": "Sanit ks count ↔ PSV-72 ZTI items.",
+      "items_found_ids": [
+        "260219_dum.PSV72.001",
+        "260219_dum.PSV72.002",
+        "260219_dum.PSV72.003",
+        "260219_dum.PSV72.004",
+        "260219_dum.PSV72.005",
+        "260219_dum.PSV72.006",
+        "260219_dum.PSV72.007",
+        "260219_dum.PSV72.008",
+        "260219_dum.PSV72.009",
+        "260219_dum.PSV72.010"
+      ],
+      "items_total_qty_ks_or_kpl": 29.0,
+      "verdict": "COVERED",
+      "severity": "important",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_KUCHYNE_INSERT",
+      "source_file": "dxf_inserts_tier4_extended.json",
+      "entity_kind": "kuchyne INSERT blocks (drez/indukce/lednice/trouba/mycka)",
+      "dxf_evidence": {
+        "kuchyne_indukce": 5,
+        "kuchyne_lednice": 3,
+        "kuchyne_trouba": 3,
+        "kuchyne_drez": 3,
+        "kuchyne_mycka": 3
+      },
+      "expected_items_logic": "Kitchen appliances generally investor-supplied — expect no items in rozpočet.",
+      "items_found_ids": [],
+      "verdict": "N/A_DOCUMENTED",
+      "severity": "informational",
+      "fix_recommendation": "Confirm with Karel that kitchen appliances are not in zhotovitel scope."
+    },
+    {
+      "dxf_entity_id": "DXF_ROOM_NUMBERS",
+      "source_file": "dxf_mtext_classified_v2.json",
+      "entity_kind": "room_number mtext (25 rooms total)",
+      "dxf_evidence": {
+        "room_number_mtext": 65,
+        "rooms_total_claimed": 25
+      },
+      "expected_items_logic": "Per-room labels feed per-podlaží/per-zone areas but rozpočet items aggregate at kapitola level.",
+      "items_found_ids": [],
+      "verdict": "N/A_DOCUMENTED",
+      "severity": "informational",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_MATERIAL_MARKERS",
+      "source_file": "dxf_mtext_classified_v2.json",
+      "entity_kind": "material_marker mtext (21 occurrences)",
+      "dxf_evidence": {
+        "material_marker_mtext": 21
+      },
+      "expected_items_logic": "Material markers (ETICS/EPS/MW/PIR) consumed by PSV-71 + HSV-7 items.",
+      "items_found_ids": [
+        "260219_dum.PSV71.001",
+        "260219_dum.PSV71.002",
+        "260219_dum.PSV71.001",
+        "260219_dum.HSV7.001",
+        "260219_dum.HSV7.002",
+        "260219_dum.HSV7.003",
+        "260219_dum.HSV7.004",
+        "260219_dum.HSV7.005",
+        "260219_dum.HSV7.006"
+      ],
+      "verdict": "COVERED",
+      "severity": "important",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_POZN_REFS",
+      "source_file": "dxf_mtext_classified_v2.json",
+      "entity_kind": "POZN. reference mtext",
+      "dxf_evidence": {
+        "poznamka_reference_mtext": 22
+      },
+      "expected_items_logic": "POZN. refs are cross-link metadata — no direct items expected.",
+      "items_found_ids": [],
+      "verdict": "N/A_DOCUMENTED",
+      "severity": "informational",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_DIMENSIONS_BANDS",
+      "source_file": "dxf_dimensions_all_v2.json",
+      "entity_kind": "dimensions magnitude bands (785 total)",
+      "dxf_evidence": {
+        "small_detail": 186,
+        "medium_dimension": 157,
+        "small_dimension": 191,
+        "tiny_detail": 50,
+        "room_or_span": 70,
+        "podlazi_vyska_or_room_width": 83,
+        "building_dimension_or_long_span": 43,
+        "very_large": 5
+      },
+      "expected_items_logic": "Dimensions are supporting evidence for quantity computation across items.",
+      "items_found_ids": [],
+      "verdict": "N/A_DOCUMENTED",
+      "severity": "informational",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_EMBEDDED_TABLES",
+      "source_file": "dxf_embedded_tables_extracted.json",
+      "entity_kind": "embedded tables in MTEXT",
+      "dxf_evidence": {
+        "table_rows": 58
+      },
+      "expected_items_logic": "Embedded tables (legendy, výpisy) feed item attributes — not items themselves.",
+      "items_found_ids": [],
+      "verdict": "N/A_DOCUMENTED",
+      "severity": "informational",
+      "fix_recommendation": null
+    },
+    {
+      "dxf_entity_id": "DXF_META_BLOCKS",
+      "source_file": "dxf_inserts_tier4_extended.json",
+      "entity_kind": "drawing meta + furniture blocks (razítko/severka/řezová značka/nábytek/plot)",
+      "dxf_evidence": {
+        "plot_dreveny": 133,
+        "rezova_znacka": 44,
+        "razitko": 32,
+        "severka": 16,
+        "wall_block": 15,
+        "nabytek_zidle": 14,
+        "nabytek_postel": 6,
+        "nabytek_tv": 4,
+        "nabytek_pohovka": 3,
+        "dvere": 2
+      },
+      "expected_items_logic": "razítko/severka/řezová značka = drawing meta (no items). Nábytek = investor scope. Plot dřevěný (133) — check if zahrnuto v VRN. Dveře (2) → PSV-76.",
+      "items_found_ids": [
+        "260219_dum.PSV76.009",
+        "260219_dum.PSV76.010",
+        "260217_sklad.PSV76.001",
+        "260219_dum.PSV76.013"
+      ],
+      "verdict": "N/A_DOCUMENTED",
+      "severity": "informational",
+      "fix_recommendation": "Verify plot_dreveny (133 inserts) — is fence in scope or zahrada-only?"
+    }
+  ]
+}

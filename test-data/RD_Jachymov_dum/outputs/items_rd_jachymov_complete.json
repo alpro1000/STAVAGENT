@@ -131,7 +131,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "_data_quality": "tz_explicit",
-      "id": "260219_dum.HSV1.004"
+      "id": "260219_dum.HSV1.004",
+      "realizuje_skladbu": "Anglický dvorek"
     },
     {
       "objekt": "260219_dum",
@@ -157,7 +158,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "_data_quality": "tz_explicit",
-      "id": "260219_dum.HSV1.005"
+      "id": "260219_dum.HSV1.005",
+      "realizuje_skladbu": "Terasa"
     },
     {
       "objekt": "260219_dum",
@@ -447,7 +449,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.001"
+      "id": "260219_dum.HSV2.001",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -476,7 +479,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.002"
+      "id": "260219_dum.HSV2.002",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -504,7 +508,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.003"
+      "id": "260219_dum.HSV2.003",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -532,7 +537,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.004"
+      "id": "260219_dum.HSV2.004",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -561,7 +567,8 @@
       "urs_code_proposed_was": "711132101",
       "urs_code_family_6digit": "711141",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = AIP bituminous rolls, item = PE separation foil. Hint: Family 711 (Izolace proti vodě) correct, leaf should be 711141 PE-folie family",
-      "urs_websearch_verified_at": "2026-05-19"
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -587,7 +594,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.006"
+      "id": "260219_dum.HSV2.006",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -619,7 +627,8 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 3.07,
       "_recalc_reason": "Part 1 inventory 2026-05-17 discovered exact external perimeter 38.70 m from DXF km_R_návrh_tlustá 2 closed polygon (91.28 m² × 6 vrcholů) — replaces prior fallback estimate 4×√104.4 ≈ 41.0 m",
-      "id": "260219_dum.HSV2.007"
+      "id": "260219_dum.HSV2.007",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -649,7 +658,8 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 20.5,
       "_recalc_reason": "Same as Pozední věnec 3.NP — perimeter 38.70 m DXF-verified",
-      "id": "260219_dum.HSV2.008"
+      "id": "260219_dum.HSV2.008",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -676,7 +686,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.009"
+      "id": "260219_dum.HSV2.009",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -701,7 +712,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.010"
+      "id": "260219_dum.HSV2.010",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -726,7 +740,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.011"
+      "id": "260219_dum.HSV2.011",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -754,7 +771,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.012"
+      "id": "260219_dum.HSV2.012",
+      "realizuje_skladbu": [
+        "S05"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -781,7 +801,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV2.013"
+      "id": "260219_dum.HSV2.013",
+      "realizuje_skladbu": [
+        "S05"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -966,7 +989,11 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.001"
+      "id": "260219_dum.HSV3.001",
+      "realizuje_skladbu": [
+        "S01",
+        "S02"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -996,7 +1023,10 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 76.05,
       "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback estimate 41.0 m",
-      "id": "260219_dum.HSV3.002"
+      "id": "260219_dum.HSV3.002",
+      "realizuje_skladbu": [
+        "S12"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1023,7 +1053,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.003"
+      "id": "260219_dum.HSV3.003",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1048,7 +1081,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.004"
+      "id": "260219_dum.HSV3.004",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1073,7 +1109,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.005"
+      "id": "260219_dum.HSV3.005",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1098,7 +1137,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.006"
+      "id": "260219_dum.HSV3.006",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1126,7 +1166,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV3.007"
+      "id": "260219_dum.HSV3.007",
+      "realizuje_skladbu": [
+        "S02"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1228,7 +1271,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.001"
+      "id": "260219_dum.HSV4.001",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1253,7 +1297,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.002"
+      "id": "260219_dum.HSV4.002",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1278,7 +1325,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.003"
+      "id": "260219_dum.HSV4.003",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1303,7 +1353,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.004"
+      "id": "260219_dum.HSV4.004",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1328,7 +1381,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.005"
+      "id": "260219_dum.HSV4.005",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1353,7 +1409,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.006"
+      "id": "260219_dum.HSV4.006",
+      "realizuje_skladbu": [
+        "S09"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1378,7 +1437,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.007"
+      "id": "260219_dum.HSV4.007",
+      "realizuje_skladbu": [
+        "S06"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1403,7 +1465,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.008"
+      "id": "260219_dum.HSV4.008",
+      "realizuje_skladbu": [
+        "S06"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1428,7 +1493,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.009"
+      "id": "260219_dum.HSV4.009",
+      "realizuje_skladbu": [
+        "S06"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1453,7 +1521,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.010"
+      "id": "260219_dum.HSV4.010",
+      "realizuje_skladbu": [
+        "S07"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1480,7 +1551,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.011"
+      "id": "260219_dum.HSV4.011",
+      "realizuje_skladbu": [
+        "S07"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1505,7 +1579,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.012"
+      "id": "260219_dum.HSV4.012",
+      "realizuje_skladbu": [
+        "S07"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1532,7 +1609,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.013"
+      "id": "260219_dum.HSV4.013",
+      "realizuje_skladbu": [
+        "S07"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1559,7 +1639,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV4.014"
+      "id": "260219_dum.HSV4.014",
+      "realizuje_skladbu": [
+        "S07"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1738,7 +1821,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": "DXF INSERT 'KR' count 111 includes krokve + sloupky + námětky; geometric calc used as primary",
-      "id": "260219_dum.HSV5.001"
+      "id": "260219_dum.HSV5.001",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1763,7 +1847,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.002"
+      "id": "260219_dum.HSV5.002",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1788,7 +1873,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.003"
+      "id": "260219_dum.HSV5.003",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1813,7 +1899,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.004"
+      "id": "260219_dum.HSV5.004",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1838,7 +1925,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.005"
+      "id": "260219_dum.HSV5.005",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1865,7 +1953,8 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": "Pre-baked říká 'JKL 100/4'; actual TZ použ. termín 'jakl/jekl' — RHS 100×100×4 dle ČSN EN 10219-2",
-      "id": "260219_dum.HSV5.006"
+      "id": "260219_dum.HSV5.006",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1890,7 +1979,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.007"
+      "id": "260219_dum.HSV5.007",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1915,7 +2007,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.008"
+      "id": "260219_dum.HSV5.008",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1942,7 +2037,10 @@
       "notes": null,
       "_data_quality": "dxf_plus_tz_explicit",
       "_recalc_reason": "PIR tloušťka 160 mm (NE 180 mm odhad) z řez S10 legenda explicit",
-      "id": "260219_dum.HSV5.009"
+      "id": "260219_dum.HSV5.009",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1967,7 +2065,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.010"
+      "id": "260219_dum.HSV5.010",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1992,7 +2093,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.011"
+      "id": "260219_dum.HSV5.011",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2017,7 +2121,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.012"
+      "id": "260219_dum.HSV5.012",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2044,7 +2151,10 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.013"
+      "id": "260219_dum.HSV5.013",
+      "realizuje_skladbu": [
+        "S10"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2069,7 +2179,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.014"
+      "id": "260219_dum.HSV5.014",
+      "realizuje_skladbu": [
+        "S11"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2094,7 +2207,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.015"
+      "id": "260219_dum.HSV5.015",
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -2119,7 +2233,10 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV5.016"
+      "id": "260219_dum.HSV5.016",
+      "realizuje_skladbu": [
+        "S12b"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2480,7 +2597,10 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 293.15,
       "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
-      "id": "260219_dum.HSV7.001"
+      "id": "260219_dum.HSV7.001",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2510,7 +2630,11 @@
       "_data_quality": "dxf_plus_tz_explicit",
       "_previous_mnozstvi": 293.15,
       "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
-      "id": "260219_dum.HSV7.002"
+      "id": "260219_dum.HSV7.002",
+      "realizuje_skladbu": [
+        "S01",
+        "S12a"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2538,7 +2662,10 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 14.35,
       "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
-      "id": "260219_dum.HSV7.003"
+      "id": "260219_dum.HSV7.003",
+      "realizuje_skladbu": [
+        "S01"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2568,7 +2695,11 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 80.0,
       "_recalc_reason": "Per-window perimeter from DXF block bbox replaces prior estimate 10 okna × 5 m = 50 bm and Comprehensive 16 okna × 5 m = 80 bm; now exact 2×(W+H) per typ",
-      "id": "260219_dum.HSV7.004"
+      "id": "260219_dum.HSV7.004",
+      "realizuje_skladbu": [
+        "S01",
+        "S12a"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2593,7 +2724,11 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV7.005"
+      "id": "260219_dum.HSV7.005",
+      "realizuje_skladbu": [
+        "S01",
+        "S12a"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2621,7 +2756,12 @@
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 307.55,
       "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
-      "id": "260219_dum.HSV7.006"
+      "id": "260219_dum.HSV7.006",
+      "realizuje_skladbu": [
+        "S01",
+        "S12a",
+        "S12b"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -3113,7 +3253,8 @@
       "_data_quality": "dxf_perimeter_ratio_estimate",
       "_previous_mnozstvi": 46.0,
       "_recalc_reason": "Klempířina total 173.8 m z DXF (Path C Tier 3) replaces estimate ~46 bm. +70% více klempířiny.",
-      "id": "260219_dum.PSV76.001"
+      "id": "260219_dum.PSV76.001",
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3140,7 +3281,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "_data_quality": "dxf_deterministic",
-      "id": "260219_dum.PSV76.002"
+      "id": "260219_dum.PSV76.002",
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3169,7 +3311,8 @@
       "_data_quality": "dxf_perimeter_ratio_estimate",
       "_previous_mnozstvi": 56.0,
       "_recalc_reason": "Svody 43 bm z DXF split (NE 56 bm odhad)",
-      "id": "260219_dum.PSV76.003"
+      "id": "260219_dum.PSV76.003",
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3195,7 +3338,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "_data_quality": "dxf_perimeter_ratio_estimate",
-      "id": "260219_dum.PSV76.004"
+      "id": "260219_dum.PSV76.004",
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -5048,7 +5192,7 @@
       "_gate": "VRN",
       "kapitola": "VRN — Průzkumy",
       "subkapitola": "Mykologický průzkum dřeva při bourání",
-      "popis": "Mykologický průzkum stávajícího krovu a dřevěných trámů zhlaví — provádí autorizovaný mykolog při bourání",
+      "popis": "Mykologický průzkum + průzkum výskytu dřevokazného hmyzu stávajícího krovu a dřevěných trámů zhlaví — pro vyloučení narušení dřevěných konstrukcí; provádí autorizovaný mykolog při bourání",
       "mj": "kpl",
       "mnozstvi": 1,
       "mnozstvi_formula": "TZ ARS §3.2.3 — 'při bourání bude proveden mykologický průzkum dřev. trámů (zhlaví)'",
@@ -5059,7 +5203,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum",
+      "source": "TZ ARS dům §3.2.3 + POZN.2.05 z půdorysů návrh + řez A-A návrh (explicit dřevokazný hmyz scope per drawing wording)",
       "subdodavatel": "mykolog",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -5067,7 +5211,9 @@
       ],
       "status_flag": "needs_subdod_mapping",
       "notes": "Subdod 'mykolog' (autorizovaný mykolog dřeva) není v current mapping. Specialty surveyor; FLAG pro batch update.",
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.001",
+      "_audit_gap_fixed": "PER_DRAWING_ENRICHMENT_POZN_2_05",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     },
     {
       "objekt": "260219_dum",
@@ -5874,31 +6020,123 @@
       "_data_quality": "audit_v2_split_per_podlazi",
       "_audit_gap_fixed": "GAP_007",
       "_added_at": "2026-05-19"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání zdiva komínu",
+      "popis": "Bourání vrchní části stávajícího komínu v posledním podlaží (cihelné zdivo, ručně), vč. likvidace cihelné suti",
+      "mj": "m³",
+      "mnozstvi": 6.0,
+      "mnozstvi_formula": "průměr komín 0.50×0.50 × výška nad střechou ~2.4 m = 0.6 m³, × 10 m³ buffer pro suti + manipulace = 6.0 m³",
+      "mnozstvi_confidence": 0.75,
+      "urs_code_proposed": "962024141",
+      "urs_alternatives": [
+        "962024151",
+        "965042141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
+      "source": "DXF dum_DPZ řez A-A bourání + POZN.1.02 z půdorysů bourání",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.016",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_02",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-6 Bourací práce",
+      "subkapitola": "Bourání venkovních konstrukcí",
+      "popis": "Bourání stávajících opěrných zídek a venkovního schodiště v zahradě/dvoře — částečné, dle vyznačení v půdorysech bourání",
+      "mj": "m³",
+      "mnozstvi": 8.0,
+      "mnozstvi_formula": "odhad ze řez A-A bourání + půdorys bourání 1.NP/1.PP, ~8 m³ celkem (opěrné zídky + venkovní schodiště zahrada/dvůr)",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": "961044111",
+      "urs_alternatives": [
+        "962031321",
+        "965042141"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "DXF dum_DPZ řez A-A bourání + POZN.1.03 + půdorys bourání",
+      "subdodavatel": "bourani_demolice",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        9
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV6.017",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_03",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Drenáž za bílou vanou",
+      "popis": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovaná + štěrkový obsyp 16/32 + geotextilie + napojení do dešťové kanalizace, L po obvodu BV",
+      "mj": "m",
+      "mnozstvi": 12.0,
+      "mnozstvi_formula": "obvod bílé vany ~10 m + napojení 2 m = 12 m",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": "877315111",
+      "urs_alternatives": [
+        "873311111",
+        "899711111"
+      ],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.7,
+      "source": "TZ ARS dům §3.2 (drenáž za opěrnou stěnou) + POZN.2.02 z půdorysů návrh + řez A-A návrh",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        8
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260219_dum.HSV1.015",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_2_02",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     }
   ],
   "_summary_total": {
-    "items_total": 189,
+    "items_total": 211,
+    "items_active": 207,
+    "items_deprecated": 4,
     "by_kapitola": {
-      "HSV-1 Zemní práce": 14,
+      "HSV-1 Zemní práce": 15,
       "HSV-2 Základové a ŽB": 19,
       "HSV-3 Svislé konstrukce": 10,
       "HSV-4 Vodorovné": 20,
       "HSV-5 Krov + střecha": 16,
-      "HSV-6 Bourací práce": 12,
+      "HSV-6 Bourací práce": 17,
       "HSV-7 Fasáda ETICS": 6,
       "PSV-71 Izolace HI": 3,
       "PSV-71 Izolace TI": 2,
-      "PSV-76 Výplně otvorů": 11,
+      "PSV-76 Výplně otvorů": 13,
       "PSV-76 Klempíř": 4,
       "PSV-76 Zámečnictví": 4,
       "PSV-76 Truhlář": 2,
       "PSV-77 Podlahy": 8,
-      "PSV-78 Povrchové úpravy": 12,
+      "PSV-78 Povrchové úpravy": 16,
       "PSV-95 Detekce požární": 2,
-      "PSV-72 ZTI": 10,
+      "PSV-72 ZTI": 19,
       "PSV-73 Vytápění": 8,
       "M-21 ELI silnoproud": 7,
-      "VRN — Zařízení staveniště": 3,
+      "VRN — Zařízení staveniště": 4,
       "VRN — Doprava + odpad": 5,
       "VRN — BOZP": 1,
       "VRN — Pojištění + zábory": 2,
@@ -5910,11 +6148,13 @@
       "VRN — Společné": 1
     },
     "by_objekt": {
-      "260219_dum": 162,
+      "260219_dum": 184,
       "260217_sklad": 27
     },
     "urs_status_distribution": {
-      "needs_production_lookup": 189
+      "matched_websearch_verified": 8,
+      "needs_production_lookup": 194,
+      "wrong_leaf_disambiguation_needed": 9
     },
     "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
@@ -5981,5 +6221,46 @@
     "gaps_na": [
       "GAP_001"
     ]
+  },
+  "_per_drawing_audit_fixes_log": {
+    "applied_at": "2026-05-26",
+    "audit_source": "outputs/cev_per_drawing_annotations_audit.json (commit 91ab8d2)",
+    "items_added": [],
+    "items_skipped_idempotent": [
+      "260219_dum.HSV6.016",
+      "260219_dum.HSV6.017",
+      "260219_dum.HSV1.015"
+    ],
+    "vrn_001_prouzkumy_enriched": true,
+    "vrn_001_prouzkumy_before": {
+      "popis": "Mykologický průzkum stávajícího krovu a dřevěných trámů zhlaví — provádí autorizovaný mykolog při bourání",
+      "source": "TZ ARS dům §3.2.3 — explicitně mykologický průzkum"
+    },
+    "vrn_001_zs_restored_from_prior_buggy_overwrite": true,
+    "id_collision_note": "id `260219_dum.VRN.001` is reused across 9 VRN sub-kapitolas in items.json — schema-level data integrity issue worth fixing in a future refactor (one canonical id per item). For now, identity is resolved via (id, kapitola) pair when targeting a specific entry.",
+    "gaps_fixed": [
+      "PER_DRAWING_GAP_POZN_1_02",
+      "PER_DRAWING_GAP_POZN_1_03",
+      "PER_DRAWING_GAP_POZN_2_02",
+      "PER_DRAWING_ENRICHMENT_POZN_2_05"
+    ],
+    "items_total_before": 211,
+    "items_total_after": 211
+  },
+  "_phase3_consolidate_log": {
+    "applied_at": "2026-05-26",
+    "purpose": "Phase 3 consolidation per gate-4 disposition: add realizuje_skladbu S-code traceability to skladba-implementing items + klempířina reconciliation note to PSV-76 Klempíř items.",
+    "tagged_skladba_items": 38,
+    "tagged_external_skladba_items": 2,
+    "tagged_klempir_items": 4,
+    "skladba_changes_by_kapitola": {
+      "HSV-1 Zemní práce": 2,
+      "HSV-2 Základové a ŽB": 4,
+      "HSV-3 Svislé konstrukce": 6,
+      "HSV-4 Vodorovné": 13,
+      "HSV-5 Krov + střecha": 9,
+      "HSV-7 Fasáda ETICS": 6
+    },
+    "explicit_review_marker": "Items in skladba-implementing kapitolas without a direct S-code mapping carry realizuje_skladbu=null (explicit reviewed-as-not-applicable, e.g. structural support items that DON'T form a skladba layer themselves)."
   }
 }

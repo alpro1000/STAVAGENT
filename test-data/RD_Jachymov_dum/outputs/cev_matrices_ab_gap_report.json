@@ -1,0 +1,340 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_matrices.py",
+  "_purpose": "Matrix A + B consolidated gap report.",
+  "matrix_a_summary": {
+    "covered": 117,
+    "na_documented": 100,
+    "gap": 0,
+    "extra": 28
+  },
+  "matrix_a_gap_by_severity": {},
+  "matrix_a_extras_by_subclass": {
+    "extra_dxf_sourced": 12,
+    "extra_tz_implicit": 1,
+    "extra_universal_vrn": 11,
+    "extra_audit_derived": 4
+  },
+  "matrix_a_items_touched": 163,
+  "matrix_a_items_total": 211,
+  "matrix_a_gaps": [],
+  "matrix_a_extras": [
+    {
+      "item_id": "260219_dum.PSV78.001",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Omítka jádrová + štuk 1.PP",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1.PP (stávající vyspravené + nové zděné)",
+      "source_field": "DXF rooms 1.PP obvod + výška podlaží 2.1 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.002",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Omítka jádrová + štuk 1.NP",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1.NP (stávající vyspravené + nové zděné)",
+      "source_field": "DXF rooms 1.NP obvod + výška podlaží 2.795 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.003",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Omítka jádrová + štuk 2.NP",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 2.NP (stávající vyspravené + nové zděné)",
+      "source_field": "DXF rooms 2.NP obvod + výška podlaží 2.865 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.004",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Omítka jádrová + štuk 3.NP",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 3.NP (stávající vyspravené + nové zděné)",
+      "source_field": "DXF rooms 3.NP obvod + výška podlaží 2.63 m (DXF SM_kóty + řez A-A Path C Tier 1) − okenní plocha (DXF) − odpočet dveří 3%",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.005",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "SDK podhled — tmelení + úprava 1.NP",
+      "popis_excerpt": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou (1.NP)",
+      "source_field": "DXF km_tabulka místností MTEXT — plocha 1.NP = plocha podhledu (flat ceiling assumption)",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.006",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "SDK podhled — tmelení + úprava 2.NP",
+      "popis_excerpt": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou (2.NP)",
+      "source_field": "DXF km_tabulka místností MTEXT — plocha 2.NP = plocha podhledu (flat ceiling assumption)",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.007",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "SDK podhled — tmelení + úprava 3.NP",
+      "popis_excerpt": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výmalbou (3.NP)",
+      "source_field": "DXF km_tabulka místností MTEXT — plocha 3.NP = plocha podhledu (flat ceiling assumption)",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.008",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Keramický obklad koupelna 1.05 (1.NP)",
+      "popis_excerpt": "Keramický obklad stěn koupelny 1.05 1.NP — výška obkladu 1.6 m (z DXF km Obklady layer)",
+      "source_field": "DXF rooms PIP perimeter 1.05 + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.009",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Keramický obklad koupelna 2.03 (2.NP)",
+      "popis_excerpt": "Keramický obklad stěn koupelny 2.03 2.NP — výška obkladu 2.45 m (z DXF km Obklady layer)",
+      "source_field": "DXF rooms PIP perimeter 2.03 + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.010",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Keramický obklad koupelna 3.04 (3.NP)",
+      "popis_excerpt": "Keramický obklad stěn koupelny 3.04 3.NP — výška obkladu 2.7 m (z DXF km Obklady layer)",
+      "source_field": "DXF rooms PIP perimeter 3.04 + DXF km Obklady layer (11 LWPOLYLINE markers s bbox heights 1600/2450/2610-2715 mm) — Path C Tier 1",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.011",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Obklad za kuchyňskou linkou",
+      "popis_excerpt": "Keramický obklad za kuchyňskou linkou nad pracovní deskou — 2 kuchyně × ~5 m² (1.06 byt rodičů + 3.05 byt 3.NP)",
+      "source_field": "DXF dum_DPZ 2× kuchyně MTEXT + TZ ARS",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.012",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Interiérová výmalba",
+      "popis_excerpt": "Interiérová výmalba akrylátová bílá 2× — všechny stěny + podhledy mimo obklad",
+      "source_field": "TZ ARS — interiérová výmalba (aggregate, no TZ per-room directive)",
+      "verdict": "EXTRA",
+      "subclass": "extra_tz_implicit",
+      "severity": "medium",
+      "fix_recommendation": "Item source field cites TZ but no specific paragraph matched. Likely the TZ wording is broader (e.g. 'celá fasáda', 'všechny prvky') than the keyword matcher could resolve. Verify cross-reference manually."
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Zařízení staveniště",
+      "subkapitola": "Mobilní WC",
+      "popis_excerpt": "Mobilní chemické WC TOI TOI pro pracovníky — pronájem ~8 měsíců",
+      "source_field": "BOZP — mobilní WC povinné pro stavbu RD",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.003",
+      "kapitola": "VRN — Zařízení staveniště",
+      "subkapitola": "El. odběr + vodovodní odběr stavby",
+      "popis_excerpt": "El. odběr stavby (zřízení staveništního rozvaděče + měřič) + vodovodní odběr (zřízení staveništní přípojky + vodoměr) — ~8 měsíců",
+      "source_field": "Standard staveniště — el. + voda zřízení a odběr po dobu stavby",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Pojištění + zábory",
+      "subkapitola": "Krátkodobé zábory ul. Fibichova",
+      "popis_excerpt": "Krátkodobé zábory ulice Fibichova pro materiál a kontejnery (povolení MU Jáchymov + DI) — odhad 30 dnů kumulativně",
+      "source_field": "TZ B m.10 + situace — řadovka ul. Fibichova",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Průzkumy",
+      "subkapitola": "Azbestový průzkum podrobný před demolicí",
+      "popis_excerpt": "Azbestový průzkum podrobný před demolicí — laboratorní vzorky a posudek (B kap. m.7.a předběžně negativní, ale podrobný před bouráním povinný)",
+      "source_field": "TZ B m.7.a + ARS §3.2 — azbestový průzkum povinný před demolicí",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Doprava materiálu",
+      "popis_excerpt": "Doprava materiálu na stavbu (centrální koordinace) — paušál ~2-3 % z PN materiál",
+      "source_field": "B4_productivity — standard doprava RD městská zástavba",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.003",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Likvidace odpadů 56.9 t",
+      "popis_excerpt": "Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné + recyklace + třídění (56.9 t celkem per TZ B m.10.e)",
+      "source_field": "TZ B m.10.e bilance odpadů celkem dům",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Doprava prefa H-BLOK auto s hyd. rukou",
+      "popis_excerpt": "Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) auto s hydraulickou rukou — celkem ~60 ks bloků",
+      "source_field": "TZ statika sklad §4 + ARS — auto s hyd. rukou pro osazení H-BLOK",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260217_sklad.VRN.002",
+      "kapitola": "VRN — Doprava + odpad",
+      "subkapitola": "Likvidace odpadu sklad",
+      "popis_excerpt": "Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (drobné množství)",
+      "source_field": "TZ ARS sklad §3 — kamenné zídky + schodiště odstraneny",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Geodet",
+      "subkapitola": "Geodetické vytýčení sklad",
+      "popis_excerpt": "Geodetické vytýčení sklad+parking+schodiště ze situace (před realizací)",
+      "source_field": "Standard — geodet vytýčení pro každý nový objekt",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Společné",
+      "subkapitola": "Podíl na obecných VRN dům",
+      "popis_excerpt": "Podíl na obecných VRN domu (buňky, BOZP, pojištění, kolaudace) — paušál ~10 % nákladů sklad nebo % alokace",
+      "source_field": "Standard zhotovitel — alokace VRN pro paralelně realizovaný sklad",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.020",
+      "kapitola": "VRN — Zařízení staveniště",
+      "subkapitola": "Voda staveniště",
+      "popis_excerpt": "Voda staveniště — napojení na stávající vodovodní přípojku, dočasné rozvody na staveništi (mísení malt, čištění, soc. zázemí), paušál pro dobu výstavby ~18 měs.",
+      "source_field": "TZ B Souhrnná m.5 — 'Stávající vodovodní přípojka z veřejného vodovodu'",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.C",
+      "kapitola": "PSV-72 ZTI",
+      "subkapitola": "Sanitární keramika koupelna 3.04 (3.NP) / fixture C",
+      "popis_excerpt": "Sprchový kout 90×90 cm vč. vaničky + skleněných dveří — koupelna 3.04 3.NP",
+      "source_field": "DXF dum_DPZ MTEXT room 3.04 3.NP + TZ ARS koupelna kompletace",
+      "verdict": "EXTRA",
+      "subclass": "extra_dxf_sourced",
+      "severity": "informational",
+      "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.1_PP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Interiérová výmalba 1.PP",
+      "popis_excerpt": "Interiérová výmalba 1.PP — sklep stěny + klenba bílá vápenná 2×",
+      "source_field": "Per-podlaží split z PSV78.012 (audit v2 GAP_007 fix); omítka PSV78.001 + SDK podhled PSV78.—",
+      "verdict": "EXTRA",
+      "subclass": "extra_audit_derived",
+      "severity": "informational",
+      "fix_recommendation": "Derived from earlier audit gap fix (per-podlaží split / GAP_X resolution). Parent item is TZ/DXF-backed; this is a refinement. Acceptable."
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.1_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Interiérová výmalba 1.NP",
+      "popis_excerpt": "Interiérová výmalba 1.NP — stěny + SDK podhled − obklad koupelny 1.05 (1.6 m výška)",
+      "source_field": "Per-podlaží split z PSV78.012 (audit v2 GAP_007 fix); omítka PSV78.002 + SDK podhled PSV78.005",
+      "verdict": "EXTRA",
+      "subclass": "extra_audit_derived",
+      "severity": "informational",
+      "fix_recommendation": "Derived from earlier audit gap fix (per-podlaží split / GAP_X resolution). Parent item is TZ/DXF-backed; this is a refinement. Acceptable."
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.2_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Interiérová výmalba 2.NP",
+      "popis_excerpt": "Interiérová výmalba 2.NP — stěny + SDK podhled − obklad koupelny 2.03 (2.45 m výška)",
+      "source_field": "Per-podlaží split z PSV78.012 (audit v2 GAP_007 fix); omítka PSV78.003 + SDK podhled PSV78.006",
+      "verdict": "EXTRA",
+      "subclass": "extra_audit_derived",
+      "severity": "informational",
+      "fix_recommendation": "Derived from earlier audit gap fix (per-podlaží split / GAP_X resolution). Parent item is TZ/DXF-backed; this is a refinement. Acceptable."
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.3_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "subkapitola": "Interiérová výmalba 3.NP",
+      "popis_excerpt": "Interiérová výmalba 3.NP — stěny + SDK podhled − obklad koupelny 3.04 (2.7 m výška)",
+      "source_field": "Per-podlaží split z PSV78.012 (audit v2 GAP_007 fix); omítka PSV78.004 + SDK podhled PSV78.007",
+      "verdict": "EXTRA",
+      "subclass": "extra_audit_derived",
+      "severity": "informational",
+      "fix_recommendation": "Derived from earlier audit gap fix (per-podlaží split / GAP_X resolution). Parent item is TZ/DXF-backed; this is a refinement. Acceptable."
+    }
+  ],
+  "matrix_b_summary": {
+    "covered": 7,
+    "na_documented": 6,
+    "gap": 0,
+    "extra": 0
+  },
+  "matrix_b_gap_or_extra_by_severity": {},
+  "matrix_b_gaps_or_extras": []
+}

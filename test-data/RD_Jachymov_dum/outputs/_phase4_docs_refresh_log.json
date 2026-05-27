@@ -1,0 +1,41 @@
+{
+  "applied_at": "2026-05-26",
+  "md_results": [
+    {
+      "file": "Project_OnePager_RD_Jachymov.md",
+      "changes": [],
+      "applied": false
+    },
+    {
+      "file": "Project_Summary_RD_Jachymov.md",
+      "changes": [],
+      "applied": false
+    },
+    {
+      "file": "items_completeness_report_v2.md",
+      "changes": [],
+      "applied": false
+    },
+    {
+      "file": "items_quality_report.md",
+      "changes": [],
+      "applied": false
+    }
+  ],
+  "docx_result": {
+    "docx_source": "outputs/Otazky_pro_Karla_a_projektanty_2026-05-18.docx",
+    "docx_v2_path": "outputs/Otazky_pro_Karla_a_projektanty_2026-05-26.docx",
+    "notes": [
+      "intro paragraph rewritten",
+      "Q2 status updated",
+      "Q20 status updated",
+      "Q21 summary row added",
+      "Q21 detail block appended"
+    ]
+  },
+  "summary": {
+    "mds_changed": 0,
+    "mds_unchanged": 4,
+    "mds_error": 0
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_generated_by": "tools/cev_layers_extract.py",
+  "_purpose": "Layer 4 of CEV — Word documents (otázky pro Karla + projektanty).",
+  "_docs_total": 1,
+  "documents": [
+    {
+      "file": "outputs/Otazky_pro_Karla_a_projektanty_2026-05-18.docx",
+      "paragraph_count": 193,
+      "questions_found": 20,
+      "questions": [
+        {
+          "q_no": 1,
+          "header": "Otázka č. 1:  Vybrat rozsah rozpočtu — agregovaný / položkový / hybrid",
+          "body_excerpt": "O co jde: Pan Volný v emailu zmínil, že rozpočtář by mu mohl udělat „nějaký agregovaný“ rozpočet ze stavebního povolení. Před tím, než dokončíme cenovou nabídku, potřebujeme jednoznačné rozhodnutí, kterou variantu rozsahu si vybírá: • Varianta A — agregovaný (souhrny po kapitolách, cca 30 řádků), nejlevnější • Varianta B — položkový (každá položka samostatně, cca 187 řádků), nejdražší • Varianta C — hybrid (HSV položkově, PSV a TZB agregovaně, kompromis) Co je třeba: Karle, prosím přepošli toto Volnému s žádostí o vybrání jedné varianty. Bez potvrzení nemůžeme dokončit cenovou nabídku. Co pro…",
+          "status_marker": null
+        },
+        {
+          "q_no": 2,
+          "header": "Otázka č. 2:  Parkovací stání u Dvořákovy — kam patří?",
+          "body_excerpt": "O co jde: Souhrnná technická zpráva (kap. m.5) uvádí samostatně povolovanou akci „parkovacích stání a vjezdu na pozemek ze severní strany z ulice Dvořákova“. Rozhodnutí o vjezdu vydáno 17. 9. 2025, spis 0003300/25/Pne. Ale není jasné, zda samotná parkovací stání jsou součástí stavební akce 260217 (sklad + parking), nebo zda jsou třetím samostatným stavebním objektem. Co je třeba: Karle, prosím ověř u Bc. Jiřího Šmída nebo přímo u SMASHE, jak jsou parkovací stání vedena. Pokud jsou součástí 260217, zůstávají v jednom rozpočtu se skladem. Pokud jsou samostatný objekt, budou v rozpočtu odděleny.…",
+          "status_marker": null
+        },
+        {
+          "q_no": 3,
+          "header": "Otázka č. 3:  Chybí výkresy ve výrobním stupni (DPS)",
+          "body_excerpt": "O co jde: Architekt zpracoval pouze dokumentaci pro stavební povolení (DSP). Dokumentace pro provádění stavby (DPS) nebyla zpracována. To znamená, že nemáme k dispozici tabulku skladeb podlah a stěn s konkrétními F-kódy, výpisy oken, dveří a klempířiny, ani detaily kotvení a lemování. Naštěstí v DXF výkresech jsme našli embedded tabulku místností s přesnými plochami pro 25 místností a 7 typů oken s přesnými rozměry — to nám dovolilo udělat rozpočet podstatně přesnější, než je u DSP obvyklé. Co je třeba: Pokud chcete přesný položkový rozpočet (přesnost ±5 %), je třeba objednat u SMASHE doplněn…",
+          "status_marker": null
+        },
+        {
+          "q_no": 4,
+          "header": "Otázka č. 4:  Skladby podlah — přesné vrstvy a výrobce  [RESOLVED 2026-05-18]",
+          "body_excerpt": "✓ STATUS: RESOLVED VYŘEŠENO 2026-05-18 (Path C Tier 2): 13 S-codes decodováno z TZ řez A-A legendy + cross-referenced s DXF S-code markers per element location. Sheet 8 Var_E_Skladby_Vrstev obsahuje plné composition vrstev pro všech 13 S-codes (S01–S12b). Výrobce systému zůstává otázkou pro investora (PSV Knauf / Rigips / Fermacell — rozhodnutí o dodavateli). O co jde: Technická zpráva uvádí materiály a tloušťky vrstev pro 3 typy skladeb podlah (na terénu, suchá nad trámovým stropem, mokrá nad ocelobetonem). Ale konkrétní výrobce systému (Knauf / Rigips / Fermacell pro suchou skladbu) ani pře…",
+          "status_marker": "RESOLVED"
+        },
+        {
+          "q_no": 5,
+          "header": "Otázka č. 5:  Výpisy oken, dveří, klempířiny, zámečnictví, truhlářství  [PARTIALLY RESOLVED 2026-05-18]",
+          "body_excerpt": "✓ STATUS: PARTIALLY RESOLVED ČÁSTEČNĚ VYŘEŠENO 2026-05-18 (Path C Tier 4 — INSERT block extrakce z DXF): Z DXF se podařilo vytáhnout 7 unique window types s exact bbox rozměry — to nahrazuje typický výpis oken pro DSP. Klempířina 173,8 m total z DXF MA_klempíř + SM__klempířina layers, per-typ split (atika / okap / svod / parapet) je v Sheet 8 Var_E + Var_B detail. ZBÝVÁ: TZ silent o materiálu / fabrice klempířiny — dotaz na výrobce zůstává. Dveře vnitřní stále odhad ±20 % (ARS uvádí 'DTD laminované' bez ks/typů). O co jde: Technická zpráva uvádí obecné popisy: „plastová okna trojsklem Uw=0,85…",
+          "status_marker": "RESOLVED"
+        },
+        {
+          "q_no": 6,
+          "header": "Otázka č. 6:  Detail vytápění — kamna, kotel, krb, tepelné čerpadlo",
+          "body_excerpt": "O co jde: Technická zpráva uvádí 4 zdroje vytápění: • Sporáková kamna na tuhá paliva v 1.NP s akumulačním zásobníkem TUV • Elektrokotel pro 3.NP (samostatný byt) • Krb na tuhá paliva v 3.NP • Multisplit tepelné čerpadlo vzduch-vzduch (venkovní + vnitřní jednotky) Ale technická zpráva neuvádí konkrétní výkony v kW, výrobce ani počet vnitřních jednotek tepelného čerpadla. Investorovo rozhodnutí potřebné pro objednání zařízení. Co je třeba: Karle, prosím přepošli Volnému tyto otázky: • Sporáková kamna: výrobce + výkon (např. 10 kW Atmos)? • Elektrokotel pro 3.NP: jaký výkon (8–12 kW)? • Krb: jak…",
+          "status_marker": null
+        },
+        {
+          "q_no": 7,
+          "header": "Otázka č. 7:  Rozsah elektroinstalace — počty zásuvek, svítidel, příprava FVE",
+          "body_excerpt": "O co jde: Technická zpráva uvádí: „kompletně nová elektroinstalace v celém domě, nová pojistková skříň s podružným měřením pro každé patro, příprava na osazení FVE (fotovoltaiky)“. Ale konkrétní počty zásuvek, svítidel, okruhů, ani metráž kabeláže nejsou. Co je třeba: Karle, doporučujeme jednu z těchto možností: 1) Najít elektroprojektanta a zpracovat profesní část (D.1.4 Silnoproud) — cena 30–50 tis. Kč, výsledkem přesný rozpočet ELI 2) Použít odhad podle standardu pro RD 220 m² se 3 byty, s rezervou v cenové nabídce ~15 % na variabilitu Co prozatím máme (předpoklad pro výpočet): Momentálně …",
+          "status_marker": null
+        },
+        {
+          "q_no": 8,
+          "header": "Otázka č. 8:  Bilance výztuže ŽB konstrukcí — kg/m³ pro každý prvek",
+          "body_excerpt": "O co jde: Statická TZ uvádí třídy materiálu (beton C25/30, výztuž B500B, ocel S235) a rozměry konstrukcí, ale nepiše konkrétní spotřebu výztuže v kg/m³ betonu pro jednotlivé prvky (opěrná stěna bílá vana, pozední věnec, deska na terénu, schodišťová deska). Co je třeba: Karle, prosíme TeAnau o krátkou tabulku spotřeby výztuže B500B pro každý ŽB prvek (kg/m³ betonu). Pokud má statik výztužné výkresy z RFEM výpočtu, ještě lépe — z nich vyplyne přesná hmotnost. Co prozatím máme (předpoklad pro výpočet): Momentálně použito (empirické sazby Methvin pro tyto typy konstrukcí): • Opěrná stěna bílá van…",
+          "status_marker": null
+        },
+        {
+          "q_no": 9,
+          "header": "Otázka č. 9:  Bourací práce — přesné objemy klenby, podlah, krovu",
+          "body_excerpt": "O co jde: Souhrnná zpráva v kap. m.10.e uvádí celkové tonáže odpadu z bourání: • Beton / cihly / keramika: 46 t • Dřevo: 9 t • Kovy: 0,1 t • EPS: 0,1 t • Sádra: 0,2 t • Směsné stavební: 1,0 t Celkem 56,4 t. To je dobrá hodnota pro VRN (kontejnery, doprava na skládku), ale pro rozpočet bourací práce by ideálně bylo m³/m² každého prvku samostatně. Co je třeba: Žádná akce směrem k projektantovi. Karle, použijeme empirický rozklad celkových tonáží na jednotlivé položky podle objemových hmotností. Pro zhotovitele zkušeného s rekonstrukcemi je toto dostačující. Co prozatím máme (předpoklad pro výpo…",
+          "status_marker": null
+        },
+        {
+          "q_no": 10,
+          "header": "Otázka č. 10:  Zařízení staveniště — umístění, zábory ulice Fibichova",
+          "body_excerpt": "O co jde: Souhrnná technická zpráva kap. m.10 uvádí: „staveniště bude zřízeno přímo v budově a na pozemcích investora“. Ale ulice Fibichova je úzká, řadová zástavba, bude třeba krátkodobé zábor pro dopravu materiálu. Co je třeba: Karle, prosíme tě po podpisu smlouvy s investorem vyřídit krátkodobé zábory ulice Fibichova u Městského úřadu Jáchymov + dopravní inspektorátu. Předpoklad: cca 30 dnů kumulativně. Co prozatím máme (předpoklad pro výpočet): Momentálně použito v rozpočtu VRN ~5–7 % z přímých nákladů (běžný rozsah pro RD rekonstrukci v městské zástavbě), z toho: • Buňky kancelář + sociá…",
+          "status_marker": null
+        },
+        {
+          "q_no": 11,
+          "header": "Otázka č. 11:  Lokální cenová hladina Karlovarský kraj",
+          "body_excerpt": "O co jde: Jáchymov leží v Krušnohoří, sněhová oblast VII. (nejvyšší v ČR), obtížnější dostupnost pro dodavatele než např. Praha nebo Karlovy Vary. Lokální cenová hladina cca +5 až +10 % oproti pražskému průměru. Co je třeba: Žádná akce projektantovi. Při finalizaci cenové nabídky aplikujeme buď: • Regionální koeficient z ÚRS pro Karlovarský kraj (pokud dostupný) • Plošně +5 % k republikovému průměru jako konzervativní odhad Co prozatím máme (předpoklad pro výpočet): Cenovou hladinu finalizujeme po výběru rozsahu rozpočtu (otázka 1). Vliv na rozpočet: Pouze finální cenování, neovlivňuje výměry…",
+          "status_marker": null
+        },
+        {
+          "q_no": 12,
+          "header": "Otázka č. 12:  Status žádosti o stavební povolení",
+          "body_excerpt": "O co jde: Status k 10. 4. 2026: • 260217 sklad + parking: podáno 17. 2. 2026, čeká se na rozhodnutí (po termínu, projektant urguje) • 260219 dům: podáno 23. 3. 2026, čeká Co je třeba: Žádná akce ze strany rozpočtu. Rozpočet připravujeme pro realizaci 2026–2027 podle technické zprávy. Po vydání stavebního povolení bude možné zahájit smluvní jednání s investorem. Co prozatím máme (předpoklad pro výpočet): Realizace plánována 2026–2027 dle souhrnné TZ kap. m.1.m. Vliv na rozpočet: Žádný — pouze časový plán.",
+          "status_marker": null
+        },
+        {
+          "q_no": 13,
+          "header": "Otázka č. 13:  Sklad + parkování — chybí řezy, pohledy, návrhové půdorysy",
+          "body_excerpt": "O co jde: Pro sklad + parkování máme pouze 1 architektonický výkres (D.1.1.02.R1 — Půdorys suterénu skladu). Chybí řezy, pohledy a návrhové půdorysy. Sklad je utilitární objekt (lichoběžník 6,35×3,34 m podle DXF) a může to být úmysl projektanta — považován za „jednoduchý technický prostor“. Ale chtěli bychom mít jistotu. Co je třeba: Karle, prosíme tě ověřit u Bc. Jiřího Šmída nebo SMASHE, zda existuje další architektonická dokumentace skladu (řezy, pohledy). Pokud ano, rádi bychom ji obdrželi. Pokud ne, akceptujeme odhad ze statické TZ a DXF rozměrů. Co prozatím máme (předpoklad pro výpočet)…",
+          "status_marker": null
+        },
+        {
+          "q_no": 14,
+          "header": "Otázka č. 14:  Statický výpočet D.2.2 — pouze pro dům, nebo i sklad?",
+          "body_excerpt": "O co jde: Po roztřídění dokumentace jsme zjistili, že soubor D.2.2 — Statický výpočet (19,8 MB plné znění s přílohami) v dokumentaci nemá objektový sufix (dum/sklad) v názvu. Sklad má samostatnou statickou TZ (D.2.1 Statika sklad), takže pravděpodobně D.2.2 je výpočet pouze pro dům. Ale rádi bychom ověřili. Co je třeba: Karle, prosíme tě krátký dotaz u TeAnau (Ing. Tvardík): „Je statický výpočet D.2.2 (19,8 MB) zpracován pouze pro dům 260219, nebo zahrnuje i sklad 260217?“ Pokud zahrnuje sklad, máme možnost vytěžit ještě více detailů. Co prozatím máme (předpoklad pro výpočet): Momentálně použ…",
+          "status_marker": null
+        },
+        {
+          "q_no": 15,
+          "header": "Otázka č. 15:  C.01 Situace širších vztahů — dvě paralelní verze názvu",
+          "body_excerpt": "O co jde: Při třídění dokumentace jsme našli dvě paralelní verze stejné situace s mírně odlišnými názvy: „C.01 Situace širších vztahů“ (721 KB) a „C.01 Situační výkres širších vztahů“ (724 KB). Téměř identická velikost, liší se jen formálností názvu. Pravděpodobně to jsou dvě úvodní verze pojmenování, ne dvě paralelní revize. Co je třeba: Žádná akce. Použijeme tu s formálnějším názvem („Situační výkres“) jako finální. Co prozatím máme (předpoklad pro výpočet): V kanonické struktuře dokumentace ponecháno: „C.01 Situační výkres širších vztahů_EAR.pdf“ (formální název dle vyhlášky 499/2006 Sb. p…",
+          "status_marker": null
+        },
+        {
+          "q_no": 16,
+          "header": "Otázka č. 16:  Interní: dům/sklad statika TZ byly v dokumentaci vyměněny — již opraveno",
+          "body_excerpt": "O co jde: Při nezávislé revizi technické dokumentace jsme zjistili, že soubor v kanonické cestě tz/260219_dum/D_2_1_TZ_statika_dum_TeAnau.pdf obsahoval ve skutečnosti obsah statiky pro sklad (hlavička každé stránky uváděla „Zahradní sklad...“), a opačně. Soubory byly v dokumentaci fyzicky prohozené. To je chyba ze zpracování dokumentace na naší straně (při uploadu zip souboru), nikoli chyba v originální PD od TeAnau. Po prohození souborů zpět do správných cest se přesnost ověření technických údajů zvýšila z 52 % (před opravou) na 97 % (po opravě). Bíla vana, HEA180/200, Porotherm 30 a ostatní…",
+          "status_marker": null
+        },
+        {
+          "q_no": 17,
+          "header": "Otázka č. 17:  Sloupky krovu — terminologie „jakl“ / „jekl“ vs. RHS/SHS",
+          "body_excerpt": "O co jde: Statika dům používá pro sloupky pod středovou vaznicí termín „sloupky z jeklu 100/4“ (statika §4) nebo „jakl 100/4“ (ARS). „Jakl“ / „jekl“ je německý výrobní název (Jäckl) pro uzavřený obdélníkový průřez. Český normativní termín je RHS nebo SHS profil podle ČSN EN 10219-2 (uzavřený profil za studena tvarovaný). Co je třeba: Karle, drobnost. Pro položku v rozpočtu „Sloupky pod vaznice“ použijeme normativní terminologii: RHS / SHS 100×100×4 mm S235JR. Funkčně shodné s „jakl 100/4“, jen formálně správně. Co prozatím máme (předpoklad pro výpočet): V rozpočtu položka „HSV-5 Sloupky pod v…",
+          "status_marker": null
+        },
+        {
+          "q_no": 18,
+          "header": "Otázka č. 18:  Sklad geometrie — řešeno z DXF výkresů",
+          "body_excerpt": "O co jde: Technická zpráva uvádí rozměry skladu „lichoběžník 6,35 × 3,34 m“ a „parkovací stání délky 7,0 m“ pouze jako sumární údaje v textu, ne jako kótované rozměry. Pro přesný rozpočet jsme potřebovali tyto hodnoty ověřit. Co je třeba: Žádná akce — vyřešeno z DXF výkresů. Co prozatím máme (předpoklad pro výpočet): Všechny tři rozměry verifikovány z DXF výkresů s vysokou přesností: • Sklad šířka 6,35 m = 6350,06 mm (DXF DIMENSION, sklad_DPZ) • Sklad hloubka 3,34 m = exactly 3340,0 mm (DXF DIMENSION, dum_DPZ) • Parkování délka 7,0 m = 7000,0 mm (DXF LWPOLYLINE bbox, 4 polylines potvrzují ste…",
+          "status_marker": "RESOLVED"
+        },
+        {
+          "q_no": 19,
+          "header": "Otázka č. 19:  Strop S09 — „košický plech“ vs „trapéz 40S/160“ (terminologický rozpor)",
+          "body_excerpt": "O co jde: ARS řez S09 (skladba stropu 1.NP/2.NP) uvádí „košický plech“ jako konstrukci spřaženého stropu. TZ statika dům §6.3 ale uvádí přesnou specifikaci „trapézový plech 40S/160 tl. 0,75 mm + nabetonávka 60 mm z betonu C25/30 XC1“. Jde o stejnou konstrukci (jen synonymum), nebo o dvě různé varianty? Co je třeba: Karle, prosím dotaž TeAnau, zda je „košický plech“ a „trapéz 40S/160 + nabetonávka“ synonymum (= jedna a tatáž ocelobetonová deska s trny pro spřažení) nebo zda jde o dvě různé skladby. Pokud synonymum, sjednotit terminologii v dokumentaci. Co prozatím máme (předpoklad pro výpočet)…",
+          "status_marker": null
+        },
+        {
+          "q_no": 20,
+          "header": "Otázka č. 20:  Verifikace ÚRS kódů — production lookup před cenotvorbou",
+          "body_excerpt": "O co jde: Rozpočet obsahuje 189 položek s navrženými ÚRS kódy generovanými heuristikou v Phase 1. V Part 5b (Sheet 9 Var_F_URS_Verification_Trail) jsme ověřili 12 kódů přes WebSearch (veřejná zrcadla podminky.urs.cz: smlouvy.gov.cz, vhodne-uverejneni.cz, docplayer.cz, cs-urs.cz). Výsledek ověření: heuristika odhadne první 6 cifer (rodinu) správně v ~75 % případů, ale 9-cifrový leaf je chybný v ~63 % (odlišný distance band, materiál, geometrie, nebo lokace). 3 položky verifikovány jako přesné, 9 položek označeno LEAF CHYBNÝ (viz červeně označený sloupec v Sheet 5/6 Var_B_Polozkovy), 4 nahrazen…",
+          "status_marker": "RESOLVED"
+        }
+      ]
+    }
+  ]
+}

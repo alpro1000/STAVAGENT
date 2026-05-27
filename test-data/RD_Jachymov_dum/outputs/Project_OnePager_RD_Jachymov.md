@@ -10,11 +10,11 @@ Přestavba řadového rodinného domu č.p. 733 v ulici Fibichova, Jáchymov (pa
 
 ## Co se staví — 2 stavební objekty
 
-**SO 260219 — Dům** (177 položek): 1.PP sklep + 1.NP byt rodiče + 2.NP pokoje dětí + 3.NP nový byt v nástavbě. Obestavěný prostor 987 m³, podlahová plocha 219,3 m², výška 13 m. 25 místností, 16 oken, 3 koupelny, 3 bytové jednotky. Stávající přípojky (voda/kanal/elektro) ZACHOVÁNY, plyn zaslepen, nový zdroj tepla = tepelné čerpadlo + krb + sporáková kamna.
+**SO 260219 — Dům** (180 active položek): 1.PP sklep + 1.NP byt rodiče + 2.NP pokoje dětí + 3.NP nový byt v nástavbě. Obestavěný prostor 987 m³, podlahová plocha 219,3 m², výška 13 m. 25 místností, 16 oken, 3 koupelny, 3 bytové jednotky. Stávající přípojky (voda/kanal/elektro) ZACHOVÁNY, plyn zaslepen, nový zdroj tepla = tepelné čerpadlo + krb + sporáková kamna.
 
 **SO 260217 — Sklad + parking + přístup. schodiště** (27 položek): zahradní sklad lichoběžník 6,35×3,34 m (21,2 m²) ze ZB tvarovek s prefa Herkul opěrnou zdí, parking délky 7 m krytý 7 ks IPE180 zastřešení, ocelové venkovní schodiště UPE200 ze zahrady.
 
-## Hlavní cenové bloky (208 položek total)
+## Hlavní cenové bloky (211 položek total (207 active, 4 deprecated audit-trail))
 
 - **HSV (100):** Zemní 14 · Základy/ŽB 19 · Svislé 10 · Vodorovné 20 · Krov+střecha 16 · Bourání 15 · ETICS fasáda 6
 - **PSV (84):** Izolace 5 · ZTI voda+sanit 16 · Vytápění 8 · Okna+dveře+klempíř 23 · Podlahy 8 · Omítky+výmalba+obklady 15 · Elektro M-21 7 · Detekce PSV-95 2
@@ -22,7 +22,7 @@ Přestavba řadového rodinného domu č.p. 733 v ulici Fibichova, Jáchymov (pa
 
 ## Stav rozpočtu
 
-✅ **Položky:** 208 (204 active po audit v2) — vše s explicit DXF nebo TZ source + audit trail.
+✅ **Položky:** 211 (207 active, 4 deprecated audit-trail) — vše s explicit DXF nebo TZ source + audit trail.
 ✅ **Audit chain:** Phase 0a + 0b + Path C + audit v2 (10 sekcí) + quality pass (5 dim) — **0 critical + 0 important gaps**.
 ✅ **KROS-format Excel:** 301 derived items (URS_MATCHER 15 batches) ready pro Karla import.
 ⚠ **URS kódy:** 49 clear (16 %) · 130 review needed (43 %) · 122 manual lookup (41 %).
@@ -54,6 +54,6 @@ Přestavba řadového rodinného domu č.p. 733 v ulici Fibichova, Jáchymov (pa
 - 📊 `Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-19.xlsx` — 9 sheets multi-view (investor + zhotovitel + projektant + statik)
 - 📋 `Vykaz_vymer_RD_Jachymov_KROS_format_2026-05-19.xlsx` — 5 sheets KROS-style ready pro Karla
 - 📝 `Otazky_pro_Karla_a_projektanty_2026-05-18.docx` — 20 otázek prioritized
-- 🗂 `items_rd_jachymov_complete.json` — single source of truth (208 items)
+- 🗂 `items_rd_jachymov_complete.json` — single source of truth (211 items)
 
 **Stav:** Rozpočet je v stavu **ready for tender preparation** po vyřešení 3 P0 otázek (Q1 + Q6 + Q7) + URS verification (Q20).

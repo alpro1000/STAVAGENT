@@ -278,8 +278,82 @@
           "source": "IGP ALTAGEO 526026, 04/2026, Mgr. Beneda §4.4 + Step 3 zastavěná 538.5 m²",
           "confidence": 0.85
         }
+      },
+      {
+        "date": "2026-05-26",
+        "change": "Added D.1.4.2 VYTÁPĚNÍ scope (12 items M-UT-001..012) per investor scope change",
+        "reason": "SOLAR DISPOREC included vytápění in bid scope (originally scope-cut Stage D)",
+        "previous_count": 138,
+        "new_count": 150,
+        "new_kapitola": "M-UT",
+        "abmv_1_update": "60 kW DPS authoritative (was 84 kW DXF estimate, now resolved)",
+        "items_added": [
+          "M-UT-001",
+          "M-UT-002",
+          "M-UT-003",
+          "M-UT-004",
+          "M-UT-005",
+          "M-UT-006",
+          "M-UT-007",
+          "M-UT-008",
+          "M-UT-009",
+          "M-UT-010",
+          "M-UT-011",
+          "M-UT-012"
+        ],
+        "items_modified": [],
+        "items_removed": [],
+        "source_documents": [
+          "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc",
+          "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+          "inputs/vykresy_dxf/UT_HALAHK_DPS.dxf (Stage C, already integrated)",
+          "inputs/vykresy_pdf/UT_HalaHK_PUDORYS_DPS_E.pdf"
+        ],
+        "elektro_scope_exclusion_documented": true,
+        "pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference."
+      },
+      {
+        "date": "2026-05-26",
+        "change": "Follow-up to D.1.4.2 VYTÁPĚNÍ commit: repath audit_trail document refs from inputs/dokumentace/ → inputs/vykresy_pdf/ (where investor uploaded TZ + výkaz + půdorys); record TZ verification (all 11 facts match); add 2 clarifying notes for Stage 3 catalog matcher (M-UT-003 řetízky double-count guard, M-UT-007 elektro cross-ref).",
+        "reason": "PR #1226 audit_trail document paths referenced inputs/dokumentace/ but files were uploaded to inputs/vykresy_pdf/ per repo convention for výkresy + drawing-attached TZ documents.",
+        "items_modified": [
+          "M-UT-003",
+          "M-UT-007",
+          "M-UT-001",
+          "M-UT-002",
+          "M-UT-003",
+          "M-UT-004",
+          "M-UT-005",
+          "M-UT-006",
+          "M-UT-007",
+          "M-UT-008",
+          "M-UT-009",
+          "M-UT-010",
+          "M-UT-011",
+          "M-UT-012"
+        ],
+        "items_added": [],
+        "items_removed": [],
+        "tz_verification": {
+          "status": "all_facts_match_dps_2026_05",
+          "verified_facts": [
+            "tepelna_ztrata_11_kw (TZ §3 + §9 Qc=11046 W)",
+            "celkovy_prikon_60_kw (TZ §9)",
+            "ecosun_20_ks_1200w_kat_5401542 (TZ §8 + výkaz p.5 ř.1.1 + §9)",
+            "dalap_e_hp_4_ks_9_kw (TZ §8 + výkaz p.5 ř.2.1 + §9 'Sahara 9 kW')",
+            "vyska_zaves_5m (TZ §8)",
+            "uet_15d_ridici_jednotka (výkaz p.5 ř.2.1)",
+            "termostaty_4_ecosun_sekce_plus_4_dalap (TZ §8)",
+            "rocni_spotreba_46_MWh (TZ §6; §9 table 45803 kWh = 45.8 MWh)",
+            "vnitrni_teplota_18_C (TZ §9 ti)",
+            "dalap_rohy_haly (TZ §8)",
+            "elektro_cross_ref (výkaz p.5 'termostaty viz projekt elektro')"
+          ],
+          "tz_source": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf (5 stránek, podepsal Ing. Stanislav Jirucha ČKAIT 0009051, 2026.05.25 19:56)"
+        }
       }
-    ]
+    ],
+    "total_items_actual": 150
   },
   "items": [
     {
@@ -10094,6 +10168,987 @@
       },
       "_review_concrete_class": null,
       "_review_qty": null
+    },
+    {
+      "id": "M-UT-001",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Dodávka el. sálavý panel Fénix ECOSUN S+ 12, 1200 W, č.kat. 5401542",
+      "mj": "ks",
+      "mnozstvi": 20.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "ECOSUN S+ 12 panel — dodávka",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "20 ks (TZ §8 + výkaz materiálu p.5 ř.1.1)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "460xxx (dodávka topidel)",
+      "audit_trail": {
+        "lokalizace": "vytápění — strop haly (sálavé panely zavěšené ve výšce 5 m) · SO-12",
+        "formula": "20 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "ks_ecosun_s+_12",
+            "value": 20.0,
+            "unit": "ks"
+          },
+          {
+            "label": "vykon_per_ks",
+            "value": 1.2,
+            "unit": "kW"
+          },
+          {
+            "label": "celkovy_vykon",
+            "value": 24.0,
+            "unit": "kW"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Fénix ECOSUN S+ 12, 1200 W, č.kat. 5401542. Celkový instalovaný výkon 20 × 1.2 = 24 kW pro sálavé vytápění hlavní plochy haly.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 20.0,
+        "declared_quantity": 20.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "460xxx (dodávka topidel)"
+      }
+    },
+    {
+      "id": "M-UT-002",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Montáž el. sálavý panel ECOSUN S+ 12 ve výšce 5 m na stropní konstrukci",
+      "mj": "ks",
+      "mnozstvi": 20.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "ECOSUN S+ 12 — montáž ve výšce 5 m",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "20 ks (1:1 s dodávkou M-UT-001)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "731xxx (montáž topidel)",
+      "audit_trail": {
+        "lokalizace": "vytápění — strop haly, závěs na ocelové konstrukci ve výšce 5 m · SO-12",
+        "formula": "20 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "ks_montaz",
+            "value": 20.0,
+            "unit": "ks"
+          },
+          {
+            "label": "vyska_montaze",
+            "value": 5.0,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Závěs panelů na hotovou ocelovou konstrukci po dokončení podlahy. Montáž ve výšce 5 m vyžaduje montážní plošinu (viz M-UT-009).",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 20.0,
+        "declared_quantity": 20.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "731xxx (montáž topidel)"
+      }
+    },
+    {
+      "id": "M-UT-003",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Závěsný materiál pro panely ECOSUN — řetízky prům. délka 5 m/ks",
+      "mj": "sada",
+      "mnozstvi": 20.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "ECOSUN závěsné řetízky",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "20 sad × 5 m/ks (výkaz mat. p.5 ř.1.1)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "731xxx (montáž příslušenství)",
+      "audit_trail": {
+        "lokalizace": "vytápění — závěs panelů na OK ve výšce 5 m · SO-12",
+        "formula": "20 sad",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "ks_sad",
+            "value": 20.0,
+            "unit": "sada"
+          },
+          {
+            "label": "delka_retizku_per_ks",
+            "value": 5.0,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Závěsné řetízky pro každý panel (1:1 s ECOSUN). Délka 5 m odpovídá montážní výšce na OK strop haly.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 20.0,
+        "declared_quantity": 20.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "731xxx (montáž příslušenství)",
+        "poznamka_vykaz_double_count_guard": "Pozor pro Stage 3 catalog matching: výkaz materiálu p.5 ř.1.1 uvádí ECOSUN dodávku 'včetně závěsných řetízků prům délka 5 m/ks' — materiál řetízků je ZAHRNUT v ECOSUN dodávce (M-UT-001, č.kat. 5401542). M-UT-003 zachycuje MONTÁŽ + doplňkový kotevní materiál nad rámec balíčku ECOSUN (731xxx). Nemísit s materiálovou dodávkou — riziko double-count při mapování na Forestina ÚT katalog."
+      }
+    },
+    {
+      "id": "M-UT-004",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Dodávka nástěnný el. ohřívač s ventilátorem Dalap E-HP 9 kW",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "Dalap E-HP 9 kW nástěnný ohřívač — dodávka",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks (TZ §8 + výkaz materiálu p.5 ř.2.1)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "460xxx (dodávka topidel)",
+      "audit_trail": {
+        "lokalizace": "vytápění — rohy haly (4× dotop) · SO-12",
+        "formula": "4 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "ks_dalap_e_hp",
+            "value": 4.0,
+            "unit": "ks"
+          },
+          {
+            "label": "vykon_per_ks",
+            "value": 9.0,
+            "unit": "kW"
+          },
+          {
+            "label": "celkovy_vykon",
+            "value": 36.0,
+            "unit": "kW"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Dalap E-HP, 9 kW/ks. Celkový instalovaný výkon dotopu 4 × 9 = 36 kW. Doplňuje sálavé ECOSUN systémy.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 4.0,
+        "declared_quantity": 4.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "460xxx (dodávka topidel)"
+      }
+    },
+    {
+      "id": "M-UT-005",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Montáž nástěnný el. ohřívač Dalap E-HP 9 kW v rozích haly",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "Dalap E-HP 9 kW — montáž v rozích haly",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks (1:1 s dodávkou M-UT-004)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "731xxx (montáž topidel)",
+      "audit_trail": {
+        "lokalizace": "vytápění — 4 rohy haly · SO-12",
+        "formula": "4 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "ks_montaz",
+            "value": 4.0,
+            "unit": "ks"
+          },
+          {
+            "label": "pozice",
+            "value": 4,
+            "unit": "rohy"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Nástěnná montáž Dalapů v rozích haly. Bez montážní plošiny (typická výška < 4 m).",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 4.0,
+        "declared_quantity": 4.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "731xxx (montáž topidel)"
+      }
+    },
+    {
+      "id": "M-UT-006",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Dodávka + osazení řídicí jednotka UET 15D pro Dalap",
+      "mj": "ks",
+      "mnozstvi": 4.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "UET 15D řídicí jednotka pro Dalap E-HP",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "4 ks (1:1 s Dalap, výkaz mat. p.5 ř.2.1)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "460xxx (dodávka regulace)",
+      "audit_trail": {
+        "lokalizace": "vytápění — řízení Dalapů · SO-12",
+        "formula": "4 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "ks_uet_15d",
+            "value": 4.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "PT Vents UET-15D — řídicí jednotka pro každý Dalap E-HP. Dodávka + osazení; kabeláž mezi UET, termostatem a topidlem v gesci elektro profession (viz _scope_exclusion).",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 4.0,
+        "declared_quantity": 4.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "460xxx (dodávka regulace)"
+      }
+    },
+    {
+      "id": "M-UT-007",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Dodávka + osazení prostorový termostat",
+      "mj": "ks",
+      "mnozstvi": 8.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "prostorový termostat pro ECOSUN sekce + Dalap",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "8 ks = 4× ECOSUN sekce + 4× Dalap (TZ §8)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "460xxx (dodávka regulace)",
+      "audit_trail": {
+        "lokalizace": "vytápění — regulace teploty v hale (4 ECOSUN zóny + 4 Dalap) · SO-12",
+        "formula": "4 + 4 = 8 ks",
+        "formula_parsed_method": "sum",
+        "inputs": [
+          {
+            "label": "ecosun_sekce_termostat",
+            "value": 4.0,
+            "unit": "ks"
+          },
+          {
+            "label": "dalap_termostat",
+            "value": 4.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "ECOSUN panely sdružené do 4 sekcí (20 ks / 5 panelů per sekce) — 1 termostat na sekci. Dalap má samostatný termostat / kus. Cílová teplota vnitřní 18 °C.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 8.0,
+        "declared_quantity": 8.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "460xxx (dodávka regulace)",
+        "poznamka_elektro_cross_reference": "TZ §8 + výkaz p.5 ř.1.1 + ř.2.1 referencují termostaty s poznámkou 'viz projekt elektro'. Per investor scope change 2026-05-26 zůstává dodávka 8 ks termostatů v kapitole M-UT (4× ECOSUN sekce + 4× Dalap). Z elektro profession přichází MaR kabeláž mezi termostatem + UET + topidlem, silové zapojení a revize (viz _scope_exclusion.elektro_profession). Stage 3 catalog matcher: dodávka + osazení termostatu v 460xxx; kabeláž v elektro VV (mimo M-UT)."
+      }
+    },
+    {
+      "id": "M-UT-008",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Pomocný montážní + kotevní materiál ÚT",
+      "mj": "soubor",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "šrouby, hmoždinky, kotvy, drobný spotřební materiál ÚT",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál 1 soubor (standardní položka kapitoly M-UT)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "998xxx (přesun hmot ÚT / drobný materiál)",
+      "audit_trail": {
+        "lokalizace": "vytápění — celá kapitola M-UT · SO-12",
+        "formula": "1 soubor",
+        "formula_parsed_method": "paushal",
+        "inputs": [
+          {
+            "label": "soubor_count",
+            "value": 1.0,
+            "unit": "soubor"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Spotřební + kotevní materiál pro instalaci 20 ECOSUN + 4 Dalap + 4 UET + 8 termostatů. Standardní paušál.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 1.0,
+        "declared_quantity": 1.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "998xxx (přesun hmot ÚT / drobný materiál)"
+      }
+    },
+    {
+      "id": "M-UT-009",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Montážní plošina / práce ve výšce pro montáž topidel ve výšce 5 m",
+      "mj": "soubor",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "montážní plošina pro montáž 20× ECOSUN ve výšce 5 m",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál 1 soubor (TZ §8 + BOZP požadavek)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "998xxx (pomocné práce / lešení)",
+      "audit_trail": {
+        "lokalizace": "vytápění — montáž ECOSUN panelů ve výšce 5 m · SO-12",
+        "formula": "1 soubor",
+        "formula_parsed_method": "paushal",
+        "inputs": [
+          {
+            "label": "soubor_count",
+            "value": 1.0,
+            "unit": "soubor"
+          },
+          {
+            "label": "pracovni_vyska",
+            "value": 5.0,
+            "unit": "m"
+          },
+          {
+            "label": "panel_count",
+            "value": 20.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          },
+          {
+            "type": "norma",
+            "code": "BOZP",
+            "section": "práce ve výšce > 1,5 m"
+          }
+        ],
+        "poznamka": "Mobilní plošina / nůžková plošina pro montáž 20 ECOSUN panelů na strop ve výšce 5 m. Požadavek BOZP pro práce ve výšce nad 1,5 m. Dalap (montáž do rohů haly < 4 m) nevyžaduje samostatnou plošinu.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 1.0,
+        "declared_quantity": 1.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "998xxx (pomocné práce / lešení)"
+      }
+    },
+    {
+      "id": "M-UT-010",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Funkční zkouška + nastavení systému vytápění",
+      "mj": "soubor",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "funkční zkouška topení + nastavení teplot na termostatech",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál 1 soubor (standardní TZB závěr)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "998xxx (zkoušky)",
+      "audit_trail": {
+        "lokalizace": "vytápění — celá kapitola M-UT · SO-12",
+        "formula": "1 soubor",
+        "formula_parsed_method": "paushal",
+        "inputs": [
+          {
+            "label": "soubor_count",
+            "value": 1.0,
+            "unit": "soubor"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Funkční zkouška po dokončení instalace + zapojení elektro: ověření výkonu, nastavení termostatů na 18 °C vnitřní teplotu, kontrola sekvenování ECOSUN sekcí + Dalapů.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 1.0,
+        "declared_quantity": 1.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "998xxx (zkoušky)"
+      }
+    },
+    {
+      "id": "M-UT-011",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Předání dokumentace + zaškolení obsluhy",
+      "mj": "soubor",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "dokumentace skutečného provedení + zaškolení provozovatele",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál 1 soubor (standardní TZB závěr)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "998xxx (předání)",
+      "audit_trail": {
+        "lokalizace": "vytápění — celá kapitola M-UT · SO-12",
+        "formula": "1 soubor",
+        "formula_parsed_method": "paushal",
+        "inputs": [
+          {
+            "label": "soubor_count",
+            "value": 1.0,
+            "unit": "soubor"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Návody k obsluze ECOSUN + Dalap + UET 15D, dokumentace skutečného provedení, zaškolení obsluhy provozovatele (SOLAR DISPOREC).",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 1.0,
+        "declared_quantity": 1.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "998xxx (předání)"
+      }
+    },
+    {
+      "id": "M-UT-012",
+      "kapitola": "M-UT",
+      "SO": "SO-12",
+      "popis": "Doprava zařízení + přesun hmot pro M-UT kapitolu",
+      "mj": "soubor",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "D.1.4.2 VYTÁPĚNÍ DPS 05/2026, TZ §8 + výkaz materiálu p.5 (investor scope change 2026-05-26)",
+      "raw_description": "doprava ECOSUN + Dalap + UET + drobné na stavbu",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "topidla_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ_DPS+vykaz_materialu",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál 1 soubor (standardní)",
+      "_export_wrapper_hint": null,
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Napájecí kabeláž (panel + Dalap)",
+          "Kabelové trasy + žlaby + lišty",
+          "Jištění + jističe + proudové chrániče (3×400V/50Hz, 5×2.5 mm², jistič 20 A pro Dalap E-HP 9)",
+          "Silové zapojení 400V",
+          "Připojení v rozvaděči",
+          "Revize elektro",
+          "MaR kabeláž mezi termostatem + UET + topidlem (dohodu s elektro profession)"
+        ]
+      },
+      "_pattern_15_ref": "Work-first generation. Catalog mapping (KROS codes) in separate Stage 3 task with Forestina ÚT/OPZ reference.",
+      "_kros_hint": "998xxx (doprava / přesun hmot)",
+      "audit_trail": {
+        "lokalizace": "vytápění — celá kapitola M-UT · SO-12",
+        "formula": "1 soubor",
+        "formula_parsed_method": "paushal",
+        "inputs": [
+          {
+            "label": "soubor_count",
+            "value": 1.0,
+            "unit": "soubor"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "8",
+            "raw": "TZ §8"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_DPS.doc",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_DPS.doc"
+          },
+          {
+            "type": "document",
+            "code": "UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "document": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf",
+            "page": 5
+          }
+        ],
+        "poznamka": "Doprava 20 ECOSUN + 4 Dalap + 4 UET + 8 termostatů + spotřebka z dodavatelského skladu na stavbu Hradec Králové.",
+        "confidence": 0.95,
+        "extraction_method": "dps_tz_specification",
+        "data_source_hint": "TZ_DPS+vykaz_materialu",
+        "extracted_at": "2026-05-26T00:00:00+00:00",
+        "kapitola_decision": "M-UT (new — vytápění in bid per investor scope change 2026-05-26)",
+        "computed_quantity": 1.0,
+        "declared_quantity": 1.0,
+        "match_delta_pct": 0.0,
+        "match_within_tolerance": true,
+        "kros_hint": "998xxx (doprava / přesun hmot)"
+      }
     }
   ]
 }

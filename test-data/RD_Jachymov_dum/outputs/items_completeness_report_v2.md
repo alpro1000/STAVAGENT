@@ -1,7 +1,7 @@
 # Completeness Audit v2 — RD Jáchymov
 
-**Generated:** 2026-05-19
-**Items:** 208 | **Rooms:** 25 | **Sections:** A–J (10)
+**Generated:** 2026-05-26
+**Items:** 211 | **Rooms:** 25 | **Sections:** A–J (10)
 
 > Tato kontrola dělá strukturovaný sweep po 10 osách. Cíl: poskytnout worksheet kde
 > uživatel vidí potenciální mezery. Není garance úplnosti.
@@ -149,7 +149,7 @@ Legend: ✓=hit | flr=covered_at_floor_level | glb=covered_globally | ⚪=N/A | 
 
 | Gate | Estimate Kč | % of total | Typical range | Verdict |
 |---|--:|--:|---|---|
-| HSV | 48,810,294 | 76.2% | 45–55% | OUT OF RANGE (typical 45-55%) |
+| HSV | 48,822,694 | 76.2% | 45–55% | OUT OF RANGE (typical 45-55%) |
 | PSV | 9,711,267 | 15.2% | 25–35% | OUT OF RANGE (typical 25-35%) |
 | TZB | 2,436,000 | 3.8% | 15–20% | OUT OF RANGE (typical 15-20%) |
 | VRN | 3,117,000 | 4.9% | 5–10% | OUT OF RANGE (typical 5-10%) |
@@ -183,7 +183,7 @@ Legend: ✓=hit | flr=covered_at_floor_level | glb=covered_globally | ⚪=N/A | 
 
 ## Sections A–D — see also v1 audit (outputs/items_completeness_report.md)
 
-- A. TKP coverage: 9 of 10 families
+- A. TKP coverage: 10 of 10 families
 - B. Subdodavatel: 36 of 36 trades
 - C. RD anchors: 66 ok / 0 missing / 1 N/A
 - D. TZ verb scan: deprioritized — see v1 (high noise)
