@@ -1,0 +1,114 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_purpose": "Consolidated POZN explanation blocks from OCR'd drawing PDFs.",
+  "n_pozn_decoded": 9,
+  "pozn": [
+    {
+      "ref": "POZN.0",
+      "body": "+ 0 5 2) 4 $ Z",
+      "_source_pdf": "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.1.01",
+      "body": "Bourání v nosných a obvodových stěnách bude řešeno dle stavebně konstrukční VA | Ks SSS SSE Re části PD. Vždy s důrazem na podepření navazujich a souvisejících prvků (stropy, ry | : m : _ n O : O O : O O m tramy...) dočasnými stojkami. V případě bourání otvorů budou vždy nejdříve osazeny WV | M nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a Wy | | | | | /á vyrovnané kapsy ve zdivu. VY 72",
+      "_source_pdf": "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.1.02",
+      "body": "Zbourání vrchní části komínu v posledním podloží S YW Ž | | | | Y",
+      "_source_pdf": "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.1.03",
+      "body": "Částečné bourání opěrných zídek a schodiště . R |=) A / 8 8 7",
+      "_source_pdf": "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.1.1",
+      "body": "M nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a WY YY Y vyrovnané kapsy ve zdivu. 502 77 Ž 72",
+      "_source_pdf": "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.2.01",
+      "body": "nový vstup do domu přes mezipodestu schodiště a a a a a a a a a a aa a - © lehká ocelová konstrukce při ákd a a přisazená k domu a a „= | | | |",
+      "_source_pdf": "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.2.02",
+      "body": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude Vy © 2.05 NÍ Vy zřízena drenáž a odvod vody 2 © společný pokoj [7",
+      "_source_pdf": "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.2.03",
+      "body": "posílení stropu/podlahy osazením nové stropnice - viz část statika = 2. = <3) ~ P 2. < is T X / s",
+      "_source_pdf": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    },
+    {
+      "ref": "POZN.2.04",
+      "body": "ŽB ztužující věněc - viz část statika mS 4 Ie) = = 2.05 stávající tramové stropy - před zahájením akce a po rozkrytí konstrukcí bude pozn J py- p J p ry proveden stavební mykologicky průzkum a průzkum výskytu dřevokazného hmyzu, pro vyloučení narušení dřevěných konstrukcí a jejich statického fungování v domu. wo skladby konstrukcí - návrh wo wo © =, | oO ee Š Š a S01 obvodová stěna - om",
+      "_source_pdf": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    }
+  ],
+  "_per_pdf_raw": {
+    "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf": {
+      "POZN.0": "+ 0 5 2) 4 $ Z"
+    },
+    "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf": {
+      "POZN.1.01": "Bourání v nosných a obvodových stěnách bude řešeno dle stavebně konstrukční y — ee < — Li. 5, WY A části PD. Vždy s důrazem na podepření navazujích a souvisejících prvků (stropy, “ (| tramy...) dočasnými stojkami. V případě bourání otvorů budou vždy nejdříve osazeny WV",
+      "POZN.1.1": "M nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a WY YY Y vyrovnané kapsy ve zdivu. 502 77 Ž 72",
+      "POZN.1.02": "Zbourání vrchní části komínu v posledním podloží m Ž Wy)"
+    },
+    "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf": {
+      "POZN.1.01": "Bourání v nosných a obvodových stěnách bude řešeno dle stavebně konstrukční G Yy zá M Z “ 4 MA VÁ © části PD. Vždy s důrazem na podepření navazujích a souvisejících prvků (stropy, | 72 tramy...) dočasnými stojkami. V případě bourání otvorů budou vždy nejdříve osazeny M OZN 1.1 M nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a % Zá vyrovnané kapsy ve zdivu. | aa",
+      "POZN.1.02": "Zbourání vrchní části komínu v posledním podloží s2 || / a . r"
+    },
+    "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf": {
+      "POZN.1.02": "Zbourání vrchní části komínu v posledním podloží / = | V",
+      "POZN.1.01": "Bourání v nosných a obvodových stěnách bude řešeno dle stavebně konstrukční VA | Ks SSS SSE Re části PD. Vždy s důrazem na podepření navazujich a souvisejících prvků (stropy, ry | : m : _ n O : O O : O O m tramy...) dočasnými stojkami. V případě bourání otvorů budou vždy nejdříve osazeny WV | M nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a Wy | | | | | /á vyrovnané kapsy ve zdivu. VY 72"
+    },
+    "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf": {
+      "POZN.1.01": "Bourání v nosných a obvodových stěnách bude řešeno dle stavebně konstrukční “ já LY & části PD. Vždy s důrazem na podepření navazujich a souvisejících prvků (stropy, M < o M M NN M Y trámy...) dočasnými stojkami. V případě bourání otvorů budou vždy nejdříve osazeny Ž Ž 2 nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a WH Ž | | | | 4 vyrovnané kapsy ve zdivu. GY Ž 2",
+      "POZN.1.02": "Zbourání vrchní části komínu v posledním podloží S YW Ž | | | | Y"
+    },
+    "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf": {
+      "POZN.2.01": "nový vstup do domu přes mezipodestu schodiště M“ Ž WV - © lehká ocelová konstrukce přisazená k domu S02 YY Ž Ye",
+      "POZN.2.02": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude Wy YY (© “ zřízena drenáž a odvod vody WY ZS Ž © 1.04 Y",
+      "POZN.2.03": "posílení stropu/podlahy osazením nové stropnice - viz část statika MTM pbywact pokoj M“",
+      "POZN.2.04": "ŽB ztužující věněc - viz část statika uchyně 7 o Ž * WY"
+    },
+    "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf": {
+      "POZN.2.01": "nový vstup do domu přes mezipodestu schodiště Wy 2 - © lehká ocelová konstrukce přisazená k domu V Y",
+      "POZN.2.02": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude Vy © 2.05 NÍ Vy zřízena drenáž a odvod vody 2 © společný pokoj [7",
+      "POZN.2.03": "Y pozn.2.03 poslení stropu/podlahy osazením nové stropnice - viz část statika M 4 M“",
+      "POZN.2.04": "ŽB ztužující věněc - viz Část statika / | W"
+    },
+    "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf": {
+      "POZN.2.01": "nový vstup do domu přes mezipodestu schodiště M OL | aa - © lehká ocelová konstrukce přisazená k domu W ND | YW",
+      "POZN.2.02": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude M < Wy zřízena drenáž a odvod vody / | 72",
+      "POZN.2.03": "posílení stropu/podlahy osazením nové stropnice - viz část statika 72 | M",
+      "POZN.2.04": "ŽB ztužující věněc - viz část statika M JEKL 100x4 BAR %"
+    },
+    "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf": {
+      "POZN.2.01": "nový vstup do domu přes mezipodestu schodiště YZ Ry ] - lehká ocelová konstrukce přisazená k domu > Ve ZY 2 J ] | | | Va | W",
+      "POZN.2.02": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude zřízena drenáž a odvod vod | / a y W P ŽŮŽ | | | V | VM",
+      "POZN.2.03": "posílení stropu/podlahy osazením nové stropnice - viz část statika M | | „ ( | 4",
+      "POZN.2.04": "ŽB ztužující věněc - viz část statika I ob wa WY"
+    },
+    "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf": {
+      "POZN.2.01": "nový vstup do domu přes mezipodestu schodiště a a a a a a a a a a aa a - © lehká ocelová konstrukce při ákd a a přisazená k domu a a „= | | | |",
+      "POZN.2.02": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude < | zřízena drenáž a odvod vody : | | | |",
+      "POZN.2.03": "posílení stropu/podlahy osazením nové stropnice - viz část statika |",
+      "POZN.2.04": "ŽB ztužující věněc - viz část statika | | | JEKL 100 |"
+    },
+    "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf": {
+      "POZN.1.02": "Zbourání vrchní části komínu v posledním podlaží 0",
+      "POZN.1.03": "Částečné bourání opěrných zídek a schodiště . R |=) A / 8 8 7"
+    },
+    "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf": {
+      "POZN.2.04": "ŽB ztužující věněc - viz část statika mS 4 Ie) = = 2.05 stávající tramové stropy - před zahájením akce a po rozkrytí konstrukcí bude pozn J py- p J p ry proveden stavební mykologicky průzkum a průzkum výskytu dřevokazného hmyzu, pro vyloučení narušení dřevěných konstrukcí a jejich statického fungování v domu. wo skladby konstrukcí - návrh wo wo © =, | oO ee Š Š a S01 obvodová stěna - om",
+      "POZN.2.02": "opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude 4 “ re) d 9 8 — <",
+      "POZN.2.03": "posílení stropu/podlahy osazením nové stropnice - viz část statika = 2. = <3) ~ P 2. < is T X / s"
+    }
+  }
+}

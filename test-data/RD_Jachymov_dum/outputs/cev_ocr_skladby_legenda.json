@@ -1,0 +1,185 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_purpose": "Consolidated SKLADBY KONSTRUKCÍ legendy parsed from OCR'd drawing PDFs.",
+  "n_skladby_decoded": 7,
+  "skladby": [
+    {
+      "code": "S01",
+      "name": "obvodová stěna - omítka - © zdivo (dle legendy materiálů) - © tepelná izolace podlahový EPS 150 (A=0,035 W/mK) 120mm - ©",
+      "layers": [
+        "- © povrch dle tabulky místností (výmalba, obklad) — smíšené zdivo - cihla plná (keramická) 600 mm - © hydroizolační pás z modif. asfaltu 4mm - © stropní trámy 180 mm — prostor vyplněný tep. izol. min",
+        "-© vnitřní omítka 10-15 mm - sanační zateplení soklu - © asfaltová penetrace -— vložená izolace z minerální vaty 100 -180 mm - SDK požární podhled s odolností min. RE 30 DP2 60 mm -— keramická děrovan",
+        "- © zdivo (dle legendy materiálů) — lepící tmel (př. Lepstyr plus) - © betonová deska, vyztužená 120 mm - © SDK požární podhled s odolností min. RE 30 DP2 80 mm - © výmalba $12a - fasáda omítka : ; SM",
+        "— smíšené zdivo - cihla plná (keramická) 450 mm — sanační izolační deska (př. Styrcon 200) - © zhutněné štěrkové lože [včetně odvětrání radonu) 150mm - © výmalba - © kontaktní zateplovací systém ETICS",
+        "- omítka - břizolit 10-15 mm — armovací vrstva, tkanina, penetrace - © zhutněný terén S10. šikmá střecha — penetrační nátěr > x - -",
+        "- © kontaktní zateplovací systém ETICS"
+      ],
+      "_source_pdf": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf"
+    },
+    {
+      "code": "S02",
+      "name": "stropní konstrukce - © drenážní vrstva - nopová folie 20mm - © drenážní vrstva - nopová folie 20mm V ————————————— _",
+      "layers": [
+        "- pojezdovy ocelový pororošt 50 mm / / \\",
+        "- nosná ocelová konstrukce - ocel. nosníky 180 mm"
+      ],
+      "_source_pdf": "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf"
+    },
+    {
+      "code": "S03",
+      "name": "autorizovaný projektant SLA igitálně",
+      "layers": [
+        "-| . : CE) 73:02:41 +01'00",
+        "- - Volný Jindřich Mgr."
+      ],
+      "_source_pdf": "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf"
+    },
+    {
+      "code": "S03a",
+      "name": "= pod úrovní terénu S08 strop - klemba mezi patry - © hliník. falcovaná krytina, pásy cca 500mm - lepící hmota cca 10mm ",
+      "layers": [
+        "- penetrační nátěr - drenážní vrstva - nopová folie 20 mm"
+      ],
+      "_source_pdf": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf"
+    },
+    {
+      "code": "S03b",
+      "name": "obvodová stěna nad úrovní terénu S05 schodiště \\ } Podélny fez B-B",
+      "layers": [
+        "- hydroi"
+      ],
+      "_source_pdf": "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf"
+    },
+    {
+      "code": "S06",
+      "name": "strop - klemba mezi suterénem a přízemím -© nášlapná vrstva 20 mm - © pojistná hydro",
+      "layers": [],
+      "_source_pdf": "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf"
+    },
+    {
+      "code": "S12a",
+      "name": "|- it a z- | < 5 S| © 1 5 +6,565 0 = Né",
+      "layers": [],
+      "_source_pdf": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    }
+  ],
+  "_per_pdf_raw": {
+    "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf": [
+      {
+        "code": "S03a",
+        "name": "— — N",
+        "layers": []
+      },
+      {
+        "code": "S01",
+        "name": "podlaha sklad S03a obvodová stěna pod úrovní terénu S04 opěrná stěna část",
+        "layers": [
+          "- betonová dlažba 50 mm - © povrch surový bez omítky - © povrch surový bez omítky C Situační výkresy",
+          "- kladecí vrstva - kamenná drt 4-8 mm 40 mm - © obvodová stěna (dle legendy materiálů) - © opěrná stěna (dle legendy materiálů) O projektant části",
+          "- podkladní nosná vrstva - kamenná drť 4-8 mm 150 mm - betonové tvárnice ztraceného bednění 250mm — betonové prefa bloky usazené na zámek 600mm Ing. arch. Marek Smolka",
+          "- zhutněná zemní pláň (30 MPa) - © asfal"
+        ]
+      }
+    ],
+    "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf": [
+      {
+        "code": "S01",
+        "name": "podlaha sklad S03a obvodová stěna pod úrovní terénu S04 opěrná stěna část",
+        "layers": [
+          "- betonová dlažba 50 mm - © povrch surový bez omítky -  povrch surový bez omítky C Situační výkresy",
+          "- kladecí vrstva - kamenná drt 4-8 mm 40 mm - © obvodová stěna (dle legendy materiálů) - © opěrná stěna (dle legendy materiálů) O projektant části",
+          "- podkladní nosná vrstva - kamenná drť 4-8 mm 150 mm - betonové tvárnice ztraceného bednění 250mm — betonové prefa bloky usazené na zámek 600mm Ing. arch. Marek Smolka",
+          "- zhutněná zemní pláň (30 MPa) - © asfaltová penetrace - © asfaltová penetrace tel.: +420 732 618 505, email: smolka Asmasharch.cz",
+          "- 2x hydroizolační a protiradonovy pás z modif. asfaltu 2x4mm - © AX hydroizolační a protiradonovy pás z modif. asfaltu 2x4mm"
+        ]
+      },
+      {
+        "code": "S02",
+        "name": "stropní konstrukce - © drenážní vrstva - nopová folie 20mm - © drenážní vrstva - nopová folie 20mm V ————————————— _",
+        "layers": [
+          "- pojezdovy ocelový pororošt 50 mm / / \\",
+          "- nosná ocelová konstrukce - ocel. nosníky 180 mm"
+        ]
+      },
+      {
+        "code": "S03b",
+        "name": "obvodová stěna nad úrovní terénu S05 schodiště \\ } Podélny fez B-B",
+        "layers": [
+          "- hydroi"
+        ]
+      }
+    ],
+    "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf": [
+      {
+        "code": "S01",
+        "name": "obvodová stěna - omítka S04 podlaha na terénu (v suterénu) S07 | strop - tramovy st",
+        "layers": []
+      }
+    ],
+    "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf": [
+      {
+        "code": "S01",
+        "name": "obvodová stěna - omítka - © zdivo (dle legendy materiálů) - © tepelná izolace podlahový EPS 150 (A=0,035 W/mK) 120mm - ©",
+        "layers": [
+          "- © povrch dle tabulky místností (výmalba, obklad) — smíšené zdivo - cihla plná (keramická) 600 mm - © hydroizolační pás z modif. asfaltu 4mm - © stropní trámy 180 mm — prostor vyplněný tep. izol. min",
+          "-© vnitřní omítka 10-15 mm - sanační zateplení soklu - © asfaltová penetrace -— vložená izolace z minerální vaty 100 -180 mm - SDK požární podhled s odolností min. RE 30 DP2 60 mm -— keramická děrovan",
+          "- © zdivo (dle legendy materiálů) — lepící tmel (př. Lepstyr plus) - © betonová deska, vyztužená 120 mm - © SDK požární podhled s odolností min. RE 30 DP2 80 mm - © výmalba $12a - fasáda omítka : ; SM",
+          "— smíšené zdivo - cihla plná (keramická) 450 mm — sanační izolační deska (př. Styrcon 200) - © zhutněné štěrkové lože [včetně odvětrání radonu) 150mm - © výmalba - © kontaktní zateplovací systém ETICS",
+          "- omítka - břizolit 10-15 mm — armovací vrstva, tkanina, penetrace - © zhutněný terén S10. šikmá střecha — penetrační nátěr > x - -",
+          "- © kontaktní zateplovací systém ETICS"
+        ]
+      },
+      {
+        "code": "S03a",
+        "name": "= pod úrovní terénu S08 strop - klemba mezi patry - © hliník. falcovaná krytina, pásy cca 500mm - lepící hmota cca 10mm ",
+        "layers": [
+          "- penetrační nátěr - drenážní vrstva - nopová folie 20 mm"
+        ]
+      },
+      {
+        "code": "S06",
+        "name": "strop - klemba mezi suterénem a přízemím -© nášlapná vrstva 20 mm - © pojistná hydro",
+        "layers": []
+      }
+    ],
+    "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf": [
+      {
+        "code": "S03",
+        "name": "autorizovaný projektant SLA igitálně",
+        "layers": [
+          "-| . : CE) 73:02:41 +01'00",
+          "- - Volný Jindřich Mgr."
+        ]
+      },
+      {
+        "code": "S01",
+        "name": "obvodová stěna - omítka S04 podlaha na terénu (v suterénu) S07 | strop - trámový strop mezi patry S09 strop - mezi patre",
+        "layers": [
+          "- © vnitřní omítka 10-15 mm - © beton 100 mm - © nášlapná vrstva 20 mm - © nosné trámy krovu (ve vzduchu s podporou) 20 mm projektový stupeň",
+          "- © zdivo (dle legendy materiálů) - © št"
+        ]
+      }
+    ],
+    "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf": [
+      {
+        "code": "S12a",
+        "name": "|- it a z- | < 5 S| © 1 5 +6,565 0 = Né",
+        "layers": []
+      }
+    ],
+    "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf": [
+      {
+        "code": "S01",
+        "name": "podlaha sklad S03a obvodová stěna pod úrovní terénu S04 opěrná stěna část",
+        "layers": [
+          "- betonová dlažba 50 mm - © povrch surový bez omítky - © povrch surový bez omítky C Situační výkresy",
+          "- kladecí vrstva - kamenná drť 4-8 mm 40mm - © obvodová stěna (dle legendy materiálů) - © opěrná stěna (dle legendy materiálů) << ojektant esti",
+          "- podkladní nosná vrstva - kamenná drť 4-8 mm 150 mm - betonové tvárnice ztraceného bednění 250mm — betonové prefa bloky usazené na zámek 600mm Ing. arch. Marek Smolka",
+          "- zhutněná zemní pláň (30 MPa) - © asfaltová penetrace - © asfaltová penetrace tel.: +420 732 618 505, email: smolka Asmasharch.cz",
+          "- 2x hydroizolační a protiradonovy pás z"
+        ]
+      }
+    ]
+  }
+}
