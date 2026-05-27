@@ -139,8 +139,6 @@ ws2.cell(row=r, column=3, value=len(positions)).font = Font(bold=True)
 ws2.cell(row=r, column=4, value=round(grand_total, 2)).font = Font(bold=True)
 ws2.cell(row=r, column=4).fill = PatternFill("solid", fgColor="FFD966")
 ws2.cell(row=r, column=5, value=100.0).font = Font(bold=True)
-for col_w in (8, 50, 14, 18, 12):
-    pass
 for i, w in enumerate([8, 50, 14, 18, 12], 1):
     ws2.column_dimensions[get_column_letter(i)].width = w
 
