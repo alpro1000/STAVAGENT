@@ -351,6 +351,69 @@
           ],
           "tz_source": "inputs/vykresy_pdf/UT_HalaHK_TZ_VM_DPS_E.pdf (5 stránek, podepsal Ing. Stanislav Jirucha ČKAIT 0009051, 2026.05.25 19:56)"
         }
+      },
+      {
+        "date": "2026-05-27",
+        "change": "Added SO-13 Venkovní úpravy (19 items M-VK-001..019) per investor scope change — full external infrastructure scope",
+        "reason": "SOLAR DISPOREC phone call 2026-05-27 — venkovní úpravy in bid: 4 rampy per A101, externí přípojky, přeložka vodovodu (podmíněná), hydrant, retenční nádrž 30 m³ prefab, liniový žlab pojízdný, zpevněné plochy 325 m² (10× parkování + manipulace + napojení), ohumusování + vyspádování",
+        "previous_count": 150,
+        "new_count": 169,
+        "new_kapitola": "M-VK / SO-13",
+        "new_abmv": [
+          "ABMV_23",
+          "ABMV_24",
+          "ABMV_25"
+        ],
+        "source_documents": [
+          "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf (DPS 06/2026 — NEW, replaces older C3_situace_kaceni for koord scope)",
+          "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf (DPS 06/2026 — NEW, supersedes DSP 2025-10 in _superseded/)",
+          "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf (DPS 06/2026 — NEW, supersedes DSP 2025-10 in _superseded/)"
+        ],
+        "items_added": [
+          "M-VK-001",
+          "M-VK-002",
+          "M-VK-003",
+          "M-VK-004",
+          "M-VK-005",
+          "M-VK-006",
+          "M-VK-007",
+          "M-VK-008",
+          "M-VK-009",
+          "M-VK-010",
+          "M-VK-011",
+          "M-VK-012",
+          "M-VK-013",
+          "M-VK-014",
+          "M-VK-015",
+          "M-VK-016",
+          "M-VK-017",
+          "M-VK-018",
+          "M-VK-019"
+        ],
+        "items_modified": [],
+        "items_removed": [],
+        "pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+        "pattern_36_staging": "Old DSP 2025-10 versions of A101 + A103 moved to inputs/vykresy_pdf/_superseded/2026-05-27_DSP/ per Pattern 36 file staging convention. New DPS 06/2026 versions canonical.",
+        "pattern_37_sync_ritual": "git fetch + grep last_number + ls-remote claude/* executed at session start — no parallel session on SO-13 scope detected.",
+        "cross_deduplication": {
+          "kaceni_S1_S2": "covered by HSV-1-020..022 — NOT duplicated",
+          "nahradni_vysadba_dreviny": "covered by HSV-1-024 — DIFFERENT from M-VK-018 ohumusování+travou",
+          "obetonovani_stav_siti": "covered by HSV-1-009/010 — DROPPED from SO-13 (originally planned in D)",
+          "mearin_pochozi_fasada": "PSV-78x-005/006 podél JZ+SZ fasády POCHOZÍ — explicitly differentiated from M-VK-012 POJÍZDNÝ B125+ pro venkovní asfalty",
+          "pomocne_vykopy_pripojek": "HSV-1-011 vodovod DN150 + HSV-1-012 kanalizace DN200 cover labor only; M-VK-005/006/008 add potrubí materiál + montáž + napojení (no double-count)",
+          "hydrant": "VRN-021 = revize only — M-VK-010 adds dodávka+montáž"
+        }
+      },
+      {
+        "date": "2026-05-27",
+        "change": "Wording fix on M-VK-001 audit_trail — clarify 5.65° + 2.00° are SKLON RAMPY (gradient), NOT angle of sectional gates. Per user correction 2026-05-27.",
+        "reason": "Earlier poznámka 'Sklon 5.65° sekční vrata' could be misread as '5.65° angle of gates' instead of '5.65° slope of ramp at the gate location'. Sectional gates are vertical lifting — no angle.",
+        "items_modified": [
+          "M-VK-001"
+        ],
+        "items_added": [],
+        "items_removed": [],
+        "no_quantity_change": "Rampy areas unchanged: R1=9.20 + R2=11.50 + R3=9.20 + R4=13.42 = 43.32 m². No mnozstvi / mj / popis change. Pure audit_trail wording + label clarification."
       }
     ],
     "total_items_actual": 150
@@ -11148,6 +11211,1454 @@
         "match_delta_pct": 0.0,
         "match_within_tolerance": true,
         "kros_hint": "998xxx (doprava / přesun hmot)"
+      }
+    },
+    {
+      "id": "M-VK-001",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Beton C25/30 XF3 — vstupní/nájezdové rampy tl 150 mm, 4 lokality (R1 sever, R2+R3 jih, R4 západ bezbariérová)",
+      "mj": "m³",
+      "mnozstvi": 6.5,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "beton C25/30 XF3 rampy + okapní pas u ramp",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "R1+R2+R3+R4 = 9.20+11.50+9.20+13.42 = 43.32 m² × 0.15 m = 6.50 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "565xxx (komunikace pozemní — beton)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "(9.2+11.5+9.2+13.42) × 0.15 = 6.50 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "R1_sever_4.0×2.3_sklon_5.65deg",
+            "value": 9.2,
+            "unit": "m²"
+          },
+          {
+            "label": "R2_jih_5.0×2.3_sklon_5.65deg",
+            "value": 11.5,
+            "unit": "m²"
+          },
+          {
+            "label": "R3_jih_4.0×2.3_sklon_5.65deg",
+            "value": 9.2,
+            "unit": "m²"
+          },
+          {
+            "label": "R4_zapad_2.2×6.1_sklon_2.00deg_bezbarierove",
+            "value": 13.42,
+            "unit": "m²"
+          },
+          {
+            "label": "total_ramp_area",
+            "value": 43.32,
+            "unit": "m²"
+          },
+          {
+            "label": "thickness",
+            "value": 0.15,
+            "unit": "m"
+          },
+          {
+            "label": "concrete_volume",
+            "value": 6.5,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Beton C25/30 XF3 (zmrazování/rozmrazování s rozmrazovacími prostředky). Dimenzování per ČSN EN 206 + XF3 expozice. Sklon RAMPY 5.65° (~10 % gradient) u sekčních vrat R1/R2/R3 + sklon RAMPY 2.00° (~3.5 % gradient) na bezbariérové pěší rampě R4 per A101. POZN: 5.65° + 2.00° jsou sklony ramp (gradient nájezdu), NE úhly vrat — sekční vrata jsou vertikálně zdvihací bez náklonu. Okapní pas u ramp included v ploše.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "565xxx (komunikace pozemní — beton)",
+        "slope_clarification": "5.65° + 2.00° = SKLON RAMPY (gradient nájezdu na podlahu haly), NE úhel vrat. Sekční vrata jsou vertikálně zdvihací bez náklonu. Confirmed by user 2026-05-27."
+      }
+    },
+    {
+      "id": "M-VK-002",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Výztuž KARI síť Q188 + bednění boční rampy 4 lokality",
+      "mj": "m²",
+      "mnozstvi": 43.32,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "výztuž KARI Q188 + boční bednění rampy",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "43.32 m² (1:1 s plochou ramp)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "631xxx (výztuž) + 564xxx (bednění)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "4 lokality rampy = 43.32 m²",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "rampa_plocha_total",
+            "value": 43.32,
+            "unit": "m²"
+          },
+          {
+            "label": "kari_typ",
+            "value": "Q188 (6 mm, 150/150)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "KARI Q188 typická síť pro betonové plochy pojezdové. Boční bednění + dilatační lišty součástí položky.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "631xxx (výztuž) + 564xxx (bednění)"
+      }
+    },
+    {
+      "id": "M-VK-003",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Drcený štěrk ŠD 32/63 podklad rampy + okapní pas tl 200 mm",
+      "mj": "m³",
+      "mnozstvi": 8.66,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "podkladní vrstva ŠD 32/63",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "43.32 m² × 0.20 m = 8.66 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "564xxx (komunikace — podkladní vrstvy)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "43.32 × 0.20 = 8.66 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "rampa_plocha",
+            "value": 43.32,
+            "unit": "m²"
+          },
+          {
+            "label": "tloustka",
+            "value": 0.2,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "ŠD 32/63 frakce. Hutnění Edef2 ≥ 45 MPa per typ pojezdové plochy.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "564xxx (komunikace — podkladní vrstvy)"
+      }
+    },
+    {
+      "id": "M-VK-004",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Obrubník betonový ABO 100×250×1000 kolem ramp + lůžko z betonu C16/20",
+      "mj": "m",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "obrubník betonový kolem ramp",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": "precision_pending_dps_detail",
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "obvod ramp ~30.0 bm (odhad z A101, 4 rampy obvod)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "916xxx (osazení obrubníku)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "~30.0 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "obrubnik_typ",
+            "value": "ABO 100×250×1000",
+            "unit": ""
+          },
+          {
+            "label": "delka_obvodu_ramp",
+            "value": 30.0,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Obrubník stojící ABO 100×250×1000 mm v lůžku z betonu C16/20. Boční opěra C16/20 na rubové straně. Precizní výměra po C.3 detail (zatím odhad z A101 plus uniform offset).",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "916xxx (osazení obrubníku)"
+      }
+    },
+    {
+      "id": "M-VK-005",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Přípojka kanalizace dešťové KG PVC SN8 DN200 — potrubí + uložení v pískovém loži + zásyp + napojení",
+      "mj": "m",
+      "mnozstvi": 40.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "dešťová přípojka KG PVC SN8 DN200",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~40 m (odhad z C.3 trasy od haly k retenční nádrži/napojení)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "871xxx (kanalizace — potrubí)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "40 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "delka_pripojky",
+            "value": 40.0,
+            "unit": "m"
+          },
+          {
+            "label": "potrubi",
+            "value": "KG PVC SN8 DN200",
+            "unit": ""
+          },
+          {
+            "label": "ulozeni",
+            "value": "pískové lože tl 100 mm + obsyp tl 300 mm",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Trasa od haly přes retenční nádrž k bodu napojení na stávající dešťovou kanalizaci (per C.3 INŽENÝRSKÉ SÍTĚ_NAVRŽENÉ). Sklon min 0.5 % per ČSN EN 1610.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "871xxx (kanalizace — potrubí)",
+        "cross_dedup_note": "HSV-1-012 pokrývá pomocné výkopy pro novou areálovou kanalizaci DN200 (m³ výkop labor). Stage 3 verify NO double-count of výkop m³ — M-VK-005 mnozstvi = délka potrubí + materiál + montáž."
+      }
+    },
+    {
+      "id": "M-VK-006",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Přípojka kanalizace splaškové KG PVC SN8 DN150 — potrubí + uložení + zásyp + napojení",
+      "mj": "m",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "splašková přípojka KG PVC SN8 DN150",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": "precision_pending_internal_zti_layout",
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~30 m (odhad z C.3, od haly k bodu napojení na areálovou)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "871xxx (kanalizace — potrubí)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "30 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "delka_pripojky",
+            "value": 30.0,
+            "unit": "m"
+          },
+          {
+            "label": "potrubi",
+            "value": "KG PVC SN8 DN150",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per C.3 INŽENÝRSKÉ SÍTĚ_NAVRŽENÉ — Přípojka kanalizace splaškové. Hala má sociální zázemí dle A101? — pokud bez sociálního zázemí, M-VK-006 jen pro odvod technologických (filtrace strojů) nebo OFF.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "871xxx (kanalizace — potrubí)",
+        "cross_dedup_note": "HSV-1-012 pomocné výkopy DN200 — výkop pro splaškovou DN150 může sdílet trench s dešťovou. Stage 3 verify uložení do společné rýhy."
+      }
+    },
+    {
+      "id": "M-VK-007",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Revizní šachta betonová Ø1000 mm, h ~1.5-2.0 m, vč. poklopu litinového B125 a vnitřních stupadel",
+      "mj": "ks",
+      "mnozstvi": 3.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "revizní šachta Ø1000 + poklop B125 + stupadla",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": "precision_pending_load_class",
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "3 ks (per C.3 — revizní šachta na zlomu trasy, šachta na DK + DKS)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "894xxx (šachty + skruže) + 899xxx (poklop)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "3 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "sachta_typ",
+            "value": "betonová Ø1000 skruž + dno + poklop",
+            "unit": ""
+          },
+          {
+            "label": "vyska_typicka",
+            "value": "1.5-2.0",
+            "unit": "m"
+          },
+          {
+            "label": "poklop_trida",
+            "value": "B125 (pochozí + lehký provoz)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Revizní šachty na trase přípojek (M-VK-005 + M-VK-006) — typicky na zlomu, max po 50 m, na napojení. Per C.3 značení 'REVIZNÍ ŠACHTA'. B125 dostačující pokud mimo komunikaci; pokud v parkovišti → upgrade D400.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "894xxx (šachty + skruže) + 899xxx (poklop)"
+      }
+    },
+    {
+      "id": "M-VK-008",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Přípojka NN — chránička HDPE Ø110 mm + pomocné výkopy + pískové lože + zásyp + výstražná páska",
+      "mj": "m",
+      "mnozstvi": 40.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "NN přípojka — stavební příprava (chránička + výkop)",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~40 m (od přípojkové skříně PRIS na hraně pozemku → hala)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "460xxx (chránička HDPE) + 132xxx (výkop)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "40 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "delka_pripojky",
+            "value": 40.0,
+            "unit": "m"
+          },
+          {
+            "label": "chranicka",
+            "value": "HDPE Ø110 mm červená",
+            "unit": ""
+          },
+          {
+            "label": "hloubka_ulozeni",
+            "value": "0.7-1.0",
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per C.3 INŽENÝRSKÉ SÍTĚ_NAVRŽENÉ — Přípojka NN od stávající přípojkové skříně PRIS na hraně pozemku k hale. Pouze STAVEBNÍ PŘÍPRAVA: výkop, chránička HDPE, pískové lože, zásyp s výstražnou páskou. Silový kabel + jištění + zapojení v rozvaděči = elektro profession (viz _scope_exclusion).",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "460xxx (chránička HDPE) + 132xxx (výkop)"
+      },
+      "_scope_exclusion": {
+        "elektro_profession": [
+          "Silové NN zapojení v rozvaděči = elektro profession",
+          "Měření spotřeby + revize NN přípojky",
+          "Kabel CYKY 4×N samotný (chránička HDPE je v scope SO-13 jako stavební příprava, samotný kabel + zapojení v elektro VV)"
+        ]
+      }
+    },
+    {
+      "id": "M-VK-009",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Přeložka stávajícího vodovodního řadu (rerouting) — kompletní práce vč. potrubí, výkop, napojení, tlakové zkoušky",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "PODMÍNĚNÁ položka — přeložka vodovodního řadu mimo trasu navrhované haly",
+      "confidence": 0.65,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_23"
+      ],
+      "_status_flag": "podminena_polozka_pending_vlastnik_confirmation",
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "1 kpl (rozsah TBD per vlastník vodovodu confirmation)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "827xxx (vodovod — přeložky) — Stage 3 stanovit po confirmation",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "1 kpl",
+        "formula_parsed_method": "paushal",
+        "inputs": [
+          {
+            "label": "rozsah",
+            "value": "TBD — confirmation pending",
+            "unit": ""
+          },
+          {
+            "label": "odhad_delka",
+            "value": "20-40",
+            "unit": "m"
+          },
+          {
+            "label": "potrubi_predpoklad",
+            "value": "litina LT DN150 nebo PE100 DN160",
+            "unit": ""
+          },
+          {
+            "label": "cena_odhad",
+            "value": "150 000",
+            "unit": "Kč"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per C.3 INŽENÝRSKÉ SÍTĚ_NAVRŽENÉ — 'PŘELOŽKA VODOVODNÍHO ŘADU'. PODMÍNĚNÁ položka — viz ABMV_23: pokud vodovod mimo pozemek 1939/1, přeložku provádí vlastník vodovodu (Hradec Králové vodárny), NE zhotovitel HK212. Pokud vodovod na pozemku → zhotovitel. Investor SOLAR DISPOREC + vodárenská společnost musí confirm před zahájením prací.",
+        "confidence": 0.65,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "827xxx (vodovod — přeložky) — Stage 3 stanovit po confirmation"
+      }
+    },
+    {
+      "id": "M-VK-010",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Hydrant podzemní DN80 vč. uzávěru, šoupátka, zemní soupravy, poklopu litinového a napojení na vodovodní řad",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "hydrant podzemní DN80",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "1 ks (per C.3 značení 'HYDRANT (Podz.)')",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "892xxx (armatury vodovodní — hydrant)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "1 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "typ",
+            "value": "podzemní hydrant DN80 + uzávěr + soupravy",
+            "unit": ""
+          },
+          {
+            "label": "umisteni",
+            "value": "per C.3 — PBŘ požadavek",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per C.3 — hydrant podzemní pro PBŘ. Vyhláška 23/2008 Sb. + ČSN 73 0873. Komplet vč. napojení šoupátkem na areálový vodovod, zemní souprava, litinový poklop H. Funkční zkouška součástí montáže.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "892xxx (armatury vodovodní — hydrant)"
+      }
+    },
+    {
+      "id": "M-VK-011",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Retenční nádrž 30 m³ — prefabrikovaná betonová, rozměry 6.15×2.75×2.0 m, vč. usazení do připraveného výkopu a napojení na dešťovou kanalizaci",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "retenční nádrž 30 m³ prefab beton",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_24"
+      ],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "1 ks (per C.3 explicit: 'RETENČNÍ NÁDRŽ 30m³ — 6.15×2.75×2.0M')",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "425xxx (nádrže) — stanovit po confirmation typu",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "1 ks prefab",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "objem_uzitny",
+            "value": 30.0,
+            "unit": "m³"
+          },
+          {
+            "label": "rozmery_LxWxH",
+            "value": "6.15×2.75×2.0",
+            "unit": "m"
+          },
+          {
+            "label": "rozmery_overeno_C3",
+            "value": "ano — explicitní text C.3",
+            "unit": ""
+          },
+          {
+            "label": "typ",
+            "value": "prefabrikovaná betonová (default)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per C.3 explicitní text 'RETENČNÍ NÁDRŽ 30m³ — 6.15x2.75x2.0M'. PREFAB betonová default (per user decision 2026-05-27). Pokud statika Volka explicitně potřebuje monolitní variantu, confirm před objednávkou — viz ABMV_24. V scope: usazení do připraveného výkopu, napojení na M-VK-005 dešťovou přípojku, přepad/odvod do retence. Výkop pro nádrž součástí HSV-1 (kontrola).",
+        "confidence": 0.85,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "425xxx (nádrže) — stanovit po confirmation typu"
+      }
+    },
+    {
+      "id": "M-VK-012",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Liniový žlab POJÍZDNÝ tř. zatížení B125 — odvodnění zpevněných ploch parkoviště + manipulace, vč. mřížky",
+      "mj": "m",
+      "mnozstvi": 40.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "liniový žlab pojízdný B125 pro venkovní plochy",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~40 m (perimetr asfaltových ploch SVĚTLO odlišný od PSV-78x)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "935xxx (odvodňovací žlaby + mřížky)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "40 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "delka",
+            "value": 40.0,
+            "unit": "m"
+          },
+          {
+            "label": "trida_zatizeni",
+            "value": "B125 (pojízdné, osobní automobily)",
+            "unit": ""
+          },
+          {
+            "label": "typ_predpoklad",
+            "value": "betonový žlab NW150-200 + mřížka B125",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "POJÍZDNÝ liniový žlab pro odvod vody ze zpevněných asfaltových ploch (parkoviště + manipulační plochy). Tř. zatížení B125 (osobní automobily) ne pochozí. Stage 3 verify finální typ + délka.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "935xxx (odvodňovací žlaby + mřížky)",
+        "cross_dedup_note": "EXPLICITNĚ ODLIŠENO od PSV-78x-005 (MEA Mearin Plus 3000 NW300 podél JZ + SZ fasády HALY) + PSV-78x-006 (Mřížka pochozí). M-VK-012 je POJÍZDNÝ žlab v jiné lokaci (perimetr venkovních asfaltů), jiné load class (B125 ne pochozí). NO geometric overlap with PSV-78x."
+      }
+    },
+    {
+      "id": "M-VK-013",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Drcené kamenivo ŠD 32/63 podklad zpevněných ploch tl 200 mm",
+      "mj": "m³",
+      "mnozstvi": 65.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "podkladní vrstva ŠD 32/63 pod asfalt",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "325.0 m² × 0.20 m = 65.0 m³ (parkoviště 125.0 + manipulace 150.0 + napojení 50.0)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "564xxx (komunikace — podkladní vrstvy)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "325.0 × 0.20 = 65.0 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "parkovani_kolma_10x_2.5x5.0",
+            "value": 125.0,
+            "unit": "m²"
+          },
+          {
+            "label": "manipulacni_plochy",
+            "value": 150.0,
+            "unit": "m²"
+          },
+          {
+            "label": "komunikacni_napojeni",
+            "value": 50.0,
+            "unit": "m²"
+          },
+          {
+            "label": "asfalt_plocha_total",
+            "value": 325.0,
+            "unit": "m²"
+          },
+          {
+            "label": "podklad_tloustka",
+            "value": 0.2,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per user decision 2026-05-27 — full venkovní scope. ŠD 32/63 hutněná Edef2 ≥ 60 MPa pro pojezdové plochy. Geotextilie separační pod ŠD (součást plochy).",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "564xxx (komunikace — podkladní vrstvy)"
+      }
+    },
+    {
+      "id": "M-VK-014",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Asfaltový beton ACO 11+ tl 50 mm obrusná vrstva — parkoviště + manipulace",
+      "mj": "m²",
+      "mnozstvi": 325.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "asfalt ACO 11+ obrusná vrstva",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": "acp_underlayer_pending_dpr_detail",
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "parkovani 125.0 + manipulace 150.0 + napojeni 50.0 = 325.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "577xxx (asfaltové vrstvy obrusné)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "125.0+150.0+50.0 = 325.0 m²",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "parkovani_kolma",
+            "value": 125.0,
+            "unit": "m²",
+            "rozpis": "10 stání × 2.5×5.0 m"
+          },
+          {
+            "label": "manipulacni",
+            "value": 150.0,
+            "unit": "m²"
+          },
+          {
+            "label": "komunikacni_napojeni",
+            "value": 50.0,
+            "unit": "m²"
+          },
+          {
+            "label": "tloustka",
+            "value": 0.05,
+            "unit": "m"
+          },
+          {
+            "label": "smes",
+            "value": "ACO 11+ (asfaltobeton obrusný, frakce 11 mm)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Obrusná vrstva pro osobní + lehký nákladní provoz. Spojovací postřik 0.50 kg/m² na podkladní vrstvě, ACO 11+ tl 50 mm hutněný. Pokud nebude podkladní AC vrstva → posoudit ACP 16 jako mezilehlá; zatím pouze 1× obrusná.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "577xxx (asfaltové vrstvy obrusné)"
+      }
+    },
+    {
+      "id": "M-VK-015",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Obrubník betonový silniční ABO 100×250×1000 mm + lůžko z betonu C16/20",
+      "mj": "m",
+      "mnozstvi": 90.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "obrubník silniční kolem zpevněných ploch",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~90.0 bm (rozpis user 80-100 bm midpoint)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "916xxx (osazení obrubníku)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "~90.0 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "obrubnik",
+            "value": "ABO 100×250×1000 mm",
+            "unit": ""
+          },
+          {
+            "label": "delka_total",
+            "value": 90.0,
+            "unit": "m"
+          },
+          {
+            "label": "luzko",
+            "value": "beton C16/20 + boční opěra",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Obrubník silniční na hraně parkoviště + manipulačních ploch. Boční opěra C16/20 na rubové straně. Stage 3 precision per C.3 detail (geo-měření po vytýčení).",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "916xxx (osazení obrubníku)"
+      }
+    },
+    {
+      "id": "M-VK-016",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Vodorovné značení parkovacích stání — symbol P + krajní čáry, barva bílá nestripovaná retroflexní",
+      "mj": "ks",
+      "mnozstvi": 10,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "vodorovné značení 10× parkovací stání",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "10 ks (10 kolmá stání)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "91611xxx (vodorovné značení)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "10 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "pocet_stani",
+            "value": 10,
+            "unit": "ks"
+          },
+          {
+            "label": "rozmer_stani",
+            "value": "2.5 × 5.0",
+            "unit": "m"
+          },
+          {
+            "label": "uprava",
+            "value": "kolmá",
+            "unit": ""
+          },
+          {
+            "label": "barva",
+            "value": "bílá strojně stříkaná retroflexní",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Per user decision 2026-05-27 — 10 kolmá parkovací stání. Značení per TP 65 + ČSN 73 6056. P4 symbol modré (= veřejné parkování) jen pokud potřeba; pro investorský areál typicky bez P4 (jen krajní čáry + číslo).",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "91611xxx (vodorovné značení)"
+      }
+    },
+    {
+      "id": "M-VK-017",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Komunikační napojení na stávající vozovku — vč. úpravy navazujícího pásu asfaltu, frézování styčné spáry, zalévací zálivka",
+      "mj": "m²",
+      "mnozstvi": 50.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "komunikační napojení na stáv. asfalt",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "50.0 m² (napojovací plocha per user decision)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "565xxx (napojení komunikací)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "50.0 m²",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "plocha_napojeni",
+            "value": 50.0,
+            "unit": "m²"
+          },
+          {
+            "label": "obsazeno",
+            "value": "frézování spáry + zálivka + sjezd",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Připojení nové asfaltové plochy na stávající vozovku (per C.3 — STÁVAJÍCÍ VOZOVKA-ASFALT). Frézování po obvodu spáry, asfaltová zálivka, případně sjezd s obrubníkem snížení.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "565xxx (napojení komunikací)"
+      }
+    },
+    {
+      "id": "M-VK-018",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Ohumusování tl 100 mm + osetí trávou parkové směsi — rekultivace zbytkových ploch okolo haly",
+      "mj": "m²",
+      "mnozstvi": 500.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "ohumusování + osetí travou — rekultivace",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~500 m² (odhad zbytkové plochy pozemku 1939/1 mimo halu+asfalt)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "181xxx (terénní úpravy + osetí)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "500 m²",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "plocha_rekultivace",
+            "value": 500.0,
+            "unit": "m²"
+          },
+          {
+            "label": "ornice_tloustka",
+            "value": 0.1,
+            "unit": "m"
+          },
+          {
+            "label": "travni_smes",
+            "value": "parková (suchovzdorná)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Rekultivace zbytkových ploch pozemku 1939/1 po dokončení stavby. Ornice + travní semeno + ošetření po vzejití.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "181xxx (terénní úpravy + osetí)",
+        "cross_dedup_note": "DIFFERENT from HSV-1-024 (Náhradní výsadba DŘEVIN — replacement trees). M-VK-018 = travní porost na zbytkových plochách. NO overlap."
+      }
+    },
+    {
+      "id": "M-VK-019",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Vyspádování okolního terénu k odvodňovacím prvkům (žlabům, retenční nádrži) — hutněná zemina, finální úprava",
+      "mj": "m²",
+      "mnozstvi": 300.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
+      "raw_description": "vyspádování okolního terénu",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_completeness": 1.0,
+      "_qty_formula": "~300 m² (perimeter haly + okolo retenční nádrže)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
+      "_kros_hint": "171xxx (zemní práce — finální úpravy)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy areálu — SO-13",
+        "formula": "300 m²",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "plocha_spadovani",
+            "value": 300.0,
+            "unit": "m²"
+          },
+          {
+            "label": "min_sklon",
+            "value": "2 %",
+            "unit": ""
+          },
+          {
+            "label": "smer",
+            "value": "od haly k retenční nádrži + žlabům",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "C.3 KOO situace",
+            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A101 půdorys 1NP",
+            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          },
+          {
+            "type": "document",
+            "code": "A103 řez A-B",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026"
+          }
+        ],
+        "poznamka": "Min sklon 2 % od haly. Finální urovnání s hutněním podloží. Cíl: žádná stagnující voda u základů, voda vedena do M-VK-012 žlabů a M-VK-005 dešťové přípojky.",
+        "confidence": 0.8,
+        "extraction_method": "dps_situace_a101_a103",
+        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
+        "extracted_at": "2026-05-27T00:00:00+00:00",
+        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
+        "kros_hint": "171xxx (zemní práce — finální úpravy)"
       }
     }
   ]
