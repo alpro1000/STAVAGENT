@@ -1,0 +1,76 @@
+{
+  "_generated_at": "2026-05-27",
+  "option": "A1",
+  "targets": [
+    {
+      "id": "260219_dum.HSV2.003",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "wrong_code": "631311115",
+      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí — bílá vana ŽB suterénní stěna; Karel: vyhledat v KROS v 274 family (společně s HSV2.001/HSV2.002 beton kód 274321321)",
+      "verification_note": "Phase 5B WebSearch: 631 = úpravy povrchů (wrong family for bednění). Phase 5 Option A1 disambiguation: leaf moved to null pending Karel's KROS lookup in 274 family per cs-urs.cz 801-1 chapter. Companion items HSV2.001/HSV2.002 use 274321321 for beton BV."
+    },
+    {
+      "id": "260219_dum.HSV2.008",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "wrong_code": "631311115",
+      "correct_code_hint": "274XXX systémové bednění věnců — pozední věnec ŽB; Karel: vyhledat v KROS v 274 family (společně s HSV2.007 beton věnec kód 274321311)",
+      "verification_note": "Phase 5B WebSearch: 631 = úpravy povrchů (wrong family for bednění). Phase 5 Option A1 disambiguation: leaf moved to null pending Karel's KROS lookup in 274 family per cs-urs.cz 801-1 chapter. Companion item HSV2.007 uses 274321311 for beton věnce."
+    }
+  ],
+  "applied": [
+    {
+      "id": "260219_dum.HSV2.003",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "prev_code": "631311115",
+      "prev_alts": [
+        "631311111",
+        "634111111"
+      ],
+      "prev_status": "wrong_leaf_disambiguation_needed",
+      "prev_conf": 0.55,
+      "new_code": null,
+      "new_family_6digit": "274",
+      "new_status": "wrong_leaf_274_family_lookup_required",
+      "new_conf": 0.4,
+      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí — bílá vana ŽB suterénní stěna..."
+    },
+    {
+      "id": "260219_dum.HSV2.008",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "prev_code": "631311115",
+      "prev_alts": [
+        "631311111"
+      ],
+      "prev_status": "wrong_leaf_disambiguation_needed",
+      "prev_conf": 0.55,
+      "new_code": null,
+      "new_family_6digit": "274",
+      "new_status": "wrong_leaf_274_family_lookup_required",
+      "new_conf": 0.4,
+      "correct_code_hint": "274XXX systémové bednění věnců — pozední věnec ŽB; Karel: vyhledat v KROS v 274 ..."
+    }
+  ],
+  "skipped": [],
+  "frozen_fields_verified": [
+    "kapitola",
+    "mj",
+    "mnozstvi",
+    "mnozstvi_formula",
+    "popis",
+    "realizuje_skladbu",
+    "source",
+    "subdodavatel",
+    "subkapitola"
+  ],
+  "allowed_write_fields": [
+    "_audit_gap_fixed",
+    "correct_code_hint",
+    "urs_alternatives",
+    "urs_code_family_6digit",
+    "urs_code_proposed",
+    "urs_code_proposed_was",
+    "urs_confidence",
+    "urs_status",
+    "urs_verification_note"
+  ]
+}

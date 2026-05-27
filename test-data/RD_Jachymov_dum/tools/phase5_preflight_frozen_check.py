@@ -32,9 +32,15 @@ FROZEN_FIELDS = [
 ]
 
 ALLOWED_CHANGE = [
+    # Phase 5B WebSearch verdict writes
     "urs_code_proposed", "urs_status", "urs_confidence",
     "cross_verification_status", "cross_verification_evidence_url",
     "correct_code_hint", "_audit_gap_fixed",
+    # Phase 5 Option A disambiguation writes (Pattern 26 honest fallback)
+    "urs_code_proposed_was",   # audit trail of rejected code
+    "urs_code_family_6digit",  # honest family-only stem when leaf unknown
+    "urs_alternatives",        # purge of wrong-family alts
+    "urs_verification_note",   # disambiguation rationale + Karel handoff
 ]
 
 

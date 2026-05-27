@@ -531,10 +531,13 @@
       "mnozstvi": 65.0,
       "mnozstvi_formula": "2×2.05×10 (svislé) + 2×1.20×10 (pata) = 41 + 24 = 65",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": null,
-      "urs_alternatives": [],
-      "urs_status": "wrong_leaf_274_family_lookup_required",
-      "urs_confidence": 0.4,
+      "urs_code_proposed": "631311115",
+      "urs_alternatives": [
+        "631311111",
+        "634111111"
+      ],
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.55,
       "source": "TZ statika §5.5 + ČBS 02 — bobtnavý pásek + těsnící plech pracovní spáry",
       "subdodavatel": "bila_vana_csb02",
       "subdodavatel_status": "mapped",
@@ -547,11 +550,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "WRONG_LEAF",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí — bílá vana ŽB suterénní stěna; Karel: vyhledat v KROS v 274 family (společně s HSV2.001/HSV2.002 beton kód 274321321)",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; URS_PHASE5_A1_274_DISAMBIG",
-      "urs_code_proposed_was": "631311115",
-      "urs_code_family_6digit": "274",
-      "urs_verification_note": "Phase 5B WebSearch: 631 = úpravy povrchů (wrong family for bednění). Phase 5 Option A1 disambiguation: leaf moved to null pending Karel's KROS lookup in 274 family per cs-urs.cz 801-1 chapter. Companion items HSV2.001/HSV2.002 use 274321321 for beton BV."
+      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
     },
     {
       "objekt": "260219_dum",
@@ -689,10 +689,12 @@
       "mnozstvi": 19.4,
       "mnozstvi_formula": "2 (oboustranné) × 0.25 m výška × obvod 38.7 m (DXF) = 19.4 m²",
       "mnozstvi_confidence": 0.9,
-      "urs_code_proposed": null,
-      "urs_alternatives": [],
-      "urs_status": "wrong_leaf_274_family_lookup_required",
-      "urs_confidence": 0.4,
+      "urs_code_proposed": "631311115",
+      "urs_alternatives": [
+        "631311111"
+      ],
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.55,
       "source": "TZ statika dům §4 + DXF external perimeter",
       "subdodavatel": "bednici_tesar",
       "subdodavatel_status": "mapped",
@@ -708,11 +710,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "WRONG_LEAF",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "correct_code_hint": "274XXX systémové bednění věnců — pozední věnec ŽB; Karel: vyhledat v KROS v 274 family (společně s HSV2.007 beton věnec kód 274321311)",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; URS_PHASE5_A1_274_DISAMBIG",
-      "urs_code_proposed_was": "631311115",
-      "urs_code_family_6digit": "274",
-      "urs_verification_note": "Phase 5B WebSearch: 631 = úpravy povrchů (wrong family for bednění). Phase 5 Option A1 disambiguation: leaf moved to null pending Karel's KROS lookup in 274 family per cs-urs.cz 801-1 chapter. Companion item HSV2.007 uses 274321311 for beton věnce."
+      "correct_code_hint": "274XXX systémové bednění věnců",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
     },
     {
       "objekt": "260219_dum",
@@ -6763,32 +6762,5 @@
     },
     "budget_spent_usd": 0.6,
     "results_log": "outputs/phase5b_websearch_results.json"
-  },
-  "_phase5_option_a_log": {
-    "A1_274_disambig": {
-      "applied_at": "2026-05-27",
-      "pattern_compliance": {
-        "pattern_15": "FROZEN-fields preserved (verified inline)",
-        "pattern_26": "No fabricated leaves — null + family_hint only",
-        "pattern_28": "Compound key (id, kapitola) used",
-        "pattern_32": "items.json only (File A); File B = separate downstream"
-      },
-      "targets_count": 2,
-      "items_patched": 2,
-      "items_skipped": [],
-      "snapshot_before": "outputs/items_FROZEN_pre_phase5_optionA1.json",
-      "audit_tag": "URS_PHASE5_A1_274_DISAMBIG",
-      "allowed_write_fields": [
-        "_audit_gap_fixed",
-        "correct_code_hint",
-        "urs_alternatives",
-        "urs_code_family_6digit",
-        "urs_code_proposed",
-        "urs_code_proposed_was",
-        "urs_confidence",
-        "urs_status",
-        "urs_verification_note"
-      ]
-    }
   }
 }
