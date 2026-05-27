@@ -1,8 +1,23 @@
 # BD Daliborova 266/24 — Půdní vestavba + nová střecha
 
-**Status:** Phase 0a (setup) — 2026-05-27
+**Status:** Phase 0a + first audit pass complete — 2026-05-27
 **Stupeň PD:** DSP (architektonicko-stavební část D.1.1)
 **Pattern:** RD-Jachymov-style (rekonstrukce + vestavba, kompletní výměna krovu, vikýře)
+
+## Aktuální deliverable (2026-05-27)
+
+| Soubor | Popis |
+|---|---|
+| `outputs/audit_2026-05-27/AUDIT_REPORT.md` | **HLAVNÍ DOKUMENT** — audit v1 (4 fatální chyby + 8 chybějících sekcí) + 137 položek v2 + 7 sekcí cross-reference TZ↔výkres↔výpočet |
+| `outputs/audit_2026-05-27/Vykaz_BD_Daliborova_v2_KROS.xlsx` | KROS-kompatibilní 5-listový Excel: Soupis (137 položek) + Souhrn po sekcích + Audit v1 fatální + Audit v1 chybějící + Blockery |
+| `outputs/audit_2026-05-27/positions_v2.json` | Machine-readable JSON — připraveno pro KROS XML export |
+| `outputs/audit_2026-05-27/calc_traces/volumes.md` | Výpočtové stopy všech objemů (krokve, ocel, suť, zdivo, SDK, ETICS, klempířské, VRN) |
+
+**Klíčová čísla:**
+- v1 (ChatGPT, 73 pol.): **2 196 660 Kč** bez DPH
+- v2 (po auditu, 137 pol.): **3 978 264 Kč** bez DPH / **4 575 004 Kč** s DPH 15 %
+- Δ = +1 781 604 Kč (+81 %) — NE „předražení", ale doplnění 8 chybějících sekcí (zdivo Porotherm, ŽB věnec, ocel U100/U120, SDK + suchá podlaha Fermacell, omítky + ETICS, Cu klempířina, VRN, kompletní demolice)
+- v2 stále **nezahrnuje D.1.4 TZB** (~800 tis. – 1.2 M Kč navíc)
 
 ## Krátký popis
 

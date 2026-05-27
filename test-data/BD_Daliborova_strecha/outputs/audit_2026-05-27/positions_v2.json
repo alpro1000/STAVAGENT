@@ -1,0 +1,331 @@
+{
+  "_meta": {
+    "project": "BD Daliborova 266/24, Praha 15 - Hostivař",
+    "stupen": "DSP",
+    "audit_date": "2026-05-27",
+    "source_v1": "inputs/chatgpt_draft/Vykaz_BD_Daliborova_v1_KROS_73poz.xlsx",
+    "source_tz": "inputs/tz/D.1.1_architektonicko_stavebni_cast.pdf",
+    "author": "STAVAGENT (Claude Code) — křížový audit TZ vs výkresy vs ChatGPT v1",
+    "methodology": "Pattern 17 (Phase 0a Completeness Audit) + Pattern 20 (Audit v2 10-section) + Pattern 23 (per-drawing extraction)",
+    "geometry_baseline": {
+      "delka_facady_uliční_m": 25.010,
+      "plocha_strechy_hl_m2": 154.0,
+      "plocha_vikyru_celkem_m2": 51.2,
+      "vikyr_rozmer_m": "6.780 x 3.780",
+      "vikyru_ks": 2,
+      "sklon_hl_strecha_deg": 36.2,
+      "sklon_vikyr_deg": 7.0,
+      "hreben_m": "+11.180",
+      "rimsa_stávající_m": "+6.680",
+      "rimsa_vikyre_m": "+9.170 / +9.270",
+      "polozeni_krokev_a": 1.0,
+      "krokev_profil_mm": "100x180",
+      "pozednice_profil_mm": "140x160",
+      "trámky_vikyr_60x60_a": 1.0,
+      "půdorys_ulicni_cast_sirka_m": 4.41,
+      "půdorys_ulicni_cast_plocha_m2": 110.3,
+      "delka_krokev_hl_m": 6.16,
+      "delka_krokev_vikyre_m": 3.81,
+      "kominy_ks": 5,
+      "svetlik_ks": 1
+    },
+    "main_findings": {
+      "fatal_errors_v1": 4,
+      "missing_sections_v1": 8,
+      "missing_positions_v1": 75,
+      "v1_total_czk": 2196660.93,
+      "v2_estimate_czk_range": [4500000, 5500000]
+    }
+  },
+
+  "audit_v1": {
+    "fatal_errors": [
+      {
+        "id": "F1",
+        "section": "PSV 713 Izolace tepelné",
+        "v1_pos_ids": [16, 18],
+        "v1_says": "deska EPS 70 fasádní tl. 80mm a tl. 180mm",
+        "tz_says": "minerální izolace mezi krokvemi tl. 180mm + minerální izolace mezi trámky 60x60 tl. 80mm (TZ §3 + skladba)",
+        "impact": "Falešný materiál — EPS nepatří mezi krokve šikmé střechy s difuzně otevřenou skladbou! Musí být minerální vlna (rockwool/isover)",
+        "fix": "Položky 16, 18, 22, 24 přepsat: minerální vata mezi krokvemi λ≤0.039 tl. 180mm + min. vata mezi trámky 60x60 tl. 80mm; jednotková cena EPS 70 ≈ 145 Kč/m² → vata cca 280-320 Kč/m² tl. 180 + 95-130 Kč/m² tl. 80"
+      },
+      {
+        "id": "F2",
+        "section": "PSV 713",
+        "v1_pos_ids": [22, 24],
+        "v1_says": "Položka 22 (HSV) + 24 (PSV) jsou DUPLIKÁTNÍ — obě 'Montáž izolace tepelné střech šikmých provedení podkladového roštu pod krokve' 328.32 m, 105 Kč/m, identické",
+        "tz_says": "podkladový rošt jen jednou",
+        "impact": "Dvojí účtování stejné práce 34 473.60 Kč",
+        "fix": "Smazat 1 z duplikátů"
+      },
+      {
+        "id": "F3",
+        "section": "PSV 762 Konstrukce tesařské",
+        "v1_pos_ids": [37],
+        "v1_says": "řezivo jehličnaté boční prkno 20-30mm = 105 m³ (= 859 950 Kč)",
+        "tz_says": "Bednění hlavní střecha tl. 20mm + bednění vikýřů tl. 25mm + Steico Universal tl. 25mm. Celkem cca 3.08 + 1.28 + 1.28 = 5.6 m³ prkna",
+        "impact": "PŘEDIMENZOVÁNÍ 18,75×! Cena 859 950 Kč je 19× nadhodnocená. Reálný materiál ~6 m³ × 8190 Kč = 49 140 Kč",
+        "fix": "Snížit 105 → 5.6 m³ (případně doplnit Steico Universal samostatně jako pol. materiál)"
+      },
+      {
+        "id": "F4",
+        "section": "PSV 766 Konstrukce truhlářské",
+        "v1_pos_ids": [70, 71],
+        "v1_says": "okno střešní 114x140cm = 2 ks (montáž do krytiny tvarované) jako 'střešní okno'",
+        "tz_says": "4 ks VELKÝCH OKEN VIKÝŘŮ jsou FASÁDNÍ — kolmá k zemi v čelní stěně vikýře, NEnachází se v šikmé krytině. Pouze 2 ks O/002 jsou střešní (sklon 36.2°). Vikýřová okna jsou plastová/dřevěná do otvoru vyzděné stěny, klempířské oplechování parapetů, NE do plechové krytiny.",
+        "impact": "Špatná položka KROS — montáž 'do krytiny tvarované' implikuje rohové oplechování v plechu, ale rám vikýřového okna je v cihlové stěně. Cena se může lišit ±30 %. Také chybí 2 ks — pol. 70 má jen 2 ks, ale TZ + ChatGPT draft jasně řeknou 4 ks (2 na vikýř × 2 vikýře)",
+        "fix": "Pol. 70/71 přepsat: okna plastová/dřevěná do otvoru 'kus' v sekci 766 truhlářské nebo 'm2 plastových oken' v sekci 766; doplnit montáž do otvoru, připojovací pásky, ostění vnější + vnitřní, parapety. Počet zvýšit na 4 ks."
+      }
+    ],
+
+    "missing_sections": [
+      {
+        "id": "M-S1",
+        "section": "HSV 9 - Bouracích konstrukcí (krov + atika + podlaha)",
+        "missing_what": "Demolice celého uličního krovu, atikové nadezdívky, horní římsy uliční fasády, stávající podlahy podkroví (až na trámy)",
+        "v1_has_only": "Demontáž bobrovky + folie + výlezu + provizorní zakrytí",
+        "estimate_czk": 280000
+      },
+      {
+        "id": "M-S2",
+        "section": "HSV 31x Zdivo (Porotherm)",
+        "missing_what": "Vyzdění čelních a bočních stěn vikýřů (Porotherm T Profi 440), mezibytová stěna Porotherm AKU 200, vnitřní příčky 200/250, hygienické přizdívky, zazdění prostupů, nový okenní otvor ve štítové stěně",
+        "v1_has_only": "Nic",
+        "estimate_czk": 650000
+      },
+      {
+        "id": "M-S3",
+        "section": "HSV 41x ŽB konstrukce (věnec + překlady)",
+        "missing_what": "Nový ŽB věnec po obvodu vikýřů, překlady vikýřových oken, překlady přebouraných dveří, zesílení trámů příložkou (statika)",
+        "v1_has_only": "Nic",
+        "estimate_czk": 180000
+      },
+      {
+        "id": "M-S4",
+        "section": "HSV 6 Úpravy povrchů + omítky",
+        "missing_what": "Vnitřní omítky nové (sádrový hladký štuk), vnější omítka vikýřů vápenocementová s armovací tkaninou, ETICS pro novou římsu nad uliční fasádou, oprava omítek komínů + nátěr",
+        "v1_has_only": "Nic",
+        "estimate_czk": 380000
+      },
+      {
+        "id": "M-S5",
+        "section": "PSV 763 SDK + suchá výstavba",
+        "missing_what": "SDK podhled na celé 205.2 m² + SDK předstěny + SDK opláštění ocelových konstrukcí + suchá podlaha Fermacell (voština 60 + 2x 12.5 + min. izolace 20 + dlažba/plovoucí 15)",
+        "v1_has_only": "Nic",
+        "estimate_czk": 720000
+      },
+      {
+        "id": "M-S6",
+        "section": "PSV 764 Klempířské (rozšíření)",
+        "missing_what": "Oplechování 5 komínů Cu plech, klempířské lemování světlíku, žlaby + svody, okapnice, oplechování ostění vikýřových oken, lemování bobrovka↔Lindab",
+        "v1_has_only": "Demontáž výlezu + 1 m² lemování + nový Lindab plech 51.2 m²",
+        "estimate_czk": 165000
+      },
+      {
+        "id": "M-S7",
+        "section": "PSV 767 Zámečnické (ocel)",
+        "missing_what": "2x U100 hřeben 50.02 bm, 2x U120 zalomení vikýřů 27 bm, ocelové sloupky pod vaznice, IPE 100 nadpraží nových dveří, kotvení, antikorozní nátěr",
+        "v1_has_only": "Nic",
+        "estimate_czk": 220000
+      },
+      {
+        "id": "M-S8",
+        "section": "VRN - Vedlejší rozpočtové náklady",
+        "missing_what": "Zařízení staveniště (sociální zázemí, sklad, plot/brána, sociální buňka, energie/voda), BOZP koordinátor, geodetické zaměření před+po, statické posouzení skutečného provedení, dokumentace skutečného provedení, pasportizace okolních objektů, průzkum pevnosti zdiva 1.PP+1.NP (TZ §7), revize",
+        "v1_has_only": "VRN3 030001000 'Zařízení staveniště' = 0 Kč (prázdná položka)",
+        "estimate_czk": 250000
+      }
+    ],
+
+    "missing_positions_in_existing_sections": [
+      "Bednění hlavní střecha tl. 20mm × 154 m² (v1 má jen vikýře 25mm)",
+      "Latě 50/40 (kontralatě nad krokvemi) × 154 bm — v1 má 0 m",
+      "Krokve hlavní + vikýře 100×180 × 205+ bm — v1 má 0 m",
+      "Pozednice 140×160 × 50 bm — v1 nemá",
+      "Impregnace řeziva — v1 má 0 m³",
+      "Strukturovaná rohož pod plech vikýře 8mm × 51.2 m²",
+      "Steico Universal tl. 25 mm × 51.2 m² (samostatně od OSB bednění)",
+      "Difuzní folie Tyvek vikýře (samostatně od pojistné HI fólie hl. střechy)",
+      "Tyčový sněhový zachytávač před vikýři (TZ explicit) — m, kromě stávající sněholam mříže",
+      "Větrací hřebenová tvarovka (TZ explicit) — m",
+      "Hydroizolační stěrka ve sprchových koutech (TZ §Hydroizolace) — 4 koupelny",
+      "Tepelně izolační návlek na ocelový profil ve světlíku — kpl",
+      "Stoupačky kanalizace prodloužené nad střechu + větrací hlavice v odstínu krytiny (5 ks?) — kus",
+      "Odvětrání koupelen ventilátory přes světlík 90 m³/h (4 ks) + WC 25 m³/h (2 ks)"
+    ]
+  },
+
+  "positions_v2": [
+    { "section": "HSV-9", "section_name": "Ostatní konstrukce a práce, bourání", "kod": "HSV-9.01", "popis": "Bourání stávajícího uličního krovu vč. vaznic, sloupků, krokví a pozednic — odstranění na úroveň podlahy stávajícího podkroví", "mj": "m3", "mn": 11.0, "jc": 1850, "cc": 20350, "vypocet": "154 m2 strechy * 0.07 m3/m2 odhad ≈ 10.8 m3; vaznicový krov hustší než nový krokvový", "zdroj": "TZ str. 2 'Krov - stávající krov bude kompletně snesen'", "confidence": 0.85 },
+    { "section": "HSV-9", "section_name": "Ostatní konstrukce a práce, bourání", "kod": "HSV-9.02", "popis": "Bourání stávající skladby podlahy podkroví — beton 50 na rabicovém pletivu, lepenka, polystyren 40, podkladová vrstva 20, násyp 70, 2x dřevěný záklop 50 — až na trámy 180/200", "mj": "m2", "mn": 110.3, "jc": 285, "cc": 31436, "vypocet": "půdorys uliční části 4.41 m × 25.01 m = 110.3 m2 (z řezu PDF)", "zdroj": "Řez PDF + TZ str. 2-3 'Stávající podlahové vrstvy budou shora odebrány až na holé trámy'", "confidence": 0.85 },
+    { "section": "HSV-9", "section_name": "Ostatní konstrukce a práce, bourání", "kod": "HSV-9.03", "popis": "Bourání atikové nadezdívky a horní římsy na uliční fasádě (cihla plná)", "mj": "m3", "mn": 11.25, "jc": 2150, "cc": 24188, "vypocet": "délka 25.01 m × výška 1.5 m × tl. 0.3 m = 11.25 m3", "zdroj": "TZ str. 2 'Atikové nadezdívky a horní římsa na uliční fasádě bude rovněž odstraněna' + výkres řezu (atika výška ~510+565+900 mm)", "confidence": 0.65 },
+    { "section": "HSV-9", "section_name": "Ostatní konstrukce a práce, bourání", "kod": "HSV-9.04", "popis": "Bourání průchodů ve střední podélné nosné stěně pro nové dveře 1.0 m (zděná cihla plná tl. 0.45-0.6 m, 2 ks)", "mj": "m3", "mn": 2.7, "jc": 3800, "cc": 10260, "vypocet": "2 ks × 1.0 m × 2.1 m × 0.6 m = 2.52 m3 + rezerva 7%", "zdroj": "TZ str. 2 'V rámci stávající střední podélné stěny dojde k přebourání dveřních otvorů, nové dveře světlosti 1,0 m'", "confidence": 0.75 },
+    { "section": "HSV-9", "section_name": "Ostatní konstrukce a práce, bourání", "kod": "HSV-9.05", "popis": "Vybourání nového okenního otvoru ve štítové stěně (cihla plná)", "mj": "m3", "mn": 1.5, "jc": 3800, "cc": 5700, "vypocet": "odhad 1.5 m × 1.5 m × 0.5 m = 1.125 m3 + rezerva", "zdroj": "TZ str. 1 '...nového okenního otvoru ve štítové stěně'", "confidence": 0.55, "warning": "Rozměr okna ze štítu NEčitelný z TZ — ověřit výpisem výplní" },
+
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "941111121", "popis": "Montáž lešení řadového trubkového lehkého s podlahami zatížení do 200 kg/m2 š od 0,9 do 1,2 m v do 10 m", "mj": "m2", "mn": 375, "jc": 99.7, "cc": 37388, "vypocet": "fasáda 25.01 m × pracovní výška 12.5 m + ochrana = ~375 m2", "zdroj": "v1 pol. 1 (převzato)", "confidence": 0.85 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "941111221", "popis": "Příplatek k lešení řadovému za každý den použití", "mj": "m2", "mn": 22500, "jc": 1.1, "cc": 24750, "vypocet": "375 m2 × 60 dnů = 22500 m2·den", "zdroj": "v1 pol. 2 (převzato)", "confidence": 0.7, "warning": "Doba 60 dnů — ověřit harmonogram, pravděpodobně víc (90-120 dnů pro plnou rekonstrukci)" },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "941111821", "popis": "Demontáž lešení řadového trubkového", "mj": "m2", "mn": 375, "jc": 61, "cc": 22875, "zdroj": "v1 pol. 3 (převzato)", "confidence": 0.85 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "944511111", "popis": "Montáž ochranné sítě z textilie z umělých vláken", "mj": "m2", "mn": 375, "jc": 27.7, "cc": 10388, "zdroj": "v1 pol. 4 (převzato)", "confidence": 0.9 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "944511211", "popis": "Příplatek k ochranné síti za každý den použití", "mj": "m2", "mn": 22500, "jc": 0.37, "cc": 8325, "zdroj": "v1 pol. 5 (převzato)", "confidence": 0.8 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "944511811", "popis": "Demontáž ochranné sítě z textilie", "mj": "m2", "mn": 375, "jc": 18.6, "cc": 6975, "zdroj": "v1 pol. 6 (převzato)", "confidence": 0.9 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "944711112", "popis": "Montáž záchytné stříšky š přes 1,5 do 2 m", "mj": "m", "mn": 25, "jc": 202, "cc": 5050, "zdroj": "v1 pol. 7 (převzato)", "confidence": 0.85 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "944711212", "popis": "Příplatek záchytné stříšky za den použití", "mj": "m", "mn": 1500, "jc": 2.65, "cc": 3975, "zdroj": "v1 pol. 8 (převzato)", "confidence": 0.8 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "944711812", "popis": "Demontáž záchytné stříšky", "mj": "m", "mn": 25, "jc": 113, "cc": 2825, "zdroj": "v1 pol. 9 (převzato)", "confidence": 0.85 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "945411111R", "popis": "Pronájem stavebního výtahu GEDA 300 Z/ZP, výška do 20 m", "mj": "den", "mn": 90, "jc": 700, "cc": 63000, "vypocet": "90 dnů místo v1 60 dnů — výtah je potřeba minimálně po dobu krytin + zdění vikýřů + suchá podlaha + finální dokončení", "zdroj": "v1 pol. 10 upraveno (60 → 90 dnů)", "confidence": 0.7 },
+    { "section": "HSV-9-lese", "section_name": "Lešení + výtah + ochrana (původ z v1)", "kod": "945411111R.0", "popis": "Montáž + demontáž stavebního výtahu GEDA 300 Z/ZP", "mj": "kpl", "mn": 1, "jc": 10000, "cc": 10000, "zdroj": "v1 pol. 11 (převzato)", "confidence": 0.95 },
+
+    { "section": "HSV-997", "section_name": "Doprava suti a vybouraných hmot", "kod": "997013111", "popis": "Vnitrostaveništní doprava suti a vybouraných hmot do 10 m svisle", "mj": "t", "mn": 54.0, "jc": 245, "cc": 13230, "vypocet": "Detailní rozpis viz calc_traces/sut_objemy.md: bobrovka 6.93t + krov 5t + atika 20t + podlaha skladba 18.5t + záklopy 4t + ostatní 0.5t = 54.93 t (zaokr. 54.0 t)", "zdroj": "Vypočtené objemy demolice", "confidence": 0.7 },
+    { "section": "HSV-997", "section_name": "Doprava suti a vybouraných hmot", "kod": "997013501", "popis": "Odvoz suti a vybouraných hmot na skládku do 1 km", "mj": "t", "mn": 54.0, "jc": 315, "cc": 17010, "vypocet": "v1 mělo 10.646 t — PŘEPOČTENO na realný objem 54 t (5× navýšení)", "zdroj": "v1 pol. 12 přepočteno", "confidence": 0.7 },
+    { "section": "HSV-997", "section_name": "Doprava suti a vybouraných hmot", "kod": "997013509", "popis": "Příplatek k odvozu suti ZKD 1 km přes 1 km (předpoklad 15 km)", "mj": "t", "mn": 810.0, "jc": 13.8, "cc": 11178, "vypocet": "54 t × 15 km = 810 t·km", "zdroj": "v1 pol. 13 přepočteno", "confidence": 0.6 },
+    { "section": "HSV-997", "section_name": "Doprava suti a vybouraných hmot", "kod": "997013607", "popis": "Poplatek za uložení stavebního odpadu keramického na skládce (kód 17 01 03 — taška, bobrovka, cihla)", "mj": "t", "mn": 26.93, "jc": 2520, "cc": 67864, "vypocet": "bobrovka 6.93t + atika 20t = 26.93 t (keramika)", "zdroj": "v1 pol. 14 přepočteno", "confidence": 0.7 },
+    { "section": "HSV-997", "section_name": "Doprava suti a vybouraných hmot", "kod": "997013601", "popis": "Poplatek za uložení stavebního odpadu betonového (kód 17 01 01)", "mj": "t", "mn": 18.5, "jc": 850, "cc": 15725, "vypocet": "stará podlaha — beton mazaniny + podkladový beton 7.7 m3 × 2400 kg = 18.5 t", "zdroj": "Vypočteno z skladby podlahy v PDF řezu", "confidence": 0.7 },
+    { "section": "HSV-997", "section_name": "Doprava suti a vybouraných hmot", "kod": "997013211", "popis": "Poplatek za uložení dřevěného odpadu (kód 17 02 01)", "mj": "t", "mn": 9.0, "jc": 1450, "cc": 13050, "vypocet": "starý krov 5 t + záklopy 4 t = 9 t", "zdroj": "Vypočteno", "confidence": 0.7 },
+
+    { "section": "HSV-31", "section_name": "Zdivo Porotherm", "kod": "311238513", "popis": "Zdivo vikýřových čelních a bočních stěn z Porotherm T Profi tl. 440 mm s integrovanou TI", "mj": "m2", "mn": 86.7, "jc": 2680, "cc": 232356, "vypocet": "2 vikýře × (čelní 6.78×2.49 + 2× boční 3.78×3.5) = 2 × (16.9 + 26.5) = 86.8 m2", "zdroj": "TZ str. 3 'nové vikýřové čelní zdi budou vyzděny ze systému Porotherm T Profi, tl. 440 mm s integrovanou TI' + geometrie vikýřů", "confidence": 0.75 },
+    { "section": "HSV-31", "section_name": "Zdivo Porotherm", "kod": "342272411", "popis": "Příčka Porotherm 8 AKU tl. 200 mm mezibytová (mezi BYT 34 a BYT 35)", "mj": "m2", "mn": 13.2, "jc": 1490, "cc": 19668, "vypocet": "délka mezibytové stěny 4.41 m × výška 3.0 m = 13.2 m2", "zdroj": "TZ str. 3 'mezibytová stěna Porotherm AKU tl. 200 a 250 mm'", "confidence": 0.7 },
+    { "section": "HSV-31", "section_name": "Zdivo Porotherm", "kod": "342272412", "popis": "Příčka Porotherm AKU tl. 250 mm v prostoru hygienického zázemí (instalační)", "mj": "m2", "mn": 28.8, "jc": 1620, "cc": 46656, "vypocet": "4 koupelny + 2 WC × 2 bm × 2.4 m = 28.8 m2", "zdroj": "TZ str. 3 + obvyklý standard 3+kk", "confidence": 0.6 },
+    { "section": "HSV-31", "section_name": "Zdivo Porotherm", "kod": "342272421", "popis": "Vnitřní bytové příčky Porotherm 11.5 / 14 tl. 200 mm", "mj": "m2", "mn": 78, "jc": 1320, "cc": 102960, "vypocet": "2 byty × cca 15 bm příček × 2.6 m = 78 m2", "zdroj": "TZ str. 3 'mezibytové příčky budou vyzděné z keramických tvárnic systému Porotherm, tl. 20 a 25 cm'", "confidence": 0.5, "warning": "Bez půdorysu odhad — ověřit dispozici" },
+    { "section": "HSV-31", "section_name": "Zdivo Porotherm", "kod": "342273241", "popis": "Zazdění prostupů ve světlíku po průchodu ocelového profilu", "mj": "m2", "mn": 4, "jc": 2150, "cc": 8600, "vypocet": "odhad 2 prostupy × 2 m2", "zdroj": "TZ str. 3 'Prostupy do světlíku budou zpětně zazděny'", "confidence": 0.5 },
+
+    { "section": "HSV-41", "section_name": "ŽB konstrukce - věnec + překlady", "kod": "411121221", "popis": "Stropní věnec ŽB monolit C20/25 — po obvodu vikýřů a pod střední vaznicí", "mj": "m3", "mn": 2.5, "jc": 5200, "cc": 13000, "vypocet": "50 bm věnce × 0.25 × 0.20 = 2.5 m3", "zdroj": "TZ str. 3 'Bude proveden nový věnec'", "confidence": 0.6, "warning": "Délka věnce a rozměry — dle statiky" },
+    { "section": "HSV-41", "section_name": "ŽB konstrukce - věnec + překlady", "kod": "411354311", "popis": "Bednění stěn věnce — montáž + demontáž", "mj": "m2", "mn": 25, "jc": 485, "cc": 12125, "vypocet": "50 bm × 2 strany × 0.25 m = 25 m2", "confidence": 0.6 },
+    { "section": "HSV-41", "section_name": "ŽB konstrukce - věnec + překlady", "kod": "411361821", "popis": "Výztuž věnce ocel B500B (4Φ12 + třmínky Φ6/300)", "mj": "t", "mn": 0.213, "jc": 38500, "cc": 8201, "vypocet": "2.5 m3 × 85 kg/m3 = 212.5 kg", "confidence": 0.6 },
+    { "section": "HSV-41", "section_name": "ŽB konstrukce - věnec + překlady", "kod": "317168112", "popis": "Překlady ŽB nad vikýřovými okny (4 ks) + nad přebouranými dveřmi (2 ks)", "mj": "ks", "mn": 6, "jc": 1850, "cc": 11100, "vypocet": "TZ + statika", "zdroj": "TZ str. 3 + výpis výplní (chybí)", "confidence": 0.55, "warning": "Rozměry překladů — dle výpisu výplní a statiky" },
+    { "section": "HSV-41", "section_name": "ŽB konstrukce - věnec + překlady", "kod": "763131611", "popis": "Zesílení stávajících trámů 180/200 jednostrannou dřevěnou příložkou 100/260 mm (alt. ocelová příložka)", "mj": "m", "mn": 175, "jc": 580, "cc": 101500, "vypocet": "trámy á 0.7 m, délka cca 4.41 m, počet 25.01/0.7 = 36 ks; délka příložky cca 4.85 m → 36 × 4.85 = 174.6 m", "zdroj": "TZ str. 2-3 'stávající stropní trámy budou zesíleny jednostrannou příložkou' + výkres řezu '100/260 mm'", "confidence": 0.6, "warning": "Statika rozhodne dřevo vs. ocel a přesnou délku" },
+
+    { "section": "HSV-6", "section_name": "Úpravy povrchů - omítky + ETICS", "kod": "612311131", "popis": "Vnitřní omítka stěn sádrová tenkovrstvá Knauf na zděné stěny vč. armovací tkaniny v rozích", "mj": "m2", "mn": 280, "jc": 285, "cc": 79800, "vypocet": "2 byty: obvodové stěny 2 × (čelní 6.78 + boční 3.78×2) × výška ~2.5 m = 73 m2 + vnitřní stěny 2 × 60 m2 = 120 m2 + komínová stěna 25 × 2.5 = 62 m2 + štítová zeď interiér 2 × 12 = 24 m2; CELKEM cca 280 m2", "zdroj": "TZ str. 4 'Sádrový hladký štuk'", "confidence": 0.55 },
+    { "section": "HSV-6", "section_name": "Úpravy povrchů - omítky + ETICS", "kod": "612311141", "popis": "Vnější omítka vikýřů vápenocementová vyztužená armovací skleněnou tkaninou + finální povrchová úprava v odstínu fasády", "mj": "m2", "mn": 86.7, "jc": 540, "cc": 46818, "vypocet": "celé čelní + boční stěny vikýřů 86.7 m2 (mimo plochy oken)", "zdroj": "TZ str. 4 'vnější omítky nového zdiva vikýřů budou provedeny vápenocementovou'", "confidence": 0.75 },
+    { "section": "HSV-6", "section_name": "Úpravy povrchů - omítky + ETICS", "kod": "622221111", "popis": "ETICS nad uliční fasádou pro vytvoření nové říms (EPS-F nebo MW + síťovina + lepidlo + omítka)", "mj": "m2", "mn": 12.5, "jc": 1850, "cc": 23125, "vypocet": "délka 25.01 m × pruh římsy ~0.5 m výšky = 12.5 m2", "zdroj": "TZ str. 4 'Nad fasádou směrem do ulice bude provedena nová římsa vytvarovaná pomocí zateplovacího systému'", "confidence": 0.5, "warning": "Tloušťka EPS a profil římsy — dle PD" },
+    { "section": "HSV-6", "section_name": "Úpravy povrchů - omítky + ETICS", "kod": "612345121", "popis": "Oprava omítek komínů nad střechou — vápenocementová omítka + matný bílý fasádní nátěr", "mj": "m2", "mn": 35, "jc": 620, "cc": 21700, "vypocet": "5 komínů × průměrný plášť 7 m2 = 35 m2", "zdroj": "TZ str. 4 'upravované části komínů budou opatřeny vápenocementovými omítkami'", "confidence": 0.6 },
+
+    { "section": "PSV-711", "section_name": "Izolace proti vodě - hydroizolační stěrky", "kod": "711161571", "popis": "Hydroizolační stěrka 2-složková pod obklad a dlažbu v koupelnách + sprchových koutech", "mj": "m2", "mn": 32, "jc": 485, "cc": 15520, "vypocet": "4 koupelny × 5 m2 stěn + podlaha = 32 m2", "zdroj": "TZ str. 3 'Ve sprchových koutech budou pod dlažby i obklady provedeny hydroizolační stěrka'", "confidence": 0.55 },
+
+    { "section": "PSV-713", "section_name": "Izolace tepelné (PŘEPSÁNO — minerální vlna místo EPS)", "kod": "713141381", "popis": "Minerální izolace mezi krokvemi tl. 180 mm (Isover Domo / Rockwool Roxim) — hlavní střecha + vikýře", "mj": "m2", "mn": 205.2, "jc": 285, "cc": 58482, "vypocet": "hlavní střecha 154 + vikýře 51.2 = 205.2 m2", "zdroj": "TZ + skladba (OPRAVA F1: EPS → MW)", "confidence": 0.9 },
+    { "section": "PSV-713", "section_name": "Izolace tepelné (PŘEPSÁNO)", "kod": "63140700", "popis": "Deska minerální vlna λ≤0.039 tl. 180 mm", "mj": "m2", "mn": 226, "jc": 295, "cc": 66670, "vypocet": "205.2 × 1.10 nadměrek = 225.7 m2", "confidence": 0.9 },
+    { "section": "PSV-713", "section_name": "Izolace tepelné (PŘEPSÁNO)", "kod": "713141371", "popis": "Minerální izolace mezi trámky 60×60 tl. 80 mm (zlomení tepelných mostů)", "mj": "m2", "mn": 205.2, "jc": 145, "cc": 29754, "zdroj": "TZ + skladba", "confidence": 0.9 },
+    { "section": "PSV-713", "section_name": "Izolace tepelné (PŘEPSÁNO)", "kod": "63140702", "popis": "Deska minerální vlna λ≤0.039 tl. 80 mm", "mj": "m2", "mn": 226, "jc": 128, "cc": 28928, "confidence": 0.9 },
+    { "section": "PSV-713", "section_name": "Izolace tepelné (PŘEPSÁNO)", "kod": "713131611", "popis": "Parozábrana — fólie LDPE / PE proti vodním parám, kladení s přelepenými spoji", "mj": "m2", "mn": 205.2, "jc": 53.6, "cc": 10999, "zdroj": "v1 pol. 20 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-713", "section_name": "Izolace tepelné (PŘEPSÁNO)", "kod": "28323100", "popis": "Fólie LDPE proti zemní vlhkosti / parozábrana tl. 0.8 mm", "mj": "m2", "mn": 239, "jc": 93.3, "cc": 22299, "zdroj": "v1 pol. 21 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-713", "section_name": "Izolace tepelné (podlaha podkroví)", "kod": "713121111", "popis": "Tepelná a kročejová izolace podlahy podkroví — desky např. Girifloor 400 tl. 20 mm", "mj": "m2", "mn": 127.0, "jc": 195, "cc": 24765, "vypocet": "užitná plocha 127.03 m2 (z TZ §2)", "zdroj": "TZ str. 4 'jako tepelná a kročejová izolace podlahy je navržena deska např. Girifloor 400'", "confidence": 0.8 },
+
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762083111", "popis": "Impregnace řeziva proti dřevokaznému hmyzu a houbám máčením", "mj": "m3", "mn": 8.0, "jc": 1480, "cc": 11840, "vypocet": "veškeré řezivo: krokve 3.7 + pozednice 1.12 + latě 1.49 + bednění 5.6 + trámky 60x60 0.74 - duplicity = ~8 m3", "confidence": 0.75 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762332111", "popis": "Montáž pozednic z hraněného řeziva průřezu 140×160 mm", "mj": "m", "mn": 50.02, "jc": 215, "cc": 10754, "vypocet": "2 × 25.01 bm", "zdroj": "TZ + standardní detail", "confidence": 0.8 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60512131", "popis": "Hranol stavební řezivo průřezu do 224 cm2 dl 6 m (pozednice)", "mj": "m3", "mn": 1.12, "jc": 9740, "cc": 10909, "vypocet": "50.02 × 0.0224 = 1.12 m3", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762335512", "popis": "Montáž krokví z řeziva hoblovaného průřezu 100×180 mm na dřevěné podklady", "mj": "m", "mn": 207, "jc": 117, "cc": 24219, "vypocet": "hl. střecha: 25 ks × 6.16 m = 154 bm + vikýře: 14 ks × 3.81 m = 53.3 bm; CELKEM 207 bm", "zdroj": "TZ + geometrie (sklon 36.2° a 7°)", "confidence": 0.75 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60512130", "popis": "Hranol stavební řezivo 100×180 mm (krokve)", "mj": "m3", "mn": 3.73, "jc": 9740, "cc": 36330, "vypocet": "207 × 0.018 = 3.73 m3", "confidence": 0.8 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762335812", "popis": "Demontáž stávajících krokví průřezu do 224 cm2", "mj": "m", "mn": 180, "jc": 54, "cc": 9720, "vypocet": "starý vaznicový krov — odhad 180 bm pro 154 m2", "confidence": 0.65 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762341111", "popis": "Bednění střechy z prken tl. 20 mm na sraz — hlavní střecha 36.2°", "mj": "m2", "mn": 154, "jc": 385, "cc": 59290, "vypocet": "plocha bobrovky", "zdroj": "TZ + skladba hl. střecha pos. 5", "confidence": 0.9 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60515112", "popis": "Řezivo jehličnaté prkno tl. 20 mm (bednění hl. střecha)", "mj": "m3", "mn": 3.08, "jc": 8190, "cc": 25225, "vypocet": "154 × 0.02 = 3.08 m3", "confidence": 0.9 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762341017", "popis": "Bednění střech rovných sklon do 60° z desek OSB tl. 25 mm na sraz šroubovaných (vikýře, plnoplošné pod plech)", "mj": "m2", "mn": 51.2, "jc": 675, "cc": 34560, "zdroj": "v1 pol. 29 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762341017b", "popis": "Pobití prkna nebo deska Steico Universal tl. 25 mm — vikýře (nad TI)", "mj": "m2", "mn": 51.2, "jc": 695, "cc": 35584, "zdroj": "TZ + skladba vikýř pos. 6", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762332131", "popis": "Montáž trámků 60×60 mm mezi krokvemi pro 80mm izolaci", "mj": "m", "mn": 205, "jc": 92, "cc": 18860, "vypocet": "205.2 m2 / 1.0 m rozteč = 205 bm", "confidence": 0.7 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60512041", "popis": "Hranolek 60×60 mm impregnovaný", "mj": "m3", "mn": 0.74, "jc": 9740, "cc": 7208, "confidence": 0.8 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762342214", "popis": "Montáž latí pro krytinu bobrovku 50×40 mm — rozteč ~330 mm", "mj": "m", "mn": 467, "jc": 38, "cc": 17746, "vypocet": "154 m2 / rozteč 0.33 = 467 bm", "zdroj": "TZ + skladba hl. střecha pos. 2", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762342222", "popis": "Montáž kontralatí 50×40 mm nad krokvemi", "mj": "m", "mn": 154, "jc": 42, "cc": 6468, "vypocet": "1 kontralať na krokev (25 ks × 6.16 m) + vikýře 14 × 3.81 = 153.4 → 154 bm", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60514114", "popis": "Řezivo jehličnaté lať 50×40 mm impregnovaná (latě + kontralatě bobrovka)", "mj": "m3", "mn": 1.24, "jc": 10700, "cc": 13268, "vypocet": "(467 + 154) × 0.002 = 1.242 m3", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762342621", "popis": "Montáž latí 50×60 mm — větraná vzduchová mezera 60 mm pro vikýře", "mj": "m", "mn": 85, "jc": 52, "cc": 4420, "vypocet": "51.2 m2 / 0.6 m rozteč = 85.3 bm", "zdroj": "TZ + skladba vikýř pos. 4", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60514115", "popis": "Řezivo jehličnaté lať 50×60 mm impregnovaná (větraná mezera vikýř)", "mj": "m3", "mn": 0.26, "jc": 10700, "cc": 2782, "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762353230", "popis": "Montáž střešního vikýře pultového z hraněného řeziva", "mj": "m", "mn": 13.56, "jc": 355, "cc": 4814, "zdroj": "v1 pol. 32 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762381111", "popis": "Ukotvení komínu ke krovu (chemické / mechanické kotvy)", "mj": "kus", "mn": 5, "jc": 3520, "cc": 17600, "zdroj": "v1 pol. 34 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762395000", "popis": "Spojovací prostředky krovů, bednění, laťování (vruty, hřebíky, vazací prvky)", "mj": "m3", "mn": 8.0, "jc": 1630, "cc": 13040, "vypocet": "8 m3 dřeva celkem", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762842122", "popis": "Montáž podbití střech vnějšího přesahu š do 0.8 m z hoblovaných prken na pero a drážku", "mj": "m", "mn": 100, "jc": 347, "cc": 34700, "zdroj": "v1 pol. 36 (převzato)", "confidence": 0.7 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "60515111", "popis": "Řezivo jehličnaté boční prkno 20-30 mm (podbití přesahu střechy)", "mj": "m3", "mn": 2.5, "jc": 8190, "cc": 20475, "vypocet": "OPRAVA F3: bylo 105 m3 v1 → REÁLNĚ 2.5 m3 (100 bm × 0.8 m š × 0.025 m + nadměrek 25 % = 2.5 m3)", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762541127", "popis": "Strukturovaná podkladní rohož pod plech vikýře tl. 8 mm (separační/odvětrávací)", "mj": "m2", "mn": 51.2, "jc": 165, "cc": 8448, "zdroj": "TZ + skladba vikýř pos. 2", "confidence": 0.85 },
+    { "section": "PSV-762", "section_name": "Konstrukce tesařské - krov + bednění + lat", "kod": "762811111", "popis": "Difuzní fólie Tyvek pod skladbu vikýře (paropropustná hydroizolace)", "mj": "m2", "mn": 51.2, "jc": 78, "cc": 3994, "zdroj": "TZ + skladba vikýř pos. 5", "confidence": 0.85 },
+
+    { "section": "PSV-763", "section_name": "Konstrukce suché výstavby (SDK + Fermacell suchá podlaha)", "kod": "763131411", "popis": "SDK podhled na systémovém roštu tl. 50 + 12.5 mm — protipožární dle PBŘ", "mj": "m2", "mn": 205.2, "jc": 685, "cc": 140562, "vypocet": "hl. střecha 154 + vikýře 51.2 = 205.2 m2", "zdroj": "TZ + skladba pos. 9-10", "confidence": 0.85 },
+    { "section": "PSV-763", "section_name": "Konstrukce suché výstavby", "kod": "763131611", "popis": "SDK předstěny + opláštění ocelových konstrukcí v koupelnách + WC + vstupní zádveří (impregnované desky GKBi)", "mj": "m2", "mn": 90, "jc": 720, "cc": 64800, "vypocet": "2 byty × cca 45 m2 předstěn a opláštění oc. profilů", "confidence": 0.55 },
+    { "section": "PSV-763", "section_name": "Konstrukce suché výstavby", "kod": "763131831", "popis": "Tenkovrstvá omítka sádrová Knauf + 2× bílý malířský nátěr", "mj": "m2", "mn": 295.2, "jc": 165, "cc": 48708, "vypocet": "podhledy 205.2 + předstěny + opláštění oc. 90 = 295.2 m2", "zdroj": "TZ + skladba pos. 11", "confidence": 0.8 },
+    { "section": "PSV-763", "section_name": "Konstrukce suché výstavby", "kod": "763413311", "popis": "Suchá podlaha Fermacell — voština 60 mm + 2× deska 2E35 25 mm na podlaze podkroví", "mj": "m2", "mn": 127, "jc": 1190, "cc": 151130, "vypocet": "užitná plocha bytů 127.03 m2", "zdroj": "TZ str. 3 'voštinový systém fermacell tl. 60 + 2 x 12,5 mm fermacell desky 2 E 35, tl. 25 mm' + výkres řezu", "confidence": 0.8 },
+    { "section": "PSV-763", "section_name": "Konstrukce suché výstavby", "kod": "763411511", "popis": "OSB záklop tl. 20-24 mm na zesílené stropní trámy (podklad pro suchou podlahu)", "mj": "m2", "mn": 127, "jc": 425, "cc": 53975, "vypocet": "127 m2 (užitná plocha)", "zdroj": "TZ + řez (OSB záklop tl. 20 mm)", "confidence": 0.85 },
+
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské (rozšířeno o Cu pro hl. střechu + lemování)", "kod": "764002821", "popis": "Demontáž stávajícího střešního výlezu do suti", "mj": "kus", "mn": 1, "jc": 120, "cc": 120, "zdroj": "v1 pol. 38 (převzato)", "confidence": 0.95 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764002881", "popis": "Demontáž oplechování komínů + napojení u světlíku do suti", "mj": "m2", "mn": 18, "jc": 337, "cc": 6066, "vypocet": "5 komínů × cca 3 m2 + světlík 3 m2 = 18 m2", "zdroj": "TZ + ChatGPT", "confidence": 0.75 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764101103", "popis": "Montáž krytiny střechy vikýře drážkováním ze svitků (Lindab Click)", "mj": "m2", "mn": 51.2, "jc": 1190, "cc": 60928, "zdroj": "v1 pol. 40 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "55351051R", "popis": "Plech svitkový Al tl. 1.0 mm hladký pro falcování (Lindab Click matný cihlově červený)", "mj": "m2", "mn": 56.32, "jc": 555, "cc": 31258, "zdroj": "v1 pol. 41 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764311621", "popis": "Oplechování komínů Cu plech tl. 0.6 mm — montáž + materiál", "mj": "m2", "mn": 18, "jc": 1850, "cc": 33300, "vypocet": "5 komínů × cca 3.6 m2", "zdroj": "TZ str. 4 'klempířské výrobky zbývajících střech budou proveden z Cu plechu'", "confidence": 0.7 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764311515", "popis": "Klempířské lemování napojení u světlíku Cu plech", "mj": "m", "mn": 8, "jc": 580, "cc": 4640, "vypocet": "obvod světlíku odhad 8 bm", "zdroj": "TZ + ChatGPT", "confidence": 0.65 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764511631", "popis": "Žlab podokapní polokruhový Cu plech ø 150 mm", "mj": "m", "mn": 25, "jc": 985, "cc": 24625, "vypocet": "uliční fasáda 25.01 bm", "zdroj": "TZ + ČSN 73 3610", "confidence": 0.7 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764554621", "popis": "Svod dešťový Cu plech ø 100 mm (s nátěrem v odstínu fasády do dvora)", "mj": "m", "mn": 30, "jc": 1185, "cc": 35550, "vypocet": "2 svody × cca 15 m výšky (cca 14 m dům + zaústění)", "zdroj": "TZ str. 4 'dešťové svody do dvora opatřeny nátěrem'", "confidence": 0.65 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764311671", "popis": "Okapnice Cu plech rš 250 mm", "mj": "m", "mn": 25, "jc": 410, "cc": 10250, "vypocet": "uliční fasáda", "confidence": 0.7 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764311551", "popis": "Boční lemování vikýřů Cu plech — napojení falc Lindab na bobrovku (KRITICKÝ vodotěsný detail)", "mj": "m", "mn": 15.24, "jc": 685, "cc": 10439, "vypocet": "2 vikýře × 2 strany × 3.81 m = 15.24 bm", "zdroj": "TZ + ChatGPT", "confidence": 0.75 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764311671b", "popis": "Čelní lemování / okapová hrana vikýřů Cu plech", "mj": "m", "mn": 13.56, "jc": 410, "cc": 5560, "vypocet": "2 × 6.78 = 13.56 bm", "confidence": 0.75 },
+    { "section": "PSV-764", "section_name": "Konstrukce klempířské", "kod": "764811561", "popis": "Klempířské oplechování parapetů a ostění vikýřových oken Cu plech", "mj": "m", "mn": 32, "jc": 485, "cc": 15520, "vypocet": "4 okna × cca 8 bm obvodu = 32 bm", "confidence": 0.65 },
+
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka) — v1 zachováno", "kod": "765111101", "popis": "Montáž krytiny keramické hladké (bobrovka cihlová) sklonu do 30° na sucho — korunové krytí", "mj": "m2", "mn": 154, "jc": 570, "cc": 87780, "zdroj": "v1 pol. 42 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "59660010", "popis": "Taška bobrovka režná základní kulatý řez (cihlově červená)", "mj": "kus", "mn": 6028, "jc": 18.3, "cc": 110312, "zdroj": "v1 pol. 43 (převzato)", "confidence": 0.95 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111204", "popis": "Větrací mřížka okapní s hřebenem", "mj": "m", "mn": 28.36, "jc": 105, "cc": 2978, "zdroj": "v1 pol. 44 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "59660204", "popis": "Mřížka ochranná větrací s vysokým průřezem s hřebenem", "mj": "kus", "mn": 28.36, "jc": 104, "cc": 2949, "zdroj": "v1 pol. 45 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111253", "popis": "Montáž hřebene na sucho s podhřebenovou střešní taškou (větraný hřeben)", "mj": "m", "mn": 25, "jc": 1020, "cc": 25500, "zdroj": "v1 pol. 46 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "59660030", "popis": "Hřebenáč drážkový keramický š 210 mm režný", "mj": "kus", "mn": 77.25, "jc": 252, "cc": 19467, "zdroj": "v1 pol. 47 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111305", "popis": "Montáž úžlabí na plech (na bobrovce — napojení vikýř↔bobrovka)", "mj": "m", "mn": 13.56, "jc": 1270, "cc": 17221, "zdroj": "v1 pol. 48 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "59660012", "popis": "Pás těsnící úžlabí klínový samolepící š 50 mm", "mj": "m", "mn": 27.66, "jc": 43.4, "cc": 1200, "zdroj": "v1 pol. 49 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111403", "popis": "Opracování bobrovky v místě prostupů — komíny + světlík (6 ks)", "mj": "kus", "mn": 6, "jc": 924, "cc": 5544, "zdroj": "v1 pol. 50 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111503", "popis": "Příplatek k montáži bobrovky za připevňovací prostředky za sklon přes 30° do 40°", "mj": "m2", "mn": 154, "jc": 176, "cc": 27104, "zdroj": "v1 pol. 52 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111821", "popis": "Demontáž stávající bobrovky do suti", "mj": "m2", "mn": 154, "jc": 187, "cc": 28798, "zdroj": "v1 pol. 53 (převzato)", "confidence": 0.95 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765111831", "popis": "Příplatek k demontáži bobrovky za sklon přes 30°", "mj": "m2", "mn": 154, "jc": 22.4, "cc": 3450, "zdroj": "v1 pol. 54 (převzato)", "confidence": 0.95 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765115403", "popis": "Montáž mříže sněholamu pro keramickou krytinu (sněhové zábrany hřeben + střecha)", "mj": "m", "mn": 25, "jc": 193, "cc": 4825, "zdroj": "v1 pol. 55 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "59660033", "popis": "Komplet protisněhový (4× držák, sněhová mříž 3 m, 2× spojka)", "mj": "sada", "mn": 8, "jc": 2500, "cc": 20000, "zdroj": "v1 pol. 56 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765115521", "popis": "Montáž tyčového sněhového zachytávače před vikýři (3-úrovňový systém)", "mj": "m", "mn": 13.56, "jc": 285, "cc": 3865, "vypocet": "2 vikýře × 6.78 = 13.56 bm před vikýři", "zdroj": "TZ str. 3 'Před okapovou hranou bude osazen tyčový sněhový zachytávač pro zabránění přetížení žlabu ledem' — EXPLICIT v TZ jako TYČOVÝ, ne mříž", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765191011", "popis": "Montáž pojistné difuzně otevřené hydroizolační fólie (Dekten Multi Pro) na hlavní střechu", "mj": "m2", "mn": 154, "jc": 58.4, "cc": 8994, "zdroj": "v1 pol. 57 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "28329250", "popis": "Fólie difuzně propustná Dekten Multi Pro 110 g/m² (s přelepenými spoji)", "mj": "m2", "mn": 169.4, "jc": 15, "cc": 2541, "zdroj": "v1 pol. 58 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765191091", "popis": "Příplatek k pojistné fólii za sklon přes 30°", "mj": "m2", "mn": 154, "jc": 63, "cc": 9702, "zdroj": "v1 pol. 59 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765191013", "popis": "Montáž bitumenové hydroizolační fólie 3. stupně třídy B na vikýře (přetažená přes kontralatě)", "mj": "m2", "mn": 51.2, "jc": 52.9, "cc": 2708, "vypocet": "TZ explicit 'Pojistnou hydroizolací 3. stupně, Třída B, tj. pojistná hydroizolační fólie z bitumenového pásu'", "zdroj": "TZ str. 4 + v1 pol. 60 (upřesnění materiálu)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "28329324b", "popis": "Bitumenový pás pojistné HI 3. stupně Třída B (pro vikýře)", "mj": "m2", "mn": 56.32, "jc": 95, "cc": 5350, "vypocet": "v1 měl PP fólii 40.9 Kč/m² — opraveno na bitumen", "zdroj": "TZ explicit 3. stupně Třída B", "confidence": 0.8 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765191911", "popis": "Demontáž stávající pojistné HI fólie", "mj": "m2", "mn": 154, "jc": 22.3, "cc": 3434, "zdroj": "v1 pol. 62 (převzato)", "confidence": 0.9 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765192011", "popis": "Provizorní zakrytí střechy ochrannou plachtou", "mj": "m2", "mn": 225.7, "jc": 61.6, "cc": 13903, "zdroj": "v1 pol. 63 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "28329204", "popis": "Plachta krycí PVC olemovaná s oky 180 g/m²", "mj": "m2", "mn": 248.27, "jc": 36.8, "cc": 9136, "zdroj": "v1 pol. 64 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765192811", "popis": "Demontáž stávajícího střešního výlezu", "mj": "kus", "mn": 1, "jc": 459, "cc": 459, "zdroj": "v1 pol. 65 (převzato)", "confidence": 0.95 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "765191017", "popis": "Větrací hřebenová tvarovka pro odvětrání střechy (TZ explicit 'řešeno větrací hřebenovou tvarovkou')", "mj": "m", "mn": 25, "jc": 285, "cc": 7125, "zdroj": "TZ str. 3", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "998765122", "popis": "Přesun hmot tonážní pro krytiny skládané ruční v objektech v přes 6 do 12 m", "mj": "t", "mn": 10.705, "jc": 3500, "cc": 37468, "zdroj": "v1 pol. 66 (převzato)", "confidence": 0.85 },
+    { "section": "PSV-765", "section_name": "Krytina skládaná (bobrovka)", "kod": "998765192", "popis": "Příplatek k přesunu hmot tonážnímu za zvětšený přesun do 100 m", "mj": "t", "mn": 10.705, "jc": 1000, "cc": 10705, "zdroj": "v1 pol. 67 (převzato)", "confidence": 0.85 },
+
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské (okna + dveře + parapety)", "kod": "766671025", "popis": "Montáž střešního okna do bobrovky 78×140 cm — O/002", "mj": "kus", "mn": 2, "jc": 2570, "cc": 5140, "zdroj": "v1 pol. 68 (převzato)", "confidence": 0.85, "warning": "Rozměr O/002 ověřit výpisem výplní" },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "61124499", "popis": "Okno střešní dřevěné kyvné, izolační trojsklo 78×140 cm, Uw=1.1 W/m²K, Al oplechování", "mj": "kus", "mn": 2, "jc": 15700, "cc": 31400, "zdroj": "v1 pol. 69 (převzato)", "confidence": 0.8 },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "766621035", "popis": "Montáž PLASTOVÉHO / DŘEVĚNÉHO okna VIKÝŘOVÉHO do otvoru ve zděné stěně (NE do krytiny) — vč. připojovací spáry a pásek (PE-Bandage / komprimovaný profilTC)", "mj": "kus", "mn": 4, "jc": 2850, "cc": 11400, "vypocet": "OPRAVA F4: 4 ks fasádních oken vikýřů, NE 2 ks 'do krytiny tvarované'", "zdroj": "TZ + ChatGPT draft 'velká fasádní okna vikýřů 4 ks (2 v každém vikýři)'", "confidence": 0.75, "warning": "Rozměr a materiál (plast vs dřevo vs hliník) — ověřit výpisem výplní" },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "61140125", "popis": "Okno plastové / dřevěné izolační trojsklo Uw≤0.85 W/m²K, otvíravo-sklopné, 1.2×1.4 m (vikýřové)", "mj": "kus", "mn": 4, "jc": 14500, "cc": 58000, "vypocet": "rozměr odhadem 1.2×1.4 m — ověřit výpisem výplní", "zdroj": "Standard pro vikýřová okna v podkroví", "confidence": 0.6, "warning": "Rozměry a materiál — ověřit" },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "766674811", "popis": "Demontáž stávajícího střešního okna (6 ks)", "mj": "kus", "mn": 6, "jc": 318, "cc": 1908, "zdroj": "v1 pol. 72 (převzato)", "confidence": 0.95 },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "766691111", "popis": "Vnitřní parapety oken vikýřů (4 ks) — dřevo / kompakt / dle interiéru", "mj": "kus", "mn": 4, "jc": 1480, "cc": 5920, "zdroj": "TZ + interiér", "confidence": 0.65 },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "766691112", "popis": "Vnitřní ostění oken vikýřů + střešních oken (10 ostění)", "mj": "kus", "mn": 10, "jc": 850, "cc": 8500, "vypocet": "4 vikýře + 2 střešní = 6 oken × cca 1.7 obvodových ostění = ~10 (odhad zaokr.)", "confidence": 0.6 },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "766660171", "popis": "Vstupní bytové dveře jednokřídlé 900/1970 mm — RC3, EI 30 DP3, 37 dB — vč. oc. zárubně s dřevěnou krycí obložkou (2 ks)", "mj": "kus", "mn": 2, "jc": 24500, "cc": 49000, "zdroj": "TZ str. 4 'Vstupní bytové dveře – 2 ks nových jednokřídlých'", "confidence": 0.85 },
+    { "section": "PSV-766", "section_name": "Konstrukce truhlářské", "kod": "766660172", "popis": "Vnitřní dveře hladké do oc. zárubně 800-900/1970 mm (2 byty × cca 5 dveří = 10 ks)", "mj": "kus", "mn": 10, "jc": 5800, "cc": 58000, "vypocet": "2 byty × 3+kk: zádveří + koupelna + WC + pokoj + ložnice = 5 dveří × 2 = 10", "confidence": 0.65 },
+
+    { "section": "PSV-767", "section_name": "Konstrukce zámečnické (ocelové konstrukce)", "kod": "767120130", "popis": "Ocelová vaznice + sloupky pro krov — 2× U100 u hřebene + 2× U120 v zalomení vikýřů + ocelové sloupky pod vaznice (S235JR, žárově zinkováno)", "mj": "t", "mn": 1.85, "jc": 78500, "cc": 145225, "vypocet": "2× U100 50.02 bm × 10.6 kg/m = 0.53 t + 2× U120 27 bm × 13.4 kg/m = 0.72 t + sloupky cca 6 ks × 100 kg = 0.6 t = celkem 1.85 t", "zdroj": "TZ str. 3 'střední a vrcholovou vaznicí na ocelových sloupcích' + výkres řezu '2x U100' + ChatGPT 'U120 v zalomení'", "confidence": 0.55, "warning": "Statický výpis NUTNÝ — délka, profily, sloupky pouze odhad" },
+    { "section": "PSV-767", "section_name": "Konstrukce zámečnické", "kod": "767120131", "popis": "Nadpraží IPE 100 nad přebouranými dveřmi ve střední podélné stěně (2 ks otvorů světlosti 1.0 m)", "mj": "t", "mn": 0.06, "jc": 78500, "cc": 4710, "vypocet": "2 ks × 1.5 m × 8.1 kg/m × 2 (oboustranné) = 48.6 kg + spojovací = 60 kg", "zdroj": "TZ str. 2 'Jako nadpraží jsou navrženy ocelové profily IPE 100 mm'", "confidence": 0.7 },
+    { "section": "PSV-767", "section_name": "Konstrukce zámečnické", "kod": "767995118", "popis": "Antikorozní ochrana ocelových konstrukcí — žárové zinkování / antikorozní nátěr", "mj": "t", "mn": 1.91, "jc": 14500, "cc": 27695, "vypocet": "celá ocel 1.85 + 0.06 = 1.91 t", "confidence": 0.75 },
+    { "section": "PSV-767", "section_name": "Konstrukce zámečnické", "kod": "767995111", "popis": "Kotvení ocelových konstrukcí — chemické / mechanické kotvy", "mj": "kpl", "mn": 1, "jc": 18500, "cc": 18500, "zdroj": "TZ str. 3 'Kotvení, spojovací materiál, antikorozní ochrana'", "confidence": 0.7 },
+    { "section": "PSV-767", "section_name": "Konstrukce zámečnické", "kod": "767996115", "popis": "Tepelně izolační návlek na ocelový profil ve světlíku — minerální vata + povrch hliník", "mj": "kpl", "mn": 1, "jc": 8500, "cc": 8500, "zdroj": "TZ str. 3 'Ocelový profil bude ve světlíku obalen tepelně izolačním návlekem s minerální vatou, povrch – hliník'", "confidence": 0.8 },
+
+    { "section": "PSV-771", "section_name": "Podlahy z dlaždic + plovoucí podlaha", "kod": "771474112", "popis": "Keramická dlažba lepená do koupelen + WC + zádveří + chodby — formát 30×30 nebo 40×40, mrazuvzdorná, R10", "mj": "m2", "mn": 40, "jc": 1320, "cc": 52800, "vypocet": "2 byty × cca 20 m2 (koupelna + WC + zádveří + chodba) = 40 m2", "zdroj": "TZ + standard 3+kk", "confidence": 0.6 },
+    { "section": "PSV-775", "section_name": "Podlahy plovoucí", "kod": "775413232", "popis": "Plovoucí podlaha vícevrstvá lamela / vinyl / korek na podkladovou podložku — obytné místnosti", "mj": "m2", "mn": 87, "jc": 685, "cc": 59595, "vypocet": "127 m2 užitná - 40 m2 dlažba = 87 m2", "zdroj": "TZ str. 3 'keramická dlažba nalepená nebo plovoucí podlaha na podložce'", "confidence": 0.6 },
+
+    { "section": "PSV-781", "section_name": "Obklady keramické", "kod": "781474112", "popis": "Keramický obklad stěn koupelen + WC — výška 2.0 m, formát 25×40 / 30×60", "mj": "m2", "mn": 95, "jc": 985, "cc": 93575, "vypocet": "4 koupelny × ~16 m2 obkladu + 2 WC × ~12 m2 + spáry zaokr. = 95 m2", "confidence": 0.55 },
+
+    { "section": "PSV-783", "section_name": "Nátěry + omítky finále", "kod": "783325513", "popis": "Vnitřní 2× malířský nátěr bílý na omítky a SDK", "mj": "m2", "mn": 575, "jc": 95, "cc": 54625, "vypocet": "omítky 280 + SDK podhled 205.2 + SDK předstěny 90 = 575 m2", "confidence": 0.75 },
+
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030001000", "popis": "Zařízení staveniště — buňky (kancelář, šatna, sociál), sklady, oplocení, brána, energie + voda, zajištění suti, drobné nářadí", "mj": "kpl", "mn": 1, "jc": 95000, "cc": 95000, "confidence": 0.6 },
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030002000", "popis": "Koordinátor BOZP — fáze realizace + dokumentace ZS", "mj": "kpl", "mn": 1, "jc": 48000, "cc": 48000, "confidence": 0.75 },
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030003000", "popis": "Geodetické zaměření před stavbou + skutečné provedení", "mj": "kpl", "mn": 1, "jc": 28000, "cc": 28000, "confidence": 0.8 },
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030004000", "popis": "Průzkum pevnosti zdiva 1.PP + 1.NP — vybrané přitěžované pilíře (TZ §7)", "mj": "kpl", "mn": 1, "jc": 35000, "cc": 35000, "zdroj": "TZ str. 7 §7 explicit", "confidence": 0.8 },
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030005000", "popis": "Statický dozor + posouzení skutečného provedení (AD)", "mj": "kpl", "mn": 1, "jc": 25000, "cc": 25000, "confidence": 0.75 },
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030006000", "popis": "Pasportizace okolních objektů (sousední BD, navazující fasády) — fotodokumentace + protokol", "mj": "kpl", "mn": 1, "jc": 22000, "cc": 22000, "confidence": 0.7 },
+    { "section": "VRN", "section_name": "Vedlejší rozpočtové náklady", "kod": "030007000", "popis": "Dokumentace skutečného provedení stavby (DSPS) — všechny profese", "mj": "kpl", "mn": 1, "jc": 18000, "cc": 18000, "confidence": 0.8 }
+  ],
+
+  "totals_summary": {
+    "v1_celkem_czk": 2196660.93,
+    "v2_celkem_predbezne_czk": "viz Excel agregát (~4.6 M Kč)",
+    "delta_czk": "~+2.4 M Kč",
+    "delta_pct": "~+109 %",
+    "comment": "Nárůst neznamená 'předražení'; znamená že v1 vynechalo velkou část položek (zdivo, SDK, omítky, TZB-light, VRN, oprava ocelů, oprava izolace). Nezahrnuje D.1.4 TZB (elektro + vytápění + ZTI) = další ~800k-1.2M Kč."
+  },
+
+  "blockers_for_phase_2": [
+    "STATIKA — krokve, U100, U120, sloupky, zesílení stropu (P0)",
+    "VÝPIS VÝPLNÍ OTVORŮ — okno O/002, 4 okna vikýřů, vnitřní dveře, vstupní RC3 (P0)",
+    "VÝKRESOVÁ ČÁST D.1.1.2 — půdorysy + řezy + skladby (P0)",
+    "PBŘ — typy SDK desek, požární odolnost, ucpávky prostupů (P1)",
+    "D.1.4 TZB — kanalizace, vodovod, plyn, elektro, vytápění (P1)",
+    "Geometrie vikýřů — výška čelní stěny, profil bočních stěn (P1)"
+  ]
+}
