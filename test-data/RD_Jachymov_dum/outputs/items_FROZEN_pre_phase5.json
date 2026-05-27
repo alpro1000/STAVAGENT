@@ -41,10 +41,7 @@
       "notes": null,
       "id": "260219_dum.HSV1.001",
       "urs_verification_note": "WebSearch: 'Sejmutí ornice ... do 50 m' m³ — leaf valid; distance ≤ 50 m for staging-close work matches RD Jáchymov dvorek scope",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/823-2-Rekultivace-(2020-I)/5/",
-      "_audit_gap_fixed": "URS_PHASE5B_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -62,8 +59,8 @@
         "132211101",
         "131201101"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "TZ statika dům §5.5 + geologie F4-CS Rdt 350 kPa",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -75,10 +72,7 @@
       "notes": null,
       "id": "260219_dum.HSV1.002",
       "urs_verification_note": "WebSearch: 'Hloubení rýh š do 600 mm v hornině tř. 3 objemu do 100 m3' — exact match to item",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -97,8 +91,8 @@
         "131301101",
         "132201101"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.95,
       "source": "TZ ARS dům §6.2 zahrada — nový vstup do 1.PP",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -111,10 +105,7 @@
       "popis_was_fabricated": "Hloubení figury pro anglický dvorek a nový vstup do 1.PP ze zahrady",
       "urs_code_proposed_was": "132211101",
       "urs_verification_note": "Korekce 2026-05-19: 'figura' RU loanword odstraněn → správný URS term 'Hloubení jam nezapažených' (TKP 131). Verified leaf 131201101 = 'Hloubení jam nezapažených v hornině tř. 3 objemu do 100 m3' m³ (smlouvy.gov.cz, 2016).",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -131,8 +122,8 @@
       "urs_alternatives": [
         "564851111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
-      "urs_confidence": 0.55,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 4-vrstvý dlažební systém (Path C Tier 3 embedded tables)",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
@@ -141,10 +132,7 @@
       "notes": null,
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.004",
-      "realizuje_skladbu": "Anglický dvorek",
-      "cross_verification_status": "WRONG_LEAF",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "realizuje_skladbu": "Anglický dvorek"
     },
     {
       "objekt": "260219_dum",
@@ -161,8 +149,8 @@
       "urs_alternatives": [
         "564851111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
-      "urs_confidence": 0.55,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 5-vrstvý podkladní systém terasa (Path C Tier 3 embedded tables); dřevěná prkna garapa same item v PSV-76 Truhlář",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
@@ -171,10 +159,7 @@
       "notes": null,
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.005",
-      "realizuje_skladbu": "Terasa",
-      "cross_verification_status": "WRONG_LEAF",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "realizuje_skladbu": "Terasa"
     },
     {
       "objekt": "260219_dum",
@@ -192,18 +177,15 @@
         "151101102",
         "151201101"
       ],
-      "urs_status": "matched_websearch_verified",
-      "urs_confidence": 0.95,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §5.3 'pažovat dle BOZP, sklon dočasných výkopů 1:0,5'",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.006",
-      "cross_verification_status": "VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_VERIFIED"
+      "id": "260219_dum.HSV1.006"
     },
     {
       "objekt": "260219_dum",
@@ -222,8 +204,8 @@
         "162701103",
         "162701102"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "= součet HSV-1 hloubení dům",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -236,10 +218,7 @@
       "urs_code_proposed_was": "162701105",
       "urs_code_family_6digit": "162701",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf 162701105 = 9-10 km, item says 'do 8 km'. Hint: Wahrscheinlich 162701104 (8-9 km) podle WebSearch popis ladder",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/23/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -257,8 +236,8 @@
         "174201101",
         "171101101"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §5.3 — Edef2 limity + zásyp pod deska 1.NP",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -267,10 +246,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV1.008",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.HSV1.008"
     },
     {
       "objekt": "260217_sklad",
@@ -288,8 +264,8 @@
         "962081141",
         "121101101"
       ],
-      "urs_status": "matched_websearch_cross_discipline_legitimate",
-      "urs_confidence": 0.85,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS sklad §3 + Demolice stávající kamenné zídky",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -297,10 +273,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260217_sklad.HSV1.001",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "CROSS_DISCIPLINE_OK",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/",
-      "_audit_gap_fixed": "URS_PHASE5B_CROSS_DISCIPLINE_OK"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -473,8 +446,8 @@
         "274321111",
         "273321321"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §4 + §5.5 (bílá vana, ČBS 02 metodika)",
       "subdodavatel": "bila_vana_csb02",
       "subdodavatel_status": "mapped",
@@ -485,10 +458,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV2.001",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -536,8 +506,8 @@
         "631311111",
         "634111111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
-      "urs_confidence": 0.55,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §5.5 + ČBS 02 — bobtnavý pásek + těsnící plech pracovní spáry",
       "subdodavatel": "bila_vana_csb02",
       "subdodavatel_status": "mapped",
@@ -547,11 +517,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV2.003",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "WRONG_LEAF",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -569,8 +535,8 @@
         "272361821",
         "273361801"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §5.5 + B4_productivity Methvin sazba 120 kg/m³ pro BV W0",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
@@ -580,10 +546,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV2.004",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://cs.wikipedia.org/wiki/Beton%C3%A1%C5%99sk%C3%A1_v%C3%BDztu%C5%BE",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -658,8 +621,8 @@
         "274321111",
         "273321311"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 + ARS pozední věnec po obvodu nadezdívky 3.NP + DXF external perimeter 38.70 m",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
@@ -673,10 +636,7 @@
       "_previous_mnozstvi": 3.07,
       "_recalc_reason": "Part 1 inventory 2026-05-17 discovered exact external perimeter 38.70 m from DXF km_R_návrh_tlustá 2 closed polygon (91.28 m² × 6 vrcholů) — replaces prior fallback estimate 4×√104.4 ≈ 41.0 m",
       "id": "260219_dum.HSV2.007",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.estav.cz/cz/10863.pozedni-zelezobetonovy-venec-k-cemu-slouzi-a-jaky-mel-vyvoj-na-co-si-dat-pozor",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -693,8 +653,8 @@
       "urs_alternatives": [
         "631311111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
-      "urs_confidence": 0.55,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 + DXF external perimeter",
       "subdodavatel": "bednici_tesar",
       "subdodavatel_status": "mapped",
@@ -707,11 +667,7 @@
       "_previous_mnozstvi": 20.5,
       "_recalc_reason": "Same as Pozední věnec 3.NP — perimeter 38.70 m DXF-verified",
       "id": "260219_dum.HSV2.008",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "WRONG_LEAF",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "correct_code_hint": "274XXX systémové bednění věnců",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -756,8 +712,8 @@
       "urs_alternatives": [
         "411321414"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §4 — ocelobetonový strop, nabetonávka 60 mm C25/30 XC1",
       "subdodavatel": "ocelobeton_strop_IPE_trapez",
       "subdodavatel_status": "mapped",
@@ -767,10 +723,7 @@
       "id": "260219_dum.HSV2.010",
       "realizuje_skladbu": [
         "S09"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -816,8 +769,8 @@
         "273321321",
         "274321311"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 + ARS § podlaha 1.NP zhutněné lože + ŽB deska + EPS 150 + potěr",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
@@ -829,10 +782,7 @@
       "id": "260219_dum.HSV2.012",
       "realizuje_skladbu": [
         "S05"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://styrotrade.cz/cs/nas-obchod/odborne-rady/skladby-podlah/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -914,8 +864,8 @@
       "urs_alternatives": [
         "273313611"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF sklad_DPZ LWPOLYLINE 7000 mm + rozteč 1000 mm = 7 patek",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
@@ -925,10 +875,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260217_sklad.HSV2.002",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260217_sklad",
@@ -997,8 +944,8 @@
       "urs_alternatives": [
         "174201101"
       ],
-      "urs_status": "matched_websearch_cross_discipline_legitimate",
-      "urs_confidence": 0.85,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF + TZ statika sklad",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
@@ -1009,10 +956,7 @@
       "realizuje_skladbu": [
         "S01_sklad",
         "S05_sklad"
-      ],
-      "cross_verification_status": "CROSS_DISCIPLINE_OK",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_CROSS_DISCIPLINE_OK"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1088,8 +1032,8 @@
       "urs_alternatives": [
         "311321321"
       ],
-      "urs_status": "matched_websearch_verified",
-      "urs_confidence": 0.95,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 + ARS — nástavba 3.NP + DXF external perimeter 38.70 m",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
@@ -1104,10 +1048,7 @@
       "id": "260219_dum.HSV3.002",
       "realizuje_skladbu": [
         "S12"
-      ],
-      "cross_verification_status": "VERIFIED",
-      "cross_verification_evidence_url": "https://www.wienerberger.cz/zdivo-porotherm/produkty/cihly/porotherm-30-profi.html",
-      "_audit_gap_fixed": "URS_PHASE5B_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1124,8 +1065,8 @@
       "urs_alternatives": [
         "317131111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — IPN160 dvojice s uložením 200 mm do maltového lože 50 mm s kari 5/100/100",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
@@ -1137,10 +1078,7 @@
       "id": "260219_dum.HSV3.003",
       "realizuje_skladbu": [
         "S01"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.heluz.cz/cs/vyrobek/preklad-heluz-23-8-a-200-1",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1185,8 +1123,8 @@
       "urs_alternatives": [
         "767141111"
       ],
-      "urs_status": "matched_websearch_cross_discipline_legitimate",
-      "urs_confidence": 0.85,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — zesílení ostění u komínu",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
@@ -1196,10 +1134,7 @@
       "id": "260219_dum.HSV3.005",
       "realizuje_skladbu": [
         "S01"
-      ],
-      "cross_verification_status": "CROSS_DISCIPLINE_OK",
-      "cross_verification_evidence_url": "https://online.ferona.cz/detail/28401/profil-rovnoramenny-l-z-konstrukcni-oceli-valcovane-za-tepla-en-10056-l-100x100x8",
-      "_audit_gap_fixed": "URS_PHASE5B_CROSS_DISCIPLINE_OK"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1216,8 +1151,8 @@
       "urs_alternatives": [
         "962031132"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "BOZP + technologický postup výměny překladů ve zděné stavbě",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
@@ -1225,10 +1160,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV3.006",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1245,8 +1177,8 @@
       "urs_alternatives": [
         "342341111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS — příčky pórobetonové dilatované od stropu",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
@@ -1259,10 +1191,7 @@
       "id": "260219_dum.HSV3.007",
       "realizuje_skladbu": [
         "S02"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.stavago.cz/prickovka-ytong-klasik-tl-150-mm/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260217_sklad",
@@ -1336,8 +1265,8 @@
       "urs_alternatives": [
         "272361821"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "B4_productivity Methvin — výztuž do ZB tvarovek tl. 250 mm",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
@@ -1350,10 +1279,7 @@
       "realizuje_skladbu": [
         "S03a_sklad",
         "S03b_sklad"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1370,8 +1296,8 @@
       "urs_alternatives": [
         "767131120"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — IPE180 v 1.NP pod novou příčkou 2.NP",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
@@ -1379,10 +1305,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV4.001",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://podminky.urs.cz/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1399,8 +1322,8 @@
       "urs_alternatives": [
         "767131120"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §4 — IPE180 stropnice á 1000 mm + zastavěna 104.4 m² → ~8 stropnic",
       "subdodavatel": "ocelobeton_strop_IPE_trapez",
       "subdodavatel_status": "mapped",
@@ -1410,10 +1333,7 @@
       "id": "260219_dum.HSV4.002",
       "realizuje_skladbu": [
         "S09"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.urs.cz/data/download/seznam-katalogu-cs-urs-v-kros.pdf",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1430,8 +1350,8 @@
       "urs_alternatives": [
         "767131120"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — 2×HEA180 trakt ulice",
       "subdodavatel": "ocelobeton_strop_IPE_trapez",
       "subdodavatel_status": "mapped",
@@ -1441,10 +1361,7 @@
       "id": "260219_dum.HSV4.003",
       "realizuje_skladbu": [
         "S09"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://podminky.urs.cz/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1489,8 +1406,8 @@
       "urs_alternatives": [
         "764121511"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — trapéz 40S/160 nad IPE180",
       "subdodavatel": "ocelobeton_strop_IPE_trapez",
       "subdodavatel_status": "mapped",
@@ -1500,10 +1417,7 @@
       "id": "260219_dum.HSV4.005",
       "realizuje_skladbu": [
         "S09"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1520,8 +1434,8 @@
       "urs_alternatives": [
         "763121521"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ PBŘ + statika §4 — ochrana ocelobetonu",
       "subdodavatel": "sadrokartonar",
       "subdodavatel_status": "mapped",
@@ -1531,10 +1445,7 @@
       "id": "260219_dum.HSV4.006",
       "realizuje_skladbu": [
         "S09"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1551,8 +1462,8 @@
       "urs_alternatives": [
         "974031132"
       ],
-      "urs_status": "matched_websearch_cross_discipline_legitimate",
-      "urs_confidence": 0.85,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — klenba zachována, zásyp vyměnit",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -1562,10 +1473,7 @@
       "id": "260219_dum.HSV4.007",
       "realizuje_skladbu": [
         "S06"
-      ],
-      "cross_verification_status": "CROSS_DISCIPLINE_OK",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/",
-      "_audit_gap_fixed": "URS_PHASE5B_CROSS_DISCIPLINE_OK"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1666,8 +1574,8 @@
       "urs_alternatives": [
         "713141121"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — minerální vata mezi trámy + protipož. SDK zespodu",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
@@ -1679,10 +1587,7 @@
       "id": "260219_dum.HSV4.011",
       "realizuje_skladbu": [
         "S07"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.centrum-zatepleni.cz/mineralni-vata-isover-uni-tl--180-mm/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -1901,8 +1806,8 @@
       "urs_alternatives": [
         "767131120"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF sklad_DPZ km_tabulka místností + Phase 3.5 sklad qty crosscheck (Pattern 17 Phase 0a Layer 2 + Pattern 31 CEV Matrix D.2)",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
@@ -1913,10 +1818,8 @@
       "realizuje_skladbu": [
         "S02_sklad"
       ],
-      "_audit_gap_fixed": "PHASE_3_5_SKLAD_QTY_DXF_VERIFY; URS_PHASE5B_FAMILY_VERIFIED",
-      "_added_via_audit": "phase_3_5_sklad_qty_crosscheck_2026-05-26",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/"
+      "_audit_gap_fixed": "PHASE_3_5_SKLAD_QTY_DXF_VERIFY",
+      "_added_via_audit": "phase_3_5_sklad_qty_crosscheck_2026-05-26"
     },
     {
       "objekt": "260217_sklad",
@@ -1961,8 +1864,8 @@
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 + statika §4 — krokve 100/180; DXF KR=111 INSERTs corroborates (krokve+sloupky+námětky combined)",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -1972,10 +1875,7 @@
       "status_flag": "ready_for_phase2",
       "notes": "DXF INSERT 'KR' count 111 includes krokve + sloupky + námětky; geometric calc used as primary",
       "id": "260219_dum.HSV5.001",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.gala-drevo.cz/clanky/proc-na-krovy-pouzivat-kvh-hranoly--jsou-opravdu-drazsi/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -1992,8 +1892,8 @@
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — 2× 60/180 kleštiny",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2001,10 +1901,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV5.002",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.gala-drevo.cz/clanky/proc-na-krovy-pouzivat-kvh-hranoly--jsou-opravdu-drazsi/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -2021,8 +1918,8 @@
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS + statika — pozednice kotvené do věnce",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2030,10 +1927,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV5.003",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://forum.tzb-info.cz/119036-kotveni-pozednice",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -2076,8 +1970,8 @@
       "urs_alternatives": [
         "767131120"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — HEA160 vaznice",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
@@ -2085,10 +1979,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV5.005",
-      "realizuje_skladbu": null,
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://online.ferona.cz/detail/26080/profil-hea-valcovany-za-tepla-en-10365-hea-160",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "realizuje_skladbu": null
     },
     {
       "objekt": "260219_dum",
@@ -2189,8 +2080,8 @@
       "urs_alternatives": [
         "713141121"
       ],
-      "urs_status": "matched_websearch_verified",
-      "urs_confidence": 0.95,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "PDF řez D.1.1.2.2.21 legenda S10 'tepelná izolace PIR 160 mm' EXPLICIT (Path C Tier 1 finding — was prior 180 mm odhad)",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
@@ -2202,10 +2093,7 @@
       "id": "260219_dum.HSV5.009",
       "realizuje_skladbu": [
         "S10"
-      ],
-      "cross_verification_status": "VERIFIED",
-      "cross_verification_evidence_url": "https://www.pamazastreseni.cz/katalog/228-pamatherm-alukraft-022-160x1200x2400mm-pero-drazka",
-      "_audit_gap_fixed": "URS_PHASE5B_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2278,8 +2166,8 @@
       "urs_alternatives": [
         "762331911"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — bednění pod krytinu",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2289,10 +2177,7 @@
       "id": "260219_dum.HSV5.012",
       "realizuje_skladbu": [
         "S10"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.krytiny-strechy.cz/katalog/plechove-falcovane-krytiny/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2309,8 +2194,8 @@
       "urs_alternatives": [
         "765761121"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — plechová falcovaná hliníková krytina",
       "subdodavatel": "plech_falcovany_hlinik",
       "subdodavatel_status": "mapped",
@@ -2322,10 +2207,7 @@
       "id": "260219_dum.HSV5.013",
       "realizuje_skladbu": [
         "S10"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://us.prefa.com/product-catalogue/roof-systems/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2424,8 +2306,8 @@
       "urs_alternatives": [
         "962041151"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ B m.10.e — 9 t dřeva celkem; krov hlavní zdroj",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -2434,10 +2316,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.HSV6.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.HSV6.001"
     },
     {
       "objekt": "260219_dum",
@@ -2595,8 +2474,8 @@
         "978059541",
         "978059511"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "matched_websearch_verified",
+      "urs_confidence": 0.9,
       "source": "TZ ARS dům §3 — koupelny kompletně bourány",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -2608,10 +2487,7 @@
       "id": "260219_dum.HSV6.007",
       "urs_code_proposed_was": "781473810",
       "urs_verification_note": "WebSearch found exact match — 'Demontáž obkladů z dlaždic keramických lepených' (modern bonded tiles, fits post-1990 koupelna). 781471810 = malta-laid (older). 978059541/511 = odsekání (chip-off, no reuse).",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -2794,8 +2670,8 @@
       "urs_alternatives": [
         "622221001"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §3.2 EXPLICIT 'fasádní EPS 70f grey (λ=0,032 W/mK)' + PBŘ EXPLICIT 'EPS tl. max. 200 mm' + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
@@ -2811,10 +2687,7 @@
       "realizuje_skladbu": [
         "S01",
         "S12a"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.isover.cz/produkty/eps/isover-eps-70f",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2831,8 +2704,8 @@
       "urs_alternatives": [
         "622223121"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §3.2 — sokl XPS + cihelný obklad + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
@@ -2845,10 +2718,7 @@
       "id": "260219_dum.HSV7.003",
       "realizuje_skladbu": [
         "S01"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://baumit.cz/produkty/komponenty-pro-zateplovani/zakladaci-profily/soklovy-profil-etics",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2928,8 +2798,8 @@
       "urs_alternatives": [
         "622511111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §3.2 — pastovitá probarvená lomená bílá + DXF perimeter",
       "subdodavatel": "fasadnik_etics",
       "subdodavatel_status": "mapped",
@@ -2944,10 +2814,7 @@
         "S01",
         "S12a",
         "S12b"
-      ],
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cz.weber/ncs-odstiny-dle-nzu-2023",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      ]
     },
     {
       "objekt": "260219_dum",
@@ -2965,8 +2832,8 @@
         "712331101",
         "711332101"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 + statika §5.5 — asfaltové pásy mod. proti radonu",
       "subdodavatel": "izolater_HI",
       "subdodavatel_status": "mapped",
@@ -2975,10 +2842,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://stavimbydlim.cz/postup-hydroizolace-zakladove-desky-v-6-krocich/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED; URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV71.001"
     },
     {
       "objekt": "260219_dum",
@@ -2995,18 +2859,15 @@
       "urs_alternatives": [
         "713381111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika §5.5 'ochrana proti radonu — modifikované asf. pásy + odvětrání'",
       "subdodavatel": "izolater_HI",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.002",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://cze.sika.com/cs/produkty-pro-stavebnictvi/hydroizolaci.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV71.002"
     },
     {
       "objekt": "260219_dum",
@@ -3024,8 +2885,8 @@
         "771274102",
         "711161xxx_sterka"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "DXF dum_DPZ MTEXT labels: 3× koupelna; TZ ARS — HI vana koupelny",
       "subdodavatel": "izolater_HI",
       "subdodavatel_status": "mapped",
@@ -3038,10 +2899,7 @@
       "urs_code_proposed_was": "711132101",
       "urs_code_family_6digit": "711",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = AIP bituminous rolls, item = liquid stěrka coating for koupelna. Hint: Hydroizolační stěrka koupelen — TKP 771-27 family or 711-16 stěrka family",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://cze.sika.com/cs/produkty-pro-stavebnictvi/hydroizolaci.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -3059,8 +2917,8 @@
         "713121121",
         "713121122"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ ARS dům §4 — EPS 150 λ=0.035 tl. 120 mm",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
@@ -3073,10 +2931,7 @@
       "urs_code_proposed_was": "713141121",
       "urs_code_family_6digit": "713121",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = izolace STŘECH plochých, item = PODLAHA EPS. Hint: Podlahy = TKP 713-12 (vrstvy podlah), NOT 713-14 (střechy).",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://styrotrade.cz/cs/produkty/strechy/izolace-bezne-zatizenych-plochych-strech/styro-eps-150/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -3094,8 +2949,8 @@
         "713121121",
         "713121111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.5,
       "source": "TZ ARS dům §4 — kročejová EPS shora ocelobeton",
       "subdodavatel": "izolater_TI",
       "subdodavatel_status": "mapped",
@@ -3106,10 +2961,7 @@
       "urs_code_proposed_was": "713141111",
       "urs_code_family_6digit": "713121",
       "urs_verification_note": "WebSearch verified WRONG LEAF: Same wrong-family — kročejová EPS podlaha, not střecha. Hint: Kročejová izolace mezi vrstvy podlahy = TKP 713-12.",
-      "urs_websearch_verified_at": "2026-05-19",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://styrotrade.cz/cs/produkty/strechy/izolace-bezne-zatizenych-plochych-strech/styro-eps-150/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "urs_websearch_verified_at": "2026-05-19"
     },
     {
       "objekt": "260219_dum",
@@ -3127,8 +2979,8 @@
         "766629011",
         "766629111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF dum_DPZ INSERT block 'okno 1.NP' bbox z block definition + TZ ARS Uw=0.85 W/m²K",
       "subdodavatel": "okennar",
       "subdodavatel_status": "mapped",
@@ -3142,10 +2994,7 @@
         "260219_dum.PSV76.001_aggregate_ulicni",
         "260219_dum.PSV76.002_aggregate_dvorni"
       ],
-      "id": "260219_dum.PSV76.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.vekra.cz/radce/plastova-okna-s-trojsklem/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED; URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV76.001"
     },
     {
       "objekt": "260219_dum",
@@ -3444,8 +3293,8 @@
         "764315235",
         "764312245"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.75,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF MA_klempíř (75.4 m) + SM__ klempířina (98.4 m) total = 173.8 m × 0.40 split heuristic — Path C Tier 3",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
@@ -3458,10 +3307,7 @@
       "_previous_mnozstvi": 46.0,
       "_recalc_reason": "Klempířina total 173.8 m z DXF (Path C Tier 3) replaces estimate ~46 bm. +70% více klempířiny.",
       "id": "260219_dum.PSV76.001",
-      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
-      "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED_CHAPTER_MATCH"
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3479,8 +3325,8 @@
         "764218205",
         "764218210"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.75,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF okna 16 ks INSERT blocks + standard parapet width",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
@@ -3489,10 +3335,7 @@
       "notes": null,
       "_data_quality": "dxf_deterministic",
       "id": "260219_dum.PSV76.002",
-      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
-      "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED_CHAPTER_MATCH"
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3510,8 +3353,8 @@
         "764451802",
         "764454805"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.75,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF klempířina lengths split + TZ ARS dešťové svody",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
@@ -3522,10 +3365,7 @@
       "_previous_mnozstvi": 56.0,
       "_recalc_reason": "Svody 43 bm z DXF split (NE 56 bm odhad)",
       "id": "260219_dum.PSV76.003",
-      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
-      "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED_CHAPTER_MATCH"
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3542,8 +3382,8 @@
       "urs_alternatives": [
         "764312235"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.75,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF klempířina geometry split + TZ ARS 4 vikýře",
       "subdodavatel": "klempir",
       "subdodavatel_status": "mapped",
@@ -3552,10 +3392,7 @@
       "notes": null,
       "_data_quality": "dxf_perimeter_ratio_estimate",
       "id": "260219_dum.PSV76.004",
-      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
-      "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED_CHAPTER_MATCH"
+      "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4."
     },
     {
       "objekt": "260219_dum",
@@ -3572,8 +3409,8 @@
       "urs_alternatives": [
         "767542111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ statika dům §4 — schodiště UPE200 + UPE100 podružné prvky",
       "subdodavatel": "zamecnik_PSV",
       "subdodavatel_status": "mapped",
@@ -3582,10 +3419,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.obchodprodilnu.cz/produkty/stavebni-prvky-a-materialy/rosty-schodnice/schodnice-ocelove.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV76.001"
     },
     {
       "objekt": "260219_dum",
@@ -3602,18 +3436,15 @@
       "urs_alternatives": [
         "767542111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — ocelové schodiště s dřevěnými stupni",
       "subdodavatel": "zamecnik_PSV",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.002",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.obchodprodilnu.cz/produkty/stavebni-prvky-a-materialy/rosty-schodnice/schodnice-ocelove.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV76.002"
     },
     {
       "objekt": "260219_dum",
@@ -3731,8 +3562,8 @@
         "776521820",
         "776521810"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF km_tabulka místností MTEXT (návrh) — rooms classified per name (kuchyně/obytná/chodba = vinyl) + TZ ARS §3.2.4 nášlapná vrstva",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
@@ -3762,10 +3593,7 @@
       "_expansion_origin": [
         "260219_dum.PSV77.001_aggregate"
       ],
-      "id": "260219_dum.PSV77.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://podminky.urs.cz/item/CS_URS_2021_02/776321212",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV77.001"
     },
     {
       "objekt": "260219_dum",
@@ -4430,18 +4258,15 @@
       "urs_alternatives": [
         "375211102"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ PBŘ dům — ČSN EN 14604 autonomní hlásič kouře 4 ks",
       "subdodavatel": "elektroinstalater",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV95.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.technicke-normy-csn.cz/csn-en-14604-342711-182944.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV95.001"
     },
     {
       "objekt": "260219_dum",
@@ -4545,8 +4370,8 @@
       "urs_alternatives": [
         "722290521"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — vodovod + kanalizace stávající, bez změny",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
@@ -4555,10 +4380,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.001",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.sanitino.cz/vodovodni-baterie",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV72.001"
     },
     {
       "objekt": "260219_dum",
@@ -4576,8 +4398,8 @@
         "722172021",
         "722262111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "TZ ARS dům §4 — nové koupelny + kuchyně, vyjasnění #6 working assumption",
       "subdodavatel": "vodar",
       "subdodavatel_status": "mapped",
@@ -4586,10 +4408,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV72.002",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.ceskestavby.cz/jak-se-stavi-dum/sprchy-vany-vana-zachod-umyvadlo-sprchove-kouty-5799.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "id": "260219_dum.PSV72.002"
     },
     {
       "objekt": "260219_dum",
@@ -6277,8 +6096,8 @@
         "962024151",
         "965042141"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.65,
       "source": "DXF dum_DPZ řez A-A bourání + POZN.1.02 z půdorysů bourání",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -6288,10 +6107,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV6.016",
-      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_02; URS_PHASE5B_FAMILY_VERIFIED",
-      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/"
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_02",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     },
     {
       "objekt": "260219_dum",
@@ -6309,8 +6126,8 @@
         "962031321",
         "965042141"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
       "source": "DXF dum_DPZ řez A-A bourání + POZN.1.03 + půdorys bourání",
       "subdodavatel": "bourani_demolice",
       "subdodavatel_status": "mapped",
@@ -6320,10 +6137,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV6.017",
-      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_03; URS_PHASE5B_FAMILY_VERIFIED",
-      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/"
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_03",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     },
     {
       "objekt": "260219_dum",
@@ -6341,8 +6156,8 @@
         "873311111",
         "899711111"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.7,
       "source": "TZ ARS dům §3.2 (drenáž za opěrnou stěnou) + POZN.2.02 z půdorysů návrh + řez A-A návrh",
       "subdodavatel": "izolater_HI",
       "subdodavatel_status": "mapped",
@@ -6352,10 +6167,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV1.015",
-      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_2_02; URS_PHASE5B_FAMILY_VERIFIED",
-      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/"
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_2_02",
+      "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     },
     {
       "objekt": "260217_sklad",
@@ -6748,19 +6561,5 @@
         ]
       }
     ]
-  },
-  "_phase5b_websearch_log": {
-    "applied_at": "2026-05-27",
-    "queries_total": 59,
-    "items_patched": 65,
-    "verdict_distribution": {
-      "FAMILY_VERIFIED_CHAPTER_MATCH": 1,
-      "FAMILY_VERIFIED": 46,
-      "WRONG_LEAF": 4,
-      "CROSS_DISCIPLINE_OK": 4,
-      "VERIFIED": 4
-    },
-    "budget_spent_usd": 0.6,
-    "results_log": "outputs/phase5b_websearch_results.json"
   }
 }

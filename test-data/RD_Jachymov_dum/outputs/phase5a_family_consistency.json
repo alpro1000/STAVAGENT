@@ -1,0 +1,5957 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-27",
+  "_purpose": "Phase 5A — URS family code consistency check (offline, no WebSearch, no items.json mutation).",
+  "_pattern_compliance": {
+    "pattern_15": "Catalog-matching phase — operates against FROZEN baseline only",
+    "pattern_21": "Multi-factor selection — family-digit factor evaluated",
+    "pattern_25": "Prepares targeted WebSearch candidate list for Phase 5B (selective)",
+    "pattern_26": "Honest fallback hierarchy — NO fabrication; gaps flagged explicitly"
+  },
+  "_summary_by_flag_class": {
+    "family_match": 175,
+    "family_mismatch": 27,
+    "no_code": 9,
+    "family_mismatch_whitelisted": 1
+  },
+  "_summary_by_kapitola_with_mismatches": {
+    "HSV-1 Zemní práce": 3,
+    "HSV-2 Základové a ŽB": 3,
+    "HSV-3 Svislé konstrukce": 3,
+    "HSV-4 Vodorovné": 11,
+    "HSV-5 Krov + střecha": 1,
+    "HSV-6 Bourací práce": 2,
+    "PSV-77 Podlahy": 1,
+    "PSV-95 Detekce požární": 2,
+    "M-21 ELI silnoproud": 1
+  },
+  "_websearch_candidates_total": 204,
+  "_websearch_candidates_by_priority": {
+    "high": 27,
+    "medium": 177
+  },
+  "_websearch_budget_estimate": "~$2.04 (Anthropic WebSearch ~$0.01/query)",
+  "_items_total": 212,
+  "candidates_for_phase5b": [
+    {
+      "item_id": "260219_dum.HSV1.004",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4",
+      "urs_code_current": "564831111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "5",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV1.005",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm",
+      "urs_code_current": "564831111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "5",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.001",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Sejmutí ornice a demolice stávajících kamenných zídek a schodiště v místě nového",
+      "urs_code_current": "962031132",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV2.003",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění",
+      "urs_code_current": "631311115",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV2.008",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Bednění pozedního věnce systémové oboustranné",
+      "urs_code_current": "631311115",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.005",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Štěrkopískové lože pod podlahu skladu + pod schodišťovou desku",
+      "urs_code_current": "174101101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV3.005",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Zesílení ostění úhelníky L100/10 dvojicí u otvoru u komínového tělesa (statická ",
+      "urs_code_current": "767131120",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV3.006",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Dočasné podstojkování stávajících přiléhajících stropů při osazování IPN překlad",
+      "urs_code_current": "962081120",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV3.003",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
+      "urs_code_current": "273361821",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.007",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Vyvezení původního zásypu z cihelné klenby 1.PP/1.NP — manuálně + odvoz",
+      "urs_code_current": "974031150",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.008",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Nový zásyp klenby 1.PP/1.NP — perlitbeton (lehký zásyp) tl. 100 mm",
+      "urs_code_current": "271223111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.009",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Plastická perlitbetonová roznášecí vrstva tl. 50 mm nad zásypem klenby",
+      "urs_code_current": "631321311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.010",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Strop trámový 1.NP/2.NP — sejmutí podlah, demontáž záklopu a zásypu shora (zacho",
+      "urs_code_current": "974041141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.011",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Tepelná izolace minerální vata mezi trámy stropu 1.NP/2.NP, tl. 180 mm (= trám 6",
+      "urs_code_current": "713121121",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.013",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Suchá podlahová skladba 1.NP/2.NP — zásyp Liapor pro vyrovnání tl. 50 mm",
+      "urs_code_current": "631311114",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV4.014",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Suchá podlahová skladba — sádrovláknité dílce Fermacell tl. 25 mm (dva 12.5 mm v",
+      "urs_code_current": "771421111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.001",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Dřevěné stropnice 100/160 mm á 625 mm primární zastřešení skladu — rezivo C24 fu",
+      "urs_code_current": "762341110",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.002",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Prkenný záklop stropnic skladu tl. 20 mm + impregnace",
+      "urs_code_current": "762331110",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.003",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Hydroizolační střešní souvrství skladu (modifikovaný asfaltový pás SBS + ochrann",
+      "urs_code_current": "712331101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.006",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Žárově zinková povrchová úprava IPE180 + pororoštů dle ČSN EN ISO 12944 (C3 pros",
+      "urs_code_current": "783201001",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV5.015",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Vikýře — zděná čela z Porotherm 30 (odhad 4 ks × ~3 m² stěna)",
+      "urs_code_current": "311321411",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV6.007",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání keramických obkladů a zařizovacích předmětů v koupelnách 1.NP + 2.NP",
+      "urs_code_current": "781473810",
+      "urs_confidence_current": 0.9,
+      "urs_status_current": "matched_websearch_verified",
+      "family_actual": "7",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV6.011",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Demontáž všech sanitárních zařizovacích předmětů (WC, umyvadla, baterie, sprcha)",
+      "urs_code_current": "725900001",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.PSV77.005",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Mokrá podlahová skladba — betonový potěr s kari síťkou 4/100/100 tl. 50 mm + sam",
+      "urs_code_current": "631321311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.PSV95.001",
+      "kapitola": "PSV-95 Detekce požární",
+      "popis_excerpt": "Autonomní hlásič kouře dle ČSN EN 14604 — 4 ks v místnostech 1.01, 1.02, 2.04, 3",
+      "urs_code_current": "375211101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.PSV95.002",
+      "kapitola": "PSV-95 Detekce požární",
+      "popis_excerpt": "Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné chodbě",
+      "urs_code_current": "966067121",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.M21.007",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revizní zpráva pro kolau",
+      "urs_code_current": "996019011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "ws_priority": "high"
+    },
+    {
+      "item_id": "260219_dum.HSV1.006",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Pažení a rozepření dočasných výkopů příložné, hl. do 2 m, v zemině třídy 3",
+      "urs_code_current": "151101101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV1.007",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Vodorovné přemístění výkopku — odvoz na deponii do 8 km vč. skládkovného (zemina",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV1.008",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Zhutněný štěrkopískový zásyp + lože pod ŽB deskou 1.NP, Edef2 ≥ 30 MPa na pláni ",
+      "urs_code_current": "174101101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.004",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Hloubení patek pro stojky IPE180 zastřešení parkingu, 500×500 mm × 1.0 m hl. × 7",
+      "urs_code_current": "132211101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.005",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Zhutněný štěrkopískový násyp pod podlahu skladu + štěrkopísek pro IPE patky",
+      "urs_code_current": "174101101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.006",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Odvoz výkopku z hloubení skladu + figur + patek na deponii do 8 km",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.001",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Bílá vana ČBS 02 — pata úhlové opěrné stěny 250×1200 mm × L=10 m, C25/30 XC3 XF1",
+      "urs_code_current": "274321321",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.002",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Bílá vana ČBS 02 — stěna úhlová tl. 250 mm × výška 2050 mm × L=10 m, beton C25/3",
+      "urs_code_current": "274321321",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.004",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Výztuž bílé vany B500B 120 kg/m³ (empirická sazba Methvin pro úhlové opěrné stěn",
+      "urs_code_current": "273361821",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.005",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Separační PE fólie pod základovou patou bílé vany (povinná dle ČBS 02)",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.006",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Mokré ošetřování betonu bílé vany min. 7 dní dle ČSN EN 13670 + ČBS 02 (kontrola",
+      "urs_code_current": "279351102",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.007",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "ŽB pozední věnec 300×250 mm po obvodu nadezdívky 3.NP, beton C25/30 XC1 + výztuž",
+      "urs_code_current": "274321311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.009",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Výztuž B500B věnce 100 kg/m³ (Methvin sazba pro pozední věnce)",
+      "urs_code_current": "273361821",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.010",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Nabetonávka stropu 2.NP/3.NP — beton C25/30 XC1 tl. 60 mm nad vlnu trapézového p",
+      "urs_code_current": "274321111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.011",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Výztuž nabetonávky kari síť 5/100/100 (cca 4.4 kg/m²)",
+      "urs_code_current": "273362441",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.012",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "ŽB deska podlahy 1.NP na terénu tl. 150 mm, C25/30 XC2 + vyztužení kari 6/150/15",
+      "urs_code_current": "273321311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV2.013",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Výztuž ŽB desky 1.NP — kari 6/150/150 + B500B okrajové pruty (~75 kg/m³ Methvin)",
+      "urs_code_current": "273361821",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.001",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Základové pasy z prostého betonu C16/20 XC0, 500×500 mm po obvodu skladu (nezámr",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.002",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Dvoustupňové patky pro IPE180 zastřešení parkingu — spodní část prostý beton C16",
+      "urs_code_current": "273313811",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.003",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300",
+      "urs_code_current": "311233812",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.004",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "Beton C25/30 XC3 XF1 XA1 pro zalití tvarovek ZB patek + lemujících zídek parking",
+      "urs_code_current": "273321321",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.006",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "popis_excerpt": "ŽB schodišťová deska ve sklonu + základový pas — beton C25/30 XC3 (terén ke skla",
+      "urs_code_current": "273361821",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV3.001",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Lokální dozdívky a přizdívky z cihel plných pálených P10 na MVC M10 (uvedeno v T",
+      "urs_code_current": "311232511",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV3.002",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Nadezdívka 3.NP a čela vikýřů — Porotherm 30 Profi P10 na maltu pro tenké spáry,",
+      "urs_code_current": "311321411",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV3.003",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Ocelové překlady IPN160 ve dvojici nad otvory pro nové dveře/okna v 1.NP a 2.NP ",
+      "urs_code_current": "317143112",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV3.004",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Maltové uložení překladů IPN160 — MC25 tl. 50 mm + kari 5/100/100 (po obou stran",
+      "urs_code_current": "317242421",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV3.007",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Nové příčky z pórobetonových tvárnic 150 mm na lepidlo + dilatovány od stropu",
+      "urs_code_current": "342241211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV3.001",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Zadní opěrná stěna — prefabrikované betonové bloky Herkul H-BLOK Standard, vazba",
+      "urs_code_current": "311233815",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV3.002",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "popis_excerpt": "Obvodové stěny skladu — tvarovky ztraceného bednění tl. 250 mm × výška 2.4 m + z",
+      "urs_code_current": "311233811",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.001",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Ocelová stropnice IPE180 1.NP v pozici nové příčky 2.NP — dodávka + montáž (1 ks",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.002",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Ocelobetonový strop 2.NP/3.NP — stropnice IPE180 á 1000 mm × rozpon ~8 m × ~8 ks",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.003",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Ocelobetonový strop — výztuha 2×HEA180 trakt do ulice (Fibichova), dl. ~10 m",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.004",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Ocelobetonový strop — výztuha HEA200 dvorní trakt, dl. ~10 m",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.005",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Trapézový plech 40S/160 tl. 0.75 mm — dodávka + montáž na stropnice IPE180",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.006",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Protipožární SDK podhled pod trapézovým plechem (EI 30 dle PBŘ — ocelobeton + SD",
+      "urs_code_current": "342213131",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV4.012",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Protipožární SDK podhled zespodu trámového stropu (EI 30 dle PBŘ)",
+      "urs_code_current": "342213131",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.004",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Sekundární zastřešení parkingu — IPE180 v rozteči 1000 mm × délka 7 m × 7 ks",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.005",
+      "kapitola": "HSV-4 Vodorovné",
+      "popis_excerpt": "Pojezdové ocelové pororošty demontovatelné — povrch parkingu (žárově zinkováno)",
+      "urs_code_current": "411321515",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.001",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Tesařský krov — krokve 100/180 mm á 800 mm, rezivo C24 fungicidní + protihmyzí (",
+      "urs_code_current": "762331911",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.002",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Tesařský krov — kleštiny dvojfošny 60/180 mm probíhající v oblasti spací části",
+      "urs_code_current": "762331912",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.003",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Tesařský krov — pozednice 140/160 mm kotvená do ŽB věnce 3.NP",
+      "urs_code_current": "762331923",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.004",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Tesařský krov — námětky 60/100 v dolní koncové části pro přesah střechy ~500 mm",
+      "urs_code_current": "762331911",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.005",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Ocelová středová vaznice HEA160 — 2 ks × cca 10 m délka",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.006",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Ocelové sloupky uzavřený profil 100×100×4 mm pod vaznice HEA160 (~6 ks × ~2.5 m ",
+      "urs_code_current": "411321414",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.007",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Bednění z prken tl. 20 mm pod nadkrokevní PIR (biodeska/palubka)",
+      "urs_code_current": "762341711",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.008",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Parotěsná folie nad bedněním pod nadkrokevní PIR (např. Isover Vario nebo Tyvek ",
+      "urs_code_current": "712311101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.009",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Nadkrokevní tepelná izolace PIR (polyisokyanurát) tl. 160 mm (λ=0,022 W/mK) — ře",
+      "urs_code_current": "713131811",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.010",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Doplňková hydroizolační difuzně otevřená folie nad PIR pod kontralatě",
+      "urs_code_current": "712311111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.011",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Distanční kontralatě 40×60 mm pro vzduchovou mezeru nad PIR",
+      "urs_code_current": "762331923",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.012",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Bednění z prken tl. 25 mm pod plechovou hliníkovou krytinu (rozsah dle technolog",
+      "urs_code_current": "762341711",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.013",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Plechová falcovaná HLINÍKOVÁ krytina (např. PREFA, Rheinzink, Lindab) + tlumící ",
+      "urs_code_current": "765791121",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.014",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Patro pro přespání v krovu — biodeska / OSB desky tl. 22 mm nad kleštinami",
+      "urs_code_current": "762341711",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV5.016",
+      "kapitola": "HSV-5 Krov + střecha",
+      "popis_excerpt": "Vikýře — provětrávaná fasáda min. vata + plech falcovaný hliník (4 vikýře × ~6 m",
+      "urs_code_current": "765791121",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.001",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání kompletního stávajícího krovu vč. vikýřů — vaznicový s ležatou stolicí —",
+      "urs_code_current": "962041141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.002",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání stávající plechové krytiny (manuálně, recyklace plechu)",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.003",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání zděných nadezdívek nad stropem 2.NP (mimo štítových stěn) — cihla pálená",
+      "urs_code_current": "962031132",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.004",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání trámového stropu 2.NP/podkroví — kompletně (vč. zajištění schodiště)",
+      "urs_code_current": "962041141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.005",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání stávajících lehkých příček (cihla, sádrokarton, dřevo)",
+      "urs_code_current": "962031132",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.006",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání 8 nových otvorů v nosných cihelných zdech pro dveře/okna (~1.0 × 2.1 m)",
+      "urs_code_current": "962031132",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.008",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Sejmutí podlah 1.NP a 2.NP — vč. nášlapů, podkladních vrstev",
+      "urs_code_current": "974031132",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.009",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Demontáž záklopu a zásypů stropu 1.NP (prkenný záklop na trámech zachován)",
+      "urs_code_current": "974041151",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.010",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Demontáž všech oken a dveří stávajících (recyklace)",
+      "urs_code_current": "968071120",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.012",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Odvoz a likvidace stavební suti dle vyhl. 8/2021 Sb. — celková tonáž odpadů",
+      "urs_code_current": "997013501",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV7.001",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "popis_excerpt": "Příprava fasádního podkladu — očištění tlakovou vodou, vyspravení omítek, fungic",
+      "urs_code_current": "622401110",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV7.002",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "popis_excerpt": "ETICS kontaktní zateplení — EPS 70F grey λ=0.032 tl. 160 mm + síťka + lepidlo + ",
+      "urs_code_current": "622221121",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV7.003",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "popis_excerpt": "ETICS sokl — XPS λ=0.034 tl. 120 mm + soklový profil + cihelný obklad spárovaný",
+      "urs_code_current": "622223111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV7.004",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "popis_excerpt": "Špalety oken — EPS přesah 35-40 mm + síťka + omítka",
+      "urs_code_current": "622221221",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV7.005",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "popis_excerpt": "Profilace fasády — různé tloušťky EPS (kordony, šambrány, rámování oken) — paušá",
+      "urs_code_current": "622221221",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV7.006",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "popis_excerpt": "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ — finální vrstva ET",
+      "urs_code_current": "622521111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV71.001",
+      "kapitola": "PSV-71 Izolace HI",
+      "popis_excerpt": "Hydroizolace pod ŽB deskou 1.NP — modifikované asfaltové pásy SBS 2× (zároveň pr",
+      "urs_code_current": "712311101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV71.002",
+      "kapitola": "PSV-71 Izolace HI",
+      "popis_excerpt": "Odvětrání radonu z podloží — perforované DN50 trubky v štěrkovém loži + výdech n",
+      "urs_code_current": "712381111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV71.003",
+      "kapitola": "PSV-71 Izolace HI",
+      "popis_excerpt": "Hydroizolační stěrka koupelen 3 ks — podlaha + sokl 200 mm + sprchový kout výška",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV71.001",
+      "kapitola": "PSV-71 Izolace TI",
+      "popis_excerpt": "Podlahový EPS 150 λ=0.035 tl. 120 mm — pod betonový potěr 1.NP a 3.NP",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV71.002",
+      "kapitola": "PSV-71 Izolace TI",
+      "popis_excerpt": "Kročejová EPS 150 / 30 dB tl. 30 mm nad ocelobetonovým stropem 2.NP/3.NP",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 1.NP' velikost 1185×",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 1.NP vzadu' velikost",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.003",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 2.NP' velikost 1160×",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.004",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 3.NP' velikost 1785×",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.005",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno 3.NP vzadu' velikost",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.006",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno male 3.NP vzadu' vel",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.007",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové okno izolačním trojsklem Uw=0.85 W/m²K — typ 'okno malé vzadu' velikost",
+      "urs_code_current": "766621011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.008",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Integrované stínící venkovní žaluzie v kastlíku pod omítkou s purenitovou izolac",
+      "urs_code_current": "766631211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.009",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Plastové vstupní dveře (ulice + zahrada) — 2 ks",
+      "urs_code_current": "766682111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.010",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Vnitřní dveře DTD laminované s obložkovou zárubní — odhad 15 ks",
+      "urs_code_current": "766660035",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Klempíř",
+      "popis_excerpt": "Klempířské oplechování krytiny — úžlabí, hřeben, štítové lemy (Al / Pzn lakovaný",
+      "urs_code_current": "764312235",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Klempíř",
+      "popis_excerpt": "Venkovní parapety oken — Pzn plech lakovaný 250 mm × tl. 0.55 mm × 16 ks oken",
+      "urs_code_current": "764218201",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.003",
+      "kapitola": "PSV-76 Klempíř",
+      "popis_excerpt": "Dešťové svody Pzn 100 mm + žlaby — 4 svody × ~14 m + žlaby per obvod střechy",
+      "urs_code_current": "764454802",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.004",
+      "kapitola": "PSV-76 Klempíř",
+      "popis_excerpt": "Klempířské doplňky vikýřů + atika + závětrné lemy (4 vikýře komplexní detail)",
+      "urs_code_current": "764315235",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Zámečnictví",
+      "popis_excerpt": "Ocelové schodiště ze zahrady na mezipodestu — UPE200 schodnice + dřevěné nášlapy",
+      "urs_code_current": "767531111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Zámečnictví",
+      "popis_excerpt": "Interní ocelové schodiště do spacího patra v 3.NP s dřevěnými stupni (truhlářské",
+      "urs_code_current": "767531111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.003",
+      "kapitola": "PSV-76 Zámečnictví",
+      "popis_excerpt": "Stříšky nad vstupy z ocelové konstrukce + Cetris desky + falcovaná krytina — 2 k",
+      "urs_code_current": "767532111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.004",
+      "kapitola": "PSV-76 Zámečnictví",
+      "popis_excerpt": "Ocelové zábradlí svařované z jeklů + nerez výplň pZn antracit — schodiště interi",
+      "urs_code_current": "767163115",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Truhlář",
+      "popis_excerpt": "Dřevěné stupně ocelových schodišť (truhlářské, dub masiv tl. 40 mm)",
+      "urs_code_current": "766811111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Truhlář",
+      "popis_excerpt": "Dřevěná terasa za opěrnou stěnou — prkna garapa 145×25 mm na hliníkový rošt na r",
+      "urs_code_current": "771474112",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV77.001",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Nášlapná vrstva vinyl tl. 4 mm na suchou skladbu — obytné místnosti (ložnice, ob",
+      "urs_code_current": "776511820",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV77.002",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Nášlapná vrstva keramická dlažba lepená — koupelny + WC + spíž + komora (NÁDRŽ N",
+      "urs_code_current": "771274102",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV77.003",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Nášlapná vrstva keramická dlažba — 1.PP technické místnosti (sušárna + sklepy + ",
+      "urs_code_current": "771274102",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV77.004",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Nášlapná vrstva biodeska (smrk masiv) nebo OSB v 3.NP spací části nad krovem",
+      "urs_code_current": "766411111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV77.006",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Soklíky podlahové laminátové (dub) v obytných místnostech s vinyl podlahou",
+      "urs_code_current": "776511831",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV77.007",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Soklíky keramické v místnostech s dlažbou (koupelny + WC + spíž + 1.PP)",
+      "urs_code_current": "771274107",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.001",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1",
+      "urs_code_current": "612311311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.002",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 1",
+      "urs_code_current": "612311311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.003",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 2",
+      "urs_code_current": "612311311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.004",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Omítka jádrová vápenocementová tl. 15 mm + štuková povrchová úprava na stěnách 3",
+      "urs_code_current": "612311311",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.005",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výma",
+      "urs_code_current": "612471141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.006",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výma",
+      "urs_code_current": "612471141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.007",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "SDK podhled + případné předstěny — tmelení spojů Q3 + povrchová úprava před výma",
+      "urs_code_current": "612471141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.008",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Keramický obklad stěn koupelny 1.05 1.NP — výška obkladu 1.6 m (z DXF km Obklady",
+      "urs_code_current": "781447001",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.009",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Keramický obklad stěn koupelny 2.03 2.NP — výška obkladu 2.45 m (z DXF km Obklad",
+      "urs_code_current": "781447001",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.010",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Keramický obklad stěn koupelny 3.04 3.NP — výška obkladu 2.7 m (z DXF km Obklady",
+      "urs_code_current": "781447001",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.011",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Keramický obklad za kuchyňskou linkou nad pracovní deskou — 2 kuchyně × ~5 m² (1",
+      "urs_code_current": "781447001",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Interiérová výmalba akrylátová bílá 2× — všechny stěny + podhledy mimo obklad",
+      "urs_code_current": "784121011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.PSV76.001",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Bezpečnostní dveře RC3 v ocelové zárubni — vrata skladu (TZ statika §1.4 RC3 cer",
+      "urs_code_current": "766682111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.PSV77.001",
+      "kapitola": "PSV-77 Podlahy",
+      "popis_excerpt": "Betonová dlažba do pískového lože — povrch podlahy skladu (~21 m²)",
+      "urs_code_current": null,
+      "urs_confidence_current": 0.5,
+      "urs_status_current": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.001",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Revize stávajícího napojení vodovodu + kanalizace na pozemku — kontrola stavu, č",
+      "urs_code_current": "722290515",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.002",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Nové rozvody studené + teplé vody do koupelen 1.NP + 2.NP + 3.NP a kuchyní (PEX/",
+      "urs_code_current": "722172011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.003",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Nové odpadní rozvody PVC-HT DN40-DN110 ke koupelnám 1.NP, 2.NP, 3.NP a kuchyním ",
+      "urs_code_current": "721174021",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Sanitární keramika dodávka + montáž v koupelně 1.05 1.NP: 1× vana (DXF) + 1× umy",
+      "urs_code_current": "725291131",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Sanitární keramika dodávka + montáž v koupelně 2.03 2.NP: 1× umyvadlo (DXF) + 1×",
+      "urs_code_current": "725291131",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Sanitární keramika dodávka + montáž v koupelně 3.04 3.NP: 1× WC (DXF) + 1× umyva",
+      "urs_code_current": "725291131",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.007",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Kuchyňský dřez nerez + montáž — 2 ks (kuchyně 1.06 byt rodičů + kuchyně 3.05 byt",
+      "urs_code_current": "725840111",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.008",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Vodovodní baterie (WC ventil + páková umyvadlová + sprchové + dřezové + termosta",
+      "urs_code_current": "725822611",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.009",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Akumulační zásobník TUV ~300 l v 1.PP napojený na topný systém (sporáková kamna ",
+      "urs_code_current": "732419411",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.010",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Elektrický bojler ~80 l v koupelně 3.NP (nezávislý zdroj pro samostatný byt)",
+      "urs_code_current": "732429211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.001",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Sporáková kamna na tuhá paliva ~10 kW s akumulačním zásobníkem TUV — dodávka",
+      "urs_code_current": "733241011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.002",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Sporáková kamna — montáž vč. napojení na komín + akumulační zásobník (cca 8 Nh)",
+      "urs_code_current": "733281011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.003",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Elektrokotel ~8 kW pro 3.NP samostatný byt — dodávka + montáž + napojení",
+      "urs_code_current": "733131221",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.004",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Krb na tuhá paliva v 3.NP ~6 kW — dodávka + montáž s napojením na samostatný kom",
+      "urs_code_current": "733241011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.005",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Multisplit tepelné čerpadlo vzduch-vzduch — 1× venkovní jednotka ~10 kW (silent ",
+      "urs_code_current": "733425211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.006",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Multisplit TČ — 5× vnitřní jednotka v obytných místnostech (1.NP, 2.NP, 3.NP — c",
+      "urs_code_current": "733425221",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.007",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Revize stávajícího komínu — kontrola, čištění, vystrojení vložkou nerez DN160 pr",
+      "urs_code_current": "734262122",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV73.008",
+      "kapitola": "PSV-73 Vytápění",
+      "popis_excerpt": "Rozvody otopné soustavy Cu/PEX k vnitřním jednotkám TČ + radiátorům pro doplňkov",
+      "urs_code_current": "733111021",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.M21.001",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Demontáž stávající elektroinstalace v celém domě (vodiče, rozvaděč, zásuvky, sví",
+      "urs_code_current": "210010011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.M21.002",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Nová pojistková skříň + 3× podružný rozvaděč pro každé patro (1.NP, 2.NP, 3.NP) ",
+      "urs_code_current": "210110023",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.M21.003",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Nové silnoproudé rozvody — vodiče CYKY 3×1.5 / 3×2.5 / 5×2.5 / 5×6 + krabice + i",
+      "urs_code_current": "210800012",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.M21.004",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Zásuvky a vypínače dodávka + montáž — ~70 ks (60-80 dle vyjasnění #7)",
+      "urs_code_current": "210810050",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.M21.005",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Svítidla dodávka + montáž — ~35 ks (30-40 dle vyjasnění #7) interiér + venkovní ",
+      "urs_code_current": "210820002",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.M21.006",
+      "kapitola": "M-21 ELI silnoproud",
+      "popis_excerpt": "Příprava na osazení FVE — rezerva v rozvaděči (jistič + zásuvka pro střídač) + t",
+      "urs_code_current": "210800099",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Zařízení staveniště",
+      "popis_excerpt": "Zařízení staveniště — buňka kancelář + sociální buňka (WC + šatna), pronájem ~8 ",
+      "urs_code_current": "030011000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Zařízení staveniště",
+      "popis_excerpt": "Mobilní chemické WC TOI TOI pro pracovníky — pronájem ~8 měsíců",
+      "urs_code_current": "030013000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.003",
+      "kapitola": "VRN — Zařízení staveniště",
+      "popis_excerpt": "El. odběr stavby (zřízení staveništního rozvaděče + měřič) + vodovodní odběr (zř",
+      "urs_code_current": "031011000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Doprava + odpad",
+      "popis_excerpt": "Kontejnery na suť tříděnou velkoobjemové (beton/cihly, dřevo, kovy, EPS, sádra, ",
+      "urs_code_current": "997013211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — BOZP",
+      "popis_excerpt": "Koordinátor BOZP na staveništi dle zákona 309/2006 Sb. — pro stavbu s více než j",
+      "urs_code_current": "030091000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Pojištění + zábory",
+      "popis_excerpt": "Montážní pojištění stavby (CAR) + pojištění odpovědnosti za škodu (zhotovitel) —",
+      "urs_code_current": "030081000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Pojištění + zábory",
+      "popis_excerpt": "Krátkodobé zábory ulice Fibichova pro materiál a kontejnery (povolení MU Jáchymo",
+      "urs_code_current": "030083000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Průzkumy",
+      "popis_excerpt": "Mykologický průzkum + průzkum výskytu dřevokazného hmyzu stávajícího krovu a dře",
+      "urs_code_current": "030131000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Průzkumy",
+      "popis_excerpt": "Azbestový průzkum podrobný před demolicí — laboratorní vzorky a posudek (B kap. ",
+      "urs_code_current": "030133000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Geodet",
+      "popis_excerpt": "Geodetické zaměření před realizací (verifikace polohopis + výškopis) + po dokonč",
+      "urs_code_current": "030141000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Dokumentace",
+      "popis_excerpt": "Předávací protokoly + Dokumentace skutečného provedení (DSP) — sestavení, vázání",
+      "urs_code_current": "030151000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Revize",
+      "popis_excerpt": "Revize vnějšího hydrantu pro požární zabezpečení (DN min. 80, vzdálenost 100 m d",
+      "urs_code_current": "030161000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Kolaudace",
+      "popis_excerpt": "Kolaudační řízení — paušál (správní poplatky + součinnost) dle zákona 183/2006 S",
+      "urs_code_current": "030171000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Doprava + odpad",
+      "popis_excerpt": "Doprava materiálu na stavbu (centrální koordinace) — paušál ~2-3 % z PN materiál",
+      "urs_code_current": "031031000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.003",
+      "kapitola": "VRN — Doprava + odpad",
+      "popis_excerpt": "Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné + recyklace + třídění ",
+      "urs_code_current": "997013211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Doprava + odpad",
+      "popis_excerpt": "Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) auto s hydraulickou ruk",
+      "urs_code_current": "031032000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.VRN.002",
+      "kapitola": "VRN — Doprava + odpad",
+      "popis_excerpt": "Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (drobné množství)",
+      "urs_code_current": "997013211",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Geodet",
+      "popis_excerpt": "Geodetické vytýčení sklad+parking+schodiště ze situace (před realizací)",
+      "urs_code_current": "030141000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Společné",
+      "popis_excerpt": "Podíl na obecných VRN domu (buňky, BOZP, pojištění, kolaudace) — paušál ~10 % ná",
+      "urs_code_current": "030001000",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.015",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Demontáž stávajících vnitřních dveří vč. ocelových/dřevěných zárubní — odhad 15 ",
+      "urs_code_current": "968072456",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV76.013",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "popis_excerpt": "Požárně odolné jednokřídlové dveře EI 30 DP3 na vrcholu schodiště mezi 1.PP a 1.",
+      "urs_code_current": "766694112",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.VRN.020",
+      "kapitola": "VRN — Zařízení staveniště",
+      "popis_excerpt": "Voda staveniště — napojení na stávající vodovodní přípojku, dočasné rozvody na s",
+      "urs_code_current": "012103101",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004.A",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Vana koupelnová obdélníková 170×70 cm — koupelna 1.05 1.NP",
+      "urs_code_current": "725211101",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004.B",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Umyvadlo bílé keramické se sloupcem 60 cm — koupelna 1.05 1.NP",
+      "urs_code_current": "725311111",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004.C",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "WC kombi keramické bílé — koupelna 1.05 1.NP",
+      "urs_code_current": "725111101",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005.A",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Umyvadlo bílé keramické se sloupcem 60 cm — koupelna 2.03 2.NP",
+      "urs_code_current": "725311111",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005.B",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Sprchový kout 90×90 cm vč. vaničky + skleněných dveří — koupelna 2.03 2.NP",
+      "urs_code_current": "725221201",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005.C",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "WC kombi keramické bílé — koupelna 2.03 2.NP",
+      "urs_code_current": "725111101",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.A",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "WC kombi keramické bílé — koupelna 3.04 3.NP",
+      "urs_code_current": "725111101",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.B",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Umyvadlo bílé keramické se sloupcem 60 cm — koupelna 3.04 3.NP",
+      "urs_code_current": "725311111",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.C",
+      "kapitola": "PSV-72 ZTI",
+      "popis_excerpt": "Sprchový kout 90×90 cm vč. vaničky + skleněných dveří — koupelna 3.04 3.NP",
+      "urs_code_current": "725221201",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.1_PP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Interiérová výmalba 1.PP — sklep stěny + klenba bílá vápenná 2×",
+      "urs_code_current": "784121011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.1_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Interiérová výmalba 1.NP — stěny + SDK podhled − obklad koupelny 1.05 (1.6 m výš",
+      "urs_code_current": "784121011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.2_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Interiérová výmalba 2.NP — stěny + SDK podhled − obklad koupelny 2.03 (2.45 m vý",
+      "urs_code_current": "784121011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.3_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "popis_excerpt": "Interiérová výmalba 3.NP — stěny + SDK podhled − obklad koupelny 3.04 (2.7 m výš",
+      "urs_code_current": "784121011",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.016",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání vrchní části stávajícího komínu v posledním podlaží (cihelné zdivo, ručn",
+      "urs_code_current": "962024141",
+      "urs_confidence_current": 0.65,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV6.017",
+      "kapitola": "HSV-6 Bourací práce",
+      "popis_excerpt": "Bourání stávajících opěrných zídek a venkovního schodiště v zahradě/dvoře — část",
+      "urs_code_current": "961044111",
+      "urs_confidence_current": 0.6,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260219_dum.HSV1.015",
+      "kapitola": "HSV-1 Zemní práce",
+      "popis_excerpt": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovan",
+      "urs_code_current": "877315111",
+      "urs_confidence_current": 0.7,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "8",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch_whitelisted",
+      "ws_priority": "medium"
+    },
+    {
+      "item_id": "260217_sklad.HSV5.001",
+      "kapitola": "HSV-5 Komunikace + schodiště",
+      "popis_excerpt": "Sklad mezipodesta schodiště — prefa betonové stupně (9 ks × 179.5×250 mm) + klad",
+      "urs_code_current": "121301101",
+      "urs_confidence_current": 0.6,
+      "urs_status_current": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1",
+        "2",
+        "5",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "ws_priority": "medium"
+    }
+  ],
+  "per_item_flags": [
+    {
+      "item_id": "260219_dum.HSV1.001",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "121101101",
+      "urs_confidence": 0.95,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260219_dum.HSV1.002",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "132201101",
+      "urs_confidence": 0.95,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260219_dum.HSV1.003",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "131201101",
+      "urs_confidence": 0.95,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260219_dum.HSV1.004",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "564831111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "5",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '5' NOT in expected set ['1'] for kapitola 'HSV-1 Zemní práce'"
+    },
+    {
+      "item_id": "260219_dum.HSV1.005",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "564831111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "5",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '5' NOT in expected set ['1'] for kapitola 'HSV-1 Zemní práce'"
+    },
+    {
+      "item_id": "260219_dum.HSV1.006",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "151101101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260219_dum.HSV1.007",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.HSV1.008",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "174101101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.001",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "962031132",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '9' NOT in expected set ['1'] for kapitola 'HSV-1 Zemní práce'"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.002",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "131201101",
+      "urs_confidence": 0.95,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.003",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "132201101",
+      "urs_confidence": 0.95,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.004",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "132211101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.005",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "174101101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1']"
+    },
+    {
+      "item_id": "260217_sklad.HSV1.006",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.HSV2.001",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "274321321",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.002",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "274321321",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.003",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "631311115",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '6' NOT in expected set ['2', '3', '4'] for kapitola 'HSV-2 Základové a ŽB'"
+    },
+    {
+      "item_id": "260219_dum.HSV2.004",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273361821",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.005",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.HSV2.006",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "279351102",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.007",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "274321311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.008",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "631311115",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '6' NOT in expected set ['2', '3', '4'] for kapitola 'HSV-2 Základové a ŽB'"
+    },
+    {
+      "item_id": "260219_dum.HSV2.009",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273361821",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.010",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "274321111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.011",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273362441",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.012",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273321311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV2.013",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273361821",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.001",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.002",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273313811",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.003",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "311233812",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.004",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273321321",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.005",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "174101101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '1' NOT in expected set ['2', '3', '4'] for kapitola 'HSV-2 Základové a ŽB'"
+    },
+    {
+      "item_id": "260217_sklad.HSV2.006",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "urs_code_proposed": "273361821",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV3.001",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "311232511",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260219_dum.HSV3.002",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "311321411",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260219_dum.HSV3.003",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "317143112",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260219_dum.HSV3.004",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "317242421",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260219_dum.HSV3.005",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "767131120",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3'] for kapitola 'HSV-3 Svislé konstrukce'"
+    },
+    {
+      "item_id": "260219_dum.HSV3.006",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "962081120",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '9' NOT in expected set ['3'] for kapitola 'HSV-3 Svislé konstrukce'"
+    },
+    {
+      "item_id": "260219_dum.HSV3.007",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "342241211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260217_sklad.HSV3.001",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "311233815",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260217_sklad.HSV3.002",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "311233811",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3']"
+    },
+    {
+      "item_id": "260217_sklad.HSV3.003",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "urs_code_proposed": "273361821",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "3"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '2' NOT in expected set ['3'] for kapitola 'HSV-3 Svislé konstrukce'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.001",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.002",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.003",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.004",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.005",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.006",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "342213131",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.007",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "974031150",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '9' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.008",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "271223111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '2' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.009",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "631321311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '6' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.010",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "974041141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '9' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.011",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "713121121",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.012",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "342213131",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '3' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260219_dum.HSV4.013",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "631311114",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '6' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV4.014",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "771421111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.001",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "762341110",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.002",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "762331110",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.003",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "712331101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.004",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.005",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "411321515",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['3', '4']"
+    },
+    {
+      "item_id": "260217_sklad.HSV4.006",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code_proposed": "783201001",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "3",
+        "4"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['3', '4'] for kapitola 'HSV-4 Vodorovné'"
+    },
+    {
+      "item_id": "260219_dum.HSV5.001",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762331911",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.002",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762331912",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.003",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762331923",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.004",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762331911",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.005",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.006",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "411321414",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "4",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '4' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.007",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762341711",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.008",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "712311101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.009",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "713131811",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.010",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "712311111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.011",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762331923",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.012",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762341711",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.013",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "765791121",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.014",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "762341711",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV5.015",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "311321411",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '3' NOT in expected set ['4', '6', '7'] for kapitola 'HSV-5 Krov + střecha'"
+    },
+    {
+      "item_id": "260219_dum.HSV5.016",
+      "kapitola": "HSV-5 Krov + střecha",
+      "urs_code_proposed": "765791121",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "4",
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['4', '6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.001",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "962041141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.002",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.HSV6.003",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "962031132",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.004",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "962041141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.005",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "962031132",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.006",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "962031132",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.007",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "781473810",
+      "urs_confidence": 0.9,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "7",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['9'] for kapitola 'HSV-6 Bourací práce'"
+    },
+    {
+      "item_id": "260219_dum.HSV6.008",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "974031132",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.009",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "974041151",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.010",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "968071120",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.011",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "725900001",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '7' NOT in expected set ['9'] for kapitola 'HSV-6 Bourací práce'"
+    },
+    {
+      "item_id": "260219_dum.HSV6.012",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "997013501",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV7.001",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "urs_code_proposed": "622401110",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV7.002",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "urs_code_proposed": "622221121",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV7.003",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "urs_code_proposed": "622223111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV7.004",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "urs_code_proposed": "622221221",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV7.005",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "urs_code_proposed": "622221221",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV7.006",
+      "kapitola": "HSV-7 Fasáda ETICS",
+      "urs_code_proposed": "622521111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV71.001",
+      "kapitola": "PSV-71 Izolace HI",
+      "urs_code_proposed": "712311101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV71.002",
+      "kapitola": "PSV-71 Izolace HI",
+      "urs_code_proposed": "712381111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV71.003",
+      "kapitola": "PSV-71 Izolace HI",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.PSV71.001",
+      "kapitola": "PSV-71 Izolace TI",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.PSV71.002",
+      "kapitola": "PSV-71 Izolace TI",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.003",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.004",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.005",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.006",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.007",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766621011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.008",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766631211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.009",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766682111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.010",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766660035",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Klempíř",
+      "urs_code_proposed": "764312235",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Klempíř",
+      "urs_code_proposed": "764218201",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.003",
+      "kapitola": "PSV-76 Klempíř",
+      "urs_code_proposed": "764454802",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.004",
+      "kapitola": "PSV-76 Klempíř",
+      "urs_code_proposed": "764315235",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Zámečnictví",
+      "urs_code_proposed": "767531111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Zámečnictví",
+      "urs_code_proposed": "767531111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.003",
+      "kapitola": "PSV-76 Zámečnictví",
+      "urs_code_proposed": "767532111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.004",
+      "kapitola": "PSV-76 Zámečnictví",
+      "urs_code_proposed": "767163115",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.001",
+      "kapitola": "PSV-76 Truhlář",
+      "urs_code_proposed": "766811111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.002",
+      "kapitola": "PSV-76 Truhlář",
+      "urs_code_proposed": "771474112",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV77.001",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "776511820",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV77.002",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "771274102",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV77.003",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "771274102",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV77.004",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "766411111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV77.005",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "631321311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '6' NOT in expected set ['7'] for kapitola 'PSV-77 Podlahy'"
+    },
+    {
+      "item_id": "260219_dum.PSV77.006",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "776511831",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV77.007",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": "771274107",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.001",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612311311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.002",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612311311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.003",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612311311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.004",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612311311",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.005",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612471141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.006",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612471141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.007",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "612471141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "6",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '6' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.008",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "781447001",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.009",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "781447001",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.010",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "781447001",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.011",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "781447001",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "784121011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV95.001",
+      "kapitola": "PSV-95 Detekce požární",
+      "urs_code_proposed": "375211101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "3",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '3' NOT in expected set ['7'] for kapitola 'PSV-95 Detekce požární'"
+    },
+    {
+      "item_id": "260219_dum.PSV95.002",
+      "kapitola": "PSV-95 Detekce požární",
+      "urs_code_proposed": "966067121",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '9' NOT in expected set ['7'] for kapitola 'PSV-95 Detekce požární'"
+    },
+    {
+      "item_id": "260217_sklad.PSV76.001",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766682111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260217_sklad.PSV77.001",
+      "kapitola": "PSV-77 Podlahy",
+      "urs_code_proposed": null,
+      "urs_confidence": 0.5,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "family_actual": null,
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "no_code",
+      "rationale": "No urs_code_proposed — already MANUAL LOOKUP class"
+    },
+    {
+      "item_id": "260219_dum.PSV72.001",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "722290515",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.002",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "722172011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.003",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "721174021",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725291131",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725291131",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725291131",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.007",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725840111",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.008",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725822611",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.009",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "732419411",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.010",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "732429211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.001",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733241011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.002",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733281011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.003",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733131221",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.004",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733241011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.005",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733425211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.006",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733425221",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.007",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "734262122",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV73.008",
+      "kapitola": "PSV-73 Vytápění",
+      "urs_code_proposed": "733111021",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.M21.001",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "210010011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '7']"
+    },
+    {
+      "item_id": "260219_dum.M21.002",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "210110023",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '7']"
+    },
+    {
+      "item_id": "260219_dum.M21.003",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "210800012",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '7']"
+    },
+    {
+      "item_id": "260219_dum.M21.004",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "210810050",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '7']"
+    },
+    {
+      "item_id": "260219_dum.M21.005",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "210820002",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '7']"
+    },
+    {
+      "item_id": "260219_dum.M21.006",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "210800099",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "2",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '2' in expected set ['2', '7']"
+    },
+    {
+      "item_id": "260219_dum.M21.007",
+      "kapitola": "M-21 ELI silnoproud",
+      "urs_code_proposed": "996019011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "2",
+        "7"
+      ],
+      "flag_class": "family_mismatch",
+      "rationale": "family digit '9' NOT in expected set ['2', '7'] for kapitola 'M-21 ELI silnoproud'"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Zařízení staveniště",
+      "urs_code_proposed": "030011000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Zařízení staveniště",
+      "urs_code_proposed": "030013000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.003",
+      "kapitola": "VRN — Zařízení staveniště",
+      "urs_code_proposed": "031011000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Doprava + odpad",
+      "urs_code_proposed": "997013211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['0', '1', '9']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — BOZP",
+      "urs_code_proposed": "030091000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0', '9']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Pojištění + zábory",
+      "urs_code_proposed": "030081000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Pojištění + zábory",
+      "urs_code_proposed": "030083000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Průzkumy",
+      "urs_code_proposed": "030131000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Průzkumy",
+      "urs_code_proposed": "030133000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Geodet",
+      "urs_code_proposed": "030141000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Dokumentace",
+      "urs_code_proposed": "030151000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Revize",
+      "urs_code_proposed": "030161000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0', '7']"
+    },
+    {
+      "item_id": "260219_dum.VRN.001",
+      "kapitola": "VRN — Kolaudace",
+      "urs_code_proposed": "030171000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.VRN.002",
+      "kapitola": "VRN — Doprava + odpad",
+      "urs_code_proposed": "031031000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0', '1', '9']"
+    },
+    {
+      "item_id": "260219_dum.VRN.003",
+      "kapitola": "VRN — Doprava + odpad",
+      "urs_code_proposed": "997013211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['0', '1', '9']"
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Doprava + odpad",
+      "urs_code_proposed": "031032000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0', '1', '9']"
+    },
+    {
+      "item_id": "260217_sklad.VRN.002",
+      "kapitola": "VRN — Doprava + odpad",
+      "urs_code_proposed": "997013211",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "0",
+        "1",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['0', '1', '9']"
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Geodet",
+      "urs_code_proposed": "030141000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260217_sklad.VRN.001",
+      "kapitola": "VRN — Společné",
+      "urs_code_proposed": "030001000",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.013",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "978013181",
+      "urs_confidence": 0.85,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.014",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "978013181",
+      "urs_confidence": 0.8,
+      "urs_status": "matched_websearch_verified",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.015",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "968072456",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.013",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "766694112",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.VRN.020",
+      "kapitola": "VRN — Zařízení staveniště",
+      "urs_code_proposed": "012103101",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "0",
+      "family_expected": [
+        "0"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '0' in expected set ['0']"
+    },
+    {
+      "item_id": "260219_dum.PSV76.014",
+      "kapitola": "PSV-76 Výplně otvorů",
+      "urs_code_proposed": "764811112",
+      "urs_confidence": 0.75,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004.A",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725211101",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004.B",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725311111",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.004.C",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725111101",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005.A",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725311111",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005.B",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725221201",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.005.C",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725111101",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.A",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725111101",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.B",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725311111",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV72.006.C",
+      "kapitola": "PSV-72 ZTI",
+      "urs_code_proposed": "725221201",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "7",
+        "8"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['7', '8']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.1_PP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "784121011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.1_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "784121011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.2_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "784121011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.PSV78.012.3_NP",
+      "kapitola": "PSV-78 Povrchové úpravy",
+      "urs_code_proposed": "784121011",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "7",
+      "family_expected": [
+        "6",
+        "7"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '7' in expected set ['6', '7']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.016",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "962024141",
+      "urs_confidence": 0.65,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV6.017",
+      "kapitola": "HSV-6 Bourací práce",
+      "urs_code_proposed": "961044111",
+      "urs_confidence": 0.6,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "9",
+      "family_expected": [
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '9' in expected set ['9']"
+    },
+    {
+      "item_id": "260219_dum.HSV1.015",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code_proposed": "877315111",
+      "urs_confidence": 0.7,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "8",
+      "family_expected": [
+        "1"
+      ],
+      "flag_class": "family_mismatch_whitelisted",
+      "rationale": "Drenážní trubka DN100 — 8xx ZTI family legitimate for trubní vedení (Pattern 21 — cross-discipline boundary)"
+    },
+    {
+      "item_id": "260217_sklad.HSV5.001",
+      "kapitola": "HSV-5 Komunikace + schodiště",
+      "urs_code_proposed": "121301101",
+      "urs_confidence": 0.6,
+      "urs_status": "needs_production_lookup",
+      "family_actual": "1",
+      "family_expected": [
+        "1",
+        "2",
+        "5",
+        "9"
+      ],
+      "flag_class": "family_match",
+      "rationale": "family digit '1' in expected set ['1', '2', '5', '9']"
+    }
+  ]
+}
