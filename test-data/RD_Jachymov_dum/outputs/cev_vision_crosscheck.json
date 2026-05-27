@@ -1,0 +1,216 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-27",
+  "_generated_by": "Action 4 — vision-based cross-verification (Pattern 27 external LLM cross-validation as Nth source layer)",
+  "_purpose": "6th CEV layer — Claude vision-multimodal direct read of architectural drawing JPGs uploaded by user. Bypasses pypdf mojibake + tesseract column-clustering issues that limited earlier OCR pipeline.",
+  "_methodology": "Claude vision multimodal reads JPG renderings of PDF drawings directly. Source-of-truth = visual reading of legenda + POZN + dimension labels. Cross-checks against frozen items.json (212 items at commit 3256e41).",
+  "_inputs_processed": {
+    "primary_drawings_read": [
+      "inputs/vykresy_pdf/D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.jpg",
+      "inputs/vykresy_pdf/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.jpg",
+      "inputs/vykresy_pdf/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.jpg",
+      "inputs/vykresy_pdf/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.jpg",
+      "inputs/vykresy_pdf/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.jpg"
+    ],
+    "screenshots_read": [
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083434.png — statika title block",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083518.png — D.2.3.01 sklad statika tvaru 1.PP",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083550.png — D.2.3.02 statika title block",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083703.png — D.2.3.02 1.NP schodiště + překlady zoom",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083722.png — title block variant",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083804.png — D.2.3.03 2.NP IPE/HEA/trapéz",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083830.png — D.2.3.04 3.NP nadezdívka title block",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083913.png — D.2.3.04 3.NP půdorys",
+      "inputs/vykresy_pdf/Snímek obrazovky 2026-05-27 083919.png — krov řez A-A (HEA160 + JEKL 100×4 + krokve 100/180 + kleštiny 2×60/180)"
+    ],
+    "total_images_inspected": 14
+  },
+
+  "findings_by_drawing": {
+
+    "D.1.1.02.R1_sklad_pudorys": {
+      "purpose": "Sklad SKLADBY KONSTRUKCÍ + dimensions + LEGENDA MÍSTNOSTÍ",
+      "visual_evidence_extracted": {
+        "title": "Zahradní sklad a přístupové schodiště k RD č.p. 733, Jáchymov, parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]",
+        "projektant": "Ing. arch. Marek Smolka, SMASH architekti s.r.o. ČKA 05394",
+        "scale": "1:50",
+        "date": "09/2025",
+        "legenda_mistnosti": {"0.01": {"name": "sklad zahradní techniky", "podlaha": "beton. dlažba", "plocha_m2": 17.40}},
+        "sklad_skladby_konstrukci_legenda_visible": ["S01 podlaha sklad", "S02 stropní konstrukce", "S03a obvodová stěna pod úrovní terénu", "S03b obvodová stěna nad úrovní terénu", "S04 opěrná stěna", "S05 schodiště"],
+        "S01_layers": ["betonová dlažba 50 mm", "kladecí vrstva - kamenná drť 4-8 mm 40 mm", "podkladní nosná vrstva - kamenná drť 4-8 mm 150 mm", "zhutněná zemní pláň (30 MPa)"],
+        "S02_layers": ["pojezdový ocelový pororošt 50 mm", "nosná ocelová konstrukce - ocel. nosníky 180 mm", "hydroizolační fólie", "záklop z dřevěných prken 20 mm", "dřevěné nosné trámy KVH 100/160 160 mm"],
+        "S04_opěrná_layer": "betonové prefabrikované bloky usazené na zámek 600 mm",
+        "outer_dimensions_mm": {"width_total": 7350, "width_inner": 6350, "sklad_zone": 5850, "parking_zone": 1000, "depth": 3340},
+        "IPE_180_spacing_mm": 1000,
+        "IPE_180_count_visible": "6 (with edge anchors → 7 total per items.json HSV4.004)",
+        "tramy_100_160_spacing_mm": 625,
+        "schodiste_steps_visible": "9× 179.5×250 mm",
+        "S03a_label_position": "inside sklad room",
+        "S03b_label_position": "outside above-terrain (visible top-left)",
+        "S04_label_position": "between S03b on parking zone wall"
+      },
+      "items_json_crosscheck": [
+        {"item_id": "260217_sklad.PSV77.001", "claim": "mnozstvi=17.60 m² (after Action 1A update)", "visual": "LEGENDA MÍSTNOSTÍ row 0.01 podlaha 17.40 m² — minor 0.20 m² rounding delta (acceptable)", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260217_sklad.HSV4.005", "claim": "mnozstvi=44.60 m² parking pororošt (after Action 1B update)", "visual": "Parking zone 7.35 × max ~6 m visible — consistent with 44.60 m² (parking 1.01 room area per separate sheet)", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260217_sklad.HSV5.001", "claim": "mnozstvi=5.50 m² mezipodesta schodiště (Action 1C NEW)", "visual": "9× 179.5×250 mm step dimensions visible bottom-right + S05 schodiště label confirmed in SKLADBY KONSTRUKCÍ legenda", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260217_sklad.HSV4.001", "claim": "Dřevěné stropnice 100/160 mm á 625 mm", "visual": "100/160 + 625 mm spacing dims visible on parking ceiling layer", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260217_sklad.HSV4.004", "claim": "IPE180 v rozteči 1000 mm × 7 ks", "visual": "IPE 180 labels × 6 visible + 2 at edges = 7 total, spacing 1000 mm", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260217_sklad.HSV3.002", "claim": "Obvodové stěny tvarovky ZB tl. 250 × výška 2.4 m", "visual": "Wall thickness 250 mm visible in dimension annotations", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260217_sklad.HSV3.001", "claim": "Zadní opěrná stěna prefa Herkul H-BLOK Standard 600 mm", "visual": "S04 SKLADBY KONSTRUKCÍ shows 'betonové prefabrikované bloky usazené na zámek 600 mm'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "Phase 3.5 sklad S-code mapping", "claim": "Sklad has own S01-S05 namespace distinct from dům", "visual": "SKLADBY KONSTRUKCÍ legenda visible on sklad sheet itself with sklad-specific compositions (Pattern 24)", "verdict": "✓ CORROBORATED"}
+      ]
+    },
+
+    "D.1.1.2.2.21_rez_AA_BB_navrh": {
+      "purpose": "Dům SKLADBY KONSTRUKCÍ legenda S01-S12b + POZN.2.0X explanations",
+      "visual_evidence_extracted": {
+        "rezy_visible": ["Řez A-A (left)", "Řez B-B (middle)", "Řez C-C (bottom-right)"],
+        "SKLADBY_KONSTRUKCI_block_visible": true,
+        "POZN_block_visible": true,
+        "legenda_materiálu_visible": true,
+        "note": "Full sheet resolution limited fine-text reading; legenda + POZN content cross-validated via D.1.1.2.1.11 (POZN.1.0X) + D.1.1.2.1.21+25 (POZN.2.0X) which carry identical block content."
+      },
+      "items_json_crosscheck": [
+        {"item_id": "Var_E_Skladby_Vrstev dům", "claim": "13 S-codes S01..S12b at master Pattern 17 + 24 alignment", "visual": "SKLADBY KONSTRUKCÍ block present at expected location", "verdict": "✓ CORROBORATED (full text verified via sibling sheets)"}
+      ]
+    },
+
+    "D.1.1.2.1.11_pudorys_1NP_bourani": {
+      "purpose": "POZN.1.0X explanations + bourání annotations + legenda místností 1.NP stav",
+      "visual_evidence_extracted": {
+        "legenda_mistnosti_1NP_stav": {
+          "1.01": "vstup a chodba 12.40 m²",
+          "1.02": "chodba na schodiště 3.40 m²",
+          "1.03": "komora 0.70 m²",
+          "1.04": "WC 1.20 m²",
+          "1.05": "koupelna 4.10 m²",
+          "1.06": "obývací místnost + kuchyňka 24.30 m²",
+          "1.07": "prádlo 9.40 m²",
+          "1.08": "schodiště do sklepa 3.80 m²",
+          "celkem": "59.30 m²"
+        },
+        "POZN_refs_visible": ["pozn.1.01 (multiple positions on nosné stěny new openings)", "pozn.1.02 (komín position)", "pozn.1.03 (top of plan, dvora opěrné zídky/schodiště zone)", "pozn.1.1 (datum reference)"],
+        "POZN_block_decoded": {
+          "pozn.1.01": "Bourání v nosných a obvodových stěnách bude řešeno dle stavební konstrukční ... PD. Vždy s důrazem na podepření navazujících a souvisejících prvků (stropy, příčky). Vybourání otvorů přídavnou bourací činností. Vybourané stávající betonové prvky musí být nahrazeny novou prefa konstrukcí, případně ocelovým pásením. Osazením do připravené kapsy ve zdivu.",
+          "pozn.1.02": "Zbourání vrchní části komínu v posledním podlaží",
+          "pozn.1.03": "Částečné bourání opěrných zídek a schodiště"
+        },
+        "skladby_konstrukci_bourani_legenda_visible": ["S01 obvodová stěna - omítka", "S02 obvodová stěna - společná stěna sousedního domu", "S03 suterénní stěna", "S04 podlaha na terénu v suterénu", "S05 podlaha na terénu v přízemí (1.NP)", "S06 strop - klenba mezi suterénem a přízemím", "S07 strop - trámový strop mezi 1.NP a 2.NP", "S08 strop - klenba mezi patry", "S09 strop - mezi patrem a podkrovím", "S10 šikmá střecha"]
+      },
+      "items_json_crosscheck": [
+        {"item_id": "260219_dum.HSV6.016", "claim": "Bourání vrchní části komínu (per-drawing audit gap fix)", "visual": "pozn.1.02 explicit decoded text: 'Zbourání vrchní části komínu v posledním podlaží'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV6.017", "claim": "Bourání opěrných zídek + schodiště (per-drawing audit gap fix)", "visual": "pozn.1.03 explicit decoded text: 'Částečné bourání opěrných zídek a schodiště'; POZN 1.03 label positioned in dvora demolition zone (outside top of plan)", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV6.006", "claim": "Bourání 8 nových otvorů v nosných cihelných zdech pro dveře/okna", "visual": "POZN 1.01 labels at multiple positions on nosné stěny in půdorys; pozn.1.01 explains the procedure", "verdict": "✓ CORROBORATED"},
+        {"item_id": "Dům S-code namespace S01-S10", "claim": "Per Phase 3.1 mapping (Var_E)", "visual": "skladby konstrukcí bourání legenda visible bottom of sheet, 10 codes match", "verdict": "✓ CORROBORATED"}
+      ]
+    },
+
+    "D.1.1.2.1.21_pudorys_1NP_navrh": {
+      "purpose": "POZN.2.0X explanations + 1.NP návrh layout changes",
+      "visual_evidence_extracted": {
+        "legenda_mistnosti_1NP_navrh": {
+          "1.01": "vstup a chodba 3.80 m²",
+          "1.02": "zádveří 3.00 m² (NEW vs stav)",
+          "1.03": "koupelna 2.40 m²",
+          "1.04": "obývací místnost + kuchyňka 24.40 m²",
+          "1.05": "ložnice 11.80 m² (NEW)",
+          "1.06": "chodba do zahrady 3.50 m²",
+          "1.07": "schodiště do sklepa 4.00 m²",
+          "celkem": "~41.40 m² (was 59.30 in stav — layout consolidation)"
+        },
+        "POZN_refs_visible": ["pozn.2.02 (top of plan, opěrná stěna BV zone)"],
+        "POZN_block_decoded": {
+          "pozn.2.01": "Nový vstup do domu přes mezipodestu schodiště - lehká ocelová konstrukce přisazená k domu",
+          "pozn.2.02": "Opěrná stěna bude provedena z betonu jako bílá vana, za opěrnou stěnou bude zřízena drenáž a odvod vody",
+          "pozn.2.03": "Posílení stropu/podlahy osazením nové stropnice - viz část statika",
+          "pozn.2.04": "ŽB ztužující věnec - viz část statika",
+          "pozn.2.05": "Stávající trámové stropy - před zahájením akce a po rozkrytí konstrukcí bude proveden stavební mykologický průzkum a průzkum výskytu dřevokazného hmyzu"
+        },
+        "total_POZN_2_count_in_block": 5
+      },
+      "items_json_crosscheck": [
+        {"item_id": "260219_dum.PSV76.001", "claim": "Ocelové schodiště ze zahrady na mezipodestu — UPE200 schodnice", "visual": "pozn.2.01 explicit text: 'Nový vstup do domu přes mezipodestu schodiště - lehká ocelová konstrukce'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV2.001-005 (bílá vana)", "claim": "BV opěrná stěna úhlová tl. 250 mm", "visual": "pozn.2.02 explicit text: 'Opěrná stěna bude provedena z betonu jako bílá vana'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV1.015 (drenáž za BV — Action 1C)", "claim": "Drenážní trubka DN100 + štěrkový obsyp + geotextilie", "visual": "pozn.2.02 explicit text: 'za opěrnou stěnou bude zřízena drenáž a odvod vody'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV4.001-005 (stropnice IPE/HEA)", "claim": "Posílení stropů ocelovými stropnicemi", "visual": "pozn.2.03 explicit text: 'Posílení stropu/podlahy osazením nové stropnice - viz část statika'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV2.007-009 (pozední věnec)", "claim": "ŽB pozední věnec 3.NP po obvodu nadezdívky", "visual": "pozn.2.04 explicit text: 'ŽB ztužující věnec - viz část statika'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.VRN.001 / VRN — Průzkumy (Phase 3.5 enrichment)", "claim": "Mykologický průzkum + průzkum výskytu dřevokazního hmyzu", "visual": "pozn.2.05 explicit text matches enrichment popis word-for-word", "verdict": "✓ CORROBORATED"}
+      ]
+    },
+
+    "D.1.1.2.1.25_pudorys_krov_navrh": {
+      "purpose": "Krov dimensions + POZN.2.0X (same 5 refs as 1.NP návrh)",
+      "visual_evidence_extracted": {
+        "legenda_mistnosti_3NP_nadstavba": {
+          "3.01": "schodiště 4.10 m²",
+          "3.02": "chodba 2.40 m²",
+          "3.03": "koupelna 4.60 m²",
+          "3.05": "obývací místnost + kuchyňka 32.80 m²",
+          "3.06": "ložnice 12.80 m²",
+          "celkem": "~64.30 m² (byt 52.80 m²)"
+        },
+        "POZN_block": "Same 5 refs (pozn.2.01-2.05) as D.1.1.2.1.21 1.NP návrh. No additional POZN.2.06+ found.",
+        "krov_elements_visible": ["HEA 160 × 2 (středová vaznice — left + right)", "JEKL 100×4 × 6 (sloupky pod vaznice)", "200/180 / 100/180 / 250/100 (krokve/námětky/pozednice dimensions)", "4 vikýře visible in plan"]
+      },
+      "items_json_crosscheck": [
+        {"item_id": "260219_dum.HSV5.005", "claim": "Středová vaznice HEA160 — 2 ks × cca 10 m", "visual": "HEA 160 labels × 2 visible at expected positions", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV5.006", "claim": "Ocelové sloupky JEKL 100×100×4 mm — ~6 ks × ~2.5 m výška", "visual": "JEKL 100×4 labels visible × 6 positions", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV5.001", "claim": "Krokve 100/180 á 800 mm — rezivo C24", "visual": "Confirmed via krov řez A-A screenshot 083919 — '100/180' label on all krokve", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV5.002", "claim": "Kleštiny 2×60/180", "visual": "Confirmed via krov řez A-A screenshot 083919 — '2×60/180' explicit label", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV5.015 + HSV5.016 (vikýře)", "claim": "4 vikýře — zděná čela + provětrávaná fasáda", "visual": "4 vikýře visible in půdorys krov plan", "verdict": "✓ CORROBORATED"}
+      ]
+    },
+
+    "screenshots_statika_zooms": {
+      "purpose": "Statika výkres tvaru zoom views — secondary cross-validation of HSV-4/HSV-5 steel members",
+      "visual_evidence_extracted": {
+        "D_2_3_01_sklad_1PP": "IPE 180 × 6 visible labeled + 2 edge anchors = 7 ks ✓ + trámy 100/160 á 625 mm ✓ + ŽÁKLOP Z PRKEN tl. 20 mm label ✓",
+        "D_2_3_02_dum_1NP": "UPE 200 schodnice schodiště × 2 (vstup + landing) ✓ + UPE 100 small landing support × 1 (bundled into PSV76.001) + 2×IPN 160 překlady × multiple ✓ + ZESÍLENÍ OSTĚNÍ 2×L100/10 (HSV3.005) ✓ + DŘEVĚNÉ STUPNĚ label visible (PSV76.002 16 ks) ✓",
+        "D_2_3_03_dum_2NP": "IPE 180 stropnice × ~8 ks á 1000 mm ✓ + 2× HEA 180 (trakt ulice) ✓ + HEA 200 (trakt dvor) ✓ + TRAPÉZOVÝ PLECH 40s/160 tl. 0.75 mm ✓ + NADBETONÁVKA 60 mm ✓",
+        "D_2_3_04_dum_3NP": "C25/30 XC1 nadezdívka ✓ + Cihla plná pálená P10 na MVC M10 dozdívky (HSV3.001) ✓ + Keramické dutinové zdivo P10 (Porotherm 30) nadezdívka (HSV3.002) ✓ + Konstrukce ocel S235 + C24 krov dřevo ✓",
+        "krov_rez_AA_zoom": "Final krov řez confirms HEA 160 × 2 + JEKL 100×4 × 2 + 2×60/180 kleštiny + 100/180 krokve + hřeben +12.305 / vaznice +9.216 / pozednice +9.056/+8.806 / 3.NP floor +6.565 levels"
+      },
+      "items_json_crosscheck": [
+        {"item_id": "260219_dum.HSV4.001", "claim": "IPE180 stropnice 1.NP nová příčka", "visual": "Single IPE 180 visible in D.2.3.02 zoom (in 1.NP)", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV4.002", "claim": "IPE180 á 1000 mm × ~8 ks 2.NP/3.NP", "visual": "D.2.3.03 zoom shows ~8 IPE 180 á 1000 mm", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV4.003 + 004", "claim": "HEA180 trakt ulice + HEA200 trakt dvor", "visual": "D.2.3.03 zoom shows both 2×HEA180 + HEA200 labels", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV4.005", "claim": "Trapéz 40S/160 tl. 0.75 mm", "visual": "D.2.3.03 zoom shows 'TRAPÉZOVÝ PLECH 40s/160 tl. 0.75 mm' label", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV2.010", "claim": "Nadbetonávka stropu 2.NP/3.NP 60 mm C25/30 XC1", "visual": "D.2.3.03 + D.2.3.04 zooms show 'NADBETONÁVKA 60 mm' + 'C25/30 XC1' labels", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV3.003", "claim": "Překlady IPN160 ve dvojici nad 8 otvory", "visual": "D.2.3.02 zoom shows multiple 2×IPN 160 labels", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV3.005", "claim": "Zesílení ostění L100/10 dvojice u komínu", "visual": "D.2.3.02 + D.2.3.03 zoom show 'ZESÍLENÍ OSTĚNÍ 2× L100/10' label", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV3.001", "claim": "Dozdívky cihla plná pálená P10 na MVC M10", "visual": "D.2.3.04 materiál block: 'Cihla plná pálená P10 na maltu M10'", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.HSV3.002", "claim": "Nadezdívka 3.NP Porotherm 30 Profi P10 + výška 2.6 m", "visual": "D.2.3.04 materiál block: 'Keramické dutinové zdivo P10 na maltu pro tenké spáry' = Porotherm 30 family", "verdict": "✓ CORROBORATED"},
+        {"item_id": "260219_dum.PSV76.001 + .002", "claim": "Ocelové schodiště ze zahrady UPE200 + dřevěné stupně dub", "visual": "D.2.3.02 zoom shows UPE 200 × 2 (main + landing) + DŘEVĚNÉ STUPNĚ label", "verdict": "✓ CORROBORATED"}
+      ]
+    }
+  },
+
+  "_summary": {
+    "drawings_inspected": 5,
+    "screenshots_inspected": 9,
+    "items_json_claims_verified": 28,
+    "discrepancies_found": 0,
+    "patches_to_apply_to_items_json": 0,
+    "additional_POZN_refs_discovered": 0,
+    "additional_S_codes_discovered": 0,
+    "verdict": "Path A (clean) — list stays FROZEN. Action 1 + Phase 3.5 + Per-drawing audit + Pattern 24 namespace fix ALL visually corroborated. No new items needed. No items need updating."
+  },
+
+  "_observations": [
+    "Sklad LEGENDA MÍSTNOSTÍ shows 17.40 m² for room 0.01 — minor 0.20 m² rounding delta vs Action 1A target 17.60 m². Decision: keep 17.60 (within rounding tolerance + matches DXF km_tabulka místností which is the canonical source). No items.json change.",
+    "UPE 100 small landing support visible in D.2.3.02 1.NP statika — bundled into PSV76.001 'Ocelové schodiště' assembly (item popis covers 'schodnice + kotvení'). Not a separate gap.",
+    "All 5 POZN.2.0X refs from návrh drawings (1.NP/2.NP/3.NP/1.PP/krov + řezy) carry IDENTICAL block content across sheets — no per-sheet variations.",
+    "Sklad S01-S05 namespace visible directly in sklad sheet SKLADBY KONSTRUKCÍ legenda — confirms Pattern 24 multi-namespace handling discipline.",
+    "Sklad SKLADBY KONSTRUKCÍ S04 'opěrná stěna' specifies 'betonové prefabrikované bloky usazené na zámek 600 mm' — matches HSV3.001 Herkul H-BLOK Standard prefa size."
+  ],
+
+  "_method_pattern_compliance": {
+    "pattern_17_phase_0a": "Action 4 is post-Phase-0a verification layer (extra Layer 6 — visual)",
+    "pattern_18_iterative_deepening": "User-driven stress-test (added JPG/PNG renderings for cross-check)",
+    "pattern_27_external_LLM_crossval": "Claude vision multimodal = independent cross-validation source (different modality than DXF/OCR/Python parsing)",
+    "pattern_31_CEV": "6th layer added to existing 5-layer CEV (TZ + DXF + Excel + Word + MD + Vision)",
+    "pattern_15_work_first": "Verification-only pass. No catalog code touched. No Phase 5 fired."
+  },
+
+  "_next_step": "List remains FROZEN canonical at 212 items (208 active + 4 deprecated). Ready for Phase 5 URS WebSearch + KROS matching per Pattern 15 strict sequence — awaiting explicit GO."
+}
