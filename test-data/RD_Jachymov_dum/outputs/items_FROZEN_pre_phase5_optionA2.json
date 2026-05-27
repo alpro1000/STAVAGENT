@@ -127,13 +127,12 @@
       "mnozstvi": 30.0,
       "mnozstvi_formula": "PDF řez C-C explicit composition + anglický dvorek ~30 m² odhad (2.5 × 2.0 m + odkop k vstupu 1.PP)",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "596811220",
+      "urs_code_proposed": "564831111",
       "urs_alternatives": [
-        "596411142",
-        "596811311"
+        "564851111"
       ],
-      "urs_status": "family_verified_leaf_candidate_kros_confirm_needed",
-      "urs_confidence": 0.65,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.55,
       "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 4-vrstvý dlažební systém (Path C Tier 3 embedded tables)",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
@@ -143,13 +142,9 @@
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.004",
       "realizuje_skladbu": "Anglický dvorek",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://podminky.urs.cz/  (cs-urs.cz 800-596 Kladení dlažeb)",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; URS_PHASE5_A2_DVOREK_596_FIX",
-      "urs_code_proposed_was": "564831111",
-      "urs_code_family_6digit": "596",
-      "correct_code_hint": "596xxx Kladení dlažeb (NOT 564 podkladní vrstvy) — composite item anglický dvorek; kandidát hlavního leafu 596811220 'Betonová dlažba 50 mm na kamenné drti, kladecí + nosná vrstva, pozemní komunikace pěší' per cs-urs.cz; alternativy 596411142 + 596811311. Karel: ověřit v KROS — pokud KROS vyžaduje samostatný leaf pro podkladní vrstvy, dodat 564xxx jako 2. řádek.",
-      "urs_verification_note": "Phase 5 A2 evidence: concrete-agent MCP find_urs_code returned 596811220 (perplexity 0.80, exact spec match) + 596411142 (URS_MATCHER local DB 0.74) + 596811311 (URS_MATCHER 0.56) — three-source convergence on 596 family. 564 family was wrong interpretation of composite item (564 = jen podkladní vrstvy, 596 = dlažba + lože — leading work in this RD item). Duplicate-code conflict with HSV1.005 terasa (different family 762) is now structurally resolved by Pattern 26 disambiguation."
+      "cross_verification_status": "WRONG_LEAF",
+      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
     },
     {
       "objekt": "260219_dum",
@@ -162,13 +157,12 @@
       "mnozstvi": 30.0,
       "mnozstvi_formula": "PDF řez C-C explicit composition + terasa ~30 m² odhad (rozměry z TZ ARS dům §4 terasa za op. stěnou)",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "762952004",
+      "urs_code_proposed": "564831111",
       "urs_alternatives": [
-        "762951002",
-        "767590124"
+        "564851111"
       ],
-      "urs_status": "family_verified_leaf_candidate_kros_decomposition_needed",
-      "urs_confidence": 0.7,
+      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_confidence": 0.55,
       "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 5-vrstvý podkladní systém terasa (Path C Tier 3 embedded tables); dřevěná prkna garapa same item v PSV-76 Truhlář",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
@@ -178,13 +172,9 @@
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.005",
       "realizuje_skladbu": "Terasa",
-      "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://podminky.urs.cz/  (cs-urs.cz 762 Tesařské konstrukce)",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; URS_PHASE5_A2_TERASA_762_FIX",
-      "urs_code_proposed_was": "564831111",
-      "urs_code_family_6digit": "762",
-      "correct_code_hint": "762xxx Tesařské konstrukce (NOT 564 komunikace) — dřevěná terasa exteriér; kandidát hlavního leafu 762952004 'Montáž terasy nášlapné vrstvy z prken' (matcher 0.91); rošt samostatně 762951002 'Montáž podkladního roštu terasy' (matcher 0.95); alternativa rošt 767590124. Karel: v KROS rozdělit COMPOSITE položku na 762951002 rošt + 762952004 prkna + samostatný řádek HSV-1/HSV-4 pro podklad (dlaždice 50 mm + štěrkový podsyp 16/32 100 mm + 4/8 150 mm + geotextilie). Mnozstvi 30 m² zůstává pro všechny komponenty.",
-      "urs_verification_note": "Phase 5 A2 evidence: concrete-agent MCP find_urs_code returned 762951002 (URS_MATCHER 0.95) + 762952004 (URS_MATCHER 0.91) — high-confidence dual-leaf hit in tesařské konstrukce 762 family. Original 564 family was completely wrong (komunikace ≠ dřevěná terasa). Original duplicate-code conflict with HSV1.004 dvorek (different family 596) is now structurally resolved by Pattern 26."
+      "cross_verification_status": "WRONG_LEAF",
+      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
     },
     {
       "objekt": "260219_dum",
@@ -6799,26 +6789,6 @@
         "urs_status",
         "urs_verification_note"
       ]
-    },
-    "A2_dvorek_terasa_disambig": {
-      "applied_at": "2026-05-27",
-      "pattern_compliance": {
-        "pattern_15": "FROZEN-fields preserved (verified inline)",
-        "pattern_26": "Catalog-evidenced codes only (no fabrication)",
-        "pattern_27": "External LLM (Perplexity + URS_MATCHER) cross-validation",
-        "pattern_28": "Compound key (id, kapitola) used",
-        "pattern_32": "items.json only; File B separate"
-      },
-      "evidence_source": "concrete-agent MCP find_urs_code (perplexity_urs_search + urs_matcher_service)",
-      "targets_count": 2,
-      "items_patched": 2,
-      "items_skipped": [],
-      "snapshot_before": "outputs/items_FROZEN_pre_phase5_optionA2.json",
-      "audit_tags": [
-        "URS_PHASE5_A2_DVOREK_596_FIX",
-        "URS_PHASE5_A2_TERASA_762_FIX"
-      ],
-      "wrong_leaf_resolved_in_this_step": 2
     }
   }
 }

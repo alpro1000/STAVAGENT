@@ -1,0 +1,119 @@
+{
+  "_generated_at": "2026-05-27",
+  "option": "A2",
+  "targets": [
+    {
+      "id": "260219_dum.HSV1.004",
+      "kapitola": "HSV-1 Zemní práce",
+      "wrong_code": "564831111",
+      "new_code_proposed": "596811220",
+      "new_alternatives": [
+        "596411142",
+        "596811311"
+      ],
+      "new_family_6digit": "596",
+      "new_status": "family_verified_leaf_candidate_kros_confirm_needed",
+      "new_conf": 0.65,
+      "new_cross_verification_status": "FAMILY_VERIFIED",
+      "evidence_url": "https://podminky.urs.cz/  (cs-urs.cz 800-596 Kladení dlažeb)",
+      "correct_code_hint": "596xxx Kladení dlažeb (NOT 564 podkladní vrstvy) — composite item anglický dvorek; kandidát hlavního leafu 596811220 'Betonová dlažba 50 mm na kamenné drti, kladecí + nosná vrstva, pozemní komunikace pěší' per cs-urs.cz; alternativy 596411142 + 596811311. Karel: ověřit v KROS — pokud KROS vyžaduje samostatný leaf pro podkladní vrstvy, dodat 564xxx jako 2. řádek.",
+      "verification_note": "Phase 5 A2 evidence: concrete-agent MCP find_urs_code returned 596811220 (perplexity 0.80, exact spec match) + 596411142 (URS_MATCHER local DB 0.74) + 596811311 (URS_MATCHER 0.56) — three-source convergence on 596 family. 564 family was wrong interpretation of composite item (564 = jen podkladní vrstvy, 596 = dlažba + lože — leading work in this RD item). Duplicate-code conflict with HSV1.005 terasa (different family 762) is now structurally resolved by Pattern 26 disambiguation.",
+      "audit_tag": "URS_PHASE5_A2_DVOREK_596_FIX"
+    },
+    {
+      "id": "260219_dum.HSV1.005",
+      "kapitola": "HSV-1 Zemní práce",
+      "wrong_code": "564831111",
+      "new_code_proposed": "762952004",
+      "new_alternatives": [
+        "762951002",
+        "767590124"
+      ],
+      "new_family_6digit": "762",
+      "new_status": "family_verified_leaf_candidate_kros_decomposition_needed",
+      "new_conf": 0.7,
+      "new_cross_verification_status": "FAMILY_VERIFIED",
+      "evidence_url": "https://podminky.urs.cz/  (cs-urs.cz 762 Tesařské konstrukce)",
+      "correct_code_hint": "762xxx Tesařské konstrukce (NOT 564 komunikace) — dřevěná terasa exteriér; kandidát hlavního leafu 762952004 'Montáž terasy nášlapné vrstvy z prken' (matcher 0.91); rošt samostatně 762951002 'Montáž podkladního roštu terasy' (matcher 0.95); alternativa rošt 767590124. Karel: v KROS rozdělit COMPOSITE položku na 762951002 rošt + 762952004 prkna + samostatný řádek HSV-1/HSV-4 pro podklad (dlaždice 50 mm + štěrkový podsyp 16/32 100 mm + 4/8 150 mm + geotextilie). Mnozstvi 30 m² zůstává pro všechny komponenty.",
+      "verification_note": "Phase 5 A2 evidence: concrete-agent MCP find_urs_code returned 762951002 (URS_MATCHER 0.95) + 762952004 (URS_MATCHER 0.91) — high-confidence dual-leaf hit in tesařské konstrukce 762 family. Original 564 family was completely wrong (komunikace ≠ dřevěná terasa). Original duplicate-code conflict with HSV1.004 dvorek (different family 596) is now structurally resolved by Pattern 26.",
+      "audit_tag": "URS_PHASE5_A2_TERASA_762_FIX"
+    }
+  ],
+  "applied": [
+    {
+      "id": "260219_dum.HSV1.004",
+      "kapitola": "HSV-1 Zemní práce",
+      "before": {
+        "urs_code_proposed": "564831111",
+        "urs_alternatives": [
+          "564851111"
+        ],
+        "urs_status": "wrong_leaf_disambiguation_needed",
+        "urs_confidence": 0.55,
+        "cross_verification_status": "WRONG_LEAF"
+      },
+      "after": {
+        "urs_code_proposed": "596811220",
+        "urs_alternatives": [
+          "596411142",
+          "596811311"
+        ],
+        "urs_code_family_6digit": "596",
+        "urs_status": "family_verified_leaf_candidate_kros_confirm_needed",
+        "urs_confidence": 0.65,
+        "cross_verification_status": "FAMILY_VERIFIED"
+      },
+      "audit_tag": "URS_PHASE5_A2_DVOREK_596_FIX"
+    },
+    {
+      "id": "260219_dum.HSV1.005",
+      "kapitola": "HSV-1 Zemní práce",
+      "before": {
+        "urs_code_proposed": "564831111",
+        "urs_alternatives": [
+          "564851111"
+        ],
+        "urs_status": "wrong_leaf_disambiguation_needed",
+        "urs_confidence": 0.55,
+        "cross_verification_status": "WRONG_LEAF"
+      },
+      "after": {
+        "urs_code_proposed": "762952004",
+        "urs_alternatives": [
+          "762951002",
+          "767590124"
+        ],
+        "urs_code_family_6digit": "762",
+        "urs_status": "family_verified_leaf_candidate_kros_decomposition_needed",
+        "urs_confidence": 0.7,
+        "cross_verification_status": "FAMILY_VERIFIED"
+      },
+      "audit_tag": "URS_PHASE5_A2_TERASA_762_FIX"
+    }
+  ],
+  "skipped": [],
+  "frozen_fields_verified": [
+    "kapitola",
+    "mj",
+    "mnozstvi",
+    "mnozstvi_formula",
+    "popis",
+    "realizuje_skladbu",
+    "source",
+    "subdodavatel",
+    "subkapitola"
+  ],
+  "allowed_write_fields": [
+    "_audit_gap_fixed",
+    "correct_code_hint",
+    "cross_verification_evidence_url",
+    "cross_verification_status",
+    "urs_alternatives",
+    "urs_code_family_6digit",
+    "urs_code_proposed",
+    "urs_code_proposed_was",
+    "urs_confidence",
+    "urs_status",
+    "urs_verification_note"
+  ]
+}
