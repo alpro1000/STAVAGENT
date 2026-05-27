@@ -1,0 +1,1043 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_purpose": "Full-coverage OCR pipeline output — pdftoppm 300 DPI + tesseract ces+eng per drawing PDF.",
+  "pdfs_processed": 34,
+  "per_pdf": {
+    "D.1.1.01.R2 - Půdorys střechy _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.01.R2 - Půdorys střechy _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2642,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2642,
+      "first_text_excerpt": "[OT v.673,40 a\n| | | [To — asfaltová komunikace č.m. název místnosti podlaha strop stěny plocha [m?]\nR K K R R O K SKK O OKNY GS zelený travn tý vé . O 1.01 stání pororošt 44,60\n2275 E S B S S M 5001000 Naty pásmezi pozemky a komunikací v O\nO O O O O O O O O O O O A vnikací — pe senodiste TOM\nplo | ly sol LR pope | | |\neee) See eee ee, Ae\n= | KN O O a M M V F M B ff NÍ NÍ\n| HH T DD O O DODO LOD LO O\n\\ TE 1 | 7\n\\ Co Po _f..\n3) | Io. TS | -\n\\ | LEGENDA\n| | | | ! | ! x\n| | | | | | | \\ oo. , m\n\\ L L L L L L < | | navrhovaný objekt parkovacího stání\n| | | ~ J —— — — hranice podzemní části navrhované budovy\n| +0,000 a\n| ——————— katastrální mapa\n| | — | | TT ploty\n| | | 0,000 | A VA vstup / vjezd\no |\n1660 | | | x | —_———_- navrhovaný plot a vjezd / vstup\n| |\n| |\n| | | | E napojení na komunikaci - dážděná plocha - betonová dlažba\n| | | |\n| ! a |\n| | |\n| X\n| o | | i\n| | = | POZNAMKY\n\\ x\n= \\ | 8 | POIN. 01 zpevněná plocha napojení na komunikaci bude provedena z hladké\n© \\ — LL- — Sh HE E ET M E- MB <.. | betonové dlažby. Plocha bude vyspádována směrem na pozemek\n\\ | investora. Výška napojení na komunikaci je cca 763,4 m, výška stání a\n\\ PF — vjedzu na hraně pozemku bude cca 763,3m. Spád bude proměnný,\n\\ an .\n\\ 57 | dle výšky stoupající komunikace, cca 7-9 %.\n\\ — fe OO IO Oe T |\n\\ | l “ 6 |\n\\ Y 1.02 |\n\\ | | schodisté |\n\\ 1615] | |\nHM I\nA . | : | m... ~ reve datum popis\nB | | : © ý : | n. | B 02 02/2026 úprava statického řešení\n| 1.01 x | 01 10/2025 Úpřesnění napojení na komunikaci\n\\ | ."
+    },
+    "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05"
+        ],
+        "pozn_refs": [
+          "POZN.0",
+          "POZN.01"
+        ],
+        "n_chars": 3358,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": true
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 3358,
+      "first_text_excerpt": "LEGENDA MATERIÁLU:\nWZ obvodové nosné zdivo\n- betonové tvárnice\nZZ ocelové konstrukce\no ZI. zelezobeton\n6\n3\n© RR betonové prefabrikované bloky\n=\n2 - tepelná izolace - XPS\n8 9 5 štěrkopískový násyp zhutněný na 0,2 MPa / násyp\ng je o o x x\n5 8 = tlý terén\nŠ © = (= %\n© KO) 5 \"© o == dřevěné konstrukce\n£ A = o o l\nxe) = O 9 o == ‘ :\n5 > 5 8 9 = . 5 tepelná izolace - minerální vata/EPS (viz. skladby konstrukcí)\n| | S = Se původní úroveň terénu a opěrná zídka\nW“ | 8\n| 7.7% | / OW 8\n— = H U +0,000\nm 0GGN. = Ee\n5 | o POZNÁMKY\n| ; A a -O =\nPOZN 0+ 0 5 2) 4 $ Z POZN. 01 zpevněná plocha napojení na komunikaci bude provedena z hladké\n| | MLA AN 22 SAS waa l betonové dlažby. Plocha bude vyspádována směrem na pozemek\nj WX l Z investora. Výška napojení na komunikaci je cca 763,4 m, výška stání a\n| | B a> RE! 7 vjedzu na hraně pozemku bude cca 763,3m. Spád bude proměnný dle\nD4 Vian PÁ výšky stoupající komunikace, cca 7-9%.\nm 7\n| | |\n| | Yi BA E ne\n! | & S03a\n— — N\n| | 4 | l |\n7\nk $04 o Ž\ni 7\n| | Beene 1\n| i ZY\nq — = -Z o o\n— < wm wm -3,230 revize datum popis\n| i —— U 02 02/2026 úprava statického řešení\n| I A 00 09/2025 vydání dokumentace\n8 | LiL LIS LC 2 VÁ\n= El ©\nareas 8 o- 7 , v a vv\nss] 88 |- PoE 4,230 Zahradni sklad a přístupové schodiště k RD\nO) L LLC ALLA | NO n\nč.p. 733, Jáchymov,\nparc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\nrazítko/podpis\nautorizovaný projektant ZÁ ARCH Digitálně podepsal ,\nENA Ing. arch. Marek pare\nIng. arch. Marek Smolka 5(e <) \")5| Smolka\ntel.: +420 732 618 50"
+    },
+    "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05"
+        ],
+        "pozn_refs": [],
+        "n_chars": 2925,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": true
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2925,
+      "first_text_excerpt": "č.m. název místnosti podlaha strop stěny plocha [m?]\n0.01 sklad zahradní technicky beton. dlažba 17,60\nLEGENDA MATERIÁLU:\nWZ obvodové nosné zdivo\n- betonové tvárnice\nW ocelové konstrukce\nWHA zelezobeton\nRR betonové prefabrikované bloky\n8 N tepelná izolace - XPS\n”n +0,000 štěrkopískový násyp zhutněný na 0,2 MPa / násyp\n8 NNN\nL AI I I I E84-\nZe E a B E a E a E < u dřevěné konstrukce\n7 : A\nY — : 5 tepelná izolace - minerální vata/EPS (viz. skladby konstrukcí)\nZ z — — ocelová konstrukce\n03a | |- . (z mm\nam K Po\nN\nY i (Z um\n7 © F\n7 C“\nŽ = Ze\nS$03b Zw 3 -3,230 | | m revize datum popis\nZA p 02\nLL LL LL L TL LL LL L LL LL LN LL L L LL LL LL L L L LA ba ————-.\nZ Z \"A 00 09/2025 vydání dokumentace\nS M\n= b=\nó 7 a! a ws zá ow w\nGY 3 C7 Zahradní sklad a přístupové schodiště k RD\nč.p. 733, Jáchymov,\nparc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\nrazítko/podpis .\nautorizovaný projektant ZA Digitálně podepsal paré\n275 ON\\\\_ Ing. arch. Marek\nIng. arch. Marek Smolka Sle E) smotka\ntel.: +420 732 618 505, email: smolka@smasharch.cz A dy Datum: 2026.02.11\nautorizace: 05394 SK ac 22:46:38 +01'00'\ninvestor\nVolný Jindřich Mgr.\nFibichova 733, 36251 Jáchymov\nzpracovatel projektové dokumentace/generální projektant\nSMASH architekti s.r.o.\nVodňanského 1008/2, Břevnov, 169 00 Praha 6\nIČO: 17666902\nprojektový stupeň\nSKLADBY KONSTRUKCÍ dokumentace pro povolení záměru\nS01 podlaha sklad S03a obvodová stěna pod úrovní terénu S04 opěrná stěna část\n- betonová dlažba 50 mm - © povrch surový bez omítky -  povrc"
+    },
+    "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S09"
+        ],
+        "pozn_refs": [],
+        "n_chars": 5356,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5356,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n1.01 vstup a chodba 12,40\n1.02 chodba na zahradu 3,60\n1.03 komora 0,70\n1.04 WC 1,50\n1.05 koupelna 4,10\ni 1.06 obývací místnost + kuchyně 24,00\npF 1.07 pokoj 9,40\n| | 1.08 schodisté do sklepa 3,80\nI /\nI < O\n/ / celkem 59,50\nI / —\nI 7777777\n~ i ~\n-= /\n/ ee\n/ 77\n/ ee\n== / ae\n0774 I\n| I\n| I\nI I\nL 8150\nf=\n3200 4950\np a i\nlegenda\n700 500 630 950 420 200 400 835 920 700 920 975 ___ o_O\n£ £ A 8 a rz LL 2 k\n2050 Žoori 600) 1600(700) 1600(700) Obvodové nosné zdivo\n| | A - smýšené zdivo, převážně keramická cihla\n7 Vnitřní nosné zdivo\n| A > | KA - keramická cihla dutinová\n|\nTvárnice pro příčky\ns | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n“ ag =\n8 a= 7 Lg Vi “ s tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební]\nM P 7 Af 4 | hi železobeton (včetně výztuže, viz. část konstrukčně stavební)\nWw | ty | Y | T | nn a7 Y 2 A beton prostý ( viz. část konstrukčně stavební)\nM M = ATL r TT Y “ 8 dřevěné konstrukce (viz. část konstrukčně stavební)\nPp Í -\n72 Ze 7 A yy K, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nVy ZG m (G a a m 7 m OO m m |ssseu tepelná izolace - XPS (A=0,035 w/mk), PIR (A=0,022 w/mk)\n/ A T ] | l 30 1120 m 1050 610 yy RES hutněné kamenivo/zásyp —--\n“ E | | ) | / \\ 1750(700) oo 90 1780(700) A hutnény nepropustný zásyp\nW A S ké || | W —\nY | 950 —~Y 300 | 1150 3004) 900 pop 1550 } | 150 1750 / = hydroizolační souvrství\nM J = 11 |\n% A Em 72 < V VY nnnnnv"
+    },
+    "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S05",
+          "S06",
+          "S08",
+          "S09"
+        ],
+        "pozn_refs": [],
+        "n_chars": 5126,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5126,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n2.01 schodiště 7,30\n2.02 chodba 5,90\n2.03 koupelna 2,40\n2.04 pokoj 15,50\n2.05 pokoj 14,10\n2.06 pokoj 15,80\ncelkem 61,00\n8150\nDCT\n3200 4950\np a i\nlegenda\n975 1200 1025 200° 400 830 920 670 920 1010 — a u...\n1650(500) 600(700) 1600(700) 1600(700) 7 Obvodové nosné zdivo\n| | A - smýšené zdivo, převážně keramická cihla\nI Vnitřní nosné zdivo\n| A » | A - keramická cihla dutinová\nTvárnice pro příčky\ns | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n= T\nSs VY 11) “ tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n© Z\nM 72 Yj | železobeton (včetně výztuže, viz. část konstrukčně stavební)\nWo 13 Y | NA 77 NN 2 7 7 o beton prostý ( viz. část konstrukčně stavební]\nME 2.01 =n a F “ 9 dřevěné konstrukce (viz. část konstrukčně stavební)\nY 00 a ==. Vi yy VG, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\n% | | la || GY “ |ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\n| —— 0 Z M% RES hutnéné kamenivo/zásyp ——\n“ | YW hutněný nepropustný zásyp\nM“ 7 | M\nYY | | “ = hydroizolační souvrství\n“ PF a ME iannnannnnan nopová folie / svislá drenáž\n© aa Z\n5 v | 2 -——- obklad\n° “ GY ý “\nWy > / Vy 1 ¢ |- || VY\nW bo {| 2.05 W\nM a L “\ng 2 2.03 f v\nV / a 7\nx / l o\noe SN C TC “ g\n\\\\ <\n( (7 M A, 7\n== = 27\np VÍ A Ae E a\nff r m, “ Wy\nY T | %\n„M -- /\n: M WY\na ose\n— +\nW Y W\ng V “yy Y\n\"8 WALL C0 MLM E\n5 YW 4 LU TN +\" a 8\n\"\nMm : “\neS\n“ : Z\n7 E “\n“\nM | aa\nZ i /\n$02 YW, a Z\nM“ :"
+    },
+    "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10"
+        ],
+        "pozn_refs": [],
+        "n_chars": 5081,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5081,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n3.01 schodiště 7,50\n3.02 půdní prostor 57,40\ncelkem 64,90\n8150\nDCT\n300 2600 50 75 1075 75 3675 300\n(-—a—é-Ó\nlegenda\n1175 800 1225 1505 960 2485 —_.e _—_______————LSS—gQqQOwoe—_<V—g€« _——<g—<g<\nObvodové nosné zdivo\nA - smýšené zdivo, převážně keramická cihla\n7 Vnitřní nosné zdivo\n| | A - keramická cihla dutinová\nA | Rees Tvárnice pro příčky\n| | | | | | | zdéné na maltu\n| | . | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n= Z jo E“ m —_ m | o tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební\n© L E A | 9 4 y (včetně výztuže, viz. Část konstrukčně stavební)\nM > < A a | | | železobeton (včetně výztuže, viz. část konstrukčně stavební)\nA K 33 Y 7 7 7 A beton prostý ( viz. část konstrukčně stavební)\n“ 3.01 | Vj YW) 7 a 02 G 9 M 8 dřevěné konstrukce (viz. část konstrukčně stavební)\n72 iS / VA 2201222222000 RO Wi WA WA HDA K, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nM | | ae |ssseu tepelná izolace - XPS (a=0.035 w/mk), PIR (A=0,022 w/mk)\nM | a i 2 hutněné kamenivo/zásyp ——\na | s | v =\n“ ON | i | | W hutněný nepropustný zásyp\n“ a | i / a hydroizolační souvrství\na a\n% | | fF | | | i| | | | WV inna nopová folie / svislá drenáž\na a\nYW | i Z — — — — obklad\nZa © | ň ae\n: | | | M\nv Š i | S 4\n“ 3 i i o\nx g .\n“ i | ae\nM VÍ )\nV | i | | 7\n“ i i q\n4 = —— — 4- mm =- -= = = -M\nVE E HE A s\nv 1700 7777709 8\n: 7 eee ee KES | 7 :\n| :\n? c =- | “\nW ja | | 4\ny i | M\n7 | | Y\n"
+    },
+    "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S02",
+          "S05",
+          "S06",
+          "S08",
+          "S10"
+        ],
+        "pozn_refs": [],
+        "n_chars": 2914,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2914,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n0.01 schodisté 3,50\n0.0200 chodbo O\n0.03 sklep 1 22,20\n0.04 sklep 2 2,30\ncekeem 82\n3300 m 4850 iecenda\n500 950 500 800 500 650 500 3250 500\n| | | emacs\nA BA) veo\nTFT FE F F FFT FFT 9 ‘ | I SDK konstrukce pořáníodonos v čóstpožáně bezpočnosnešn\n; 722222222) ° acento\n(Cenu = T\" Ups. WY Wp IZA z 2 beton prostý (viz část konshukčně stavební\n“ V 7 WY 22 YU; Y/Y) Yi : NN\nWy ‘ \\ Y 7 T TO T le k Gy E tepelná izolace - XPS úroa56 wim PIR -0022 Win)\np 7 Uj 7 M“ UZ, m\n; a - 7 7 4 “ ZZN U\nŇ < —— —— obkla\nNET MY yy\nVEEL Ly M\nm pk\n8 2 Y 00\n= / /\n3 Y M\nyy 7 a\nyy Yj i m\nLy) Y YW)\n8 Mb — ae T , m\nyy / -0 | _ | _ | _ | _ yy\n: 70 V | | | | iy\n: Wy Ž | | | | Y J\nI / | | | | Mh\nWH) | | | | YW\n8 7 WY Ž | | | | V7 8\nHZ Z | Po | We\nVL V | | | | 7\n“ 7 | | | | Uy Tato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\nk “ Y | | | | m přpodných změnách neprodleně informovat projektanta, Př reclzaci nutno. docžoval\ndoporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\nby y | | | | n me Sorameniess renemen reomeent dokumentaci stavby!\nye LD LLL Z — FF —— GO —— k Ý BO\nZ LL EL E li mmm LL Ya LL P oP U Stavební úpravy\ni 8 Řadový rodinný dům Fibichova č.p. 733\n| A D> | parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\nV M O so ss autořzovaný projektant STR náma ih\n——————————. Po o O jadsnoshachcz (E\nautorizace: 05394 L 92:59:42 401100\"\nVolný Jindřich Mor.\nFibichova 733, 36251 Jáchymov\n-© vn"
+    },
+    "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10"
+        ],
+        "pozn_refs": [
+          "POZN.1.01",
+          "POZN.1.02",
+          "POZN.1.03",
+          "POZN.1.1"
+        ],
+        "n_chars": 6010,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 6010,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n1.01 vstup a chodba 12,4\n1.02 chodba na zahradu 3,6\n1.03 komora 0,70\n1.04 WC 15\n1.05 koupelna 410\n; 1.06 obyvaci mistnost + kuchyné 24,00\nMy 1.07 pokoj 9,40\n| | 1.08 schodisté do sklepa 3,80\nI\nI | a\n| i celkem 59,50\n; vu\ni | Tota Bourání stávajících opěrných stěn dvora\noo / | =\nn]\n| OZN.1.03 o\ni K\nm I Z —— 77777\n= | --—---—\n774 I\nI I\nI I\nNA 8150\n77\n3200 4950\np a i\nlegenda\n700 500 630 950 420 200 400 835 920 700 920 975 —_\n£ £ A 8 a rz LL 2 k\n2050 Ž00(160dj 1600(700) 1600(700) - Obvodové nosné zdivo\n| | A - smýšené zdivo, převážně keramická cihla\n7 Vnitřní nosné zdivo\nA - keramická cihla dutinová\np 00, 700 | Tvárnice pro prick\n2100 * g00(1500) 7 A eee (arnice pro příčky\nPOZN.1.01 | zděné na maltu\n. s I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n=\n8 V 4 0 P VY | “ 8 tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\nZ Ca p Jp | hi železobeton (včetně výztuže, viz. část konstrukčně stavební)\nWa mu / L] Wj nn } 175 WY 7 A beton prostý ( viz. část konstrukčně stavební)\nAR -I PLL l “ “ 8 dřevěné konstrukce (viz. část konstrukčně stavební)\np =\nYH A LE YY 7 Uy Ww, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nM“ GY ms 9 7 T “ |ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\n2 VA 7 + bo rt 1050 610 Z REE hutněné kamenivo/zásyp a\nLI | 4\n| | | | 1750(700) a 1780(700) Wy hutněný nepropustný zásyp\nW 0 [300] 1150 300, 900 A 1550 |, 150 1750 72 —— h"
+    },
+    "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10"
+        ],
+        "pozn_refs": [
+          "POZN.1.01",
+          "POZN.1.02",
+          "POZN.1.03"
+        ],
+        "n_chars": 5667,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5667,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n2.01 schodiště 7,30\n2.02 chodba 5,90\n2.03 koupelna 2,40\n2.04 pokoj 15,50\n2.05 pokoj 14,10\n2.06 pokoj 15,80\ncelkem 61,00\n8150\nDCT\n3200 4950\np a i\nlegenda\n975 1200 1025 200° 400 830 920 670 920 1010 a\n1650(500) 600(700) 1600(700) 1600(700) v Obvodové nosné zdivo\n| | A - smýšené zdivo, převážně keramická cihla\n7 Vnitřní nosné zdivo\n| 1605 70 | Jot ie no\n> — 4\n2350 *~go0(1500) * A ) KE Mun příčky\n. s | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\nU\n8 V MY, | “ tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n© M V LE / | železobeton (včetně výztuže, viz. část konstrukčně stavební)\n13 = U 7 beton prostý ( viz. část konstrukčně stavební)\n72 VY yj ny 7/7, . efonp : |\nM 2.01 mn a FF “ 9 dřevěné konstrukce (viz. část konstrukčně stavební]\nY /M | | O_<_—x\" ——— Vi yy K tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nWy | | la ———] GY “ |ssseu tepelná izolace - XPS (a=0.035 w/mk), PIR (A=0,022 w/mk)\n72 VA g M% hutněné kamenivo/zásyp —————\n“ YW hutněný nepropustný zásyp\nM“ U | M\nYY | | aw = hydroizolační souvrství\n% (n % inna nopová folie / svislá drenáž\no\nEPA. Y a\nECM 7\n“ | 2.05\n5 7 / V “\n2 © | legenda bourání\n“ 7 7 2 | “ esence pou\nCVC (NÉ =\nN =\nourání v nosných a obvodových stěnác\nY “ Bourání ých a obvodových stěnách\n=e 2 W — YY 72 | Bourání lehkých nenosných konstrukcí\np VÍ SL BT HE a ee Pa\nfe 00 | VA | | Bourání nábytku a zařizováků\nM“ — M\n7 om M | M\nz “ a "
+    },
+    "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S02",
+          "S03",
+          "S04",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10"
+        ],
+        "pozn_refs": [
+          "POZN.1.01",
+          "POZN.1.02",
+          "POZN.1.03",
+          "POZN.1.1"
+        ],
+        "n_chars": 5478,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5478,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n3.01 schodiště 7,50\n3.02 půdní prostor 57,40\ncelkem 64,90\n8150\nDCT\n300 2600 50 75 1075 75 3675 300\nCc i\nlegenda\n1175 800 1225 1505 960 2485 oT\nObvodové nosné zdivo\nA - smýšené zdivo, převážně keramická cihla\n7 Vnitřní nosné zdivo\nA - keramická cihla dutinová\n1825 | Tvarni říčk\nvarnice pro příčky\n| ? 1450 ? | A » | | R23 j\nzděné na maltu\nPOZN 1.1 |\n| | : | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n8 ZO = (O —— = | o tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n“ p NN | | ” | železobeton (včetně výztuže, viz. část konstrukčně stavební)\n77 33 A beton prostý ( viz. část konstrukčně stavební)\nWV 3.01 ee 8 dřevěné konstrukce (viz. část konstrukčně stavební)\nZ S | Po K tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\n% M |ssseu tepelná izolace - XPS (=0,035 w/mk), PIR (A=0,022 w/mk)\nM“ | | VY hutněné kamenivo/zásyp ——\n% ON | | | | WW) hutněný nepropustný zásyp\nWy O | | 72 u hydroizolační souvrství\ny | fg | | | | | | % nnnnnvvvvvu nopová folie / svislá drenáž\nON NN ! | / -=\n“ “\nm\nMEJ EL -80\na B m na | y ee\nGZ — „I — — — „I — — — Y = Bourané / demontované konstrukce\nGa zs A 8 —\n(O | of | | YW g | Z| Bourání v nosných a obvodových stěnách\no\n8 r m M | | | yy | Bourání lehkých nenosných konstrukcí\n2 wa Bourání nábytku a zařizováků\nM“ | | | “\nYW : YW\n4 = | J “\nM | | M\n502 “ | | POZN.1.02 74 502\nwa r Al\nV7 i I 7\n8 YW a Y poznámky\n> % M“ 8 pozn.1.01 Bourání "
+    },
+    "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S02",
+          "S03",
+          "S04",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10"
+        ],
+        "pozn_refs": [
+          "POZN.1.01",
+          "POZN.1.02",
+          "POZN.1.03"
+        ],
+        "n_chars": 5579,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5579,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n001 schodiště © 3B0\n002 |< chodba. |———— O AO\n0.03 sklep 1 22,20\n0.04 sklep 2 23\ncelkem 32,40\n8150\n(..————=\n3300 4850\n> ai Wi TT TTT fe\nlegenda\n500 950 500 800 500 650 500 3250 500 5533377350505\nv Obvodové nosné zdivo\nA - smýšené zdivo, převážně keramická cihla\nVnitřní nosné zdivo\nA - keramická cihla dutinová\nTvárnice pro příčky\nPZT TZ ZOOL, ZLL0 PLL Ppl gL. Z 3 . I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n8 M Vf Yj) M Yi j “ | tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n9 železobeton (včetně výztuže, viz. část konstrukčně stavební\nC W V ze 0 Vi i)\nM LCC 7 ECC < OOD V7, —.. \"| —. aA beton prostý (viz část konstrukčně stavební)\nY 7 X \\ GY WY, 8 dřevěné konstrukce (viz. část konstrukčně stavební)\nZ X | Z Y, 4 M K tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nY x \\ Y Z LL LL ZL Z LECU TEC EC WY |ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\nYW = SN WY V hutněné kamenivo/zásyp —\n“ X “a A Y hutněný nepropustný zásyp\n7] 9 % Ů = hydroizolační souvrství\na „M m inna nopová folie / svislá drenáž\nŠ Ž <\nY / —— =- obklad\n| W\nMET Uj Y 2\nhs Uj; Y Wy ror\n—$—$— :::....\nfm: Y Y 8 — Bourané / demontované konstrukce\nx a\n7 == Y 5 | ZA Bourání v nosných a obvodových stěnách\n8 „= 72 | Bourání lehkých nenosných konstrukcí\n72 m 0 Bourání nábytku a zařizováků\nW 7\n| „n Nl : /\n8 7 T T Y ý poznámky\n= 8 Y Y 8 8 pozn.1.01 Bourání v nosných a obvodových s"
+    },
+    "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10",
+          "S11",
+          "S12"
+        ],
+        "pozn_refs": [
+          "POZN.2.01",
+          "POZN.2.02",
+          "POZN.2.03",
+          "POZN.2.04",
+          "POZN.2.05"
+        ],
+        "n_chars": 9483,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 9483,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n1.01 vstup a chodba 9,10\n— - 1.02 zádveří 3,00\nZ J 1.03 koupelna 2,60\nV — % 1.04 obývací místnost + kuchyně 24,40\nW m YZ 1.05 ložnice 14,50\n1035 250| 1000 P 5615 o 106. chodbanazahrau 88\n7 7 fe = 1.08 schodiště do sklepa 4,00\ny) |] | celkem 61,40\nPe byt 48,20\ntiti, i) OAL lll 8\na B “ a\nZT\nPOZN.2.02\n3335 4815\n450 1000 405 900 580 635 920 700 920 975\n2100 200(1520) 2300 1600(700)\n700\n1 *800(1500) +\nlegenda\no —\nC | S vue\na Obvodové nosné zdivo\n| > A ) | A - smýšené zdivo, převážně keramická cihla\n. 7 Vnitřní nosné zdivo\n| | | KA - keramická cihla dutinová\n-0,200 Tvárnice pro příčky\no A ke O] BV) “ | o I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\nV fo | | 8 , —_\n~ 77 ZN | NENI s S hi tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební]\nZ 2 NÍ 14 IL, : = 0999999909990] 1999999999999 QOPI železobeton (včetně výztuže, viz. část konstrukčně stavební)\nWs N77 ň PRAČKA / V lw 77 wm 77 7 o A beton prostý ( viz. část konstrukčně stavební)\nJ S 2\nm | : y) SUSICKA GY TT 77 => p 3 V | S dřevěné konstrukce (viz. část konstrukčně stavební]\nM nm Zz O Z Vy |ssseu tepelná izolace - XPS (=0,035 w/mk), PIR (A=0,022 w/mk)\n0 na) 150 1300 300 | [oo 1120 540 1050 610 | s00| hutněné kamenivo/zásyp —————\n20 i) Í 7 | 70 hutněný nepropustný zásyp\n72 9 1.08 Z i) GY 72 = hydroizolaéni souvrstvi\ny =—— W Yj N yy Aruna nopová folie / svislá drenáž\ns Z 7 a ———- bklad\nA obkla\n: iy = M Y\nPLL chodba Z\nWY 8 Y "
+    },
+    "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10",
+          "S11",
+          "S12"
+        ],
+        "pozn_refs": [
+          "POZN.2.01",
+          "POZN.2.02",
+          "POZN.2.03",
+          "POZN.2.04",
+          "POZN.2.05"
+        ],
+        "n_chars": 9273,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 9273,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n2.01 schodiště 7,30\n2.02 chodba 4,20\nPC\nschody ze zahrady) | TON 000——— a\np LL 2.04 chodba 1.60\nm E LL 2:05 — smoečnýpokj zig\n300} 1000 ~—— (300 5565 2.06 pokoji 9,00\no 2.07 pokoji 14,40\nS g\n= Ps =\nŇ a cote L\nN aa\no wm (V —— =\n5 3 CD ee\n8 Pos | Byt 49,80\no =\n% m : 8\noperná zídka ©\nL I\n2280 | S| 1000 | 4865\na\n1000 1800 | 80, 630 ; 500100} 670 500/900) 1010\n2100\n700\neo: ;\no\na legenda\nrc: - | ň 8 Te\nřístup d + 5 A a Obvodové nosné zdivo\n| pis iP 9 polo OZN.2.01 | | A - smýšené zdivo, převážně keramická cihla\n© anglický dvorek Vnitřní 5 zdi\n+2,080 : nitřní nosné zdivo\n| -0,200 -0,200 | | Ki - keramická cihla dutinová\nTvárnice pro příčky\no some Lo VOV “ | o I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n< W A = S hi tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\nm AN ee Y B EO] TOTO VR železobeton (včetně výztuže, viz. část konstrukčně stavební)\nWe 13 Y D7 P o A beton prostý ( viz. část konstrukčně stavební)\nVV) 2.01 —=ý// p 1/4 | o dřevěné konstrukce (viz. část konstrukčně stavební)\n| schodiště q v g Z ; M an ;\nVA ZY VAL ‘( 2 Vy G, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nWY +2,080 0 O GZ j Z |ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\n300 | 2600 300 | 0] mo 1140 00 | hutněné kamenivo/zásyp —\na 4+ l\nbw“ QL g Z wy hutněný nepropustný zásyp\nZ 7 mm Mne\n2 m a === hydroizolační souvrství\n% (m Z Wy inna nopová folie / svislá drenáž\n"
+    },
+    "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10",
+          "S11",
+          "S12"
+        ],
+        "pozn_refs": [
+          "POZN.2.01",
+          "POZN.2.02",
+          "POZN.2.03",
+          "POZN.2.04",
+          "POZN.2.05"
+        ],
+        "n_chars": 9312,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 9312,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n3.01 schodiště 7,60\n3.02 chodba 4,10\n3.03 chodba 2,40\n3.04 koupelna 4,80\n3.05 obyvaci mistnost a kuchyné 32,80\n3.06 loznice 12,80\ncelkem 64,50\nbyt 52,80\n3340 4810\nCOFFS ee\np30 y 2600 150 1750 150 2900 300\n1000 1800 540 485 800 500 2075 950\n1450 1240(1000) 1240(1000)\nM legenda\nB | ao\nObvodové nosné zdivo\n— 1 OOo . 7 Vnitřní nosné zdivo\n[ | | 8 | | | V, - keramická cihla dutinová\no 85 ts Tvárnice pro příčky\n< S zděné na maltu\no sme | SSNS m | o I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\n< WO, ZZ en 7/7 = S hi tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n7 SLA 0 Tf Y, = 909000 O 2 ee železobeton (včetně výztuže, viz. část konstrukčně stavební)\nFe 1 way S A beton prostý ( viz. část konstrukčně stavební)\nwa 33 —— $1 Z 2 — orn\nA N ib] a 8 V 99999; tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nma V) i | 5 “ 4 i\naa i be Pá |ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\nM ra bo M hutněné kamenivo/zás —\nP| Ma 2 “ ke“ yp\n% L M M hutněný nepropustný zásyp\nP, o ee X řá u hydroizolační souvrství\n7 = 1\n“ be ee 7 inna nopová folie / svislá drenáž\n© M = jí we\nR I | 2\n= Z ie O i 3.06 a -—— obklad\n° “ = M\nPá o bo je ložnice Z\nŽ 3 M M V“\n| Š oe | 3.04 ||] | JEKL 100x4 a\nA3 = o] G “\nx L koupelna es! ae ,\nW a JEKL|100x4 |] mí | n ZZ egendanévh 0 ZZŮ..ER E E E.ů2ůŮEů\n2 | 1 A\np< x]\n(eye (E ——\n= M M g j\n( LO | | eS Va Uy) — soe\nbd bo Gg Dozdívka do "
+    },
+    "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10",
+          "S11",
+          "S12"
+        ],
+        "pozn_refs": [
+          "POZN.2.01",
+          "POZN.2.02",
+          "POZN.2.03",
+          "POZN.2.04",
+          "POZN.2.05"
+        ],
+        "n_chars": 9665,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 9665,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n0.01 schodiště 3,40\nV 0.02 chodba 4,40\nZ J REZ C-C 0.03 sklep | 22,20\nV % 0.04 sklep 2 23\nW Terasa ——————\n- terasová dřevěná prkna 25 mm celkem 32,30\n© - podkladní rošt z dřevěných hranolů 50 mm\ni <0 | 550) | - rektifikovatelné terče pro terasu 50 mm\nMy o C - betonové dlaždice 50 mm\nY ZB | - štěrkový podsyp 16/32 mm 100 mm\n: - hruby podsyp 4/8 mm 150 mm\n| - geotextilie podiaha anglicky dvorek\n- betonova dlazba 50 mm\nY - kladecí vrstva - kamenná drť 4-8 mm 40 mm\no V - podkladní nosná vrstva - kamenná drť 4-8 mm = 150mm\na OOBŮŮ 00008  Zulněná zemní páň (30 MPa)\nP + l „200 POZN.2.02\no o\n10 10\na a —\nNESNEDNEDNÉ Pa EA So Sa al\nEER RS: 1\nnara: H\nPE: ST legenda\n1285 1000 | 5865 S E u iD S 5 GY :\nwre x 3) Obvodové nosné zdivo\ni ig ~ = T\no | an 0 0) 200 = +0,000 70 - smýšené zdivo, převážně keramická cihla\na ee : WU, © 7 Vnitřní nosné zdivo\n= C o drenáž s odkapem do ď 7 S WA 4 n-\n| © oe ex - keramická cihla dutinová\n| © anglického dvorku < \"T MK == me ee\n© ¢ oS h 4 AON Tvárnice pro příčky\na A IZ Sa Based zděné na malu\n— 8 | Ue eee ef NESVOO sn m. vee\nPZ TT OI PEO S FE “ : opěrná zed zahrady / terasy - =U,090 | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\nM Yi jj U 2000, M L | Y S 1.100 s tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n= — —— a — n oe te GZ železobeton [včetně výztuže, viz. část konstrukčně stavební)\nULL VC ECT E ; =-\nOY eZ Z a eae 7 TTL ILL LO LTL DVU A ZA"
+    },
+    "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10",
+          "S11",
+          "S12"
+        ],
+        "pozn_refs": [
+          "POZN.2.01",
+          "POZN.2.02",
+          "POZN.2.03",
+          "POZN.2.04",
+          "POZN.2.05"
+        ],
+        "n_chars": 8815,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 8815,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n3.01 schodiště 7,60\n3.02 chodba 4,10\n3.03 chodba 2,40\n3.04 koupelna 4,80\n3.05 obyvaci mistnost a kuchyné 32,80\n3.06 loznice 12,80\ncelkem 64,50\nbyt 52,80\n8150\nLCT\n3200 4950\nTFs Ff\nM legenda\nB | Obvodové nosné zdivo\nT = — — — : EZ Vnitřní nosné zdivo\n| | | - keramická cihla dutinová\nS ts Tvárnice pro příčky\nhu zděné na maltu\n| | I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\nes tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\nL | ] S železobeton (včetně výztuže, viz. část konstrukčně stavební)\nTT v A beton prostý ( viz. část konstrukčně stavební)\nO n n 0 O dřevěné konstrukce tů čás tosténé soon\n— a | .\nN | \\ 200/160 Z, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nv 160/200 a i 7 :\n|ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\n3 RES hutněné kamenivo/zásyp —-\na ON hutněný nepropustný zásyp\noj\nO © a hydroizolační souvrství\nm. inna nopová folie / svislá drenáž\nn ©\no\n3 = EE\ng tA — if a a = = = = = = = a = = = a = a legenda névih\n3 NE KS) KK JEKL JEKL 1004\ni) mm = Novrhované konstrukce\nO Nábytek\nAN KN | Wl Dozdívka do stávající stěny\nI -keramická hie pnd\nlo | XZ (ni wo WA Obvodové nosné zdivo\n9 | | S - keramické dutinové tvárnice\nN N A ey\n: EI Nová příčka\n| . - plynosilikátové tvárnice (Ytong)\n; | | | — | Zelezobeton\n. - (včetně výztuže, viz. část konstrukčně stavební)\n| | | | | beton\no . I - (viz. část konstrukčně stavební)\noo\n= Tepelná "
+    },
+    "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09"
+        ],
+        "pozn_refs": [],
+        "n_chars": 4673,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 4673,
+      "first_text_excerpt": "č.m. název místnosti podlaha © strop stěny plocha [m?]\n1.01 vstup a chodba 12,4\n1.02 chodba na zahradu 3,6\n1.03 komora 0,70\n1.04 WC 15\n1.05 koupelna 410\n1.06 obývací místnost + kuchyně 24,00\n1.07 pokoj 9,40\n1.08 schodiště do sklepa 3,80\ncelkem 59,40\n+11,100\n= NV\n=\n\\ legenda\nObvodové nosné zdivo\nVA - smýšené zdivo, převážně keramická cihla\n> WU Vnitřní nosné zdivo\n- keramická cihla dutinová\n; ————————— 5 o n ts Tvárnice pro příčky\noT _ ae 4 O\nu ——77 Te VM | lo RA X I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\nnae aT m +8,900 | $ tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\n| | železobeton (včetně výztuže, viz. část konstrukčně stavební)\n| if | A beton prostý (viz. část konstrukčně stavební]\n| 4 dřevěné konstrukce (viz. část konstrukčně stavební)\n| tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\n| |\n| = |ssseu tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 w/mk)\nL | hutněné kamenivo/zásyp ———\ni | RE hutnény nepropustný zásyp\nc\n4 = hydroizolační souvrství\n2] 4 i. 21 ny\nYj 4 AAnunninnnanan nopová folie / svislá drenáž\no |\no | n —— —— obklad\n5 V\n0, 2 | +6,400 7\n4 6 |\nJ — LIN\npe NT\no\núm—.\nW Y VAN\n1 Z 2\n| Y n —\no\na\n/ ;\n= U Y a M\n501 Zá Ž +3,200 Y\n7 08 :\n©o\nŽ - ]\nEu- a Y\nY 72 s\nJ Us\nTH W HT\n—\no\nx\noo\nN\nLL LT\nGY Y Tato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\n3 +0 000 realizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\n0 2"
+    },
+    "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10"
+        ],
+        "pozn_refs": [
+          "POZN.1.02",
+          "POZN.1.03",
+          "POZN.1.1"
+        ],
+        "n_chars": 5141,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 5141,
+      "first_text_excerpt": "legenda\nObvodové nosné zdivo\nV/A - smýšené zdivo, převážně keramická cihla\np Vnitřní nosné zdivo\nKZ. - keramická cihla dutinová\nTvárnice pro příčky\nm SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\ntvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\nželezobeton (včetně výztuže, viz. část konstrukčně stavební)\nZ beton prostý (viz. část konstrukčně stavební)\ndřevěné konstrukce (viz. část konstrukčně stavební)\n+11,100 290990, tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\nREQ tepelná izolace - XPS (a=0,035 w/mk), PIR (A=0,022 w/mk)\n= EE hutněné kamenivo/zásyp\ns hutnény nepropustný zásyp\nV = hydroizolační souvrství\n„uvvuvuvuvuvu nopová folie / svislá drenáž\nNN ———— obklad\nlegenda bourání\n> —u Bourané / demontované konstrukce\nZ P V Bourání v nosných a obvodových stěnách\n—— L Ly mn — sní lehký\n= < m o Z AS || | 5-8 KZA Bourání lehkých nenosných konstrukcí\n—— -77 —— -0 n) nar ne sb\nn- HE Bourání nábytku a zařizováků\nT- +8,900 8\nbi —\n| | PE o,\na r\n| a Y\noe\na\nLN ň M\nee i\nAs 8\nio\nKy\nKy\nÓ i +6,400 7\nr = .\nKD\npp Co\" OND eee poznámky\nW 7 Ť PX části PD. Vždy s důrazem na podepření navazujích a souvisejících prvků (stropy,\n> A “ A “ /A = tramy...) dočasnými stojkami. V případě bourání otvorů budou vždy nejdříve osazeny\n77 V GY wl nové překlady s odpovídajícím uložením na bocích. Osazení bude do připravené a\n4 E “ YY, vyrovnané kapsy ve zdivu.\nY E T] pozn.1.02 Zbourání vrchní části komínu v posledním podlaží\n0 pozn.1.03 Částeč"
+    },
+    "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05",
+          "S06",
+          "S07",
+          "S08",
+          "S09",
+          "S10",
+          "S11",
+          "S12",
+          "S12a",
+          "S12b"
+        ],
+        "pozn_refs": [
+          "POZN.2.02",
+          "POZN.2.03",
+          "POZN.2.04"
+        ],
+        "n_chars": 12158,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 12158,
+      "first_text_excerpt": "legenda\n+] 2,750 +] 2,750 WHA Obvodové nosné zdivo\n4 - smýšené zdivo, převážně keramická cihla\np Vnitřní nosné zdivo\n\\ )\nw o NV v 222 - keramická cihla dutinová\n= m x\nA aD Tvárnice pro příčky\nŘEZ A-A A ŘEZ B-B A = O\n00000000 LN\nLGR ON AN I] SDK konstrukce (požární odolnost viz. část požárně bezpečnostní řešení)\nPL KN a ZN\nSY ZN Loh SONS , M.\nYY SN YJ KON tvarovky ztraceného bednění (včetně výztuže, viz. část konstrukčně stavební)\nLf GEN LY 2 SA železobeton (včetně výztuže, viz. část konstrukčně stavební\nLG A Lig KA 5 ,\nLg KN AY S XEN ZZ] beton prostý ( viz. část konstrukčně stavební)\nN PITT Ý E X =\nJ Lf NN © LA SON dřevěné konstrukce (viz. část konstrukčně stavební)\nLILLY ESS “ y, |- N N ne ň z\nYE Ň ” / Lp L Koon RRR tepelná izolace - EPS, minerální vata (viz. skladby konstrukcí)\ný ad ee EN |ssssa| tepelná izolace - XPS (4=0,035 w/mk), PIR (A=0,022 W/mk)\nLG A vy = ZN in éné ivo/z6\nA a YY | ON ON hutněné kamenivo/zásyp\nLf o LS a DY ěný y zá\nLS A by Yon VA hutněný nepropustný zásyp\nLp » M LNG N a SEN = hydroizolaéni souvrstvi\nP \\ Lorry ee Naeem .\nYEA PN ZY Re SEN „ranou nopová folie / svislá drenáž\no /4020) RN Loney be] KON\n= Ej SA © YE | A\na 4 A a Lf M KA 7%\nley, EN TY p] SN\nLY ZN L M SA\n+9,600 YJ = SA +9,600 ff | XN\n= a OSS Wop a ENN\nTT nae A HEA 160 P TT o i GSA\n== | VD HEA 160 © S GG) Axo A \\ legenda návrh\nTFR = 0) Zd ST IN 1 FLO TT — LY oe KN TT\n| 000 C 10900600\" i M Lf I TNX ~ == Navrhované konstrukce\nS —_ = < J J L] pv < m— KN ==\naooneo || corso NN _ 00 G | 00180 ASA\n-PB"
+    },
+    "D.1.1.2.3.01 - Pohled - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.01 - Pohled - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2150,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2150,
+      "first_text_excerpt": "povrchové materiály\n(A strukturovaná omítka, bílá\nstrukturovaná omítka, červená\n© omítková šambrána kolem okna, béžová\n(©) sokl, obklad z keramické obkladačky\n© okenní výplně a dveře\nP ocelová falcovaná krytina, barva červená\n© dřevěné prvky / dřevěný obklad\n© klempířské prvky (okapy, svody)\na komin\n| ————— |\n+6,565 |\nUT TIT\neS K M M KAM K\nPT ONEN\nTato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\nrealizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\npřípadných změnách neprodleně informovat projektanta. Při realizaci nutno dodržovat\n© © (© © © © doporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\nTato dokumentace nenahrazuje realizační dokumentaci stavby!\nrevize datum popis\n02 - -\n+3,200 A\nNV - ;\npo Ee Ee ee ee] = —- m\no O OOA! Slavební úpravy\n= „ . „ o . . w\nRadový rodinný dům Fibichova č.p. 733\n© © A parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\nrazítko/podpis paré\nautorizovaný projektant\n© RA Digitálně podepsal\nSNA\nAa Ing. arch. Marek Smolka 3/2 Ba 2a) (ne, arch. Marek\nm m tel.: +420 732 618 505, email: snolka@smasharch.cz A ly A5) Datum: 2026.02.20\n+0,000 +0,000 autorizace: 05394 GST 23:04:55 +01'00'\n\\ , O > , investor\nI] WI T L TL T TD T T T T T T T T T T T T T T T T T T T T T T TH Ůů . we\nfr Ty | NE R E R R E E E O O O O O O O O O O O O O O O O O O O O OY O U Volný Jindřich Mor.\nmm E K K KM K K M O O M O R M M O R KM O O KR M O A KM K R KM K U U O M\n(mmm "
+    },
+    "D.1.1.2.3.02 - Pohled - stav _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.02 - Pohled - stav _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 1971,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 1971,
+      "first_text_excerpt": "povrchové materiály\n(A) strukturovaná omítka, bílá\nstrukturovaná omítka, červená\n© omítková šambrána kolem okna, béžová\n©) sokl, obklad z keramické obkladačky\n© okenní výplně a dveře\n© ocelová falcovaná krytina, barva červená\n(© dřevěné prvky / dřevěný obklad\n© klempířské prvky (okapy, svody)\nad komin\nHCH © +8,440\nLT TT ETT ll\nHe i\n+6,825\n+6,565 Ň ,\n=\n= ———.* = r ————\nM\nAll\nTato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\n(© realizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\npřípadných změnách neprodleně informovat projektanta. Při realizaci nutno dodržovat\ndoporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\n© Tato dokumentace nenahrazuje realizační dokumentaci stavby!\n© © | | revize datum popis\n02 - -\n+3,200 M UO\nwb . © 00 12/2025 vydani dokumentace\n© Stavebni Upravy\n= „ . „ o . . w\nm = Radový rodinný dům Fibichova č.p. 733\n©T L de || parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\n[| | { [] razítko/podpis paré\nP © autorizovaný projektant SA Digitálně podepsal\n2/8 2X2| Ing. arch. Marek\n© HHH © Ing. arch. Marek Smolka S( (42) sm\ntel.: +420 732 618 505, email: smolka@smasharch.cz p Caray, sy Datum: 2026.02.20\n+0,000 +0,000 autorizace: 05394 SKA nev 23:06:40 +01'00\n\\ , U] | R R K or -0.200 \\ , investor\n(SKK K M O K M O R M K O K M O RO KK A eee M K © L LDN\nNU K K K K K Volný Jindřich Mor.\nFibichova 733, 36251 Jáchymov\nzpracovatel projektové dokumentace/generál"
+    },
+    "D.1.1.2.3.11 - Pohled - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.11 - Pohled - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 1864,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 1864,
+      "first_text_excerpt": "povrchové materiály\n(A strukturovaná omítka, bílá\nstrukturovaná omítka, červená\n© omítková šambrána kolem okna, béžová\n(D) sokl, obklad z keramické obkladačky\n© okenní výplně a dveře\nP ocelová falcovaná krytina, barva červená\n© dřevěné prvky / dřevěný obklad\n© klempířské prvky (okapy, svody)\na komin\ni 1\n+6,565\n+5,890\n© ®\nTato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\nrealizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\npřípadných změnách neprodleně informovat projektanta. Při realizaci nutno dodržovat\n© © (© © © © doporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\nM Tato dokumentace nenahrazuje realizační dokumentaci stavby!\n|| revize datum popis\n02 - -\n+3,200 A\nNV - ;\nT 00 12/2025 vydání dokumentace\nA Stavební úpravy\nT = „ . „ o . . w\nRadový rodinný dům Fibichova č.p. 733\n© © A- parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\nrazítko/podpis = paré\n© autorizovany projektant (ESN Digitálně podepsal\n2/8 <9) 2\\5\\\\ (ng. arch. Marek\ni] i) Ing. arch. Marek Smolka šle 7% 515) smolka\n2\\° Č\nM] LJ tel.: +420 732 618 505, email: smolka@smasharch.cz oc 99 Datum: 2026.02.20\n+0,000 +0,000 autorizace: 05394 SA acvv/ 23:16:55 +0100\n\\ , O Ch [| > , investor\nVolný Jindřich Mgr.\n© Fibichova 733, 36251 Jáchymov\nzpracovatel projektové dokumentace/generální projektant\nPo\n[I . .\nSMASH architekti s.r.o.\n| Vodňanského 1008/2, Břevnov, 169 00 Praha 6\nIČO: 17666902\n| | projektový stu"
+    },
+    "D.1.1.2.3.12 - Pohled - bourání _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.12 - Pohled - bourání _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 1889,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 1889,
+      "first_text_excerpt": "povrchové materiály\n(A) strukturovaná omítka, bílá\nstrukturovaná omítka, červená\n© omítková šambrána kolem okna, béžová\n©) sokl, obklad z keramické obkladačky\n© okenní výplně a dveře\n© ocelová falcovaná krytina, barva červená\n(© dřevěné prvky / dřevěný obklad\n© klempířské prvky (okapy, svody)\nad komin\nres A\n+6,825\n+6,565 Ň ,\nzu mů\nCd Tato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\n(© realizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\npřípadných změnách neprodleně informovat projektanta. Při realizaci nutno dodržovat\ndoporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\n© === Tato dokumentace nenahrazuje realizační dokumentaci stavby!\n© © m revize datum popis\n02 - -\n+3,200 Dm\nMV - ;\n© 00 12/2025 vydání dokumentace\n© Stavební úpravy\np r“ „ . „ o Te v\nTTI oT Radový rodinný dum Fibichova č.p. 733\n© Je |: parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\n| | [| ————— ooo\nLT TT razítko/podpis : paré\nLL © autorizovany projektant LS Digitalné podepsal\naan 2/8 <a) 2\\\\\\_ Ing. arch. Marek\n© HF (© Ing. arch. Marek Smolka £(3 (7%) FE) smolka\n„. tel.: +420 732 618 505, email: smolka©smasharch.cz A on 5/5 Datum: 2026.02.20\n+0,000 +0,000 autorizace: 05394 Dr neo/ 23:18:15 +01'00'\nA— o- 4le F ele’ +— Mar\n= Volný Jindřich Mgr.\nFibichova 733, 36251 Jáchymov\nzpracovatel projektové dokumentace/generální projektant\nSMASH architekti s.r.o.\nVodňanského 1008/2, Břevnov, 169 00 Praha 6\n"
+    },
+    "D.1.1.2.3.21 - Pohled - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.21 - Pohled - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2288,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2288,
+      "first_text_excerpt": "povrchové materiály - návrh\n(A strukturovaná omítka, bílá\nstrukturovaná omítka, šedá\n© pohledový beton\n(©) sokl, obklad z keramické obkladačky\n© okenní výplně a dveře\nP ocelová falcovaná krytina, barva černá\n+12,750 © dřevěné prvky / dřevěný obklad\n\\ , © klempířské prvky (okapy, svody)\n: : : n\n© parapety a klempířské prvky: hliníkový plech, barva pozinkovaný plech\nokenní rámy: plast, barva zelenomodrá\ni i i zábradlí a zámečnické prvky: barva antracit, výplň nerezová síť\nNA C K K B R R K K K “\n+6,565 E N y\nBI\nLIL] CL J LL] [mm/m Tato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\nrealizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\npřípadných změnách neprodleně informovat projektanta. Při realizaci nutno dodržovat\ndoporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\n© © © © Tato dokumentace nenahrazuje realizační dokumentaci stavby!\nrevize datum popis\n02 - -\n+3,200 OO\nKV- Ta A (A) 00 12/2025 vydání dokumentace\nStavební úpravy\n= „ . „ o . . w\n> T mm Radový rodinný dům Fibichova č.p. 733\n——— ———— parc. č. 1094/16, st.1022, k.ú. Jáchymov [656437]\n| | (A) razítko/podpis z paré\nautorizovaný projektant A Digitálně podepsal\n© © S OA Ing. arch. Marek\n(© Ing. arch. Marek Smolka Sle woe © =) Smolka\ntel.: +420 732 618 505, email: smolka@smasharch.cz VA Os S Datum: 2026.02.20\n+ autorizace: 05394 Sra ne099/ | 23:31:57 +0100\n+0,000 A 0,150\nOTT a FY Volný Jindřich Mgr.\n| | | R M K "
+    },
+    "D.1.1.2.3.22 - Pohled - návrh _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.1.1.2.3.22 - Pohled - návrh _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2147,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2147,
+      "first_text_excerpt": "povrchové materiály - návrh\n(A) strukturovaná omítka, bílá\nstrukturovaná omítka, šedá\n© pohledový beton\n(©) sokl, obklad z keramické obkladačky\n© okenní výplně a dveře\n© ocelová falcovaná krytina, barva černá\n+12,750 (© dřevěné prvky / dřevěný obklad\n\\ , © klempířské prvky (okapy, svody)\nji . n\nparapety a klempířské prvky: hliníkový plech, barva pozinkovaný plech\n(© okenní rámy: plast, barva zelenomodrá\nT i zábradlí a zámečnické prvky: barva antracit, výplň nerezová síť\nFET TTT R K M K S S S K\nO\n(K\nL\n° © | ©\ni +6,850\n+6,565 p LH L\n— +5,280\n© o NOV\nmm [mm Tato dokumetnace je vypracována v podrobnosti PD pro povolení záměru a není určena pro\n—— —= © realizaci díla. Veškeré rozměry nutno doměřit při realizaci na stavbě dle skutečného stavu a o\n(A) případných změnách neprodleně informovat projektanta. Při realizaci nutno dodržovat\n(© doporučení a nařízení výrobce, postupovat dle technických listů a prováděcích předpisů.\nA © © Tato dokumentace nenahrazuje realizační dokumentaci stavby!\nrevize datum popis\n02 - -\n+3,200 O\nMV - ;\n00 12/2025 vydání dokumentace\nStavební úpravy\n+2,080 ~ , . 7 o “T° v\nmm © L Radový rodinný dům Fibichova č.p. 733\n——— parc. č. 1094/16, st.1022, k.ů. Jáchymov [656437]\n[LLL razitko/podpis . paré\nq (LI autorizovaný projektant {EZ Piste podepsal\n© mmm © A Ing. arch. Marek Smolka Sls (79 JE) smolka |\nnm 0,200 tel.: +420 732 618 505, email: smolka@smasharch.cz A cng Datum: 2026.02.20\n£0,000 | P| Peed HEHE . autorizace: 05394 ues 23:33:22 40100\nn K C | fd 1 1 M -"
+    },
+    "D.2.2 - statický výpočet _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.2.2 - statický výpočet _ EAR.pdf",
+      "n_pages": 0,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 0,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": true,
+      "error": "pdftoppm: Command '['pdftoppm', '-r', '300', '-png', '/home/user/STAVAGENT/test-data/RD_Jachymov_dum/inputs/vykresy_pdf/260219_dum/D.2.2 - statický výpočet _ EAR.pdf', '/tmp/tmp2q8sw337/page']' timed out after 60 seconds",
+      "full_text_chars": 0,
+      "first_text_excerpt": ""
+    },
+    "D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S3"
+        ],
+        "pozn_refs": [],
+        "n_chars": 2056,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2056,
+      "first_text_excerpt": "MATERIÁL:\nŘ BETON OPĚRNÉ STĚNY — \"BÍLÁ VANA\"\nEZ A-A C25/30 XC3,XF1,XA1 - CL 0.4 - Dmax. 22-S3\n+0.000\n1 -=\n-400\nEZ Z\nZ\nT | LEGENDA: +0,000=+662,05 m n.m. Bpv\nHN SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ projekt:\n2 K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE Ř .\nZELEZOBETON/TVAROVKY ZTRACENÉHO BEDNENI adový rodinný dům\n< 7 SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Fibichova č.p. 733\nS Y M K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE pare. č. 1094/16, sL1022\nO ce < — NOVÉ ZDiVo | ká. Jáchymov [656437]\ns 05, 50 , I 5615 stavebník:\n= Z P I 6 SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ non rn ny\n5 2 Z Z | s Y Yy «HORN Ul DESKY PRISLUSNEHO PODLAZI Jéchymov\nZ = Z = 362 51\nni MN AL —_ WR XI SVISLÁ KONSTRUKCE VYŠŠÍHO PODLAŽÍ, PŘILÉHAJÍCÍ\n3 s M | NEE =) {HORN UCI STROPNÍ DESKY PŘÍSČUŠNÉHO PODLAŽI\n— & S| | 7p DESKA fH Soh =\n© DOLNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ dodavatel:\n= kg B TeAnau s.r.o.\n8 S < | 8 E souše m Čerčanská 624/8 TeAnau\ns Sy NNER | | HORNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO POD 140 00 Praha 4\n8 iS og IČ: 01828894\no N N V ST Ň\no HMM \\ | | OTVOR VE VODOROVNE KONSTRUKCI\nO 3 NE AL N —=77— PROSTUP SVISLOU KONSTRUKCÍ PŘSLUŠNÉHO PODLAŽÍ\n= — ANZ ee vy - VÝŠKA [mm], kkkk — VÝŠKOVÁ KOTA\nE ASSA \\ vw HHek kkk DH — DOL Hina HH — HORNÍ HRANA, OSA ie PROSTUPU vypračovař\n% NÍ \\ MN ZI | SVR VE SVISLÉ KONSTRUKCÍ PŘÍSLUŠNÉHO PODLAŽÍ\nS NĚ Ná ZN a w — VÝŠKA [mm], k.kkk — VÝŠKOVÁ KÓTA [m] zodpovědný projektant:\nE 2M WR vw DHekkkk DH — DOLNÍ HRANA, HH — HORNÍ HRANA, OS"
+    },
+    "D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.2.3.02 - výkres tvaru 1.NP _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2297,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2297,
+      "first_text_excerpt": "ŘEZ A-A MATERIÁL:\nE BETON OPĚRNÉ STĚNY — \"BÍLÁ VANA\"\nC25/30 XC3,XF1,XA1 - CL 0.4 - Dmax. 22-53\n+2.080 UPE100 ZDVO P. ,\nZe penn CIHLA PLNA PALENA P10 NA MALTU M10\nSE +1.200\nNa >L — —\nV\n-0.200\nV DO -0.850 +0,000=+662,05 m n.m. Bpv\n/ KM LEGENDA:\nrere, SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ projekt:\n-1.100 2 K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE Ř ,\nWs Ž ŽELEZOBETON /TVAROVKY ZTRACENÉHO BEDNĚNÍ adový rodinný dům\nP Fibichova č.p. 733\ns WY) SVISLA KONSTRUKCE PRISLUSNEHO PODLAŽÍ, PŘILÉHAJÍCÍ\nY Vy K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE pare, č. 1094/16, st.1022\nO = sme ; or k.ú. Jáchymov [656437]\nš < ů stavebník:\nfe So Mgr. Jindřich Vol\n< „PP B, Y SVISLÁ KONSTRUKCE PRISLUSNEHO PODLAŽÍ, PŘILÉHAJÍCÍ Fibichova 733 ons\n5 I M K HORNÍMU LÍCI DESKY PŘÍSLUŠNÉHO PODLAŽÍ Jáchymov\nZB . J STÁVAJÍCÍ ZDIVO 362 51\n5 8 = I = < R XY SVISLÁ KONSTRUKCE VYŠŠÍHO PODLAŽÍ, PŘILÉHAJÍCÍ\n= = 1285] | 1000 LT- 3865 | Y 1777 K HORNIMU LÍCI STROPNÍ DESKY PŘÍSLUŠNÉHO PODLAŽÍ\n© a, DOLNÍ OBRYS VODOROVNÉ KONSTRUKCE PRISLUSNEHO PODLAŽÍ dodavatel:\n2 © UPE200 ee a = TeAnau s.r.o.\nž x sooo =F DŘEVĚNÉ. STUPNĚ 8 — Čerčanská 624/8 fy Vavel\n= 1800 M 8 4915 “ a (T HORNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ 140 00 Praha 4\n= ee m Cog IČ: 01828894\n5 yf TT | Ay Ta Zw\nS ý M.. Z Nf APN160 7 y OTVOR VE VODOROVNÉ KONSTRUKCI\nS „DR OH V n\nO & ; 7 j = i Y ; ý 3m. PROSTUP SVISLOU KONSTRUKCÍ PŘÍSLUŠNÉHO PODLAŽÍ\n= ony one W LOY ee vy- VýšKA [mm], kkkk — VÝŠKOVÁ KOTA [m]\nE y : / _ J ý ; / vw HH=k.kkk DH — DOLNÍ HRANA, HH — HO"
+    },
+    "D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.2.3.03 - výkres tvaru 2.NP _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2416,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2416,
+      "first_text_excerpt": "MATERIÁL:\nBETON CHRÁNĚNÝCH KONSTRUKCÍ\nC25/30 XC1 - CL 0.4 - Dmax. 22-53\nZDVO o ,\nCIHLA PLNÁ PALENA P10 NA MALTU M10\nKONSTRUKČNÍ OCEL SPOJ. MATERIÁL\n9235 8.8\n+0,000=+662,05 m n.m. Bpv\nLEGENDA;\njekt:\nE SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Proje\nE ON UB yl000, 80 W700, HD, MHAy K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE Řadový rodinný dům\n2 =) (E oPNIGO 79007 ey ŽELEZOBETON /TVAROVKY ZTRACENÉHO BEDNĚNÍ Fibichova č.p. 733\noz + + MH \"ee ng = WN re\ns == — Ne > r SVISLA KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ\na og DY N Bis < M K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE pare. č. 1094/16, st.1022\nO s <= | \\ A. N | Ta R A NOVÉ ZDVO k.ú. Jáchymov [656437]\nis aS Ws NS TE NS S s WN 2 Mgr. Jindřich Volný\n| |! p ty © “pe\n= 2 JE N 7 N a N MFI l oe N = 7 SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Fibichova 755\n= SE | N = S : N M K HORNÍMU LÍCI DESKY PŘÍSLUŠNÉHO PODLAŽÍ Jáchymov\n© we | NÍ ZESÍLENÍ OSTĚNÍ | N STÁVAJÍCÍ ZDIVO 362 51\nN ka N i N M M\n3 k% | N 2xL100x10 u k KN IN XY SVISLÁ KONSTRUKCE VYŠŠÍHO PODLAŽÍ, PŘILÉHAJICÍ\ns ass EEE esli | 8 Y K HORNÍMU LÍCI STROPNÍ DESKY PŘÍSLUŠNÉHO PODLAŽÍ\n— 4 F Fm\nE a) (E aE VM i A | | DOLNÍ OBRYS VODOROVNE KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ TeÁnau s.r.o\nE SV N dos“ : N Čerčanská 624/8 TeAnau\n= Mo VEE = s iN ro 140 00 Praha 4\nS E N = a M ho JE i S . HORNÍ OBRYS VODOROVNÉ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ č 01828894.\n00 -———4 o SIF = o- : : :\nane ne =\no WN M m\nU. N Mý PES NS\ns | JVS n | A | | OTVOR VE VODOROVNE KONSTRUKCÍ\n2 See MLO , N\nO 3 = in Se EL Se L"
+    },
+    "D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260219_dum/D.2.3.04 - výkres tvaru 3.NP _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2545,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2545,
+      "first_text_excerpt": "m 1950 MATERIÁL: Digitálně\nYY === T\n50 4900 BETON CHRANENYCH KONSTRUKCI oie mo podepsal Ing. Jan\nU 7708 _y % ,\n75,800 5002075 | 950 C25/30 XC1 - CL 0.4 - Dmax. 22-53 \"9 Tara] e Tvardík\n= ao : varal\n«“ 2 v\n8 | <| ZDNO — a CS, Datum:\n_————E——_ CIHLA PLNA PALENA P10 NA MALTU M10 Seay’ O 2026.02.16\nZ | |) | 21 err ; 19. Inn!\na Vo 582 , , 16:18:09 +01'00\nSH tell WASH g KERAMITCKÉ DUTINOVÉ ZDIVO P10\n4875., 308 ||s omy ©\n3 m m 1 ed NA MALTU PRO TENKÉ SPARY\no gin “HEATGO | n off M +0,000=+662,05 m n.m. Bpv\n| U I! | | VŠ / S KONSTRUKČNÍ OCEL SPOJ. MATERIÁL |\n8 Ms th MĚLI IR $235 8.8 projekt\ný | = S, u S X S / ŘEZIVO Řadový rodinný dům\n; 4 jm S stat | C24 Fibichova č.p. 733\n= M- SHAS HH] S\n= , | S {ae | Il] S. ‘ = ; parc. č. 1094/16, st.1022\nO 8 ; | | = 3 - ‘| EES ý a k.ú. Jáchymov [656437]\n< Al | > s / LEGENDA: ke\nš R d | deg A160 UN al i: la $ SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Mor dinár Volný\na a bz |= p = | O i S ’ .\n: S EL el U CJZZigi ara ie rico 70\n5 =“ | s| Á m ZELEZOBETON/TVAROVKY ZTRACENÉHO BEDNĚNÍ Jáchymov\n© =| | S, | E: 7 SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ 362 51\na Yy Sl Y M K DOLNÍ HRANĚ VODOROVNÉ KONSTRUKCE\ns ZZ ZZ A NOVÉ ZDIVO\n— č S < I === : we ws dodavatel:\ns 350, 500, 825 „800 , 800 , 800 „800 „800 800 , 825 500, , 350 Se TeAnau ero\n_ PY 785) 10 DD 765 DO Z SVISLÁ KONSTRUKCE PŘÍSLUŠNÉHO PODLAŽÍ, PŘILÉHAJÍCÍ Čerčanská 624/8 TeAnau\n> 900 6350 900 M K HORNIMU LÍCI DESKY PŘÍSLUŠNÉHO PODLAŽÍ 140 00 Praha 4\n8 777 177 A STÁVAJÍCÍ ZDIVO IČ: 018"
+    },
+    "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf": {
+      "pdf_path": "inputs/vykresy_pdf/260217_sklad/D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [
+          "S01",
+          "S02",
+          "S03a",
+          "S03b",
+          "S04",
+          "S05"
+        ],
+        "pozn_refs": [],
+        "n_chars": 3637,
+        "has_skladby_table": true,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": true
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 3637,
+      "first_text_excerpt": "č.m. název místnosti podlaha strop stěny plocha [m?]\n, 7350 , 0.01 sklad zahradní technicky beton. dlažba 17,60\n6350 1000 o\n————-©.———Ú\n785 1000 1000 1000 1000 1000 435\nÚT T T E 4 i\nA I\nTTT mn mn -a TTT TTT LEGENDA MATERIALU:\nTp TT\nI | I | I | I | | | i I\n| T M | T M | M I | | M | | M | | M obvodové nosné zdivo\nL L L L L L bet 5 tvámi\nLo Lo Lo Lo Lo Lo - pefonove Tvárnice\n| | | | | | V ocelové konstrukce\nWHA zelezobeton\n| | | | | | LL) mite\nfo) fo) o fo) fo) fo)\no © © © © © ©\n1 6 60 wu wu wu wu wu wu — Reems betonové prefabrikované bloky\na a a a a a |\n| | | | | | ——— | tepelná izolace - XPS\n7 štěrkopískový násyp zhutněný na 0,2 MPa / násyp\nM rostlý terén\n> n bn | dřevěné konstrukce\npo | : 5 tepelná izolace - minerální vata/EPS (viz. skladby konstrukcí)\np 4 m m “ee ove\n\\\\50 760 | 625 | 625 | 625 | 625 | 625 | 625 | 625 | 615 50! 2\n5850 250 100\nS ( \\ | | | | | | | | | ea\n| o! al o! | a! a!| lo b o! | o!\nP- Na ~ | ~ | ~ | Z RI ~ | ~ | 1,615\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n©) ©) ©) ©) ©) ©) ©) ©) ©) ©)\n18 o! o! o! o! o! le o! o! o!\nwo = = = = = = = = =\n: M g | JH V NN m\n9 8\nW — | | S | | | | | | | | aw\n\\ | | | | | | | | | Po revize datum popis\nB 0.01 - B rm——.—í—í—ííííí[íííííííí———í—e-\n| | | | | sklad zaha ni techniky N 01 02/2026 úprava statického řešení\n| | | | | [-3.230] | | | | | PS 00 09/2025 vydání dokumentace\nVÚ a © | | | „MLR , p , m\n| | 2 | | | | | | | V1 xl Zahradní sklad a přístupové schodiště k RD\no | BS | | | en ha :\n/ i č.p. 733, Jáchymov,\n— L ! \"\nOI MMUMMMVM@MMMM@d6hs S b pare"
+    },
+    "C.01 - Situační výkres širších vztahů _ EAR.pdf": {
+      "pdf_path": "inputs/situace/C.01 - Situační výkres širších vztahů _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2749,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2749,
+      "first_text_excerpt": "o E E = sz : 7\nx _Cisarska® — W j= - ae. lif legenda\n„o alej p — : — al =: 0 3} - navrhovaná stavba\ni 18 ov = m Hi 5 4\nJÁCHYMOV | se EM\nL p ' av \"= = ie | 2\na _ 8 M = = l Pod Kamennou horou\nk ll |\nM i FON 3 JE 4 T i ja i\np a 4 > u z ; ye N\nA SS, > > ec: + & : — Je BS / ; =\nE PY Ú — : S oS\nE D0 -až čá Panorama\nNS ou | BS S\nO Gi = | 8\nro. ns ~ <= a ES Komenského = /\n: a > > l ; (G i)\nfy SS — > HUSOVÁ mě ; ’ Zizkova = 70%\nW Vy- o c = L KM + ! = ' - |\nre ye ~~ Pa E |\nKey, A — —\n-= ay - “ie, > k = i | 7\n4 VÁ s 37 <J ~~ m3 »\n‘ ae” OY B a =\nRONG: Da © {x\nh — ~ . o “ . B © v, \"n s\n“Cf. Ao Slo\nČÍ = v ~ M. ‘ o (i\ni. © + 4 PY\ns © úd 9 k k 5\nAM K x (S X XSS i (© 5, 9\n= — Pá : -997 We Palackého S ©,\nSos ve a Goes jh a |\n: A a: - KÝCH p- | % dl n\n— A | o (ing ~ Agrikdlovo 4 [ná\nao\ni a n [8\nWe SS Ss Ws ‘\n90, vý ©- Jáchymov lázně ;\na! \" A SA ;\n80, Lig PEA NON \\\noe “yy, M ELA ALONG va\n3 Jáchymov- ji | 4 3 a% NS A w J revize datum popis\n= : e © ¢ (s . viz UI i\nceník: A =, ROY \\ - 02\n5 2 L Ň © \\ ‘ s , C“ k . Fig. 9 M\n9 6- pile < > V tě as ČN řy Aho 00 09/2025 vydání dokumentace\now ' S \\ \\ VN ; be, ( 2 —————\nNY Prohlídkovášů, 4 =\" m = \\, ya fs VA\nyh jé iv = ae gy Uf. © / vr z wy\nsoe Noa Wi Mion K9 yl 744, Zahradní sklad a přístupové schodiště k RD\nz ME KAS C Sitio\n- BANE Sa OV ‘SE A — | č.p. 733, Jáchymov,\n2, P fo) M ae f P J noe\n4 Lázně Jáchymov \\ MŽ 27), © F L | pare.č. 1094/16, st.1022, k.ú. Jáchymov [4544371\n= N 2 ko) i > z JP 4 Ý ARCKN PPV X MA\n(p) “ > i © ' F 0 hs Y razítko/podpis „K TV ~ "
+    },
+    "C.02 - Katastrální situační výkres _ EAR.pdf": {
+      "pdf_path": "inputs/situace/C.02 - Katastrální situační výkres _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 1437,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 1437,
+      "first_text_excerpt": "legenda\n| E stávající objekt RD - stavební úpravy\n— —— — dotčené pozemky\n——__ katastrální mapa\ndotéené pozemky\nk.č. k.Ú. druh pozemku výměra\n1094/16 Jáchymov zahrada 269\nst.1022 Jáchymov zastavěná plocha a nádvoří 99\n©\n©\ns\n„\n< X\n„ < \\\nT \\\nP \\\nPsi \\\n\\\n2 X o.\nal\n526 \\ 1094/20\n\\\n\\\n\\\nX o\nk \\ 1094/15\nX X\nX =\n\\ \\ -\n\\ \\ 1094/14\n\\ \\\n\\ \\\n\\ \\\n\\ \\\nX o- X\n\\ 1094/16 \\\n\\ \\\n\\ \\\no. \\ X revize datum popis\n\\ \\ 02\nX \\ 01\n1094/12 \\ X 00 12/2025 vydání dokumentace\no / k \\\nX X Stavební úpravy\n\\ \\ x\n\\ \\ „ . A o - - wv\n: 1094/11 \\ \\ Radovy rodinný dum Fibichova č.p. 733\nX \\ parc. č. 1094/16, st.1022, k.Ú. Jáchymov [656437]\nX .\nX \\ razitko/podpis\n\\ autorizovany projektant Ze ARCH Digitálně podepsal ,\n= 1094/6 x ANA Ing. arch. Marek pare\n\\ 1030 Ing. arch. Marek Smolka S(e > *)2)) Smolka\n\\ tel.: +420 732 618 505, email: smolka@smasharch.cz VA Oren Datum: 2026.02.20\n\\ autorizace: 05394 SSA EY 22:46:00 +01'00'\n\\\n1094/8 X ZN » investor\no i PO P Volný Jindřich Mgr.\na ~@ = Fibichova 733, 36251 Jáchymov\niA ee\nZe zpracovatel projektové dokumentace/generální projektant\n1094/13\nSMASH architekti s.r.o.\n= Vodňanského 1008/2, Břevnov, 169 00 Praha 6\nIČO: 17666902\nprojektový stupeň\ndokumentace pro povolení záměru\nčást\n. wore\n„T C Situační výkresy\na < “ projektant části\n„7 Ing. arch. Marek Smolka\n. tan tel.: +420 732 618 505, email: smolka@smasharch.cz\nv“ >\nnázev výkresu\n1015\nKatastrální situační výkres\ndatum měřítko číslo výkresu\n1042 12/2025 1:250 C.2\n"
+    },
+    "C.03.R2 - Koordinační situační výkres _ EAR.pdf": {
+      "pdf_path": "inputs/situace/C.03.R2 - Koordinační situační výkres _ EAR.pdf",
+      "n_pages": 1,
+      "signals": {
+        "s_codes": [],
+        "pozn_refs": [],
+        "n_chars": 2809,
+        "has_skladby_table": false,
+        "has_legenda_mistnosti": false,
+        "has_legenda_materialu": false
+      },
+      "has_error": false,
+      "error": null,
+      "full_text_chars": 2809,
+      "first_text_excerpt": "7,00 legenda\n676.00\no 560 | E stávající objekt RD - stavebně upravovaný\nm | navrhovaný objekt parkovacího stání\n——————— hranice podzemní části navrhované budovy\n©,\nŘ > — — — — dotčený pozemek\n= : —— katastrální mapa\nŤ o ———— Ploty\ns < i É DS — — — bourané konstrukce původního uspořádání zahrady\n“Qo be .\nos a 4 m » A VA vstup / vjezd\n, je 10 ©, a navrhovaný plot a vjezd / vstup\n4 © zpevněné plochy\na 6 Le o eo\nn. ZS rozhledové trojúhelníky\n4.70 = 4 es\nao, asfalt LE 4\nec legenda - sítě\nPLL o 7 ,\n0 LA silnoproud - stávající\nk A +% EP elektroinstalační pilířek - stávající\nee < < oo a e silnoproud vedení - sloup - stávající\nsa _- : a s we PZ X \\ RE rozvaděč elektroměrový - stávající\n“0 3 LEZ \\ .\n9 cad ie a on we \\ — — — vodovod - stávající\n; L o A es Oo vodovod - objekty na povrch\na ; o“ L 2.20 Se) o : jekty poví U\n“ + > boa LL 4 A X o © studna - stávající\n. 2 © we ra k — . < noe\n2 63l* % x M A \\ 50 — — — kanalizace splašková - návrh\nSP (4 \\ O K X 1094/20 . ee\nWAV kA \\ (= Me V — — — kanalizace dešťová - návrh\nL OS L ZÁ\ni a (A O X X S LA \\ — — plynovod - stávající\n< l- $ é A223 X — — — slaboproud - stávající\n210 = X o\n1.20 \\ NÍ \\\n: \\ WX < 669,50% \\ 1094/15\n- a \\ 6 v 8\n° - > < \\\no \\ ol „> 669.00 X\n7 % \\ a\nň NÉ č S asase o\n% 669- ; \\ 2\n3 s \\ „o \\ 1094/14\na oot X — 668.00 X\n= \\\\ k\nvá o% L \\\n\\ SN\n080 \\ 667.50 =, ° \\\n\\ 1094/16 \\\nott M 6120 -667005 \\\n\\ an \\ \\\n\\ © 666.505 \\\no 6! X oe \\ revize datum popis\nX A\" “ 5 X 02 02/2026 úprava schodiště po zapracování statiky\nX o “| - 666.00 5590550 "
+    }
+  },
+  "s_codes_aggregated": {
+    "S01": [
+      "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf"
+    ],
+    "S02": [
+      "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf"
+    ],
+    "S03": [
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S03a": [
+      "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf"
+    ],
+    "S03b": [
+      "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf"
+    ],
+    "S04": [
+      "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf"
+    ],
+    "S05": [
+      "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf"
+    ],
+    "S06": [
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S07": [
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S08": [
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S09": [
+      "D.1.1.2.1.01 - Půdorys 1.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.02 - Půdorys 2.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S10": [
+      "D.1.1.2.1.03 - Půdorys 3.NP - stav _ EAR.pdf",
+      "D.1.1.2.1.04 - Půdorys 1.PP - stav _ EAR.pdf",
+      "D.1.1.2.1.11 - Půdorys 1.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.12 - Půdorys 2.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.13 - Půdorys 3.NP - bourání _ EAR.pdf",
+      "D.1.1.2.1.14 - Půdorys 1.PP - bourání _ EAR.pdf",
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.11 - Řez A-A - bourání _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S11": [
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S12": [
+      "D.1.1.2.1.21 - Půdorys 1.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.22 - Půdorys 2.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.23 - Půdorys 3.NP - návrh _ EAR.pdf",
+      "D.1.1.2.1.24 - Půdorys 1.PP - návrh _ EAR.pdf",
+      "D.1.1.2.1.25 - Půdorys krov - návrh _ EAR.pdf",
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S12a": [
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S12b": [
+      "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    ],
+    "S3": [
+      "D.2.3.01 - výkres tvaru 1.PP _ EAR.pdf"
+    ]
+  }
+}

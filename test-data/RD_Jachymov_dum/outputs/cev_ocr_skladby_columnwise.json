@@ -1,0 +1,72 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-26",
+  "_purpose": "Column-aware OCR (tesseract TSV mode + x-coordinate clustering) for SKLADBY KONSTRUKCÍ tables.",
+  "per_sheet": {
+    "D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf": {
+      "pdf": "inputs/vykresy_pdf/260217_sklad/D.1.1.02.R1 - Půdorys suterénu_skladu _ EAR.pdf",
+      "skladby": []
+    },
+    "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf": {
+      "pdf": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf",
+      "skladby": [
+        {
+          "code": "S01",
+          "name": "",
+          "layers": [],
+          "column_left": 3590
+        },
+        {
+          "code": "S03a",
+          "name": "",
+          "layers": [
+            "0,975"
+          ],
+          "column_left": 3590
+        }
+      ]
+    },
+    "D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf": {
+      "pdf": "inputs/vykresy_pdf/260219_dum/D.1.1.03.R2 - Příčný řez A-A _ EAR.pdf",
+      "skladby": []
+    },
+    "D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf": {
+      "pdf": "inputs/vykresy_pdf/260219_dum/D.1.1.04.R1 - Podélný řez B-B _ EAR.pdf",
+      "skladby": []
+    },
+    "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf": {
+      "pdf": "inputs/vykresy_pdf/260219_dum/D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf",
+      "skladby": [
+        {
+          "code": "S03",
+          "name": "",
+          "layers": [],
+          "column_left": 3593
+        }
+      ]
+    }
+  },
+  "consolidated_skladby": [
+    {
+      "code": "S01",
+      "name": "",
+      "layers": [],
+      "_source_pdf": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    },
+    {
+      "code": "S03",
+      "name": "",
+      "layers": [],
+      "_source_pdf": "D.1.1.2.2.01 - Řez A-A - stav _ EAR.pdf"
+    },
+    {
+      "code": "S03a",
+      "name": "",
+      "layers": [
+        "0,975"
+      ],
+      "_source_pdf": "D.1.1.2.2.21 - Řez A-A, Řez B-B - návrh _ EAR.pdf"
+    }
+  ],
+  "n_codes_decoded": 3
+}

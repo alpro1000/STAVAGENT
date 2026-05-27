@@ -1,7 +1,7 @@
 # Completeness Audit v2 — RD Jáchymov
 
-**Generated:** 2026-05-26
-**Items:** 211 | **Rooms:** 25 | **Sections:** A–J (10)
+**Generated:** 2026-05-27
+**Items:** 212 | **Rooms:** 25 | **Sections:** A–J (10)
 
 > Tato kontrola dělá strukturovaný sweep po 10 osách. Cíl: poskytnout worksheet kde
 > uživatel vidí potenciální mezery. Není garance úplnosti.
@@ -117,7 +117,7 @@ Legend: ✓=hit | flr=covered_at_floor_level | glb=covered_globally | ⚪=N/A | 
 **Verdict:** OK
 
 - `per_material_dum` = `{'vinyl': 171.5, 'dlazba': 45.9, 'biodeska': 25.0, 'ostatní': 0}`
-- `per_material_sklad` = `{'vinyl': 0, 'dlazba': 21.209, 'biodeska': 0, 'ostatní': 0}`
+- `per_material_sklad` = `{'vinyl': 0, 'dlazba': 17.6, 'biodeska': 0, 'ostatní': 0}`
 - `dum_habitable_total_m2` = `217.4`
 - `biodeska_extra_spici_patro_m2` = `25.0`
 - `tz_baseline_dum_m2` = `219.3`
@@ -149,8 +149,8 @@ Legend: ✓=hit | flr=covered_at_floor_level | glb=covered_globally | ⚪=N/A | 
 
 | Gate | Estimate Kč | % of total | Typical range | Verdict |
 |---|--:|--:|---|---|
-| HSV | 48,822,694 | 76.2% | 45–55% | OUT OF RANGE (typical 45-55%) |
-| PSV | 9,711,267 | 15.2% | 25–35% | OUT OF RANGE (typical 25-35%) |
+| HSV | 48,939,894 | 76.2% | 45–55% | OUT OF RANGE (typical 45-55%) |
+| PSV | 9,708,019 | 15.1% | 25–35% | OUT OF RANGE (typical 25-35%) |
 | TZB | 2,436,000 | 3.8% | 15–20% | OUT OF RANGE (typical 15-20%) |
 | VRN | 3,117,000 | 4.9% | 5–10% | OUT OF RANGE (typical 5-10%) |
 

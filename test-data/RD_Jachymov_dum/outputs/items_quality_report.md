@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
-**Generated:** 2026-05-26
-**Items checked:** 207 (active, excl. 4 deprecated)
-**Issues flagged:** 57
+**Generated:** 2026-05-27
+**Items checked:** 208 (active, excl. 4 deprecated)
+**Issues flagged:** 59
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,15 +17,15 @@
 
 | Dimension | Issues |
 |---|--:|
-| urs_family_consistency | 30 |
-| subdodavatel_logical | 27 |
+| urs_family_consistency | 31 |
+| subdodavatel_logical | 28 |
 
-**By severity:** informational=57
+**By severity:** informational=59
 
 
 ---
 
-## urs_family_consistency (30 issues)
+## urs_family_consistency (31 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -59,10 +59,11 @@
 | `260219_dum.PSV95.002` | ⚪ informational | Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné | URS kód 966067121 prvních digit '9' neodpovídá PSV-95 expected ['0', '3'] — likely cross-category položka per Corpus Pat |
 | `260219_dum.M21.007` | ⚪ informational | Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revi | URS kód 996019011 prvních digit '9' neodpovídá M-21 expected ['0', '2', '7'] — likely cross-category položka per Corpus  |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | URS kód 877315111 prvních digit '8' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
+| `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | URS kód 121301101 prvních digit '1' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus |
 
 ---
 
-## subdodavatel_logical (27 issues)
+## subdodavatel_logical (28 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -93,3 +94,4 @@
 | `260217_sklad.VRN.001` | ⚪ informational | Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) aut | Subdodavatel 'prefa_bloky_specialista' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Ang |
 | `260217_sklad.VRN.002` | ⚪ informational | Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (dr | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | Subdodavatel 'izolater_HI' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek d |

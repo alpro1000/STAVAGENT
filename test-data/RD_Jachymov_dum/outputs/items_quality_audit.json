@@ -1,16 +1,16 @@
 {
   "_schema_version": "1.0",
-  "_generated_at": "2026-05-26",
+  "_generated_at": "2026-05-27",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 207,
-  "items_total_incl_deprecated": 211,
-  "issues_found_total": 57,
+  "items_checked": 208,
+  "items_total_incl_deprecated": 212,
+  "issues_found_total": 59,
   "summary_by_dimension": {
-    "urs_family_consistency": 30,
-    "subdodavatel_logical": 27
+    "urs_family_consistency": 31,
+    "subdodavatel_logical": 28
   },
   "summary_by_severity": {
-    "informational": 57
+    "informational": 59
   },
   "issues": [
     {
@@ -835,6 +835,37 @@
       "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260219_dum.HSV1.015",
       "popis": "Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN100 vlnitá perforovan"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-5 Komunikace + schodiště",
+      "urs_code": "121301101",
+      "first_digit": "1",
+      "expected_first_digits": [
+        "5",
+        "6",
+        "7"
+      ],
+      "reason": "URS kód 121301101 prvních digit '1' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV5.001",
+      "popis": "Sklad mezipodesta schodiště — prefa betonové stupně (9 ks × 179.5×250 mm) + klad"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Komunikace + schodiště",
+      "current_subdodavatel": "betonar",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV5.001",
+      "popis": "Sklad mezipodesta schodiště — prefa betonové stupně (9 ks × 179.5×250 mm) + klad"
     }
   ]
 }

@@ -1,0 +1,51 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-27",
+  "_purpose": "Sklad item qty cross-check vs DXF room tables (Action 1 deliverable).",
+  "dxf_room_table_ground_truth": {
+    "0.01": {
+      "name": "sklad zahradní techniky",
+      "podlaha": "beton. dlažba",
+      "plocha_m2": 17.6
+    },
+    "1.01": {
+      "name": "stání",
+      "podlaha": "pororošt",
+      "plocha_m2": 44.6
+    },
+    "1.02": {
+      "name": "schodiště (mezipodesta)",
+      "podlaha": "beton",
+      "plocha_m2": 5.5
+    }
+  },
+  "items_total_before": 211,
+  "items_total_after": 212,
+  "deltas": [
+    {
+      "action": "UPDATE",
+      "item_id": "260217_sklad.PSV77.001",
+      "field": "mnozstvi",
+      "before": 21.209,
+      "after": 17.6,
+      "delta_pct": -17.02,
+      "rationale": "Inner usable per DXF room table 0.01 (was outer footprint)"
+    },
+    {
+      "action": "UPDATE",
+      "item_id": "260217_sklad.HSV4.005",
+      "field": "mnozstvi",
+      "before": 21.0,
+      "after": 44.6,
+      "delta_pct": 112.38,
+      "rationale": "Full parking footprint per DXF room table 1.01 (was rough 7×3 estimate)"
+    },
+    {
+      "action": "ADD",
+      "item_id": "260217_sklad.HSV5.001",
+      "kapitola": "HSV-5 Komunikace + schodiště",
+      "mnozstvi": 5.5,
+      "rationale": "DXF room 1.02 schodiště 5.5 m² + S05_sklad skladba (step blocks were missing — HSV2.005 lože + HSV2.006 deska cover base only)"
+    }
+  ]
+}
