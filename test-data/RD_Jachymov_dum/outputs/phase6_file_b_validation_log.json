@@ -1,0 +1,50 @@
+{
+  "_generated_at": "2026-05-27",
+  "output_file": "outputs/Vykaz_vymer_RD_Jachymov_KROS_format_2026-05-27_v3_final.xlsx",
+  "pattern_compliance": {
+    "pattern_15": "items.json untouched (read-only)",
+    "pattern_25_26": "status icons (✓⚠❌?) per honest fallback hierarchy",
+    "pattern_27": "evidence URLs surfaced in Pozn. + audit sheet",
+    "pattern_28": "compound key (id, kapitola) ordering stable",
+    "pattern_32": "File B = production deliverable; no provenance columns (mnozstvi_formula as VV-row only, KROS standard)"
+  },
+  "sheets": [
+    "Rekapitulace stavby",
+    "SO_260219_Dum",
+    "SO_260217_Sklad",
+    "Stav polozek",
+    "URS vyber audit"
+  ],
+  "sheet_count": 5,
+  "active_items": 208,
+  "items_per_objekt": {
+    "260219": 180,
+    "260217": 28
+  },
+  "excluded_deprecated": [
+    {
+      "id": "260219_dum.PSV78.012",
+      "status_flag": "deprecated_audit_v2"
+    },
+    {
+      "id": "260219_dum.PSV72.004",
+      "status_flag": "deprecated_audit_v2"
+    },
+    {
+      "id": "260219_dum.PSV72.005",
+      "status_flag": "deprecated_audit_v2"
+    },
+    {
+      "id": "260219_dum.PSV72.006",
+      "status_flag": "deprecated_audit_v2"
+    }
+  ],
+  "pattern_26_fabricated_code_check": {
+    "fail_count": 0,
+    "violations": []
+  },
+  "per_so_cena_ranges": {
+    "SO_260219_Dum": "I51:I439",
+    "SO_260217_Sklad": "I33:I98"
+  }
+}
