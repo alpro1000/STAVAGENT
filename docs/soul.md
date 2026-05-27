@@ -388,7 +388,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - Phase C G1 calibration values (cold side: 30d @ -5°C–5°C for C30+ class 4) are aggressive vs ČSN EN 13670 NA.2 baseline (was 14d). Matches production Python MCP per user spec but lacks independent verification against TKP 18 06/2025 source PDF.
 - T-bednění productivity hours pass through `fwSystem.assembly_h_m2` which is documented as "hours per m² OR per bm when unit='bm'". Type-system doesn't enforce; relies on convention. Future: split into `assembly_h_m2?: number` + `assembly_h_bm?: number` fields (low-priority refactor).
 
-**Artefakty této session (Týden 3 + Phase C, 8 commits on `claude/kind-wright-5nBQ2`):**
+**Artefakty této session (Týden 3 + Phase C + PR review fixes, 12 commits on `claude/kind-wright-5nBQ2`):**
 - `032c6b7` FEAT(knowledge): codegen pipeline + 5 Top-5 integrations
 - `f842ac2` FIX: TKP18 curing class 4 calibration (G1)
 - `2b6f18e` FEAT(scheduler): SchedulerMode infrastructure (G2)
@@ -396,7 +396,37 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - `5b4d85a` FEAT(orchestrator): wire cyclic + T-bednění productivity (G4)
 - `c9f1460` TEST(scheduler): cyclic regression suite (G5)
 - `6456bde` DOCS: backlog + MCP boundary (G6)
-- (G-final commit follows — soul.md + next-session.md)
+- `0a03aed` DOCS: Phase C closing handoff (G-final)
+- `c119cd9` FIX(scheduler): split relocate from stripping field (PR review #2)
+- `995d271` FIX(scheduler): sequential baseline + remove double-counted relocate (PR review #3)
+- `48d8369` FIX(scheduler): explicit rebStart=cursor when overlap + non-first (PR review #1)
+- `1979a39` TEST(scheduler): 9 regression locks for PR review fixes
+
+---
+
+### 2026-05-26 — Session: Phase C PR review fixes (Amazon Q logic errors)
+
+**Topic:** Amazon Q automated review on PR #1223 surfaced 3 real logic errors in `scheduleCyclic()`. All 3 confirmed valid, fixed atomically as 3 separate commits + 1 regression test commit. Tests: 1197 → **1206** (+9 review-lock cases).
+
+**Rozhodnuto:**
+- **Fix #2 (semantic field):** `TactDetail` gains optional `relocate?: [number, number]`. Intermediate tacts in cyclic mode write `relocate=[relStart, relEnd]` + `stripping=[t, t]` zero-length placeholder. Last tact unchanged (stripping non-zero, relocate undefined). Legacy DAG scheduler never sets `relocate` — backward compat preserved. Stripping stays REQUIRED in interface (consumer breakage avoided).
+- **Fix #3 (sequential baseline):** `asmDur = isFirst ? setupShifts : 0` (was: `: relocateShifts`). Root cause was double-counting: each non-first tact had relocate AT START (asmDur) AND AT END (else-branch), giving 2 × relocateShifts per intermediate. Fix means non-first tact's assembly slot is zero-length (form already in place from prev tact's relocate event). Net effect: total_days shrinks by `(n-1) × relocateShifts` for cyclic mode; sequential_days matches manual formula `setup + (n-1)×relocate + n×(rebar+pour) + (n-1)×wait + finalCure + prestress + finalStrip`.
+- **Fix #1 (rebar overlap explicit):** `rebStart = (!isFirst && rebarOverlapsWithWait) ? cursor : asmEnd`. After Fix #3, asmEnd === cursor for non-first anyway (functionally equivalent), but explicit conditional documents the parallel-with-WAIT intent + provides robustness against future refactors that might restore asmDur > 0.
+- **9 regression tests** in `scheduler-cyclic.test.ts`: 2 for Fix #1 (overlap visible in td.rebar + bounded savings), 4 for Fix #2 (intermediate has relocate + zero-strip / last has strip + no-relocate / relocate at curEnd / n=1 degradation), 3 for Fix #3 (manual formula match / single-crew total==sequential / dual-crew savings_days = (n-1) × min(rebar, wait) exact).
+
+**Odmítnuto:**
+- Making `stripping` field optional in TactDetail — would break 4 legacy consumers (PlannerGantt, CalculatorResult CSV, exportPlanXLSX, formulas.ts) that read `td.stripping[0]/[1]` without null checks. Zero-length placeholder is safe (Gantt fillRow handles [t,t] as no-op).
+- Keeping asmDur=relocateShifts for non-first + handling double-count elsewhere — root cause is the model itself (form can't be relocated twice per cycle); fixing it at the source is cleaner than band-aid in accumulator.
+- Bumping CLAUDE.md version to v4.33.0 — PR #1223 not merged yet; version bumps reserved for post-merge state to avoid drift between CLAUDE.md and main.
+
+**Otevřené otázky:**
+- Real-world rimsa validation against DOKA nabídka č. 540045359 — still deferred to Phase D (no Vitest fixture asserts specific day counts; smoke covered via element-audit). After Fix #3, total_days for rimsa shrank further (correct, but more divergent from pre-Phase-C behavior). Real-world calibration matters more than before.
+- Whether the "cursor decremented at end of iteration for overlap" + "rebStart=cursor at start of next iteration" pattern is the right abstraction. Works correctly today but reasoning requires tracing across iterations. Alternative: explicit per-iteration rebar/relocate start times computed up-front, no cursor tracking. Refactor candidate if cyclic gets more complex (Phase E?).
+
+**Co dál:**
+- PR #1223 awaits re-review (Amazon Q + Alexandra) + CI green
+- If review approves: merge. If new findings: another iteration.
+- Phase D (T-bednění productivity calibration, golden-rimsa fixture) starts post-merge per `next-session.md`.
 
 ---
 
@@ -614,43 +644,6 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - Memory consolidation: 8 patterns destilované do soul.md §6.6a (Re-read TZ, DSP detail trap, Ghost razítko, Layer ratification gate, Annotate-before-mutate, Profession scope-cut hygiene, Long-session context decay, Block-name pseudo-schedule).
 
 **Session retrospective:** `docs/sessions/2026-05-22_HK212_StageABCD_Step3.md`
-
----
-
-### 2026-05-21 — Session: Říms calibration — Phase A closing (gate GREEN)
-
-**Topic:** Alexandra answered 8 open questions; this session closes Phase A by running the two gate-blocking actions (Q4 curing-class repro + Q7 MCP/Monolit boundary read) and shipping the documentation updates (Q1 task path fix, Q6 backlog file, Q8 finding documented). Phase A → Phase C gate is now GREEN.
-
-**Rozhodnuto (per Alexandra's answers):**
-- **Q1:** Task spec amended — SO-250 path corrected from `test-data/tz/SO-250_golden_test.md` to `test-data/SO_250/tz/SO-250.md`. Vitest wiring deferred to Phase G.
-- **Q2:** SO-206 fixture skipped entirely. Stays as DOKA nabídka 540045359 reference only.
-- **Q3:** TS catalog wins for this task. MCP HTTP-delegates. Migration to "B4 YAML wins with CI drift check" deferred to a separate Týden 3 codegen pipeline task.
-- **Q4:** 15-min repro complete. **Subagent claim was wrong** — orchestrator at `planner-orchestrator.ts:1536–1576` DOES thread `curing_class` correctly via `getDefaultCuringClass(elementType)`. But a deeper bug surfaced: TS `CURING_DAYS_TABLE` and Python MCP `CURING_DAYS_TABLE` disagree on class 4 values at 15-25 °C × C30+ (TS=5 d, Python=9 d, task expects 9 d). Phase C fix #1.
-- **Q5:** Scheduler refactor gated behind opt-in `scheduler_mode` flag per element. rimsa defaults to `discrete_cyclic`; everything else stays `legacy`. Expand only after each element has golden test.
-- **Q6:** This task ships `rimsa.yaml` + `T_bedneni.yaml` only. TKP 18 / ČSN EN 13670 / DIN 18218 norm extraction → `backlog/kb_norms_extraction.md` (Týden 3 scope, 3 PRs).
-- **Q7:** 30-min directed read of `concrete-agent/.../mcp/tools/calculator.py` complete. MCP is a soft-fallback wrapper: HTTP-POSTs to `MONOLIT_API_URL/api/calculate` first; falls back to local Python simplified calc on timeout/failure. NOT duplicated business logic — degraded mode. Boundary documented at `docs/architecture/mcp_calculator_boundary.md`.
-- **Q8:** Comparison-table acceptance test dropped — stale expectation. No standalone "tabulka porovnání bednění" component exists in the frontend; filter happens at data-fetch layer via `getSuitableSystemsForElement(rimsa)` short-circuit (returns 3 rimsa systems, hides the rest). Wrong-system display is unreachable.
-
-**Odmítnuto:**
-- Migrating norm matrices into KB now (deferred to Týden 3 per Q6).
-- Trusting the audit subagent's curing-threading claim without source verification — turned out to be wrong; rule applied: "lépe ověř než hádej".
-- Removing the Python MCP fallback. It serves a real graceful-degradation role; just needs the curing table reconciled with the TS engine.
-
-**Otevřené otázky:** None gating Phase C. Phase C kickoff is the next session.
-
-**Co dál:**
-- Phase C kickoff (branch `claude/rimsa-phase-c-scheduler-discrete-XXXXX`) — introduce `scheduler_mode` flag, fix curing table divergence, implement discrete-shift scheduler + cyclic phase model, wire crew parallelism through UI inputs.
-- Phase F note: forward `exposure_class` + `curing_class` in MCP→Monolit HTTP payload (currently dropped on the wire per Q7 finding).
-
-**Files changed:**
-- `docs/audits/rimsa_fullstack/2026-05-20_phase_a_closing.md` (new, ~200 lines — decisions + Q4 repro + Q8 finding)
-- `docs/architecture/mcp_calculator_boundary.md` (new, ~120 lines — Q7 output)
-- `backlog/kb_norms_extraction.md` (new — Q6 Týden 3 ticket, 3-PR split)
-- `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md` (Q1 SO-250 path correction in 2 places)
-- `docs/soul.md` §9 (this entry)
-- `next-session.md` (overwrite — Phase C kickoff handoff)
-
-**Branch:** `claude/rimsa-calibration-phase-a`
 
 ---
 
