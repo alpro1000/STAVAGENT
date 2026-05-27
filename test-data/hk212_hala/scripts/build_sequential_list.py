@@ -304,6 +304,36 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
             ("Náhradní výsadba dřevin (po dokončení)", ["HSV-1-024"]),
         ],
     ),
+    (
+        12,
+        "VENKOVNÍ ÚPRAVY (SO-13)",
+        [
+            (
+                "Externí přípojky — výkop + potrubí (paralelně se ZS)",
+                ["M-VK-005", "M-VK-006", "M-VK-008", "M-VK-007"],
+            ),
+            ("Přeložka vodovodního řadu (PODMÍNĚNÁ — pending ABMV_23)", ["M-VK-009"]),
+            ("Retenční nádrž 30 m³ prefab betonová (pending ABMV_24)", ["M-VK-011"]),
+            ("Hydrant podzemní DN80 + napojení", ["M-VK-010"]),
+            (
+                "Rampy 4× (R1-R4) — podklad ŠD + výztuž + bednění + beton + obrubník",
+                ["M-VK-003", "M-VK-002", "M-VK-001", "M-VK-004"],
+            ),
+            (
+                "Zpevněné plochy — podklad ŠD + asfalt + obrubník + napojení",
+                [
+                    "M-VK-013",
+                    "M-VK-014",
+                    "M-VK-015",
+                    "M-VK-017",
+                ],
+            ),
+            ("Liniový žlab pojízdný B125 — venkovní plochy", ["M-VK-012"]),
+            ("Vodorovné značení 10× parkovacích stání", ["M-VK-016"]),
+            ("Vyspádování okolního terénu k odvodnění", ["M-VK-019"]),
+            ("Ohumusování + osetí travou zbytkových ploch", ["M-VK-018"]),
+        ],
+    ),
 ]
 
 
@@ -347,8 +377,8 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
     missing = set(items_by_id) - seen
     if missing:
         raise SystemExit(f"FATAL: {len(missing)} items.json IDs missing from SEQUENCE: {sorted(missing)}")
-    if len(out) != 150:
-        raise SystemExit(f"FATAL: expected 150 ordered rows, got {len(out)}")
+    if len(out) != 169:
+        raise SystemExit(f"FATAL: expected 169 ordered rows, got {len(out)}")
     return out
 
 
@@ -574,13 +604,13 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
     review_conc = [it["id"] for it in items_by_id.values() if it.get("_review_concrete_class")]
     body = f"""# HK212 Sequential Construction List
 
-150 položek v logickém pořadí výstavby (fáze 1–11, vč. 9.5 TZB Vytápění).
+169 položek v logickém pořadí výstavby (fáze 1–12, vč. 9.5 TZB Vytápění + 12 Venkovní úpravy).
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (150 items)
-**Branch:** `claude/hk212-add-vytapeni` (12 M-UT items added per investor scope change 2026-05-26)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (169 items)
+**Branch:** `claude/hk212-add-venkovni-upravy` (12 M-UT items added per investor scope change 2026-05-26)
 **Generated:** {date.today().isoformat()}
 
 ## Fáze
@@ -596,6 +626,7 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
 9.5. TZB INSTALACE — VYTÁPĚNÍ (M-UT, 12 items, DPS D.1.4.2)
 10. OSTATNÍ + PŘESUN HMOT
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
+12. VENKOVNÍ ÚPRAVY (SO-13, M-VK, 19 items, DPS 06/2026)
 
 ## Soubory
 - `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1, includes Vzorec / Zdroj výměry column
@@ -642,14 +673,14 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 
 **Status:** generated, validated, ready for manual KROS/URS + price assignment.
 
-**Branch:** `claude/hk212-add-vytapeni`
+**Branch:** `claude/hk212-add-venkovni-upravy`
 **Date:** {date.today().isoformat()}
 
 ## Counts
-- 150 items v logickém stavebním pořadí (138 baseline + 12 M-UT vytápění)
-- 12 fází (1–11, vč. nová 9.5 TZB Vytápění mezi Podlaha průmyslová a Ostatní + Přesun hmot)
-- 12 items added (M-UT-001..012), 0 skipped, 0 invented
-- 1 ABMV updated (ABMV_1 → resolved_authoritative, 60 kW DPS)
+- 169 items v logickém stavebním pořadí (138 baseline + 12 M-UT vytápění + 19 M-VK venkovní úpravy)
+- 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
+- 31 items added (12 M-UT + 19 M-VK), 0 skipped, 0 invented
+- 1 ABMV updated + 3 ABMV opened (ABMV_23 přeložka, _24 retenční typ, _25 VZT cross-ref)
 
 ## Per-phase distribution
 {chr(10).join(f"- FÁZE {p}: {phase_counts[p]} items" for p in sorted(phase_counts))}
@@ -661,10 +692,10 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 - confidence < 0.70: {low_conf} items (yellow-tinted v XLSX)
 
 ## Validation (§6)
-- ✔ row count = 150 (excl. separator rows)
+- ✔ row count = 169 (excl. separator rows)
 - ✔ each items.json id appears exactly once
 - ✔ no id missing from output
-- ✔ phases ordered 1→9, 9.5, 10, 11 monotonically
+- ✔ phases ordered 1→9, 9.5, 10, 11, 12 monotonically
 - ✔ within phase: výztuž → bednění → beton; doprava → montáž; dodávka → instalace
 
 ## Sidecar files
@@ -700,9 +731,9 @@ def main() -> None:
     rows = build_ordered_rows(items_by_id)
 
     # Validation
-    assert len(rows) == 150, len(rows)
+    assert len(rows) == 169, len(rows)
     ids = [r["id"] for r in rows]
-    assert len(set(ids)) == 150, "duplicate IDs in output"
+    assert len(set(ids)) == 169, "duplicate IDs in output"
     assert set(ids) == set(items_by_id), "ID set mismatch"
     phases = [r["_phase"] for r in rows]
     for prev, cur in zip(phases, phases[1:]):
@@ -710,7 +741,7 @@ def main() -> None:
     empty_vzorec = [r["id"] for r in rows if not r["vzorec"]]
     assert not empty_vzorec, f"empty vzorec for: {empty_vzorec}"
     fallback_vzorec = [r["id"] for r in rows if r["vzorec"].startswith("(zdroj nenalezen")]
-    print(f"  vzorec coverage: {150 - len(fallback_vzorec)}/150 with formula, {len(fallback_vzorec)} fallback")
+    print(f"  vzorec coverage: {169 - len(fallback_vzorec)}/169 with formula, {len(fallback_vzorec)} fallback")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_xlsx(rows, OUT_DIR / "hk212_sequential_list.xlsx")
@@ -719,7 +750,7 @@ def main() -> None:
     write_readme(rows, items_by_id, OUT_DIR / "README.md")
     write_handoff(rows, items_by_id, OUT_DIR / "HANDOFF_SEQUENTIAL.md")
 
-    print(f"OK — 150 items in 12 phases (vč. 9.5) written to {OUT_DIR}")
+    print(f"OK — 169 items in 13 phases (vč. 9.5 + 12 Venkovní) written to {OUT_DIR}")
     for p in sorted({r["_phase"] for r in rows}):
         n = sum(1 for r in rows if r["_phase"] == p)
         print(f"  FÁZE {p}: {n}")

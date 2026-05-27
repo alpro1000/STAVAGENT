@@ -441,6 +441,62 @@
       "resolution_pending": "Projektant fill A201 bilance table OR DXF polygon layer scan",
       "_created_date": "2026-05-24",
       "_blocker_priority": "low (bid-stage acceptable, final precision pending)"
+    },
+    {
+      "id": "ABMV_23",
+      "category": "design_clarification",
+      "severity": "high",
+      "status": "open",
+      "title": "Přeložka vodovodního řadu — vlastník confirmation pending",
+      "summary_cs": "C.3 koordinační situace DPS 06/2026 zakreslena 'PŘELOŽKA VODOVODNÍHO ŘADU' jako navržená inženýrská síť. Pokud stávající řad mimo pozemek 1939/1 → přeložku provádí vlastník vodovodu (Hradec Králové vodárny), NE zhotovitel. Pokud na pozemku → zhotovitel HK212.",
+      "blocks_vv": [
+        "M-VK-009 mnozstvi + cena finalize"
+      ],
+      "addressee": [
+        "SOLAR DISPOREC",
+        "Hradec Králové vodárny (provozovatel)"
+      ],
+      "items_affected": [
+        "M-VK-009"
+      ],
+      "resolution_required_before": "zahájení prací M-VK-009",
+      "created_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "id": "ABMV_24",
+      "category": "design_clarification",
+      "severity": "medium",
+      "status": "open",
+      "title": "Retenční nádrž 30 m³ typ — prefab default, monolit pending",
+      "summary_cs": "M-VK-011 default = prefabrikovaná betonová nádrž 6.15×2.75×2.0 m per user decision 2026-05-27. Pokud projektant statika (Volka) explicitně potřebuje MONOLITNÍ variantu (důvod: zatížení, geologie, prostorové omezení), confirm PŘED objednávkou prefab. Cenový dopad: monolit ~+40 % vs prefab.",
+      "blocks_vv": [
+        "M-VK-011 objednávka prefab"
+      ],
+      "addressee": [
+        "projektant statika (Volka)",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-011"
+      ],
+      "resolution_required_before": "objednávka prefab",
+      "created_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "id": "ABMV_25",
+      "category": "scope_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Venkovní VZT jednotka s rekuperací — VZT profession scope",
+      "summary_cs": "C.3 koordinační situace zakresluje 'VENKOVNÍ VZT JEDNOTKA S REKUPERACÍ' na východní straně haly. NE zahrnuto v SO-13 — spadá do VZT profession (Viktoria Yasinovska samostatný rozpočet, originally Stage D scope-cut as VZT-001..015). Tento ABMV je cross-reference záznam, NE blocker.",
+      "blocks_vv": [],
+      "addressee": [
+        "Viktoria Yasinovska (VZT zpracovatel)"
+      ],
+      "items_affected": [],
+      "scope_owner": "VZT_profession",
+      "cross_reference": "C.3 značení 'VENKOVNÍ VZT JEDNOTKA S REKUPERA[CÍ]'",
+      "created_at": "2026-05-27T00:00:00+00:00"
     }
   ]
 }
