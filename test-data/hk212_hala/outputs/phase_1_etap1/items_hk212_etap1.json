@@ -646,6 +646,20 @@
         ],
         "double_count_status": "KEEP both 935113111 + 953941212 — kros_catalog.db subset cannot verify, flag ABMV_36",
         "pattern_14_compliance": "M-VK-012 superseded with _analytical_journey + _superseded_by"
+      },
+      {
+        "date": "2026-05-28",
+        "change": "Stage 3 ÚRS code SUGGESTION for M-VK (28 items) + M-ZTI (56 items). Written to _urs_code_suggested (NE final urs_code — Pattern 13 review).",
+        "reason": "Catalog-first mapping (kros_catalog.db) + ÚRS class knowledge fallback. Interior/exterior classified per žlab lesson (NE 721 ZTI for exterior).",
+        "items_suggested": 84,
+        "suggestion_stats": {
+          "catalog_1.0": 22,
+          "knowledge_0.7": 55,
+          "flag_null": 7
+        },
+        "catalog_subset_sufficiency": "65% items confidence 0.7 (catalog subset lacks 564/722/725/871/891/894/919). Recommend user provides full ÚRS export for Stage 3 finalization.",
+        "pattern_13_compliance": "_urs_code_suggested only — final urs_code untouched, review before promote",
+        "review_table": "outputs/stage3_codes_review_vk_zti.md"
       }
     ],
     "total_items_actual": 150
@@ -11537,8 +11551,21 @@
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "565xxx (komunikace pozemní — beton)",
-        "slope_clarification": "5.65° + 2.00° = SKLON RAMPY (gradient nájezdu na podlahu haly), NE úhel vrat. Sekční vrata jsou vertikálně zdvihací bez náklonu. Confirmed by user 2026-05-27."
-      }
+        "slope_clarification": "5.65° + 2.00° = SKLON RAMPY (gradient nájezdu na podlahu haly), NE úhel vrat. Sekční vrata jsou vertikálně zdvihací bez náklonu. Confirmed by user 2026-05-27.",
+        "urs_suggestion_stage_3": {
+          "suggested": "919*beton-monolit/564",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "beton rampy — class 919 vozovkové/564; verify",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "919*beton-monolit/564",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-002",
@@ -11606,8 +11633,21 @@
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "631xxx (výztuž) + 564xxx (bednění)"
-      }
+        "kros_hint": "631xxx (výztuž) + 564xxx (bednění)",
+        "urs_suggestion_stage_3": {
+          "suggested": "631362021/953",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "KARI síť výztuž + bednění; 631 výztuž / 953 osazení",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "631362021/953",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-003",
@@ -11675,8 +11715,21 @@
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "564xxx (komunikace — podkladní vrstvy)"
-      }
+        "kros_hint": "564xxx (komunikace — podkladní vrstvy)",
+        "urs_suggestion_stage_3": {
+          "suggested": "564",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "drcený štěrk ŠD podklad — class 564, catalog subset prázdný",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "564",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-004",
@@ -11744,8 +11797,21 @@
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "916xxx (osazení obrubníku)"
-      }
+        "kros_hint": "916xxx (osazení obrubníku)",
+        "urs_suggestion_stage_3": {
+          "suggested": "916231112",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "osazení chodníkového obrubníku se zřízením lože (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "916231112",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-005",
@@ -12094,7 +12160,16 @@
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "460xxx (chránička HDPE) + 132xxx (výkop)"
+        "kros_hint": "460xxx (chránička HDPE) + 132xxx (výkop)",
+        "urs_suggestion_stage_3": {
+          "suggested": "460xxx-chranicka+132201101",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "chránička HDPE + výkop rýhy; silové = elektro VV",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
       },
       "_scope_exclusion": {
         "elektro_profession": [
@@ -12102,7 +12177,11 @@
           "Měření spotřeby + revize NN přípojky",
           "Kabel CYKY 4×N samotný (chránička HDPE je v scope SO-13 jako stavební příprava, samotný kabel + zapojení v elektro VV)"
         ]
-      }
+      },
+      "_urs_code_suggested": "460xxx-chranicka+132201101",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-009",
@@ -12182,8 +12261,21 @@
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "827xxx (vodovod — přeložky) — Stage 3 stanovit po confirmation"
-      }
+        "kros_hint": "827xxx (vodovod — přeložky) — Stage 3 stanovit po confirmation",
+        "urs_suggestion_stage_3": {
+          "suggested": "891xxx-prelozka",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "přeložka vodovodu vnější — class 891; rozsah pending ABMV_23",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "891xxx-prelozka",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-010",
@@ -13035,8 +13127,21 @@
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "181xxx (terénní úpravy + osetí)",
-        "cross_dedup_note": "DIFFERENT from HSV-1-024 (Náhradní výsadba DŘEVIN — replacement trees). M-VK-018 = travní porost na zbytkových plochách. NO overlap."
-      }
+        "cross_dedup_note": "DIFFERENT from HSV-1-024 (Náhradní výsadba DŘEVIN — replacement trees). M-VK-018 = travní porost na zbytkových plochách. NO overlap.",
+        "urs_suggestion_stage_3": {
+          "suggested": "181301103/181411131",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "ohumusování + osetí travou — class 181",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "181301103/181411131",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-019",
@@ -13109,8 +13214,21 @@
         "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "171xxx (zemní práce — finální úpravy)"
-      }
+        "kros_hint": "171xxx (zemní práce — finální úpravy)",
+        "urs_suggestion_stage_3": {
+          "suggested": "171201101",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "vyspádování/úprava terénu — class 171",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "171201101",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-020",
@@ -13209,8 +13327,21 @@
         "extracted_at": "2026-05-27T20:30:00+00:00",
         "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
         "kros_hint": "565xxx (komunikace pozemní — beton venkovní)",
-        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
-      }
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice.",
+        "urs_suggestion_stage_3": {
+          "suggested": "564/919-beton-okapnik",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "beton okapník C25/30 XF3 — class 564/919",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "564/919-beton-okapnik",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-021",
@@ -13306,7 +13437,16 @@
         "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
         "kros_hint": "631xxx (KARI síť) + 564xxx (bednění)",
         "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice.",
-        "de_bundle_note": "Mnozstvi 56 m² unchanged (KARI plocha = chodník plocha). Bednění split to M-VK-026 (16 m²). Dilatace remains M-VK-023 (20 m). No double-count: KARI / bednění / dilatace now 3 distinct items."
+        "de_bundle_note": "Mnozstvi 56 m² unchanged (KARI plocha = chodník plocha). Bednění split to M-VK-026 (16 m²). Dilatace remains M-VK-023 (20 m). No double-count: KARI / bednění / dilatace now 3 distinct items.",
+        "urs_suggestion_stage_3": {
+          "suggested": "631362021",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "KARI Q188 výztuž — class 631",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
       },
       "_analytical_journey": [
         {
@@ -13323,7 +13463,11 @@
           "source": "Complete 6-layer stack task 2026-05-27 — bednění split to M-VK-026 (separate atomic item), dilatace already at M-VK-023. M-VK-021 now KARI-only to avoid double-count in layered stack.",
           "correction_type": "de_bundle_no_quantity_change"
         }
-      ]
+      ],
+      "_urs_code_suggested": "631362021",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-022",
@@ -13423,8 +13567,21 @@
         "extracted_at": "2026-05-27T20:30:00+00:00",
         "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
         "kros_hint": "564xxx (komunikace — podkladní vrstvy)",
-        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
-      }
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice.",
+        "urs_suggestion_stage_3": {
+          "suggested": "564",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "drcený štěrk ŠD podklad — class 564",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "564",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-023",
@@ -13514,8 +13671,21 @@
         "extracted_at": "2026-05-27T20:30:00+00:00",
         "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
         "kros_hint": "938xxx (dilatační spáry + těsnění)",
-        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
-      }
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice.",
+        "urs_suggestion_stage_3": {
+          "suggested": "919-dilatace",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "dilatační lišty + řezání spár — class 919",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "919-dilatace",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-024",
@@ -13595,8 +13765,21 @@
         "data_source_hint": "A103_riez+ČSN_73_6126",
         "extracted_at": "2026-05-27T22:00:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
-        "kros_hint": "181xxx (úprava pláně) / 171xxx (hutnění)"
-      }
+        "kros_hint": "181xxx (úprava pláně) / 171xxx (hutnění)",
+        "urs_suggestion_stage_3": {
+          "suggested": "181101102/174",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "úprava + hutnění zemní pláně — class 181/174",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "181101102/174",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-025",
@@ -13671,8 +13854,21 @@
         "data_source_hint": "A103_riez+ČSN_73_6126",
         "extracted_at": "2026-05-27T22:00:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
-        "kros_hint": "171xxx (hutnění vrstev)"
-      }
+        "kros_hint": "171xxx (hutnění vrstev)",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "hutnění (zásyp/hutnění catalog) — verify pro štěrk",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-026",
@@ -13752,8 +13948,21 @@
         "data_source_hint": "A103_riez+ČSN_73_6126",
         "extracted_at": "2026-05-27T22:00:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
-        "kros_hint": "564xxx (bednění komunikace)"
-      }
+        "kros_hint": "564xxx (bednění komunikace)",
+        "urs_suggestion_stage_3": {
+          "suggested": "919-bedneni",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "bednění boční hrana — class 919",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "919-bedneni",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-027",
@@ -13834,8 +14043,21 @@
         "data_source_hint": "ČSN_okapový_chodník + A103_riez",
         "extracted_at": "2026-05-27T22:45:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
-        "kros_hint": "132xxx (výkop rýh)"
-      }
+        "kros_hint": "132xxx (výkop rýh)",
+        "urs_suggestion_stage_3": {
+          "suggested": "132201101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "hloubení rýh š do 600 mm (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "132201101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-028",
@@ -13905,8 +14127,21 @@
         "data_source_hint": "ČSN_okapový_chodník + A103_riez",
         "extracted_at": "2026-05-27T22:45:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
-        "kros_hint": "162xxx (vodorovné přemístění) / 171xxx (uložení na skládku)"
-      }
+        "kros_hint": "162xxx (vodorovné přemístění) / 171xxx (uložení na skládku)",
+        "urs_suggestion_stage_3": {
+          "suggested": "162201101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "vodorovné přemístění výkopku/odvoz (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "162201101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-029",
@@ -13991,8 +14226,21 @@
         "data_source_hint": "ČSN_okapový_chodník + A103_riez",
         "extracted_at": "2026-05-27T22:45:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
-        "kros_hint": "693xxx (geotextilie)"
-      }
+        "kros_hint": "693xxx (geotextilie)",
+        "urs_suggestion_stage_3": {
+          "suggested": "936xxx/213-geotextilie",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "geotextilie separace — class 936/213",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "936xxx/213-geotextilie",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-001",
@@ -14050,8 +14298,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV1.1"
-      }
+        "projektant_code": "DV1.1",
+        "urs_suggestion_stage_3": {
+          "suggested": "722170xxx-PPR",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "PP-RCT 16×2,2 + izolace — class 722 vnitřní vodovod",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722170xxx-PPR",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-002",
@@ -14109,8 +14370,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV1.2"
-      }
+        "projektant_code": "DV1.2",
+        "urs_suggestion_stage_3": {
+          "suggested": "722170xxx-PPR",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "PP-RCT 16×2,2 + izolace — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722170xxx-PPR",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-003",
@@ -14168,8 +14442,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV1.3"
-      }
+        "projektant_code": "DV1.3",
+        "urs_suggestion_stage_3": {
+          "suggested": "722170xxx-PPR",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "PP-RCT 20-50 + izolace — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722170xxx-PPR",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-004",
@@ -14227,8 +14514,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV3.1"
-      }
+        "projektant_code": "DV3.1",
+        "urs_suggestion_stage_3": {
+          "suggested": "722230xxx-ventil",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "rohový ventil + flexi — class 722 armatury",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722230xxx-ventil",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-005",
@@ -14286,8 +14586,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV3.2"
-      }
+        "projektant_code": "DV3.2",
+        "urs_suggestion_stage_3": {
+          "suggested": "722230xxx-kohout",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "kulový kohout DN40 — class 722 armatury",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722230xxx-kohout",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-006",
@@ -14345,8 +14658,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV3.3"
-      }
+        "projektant_code": "DV3.3",
+        "urs_suggestion_stage_3": {
+          "suggested": "722250xxx-vodomer",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "vodoměrná sestava — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722250xxx-vodomer",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-007",
@@ -14404,8 +14730,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV4.1"
-      }
+        "projektant_code": "DV4.1",
+        "urs_suggestion_stage_3": {
+          "suggested": "725820xxx-baterie",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "umyvadlová baterie — class 725 (výtoková armatura)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "725820xxx-baterie",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-008",
@@ -14463,8 +14802,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV5.1"
-      }
+        "projektant_code": "DV5.1",
+        "urs_suggestion_stage_3": {
+          "suggested": "724/722-TUV-zasobnik",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "el. zásobník TUV — class 724/722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "724/722-TUV-zasobnik",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-009",
@@ -14522,8 +14874,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV5.2"
-      }
+        "projektant_code": "DV5.2",
+        "urs_suggestion_stage_3": {
+          "suggested": "722230xxx-ventil",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "uzavírací ventil DN20 — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722230xxx-ventil",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-010",
@@ -14581,8 +14946,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV6.1"
-      }
+        "projektant_code": "DV6.1",
+        "urs_suggestion_stage_3": {
+          "suggested": "725110xxx-umyvadlo",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "umyvadlo — class 725 zařizovací předměty",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "725110xxx-umyvadlo",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-011",
@@ -14640,8 +15018,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV7.1"
-      }
+        "projektant_code": "DV7.1",
+        "urs_suggestion_stage_3": {
+          "suggested": "722130xxx-ocel-pozink",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "ocel pozink DN20 požární — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722130xxx-ocel-pozink",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-012",
@@ -14699,8 +15090,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV7.2"
-      }
+        "projektant_code": "DV7.2",
+        "urs_suggestion_stage_3": {
+          "suggested": "722130xxx-ocel-pozink",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "ocel pozink DN25 požární — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722130xxx-ocel-pozink",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-013",
@@ -14758,8 +15162,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV7.3"
-      }
+        "projektant_code": "DV7.3",
+        "urs_suggestion_stage_3": {
+          "suggested": "722130xxx-ocel-pozink",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "ocel pozink DN32 požární — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722130xxx-ocel-pozink",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-014",
@@ -14817,8 +15234,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV7.4"
-      }
+        "projektant_code": "DV7.4",
+        "urs_suggestion_stage_3": {
+          "suggested": "722290xxx-hydrant",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "hydrant D19/30 vnitřní požární — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722290xxx-hydrant",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-015",
@@ -14876,8 +15306,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "DV7.5"
-      }
+        "projektant_code": "DV7.5",
+        "urs_suggestion_stage_3": {
+          "suggested": "722230xxx-klapka",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "zpětná klapka DN32 — class 722",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "722230xxx-klapka",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-016",
@@ -14935,8 +15378,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.2"
-      }
+        "projektant_code": "K1.2",
+        "urs_suggestion_stage_3": {
+          "suggested": "721174024",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "interior",
+          "note": "PP-HT DN50 odpadní (catalog 721174024 DN70 base — verify DN50)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721174024",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-017",
@@ -14994,8 +15450,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.3"
-      }
+        "projektant_code": "K1.3",
+        "urs_suggestion_stage_3": {
+          "suggested": "721174026",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "interior",
+          "note": "PP-HT DN110 (catalog 721174026 DN125 base — verify DN110)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721174026",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-018",
@@ -15053,8 +15522,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.5"
-      }
+        "projektant_code": "K1.5",
+        "urs_suggestion_stage_3": {
+          "suggested": "721173315",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "interior",
+          "note": "PP-KG DN110 systém KG (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721173315",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-019",
@@ -15112,8 +15594,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.6"
-      }
+        "projektant_code": "K1.6",
+        "urs_suggestion_stage_3": {
+          "suggested": "721173402",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "interior",
+          "note": "PP-KG DN125 svodné (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721173402",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-020",
@@ -15171,8 +15666,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.7"
-      }
+        "projektant_code": "K1.7",
+        "urs_suggestion_stage_3": {
+          "suggested": "721173xxx-DN160",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "PP-KG DN160 — class 721 (catalog DN160 nenalezen)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721173xxx-DN160",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-021",
@@ -15230,8 +15738,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.8"
-      }
+        "projektant_code": "K1.8",
+        "urs_suggestion_stage_3": {
+          "suggested": "721173xxx-DN200",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "PP-KG DN200 — class 721 (catalog DN200 nenalezen)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721173xxx-DN200",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-022",
@@ -15289,8 +15810,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.9"
-      }
+        "projektant_code": "K1.9",
+        "urs_suggestion_stage_3": {
+          "suggested": "894xxx-sachta-DN1000",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "revizní šachta Dš DN1000 + regulační prvek — class 894",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894xxx-sachta-DN1000",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-023",
@@ -15348,8 +15882,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.10"
-      }
+        "projektant_code": "K1.10",
+        "urs_suggestion_stage_3": {
+          "suggested": "894xxx-sachta-DN1000",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "revizní šachta Dš1 dešťová DN1000 — class 894",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894xxx-sachta-DN1000",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-024",
@@ -15407,8 +15954,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.11"
-      }
+        "projektant_code": "K1.11",
+        "urs_suggestion_stage_3": {
+          "suggested": "894xxx-sachta-filtracni",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "filtrační šachta Dš2 DN1000 — class 894",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894xxx-sachta-filtracni",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-025",
@@ -15466,8 +16026,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.12"
-      }
+        "projektant_code": "K1.12",
+        "urs_suggestion_stage_3": {
+          "suggested": "894xxx-sachta-DN1000",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "revizní šachty Rš2+Rš3 DN1000 — class 894",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894xxx-sachta-DN1000",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-026",
@@ -15525,8 +16098,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.13"
-      }
+        "projektant_code": "K1.13",
+        "urs_suggestion_stage_3": {
+          "suggested": "894/871-zasakovaci",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "zasakovací těleso 2 m³ — class 894/871 specific; verify ABMV_33",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894/871-zasakovaci",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-027",
@@ -15584,8 +16170,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.14"
-      }
+        "projektant_code": "K1.14",
+        "urs_suggestion_stage_3": {
+          "suggested": "894/871-retencni-15m3",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "retenční nádoba 15 m³ — class 894/871; verify ABMV_33",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894/871-retencni-15m3",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-028",
@@ -15643,8 +16242,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K1.15"
-      }
+        "projektant_code": "K1.15",
+        "urs_suggestion_stage_3": {
+          "suggested": "894xxx-sachta-DN1000",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "revizní šachta Dš2 DN1000 — class 894",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "894xxx-sachta-DN1000",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-029",
@@ -15702,8 +16314,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K2.2"
-      }
+        "projektant_code": "K2.2",
+        "urs_suggestion_stage_3": {
+          "suggested": "721290xxx-sifon",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "sifon umyvadlový — class 721 příslušenství",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721290xxx-sifon",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-030",
@@ -15761,8 +16386,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K2.3"
-      }
+        "projektant_code": "K2.3",
+        "urs_suggestion_stage_3": {
+          "suggested": "721290xxx-sifon-kondenzat",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "sifon kondenzát HL136 — class 721",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721290xxx-sifon-kondenzat",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-031",
@@ -15820,8 +16458,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "K2.4"
-      }
+        "projektant_code": "K2.4",
+        "urs_suggestion_stage_3": {
+          "suggested": "721290xxx-lapac",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "interior",
+          "note": "lapač splavenin litinový — class 721",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "721290xxx-lapac",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "interior"
     },
     {
       "id": "M-ZTI-032",
@@ -15879,8 +16530,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.2c"
-      }
+        "projektant_code": "P1.2c",
+        "urs_suggestion_stage_3": {
+          "suggested": "871xxx-PE100-cerpana",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "PE100 d50 čerpaná kanalizace — class 871",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "871xxx-PE100-cerpana",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-033",
@@ -15938,8 +16602,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.3c"
-      }
+        "projektant_code": "P1.3c",
+        "urs_suggestion_stage_3": {
+          "suggested": "891xxx-navrtavaci-pas",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "navrtávací pas 75/40 — class 891/871",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "891xxx-navrtavaci-pas",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-034",
@@ -15997,8 +16674,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.4c"
-      }
+        "projektant_code": "P1.4c",
+        "urs_suggestion_stage_3": {
+          "suggested": "871xxx-precerpavaci-stanice",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "přečerpávací stanice Tlakan P2 — class 871 specific",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "871xxx-precerpavaci-stanice",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-035",
@@ -16056,8 +16746,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.5c"
-      }
+        "projektant_code": "P1.5c",
+        "urs_suggestion_stage_3": {
+          "suggested": "132201201",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "hloubení rýh š přes 600 do 2000 mm pažený (catalog match, š1m)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "132201201",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-036",
@@ -16115,8 +16818,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.6c"
-      }
+        "projektant_code": "P1.6c",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "pískový podsyp se zhutněním (catalog 174 zásyp/hutnění — verify obsyp)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-037",
@@ -16174,8 +16890,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.7c"
-      }
+        "projektant_code": "P1.7c",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "pískový obsyp se zhutněním (catalog 174 — verify)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-038",
@@ -16233,8 +16962,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.8c"
-      }
+        "projektant_code": "P1.8c",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "konečný zához zeminou (catalog 174 zásyp)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-039",
@@ -16292,8 +17034,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.10c"
-      }
+        "projektant_code": "P1.10c",
+        "urs_suggestion_stage_3": {
+          "suggested": "162201101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "odvoz přebytečného výkopku (catalog 162)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "162201101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-040",
@@ -16351,8 +17106,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.11c"
-      }
+        "projektant_code": "P1.11c",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "montážní + pomocný materiál kpl — NE catalog item, user provide",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-ZTI-041",
@@ -16410,8 +17179,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P.2.2"
-      }
+        "projektant_code": "P.2.2",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "ostatní práce kpl — NE catalog item, user provide",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-ZTI-042",
@@ -16469,8 +17252,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P.2.3"
-      }
+        "projektant_code": "P.2.3",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "vytyčení sítí kpl — VRN-style, user provide (NE standard ÚRS)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-ZTI-043",
@@ -16528,8 +17325,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P.2.4"
-      }
+        "projektant_code": "P.2.4",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "inženýrská činnost kpl — VRN-style, user provide",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-ZTI-044",
@@ -16587,8 +17398,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P.2.5"
-      }
+        "projektant_code": "P.2.5",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "dílenská dokumentace kpl — VRN-style, user provide",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-ZTI-045",
@@ -16646,8 +17471,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P.2.6"
-      }
+        "projektant_code": "P.2.6",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "dokumentace skutečného provedení kpl — VRN-style, user provide",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-ZTI-046",
@@ -16705,8 +17544,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P.2.7"
-      }
+        "projektant_code": "P.2.7",
+        "urs_suggestion_stage_3": {
+          "suggested": "871xxx/892-zkouska-tesnosti",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "zkouška těsnosti kanalizace — class 871/892",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "871xxx/892-zkouska-tesnosti",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-047",
@@ -16764,8 +17616,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.2d"
-      }
+        "projektant_code": "P1.2d",
+        "urs_suggestion_stage_3": {
+          "suggested": "891xxx-PE100-vodovod",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "PE100 d50 vodovod vnější — class 891",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "891xxx-PE100-vodovod",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-048",
@@ -16823,8 +17688,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.3d"
-      }
+        "projektant_code": "P1.3d",
+        "urs_suggestion_stage_3": {
+          "suggested": "891xxx-navrtavaci-pas",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "navrtávací pas 110/50 — class 891",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "891xxx-navrtavaci-pas",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-049",
@@ -16882,8 +17760,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.4d"
-      }
+        "projektant_code": "P1.4d",
+        "urs_suggestion_stage_3": {
+          "suggested": "891xxx-soupe-DN40",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "uzavírací šoupě + zemní souprava DN40 — class 891",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "891xxx-soupe-DN40",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-050",
@@ -16941,8 +17832,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.5d"
-      }
+        "projektant_code": "P1.5d",
+        "urs_suggestion_stage_3": {
+          "suggested": "132201201",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "hloubení rýh š přes 600 do 2000 mm pažený (catalog match, š1m)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "132201201",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-051",
@@ -17000,8 +17904,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.6d"
-      }
+        "projektant_code": "P1.6d",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "pískový podsyp se zhutněním (catalog 174)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-052",
@@ -17059,8 +17976,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.7d"
-      }
+        "projektant_code": "P1.7d",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "pískový obsyp se zhutněním (catalog 174)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-053",
@@ -17118,8 +18048,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.8d"
-      }
+        "projektant_code": "P1.8d",
+        "urs_suggestion_stage_3": {
+          "suggested": "174101101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "konečný zához zeminou (catalog 174)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "174101101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-054",
@@ -17177,8 +18120,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.9d"
-      }
+        "projektant_code": "P1.9d",
+        "urs_suggestion_stage_3": {
+          "suggested": "899xxx/871-vystrazna-folie",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "výstražná folie — class 899/871",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "899xxx/871-vystrazna-folie",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-055",
@@ -17236,8 +18192,21 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.10d"
-      }
+        "projektant_code": "P1.10d",
+        "urs_suggestion_stage_3": {
+          "suggested": "162201101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "odvoz přebytečného výkopku (catalog 162)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "162201101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-ZTI-056",
@@ -17295,8 +18264,22 @@
         "data_source_hint": "VV_projektant",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
-        "projektant_code": "P1.11d"
-      }
+        "projektant_code": "P1.11d",
+        "urs_suggestion_stage_3": {
+          "suggested": null,
+          "confidence": null,
+          "source": "user_must_provide",
+          "interior_exterior": "exterior",
+          "note": "montážní + pomocný materiál kpl — NE catalog item, user provide",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": null,
+      "_urs_confidence": null,
+      "_urs_source": "user_must_provide",
+      "_interior_exterior": "exterior",
+      "_urs_flag": "user_must_provide"
     },
     {
       "id": "M-VK-030",
@@ -17364,8 +18347,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "132xxx (výkop rýh)"
-      }
+        "kros_hint": "132xxx (výkop rýh)",
+        "urs_suggestion_stage_3": {
+          "suggested": "132201101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "hloubení rýh š do 600 mm (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "132201101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-031",
@@ -17433,8 +18429,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "162xxx (odvoz)"
-      }
+        "kros_hint": "162xxx (odvoz)",
+        "urs_suggestion_stage_3": {
+          "suggested": "162201101",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "vodorovné přemístění/odvoz (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "162201101",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-032",
@@ -17502,8 +18511,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "181xxx (úprava pláně)"
-      }
+        "kros_hint": "181xxx (úprava pláně)",
+        "urs_suggestion_stage_3": {
+          "suggested": "181101102/174",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "úprava + hutnění pláně — class 181/174",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "181101102/174",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-033",
@@ -17571,8 +18593,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "693xxx (geotextilie)"
-      }
+        "kros_hint": "693xxx (geotextilie)",
+        "urs_suggestion_stage_3": {
+          "suggested": "936xxx/213-geotextilie",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "geotextilie separace — class 936/213",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "936xxx/213-geotextilie",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-034",
@@ -17640,8 +18675,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "564xxx (podkladní vrstvy)"
-      }
+        "kros_hint": "564xxx (podkladní vrstvy)",
+        "urs_suggestion_stage_3": {
+          "suggested": "564",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "ŠD nosná podkladní vrstva — class 564",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "564",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-035",
@@ -17709,8 +18757,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "564xxx (ložná vrstva)"
-      }
+        "kros_hint": "564xxx (ložná vrstva)",
+        "urs_suggestion_stage_3": {
+          "suggested": "564-loze-drt",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "drť 4/8 ložná vrstva — class 564",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "564-loze-drt",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-036",
@@ -17778,8 +18839,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "916xxx (obrubníky)"
-      }
+        "kros_hint": "916xxx (obrubníky)",
+        "urs_suggestion_stage_3": {
+          "suggested": "916231112",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "osazení obrubníku se zřízením lože (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "916231112",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-037",
@@ -17847,8 +18921,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "916xxx (lože obrubníku)"
-      }
+        "kros_hint": "916xxx (lože obrubníku)",
+        "urs_suggestion_stage_3": {
+          "suggested": "919/564-beton-loze",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "beton lože C16/20 pod obrubník — class 919/564",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "919/564-beton-loze",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-038",
@@ -17916,8 +19003,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "596xxx (kladení dlažby)"
-      }
+        "kros_hint": "596xxx (kladení dlažby)",
+        "urs_suggestion_stage_3": {
+          "suggested": "596811222",
+          "confidence": 1.0,
+          "source": "kros_catalog.db",
+          "interior_exterior": "exterior",
+          "note": "kladení dlažby komunikací pro pěší (catalog match)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "596811222",
+      "_urs_confidence": 1.0,
+      "_urs_source": "kros_catalog.db",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-039",
@@ -17985,8 +19085,21 @@
         "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
         "extracted_at": "2026-05-27T23:30:00+00:00",
         "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
-        "kros_hint": "596xxx (zásyp spár)"
-      }
+        "kros_hint": "596xxx (zásyp spár)",
+        "urs_suggestion_stage_3": {
+          "suggested": "596-zasyp-spar",
+          "confidence": 0.7,
+          "source": "urs_class_knowledge_verify_full",
+          "interior_exterior": "exterior",
+          "note": "zásyp spár pískem + hutnění — class 596 (součást kladení)",
+          "review_required": "Pattern 13 — review before promote to final urs_code",
+          "suggested_at": "2026-05-28T00:30:00+00:00"
+        }
+      },
+      "_urs_code_suggested": "596-zasyp-spar",
+      "_urs_confidence": 0.7,
+      "_urs_source": "urs_class_knowledge_verify_full",
+      "_interior_exterior": "exterior"
     },
     {
       "id": "M-VK-040",
