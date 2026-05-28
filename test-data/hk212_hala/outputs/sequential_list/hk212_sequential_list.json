@@ -12185,6 +12185,169 @@
       "_vzorec_display": "43.32 × 0.20 = 8.66 m³  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
     {
+      "id": "M-VK-027",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Výkop rýhy pro okapní chodník hl. 400 mm (na hloubku všech vrstev)",
+      "mj": "m³",
+      "mnozstvi": 22.4,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "výkop rýhy okapní chodník 400 mm",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez+ČSN_okapový_chodník+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 × 0.4 = 22.4 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "132xxx (výkop rýh)",
+      "_scope_basis": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap). Bez výkopu rýhy a geotextilie beton praská do 1-2 let (kontaminace štěrku zeminou + zdvih mrazem + prorůstání plevele).",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 × 0.4 = 22.4 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_ryhy",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "hloubka_ryhy",
+            "value": 0.4,
+            "unit": "m",
+            "rozpis": "štěrk 150 + beton 200 + rezerva 50 = ~400 mm celková hloubka vrstev"
+          },
+          {
+            "label": "objem_vykopu",
+            "value": 22.4,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil zakreslen; výkop rýhy + geotextilie NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN okapový chodník",
+            "section": "výkop rýhy na hloubku vrstev + geotextilie separace"
+          }
+        ],
+        "poznamka": "PRVNÍ položka (před úpravou pláně). Výkop rýhy na hloubku 400 mm = součet všech vrstev (štěrk 150 + beton 200 + rezerva 50). Bez výkopu není kam vrstvy položit — okapní chodník je zapuštěný do terénu. Per ČSN okapový chodník norma + řez A103 (DPS gap — výkop NE zakreslen).",
+        "confidence": 0.8,
+        "extraction_method": "ČSN_okapový_chodník_layer_stack + riez_profil",
+        "data_source_hint": "ČSN_okapový_chodník + A103_riez",
+        "extracted_at": "2026-05-27T22:45:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
+        "kros_hint": "132xxx (výkop rýh)"
+      },
+      "_sequence_position": 159,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_vzorec_display": "80.0 × 0.7 × 0.4 = 22.4 m³  [document:A103 řez A-B detail, norma:ČSN 73 6126, norma:ČSN okapový chodník]"
+    },
+    {
+      "id": "M-VK-028",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Odvoz vykopané zeminy z rýhy okapního chodníku na skládku",
+      "mj": "m³",
+      "mnozstvi": 22.4,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "odvoz zeminy z výkopu okapního chodníku",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez+ČSN_okapový_chodník+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "= objem výkopu M-VK-027 = 22.4 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "162xxx (vodorovné přemístění) / 171xxx (uložení na skládku)",
+      "_scope_basis": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap). Bez výkopu rýhy a geotextilie beton praská do 1-2 let (kontaminace štěrku zeminou + zdvih mrazem + prorůstání plevele).",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "= 22.4 m³ (1:1 s výkopem)",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "objem_zeminy",
+            "value": 22.4,
+            "unit": "m³"
+          },
+          {
+            "label": "vazba",
+            "value": "= výkop M-VK-027",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil zakreslen; výkop rýhy + geotextilie NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN okapový chodník",
+            "section": "výkop rýhy na hloubku vrstev + geotextilie separace"
+          }
+        ],
+        "poznamka": "DRUHÁ položka. Odvoz vykopané zeminy na skládku (zemina z rýhy se nepoužije zpět — chodník je nahrazen štěrkem + betonem). Vzdálenost skládky per VRN doprava. Bez nakypření factor (rostlý objem = 22.4 m³; nakypřený ~+25 % řeší KROS doprava položka v Stage 3).",
+        "confidence": 0.8,
+        "extraction_method": "ČSN_okapový_chodník_layer_stack + riez_profil",
+        "data_source_hint": "ČSN_okapový_chodník + A103_riez",
+        "extracted_at": "2026-05-27T22:45:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
+        "kros_hint": "162xxx (vodorovné přemístění) / 171xxx (uložení na skládku)"
+      },
+      "_sequence_position": 160,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_vzorec_display": "= 22.4 m³ (1:1 s výkopem)  [document:A103 řez A-B detail, norma:ČSN 73 6126, norma:ČSN okapový chodník]"
+    },
+    {
       "id": "M-VK-024",
       "kapitola": "M-VK",
       "SO": "SO-13",
@@ -12264,11 +12427,102 @@
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
         "kros_hint": "181xxx (úprava pláně) / 171xxx (hutnění)"
       },
-      "_sequence_position": 159,
+      "_sequence_position": 161,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 × 0.7 = 56.0 m²  [document:A103 řez A-B detail, norma:ČSN 73 6126, norma:ČSN EN 13670]"
+    },
+    {
+      "id": "M-VK-029",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Geotextilie 300 g/m² separační — mezi hutněnou zemní pláň a štěrkový podklad okapního chodníku",
+      "mj": "m²",
+      "mnozstvi": 56.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "geotextilie 300 g/m² separace zemina/štěrk",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez+ČSN_okapový_chodník+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 = 56.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "693xxx (geotextilie)",
+      "_scope_basis": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap). Bez výkopu rýhy a geotextilie beton praská do 1-2 let (kontaminace štěrku zeminou + zdvih mrazem + prorůstání plevele).",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 = 56.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "plocha",
+            "value": 56.0,
+            "unit": "m²"
+          },
+          {
+            "label": "gramaz",
+            "value": "300 g/m²",
+            "unit": ""
+          },
+          {
+            "label": "presahy",
+            "value": "min 150 mm (v ceně m²)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil zakreslen; výkop rýhy + geotextilie NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN okapový chodník",
+            "section": "výkop rýhy na hloubku vrstev + geotextilie separace"
+          }
+        ],
+        "poznamka": "Mezi hutněním pláně (M-VK-024) a štěrkem (M-VK-022). Funkce: separace zeminy od štěrku (proti kontaminaci jemnými částicemi → ztráta drenáže) + proti prorůstání plevele. Netkaná PP/PES 300 g/m². Přesahy min 150 mm. Per ČSN okapový chodník norma — bez geotextilie beton praská do 1-2 let (DPS gap).",
+        "confidence": 0.8,
+        "extraction_method": "ČSN_okapový_chodník_layer_stack + riez_profil",
+        "data_source_hint": "ČSN_okapový_chodník + A103_riez",
+        "extracted_at": "2026-05-27T22:45:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
+        "kros_hint": "693xxx (geotextilie)"
+      },
+      "_sequence_position": 162,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_vzorec_display": "80.0 × 0.7 = 56.0 m²  [document:A103 řez A-B detail, norma:ČSN 73 6126, norma:ČSN okapový chodník]"
     },
     {
       "id": "M-VK-022",
@@ -12370,10 +12624,10 @@
         "kros_hint": "564xxx (komunikace — podkladní vrstvy)",
         "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
       },
-      "_sequence_position": 160,
+      "_sequence_position": 163,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 × 0.7 × 0.15 = 8.40 m³  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
     },
     {
@@ -12451,10 +12705,10 @@
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
         "kros_hint": "171xxx (hutnění vrstev)"
       },
-      "_sequence_position": 161,
+      "_sequence_position": 164,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 × 0.7 = 56.0 m²  [document:A103 řez A-B detail, norma:ČSN 73 6126, norma:ČSN EN 13670]"
     },
     {
@@ -12537,10 +12791,10 @@
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
         "kros_hint": "564xxx (bednění komunikace)"
       },
-      "_sequence_position": 162,
+      "_sequence_position": 165,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 × 0.2 = 16.0 m²  [document:A103 řez A-B detail, norma:ČSN 73 6126, norma:ČSN EN 13670]"
     },
     {
@@ -12655,10 +12909,10 @@
           "correction_type": "de_bundle_no_quantity_change"
         }
       ],
-      "_sequence_position": 163,
+      "_sequence_position": 166,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 × 0.7 = 56.00 m²  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
     },
     {
@@ -12760,10 +13014,10 @@
         "kros_hint": "565xxx (komunikace pozemní — beton venkovní)",
         "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
       },
-      "_sequence_position": 164,
+      "_sequence_position": 167,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 × 0.7 × 0.2 = 11.20 m³  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
     },
     {
@@ -12856,10 +13110,10 @@
         "kros_hint": "938xxx (dilatační spáry + těsnění)",
         "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
       },
-      "_sequence_position": 165,
+      "_sequence_position": 168,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
-      "_krok": "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly (zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+      "_krok": "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
       "_vzorec_display": "80.0 / 4 = 20 ks dilatací  [document:A103 řezy A-B detail, document:A101 půdorys 1NP, document:C.3 KOO situace]"
     },
     {
@@ -12930,7 +13184,7 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "631xxx (výztuž) + 564xxx (bednění)"
       },
-      "_sequence_position": 166,
+      "_sequence_position": 169,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
@@ -13030,7 +13284,7 @@
         "kros_hint": "565xxx (komunikace pozemní — beton)",
         "slope_clarification": "5.65° + 2.00° = SKLON RAMPY (gradient nájezdu na podlahu haly), NE úhel vrat. Sekční vrata jsou vertikálně zdvihací bez náklonu. Confirmed by user 2026-05-27."
       },
-      "_sequence_position": 167,
+      "_sequence_position": 170,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
@@ -13104,7 +13358,7 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "916xxx (osazení obrubníku)"
       },
-      "_sequence_position": 168,
+      "_sequence_position": 171,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
@@ -13184,7 +13438,7 @@
         "kros_hint": "935xxx (odvodňovací žlaby + mřížky)",
         "cross_dedup_note": "EXPLICITNĚ ODLIŠENO od PSV-78x-005 (MEA Mearin Plus 3000 NW300 podél JZ + SZ fasády HALY) + PSV-78x-006 (Mřížka pochozí). M-VK-012 je POJÍZDNÝ žlab v jiné lokaci (perimetr venkovních asfaltů), jiné load class (B125 ne pochozí). NO geometric overlap with PSV-78x."
       },
-      "_sequence_position": 169,
+      "_sequence_position": 172,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Liniový žlab pojízdný B125 — SZ + JZ fasáda (40 m)",
@@ -13263,7 +13517,7 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "171xxx (zemní práce — finální úpravy)"
       },
-      "_sequence_position": 170,
+      "_sequence_position": 173,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Vyspádování okolního terénu k odvodnění",
@@ -13343,12 +13597,12 @@
         "kros_hint": "181xxx (terénní úpravy + osetí)",
         "cross_dedup_note": "DIFFERENT from HSV-1-024 (Náhradní výsadba DŘEVIN — replacement trees). M-VK-018 = travní porost na zbytkových plochách. NO overlap."
       },
-      "_sequence_position": 171,
+      "_sequence_position": 174,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
       "_krok": "Ohumusování + osetí travou zbytkových ploch",
       "_vzorec_display": "500 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     }
   ],
-  "count": 171
+  "count": 174
 }

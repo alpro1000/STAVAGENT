@@ -595,18 +595,21 @@
       "severity": "low",
       "status": "open",
       "title": "Okapní chodník podkladní vrstvy — DPS gap doplněno per ČSN",
-      "summary_cs": "Řez A103 detail ukazuje pouze beton profil okapního chodníku. Podkladní vrstvy (zemní pláň + hutnění, štěrk ŠD 150 mm + hutnění, boční bednění) NE zakresleny — typický DPS gap. Doplněno per standard CR technologie ČSN 73 6126 + ČSN EN 13670. Verify s projektant Volka jestli souhlasí s tloušťkou štěrk 150 mm + beton 200 mm. Standardní defensible scope.",
+      "summary_cs": "Řez A103 detail ukazuje pouze beton profil okapního chodníku. Podkladní vrstvy (zemní pláň + hutnění, štěrk ŠD 150 mm + hutnění, boční bednění) NE zakresleny — typický DPS gap. Doplněno per standard CR technologie ČSN 73 6126 + ČSN EN 13670. Verify s projektant Volka jestli souhlasí s tloušťkou štěrk 150 mm + beton 200 mm. Standardní defensible scope. UPDATE 2026-05-27: + výkop rýhy 400 mm + geotextilie 300 g/m² doplněny per ČSN okapový chodník norma (jinak beton praská 1-2 roky).",
       "blocks_vv": [],
       "addressee": [
         "projektant Volka",
         "SOLAR DISPOREC"
       ],
       "items_affected": [
+        "M-VK-020",
+        "M-VK-022",
         "M-VK-024",
         "M-VK-025",
         "M-VK-026",
-        "M-VK-022",
-        "M-VK-020"
+        "M-VK-027",
+        "M-VK-028",
+        "M-VK-029"
       ],
       "resolution_required_before": "execution kick-off (Stage 4)",
       "created_at": "2026-05-27T22:00:00+00:00"

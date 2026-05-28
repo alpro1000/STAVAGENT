@@ -317,17 +317,20 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
             ("Hydrant podzemní DN80 + napojení", ["M-VK-010"]),
             ("Drcený štěrk podklad ramp", ["M-VK-003"]),
             (
-                "Okapní chodník — complete layer stack 0.7 m × 80 m po obvodu haly "
-                "(zemní pláň → štěrk → hutnění → bednění → výztuž → beton → dilatace, "
-                "pending ABMV_31 + ABMV_32)",
+                "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu "
+                "haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → "
+                "bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
                 [
-                    "M-VK-024",  # 1. úprava zemní pláně + hutnění
-                    "M-VK-022",  # 2. drcený štěrk ŠD 32/63 podklad
-                    "M-VK-025",  # 3. hutnění štěrkového podkladu
-                    "M-VK-026",  # 4. bednění boční vnější hrana
-                    "M-VK-021",  # 5. výztuž KARI Q188
-                    "M-VK-020",  # 6. beton C25/30 XF3
-                    "M-VK-023",  # 7. dilatační lišty + těsnění
+                    "M-VK-027",  # 1. výkop rýhy 400 mm
+                    "M-VK-028",  # 2. odvoz vykopané zeminy
+                    "M-VK-024",  # 3. úprava zemní pláně + hutnění
+                    "M-VK-029",  # 4. geotextilie 300 g/m² separační
+                    "M-VK-022",  # 5. drcený štěrk ŠD 32/63 podklad
+                    "M-VK-025",  # 6. hutnění štěrkového podkladu
+                    "M-VK-026",  # 7. bednění boční vnější hrana
+                    "M-VK-021",  # 8. výztuž KARI Q188
+                    "M-VK-020",  # 9. beton C25/30 XF3
+                    "M-VK-023",  # 10. dilatační lišty + těsnění
                 ],
             ),
             (
@@ -390,8 +393,8 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
     missing = set(items_by_id) - seen
     if missing:
         raise SystemExit(f"FATAL: {len(missing)} items.json IDs missing from SEQUENCE: {sorted(missing)}")
-    if len(out) != 171:
-        raise SystemExit(f"FATAL: expected 171 ordered rows, got {len(out)}")
+    if len(out) != 174:
+        raise SystemExit(f"FATAL: expected 174 ordered rows, got {len(out)}")
     return out
 
 
@@ -617,12 +620,12 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
     review_conc = [it["id"] for it in items_by_id.values() if it.get("_review_concrete_class")]
     body = f"""# HK212 Sequential Construction List
 
-171 active položek v logickém pořadí výstavby (fáze 1–12, vč. 9.5 TZB Vytápění + 12 Venkovní úpravy). 5 items dropped per user decision 2026-05-27 (M-VK-013..017 asfalt/parkoviště) preserved s _status_flag. Okapní chodník complete 7-layer stack (M-VK-020..026).
+174 active položek v logickém pořadí výstavby (fáze 1–12, vč. 9.5 TZB Vytápění + 12 Venkovní úpravy). 5 items dropped per user decision 2026-05-27 (M-VK-013..017 asfalt/parkoviště) preserved s _status_flag. Okapní chodník complete 7-layer stack (M-VK-020..026).
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (176 entries, 171 active)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (179 entries, 174 active)
 **Branch:** `claude/hk212-vk-final-minimal` (12 M-UT items added per investor scope change 2026-05-26)
 **Generated:** {date.today().isoformat()}
 
@@ -639,7 +642,7 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
 9.5. TZB INSTALACE — VYTÁPĚNÍ (M-UT, 12 items, DPS D.1.4.2)
 10. OSTATNÍ + PŘESUN HMOT
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
-12. VENKOVNÍ ÚPRAVY (SO-13, M-VK, 21 active items — minimal scope + okapní chodník complete 7-layer stack, DPS 06/2026)
+12. VENKOVNÍ ÚPRAVY (SO-13, M-VK, 24 active items — minimal scope + okapní chodník complete 10-layer stack, DPS 06/2026)
 
 ## Soubory
 - `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1, includes Vzorec / Zdroj výměry column
@@ -690,9 +693,9 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 **Date:** {date.today().isoformat()}
 
 ## Counts
-- 171 active items (138 baseline + 12 M-UT vytápění + 21 M-VK venkovní úpravy — minimal scope + okapní chodník complete layer stack)
+- 174 active items (138 baseline + 12 M-UT vytápění + 24 M-VK venkovní úpravy — minimal scope + okapní chodník complete layer stack)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
-- 33 active items added (12 M-UT + 21 M-VK = 14 kept + 7 okapní layers), 5 dropped per user decision, 0 invented
+- 36 active items added (12 M-UT + 24 M-VK = 14 kept + 10 okapní layers), 5 dropped per user decision, 0 invented
 - 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
 
 ## Per-phase distribution
@@ -744,9 +747,9 @@ def main() -> None:
     rows = build_ordered_rows(items_by_id)
 
     # Validation
-    assert len(rows) == 171, len(rows)
+    assert len(rows) == 174, len(rows)
     ids = [r["id"] for r in rows]
-    assert len(set(ids)) == 171, "duplicate IDs in output"
+    assert len(set(ids)) == 174, "duplicate IDs in output"
     # NOTE: items.json contains 173 entries but 5 are dropped per user decision
     # 2026-05-27 (_status_flag=dropped_per_user_decision_2026-05-27).
     # Sequential list active = 168 (= 173 entries - 5 dropped).
@@ -759,7 +762,7 @@ def main() -> None:
     empty_vzorec = [r["id"] for r in rows if not r["vzorec"]]
     assert not empty_vzorec, f"empty vzorec for: {empty_vzorec}"
     fallback_vzorec = [r["id"] for r in rows if r["vzorec"].startswith("(zdroj nenalezen")]
-    print(f"  vzorec coverage: {171 - len(fallback_vzorec)}/171 with formula, {len(fallback_vzorec)} fallback")
+    print(f"  vzorec coverage: {174 - len(fallback_vzorec)}/174 with formula, {len(fallback_vzorec)} fallback")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_xlsx(rows, OUT_DIR / "hk212_sequential_list.xlsx")
@@ -768,7 +771,7 @@ def main() -> None:
     write_readme(rows, items_by_id, OUT_DIR / "README.md")
     write_handoff(rows, items_by_id, OUT_DIR / "HANDOFF_SEQUENTIAL.md")
 
-    print(f"OK — 171 active items in 13 phases (vč. 9.5 + 12 Venkovní + okapní complete stack) written to {OUT_DIR}")
+    print(f"OK — 174 active items in 13 phases (vč. 9.5 + 12 Venkovní + okapní complete 10-layer stack) written to {OUT_DIR}")
     for p in sorted({r["_phase"] for r in rows}):
         n = sum(1 for r in rows if r["_phase"] == p)
         print(f"  FÁZE {p}: {n}")

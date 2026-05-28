@@ -484,6 +484,34 @@
         "pattern_14_compliance": "M-VK-021 de-bundle has _analytical_journey entry",
         "pattern_15_compliance": "3 new items work-first, _kros_hint only",
         "dps_gap_note": "Layer stack standard per ČSN — řez A103 only showed beton profile. Material + thicknesses pending projektant Volka confirm (ABMV_32)."
+      },
+      {
+        "date": "2026-05-27",
+        "change": "Okapní chodník — add 3 ČSN-required items (M-VK-027 výkop rýhy, M-VK-028 odvoz zeminy, M-VK-029 geotextilie 300 g/m²). Stack now complete 10 items.",
+        "reason": "ČSN okapový chodník norma review — (a) výkop rýhy 400 mm na hloubku všech vrstev (chodník zapuštěný), (b) geotextilie separace zemina/štěrk + proti prorůstání plevele. Bez nich beton praská do 1-2 let. DPS gap — řez A103 ukazoval pouze beton profil.",
+        "previous_count": 176,
+        "new_count": 179,
+        "items_added": [
+          "M-VK-027",
+          "M-VK-028",
+          "M-VK-029"
+        ],
+        "items_modified": [],
+        "items_removed": [],
+        "okapni_chodnik_final_stack_10": [
+          "1. M-VK-027 Výkop rýhy 400 mm (22.4 m³)",
+          "2. M-VK-028 Odvoz zeminy (22.4 m³)",
+          "3. M-VK-024 Úprava + hutnění zemní pláně (56 m²)",
+          "4. M-VK-029 Geotextilie 300 g/m² (56 m²)",
+          "5. M-VK-022 Štěrk ŠD 32/63 150 mm (8.4 m³)",
+          "6. M-VK-025 Hutnění štěrku (56 m²)",
+          "7. M-VK-026 Bednění vnější hrana (16 m²)",
+          "8. M-VK-021 KARI Q188 (56 m²)",
+          "9. M-VK-020 Beton C25/30 XF3 200 mm (11.2 m³)",
+          "10. M-VK-023 Dilatace á 4 m (20 m)"
+        ],
+        "pattern_15_compliance": "3 new items work-first, _kros_hint only",
+        "dps_gap_note": "Výkop + geotextilie standard per ČSN okapový chodník — DPS řez A103 only showed beton profile. Covered by existing ABMV_32 (podkladní vrstvy verification — items_affected extended)."
       }
     ],
     "total_items_actual": 150
@@ -13477,6 +13505,245 @@
         "extracted_at": "2026-05-27T22:00:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
         "kros_hint": "564xxx (bednění komunikace)"
+      }
+    },
+    {
+      "id": "M-VK-027",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Výkop rýhy pro okapní chodník hl. 400 mm (na hloubku všech vrstev)",
+      "mj": "m³",
+      "mnozstvi": 22.4,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "výkop rýhy okapní chodník 400 mm",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez+ČSN_okapový_chodník+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 × 0.4 = 22.4 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "132xxx (výkop rýh)",
+      "_scope_basis": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap). Bez výkopu rýhy a geotextilie beton praská do 1-2 let (kontaminace štěrku zeminou + zdvih mrazem + prorůstání plevele).",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 × 0.4 = 22.4 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_ryhy",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "hloubka_ryhy",
+            "value": 0.4,
+            "unit": "m",
+            "rozpis": "štěrk 150 + beton 200 + rezerva 50 = ~400 mm celková hloubka vrstev"
+          },
+          {
+            "label": "objem_vykopu",
+            "value": 22.4,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil zakreslen; výkop rýhy + geotextilie NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN okapový chodník",
+            "section": "výkop rýhy na hloubku vrstev + geotextilie separace"
+          }
+        ],
+        "poznamka": "PRVNÍ položka (před úpravou pláně). Výkop rýhy na hloubku 400 mm = součet všech vrstev (štěrk 150 + beton 200 + rezerva 50). Bez výkopu není kam vrstvy položit — okapní chodník je zapuštěný do terénu. Per ČSN okapový chodník norma + řez A103 (DPS gap — výkop NE zakreslen).",
+        "confidence": 0.8,
+        "extraction_method": "ČSN_okapový_chodník_layer_stack + riez_profil",
+        "data_source_hint": "ČSN_okapový_chodník + A103_riez",
+        "extracted_at": "2026-05-27T22:45:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
+        "kros_hint": "132xxx (výkop rýh)"
+      }
+    },
+    {
+      "id": "M-VK-028",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Odvoz vykopané zeminy z rýhy okapního chodníku na skládku",
+      "mj": "m³",
+      "mnozstvi": 22.4,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "odvoz zeminy z výkopu okapního chodníku",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez+ČSN_okapový_chodník+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "= objem výkopu M-VK-027 = 22.4 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "162xxx (vodorovné přemístění) / 171xxx (uložení na skládku)",
+      "_scope_basis": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap). Bez výkopu rýhy a geotextilie beton praská do 1-2 let (kontaminace štěrku zeminou + zdvih mrazem + prorůstání plevele).",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "= 22.4 m³ (1:1 s výkopem)",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "objem_zeminy",
+            "value": 22.4,
+            "unit": "m³"
+          },
+          {
+            "label": "vazba",
+            "value": "= výkop M-VK-027",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil zakreslen; výkop rýhy + geotextilie NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN okapový chodník",
+            "section": "výkop rýhy na hloubku vrstev + geotextilie separace"
+          }
+        ],
+        "poznamka": "DRUHÁ položka. Odvoz vykopané zeminy na skládku (zemina z rýhy se nepoužije zpět — chodník je nahrazen štěrkem + betonem). Vzdálenost skládky per VRN doprava. Bez nakypření factor (rostlý objem = 22.4 m³; nakypřený ~+25 % řeší KROS doprava položka v Stage 3).",
+        "confidence": 0.8,
+        "extraction_method": "ČSN_okapový_chodník_layer_stack + riez_profil",
+        "data_source_hint": "ČSN_okapový_chodník + A103_riez",
+        "extracted_at": "2026-05-27T22:45:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
+        "kros_hint": "162xxx (vodorovné přemístění) / 171xxx (uložení na skládku)"
+      }
+    },
+    {
+      "id": "M-VK-029",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Geotextilie 300 g/m² separační — mezi hutněnou zemní pláň a štěrkový podklad okapního chodníku",
+      "mj": "m²",
+      "mnozstvi": 56.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "geotextilie 300 g/m² separace zemina/štěrk",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez+ČSN_okapový_chodník+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 = 56.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "693xxx (geotextilie)",
+      "_scope_basis": "ČSN okapový chodník norma + řez A103 detail — výkop + geotextilie doplněny (DPS gap). Bez výkopu rýhy a geotextilie beton praská do 1-2 let (kontaminace štěrku zeminou + zdvih mrazem + prorůstání plevele).",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 = 56.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "plocha",
+            "value": 56.0,
+            "unit": "m²"
+          },
+          {
+            "label": "gramaz",
+            "value": "300 g/m²",
+            "unit": ""
+          },
+          {
+            "label": "presahy",
+            "value": "min 150 mm (v ceně m²)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil zakreslen; výkop rýhy + geotextilie NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN okapový chodník",
+            "section": "výkop rýhy na hloubku vrstev + geotextilie separace"
+          }
+        ],
+        "poznamka": "Mezi hutněním pláně (M-VK-024) a štěrkem (M-VK-022). Funkce: separace zeminy od štěrku (proti kontaminaci jemnými částicemi → ztráta drenáže) + proti prorůstání plevele. Netkaná PP/PES 300 g/m². Přesahy min 150 mm. Per ČSN okapový chodník norma — bez geotextilie beton praská do 1-2 let (DPS gap).",
+        "confidence": 0.8,
+        "extraction_method": "ČSN_okapový_chodník_layer_stack + riez_profil",
+        "data_source_hint": "ČSN_okapový_chodník + A103_riez",
+        "extracted_at": "2026-05-27T22:45:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
+        "kros_hint": "693xxx (geotextilie)"
       }
     }
   ]

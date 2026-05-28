@@ -6,9 +6,9 @@
 **Date:** 2026-05-28
 
 ## Counts
-- 171 active items (138 baseline + 12 M-UT vytápění + 21 M-VK venkovní úpravy — minimal scope + okapní chodník complete layer stack)
+- 174 active items (138 baseline + 12 M-UT vytápění + 24 M-VK venkovní úpravy — minimal scope + okapní chodník complete layer stack)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
-- 33 active items added (12 M-UT + 21 M-VK = 14 kept + 7 okapní layers), 5 dropped per user decision, 0 invented
+- 36 active items added (12 M-UT + 24 M-VK = 14 kept + 10 okapní layers), 5 dropped per user decision, 0 invented
 - 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
 
 ## Per-phase distribution
@@ -24,7 +24,7 @@
 - FÁZE 9.5: 12 items
 - FÁZE 10: 2 items
 - FÁZE 11: 9 items
-- FÁZE 12: 21 items
+- FÁZE 12: 24 items
 
 ## Quality flags propagated (from items.json)
 - `_vyjasneni_ref` open ABMV: 12 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_24, ABMV_3, ABMV_31, ABMV_32

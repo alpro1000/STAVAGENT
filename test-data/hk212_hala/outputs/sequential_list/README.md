@@ -1,11 +1,11 @@
 # HK212 Sequential Construction List
 
-171 active položek v logickém pořadí výstavby (fáze 1–12, vč. 9.5 TZB Vytápění + 12 Venkovní úpravy). 5 items dropped per user decision 2026-05-27 (M-VK-013..017 asfalt/parkoviště) preserved s _status_flag. Okapní chodník complete 7-layer stack (M-VK-020..026).
+174 active položek v logickém pořadí výstavby (fáze 1–12, vč. 9.5 TZB Vytápění + 12 Venkovní úpravy). 5 items dropped per user decision 2026-05-27 (M-VK-013..017 asfalt/parkoviště) preserved s _status_flag. Okapní chodník complete 7-layer stack (M-VK-020..026).
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (176 entries, 171 active)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (179 entries, 174 active)
 **Branch:** `claude/hk212-vk-final-minimal` (12 M-UT items added per investor scope change 2026-05-26)
 **Generated:** 2026-05-28
 
@@ -22,7 +22,7 @@
 9.5. TZB INSTALACE — VYTÁPĚNÍ (M-UT, 12 items, DPS D.1.4.2)
 10. OSTATNÍ + PŘESUN HMOT
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
-12. VENKOVNÍ ÚPRAVY (SO-13, M-VK, 21 active items — minimal scope + okapní chodník complete 7-layer stack, DPS 06/2026)
+12. VENKOVNÍ ÚPRAVY (SO-13, M-VK, 24 active items — minimal scope + okapní chodník complete 10-layer stack, DPS 06/2026)
 
 ## Soubory
 - `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1, includes Vzorec / Zdroj výměry column
