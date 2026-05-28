@@ -453,6 +453,37 @@
         "pattern_15_compliance": "4 new okapní items: work-first, KROS hint only, Stage 3 catalog mapping separately.",
         "pattern_36_compliance": "A101 + A103 DPS 2026-05 used (DSP 2025-10 in _superseded/ from prior PR #1235).",
         "pattern_37_compliance": "git fetch + git ls-remote claude/* executed at session start; no parallel session on M-VK scope confirmed."
+      },
+      {
+        "date": "2026-05-27",
+        "change": "Okapní chodník complete 6-layer technology stack — add 3 podkladní vrstvy items (M-VK-024 zemní pláň, M-VK-025 hutnění štěrku, M-VK-026 bednění), de-bundle M-VK-021 to KARI-only. End state 7 atomic items.",
+        "reason": "Řez A103 detail shows only concrete profile; podkladní vrstvy (zemní pláň, hutnění, štěrk hutnění, bednění) NOT drawn — typical DPS gap. Completed per ČSN 73 6126 + ČSN EN 13670 standard CR technology. Defensible standard zhotovitele scope.",
+        "previous_count": 173,
+        "new_count": 176,
+        "items_added": [
+          "M-VK-024",
+          "M-VK-025",
+          "M-VK-026"
+        ],
+        "items_modified": [
+          "M-VK-021 (de-bundle → KARI only, no quantity change)"
+        ],
+        "items_removed": [],
+        "okapni_chodnik_complete_stack": [
+          "1. M-VK-024 Úprava zemní pláně + hutnění (56 m²)",
+          "2. M-VK-022 Drcený štěrk ŠD 32/63 podklad (8.4 m³)",
+          "3. M-VK-025 Hutnění štěrkového podkladu (56 m²)",
+          "4. M-VK-026 Bednění boční vnější hrana (16 m²)",
+          "5. M-VK-021 Výztuž KARI síť Q188 (56 m²)",
+          "6. M-VK-020 Beton C25/30 XF3 (11.2 m³)",
+          "7. M-VK-023 Dilatační lišty (20 m)"
+        ],
+        "abmvs_added": [
+          "ABMV_32"
+        ],
+        "pattern_14_compliance": "M-VK-021 de-bundle has _analytical_journey entry",
+        "pattern_15_compliance": "3 new items work-first, _kros_hint only",
+        "dps_gap_note": "Layer stack standard per ČSN — řez A103 only showed beton profile. Material + thicknesses pending projektant Volka confirm (ABMV_32)."
       }
     ],
     "total_items_actual": 150
@@ -12909,7 +12940,7 @@
       "id": "M-VK-021",
       "kapitola": "M-VK",
       "SO": "SO-13",
-      "popis": "Výztuž KARI síť Q188 + boční bednění + dilatační lišty — okapní chodník",
+      "popis": "Výztuž KARI síť Q188 (150/150/6 mm) — okapní chodník",
       "mj": "m²",
       "mnozstvi": 56.0,
       "urs_code": null,
@@ -12918,7 +12949,7 @@
       "urs_match_score": 0.0,
       "skladba_ref": null,
       "source": "Řezy A103 detail screenshots 2026-05-27 + user měření obvodu A101 + user decision 2026-05-27 (minimal scope override)",
-      "raw_description": "KARI Q188 + bednění okapního chodníku",
+      "raw_description": "KARI Q188 výztuž okapního chodníku",
       "confidence": 0.8,
       "subdodavatel_chapter": "venkovni_upravy",
       "_vyjasneni_ref": [
@@ -12930,7 +12961,7 @@
       "_qty_formula": "80.0 × 0.7 = 56.00 m² (1:1 s plochou chodníku)",
       "_export_wrapper_hint": null,
       "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
-      "_kros_hint": "631xxx (KARI síť) + 564xxx (bednění)",
+      "_kros_hint": "631xxx (KARI síť)",
       "_scope_basis": "User decision 2026-05-27 minimal scope — beton okapní chodník per řezy graphical authority. Material verification pending — viz ABMV_31.",
       "audit_trail": {
         "lokalizace": "venkovní úpravy areálu — perimetr haly (mimo 4 vstupy) · SO-13",
@@ -12998,8 +13029,25 @@
         "extracted_at": "2026-05-27T20:30:00+00:00",
         "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
         "kros_hint": "631xxx (KARI síť) + 564xxx (bednění)",
-        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
-      }
+        "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice.",
+        "de_bundle_note": "Mnozstvi 56 m² unchanged (KARI plocha = chodník plocha). Bednění split to M-VK-026 (16 m²). Dilatace remains M-VK-023 (20 m). No double-count: KARI / bednění / dilatace now 3 distinct items."
+      },
+      "_analytical_journey": [
+        {
+          "timestamp": "2026-05-27T22:00:00+00:00",
+          "phase": "de_bundle_complete_layer_stack",
+          "previous_state": {
+            "popis": "Výztuž KARI síť Q188 + boční bednění + dilatační lišty — okapní chodník",
+            "kros_hint": "631xxx + 564xxx"
+          },
+          "current_state": {
+            "popis": "Výztuž KARI síť Q188 (150/150/6 mm) — okapní chodník",
+            "kros_hint": "631xxx (KARI síť)"
+          },
+          "source": "Complete 6-layer stack task 2026-05-27 — bednění split to M-VK-026 (separate atomic item), dilatace already at M-VK-023. M-VK-021 now KARI-only to avoid double-count in layered stack.",
+          "correction_type": "de_bundle_no_quantity_change"
+        }
+      ]
     },
     {
       "id": "M-VK-022",
@@ -13191,6 +13239,244 @@
         "kapitola_decision": "M-VK okapní chodník (final scope per user decision 2026-05-27 — minimal scope per documentation conflicts)",
         "kros_hint": "938xxx (dilatační spáry + těsnění)",
         "scope_basis": "User decision 2026-05-27: minimal scope — beton okapní chodník (per řezy graphical authority) + 4 rampy (per A101 graphical authority) + liniový žlab (existing). TZ ARS B p09 dlažba 1.5 m spec explicitly overridden per user choice."
+      }
+    },
+    {
+      "id": "M-VK-024",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Úprava zemní pláně + hutnění pod okapní chodník (Edef2 ≥ 30 MPa)",
+      "mj": "m²",
+      "mnozstvi": 56.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řez A103 detail + standard CR technologie ČSN 73 6126 (podkladní vrstvy doplněny — DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "zemní pláň + hutnění podloží okapního chodníku",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_profil+ČSN_73_6126+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 = 56.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "181xxx (úprava pláně) / 171xxx (hutnění)",
+      "_scope_basis": "DPS výkres incomplete — beton element zakreslen v řezu A103, podkladní vrstvy + hutnění + bednění standard zhotovitele dle ČSN 73 6126 + ČSN EN 13670. Defensible standard scope. Verify s projektant Volka — ABMV_32.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 = 56.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire",
+            "value": 0.7,
+            "unit": "m"
+          },
+          {
+            "label": "plocha",
+            "value": 56.0,
+            "unit": "m²"
+          },
+          {
+            "label": "pozadovane_Edef2",
+            "value": "≥ 30 MPa (zemní pláň)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil okapního chodníku zakreslen; podkladní vrstvy NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN EN 13670",
+            "section": "Provádění betonových konstrukcí"
+          }
+        ],
+        "poznamka": "Layer 1 (zdola). Srovnání + hutnění zemní pláně před položením štěrkového podkladu. Sklon 2 % od fasády (kopíruje finální sklon chodníku). Per ČSN 73 6126 — příprava podloží pod podkladní vrstvy. DPS gap — řez A103 ukazuje pouze beton, zemní pláň doplněna per norma.",
+        "confidence": 0.8,
+        "extraction_method": "riez_profil + ČSN_standard_layer_stack",
+        "data_source_hint": "A103_riez+ČSN_73_6126",
+        "extracted_at": "2026-05-27T22:00:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
+        "kros_hint": "181xxx (úprava pláně) / 171xxx (hutnění)"
+      }
+    },
+    {
+      "id": "M-VK-025",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Hutnění štěrkového podkladu okapního chodníku vibrodeskou (Edef2 ≥ 45 MPa)",
+      "mj": "m²",
+      "mnozstvi": 56.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řez A103 detail + standard CR technologie ČSN 73 6126 (podkladní vrstvy doplněny — DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "hutnění štěrku ŠD vibrodeska",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_profil+ČSN_73_6126+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.7 = 56.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "171xxx (hutnění vrstev)",
+      "_scope_basis": "DPS výkres incomplete — beton element zakreslen v řezu A103, podkladní vrstvy + hutnění + bednění standard zhotovitele dle ČSN 73 6126 + ČSN EN 13670. Defensible standard scope. Verify s projektant Volka — ABMV_32.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.7 = 56.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "plocha",
+            "value": 56.0,
+            "unit": "m²"
+          },
+          {
+            "label": "metoda",
+            "value": "vibrační deska",
+            "unit": ""
+          },
+          {
+            "label": "pozadovane_Edef2",
+            "value": "≥ 45 MPa (štěrk pod beton)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil okapního chodníku zakreslen; podkladní vrstvy NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN EN 13670",
+            "section": "Provádění betonových konstrukcí"
+          }
+        ],
+        "poznamka": "Layer 3 (zdola). Hutnění štěrkové vrstvy ŠD 32/63 (M-VK-022) vibrodeskou na Edef2 ≥ 45 MPa před betonáží. Per ČSN 73 6126. Samostatná položka — práce hutnění oddělena od dodávky štěrku (M-VK-022 = materiál + rozprostření; M-VK-025 = hutnění).",
+        "confidence": 0.8,
+        "extraction_method": "riez_profil + ČSN_standard_layer_stack",
+        "data_source_hint": "A103_riez+ČSN_73_6126",
+        "extracted_at": "2026-05-27T22:00:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
+        "kros_hint": "171xxx (hutnění vrstev)"
+      }
+    },
+    {
+      "id": "M-VK-026",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Bednění boční vnější hrana okapního chodníku v 200 mm (vnitřní hrana = stěna haly)",
+      "mj": "m²",
+      "mnozstvi": 16.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "Řez A103 detail + standard CR technologie ČSN 73 6126 (podkladní vrstvy doplněny — DPS gap) + user měření obvodu 79.65 m",
+      "raw_description": "boční bednění okapní chodník vnější hrana",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_32"
+      ],
+      "_status_flag": null,
+      "_data_source": "A103_riez_profil+ČSN_73_6126+A101_obvod",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 0.2 m výška = 16.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "564xxx (bednění komunikace)",
+      "_scope_basis": "DPS výkres incomplete — beton element zakreslen v řezu A103, podkladní vrstvy + hutnění + bednění standard zhotovitele dle ČSN 73 6126 + ČSN EN 13670. Defensible standard scope. Verify s projektant Volka — ABMV_32.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — okapní chodník po obvodu haly (mimo 4 vstupy) · SO-13",
+        "formula": "80.0 × 0.2 = 16.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "obvod_mimo_vstupy",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "vyska_bedneni",
+            "value": 0.2,
+            "unit": "m"
+          },
+          {
+            "label": "plocha_bedneni",
+            "value": 16.0,
+            "unit": "m²"
+          },
+          {
+            "label": "pozn_vnitrni_hrana",
+            "value": "stěna haly = vnitřní bednění (bez položky)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "A103 řez A-B detail",
+            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
+            "stage": "DPS 06/2026",
+            "evidence": "Beton profil okapního chodníku zakreslen; podkladní vrstvy NE (DPS gap)"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6126",
+            "section": "Stavba vozovek — podkladní vrstvy"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN EN 13670",
+            "section": "Provádění betonových konstrukcí"
+          }
+        ],
+        "poznamka": "Layer 4. POUZE vnější boční bednění (výška 200 mm) — vnitřní hrana okapního chodníku přiléhá ke stěně haly, která slouží jako vnitřní bednění. De-bundled z dřívější M-VK-021 (kde bylo bednění bundled s KARI). Plocha = obvod × výška betonu. Včetně dilatačních lišt (viz M-VK-023 pro vlastní dilatace).",
+        "confidence": 0.8,
+        "extraction_method": "riez_profil + ČSN_standard_layer_stack",
+        "data_source_hint": "A103_riez+ČSN_73_6126",
+        "extracted_at": "2026-05-27T22:00:00+00:00",
+        "kapitola_decision": "M-VK okapní chodník complete stack — podkladní vrstvy doplněny per inženýrská norma ČSN 73 6126 (řez A103 ukazoval pouze beton profil — DPS gap)",
+        "kros_hint": "564xxx (bednění komunikace)"
       }
     }
   ]

@@ -3,12 +3,12 @@
 **Status:** generated, validated, ready for manual KROS/URS + price assignment.
 
 **Branch:** `claude/hk212-vk-final-minimal`
-**Date:** 2026-05-27
+**Date:** 2026-05-28
 
 ## Counts
-- 168 active items (138 baseline + 12 M-UT vytápění + 18 M-VK venkovní úpravy minimal scope per user decision 2026-05-27)
+- 171 active items (138 baseline + 12 M-UT vytápění + 21 M-VK venkovní úpravy — minimal scope + okapní chodník complete layer stack)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
-- 30 active items added (12 M-UT + 18 M-VK = 14 kept + 4 new), 5 dropped per user decision, 0 invented
+- 33 active items added (12 M-UT + 21 M-VK = 14 kept + 7 okapní layers), 5 dropped per user decision, 0 invented
 - 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
 
 ## Per-phase distribution
@@ -24,10 +24,10 @@
 - FÁZE 9.5: 12 items
 - FÁZE 10: 2 items
 - FÁZE 11: 9 items
-- FÁZE 12: 18 items
+- FÁZE 12: 21 items
 
 ## Quality flags propagated (from items.json)
-- `_vyjasneni_ref` open ABMV: 11 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_24, ABMV_3, ABMV_31
+- `_vyjasneni_ref` open ABMV: 12 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_24, ABMV_3, ABMV_31, ABMV_32
 - `_review_qty`: 1 → PSV-OPL-005
 - `_review_concrete_class`: 1 → HSV-2-013
 - confidence < 0.70: 81 items (yellow-tinted v XLSX)
