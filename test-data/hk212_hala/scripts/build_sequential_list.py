@@ -306,33 +306,51 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
     ),
     (
         12,
-        "VENKOVNÍ ÚPRAVY (SO-13) — minimal scope per user decision 2026-05-27",
+        "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
         [
+            # --- ZTI vnější sítě (VV) — early phase, coordinate s výkopy ---
             (
-                "Externí přípojky — výkop + potrubí (paralelně se ZS)",
-                ["M-VK-005", "M-VK-006", "M-VK-008", "M-VK-007"],
+                "ZTI vnější — kanalizace čerpaná (potrubí + přečerpávací stanice + zemní práce)",
+                [f"M-ZTI-{n:03d}" for n in range(32, 47)],  # C section
             ),
-            ("Přeložka vodovodního řadu (PODMÍNĚNÁ — pending ABMV_23)", ["M-VK-009"]),
-            ("Retenční nádrž 30 m³ prefab betonová (pending ABMV_24)", ["M-VK-011"]),
-            ("Hydrant podzemní DN80 + napojení", ["M-VK-010"]),
-            ("Drcený štěrk podklad ramp", ["M-VK-003"]),
             (
-                "Okapní chodník — complete 10-layer stack 0.7 m × 80 m po obvodu "
-                "haly (výkop → odvoz → pláň → geotextilie → štěrk → hutnění → "
-                "bednění → výztuž → beton → dilatace, pending ABMV_31 + ABMV_32)",
+                "ZTI vnější — vodovod (PE100 + armatury + zemní práce)",
+                [f"M-ZTI-{n:03d}" for n in range(47, 57)],  # D section
+            ),
+            # --- Domovní kanalizace — šachty + retenční/zasakovací + potrubí ---
+            (
+                "ZTI domovní kanalizace — potrubí PP-KG/HT + revizní šachty + "
+                "retenční nádoba 15 m³ + zasakovací těleso (VV K1, pending ABMV_33)",
+                [f"M-ZTI-{n:03d}" for n in range(16, 32)],  # B section
+            ),
+            # --- Domovní vodovod — potrubí + armatury + TUV + požární ---
+            (
+                "ZTI domovní vodovod — potrubí + armatury + TUV + požární vodovod "
+                "+ hydrant D19/30 (VV DV)",
+                [f"M-ZTI-{n:03d}" for n in range(1, 16)],  # A section
+            ),
+            # --- Přeložka vodovodu (podmíněná) ---
+            ("Přeložka vodovodního řadu (PODMÍNĚNÁ — pending ABMV_23)", ["M-VK-009"]),
+            ("NN chránička HDPE — stavební příprava (silové v elektro VV)", ["M-VK-008"]),
+            # --- Okapník beton 0.7 m ---
+            (
+                "Okapní chodník beton — 10-layer stack 0.7 m × 80 m (výkop → odvoz "
+                "→ pláň → geotextilie → štěrk → hutnění → bednění → výztuž → beton "
+                "→ dilatace, pending ABMV_31/32/34)",
                 [
-                    "M-VK-027",  # 1. výkop rýhy 400 mm
-                    "M-VK-028",  # 2. odvoz vykopané zeminy
-                    "M-VK-024",  # 3. úprava zemní pláně + hutnění
-                    "M-VK-029",  # 4. geotextilie 300 g/m² separační
-                    "M-VK-022",  # 5. drcený štěrk ŠD 32/63 podklad
-                    "M-VK-025",  # 6. hutnění štěrkového podkladu
-                    "M-VK-026",  # 7. bednění boční vnější hrana
-                    "M-VK-021",  # 8. výztuž KARI Q188
-                    "M-VK-020",  # 9. beton C25/30 XF3
-                    "M-VK-023",  # 10. dilatační lišty + těsnění
+                    "M-VK-027", "M-VK-028", "M-VK-024", "M-VK-029", "M-VK-022",
+                    "M-VK-025", "M-VK-026", "M-VK-021", "M-VK-020", "M-VK-023",
                 ],
             ),
+            # --- Dlažba 1.5 m chodník (ADJACENT okapník = 2.2 m) ---
+            (
+                "Zámková dlažba chodník 1.5 m — ČSN 73 6131 stack (výkop → odvoz → "
+                "pláň → geotextilie → štěrk → drť 4/8 → obrubník → lože → dlažba → "
+                "spáry; TZ ARS B p09, pending ABMV_34)",
+                [f"M-VK-{n:03d}" for n in range(30, 40)],
+            ),
+            # --- Rampy + žlab + vegetace ---
+            ("Drcený štěrk podklad ramp", ["M-VK-003"]),
             (
                 "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
                 ["M-VK-002", "M-VK-001", "M-VK-004"],
@@ -346,15 +364,17 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
 
 
 def load_items() -> tuple[dict, dict]:
-    """Load items.json; filter out items dropped per user decisions.
+    """Load items.json; filter out items dropped/superseded per user decisions.
 
-    Items with `_status_flag` starting with "dropped" are preserved in JSON
-    (Pattern 14 forward journey) but excluded from sequential list active rows.
+    Items with `_status_flag` starting with "dropped" or "superseded" are
+    preserved in JSON (Pattern 14 forward journey) but excluded from the
+    active sequential list rows.
     """
     raw = json.loads(SRC.read_text(encoding="utf-8"))
+    inactive = ("dropped", "superseded")
     items_by_id = {
         it["id"]: it for it in raw["items"]
-        if not str(it.get("_status_flag", "")).startswith("dropped")
+        if not str(it.get("_status_flag", "")).startswith(inactive)
     }
     return raw, items_by_id
 
@@ -393,8 +413,8 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
     missing = set(items_by_id) - seen
     if missing:
         raise SystemExit(f"FATAL: {len(missing)} items.json IDs missing from SEQUENCE: {sorted(missing)}")
-    if len(out) != 174:
-        raise SystemExit(f"FATAL: expected 174 ordered rows, got {len(out)}")
+    if len(out) != 235:
+        raise SystemExit(f"FATAL: expected 235 ordered rows, got {len(out)}")
     return out
 
 
@@ -620,12 +640,12 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
     review_conc = [it["id"] for it in items_by_id.values() if it.get("_review_concrete_class")]
     body = f"""# HK212 Sequential Construction List
 
-174 active položek v logickém pořadí výstavby (fáze 1–12, vč. 9.5 TZB Vytápění + 12 Venkovní úpravy). 5 items dropped per user decision 2026-05-27 (M-VK-013..017 asfalt/parkoviště) preserved s _status_flag. Okapní chodník complete 7-layer stack (M-VK-020..026).
+235 active položek v logickém pořadí výstavby. Fáze 12 = Venkovní úpravy (SO-13) + ZTI (SO-14, 56 items z projektantského VV). 5 items dropped (M-VK-013..017 asfalt) + 5 superseded by VV (M-VK-005/006/007/010/011) preserved s _status_flag. Okapní chodník 10-layer + zámková dlažba 1.5 m 10-layer.
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (179 entries, 174 active)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (245 entries, 235 active)
 **Branch:** `claude/hk212-vk-final-minimal` (12 M-UT items added per investor scope change 2026-05-26)
 **Generated:** {date.today().isoformat()}
 
@@ -693,7 +713,7 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 **Date:** {date.today().isoformat()}
 
 ## Counts
-- 174 active items (138 baseline + 12 M-UT vytápění + 24 M-VK venkovní úpravy — minimal scope + okapní chodník complete layer stack)
+- 235 active items (138 baseline + 12 M-UT + 34 M-VK venkovní úpravy + 56 M-ZTI z projektantského VV; 10 inactive: 5 dropped + 5 superseded)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
 - 36 active items added (12 M-UT + 24 M-VK = 14 kept + 10 okapní layers), 5 dropped per user decision, 0 invented
 - 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
@@ -747,9 +767,9 @@ def main() -> None:
     rows = build_ordered_rows(items_by_id)
 
     # Validation
-    assert len(rows) == 174, len(rows)
+    assert len(rows) == 235, len(rows)
     ids = [r["id"] for r in rows]
-    assert len(set(ids)) == 174, "duplicate IDs in output"
+    assert len(set(ids)) == 235, "duplicate IDs in output"
     # NOTE: items.json contains 173 entries but 5 are dropped per user decision
     # 2026-05-27 (_status_flag=dropped_per_user_decision_2026-05-27).
     # Sequential list active = 168 (= 173 entries - 5 dropped).
@@ -762,7 +782,7 @@ def main() -> None:
     empty_vzorec = [r["id"] for r in rows if not r["vzorec"]]
     assert not empty_vzorec, f"empty vzorec for: {empty_vzorec}"
     fallback_vzorec = [r["id"] for r in rows if r["vzorec"].startswith("(zdroj nenalezen")]
-    print(f"  vzorec coverage: {174 - len(fallback_vzorec)}/174 with formula, {len(fallback_vzorec)} fallback")
+    print(f"  vzorec coverage: {235 - len(fallback_vzorec)}/235 with formula, {len(fallback_vzorec)} fallback")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_xlsx(rows, OUT_DIR / "hk212_sequential_list.xlsx")
@@ -771,7 +791,7 @@ def main() -> None:
     write_readme(rows, items_by_id, OUT_DIR / "README.md")
     write_handoff(rows, items_by_id, OUT_DIR / "HANDOFF_SEQUENTIAL.md")
 
-    print(f"OK — 174 active items in 13 phases (vč. 9.5 + 12 Venkovní + okapní complete 10-layer stack) written to {OUT_DIR}")
+    print(f"OK — 235 active items in 13 phases (vč. 9.5 + 12 Venkovní + ZTI VV + dlažba) written to {OUT_DIR}")
     for p in sorted({r["_phase"] for r in rows}):
         n = sum(1 for r in rows if r["_phase"] == p)
         print(f"  FÁZE {p}: {n}")

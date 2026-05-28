@@ -512,6 +512,99 @@
         ],
         "pattern_15_compliance": "3 new items work-first, _kros_hint only",
         "dps_gap_note": "Výkop + geotextilie standard per ČSN okapový chodník — DPS řez A103 only showed beton profile. Covered by existing ABMV_32 (podkladní vrstvy verification — items_affected extended)."
+      },
+      {
+        "date": "2026-05-27",
+        "change": "VV ZTI parse → M-ZTI kapitola (56 items, SO-14) + zámková dlažba 1.5 m chodník (10 items, M-VK-030..039) + supersede 5 guessed M-VK items per projektant VV authoritative.",
+        "reason": "Projektantský VV (inputs/tz/VV_Hradec Králové.pdf) authoritative (confidence 0.95) — nahrazuje guessed kanalizace/vodovod/šachty/hydrant/retenční items. Dlažba 1.5 m per TZ ARS B p09 + user decision 2026-05-27 (dříve dropped, nyní IN bid). Všechny skladby norm-verified (outputs/norm_verification_okapnik_dlazba.md).",
+        "previous_count": 179,
+        "new_count": 245,
+        "items_added_m_zti": [
+          "M-ZTI-001",
+          "M-ZTI-002",
+          "M-ZTI-003",
+          "M-ZTI-004",
+          "M-ZTI-005",
+          "M-ZTI-006",
+          "M-ZTI-007",
+          "M-ZTI-008",
+          "M-ZTI-009",
+          "M-ZTI-010",
+          "M-ZTI-011",
+          "M-ZTI-012",
+          "M-ZTI-013",
+          "M-ZTI-014",
+          "M-ZTI-015",
+          "M-ZTI-016",
+          "M-ZTI-017",
+          "M-ZTI-018",
+          "M-ZTI-019",
+          "M-ZTI-020",
+          "M-ZTI-021",
+          "M-ZTI-022",
+          "M-ZTI-023",
+          "M-ZTI-024",
+          "M-ZTI-025",
+          "M-ZTI-026",
+          "M-ZTI-027",
+          "M-ZTI-028",
+          "M-ZTI-029",
+          "M-ZTI-030",
+          "M-ZTI-031",
+          "M-ZTI-032",
+          "M-ZTI-033",
+          "M-ZTI-034",
+          "M-ZTI-035",
+          "M-ZTI-036",
+          "M-ZTI-037",
+          "M-ZTI-038",
+          "M-ZTI-039",
+          "M-ZTI-040",
+          "M-ZTI-041",
+          "M-ZTI-042",
+          "M-ZTI-043",
+          "M-ZTI-044",
+          "M-ZTI-045",
+          "M-ZTI-046",
+          "M-ZTI-047",
+          "M-ZTI-048",
+          "M-ZTI-049",
+          "M-ZTI-050",
+          "M-ZTI-051",
+          "M-ZTI-052",
+          "M-ZTI-053",
+          "M-ZTI-054",
+          "M-ZTI-055",
+          "M-ZTI-056"
+        ],
+        "items_added_dlazba": [
+          "M-VK-030",
+          "M-VK-031",
+          "M-VK-032",
+          "M-VK-033",
+          "M-VK-034",
+          "M-VK-035",
+          "M-VK-036",
+          "M-VK-037",
+          "M-VK-038",
+          "M-VK-039"
+        ],
+        "items_superseded": [
+          "M-VK-005",
+          "M-VK-006",
+          "M-VK-007",
+          "M-VK-010",
+          "M-VK-011"
+        ],
+        "abmvs_added": [
+          "ABMV_33",
+          "ABMV_34"
+        ],
+        "retencni_discrepancy": "Guessed M-VK-011 = 30 m³ (6.15×2.75×2.0). VV K1.14 = retenční 15 m³ (⌀3.1×2.0) + K1.13 zasakovací 2 m³. VV authoritative → ABMV_33.",
+        "norm_verification": "outputs/norm_verification_okapnik_dlazba.md (all skladby compliant)",
+        "pattern_14_compliance": "5 superseded items have _analytical_journey + _superseded_by link",
+        "pattern_15_compliance": "VV codes preserved as _projektant_code; KROS mapping Stage 3 separate",
+        "projektant_codes_preserved": "DV1.1..DV7.5, K1.2..K1.15, K2.2-K2.4, P1.x, P.2.x in _projektant_code"
       }
     ],
     "total_items_actual": 150
@@ -11630,7 +11723,7 @@
       "confidence": 0.8,
       "subdodavatel_chapter": "venkovni_upravy",
       "_vyjasneni_ref": [],
-      "_status_flag": null,
+      "_status_flag": "superseded_by_VV_2026-05-27",
       "_data_source": "C3_DPS+A101_DPS+A103_DPS",
       "_completeness": 1.0,
       "_qty_formula": "~40 m (odhad z C.3 trasy od haly k retenční nádrži/napojení)",
@@ -11686,7 +11779,26 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "871xxx (kanalizace — potrubí)",
         "cross_dedup_note": "HSV-1-012 pokrývá pomocné výkopy pro novou areálovou kanalizaci DN200 (m³ výkop labor). Stage 3 verify NO double-count of výkop m³ — M-VK-005 mnozstvi = délka potrubí + materiál + montáž."
-      }
+      },
+      "_superseded_by": "VV K1.6 DN125 55m + K1.7 DN160 30m + K1.8 DN200 9m (M-ZTI dešťová kanalizace přesné DN+metry)",
+      "_analytical_journey": [
+        {
+          "timestamp": "2026-05-27T23:30:00+00:00",
+          "phase": "superseded_by_projektant_VV",
+          "previous_state": {
+            "mnozstvi": 40.0,
+            "mj": "m",
+            "confidence": 0.8,
+            "active": true
+          },
+          "current_state": {
+            "_status_flag": "superseded_by_VV_2026-05-27",
+            "active": false
+          },
+          "source": "VV projektantský výkaz (inputs/tz/VV_Hradec Králové.pdf) authoritative (conf 0.95) supersedes guessed item. Replacement: VV K1.6 DN125 55m + K1.7 DN160 30m + K1.8 DN200 9m (M-ZTI dešťová kanalizace přesné DN+metry)",
+          "correction_type": "guessed_superseded_by_authoritative_VV"
+        }
+      ]
     },
     {
       "id": "M-VK-006",
@@ -11705,7 +11817,7 @@
       "confidence": 0.8,
       "subdodavatel_chapter": "venkovni_upravy",
       "_vyjasneni_ref": [],
-      "_status_flag": "precision_pending_internal_zti_layout",
+      "_status_flag": "superseded_by_VV_2026-05-27",
       "_data_source": "C3_DPS+A101_DPS+A103_DPS",
       "_completeness": 1.0,
       "_qty_formula": "~30 m (odhad z C.3, od haly k bodu napojení na areálovou)",
@@ -11756,7 +11868,26 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "871xxx (kanalizace — potrubí)",
         "cross_dedup_note": "HSV-1-012 pomocné výkopy DN200 — výkop pro splaškovou DN150 může sdílet trench s dešťovou. Stage 3 verify uložení do společné rýhy."
-      }
+      },
+      "_superseded_by": "VV K1.2/K1.3 PP-HT + K1.5 PP-KG DN110 (M-ZTI splašková kanalizace přesné)",
+      "_analytical_journey": [
+        {
+          "timestamp": "2026-05-27T23:30:00+00:00",
+          "phase": "superseded_by_projektant_VV",
+          "previous_state": {
+            "mnozstvi": 30.0,
+            "mj": "m",
+            "confidence": 0.8,
+            "active": true
+          },
+          "current_state": {
+            "_status_flag": "superseded_by_VV_2026-05-27",
+            "active": false
+          },
+          "source": "VV projektantský výkaz (inputs/tz/VV_Hradec Králové.pdf) authoritative (conf 0.95) supersedes guessed item. Replacement: VV K1.2/K1.3 PP-HT + K1.5 PP-KG DN110 (M-ZTI splašková kanalizace přesné)",
+          "correction_type": "guessed_superseded_by_authoritative_VV"
+        }
+      ]
     },
     {
       "id": "M-VK-007",
@@ -11775,7 +11906,7 @@
       "confidence": 0.8,
       "subdodavatel_chapter": "venkovni_upravy",
       "_vyjasneni_ref": [],
-      "_status_flag": "precision_pending_load_class",
+      "_status_flag": "superseded_by_VV_2026-05-27",
       "_data_source": "C3_DPS+A101_DPS+A103_DPS",
       "_completeness": 1.0,
       "_qty_formula": "3 ks (per C.3 — revizní šachta na zlomu trasy, šachta na DK + DKS)",
@@ -11830,7 +11961,26 @@
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "894xxx (šachty + skruže) + 899xxx (poklop)"
-      }
+      },
+      "_superseded_by": "VV K1.9..K1.15 — 7 specifických šachet (Dš, Dš1, Dš2 filtrační, Rš2, Rš3, Dš2) místo guessed 3 generic",
+      "_analytical_journey": [
+        {
+          "timestamp": "2026-05-27T23:30:00+00:00",
+          "phase": "superseded_by_projektant_VV",
+          "previous_state": {
+            "mnozstvi": 3.0,
+            "mj": "ks",
+            "confidence": 0.8,
+            "active": true
+          },
+          "current_state": {
+            "_status_flag": "superseded_by_VV_2026-05-27",
+            "active": false
+          },
+          "source": "VV projektantský výkaz (inputs/tz/VV_Hradec Králové.pdf) authoritative (conf 0.95) supersedes guessed item. Replacement: VV K1.9..K1.15 — 7 specifických šachet (Dš, Dš1, Dš2 filtrační, Rš2, Rš3, Dš2) místo guessed 3 generic",
+          "correction_type": "guessed_superseded_by_authoritative_VV"
+        }
+      ]
     },
     {
       "id": "M-VK-008",
@@ -12011,7 +12161,7 @@
       "confidence": 0.8,
       "subdodavatel_chapter": "venkovni_upravy",
       "_vyjasneni_ref": [],
-      "_status_flag": null,
+      "_status_flag": "superseded_by_VV_2026-05-27",
       "_data_source": "C3_DPS+A101_DPS+A103_DPS",
       "_completeness": 1.0,
       "_qty_formula": "1 ks (per C.3 značení 'HYDRANT (Podz.)')",
@@ -12061,7 +12211,26 @@
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "892xxx (armatury vodovodní — hydrant)"
-      }
+      },
+      "_superseded_by": "VV DV7.1-7.5 požární vodovod + hydrant D19/30 (M-ZTI A požární)",
+      "_analytical_journey": [
+        {
+          "timestamp": "2026-05-27T23:30:00+00:00",
+          "phase": "superseded_by_projektant_VV",
+          "previous_state": {
+            "mnozstvi": 1.0,
+            "mj": "ks",
+            "confidence": 0.8,
+            "active": true
+          },
+          "current_state": {
+            "_status_flag": "superseded_by_VV_2026-05-27",
+            "active": false
+          },
+          "source": "VV projektantský výkaz (inputs/tz/VV_Hradec Králové.pdf) authoritative (conf 0.95) supersedes guessed item. Replacement: VV DV7.1-7.5 požární vodovod + hydrant D19/30 (M-ZTI A požární)",
+          "correction_type": "guessed_superseded_by_authoritative_VV"
+        }
+      ]
     },
     {
       "id": "M-VK-011",
@@ -12082,7 +12251,7 @@
       "_vyjasneni_ref": [
         "ABMV_24"
       ],
-      "_status_flag": null,
+      "_status_flag": "superseded_by_VV_2026-05-27",
       "_data_source": "C3_DPS+A101_DPS+A103_DPS",
       "_completeness": 1.0,
       "_qty_formula": "1 ks (per C.3 explicit: 'RETENČNÍ NÁDRŽ 30m³ — 6.15×2.75×2.0M')",
@@ -12142,7 +12311,26 @@
         "extracted_at": "2026-05-27T00:00:00+00:00",
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "425xxx (nádrže) — stanovit po confirmation typu"
-      }
+      },
+      "_superseded_by": "VV K1.14 retenční nádoba 15 m³ (⌀3.1×2.0) + K1.13 zasakovací těleso 2 m³ — NE 30 m³ guessed",
+      "_analytical_journey": [
+        {
+          "timestamp": "2026-05-27T23:30:00+00:00",
+          "phase": "superseded_by_projektant_VV",
+          "previous_state": {
+            "mnozstvi": 1.0,
+            "mj": "ks",
+            "confidence": 0.85,
+            "active": true
+          },
+          "current_state": {
+            "_status_flag": "superseded_by_VV_2026-05-27",
+            "active": false
+          },
+          "source": "VV projektantský výkaz (inputs/tz/VV_Hradec Králové.pdf) authoritative (conf 0.95) supersedes guessed item. Replacement: VV K1.14 retenční nádoba 15 m³ (⌀3.1×2.0) + K1.13 zasakovací těleso 2 m³ — NE 30 m³ guessed",
+          "correction_type": "guessed_superseded_by_authoritative_VV"
+        }
+      ]
     },
     {
       "id": "M-VK-012",
@@ -13744,6 +13932,4000 @@
         "extracted_at": "2026-05-27T22:45:00+00:00",
         "kapitola_decision": "M-VK okapní chodník complete stack — výkop rýhy + geotextilie doplněny per ČSN okapový chodník norma (DPS gap, řez ukazoval pouze beton profil)",
         "kros_hint": "693xxx (geotextilie)"
+      }
+    },
+    {
+      "id": "M-ZTI-001",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "EVO PP-RCT 16×2,2 + izolace mirelon 9 mm",
+      "mj": "bm",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV1.1: EVO PP-RCT 16×2,2 + izolace mirelon 9 mm",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV1.1 = 2.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV1.1",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV1.1 = 2.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV1.1",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 2.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV1.1"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV1.1 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV1.1"
+      }
+    },
+    {
+      "id": "M-ZTI-002",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "EVO PP-RCT 16×2,2 + izolace mirelon 13 mm",
+      "mj": "bm",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV1.2: EVO PP-RCT 16×2,2 + izolace mirelon 13 mm",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV1.2 = 2.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV1.2",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV1.2 = 2.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV1.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 2.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV1.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV1.2 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV1.2"
+      }
+    },
+    {
+      "id": "M-ZTI-003",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "EVO PP-RCT 20×2,3–50×4,6 + izolace mirelon 9–30 mm",
+      "mj": "bm",
+      "mnozstvi": 8.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV1.3: EVO PP-RCT 20×2,3–50×4,6 + izolace mirelon 9–30 mm",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV1.3 = 8.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV1.3",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV1.3 = 8.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV1.3",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 8.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV1.3"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV1.3 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV1.3"
+      }
+    },
+    {
+      "id": "M-ZTI-004",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Rohový ventil 1/2\" + flexi hadička, připojení zařizovacích předmětů — komplet",
+      "mj": "kus",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV3.1: Rohový ventil 1/2\" + flexi hadička, připojení zařizovacích p",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV3.1 = 2.0 kus (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV3.1",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV3.1 = 2.0 kus",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV3.1",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 2.0,
+            "unit": "kus"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV3.1"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV3.1 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV3.1"
+      }
+    },
+    {
+      "id": "M-ZTI-005",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Kulový kohout DN40 s vypouštěním",
+      "mj": "kus",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV3.2: Kulový kohout DN40 s vypouštěním",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV3.2 = 1.0 kus (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV3.2",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV3.2 = 1.0 kus",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV3.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kus"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV3.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV3.2 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV3.2"
+      }
+    },
+    {
+      "id": "M-ZTI-006",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Podružná vodoměrná sestava dle požadavku provozovatele areálové sítě",
+      "mj": "kus",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV3.3: Podružná vodoměrná sestava dle požadavku provozovatele areál",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV3.3 = 1.0 kus (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV3.3",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV3.3 = 1.0 kus",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV3.3",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kus"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV3.3"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV3.3 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV3.3"
+      }
+    },
+    {
+      "id": "M-ZTI-007",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Stojánková páková umyvadlová směšovací baterie s ramínkem",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV4.1: Stojánková páková umyvadlová směšovací baterie s ramínkem",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV4.1 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV4.1",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV4.1 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV4.1",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV4.1"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV4.1 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV4.1"
+      }
+    },
+    {
+      "id": "M-ZTI-008",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Automatická stanice přípravy TUV vč. jistící armatury — el. tlakově nezávislý zásobník (dodávka VYT, komplet)",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV5.1: Automatická stanice přípravy TUV vč. jistící armatury — el. ",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV5.1 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV5.1",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV5.1 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV5.1",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV5.1"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV5.1 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV5.1"
+      }
+    },
+    {
+      "id": "M-ZTI-009",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Uzavírací ventil DN20",
+      "mj": "ks",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV5.2: Uzavírací ventil DN20",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV5.2 = 2.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV5.2",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV5.2 = 2.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV5.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 2.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV5.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV5.2 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV5.2"
+      }
+    },
+    {
+      "id": "M-ZTI-010",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Umyvadlo dle výběru investora vč. kotvících prvků (komplet)",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV6.1: Umyvadlo dle výběru investora vč. kotvících prvků (komplet)",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV6.1 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV6.1",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV6.1 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV6.1",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV6.1"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV6.1 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV6.1"
+      }
+    },
+    {
+      "id": "M-ZTI-011",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Ocelové pozinkové potrubí DN20 (požární vodovod)",
+      "mj": "bm",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV7.1: Ocelové pozinkové potrubí DN20 (požární vodovod)",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV7.1 = 1.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV7.1",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV7.1 = 1.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV7.1",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV7.1"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV7.1 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV7.1"
+      }
+    },
+    {
+      "id": "M-ZTI-012",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Ocelové pozinkové potrubí DN25 (požární vodovod)",
+      "mj": "bm",
+      "mnozstvi": 5.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV7.2: Ocelové pozinkové potrubí DN25 (požární vodovod)",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV7.2 = 5.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV7.2",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV7.2 = 5.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV7.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 5.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV7.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV7.2 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV7.2"
+      }
+    },
+    {
+      "id": "M-ZTI-013",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Ocelové pozinkové potrubí DN32 (požární vodovod)",
+      "mj": "bm",
+      "mnozstvi": 40.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV7.3: Ocelové pozinkové potrubí DN32 (požární vodovod)",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV7.3 = 40.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV7.3",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV7.3 = 40.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV7.3",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 40.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV7.3"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV7.3 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV7.3"
+      }
+    },
+    {
+      "id": "M-ZTI-014",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Hydrant typu D19/30 dle PBŘ — do výklenku vč. uzavíracího kohoutu + tvarově stálá hadice",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV7.4: Hydrant typu D19/30 dle PBŘ — do výklenku vč. uzavíracího ko",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV7.4 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV7.4",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV7.4 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV7.4",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV7.4"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV7.4 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV7.4"
+      }
+    },
+    {
+      "id": "M-ZTI-015",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Zpětná klapka DN32 EA — oddělovač požárního a spotřebního vodovodu",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní vodovod (DV1-DV7)",
+      "raw_description": "DV7.5: Zpětná klapka DN32 EA — oddělovač požárního a spotřebního vo",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV DV7.5 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "DV7.5",
+      "_pct_addon": "DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní vodovod (DV1-DV7) · SO-14",
+        "formula": "VV DV7.5 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "DV7.5",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "DV7.5"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód DV7.5 preserved. Percentage addon na sekci: DV1.5 kompletace+montáž 15 % + DV1.6 rezerva 10 % + DV3.4 10 % + DV4.2 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "DV7.5"
+      }
+    },
+    {
+      "id": "M-ZTI-016",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Potrubí PP-HT DN50",
+      "mj": "bm",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.2: Potrubí PP-HT DN50",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.2 = 2.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.2",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.2 = 2.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 2.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.2 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.2"
+      }
+    },
+    {
+      "id": "M-ZTI-017",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Potrubí PP-HT DN110",
+      "mj": "bm",
+      "mnozstvi": 5.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.3: Potrubí PP-HT DN110",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.3 = 5.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.3",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.3 = 5.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.3",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 5.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.3"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.3 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.3"
+      }
+    },
+    {
+      "id": "M-ZTI-018",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Kanalizační potrubí PP-KG DN110 vč. tvarovek",
+      "mj": "bm",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.5: Kanalizační potrubí PP-KG DN110 vč. tvarovek",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.5 = 1.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.5",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.5 = 1.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.5",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.5"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.5 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.5"
+      }
+    },
+    {
+      "id": "M-ZTI-019",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Kanalizační potrubí PP-KG DN125 vč. tvarovek",
+      "mj": "bm",
+      "mnozstvi": 55.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.6: Kanalizační potrubí PP-KG DN125 vč. tvarovek",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.6 = 55.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.6",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.6 = 55.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.6",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 55.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.6"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.6 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.6"
+      }
+    },
+    {
+      "id": "M-ZTI-020",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Kanalizační potrubí PP-KG DN160 vč. tvarovek",
+      "mj": "bm",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.7: Kanalizační potrubí PP-KG DN160 vč. tvarovek",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.7 = 30.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.7",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.7 = 30.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.7",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 30.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.7"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.7 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.7"
+      }
+    },
+    {
+      "id": "M-ZTI-021",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Kanalizační potrubí PP-KG DN200 vč. tvarovek",
+      "mj": "bm",
+      "mnozstvi": 9.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.8: Kanalizační potrubí PP-KG DN200 vč. tvarovek",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.8 = 9.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.8",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.8 = 9.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.8",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 9.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.8"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.8 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.8"
+      }
+    },
+    {
+      "id": "M-ZTI-022",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Revizní šachta Dš — bet. skruže DN1000, pojezdný poklop, šachetní dno, regulační prvek max 0,55 l/s + havarijní přepad DN200, hl do 2,5 m (kpl)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.9: Revizní šachta Dš — bet. skruže DN1000, pojezdný poklop, šac",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.9 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.9",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.9 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.9",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.9"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.9 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.9"
+      }
+    },
+    {
+      "id": "M-ZTI-023",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Revizní betonová šachta dešťová Dš1 — DN1000, rovné dno, hl do 2,0 m, nátok DN160 (-90°/180°), výtok DN200, pojezdový poklop (kpl)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.10: Revizní betonová šachta dešťová Dš1 — DN1000, rovné dno, hl ",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.10 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.10",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.10 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.10",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.10"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.10 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.10"
+      }
+    },
+    {
+      "id": "M-ZTI-024",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Revizní filtrační šachta Dš2 — bet. skruže DN1000, pojezdný poklop, dno, hl do 1,6 m, nátok DN160 -90°, výtok DN160 (kpl)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.11: Revizní filtrační šachta Dš2 — bet. skruže DN1000, pojezdný ",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.11 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.11",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.11 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.11",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.11"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.11 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.11"
+      }
+    },
+    {
+      "id": "M-ZTI-025",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Revizní šachty Rš2 + Rš3 — bet. skruže DN1000, pojezdný poklop, dno, hl dle stáv. kanalizace (kpl)",
+      "mj": "kpl",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.12: Revizní šachty Rš2 + Rš3 — bet. skruže DN1000, pojezdný pokl",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.12 = 2.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.12",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.12 = 2.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.12",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 2.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.12"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.12 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.12"
+      }
+    },
+    {
+      "id": "M-ZTI-026",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Zasakovací těleso 1,5×3,0×0,39 m — min. využitelný objem 2 m³, zasakovací plocha min 4,5 m², kamenivo/voštinové těleso",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.13: Zasakovací těleso 1,5×3,0×0,39 m — min. využitelný objem 2 m",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.13 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.13",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.13 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.13",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.13"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.13 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.13"
+      }
+    },
+    {
+      "id": "M-ZTI-027",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Akumulačně retenční nádoba na dešťovou vodu 15 m³ — ⌀3,1 m × v=2,0 m, dodávka + montáž (kpl)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.14: Akumulačně retenční nádoba na dešťovou vodu 15 m³ — ⌀3,1 m ×",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.14 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.14",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.14 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.14",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.14"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.14 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.14"
+      }
+    },
+    {
+      "id": "M-ZTI-028",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Revizní šachta Dš2 — bet. skruže DN1000, pojezdný poklop, dno, hl do 2,2 m (kpl)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K1.15: Revizní šachta Dš2 — bet. skruže DN1000, pojezdný poklop, dn",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K1.15 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K1.15",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K1.15 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K1.15",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K1.15"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K1.15 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K1.15"
+      }
+    },
+    {
+      "id": "M-ZTI-029",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Zápachová uzávěrka pro umyvadla — sifon trubkový chrom designový 5/4\" 32 mm (komplet)",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K2.2: Zápachová uzávěrka pro umyvadla — sifon trubkový chrom desig",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K2.2 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K2.2",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K2.2 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K2.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K2.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K2.2 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K2.2"
+      }
+    },
+    {
+      "id": "M-ZTI-030",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Sifon pro odvod kondenzátu z kondenzačního kotle, VZT a boileru (ref. HL 136)",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K2.3: Sifon pro odvod kondenzátu z kondenzačního kotle, VZT a boil",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K2.3 = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K2.3",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K2.3 = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K2.3",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K2.3"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K2.3 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K2.3"
+      }
+    },
+    {
+      "id": "M-ZTI-031",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Lapač splavenin a nečistot — litinový",
+      "mj": "ks",
+      "mnozstvi": 5.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Domovní kanalizace (K1-K2)",
+      "raw_description": "K2.4: Lapač splavenin a nečistot — litinový",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV K2.4 = 5.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "K2.4",
+      "_pct_addon": "K1.16 montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Domovní kanalizace (K1-K2) · SO-14",
+        "formula": "VV K2.4 = 5.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "K2.4",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 5.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "K2.4"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód K2.4 preserved. Percentage addon na sekci: K1.16 montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "K2.4"
+      }
+    },
+    {
+      "id": "M-ZTI-032",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Plastové potrubí PE100 SDR11 d50 (50×4,5 mm) vč. montáže a tvarovek",
+      "mj": "bm",
+      "mnozstvi": 8.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.2c: Plastové potrubí PE100 SDR11 d50 (50×4,5 mm) vč. montáže a t",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.2c = 8.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.2c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.2c = 8.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.2c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 8.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.2c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.2c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.2c"
+      }
+    },
+    {
+      "id": "M-ZTI-033",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Navrtávací pas 75/40",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.3c: Navrtávací pas 75/40",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.3c = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.3c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.3c = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.3c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.3c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.3c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.3c"
+      }
+    },
+    {
+      "id": "M-ZTI-034",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Automatická přečerpávací stanice tlakové kanalizace vč. jímky, vystrojení a řídící jednotky (např. Tlakan P2 smart, kpl)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.4c: Automatická přečerpávací stanice tlakové kanalizace vč. jímk",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.4c = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.4c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.4c = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.4c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.4c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.4c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.4c"
+      }
+    },
+    {
+      "id": "M-ZTI-035",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Výkop pro pokládku potrubí šířky 1 m, pažený",
+      "mj": "bm",
+      "mnozstvi": 12.8,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.5c: Výkop pro pokládku potrubí šířky 1 m, pažený",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.5c = 12.8 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.5c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.5c = 12.8 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.5c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 12.8,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.5c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.5c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.5c"
+      }
+    },
+    {
+      "id": "M-ZTI-036",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Pískový podsyp frakce 0–16 mm, výška 0,1 m, zhutnění",
+      "mj": "m³",
+      "mnozstvi": 1.28,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.6c: Pískový podsyp frakce 0–16 mm, výška 0,1 m, zhutnění",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.6c = 1.28 m³ (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.6c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.6c = 1.28 m³",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.6c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.28,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.6c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.6c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.6c"
+      }
+    },
+    {
+      "id": "M-ZTI-037",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Pískový obsyp frakce 0–16 mm bez ostrých zrn, výška 0,2 m, zhutnění",
+      "mj": "m³",
+      "mnozstvi": 3.84,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.7c: Pískový obsyp frakce 0–16 mm bez ostrých zrn, výška 0,2 m, z",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.7c = 3.84 m³ (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.7c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.7c = 3.84 m³",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.7c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 3.84,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.7c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.7c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.7c"
+      }
+    },
+    {
+      "id": "M-ZTI-038",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Konečný zához výkopu zeminou",
+      "mj": "kpl",
+      "mnozstvi": 7.68,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.8c: Konečný zához výkopu zeminou",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.8c = 7.68 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.8c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.8c = 7.68 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.8c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 7.68,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.8c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.8c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.8c"
+      }
+    },
+    {
+      "id": "M-ZTI-039",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Odvoz a uskladnění přebytečného výkopového materiálu",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.10c: Odvoz a uskladnění přebytečného výkopového materiálu",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.10c = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.10c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.10c = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.10c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.10c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.10c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.10c"
+      }
+    },
+    {
+      "id": "M-ZTI-040",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Montážní a pomocný materiál (součást zemních a pomocných prací)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P1.11c: Montážní a pomocný materiál (součást zemních a pomocných pra",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.11c = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.11c",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P1.11c = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.11c",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.11c"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.11c preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.11c"
+      }
+    },
+    {
+      "id": "M-ZTI-041",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Ostatní práce",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P.2.2: Ostatní práce",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P.2.2 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P.2.2",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P.2.2 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P.2.2",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P.2.2"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P.2.2 preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P.2.2"
+      }
+    },
+    {
+      "id": "M-ZTI-042",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Identifikace, vytyčení a průkaz stávajících sítí ve výkopem dotčeném území vč. příp. projektové činnosti",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P.2.3: Identifikace, vytyčení a průkaz stávajících sítí ve výkopem ",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P.2.3 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P.2.3",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P.2.3 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P.2.3",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P.2.3"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P.2.3 preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P.2.3"
+      }
+    },
+    {
+      "id": "M-ZTI-043",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Inženýrská činnost vč. mapových podkladů, správních poplatků atd.",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P.2.4: Inženýrská činnost vč. mapových podkladů, správních poplatků",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P.2.4 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P.2.4",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P.2.4 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P.2.4",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P.2.4"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P.2.4 preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P.2.4"
+      }
+    },
+    {
+      "id": "M-ZTI-044",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Dílenská dokumentace",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P.2.5: Dílenská dokumentace",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P.2.5 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P.2.5",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P.2.5 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P.2.5",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P.2.5"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P.2.5 preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P.2.5"
+      }
+    },
+    {
+      "id": "M-ZTI-045",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Dokumentace skutečného provedení",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P.2.6: Dokumentace skutečného provedení",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P.2.6 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P.2.6",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P.2.6 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P.2.6",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P.2.6"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P.2.6 preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P.2.6"
+      }
+    },
+    {
+      "id": "M-ZTI-046",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Zkouška těsnosti kanalizace",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Kanalizace čerpaná vnější (P1)",
+      "raw_description": "P.2.7: Zkouška těsnosti kanalizace",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P.2.7 = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P.2.7",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Kanalizace čerpaná vnější (P1) · SO-14",
+        "formula": "VV P.2.7 = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P.2.7",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P.2.7"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P.2.7 preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P.2.7"
+      }
+    },
+    {
+      "id": "M-ZTI-047",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Plastové potrubí PE100 SDR11 d50 (50×4,6 mm) vč. montáže a tvarovek",
+      "mj": "bm",
+      "mnozstvi": 10.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.2d: Plastové potrubí PE100 SDR11 d50 (50×4,6 mm) vč. montáže a t",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.2d = 10.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.2d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.2d = 10.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.2d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 10.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.2d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.2d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.2d"
+      }
+    },
+    {
+      "id": "M-ZTI-048",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Navrtávací pas 110/50",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.3d: Navrtávací pas 110/50",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.3d = 1.0 ks (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.3d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.3d = 1.0 ks",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.3d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "ks"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.3d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.3d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.3d"
+      }
+    },
+    {
+      "id": "M-ZTI-049",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Uzavírací šoupě vč. zemní soupravy DN40",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.4d: Uzavírací šoupě vč. zemní soupravy DN40",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.4d = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.4d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.4d = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.4d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.4d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.4d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.4d"
+      }
+    },
+    {
+      "id": "M-ZTI-050",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Výkop pro pokládku potrubí šířky 1 m, pažený",
+      "mj": "bm",
+      "mnozstvi": 16.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.5d: Výkop pro pokládku potrubí šířky 1 m, pažený",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.5d = 16.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.5d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.5d = 16.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.5d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 16.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.5d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.5d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.5d"
+      }
+    },
+    {
+      "id": "M-ZTI-051",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Pískový podsyp frakce 0–16 mm, výška 0,1 m, zhutnění",
+      "mj": "m³",
+      "mnozstvi": 1.6,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.6d: Pískový podsyp frakce 0–16 mm, výška 0,1 m, zhutnění",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.6d = 1.6 m³ (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.6d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.6d = 1.6 m³",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.6d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.6,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.6d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.6d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.6d"
+      }
+    },
+    {
+      "id": "M-ZTI-052",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Pískový obsyp frakce 0–16 mm bez ostrých zrn, výška 0,2 m, zhutnění",
+      "mj": "m³",
+      "mnozstvi": 4.8,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.7d: Pískový obsyp frakce 0–16 mm bez ostrých zrn, výška 0,2 m, z",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.7d = 4.8 m³ (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.7d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.7d = 4.8 m³",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.7d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 4.8,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.7d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.7d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.7d"
+      }
+    },
+    {
+      "id": "M-ZTI-053",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Konečný zához výkopu zeminou",
+      "mj": "kpl",
+      "mnozstvi": 9.6,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.8d: Konečný zához výkopu zeminou",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.8d = 9.6 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.8d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.8d = 9.6 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.8d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 9.6,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.8d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.8d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.8d"
+      }
+    },
+    {
+      "id": "M-ZTI-054",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Výstražná folie",
+      "mj": "bm",
+      "mnozstvi": 10.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.9d: Výstražná folie",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.9d = 10.0 bm (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.9d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.9d = 10.0 bm",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.9d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 10.0,
+            "unit": "bm"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.9d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.9d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.9d"
+      }
+    },
+    {
+      "id": "M-ZTI-055",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Odvoz a uskladnění přebytečného výkopového materiálu",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.10d: Odvoz a uskladnění přebytečného výkopového materiálu",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.10d = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.10d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.10d = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.10d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.10d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.10d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.10d"
+      }
+    },
+    {
+      "id": "M-ZTI-056",
+      "kapitola": "M-ZTI",
+      "SO": "SO-14",
+      "popis": "Montážní a pomocný materiál (součást zemních a pomocných prací)",
+      "mj": "kpl",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "VV projektantský výkaz výměr (inputs/tz/VV_Hradec Králové.pdf) — Vodovod vnější (P1)",
+      "raw_description": "P1.11d: Montážní a pomocný materiál (součást zemních a pomocných pra",
+      "confidence": 0.95,
+      "subdodavatel_chapter": "zti_vodovod_kanalizace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "VV_projektant",
+      "_completeness": 1.0,
+      "_qty_formula": "VV P1.11d = 1.0 kpl (projektant authoritative)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "Stage 3 — VV kód → KROS/URS mapping separate task",
+      "_projektant_code": "P1.11d",
+      "_pct_addon": "montáž + kompletace 10 %",
+      "audit_trail": {
+        "lokalizace": "ZTI — Vodovod vnější (P1) · SO-14",
+        "formula": "VV P1.11d = 1.0 kpl",
+        "formula_parsed_method": "direct_vv_extract",
+        "inputs": [
+          {
+            "label": "projektant_code",
+            "value": "P1.11d",
+            "unit": ""
+          },
+          {
+            "label": "vymera",
+            "value": 1.0,
+            "unit": "kpl"
+          }
+        ],
+        "reference": [
+          {
+            "type": "document",
+            "code": "VV výkaz výměr",
+            "document": "inputs/tz/VV_Hradec Králové.pdf",
+            "projektant_code": "P1.11d"
+          }
+        ],
+        "poznamka": "Projektantský VV — authoritative (confidence 0.95). Kód P1.11d preserved. Percentage addon na sekci: montáž + kompletace 10 %.",
+        "confidence": 0.95,
+        "extraction_method": "vv_projektant_authoritative",
+        "data_source_hint": "VV_projektant",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-ZTI (new — ZTI z projektantského VV, SO-14)",
+        "projektant_code": "P1.11d"
+      }
+    },
+    {
+      "id": "M-VK-030",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Výkop rýhy pro zámkovou dlažbu chodníku hl. ~300 mm",
+      "mj": "m³",
+      "mnozstvi": 36.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Výkop rýhy pro zámkovou dlažbu chodníku hl. ~",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 1.5 × 0.30 = 36.0 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "132xxx (výkop rýh)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "80.0 × 1.5 × 0.30 = 36.0 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "132xxx (výkop rýh)"
+      }
+    },
+    {
+      "id": "M-VK-031",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Odvoz vykopané zeminy z rýhy chodníku na skládku",
+      "mj": "m³",
+      "mnozstvi": 36.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Odvoz vykopané zeminy z rýhy chodníku na sklá",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "= objem výkopu M-VK-030 = 36.0 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "162xxx (odvoz)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "= objem výkopu M-VK-030 = 36.0 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "162xxx (odvoz)"
+      }
+    },
+    {
+      "id": "M-VK-032",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Úprava + hutnění zemní pláně pod dlažbu chodníku (Edef2 ≥ 30 MPa)",
+      "mj": "m²",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Úprava + hutnění zemní pláně pod dlažbu chodn",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 1.5 = 120.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "181xxx (úprava pláně)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "80.0 × 1.5 = 120.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "181xxx (úprava pláně)"
+      }
+    },
+    {
+      "id": "M-VK-033",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Geotextilie 300 g/m² separační pod dlažbu chodníku",
+      "mj": "m²",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Geotextilie 300 g/m² separační pod dlažbu cho",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 1.5 = 120.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "693xxx (geotextilie)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "80.0 × 1.5 = 120.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "693xxx (geotextilie)"
+      }
+    },
+    {
+      "id": "M-VK-034",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Štěrk ŠD 32/63 nosná podkladní vrstva tl 150 mm + hutnění (chodník dlažba)",
+      "mj": "m³",
+      "mnozstvi": 18.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Štěrk ŠD 32/63 nosná podkladní vrstva tl 150 ",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "120.0 × 0.15 = 18.0 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "564xxx (podkladní vrstvy)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "120.0 × 0.15 = 18.0 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "564xxx (podkladní vrstvy)"
+      }
+    },
+    {
+      "id": "M-VK-035",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Jemný štěrk / drť frakce 4/8 mm — ložná vrstva dlažby tl 40 mm",
+      "mj": "m³",
+      "mnozstvi": 4.8,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Jemný štěrk / drť frakce 4/8 mm — ložná vrstv",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "120.0 × 0.04 = 4.8 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "564xxx (ložná vrstva)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "120.0 × 0.04 = 4.8 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "564xxx (ložná vrstva)"
+      }
+    },
+    {
+      "id": "M-VK-036",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Obrubníky betonové ABO 100×250 do betonového lože C16/20 (lemování chodníku)",
+      "mj": "bm",
+      "mnozstvi": 80.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Obrubníky betonové ABO 100×250 do betonového ",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "~80.0 bm (vnější hrana chodníku)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "916xxx (obrubníky)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "~80.0 bm (vnější hrana chodníku)",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "916xxx (obrubníky)"
+      }
+    },
+    {
+      "id": "M-VK-037",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Beton lože C16/20 pod obrubníky chodníku + boční opěra",
+      "mj": "m³",
+      "mnozstvi": 2.4,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Beton lože C16/20 pod obrubníky chodníku + bo",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "80 bm × ~0.03 m³/bm (lože + opěra) = ~2.4 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "916xxx (lože obrubníku)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "80 bm × ~0.03 m³/bm (lože + opěra) = ~2.4 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "916xxx (lože obrubníku)"
+      }
+    },
+    {
+      "id": "M-VK-038",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Zámková dlažba BEST tl 80 mm — kladení, sklon 2 % od fasády",
+      "mj": "m²",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Zámková dlažba BEST tl 80 mm — kladení, sklon",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 1.5 = 120.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "596xxx (kladení dlažby)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "80.0 × 1.5 = 120.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "596xxx (kladení dlažby)"
+      }
+    },
+    {
+      "id": "M-VK-039",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Zásyp spár křemičitým pískem frakce 0,2 mm + hutnění vibrodeskou",
+      "mj": "m²",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS B p09 (chodník pro pěší ze zámkové dlažby 1,5 m) + zákazník confirmation 2026-05-27 + ČSN 73 6131 (norm-verified skladba)",
+      "raw_description": "dlažba chodník 1.5 m — Zásyp spár křemičitým pískem frakce 0,2 mm + ",
+      "confidence": 0.8,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_34"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_B_p09+ČSN_73_6131+user_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "80.0 × 1.5 = 120.0 m²",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Work-first generation. KROS catalog mapping in separate Stage 3 task.",
+      "_kros_hint": "596xxx (zásyp spár)",
+      "_scope_basis": "TZ ARS B p09 explicit 'chodník pro pěší ze zámkové dlažby 1,5 m'. Dlažba 1.5 m ADJACENT k okapníku 0.7 m = 2.2 m kolem haly (user decision 2026-05-27). Skladba per ČSN 73 6131 (norm verification outputs/norm_verification_okapnik_dlazba.md §1.2). Viz ABMV_34.",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — zámková dlažba chodník 1.5 m podél haly · SO-13",
+        "formula": "80.0 × 1.5 = 120.0 m²",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka_chodniku",
+            "value": 80.0,
+            "unit": "m"
+          },
+          {
+            "label": "sire_chodniku",
+            "value": 1.5,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS B p09",
+            "raw": "chodník pro pěší ze zámkové dlažby o šířce 1,5 m"
+          },
+          {
+            "type": "norma",
+            "code": "ČSN 73 6131-1",
+            "section": "Stavba vozovek — Kryty z dlažeb"
+          },
+          {
+            "type": "user_decision",
+            "code": "2026-05-27",
+            "raw": "dlažba 1.5 m + okapník 0.7 m = 2.2 m kolem haly"
+          }
+        ],
+        "poznamka": "Zámková dlažba pěší chodník per TZ ARS B p09 (1,5 m šíře). Skladba ČSN 73 6131 — norm-verified. ADJACENT k betonovému okapníku 0.7 m (M-VK-020..029).",
+        "confidence": 0.8,
+        "extraction_method": "tz_ars + ČSN_73_6131_layer_stack",
+        "data_source_hint": "TZ_ARS_B+ČSN_73_6131",
+        "extracted_at": "2026-05-27T23:30:00+00:00",
+        "kapitola_decision": "M-VK zámková dlažba chodník 1.5 m — TZ ARS B p09 explicit + user decision 2026-05-27 (NE dříve dropped — nyní IN bid)",
+        "kros_hint": "596xxx (zásyp spár)"
       }
     }
   ]
