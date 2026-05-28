@@ -355,7 +355,23 @@ SEQUENCE: list[tuple[int, str, list[tuple[str, list[str]]]]] = [
                 "Rampy 4× (R1-R4) — výztuž + bednění + beton + obrubník (per A101)",
                 ["M-VK-002", "M-VK-001", "M-VK-004"],
             ),
-            ("Liniový žlab pojízdný B125 — SZ + JZ fasáda (40 m)", ["M-VK-012"]),
+            (
+                "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab "
+                "polymerbeton + osazení → lože + obetonování → rošt D400 + osazení "
+                "mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+                [
+                    "M-VK-040",  # výkop rýhy
+                    "M-VK-041",  # odvoz zeminy
+                    "M-VK-042",  # žlab polymerbeton (materiál)
+                    "M-VK-043",  # osazení žlabu s roštem
+                    "M-VK-046",  # betonové lože (podklad)
+                    "M-VK-047",  # obetonování (zapravení)
+                    "M-VK-044",  # rošt D400 (materiál)
+                    "M-VK-045",  # osazení mříže
+                    "M-VK-048",  # vpusti DN150
+                    "M-VK-049",  # čela žlabu
+                ],
+            ),
             ("Vyspádování okolního terénu k odvodnění", ["M-VK-019"]),
             ("Ohumusování + osetí travou zbytkových ploch", ["M-VK-018"]),
         ],
@@ -413,8 +429,8 @@ def build_ordered_rows(items_by_id: dict) -> list[dict]:
     missing = set(items_by_id) - seen
     if missing:
         raise SystemExit(f"FATAL: {len(missing)} items.json IDs missing from SEQUENCE: {sorted(missing)}")
-    if len(out) != 235:
-        raise SystemExit(f"FATAL: expected 235 ordered rows, got {len(out)}")
+    if len(out) != 244:
+        raise SystemExit(f"FATAL: expected 244 ordered rows, got {len(out)}")
     return out
 
 
@@ -640,12 +656,12 @@ def write_readme(rows: list[dict], items_by_id: dict, path: Path) -> None:
     review_conc = [it["id"] for it in items_by_id.values() if it.get("_review_concrete_class")]
     body = f"""# HK212 Sequential Construction List
 
-235 active položek v logickém pořadí výstavby. Fáze 12 = Venkovní úpravy (SO-13) + ZTI (SO-14, 56 items z projektantského VV). 5 items dropped (M-VK-013..017 asfalt) + 5 superseded by VV (M-VK-005/006/007/010/011) preserved s _status_flag. Okapní chodník 10-layer + zámková dlažba 1.5 m 10-layer.
+244 active položek v logickém pořadí výstavby. Fáze 12 = Venkovní úpravy (SO-13) + ZTI (SO-14, 56 items z projektantského VV). 5 items dropped (M-VK-013..017 asfalt) + 5 superseded by VV (M-VK-005/006/007/010/011) preserved s _status_flag. Okapní chodník 10-layer + zámková dlažba 1.5 m 10-layer.
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (245 entries, 235 active)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (255 entries, 244 active)
 **Branch:** `claude/hk212-vk-final-minimal` (12 M-UT items added per investor scope change 2026-05-26)
 **Generated:** {date.today().isoformat()}
 
@@ -713,7 +729,7 @@ def write_handoff(rows: list[dict], items_by_id: dict, path: Path) -> None:
 **Date:** {date.today().isoformat()}
 
 ## Counts
-- 235 active items (138 baseline + 12 M-UT + 34 M-VK venkovní úpravy + 56 M-ZTI z projektantského VV; 10 inactive: 5 dropped + 5 superseded)
+- 244 active items (138 baseline + 12 M-UT + 43 M-VK venkovní úpravy + 56 M-ZTI z VV; 11 inactive: 5 dropped + 6 superseded vč. M-VK-012 liniový žlab)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
 - 36 active items added (12 M-UT + 24 M-VK = 14 kept + 10 okapní layers), 5 dropped per user decision, 0 invented
 - 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
@@ -767,9 +783,9 @@ def main() -> None:
     rows = build_ordered_rows(items_by_id)
 
     # Validation
-    assert len(rows) == 235, len(rows)
+    assert len(rows) == 244, len(rows)
     ids = [r["id"] for r in rows]
-    assert len(set(ids)) == 235, "duplicate IDs in output"
+    assert len(set(ids)) == 244, "duplicate IDs in output"
     # NOTE: items.json contains 173 entries but 5 are dropped per user decision
     # 2026-05-27 (_status_flag=dropped_per_user_decision_2026-05-27).
     # Sequential list active = 168 (= 173 entries - 5 dropped).
@@ -782,7 +798,7 @@ def main() -> None:
     empty_vzorec = [r["id"] for r in rows if not r["vzorec"]]
     assert not empty_vzorec, f"empty vzorec for: {empty_vzorec}"
     fallback_vzorec = [r["id"] for r in rows if r["vzorec"].startswith("(zdroj nenalezen")]
-    print(f"  vzorec coverage: {235 - len(fallback_vzorec)}/235 with formula, {len(fallback_vzorec)} fallback")
+    print(f"  vzorec coverage: {244 - len(fallback_vzorec)}/244 with formula, {len(fallback_vzorec)} fallback")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     write_xlsx(rows, OUT_DIR / "hk212_sequential_list.xlsx")
@@ -791,7 +807,7 @@ def main() -> None:
     write_readme(rows, items_by_id, OUT_DIR / "README.md")
     write_handoff(rows, items_by_id, OUT_DIR / "HANDOFF_SEQUENTIAL.md")
 
-    print(f"OK — 235 active items in 13 phases (vč. 9.5 + 12 Venkovní + ZTI VV + dlažba) written to {OUT_DIR}")
+    print(f"OK — 244 active items in 13 phases (vč. ZTI VV + dlažba + liniový žlab complete) written to {OUT_DIR}")
     for p in sorted({r["_phase"] for r in rows}):
         n = sum(1 for r in rows if r["_phase"] == p)
         print(f"  FÁZE {p}: {n}")
