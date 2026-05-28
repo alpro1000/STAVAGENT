@@ -6,7 +6,7 @@
 **Date:** 2026-05-28
 
 ## Counts
-- 235 active items (138 baseline + 12 M-UT + 34 M-VK venkovní úpravy + 56 M-ZTI z projektantského VV; 10 inactive: 5 dropped + 5 superseded)
+- 244 active items (138 baseline + 12 M-UT + 43 M-VK venkovní úpravy + 56 M-ZTI z VV; 11 inactive: 5 dropped + 6 superseded vč. M-VK-012 liniový žlab)
 - 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
 - 36 active items added (12 M-UT + 24 M-VK = 14 kept + 10 okapní layers), 5 dropped per user decision, 0 invented
 - 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
@@ -24,10 +24,10 @@
 - FÁZE 9.5: 12 items
 - FÁZE 10: 2 items
 - FÁZE 11: 9 items
-- FÁZE 12: 85 items
+- FÁZE 12: 94 items
 
 ## Quality flags propagated (from items.json)
-- `_vyjasneni_ref` open ABMV: 12 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_3, ABMV_31, ABMV_32, ABMV_34
+- `_vyjasneni_ref` open ABMV: 14 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_3, ABMV_31, ABMV_32, ABMV_34, ABMV_35, ABMV_36
 - `_review_qty`: 1 → PSV-OPL-005
 - `_review_concrete_class`: 1 → HSV-2-013
 - confidence < 0.70: 81 items (yellow-tinted v XLSX)

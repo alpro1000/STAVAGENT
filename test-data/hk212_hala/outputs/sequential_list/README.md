@@ -1,11 +1,11 @@
 # HK212 Sequential Construction List
 
-235 active položek v logickém pořadí výstavby. Fáze 12 = Venkovní úpravy (SO-13) + ZTI (SO-14, 56 items z projektantského VV). 5 items dropped (M-VK-013..017 asfalt) + 5 superseded by VV (M-VK-005/006/007/010/011) preserved s _status_flag. Okapní chodník 10-layer + zámková dlažba 1.5 m 10-layer.
+244 active položek v logickém pořadí výstavby. Fáze 12 = Venkovní úpravy (SO-13) + ZTI (SO-14, 56 items z projektantského VV). 5 items dropped (M-VK-013..017 asfalt) + 5 superseded by VV (M-VK-005/006/007/010/011) preserved s _status_flag. Okapní chodník 10-layer + zámková dlažba 1.5 m 10-layer.
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (245 entries, 235 active)
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (255 entries, 244 active)
 **Branch:** `claude/hk212-vk-final-minimal` (12 M-UT items added per investor scope change 2026-05-26)
 **Generated:** 2026-05-28
 
@@ -32,8 +32,8 @@
 ## Sloupec "Vzorec / Zdroj výměry"
 Každý řádek nese stručný výpočet kvantity + zdrojové reference (výkres / TZ / statika / Step3 / phase ref) extrahované z `items_hk212_etap1.json` field `audit_trail.formula` + `audit_trail.reference`. Pokud zdroj nelze odvodit, řádek nese `(zdroj nenalezen — manual verify)`. Text je truncated na ~220 znaků; plné detaily (vstupy + krok-za-krok + analytical_journey) zůstávají v `items.json` audit_trail.
 
-## ABMV open (12)
-ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_3, ABMV_31, ABMV_32, ABMV_34
+## ABMV open (14)
+ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_3, ABMV_31, ABMV_32, ABMV_34, ABMV_35, ABMV_36
 
 ## _review_qty flags (1)
 PSV-OPL-005

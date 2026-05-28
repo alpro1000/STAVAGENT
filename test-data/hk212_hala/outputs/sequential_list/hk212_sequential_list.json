@@ -17295,84 +17295,860 @@
       "_vzorec_display": "~30.0 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     },
     {
-      "id": "M-VK-012",
+      "id": "M-VK-040",
       "kapitola": "M-VK",
       "SO": "SO-13",
-      "popis": "Liniový žlab POJÍZDNÝ tř. zatížení B125 — odvodnění zpevněných ploch parkoviště + manipulace, vč. mřížky",
-      "mj": "m",
-      "mnozstvi": 40.0,
+      "popis": "Výkop rýhy pro liniový žlab š 300 mm, hl 350 mm (SZ + JZ fasáda)",
+      "mj": "m³",
+      "mnozstvi": 4.9,
       "urs_code": null,
       "urs_alternatives": [],
       "urs_status": "pending_stage_3",
       "urs_match_score": 0.0,
       "skladba_ref": null,
-      "source": "C.3 KOORDINAČNÍ SITUACE DPS 06/2026 + A101 půdorys + A103 řez (investor scope change 2026-05-27)",
-      "raw_description": "liniový žlab pojízdný B125 pro venkovní plochy",
-      "confidence": 0.8,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Výkop rýhy pro liniový žlab š 300 mm, hl 350 mm (S",
+      "confidence": 0.85,
       "subdodavatel_chapter": "venkovni_upravy",
-      "_vyjasneni_ref": [],
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
       "_status_flag": null,
-      "_data_source": "C3_DPS+A101_DPS+A103_DPS",
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
       "_completeness": 1.0,
-      "_qty_formula": "~40 m (perimetr asfaltových ploch SVĚTLO odlišný od PSV-78x)",
+      "_qty_formula": "46.5 × 0.30 × 0.35 = 4.9 m³",
       "_export_wrapper_hint": null,
-      "_pattern_15_ref": "Work-first generation. KROS/URS catalog mapping in separate Stage 3 task with Forestina komplet ÚP reference (sample at test-data/hk212_hala/inputs/_reference/ if available).",
-      "_kros_hint": "935xxx (odvodňovací žlaby + mřížky)",
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "132xxx výkop rýhy / 162xxx (Stage 3)",
       "audit_trail": {
-        "lokalizace": "venkovní úpravy areálu — SO-13",
-        "formula": "40 m",
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "46.5 × 0.30 × 0.35 = 4.9 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka",
+            "value": 46.5,
+            "unit": "m"
+          },
+          {
+            "label": "sirka",
+            "value": 0.3,
+            "unit": "m"
+          },
+          {
+            "label": "hloubka",
+            "value": 0.35,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Výkop rýhy na hloubku žlab + betonové lože. class 132/162 — Stage 3 kód.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "132xxx výkop rýhy / 162xxx (Stage 3)"
+      },
+      "_sequence_position": 233,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "46.5 × 0.30 × 0.35 = 4.9 m³  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-041",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Odvoz vykopané zeminy z rýhy žlabu na skládku",
+      "mj": "m³",
+      "mnozstvi": 4.9,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Odvoz vykopané zeminy z rýhy žlabu na skládku",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "= výkop M-VK-040 = 4.9 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "162xxx odvoz (Stage 3)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "= 4.9 m³",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "objem",
+            "value": 4.9,
+            "unit": "m³"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Odvoz zeminy z rýhy (nahrazena žlabem + betonem). Stage 3 kód.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "162xxx odvoz (Stage 3)"
+      },
+      "_sequence_position": 234,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "= 4.9 m³  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-042",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Žlab odvodňovací polymerbeton spádový š 130 mm (materiál, kaskáda spádu 0,5 %)",
+      "mj": "m",
+      "mnozstvi": 46.5,
+      "urs_code": "59227005",
+      "urs_alternatives": [],
+      "urs_status": "user_resolved_stage_3",
+      "urs_match_score": 1.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Žlab odvodňovací polymerbeton spádový š 130 mm (ma",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "46.5 m (user měření)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "59227005 (polymerbeton žlab, kaskáda 006-011 dle hloubky)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "46.5 m",
         "formula_parsed_method": "direct",
         "inputs": [
           {
             "label": "delka",
-            "value": 40.0,
+            "value": 46.5,
             "unit": "m"
           },
           {
-            "label": "trida_zatizeni",
-            "value": "B125 (pojízdné, osobní automobily)",
-            "unit": ""
+            "label": "sirka_zlabu",
+            "value": 130,
+            "unit": "mm"
           },
           {
-            "label": "typ_predpoklad",
-            "value": "betonový žlab NW150-200 + mřížka B125",
+            "label": "spad",
+            "value": "0.5 % kaskáda (59227005-011 dle hloubky dna)",
             "unit": ""
           }
         ],
         "reference": [
           {
-            "type": "document",
-            "code": "C.3 KOO situace",
-            "document": "inputs/situace/C3_koordinacni_situace_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
           },
           {
-            "type": "document",
-            "code": "A101 půdorys 1NP",
-            "document": "inputs/vykresy_pdf/A101_pudorys_1np_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
           },
           {
-            "type": "document",
-            "code": "A103 řez A-B",
-            "document": "inputs/vykresy_pdf/A103_rez_AB_DPS_2026-05.pdf",
-            "stage": "DPS 06/2026"
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
           }
         ],
-        "poznamka": "POJÍZDNÝ liniový žlab pro odvod vody ze zpevněných asfaltových ploch (parkoviště + manipulační plochy). Tř. zatížení B125 (osobní automobily) ne pochozí. Stage 3 verify finální typ + délka.",
-        "confidence": 0.8,
-        "extraction_method": "dps_situace_a101_a103",
-        "data_source_hint": "C3_DPS+A101_DPS+A103_DPS",
-        "extracted_at": "2026-05-27T00:00:00+00:00",
-        "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
-        "kros_hint": "935xxx (odvodňovací žlaby + mřížky)",
-        "cross_dedup_note": "EXPLICITNĚ ODLIŠENO od PSV-78x-005 (MEA Mearin Plus 3000 NW300 podél JZ + SZ fasády HALY) + PSV-78x-006 (Mřížka pochozí). M-VK-012 je POJÍZDNÝ žlab v jiné lokaci (perimetr venkovních asfaltů), jiné load class (B125 ne pochozí). NO geometric overlap with PSV-78x."
+        "poznamka": "Materiál žlab polymerbeton spádový. Pro 46.5 m bez bodu sběru → spádový systém (kaskáda 59227005-011 rostoucí hloubka dna) NEBO uklon v betonovém loži ke 2 vpustím. Default spádový polymerbeton, 2 vpusti (SZ + JZ větev ~23 m úsek). Hydraulický výpočet ACO → ABMV_35.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "59227005 (polymerbeton žlab, kaskáda 006-011 dle hloubky)",
+        "coding_resolution": {
+          "resolved_2026_05_27": "Liniový žlab CODING RESOLVED Stage 3 (user 2026-05-27)",
+          "kept_codes": {
+            "935113111": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm — class 221 Komunikace",
+            "59227005": "Žlab odvodňovací polymerbeton spádový š 130 mm — materiál (kaskáda 005-011 dle hloubky spádu)",
+            "55241040": "Mříž 600/40T D400 litina — materiál (nebo 28661702 rošt vtokový D400)",
+            "953941212": "Osazování kovových mříží v rámu — class 011 A08",
+            "ACO.10935": "Vpust ACO Drain dolní díl odtok DN150 — napojení na dešťovou kanalizaci",
+            "ACO.447778": "Čela žlabu kombi (začátek/konec)"
+          },
+          "rejected_prior_wrong_class": [
+            "771591481 + 59054099 — class 771 dlaždice / napojení na kontaktní izolaci (terasové/vnitřní) — WRONG",
+            "721212121.HLE + 721219128 + HLE.HL50Fxxx — class 721 ZTI vnitřní sprchové žlaby nerez DN50 — WRONG"
+          ],
+          "lesson": "Venkovní pojízdný liniový žlab = class 221 (montáž žlabu) + 011 A08 (montáž mříže), NE 721 ZTI ani 771 dlaždice. Marker: 'pojízdný / do komunikace / ACO Drain / rošt litinový D400'.",
+          "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+        }
       },
-      "_sequence_position": 233,
+      "_sequence_position": 235,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
-      "_krok": "Liniový žlab pojízdný B125 — SZ + JZ fasáda (40 m)",
-      "_vzorec_display": "40 m  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "46.5 m  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-043",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm",
+      "mj": "m",
+      "mnozstvi": 46.5,
+      "urs_code": "935113111",
+      "urs_alternatives": [],
+      "urs_status": "user_resolved_stage_3",
+      "urs_match_score": 1.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Osazení odvodňovacího polymerbetonového žlabu s kr",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35",
+        "ABMV_36"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "46.5 m (1:1 s žlabem)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "935113111 (osazení žlabu s krycím roštem, class 221)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "46.5 m",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "delka",
+            "value": 46.5,
+            "unit": "m"
+          },
+          {
+            "label": "trida",
+            "value": "221 Komunikace",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Montáž žlabu — class 221 Komunikace. Popis ÚRS 'osazení s krycím roštem' → viz double_count_flag vs M-VK-045 (953941212 separate montáž mříže). Coding resolution log v audit_trail.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "935113111 (osazení žlabu s krycím roštem, class 221)",
+        "coding_resolution": {
+          "resolved_2026_05_27": "Liniový žlab CODING RESOLVED Stage 3 (user 2026-05-27)",
+          "kept_codes": {
+            "935113111": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm — class 221 Komunikace",
+            "59227005": "Žlab odvodňovací polymerbeton spádový š 130 mm — materiál (kaskáda 005-011 dle hloubky spádu)",
+            "55241040": "Mříž 600/40T D400 litina — materiál (nebo 28661702 rošt vtokový D400)",
+            "953941212": "Osazování kovových mříží v rámu — class 011 A08",
+            "ACO.10935": "Vpust ACO Drain dolní díl odtok DN150 — napojení na dešťovou kanalizaci",
+            "ACO.447778": "Čela žlabu kombi (začátek/konec)"
+          },
+          "rejected_prior_wrong_class": [
+            "771591481 + 59054099 — class 771 dlaždice / napojení na kontaktní izolaci (terasové/vnitřní) — WRONG",
+            "721212121.HLE + 721219128 + HLE.HL50Fxxx — class 721 ZTI vnitřní sprchové žlaby nerez DN50 — WRONG"
+          ],
+          "lesson": "Venkovní pojízdný liniový žlab = class 221 (montáž žlabu) + 011 A08 (montáž mříže), NE 721 ZTI ani 771 dlaždice. Marker: 'pojízdný / do komunikace / ACO Drain / rošt litinový D400'.",
+          "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+        },
+        "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+      },
+      "_sequence_position": 236,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "46.5 m  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-046",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Betonové lože C25/30 pod žlab min 150 mm (\"podklad\" per customer)",
+      "mj": "m³",
+      "mnozstvi": 2.1,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Betonové lože C25/30 pod žlab min 150 mm (\"podklad",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "46.5 × 0.30 × 0.15 = 2.1 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "564xxx betonové lože (Stage 3, class 564)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "46.5 × 0.30 × 0.15 = 2.1 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka",
+            "value": 46.5,
+            "unit": "m"
+          },
+          {
+            "label": "sirka",
+            "value": 0.3,
+            "unit": "m"
+          },
+          {
+            "label": "tloustka_loze",
+            "value": 0.15,
+            "unit": "m"
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Betonové lože C25/30 pod žlab = 'podklad' per customer reminder 2026-05-27. class 564 — Stage 3 kód. Sklon ke spádu žlabu.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "564xxx betonové lože (Stage 3, class 564)"
+      },
+      "_sequence_position": 237,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "46.5 × 0.30 × 0.15 = 2.1 m³  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-047",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Obetonování žlabu C25/30 po vrchní hranu (\"zapravení\" boky per customer)",
+      "mj": "m³",
+      "mnozstvi": 1.7,
+      "urs_code": null,
+      "urs_alternatives": [],
+      "urs_status": "pending_stage_3",
+      "urs_match_score": 0.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Obetonování žlabu C25/30 po vrchní hranu (\"zaprave",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "boky žlabu po vrchní hranu ≈ 1.7 m³",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "564xxx obetonování (Stage 3, class 564)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "2 × (0.085 × 0.20) × 46.5 ≈ 1.7 m³",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "delka",
+            "value": 46.5,
+            "unit": "m"
+          },
+          {
+            "label": "obetonovani",
+            "value": "oba boky po vrchní hranu",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Obetonování boků žlabu C25/30 = 'zapravení' per customer reminder 2026-05-27. Stabilizace žlabu proti pojezdu D400. class 564 — Stage 3.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "564xxx obetonování (Stage 3, class 564)"
+      },
+      "_sequence_position": 238,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "2 × (0.085 × 0.20) × 46.5 ≈ 1.7 m³  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-044",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Rošt / mříž litinová D400 600/40T (materiál, pojízdný — nákladní doprava)",
+      "mj": "kus",
+      "mnozstvi": 47,
+      "urs_code": "55241040",
+      "urs_alternatives": [],
+      "urs_status": "user_resolved_stage_3",
+      "urs_match_score": 1.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Rošt / mříž litinová D400 600/40T (materiál, pojíz",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "46.5 m / ~1.0 m per rošt = 47 ks",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "55241040 (mříž 600/40T D400) nebo 28661702 (rošt vtokový D400)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "46.5 / 1.0 ≈ 47 ks",
+        "formula_parsed_method": "quotient",
+        "inputs": [
+          {
+            "label": "delka_zlabu",
+            "value": 46.5,
+            "unit": "m"
+          },
+          {
+            "label": "rost_delka",
+            "value": 1.0,
+            "unit": "m/ks"
+          },
+          {
+            "label": "trida_zatizeni",
+            "value": "D400 (pojízdný nákladní)",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Materiál rošt litina D400 (TZ bilance 5 nákladních vozidel/týden → D400). Alternativa 28661702 rošt vtokový D400. KROS link 55241040 ↔ montáž 953941212 (M-VK-045).",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "55241040 (mříž 600/40T D400) nebo 28661702 (rošt vtokový D400)",
+        "coding_resolution": {
+          "resolved_2026_05_27": "Liniový žlab CODING RESOLVED Stage 3 (user 2026-05-27)",
+          "kept_codes": {
+            "935113111": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm — class 221 Komunikace",
+            "59227005": "Žlab odvodňovací polymerbeton spádový š 130 mm — materiál (kaskáda 005-011 dle hloubky spádu)",
+            "55241040": "Mříž 600/40T D400 litina — materiál (nebo 28661702 rošt vtokový D400)",
+            "953941212": "Osazování kovových mříží v rámu — class 011 A08",
+            "ACO.10935": "Vpust ACO Drain dolní díl odtok DN150 — napojení na dešťovou kanalizaci",
+            "ACO.447778": "Čela žlabu kombi (začátek/konec)"
+          },
+          "rejected_prior_wrong_class": [
+            "771591481 + 59054099 — class 771 dlaždice / napojení na kontaktní izolaci (terasové/vnitřní) — WRONG",
+            "721212121.HLE + 721219128 + HLE.HL50Fxxx — class 721 ZTI vnitřní sprchové žlaby nerez DN50 — WRONG"
+          ],
+          "lesson": "Venkovní pojízdný liniový žlab = class 221 (montáž žlabu) + 011 A08 (montáž mříže), NE 721 ZTI ani 771 dlaždice. Marker: 'pojízdný / do komunikace / ACO Drain / rošt litinový D400'.",
+          "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+        }
+      },
+      "_sequence_position": 239,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "46.5 / 1.0 ≈ 47 ks  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-045",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Osazování kovových mříží litinových D400 v rámu (montáž roštu)",
+      "mj": "kus",
+      "mnozstvi": 47,
+      "urs_code": "953941212",
+      "urs_alternatives": [],
+      "urs_status": "user_resolved_stage_3",
+      "urs_match_score": 1.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Osazování kovových mříží litinových D400 v rámu (m",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35",
+        "ABMV_36"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "47 ks (1:1 s roštem M-VK-044)",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "953941212 (osazování mříží v rámu, class 011 A08)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "47 ks",
+        "formula_parsed_method": "direct",
+        "inputs": [
+          {
+            "label": "pocet_rostu",
+            "value": 47,
+            "unit": "ks"
+          },
+          {
+            "label": "trida",
+            "value": "011 A08",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Montáž mříže — class 011 A08. ⚠️ DOUBLE-COUNT FLAG vs M-VK-043 (935113111 'osazení žlabu s krycím roštem'). Default KEEP per KROS link 953941212 ↔ 55241040 (naznačuje separate montáž mříže). kros_catalog.db subset neobsahuje 935* → nelze ověřit. User final review Stage 3 — pokud 935113111 už zahrnuje osazení roštu → DROP tuto položku, M-VK-044 zůstane jen materiál. Viz ABMV_36.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "953941212 (osazování mříží v rámu, class 011 A08)",
+        "coding_resolution": {
+          "resolved_2026_05_27": "Liniový žlab CODING RESOLVED Stage 3 (user 2026-05-27)",
+          "kept_codes": {
+            "935113111": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm — class 221 Komunikace",
+            "59227005": "Žlab odvodňovací polymerbeton spádový š 130 mm — materiál (kaskáda 005-011 dle hloubky spádu)",
+            "55241040": "Mříž 600/40T D400 litina — materiál (nebo 28661702 rošt vtokový D400)",
+            "953941212": "Osazování kovových mříží v rámu — class 011 A08",
+            "ACO.10935": "Vpust ACO Drain dolní díl odtok DN150 — napojení na dešťovou kanalizaci",
+            "ACO.447778": "Čela žlabu kombi (začátek/konec)"
+          },
+          "rejected_prior_wrong_class": [
+            "771591481 + 59054099 — class 771 dlaždice / napojení na kontaktní izolaci (terasové/vnitřní) — WRONG",
+            "721212121.HLE + 721219128 + HLE.HL50Fxxx — class 721 ZTI vnitřní sprchové žlaby nerez DN50 — WRONG"
+          ],
+          "lesson": "Venkovní pojízdný liniový žlab = class 221 (montáž žlabu) + 011 A08 (montáž mříže), NE 721 ZTI ani 771 dlaždice. Marker: 'pojízdný / do komunikace / ACO Drain / rošt litinový D400'.",
+          "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+        },
+        "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+      },
+      "_sequence_position": 240,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "47 ks  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-048",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Vpust ACO Drain dolní díl, odtok DN150 — napojení na dešťovou kanalizaci (SZ + JZ větev)",
+      "mj": "kus",
+      "mnozstvi": 2,
+      "urs_code": "ACO.10935",
+      "urs_alternatives": [],
+      "urs_status": "user_resolved_stage_3",
+      "urs_match_score": 1.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Vpust ACO Drain dolní díl, odtok DN150 — napojení ",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "2 ks = SZ větev + JZ větev",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "ACO.10935 (vpust ACO Drain DN150)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "1 + 1 = 2 ks",
+        "formula_parsed_method": "sum",
+        "inputs": [
+          {
+            "label": "sz_vetev",
+            "value": 1,
+            "unit": "ks"
+          },
+          {
+            "label": "jz_vetev",
+            "value": 1,
+            "unit": "ks"
+          },
+          {
+            "label": "odtok",
+            "value": "DN150 → dešťová kanalizace",
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Vpust ACO Drain DN150 napojená na dešťovou kanalizaci (M-ZTI K1 dešťová větev). 2 ks = sběrný bod každé větve (SZ + JZ ~23 m úsek). Počet dle hydraulického výpočtu ACO → ABMV_35.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "ACO.10935 (vpust ACO Drain DN150)",
+        "coding_resolution": {
+          "resolved_2026_05_27": "Liniový žlab CODING RESOLVED Stage 3 (user 2026-05-27)",
+          "kept_codes": {
+            "935113111": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm — class 221 Komunikace",
+            "59227005": "Žlab odvodňovací polymerbeton spádový š 130 mm — materiál (kaskáda 005-011 dle hloubky spádu)",
+            "55241040": "Mříž 600/40T D400 litina — materiál (nebo 28661702 rošt vtokový D400)",
+            "953941212": "Osazování kovových mříží v rámu — class 011 A08",
+            "ACO.10935": "Vpust ACO Drain dolní díl odtok DN150 — napojení na dešťovou kanalizaci",
+            "ACO.447778": "Čela žlabu kombi (začátek/konec)"
+          },
+          "rejected_prior_wrong_class": [
+            "771591481 + 59054099 — class 771 dlaždice / napojení na kontaktní izolaci (terasové/vnitřní) — WRONG",
+            "721212121.HLE + 721219128 + HLE.HL50Fxxx — class 721 ZTI vnitřní sprchové žlaby nerez DN50 — WRONG"
+          ],
+          "lesson": "Venkovní pojízdný liniový žlab = class 221 (montáž žlabu) + 011 A08 (montáž mříže), NE 721 ZTI ani 771 dlaždice. Marker: 'pojízdný / do komunikace / ACO Drain / rošt litinový D400'.",
+          "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+        }
+      },
+      "_sequence_position": 241,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "1 + 1 = 2 ks  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
+    },
+    {
+      "id": "M-VK-049",
+      "kapitola": "M-VK",
+      "SO": "SO-13",
+      "popis": "Čela žlabu kombi (začátek/konec) — 2 čela × 2 větve",
+      "mj": "kus",
+      "mnozstvi": 4,
+      "urs_code": "ACO.447778",
+      "urs_alternatives": [],
+      "urs_status": "user_resolved_stage_3",
+      "urs_match_score": 1.0,
+      "skladba_ref": null,
+      "source": "TZ ARS D.1.1 + customer SOLAR DISPOREC 2026-05-27 + user měření 46.5 m + user ÚRS coding resolution Stage 3 2026-05-27",
+      "raw_description": "liniový žlab — Čela žlabu kombi (začátek/konec) — 2 čela × 2 větv",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "venkovni_upravy",
+      "_vyjasneni_ref": [
+        "ABMV_35"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ_ARS_D11+user_měření+user_ÚRS_2026-05-27",
+      "_completeness": 1.0,
+      "_qty_formula": "2 čela × 2 větve = 4 ks",
+      "_export_wrapper_hint": null,
+      "_pattern_15_ref": "Coding RESOLVED Stage 3 by user 2026-05-27 — real ÚRS codes assigned.",
+      "_kros_hint": "ACO.447778 (čela žlabu kombi)",
+      "audit_trail": {
+        "lokalizace": "venkovní úpravy — liniový žlab SZ + JZ fasáda zapuštěný v komunikaci · SO-13",
+        "formula": "2 × 2 = 4 ks",
+        "formula_parsed_method": "product",
+        "inputs": [
+          {
+            "label": "cela_per_vetev",
+            "value": 2,
+            "unit": "ks"
+          },
+          {
+            "label": "pocet_vetvi",
+            "value": 2,
+            "unit": ""
+          }
+        ],
+        "reference": [
+          {
+            "type": "tz_section",
+            "section": "ARS D.1.1",
+            "raw": "liniovým žlabem kolem SZ a JZ fasády zapuštěným v komunikaci"
+          },
+          {
+            "type": "user_measurement",
+            "code": "2026-05-27",
+            "raw": "délka žlabu 46.5 m (supersedes guessed 40 m)"
+          },
+          {
+            "type": "customer_reminder",
+            "code": "SOLAR DISPOREC 2026-05-27",
+            "raw": "žlab ze dvou stran domu včetně podkladu a zapravení"
+          }
+        ],
+        "poznamka": "Čela žlabu (začátek + konec) každé větve SZ + JZ = 4 ks.",
+        "confidence": 0.85,
+        "extraction_method": "user_resolved_urs_stage_3 + tz_ars_d11",
+        "data_source_hint": "TZ_ARS_D11 + user_měření + user_ÚRS_codes_2026-05-27",
+        "extracted_at": "2026-05-27T23:55:00+00:00",
+        "kapitola_decision": "M-VK liniový žlab complete — M-VK-012 superseded, 10 atomic položek s real ÚRS codes (user Stage 3 resolution 2026-05-27)",
+        "kros_hint": "ACO.447778 (čela žlabu kombi)",
+        "coding_resolution": {
+          "resolved_2026_05_27": "Liniový žlab CODING RESOLVED Stage 3 (user 2026-05-27)",
+          "kept_codes": {
+            "935113111": "Osazení odvodňovacího polymerbetonového žlabu s krycím roštem š do 210 mm — class 221 Komunikace",
+            "59227005": "Žlab odvodňovací polymerbeton spádový š 130 mm — materiál (kaskáda 005-011 dle hloubky spádu)",
+            "55241040": "Mříž 600/40T D400 litina — materiál (nebo 28661702 rošt vtokový D400)",
+            "953941212": "Osazování kovových mříží v rámu — class 011 A08",
+            "ACO.10935": "Vpust ACO Drain dolní díl odtok DN150 — napojení na dešťovou kanalizaci",
+            "ACO.447778": "Čela žlabu kombi (začátek/konec)"
+          },
+          "rejected_prior_wrong_class": [
+            "771591481 + 59054099 — class 771 dlaždice / napojení na kontaktní izolaci (terasové/vnitřní) — WRONG",
+            "721212121.HLE + 721219128 + HLE.HL50Fxxx — class 721 ZTI vnitřní sprchové žlaby nerez DN50 — WRONG"
+          ],
+          "lesson": "Venkovní pojízdný liniový žlab = class 221 (montáž žlabu) + 011 A08 (montáž mříže), NE 721 ZTI ani 771 dlaždice. Marker: 'pojízdný / do komunikace / ACO Drain / rošt litinový D400'.",
+          "double_count_flag": "935113111 'osazení s krycím roštem' vs 953941212 separate mříž osazení. kros_catalog.db subset (9173 items) neobsahuje 935*/592* → CANNOT verify. Per §9 KEEP both (KROS link 953941212 ↔ 55241040 naznačuje separate montáž mříže). User final review Stage 3 — viz ABMV_36."
+        }
+      },
+      "_sequence_position": 242,
+      "_phase": 12,
+      "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
+      "_krok": "Liniový žlab SZ + JZ fasáda 46.5 m — complete (výkop → žlab polymerbeton + osazení → lože + obetonování → rošt D400 + osazení mříže → vpusti DN150 + čela; real ÚRS codes, pending ABMV_35/36)",
+      "_vzorec_display": "2 × 2 = 4 ks  [TZ:ARS D.1.1, user_measurement:2026-05-27, customer_reminder:SOLAR DISPOREC 2026-05-27]"
     },
     {
       "id": "M-VK-019",
@@ -17447,7 +18223,7 @@
         "kapitola_decision": "M-VK / SO-13 (new — venkovní úpravy in bid per investor phone call 2026-05-27, SOLAR DISPOREC scope expansion)",
         "kros_hint": "171xxx (zemní práce — finální úpravy)"
       },
-      "_sequence_position": 234,
+      "_sequence_position": 243,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
       "_krok": "Vyspádování okolního terénu k odvodnění",
@@ -17527,12 +18303,12 @@
         "kros_hint": "181xxx (terénní úpravy + osetí)",
         "cross_dedup_note": "DIFFERENT from HSV-1-024 (Náhradní výsadba DŘEVIN — replacement trees). M-VK-018 = travní porost na zbytkových plochách. NO overlap."
       },
-      "_sequence_position": 235,
+      "_sequence_position": 244,
       "_phase": 12,
       "_phase_title": "VENKOVNÍ ÚPRAVY + ZTI (SO-13 + SO-14) — VV authoritative + norm-verified",
       "_krok": "Ohumusování + osetí travou zbytkových ploch",
       "_vzorec_display": "500 m²  [document:C.3 KOO situace, document:A101 půdorys 1NP, document:A103 řez A-B]"
     }
   ],
-  "count": 235
+  "count": 244
 }
