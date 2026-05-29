@@ -1,5 +1,9 @@
 # TASK: VZ Scraper + Work Packages DB v3.0
 
+> **✅ KANONICKÁ / ŽIVÁ kopie.** Archivní twin
+> `docs/archive/future-planning/TASK_VZ_Scraper_WorkPackages_v3.md` NENÍ
+> byte-identický a je označen ARCHIVED — řiď se touto root kopií.
+
 **Status:** PLANNED
 **Priority:** HIGH (data foundation for TZ→Soupis pipeline)
 **Branch:** TBD (claude/vz-scraper-workpackages-XXXXX)

@@ -5,7 +5,7 @@
 > matrices, robustness layers (DWG fallback chain, IFC streaming, IFC 
 > version tracking), full MCP tool suite.
 > 
-> **Reference document:** `docs/tasks/TASK_DocumentExtraction_Universal_Pipeline.md` 
+> **Reference document:** `docs/TASK_DocumentExtraction_Universal_Pipeline.md` 
 > (v3 spec). This task references §§ from there extensively.
 > 
 > **Prerequisite:** PR2 merged. Reconciliation + derivation work for 

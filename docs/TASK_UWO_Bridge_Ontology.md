@@ -1,5 +1,12 @@
 # TASK 1 — Universal Work Ontology + Catalog Bindings (UWO Bridge)
 
+> **⚠️ SUPERSEDED — ponecháno pro referenci, NEimplementovat podle této speky.**
+> Tuto paralelní UWO speku nahradila orchestrator WorkOntology rodina:
+> [`tasks/TASK_Orchestrator_WorkOntology_SO250.md`](tasks/TASK_Orchestrator_WorkOntology_SO250.md)
+> a [`tasks/TASK_Orchestrator_WorkOntology_SO202_Bridge.md`](tasks/TASK_Orchestrator_WorkOntology_SO202_Bridge.md).
+> Budoucí sessions se řídí těmi; tento dokument zůstává jen jako historický
+> kontext (cituje ho `docs/STAVAGENT_Architecture_Notes.md`). Nemazat.
+
 _Part of STAVAGENT architecture roadmap. See `docs/STAVAGENT_Architecture_Notes.md` for full context._
 _This task is foundation. TASKs 2-4 (Hybrid Search, Validation, MCP Security) build on it._
 

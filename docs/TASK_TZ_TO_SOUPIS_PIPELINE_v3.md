@@ -1,5 +1,9 @@
 # TASK: TZ → Soupis prací Pipeline v3.0
 
+> **✅ KANONICKÁ / ŽIVÁ kopie.** Archivní twin
+> `docs/archive/future-planning/TASK_TZ_to_Soupis_Pipeline_v3.md` NENÍ
+> byte-identický a je označen ARCHIVED — řiď se touto root kopií.
+
 **Status:** PLANNED (depends on Work Packages DB from VZ Scraper task)
 **Priority:** HIGH
 **Depends on:** TASK_VZ_SCRAPER_WORKPACKAGES_v3 (Stage 4 complete)
