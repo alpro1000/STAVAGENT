@@ -84,13 +84,33 @@ def test_policy_stage_derived_from_yaml_not_manifest():
     )
 
 
+def _auth_tool_costs():
+    """Load TOOL_COSTS from auth.py source without importing it.
+
+    app/mcp/auth.py imports bcrypt at module load, which is not installed in the
+    minimal test sandbox. We only need the TOOL_COSTS literal, so parse it out of
+    the source with AST rather than importing the module.
+    """
+    import ast
+    from pathlib import Path
+
+    src = Path(__file__).resolve().parents[1] / "app" / "mcp" / "auth.py"
+    tree = ast.parse(src.read_text(encoding="utf-8"))
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id == "TOOL_COSTS":
+                    return ast.literal_eval(node.value)
+    return {}
+
+
 def test_manifest_credits_match_auth_tool_costs():
     """Manifest credits stay in lockstep with auth.py TOOL_COSTS (no drift)."""
-    from app.mcp import auth as mcp_auth
-
+    tool_costs = _auth_tool_costs()
+    assert tool_costs, "could not load TOOL_COSTS from auth.py"
     for name, manifest in _manifests().items():
-        if name in mcp_auth.TOOL_COSTS:
-            assert manifest.credits == mcp_auth.TOOL_COSTS[name], name
+        if name in tool_costs:
+            assert manifest.credits == tool_costs[name], name
 
 
 def _manifests():

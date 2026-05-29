@@ -1383,6 +1383,11 @@ class BreakdownRequest(BaseModel):
     elements: list[BreakdownElement]
     project_type: str = "most"
     catalog: str = "otskp"
+    # Work-first contract (Pattern 15). Default produces a frozen, code-less list.
+    mode: str = "work_first"
+    # Opt-in stage gating: when set, the policy gateway enforces the session's
+    # workflow stage; when omitted, the call is session-less (current behavior).
+    session_id: Optional[str] = None
 
 
 @router.post("/tools/breakdown")
@@ -1390,7 +1395,12 @@ async def rest_breakdown(
     body: BreakdownRequest,
     authorization: Optional[str] = Header(None),
 ):
-    """Create work breakdown (20 credits)."""
+    """Create work breakdown (20 credits). Work-first by default (Pattern 15)."""
+    # Single server-side policy enforcement point (tools stay dumb). Session-less
+    # calls pass through; a supplied session_id activates stage gating.
+    from app.mcp.stage_gating_gateway import enforce_or_raise
+    enforce_or_raise(tool_name="create_work_breakdown", session_id=body.session_id)
+
     api_key = _extract_bearer(authorization)
     credit_check = mcp_auth.check_credits(api_key or "", "create_work_breakdown")
     if not credit_check["ok"]:
@@ -1401,6 +1411,7 @@ async def rest_breakdown(
         elements=[e.model_dump() for e in body.elements],
         project_type=body.project_type,
         catalog=body.catalog,
+        mode=body.mode,
     )
 
 
