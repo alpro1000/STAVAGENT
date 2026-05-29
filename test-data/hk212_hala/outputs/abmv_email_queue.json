@@ -441,6 +441,263 @@
       "resolution_pending": "Projektant fill A201 bilance table OR DXF polygon layer scan",
       "_created_date": "2026-05-24",
       "_blocker_priority": "low (bid-stage acceptable, final precision pending)"
+    },
+    {
+      "id": "ABMV_23",
+      "category": "design_clarification",
+      "severity": "high",
+      "status": "open",
+      "title": "Přeložka vodovodního řadu — vlastník confirmation pending",
+      "summary_cs": "C.3 koordinační situace DPS 06/2026 zakreslena 'PŘELOŽKA VODOVODNÍHO ŘADU' jako navržená inženýrská síť. Pokud stávající řad mimo pozemek 1939/1 → přeložku provádí vlastník vodovodu (Hradec Králové vodárny), NE zhotovitel. Pokud na pozemku → zhotovitel HK212.",
+      "blocks_vv": [
+        "M-VK-009 mnozstvi + cena finalize"
+      ],
+      "addressee": [
+        "SOLAR DISPOREC",
+        "Hradec Králové vodárny (provozovatel)"
+      ],
+      "items_affected": [
+        "M-VK-009"
+      ],
+      "resolution_required_before": "zahájení prací M-VK-009",
+      "created_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "id": "ABMV_24",
+      "category": "design_clarification",
+      "severity": "medium",
+      "status": "open",
+      "title": "Retenční nádrž 30 m³ typ — prefab default, monolit pending",
+      "summary_cs": "M-VK-011 default = prefabrikovaná betonová nádrž 6.15×2.75×2.0 m per user decision 2026-05-27. Pokud projektant statika (Volka) explicitně potřebuje MONOLITNÍ variantu (důvod: zatížení, geologie, prostorové omezení), confirm PŘED objednávkou prefab. Cenový dopad: monolit ~+40 % vs prefab.",
+      "blocks_vv": [
+        "M-VK-011 objednávka prefab"
+      ],
+      "addressee": [
+        "projektant statika (Volka)",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-011"
+      ],
+      "resolution_required_before": "objednávka prefab",
+      "created_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "id": "ABMV_25",
+      "category": "scope_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Venkovní VZT jednotka s rekuperací — VZT profession scope",
+      "summary_cs": "C.3 koordinační situace zakresluje 'VENKOVNÍ VZT JEDNOTKA S REKUPERACÍ' na východní straně haly. NE zahrnuto v SO-13 — spadá do VZT profession (Viktoria Yasinovska samostatný rozpočet, originally Stage D scope-cut as VZT-001..015). Tento ABMV je cross-reference záznam, NE blocker.",
+      "blocks_vv": [],
+      "addressee": [
+        "Viktoria Yasinovska (VZT zpracovatel)"
+      ],
+      "items_affected": [],
+      "scope_owner": "VZT_profession",
+      "cross_reference": "C.3 značení 'VENKOVNÍ VZT JEDNOTKA S REKUPERA[CÍ]'",
+      "created_at": "2026-05-27T00:00:00+00:00"
+    },
+    {
+      "id": "ABMV_26",
+      "category": "design_clarification",
+      "severity": "medium",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Material zpevněných ploch okolo haly",
+      "summary_cs": "Considered: Variant A asfalt 4-layer (ACO 11+ + ACL 16+ + MZK + ŠD) per task §1.3 user preliminary preference. Audit revealed TZ ARS B p09 + p21 explicitly specifies 'chodník pro pěší ze zámkové dlažby šířky 1.5 m', NE asfalt. C.3 KOO situace legenda obsahuje pouze 'STÁVAJÍCÍ VOZOVKA - ASFALT' — žádná položka navržená nová zpevněná plocha.",
+      "resolution_note": "User decision 2026-05-27: minimal scope per documentation conflicts. Pouze beton okapní chodník + 4 rampy + existing liniový žlab. NE asfalt (TZ p21 zachovat SZ existing). NE dlažba 1.5 m (user explicitly excluded, override TZ p09).",
+      "resolution_date": "2026-05-27",
+      "resolution_source": "User decision 2026-05-27 + audit outputs/zpevnene_plochy_audit.md",
+      "items_affected": [
+        "M-VK-013 dropped",
+        "M-VK-014 dropped"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_27",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Plocha zpevněných ploch dimenze",
+      "summary_cs": "Considered: 545 m² celá žlutá zóna z C.3 měření user (parkoviště 125 + manipulace 150 + napojení 50 + okolí 220). After TZ ARS audit: SZ komunikace EXISTING (ZACHOVAT), parkoviště nepodporeno (TZ p21 'bez nárůstu OA'), manipulační drátkobeton není v TZ.",
+      "resolution_note": "User decision 2026-05-27: 545 m² scope dropped entirely. Bid scope = pouze okapní chodník 56 m² (per řezy A103 detail) + rampy 43 m² (per A101). Total venkovní pavement scope = 99 m², NE 545 m² preliminary estimate.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [
+        "M-VK-013..017 all dropped"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_28",
+      "category": "scope_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Manipulační drátkobeton okolo vrat",
+      "summary_cs": "Considered: agent assumption v earlier scenarios — drátkobeton C25/30 XF4 s vlákny pro VZV provoz okolo sekčních vrat (~200 m²). NE TZ explicit spec; user assumption-based extension.",
+      "resolution_note": "User decision 2026-05-27: dropped from scope. NE TZ explicit, NE bid. If SOLAR DISPOREC requests post-bid → change request workflow.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_29",
+      "category": "scope_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Parkoviště 10 stání",
+      "summary_cs": "Considered: 10 kolmá parkovací stání 2.5×5.0 m = 125 m² asfalt + vodorovné značení (M-VK-016) per agent earlier assumption. TZ ARS B p21 explicit: 'Navýšení pohybu osobních vozidel se nepředpokládá. Jako skladníci budou pracovat stávající zaměstnanci.'",
+      "resolution_note": "User decision 2026-05-27: dropped per TZ p21 'bez nárůstu OA'. If SOLAR DISPOREC requests post-bid (e.g. expansion of zaměstnanců) → change request.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [
+        "M-VK-016 dropped"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_30",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "resolved_per_user_decision_2026-05-27",
+      "title": "Beton expozice XF3 vs XF4 pro okapní chodník",
+      "summary_cs": "Considered: XF3 (zmrazování bez chemikálií) vs XF4 (s chemikáliemi rozmrazovacích solí). Závisí na expozici hala perimetru: pokud hala přiléhá k veřejné solící komunikaci → XF4. Per audit: hala nepřiléhá veřejné komunikaci (pouze stávající areálová obslužná).",
+      "resolution_note": "User decision 2026-05-27: XF3 confirmed per hala neaplikuje rozmrazovací soli na svém perimetru. M-VK-020 beton C25/30 XF3.",
+      "resolution_date": "2026-05-27",
+      "items_affected": [
+        "M-VK-020"
+      ],
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_31",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Material okapního chodníku verification — projektant confirm",
+      "summary_cs": "Okapní chodník 0.7 m × 80 m × 0.20 m calculated as beton C25/30 XF3 + KARI per řezy A103 detail screenshots 2026-05-27 hatching interpretation. TZ ARS silent na material tohoto specific element (TZ p09 mentions only dlažbu 1.5 m, dropped per user). Verify s projektant Volka při execution kick-off.",
+      "blocks_vv": [],
+      "addressee": [
+        "projektant Volka",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-020",
+        "M-VK-021",
+        "M-VK-022",
+        "M-VK-023"
+      ],
+      "resolution_required_before": "execution kick-off (Stage 4)",
+      "created_at": "2026-05-27T20:30:00+00:00"
+    },
+    {
+      "id": "ABMV_32",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Okapní chodník podkladní vrstvy — DPS gap doplněno per ČSN",
+      "summary_cs": "Řez A103 detail ukazuje pouze beton profil okapního chodníku. Podkladní vrstvy (zemní pláň + hutnění, štěrk ŠD 150 mm + hutnění, boční bednění) NE zakresleny — typický DPS gap. Doplněno per standard CR technologie ČSN 73 6126 + ČSN EN 13670. Verify s projektant Volka jestli souhlasí s tloušťkou štěrk 150 mm + beton 200 mm. Standardní defensible scope. UPDATE 2026-05-27: + výkop rýhy 400 mm + geotextilie 300 g/m² doplněny per ČSN okapový chodník norma (jinak beton praská 1-2 roky).",
+      "blocks_vv": [],
+      "addressee": [
+        "projektant Volka",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-020",
+        "M-VK-022",
+        "M-VK-024",
+        "M-VK-025",
+        "M-VK-026",
+        "M-VK-027",
+        "M-VK-028",
+        "M-VK-029"
+      ],
+      "resolution_required_before": "execution kick-off (Stage 4)",
+      "created_at": "2026-05-27T22:00:00+00:00"
+    },
+    {
+      "id": "ABMV_33",
+      "category": "design_clarification",
+      "severity": "medium",
+      "status": "open",
+      "title": "Retenční nádrž objem 30 vs 15 m³ — VV authoritative",
+      "summary_cs": "C.3 situace + guessed item M-VK-011 = 30 m³ (6.15×2.75×2.0). Projektantský VV K1.14 = akumulačně retenční nádoba 15 m³ (⌀3.1 × v=2.0 m) + K1.13 zasakovací těleso min 2 m³. VV authoritative → bid = 15 m³ retenční + 2 m³ zasakovací. M-VK-011 superseded. Cena impact: objem -50 %. Verify projektant Volka.",
+      "blocks_vv": [],
+      "addressee": [
+        "projektant Volka",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-011 (superseded)",
+        "M-ZTI K1.13",
+        "M-ZTI K1.14"
+      ],
+      "resolution_required_before": "objednávka nádrže",
+      "created_at": "2026-05-27T23:30:00+00:00"
+    },
+    {
+      "id": "ABMV_34",
+      "category": "design_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Konfigurace 2.2 m kolem haly — okapník 0.7 + dlažba 1.5",
+      "summary_cs": "User decision 2026-05-27: betonový okapník 0.7 m ADJACENT zámková dlažba 1.5 m = 2.2 m total kolem haly. Okapník = drip/sokl ochrana u fasády (M-VK-020..029); dlažba = pěší chodník vně (M-VK-030..039, per TZ ARS B p09). Verify projektant Volka že kombinace 2.2 m souhlasí s detailem řezu A103 + osazením.",
+      "blocks_vv": [],
+      "addressee": [
+        "projektant Volka"
+      ],
+      "items_affected": [
+        "M-VK-020..029 okapník",
+        "M-VK-030..039 dlažba"
+      ],
+      "resolution_required_before": "execution kick-off",
+      "created_at": "2026-05-27T23:30:00+00:00"
+    },
+    {
+      "id": "ABMV_35",
+      "category": "design_clarification",
+      "severity": "medium",
+      "status": "open",
+      "title": "Liniový žlab — délka 46.5 m + load class + počet vpustí",
+      "summary_cs": "Žlab délka 46.5 m (user měření 2026-05-27, supersedes guessed 40 m). Spádový polymerbeton š130 + rošt D400 litina (nákladní doprava 5/týden). 2 vpusti DN150 (SZ + JZ větev). Verify projektant: load class D400 + počet vpustí dle hydraulického výpočtu ACO (spád 0.5 % na 46.5 m → ověřit počet sběrných bodů).",
+      "blocks_vv": [],
+      "addressee": [
+        "projektant Volka",
+        "SOLAR DISPOREC",
+        "ACO technik"
+      ],
+      "items_affected": [
+        "M-VK-040",
+        "M-VK-041",
+        "M-VK-042",
+        "M-VK-043",
+        "M-VK-044",
+        "M-VK-045",
+        "M-VK-046",
+        "M-VK-047",
+        "M-VK-048",
+        "M-VK-049"
+      ],
+      "resolution_required_before": "objednávka žlabu",
+      "created_at": "2026-05-27T23:55:00+00:00"
+    },
+    {
+      "id": "ABMV_36",
+      "category": "coding_clarification",
+      "severity": "low",
+      "status": "open",
+      "title": "Rošt montáž double-count — 935113111 vs 953941212",
+      "summary_cs": "935113111 'osazení žlabu s krycím roštem' (M-VK-043) vs 953941212 separate montáž mříže (M-VK-045). kros_catalog.db subset (9173 items) neobsahuje 935*/592* → nelze ověřit zda 935 už zahrnuje osazení roštu. Default KEEP both per KROS link 953941212 ↔ 55241040. User final review Stage 3: pokud 935113111 zahrnuje rošt montáž → DROP M-VK-045, M-VK-044 zůstane jen materiál.",
+      "blocks_vv": [],
+      "addressee": [
+        "rozpočtář Stage 3",
+        "SOLAR DISPOREC"
+      ],
+      "items_affected": [
+        "M-VK-043",
+        "M-VK-045"
+      ],
+      "resolution_required_before": "Stage 3 finalizace ceny",
+      "created_at": "2026-05-27T23:55:00+00:00"
     }
   ]
 }

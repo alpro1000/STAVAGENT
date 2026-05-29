@@ -2,14 +2,14 @@
 
 **Status:** generated, validated, ready for manual KROS/URS + price assignment.
 
-**Branch:** `claude/hk212-add-vytapeni`
-**Date:** 2026-05-26
+**Branch:** `claude/hk212-vk-final-minimal`
+**Date:** 2026-05-28
 
 ## Counts
-- 150 items v logickém stavebním pořadí (138 baseline + 12 M-UT vytápění)
-- 12 fází (1–11, vč. nová 9.5 TZB Vytápění mezi Podlaha průmyslová a Ostatní + Přesun hmot)
-- 12 items added (M-UT-001..012), 0 skipped, 0 invented
-- 1 ABMV updated (ABMV_1 → resolved_authoritative, 60 kW DPS)
+- 244 active items (138 baseline + 12 M-UT + 43 M-VK venkovní úpravy + 56 M-ZTI z VV; 11 inactive: 5 dropped + 6 superseded vč. M-VK-012 liniový žlab)
+- 13 fází (1–12, vč. 9.5 TZB Vytápění + nová 12 Venkovní úpravy po Dokončení)
+- 36 active items added (12 M-UT + 24 M-VK = 14 kept + 10 okapní layers), 5 dropped per user decision, 0 invented
+- 1 ABMV updated + 3 ABMV opened (ABMV_23/24/25 from PR #1235) + 5 ABMV resolved + 1 new (ABMV_26..31 from this PR)
 
 ## Per-phase distribution
 - FÁZE 1: 20 items
@@ -24,18 +24,19 @@
 - FÁZE 9.5: 12 items
 - FÁZE 10: 2 items
 - FÁZE 11: 9 items
+- FÁZE 12: 94 items
 
 ## Quality flags propagated (from items.json)
-- `_vyjasneni_ref` open ABMV: 8 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_3
+- `_vyjasneni_ref` open ABMV: 14 → ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_3, ABMV_31, ABMV_32, ABMV_34, ABMV_35, ABMV_36
 - `_review_qty`: 1 → PSV-OPL-005
 - `_review_concrete_class`: 1 → HSV-2-013
-- confidence < 0.70: 80 items (yellow-tinted v XLSX)
+- confidence < 0.70: 81 items (yellow-tinted v XLSX)
 
 ## Validation (§6)
-- ✔ row count = 150 (excl. separator rows)
+- ✔ row count = 168 (excl. separator rows + dropped items)
 - ✔ each items.json id appears exactly once
 - ✔ no id missing from output
-- ✔ phases ordered 1→9, 9.5, 10, 11 monotonically
+- ✔ phases ordered 1→9, 9.5, 10, 11, 12 monotonically
 - ✔ within phase: výztuž → bednění → beton; doprava → montáž; dodávka → instalace
 
 ## Sidecar files

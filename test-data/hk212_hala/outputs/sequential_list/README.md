@@ -1,13 +1,13 @@
 # HK212 Sequential Construction List
 
-150 položek v logickém pořadí výstavby (fáze 1–11, vč. 9.5 TZB Vytápění).
+244 active položek v logickém pořadí výstavby. Fáze 12 = Venkovní úpravy (SO-13) + ZTI (SO-14, 56 items z projektantského VV). 5 items dropped (M-VK-013..017 asfalt) + 5 superseded by VV (M-VK-005/006/007/010/011) preserved s _status_flag. Okapní chodník 10-layer + zámková dlažba 1.5 m 10-layer.
 Žádné kódy, žádné ceny — jen popis + výměra ve správném pořadí.
 
 **Použití:** user manually adds KROS/URS codes + ceny per row.
 
-**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (150 items)
-**Branch:** `claude/hk212-add-vytapeni` (12 M-UT items added per investor scope change 2026-05-26)
-**Generated:** 2026-05-26
+**Source:** `outputs/phase_1_etap1/items_hk212_etap1.json` (255 entries, 244 active)
+**Branch:** `claude/hk212-vk-final-minimal` (12 M-UT items added per investor scope change 2026-05-26)
+**Generated:** 2026-05-28
 
 ## Fáze
 1. PŘÍPRAVA STAVENIŠTĚ + GEODÉZIE
@@ -22,6 +22,7 @@
 9.5. TZB INSTALACE — VYTÁPĚNÍ (M-UT, 12 items, DPS D.1.4.2)
 10. OSTATNÍ + PŘESUN HMOT
 11. DOKONČENÍ + REVIZE + ODEVZDÁNÍ
+12. VENKOVNÍ ÚPRAVY (SO-13, M-VK, 24 active items — minimal scope + okapní chodník complete 10-layer stack, DPS 06/2026)
 
 ## Soubory
 - `hk212_sequential_list.xlsx` — single-sheet "Postup stavby", formatted, freeze row 1, includes Vzorec / Zdroj výměry column
@@ -31,8 +32,8 @@
 ## Sloupec "Vzorec / Zdroj výměry"
 Každý řádek nese stručný výpočet kvantity + zdrojové reference (výkres / TZ / statika / Step3 / phase ref) extrahované z `items_hk212_etap1.json` field `audit_trail.formula` + `audit_trail.reference`. Pokud zdroj nelze odvodit, řádek nese `(zdroj nenalezen — manual verify)`. Text je truncated na ~220 znaků; plné detaily (vstupy + krok-za-krok + analytical_journey) zůstávají v `items.json` audit_trail.
 
-## ABMV open (8)
-ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_3
+## ABMV open (14)
+ABMV_10, ABMV_11, ABMV_13, ABMV_15, ABMV_16, ABMV_17, ABMV_20, ABMV_23, ABMV_3, ABMV_31, ABMV_32, ABMV_34, ABMV_35, ABMV_36
 
 ## _review_qty flags (1)
 PSV-OPL-005
