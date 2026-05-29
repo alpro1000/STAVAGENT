@@ -17,6 +17,7 @@ from app.db.models.job import BackgroundJob
 from app.db.models.version import BudgetVersion
 from app.db.models.kb_cache import KnowledgeBaseCache
 from app.db.models.credential import UserCredential
+from app.db.models.orchestrator_session import OrchestratorSession
 
 __all__ = [
     # Base classes
@@ -35,4 +36,5 @@ __all__ = [
     "BudgetVersion",
     "KnowledgeBaseCache",
     "UserCredential",
+    "OrchestratorSession",
 ]
