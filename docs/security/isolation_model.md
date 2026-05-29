@@ -5,7 +5,12 @@
 > `claude/security-isolation-hotfix`). Supersedes the pre-multi-tenant
 > "kiosk mode" assumptions documented inline in some routes.
 >
-> **Audit reference:** `docs/audits/pre_cemex_2026_06_28/2026-05-19_audit_mcp_isolation_submission_sidelines.md` § Section 2.
+> **Audit reference (odloženo — audit zatím nevznikl):** plánovaným
+> zdrojem byl `docs/audits/pre_cemex_2026_06_28/2026-05-19_audit_mcp_isolation_submission_sidelines.md`
+> § Section 2, což je nedodaný výstup tasku
+> [`../tasks/TASK_AUDIT_MCP_Isolation_Cemex_Sidelines.md`](../tasks/TASK_AUDIT_MCP_Isolation_Cemex_Sidelines.md).
+> Tento isolation model byl ověřen přímo proti kódu (viz commits výše),
+> nikoli proti tomuto auditu — odkaz neukazuje na existující soubor.
 
 ## TL;DR
 

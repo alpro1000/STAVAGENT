@@ -3116,8 +3116,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "HEA180",
-        "HEA200",
-        "HEA160"
+        "HEA160",
+        "HEA200"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3163,8 +3163,8 @@
       "description": "TZ ARS — komínové těleso (zachované / nové)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Komín",
-        "komín"
+        "komín",
+        "Komín"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3191,7 +3191,7 @@
       "tz_mention_sample": [
         "opěrné stěn",
         "Opěrná stěn",
-        "opěrná stěn"
+        "bílá vana"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3241,9 +3241,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "protipožární",
-        "EI 180",
-        "Protipožární"
+        "EI 90",
+        "Protipožární",
+        "EI 180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3282,8 +3282,8 @@
       "description": "TZ ARS — krb (PSV-73)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Krb",
-        "krb"
+        "krb",
+        "Krb"
       ],
       "items_keyword_hit": true,
       "status": "covered",

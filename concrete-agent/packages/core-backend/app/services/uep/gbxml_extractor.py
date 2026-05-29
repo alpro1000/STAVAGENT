@@ -38,7 +38,7 @@ exports can be ≥ 50 MB, we therefore stream via `iterparse` exactly as
 `landxml_extractor.py` does.
 
 Reference: docs/tasks/TASK_UEP_PR4.md §3.2
-Reference: docs/tasks/TASK_DocumentExtraction_Universal_Pipeline.md §3.1.3, §15.4
+Reference: docs/TASK_DocumentExtraction_Universal_Pipeline.md §3.1.3, §15.4
 """
 
 from __future__ import annotations
