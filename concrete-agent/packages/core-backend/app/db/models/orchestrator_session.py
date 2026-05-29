@@ -104,6 +104,12 @@ class OrchestratorSession(Base):
     # user = relationship("User")
     # project = relationship("Project")
 
+    # NOTE: created_at / updated_at are inherited from Base -> TimestampMixin,
+    # which sets `onupdate=datetime.utcnow` on updated_at. All writes in PR1 go
+    # through the ORM repository (read -> mutate -> commit), so updated_at is
+    # bumped on every state transition. The codebase relies on this ORM-level
+    # onupdate uniformly (no DB triggers exist on any table).
+
     def __repr__(self) -> str:
         return (
             f"<OrchestratorSession(id={self.id}, state='{self.workflow_state}', "

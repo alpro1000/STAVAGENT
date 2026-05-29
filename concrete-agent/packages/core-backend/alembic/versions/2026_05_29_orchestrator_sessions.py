@@ -120,7 +120,7 @@ def upgrade() -> None:
             "updated_at",
             sa.DateTime(timezone=True),
             server_default=sa.func.now(),
-            nullable=False,
+            nullable=True,
         ),
         sa.CheckConstraint(
             "status IN ('active', 'committed', 'abandoned', 'undone')",
@@ -152,9 +152,27 @@ def upgrade() -> None:
         "orchestrator_sessions",
         ["expires_at"],
     )
+    # created_at / updated_at indexed to match TimestampMixin (prevents
+    # autogenerate drift between the ORM model and the table).
+    op.create_index(
+        "ix_orchestrator_sessions_created_at",
+        "orchestrator_sessions",
+        ["created_at"],
+    )
+    op.create_index(
+        "ix_orchestrator_sessions_updated_at",
+        "orchestrator_sessions",
+        ["updated_at"],
+    )
 
 
 def downgrade() -> None:
+    op.drop_index(
+        "ix_orchestrator_sessions_updated_at", table_name="orchestrator_sessions"
+    )
+    op.drop_index(
+        "ix_orchestrator_sessions_created_at", table_name="orchestrator_sessions"
+    )
     op.drop_index(
         "ix_orchestrator_sessions_expires_at", table_name="orchestrator_sessions"
     )
