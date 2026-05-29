@@ -277,6 +277,76 @@ def build_decomp_map(wb, data):
     return ws
 
 
+def build_pending_decisions(wb):
+    """PENDING DECISIONS sheet — surfaces open vyjasnění + skipped anchor gaps
+    so they're not forgotten during Stage 3 catalog binding. Reads
+    vyjasneni_queue.json (open items) — these works are NOT in items.json
+    (verified-not-in-TZ per Stage 1B), but Karel must decide on them."""
+    queue_path = ROOT / "inputs" / "meta" / "vyjasneni_queue.json"
+    try:
+        with queue_path.open() as f:
+            q = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        q = {"items": []}
+    open_vyj = [v for v in q.get("items", []) if v.get("status") == "open"]
+
+    ws = wb.create_sheet("PENDING_DECISIONS")
+    headers = ["#", "Severity", "Téma (čeká rozhodnutí)", "Stav v rozpočtu", "Next action"]
+    widths = [6, 12, 50, 30, 60]
+    for c, (h, w) in enumerate(zip(headers, widths), start=1):
+        cell = ws.cell(1, c, value=h)
+        cell.font = HEADER_FONT
+        cell.fill = HEADER_FILL
+        cell.alignment = HEADER_ALIGN
+        cell.border = BORDER
+        ws.column_dimensions[get_column_letter(c)].width = w
+    ws.freeze_panes = "A2"
+
+    # Intro note row
+    intro = ws.cell(2, 1, value=(
+        "⚠ Tyto práce NEJSOU v items.json ani v atomic worklistu — byly ověřeny "
+        "jako NEzmíněné v ARS dům TZ (Stage 1B-verify). Před cenotvorbou / katalogovým "
+        "mapováním (Stage 3) je nutné rozhodnutí projektanta/investora. NE zapomenout."
+    ))
+    intro.font = NOTE_FONT
+    intro.alignment = LEFT
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=5)
+    row = 3
+
+    for v in open_vyj:
+        vals = [
+            v.get("id"),
+            v.get("severity", ""),
+            v.get("title", ""),
+            "NEPŘIDÁNO (verify-first)",
+            (v.get("next_action") or "")[:300],
+        ]
+        for c, val in enumerate(vals, start=1):
+            cell = ws.cell(row, c, value=val)
+            cell.font = BODY_FONT
+            cell.border = BORDER
+            cell.alignment = CENTER if c == 1 else LEFT
+            cell.fill = BLANK_FILL  # red tint — needs attention
+        row += 1
+
+    # PM05 was SKIP-silent (not even a vyjasnění) — surface it too
+    pm05 = [
+        "PM05", "medium",
+        "Okapový chodník + obvodová drenáž domu — NOT_IN_TZ (žádná zmínka v TZ)",
+        "SKIP (rekonstrukce — možná existuje)",
+        "Volitelné: ověřit zda okapový chodník po obvodu domu je v scope (mimo BV drenáž HSV1.015). Pokud ano → HSV-1 položka.",
+    ]
+    for c, val in enumerate(pm05, start=1):
+        cell = ws.cell(row, c, value=val)
+        cell.font = BODY_FONT
+        cell.border = BORDER
+        cell.alignment = CENTER if c == 1 else LEFT
+        cell.fill = DECOMP_FILL  # amber — informational skip
+    row += 1
+
+    return ws, len(open_vyj) + 1
+
+
 def main() -> None:
     # Defensive load — decomposition map may be missing / malformed / lack key
     try:
@@ -311,6 +381,7 @@ def main() -> None:
     _, n_vrn = build_profession_sheet(wb, "260219_DUM_VRN", dum_vrn, VRN_ORDER)
     _, n_sklad = build_profession_sheet(wb, "260217_SKLAD", sklad, HSV_ORDER + PSV_ORDER + VRN_ORDER)
     build_decomp_map(wb, data)
+    _, n_pending = build_pending_decisions(wb)
 
     TARGET.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -338,6 +409,7 @@ def main() -> None:
         "traceability_100pct": traceability_ok,
         "fabricated_codes": len(fabricated),
         "pattern_26_honest_blanks": data["_summary"]["familia_distribution"].get("(blank)", 0),
+        "pending_decisions_rows": n_pending,
     }, indent=2, ensure_ascii=False))
 
 
