@@ -1,11 +1,16 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-05-26 (parallel-sync pass):
-Sequential 1..37 validated (no duplicates, no gaps).
-last_number: 38
-next_pattern: 39  ← use this for any new additions.
+Pattern numbering audit 2026-05-29 (terasa-miss anti-hallucination pass):
+Sequential 1..40 validated (no duplicates, no gaps).
+last_number: 40
+next_pattern: 41  ← use this for any new additions.
 last_audit: 2026-05-29
+
+Added 2026-05-29 (RD Jáchymov terasa 762 miss): Pattern 39 (Vision-first
+reading for drawings) + Pattern 40 (Host-delegated vision + MCP validation
+gate). Pattern 9 enriched (re-read before DECIDING, not just generating;
+periodic re-grounding). Pattern 29 enriched (citation present ≠ VERIFIED).
 
 Expansion 2026-05-26: 20 new patterns 17..36 added from RD Jáchymov pilot
 CEV session. Patterns 12 + 15 enriched (workflow + freeze-gate detail).
@@ -452,6 +457,13 @@ Výsledek: positions s vague popisy, wrong confidence (0.50), missing TZ spec de
 - HK212 hala: `outputs/phase_1_etap1/items_hk212_etap1.json` PSV-OPL-001..008
 - ABMV_13: KS FR/FF K-roc vs IPN → MW confirmed (never use IPN/PIR for HK212)
 - `scripts/phase_1_etap1/stage_e_add_opl.py` — reference implementation
+
+### Enrichment 2026-05-29 (terasa 762 miss — re-read before DECIDING, not just generating)
+Pattern 9's "re-read TZ before **generating**" extends to re-read the source before any **fact decision** — mutating, reconciling, or **discarding** a code / composition / qty. Memory is not a source. Two triggers:
+- **Event trigger** — before any decision that changes a fact (discard / overwrite / reclassify), re-verify the source document (vision for drawings, Pattern 39). Never decide from memory or a prior step's summary.
+- **Cadence trigger (periodic re-grounding)** — during long generation/audit runs, re-read the source every N items / each skladba rather than trusting accumulated working memory.
+
+**Anti-pattern:** deciding to discard/overwrite a fact because "I remember the source said X". The terasa reconciliation discarded the 762 wood layer from memory ("frozen popis said dlaždice na terče") without re-opening ŘEZ C-C — a vision re-read would have shown the wood. (Origin: RD Jáchymov terasa 762 discard.)
 
 ---
 
@@ -1392,6 +1404,12 @@ RD Jáchymov pilot requires per-item provenance for File A audit deliverable. Ma
 - Pattern 31 (CEV) — Matrix C verifies _source claims
 - Pattern 32 (Two-file delivery) — File A surfaces these fields as columns
 
+### Enrichment 2026-05-29 (terasa 762 miss — citation present ≠ VERIFIED)
+A populated `_source` field is **necessary but not sufficient** for VERIFIED status. The terasa item carried `_source: "PDF řez C-C explicit composition"` — a *real* reference — yet the extracted content (4 layers, wood dropped, dlaždice inverted) did **not** match the drawing (7 layers). VERIFIED requires the claim to **match the cited source on re-read** (vision for drawings, Pattern 39), not merely cite it.
+- `_source` missing → **UNVERIFIED**.
+- `_source` present but not confirmed-against-document → **UNVERIFIED until content-match confirmed**.
+- CEV Matrix C (Pattern 31) verdict for a citation-present-but-content-mismatched item is `NOT_VERIFIABLE` / `PARTIAL`, never `VERIFIED`.
+
 ---
 
 ## Pattern 30: Czech regex diacritic boundary pitfall
@@ -1776,6 +1794,69 @@ RD Jáchymov Stage 1B added 2 anchor-gap items (212 → 214 — přesun hmot + l
 - Pattern 32 (Two-file delivery) — *which* views exist; Pattern 38 governs their regeneration
 - Pattern 36 (File staging convention) — `_superseded/` convention extended here to baseline snapshots
 - Pattern 28 (Schema integrity) — the count-assertion is a schema-level invariant
+
+---
+
+## Pattern 39: Vision-first reading for drawings (skladby / řezy / detaily)
+
+**Source:** RD Jáchymov terasa 762 miss (2026-05-29).
+
+### Problem
+Technical drawings carry critical information as **graphical** content — layered skladba tables, řezy with composition call-outs, dimension chains, hatched material legends. Text extraction (pypdf / pdfplumber) and even text-OCR (tesseract) flatten or drop the graphical structure: a multi-layer skladba table becomes a jumble of disordered tokens, **layer order is lost**, and the agent silently mis-reconstructs the composition.
+
+### Algorithm
+1. For any drawing whose value is **graphical** (skladby, řezy, detaily, composition tables, hatched legends): read the drawing **AS AN IMAGE** via multimodal vision (Gemini Vision / Claude vision), rendering the page → PNG @ ≥200 DPI.
+2. Extract the composition with explicit structure: ordered `layers[]` (top→bottom as drawn), each with material + thickness + role.
+3. Text extraction (pypdf) + text-OCR (tesseract, Pattern 23) are **fallback only** — for plain narrative text, never for graphical composition.
+4. Cross-check the vision-extracted skladba against any TZ text mention (Pattern 31 Matrix D consistency).
+
+### Acceptance
+Every skladba/řez-derived item cites a vision-read source (e.g. `"ŘEZ C-C vision-read, 7 vrstev"`) and the layer order matches the drawing. A skladba reconstructed purely from text extraction is flagged UNVERIFIED until vision-confirmed.
+
+### Anti-pattern
+Running pypdf / pdfplumber / tesseract on a graphical řez and trusting the token output as the composition. Loses layer order + graphical-only content (hatching, leader lines, layer brackets).
+
+### Origin context
+RD Jáchymov — `ŘEZ C-C` was available but read as text; the 7-layer terasa skladba (prkna → dřevěný rošt → terče → betonové dlaždice *roznášecí* → štěrk → hrubý podsyp → geotextilie) collapsed to **4 ops** with wood (762) lost and "dlaždice na terče" inverted (tiles placed above terče instead of as the roznášecí layer below). A vision read would have captured all 7 layers in order.
+
+### Related
+- Pattern 23 (Per-drawing extraction) — *coverage* of all sheets; Pattern 39 is the *reading modality* for each
+- Pattern 31 (CEV) — vision is the correct Layer-1/Layer-2 reading method for graphical sheets
+- Pattern 9 (Re-read source before generating/deciding) — vision is *how* you re-read a drawing
+- Pattern 40 (Host-delegated vision) — *who* does the vision in an MCP topology
+
+---
+
+## Pattern 40: Host-delegated vision + MCP deterministic validation gate
+
+**Source:** RD Jáchymov terasa 762 miss (2026-05-29) — architecture corollary.
+
+### Problem
+The STAVAGENT MCP server exposes 9 deterministic-Python tools (incl. `analyze_construction_document`). A naive design tries to make the MCP server itself "do vision" (run pypdf / OCR server-side) — but it has no multimodal model, so its drawing reading degrades to text extraction (the terasa failure mode). Meanwhile the **host** chat (ChatGPT / Claude.ai / Gemini) already has native multimodal vision. Duplicating a weaker vision in the MCP server is both redundant and worse.
+
+### Principle
+Vision is the **host's** job; the MCP server's job is to **orchestrate + validate deterministically**. The MCP forces the host to do vision correctly via 4 mechanisms:
+1. **Schema requires structured grounded fields** — `analyze_construction_document` must return ordered `layers[]` (material + thickness + role) + per-field `source`. A flat string is rejected.
+2. **Description instructs vision-first** — the tool description tells the host to read the drawing AS AN IMAGE (Pattern 39) before calling.
+3. **Validation gate rejects ungrounded output** — missing `source` / missing layer order / layer-count mismatch → the tool returns an error asking the host to re-read.
+4. **Deterministic cross-reference** — MCP parses the TZ text deterministically and compares against the host-vision skladba; divergence (e.g. TZ says "garapa prkna", vision-skladba has no wood) → flag — catches hallucination.
+
+The MCP cannot literally make the model "look", but schema + validation make the host **unable to submit accepted data** without having done vision properly.
+
+### Acceptance
+MCP document/skladba tools (a) require ordered `layers[]` + `source`, (b) reject ungrounded submissions, (c) emit a deterministic TZ↔vision cross-check verdict. Host output that fails the gate is bounced back, not silently stored.
+
+### Anti-pattern
+MCP server runs its own pypdf / OCR and returns a flat text blob as "the skladba" (re-creates the terasa miss server-side). Or accepts host output with no `source` / no layer structure (no gate).
+
+### Origin context
+The terasa miss happened in a Claude Code session reading the řez as text. Generalized: any host (incl. MCP clients ChatGPT / Claude.ai) reading drawings must do vision; the MCP server's value-add is deterministic validation (TZ parse, catalog, schema), **not** duplicating the host's vision.
+
+### Related
+- Pattern 27 (External LLM cross-validation) — sibling; Pattern 40 is the host↔MCP division of labor
+- Pattern 39 (Vision-first) — *what* the host must do
+- Pattern 31 (CEV) — MCP deterministic layers feed the cross-check
+- Pattern 29 (Source provenance) — the grounded fields the gate requires
 
 ---
 
