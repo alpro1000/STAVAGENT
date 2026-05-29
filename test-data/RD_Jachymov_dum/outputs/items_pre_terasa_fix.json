@@ -153,20 +153,19 @@
       "kapitola_group": "HSV",
       "_gate": "HSV",
       "kapitola": "HSV-1 Zemní práce",
-      "subkapitola": "Terasa — podkladní skladba (pod dřevěnou pochozí vrstvou PSV76.002)",
-      "popis": "Terasa za opěrnou stěnou — PODKLADNÍ SKLADBA pod dřevěnou pochozí vrstvou (PSV76.002 Truhlář): rektifikovatelné terče výšky ~50 mm + betonové dlaždice tl. 50 mm jako roznášecí vrstva POD terče + štěrkový podsyp 16/32 mm tl. 100 mm + hrubý podsyp 4/8 mm tl. 150 mm + geotextilie separační",
+      "subkapitola": "Terasa garapa — podkladní rošt",
+      "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm + štěrkový podsyp 16/32 mm tl. 100 mm + hrubý podsyp 4/8 mm tl. 150 mm + geotextilie",
       "mj": "m²",
       "mnozstvi": 30.0,
-      "mnozstvi_formula": "PDF řez C-C explicit composition — terasa ~30 m² (rozměry z TZ ARS dům §4 terasa za op. stěnou). ŘEZ C-C: dlaždice = roznášecí vrstva POD terče (NE na terče); terče nesou dřevěnou pochozí vrstvu PSV76.002.",
+      "mnozstvi_formula": "PDF řez C-C explicit composition + terasa ~30 m² odhad (rozměry z TZ ARS dům §4 terasa za op. stěnou)",
       "mnozstvi_confidence": 0.85,
       "urs_code_proposed": null,
       "urs_alternatives": [
-        "596811220",
         "564851111"
       ],
-      "urs_status": "family_564_leaf_lookup_required",
+      "urs_status": "family_636311_leaf_lookup_required",
       "urs_confidence": 0.55,
-      "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — podkladní skladba terasy (terče + dlaždice roznášecí + podsypy + geotextilie); dřevěná pochozí vrstva (prkna garapa + dřevěný rošt) = samostatná položka PSV76.002 Truhlář (split-by-trade)",
+      "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 5-vrstvý podkladní systém terasa (Path C Tier 3 embedded tables); dřevěná prkna garapa same item v PSV-76 Truhlář",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -175,11 +174,11 @@
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.005",
       "realizuje_skladbu": "Terasa",
-      "cross_verification_status": "REZ_CC_CORRECTED_substructure_dlazdice_roznaseci_pod_terce",
+      "cross_verification_status": "RECONCILED_636311_terasa_na_terce",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS; REZ_CC_TERASA_FIX_2026-05-29",
-      "urs_code_family_6digit": "564",
-      "correct_code_hint": "ŘEZ C-C OPRAVA 2026-05-29: betonové dlaždice = ROZNÁŠECÍ vrstva POD rektifikovatelné terče (NE '636311 dlaždice na terče' — to byla chyba reconciliation). Dřevěná pochozí vrstva (prkna + dřevěný rošt, família 762) = samostatná položka PSV76.002 Truhlář (split-by-trade, žádné zdvojení 30 m²). Podkladní roznášecí dlaždice + podsypy → família 564/596 — leaf Stage 3 (app.urs.cz)."
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS",
+      "urs_code_family_6digit": "636311",
+      "correct_code_hint": "636311 família — betonové dlaždice NA TERČE (rektifikovatelné terče). USE busy-einstein 636311. happy-hamilton 762952004 (carpentry) DISCARDED — superseded wooden-decking assumption; frozen popis is betonové dlaždice na terče, NOT dřevěná prkna. Leaf binding Stage 3."
     },
     {
       "objekt": "260219_dum",
@@ -3702,30 +3701,25 @@
       "kapitola_group": "PSV",
       "_gate": "PSV",
       "kapitola": "PSV-76 Truhlář",
-      "subkapitola": "Terasa garapa za opěrnou stěnou — dřevěná pochozí vrstva",
-      "popis": "Dřevěná terasa za opěrnou stěnou — prkna garapa 145×25 mm na dřevěném roštu z hranolů 50 mm na rektifikovatelných terčích (terče + podkladní skladba viz HSV1.005)",
+      "subkapitola": "Terasa garapa za opěrnou stěnou",
+      "popis": "Dřevěná terasa za opěrnou stěnou — prkna garapa 145×25 mm na hliníkový rošt na rektifikovatelných terčích",
       "mj": "m²",
       "mnozstvi": 30.0,
       "mnozstvi_formula": "DXF dum_situace PLOT_DREVENY_04 = 57 INSERTs (timber pattern blocks) → odhad terasa ~30 m². NEPOUŽITELNÉ pro 3.NP biodeska (PLOT_DREVENY_04 v dum_DPZ = 0).",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": null,
+      "urs_code_proposed": "771474112",
       "urs_alternatives": [
         "766811111"
       ],
-      "urs_status": "family_762_leaf_lookup_required",
+      "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ ARS dům §4 + DXF dum_situace PLOT_DREVENY_04 (terasa, ne 3.NP); ŘEZ C-C potvrzuje dřevěný rošt z hranolů (NE hliníkový) + dřevěnou pochozí vrstvu",
+      "source": "TZ ARS dům §4 + DXF dum_situace PLOT_DREVENY_04 (terasa, ne 3.NP)",
       "subdodavatel": "truhlar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.002",
-      "urs_code_proposed_was": "771474112",
-      "urs_code_family_6digit": "762",
-      "cross_verification_status": "REZ_CC_CORRECTED_wood_deck_762_split_by_trade",
-      "correct_code_hint": "ŘEZ C-C 2026-05-29: dřevěná pochozí terasa (prkna garapa + dřevěný rošt z hranolů) → família 762 (tesařské/truhlářské konstrukce). Kód 771474112 (dlaždice domain) BYL WRONG — odstraněn (Pattern 26, nefabrikovat leaf). Rošt opraven hliníkový→dřevěný per řez C-C. Podklad (terče + dlaždice roznášecí + podsypy + geotextilie) = HSV1.005 (split-by-trade, žádné zdvojení).",
-      "_audit_gap_fixed": "REZ_CC_TERASA_FIX_2026-05-29"
+      "id": "260219_dum.PSV76.002"
     },
     {
       "objekt": "260219_dum",
@@ -6281,8 +6275,8 @@
       "subkapitola": "Bourání zdiva komínu",
       "popis": "Bourání vrchní části stávajícího komínu v posledním podlaží (cihelné zdivo, ručně), vč. likvidace cihelné suti",
       "mj": "m³",
-      "mnozstvi": 0.6,
-      "mnozstvi_formula": "průměr komín 0.50×0.50 × výška nad střechou ~2.4 m = 0.6 m³ (OPRAVA ChatGPT revize 2026-05-29: dříve 6.0 m³ = ×10 chybná inflace; skutečný objem 0.6 m³)",
+      "mnozstvi": 6.0,
+      "mnozstvi_formula": "průměr komín 0.50×0.50 × výška nad střechou ~2.4 m = 0.6 m³, × 10 m³ buffer pro suti + manipulace = 6.0 m³",
       "mnozstvi_confidence": 0.75,
       "urs_code_proposed": "962024141",
       "urs_alternatives": [
@@ -6300,11 +6294,10 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV6.016",
-      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_02; URS_PHASE5B_FAMILY_VERIFIED; CHATGPT_KOMIN_QTY_FIX_2026-05-29",
+      "_audit_gap_fixed": "PER_DRAWING_GAP_POZN_1_02; URS_PHASE5B_FAMILY_VERIFIED",
       "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26",
       "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/",
-      "mnozstvi_was": 6.0
+      "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-3-Budovy-a-haly---bourani-konstrukci-(2020-II)/19/"
     },
     {
       "objekt": "260219_dum",
@@ -6764,19 +6757,5 @@
     "budget_spent_usd": "~0.05 (4 MCP probes; find_otskp free, find_urs cheap perplexity)",
     "deliverable": "Family-resolved (274/596/636311 consensus + Phase 5 families) + 8 verified leaves + honest MANUAL LOOKUP blanks. File B 'URS vyber audit' sheet surfaces status per item for KROS binding.",
     "snapshot_before": "outputs/items_pre_stage3.json"
-  },
-  "_terasa_dvorek_fix_log": {
-    "applied_at": "2026-05-29",
-    "tag": "REZ_CC_TERASA_FIX_2026-05-29",
-    "evidence": "ŘEZ C-C (D.1.1.2.2.21) — drawing-confirmed",
-    "decision": "Option B — split-by-trade (no 30 m² double-count)",
-    "changes": {
-      "HSV1.005 (HSV-1)": "podkladní skladba: terče + betonové dlaždice ROZNÁŠECÍ POD terče + štěrk 16/32 + hrubý 4/8 + geotextilie; family 636311(na terče) → 564/596 (podkladní). Atomic decomp 4 → 5 ops.",
-      "PSV76.002 (PSV-76 Truhlář)": "dřevěná pochozí vrstva: prkna garapa + dřevěný rošt z hranolů (hliníkový→dřevěný per řez). Code 771474112 → blank (Pattern 26), family 762. Atomic decomp 1 → 2 ops.",
-      "HSV1.004 (HSV-1) dvorek": "atomic decomp 3 → 4 ops (dlažba 596 / kladecí vrstva 564 split); item popis already 4-layer, unchanged."
-    },
-    "double_count_guard": "30 m² wood lives ONLY in PSV76.002; terče lives ONLY in HSV1.005a. No overlap.",
-    "snapshot_before": "outputs/items_pre_terasa_fix.json",
-    "items_total": 214
   }
 }
