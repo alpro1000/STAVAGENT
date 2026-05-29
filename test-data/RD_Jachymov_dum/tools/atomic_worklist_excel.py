@@ -72,6 +72,43 @@ VRN_ORDER = ["VRN — Zařízení staveniště", "VRN — Doprava + odpad", "VRN
              "VRN — Dokumentace", "VRN — Revize", "VRN — Kolaudace", "VRN — Společné"]
 
 
+def _code_digits(code) -> int:
+    if not code:
+        return 0
+    return len(re.sub(r"[^\d]", "", str(code)))
+
+
+def classify_status(op: dict) -> str:
+    """4-tier finalized status (Alexander principle — work always remains,
+    code state is orthogonal):
+      ✓ verified              — leaf code verified (Phase 5 / carried / consensus leaf)
+      ⚠ kandidát-verify       — 9-digit leaf from generator, NOT yet verified
+      ⚠ família ???           — family resolved, leaf pending
+      ❌ blank — ÚRS online    — no code; bind later from app.urs.cz
+    """
+    s = (op.get("status") or "").lower()
+    code = op.get("urs_kod_kandidat")
+    digits = _code_digits(code)
+    family = op.get("urs_code_family_6digit")
+
+    if not code and not family:
+        return "❌ blank — ÚRS online"
+    if not code and family:
+        return "⚠ família ??? (ÚRS online)"
+    # has a code
+    if digits >= 9:
+        if ("verified" in s and "family" not in s) or "carried_verified" in s \
+           or s == "matched_websearch_verified" or "cross_discipline" in s \
+           or "reconciled_596" in s:
+            return "✓ verified"
+        return "⚠ kandidát-verify"
+    # family-only code (≤6 digit)
+    return "⚠ família ??? (ÚRS online)"
+
+
+URS_ONLINE_NOTE = "Doplnit leaf z CS ÚRS online (app.urs.cz, cen. úroveň 2026 01) dle família + popis + Vzorec."
+
+
 def status_icon(status: str) -> str:
     s = (status or "").lower()
     if "verified" in s and "cross_discipline" not in s and "carried" not in s:
@@ -110,6 +147,14 @@ def write_op_row(ws, row, op, poradi_override=None):
     code = op.get("urs_kod_kandidat")
     is_decomp = op.get("decomposition_type") in ("skladba_vrstva", "fixture")
     is_blank = not code
+    status_4tier = classify_status(op)
+    # Show família in code column when leaf blank but family known
+    family = op.get("urs_code_family_6digit")
+    code_display = code if code else (f"{family} ???" if family else "")
+    # Append ÚRS-online note to Pozn for blank/family ops (work always remains)
+    base_pozn = op.get("pozn") or ""
+    if ("família" in status_4tier) or ("blank" in status_4tier):
+        base_pozn = (base_pozn + "  " + URS_ONLINE_NOTE).strip() if base_pozn else URS_ONLINE_NOTE
     vals = [
         poradi_override if poradi_override is not None else op["poradi"],
         op["kapitola"],
@@ -117,11 +162,11 @@ def write_op_row(ws, row, op, poradi_override=None):
         op["mj"],
         op["mnozstvi"],
         op.get("qty_formula") or "",
-        code if code else "",
-        status_icon(op.get("status")),
+        code_display,
+        status_4tier,
         f"{op['parent_frozen_item_id']} → {op['atomic_id']}" if is_decomp else op["parent_frozen_item_id"],
         rs or "",
-        op.get("pozn") or "",
+        base_pozn,
     ]
     # Column indices (1-based): 1=Poř 4=MJ 5=Množství 8=Status
     for c, v in enumerate(vals, start=1):
@@ -217,6 +262,27 @@ def build_souhrn(wb, data):
     r += 1
     for kap, n in summ["atomic_per_kapitola"].items():
         kv(kap, n)
+    r += 1
+
+    # STAV KÓDŮ — 4-tier code-state summary computed from ops
+    from collections import Counter as _C
+    tier = _C(classify_status(o) for o in data["atomic_operations"])
+    section("STAV KÓDŮ (4 tiers — práce kompletní bez ohledu na stav kódu)")
+    for label, key in [("✓ verified (leaf ověřen)", "✓ verified"),
+                       ("⚠ kandidát-verify (leaf generátor, neověřen)", "⚠ kandidát-verify"),
+                       ("⚠ família ??? (leaf z ÚRS online)", "⚠ família ??? (ÚRS online)"),
+                       ("❌ blank — ÚRS online", "❌ blank — ÚRS online")]:
+        kv(label, tier.get(key, 0))
+    r += 1
+    note_lines = [
+        "Kódy: leaf binding doplnit z CS ÚRS online (app.urs.cz, cenová úroveň 2026 01) dle família + popis + Vzorec.",
+        "Reconciliation consensus: HSV1.004 dvorek 596811220 · HSV1.005 terasa 636311 (na terče, NE 762) · HSV2.003/008 bednění 274.",
+        "PRÁCE JE KOMPLETNÍ bez ohledu na stav kódu — seznam (postup prací) = primary deliverable. Code = secondary, doplní se v ÚRS online / KROS.",
+    ]
+    for line in note_lines:
+        ws.cell(r, 1, value="• " + line).font = NOTE_FONT
+        ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=3)
+        r += 1
     r += 1
 
     section("URS FAMÍLIA DISTRIBUCE (54 distinct)")
