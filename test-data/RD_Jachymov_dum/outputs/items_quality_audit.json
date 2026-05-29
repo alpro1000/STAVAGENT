@@ -1,9 +1,9 @@
 {
   "_schema_version": "1.0",
-  "_generated_at": "2026-05-27",
+  "_generated_at": "2026-05-29",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 208,
-  "items_total_incl_deprecated": 212,
+  "items_checked": 210,
+  "items_total_incl_deprecated": 214,
   "issues_found_total": 59,
   "summary_by_dimension": {
     "urs_family_consistency": 31,

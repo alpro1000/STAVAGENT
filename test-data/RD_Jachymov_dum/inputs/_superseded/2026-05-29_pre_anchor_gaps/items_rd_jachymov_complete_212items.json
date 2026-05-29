@@ -6387,63 +6387,11 @@
       ],
       "_audit_gap_fixed": "PHASE_3_5_SKLAD_MEZIPODESTA_GAP",
       "_added_via_audit": "phase_3_5_sklad_qty_crosscheck_2026-05-26"
-    },
-    {
-      "objekt": "260219_dum",
-      "kapitola_group": "VRN",
-      "_gate": "VRN",
-      "kapitola": "VRN — Přesun hmot",
-      "subkapitola": "Přesun hmot pro budovu",
-      "popis": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu a hmot (rekonstrukce vícepodlažní RD + nástavba 3.NP)",
-      "mj": "t",
-      "mnozstvi": 0,
-      "mnozstvi_formula": "TBD — buď % z HSV nákladů (běžně 2-4 %) nebo dle celkové tonáže přesouvaných hmot; množství doplní rozpočtář při cenotvorbě",
-      "mnozstvi_confidence": 0.6,
-      "urs_code_proposed": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.0,
-      "source": "anchor checklist PM01 — technical necessity (povinná položka každého rozpočtu, 998xxx URS família)",
-      "subdodavatel": "VRN_management",
-      "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [],
-      "status_flag": "ready_for_phase2",
-      "notes": "Množství TBD při cenotvorbě (% z HSV nebo tonáž). Nástavba 3.NP → vertikální přesun nutný.",
-      "id": "260219_dum.VRN.PM01",
-      "realizuje_skladbu": null,
-      "_audit_gap_fixed": "ANCHOR_CHECKLIST_PM01",
-      "_added_via_audit": "anchor_checklist_gap_audit_2026-05-29"
-    },
-    {
-      "objekt": "260219_dum",
-      "kapitola_group": "VRN",
-      "_gate": "VRN",
-      "kapitola": "VRN — Lešení",
-      "subkapitola": "Fasádní lešení (ETICS + krov + klempířina)",
-      "popis": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro provedení ETICS fasády, krovu a klempířiny po obvodu domu (výška 13 m)",
-      "mj": "m²",
-      "mnozstvi": 503.1,
-      "mnozstvi_formula": "obvod domu 38.7 m × výška 13.0 m = 503.1 m² lešenné plochy (pro ETICS fasádu 276.7 m² + krov + klempířinu)",
-      "mnozstvi_confidence": 0.8,
-      "urs_code_proposed": null,
-      "urs_alternatives": [],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.0,
-      "source": "anchor checklist PM02 — technical necessity (ETICS 276.7 m² nelze provést bez lešení, 941xxx URS família) + DXF obvod 38.7 m + řez výška 13 m",
-      "subdodavatel": "VRN_management",
-      "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [],
-      "status_flag": "ready_for_phase2",
-      "notes": "Lešenná plocha = obvod × výška. Pronájem dle doby ETICS + krov + klempířina.",
-      "id": "260219_dum.VRN.PM02",
-      "realizuje_skladbu": null,
-      "_audit_gap_fixed": "ANCHOR_CHECKLIST_PM02",
-      "_added_via_audit": "anchor_checklist_gap_audit_2026-05-29"
     }
   ],
   "_summary_total": {
-    "items_total": 214,
-    "items_active": 210,
+    "items_total": 212,
+    "items_active": 208,
     "items_deprecated": 4,
     "by_kapitola": {
       "HSV-1 Zemní práce": 15,
@@ -6475,15 +6423,18 @@
       "VRN — Revize": 1,
       "VRN — Kolaudace": 1,
       "VRN — Společné": 1,
-      "HSV-5 Komunikace + schodiště": 1,
-      "VRN — Přesun hmot": 1,
-      "VRN — Lešení": 1
+      "HSV-5 Komunikace + schodiště": 1
     },
     "by_objekt": {
-      "260219_dum": 186,
+      "260219_dum": 184,
       "260217_sklad": 28
     },
-    "items_below_conf_0_70_mnozstvi": 1,
+    "urs_status_distribution": {
+      "matched_websearch_verified": 8,
+      "needs_production_lookup": 195,
+      "wrong_leaf_disambiguation_needed": 9
+    },
+    "items_below_conf_0_70_mnozstvi": 0,
     "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
   },
@@ -6658,10 +6609,145 @@
     "items_total_after": 212
   },
   "_phase3_5_namespace_finalize_log": {
-    "applied_at": "2026-05-29",
+    "applied_at": "2026-05-27",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
-    "items_renamed": 0,
-    "per_item_changes": []
+    "items_renamed": 14,
+    "per_item_changes": [
+      {
+        "id": "260217_sklad.HSV1.005",
+        "before": [
+          "S01"
+        ],
+        "after": [
+          "S01_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV2.001",
+        "before": [
+          "S03a",
+          "S03b"
+        ],
+        "after": [
+          "S03a_sklad",
+          "S03b_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV2.005",
+        "before": [
+          "S01",
+          "S05"
+        ],
+        "after": [
+          "S01_sklad",
+          "S05_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV2.006",
+        "before": [
+          "S05"
+        ],
+        "after": [
+          "S05_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV3.001",
+        "before": [
+          "S04"
+        ],
+        "after": [
+          "S04_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV3.002",
+        "before": [
+          "S03a",
+          "S03b"
+        ],
+        "after": [
+          "S03a_sklad",
+          "S03b_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV3.003",
+        "before": [
+          "S03a",
+          "S03b"
+        ],
+        "after": [
+          "S03a_sklad",
+          "S03b_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV4.001",
+        "before": [
+          "S02"
+        ],
+        "after": [
+          "S02_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV4.002",
+        "before": [
+          "S02"
+        ],
+        "after": [
+          "S02_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV4.003",
+        "before": [
+          "S02"
+        ],
+        "after": [
+          "S02_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV4.004",
+        "before": [
+          "S02"
+        ],
+        "after": [
+          "S02_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV4.005",
+        "before": [
+          "S02"
+        ],
+        "after": [
+          "S02_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV4.006",
+        "before": [
+          "S02"
+        ],
+        "after": [
+          "S02_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.PSV77.001",
+        "before": [
+          "S01"
+        ],
+        "after": [
+          "S01_sklad"
+        ]
+      }
+    ]
   },
   "_phase5b_websearch_log": {
     "applied_at": "2026-05-27",
@@ -6676,23 +6762,5 @@
     },
     "budget_spent_usd": 0.6,
     "results_log": "outputs/phase5b_websearch_results.json"
-  },
-  "_anchor_gaps_applied_log": {
-    "applied_at": "2026-05-29",
-    "purpose": "Stage 1B-add — confirmed anchor gaps (PM01 přesun hmot + PM02 lešení). Technical necessities only. PM03/PM05/PM06 NOT added per Stage 1B-verify (not in ARS dům TZ).",
-    "items_added": [
-      "260219_dum.VRN.PM01",
-      "260219_dum.VRN.PM02"
-    ],
-    "items_skipped_idempotent": [],
-    "items_total_before": 212,
-    "items_total_after": 214,
-    "verify_decisions": {
-      "PM03_hromosvod": "VERIFY_PROJEKTANT — PBŘ no explicit LPS → vyjasnění #22, NOT added",
-      "PM04_slaboproud": "SKIP — not in TZ (rekonstrukce); vyjasnění #24 flag",
-      "PM05_okapovy_chodnik_drenaz": "SKIP — NOT in any TZ",
-      "PM06_terenni_upravy": "VERIFY_PROJEKTANT — only in MU sjezd rozhodnutí (separate scope) → vyjasnění #23, NOT added"
-    },
-    "snapshot_before": "outputs/items_FROZEN_pre_anchor_gaps.json"
   }
 }

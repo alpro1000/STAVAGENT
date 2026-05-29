@@ -9,16 +9,16 @@
     "pattern_32": "Separate deliverable — does not modify File A audit or items.json"
   },
   "_frozen_baseline_preflight": {
-    "items_json_count": 212,
+    "items_json_count": 214,
     "expected": 212,
-    "frozen_unchanged": true
+    "frozen_unchanged": false
   },
   "_summary": {
-    "frozen_items_total": 212,
-    "atomic_operations_total": 238,
+    "frozen_items_total": 214,
+    "atomic_operations_total": 240,
     "items_decomposed": 17,
     "atomic_children_from_decomposition": 43,
-    "items_carried_1to1": 195,
+    "items_carried_1to1": 197,
     "atomic_per_kapitola": {
       "HSV-1 Zemní práce": 22,
       "HSV-2 Základové a ŽB": 19,
@@ -45,14 +45,16 @@
       "VRN — Doprava + odpad": 5,
       "VRN — Geodet": 2,
       "VRN — Kolaudace": 1,
+      "VRN — Lešení": 1,
       "VRN — Pojištění + zábory": 2,
       "VRN — Průzkumy": 2,
+      "VRN — Přesun hmot": 1,
       "VRN — Revize": 1,
       "VRN — Společné": 1,
       "VRN — Zařízení staveniště": 4
     },
     "familia_distribution": {
-      "(blank)": 9,
+      "(blank)": 11,
       "012": 1,
       "030": 13,
       "031": 3,
@@ -4491,6 +4493,40 @@
         "S05_sklad"
       ],
       "qty_formula": "DXF sklad_DPZ km_tabulka místností: room 1.02 schodiště plocha = 5.50 m². 9 stupňů 179.5×250 mm vyznačené v půdoryse parking sheet (Phase 3.5 cross-check)",
+      "pozn": "Carried 1:1 (atomic — no decomposition needed)",
+      "decomposition_type": "atomic_1to1"
+    },
+    {
+      "poradi": 239,
+      "objekt": "260219_dum",
+      "kapitola": "VRN — Přesun hmot",
+      "atomic_id": "VRN.PM01",
+      "atomic_operace_popis": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu a hmot (rekonstrukce vícepodlažní RD + nástavba 3.NP)",
+      "mj": "t",
+      "mnozstvi": 0,
+      "urs_kod_kandidat": null,
+      "status": "needs_production_lookup",
+      "parent_frozen_item_id": "260219_dum.VRN.PM01",
+      "parent_kapitola": "VRN — Přesun hmot",
+      "realizuje_skladbu": null,
+      "qty_formula": "TBD — buď % z HSV nákladů (běžně 2-4 %) nebo dle celkové tonáže přesouvaných hmot; množství doplní rozpočtář při cenotvorbě",
+      "pozn": "Carried 1:1 (atomic — no decomposition needed)",
+      "decomposition_type": "atomic_1to1"
+    },
+    {
+      "poradi": 240,
+      "objekt": "260219_dum",
+      "kapitola": "VRN — Lešení",
+      "atomic_id": "VRN.PM02",
+      "atomic_operace_popis": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro provedení ETICS fasády, krovu a klempířiny po obvodu domu (výška 13 m)",
+      "mj": "m²",
+      "mnozstvi": 503.1,
+      "urs_kod_kandidat": null,
+      "status": "needs_production_lookup",
+      "parent_frozen_item_id": "260219_dum.VRN.PM02",
+      "parent_kapitola": "VRN — Lešení",
+      "realizuje_skladbu": null,
+      "qty_formula": "obvod domu 38.7 m × výška 13.0 m = 503.1 m² lešenné plochy (pro ETICS fasádu 276.7 m² + krov + klempířinu)",
       "pozn": "Carried 1:1 (atomic — no decomposition needed)",
       "decomposition_type": "atomic_1to1"
     }

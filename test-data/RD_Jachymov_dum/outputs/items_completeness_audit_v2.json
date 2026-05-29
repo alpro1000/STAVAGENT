@@ -1,8 +1,8 @@
 {
   "_schema_version": "2.0",
-  "_generated_at": "2026-05-27",
+  "_generated_at": "2026-05-29",
   "_generated_by": "tools/completeness_check_v2.py",
-  "_items_total": 212,
+  "_items_total": 214,
   "_rooms_total": 25,
   "_sections_present": [
     "A",
@@ -211,7 +211,7 @@
         "gap_flag": false
       }
     ],
-    "n_orphans": 0
+    "n_orphans": 2
   },
   "section_B_subdodavatel": {
     "coverage": [
@@ -470,7 +470,7 @@
       {
         "trade": "VRN_management",
         "label_cz": "VRN — generální dodavatel (zařízení staveniště, BOZP, doprava, likvidace)",
-        "n_items": 12,
+        "n_items": 14,
         "kapitoly_expected": [
           "VRN"
         ],
@@ -830,7 +830,7 @@
         "label": "Krov dřevěný + krokve",
         "applicable": true,
         "status": "ok",
-        "n_hits": 20,
+        "n_hits": 21,
         "sample_ids": [
           "260219_dum.HSV5.001",
           "260219_dum.HSV5.002",
@@ -901,7 +901,7 @@
         "label": "ETICS zateplení (EPS/MW)",
         "applicable": true,
         "status": "ok",
-        "n_hits": 6,
+        "n_hits": 7,
         "sample_ids": [
           "260219_dum.HSV7.001",
           "260219_dum.HSV7.002",
@@ -990,7 +990,7 @@
         "label": "TI mezi krokvemi / nad krovem",
         "applicable": true,
         "status": "ok",
-        "n_hits": 10,
+        "n_hits": 11,
         "sample_ids": [
           "260219_dum.HSV2.004",
           "260219_dum.HSV5.007",
@@ -3030,7 +3030,7 @@
     "_status": "INFORMATIONAL_ONLY",
     "_method": "Σ(qty × Methvin průměrná sazba) per kapitola → aggregate per gate",
     "_disclaimer": "Methvin rates have INCONSISTENT UNITS per kapitola (Kč/m³ vs Kč/m² vs Kč/ks) and are aggregated naively — results are NOT reliable for ratio analysis. Treated as informational ballpark only. Real cenotvorba requires unit-aware per-item rates from URS catalog. Verdict 'OUT OF RANGE' for this section is EXPECTED and not treated as a gap in consolidated_gaps.",
-    "total_estimate_czk_ballpark": 64200913.025,
+    "total_estimate_czk_ballpark": 79293913.025,
     "per_kapitola_czk": {
       "HSV-1": 120645.0,
       "HSV-2": 12471300.0,
@@ -3047,13 +3047,13 @@
       "PSV-72": 1352000.0,
       "PSV-73": 2775000.0,
       "M-21": 2436000.0,
-      "VRN": 3117000.0
+      "VRN": 18210000.0
     },
     "per_gate_breakdown": [
       {
         "gate": "HSV",
         "estimate_czk": 48939894.025,
-        "pct_of_total": 0.7622928042462991,
+        "pct_of_total": 0.6171961019198294,
         "typical_range_pct": [
           0.45,
           0.55
@@ -3064,7 +3064,7 @@
       {
         "gate": "PSV",
         "estimate_czk": 9708019.0,
-        "pct_of_total": 0.15121309873303004,
+        "pct_of_total": 0.12243082261483589,
         "typical_range_pct": [
           0.25,
           0.35
@@ -3075,7 +3075,7 @@
       {
         "gate": "TZB",
         "estimate_czk": 2436000.0,
-        "pct_of_total": 0.03794338561900849,
+        "pct_of_total": 0.03072114752656955,
         "typical_range_pct": [
           0.15,
           0.2
@@ -3085,8 +3085,8 @@
       },
       {
         "gate": "VRN",
-        "estimate_czk": 3117000.0,
-        "pct_of_total": 0.048550711401662346,
+        "estimate_czk": 18210000.0,
+        "pct_of_total": 0.229651927938765,
         "typical_range_pct": [
           0.05,
           0.1
@@ -3115,9 +3115,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA160",
+        "HEA180",
         "HEA200",
-        "HEA180"
+        "HEA160"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3176,8 +3176,8 @@
       "description": "TZ ARS — vikýře (počet, materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Vikýř",
-        "vikýř"
+        "vikýř",
+        "Vikýř"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3189,9 +3189,9 @@
       "description": "TZ ARS — opěrná stěna / bílá vana",
       "tz_mention_count": 5,
       "tz_mention_sample": [
-        "Opěrná stěn",
         "opěrné stěn",
-        "opěrná stěn"
+        "Opěrná stěn",
+        "Opěrné stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3203,8 +3203,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický \ndvorek",
-        "anglický dvorek"
+        "anglický dvorek",
+        "anglický \ndvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3216,8 +3216,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasy",
-        "terasa"
+        "terasa",
+        "terasy"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3241,9 +3241,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "EI 90",
         "EI 180",
-        "protipožární"
+        "EI 90",
+        "Protipožární"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3255,8 +3255,8 @@
       "description": "TZ ARS — tepelné čerpadlo (PSV-73)",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "TČ",
         "multisplit",
+        "TČ",
         "tepelné čerpadl"
       ],
       "items_keyword_hit": true,
@@ -3269,8 +3269,8 @@
       "description": "TZ ARS — elektrokotel / kotel",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "kotel",
-        "elektrokotel"
+        "elektrokotel",
+        "kotel"
       ],
       "items_keyword_hit": true,
       "status": "covered",

@@ -1,7 +1,7 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
-**Generated:** 2026-05-27
-**Items checked:** 208 (active, excl. 4 deprecated)
+**Generated:** 2026-05-29
+**Items checked:** 210 (active, excl. 4 deprecated)
 **Issues flagged:** 59
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
