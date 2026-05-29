@@ -1,0 +1,100 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Workflow definitions for the orchestrator stage-gating layer.
+#
+# This file is DATA, not code (task §5 / Domain Rules: "Workflow definitions are
+# data (YAML or JSON), not code"). It can be edited without redeploying the
+# orchestrator loop.
+#
+# Loaded by app/services/stage_gating/workflow_loader.py.
+#
+# PR1 scope: defines the state graph (allowed transitions) + per-state tool
+# allow-lists + the default linear workflow sequence. The loader validates that
+# every state/tool name resolves to a known WorkflowState. Server-side policy
+# ENFORCEMENT that reads these allow-lists is PR2 — this PR only ships the data
+# + loader + state-machine primitive.
+#
+# Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md §1, §5, §7
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: 1
+
+# Per-state allow-list of tools that may be invoked while a session is in that
+# state. Mirrors the migration plan in task §7. The gateway (PR2) will read this
+# to decide STAGE_VIOLATION. Tools allowed in "all stages" are listed under
+# `_all_stages` and merged into every state's effective allow-list by the loader.
+_all_stages:
+  - read_project_documentation
+  - parse_construction_budget
+  - search_czech_construction_norms
+
+states:
+  DOCUMENT_ANALYSIS:
+    tools:
+      - analyze_construction_document
+  WORK_ATOMIZATION:
+    tools:
+      - analyze_construction_document
+      - classify_construction_element
+      - calculate_concrete_works
+      - create_work_breakdown   # only mode=work_first; mode enforcement is PR2
+  DECOMPOSITION:
+    optional: true              # not all workflows enter this state
+    tools:
+      - calculate_concrete_works
+  CATALOG_BINDING:
+    tools:
+      - find_urs_code
+      - find_otskp_code
+  PRICING:
+    tools: []
+  REVIEW:
+    tools: []
+  COMMIT_PENDING:
+    tools: []
+  COMMITTED:
+    terminal: true
+    tools: []
+  EXPORTED:
+    terminal: true
+    tools: []
+
+# Allowed state transitions (adjacency). Linear forward flow with the optional
+# DECOMPOSITION branch off WORK_ATOMIZATION. Terminal states have no outgoing
+# edges in PR1 (re-export edge is a PR2 enforcement concern).
+transitions:
+  DOCUMENT_ANALYSIS:   [WORK_ATOMIZATION]
+  WORK_ATOMIZATION:    [DECOMPOSITION, CATALOG_BINDING]
+  DECOMPOSITION:       [CATALOG_BINDING]
+  CATALOG_BINDING:     [PRICING]
+  PRICING:             [REVIEW]
+  REVIEW:              [COMMIT_PENDING]
+  COMMIT_PENDING:      [COMMITTED]
+  COMMITTED:           [EXPORTED]
+  EXPORTED:            []
+
+# Named workflow definitions. The orchestrator (PR2+) looks one up by classified
+# intent and walks `sequence` step by step. PR1 only needs the data shape + the
+# default sequence for the end-to-end stub test.
+workflows:
+  full_takeoff:
+    description: >-
+      PDF/documentation -> atomized work list -> catalog binding -> pricing ->
+      review -> commit -> export. The canonical end-to-end flow.
+    start_state: DOCUMENT_ANALYSIS
+    sequence:
+      - DOCUMENT_ANALYSIS
+      - WORK_ATOMIZATION
+      - CATALOG_BINDING
+      - PRICING
+      - REVIEW
+      - COMMIT_PENDING
+      - COMMITTED
+      - EXPORTED
+  work_list_only:
+    description: >-
+      Work-first only — produce an atomized work list without catalog codes or
+      prices (Pattern 15). Stops after WORK_ATOMIZATION.
+    start_state: DOCUMENT_ANALYSIS
+    sequence:
+      - DOCUMENT_ANALYSIS
+      - WORK_ATOMIZATION
