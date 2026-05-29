@@ -1,5 +1,24 @@
 # TASK — Codify anti-hallucination patterns (terasa 762 failure)
 
+> ## ✅ DONE (2026-05-29, parallel session) — NESPOUŠTĚT ZNOVU
+>
+> Tento task už byl vykonán a kodifikován na `main`. Byl psán proti zastaralému
+> snapshotu (`last_number: 38`) — živý registr je už na **`last_number: 40`**.
+>
+> **Co je na main (`docs/STAVAGENT_PATTERNS.md`):**
+> - **Pattern 39** — Vision-first reading for drawings (kandidát #2, NEW)
+> - **Pattern 40** — Host-delegated vision + MCP deterministic validation gate (kandidát #5, NEW)
+> - **Enrichment Pattern 9** — re-read source before DECIDING (ne jen generating),
+>   včetně periodic re-grounding cadence (kandidáti #4 + #3, #3 folded)
+> - **Enrichment Pattern 29** — source-grounding: citation present ≠ VERIFIED (kandidát #1)
+>
+> Honest verdikt 5 kandidátů: **2 NEW (39, 40) + 2 ENRICHMENTS (9, 29)**, kandidát #3
+> složen do enrichmentu Patternu 9 (žádné nafouknutí knihovny). Sekvence 1–40
+> souvislá, bez děr/duplikátů.
+>
+> Cross-ref: `concrete-agent/.../rd_jachymov/patterns_validated.md` §"Anti-hallucination
+> pass (2026-05-29 — terasa 762 miss)".
+
 ## Контекст
 
 Агент пропустил terasa 7-layer skladbu, хотя чертёж ŘEZ C-C был дан ранее.
