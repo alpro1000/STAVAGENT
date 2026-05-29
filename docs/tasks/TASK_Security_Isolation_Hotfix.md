@@ -4,7 +4,12 @@
 > identified in pre-Cemex audit. Standalone — does NOT touch UEP code, 
 > can run in parallel with UEP PR2 session on separate branch.
 > 
-> **Reference:** `docs/audits/pre_cemex_2026_06_28/2026-05-19_audit_mcp_isolation_submission_sidelines.md`
+> **Reference (odloženo — audit zatím nevznikl):** plánovaný audit
+> `docs/audits/pre_cemex_2026_06_28/2026-05-19_audit_mcp_isolation_submission_sidelines.md`
+> je nedodaný výstup tasku
+> [`TASK_AUDIT_MCP_Isolation_Cemex_Sidelines.md`](TASK_AUDIT_MCP_Isolation_Cemex_Sidelines.md);
+> soubor zatím neexistuje. Isolation gaps zde popsané byly identifikovány
+> přímo v kódu, ne v tomto auditu.
 > 
 > **Estimated effort:** ~25-30 hours total, doable in 1-2 Claude Code sessions.
 

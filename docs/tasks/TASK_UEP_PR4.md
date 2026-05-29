@@ -5,7 +5,7 @@
 > (quantity deltas + narrative), UI visualization in Portal/Registry 
 > kiosks, performance optimization pass.
 > 
-> **Reference document:** `docs/tasks/TASK_DocumentExtraction_Universal_Pipeline.md` 
+> **Reference document:** `docs/TASK_DocumentExtraction_Universal_Pipeline.md` 
 > (v3 spec).
 > 
 > **Prerequisite:** PR3 merged. All five major project types (residential, 

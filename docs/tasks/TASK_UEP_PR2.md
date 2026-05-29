@@ -4,7 +4,7 @@
 > Phase 4 (derivation), REST API surface, job orchestration, tier-based 
 > concurrency control, DXF unit heuristic, passport_schema bridge.
 > 
-> **Reference document:** `docs/tasks/TASK_DocumentExtraction_Universal_Pipeline.md` 
+> **Reference document:** `docs/TASK_DocumentExtraction_Universal_Pipeline.md` 
 > (the v3 spec). This task references §§ from there. Do NOT re-derive 
 > architecture — follow v3.
 > 

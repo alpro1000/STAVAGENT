@@ -30,7 +30,9 @@
 # Calibration sources:
 #   - STAVAGENT_PATTERNS.md (7 Žihle-validated patterns; "triangulation
 #     no-winner" + audit trail mandatory).
-#   - Pre-Cemex audit `docs/audits/pre_cemex_2026_06_28/…` §Section 4.
+#   - Pre-Cemex audit (odloženo — dosud nevytvořen): plánovaný výstup
+#     docs/tasks/TASK_AUDIT_MCP_Isolation_Cemex_Sidelines.md; deliverable
+#     docs/audits/pre_cemex_2026_06_28/… §Section 4 zatím neexistuje.
 #   - PR1 verification `docs/audit/UEP_PR1_VERIFICATION.md` (DXF mm-as-metres
 #     drift + PDF TZ exposure-class garbage).
 #
