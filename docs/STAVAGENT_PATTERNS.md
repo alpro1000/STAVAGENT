@@ -3,9 +3,9 @@
 <!--
 Pattern numbering audit 2026-05-26 (parallel-sync pass):
 Sequential 1..37 validated (no duplicates, no gaps).
-last_number: 37
-next_pattern: 38  ← use this for any new additions.
-last_audit: 2026-05-26
+last_number: 38
+next_pattern: 39  ← use this for any new additions.
+last_audit: 2026-05-29
 
 Expansion 2026-05-26: 20 new patterns 17..36 added from RD Jáchymov pilot
 CEV session. Patterns 12 + 15 enriched (workflow + freeze-gate detail).
@@ -1023,11 +1023,31 @@ Shipping without Audit v2 — sections E-J catch ~80 % of gaps that earlier audi
 ### Origin context
 RD Jáchymov pilot's Audit v1 (4 sections A-D) caught 2 gaps. Audit v2 (10 sections A-J) caught 8 additional gaps that v1 missed.
 
+### §C implicit-pomocné/VRN sub-class (enrichment 2026-05-29, RD Jáchymov)
+
+The §C "domain anchor checklist" originally listed *visible construction* works (demolice, ŽB, krov, ETICS, sanita…). It MISSED a whole class: **implicit pomocné + VRN works that are rarely stated in TZ but are physically required for realizace.** These slip through every TZ-derived audit because they aren't in the TZ to be found.
+
+Mandatory §C sub-class to check on every pilot:
+
+| Anchor | Práce | Why often missing |
+|---|---|---|
+| **PM01** | Přesun hmot pro budovu | POVINNÁ in every rozpočet (998xxx); never in TZ — it's a costing convention |
+| **PM02** | Lešení (fasádní/prostorové) | Required for any ETICS/fasáda/krov work; TZ describes the result, not the access means |
+| **PM03** | Hromosvod / LPS | ČSN EN 62305 risk-driven; PBŘ may omit if not analysed |
+| **PM04** | Slaboproud (data/TV/domofon) | TZ covers silnoproud; slaboproud assumed |
+| **PM05** | Okapový chodník + obvodová drenáž | Detailing-level, below TZ resolution |
+| **PM06** | Terénní + sadové úpravy finální | Often in a separate povolovaná akce / out-of-scope |
+
+**Discipline:** for each, COVERED / GAP / N/A. PM01 + PM02 are near-always real GAPs if absent (add as technical necessities). PM03-PM06 require **TZ/scope verification before adding** (Pattern 9 + Pattern 26) — do NOT fabricate them into the rozpočet; if not in TZ, record as vyjasnění for projektant/investor.
+
+**RD Jáchymov evidence:** Stage 1A anchor audit found all 47 standard construction anchors COVERED (prior CEV/audit was complete w.r.t. TZ) but 6 GAPs — ALL in this implicit class. PM01 přesun hmot + PM02 lešení (503 m², ETICS 276.7 m²) added as technical necessities (212→214); PM03/04/05/06 verified-not-in-TZ → vyjasnění #22-24, not fabricated.
+
 ### Related
 - Pattern 17 (Phase 0a) — orthogonal source-side audit
 - Pattern 18 (Iterative deepening) — Audit v2 results drive iteration
 - Pattern 31 (CEV) — orthogonal cross-source consistency layer
 - Pattern 33 (Project synthesis) — read after Audit v2 for holistic view
+- Pattern 9 + 26 — verify-before-add discipline for PM03-PM06 (NE fabricate work not in TZ)
 
 ---
 
@@ -1218,6 +1238,16 @@ Never fabricate catalog code. If nothing found → blank cell + explicit "MANUAL
 
 ### Origin context
 Pilot URS WebSearch verified 13 codes selectively, found 6 wrong leafs (family OK but leaf 9-digit wrong, ~63 % rate) + 4 correct replacements. Established generator heuristic accuracy: 6-digit family correct ~75 %, 9-digit leaf wrong ~63 %.
+
+### Source priority ladder (enrichment 2026-05-29, RD Jáchymov)
+
+WebSearch is the **fallback**, not the first resort. Explicit priority when verifying/finding a catalog code:
+
+1. **Catalog API / MCP tool** (authoritative) — `find_urs_code` / `find_otskp_code` MCP tools query the real 17 904-code OTSKP + 39 000+-code ÚRS databases. A hit here returns the actual catalog leaf + popis — ground truth.
+2. **WebSearch** (snippet inference) — only when the API is blocked/unavailable or returns nothing. Returns chapter-level context (e.g. cs-urs.cz `800-764 Klempířské`) confirming *family*, rarely the specific 9-digit leaf.
+3. **Blank + MANUAL LOOKUP flag** (Pattern 26) — when neither yields a defensible code.
+
+**Why the ladder matters:** RD Jáchymov Phase 5B used WebSearch for 60 queries and got mostly FAMILY_VERIFIED (chapter confirmed, leaf not) — because Google snippets of a paywalled catalog can't expose 9-digit leaves. The MCP `find_urs_code` tool, when available, would have returned actual leaves for many of those. Reach for the API tool first; drop to WebSearch only on miss. Never invert the order (WebSearch-first wastes the authoritative source).
 
 ### Related
 - Pattern 11 (KROS FTS matching) — primary matcher; Pattern 25 is verification layer
@@ -1703,6 +1733,49 @@ Treating "I just rebased an hour ago" as good enough. With 50+ active `claude/*`
 - Pattern 12 (Squash Merge Orphans) — branches auto-delete post-merge, leaving stale local refs; mitigated by the same fetch-first discipline
 - Anti-pattern **Pattern number guessing** (near end of file) — the failure mode that motivates the `last_number` header that motivates this pattern
 - Pattern 14 (Forward-Tracked `_analytical_journey`) — same shape: explicit state-of-the-world check before mutation, instead of relying on memory
+
+---
+
+## Pattern 38: Single-source projection discipline
+
+**Source:** RD Jáchymov pilot UWO restructure (2026-05-28/29). Distinct operational corollary of Patterns 16 + 32.
+
+### Problem
+A pilot produces many deliverable *views* of the same data — atomic worklist XLSX, audit File A (multi-sheet), File B production, completeness/quality audit reports, decomposition map. Once there are 5+ views, two failure modes appear:
+1. **Drift** — someone hand-edits a quantity in the Excel; now the Excel disagrees with `items.json`. Next regeneration silently reverts the edit, or worse, the edit is treated as authoritative and `items.json` rots.
+2. **Stale views** — `items.json` changes (e.g. +2 anchor-gap items 212→214) but only some views are regenerated. The atomic worklist says 240 ops, File A still says 212 items, the audit report cites the old count. Reviewer can't tell which number is true.
+
+Pattern 16 establishes *what* the single source is (catalog-agnostic work ontology). Pattern 32 establishes *which* views exist (File A audit vs File B production). Neither codifies the **operational discipline** that keeps them in sync.
+
+### Algorithm
+1. **`items.json` is the ONLY editable artefact.** Every other deliverable is a *projection* — generated, never hand-edited.
+2. **ONE regeneration orchestrator** (`regenerate_all_views.py`) runs the full view pipeline as a fail-fast subprocess chain. After ANY `items.json` change, run it — all views rebuild from the single source in dependency order.
+3. **Never hand-edit a projection.** A correction goes into `items.json` (or its generator), then regenerate. If you find yourself opening the XLSX to "just fix one cell" — stop; fix the source.
+4. **Version-supersede, don't overwrite.** Before a baseline change, snapshot the old `items.json` to `inputs/_superseded/<date>_<reason>/` + an `items_FROZEN_pre_<change>.json`. The frozen snapshot is the revert source and the audit trail.
+5. **Post-regen sync assertion.** The orchestrator (or a follow-up check) asserts every view's item-count == `items.json` count. Mismatch = abort, not ship.
+
+### Acceptance
+- Single command regenerates all views; output is a per-step OK/FAIL table.
+- A grep/assert confirms `items.json` count == atomic-map count == File A count after every change.
+- No deliverable XLSX is ever in the diff without its generator also in the diff (a hand-edited projection shows as XLSX-only change → red flag).
+
+### Anti-pattern
+- Hand-editing the Excel "because it's faster than fixing the script". The edit is invisible to the next regeneration and to every other view.
+- Regenerating only the view you happened to be looking at, leaving the other 4 stale.
+- Overwriting the previous `items.json` in place with no dated snapshot — losing the ability to diff "what changed and why".
+
+### Origin context
+RD Jáchymov Stage 1B added 2 anchor-gap items (212 → 214 — přesun hmot + lešení). A single orchestrator `tools/regenerate_all_views.py` rebuilt all 7 views (atomic decomposition 240 ops → worklist XLSX → File A base + v2 + v2_final → completeness + quality audits) fail-fast; post-regen assertion confirmed `items.json 214 == atomic map frozen_total 214`. Old 212-item baseline superseded to `inputs/_superseded/2026-05-29_pre_anchor_gaps/`. No view was hand-edited; the only editable artefact was `items.json` (+ the `apply_anchor_gaps.py` generator).
+
+### Reusable code
+- `tools/regenerate_all_views.py` — orchestrator (7-step fail-fast chain)
+- `inputs/_superseded/<date>_<reason>/` — version-supersede convention (extends Pattern 36 to baseline snapshots)
+
+### Related
+- Pattern 16 (Universal Work Ontology) — *what* the single source is (catalog-agnostic); Pattern 38 is *how* you keep projections in sync with it
+- Pattern 32 (Two-file delivery) — *which* views exist; Pattern 38 governs their regeneration
+- Pattern 36 (File staging convention) — `_superseded/` convention extended here to baseline snapshots
+- Pattern 28 (Schema integrity) — the count-assertion is a schema-level invariant
 
 ---
 

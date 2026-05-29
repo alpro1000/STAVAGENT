@@ -81,6 +81,31 @@ These are RD Jáchymov-specific case studies — concrete artefacts from this pi
 - ZS templates (separate library): [`B5_tech_cards/ZS_templates/PATTERNS.md`](../../ZS_templates/PATTERNS.md)
 - Concrete-agent CLAUDE.md pattern section: [`concrete-agent/CLAUDE.md`](../../../../../../../../concrete-agent/CLAUDE.md)
 
+## UWO restructure pass (2026-05-28/29) — Stage 1A/1B
+
+Second contribution wave from the UWO single-source restructure. Honest assessment of 7 pattern candidates → **1 NEW + 2 ENRICHMENTS + 4 ALREADY COVERED** (no library inflation):
+
+| Master # | Title | Type | Origin in this pass |
+|---:|---|---|---|
+| **38** | Single-source projection discipline | **NEW** | `regenerate_all_views.py` orchestrator rebuilt 7 views from items.json 212→214; post-regen count assertion; `_superseded/` snapshot. Distinct from 16 (catalog-agnostic) + 32 (which views) — codifies the *regeneration/no-hand-edit* operational rule. |
+| **25** | Web search as catalog verification fallback | ENRICHMENT | Added source-priority ladder: catalog API/MCP (`find_urs_code`) authoritative > WebSearch snippet > blank. Phase 5B 60 WebSearch queries gave mostly FAMILY_VERIFIED because paywalled catalog leaves aren't in Google snippets. |
+| **20** | Audit v2 — 10-section completeness | ENRICHMENT | Added §C implicit-pomocné/VRN sub-class (PM01-PM06: přesun hmot, lešení, hromosvod, slaboproud, okapový chodník, terénní úpravy) — works rarely in TZ but physically required. Stage 1A found all 47 standard anchors COVERED, 6 GAPs all in this class. |
+
+Candidates dismissed as already covered (verified against existing patterns):
+
+| Candidate | Verdict |
+|---|---|
+| Atomic worklist HK212 028a..f letter-suffix | ALREADY COVERED — Pattern 15 Stage 2 (split into `{parent}a/b`, references `split_hsv1_028.py`) |
+| Catalog tools BLOCKED during Stage 1 | ALREADY COVERED — Pattern 15 Rule ("Code+Cena columns left EMPTY in Stage 1", "never run auto-matcher on fresh items") |
+| Names FROM catalog Stage 3 | ALREADY COVERED — Pattern 15 Stage 3 + Pattern 16 (names are catalog-local; work ontology is name-agnostic) |
+| Don't invent work not in TZ | ALREADY COVERED — Pattern 9 (Re-read TZ Before Generating) + Pattern 26 (honest, no fabrication). Stage 1B-verify (scan TZ before adding PM03/05/06) is this discipline applied. |
+
+Stage 1A/1B artefacts:
+- `tools/anchor_checklist_gap_audit.py` + `outputs/anchor_checklist_gap_audit.json` (53 anchors → 48 COVERED + 6 GAP)
+- `tools/apply_anchor_gaps.py` (212→214: PM01 přesun hmot + PM02 lešení only)
+- `tools/add_anchor_vyjasneni.py` (vyjasnění #22 hromosvod + #23 terénní + #24 slaboproud)
+- `tools/regenerate_all_views.py` (single-source orchestrator — Pattern 38 reference impl)
+
 ## Compilation note
 
-This file was compiled as part of the pattern-library expansion pass on 2026-05-26 (commit hash to follow). It is a snapshot of the pilot's contribution to the master registry at that point. Future RD Jáchymov sessions extending these patterns should append updates here, NOT renumber master entries — see Pattern 35 (Skill-of-the-pilot encoding) for the discipline.
+This file was compiled as part of the pattern-library expansion pass on 2026-05-26 (commit hash to follow), extended 2026-05-28/29 with the UWO restructure wave (Pattern 38 + enrichments to 20/25). It is a snapshot of the pilot's contribution to the master registry. Future RD Jáchymov sessions extending these patterns should append updates here, NOT renumber master entries — see Pattern 35 (Skill-of-the-pilot encoding) for the discipline.
