@@ -106,6 +106,32 @@ Stage 1A/1B artefacts:
 - `tools/add_anchor_vyjasneni.py` (vyjasnění #22 hromosvod + #23 terénní + #24 slaboproud)
 - `tools/regenerate_all_views.py` (single-source orchestrator — Pattern 38 reference impl)
 
+## Anti-hallucination pass (2026-05-29) — terasa 762 miss
+
+Third contribution wave, from the terasa ŘEZ C-C failure: the 7-layer terasa skladba was read as **text** (pypdf), losing the graphical layer order; the 762 wood was then **discarded from memory** during reconciliation without re-opening the drawing → terasa shipped as 4 ops with inverted "dlaždice na terče". Honest assessment of 5 candidates → **2 NEW + 2 ENRICHMENTS** (candidate 3 folded into the P9 enrichment; no library inflation):
+
+| Master # | Title | Type | Origin in this pass |
+|---:|---|---|---|
+| **39** | Vision-first reading for drawings | **NEW** | ŘEZ C-C read as text → graphical skladba table collapsed (7→4 layers, wood lost). Distinct from 23 (sheet *coverage* + tesseract text-OCR) — codifies reading graphical skladby/řezy AS IMAGES via multimodal vision, text-extract fallback only. |
+| **40** | Host-delegated vision + MCP validation gate | **NEW** | Architecture corollary: MCP (deterministic Python) must not duplicate host vision; it orchestrates + validates via schema (ordered `layers[]`+source), vision-first description, ungrounded-reject gate, deterministic TZ↔vision cross-ref. Distinct from 27 (external-LLM cross-val). |
+| **9** | Re-read TZ Before Generating | ENRICHMENT | Extended: re-read source before any **fact decision** (discard/overwrite/reclassify), not just generation; + periodic re-grounding cadence (candidate 3 folded here). Memory ≠ source. The discard-762 was exactly this anti-pattern. |
+| **29** | Continuous source provenance | ENRICHMENT | Citation present ≠ VERIFIED: terasa carried a real `_source` ("řez C-C") but content didn't match the drawing. VERIFIED requires content-match on re-read; Matrix C verdict for cite-present/content-mismatch = PARTIAL/NOT_VERIFIABLE. |
+
+Candidate dispositions (honest, per task):
+
+| Candidate | Verdict |
+|---|---|
+| 1 Source-grounding mandatory | ENRICHMENT 29 (citation present ≠ VERIFIED) — core already in 29 + 31 Matrix C |
+| 2 Vision-first for drawings | **NEW 39** |
+| 3 Periodic re-grounding | ENRICHMENT 9 (cadence trigger, folded — operational discipline, not standalone) |
+| 4 No memory-based fact decisions | ENRICHMENT 9 (event trigger) |
+| 5 Host-delegated vision + MCP gate | **NEW 40** |
+
+Anti-hallucination artefacts (this pilot session):
+- `test-data/RD_Jachymov_dum/tools/fix_terasa_dvorek.py` (ŘEZ C-C terasa 762 restore, split-by-trade)
+- `test-data/RD_Jachymov_dum/tools/annotate_statika_crosscheck.py` (statika D.2 profile validation)
+- Master registry header bumped `last_number: 38 → 40`, `next_pattern: 39 → 41`.
+
 ## Compilation note
 
 This file was compiled as part of the pattern-library expansion pass on 2026-05-26 (commit hash to follow), extended 2026-05-28/29 with the UWO restructure wave (Pattern 38 + enrichments to 20/25). It is a snapshot of the pilot's contribution to the master registry. Future RD Jáchymov sessions extending these patterns should append updates here, NOT renumber master entries — see Pattern 35 (Skill-of-the-pilot encoding) for the discipline.

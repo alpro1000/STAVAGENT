@@ -43,14 +43,14 @@
       "dimension": "urs_family_consistency",
       "severity": "informational",
       "kapitola": "HSV-1 Zemní práce",
-      "urs_code": "636311",
-      "first_digit": "6",
+      "urs_code": "564",
+      "first_digit": "5",
       "expected_first_digits": [
         "1"
       ],
-      "reason": "URS kód 636311 prvních digit '6' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "reason": "URS kód 564 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
       "item_id": "260219_dum.HSV1.005",
-      "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
+      "popis": "Terasa za opěrnou stěnou — PODKLADNÍ SKLADBA pod dřevěnou pochozí vrstvou (PSV76"
     },
     {
       "dimension": "subdodavatel_logical",
@@ -63,7 +63,7 @@
       ],
       "reason": "Subdodavatel 'podlahar' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260219_dum.HSV1.005",
-      "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
+      "popis": "Terasa za opěrnou stěnou — PODKLADNÍ SKLADBA pod dřevěnou pochozí vrstvou (PSV76"
     },
     {
       "dimension": "urs_family_consistency",

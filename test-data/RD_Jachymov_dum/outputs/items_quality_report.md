@@ -30,7 +30,7 @@
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
 | `260219_dum.HSV1.004` | ⚪ informational | Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kame | URS kód 596811220 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
-| `260219_dum.HSV1.005` | ⚪ informational | Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + bet | URS kód 636311 prvních digit '6' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 ( |
+| `260219_dum.HSV1.005` | ⚪ informational | Terasa za opěrnou stěnou — PODKLADNÍ SKLADBA pod dřevěnou po | URS kód 564 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (wor |
 | `260217_sklad.HSV1.001` | ⚪ informational | Sejmutí ornice a demolice stávajících kamenných zídek a scho | URS kód 962031132 prvních digit '9' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
 | `260219_dum.HSV2.005` | ⚪ informational | Separační PE fólie pod základovou patou bílé vany (povinná d | URS kód 711141 prvních digit '7' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern |
 | `260217_sklad.HSV2.005` | ⚪ informational | Štěrkopískové lože pod podlahu skladu + pod schodišťovou des | URS kód 174101101 prvních digit '1' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Patt |
@@ -66,7 +66,7 @@
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
 | `260219_dum.HSV1.004` | ⚪ informational | Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kame | Subdodavatel 'podlahar' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
-| `260219_dum.HSV1.005` | ⚪ informational | Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + bet | Subdodavatel 'podlahar' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
+| `260219_dum.HSV1.005` | ⚪ informational | Terasa za opěrnou stěnou — PODKLADNÍ SKLADBA pod dřevěnou po | Subdodavatel 'podlahar' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260217_sklad.HSV1.001` | ⚪ informational | Sejmutí ornice a demolice stávajících kamenných zídek a scho | Subdodavatel 'bourani_demolice' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický |
 | `260219_dum.HSV2.010` | ⚪ informational | Nabetonávka stropu 2.NP/3.NP — beton C25/30 XC1 tl. 60 mm na | Subdodavatel 'ocelobeton_strop_IPE_trapez' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV- |
 | `260219_dum.HSV2.011` | ⚪ informational | Výztuž nabetonávky kari síť 5/100/100 (cca 4.4 kg/m²) | Subdodavatel 'ocelobeton_strop_IPE_trapez' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV- |

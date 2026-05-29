@@ -156,8 +156,8 @@ is negligible compared to a silent-drift ship.
 ## Pattern library — universal patterns + pilot-local case studies
 
 This codebase implements universal patterns from the master registry
-[`docs/STAVAGENT_PATTERNS.md`](../docs/STAVAGENT_PATTERNS.md) (36
-patterns sequential as of 2026-05-26).
+[`docs/STAVAGENT_PATTERNS.md`](../docs/STAVAGENT_PATTERNS.md) (40
+patterns sequential as of 2026-05-29).
 
 ### Critical mandatory rules (promoted to CLAUDE.md status)
 
@@ -168,6 +168,7 @@ patterns sequential as of 2026-05-26).
 | **31** | CEV (Comprehensive Extraction Verification) before catalog matching | `tools/cev_layers_extract.py` + `cev_matrices*.py` (RD Jáchymov); sections E-J catch ~80 % of gaps |
 | **15** | Work-First, Catalog-Last — Sequential Výkaz Výměr Generation | Strict 6-phase sequence enforced. No Phase 5 (catalog matching) until Phase 4 STOP gate confirms list FROZEN. No File B until File A complete. |
 | **12** | Squash Merge Orphans (repo settings + branch lifecycle) | Repo configuration: ☐ Allow squash merging (UNCHECK). Default merge strategy = Merge commit. Open PR only when work truly done. |
+| **39** | Vision-first reading for drawings (skladby / řezy AS IMAGES) | Graphical drawings (skladby, řezy, detaily) → read via multimodal vision (≥200 DPI render); pypdf / tesseract text-extract is **fallback only**. Origin: terasa 762 miss — řez C-C read as text → 7-layer skladba collapsed to 4, wood (762) lost, "dlaždice na terče" inverted. |
 
 ### Sibling discipline patterns frequently cited in this codebase
 
@@ -184,6 +185,9 @@ patterns sequential as of 2026-05-26).
 | 29 | Continuous source provenance per item | Required fields per item (see Pattern 2 sibling) |
 | 30 | Czech regex diacritic boundary pitfall | All Czech regex stems tested against actual terminology; avoid `\w+` boundaries on `č` / `š` |
 | 32 | Two-file delivery — audit + production separation | File A `Vykaz_vymer_VSE_VARIANTY.xlsx` (provenance) vs File B `Vykaz_vymer_KROS_format.xlsx` (production) |
+| 40 | Host-delegated vision + MCP validation gate | MCP doc tools (e.g. `analyze_construction_document`) require ordered `layers[]` + `source`, reject ungrounded host output, cross-check TZ↔vision deterministically — vision is the host's job, MCP validates. Sibling of 39. |
+
+> **Enrichments 2026-05-29 (terasa 762 miss):** Pattern 9 extended — re-read source before any *fact decision* (discard/overwrite/reclassify), not just generation; memory ≠ source. Pattern 29 extended — a populated `_source` is *not* VERIFIED until content matches the cited document on re-read (vision for drawings).
 
 ### Pilot-specific patterns and case studies
 
