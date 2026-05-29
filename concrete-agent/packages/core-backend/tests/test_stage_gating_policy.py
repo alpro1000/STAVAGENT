@@ -322,3 +322,32 @@ def test_breakdown_catalog_none_alias_forces_work_first():
     assert r["mode"] == "work_first"
     assert r["catalog_bound"] is False
     assert all("otskp_code" not in i for i in r["items"])
+
+
+# ── enforce_or_raise async-context safety (review fix) ────────────────────────
+
+def test_enforce_or_raise_runs_inside_event_loop():
+    """Regression: enforce_or_raise is awaited from FastAPI async handlers, which
+    already run an event loop. The old sync impl called asyncio.run() and crashed
+    with 'cannot run event loop while another loop is running'. It must now be a
+    coroutine that awaits cleanly inside a running loop.
+    """
+    pytest.importorskip("fastapi")  # gateway imports HTTPException
+    from app.mcp.stage_gating_gateway import enforce_or_raise
+
+    async def _call():
+        # session-less → allowed, no DB touched; the point is it does not raise
+        # RuntimeError when invoked from within a running loop.
+        await enforce_or_raise(tool_name="create_work_breakdown", session_id=None)
+        return True
+
+    assert asyncio.run(_call()) is True
+
+
+def test_enforce_or_raise_is_coroutine_function():
+    pytest.importorskip("fastapi")
+    import inspect
+
+    from app.mcp.stage_gating_gateway import enforce_or_raise
+
+    assert inspect.iscoroutinefunction(enforce_or_raise)

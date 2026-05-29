@@ -1399,7 +1399,7 @@ async def rest_breakdown(
     # Single server-side policy enforcement point (tools stay dumb). Session-less
     # calls pass through; a supplied session_id activates stage gating.
     from app.mcp.stage_gating_gateway import enforce_or_raise
-    enforce_or_raise(tool_name="create_work_breakdown", session_id=body.session_id)
+    await enforce_or_raise(tool_name="create_work_breakdown", session_id=body.session_id)
 
     api_key = _extract_bearer(authorization)
     credit_check = mcp_auth.check_credits(api_key or "", "create_work_breakdown")

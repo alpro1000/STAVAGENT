@@ -52,9 +52,14 @@ def _config():
     return load_workflow_config()
 
 
-def _resolve_session_state(session_id: str) -> Optional[WorkflowState]:
+async def _resolve_session_state(session_id: str) -> Optional[WorkflowState]:
     """Return the current WorkflowState for a session_id, or None if it cannot
     be resolved (no DB configured, malformed id, or session not found).
+
+    Async: the gateway is invoked from FastAPI async handlers, which already run
+    inside an event loop. We `await` the repository directly — never `asyncio.run`
+    (that raises "cannot run event loop while another loop is running" and would
+    crash every async caller).
 
     Kept defensive: any failure to reach the DB yields None rather than raising,
     so a misconfigured DB never 500s a tool call — the gateway then reports the
@@ -74,32 +79,27 @@ def _resolve_session_state(session_id: str) -> Optional[WorkflowState]:
         if not dsn:
             return None
         # Local import to avoid a hard dependency at module import time.
-        import asyncio
-
         from app.services.stage_gating.session_repository import (
             SqlAlchemySessionRepository,
         )
 
-        async def _load() -> Optional[WorkflowState]:
-            engine = create_async_engine(
-                dsn.replace("postgresql://", "postgresql+asyncpg://", 1),
-                future=True,
-            )
-            try:
-                factory = async_sessionmaker(engine, expire_on_commit=False)
-                repo = SqlAlchemySessionRepository(factory)
-                state = await repo.get(sid)
-                return state.workflow_state if state is not None else None
-            finally:
-                await engine.dispose()
-
-        return asyncio.run(_load())
+        engine = create_async_engine(
+            dsn.replace("postgresql://", "postgresql+asyncpg://", 1),
+            future=True,
+        )
+        try:
+            factory = async_sessionmaker(engine, expire_on_commit=False)
+            repo = SqlAlchemySessionRepository(factory)
+            state = await repo.get(sid)
+            return state.workflow_state if state is not None else None
+        finally:
+            await engine.dispose()
     except Exception as exc:  # pragma: no cover - defensive
         logger.warning("[StageGating] session state resolution failed: %s", exc)
         return None
 
 
-def enforce_or_raise(
+async def enforce_or_raise(
     *,
     tool_name: str,
     session_id: Optional[str] = None,
@@ -109,10 +109,14 @@ def enforce_or_raise(
 ) -> None:
     """Run the policy gateway for `tool_name`; raise HTTPException on refusal.
 
-    No-op (allows) for session-less calls — preserves current behavior. When a
-    session_id is supplied, resolves its state and enforces the YAML allow-list.
+    Async because session-state resolution awaits the DB repository. Call it with
+    `await` from the async tool surfaces. No-op (allows) for session-less calls —
+    preserves current behavior. When a session_id is supplied, resolves its state
+    and enforces the YAML allow-list.
     """
-    current_state = _resolve_session_state(session_id) if session_id else None
+    current_state = (
+        await _resolve_session_state(session_id) if session_id else None
+    )
     decision = evaluate_tool_policy(
         tool_name=tool_name,
         config=_config(),
