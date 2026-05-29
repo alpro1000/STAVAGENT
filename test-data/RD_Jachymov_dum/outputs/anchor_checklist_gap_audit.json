@@ -1,0 +1,805 @@
+{
+  "_schema_version": "1.0",
+  "_generated_at": "2026-05-29",
+  "_purpose": "Stage 1A — anchor checklist gap audit. RD Jáchymov frozen items vs ~40 typical RD works. Focus: implicit pomocné/VRN works (Audit v2 §C blind spot). items.json FROZEN — analysis only.",
+  "_pattern_compliance": {
+    "pattern_20": "§C domain anchor checklist — extended with implicit pomocné/VRN class",
+    "pattern_15": "Work-first — gaps as generic popis drafts, NO catalog codes",
+    "pattern_26": "Honest — gaps flagged, no fabrication; PM03 hromosvod marked needs-verify not assumed",
+    "pattern_32": "Separate analysis — items.json frozen NOT touched"
+  },
+  "_frozen_baseline": {
+    "items_json_count": 212,
+    "touched": false
+  },
+  "_summary": {
+    "anchors_total": 53,
+    "verdicts": {
+      "COVERED": 47,
+      "GAP": 6,
+      "N/A": 0
+    },
+    "gaps_by_severity": {
+      "critical": 2,
+      "important": 1,
+      "medium": 3
+    }
+  },
+  "anchor_results": [
+    {
+      "anchor_id": "PM01",
+      "label": "Přesun hmot pro budovu (vnitrostaveništní)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "critical",
+      "suggested_item_draft": {
+        "kapitola": "VRN — Přesun hmot",
+        "popis": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu (rekonstrukce vícepodlažní + nástavba 3.NP)",
+        "mj": "t",
+        "pozn": "POVINNÁ položka každého rozpočtu (998xxx URS família). Pro RD s nástavbou 3.NP nutný vertikální přesun. Buď % z HSV nebo dle tonáže."
+      }
+    },
+    {
+      "anchor_id": "PM02",
+      "label": "Lešení fasádní (ETICS + krov + klempířina)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "critical",
+      "suggested_item_draft": {
+        "kapitola": "VRN — Lešení",
+        "popis": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro ETICS fasádu 276.7 m² + krov + klempířinu (výška domu 13 m)",
+        "mj": "m²",
+        "pozn": "POVINNÉ pro ETICS 276.7 m² fasády. URS 941xxx família. Plocha ~ obvod 38.7 m × výška 13 m = ~500 m² lešenné plochy."
+      }
+    },
+    {
+      "anchor_id": "PM03",
+      "label": "Hromosvod / ochrana před bleskem (LPS)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "important",
+      "pbr_verification": "D_3_PBR_dum_TUSPO.pdf scanned — NO hromosvod/bleskosvod/LPS/uzemnění mention found. PBŘ does not explicitly require LPS. Needs projektant confirmation per ČSN EN 62305 risk analysis.",
+      "suggested_item_draft": {
+        "kapitola": "M-22 ELI slaboproud + hromosvod",
+        "popis": "Hromosvod (LPS) — jímací soustava + svody + uzemnění dle ČSN EN 62305 (nový krov + hliníková falcovaná krytina, dům 13 m v exponované poloze Krušnohoří)",
+        "mj": "kpl",
+        "pozn": "PBŘ D.3 hromosvod NEZMIŇUJE explicitně — VERIFY u projektanta zda ČSN EN 62305 risk analysis vyžaduje LPS. Nový krov + kovová krytina + exponovaná poloha → pravděpodobně ano."
+      }
+    },
+    {
+      "anchor_id": "PM04",
+      "label": "Slaboproud (data/TV/zvonek/domofon/anténa)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "medium",
+      "suggested_item_draft": {
+        "kapitola": "M-22 ELI slaboproud",
+        "popis": "Slaboproudé rozvody — datové zásuvky + TV/STA + zvonek/domofon + anténa (3 bytové jednotky)",
+        "mj": "kpl",
+        "pozn": "M-21 silnoproud je pokryt; slaboproud chybí. Pro 3 byty obvyklé. Rozsah dle vyjasnění #7 (počty)."
+      }
+    },
+    {
+      "anchor_id": "PM05",
+      "label": "Okapový chodník + obvodová drenáž domu",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "medium",
+      "suggested_item_draft": {
+        "kapitola": "HSV-1 Zemní práce",
+        "popis": "Okapový chodník po obvodu domu (kačírek/dlažba) + obvodová drenáž paty základů (mimo BV drenáže HSV1.015)",
+        "mj": "m",
+        "pozn": "HSV1.015 pokrývá drenáž za BV opěrnou stěnou; okapový chodník po obvodu domu samostatně. Verify dle situace."
+      }
+    },
+    {
+      "anchor_id": "PM06",
+      "label": "Terénní + sadové úpravy finální",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "medium",
+      "suggested_item_draft": {
+        "kapitola": "HSV-1 Zemní práce",
+        "popis": "Terénní úpravy finální — ohumusování + zatravnění + úprava zahrady po stavbě",
+        "mj": "m²",
+        "pozn": "Dokončovací práce zahrady. Často minimální rozsah u rekonstrukce. Verify scope s investorem."
+      }
+    },
+    {
+      "anchor_id": "D01",
+      "label": "Bourání krytiny + krov",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV6.002"
+      ],
+      "matched_count": 1
+    },
+    {
+      "anchor_id": "D02",
+      "label": "Bourání obkladů koupelen",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV6.007"
+      ],
+      "matched_count": 1
+    },
+    {
+      "anchor_id": "D03",
+      "label": "Bourání příček + otvory",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV6.005",
+        "260219_dum.HSV6.006"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "D04",
+      "label": "Bourání/sejmutí podlah",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV4.010",
+        "260219_dum.HSV6.008"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "D05",
+      "label": "Demontáž oken + dveří",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV6.010",
+        "260219_dum.HSV6.014",
+        "260219_dum.HSV6.015"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "D06",
+      "label": "Bourání komínu (vrchní část)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV3.005",
+        "260219_dum.PSV73.002",
+        "260219_dum.PSV73.004",
+        "260219_dum.PSV73.007",
+        "260219_dum.HSV6.016"
+      ],
+      "matched_count": 5
+    },
+    {
+      "anchor_id": "D07",
+      "label": "Bourání opěrných zídek + venkovní schody",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV6.017"
+      ],
+      "matched_count": 1
+    },
+    {
+      "anchor_id": "Z01",
+      "label": "Sejmutí ornice",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV1.001",
+        "260217_sklad.HSV1.001"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "Z02",
+      "label": "Hloubení rýh / jam",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV1.002",
+        "260219_dum.HSV1.003",
+        "260219_dum.HSV1.007",
+        "260217_sklad.HSV1.002",
+        "260217_sklad.HSV1.003"
+      ],
+      "matched_count": 5
+    },
+    {
+      "anchor_id": "Z03",
+      "label": "Odvoz výkopku",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV1.007",
+        "260217_sklad.HSV1.006"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "B01",
+      "label": "Bílá vana opěrná stěna (beton+výztuž+bednění)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV2.001",
+        "260219_dum.HSV2.002",
+        "260219_dum.HSV2.003",
+        "260219_dum.HSV2.004",
+        "260219_dum.HSV2.005",
+        "260219_dum.HSV2.006"
+      ],
+      "matched_count": 6
+    },
+    {
+      "anchor_id": "B02",
+      "label": "ŽB deska podlahy 1.NP",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV2.012",
+        "260219_dum.HSV2.013"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "B03",
+      "label": "Pozední věnec ŽB",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV2.007",
+        "260219_dum.HSV2.008",
+        "260219_dum.HSV2.009"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "B04",
+      "label": "Nabetonávka stropu ocelobeton",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV2.010",
+        "260219_dum.HSV2.011"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "S01",
+      "label": "Nadezdívka 3.NP + dozdívky",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV3.001",
+        "260219_dum.HSV3.002",
+        "260219_dum.HSV6.003"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "S02",
+      "label": "Ocelové překlady IPN160",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV3.003",
+        "260219_dum.HSV3.004",
+        "260219_dum.HSV6.006"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "V01",
+      "label": "Ocelobetonový strop (IPE+HEA+trapéz)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260217_sklad.HSV1.004",
+        "260217_sklad.HSV2.002",
+        "260217_sklad.HSV2.003",
+        "260219_dum.HSV4.001",
+        "260219_dum.HSV4.002",
+        "260219_dum.HSV4.003"
+      ],
+      "matched_count": 12
+    },
+    {
+      "anchor_id": "V02",
+      "label": "Krov tesařský (krokve+kleštiny+vaznice)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV5.001",
+        "260219_dum.HSV5.002",
+        "260219_dum.HSV5.003",
+        "260219_dum.HSV5.004",
+        "260219_dum.HSV5.005",
+        "260219_dum.HSV5.006"
+      ],
+      "matched_count": 21
+    },
+    {
+      "anchor_id": "V03",
+      "label": "Schodiště ocelové/dřevěné",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260217_sklad.HSV1.001",
+        "260217_sklad.HSV2.005",
+        "260217_sklad.HSV2.006",
+        "260219_dum.HSV6.004",
+        "260219_dum.PSV76.001",
+        "260219_dum.PSV76.002"
+      ],
+      "matched_count": 13
+    },
+    {
+      "anchor_id": "K01",
+      "label": "Falcovaná hliníková krytina",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV5.013",
+        "260219_dum.HSV5.016",
+        "260219_dum.PSV76.003"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "K02",
+      "label": "Klempířina (oplechování+svody+žlaby+parapety)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV76.001",
+        "260219_dum.PSV76.002",
+        "260219_dum.PSV76.003",
+        "260219_dum.PSV76.004",
+        "260219_dum.HSV6.013",
+        "260219_dum.PSV76.014"
+      ],
+      "matched_count": 6
+    },
+    {
+      "anchor_id": "F01",
+      "label": "ETICS kontaktní zateplení",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV7.002"
+      ],
+      "matched_count": 1
+    },
+    {
+      "anchor_id": "F02",
+      "label": "ETICS sokl + špalety",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV7.003",
+        "260219_dum.HSV7.004"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "F03",
+      "label": "Tenkovrstvá fasádní omítka",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV5.016",
+        "260219_dum.HSV7.001",
+        "260219_dum.HSV7.002",
+        "260219_dum.HSV7.003",
+        "260219_dum.HSV7.004",
+        "260219_dum.HSV7.005"
+      ],
+      "matched_count": 15
+    },
+    {
+      "anchor_id": "O01",
+      "label": "Plastová okna trojsklem",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV76.001",
+        "260219_dum.PSV76.002",
+        "260219_dum.PSV76.003",
+        "260219_dum.PSV76.004",
+        "260219_dum.PSV76.005",
+        "260219_dum.PSV76.006"
+      ],
+      "matched_count": 7
+    },
+    {
+      "anchor_id": "O02",
+      "label": "Vstupní + vnitřní dveře",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV76.009",
+        "260219_dum.PSV76.010",
+        "260219_dum.HSV6.014"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "I01",
+      "label": "TI nadkrokevní PIR + mezi trámy",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV2.004",
+        "260219_dum.HSV4.011",
+        "260219_dum.HSV5.007",
+        "260219_dum.HSV5.008",
+        "260219_dum.HSV5.009",
+        "260219_dum.HSV5.010"
+      ],
+      "matched_count": 11
+    },
+    {
+      "anchor_id": "I02",
+      "label": "Podlahová TI EPS",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV71.001",
+        "260219_dum.PSV71.002"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "I03",
+      "label": "Hydroizolace koupelen stěrka",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV71.003"
+      ],
+      "matched_count": 1
+    },
+    {
+      "anchor_id": "P01",
+      "label": "Nášlapné vrstvy (vinyl+dlažba)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV77.001",
+        "260219_dum.PSV77.002",
+        "260219_dum.PSV77.003",
+        "260219_dum.PSV77.004",
+        "260219_dum.PSV77.005",
+        "260219_dum.PSV77.006"
+      ],
+      "matched_count": 6
+    },
+    {
+      "anchor_id": "P02",
+      "label": "Suchá podlaha Fermacell",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV4.013",
+        "260219_dum.HSV4.014"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "U01",
+      "label": "Vnitřní omítky jádrová+štuk",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV78.001",
+        "260219_dum.PSV78.002",
+        "260219_dum.PSV78.003",
+        "260219_dum.PSV78.004"
+      ],
+      "matched_count": 4
+    },
+    {
+      "anchor_id": "U02",
+      "label": "SDK podhledy",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV4.006",
+        "260219_dum.HSV4.012",
+        "260219_dum.PSV78.005",
+        "260219_dum.PSV78.006",
+        "260219_dum.PSV78.007",
+        "260219_dum.PSV78.012"
+      ],
+      "matched_count": 10
+    },
+    {
+      "anchor_id": "U03",
+      "label": "Obklady koupelen keramické",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV78.008",
+        "260219_dum.PSV78.009",
+        "260219_dum.PSV78.010",
+        "260219_dum.PSV78.011"
+      ],
+      "matched_count": 4
+    },
+    {
+      "anchor_id": "U04",
+      "label": "Výmalba interiérová",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV78.012",
+        "260219_dum.PSV78.012.1_PP",
+        "260219_dum.PSV78.012.1_NP",
+        "260219_dum.PSV78.012.2_NP",
+        "260219_dum.PSV78.012.3_NP"
+      ],
+      "matched_count": 5
+    },
+    {
+      "anchor_id": "T01",
+      "label": "ZTI vodovod + kanalizace rozvody",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV72.002",
+        "260219_dum.PSV72.003"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "T02",
+      "label": "Sanita (WC+umyvadlo+vana+sprcha)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV2.001",
+        "260219_dum.HSV2.002",
+        "260219_dum.HSV2.003",
+        "260219_dum.HSV2.004",
+        "260219_dum.HSV2.005",
+        "260219_dum.HSV2.006"
+      ],
+      "matched_count": 30
+    },
+    {
+      "anchor_id": "T03",
+      "label": "Vytápění (TČ+krb+kamna+rozvody)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV72.009",
+        "260219_dum.PSV73.001",
+        "260219_dum.PSV73.002",
+        "260219_dum.PSV73.003",
+        "260219_dum.PSV73.004",
+        "260219_dum.PSV73.005"
+      ],
+      "matched_count": 8
+    },
+    {
+      "anchor_id": "T04",
+      "label": "M-21 silnoproud rozvody+svítidla",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV72.002",
+        "260219_dum.PSV72.003",
+        "260219_dum.PSV73.008",
+        "260219_dum.M21.001",
+        "260219_dum.M21.002",
+        "260219_dum.M21.003"
+      ],
+      "matched_count": 11
+    },
+    {
+      "anchor_id": "T05",
+      "label": "Detekce požární (hlásiče)",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV95.001",
+        "260219_dum.PSV95.002"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "R01",
+      "label": "Zařízení staveniště",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.VRN.001",
+        "260219_dum.VRN.002",
+        "260219_dum.VRN.003",
+        "260219_dum.VRN.020"
+      ],
+      "matched_count": 4
+    },
+    {
+      "anchor_id": "R02",
+      "label": "Geodet zaměření",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.VRN.001",
+        "260217_sklad.VRN.001"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "R03",
+      "label": "BOZP koordinátor",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.VRN.001",
+        "260217_sklad.VRN.001"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "R04",
+      "label": "Odvoz + likvidace suti",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.HSV6.012",
+        "260219_dum.VRN.001",
+        "260219_dum.VRN.003"
+      ],
+      "matched_count": 3
+    },
+    {
+      "anchor_id": "R05",
+      "label": "Revize závěrečné",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.PSV72.001",
+        "260219_dum.PSV73.007",
+        "260219_dum.M21.007",
+        "260219_dum.VRN.001"
+      ],
+      "matched_count": 4
+    },
+    {
+      "anchor_id": "R06",
+      "label": "Mykologický + azbestový průzkum",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.VRN.001",
+        "260219_dum.VRN.002"
+      ],
+      "matched_count": 2
+    },
+    {
+      "anchor_id": "R07",
+      "label": "Kolaudace",
+      "verdict": "COVERED",
+      "applicable": true,
+      "matched_item_ids": [
+        "260219_dum.M21.007",
+        "260219_dum.VRN.001",
+        "260219_dum.VRN.001",
+        "260219_dum.VRN.001",
+        "260217_sklad.VRN.001"
+      ],
+      "matched_count": 5
+    }
+  ],
+  "gaps_with_drafts": [
+    {
+      "anchor_id": "PM01",
+      "label": "Přesun hmot pro budovu (vnitrostaveništní)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "critical",
+      "suggested_item_draft": {
+        "kapitola": "VRN — Přesun hmot",
+        "popis": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu (rekonstrukce vícepodlažní + nástavba 3.NP)",
+        "mj": "t",
+        "pozn": "POVINNÁ položka každého rozpočtu (998xxx URS família). Pro RD s nástavbou 3.NP nutný vertikální přesun. Buď % z HSV nebo dle tonáže."
+      }
+    },
+    {
+      "anchor_id": "PM02",
+      "label": "Lešení fasádní (ETICS + krov + klempířina)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "critical",
+      "suggested_item_draft": {
+        "kapitola": "VRN — Lešení",
+        "popis": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro ETICS fasádu 276.7 m² + krov + klempířinu (výška domu 13 m)",
+        "mj": "m²",
+        "pozn": "POVINNÉ pro ETICS 276.7 m² fasády. URS 941xxx família. Plocha ~ obvod 38.7 m × výška 13 m = ~500 m² lešenné plochy."
+      }
+    },
+    {
+      "anchor_id": "PM03",
+      "label": "Hromosvod / ochrana před bleskem (LPS)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "important",
+      "pbr_verification": "D_3_PBR_dum_TUSPO.pdf scanned — NO hromosvod/bleskosvod/LPS/uzemnění mention found. PBŘ does not explicitly require LPS. Needs projektant confirmation per ČSN EN 62305 risk analysis.",
+      "suggested_item_draft": {
+        "kapitola": "M-22 ELI slaboproud + hromosvod",
+        "popis": "Hromosvod (LPS) — jímací soustava + svody + uzemnění dle ČSN EN 62305 (nový krov + hliníková falcovaná krytina, dům 13 m v exponované poloze Krušnohoří)",
+        "mj": "kpl",
+        "pozn": "PBŘ D.3 hromosvod NEZMIŇUJE explicitně — VERIFY u projektanta zda ČSN EN 62305 risk analysis vyžaduje LPS. Nový krov + kovová krytina + exponovaná poloha → pravděpodobně ano."
+      }
+    },
+    {
+      "anchor_id": "PM04",
+      "label": "Slaboproud (data/TV/zvonek/domofon/anténa)",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "medium",
+      "suggested_item_draft": {
+        "kapitola": "M-22 ELI slaboproud",
+        "popis": "Slaboproudé rozvody — datové zásuvky + TV/STA + zvonek/domofon + anténa (3 bytové jednotky)",
+        "mj": "kpl",
+        "pozn": "M-21 silnoproud je pokryt; slaboproud chybí. Pro 3 byty obvyklé. Rozsah dle vyjasnění #7 (počty)."
+      }
+    },
+    {
+      "anchor_id": "PM05",
+      "label": "Okapový chodník + obvodová drenáž domu",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "medium",
+      "suggested_item_draft": {
+        "kapitola": "HSV-1 Zemní práce",
+        "popis": "Okapový chodník po obvodu domu (kačírek/dlažba) + obvodová drenáž paty základů (mimo BV drenáže HSV1.015)",
+        "mj": "m",
+        "pozn": "HSV1.015 pokrývá drenáž za BV opěrnou stěnou; okapový chodník po obvodu domu samostatně. Verify dle situace."
+      }
+    },
+    {
+      "anchor_id": "PM06",
+      "label": "Terénní + sadové úpravy finální",
+      "verdict": "GAP",
+      "applicable": true,
+      "matched_item_ids": [],
+      "matched_count": 0,
+      "gap_severity": "medium",
+      "suggested_item_draft": {
+        "kapitola": "HSV-1 Zemní práce",
+        "popis": "Terénní úpravy finální — ohumusování + zatravnění + úprava zahrady po stavbě",
+        "mj": "m²",
+        "pozn": "Dokončovací práce zahrady. Často minimální rozsah u rekonstrukce. Verify scope s investorem."
+      }
+    }
+  ]
+}
