@@ -3115,9 +3115,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA180",
         "HEA160",
-        "HEA200"
+        "HEA200",
+        "HEA180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3163,8 +3163,8 @@
       "description": "TZ ARS — komínové těleso (zachované / nové)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "komín",
-        "Komín"
+        "Komín",
+        "komín"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3176,8 +3176,8 @@
       "description": "TZ ARS — vikýře (počet, materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Vikýř",
-        "vikýř"
+        "vikýř",
+        "Vikýř"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3189,9 +3189,9 @@
       "description": "TZ ARS — opěrná stěna / bílá vana",
       "tz_mention_count": 5,
       "tz_mention_sample": [
-        "opěrné stěn",
+        "bílá vana",
         "Opěrná stěn",
-        "bílá vana"
+        "Opěrné stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3216,8 +3216,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasa",
-        "terasy"
+        "terasy",
+        "terasa"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3242,7 +3242,7 @@
       "tz_mention_count": 4,
       "tz_mention_sample": [
         "EI 90",
-        "Protipožární",
+        "protipožární",
         "EI 180"
       ],
       "items_keyword_hit": true,
@@ -3269,8 +3269,8 @@
       "description": "TZ ARS — elektrokotel / kotel",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "elektrokotel",
-        "kotel"
+        "kotel",
+        "elektrokotel"
       ],
       "items_keyword_hit": true,
       "status": "covered",

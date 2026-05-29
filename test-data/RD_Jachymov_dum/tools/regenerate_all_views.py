@@ -39,7 +39,31 @@ PIPELINE = [
     ("phase6_build_file_b_kros.py", "KROS_format_v3_final.xlsx (File B production)"),
     ("completeness_check_v2.py", "items_completeness_* audit"),
     ("quality_audit.py", "items_quality_* audit"),
+    # queue-driven projection (single source: inputs/meta/vyjasneni_queue.json)
+    ("generate_otazky_docx.py", "Otazky_pro_Karla_*.docx (vyjasnění — projection of queue)"),
 ]
+
+
+def _post_regen_assertions() -> None:
+    """Pattern 38 sync gate — abort if any projection drifts from its single source."""
+    import glob
+    import json
+
+    # docx vyjasnění count == queue count
+    queue = json.loads((ROOT / "inputs" / "meta" / "vyjasneni_queue.json").read_text(encoding="utf-8"))
+    n_queue = len(queue["items"])
+    docxs = glob.glob(str(ROOT / "outputs" / "Otazky_pro_Karla_*.docx"))
+    if not docxs:
+        print("  ✗ ASSERT FAIL: no Otazky_pro_Karla_*.docx produced")
+        sys.exit(1)
+    docx_path = max(docxs, key=lambda p: Path(p).stat().st_mtime)
+    from docx import Document  # available — generate_otazky_docx.py (step 9) requires it
+    doc = Document(docx_path)
+    n_docx = sum(1 for p in doc.paragraphs if p.text.startswith("Otázka č."))
+    if n_docx != n_queue:
+        print(f"  ✗ ASSERT FAIL: docx vyjasnění {n_docx} != queue {n_queue} ({Path(docx_path).name})")
+        sys.exit(1)
+    print(f"  ✓ docx vyjasnění {n_docx} == queue {n_queue}")
 
 
 def main() -> None:
@@ -65,7 +89,9 @@ def main() -> None:
             print("\nAborting chain (fail-fast).")
             sys.exit(1)
 
-    print(f"\nAll {len(results)} steps OK. Views regenerated from items.json single source.")
+    print("\nPost-regen assertions:")
+    _post_regen_assertions()
+    print(f"\nAll {len(results)} steps OK + assertions passed. Views regenerated from single source.")
 
 
 if __name__ == "__main__":
