@@ -55,9 +55,9 @@ SECTION_FONT = Font(name="Calibri", size=11, bold=True)
 NOTE_FONT = Font(name="Calibri", size=9, italic=True, color="555555")
 
 COLS = ["Poř.", "Kapitola", "Atomic operace (popis)", "MJ", "Množství",
-        "URS kód kandidát", "Status", "Parent frozen item_id",
-        "Realizuje skladbu", "Pozn."]
-COL_WIDTHS = [6, 22, 56, 7, 10, 16, 22, 22, 16, 50]
+        "Vzorec / Zdroj výměry", "URS kód kandidát", "Status",
+        "Parent frozen item_id", "Realizuje skladbu", "Pozn."]
+COL_WIDTHS = [6, 22, 52, 7, 10, 46, 15, 20, 22, 15, 44]
 
 # Phase order within HSV/PSV per HK212 construction sequence
 HSV_ORDER = ["HSV-1 Zemní práce", "HSV-2 Základové a ŽB", "HSV-3 Svislé konstrukce",
@@ -70,6 +70,43 @@ PSV_ORDER = ["PSV-71 Izolace HI", "PSV-71 Izolace TI", "PSV-72 ZTI", "PSV-73 Vyt
 VRN_ORDER = ["VRN — Zařízení staveniště", "VRN — Doprava + odpad", "VRN — BOZP",
              "VRN — Pojištění + zábory", "VRN — Průzkumy", "VRN — Geodet",
              "VRN — Dokumentace", "VRN — Revize", "VRN — Kolaudace", "VRN — Společné"]
+
+
+def _code_digits(code) -> int:
+    if not code:
+        return 0
+    return len(re.sub(r"[^\d]", "", str(code)))
+
+
+def classify_status(op: dict) -> str:
+    """4-tier finalized status (Alexander principle — work always remains,
+    code state is orthogonal):
+      ✓ verified              — leaf code verified (Phase 5 / carried / consensus leaf)
+      ⚠ kandidát-verify       — 9-digit leaf from generator, NOT yet verified
+      ⚠ família ???           — family resolved, leaf pending
+      ❌ blank — ÚRS online    — no code; bind later from app.urs.cz
+    """
+    s = (op.get("status") or "").lower()
+    code = op.get("urs_kod_kandidat")
+    digits = _code_digits(code)
+    family = op.get("urs_code_family_6digit")
+
+    if not code and not family:
+        return "❌ blank — ÚRS online"
+    if not code and family:
+        return "⚠ família ??? (ÚRS online)"
+    # has a code
+    if digits >= 9:
+        if ("verified" in s and "family" not in s) or "carried_verified" in s \
+           or s == "matched_websearch_verified" or "cross_discipline" in s \
+           or "reconciled_596" in s:
+            return "✓ verified"
+        return "⚠ kandidát-verify"
+    # family-only code (≤6 digit)
+    return "⚠ família ??? (ÚRS online)"
+
+
+URS_ONLINE_NOTE = "Doplnit leaf z CS ÚRS online (app.urs.cz, cen. úroveň 2026 01) dle família + popis + Vzorec."
 
 
 def status_icon(status: str) -> str:
@@ -110,23 +147,33 @@ def write_op_row(ws, row, op, poradi_override=None):
     code = op.get("urs_kod_kandidat")
     is_decomp = op.get("decomposition_type") in ("skladba_vrstva", "fixture")
     is_blank = not code
+    status_4tier = classify_status(op)
+    # Show família in code column when leaf blank but family known
+    family = op.get("urs_code_family_6digit")
+    code_display = code if code else (f"{family} ???" if family else "")
+    # Append ÚRS-online note to Pozn for blank/family ops (work always remains)
+    base_pozn = op.get("pozn") or ""
+    if ("família" in status_4tier) or ("blank" in status_4tier):
+        base_pozn = (base_pozn + "  " + URS_ONLINE_NOTE).strip() if base_pozn else URS_ONLINE_NOTE
     vals = [
         poradi_override if poradi_override is not None else op["poradi"],
         op["kapitola"],
         op["atomic_operace_popis"],
         op["mj"],
         op["mnozstvi"],
-        code if code else "",
-        status_icon(op.get("status")),
+        op.get("qty_formula") or "",
+        code_display,
+        status_4tier,
         f"{op['parent_frozen_item_id']} → {op['atomic_id']}" if is_decomp else op["parent_frozen_item_id"],
         rs or "",
-        op.get("pozn") or "",
+        base_pozn,
     ]
+    # Column indices (1-based): 1=Poř 4=MJ 5=Množství 8=Status
     for c, v in enumerate(vals, start=1):
         cell = ws.cell(row, c, value=v)
         cell.font = BODY_FONT
         cell.border = BORDER
-        cell.alignment = RIGHT if c == 5 else (CENTER if c in (1, 4, 7) else LEFT)
+        cell.alignment = RIGHT if c == 5 else (CENTER if c in (1, 4, 8) else LEFT)
     # Row tint
     if is_blank:
         for c in range(1, len(COLS) + 1):
@@ -217,6 +264,27 @@ def build_souhrn(wb, data):
         kv(kap, n)
     r += 1
 
+    # STAV KÓDŮ — 4-tier code-state summary computed from ops
+    from collections import Counter as _C
+    tier = _C(classify_status(o) for o in data["atomic_operations"])
+    section("STAV KÓDŮ (4 tiers — práce kompletní bez ohledu na stav kódu)")
+    for label, key in [("✓ verified (leaf ověřen)", "✓ verified"),
+                       ("⚠ kandidát-verify (leaf generátor, neověřen)", "⚠ kandidát-verify"),
+                       ("⚠ família ??? (leaf z ÚRS online)", "⚠ família ??? (ÚRS online)"),
+                       ("❌ blank — ÚRS online", "❌ blank — ÚRS online")]:
+        kv(label, tier.get(key, 0))
+    r += 1
+    note_lines = [
+        "Kódy: leaf binding doplnit z CS ÚRS online (app.urs.cz, cenová úroveň 2026 01) dle família + popis + Vzorec.",
+        "Reconciliation consensus: HSV1.004 dvorek 596811220 · HSV1.005 terasa 636311 (na terče, NE 762) · HSV2.003/008 bednění 274.",
+        "PRÁCE JE KOMPLETNÍ bez ohledu na stav kódu — seznam (postup prací) = primary deliverable. Code = secondary, doplní se v ÚRS online / KROS.",
+    ]
+    for line in note_lines:
+        ws.cell(r, 1, value="• " + line).font = NOTE_FONT
+        ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=3)
+        r += 1
+    r += 1
+
     section("URS FAMÍLIA DISTRIBUCE (54 distinct)")
     ws.cell(r, 1, value="Família").font = HEADER_FONT
     ws.cell(r, 1).fill = HEADER_FILL
@@ -275,15 +343,100 @@ def build_decomp_map(wb, data):
     return ws
 
 
+def build_pending_decisions(wb):
+    """PENDING DECISIONS sheet — surfaces open vyjasnění + skipped anchor gaps
+    so they're not forgotten during Stage 3 catalog binding. Reads
+    vyjasneni_queue.json (open items) — these works are NOT in items.json
+    (verified-not-in-TZ per Stage 1B), but Karel must decide on them."""
+    queue_path = ROOT / "inputs" / "meta" / "vyjasneni_queue.json"
+    try:
+        with queue_path.open() as f:
+            q = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        q = {"items": []}
+    open_vyj = [v for v in q.get("items", []) if v.get("status") == "open"]
+
+    ws = wb.create_sheet("PENDING_DECISIONS")
+    headers = ["#", "Severity", "Téma (čeká rozhodnutí)", "Stav v rozpočtu", "Next action"]
+    widths = [6, 12, 50, 30, 60]
+    for c, (h, w) in enumerate(zip(headers, widths), start=1):
+        cell = ws.cell(1, c, value=h)
+        cell.font = HEADER_FONT
+        cell.fill = HEADER_FILL
+        cell.alignment = HEADER_ALIGN
+        cell.border = BORDER
+        ws.column_dimensions[get_column_letter(c)].width = w
+    ws.freeze_panes = "A2"
+
+    # Intro note row
+    intro = ws.cell(2, 1, value=(
+        "⚠ Tyto práce NEJSOU v items.json ani v atomic worklistu — byly ověřeny "
+        "jako NEzmíněné v ARS dům TZ (Stage 1B-verify). Před cenotvorbou / katalogovým "
+        "mapováním (Stage 3) je nutné rozhodnutí projektanta/investora. NE zapomenout."
+    ))
+    intro.font = NOTE_FONT
+    intro.alignment = LEFT
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=5)
+    row = 3
+
+    for v in open_vyj:
+        vals = [
+            v.get("id"),
+            v.get("severity", ""),
+            v.get("title", ""),
+            "NEPŘIDÁNO (verify-first)",
+            (v.get("next_action") or "")[:300],
+        ]
+        for c, val in enumerate(vals, start=1):
+            cell = ws.cell(row, c, value=val)
+            cell.font = BODY_FONT
+            cell.border = BORDER
+            cell.alignment = CENTER if c == 1 else LEFT
+            cell.fill = BLANK_FILL  # red tint — needs attention
+        row += 1
+
+    # PM05 was SKIP-silent (not even a vyjasnění) — surface it too
+    pm05 = [
+        "PM05", "medium",
+        "Okapový chodník + obvodová drenáž domu — NOT_IN_TZ (žádná zmínka v TZ)",
+        "SKIP (rekonstrukce — možná existuje)",
+        "Volitelné: ověřit zda okapový chodník po obvodu domu je v scope (mimo BV drenáž HSV1.015). Pokud ano → HSV-1 položka.",
+    ]
+    for c, val in enumerate(pm05, start=1):
+        cell = ws.cell(row, c, value=val)
+        cell.font = BODY_FONT
+        cell.border = BORDER
+        cell.alignment = CENTER if c == 1 else LEFT
+        cell.fill = DECOMP_FILL  # amber — informational skip
+    row += 1
+
+    return ws, len(open_vyj) + 1
+
+
 def main() -> None:
-    data = json.load(MAP_PATH.open())
+    # Defensive load — decomposition map may be missing / malformed / lack key
+    try:
+        with MAP_PATH.open() as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        raise SystemExit(f"ERROR: decomposition map not found: {MAP_PATH} (run atomic_decomposition.py first)")
+    except json.JSONDecodeError as e:
+        raise SystemExit(f"ERROR: invalid JSON in {MAP_PATH}: {e}")
+    if "atomic_operations" not in data or not isinstance(data["atomic_operations"], list):
+        raise SystemExit(f"ERROR: missing or malformed 'atomic_operations' list in {MAP_PATH}")
     ops = data["atomic_operations"]
 
-    # Partition ops
-    dum_hsv = [o for o in ops if o["objekt"] == "260219_dum" and o["kapitola"].startswith("HSV")]
-    dum_psv = [o for o in ops if o["objekt"] == "260219_dum" and (o["kapitola"].startswith("PSV") or o["kapitola"].startswith("M-21"))]
-    dum_vrn = [o for o in ops if o["objekt"] == "260219_dum" and o["kapitola"].startswith("VRN")]
-    sklad = [o for o in ops if o["objekt"] == "260217_sklad"]
+    # Partition ops — tolerate missing objekt/kapitola via .get() (defensive)
+    def _obj(o):
+        return o.get("objekt", "")
+
+    def _kap(o):
+        return o.get("kapitola", "") or ""
+
+    dum_hsv = [o for o in ops if _obj(o) == "260219_dum" and _kap(o).startswith("HSV")]
+    dum_psv = [o for o in ops if _obj(o) == "260219_dum" and (_kap(o).startswith("PSV") or _kap(o).startswith("M-21"))]
+    dum_vrn = [o for o in ops if _obj(o) == "260219_dum" and _kap(o).startswith("VRN")]
+    sklad = [o for o in ops if _obj(o) == "260217_sklad"]
 
     wb = Workbook()
     wb.remove(wb.active)  # drop default
@@ -294,8 +447,13 @@ def main() -> None:
     _, n_vrn = build_profession_sheet(wb, "260219_DUM_VRN", dum_vrn, VRN_ORDER)
     _, n_sklad = build_profession_sheet(wb, "260217_SKLAD", sklad, HSV_ORDER + PSV_ORDER + VRN_ORDER)
     build_decomp_map(wb, data)
+    _, n_pending = build_pending_decisions(wb)
 
-    wb.save(str(TARGET))
+    TARGET.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        wb.save(str(TARGET))
+    except (OSError, PermissionError) as e:
+        raise SystemExit(f"ERROR: failed to save {TARGET}: {e}")
 
     # Validation
     total_rows = n_hsv + n_psv + n_vrn + n_sklad
@@ -317,6 +475,7 @@ def main() -> None:
         "traceability_100pct": traceability_ok,
         "fabricated_codes": len(fabricated),
         "pattern_26_honest_blanks": data["_summary"]["familia_distribution"].get("(blank)", 0),
+        "pending_decisions_rows": n_pending,
     }, indent=2, ensure_ascii=False))
 
 

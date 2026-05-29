@@ -127,11 +127,11 @@
       "mnozstvi": 30.0,
       "mnozstvi_formula": "PDF řez C-C explicit composition + anglický dvorek ~30 m² odhad (2.5 × 2.0 m + odkop k vstupu 1.PP)",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "564831111",
+      "urs_code_proposed": "596811220",
       "urs_alternatives": [
         "564851111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_status": "family_verified_leaf_candidate_verify_stage3",
       "urs_confidence": 0.55,
       "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 4-vrstvý dlažební systém (Path C Tier 3 embedded tables)",
       "subdodavatel": "podlahar",
@@ -142,9 +142,11 @@
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.004",
       "realizuje_skladbu": "Anglický dvorek",
-      "cross_verification_status": "WRONG_LEAF",
+      "cross_verification_status": "RECONCILED_596_CONSENSUS",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS",
+      "urs_code_family_6digit": "596",
+      "correct_code_hint": "596 família — kladení betonové dlažby na loži (anglický dvorek). Consensus: busy atomic família 596 == happy A2 596811220. Leaf 596811220 candidate — VERIFY via MCP find_urs_code Stage 3."
     },
     {
       "objekt": "260219_dum",
@@ -157,11 +159,11 @@
       "mnozstvi": 30.0,
       "mnozstvi_formula": "PDF řez C-C explicit composition + terasa ~30 m² odhad (rozměry z TZ ARS dům §4 terasa za op. stěnou)",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "564831111",
+      "urs_code_proposed": null,
       "urs_alternatives": [
         "564851111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_status": "family_636311_leaf_lookup_required",
       "urs_confidence": 0.55,
       "source": "PDF řez D.1.1.2.2.21 řez C-C explicit composition — 5-vrstvý podkladní systém terasa (Path C Tier 3 embedded tables); dřevěná prkna garapa same item v PSV-76 Truhlář",
       "subdodavatel": "podlahar",
@@ -172,9 +174,11 @@
       "_data_quality": "tz_explicit",
       "id": "260219_dum.HSV1.005",
       "realizuje_skladbu": "Terasa",
-      "cross_verification_status": "WRONG_LEAF",
+      "cross_verification_status": "RECONCILED_636311_terasa_na_terce",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS",
+      "urs_code_family_6digit": "636311",
+      "correct_code_hint": "636311 família — betonové dlaždice NA TERČE (rektifikovatelné terče). USE busy-einstein 636311. happy-hamilton 762952004 (carpentry) DISCARDED — superseded wooden-decking assumption; frozen popis is betonové dlaždice na terče, NOT dřevěná prkna. Leaf binding Stage 3."
     },
     {
       "objekt": "260219_dum",
@@ -531,12 +535,12 @@
       "mnozstvi": 65.0,
       "mnozstvi_formula": "2×2.05×10 (svislé) + 2×1.20×10 (pata) = 41 + 24 = 65",
       "mnozstvi_confidence": 0.85,
-      "urs_code_proposed": "631311115",
+      "urs_code_proposed": null,
       "urs_alternatives": [
         "631311111",
         "634111111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_status": "wrong_leaf_274_family_lookup_required",
       "urs_confidence": 0.55,
       "source": "TZ statika §5.5 + ČBS 02 — bobtnavý pásek + těsnící plech pracovní spáry",
       "subdodavatel": "bila_vana_csb02",
@@ -548,10 +552,11 @@
       "notes": null,
       "id": "260219_dum.HSV2.003",
       "realizuje_skladbu": null,
-      "cross_verification_status": "WRONG_LEAF",
+      "cross_verification_status": "RECONCILED_274_CONSENSUS",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "correct_code_hint": "274XXX systémové bednění monolitických konstrukcí (bílá vana opěrná stěna). Consensus: busy-einstein hint == happy-hamilton A1. Leaf binding Stage 3.",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS",
+      "urs_code_family_6digit": "274"
     },
     {
       "objekt": "260219_dum",
@@ -689,11 +694,11 @@
       "mnozstvi": 19.4,
       "mnozstvi_formula": "2 (oboustranné) × 0.25 m výška × obvod 38.7 m (DXF) = 19.4 m²",
       "mnozstvi_confidence": 0.9,
-      "urs_code_proposed": "631311115",
+      "urs_code_proposed": null,
       "urs_alternatives": [
         "631311111"
       ],
-      "urs_status": "wrong_leaf_disambiguation_needed",
+      "urs_status": "wrong_leaf_274_family_lookup_required",
       "urs_confidence": 0.55,
       "source": "TZ statika dům §4 + DXF external perimeter",
       "subdodavatel": "bednici_tesar",
@@ -708,10 +713,11 @@
       "_recalc_reason": "Same as Pozední věnec 3.NP — perimeter 38.70 m DXF-verified",
       "id": "260219_dum.HSV2.008",
       "realizuje_skladbu": null,
-      "cross_verification_status": "WRONG_LEAF",
+      "cross_verification_status": "RECONCILED_274_CONSENSUS",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "correct_code_hint": "274XXX systémové bednění věnců",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF"
+      "correct_code_hint": "274XXX systémové bednění věnců. Consensus: busy-einstein hint == happy-hamilton A1. Leaf binding Stage 3.",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS",
+      "urs_code_family_6digit": "274"
     },
     {
       "objekt": "260219_dum",
@@ -6387,11 +6393,63 @@
       ],
       "_audit_gap_fixed": "PHASE_3_5_SKLAD_MEZIPODESTA_GAP",
       "_added_via_audit": "phase_3_5_sklad_qty_crosscheck_2026-05-26"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Přesun hmot",
+      "subkapitola": "Přesun hmot pro budovu",
+      "popis": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu a hmot (rekonstrukce vícepodlažní RD + nástavba 3.NP)",
+      "mj": "t",
+      "mnozstvi": 0,
+      "mnozstvi_formula": "TBD — buď % z HSV nákladů (běžně 2-4 %) nebo dle celkové tonáže přesouvaných hmot; množství doplní rozpočtář při cenotvorbě",
+      "mnozstvi_confidence": 0.6,
+      "urs_code_proposed": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.0,
+      "source": "anchor checklist PM01 — technical necessity (povinná položka každého rozpočtu, 998xxx URS família)",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "Množství TBD při cenotvorbě (% z HSV nebo tonáž). Nástavba 3.NP → vertikální přesun nutný.",
+      "id": "260219_dum.VRN.PM01",
+      "realizuje_skladbu": null,
+      "_audit_gap_fixed": "ANCHOR_CHECKLIST_PM01",
+      "_added_via_audit": "anchor_checklist_gap_audit_2026-05-29"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "VRN",
+      "_gate": "VRN",
+      "kapitola": "VRN — Lešení",
+      "subkapitola": "Fasádní lešení (ETICS + krov + klempířina)",
+      "popis": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro provedení ETICS fasády, krovu a klempířiny po obvodu domu (výška 13 m)",
+      "mj": "m²",
+      "mnozstvi": 503.1,
+      "mnozstvi_formula": "obvod domu 38.7 m × výška 13.0 m = 503.1 m² lešenné plochy (pro ETICS fasádu 276.7 m² + krov + klempířinu)",
+      "mnozstvi_confidence": 0.8,
+      "urs_code_proposed": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.0,
+      "source": "anchor checklist PM02 — technical necessity (ETICS 276.7 m² nelze provést bez lešení, 941xxx URS família) + DXF obvod 38.7 m + řez výška 13 m",
+      "subdodavatel": "VRN_management",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "Lešenná plocha = obvod × výška. Pronájem dle doby ETICS + krov + klempířina.",
+      "id": "260219_dum.VRN.PM02",
+      "realizuje_skladbu": null,
+      "_audit_gap_fixed": "ANCHOR_CHECKLIST_PM02",
+      "_added_via_audit": "anchor_checklist_gap_audit_2026-05-29"
     }
   ],
   "_summary_total": {
-    "items_total": 212,
-    "items_active": 208,
+    "items_total": 214,
+    "items_active": 210,
     "items_deprecated": 4,
     "by_kapitola": {
       "HSV-1 Zemní práce": 15,
@@ -6423,18 +6481,15 @@
       "VRN — Revize": 1,
       "VRN — Kolaudace": 1,
       "VRN — Společné": 1,
-      "HSV-5 Komunikace + schodiště": 1
+      "HSV-5 Komunikace + schodiště": 1,
+      "VRN — Přesun hmot": 1,
+      "VRN — Lešení": 1
     },
     "by_objekt": {
-      "260219_dum": 184,
+      "260219_dum": 186,
       "260217_sklad": 28
     },
-    "urs_status_distribution": {
-      "matched_websearch_verified": 8,
-      "needs_production_lookup": 195,
-      "wrong_leaf_disambiguation_needed": 9
-    },
-    "items_below_conf_0_70_mnozstvi": 0,
+    "items_below_conf_0_70_mnozstvi": 1,
     "subdodavatel_needs_mapping": 0,
     "urs_match_rate_pct": 0.0
   },
@@ -6609,145 +6664,10 @@
     "items_total_after": 212
   },
   "_phase3_5_namespace_finalize_log": {
-    "applied_at": "2026-05-27",
+    "applied_at": "2026-05-29",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
-    "items_renamed": 14,
-    "per_item_changes": [
-      {
-        "id": "260217_sklad.HSV1.005",
-        "before": [
-          "S01"
-        ],
-        "after": [
-          "S01_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV2.001",
-        "before": [
-          "S03a",
-          "S03b"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S03b_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV2.005",
-        "before": [
-          "S01",
-          "S05"
-        ],
-        "after": [
-          "S01_sklad",
-          "S05_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV2.006",
-        "before": [
-          "S05"
-        ],
-        "after": [
-          "S05_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV3.001",
-        "before": [
-          "S04"
-        ],
-        "after": [
-          "S04_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV3.002",
-        "before": [
-          "S03a",
-          "S03b"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S03b_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV3.003",
-        "before": [
-          "S03a",
-          "S03b"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S03b_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV4.001",
-        "before": [
-          "S02"
-        ],
-        "after": [
-          "S02_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV4.002",
-        "before": [
-          "S02"
-        ],
-        "after": [
-          "S02_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV4.003",
-        "before": [
-          "S02"
-        ],
-        "after": [
-          "S02_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV4.004",
-        "before": [
-          "S02"
-        ],
-        "after": [
-          "S02_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV4.005",
-        "before": [
-          "S02"
-        ],
-        "after": [
-          "S02_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV4.006",
-        "before": [
-          "S02"
-        ],
-        "after": [
-          "S02_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.PSV77.001",
-        "before": [
-          "S01"
-        ],
-        "after": [
-          "S01_sklad"
-        ]
-      }
-    ]
+    "items_renamed": 0,
+    "per_item_changes": []
   },
   "_phase5b_websearch_log": {
     "applied_at": "2026-05-27",
@@ -6762,5 +6682,80 @@
     },
     "budget_spent_usd": 0.6,
     "results_log": "outputs/phase5b_websearch_results.json"
+  },
+  "_anchor_gaps_applied_log": {
+    "applied_at": "2026-05-29",
+    "purpose": "Stage 1B-add — confirmed anchor gaps (PM01 přesun hmot + PM02 lešení). Technical necessities only. PM03/PM05/PM06 NOT added per Stage 1B-verify (not in ARS dům TZ).",
+    "items_added": [
+      "260219_dum.VRN.PM01",
+      "260219_dum.VRN.PM02"
+    ],
+    "items_skipped_idempotent": [],
+    "items_total_before": 212,
+    "items_total_after": 214,
+    "verify_decisions": {
+      "PM03_hromosvod": "VERIFY_PROJEKTANT — PBŘ no explicit LPS → vyjasnění #22, NOT added",
+      "PM04_slaboproud": "SKIP — not in TZ (rekonstrukce); vyjasnění #24 flag",
+      "PM05_okapovy_chodnik_drenaz": "SKIP — NOT in any TZ",
+      "PM06_terenni_upravy": "VERIFY_PROJEKTANT — only in MU sjezd rozhodnutí (separate scope) → vyjasnění #23, NOT added"
+    },
+    "snapshot_before": "outputs/items_FROZEN_pre_anchor_gaps.json"
+  },
+  "_reconciliation_a1a2_log": {
+    "applied_at": "2026-05-29",
+    "purpose": "CASE C reconciliation — A1/A2 consensus decisions salvaged from happy-hamilton into busy-einstein 214 canonical. NO raw git merge. Catalog-decision fields only.",
+    "decisions": [
+      {
+        "id": "260219_dum.HSV1.004",
+        "before_code": "564831111",
+        "after_code": "596811220",
+        "family": "596",
+        "note": "A2 reconciliation — dvorek dlažba na loži; was 564831111 WRONG_LEAF. Consensus busy 596 + happy 596811220 (leaf candidate)."
+      },
+      {
+        "id": "260219_dum.HSV1.005",
+        "before_code": "564831111",
+        "after_code": null,
+        "family": "636311",
+        "note": "A2 reconciliation — terasa; was 564831111 WRONG_LEAF. happy-hamilton 762 DISCARDED, busy-einstein 636311 (dlaždice na terče per frozen popis) USED."
+      },
+      {
+        "id": "260219_dum.HSV2.003",
+        "before_code": "631311115",
+        "after_code": null,
+        "family": "274",
+        "note": "A1 reconciliation — family 631→274 (631 = úpravy povrchů wrong; bednění ŽB = 274). Consensus busy hint + happy A1."
+      },
+      {
+        "id": "260219_dum.HSV2.008",
+        "before_code": "631311115",
+        "after_code": null,
+        "family": "274",
+        "note": "A1 reconciliation — family 631→274 (bednění pozedního věnce). Consensus busy hint + happy A1."
+      }
+    ],
+    "terasa_762_discarded": "HSV1.005 happy-hamilton 762952004 (carpentry) DISCARDED — frozen popis = betonové dlaždice na terče → 636311 família (busy-einstein atomic worklist correct).",
+    "snapshot_before": "outputs/items_pre_reconciliation.json",
+    "items_total": 214
+  },
+  "_stage3_leaf_binding_log": {
+    "applied_at": "2026-05-29",
+    "outcome": "LEAF_BINDING_BLOCKED_BY_CATALOG_ACCESS",
+    "source_ladder_attempted": {
+      "1_mcp_find_urs_code": "N/A — web-backed (Perplexity/urs.cz), catalog paywalled; tool refuses to fabricate (conf 0.5, 'nechci hádat'). Tested HSV2.003 bednění + omítka 612 — both N/A.",
+      "2_urs_matcher": "same matcher backend as find_urs_code",
+      "3_find_otskp_code": "WRONG DOMAIN — real 17904-item DB but transport (mosty/silnice); 'přesun hmot'→popelnice/DZ sloupky, 'lešení'→GSM-R/SOS hláska. Not usable for pozemní RD.",
+      "4_websearch": "family-level only (Phase 5B: 6-digit family ~75%, 9-digit leaf not in paywalled-catalog snippets)"
+    },
+    "pattern_26_compliance": "NO leaf fabricated. URS building leaves require Karel's KROS system (paid catalog). Família-resolved + honest MANUAL LOOKUP flags delivered.",
+    "disposition": {
+      "leaf_verified_phase5": 56,
+      "family_resolved_leaf_MANUAL_LOOKUP": 12,
+      "leaf_from_generator_unverified": 144,
+      "blank_MANUAL_LOOKUP": 2
+    },
+    "budget_spent_usd": "~0.05 (4 MCP probes; find_otskp free, find_urs cheap perplexity)",
+    "deliverable": "Family-resolved (274/596/636311 consensus + Phase 5 families) + 8 verified leaves + honest MANUAL LOOKUP blanks. File B 'URS vyber audit' sheet surfaces status per item for KROS binding.",
+    "snapshot_before": "outputs/items_pre_stage3.json"
   }
 }

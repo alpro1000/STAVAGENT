@@ -141,7 +141,16 @@ def short_id(full_id: str) -> str:
 
 
 def main() -> None:
-    data = json.load(ITEMS_PATH.open())
+    # Defensive load — input file may be missing / malformed / lack key
+    try:
+        with ITEMS_PATH.open() as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        raise SystemExit(f"ERROR: frozen items file not found: {ITEMS_PATH}")
+    except json.JSONDecodeError as e:
+        raise SystemExit(f"ERROR: invalid JSON in {ITEMS_PATH}: {e}")
+    if "items" not in data or not isinstance(data["items"], list):
+        raise SystemExit(f"ERROR: missing or malformed 'items' list in {ITEMS_PATH}")
     items = data["items"]
 
     atomic_ops: list[dict] = []
@@ -150,7 +159,14 @@ def main() -> None:
 
     decomposed_keys = set()
 
+    REQUIRED = ("id", "kapitola", "objekt", "popis", "mj", "mnozstvi")
     for it in items:
+        missing = [k for k in REQUIRED if k not in it]
+        if missing:
+            raise SystemExit(
+                f"ERROR: frozen item missing required keys {missing}: "
+                f"{it.get('id', '<no id>')}"
+            )
         key = (it["id"], it["kapitola"])
         rs = it.get("realizuje_skladbu")
         parent_id = it["id"]
@@ -256,7 +272,11 @@ def main() -> None:
         "decomposition_map": decomp_map,
         "atomic_operations": atomic_ops,
     }
-    OUT.write_text(json.dumps(out, indent=2, ensure_ascii=False))
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        OUT.write_text(json.dumps(out, indent=2, ensure_ascii=False))
+    except (OSError, PermissionError) as e:
+        raise SystemExit(f"ERROR: failed to write {OUT}: {e}")
 
     print(json.dumps({
         "frozen_items": len(items),
