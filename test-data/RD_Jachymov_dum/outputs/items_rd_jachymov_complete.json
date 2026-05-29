@@ -397,7 +397,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260217_sklad.HSV1.004",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -589,7 +590,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://cs.wikipedia.org/wiki/Beton%C3%A1%C5%99sk%C3%A1_v%C3%BDztu%C5%BE",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -682,7 +684,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.estav.cz/cz/10863.pozedni-zelezobetonovy-venec-k-cemu-slouzi-a-jaky-mel-vyvoj-na-co-si-dat-pozor",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby). POZOR množství: statika — věnec probíhá ve dvou úrovních (nižší pozednice I horní část vikýře) + stávající; jednookruhový obvod 38.7 m může podhodnocovat. Ověřit délku věnce z výkresu."
     },
     {
       "objekt": "260219_dum",
@@ -746,7 +749,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV2.009",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -805,7 +809,8 @@
       "id": "260219_dum.HSV2.011",
       "realizuje_skladbu": [
         "S09"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -839,7 +844,8 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://styrotrade.cz/cs/nas-obchod/odborne-rady/skladby-podlah/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -869,7 +875,8 @@
       "id": "260219_dum.HSV2.013",
       "realizuje_skladbu": [
         "S05"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -935,7 +942,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -961,7 +969,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260217_sklad.HSV2.003",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -1147,7 +1156,8 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.heluz.cz/cs/vyrobek/preklad-heluz-23-8-a-200-1",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1175,7 +1185,8 @@
       "id": "260219_dum.HSV3.004",
       "realizuje_skladbu": [
         "S01"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1297,7 +1308,8 @@
       "id": "260217_sklad.HSV3.001",
       "realizuje_skladbu": [
         "S04_sklad"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -1360,7 +1372,8 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1389,7 +1402,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://podminky.urs.cz/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1420,7 +1434,8 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.urs.cz/data/download/seznam-katalogu-cs-urs-v-kros.pdf",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1451,7 +1466,8 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://podminky.urs.cz/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1479,7 +1495,8 @@
       "id": "260219_dum.HSV4.004",
       "realizuje_skladbu": [
         "S09"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1510,7 +1527,8 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1805,7 +1823,8 @@
       "id": "260217_sklad.HSV4.001",
       "realizuje_skladbu": [
         "S02_sklad"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -1833,7 +1852,8 @@
       "id": "260217_sklad.HSV4.002",
       "realizuje_skladbu": [
         "S02_sklad"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -1891,7 +1911,8 @@
       "id": "260217_sklad.HSV4.004",
       "realizuje_skladbu": [
         "S02_sklad"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby). POZOR množství: statika — IPE180 á 1000 mm, stání 7.0 m, pnuty přes stěnu na patky; nosníky pravděpodobně rozpětí ~3.3–4 m (ne 7 m délka každý) → 49 lm může být ~20–30 % nadhodnoceno. Ověřit počet × délku z výkresu / RFEM modelu."
     },
     {
       "objekt": "260217_sklad",
@@ -1923,7 +1944,8 @@
       "_audit_gap_fixed": "PHASE_3_5_SKLAD_QTY_DXF_VERIFY; URS_PHASE5B_FAMILY_VERIFIED",
       "_added_via_audit": "phase_3_5_sklad_qty_crosscheck_2026-05-26",
       "cross_verification_status": "FAMILY_VERIFIED",
-      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/"
+      "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260217_sklad",
@@ -1951,7 +1973,8 @@
       "id": "260217_sklad.HSV4.006",
       "realizuje_skladbu": [
         "S02_sklad"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -1982,7 +2005,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.gala-drevo.cz/clanky/proc-na-krovy-pouzivat-kvh-hranoly--jsou-opravdu-drazsi/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -2011,7 +2035,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.gala-drevo.cz/clanky/proc-na-krovy-pouzivat-kvh-hranoly--jsou-opravdu-drazsi/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -2040,7 +2065,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://forum.tzb-info.cz/119036-kotveni-pozednice",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -2066,7 +2092,8 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260219_dum.HSV5.004",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -2095,7 +2122,8 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://online.ferona.cz/detail/26080/profil-hea-valcovany-za-tepla-en-10365-hea-160",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -2123,7 +2151,8 @@
       "status_flag": "ready_for_phase2",
       "notes": "Pre-baked říká 'JKL 100/4'; actual TZ použ. termín 'jakl/jekl' — RHS 100×100×4 dle ČSN EN 10219-2",
       "id": "260219_dum.HSV5.006",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -2360,7 +2389,8 @@
       "id": "260219_dum.HSV5.014",
       "realizuje_skladbu": [
         "S11"
-      ]
+      ],
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -3592,7 +3622,8 @@
       "id": "260219_dum.PSV76.001",
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.obchodprodilnu.cz/produkty/stavebni-prvky-a-materialy/rosty-schodnice/schodnice-ocelove.html",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -3670,7 +3701,8 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.004"
+      "id": "260219_dum.PSV76.004",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
       "objekt": "260219_dum",
@@ -6778,5 +6810,16 @@
     "double_count_guard": "30 m² wood lives ONLY in PSV76.002; terče lives ONLY in HSV1.005a. No overlap.",
     "snapshot_before": "outputs/items_pre_terasa_fix.json",
     "items_total": 214
+  },
+  "_statika_crosscheck_log": {
+    "applied_at": "2026-05-29",
+    "source": "Statika D.2 (TeAnau s.r.o., Ing. Jan Tvardík ČKAIT 0012219, RFEM 5.39) — full TZ text",
+    "verdict": "All structural profiles + concrete classes in items.json CONFIRMED by statika (zero profile/class errors). Notable: sklad pasy C16/20 XC0 confirmed (resolves ChatGPT 'ověřit'); pozední věnec 300×250 confirmed; bílá vana ČBS 02 / 250×1200 pata / 250×2050 stěna confirmed; krov HEA160+jekl100/4+kleštiny60/180+krokve100/180 confirmed; sklad stropnice 100/160 á625 + IPE180 á1000 confirmed; H-BLOK Herkul Standard confirmed.",
+    "policy": "Quantities kept as ODHAD (DPS-level výkaz per statika §7); statika_validation note added.",
+    "quantity_flags": [
+      "260217_sklad.HSV4.004 IPE180 parking — span/count needs výkres (7m length likely high)",
+      "260219_dum.HSV2.007/HSV2.008 věnec — two-level run may underestimate single-ring obvod"
+    ],
+    "items_tagged": 32
   }
 }
