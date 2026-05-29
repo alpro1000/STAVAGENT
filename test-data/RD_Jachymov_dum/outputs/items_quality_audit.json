@@ -4,25 +4,25 @@
   "_generated_by": "tools/quality_audit.py",
   "items_checked": 210,
   "items_total_incl_deprecated": 214,
-  "issues_found_total": 59,
+  "issues_found_total": 57,
   "summary_by_dimension": {
-    "urs_family_consistency": 31,
+    "urs_family_consistency": 29,
     "subdodavatel_logical": 28
   },
   "summary_by_severity": {
-    "informational": 59
+    "informational": 57
   },
   "issues": [
     {
       "dimension": "urs_family_consistency",
       "severity": "informational",
       "kapitola": "HSV-1 Zemní práce",
-      "urs_code": "564831111",
+      "urs_code": "596811220",
       "first_digit": "5",
       "expected_first_digits": [
         "1"
       ],
-      "reason": "URS kód 564831111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "reason": "URS kód 596811220 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
       "item_id": "260219_dum.HSV1.004",
       "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4"
     },
@@ -43,12 +43,12 @@
       "dimension": "urs_family_consistency",
       "severity": "informational",
       "kapitola": "HSV-1 Zemní práce",
-      "urs_code": "564831111",
-      "first_digit": "5",
+      "urs_code": "636311",
+      "first_digit": "6",
       "expected_first_digits": [
         "1"
       ],
-      "reason": "URS kód 564831111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "reason": "URS kód 636311 prvních digit '6' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
       "item_id": "260219_dum.HSV1.005",
       "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
     },
@@ -95,20 +95,6 @@
       "dimension": "urs_family_consistency",
       "severity": "informational",
       "kapitola": "HSV-2 Základové a ŽB",
-      "urs_code": "631311115",
-      "first_digit": "6",
-      "expected_first_digits": [
-        "2",
-        "3"
-      ],
-      "reason": "URS kód 631311115 prvních digit '6' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
-      "item_id": "260219_dum.HSV2.003",
-      "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění"
-    },
-    {
-      "dimension": "urs_family_consistency",
-      "severity": "informational",
-      "kapitola": "HSV-2 Základové a ŽB",
       "urs_code": "711141",
       "first_digit": "7",
       "expected_first_digits": [
@@ -118,20 +104,6 @@
       "reason": "URS kód 711141 prvních digit '7' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
       "item_id": "260219_dum.HSV2.005",
       "popis": "Separační PE fólie pod základovou patou bílé vany (povinná dle ČBS 02)"
-    },
-    {
-      "dimension": "urs_family_consistency",
-      "severity": "informational",
-      "kapitola": "HSV-2 Základové a ŽB",
-      "urs_code": "631311115",
-      "first_digit": "6",
-      "expected_first_digits": [
-        "2",
-        "3"
-      ],
-      "reason": "URS kód 631311115 prvních digit '6' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
-      "item_id": "260219_dum.HSV2.008",
-      "popis": "Bednění pozedního věnce systémové oboustranné"
     },
     {
       "dimension": "subdodavatel_logical",

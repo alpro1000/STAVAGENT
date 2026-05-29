@@ -2,7 +2,7 @@
 
 **Generated:** 2026-05-29
 **Items checked:** 210 (active, excl. 4 deprecated)
-**Issues flagged:** 59
+**Issues flagged:** 57
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,24 +17,22 @@
 
 | Dimension | Issues |
 |---|--:|
-| urs_family_consistency | 31 |
+| urs_family_consistency | 29 |
 | subdodavatel_logical | 28 |
 
-**By severity:** informational=59
+**By severity:** informational=57
 
 
 ---
 
-## urs_family_consistency (31 issues)
+## urs_family_consistency (29 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
-| `260219_dum.HSV1.004` | ⚪ informational | Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kame | URS kód 564831111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
-| `260219_dum.HSV1.005` | ⚪ informational | Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + bet | URS kód 564831111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
+| `260219_dum.HSV1.004` | ⚪ informational | Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kame | URS kód 596811220 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
+| `260219_dum.HSV1.005` | ⚪ informational | Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + bet | URS kód 636311 prvních digit '6' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 ( |
 | `260217_sklad.HSV1.001` | ⚪ informational | Sejmutí ornice a demolice stávajících kamenných zídek a scho | URS kód 962031132 prvních digit '9' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
-| `260219_dum.HSV2.003` | ⚪ informational | Systémové oboustranné bednění bílé vany — DOKA Framax / PERI | URS kód 631311115 prvních digit '6' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Patt |
 | `260219_dum.HSV2.005` | ⚪ informational | Separační PE fólie pod základovou patou bílé vany (povinná d | URS kód 711141 prvních digit '7' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Pattern |
-| `260219_dum.HSV2.008` | ⚪ informational | Bednění pozedního věnce systémové oboustranné | URS kód 631311115 prvních digit '6' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Patt |
 | `260217_sklad.HSV2.005` | ⚪ informational | Štěrkopískové lože pod podlahu skladu + pod schodišťovou des | URS kód 174101101 prvních digit '1' neodpovídá HSV-2 expected ['2', '3'] — likely cross-category položka per Corpus Patt |
 | `260219_dum.HSV3.005` | ⚪ informational | Zesílení ostění úhelníky L100/10 dvojicí u otvoru u komínové | URS kód 767131120 prvních digit '7' neodpovídá HSV-3 expected ['3'] — likely cross-category položka per Corpus Pattern 0 |
 | `260219_dum.HSV3.006` | ⚪ informational | Dočasné podstojkování stávajících přiléhajících stropů při o | URS kód 962081120 prvních digit '9' neodpovídá HSV-3 expected ['3'] — likely cross-category položka per Corpus Pattern 0 |

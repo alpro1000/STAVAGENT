@@ -36,6 +36,7 @@ PIPELINE = [
     ("phase2_excel_generator.py", "VSE_VARIANTY.xlsx (File A base)"),
     ("extend_phase4_excel.py", "VSE_VARIANTY_v2.xlsx (+ skladba cols)"),
     ("finalize_phase4_excel_v2.py", "VSE_VARIANTY_v2_final.xlsx (+ Var_E)"),
+    ("phase6_build_file_b_kros.py", "KROS_format_v3_final.xlsx (File B production)"),
     ("completeness_check_v2.py", "items_completeness_* audit"),
     ("quality_audit.py", "items_quality_* audit"),
 ]

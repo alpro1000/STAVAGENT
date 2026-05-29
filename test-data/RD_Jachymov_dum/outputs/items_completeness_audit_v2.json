@@ -61,7 +61,7 @@
       {
         "tkp_family": "2",
         "label": "Základové konstrukce, ŽB pasy/desky/věnce, hydroizolace",
-        "n_items": 22,
+        "n_items": 24,
         "samples": [
           {
             "id": "260219_dum.HSV2.001",
@@ -72,8 +72,8 @@
             "popis": "Bílá vana ČBS 02 — stěna úhlová tl. 250 mm × výška 2050 mm × L=10 m, beton C25/3"
           },
           {
-            "id": "260219_dum.HSV2.004",
-            "popis": "Výztuž bílé vany B500B 120 kg/m³ (empirická sazba Methvin pro úhlové opěrné stěn"
+            "id": "260219_dum.HSV2.003",
+            "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění"
           }
         ],
         "gap_flag": false
@@ -121,15 +121,11 @@
       {
         "tkp_family": "5",
         "label": "Komunikace, zpevněné plochy, dlažby (NA mostech / silnicích — pro RD typicky 564 chodník + dvorek)",
-        "n_items": 3,
+        "n_items": 2,
         "samples": [
           {
             "id": "260219_dum.HSV1.004",
             "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 4"
-          },
-          {
-            "id": "260219_dum.HSV1.005",
-            "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
           },
           {
             "id": "260217_sklad.PSV77.001",
@@ -141,19 +137,19 @@
       {
         "tkp_family": "6",
         "label": "Úpravy povrchů, omítky vnitřní/vnější, ETICS",
-        "n_items": 18,
+        "n_items": 17,
         "samples": [
           {
-            "id": "260219_dum.HSV2.003",
-            "popis": "Systémové oboustranné bednění bílé vany — DOKA Framax / PERI MAXIMO, vč. těsnění"
-          },
-          {
-            "id": "260219_dum.HSV2.008",
-            "popis": "Bednění pozedního věnce systémové oboustranné"
+            "id": "260219_dum.HSV1.005",
+            "popis": "Terasa za opěrnou stěnou: rektifikovatelné terče 50 mm + betonové dlaždice 50 mm"
           },
           {
             "id": "260219_dum.HSV4.009",
             "popis": "Plastická perlitbetonová roznášecí vrstva tl. 50 mm nad zásypem klenby"
+          },
+          {
+            "id": "260219_dum.HSV4.013",
+            "popis": "Suchá podlahová skladba 1.NP/2.NP — zásyp Liapor pro vyrovnání tl. 50 mm"
           }
         ],
         "gap_flag": false
@@ -3116,8 +3112,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "HEA160",
-        "HEA200",
-        "HEA180"
+        "HEA180",
+        "HEA200"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3163,8 +3159,8 @@
       "description": "TZ ARS — komínové těleso (zachované / nové)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "komín",
-        "Komín"
+        "Komín",
+        "komín"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3189,9 +3185,9 @@
       "description": "TZ ARS — opěrná stěna / bílá vana",
       "tz_mention_count": 5,
       "tz_mention_sample": [
-        "opěrné stěn",
-        "opěrná stěn",
-        "Opěrná stěn"
+        "bílá vana",
+        "Opěrná stěn",
+        "opěrná stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3216,8 +3212,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasa",
-        "terasy"
+        "terasy",
+        "terasa"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3241,9 +3237,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "protipožární",
         "EI 180",
-        "EI 90"
+        "EI 90",
+        "protipožární"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3256,8 +3252,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "TČ",
-        "tepelné čerpadl",
-        "multisplit"
+        "multisplit",
+        "tepelné čerpadl"
       ],
       "items_keyword_hit": true,
       "status": "covered",
