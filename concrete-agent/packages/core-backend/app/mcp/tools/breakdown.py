@@ -44,10 +44,43 @@ WORK_TEMPLATES = {
 }
 
 
+# Work-first contract (W2/PR2 — Pattern 15). `mode` is a first-class parameter.
+#   work_first        — produce a frozen, code-less, price-less work list. Catalog
+#                       binding is a SEPARATE stage (CATALOG_BINDING) behind the
+#                       STOP gate. This is the default (Pattern 15).
+#   work_with_catalog — legacy single-pass: attach OTSKP codes + prices inline.
+# `catalog="none"` is an accepted alias that forces work_first regardless of mode.
+MODE_WORK_FIRST = "work_first"
+MODE_WORK_WITH_CATALOG = "work_with_catalog"
+
+
+def _attach_catalog_codes(items: list[dict], otskp_catalog, catalog: str) -> list[dict]:
+    """Catalog-binding step, DECOUPLED from work decomposition.
+
+    Mutates each item in place, attaching OTSKP code + unit/total price when a
+    match is found. This runs only in mode=work_with_catalog — in work_first the
+    breakdown ends on the frozen work list and this is never called (the catalog
+    stage is reached separately, after the WORK_ATOMIZATION → CATALOG_BINDING
+    transition, via find_otskp_code / find_urs_code under CATALOG_BINDING policy).
+    """
+    if catalog not in ("otskp", "both"):
+        return items
+    for item in items:
+        search_results = otskp_catalog.search(item["work_description"], limit=1)
+        if search_results:
+            r = search_results[0]
+            item["otskp_code"] = r.code
+            item["otskp_description"] = r.nazev
+            item["unit_price_czk"] = r.cena
+            item["total_price_czk"] = round(r.cena * item["quantity"], 0)
+    return items
+
+
 async def create_work_breakdown(
     elements: list[dict],
     project_type: str = "most",
     catalog: str = "otskp",
+    mode: str = MODE_WORK_FIRST,
 ) -> dict:
     """From a list of structural elements, create a complete bill of quantities
     (výkaz výměr / soupis prací) with OTSKP/ÚRS codes and prices.
@@ -97,6 +130,16 @@ async def create_work_breakdown(
             - 'otskp': OTSKP D6 catalog (17,904 items, transport structures)
             - 'urs': ÚRS catalog (39,000+ items, building construction)
             - 'both': search both catalogs (slower, more complete)
+            - 'none': work-first alias — forces a code-less list (no matching)
+
+        mode: Work-first contract (Pattern 15 — Work-First, Catalog-Last).
+            - 'work_first' (DEFAULT): produce a frozen, code-less, price-less
+              work list. Catalog binding is a SEPARATE stage (CATALOG_BINDING)
+              behind the STOP gate — do NOT attach codes/prices here.
+            - 'work_with_catalog': legacy single-pass — attach OTSKP codes +
+              prices inline (only when `catalog` is a real catalog).
+            Response echoes `mode` + `catalog_bound` so callers can tell whether
+            the list is frozen-work-only or already catalog-bound.
     """
     try:
         from app.mcp.tools.classifier import _classify, ELEMENT_TYPES
@@ -158,18 +201,10 @@ async def create_work_breakdown(
                 if qty <= 0:
                     continue
 
-                # Step 4: Find OTSKP code
-                otskp_match = None
-                if catalog in ("otskp", "both"):
-                    search_results = otskp_catalog.search(work_name, limit=1)
-                    if search_results:
-                        r = search_results[0]
-                        otskp_match = {
-                            "code": r.code,
-                            "description": r.nazev,
-                            "unit_price_czk": r.cena,
-                        }
-
+                # Build the work item (code-less). Each item carries `_source`
+                # tracing it to the originating input element + work template —
+                # the grounding-gate (Pattern 29) marks items without `_source`
+                # as UNVERIFIED. Catalog binding is NOT done here (Pattern 15).
                 item = {
                     "work_description": work_name,
                     "unit": tmpl["unit"],
@@ -177,14 +212,17 @@ async def create_work_breakdown(
                     "hsv_section": tmpl.get("hsv", ""),
                     "element_name": name,
                     "element_type": etype,
+                    "_source": f"element:{name} / template:{tmpl['work']}",
                 }
-                if otskp_match:
-                    item["otskp_code"] = otskp_match["code"]
-                    item["otskp_description"] = otskp_match["description"]
-                    item["unit_price_czk"] = otskp_match["unit_price_czk"]
-                    item["total_price_czk"] = round(otskp_match["unit_price_czk"] * qty, 0)
-
                 all_items.append(item)
+
+        # Work-first decoupling (Pattern 15): the breakdown ends on the frozen
+        # work list. Catalog codes/prices are attached ONLY in the explicit
+        # work_with_catalog mode (and only for real catalogs). catalog="none"
+        # forces work-first regardless of `mode`.
+        work_first = mode != MODE_WORK_WITH_CATALOG or catalog == "none"
+        if not work_first:
+            _attach_catalog_codes(all_items, otskp_catalog, catalog)
 
         # Group by HSV section
         sections = {}
@@ -204,6 +242,8 @@ async def create_work_breakdown(
             "elements_processed": len(elements),
             "catalog": catalog,
             "project_type": project_type,
+            "mode": MODE_WORK_FIRST if work_first else MODE_WORK_WITH_CATALOG,
+            "catalog_bound": not work_first,
         }
 
     except Exception as e:

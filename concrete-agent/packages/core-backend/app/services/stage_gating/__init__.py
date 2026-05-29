@@ -8,8 +8,10 @@ Public surface:
   - InMemorySessionRepository, SqlAlchemySessionRepository
 
 PR1 ships the rails (state machine + workflow config + session model + resume).
-Policy enforcement, audit hashing, replay, work-first decoupling and the
-grounding-gate are PR2/PR3.
+PR2 adds enforcement OVER those rails: the tool-manifest registry, the single
+policy gateway (`evaluate_tool_policy`), and the grounding-gate
+(`validate_grounding`) — all reading the PR1 YAML allow-lists as the single
+source of truth. Audit-hash chaining, replay verification and HITL are PR3.
 
 Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md
 """
@@ -38,6 +40,25 @@ from app.services.stage_gating.workflow_state import (
     is_resumable,
     transition,
 )
+from app.services.stage_gating.tool_manifest import (
+    TOOL_MANIFESTS,
+    RegistryValidationError,
+    SideEffectLevel,
+    ToolCategory,
+    ToolManifest,
+    get_manifest,
+    stages_for_tool,
+    validate_registry,
+)
+from app.services.stage_gating.policy_gateway import (
+    GROUNDING_UNVERIFIED,
+    GROUNDING_VERIFIED,
+    GroundingResult,
+    PolicyDecision,
+    PolicyError,
+    evaluate_tool_policy,
+    validate_grounding,
+)
 
 __all__ = [
     "WorkflowState",
@@ -57,4 +78,21 @@ __all__ = [
     "DEFAULT_TTL_DAYS",
     "InMemorySessionRepository",
     "SqlAlchemySessionRepository",
+    # PR2 — tool registry
+    "TOOL_MANIFESTS",
+    "ToolManifest",
+    "ToolCategory",
+    "SideEffectLevel",
+    "RegistryValidationError",
+    "get_manifest",
+    "stages_for_tool",
+    "validate_registry",
+    # PR2 — policy gateway + grounding-gate
+    "PolicyDecision",
+    "PolicyError",
+    "evaluate_tool_policy",
+    "validate_grounding",
+    "GroundingResult",
+    "GROUNDING_VERIFIED",
+    "GROUNDING_UNVERIFIED",
 ]
