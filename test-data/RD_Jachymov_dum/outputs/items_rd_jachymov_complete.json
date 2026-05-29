@@ -6737,5 +6737,25 @@
     "terasa_762_discarded": "HSV1.005 happy-hamilton 762952004 (carpentry) DISCARDED — frozen popis = betonové dlaždice na terče → 636311 família (busy-einstein atomic worklist correct).",
     "snapshot_before": "outputs/items_pre_reconciliation.json",
     "items_total": 214
+  },
+  "_stage3_leaf_binding_log": {
+    "applied_at": "2026-05-29",
+    "outcome": "LEAF_BINDING_BLOCKED_BY_CATALOG_ACCESS",
+    "source_ladder_attempted": {
+      "1_mcp_find_urs_code": "N/A — web-backed (Perplexity/urs.cz), catalog paywalled; tool refuses to fabricate (conf 0.5, 'nechci hádat'). Tested HSV2.003 bednění + omítka 612 — both N/A.",
+      "2_urs_matcher": "same matcher backend as find_urs_code",
+      "3_find_otskp_code": "WRONG DOMAIN — real 17904-item DB but transport (mosty/silnice); 'přesun hmot'→popelnice/DZ sloupky, 'lešení'→GSM-R/SOS hláska. Not usable for pozemní RD.",
+      "4_websearch": "family-level only (Phase 5B: 6-digit family ~75%, 9-digit leaf not in paywalled-catalog snippets)"
+    },
+    "pattern_26_compliance": "NO leaf fabricated. URS building leaves require Karel's KROS system (paid catalog). Família-resolved + honest MANUAL LOOKUP flags delivered.",
+    "disposition": {
+      "leaf_verified_phase5": 56,
+      "family_resolved_leaf_MANUAL_LOOKUP": 12,
+      "leaf_from_generator_unverified": 144,
+      "blank_MANUAL_LOOKUP": 2
+    },
+    "budget_spent_usd": "~0.05 (4 MCP probes; find_otskp free, find_urs cheap perplexity)",
+    "deliverable": "Family-resolved (274/596/636311 consensus + Phase 5 families) + 8 verified leaves + honest MANUAL LOOKUP blanks. File B 'URS vyber audit' sheet surfaces status per item for KROS binding.",
+    "snapshot_before": "outputs/items_pre_stage3.json"
   }
 }
