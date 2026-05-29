@@ -1,5 +1,9 @@
 # ЗАДАНИЕ: Pipeline генерации soupisu prací из проектной документации (TZ + výkresy)
 
+> **🗄️ ARCHIVED — viz živá kopie v root: [`docs/TASK_TZ_TO_SOUPIS_PIPELINE_v3.md`](../../TASK_TZ_TO_SOUPIS_PIPELINE_v3.md).**
+> Tato archivní verze NENÍ byte-identická s živou root kopií; ponechána jen
+> pro historický kontext. Nemerguj ani nemaž — kanonická je root kopie.
+
 **Версия:** 3.0
 **Приоритет:** высокий
 **Зависит от:** Work Packages DB (из TASK_VZ_Scraper_WorkPackages)

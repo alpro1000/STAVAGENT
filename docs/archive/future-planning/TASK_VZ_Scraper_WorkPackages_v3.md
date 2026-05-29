@@ -1,5 +1,9 @@
 # ЗАДАНИЕ: Сбор смет + Автоматические Work Packages из 1000+ rozpočtů
 
+> **🗄️ ARCHIVED — viz živá kopie v root: [`docs/TASK_VZ_SCRAPER_WORKPACKAGES_v3.md`](../../TASK_VZ_SCRAPER_WORKPACKAGES_v3.md).**
+> Tato archivní verze NENÍ byte-identická s živou root kopií; ponechána jen
+> pro historický kontext. Nemerguj ani nemaž — kanonická je root kopie.
+
 **Версия:** 3.0 (s PoC výsledky)
 **Приоритет:** высокий (data foundation для TZ→Soupis pipeline)
 **Тип:** data engineering + ML clustering
