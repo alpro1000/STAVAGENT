@@ -278,14 +278,29 @@ def build_decomp_map(wb, data):
 
 
 def main() -> None:
-    data = json.load(MAP_PATH.open())
+    # Defensive load — decomposition map may be missing / malformed / lack key
+    try:
+        with MAP_PATH.open() as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        raise SystemExit(f"ERROR: decomposition map not found: {MAP_PATH} (run atomic_decomposition.py first)")
+    except json.JSONDecodeError as e:
+        raise SystemExit(f"ERROR: invalid JSON in {MAP_PATH}: {e}")
+    if "atomic_operations" not in data or not isinstance(data["atomic_operations"], list):
+        raise SystemExit(f"ERROR: missing or malformed 'atomic_operations' list in {MAP_PATH}")
     ops = data["atomic_operations"]
 
-    # Partition ops
-    dum_hsv = [o for o in ops if o["objekt"] == "260219_dum" and o["kapitola"].startswith("HSV")]
-    dum_psv = [o for o in ops if o["objekt"] == "260219_dum" and (o["kapitola"].startswith("PSV") or o["kapitola"].startswith("M-21"))]
-    dum_vrn = [o for o in ops if o["objekt"] == "260219_dum" and o["kapitola"].startswith("VRN")]
-    sklad = [o for o in ops if o["objekt"] == "260217_sklad"]
+    # Partition ops — tolerate missing objekt/kapitola via .get() (defensive)
+    def _obj(o):
+        return o.get("objekt", "")
+
+    def _kap(o):
+        return o.get("kapitola", "") or ""
+
+    dum_hsv = [o for o in ops if _obj(o) == "260219_dum" and _kap(o).startswith("HSV")]
+    dum_psv = [o for o in ops if _obj(o) == "260219_dum" and (_kap(o).startswith("PSV") or _kap(o).startswith("M-21"))]
+    dum_vrn = [o for o in ops if _obj(o) == "260219_dum" and _kap(o).startswith("VRN")]
+    sklad = [o for o in ops if _obj(o) == "260217_sklad"]
 
     wb = Workbook()
     wb.remove(wb.active)  # drop default
@@ -297,7 +312,11 @@ def main() -> None:
     _, n_sklad = build_profession_sheet(wb, "260217_SKLAD", sklad, HSV_ORDER + PSV_ORDER + VRN_ORDER)
     build_decomp_map(wb, data)
 
-    wb.save(str(TARGET))
+    TARGET.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        wb.save(str(TARGET))
+    except (OSError, PermissionError) as e:
+        raise SystemExit(f"ERROR: failed to save {TARGET}: {e}")
 
     # Validation
     total_rows = n_hsv + n_psv + n_vrn + n_sklad
