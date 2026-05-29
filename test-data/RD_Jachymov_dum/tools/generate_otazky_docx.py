@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
-Generator profesionálního Word dokumentu s 18 otázkami pro Karla Šmída
+Generator profesionálního Word dokumentu s vyjasněními pro Karla Šmída
 k forwarduje projektantům (SMASH, TeAnau, TUSPO) k vyřešení.
+
+Single source = inputs/meta/vyjasneni_queue.json. Hardcoded OTAZKY dict slouží
+POUZE jako friendly-Czech override per id; položky bez override se renderují
+z polí queue. Počet otázek == počet položek v queue (Pattern 38 projection).
 
 Source: inputs/meta/vyjasneni_queue.json
 Output: outputs/Otazky_pro_Karla_a_projektanty_2026-05-29.docx
@@ -637,7 +641,44 @@ def add_page_number(paragraph):
     run._r.append(fldChar2)
 
 
+_SEV_TO_VAZNOST = {
+    "critical": "URGENTNÍ",
+    "important": "DŮLEŽITÉ",
+    "minor": "MÉNĚ URGENTNÍ",
+}
+
+
+def _from_queue(item: dict) -> dict:
+    """Map a vyjasneni_queue.json item → render schema (for ids without a friendly override)."""
+    blocks = item.get("blocks") or []
+    return {
+        "title": item.get("title", ""),
+        "komu": "Projektant (SMASH / TeAnau / TUSPO) nebo investor — viz akce",
+        "komu_email": "",
+        "vaznost": _SEV_TO_VAZNOST.get(item.get("severity"), "STŘEDNĚ DŮLEŽITÉ"),
+        "o_co_jde": item.get("context", ""),
+        "co_je_treba": item.get("next_action", ""),
+        "co_mame": item.get("working_assumption", ""),
+        "vliv": ("Dotčené práce: " + "; ".join(blocks)) if blocks else item.get("working_assumption", ""),
+    }
+
+
+def build_render() -> dict:
+    """Single-source projection: docx renders EXACTLY the queue ids (Pattern 38).
+
+    OTAZKY hardcoded dict is a friendly-Czech override per id; queue-only ids are
+    built from queue fields; OTAZKY-only ids (resolved/removed from queue) are dropped.
+    """
+    queue = json.loads(QUEUE_JSON.read_text(encoding="utf-8"))["items"]
+    render: dict = {}
+    for item in queue:
+        qid = item["id"]
+        render[qid] = OTAZKY[qid] if qid in OTAZKY else _from_queue(item)
+    return render
+
+
 def main() -> int:
+    RENDER = build_render()  # single-source projection of vyjasneni_queue.json
     doc = Document()
 
     # Page margins
@@ -692,7 +733,7 @@ def main() -> int:
 
     intro2 = doc.add_paragraph()
     intro2.add_run(
-        "Tento dokument obsahuje 18 otázek, které je třeba vyřešit s projektanty "
+        f"Tento dokument obsahuje {len(RENDER)} otázek, které je třeba vyřešit s projektanty "
         "před cenovou kalkulací konkrétními řemesly a před zahájením realizace.\n\n"
         "Každá otázka má uvedeno: kdo má odpovědět, co je třeba zjistit, jaký předpoklad "
         "jsme prozatím použili pro výpočet, a jak odpověď ovlivní rozpočet."
@@ -725,8 +766,8 @@ def main() -> int:
         set_cell_bg(hdr[i], "1F3A5F")
         hdr[i].paragraphs[0].runs[0].font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
 
-    for qid in sorted(OTAZKY):
-        q = OTAZKY[qid]
+    for qid in sorted(RENDER):
+        q = RENDER[qid]
         row = summary_table.add_row().cells
         row[0].text = str(qid)
         row[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -750,8 +791,8 @@ def main() -> int:
 
     # Detail per otázka
     doc.add_heading("Detailní popis otázek", level=1)
-    for qid in sorted(OTAZKY):
-        q = OTAZKY[qid]
+    for qid in sorted(RENDER):
+        q = RENDER[qid]
         # Heading
         h = doc.add_heading(f"Otázka č. {qid}:  {q['title']}", level=2)
 
@@ -851,7 +892,7 @@ def main() -> int:
 
     # Save
     doc.save(str(OUT))
-    print(f"✓ Wrote {OUT.relative_to(PROJ)} ({OUT.stat().st_size:,} bytes)")
+    print(f"✓ Wrote {OUT.relative_to(PROJ)} ({OUT.stat().st_size:,} bytes, {len(RENDER)} vyjasnění)")
     return 0
 
 

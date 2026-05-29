@@ -352,7 +352,34 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
-### 2026-05-26 — Session: Phase C closing (G0–G6 + G-final) — Rimsa calibration + cyclic scheduler
+### 2026-05-29 — Session: RD Jáchymov terasa 762 fix + ChatGPT diff + statika cross-check + anti-hallucination patterns
+
+**Topic:** Branch `claude/busy-einstein-zMx5F` (RD Jáchymov pilot, items.json 214 single source). Five units of work shipped + a `main` merge. Drawing-confirmed terasa fix, ChatGPT revize cross-check, full statika D.2 validation, pattern-library codification of the failure that motivated it, and 3 Pattern-38 follow-up fixes. Commits `560bf3a1` → `c49470e8`.
+
+**Rozhodnuto:**
+- **Terasa ŘEZ C-C fix (split-by-trade, Option B):** "betonové dlaždice NA terče" was wrong — tiles are the *roznášecí* layer POD terče; terče carry the wooden deck. Wood (762) was never gone — it survived as `PSV76.002 Truhlář` mis-coded `771` + "hliníkový rošt". Fix: `HSV1.005` = 5-op podkladní skladba (fam 636311→564); `PSV76.002` = 2-op dřevěná pochozí vrstva (fam **762**, code blank per Pattern 26, rošt hliníkový→dřevěný); dvorek `HSV1.004` 3→4 ops. No 30 m² double-count (wood only in PSV76.002, terče only in HSV1.005a). items 214 unchanged.
+- **ChatGPT revize diff (235 master / 71 CHYBI_OVERIT vs 214):** ~58/71 flags were already covered (risk-annotations on existing items). VALID catches: komín `HSV6.016` 6.0→0.6 m³ (×10 inflation, formula self-documented 0.6); sklad below-grade HI+drenáž (real gap, NOT_IN_TZ → vyjasnění #25); sněhové zábrany #26 + lemování komína #27. All real gaps were NOT_IN_TZ → vyjasnění, not fabricated (Pattern 26). C16/20 "ověřit" resolved by statika (correct).
+- **Statika D.2 cross-check:** ALL structural profiles + concrete classes CONFIRMED (zero profile/class errors). Per Pattern 26, kg/ks/bm stay ODHAD (statika §7 — výkaz oceli/dřeva is DPS-level); `statika_validation` note added to 32 structural items. 2 quantity flags noted in-item (sklad IPE180 parking, pozední věnec), unchanged.
+- **Anti-hallucination patterns (terasa miss):** 2 NEW (39 Vision-first reading for drawings, 40 Host-delegated vision + MCP validation gate) + 2 enrichments (9 re-read before fact-decision, 29 citation present ≠ VERIFIED). Header `last_number 38→40`, sequence 1..40 validated. P39 promoted to mandatory in `concrete-agent/CLAUDE.md`.
+- **3 Pattern-38 fixes:** `generate_otazky_docx.py` was rendering a HARDCODED `OTAZKY[1-20]` and never loaded the queue → docx silently shipped stale set, MISSING #22-27 + INCLUDING resolved 19/20. Made queue-driven (OTAZKY = friendly override), added as 9th orchestrator step + `docx==queue` assertion. Plus docstring count-agnostic + `HSV1.005a` urs ""→null.
+- **`main` merge:** PR conflicts resolved — `#1246` was this branch's earlier snapshot; my HEAD verified strict superset → `--ours` on RD/pattern files + regenerate (Pattern 38), main's 3 new task docs kept. Branch now contains all of main.
+
+**Odmítnuto:**
+- Putting wood ops into `HSV1.005` (task's literal 7-op) — would double-count 30 m² with PSV76.002. Chose split-by-trade.
+- Fabricating sklad HI/drenáž + sněhové zábrany + lemování as položky — NOT_IN_TZ → vyjasnění only (Pattern 26).
+- Recomputing steel/timber tonnage from statika — exact výkaz is DPS-level; kept ODHAD + note.
+
+**Otevřené otázky / risks:**
+- 2 quantity flags need výkres/RFEM: sklad IPE180 parking (49 lm likely ~20–30% high), pozední věnec (two-level run may underestimate single-ring obvod).
+- Stage 3 URS leaf binding still blocked (12/214 verified); `find_urs_code` MCP connected/disconnected intermittently this session — not tested.
+- `File B KROS_format` NOT import-ready (codes mostly família/blank) — deliverable to Karel = ATOMIC_WORKLIST + Otazky.docx + File A + Summary, as estimate with disclaimers.
+
+**Co dál:**
+- Merge this branch to `main` (this session).
+- When `find_urs_code` stable → Stage 3 leaf binding.
+- Resolve 24 vyjasnění with Karel/projektant; refine 2 quantity flags from výkres.
+
+---
 
 **Topic:** Phase C of Rimsa Calibration FullStack v1 (per `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`, Phase A audit `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`). Single-batch execution G0→G6→G-final on branch `claude/kind-wright-5nBQ2` (piggyback on Týden 3 Knowledge codegen branch — single PR for both bodies of work). All 7 gates shipped atomically; ~470 LOC engine + ~370 LOC tests + ~230 LOC docs. **Tests: 1136 baseline → 1197 (+61 across Týden 3 KB + Phase C cyclic).**
 

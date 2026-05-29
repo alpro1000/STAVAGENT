@@ -466,7 +466,7 @@
       "atomic_operace_popis": "Osazení rektifikovatelných terčů výšky ~50 mm na betonové dlaždice — terasa za opěrnou stěnou (nesou dřevěnou pochozí vrstvu PSV76.002)",
       "mj": "m²",
       "mnozstvi": 30.0,
-      "urs_kod_kandidat": "",
+      "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260219_dum.HSV1.005",
       "parent_kapitola": "HSV-1 Zemní práce",
