@@ -55,9 +55,9 @@ SECTION_FONT = Font(name="Calibri", size=11, bold=True)
 NOTE_FONT = Font(name="Calibri", size=9, italic=True, color="555555")
 
 COLS = ["Poř.", "Kapitola", "Atomic operace (popis)", "MJ", "Množství",
-        "URS kód kandidát", "Status", "Parent frozen item_id",
-        "Realizuje skladbu", "Pozn."]
-COL_WIDTHS = [6, 22, 56, 7, 10, 16, 22, 22, 16, 50]
+        "Vzorec / Zdroj výměry", "URS kód kandidát", "Status",
+        "Parent frozen item_id", "Realizuje skladbu", "Pozn."]
+COL_WIDTHS = [6, 22, 52, 7, 10, 46, 15, 20, 22, 15, 44]
 
 # Phase order within HSV/PSV per HK212 construction sequence
 HSV_ORDER = ["HSV-1 Zemní práce", "HSV-2 Základové a ŽB", "HSV-3 Svislé konstrukce",
@@ -116,17 +116,19 @@ def write_op_row(ws, row, op, poradi_override=None):
         op["atomic_operace_popis"],
         op["mj"],
         op["mnozstvi"],
+        op.get("qty_formula") or "",
         code if code else "",
         status_icon(op.get("status")),
         f"{op['parent_frozen_item_id']} → {op['atomic_id']}" if is_decomp else op["parent_frozen_item_id"],
         rs or "",
         op.get("pozn") or "",
     ]
+    # Column indices (1-based): 1=Poř 4=MJ 5=Množství 8=Status
     for c, v in enumerate(vals, start=1):
         cell = ws.cell(row, c, value=v)
         cell.font = BODY_FONT
         cell.border = BORDER
-        cell.alignment = RIGHT if c == 5 else (CENTER if c in (1, 4, 7) else LEFT)
+        cell.alignment = RIGHT if c == 5 else (CENTER if c in (1, 4, 8) else LEFT)
     # Row tint
     if is_blank:
         for c in range(1, len(COLS) + 1):
