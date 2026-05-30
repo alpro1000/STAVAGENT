@@ -1,16 +1,16 @@
 {
   "_schema_version": "1.0",
-  "_generated_at": "2026-05-29",
+  "_generated_at": "2026-05-30",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 210,
-  "items_total_incl_deprecated": 214,
-  "issues_found_total": 57,
+  "items_checked": 211,
+  "items_total_incl_deprecated": 215,
+  "issues_found_total": 58,
   "summary_by_dimension": {
     "urs_family_consistency": 29,
-    "subdodavatel_logical": 28
+    "subdodavatel_logical": 29
   },
   "summary_by_severity": {
-    "informational": 57
+    "informational": 58
   },
   "issues": [
     {
@@ -838,6 +838,19 @@
       "reason": "Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260217_sklad.HSV5.001",
       "popis": "Sklad mezipodesta schodiště — prefa betonové stupně (9 ks × 179.5×250 mm) + klad"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "current_subdodavatel": "zednik",
+      "expected_set": [
+        "VRN_management",
+        "zemni_prace"
+      ],
+      "reason": "Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV1.016",
+      "popis": "Venkovní schody na terénu z betonových dílců do betonového lože — rameno 1: 8×17"
     }
   ]
 }

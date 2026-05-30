@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
-**Generated:** 2026-05-29
-**Items checked:** 210 (active, excl. 4 deprecated)
-**Issues flagged:** 57
+**Generated:** 2026-05-30
+**Items checked:** 211 (active, excl. 4 deprecated)
+**Issues flagged:** 58
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -18,9 +18,9 @@
 | Dimension | Issues |
 |---|--:|
 | urs_family_consistency | 29 |
-| subdodavatel_logical | 28 |
+| subdodavatel_logical | 29 |
 
-**By severity:** informational=57
+**By severity:** informational=58
 
 
 ---
@@ -61,7 +61,7 @@
 
 ---
 
-## subdodavatel_logical (28 issues)
+## subdodavatel_logical (29 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -93,3 +93,4 @@
 | `260217_sklad.VRN.002` | ⚪ informational | Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (dr | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | Subdodavatel 'izolater_HI' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
 | `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek d |
+| `260219_dum.HSV1.016` | ⚪ informational | Venkovní schody na terénu z betonových dílců do betonového l | Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
