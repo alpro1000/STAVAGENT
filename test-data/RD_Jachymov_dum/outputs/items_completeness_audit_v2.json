@@ -3116,8 +3116,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "HEA200",
-        "HEA180",
-        "HEA160"
+        "HEA160",
+        "HEA180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3189,9 +3189,9 @@
       "description": "TZ ARS — opěrná stěna / bílá vana",
       "tz_mention_count": 5,
       "tz_mention_sample": [
-        "opěrné stěn",
-        "Opěrná stěn",
-        "bílá vana"
+        "opěrná stěn",
+        "Opěrné stěn",
+        "Opěrná stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3241,9 +3241,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "protipožární",
+        "EI 180",
         "Protipožární",
-        "EI 180"
+        "EI 90"
       ],
       "items_keyword_hit": true,
       "status": "covered",
