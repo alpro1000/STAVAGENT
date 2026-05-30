@@ -189,6 +189,32 @@ class SessionManager:
             )
         return state
 
+    # ── orchestrator support ───────────────────────────────────────────────
+    def load(self, *, session_id: UUID, user_id: UUID) -> SessionState:
+        """Return the owned session state without a resumability check.
+
+        Public, ownership-checked accessor for the orchestrator. Unlike
+        `resume_session` it does NOT reject terminal/expired sessions — the
+        caller decides what to do with the state. Raises SessionNotFoundError /
+        SessionAccessError via the same tenant guard as every other entry point.
+        """
+        return self._load_owned(session_id, user_id)
+
+    def persist(self, state: SessionState, *, user_id: UUID) -> SessionState:
+        """Persist orchestrator-mutated session data (partials/drafts/etc.).
+
+        Ownership-checked: the orchestrator records per-step outputs onto a
+        state it already loaded through an ownership-checked path, so this only
+        re-asserts the tenant guard before writing back. State transitions still
+        go exclusively through `advance` (the validated state-machine edge) —
+        this method must NOT be used to change `workflow_state`.
+        """
+        if state.user_id != user_id:
+            raise SessionAccessError(
+                f"User {user_id} may not persist session {state.id}"
+            )
+        return self._repo.update(state)
+
     # ── internal ──────────────────────────────────────────────────────────
     def _load_owned(self, session_id: UUID, user_id: UUID) -> SessionState:
         state = self._repo.get(session_id)

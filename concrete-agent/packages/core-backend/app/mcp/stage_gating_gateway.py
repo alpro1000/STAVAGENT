@@ -52,6 +52,26 @@ def _config():
     return load_workflow_config()
 
 
+@lru_cache(maxsize=4)
+def _engine_and_factory(dsn: str):
+    """Build + memoize the async engine and sessionmaker for a DSN (P1).
+
+    The engine owns a connection pool, so it MUST outlive a single tool call —
+    the previous per-call `create_async_engine(...)` + `await engine.dispose()`
+    opened and tore down a fresh pool (and a new asyncpg connection) on every
+    gated invocation, which dominated latency under any real traffic. Memoizing
+    per DSN keeps one warm pool per process. Keyed by the already-normalized DSN
+    so a config change (rare) yields a distinct cached engine rather than
+    silently reusing a stale one. Built lazily on first resolution so module
+    import stays DB-free.
+    """
+    from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+
+    engine = create_async_engine(dsn, future=True, pool_pre_ping=True)
+    factory = async_sessionmaker(engine, expire_on_commit=False)
+    return engine, factory
+
+
 async def _resolve_session_state(session_id: str) -> Optional[WorkflowState]:
     """Return the current WorkflowState for a session_id, or None if it cannot
     be resolved (no DB configured, malformed id, or session not found).
@@ -71,8 +91,6 @@ async def _resolve_session_state(session_id: str) -> Optional[WorkflowState]:
         return None
 
     try:
-        from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-
         from app.core.config import settings  # type: ignore
 
         dsn = getattr(settings, "DATABASE_URL", None)
@@ -83,17 +101,12 @@ async def _resolve_session_state(session_id: str) -> Optional[WorkflowState]:
             SqlAlchemySessionRepository,
         )
 
-        engine = create_async_engine(
-            dsn.replace("postgresql://", "postgresql+asyncpg://", 1),
-            future=True,
+        _engine, factory = _engine_and_factory(
+            dsn.replace("postgresql://", "postgresql+asyncpg://", 1)
         )
-        try:
-            factory = async_sessionmaker(engine, expire_on_commit=False)
-            repo = SqlAlchemySessionRepository(factory)
-            state = await repo.get(sid)
-            return state.workflow_state if state is not None else None
-        finally:
-            await engine.dispose()
+        repo = SqlAlchemySessionRepository(factory)
+        state = await repo.get(sid)
+        return state.workflow_state if state is not None else None
     except Exception as exc:  # pragma: no cover - defensive
         logger.warning("[StageGating] session state resolution failed: %s", exc)
         return None
