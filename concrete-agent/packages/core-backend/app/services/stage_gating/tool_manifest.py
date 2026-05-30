@@ -219,12 +219,10 @@ def validate_registry(
 ) -> None:
     """Validate the manifest registry at startup (AC4).
 
-    - Every registered MCP tool (minus `exempt`) must have a manifest, else the
-      server refuses to start with a clear error.
+    Two checks, both fail the server start with a clear error:
+    - Every registered MCP tool (minus `exempt`) must have a manifest.
     - Every tool that appears in any YAML stage allow-list must have a manifest
       (so the gateway can resolve its metadata).
-    - Every manifest tool that is reachable in at least one workflow stage must
-      resolve to a non-empty derived policy_stage (catches YAML/manifest drift).
 
     `exempt` covers tools intentionally outside the stage-gated workflow surface
     (e.g. the UEP pipeline tools and the pump/advisor helpers), which are billed

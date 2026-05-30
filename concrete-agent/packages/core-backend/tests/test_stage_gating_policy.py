@@ -351,3 +351,76 @@ def test_enforce_or_raise_is_coroutine_function():
     from app.mcp.stage_gating_gateway import enforce_or_raise
 
     assert inspect.iscoroutinefunction(enforce_or_raise)
+
+
+# ── Bridge integration: session → stage → STAGE_VIOLATION (wiring path) ───────
+# These exercise the FULL enforce_or_raise body — resolve session state, run the
+# policy gate, map a refusal to HTTPException — i.e. the exact path the prior
+# async crash broke. evaluate_tool_policy alone was tested above; this proves the
+# session-resolution + HTTP-mapping wiring around it actually works end-to-end.
+# We patch _resolve_session_state (the DB seam) with a fake repository result so
+# no Postgres is needed.
+
+def test_enforce_or_raise_stage_violation_through_bridge():
+    """find_urs_code in WORK_ATOMIZATION → HTTPException 409 STAGE_VIOLATION,
+    resolved through the real enforce_or_raise (not evaluate_tool_policy directly).
+    """
+    pytest.importorskip("fastapi")
+    from fastapi import HTTPException
+
+    from app.mcp import stage_gating_gateway as gw
+
+    async def _fake_resolve(session_id):  # fake session repository result
+        return WorkflowState.WORK_ATOMIZATION
+
+    async def _call():
+        with patch.object(gw, "_resolve_session_state", _fake_resolve):
+            await gw.enforce_or_raise(
+                tool_name="find_urs_code", session_id="00000000-0000-0000-0000-000000000001"
+            )
+
+    with pytest.raises(HTTPException) as exc_info:
+        asyncio.run(_call())
+    assert exc_info.value.status_code == 409
+    assert exc_info.value.detail["error_code"] == "STAGE_VIOLATION"
+
+
+def test_enforce_or_raise_allows_tool_in_its_stage_through_bridge():
+    """find_urs_code in CATALOG_BINDING → passes cleanly through the bridge."""
+    pytest.importorskip("fastapi")
+    from app.mcp import stage_gating_gateway as gw
+
+    async def _fake_resolve(session_id):
+        return WorkflowState.CATALOG_BINDING
+
+    async def _call():
+        with patch.object(gw, "_resolve_session_state", _fake_resolve):
+            await gw.enforce_or_raise(
+                tool_name="find_urs_code", session_id="00000000-0000-0000-0000-000000000002"
+            )
+        return True
+
+    assert asyncio.run(_call()) is True
+
+
+def test_enforce_or_raise_unresolvable_session_is_session_required():
+    """A session_id that resolves to no state → HTTPException 400 SESSION_REQUIRED
+    (the gateway must not silently treat it as session-less and allow)."""
+    pytest.importorskip("fastapi")
+    from fastapi import HTTPException
+
+    from app.mcp import stage_gating_gateway as gw
+
+    async def _fake_resolve(session_id):
+        return None  # e.g. DB unreachable or unknown session
+
+    async def _call():
+        with patch.object(gw, "_resolve_session_state", _fake_resolve):
+            await gw.enforce_or_raise(
+                tool_name="find_urs_code", session_id="00000000-0000-0000-0000-000000000003"
+            )
+
+    with pytest.raises(HTTPException) as exc_info:
+        asyncio.run(_call())
+    assert exc_info.value.status_code == 400
+    assert exc_info.value.detail["error_code"] == "SESSION_REQUIRED"
