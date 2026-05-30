@@ -352,6 +352,34 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-30 — Session: Orchestrator stage-gating PR3a (/orchestrate + HITL + e2e stub + P1 engine memoization)
+
+**Topic:** Branch `claude/orchestrator-stagegating-pr3`. Continuation of the stage-gating MVP (PR1 foundation + PR2 policy gateway already merged on this branch). Split the remaining PR3 into **PR3a** (this session) + **PR3b** (next). PR3a = the thin orchestrator loop, deterministic intent classification, HITL pause/resume, the canonical `/orchestrate` endpoint, an end-to-end stub test, and the P1 engine-memoization perf fix.
+
+**Rozhodnuto:**
+- **Thin orchestrator (`app/services/stage_gating/orchestrator.py`):** owns session state; walks a named workflow's `sequence` one state at a time; per state runs a *step* through an injected `ToolRunner` seam, records outputs onto the session, then `SessionManager.advance`s to the next state. Contains NO domain/tool logic (tools never mutate state — orchestrator does). **Atomic steps:** a step either COMPLETES (record + advance) or PAUSES (record nothing, state unchanged) → resume safely re-runs the paused step, no half-applied state, no double-exec. Deterministic by construction (same request + same runner outputs → same state walk + same logs) so PR3b replay will hold.
+- **Deterministic intent (`intent_classifier.py`, W3 decision = NO LLM):** resolution order `options.target_output` (explicit, unknown value → raise) → message keyword heuristic (CZ+EN) → default `full_takeoff`. Result validated against loaded `WorkflowConfig` (map↔YAML drift fails loud).
+- **HITL:** `StepResult.needs_user_input` + `question` → orchestrator returns `paused_for_input`, persists a `hitl_pause` marker, leaves `workflow_state` on the paused state. Resume = re-invoke `/orchestrate` with `session_id` (+ `user_response`/`confirmation_token`); `user_response` applies only to the FIRST resumed step then is consumed (verified by a two-pause-point test).
+- **`/orchestrate` endpoint (`routes_orchestrator.py`, `POST /api/v1/orchestrate`):** single canonical REST surface (UI + MCP). Default `make_checkpoint_tool_runner(config)` records each state as a checkpoint (no fabricated domain outputs) and enforces ONE real gate — COMMIT_PENDING pauses for a `confirmation_token` before crossing into COMMITTED. Client errors mapped: intent→400, not-found→404, wrong-owner→403, terminal→409.
+- **P1 perf fix (`mcp/stage_gating_gateway.py`):** replaced per-tool-call `create_async_engine(...)` + `await engine.dispose()` with a module-level `@lru_cache`'d `(engine, factory)` per DSN — was opening/tearing down a fresh pool + asyncpg connection on every gated invocation.
+- **SessionManager additions:** two small public, ownership-checked methods (`load`, `persist`) so the orchestrator never touches `_repo` privates; state transitions still go ONLY through `advance`.
+- **Tests + CI:** `tests/test_stage_gating_orchestrator.py` (18 tests: 15 pure logic pass locally, 3 endpoint tests skip locally on missing `fastapi`, run in CI). Added the file to `test-mcp-compatibility.yml` (push + PR paths + pytest invocation).
+
+**Odmítnuto:**
+- LLM-based intent routing — determinism is a hard requirement for replay (Determinism > AI).
+- Wiring real per-tool dispatch into the endpoint this PR — explicitly the "e2e **stub**" scope; checkpoint runner ships instead, with the `ToolRunner` seam as the obvious extension point.
+- DB-backed durable orchestrator sessions — PR1's sync `SessionManager` and async `SqlAlchemySessionRepository` are deliberately un-wired (the sync↔async bridge is PR3b). Endpoint uses a **process-local in-memory** repo for PR3a (documented limitation: HITL resume not durable across instances/restarts).
+
+**Otevřené otázky / risks:**
+- Endpoint session durability is process-local until the PR3b sync↔async repository bridge lands — multi-instance Cloud Run resume is unreliable meanwhile.
+- Audit-hash chaining, append-only audit table (alembic migration + BEFORE UPDATE/DELETE trigger → RAISE), replay verification, cross-user RLS isolation test = all PR3b.
+
+**Co dál:**
+- Commit + push PR3a to `claude/orchestrator-stagegating-pr3`.
+- PR3b: audit hashes + append-only migration/trigger + replay test + isolation test + real tool dispatch + sync↔async repo bridge for durable sessions.
+
+---
+
 ### 2026-05-29 — Session: RD Jáchymov terasa 762 fix + ChatGPT diff + statika cross-check + anti-hallucination patterns
 
 **Topic:** Branch `claude/busy-einstein-zMx5F` (RD Jáchymov pilot, items.json 214 single source). Five units of work shipped + a `main` merge. Drawing-confirmed terasa fix, ChatGPT revize cross-check, full statika D.2 validation, pattern-library codification of the failure that motivated it, and 3 Pattern-38 follow-up fixes. Commits `560bf3a1` → `c49470e8`.

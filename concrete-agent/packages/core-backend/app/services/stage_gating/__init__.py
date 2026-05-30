@@ -59,6 +59,23 @@ from app.services.stage_gating.policy_gateway import (
     evaluate_tool_policy,
     validate_grounding,
 )
+from app.services.stage_gating.intent_classifier import (
+    DEFAULT_WORKFLOW,
+    IntentClassificationError,
+    classify_intent,
+)
+from app.services.stage_gating.orchestrator import (
+    STATUS_COMPLETED,
+    STATUS_ERROR,
+    STATUS_PAUSED,
+    OrchestrateRequest,
+    OrchestrateResult,
+    StageGatingOrchestrator,
+    StepContext,
+    StepResult,
+    ToolRunner,
+    make_checkpoint_tool_runner,
+)
 
 __all__ = [
     "WorkflowState",
@@ -95,4 +112,18 @@ __all__ = [
     "GroundingResult",
     "GROUNDING_VERIFIED",
     "GROUNDING_UNVERIFIED",
+    # PR3a — intent classification + orchestrator
+    "classify_intent",
+    "IntentClassificationError",
+    "DEFAULT_WORKFLOW",
+    "StageGatingOrchestrator",
+    "OrchestrateRequest",
+    "OrchestrateResult",
+    "StepContext",
+    "StepResult",
+    "ToolRunner",
+    "make_checkpoint_tool_runner",
+    "STATUS_COMPLETED",
+    "STATUS_PAUSED",
+    "STATUS_ERROR",
 ]
