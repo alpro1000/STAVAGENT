@@ -14,6 +14,9 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_mcp_middleware_bearer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_rate_limit.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_dcr_integration.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_foundation.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_policy.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_session_db.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -27,6 +30,9 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_mcp_middleware_bearer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_rate_limit.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_dcr_integration.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_foundation.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_policy.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_session_db.py'
 
 jobs:
   mcp-compatibility:
@@ -118,4 +124,7 @@ jobs:
             tests/test_mcp_middleware_bearer.py \
             tests/test_mcp_rate_limit.py \
             tests/test_mcp_dcr_integration.py \
+            tests/test_stage_gating_foundation.py \
+            tests/test_stage_gating_policy.py \
+            tests/test_stage_gating_session_db.py \
             -v --tb=short
