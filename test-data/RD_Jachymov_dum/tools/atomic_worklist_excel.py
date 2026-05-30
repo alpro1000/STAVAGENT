@@ -276,7 +276,7 @@ def build_souhrn(wb, data):
     r += 1
     note_lines = [
         "Kódy: leaf binding doplnit z CS ÚRS online (app.urs.cz, cenová úroveň 2026 01) dle família + popis + Vzorec.",
-        "Reconciliation consensus: HSV1.004 dvorek 596811220 · HSV1.005 terasa 636311 (na terče, NE 762) · HSV2.003/008 bednění 274.",
+        "Reconciliation consensus: HSV1.004 dvorek 596811220 · HSV1.005 terasa = podkladní skladba 564 (dlaždice ROZNÁŠECÍ POD terče, ŘEZ C-C) · dřevo 762 = PSV76.002 Truhlář · HSV2.003/008 bednění 274.",
         "PRÁCE JE KOMPLETNÍ bez ohledu na stav kódu — seznam (postup prací) = primary deliverable. Code = secondary, doplní se v ÚRS online / KROS.",
     ]
     for line in note_lines:
@@ -307,7 +307,7 @@ def build_souhrn(wb, data):
         "Pattern 28: (id, kapitola) compound key — řeší PSV76.003 ×3 + VRN.001 ×9 collisions",
         "Pattern 32: separate deliverable — items.json frozen + File A audit NEDOTČENO",
         "Traceability: každá atomic op → parent_frozen_item_id (100% coverage)",
-        "Terasa A2 korekce: HSV1.005a = 636311 família (dlaždice NA TERČE, NE 762 carpentry)",
+        "Terasa ŘEZ C-C oprava: dlaždice = roznášecí vrstva POD terče (564, NE '636311 na terče'); dřevěná pochozí vrstva (762) = PSV76.002 Truhlář (split-by-trade). Plochy situace: terasa 9.23 / dvorek 16.54 m².",
     ]:
         ws.cell(r, 1, value="• " + line).font = BODY_FONT
         ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=3)
