@@ -379,6 +379,13 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - When `find_urs_code` stable → Stage 3 leaf binding.
 - Resolve 24 vyjasnění with Karel/projektant; refine 2 quantity flags from výkres.
 
+**Addendum (same session, post-merge — shipped to `main` via PR #1251, #1256):**
+- **`main` merge resolved twice** — parallel snapshots of this branch (#1246, #1248) kept landing on main; HEAD verified strict superset each time → `--ours` on RD/pattern files + regenerate (Pattern 38). PR #1251 merged (merge-commit, Pattern 12).
+- **3 Pattern-38 fixes** — discovered `generate_otazky_docx.py` rendered a HARDCODED `OTAZKY[1-20]` and never loaded the queue → docx silently shipped stale set (missing #22-27, including resolved 19/20). Made queue-driven (OTAZKY = friendly override), added as 9th orchestrator step + `docx==queue` fail-fast assertion. Plus count-agnostic docstring + `HSV1.005a` urs ""→null.
+- **Situace-measured area correction (PR #1256)** — legend (zpevněné plochy: dlažba [brick-hatch] vs terasa [line-hatch]) overturned the rough ODHAD: **terasa = 9,23 m²** (HSV1.005 podklad + PSV76.002 dřevo, was 30) ≠ **anglický dvorek = 16,54 m²** (HSV1.004, 12,46+4,08, was 30) — two distinct constructions (wood vs dlažba). NEW `HSV1.016` venkovní schody na terénu (13 stupňů 8×175×280 + 5×175×280, TZ §3.2.5, code blank Pattern 26). **items 214 → 215.**
+- **soul.md §9 entry** written (this entry). All work on `main`; branch synced.
+- **Open:** HSV1.016 assumed betonové schody na terénu — verify vs steel PSV76.001 from výkres (if same stair → drop HSV1.016, fix step count 16→13).
+
 ---
 
 **Topic:** Phase C of Rimsa Calibration FullStack v1 (per `docs/tasks/TASK_Rimsa_Calibration_FullStack_v1.md`, Phase A audit `docs/audits/rimsa_fullstack/2026-05-20_phase_a_discovery.md`). Single-batch execution G0→G6→G-final on branch `claude/kind-wright-5nBQ2` (piggyback on Týden 3 Knowledge codegen branch — single PR for both bodies of work). All 7 gates shipped atomically; ~470 LOC engine + ~370 LOC tests + ~230 LOC docs. **Tests: 1136 baseline → 1197 (+61 across Týden 3 KB + Phase C cyclic).**
