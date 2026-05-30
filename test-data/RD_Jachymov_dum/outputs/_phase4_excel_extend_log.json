@@ -1,12 +1,12 @@
 {
-  "applied_at": "2026-05-29",
-  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-29.xlsx",
-  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-29_v2.xlsx",
+  "applied_at": "2026-05-30",
+  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-30.xlsx",
+  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-30_v2.xlsx",
   "totals": {
-    "total": 214,
-    "active": 210,
+    "total": 215,
+    "active": 211,
     "deprecated": 4,
-    "dum_active": 182,
+    "dum_active": 183,
     "sklad_active": 28,
     "otazky_total": 21,
     "patterns": 20,
@@ -19,7 +19,7 @@
     "R38C2: 18 items (3 critical:"
   ],
   "var_b_dum_notes": [
-    "186 rows enriched (of 186 data rows)"
+    "187 rows enriched (of 187 data rows)"
   ],
   "var_b_sklad_notes": [
     "28 rows enriched (of 28 data rows)"

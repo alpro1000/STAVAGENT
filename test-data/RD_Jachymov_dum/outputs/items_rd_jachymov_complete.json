@@ -124,9 +124,9 @@
       "subkapitola": "Anglický dvorek — skladba dlažby",
       "popis": "Anglický dvorek: betonová dlažba 50 mm + kladecí vrstva kamenná drť 4-8 mm tl. 40 mm + podkladní nosná vrstva kamenná drť 4-8 mm tl. 150 mm na zhutněnou zemní pláň (30 MPa)",
       "mj": "m²",
-      "mnozstvi": 30.0,
-      "mnozstvi_formula": "PDF řez C-C explicit composition + anglický dvorek ~30 m² odhad (2.5 × 2.0 m + odkop k vstupu 1.PP)",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 16.54,
+      "mnozstvi_formula": "Situace měření 2026-05-29 — anglický dvorek (zpevněné plochy DLAŽBA, brick-hatch) = 12.46 + 4.08 = 16.54 m². Dříve ODHAD 30 m².",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "596811220",
       "urs_alternatives": [
         "564851111"
@@ -139,12 +139,12 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "_data_quality": "tz_explicit",
+      "_data_quality": "situace_measured",
       "id": "260219_dum.HSV1.004",
       "realizuje_skladbu": "Anglický dvorek",
       "cross_verification_status": "RECONCILED_596_CONSENSUS",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS; SITUACE_AREA_FIX_2026-05-29",
       "urs_code_family_6digit": "596",
       "correct_code_hint": "596 família — kladení betonové dlažby na loži (anglický dvorek). Consensus: busy atomic família 596 == happy A2 596811220. Leaf 596811220 candidate — VERIFY via MCP find_urs_code Stage 3."
     },
@@ -156,9 +156,9 @@
       "subkapitola": "Terasa — podkladní skladba (pod dřevěnou pochozí vrstvou PSV76.002)",
       "popis": "Terasa za opěrnou stěnou — PODKLADNÍ SKLADBA pod dřevěnou pochozí vrstvou (PSV76.002 Truhlář): rektifikovatelné terče výšky ~50 mm + betonové dlaždice tl. 50 mm jako roznášecí vrstva POD terče + štěrkový podsyp 16/32 mm tl. 100 mm + hrubý podsyp 4/8 mm tl. 150 mm + geotextilie separační",
       "mj": "m²",
-      "mnozstvi": 30.0,
-      "mnozstvi_formula": "PDF řez C-C explicit composition — terasa ~30 m² (rozměry z TZ ARS dům §4 terasa za op. stěnou). ŘEZ C-C: dlaždice = roznášecí vrstva POD terče (NE na terče); terče nesou dřevěnou pochozí vrstvu PSV76.002.",
-      "mnozstvi_confidence": 0.85,
+      "mnozstvi": 9.23,
+      "mnozstvi_formula": "Situace měření 2026-05-29 — terasa (zpevněné plochy TERASA, line-hatch, dřevěná) = 9.23 m². Dříve ODHAD 30 m². Dlažba 12.46+4.08 = anglický dvorek HSV1.004 (jiná konstrukce). ŘEZ C-C: dlaždice = roznášecí vrstva POD terče; terče nesou dřevěnou pochozí vrstvu PSV76.002.",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": null,
       "urs_alternatives": [
         "596811220",
@@ -172,12 +172,12 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "_data_quality": "tz_explicit",
+      "_data_quality": "situace_measured",
       "id": "260219_dum.HSV1.005",
       "realizuje_skladbu": "Terasa",
       "cross_verification_status": "REZ_CC_CORRECTED_substructure_dlazdice_roznaseci_pod_terce",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS; REZ_CC_TERASA_FIX_2026-05-29",
+      "_audit_gap_fixed": "URS_PHASE5B_WRONG_LEAF; RECONCILIATION_A1A2_CONSENSUS; REZ_CC_TERASA_FIX_2026-05-29; SITUACE_AREA_FIX_2026-05-29",
       "urs_code_family_6digit": "564",
       "correct_code_hint": "ŘEZ C-C OPRAVA 2026-05-29: betonové dlaždice = ROZNÁŠECÍ vrstva POD rektifikovatelné terče (NE '636311 dlaždice na terče' — to byla chyba reconciliation). Dřevěná pochozí vrstva (prkna + dřevěný rošt, família 762) = samostatná položka PSV76.002 Truhlář (split-by-trade, žádné zdvojení 30 m²). Podkladní roznášecí dlaždice + podsypy → família 564/596 — leaf Stage 3 (app.urs.cz)."
     },
@@ -3737,9 +3737,9 @@
       "subkapitola": "Terasa garapa za opěrnou stěnou — dřevěná pochozí vrstva",
       "popis": "Dřevěná terasa za opěrnou stěnou — prkna garapa 145×25 mm na dřevěném roštu z hranolů 50 mm na rektifikovatelných terčích (terče + podkladní skladba viz HSV1.005)",
       "mj": "m²",
-      "mnozstvi": 30.0,
-      "mnozstvi_formula": "DXF dum_situace PLOT_DREVENY_04 = 57 INSERTs (timber pattern blocks) → odhad terasa ~30 m². NEPOUŽITELNÉ pro 3.NP biodeska (PLOT_DREVENY_04 v dum_DPZ = 0).",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 9.23,
+      "mnozstvi_formula": "Situace měření 2026-05-29 — dřevěná terasa (line-hatch zpevněné plochy) = 9.23 m². Dříve ODHAD 30 m². Terče + podkladní skladba viz HSV1.005 (split-by-trade).",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": null,
       "urs_alternatives": [
         "766811111"
@@ -3757,7 +3757,8 @@
       "urs_code_family_6digit": "762",
       "cross_verification_status": "REZ_CC_CORRECTED_wood_deck_762_split_by_trade",
       "correct_code_hint": "ŘEZ C-C 2026-05-29: dřevěná pochozí terasa (prkna garapa + dřevěný rošt z hranolů) → família 762 (tesařské/truhlářské konstrukce). Kód 771474112 (dlaždice domain) BYL WRONG — odstraněn (Pattern 26, nefabrikovat leaf). Rošt opraven hliníkový→dřevěný per řez C-C. Podklad (terče + dlaždice roznášecí + podsypy + geotextilie) = HSV1.005 (split-by-trade, žádné zdvojení).",
-      "_audit_gap_fixed": "REZ_CC_TERASA_FIX_2026-05-29"
+      "_audit_gap_fixed": "REZ_CC_TERASA_FIX_2026-05-29; SITUACE_AREA_FIX_2026-05-29",
+      "_data_quality": "situace_measured"
     },
     {
       "objekt": "260219_dum",
@@ -6484,6 +6485,34 @@
       "realizuje_skladbu": null,
       "_audit_gap_fixed": "ANCHOR_CHECKLIST_PM02",
       "_added_via_audit": "anchor_checklist_gap_audit_2026-05-29"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Venkovní schody na terénu (zahrada za opěrnou stěnou)",
+      "popis": "Venkovní schody na terénu z betonových dílců do betonového lože — rameno 1: 8×175×280 mm + rameno 2: 5×175×280 mm (13 stupňů), zahrada za opěrnou stěnou",
+      "mj": "ks",
+      "mnozstvi": 13,
+      "mnozstvi_formula": "Situace měření 2026-05-29: rameno 1 = 8 stupňů + rameno 2 = 5 stupňů = 13 stupňů (175×280 mm)",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_lookup",
+      "urs_confidence": 0.0,
+      "source": "Situace měření 2026-05-29 (rameno 8×175×280 + rameno 5×175×280) + TZ statika §3.2.5 'schody na terénu z betonových dílců do betonového lože'",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "situace_measured",
+      "id": "260219_dum.HSV1.016",
+      "realizuje_skladbu": "Venkovní schody na terénu",
+      "urs_code_family_6digit": null,
+      "correct_code_hint": "Venkovní betonové schody na terénu z dílců do lože — família ÚRS ověřit (kandidáti: 935 drobné betonové konstrukce / 917-919 osazení betonových dílců / 564 lože). Leaf z app.urs.cz. Pattern 26: kód blank dokud neověřeno.",
+      "_audit_gap_fixed": "SITUACE_STAIRS_ADD_2026-05-29"
     }
   ],
   "_summary_total": {
@@ -6703,7 +6732,7 @@
     "items_total_after": 212
   },
   "_phase3_5_namespace_finalize_log": {
-    "applied_at": "2026-05-29",
+    "applied_at": "2026-05-30",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
     "items_renamed": 0,
     "per_item_changes": []
@@ -6821,5 +6850,18 @@
       "260219_dum.HSV2.007/HSV2.008 věnec — two-level run may underestimate single-ring obvod"
     ],
     "items_tagged": 32
+  },
+  "_situace_area_fix_log": {
+    "applied_at": "2026-05-29",
+    "tag": "SITUACE_AREA_FIX_2026-05-29",
+    "source": "Situace měření + legend (zpevněné plochy: dlažba [brick] vs terasa [line])",
+    "changes": {
+      "HSV1.004 anglický dvorek (dlažba)": "30 → 16.54 m² (12.46 + 4.08, brick-hatch)",
+      "HSV1.005 terasa podklad (line-hatch)": "30 → 9.23 m²",
+      "PSV76.002 terasa dřevo (line-hatch)": "30 → 9.23 m²",
+      "HSV1.016 venkovní schody na terénu": "NEW — 13 stupňů (8×175×280 + 5×175×280), code blank (Pattern 26)"
+    },
+    "snapshot_before": "outputs/items_pre_terasa_area_fix.json",
+    "items_total": 215
   }
 }

@@ -1,8 +1,8 @@
 {
   "_schema_version": "2.0",
-  "_generated_at": "2026-05-29",
+  "_generated_at": "2026-05-30",
   "_generated_by": "tools/completeness_check_v2.py",
-  "_items_total": 214,
+  "_items_total": 215,
   "_rooms_total": 25,
   "_sections_present": [
     "A",
@@ -211,7 +211,7 @@
         "gap_flag": false
       }
     ],
-    "n_orphans": 2
+    "n_orphans": 3
   },
   "section_B_subdodavatel": {
     "coverage": [
@@ -255,7 +255,7 @@
       {
         "trade": "zednik",
         "label_cz": "Zedník",
-        "n_items": 11,
+        "n_items": 12,
         "kapitoly_expected": [
           "HSV-3",
           "PSV-78"
@@ -3030,9 +3030,9 @@
     "_status": "INFORMATIONAL_ONLY",
     "_method": "Σ(qty × Methvin průměrná sazba) per kapitola → aggregate per gate",
     "_disclaimer": "Methvin rates have INCONSISTENT UNITS per kapitola (Kč/m³ vs Kč/m² vs Kč/ks) and are aggregated naively — results are NOT reliable for ratio analysis. Treated as informational ballpark only. Real cenotvorba requires unit-aware per-item rates from URS catalog. Verdict 'OUT OF RANGE' for this section is EXPECTED and not treated as a gap in consolidated_gaps.",
-    "total_estimate_czk_ballpark": 79291213.025,
+    "total_estimate_czk_ballpark": 78970109.525,
     "per_kapitola_czk": {
-      "HSV-1": 120645.0,
+      "HSV-1": 111091.5,
       "HSV-2": 12471300.0,
       "HSV-3": 4260000.0,
       "HSV-4": 25653503.025,
@@ -3040,7 +3040,7 @@
       "HSV-6": 352455.0,
       "HSV-7": 1739555.0,
       "PSV-71": 207400.0,
-      "PSV-76": 4318500.0,
+      "PSV-76": 4006950.0,
       "PSV-77": 429939.0,
       "PSV-78": 600180.0,
       "PSV-95": 25000.0,
@@ -3052,8 +3052,8 @@
     "per_gate_breakdown": [
       {
         "gate": "HSV",
-        "estimate_czk": 48937194.025,
-        "pct_of_total": 0.617183066799223,
+        "estimate_czk": 48927640.525,
+        "pct_of_total": 0.6195716432368719,
         "typical_range_pct": [
           0.45,
           0.55
@@ -3063,8 +3063,8 @@
       },
       {
         "gate": "PSV",
-        "estimate_czk": 9708019.0,
-        "pct_of_total": 0.12243499159155409,
+        "estimate_czk": 9396469.0,
+        "pct_of_total": 0.11898766579556672,
         "typical_range_pct": [
           0.25,
           0.35
@@ -3075,7 +3075,7 @@
       {
         "gate": "TZB",
         "estimate_czk": 2436000.0,
-        "pct_of_total": 0.03072219363363687,
+        "pct_of_total": 0.03084711436583258,
         "typical_range_pct": [
           0.15,
           0.2
@@ -3086,7 +3086,7 @@
       {
         "gate": "VRN",
         "estimate_czk": 18210000.0,
-        "pct_of_total": 0.22965974797558597,
+        "pct_of_total": 0.23059357660172877,
         "typical_range_pct": [
           0.05,
           0.1
@@ -3115,9 +3115,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
+        "HEA200",
         "HEA180",
-        "HEA160",
-        "HEA200"
+        "HEA160"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3191,7 +3191,7 @@
       "tz_mention_sample": [
         "opěrné stěn",
         "Opěrná stěn",
-        "opěrná stěn"
+        "bílá vana"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3203,8 +3203,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický \ndvorek",
-        "anglický dvorek"
+        "anglický dvorek",
+        "anglický \ndvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3243,7 +3243,7 @@
       "tz_mention_sample": [
         "protipožární",
         "Protipožární",
-        "EI 90"
+        "EI 180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3256,8 +3256,8 @@
       "tz_mention_count": 3,
       "tz_mention_sample": [
         "tepelné čerpadl",
-        "TČ",
-        "multisplit"
+        "multisplit",
+        "TČ"
       ],
       "items_keyword_hit": true,
       "status": "covered",
