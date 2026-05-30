@@ -123,3 +123,54 @@ mcp.tool()(uep_list_supported_formats)
 mcp.tool()(uep_get_coverage_matrix)
 mcp.tool()(uep_get_reconciliation_rules)
 mcp.tool()(uep_get_dwg_conversion_status)
+
+
+# ── Startup policy-registry validation (PR2 — AC4) ──────────────────────────
+# Every registered workflow tool MUST have a manifest. Validation runs at import
+# (server startup) and raises RegistryValidationError on drift, so the server
+# refuses to start with a clear message rather than enforcing against an
+# incomplete registry. Non-workflow helpers (pump/advisor) and the UEP pipeline
+# tools are billed + auth-gated but live outside the document→export state
+# machine, so they are explicitly exempt (not yet stage-gated).
+
+from app.services.stage_gating import (  # noqa: E402
+    load_workflow_config,
+    validate_registry,
+)
+
+_STAGE_GATING_EXEMPT_TOOLS = {
+    "calculate_pump",
+    "get_construction_advisor",
+    "uep_run_extraction",
+    "uep_get_job",
+    "uep_list_supported_formats",
+    "uep_get_coverage_matrix",
+    "uep_get_reconciliation_rules",
+    "uep_get_dwg_conversion_status",
+}
+
+_REGISTERED_TOOL_NAMES = {
+    "find_otskp_code",
+    "find_urs_code",
+    "classify_construction_element",
+    "calculate_concrete_works",
+    "calculate_pump",
+    "parse_construction_budget",
+    "analyze_construction_document",
+    "create_work_breakdown",
+    "get_construction_advisor",
+    "search_czech_construction_norms",
+    "uep_run_extraction",
+    "uep_get_job",
+    "uep_list_supported_formats",
+    "uep_get_coverage_matrix",
+    "uep_get_reconciliation_rules",
+    "uep_get_dwg_conversion_status",
+}
+
+validate_registry(
+    load_workflow_config(),
+    _REGISTERED_TOOL_NAMES,
+    exempt=_STAGE_GATING_EXEMPT_TOOLS,
+)
+logger.info("[MCP] Stage-gating policy registry validated at startup.")

@@ -73,7 +73,9 @@ This task does NOT implement the work ontology extraction itself (next week). It
 
 ### 1. Workflow State Machine
 
-A single canonical primitive that tracks workflow stage per session. Eight states:
+A single canonical primitive that tracks workflow stage per session. Nine states
+(eight core + the optional DECOMPOSITION state — PR1 flagged the prose/enum
+mismatch; the enum implements nine):
 
 - DOCUMENT_ANALYSIS
 - WORK_ATOMIZATION
@@ -129,7 +131,7 @@ A Cloud SQL table that tracks workflow runs. Per-session state machine position.
 - Primary key (UUID)
 - User reference (foreign key to users)
 - Project reference (foreign key to projects)
-- Current workflow state (enum matching the 8 states above)
+- Current workflow state (enum matching the 9 states above)
 - Created timestamp
 - Last updated timestamp
 - TTL / expiry timestamp (configurable per project, default 7 days)
@@ -240,7 +242,7 @@ create_work_breakdown specifically needs refactoring to accept a mode parameter 
 ## Acceptance Criteria
 
 1. Orchestrator endpoint exists and accepts the documented input shape (user_request, files, options, optional session_id, confirmation_token, user_response).
-2. Workflow state machine is implemented with the 8 documented states as an enum. State transitions are explicit and validated.
+2. Workflow state machine is implemented with the 9 documented states as an enum (eight core + optional DECOMPOSITION). State transitions are explicit and validated.
 3. Tool metadata registry exists with all required manifest fields. The side_effect_level enum has all 6 values.
 4. Registry is validated at server startup. A tool without a manifest causes the server to refuse to start with a clear error message.
 5. All 9 existing MCP tools have manifests assigned with correct policy_stage values per the migration plan above.
