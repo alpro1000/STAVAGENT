@@ -115,6 +115,10 @@ jobs:
           # Enable http://localhost:* redirect_uri so the test fixture's
           # `http://localhost:9999/callback` is accepted by the allowlist.
           MCP_OAUTH_ALLOW_LOCALHOST_REDIRECT: "1"
+          # Fail loud if the orchestrator endpoint tests can't run (missing dep /
+          # broken app import) instead of silently skipping — rules out a
+          # falsely-green run where endpoint coverage never executed.
+          STAGEGATING_REQUIRE_ENDPOINT_TESTS: "1"
         run: |
           python -m pytest \
             tests/test_mcp_compatibility.py \

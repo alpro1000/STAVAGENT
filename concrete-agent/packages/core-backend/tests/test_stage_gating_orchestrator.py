@@ -25,6 +25,7 @@ Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md §5.
 """
 from __future__ import annotations
 
+import os
 from uuid import uuid4
 
 import pytest
@@ -45,7 +46,9 @@ from app.services.stage_gating import (
     make_checkpoint_tool_runner,
 )
 from app.services.stage_gating.orchestrator import (
+    PARTIALS_WORKFLOW_KEY,
     STATUS_COMPLETED,
+    STATUS_ERROR,
     STATUS_PAUSED,
 )
 
@@ -283,6 +286,40 @@ def test_resume_of_completed_session_is_terminal():
         )
 
 
+# ── resume into a state outside the workflow sequence ────────────────────────
+
+def test_resume_state_not_in_sequence_returns_error_not_500():
+    """A session sitting in a state absent from the resolved workflow's sequence
+    (e.g. the optional DECOMPOSITION branch under full_takeoff) must yield a
+    clean STATUS_ERROR, not an unhandled ValueError from sequence.index()."""
+    mgr = SessionManager(InMemorySessionRepository(), config=CFG)
+    uid, pid, sid = uuid4(), uuid4(), uuid4()
+    st = mgr.create_session(
+        session_id=sid,
+        user_id=uid,
+        project_id=pid,
+        start_state=WorkflowState.WORK_ATOMIZATION,
+    )
+    st.partials[PARTIALS_WORKFLOW_KEY] = "full_takeoff"
+    mgr.persist(st, user_id=uid)
+    # DECOMPOSITION is a legal edge from WORK_ATOMIZATION but is NOT in the
+    # full_takeoff sequence.
+    mgr.advance(
+        session_id=sid,
+        user_id=uid,
+        target=WorkflowState.DECOMPOSITION,
+        triggered_by="test",
+    )
+
+    orch = StageGatingOrchestrator(
+        manager=mgr, config=CFG, tool_runner=_always_complete
+    )
+    result = orch.run(OrchestrateRequest(user_id=uid, project_id=pid, session_id=sid))
+    assert result.status == STATUS_ERROR
+    assert result.workflow_state == WorkflowState.DECOMPOSITION
+    assert "DECOMPOSITION" in (result.error or "")
+
+
 # ── checkpoint runner commit gate ────────────────────────────────────────────
 
 def test_checkpoint_runner_gates_commit_on_confirmation():
@@ -314,13 +351,24 @@ def test_checkpoint_runner_gates_commit_on_confirmation():
 
 # ── /orchestrate endpoint ────────────────────────────────────────────────────
 
+# When set (in CI), a failed app import must turn the job RED rather than
+# silently skipping the endpoint tests — this structurally rules out a
+# falsely-green run where the endpoint coverage never executed. Local runs leave
+# the var unset and keep the soft-skip so the pure-logic tests still run without
+# the full FastAPI dependency tree.
+_REQUIRE_ENDPOINT_TESTS = os.environ.get("STAGEGATING_REQUIRE_ENDPOINT_TESTS") == "1"
+
+
 @pytest.fixture()
 def client():
     try:
         from fastapi.testclient import TestClient
 
         from app.main import app
-    except Exception as exc:  # pragma: no cover - missing optional deps locally
+    except Exception as exc:  # missing optional deps
+        if _REQUIRE_ENDPOINT_TESTS:
+            # CI: do NOT mask a missing dep / broken import as a skip.
+            raise
         pytest.skip(f"app import unavailable: {exc}")
     return TestClient(app)
 

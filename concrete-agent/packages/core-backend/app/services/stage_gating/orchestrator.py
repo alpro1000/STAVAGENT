@@ -147,6 +147,24 @@ class StageGatingOrchestrator:
         state, workflow_name = self._start_or_resume(request)
         sequence = self._config.workflows[workflow_name].sequence
 
+        # A resumed session may sit in a state that is not part of the resolved
+        # workflow's sequence (e.g. it entered the optional DECOMPOSITION branch,
+        # or its workflow tag disagrees with its state). `sequence.index()` would
+        # raise ValueError → unhandled 500. Guard it into a clean STATUS_ERROR so
+        # the caller gets an actionable message instead of a stack trace.
+        if state.workflow_state not in sequence:
+            return OrchestrateResult(
+                session_id=state.id,
+                status=STATUS_ERROR,
+                workflow_name=workflow_name,
+                workflow_state=state.workflow_state,
+                error=(
+                    f"session state '{state.workflow_state.value}' is not in "
+                    f"workflow '{workflow_name}' sequence "
+                    f"{[s.value for s in sequence]}; cannot resume here."
+                ),
+            )
+
         steps_this_run: list[dict[str, Any]] = []
         # The user's answer applies only to the FIRST step executed this run
         # (the one that was paused). Cleared once that step completes so later
