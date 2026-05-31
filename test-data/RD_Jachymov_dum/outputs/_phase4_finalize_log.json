@@ -1,7 +1,7 @@
 {
-  "applied_at": "2026-05-30",
-  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-30_v2.xlsx",
-  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-30_v2_final.xlsx",
+  "applied_at": "2026-05-31",
+  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-31_v2.xlsx",
+  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-31_v2_final.xlsx",
   "namespace_fix": {
     "items_renamed": 0,
     "per_item_changes": []

@@ -7,17 +7,17 @@
     "covered": 117,
     "na_documented": 100,
     "gap": 0,
-    "extra": 29
+    "extra": 31
   },
   "matrix_a_gap_by_severity": {},
   "matrix_a_extras_by_subclass": {
     "extra_dxf_sourced": 13,
     "extra_tz_implicit": 1,
-    "extra_universal_vrn": 11,
+    "extra_universal_vrn": 13,
     "extra_audit_derived": 4
   },
-  "matrix_a_items_touched": 163,
-  "matrix_a_items_total": 212,
+  "matrix_a_items_touched": 164,
+  "matrix_a_items_total": 215,
   "matrix_a_gaps": [],
   "matrix_a_extras": [
     {
@@ -338,6 +338,28 @@
       "subclass": "extra_dxf_sourced",
       "severity": "informational",
       "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.VRN.PM01",
+      "kapitola": "VRN — Přesun hmot",
+      "subkapitola": "Přesun hmot pro budovu",
+      "popis_excerpt": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu a hmot (rekonstrukce vícepodlažní RD + nástavba 3.NP)",
+      "source_field": "anchor checklist PM01 — technical necessity (povinná položka každého rozpočtu, 998xxx URS família)",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.PM02",
+      "kapitola": "VRN — Lešení",
+      "subkapitola": "Fasádní lešení (ETICS + krov + klempířina)",
+      "popis_excerpt": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro provedení ETICS fasády, krovu a klempířiny po obvodu domu (výška 13 m)",
+      "source_field": "anchor checklist PM02 — technical necessity (ETICS 276.7 m² nelze provést bez lešení, 941xxx URS família) + DXF obvod 38.7 m + řez výška 13 m",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
     }
   ],
   "matrix_b_summary": {

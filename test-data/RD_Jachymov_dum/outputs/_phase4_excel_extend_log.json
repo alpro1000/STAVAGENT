@@ -1,7 +1,7 @@
 {
-  "applied_at": "2026-05-30",
-  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-30.xlsx",
-  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-30_v2.xlsx",
+  "applied_at": "2026-05-31",
+  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-31.xlsx",
+  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-05-31_v2.xlsx",
   "totals": {
     "total": 215,
     "active": 211,
@@ -13,11 +13,7 @@
     "urs_verified": 8,
     "urs_verified_pct": "3.7"
   },
-  "souhrn_changes": [
-    "R25C2: Plný detail (dum 144 + sklad 27 = 171 položek)",
-    "R31C2: 171 (144 dum + 27 sklad)",
-    "R38C2: 18 items (3 critical:"
-  ],
+  "souhrn_changes": [],
   "var_b_dum_notes": [
     "187 rows enriched (of 187 data rows)"
   ],

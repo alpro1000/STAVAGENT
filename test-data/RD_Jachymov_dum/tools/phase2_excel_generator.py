@@ -182,15 +182,36 @@ def build_sheet_souhrn(wb: Workbook, items: list[dict], header: dict) -> None:
         bold=True, size=11, color="1F3A5F"
     )
     row += 1
-    write_header_row(ws, row, ["Varianta", "Popis", "Počet položek", "Cena bez DPH (Kč)", "DPH 15 % (Kč)", "Cena s DPH (Kč)"])
+    # Live counts (Pattern 38 — never hardcode item statistics in a projection)
+    _n_total = len(items)
+    _n_dum = sum(1 for it in items if it.get("objekt") == "260219_dum")
+    _n_sklad = sum(1 for it in items if it.get("objekt") == "260217_sklad")
+    from collections import Counter as _GateCounter
+    _gate_dist = _GateCounter(it.get("_gate", "?") for it in items)
+    _gate_str = " | ".join(f"{g} {n}" for g, n in sorted(_gate_dist.items()))
+    import json as _json
+    from pathlib import Path as _QPath
+    _qpath = _QPath(__file__).resolve().parent.parent / "inputs" / "meta" / "vyjasneni_queue.json"
+    try:
+        _n_vyj = len(_json.loads(_qpath.read_text(encoding="utf-8")).get("items", []))
+    except Exception:
+        _n_vyj = 0
+    # Variant row counts — match the actual Var_A / Var_C / Var_B sheet builders
+    _n_var_a = sum(
+        len({kapitola_prefix(it["kapitola"]) for it in items if it["objekt"] == obj})
+        for obj in ("260219_dum", "260217_sklad")
+    )
+    _n_hsv = sum(1 for it in items if it.get("_gate") == "HSV")
+    _n_var_c = _n_hsv + len({(it["objekt"], kapitola_prefix(it["kapitola"])) for it in items if it.get("_gate") != "HSV"})
+    write_header_row(ws, row, ["Varianta", "Popis", "Počet položek", "Cena bez DPH (Kč)", "DPH 12 % (Kč)", "Cena s DPH (Kč)"])
     row += 1
     variant_rows = [
-        ("A — Agregovaný", "GROUP BY kapitola (dum 22 + sklad 6 = ~28 řádků). Pro orientační cenovku.",
-         len([it for it in items if it["_gate"] == "VRN" or it["_gate"] == "HSV"]) // 5 + 6, None, None, None),  # rough estimate
-        ("C — Hybrid", "HSV položkově (95 ks) + PSV/TZB/VRN agregovaně (~80 řádků celkem).",
-         95 + 16, None, None, None),
-        ("B — Položkový", "Plný detail (dum 144 + sklad 27 = 171 položek). Cílový rozsah pro produkční pricing.",
-         171, None, None, None),
+        ("A — Agregovaný", f"GROUP BY kapitola per objekt ({_n_var_a} souhrnných řádků). Pro orientační cenovku.",
+         _n_var_a, None, None, None),
+        ("C — Hybrid", f"HSV položkově ({_n_hsv} ks) + PSV/TZB/VRN agregovaně ({_n_var_c - _n_hsv} skupin) = {_n_var_c} řádků.",
+         _n_var_c, None, None, None),
+        ("B — Položkový", f"Plný detail ({_n_dum} dum + {_n_sklad} sklad = {_n_total} položek). Cílový rozsah pro produkční pricing.",
+         _n_total, None, None, None),
     ]
     for v, popis, n, c1, c2, c3 in variant_rows:
         ws.cell(row=row, column=1, value=v).font = Font(bold=True)
@@ -232,15 +253,17 @@ def build_sheet_souhrn(wb: Workbook, items: list[dict], header: dict) -> None:
         f"{_n_pending} needs_production_lookup ({_pct(_n_pending)})"
     )
 
+    _conf_dist_stat = _GateCounter(round(it["mnozstvi_confidence"], 2) for it in items if it.get("mnozstvi_confidence") is not None)
+    _conf_stat_str = " | ".join(f"{c:.2f}: {n}" for c, n in sorted(_conf_dist_stat.items(), reverse=True))
     stat_rows = [
-        ("Položky celkem", "171 (144 dum + 27 sklad)"),
-        ("Gate distribution", "HSV 95 | PSV 35 | TZB+M 22 | VRN 19"),
-        ("Confidence dist", "0.99 manual: 5 | 0.95 DXF/regex: 21 | 0.90 LWPOLYLINE: 5 | 0.85 TZ: 36 | 0.80 empirické: 16 | 0.75 geometry: 88 | <0.70: 0"),
+        ("Položky celkem", f"{_n_total} ({_n_dum} dum + {_n_sklad} sklad)"),
+        ("Gate distribution", _gate_str),
+        ("Confidence dist", _conf_stat_str),
         ("URS status (Part 5b)", urs_status_value),
         ("subdodavatel needs_mapping", "0 (v1.2 mapping covers all 5 RD Jáchymov pilot flags)"),
         ("Phase 0b validation", "67/69 verified (97.1 %), 0 silent drifts, gate OPEN"),
         ("Phase 0b §3.3 DXF", "4/4 DXF parsed OK, vyjasnění #18 fully_resolved (sklad geom z DIMENSION + parking LWPOLYLINE bbox)"),
-        ("Vyjasnění queue", "18 items (3 critical: #1 scope + #16 statika swap [fixed] + #99 N/A)"),
+        ("Vyjasnění queue", f"{_n_vyj} items (viz Otazky_pro_Karla docx)"),
         ("Corpus patterns aplikované", "4 (UNSORTED dedup + drift detection + multi-modal geometry + _gate vs kapitola_group)"),
     ]
     for label, value in stat_rows:
