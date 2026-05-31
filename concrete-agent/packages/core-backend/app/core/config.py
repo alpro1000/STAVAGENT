@@ -272,6 +272,19 @@ class Settings(BaseSettings):
     )
 
     # ==========================================
+    # AUTH — cross-service JWT (orchestrator principal, PR3b)
+    # ==========================================
+    # Shared secret with the Portal (and Monolit) — Portal signs the user JWT
+    # (HS256, claims: userId / email / name / role). The orchestrator endpoint
+    # validates it to derive the authenticated session owner. Empty by default
+    # so non-orchestrator deployments need no extra config; the orchestrator
+    # endpoint refuses auth (401) when it is unset.
+    JWT_SECRET: str = Field(
+        default="",
+        description="Shared HS256 secret for validating Portal-issued user JWTs"
+    )
+
+    # ==========================================
     # CELERY - Phase 4 (Background Tasks)
     # ==========================================
     CELERY_BROKER_URL: str = Field(
