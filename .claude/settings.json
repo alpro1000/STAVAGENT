@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(./test-data/**)",
+      "Read(**/*.dxf)",
+      "Read(**/*.dwg)",
+      "Read(**/*.db)",
+      "Read(**/*.mdb)",
+      "Read(**/*.MDB)",
+      "Read(./concrete-agent/packages/core-backend/app/knowledge_base/**/*.json)",
+      "Read(./concrete-agent/packages/core-backend/app/knowledge_base/**/*.xml)",
+      "Read(./Monolit-Planner/2025_03 OTSKP.xml)",
+      "Read(./docs/normy/**/*.pdf)",
+      "Read(./URS_MATCHER_SERVICE/backend/data/**/*.csv)"
+    ]
+  }
+}
