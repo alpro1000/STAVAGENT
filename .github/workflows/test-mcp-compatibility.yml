@@ -23,6 +23,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_element_name_normalizer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250b.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -45,6 +46,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_element_name_normalizer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250b.py'
 
 jobs:
   mcp-compatibility:
@@ -149,4 +151,5 @@ jobs:
             tests/test_element_name_normalizer.py \
             tests/test_mcp_golden_so250.py \
             tests/test_mcp_golden_so202.py \
+            tests/test_mcp_golden_so250b.py \
             -v --tb=short
