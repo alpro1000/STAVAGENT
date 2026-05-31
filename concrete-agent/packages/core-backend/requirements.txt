@@ -127,7 +127,7 @@ rich>=13.7.0  # Beautiful terminal output for test scripts
 sqlalchemy[asyncio]==2.0.36
 asyncpg==0.29.0  # Async PostgreSQL driver
 psycopg2-binary==2.9.10  # Sync driver (fallback)
-PyJWT==2.9.0  # Validate Portal-issued user JWTs (orchestrator principal, PR3b)
+PyJWT>=2.10.1  # Validate Portal-issued user JWTs (PR3b); floor matches mcp's transitive requirement (fastmcp→mcp→pyjwt[crypto]>=2.10.1)
 alembic==1.14.0  # Database migrations
 
 # ==========================================

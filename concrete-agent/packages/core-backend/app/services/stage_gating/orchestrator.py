@@ -233,16 +233,21 @@ class StageGatingOrchestrator:
 
             # Append-only audit: one tool_call row per completed step. Hashes are
             # computed over volatile-stripped payloads so replay reproduces them.
+            # tool_name is a SHORT identifier (a single invoked tool, or the step
+            # state as a label) — NOT a joined list, which would overflow the
+            # column. The full invoked/allowed tool sets live in `detail` (JSONB).
+            if len(result.tools_invoked) == 1:
+                tool_name = result.tools_invoked[0]
+            elif result.tools_invoked:
+                tool_name = f"{current.value}[{len(result.tools_invoked)} tools]"
+            else:
+                tool_name = current.value
             self._audit.write(
                 build_tool_call_entry(
                     session_id=state.id,
                     user_id=state.user_id,
                     project_id=state.project_id,
-                    tool_name=(
-                        ",".join(result.tools_invoked)
-                        or ",".join(result.tools_allowed)
-                        or current.value
-                    ),
+                    tool_name=tool_name,
                     tool_version=result.tool_version,
                     inputs={
                         "state": current.value,
@@ -254,7 +259,10 @@ class StageGatingOrchestrator:
                         "outputs": result.outputs,
                         "work_items_count": len(result.work_items),
                     },
-                    detail={"tools_allowed": list(result.tools_allowed)},
+                    detail={
+                        "tools_invoked": list(result.tools_invoked),
+                        "tools_allowed": list(result.tools_allowed),
+                    },
                 )
             )
             pending_response = None  # consumed by the step that just completed
