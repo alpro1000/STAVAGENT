@@ -352,6 +352,34 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-31 — Session: Orchestrator stage-gating PR3b (durable sessions + real isolation + audit/replay — W2 close)
+
+**Topic:** Fresh branch `claude/orchestrator-stagegating-pr3b` from main (PR3a merged as squash `001f6743`). Closes Week-2 stage-gating: the deferred PR3b scope — real cross-user isolation (P0/GDPR), durable session bridge, append-only audit log, replay. Shipped in 5 incremental commits (pushed as built so nothing is lost).
+
+**Rozhodnuto:**
+- **Auth principal (P0, AC18) = Portal JWT (shared `JWT_SECRET`).** concrete-agent had NO JWT; added HS256 validation of the Portal-issued user JWT (claims `userId`/`email`/`role`) → `Principal`. `/orchestrate` owner now comes from `Depends(require_principal)`, NEVER the request body — `SessionAccessError` is a real HTTP 403 boundary, not advisory. `user_id` removed from the request schema. Interview-confirmed with Alexandr.
+- **Auto-provision users + projects** (interview decision): concrete-agent's `users`/`projects` are its own DB, so a Portal `userId`/`project_id` may be absent → FK would fail. `ensure_user_provisioned` / `ensure_project_provisioned` idempotently upsert (ON CONFLICT DO NOTHING; sentinel password_hash; `workflow_a` to satisfy the projects CHECK).
+- **Durable session bridge = sync SQLAlchemy repository.** PR1's `SessionManager` is sync, the existing repo async (un-wired by design). Rather than rewrite PR1, added `SyncSqlAlchemySessionRepository` (psycopg2, reuses the async repo's pure `_to_model`/`_from_model`) + memoized `make_sync_session_factory`. Endpoint runs the sync orchestrator in `asyncio.to_thread` so blocking DB I/O never blocks the loop. Sessions survive across Cloud Run instances → durable HITL resume (AC11). `purge_expired()` for TTL eviction (bounded store).
+- **Append-only audit (AC13) = alembic migration + BEFORE UPDATE/DELETE trigger → RAISE** (not SQL-startup, mirrors PR1; not a GRANT/RLS — trigger is role-independent). `orchestrator_audit_log` captures AC14 fingerprint (tool name/version, inputs/outputs/policy sha256 hashes, core engine version, session/user/project, timestamp) + AC16 transition source. Plain UUID tenant cols (no CASCADE FK) so audit outlives its refs.
+- **Replay (AC20):** content hashes computed over canonical JSON with volatile timestamp keys stripped recursively → same inputs + same engine version reproduce the identical audit fingerprint + final state. Test runs a session twice, diffs fingerprints (session_id + `at` excluded).
+- **`tools_invoked` → `tools_allowed`:** checkpoint runner records YAML-allowed tools under `tools_allowed` (no tool actually ran) — names must not lie to the audit/replay trail. `tools_invoked` reserved for real dispatch (W4).
+
+**Odmítnuto:**
+- Rewriting PR1's `SessionManager` to async — chose the sync-repo bridge (least churn, PR1 untouched).
+- MCP Bearer api-key as the principal — session.user_id is a `users` UUID, a different identity space; JWT principal is coherent and matches the FK.
+- Enforcing append-only via DB GRANTs/RLS — a trigger holds regardless of connecting role (app credential or compromised credential alike).
+
+**Otevřené otázky / risks:**
+- `/orchestrate` requires `JWT_SECRET` set in CORE Cloud Run env (shared with Portal) — must be configured before the UI calls it; endpoint 401s until then.
+- Auto-provisioned `users` rows carry a synthetic email + sentinel password_hash — fine for isolation, but these are not full Portal users (no cross-DB sync). Acceptable for orchestrator scope.
+- Real per-tool dispatch into the `ToolRunner` seam is still W4 (checkpoint runner is the live default); `tools_invoked` stays empty until then.
+
+**Co dál:**
+- Open PR3b → main, ready for review (merge via UI). Verify CI runs the new DB-gated tests green (not skipped) — `STAGEGATING_REQUIRE_ENDPOINT_TESTS=1` makes a missing dep/DB red.
+- W3: real work-ontology extraction (SO-250 / SO-202) on top of these rails. W4: KROS adapter + real tool dispatch.
+
+---
+
 ### 2026-05-30 — Session: Orchestrator stage-gating PR3a (/orchestrate + HITL + e2e stub + P1 engine memoization)
 
 **Topic:** Branch `claude/orchestrator-stagegating-pr3`. Continuation of the stage-gating MVP (PR1 foundation + PR2 policy gateway already merged on this branch). Split the remaining PR3 into **PR3a** (this session) + **PR3b** (next). PR3a = the thin orchestrator loop, deterministic intent classification, HITL pause/resume, the canonical `/orchestrate` endpoint, an end-to-end stub test, and the P1 engine-memoization perf fix.

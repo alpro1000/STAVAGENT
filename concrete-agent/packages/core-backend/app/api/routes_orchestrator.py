@@ -1,68 +1,83 @@
-"""
-The canonical `/orchestrate` endpoint (PR3a).
+"""The canonical `/orchestrate` endpoint (PR3a + PR3b).
 
-This is the single REST surface the UI, MCP clients, and (later) the ADK call to
-drive a stage-gated workflow. It is a thin transport adapter: it validates the
-request, builds the `StageGatingOrchestrator` over the shared session store +
-workflow config, runs one turn (which either completes the workflow or pauses
-for human-in-the-loop input), and maps the typed result back to JSON.
+Single REST surface the UI, MCP clients, and (later) the ADK call to drive a
+stage-gated workflow. Thin transport adapter: validate, build the orchestrator
+over the DURABLE session store + audit log, run one turn, map the typed result to
+JSON.
 
-ALL workflow logic lives in `app.services.stage_gating.orchestrator` — this file
-contains no stage logic, only request/response shaping and error mapping.
+PR3b changes (the durable + secured surface):
+  - Session owner comes from the authenticated principal (Portal JWT), NEVER the
+    request body — `SessionAccessError` is now a real HTTP boundary (AC18).
+  - Sessions persist to Postgres via the sync repository, so HITL pause/resume is
+    durable across Cloud Run instances/restarts (no more process-local store).
+  - Every tool call + state transition is written to the append-only audit log.
+  - The principal's user (and the referenced project) are auto-provisioned so the
+    session FKs are satisfiable even though those ids originate in the Portal DB.
 
-PR3a scope / known limitation (durability):
-  Sessions are persisted in a PROCESS-LOCAL in-memory store. PR1 ships a sync
-  `SessionManager` and an async `SqlAlchemySessionRepository` that are
-  deliberately NOT wired together yet (the sync↔async repository bridge is
-  PR3b). Until that bridge exists, HITL pause/resume works within a single
-  running instance but is not durable across instances or restarts. This is a
-  conscious MVP boundary, documented here and in the PR description — not an
-  oversight. The orchestrator itself is storage-agnostic, so swapping in the
-  DB-backed repository in PR3b is a one-line change at the wiring point below.
+The orchestrator + session manager are synchronous; the endpoint runs them in a
+worker thread (`asyncio.to_thread`) so the blocking DB I/O never blocks the
+FastAPI event loop.
 
-Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md §5.
+Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md §5, AC9, AC11, AC18.
 """
 from __future__ import annotations
 
+import asyncio
 from typing import Any, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from app.api.auth_principal import (
+    Principal,
+    ensure_project_provisioned,
+    ensure_user_provisioned,
+    require_principal,
+)
+from app.core.config import settings
 from app.services.stage_gating import (
-    InMemorySessionRepository,
     IntentClassificationError,
     OrchestrateRequest,
+    OrchestrateResult,
     SessionAccessError,
     SessionManager,
     SessionNotFoundError,
     SessionTerminalError,
     StageGatingOrchestrator,
+    SyncAuditLogWriter,
+    SyncSqlAlchemySessionRepository,
     load_workflow_config,
     make_checkpoint_tool_runner,
+    make_sync_session_factory,
 )
 
 router = APIRouter(prefix="/api/v1", tags=["orchestrator"])
 
-# Shared, process-local wiring (see module docstring re: durability). Built once
-# so the workflow config is parsed a single time per process.
+# Parsed once per process (config is data; cheap, immutable).
 _CONFIG = load_workflow_config()
-_REPO = InMemorySessionRepository()
-_MANAGER = SessionManager(_REPO, config=_CONFIG)
 _TOOL_RUNNER = make_checkpoint_tool_runner(_CONFIG)
 
 
+def _session_factory():
+    """Memoized sync sessionmaker for the configured DB (engine outlives request)."""
+    return make_sync_session_factory(settings.DATABASE_URL)
+
+
 def _build_orchestrator() -> StageGatingOrchestrator:
+    factory = _session_factory()
+    manager = SessionManager(SyncSqlAlchemySessionRepository(factory), config=_CONFIG)
     return StageGatingOrchestrator(
-        manager=_MANAGER, config=_CONFIG, tool_runner=_TOOL_RUNNER
+        manager=manager,
+        config=_CONFIG,
+        tool_runner=_TOOL_RUNNER,
+        audit_writer=SyncAuditLogWriter(factory),
     )
 
 
 class OrchestrateBody(BaseModel):
-    """Request body for POST /api/v1/orchestrate."""
+    """Request body. NOTE: no `user_id` — the owner is the authenticated principal."""
 
-    user_id: UUID = Field(..., description="Owning user (tenant guard).")
     project_id: UUID = Field(..., description="Project the session belongs to.")
     session_id: Optional[UUID] = Field(
         None, description="Omit to start a new session; supply to resume one."
@@ -92,21 +107,20 @@ class OrchestrateResponse(BaseModel):
     error: Optional[str] = None
 
 
-@router.post("/orchestrate", response_model=OrchestrateResponse)
-async def orchestrate(body: OrchestrateBody) -> OrchestrateResponse:
-    """Create or resume a stage-gated workflow session and advance it one turn.
+def _run_blocking(principal: Principal, body: OrchestrateBody) -> OrchestrateResult:
+    """Synchronous work: provision FKs, then drive the orchestrator one turn.
 
-    Returns `status`:
-      - `completed`        — workflow reached its terminal state this turn,
-      - `paused_for_input` — a step needs HITL input; resume with `session_id`
-                             (+ `user_response` / `confirmation_token`),
-      - `error`            — a step failed (partial progress is preserved).
-
-    Client errors map to 4xx: unknown intent → 400, unknown session → 404,
-    wrong owner → 403, terminal/expired session → 409.
+    Runs in a worker thread. Auto-provisioning the user + project keeps the
+    session FKs satisfiable for ids that originate in the Portal DB. The owner is
+    bound to the authenticated principal, never to a body field.
     """
+    factory = _session_factory()
+    ensure_user_provisioned(principal, factory)
+    ensure_project_provisioned(
+        user_id=principal.user_id, project_id=body.project_id, session_factory=factory
+    )
     request = OrchestrateRequest(
-        user_id=body.user_id,
+        user_id=principal.user_id,
         project_id=body.project_id,
         session_id=body.session_id,
         message=body.message,
@@ -114,9 +128,26 @@ async def orchestrate(body: OrchestrateBody) -> OrchestrateResponse:
         confirmation_token=body.confirmation_token,
         user_response=body.user_response,
     )
-    orchestrator = _build_orchestrator()
+    return _build_orchestrator().run(request)
+
+
+@router.post("/orchestrate", response_model=OrchestrateResponse)
+async def orchestrate(
+    body: OrchestrateBody,
+    principal: Principal = Depends(require_principal),
+) -> OrchestrateResponse:
+    """Create or resume a stage-gated workflow session and advance it one turn.
+
+    Auth: `Authorization: Bearer <Portal JWT>` required (401 otherwise). The
+    session owner is the JWT principal; a session created by user A cannot be
+    read or resumed by user B (403 via the tenant guard).
+
+    Returns `status`: `completed` / `paused_for_input` / `error`. Client errors
+    map to 4xx: unknown intent → 400, unknown session → 404, wrong owner → 403,
+    terminal/expired session → 409.
+    """
     try:
-        result = orchestrator.run(request)
+        result = await asyncio.to_thread(_run_blocking, principal, body)
     except IntentClassificationError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except SessionNotFoundError as exc:

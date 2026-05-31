@@ -26,6 +26,8 @@ from app.services.stage_gating.session_manager import (
 from app.services.stage_gating.session_repository import (
     InMemorySessionRepository,
     SqlAlchemySessionRepository,
+    SyncSqlAlchemySessionRepository,
+    make_sync_session_factory,
 )
 from app.services.stage_gating.workflow_loader import (
     WorkflowConfig,
@@ -58,6 +60,15 @@ from app.services.stage_gating.policy_gateway import (
     PolicyError,
     evaluate_tool_policy,
     validate_grounding,
+)
+from app.services.stage_gating.audit_log import (
+    CORE_ENGINE_VERSION,
+    AuditEntry,
+    AuditLogWriter,
+    InMemoryAuditLogWriter,
+    NullAuditLogWriter,
+    SyncAuditLogWriter,
+    hash_payload,
 )
 from app.services.stage_gating.intent_classifier import (
     DEFAULT_WORKFLOW,
@@ -95,6 +106,8 @@ __all__ = [
     "DEFAULT_TTL_DAYS",
     "InMemorySessionRepository",
     "SqlAlchemySessionRepository",
+    "SyncSqlAlchemySessionRepository",
+    "make_sync_session_factory",
     # PR2 — tool registry
     "TOOL_MANIFESTS",
     "ToolManifest",
@@ -126,4 +139,12 @@ __all__ = [
     "STATUS_COMPLETED",
     "STATUS_PAUSED",
     "STATUS_ERROR",
+    # PR3b — audit log
+    "AuditEntry",
+    "AuditLogWriter",
+    "InMemoryAuditLogWriter",
+    "NullAuditLogWriter",
+    "SyncAuditLogWriter",
+    "hash_payload",
+    "CORE_ENGINE_VERSION",
 ]

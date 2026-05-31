@@ -38,6 +38,12 @@ from datetime import datetime, timezone
 from typing import Any, Callable, Mapping, Optional
 from uuid import UUID, uuid4
 
+from app.services.stage_gating.audit_log import (
+    AuditLogWriter,
+    NullAuditLogWriter,
+    build_state_transition_entry,
+    build_tool_call_entry,
+)
 from app.services.stage_gating.intent_classifier import classify_intent
 from app.services.stage_gating.policy_gateway import validate_grounding
 from app.services.stage_gating.session_manager import SessionManager, SessionState
@@ -86,7 +92,12 @@ class StepResult:
 
     outputs: dict[str, Any] = field(default_factory=dict)
     work_items: list[dict[str, Any]] = field(default_factory=list)
+    # Tools the runner actually invoked (real dispatch). The checkpoint runner
+    # leaves this empty and populates `tools_allowed` instead — names must not
+    # claim a tool ran when none did (audit/replay honesty).
     tools_invoked: list[str] = field(default_factory=list)
+    tools_allowed: list[str] = field(default_factory=list)
+    tool_version: Optional[str] = None
     needs_user_input: bool = False
     question: Optional[dict[str, Any]] = None
 
@@ -129,10 +140,14 @@ class StageGatingOrchestrator:
         manager: SessionManager,
         config: WorkflowConfig,
         tool_runner: ToolRunner,
+        audit_writer: Optional[AuditLogWriter] = None,
     ) -> None:
         self._manager = manager
         self._config = config
         self._run_step = tool_runner
+        # Append-only audit sink. Defaults to a no-op so the orchestrator stays
+        # callable without a DB (PR3a in-memory path / pure unit tests).
+        self._audit = audit_writer or NullAuditLogWriter()
 
     # ── entry point ─────────────────────────────────────────────────────────
     def run(self, request: OrchestrateRequest) -> OrchestrateResult:
@@ -215,6 +230,41 @@ class StageGatingOrchestrator:
 
             step_record = self._record_step(state, current, result, request.user_id)
             steps_this_run.append(step_record)
+
+            # Append-only audit: one tool_call row per completed step. Hashes are
+            # computed over volatile-stripped payloads so replay reproduces them.
+            # tool_name is a SHORT identifier (a single invoked tool, or the step
+            # state as a label) — NOT a joined list, which would overflow the
+            # column. The full invoked/allowed tool sets live in `detail` (JSONB).
+            if len(result.tools_invoked) == 1:
+                tool_name = result.tools_invoked[0]
+            elif result.tools_invoked:
+                tool_name = f"{current.value}[{len(result.tools_invoked)} tools]"
+            else:
+                tool_name = current.value
+            self._audit.write(
+                build_tool_call_entry(
+                    session_id=state.id,
+                    user_id=state.user_id,
+                    project_id=state.project_id,
+                    tool_name=tool_name,
+                    tool_version=result.tool_version,
+                    inputs={
+                        "state": current.value,
+                        "message": request.message,
+                        "options": dict(request.options),
+                        "has_user_response": pending_response is not None,
+                    },
+                    outputs={
+                        "outputs": result.outputs,
+                        "work_items_count": len(result.work_items),
+                    },
+                    detail={
+                        "tools_invoked": list(result.tools_invoked),
+                        "tools_allowed": list(result.tools_allowed),
+                    },
+                )
+            )
             pending_response = None  # consumed by the step that just completed
 
             if idx == len(sequence) - 1:
@@ -228,11 +278,23 @@ class StageGatingOrchestrator:
                 )
 
             next_state = sequence[idx + 1]
+            source = f"orchestrator:{current.value}->{next_state.value}"
             state = self._manager.advance(
                 session_id=state.id,
                 user_id=request.user_id,
                 target=next_state,
-                triggered_by=f"orchestrator:{current.value}->{next_state.value}",
+                triggered_by=source,
+            )
+            # Append-only audit: state transition with its source (AC16).
+            self._audit.write(
+                build_state_transition_entry(
+                    session_id=state.id,
+                    user_id=state.user_id,
+                    project_id=state.project_id,
+                    transition_from=current.value,
+                    transition_to=next_state.value,
+                    transition_source=source,
+                )
             )
 
         # Unreachable for a well-formed config (loop returns at the terminal
@@ -295,6 +357,7 @@ class StageGatingOrchestrator:
         record: dict[str, Any] = {
             "state": current.value,
             "tools_invoked": list(result.tools_invoked),
+            "tools_allowed": list(result.tools_allowed),
             "at": _utcnow_iso(),
         }
         if result.work_items:
@@ -356,9 +419,11 @@ def make_checkpoint_tool_runner(config: WorkflowConfig) -> ToolRunner:
                     "required": "confirmation_token",
                 },
             )
+        # Checkpoint, not a real dispatch: record the tools the YAML ALLOWS in
+        # this state under `tools_allowed` — never `tools_invoked` (no tool ran).
         return StepResult(
             outputs={"checkpoint": True},
-            tools_invoked=sorted(config.tools_allowed_in(ctx.state)),
+            tools_allowed=sorted(config.tools_allowed_in(ctx.state)),
         )
 
     return _runner
