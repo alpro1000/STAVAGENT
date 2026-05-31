@@ -111,28 +111,46 @@ def ensure_user_provisioned(principal: Principal, session_factory) -> None:
 
     The Portal `userId` may not exist in concrete-agent's own `users` table, so
     the `orchestrator_sessions.user_id` FK would fail. This inserts a minimal row
-    (id + email + sentinel password_hash) ON CONFLICT DO NOTHING, so the FK is
-    satisfiable without coupling to external provisioning. The sentinel
-    password_hash is never a valid credential (concrete-agent never
-    password-authenticates this user).
+    (id + email + an UNUSABLE password_hash) ON CONFLICT DO NOTHING, so the FK is
+    satisfiable without coupling to external provisioning.
+
+    password_hash is an *unusable* sentinel — the Django convention: a `'!'`
+    prefix (which no bcrypt/argon2 verifier can ever match — bcrypt.checkpw on a
+    non-`$2…$` string raises rather than returning True) PLUS per-row randomness
+    so the value is non-empty, structurally impossible to authenticate against,
+    and unpredictable. concrete-agent has no password-login path today regardless
+    (the only auth is this JWT principal + the MCP api-key system), so these rows
+    can never log in; the unusable hash is defence-in-depth for any future
+    password flow.
     """
+    import secrets
+
     from sqlalchemy import text
     from sqlalchemy.exc import IntegrityError
 
     email = principal.email or f"{principal.user_id}@jwt.external"
     role = principal.role or "user"
+    # Unusable password marker: '!' prefix (never a valid bcrypt/argon2 hash) +
+    # 32 random hex chars (unpredictable, unique per row).
+    unusable_password = f"!jwt-provisioned-{secrets.token_hex(16)}"
 
     stmt = text(
         """
         INSERT INTO users (id, email, password_hash, role, status, email_verified)
-        VALUES (:id, :email, '!jwt-provisioned', :role, 'active', true)
+        VALUES (:id, :email, :pw, :role, 'active', true)
         ON CONFLICT (id) DO NOTHING
         """
     )
     with session_factory() as session:
         try:
             session.execute(
-                stmt, {"id": principal.user_id, "email": email, "role": role}
+                stmt,
+                {
+                    "id": principal.user_id,
+                    "email": email,
+                    "role": role,
+                    "pw": unusable_password,
+                },
             )
             session.commit()
         except IntegrityError:
