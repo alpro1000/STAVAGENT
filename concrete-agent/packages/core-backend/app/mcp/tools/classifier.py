@@ -13,6 +13,8 @@ import logging
 import re
 from typing import Optional
 
+from app.mcp.tools.element_name_normalizer import normalize_element_name
+
 logger = logging.getLogger(__name__)
 
 # ── Element type definitions (mirroring element-classifier.ts) ───────────────
@@ -186,6 +188,17 @@ ELEMENT_TYPES = {
         "orientation": "vertical",
         "formwork": ["Framax Xlife", "Frami Xlife"],
     },
+    "zdivo_obklad": {
+        # Lícové zdivo / obklad z lomového kamene — masonry/cladding, NOT
+        # concrete (W3 §4): no rebar, no formwork, vertical, area/volume of
+        # masonry. Without it, stone cladding falls to the residual category.
+        "label_cs": "Lícové zdivo / obklad z lomového kamene",
+        "difficulty": 1.0,
+        "rebar_kg_m3": 0,
+        "rebar_range": [0, 0],
+        "orientation": "vertical",
+        "formwork": [],
+    },
     "jine": {
         "label_cs": "Jiné / nespecifikováno",
         "difficulty": 1.0,
@@ -203,6 +216,9 @@ BRIDGE_MARKERS = re.compile(r"SO[-\s]?\d{3}|most|bridge|přemost|lávk", re.I)
 
 # Classification keywords (order matters — first match wins within priority)
 KEYWORD_RULES: list[tuple[re.Pattern, str]] = [
+    # Lícové zdivo / obklad (masonry) — must precede dřík/stěna so a stone
+    # cladding name does not fall through to a concrete element (W3 #65).
+    (re.compile(r"lícov\w*\s*(?:obklad|zdiv)|obklad\b|kamenn\w*\s*zdiv", re.I), "zdivo_obklad"),
     (re.compile(r"pilot[ay]|vrtan|CFA|mikropilot", re.I), "pilota"),
     (re.compile(r"mostovk|nosn[aá]\s*konstr|NK\s|hmotn|superstr", re.I), "mostovkova_deska"),
     (re.compile(r"říms[ay]|corniche|parapetní", re.I), "rimsa"),
@@ -238,13 +254,24 @@ def _detect_prestress(name: str) -> bool:
 
 
 def _classify(name: str, object_code: Optional[str] = None) -> dict:
-    """Classify element by name."""
-    is_bridge = bool(BRIDGE_MARKERS.search(object_code or ""))
+    """Classify element by name.
 
-    # Try keyword rules
+    The raw name first passes through the normalization layer (W3): the matcher
+    runs on the canonical head-noun string, bridge context is derived from real
+    construction vocabulary (NOT the bare SO-number), and a status flag is set
+    for existing/demolition elements. The KEYWORD_RULES table itself is unchanged
+    — it stays a pure category matcher.
+    """
+    norm = normalize_element_name(name, object_code)
+    match_name = norm.canonical_name
+    is_bridge = norm.construction_context == "bridge"
+
+    # Try keyword rules (on the normalized head-noun string)
     for pattern, etype in KEYWORD_RULES:
-        if pattern.search(name):
-            # Bridge context: upgrade pozemní types to mostní equivalents
+        if pattern.search(match_name):
+            # Bridge context: upgrade pozemní types to mostní equivalents. Only
+            # fires for a real bridge context — a retaining wall (SO 250) never
+            # remaps its základ/stěna/deska to pier/deck variants (W3 #69).
             if is_bridge:
                 bridge_map = {
                     "sloup": "driky_piliru",
@@ -265,6 +292,8 @@ def _classify(name: str, object_code: Optional[str] = None) -> dict:
                 "orientation": profile["orientation"],
                 "recommended_formwork": profile["formwork"],
                 "is_bridge_context": is_bridge,
+                "construction_context": norm.construction_context,
+                "status": norm.status,
                 "concrete_class_detected": _detect_concrete_class(name),
                 "is_prestressed_detected": _detect_prestress(name),
             }
@@ -282,6 +311,8 @@ def _classify(name: str, object_code: Optional[str] = None) -> dict:
         "orientation": profile["orientation"],
         "recommended_formwork": profile["formwork"],
         "is_bridge_context": is_bridge,
+        "construction_context": norm.construction_context,
+        "status": norm.status,
         "concrete_class_detected": _detect_concrete_class(name),
         "is_prestressed_detected": _detect_prestress(name),
     }

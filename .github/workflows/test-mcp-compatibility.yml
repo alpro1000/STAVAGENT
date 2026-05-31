@@ -20,6 +20,9 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_orchestrator.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_audit.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_pr3b.py'
+      - 'concrete-agent/packages/core-backend/tests/test_element_name_normalizer.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -39,6 +42,9 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_orchestrator.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_audit.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_pr3b.py'
+      - 'concrete-agent/packages/core-backend/tests/test_element_name_normalizer.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py'
 
 jobs:
   mcp-compatibility:
@@ -140,4 +146,7 @@ jobs:
             tests/test_stage_gating_orchestrator.py \
             tests/test_stage_gating_audit.py \
             tests/test_stage_gating_pr3b.py \
+            tests/test_element_name_normalizer.py \
+            tests/test_mcp_golden_so250.py \
+            tests/test_mcp_golden_so202.py \
             -v --tb=short
