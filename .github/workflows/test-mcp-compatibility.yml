@@ -18,6 +18,8 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_policy.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_session_db.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_orchestrator.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_audit.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_pr3b.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -35,6 +37,8 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_policy.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_session_db.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_orchestrator.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_audit.py'
+      - 'concrete-agent/packages/core-backend/tests/test_stage_gating_pr3b.py'
 
 jobs:
   mcp-compatibility:
@@ -134,4 +138,6 @@ jobs:
             tests/test_stage_gating_policy.py \
             tests/test_stage_gating_session_db.py \
             tests/test_stage_gating_orchestrator.py \
+            tests/test_stage_gating_audit.py \
+            tests/test_stage_gating_pr3b.py \
             -v --tb=short

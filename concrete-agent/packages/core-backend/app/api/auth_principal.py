@@ -139,3 +139,34 @@ def ensure_user_provisioned(principal: Principal, session_factory) -> None:
             # Email-uniqueness collision with a different id (rare) — the user
             # effectively exists; nothing to provision.
             session.rollback()
+
+
+def ensure_project_provisioned(
+    *, user_id: UUID, project_id: UUID, session_factory
+) -> None:
+    """Idempotently upsert a `projects` row so the session FK is satisfiable.
+
+    `orchestrator_sessions.project_id` is a NOT NULL FK to `projects`, and (like
+    `users`) the caller's project may live in the Portal DB, not concrete-agent's.
+    Same auto-provision rationale: insert a minimal owned row ON CONFLICT DO
+    NOTHING. `workflow` honors the table CHECK ('workflow_a' | 'workflow_b').
+    """
+    from sqlalchemy import text
+
+    stmt = text(
+        """
+        INSERT INTO projects (id, user_id, name, workflow, status)
+        VALUES (:id, :user_id, :name, 'workflow_a', 'draft')
+        ON CONFLICT (id) DO NOTHING
+        """
+    )
+    with session_factory() as session:
+        session.execute(
+            stmt,
+            {
+                "id": project_id,
+                "user_id": user_id,
+                "name": f"Orchestrator session project {project_id}",
+            },
+        )
+        session.commit()

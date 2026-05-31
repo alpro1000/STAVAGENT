@@ -18,14 +18,13 @@ Covers:
   - grounding-gate counts are recorded per step from emitted work_items
   - ownership guard on resume; terminal session cannot be resumed
   - checkpoint runner gates COMMIT_PENDING on a confirmation_token
-  - /orchestrate endpoint: new -> paused (commit gate) -> resume -> completed,
-    work_list_only -> completed, unknown target_output -> 400
+  (HTTP endpoint tests live in test_stage_gating_pr3b.py — the PR3b endpoint is
+  auth + DB gated, so those are integration tests, not in-memory unit tests.)
 
 Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md §5.
 """
 from __future__ import annotations
 
-import os
 from uuid import uuid4
 
 import pytest
@@ -349,78 +348,6 @@ def test_checkpoint_runner_gates_commit_on_confirmation():
     assert done.workflow_state == WorkflowState.EXPORTED
 
 
-# ── /orchestrate endpoint ────────────────────────────────────────────────────
-
-# When set (in CI), a failed app import must turn the job RED rather than
-# silently skipping the endpoint tests — this structurally rules out a
-# falsely-green run where the endpoint coverage never executed. Local runs leave
-# the var unset and keep the soft-skip so the pure-logic tests still run without
-# the full FastAPI dependency tree.
-_REQUIRE_ENDPOINT_TESTS = os.environ.get("STAGEGATING_REQUIRE_ENDPOINT_TESTS") == "1"
-
-
-@pytest.fixture()
-def client():
-    try:
-        from fastapi.testclient import TestClient
-
-        from app.main import app
-    except Exception as exc:  # missing optional deps
-        if _REQUIRE_ENDPOINT_TESTS:
-            # CI: do NOT mask a missing dep / broken import as a skip.
-            raise
-        pytest.skip(f"app import unavailable: {exc}")
-    return TestClient(app)
-
-
-def test_endpoint_full_takeoff_pauses_then_completes(client):
-    uid, pid = str(uuid4()), str(uuid4())
-    r1 = client.post(
-        "/api/v1/orchestrate",
-        json={"user_id": uid, "project_id": pid, "options": {"target_output": "full"}},
-    )
-    assert r1.status_code == 200, r1.text
-    body1 = r1.json()
-    assert body1["status"] == STATUS_PAUSED
-    assert body1["workflow_state"] == WorkflowState.COMMIT_PENDING.value
-
-    r2 = client.post(
-        "/api/v1/orchestrate",
-        json={
-            "user_id": uid,
-            "project_id": pid,
-            "session_id": body1["session_id"],
-            "confirmation_token": "ok",
-        },
-    )
-    assert r2.status_code == 200, r2.text
-    body2 = r2.json()
-    assert body2["status"] == STATUS_COMPLETED
-    assert body2["workflow_state"] == WorkflowState.EXPORTED.value
-
-
-def test_endpoint_work_list_only_completes(client):
-    r = client.post(
-        "/api/v1/orchestrate",
-        json={
-            "user_id": str(uuid4()),
-            "project_id": str(uuid4()),
-            "options": {"target_output": "work_list"},
-        },
-    )
-    assert r.status_code == 200, r.text
-    body = r.json()
-    assert body["status"] == STATUS_COMPLETED
-    assert body["workflow_state"] == WorkflowState.WORK_ATOMIZATION.value
-
-
-def test_endpoint_unknown_target_output_is_400(client):
-    r = client.post(
-        "/api/v1/orchestrate",
-        json={
-            "user_id": str(uuid4()),
-            "project_id": str(uuid4()),
-            "options": {"target_output": "definitely-not-a-workflow"},
-        },
-    )
-    assert r.status_code == 400, r.text
+# NOTE: HTTP endpoint tests moved to test_stage_gating_pr3b.py — the PR3b
+# endpoint requires an authenticated JWT principal + a durable DB session store,
+# so its tests are DB+auth-gated integration tests, not in-memory unit tests.
