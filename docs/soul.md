@@ -352,6 +352,27 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-31 — Session: Claude Code plugins audit + setup (code-review installed, automation analysis)
+
+**Topic:** READ-ONLY tooling task on `claude/code-plugins-audit-setup-paw6S`. Install two official plugins (automation analyzer + code-review) and produce a bucketed recommendation report, under Google-for-Startups prod-safety constraints (no auto-push/deploy, no kiosk branches).
+
+**Rozhodnuto:**
+- Added official marketplace `anthropics/claude-code` (`claude-code-plugins`); installed **`code-review` v1.0.0** (user scope). Recorded actual composition: 1 slash command spawning haiku-gate → haiku CLAUDE.md-collector → sonnet summary → 4 parallel reviewers (2× sonnet CLAUDE.md + 2× opus bug/security) → per-issue validator subagents → filter.
+- Report filed at `docs/audits/claude_code_plugins/2026-05-31_setup_and_recommendations.md` with БРАТЬ/ОТЛОЖИТЬ/НЕ БРАТЬ buckets.
+- Big-data context-exclusion **proposed** (R1): read-deny for `test-data/**` (459 MB), DXF/DB/MDB, KB JSON/XML (40 MB), `docs/normy` PDFs (40 MB), URS CSVs. Recommendation only — not applied.
+- Top "take now": context read-deny (R1), security/cross-user-isolation reviewer subagent (R3, serves GDPR P0), `/code-review` (R5), Python ruff+black hook (R2, tools commented in requirements, no CI conflict), MCP-compat guard (R4), secret-scan (R6).
+
+**Odmítnuto / honest findings:**
+- The task's "automation analyzer" plugin **does not exist** in the official marketplace (all 13 enumerated). User chose: analyze Core manually, no mismatched install.
+- `code-review`'s "confidence scoring 0–100" is actually a binary **validation-pass filter**, not a numeric threshold. Command depends on `gh` CLI + `github_inline_comment` MCP — both absent in this remote env (only `mcp__github__*`).
+- Code-review **not test-run**: no human PR (all 24 open PRs are Dependabot → command skips automated PRs), gh-CLI gap, and commands load only next-session.
+
+**Otevřené otázky:** none blocking. Whether to actually *enable* R1/R2/R3/R4/R6 is a separate user decision.
+
+**Co dál:** if user approves, implement R1 (project `.claude/settings.json` read-deny) + R2/R4/R6 hooks + R3 isolation-reviewer subagent in a follow-up — none touch product code. Defer R8/R9 (frontend-MCP, auto-deploy) until after Google review.
+
+---
+
 ### 2026-05-31 — Session: Orchestrator stage-gating PR3b (durable sessions + real isolation + audit/replay — W2 close)
 
 **Topic:** Fresh branch `claude/orchestrator-stagegating-pr3b` from main (PR3a merged as squash `001f6743`). Closes Week-2 stage-gating: the deferred PR3b scope — real cross-user isolation (P0/GDPR), durable session bridge, append-only audit log, replay. Shipped in 5 incremental commits (pushed as built so nothing is lost).
