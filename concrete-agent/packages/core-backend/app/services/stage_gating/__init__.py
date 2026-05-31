@@ -61,6 +61,15 @@ from app.services.stage_gating.policy_gateway import (
     evaluate_tool_policy,
     validate_grounding,
 )
+from app.services.stage_gating.audit_log import (
+    CORE_ENGINE_VERSION,
+    AuditEntry,
+    AuditLogWriter,
+    InMemoryAuditLogWriter,
+    NullAuditLogWriter,
+    SyncAuditLogWriter,
+    hash_payload,
+)
 from app.services.stage_gating.intent_classifier import (
     DEFAULT_WORKFLOW,
     IntentClassificationError,
@@ -130,4 +139,12 @@ __all__ = [
     "STATUS_COMPLETED",
     "STATUS_PAUSED",
     "STATUS_ERROR",
+    # PR3b — audit log
+    "AuditEntry",
+    "AuditLogWriter",
+    "InMemoryAuditLogWriter",
+    "NullAuditLogWriter",
+    "SyncAuditLogWriter",
+    "hash_payload",
+    "CORE_ENGINE_VERSION",
 ]
