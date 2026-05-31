@@ -352,6 +352,49 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-31 — Session: Implement audit recommendations R1/R2/R3/R6 (R4 held)
+
+**Topic:** Follow-up to the plugins-audit session — enable the БРАТЬ-bucket tooling on `claude/code-plugins-audit-setup-paw6S`. User scope: "R1, R3, R6, and R2 with ruff+black only — no blocking mypy. Hold R4. Each as its own commit, no auto-push hooks, no PR." No product code touched.
+
+**Rozhodnuto:**
+- **R1** (already committed `4532e7c`): project `.claude/settings.json` `permissions.deny` read-patterns for the big-data corpus (`test-data/**`, DXF/DWG/DB/MDB, KB JSON/XML, `docs/normy` PDFs, URS CSVs, OTSKP XML).
+- **R2** Python lint/format gate → delivered as a **Husky pre-commit gate** (`scripts/python_lint_check.sh`), not a Claude Code PostToolUse hook (user declined the auto-format-on-edit wiring; "no blocking mypy" implied a blocking gate). Checks staged `concrete-agent/**/*.py` with `black --check` + `ruff --select=E9,F63,F7,F82` (real-bug rules only, to avoid blocking on the never-linted core-backend's style nits). No mypy, no auto-formatting. Skips gracefully if tools absent; `--no-verify` bypass documented.
+- **R3** cross-user-isolation reviewer **subagent** at `.claude/agents/cross-user-isolation-reviewer.md` (read-only Read/Grep/Glob/Bash, `model: inherit`), grounded in `docs/security/isolation_model.md` — enforces the three `owner_id` invariants + 404-not-403 existence-leak + anonymous-401 checks. Allowlisted `.claude/agents/` in `.gitignore` (mirrors existing `skills/`/`settings.json` exceptions).
+- **R6** secret-scan **pre-commit gate** (`scripts/secret_scan_check.sh`), dependency-free (no gitleaks). Scans only added lines; matches private keys, AWS/Google/GitHub/Stripe/Slack tokens, `sk-stavagent-*` product key, and `key="literal"` credentials; ignores placeholders/env-vars; `pragma: allowlist secret` per-line opt-out. Motivated by the once-leaked DB password.
+- Each as its own commit (R2 `0d19743`, R3 `44a515f`, R6 `dc94a87`). Both gates wired into `.husky/pre-commit` after the existing shared-formula tests.
+
+**Odmítnuto / honest findings:**
+- **R4 held** per user (MCP-compatibility pytest guard — deferred).
+- Husky is **not active in this container** (`core.hooksPath` unset, no `.git/hooks/pre-commit`) → gates were validated by running the scripts directly against staged fixtures (black catches unformatted, ruff catches bugs, secret-scan catches AWS/GH/Google keys + hardcoded creds, passes env-vars/placeholders/marker). They activate for developers who run `npm install` (husky prepare) normally.
+- R2 PostToolUse auto-format approach was built then removed after the user declined it.
+
+**Otevřené otázky:** R2 `black --check` on a never-blackened codebase will flag any legacy file a dev stages — acceptable boy-scout friction with `--no-verify` escape, but could be softened to warn-only if it proves noisy.
+
+**Co dál:** R4 when user lifts the hold. Optionally add `ruff`/`black` to `core-backend/requirements.txt` (currently commented) so CI/devs install them. Branch pushed, no PR per instruction.
+
+---
+
+### 2026-05-31 — Session: Claude Code plugins audit + setup (code-review installed, automation analysis)
+
+**Topic:** READ-ONLY tooling task on `claude/code-plugins-audit-setup-paw6S`. Install two official plugins (automation analyzer + code-review) and produce a bucketed recommendation report, under Google-for-Startups prod-safety constraints (no auto-push/deploy, no kiosk branches).
+
+**Rozhodnuto:**
+- Added official marketplace `anthropics/claude-code` (`claude-code-plugins`); installed **`code-review` v1.0.0** (user scope). Recorded actual composition: 1 slash command spawning haiku-gate → haiku CLAUDE.md-collector → sonnet summary → 4 parallel reviewers (2× sonnet CLAUDE.md + 2× opus bug/security) → per-issue validator subagents → filter.
+- Report filed at `docs/audits/claude_code_plugins/2026-05-31_setup_and_recommendations.md` with БРАТЬ/ОТЛОЖИТЬ/НЕ БРАТЬ buckets.
+- Big-data context-exclusion **proposed** (R1): read-deny for `test-data/**` (459 MB), DXF/DB/MDB, KB JSON/XML (40 MB), `docs/normy` PDFs (40 MB), URS CSVs. Recommendation only — not applied.
+- Top "take now": context read-deny (R1), security/cross-user-isolation reviewer subagent (R3, serves GDPR P0), `/code-review` (R5), Python ruff+black hook (R2, tools commented in requirements, no CI conflict), MCP-compat guard (R4), secret-scan (R6).
+
+**Odmítnuto / honest findings:**
+- The task's "automation analyzer" plugin **does not exist** in the official marketplace (all 13 enumerated). User chose: analyze Core manually, no mismatched install.
+- `code-review`'s "confidence scoring 0–100" is actually a binary **validation-pass filter**, not a numeric threshold. Command depends on `gh` CLI + `github_inline_comment` MCP — both absent in this remote env (only `mcp__github__*`).
+- Code-review **not test-run**: no human PR (all 24 open PRs are Dependabot → command skips automated PRs), gh-CLI gap, and commands load only next-session.
+
+**Otevřené otázky:** none blocking. Whether to actually *enable* R1/R2/R3/R4/R6 is a separate user decision.
+
+**Co dál:** if user approves, implement R1 (project `.claude/settings.json` read-deny) + R2/R4/R6 hooks + R3 isolation-reviewer subagent in a follow-up — none touch product code. Defer R8/R9 (frontend-MCP, auto-deploy) until after Google review.
+
+---
+
 ### 2026-05-31 — Session: Orchestrator stage-gating PR3b (durable sessions + real isolation + audit/replay — W2 close)
 
 **Topic:** Fresh branch `claude/orchestrator-stagegating-pr3b` from main (PR3a merged as squash `001f6743`). Closes Week-2 stage-gating: the deferred PR3b scope — real cross-user isolation (P0/GDPR), durable session bridge, append-only audit log, replay. Shipped in 5 incremental commits (pushed as built so nothing is lost).

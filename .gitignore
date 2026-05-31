@@ -2,9 +2,12 @@ node_modules/
 package-lock.json
 *.db
 
-# Claude Code project state — ignore local settings, track shared skills
+# Claude Code project state — track shared config (settings/skills),
+# ignore personal overrides (.claude/settings.local.json stays ignored via .claude/*)
 .claude/*
 !.claude/skills/
+!.claude/settings.json
+!.claude/agents/
 
 # URS cache — derived locally by scripts/urs_cache/, ~140 MB
 data/urs_cache.db
