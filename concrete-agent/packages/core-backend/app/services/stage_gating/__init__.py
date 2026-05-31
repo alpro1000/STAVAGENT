@@ -26,6 +26,8 @@ from app.services.stage_gating.session_manager import (
 from app.services.stage_gating.session_repository import (
     InMemorySessionRepository,
     SqlAlchemySessionRepository,
+    SyncSqlAlchemySessionRepository,
+    make_sync_session_factory,
 )
 from app.services.stage_gating.workflow_loader import (
     WorkflowConfig,
@@ -95,6 +97,8 @@ __all__ = [
     "DEFAULT_TTL_DAYS",
     "InMemorySessionRepository",
     "SqlAlchemySessionRepository",
+    "SyncSqlAlchemySessionRepository",
+    "make_sync_session_factory",
     # PR2 — tool registry
     "TOOL_MANIFESTS",
     "ToolManifest",
