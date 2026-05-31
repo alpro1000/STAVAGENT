@@ -27,7 +27,7 @@ Klasifikátor prvků rozhoduje podle výskytu klíčového slova v názvu, nikol
 Nová čistá funkce odvodí z názvu a kódu objektu strukturu se třemi signály a předá ji klasifikátoru:
 
 - **Řídící podstatné jméno** — kanonizované (například „základ", „základy" i „železobetonový základ" vedou na tentýž kanonický tvar), aby křehké přípony v pravidlech (například požadavek na koncovku u slova „základ") shodu neblokovaly a aby předložkový ocas název neunesl.
-- **Kontext konstrukce** — opěrná/zárubní zeď versus most a pilíř versus pozemní stavba, odvozený z názvu objektu a obsahových klíčových slov, **oddělený od domněnky, že kód objektu s číslem znamená most**.
+- **Kontext konstrukce** — opěrná/zárubní zeď versus most a pilíř versus pozemní stavba. **Autoritativně** se předává explicitním parametrem `object_type` (most / zárubní zeď / budova), který se klasifikuje **jednou z TZ objektu** a thread-uje na každý prvek — protože lexika mostu a stěny se překrývá (opěra, římsa, nosná konstrukce) a prvek mostu s běžným názvem by se jinak zadefaultil do stěny. Když `object_type` chybí (samostatný REST caller), kontext se odvodí z názvu + kódu objektu, **odděleně od domněnky, že kód objektu s číslem znamená most**.
 - **Status** — nový versus stávající, podle výskytu slov stávající, demolice, odstranění, bourání; jinak nový.
 
 Vrstva pouze anotuje; kategorii nadále vydává klasifikátor. Tabulka pravidel a katalog logiky zůstávají nedotčené.

@@ -1307,11 +1307,18 @@ async def rest_otskp(
 async def rest_classify(
     name: str,
     object_code: Optional[str] = None,
+    object_type: Optional[str] = None,
     authorization: Optional[str] = Header(None),
 ):
-    """Classify construction element (free tool, no auth required)."""
+    """Classify construction element (free tool, no auth required).
+
+    `object_type` (bridge | retaining_wall | building) is the authoritative
+    construction context when supplied — see classify_construction_element.
+    """
     from app.mcp.tools.classifier import classify_construction_element
-    return await classify_construction_element(name=name, object_code=object_code)
+    return await classify_construction_element(
+        name=name, object_code=object_code, object_type=object_type
+    )
 
 
 class CalculateRequest(BaseModel):

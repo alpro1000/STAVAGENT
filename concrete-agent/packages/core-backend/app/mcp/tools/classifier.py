@@ -253,7 +253,11 @@ def _detect_prestress(name: str) -> bool:
     return bool(re.search(r"předp[ěj]|prestress|post[\s-]?tens|Y1860", name, re.I))
 
 
-def _classify(name: str, object_code: Optional[str] = None) -> dict:
+def _classify(
+    name: str,
+    object_code: Optional[str] = None,
+    object_type: Optional[str] = None,
+) -> dict:
     """Classify element by name.
 
     The raw name first passes through the normalization layer (W3): the matcher
@@ -262,7 +266,7 @@ def _classify(name: str, object_code: Optional[str] = None) -> dict:
     for existing/demolition elements. The KEYWORD_RULES table itself is unchanged
     — it stays a pure category matcher.
     """
-    norm = normalize_element_name(name, object_code)
+    norm = normalize_element_name(name, object_code, object_type)
     match_name = norm.canonical_name
     is_bridge = norm.construction_context == "bridge"
 
@@ -321,6 +325,7 @@ def _classify(name: str, object_code: Optional[str] = None) -> dict:
 async def classify_construction_element(
     name: str,
     object_code: Optional[str] = None,
+    object_type: Optional[str] = None,
 ) -> dict:
     """Classify a structural construction element into one of 22 types.
 
@@ -359,12 +364,22 @@ async def classify_construction_element(
             deska→mostovkova_deska.
             Without this hint, 'Sloupy P2' would classify as building
             column instead of bridge pier.
+
+        object_type: AUTHORITATIVE construction-object type, classified ONCE from
+            the project TZ and threaded per item by the orchestrator:
+            'bridge' | 'retaining_wall' | 'building' (aliases: most / zarubni_zed
+            / operna_zed / budova / pozemni). Preferred over object_code, because
+            bridge and wall vocabulary overlaps (opěra, římsa, nosná konstrukce) —
+            a bridge element with an ordinary name must not default to wall. When
+            omitted, context falls back to deriving from name + object_code.
     """
     try:
-        result = _classify(name, object_code)
+        result = _classify(name, object_code, object_type)
         result["input_name"] = name
         if object_code:
             result["input_object_code"] = object_code
+        if object_type:
+            result["input_object_type"] = object_type
         return result
     except Exception as e:
         logger.error(f"[MCP/Classifier] Error: {e}")

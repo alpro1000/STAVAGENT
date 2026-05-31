@@ -96,6 +96,36 @@ def _construction_context(name: str, object_code: Optional[str]) -> Optional[str
     return None
 
 
+# Accepted explicit object-type values (classified ONCE from the TZ by the
+# orchestrator and threaded per item). Authoritative over per-name heuristics.
+_OBJECT_TYPE_ALIASES = {
+    "bridge": "bridge",
+    "most": "bridge",
+    "retaining_wall": "retaining_wall",
+    "zarubni_zed": "retaining_wall",
+    "operna_zed": "retaining_wall",
+    "zed": "retaining_wall",
+    "building": "building",
+    "budova": "building",
+    "pozemni": "building",
+}
+
+
+def _resolve_context(
+    name: str, object_code: Optional[str], object_type: Optional[str]
+) -> Optional[str]:
+    """Resolve construction context. An explicit object_type (classified once
+    from the TZ) is AUTHORITATIVE — per-item names share bridge/wall vocabulary
+    (opěra, římsa, nosná konstrukce), so a bridge element with an ordinary name
+    must not default to wall. Only when object_type is absent (standalone REST
+    caller) do we fall back to deriving from the name + object_code."""
+    if object_type:
+        canon = _OBJECT_TYPE_ALIASES.get(object_type.strip().lower())
+        if canon:
+            return canon
+    return _construction_context(name, object_code)
+
+
 def _canonical_head(core: str, context: Optional[str]) -> tuple[str, Optional[str]]:
     """Resolve the governing structural noun → a canonical token the EXISTING
     rule table already matches. Ordered: multi-word structural terms first, then
@@ -131,12 +161,19 @@ def _canonical_head(core: str, context: Optional[str]) -> tuple[str, Optional[st
 
 
 def normalize_element_name(
-    name: str, object_code: Optional[str] = None
+    name: str,
+    object_code: Optional[str] = None,
+    object_type: Optional[str] = None,
 ) -> NormalizedName:
-    """Normalize a raw element name for classification. Pure + deterministic."""
+    """Normalize a raw element name for classification. Pure + deterministic.
+
+    `object_type` (bridge | retaining_wall | building, classified once from the
+    TZ) is the authoritative context when supplied; otherwise context is derived
+    from the name + object_code (standalone-caller fallback).
+    """
     raw = name or ""
     status = "stávající" if _EXISTING_STATUS.search(raw) else "nový"
-    context = _construction_context(raw, object_code)
+    context = _resolve_context(raw, object_code, object_type)
     core = _strip_modifiers(raw)
     canonical, head = _canonical_head(core, context)
     return NormalizedName(
