@@ -92,6 +92,26 @@ def test_audit_records_tool_calls_and_transitions_with_source():
     assert tr.transition_source.startswith("orchestrator:")
 
 
+def test_sync_audit_writer_swallows_db_errors(caplog):
+    """A DB failure in the audit write must NOT propagate (workflow continues);
+    it is logged at ERROR so the gap is observable, not silent."""
+    from app.services.stage_gating.audit_log import (
+        EVENT_TOOL_CALL,
+        AuditEntry,
+        SyncAuditLogWriter,
+    )
+
+    def failing_factory():
+        raise RuntimeError("db down")
+
+    writer = SyncAuditLogWriter(failing_factory)
+    entry = AuditEntry(event_type=EVENT_TOOL_CALL, session_id=uuid4(), user_id=uuid4())
+    # Must not raise.
+    writer.write(entry)
+    assert any("failed to write" in r.message.lower() or "audit" in r.message.lower()
+               for r in caplog.records)
+
+
 def test_audit_writer_default_is_noop_safe():
     # No audit_writer → NullAuditLogWriter; run must not raise.
     mgr = SessionManager(InMemorySessionRepository(), config=CFG)

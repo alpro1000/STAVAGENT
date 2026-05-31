@@ -17,11 +17,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Optional, Protocol
 from uuid import UUID
+
+logger = logging.getLogger(__name__)
 
 # Core engine version stamped on every audit row (AC14). Overridable per
 # deployment; the value is part of the replay contract — same inputs + same
@@ -192,25 +195,44 @@ class SyncAuditLogWriter:
         self._session_factory = session_factory
 
     def write(self, entry: AuditEntry) -> None:
+        """Persist one audit entry. Resilient: a DB failure is logged, not raised.
+
+        Audit writes happen AFTER the session state is already durably persisted
+        (the orchestrator saves the session, then records the audit row), so a
+        transient DB hiccup on the audit table must not crash the workflow or
+        500 the request and roll the user back. The failure is logged at ERROR
+        with full context so a missing audit row is observable (a loud gap), not
+        a silent one — the append-only guarantee covers immutability of rows that
+        WERE written; availability of the workflow takes precedence over a single
+        secondary-record write.
+        """
         from app.db.models.orchestrator_audit_log import OrchestratorAuditLog
 
-        with self._session_factory() as session:
-            session.add(
-                OrchestratorAuditLog(
-                    session_id=entry.session_id,
-                    user_id=entry.user_id,
-                    project_id=entry.project_id,
-                    event_type=entry.event_type,
-                    tool_name=entry.tool_name,
-                    tool_version=entry.tool_version,
-                    inputs_hash=entry.inputs_hash,
-                    outputs_hash=entry.outputs_hash,
-                    policy_hash=entry.policy_hash,
-                    core_engine_version=entry.core_engine_version,
-                    transition_from=entry.transition_from,
-                    transition_to=entry.transition_to,
-                    transition_source=entry.transition_source,
-                    detail=entry.detail,
+        try:
+            with self._session_factory() as session:
+                session.add(
+                    OrchestratorAuditLog(
+                        session_id=entry.session_id,
+                        user_id=entry.user_id,
+                        project_id=entry.project_id,
+                        event_type=entry.event_type,
+                        tool_name=entry.tool_name,
+                        tool_version=entry.tool_version,
+                        inputs_hash=entry.inputs_hash,
+                        outputs_hash=entry.outputs_hash,
+                        policy_hash=entry.policy_hash,
+                        core_engine_version=entry.core_engine_version,
+                        transition_from=entry.transition_from,
+                        transition_to=entry.transition_to,
+                        transition_source=entry.transition_source,
+                        detail=entry.detail,
+                    )
                 )
+                session.commit()
+        except Exception:
+            logger.exception(
+                "[StageGating/audit] failed to write %s entry for session %s "
+                "(workflow continues; audit row missing)",
+                entry.event_type,
+                entry.session_id,
             )
-            session.commit()
