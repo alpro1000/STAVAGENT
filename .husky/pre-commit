@@ -28,5 +28,9 @@ fi
 echo "🐍 Checking staged Python (concrete-agent) with ruff + black..."
 "$REPO_ROOT/scripts/python_lint_check.sh" || exit 1
 
+# R6 — secret-scan gate (block new secrets in staged changes)
+echo "🔑 Scanning staged changes for secrets..."
+"$REPO_ROOT/scripts/secret_scan_check.sh" || exit 1
+
 echo "✅ All critical checks passed!"
 exit 0
