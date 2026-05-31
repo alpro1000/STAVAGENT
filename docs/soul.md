@@ -352,6 +352,31 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-31 — Session: W3 element-name normalization layer (SO-250 probe, classifier #63–#70)
+
+**Topic:** Fresh branch `claude/w3-normalize-element-name` from origin/main. Contract `docs/tasks/TASK_W3_NormalizeElementName_SO250.md` (renamed to avoid collision with the existing `TASK_Orchestrator_WorkOntology_SO250.md` #1–#20 extraction task). Red→green TDD on the MCP element classifier.
+
+**Rozhodnuto:**
+- **Recon first (no code):** mapped classifier (`app/mcp/tools/classifier.py` — `KEYWORD_RULES` L205+, confidence hard-coded 0.85/0.3, `BRIDGE_MARKERS` SO\d{3} bug), catalog (`ELEMENT_TYPES` 22 types), pre-classify insertion point (`_classify` call), golden harness (`tests/test_mcp_golden_so202.py`, not in any CI workflow), `provider_router.py` (untouched). Reproduced 6 probe findings: 4/6 wrong.
+- **Normalization layer** = new pure `normalize_element_name(name, object_code)` (`app/mcp/tools/element_name_normalizer.py`), called inside `_classify` BEFORE the rule loop; rule table unchanged (stays category matcher). 3 signals: canonical head-noun (strips prepositional/participle tails + dims; context-sensitive dřík; základ canonicalized; NK>trám), construction_context (from real vocab, NOT SO-number), status (nový/stávající). No LLM (replay-deterministic).
+- **Catalog:** +1 category `zdivo_obklad` (23rd; rebar 0, vertical, no formwork) for lícový obklad z lomového kamene. Q2 decision.
+- **Bridge context decoupled from SO-number** (fixes #69) — re-derived from content words (most/NK/pilíř vs zárubní/úhlová zeď), which KEPT the two existing `is_bridge_context is True` tests green (SO-204 "NK deskový", SO-202 "Pilíře").
+- **Golden:** new `test_mcp_golden_so250.py` (8 tests #63–#70) mirroring so202; +11 normalizer units. Red verified directly (#63/#65/#66/#68/#69/#70 fail, #64/#67 green guards) → green after impl. CI: wired normalizer + golden so250 + **golden so202** (previously unenforced) into `test-mcp-compatibility.yml`.
+
+**Odmítnuto:**
+- Touching `KEYWORD_RULES` regex logic (contract forbids — only normalize before, +1 category).
+- Fixing the sister TS classifier (`Monolit-Planner/.../element-classifier.ts`) — same defects, but explicit follow-up to avoid drift risk (task §7).
+
+**Otevřené otázky / risks:**
+- Sister TS classifier in the calculator now diverges from the Python MCP one — drift risk until a follow-up ports the normalizer.
+- Modifier-stripping is a curated marker set (task examples); broad ŘSD corpus may surface more tail patterns — extend conservatively.
+
+**Co dál:**
+- Open PR W3 → main (ready for review). CI must run golden so250 + so202 green (not skip).
+- Follow-up: port normalization to the TS sister classifier; extraction-layer criteria #71+ (concrete-class binding, source grounding) on the #1–#20 task.
+
+---
+
 ### 2026-05-31 — Session: Implement audit recommendations R1/R2/R3/R6 (R4 held)
 
 **Topic:** Follow-up to the plugins-audit session — enable the БРАТЬ-bucket tooling on `claude/code-plugins-audit-setup-paw6S`. User scope: "R1, R3, R6, and R2 with ruff+black only — no blocking mypy. Hold R4. Each as its own commit, no auto-push hooks, no PR." No product code touched.
