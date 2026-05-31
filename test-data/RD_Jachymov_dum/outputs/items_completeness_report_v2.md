@@ -1,6 +1,6 @@
 # Completeness Audit v2 — RD Jáchymov
 
-**Generated:** 2026-05-30
+**Generated:** 2026-05-31
 **Items:** 215 | **Rooms:** 25 | **Sections:** A–J (10)
 
 > Tato kontrola dělá strukturovaný sweep po 10 osách. Cíl: poskytnout worksheet kde

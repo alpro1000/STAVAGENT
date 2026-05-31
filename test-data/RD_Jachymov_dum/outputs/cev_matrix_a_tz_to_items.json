@@ -7,17 +7,17 @@
     "covered": 117,
     "na_documented": 100,
     "gap": 0,
-    "extra": 29
+    "extra": 31
   },
   "_gap_by_severity": {},
   "_extras_by_subclass": {
     "extra_dxf_sourced": 13,
     "extra_tz_implicit": 1,
-    "extra_universal_vrn": 11,
+    "extra_universal_vrn": 13,
     "extra_audit_derived": 4
   },
-  "_items_total": 212,
-  "_items_touched_by_evidence": 163,
+  "_items_total": 215,
+  "_items_touched_by_evidence": 164,
   "matrix_a": [
     {
       "tz_evidence_id": "TZ_EV_0001",
@@ -128,7 +128,8 @@
         "260217_sklad.HSV1.004",
         "260217_sklad.HSV1.005",
         "260217_sklad.HSV1.006",
-        "260219_dum.HSV1.015"
+        "260219_dum.HSV1.015",
+        "260219_dum.HSV1.016"
       ],
       "candidate_kapitolas": [
         "HSV-1 Zemní práce"
@@ -1063,7 +1064,8 @@
         "260217_sklad.HSV1.003",
         "260217_sklad.HSV1.004",
         "260217_sklad.HSV1.005",
-        "260219_dum.HSV1.015"
+        "260219_dum.HSV1.015",
+        "260219_dum.HSV1.016"
       ],
       "candidate_kapitolas": [
         "PSV-95 Detekce požární",
@@ -1557,6 +1559,7 @@
         "260219_dum.HSV1.004",
         "260219_dum.HSV1.005",
         "260219_dum.HSV1.015",
+        "260219_dum.HSV1.016",
         "260219_dum.HSV6.003",
         "260219_dum.HSV6.006",
         "260219_dum.HSV6.012",
@@ -1571,8 +1574,7 @@
         "260217_sklad.HSV1.002",
         "260217_sklad.HSV1.003",
         "260217_sklad.HSV1.004",
-        "260217_sklad.HSV1.005",
-        "260217_sklad.HSV1.006"
+        "260217_sklad.HSV1.005"
       ],
       "candidate_kapitolas": [
         "HSV-6 Bourací práce",
@@ -2621,7 +2623,8 @@
         "260217_sklad.HSV1.003",
         "260217_sklad.HSV1.004",
         "260217_sklad.HSV1.005",
-        "260219_dum.HSV1.015"
+        "260219_dum.HSV1.015",
+        "260219_dum.HSV1.016"
       ],
       "candidate_kapitolas": [
         "PSV-95 Detekce požární",
@@ -5935,6 +5938,28 @@
       "subclass": "extra_dxf_sourced",
       "severity": "informational",
       "fix_recommendation": "Item explicitly DXF-derived (rooms / layers / kóty). Coverage proven by Matrix B (DXF→items). Consider adding a TZ §-reference in source field for double-citation if available."
+    },
+    {
+      "item_id": "260219_dum.VRN.PM01",
+      "kapitola": "VRN — Přesun hmot",
+      "subkapitola": "Přesun hmot pro budovu",
+      "popis_excerpt": "Přesun hmot pro budovu — vnitrostaveništní vertikální + horizontální doprava materiálu a hmot (rekonstrukce vícepodlažní RD + nástavba 3.NP)",
+      "source_field": "anchor checklist PM01 — technical necessity (povinná položka každého rozpočtu, 998xxx URS família)",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
+    },
+    {
+      "item_id": "260219_dum.VRN.PM02",
+      "kapitola": "VRN — Lešení",
+      "subkapitola": "Fasádní lešení (ETICS + krov + klempířina)",
+      "popis_excerpt": "Fasádní lešení trubkové/rámové vč. montáže + pronájmu + demontáže — pro provedení ETICS fasády, krovu a klempířiny po obvodu domu (výška 13 m)",
+      "source_field": "anchor checklist PM02 — technical necessity (ETICS 276.7 m² nelze provést bez lešení, 941xxx URS família) + DXF obvod 38.7 m + řez výška 13 m",
+      "verdict": "EXTRA",
+      "subclass": "extra_universal_vrn",
+      "severity": "informational",
+      "fix_recommendation": "Universal VRN line item (BOZP, ZS, kolaudace, pojištění, geodet). Acceptable without specific TZ paragraph — covered by zákon 309/2006 + standard rozpočet practice."
     }
   ]
 }

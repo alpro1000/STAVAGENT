@@ -1,6 +1,6 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
-**Generated:** 2026-05-30
+**Generated:** 2026-05-31
 **Items checked:** 211 (active, excl. 4 deprecated)
 **Issues flagged:** 58
 

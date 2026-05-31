@@ -1,6 +1,6 @@
 {
-  "_generated_at": "2026-05-30",
-  "output_file": "outputs/Vykaz_vymer_RD_Jachymov_KROS_format_2026-05-30_v3_final.xlsx",
+  "_generated_at": "2026-05-31",
+  "output_file": "outputs/Vykaz_vymer_RD_Jachymov_KROS_format_2026-05-31_v3_final.xlsx",
   "pattern_compliance": {
     "pattern_15": "items.json untouched (read-only)",
     "pattern_25_26": "status icons (✓⚠❌?) per honest fallback hierarchy",

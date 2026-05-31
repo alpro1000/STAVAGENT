@@ -249,8 +249,16 @@ def update_souhrn_narrative(wb) -> list[str]:
     """Append Phase 3.5+ narrative paragraph at end of Souhrn (after R39)."""
     sh = wb["Souhrn"]
     notes: list[str] = []
+    # live counts (Pattern 38 — no hardcoded item statistics)
+    import json as _j
+    from pathlib import Path as _P
+    _it = _j.loads((_P(__file__).resolve().parent.parent / "outputs" / "items_rd_jachymov_complete.json").read_text(encoding="utf-8"))["items"]
+    _tot = len(_it)
+    _dum = sum(1 for i in _it if i.get("objekt") == "260219_dum")
+    _skl = sum(1 for i in _it if i.get("objekt") == "260217_sklad")
+    _n_skladba = sum(1 for i in _it if i.get("realizuje_skladbu"))
     next_row = sh.max_row + 2
-    cell = sh.cell(next_row, 1, value="PHASE 3.5+ FINALIZACE (2026-05-26)")
+    cell = sh.cell(next_row, 1, value="PHASE 3.5+ FINALIZACE (aktualizováno 2026-05-30)")
     cell.font = SECTION_FONT
     cell.fill = SECTION_FILL
     sh.merge_cells(start_row=next_row, start_column=1, end_row=next_row, end_column=6)
@@ -259,7 +267,7 @@ def update_souhrn_narrative(wb) -> list[str]:
         "Phase 3.5 sklad S-code mapping complete: 14 items tagged + 9 explicit null markers (Pattern 24 multi-namespace S-codes — sklad SN_sklad distinct from dům SN)",
         "Action 1 (qty cross-check): PSV77.001 podlaha 21.209 → 17.60 m² (inner usable per DXF room 0.01); HSV4.005 parking pororošt 21.0 → 44.60 m² (full footprint per DXF room 1.01); HSV5.001 NEW mezipodesta schodiště prefa 5.50 m² (DXF room 1.02 gap-fill, S05_sklad skladba)",
         "Exhaustive extraction via DXF native parser (ezdxf, 15 S-codes + 11 POZN refs across 4 DXFs) + full OCR pipeline (34 PDFs at 300 DPI tesseract ces+eng)",
-        "Total items: 211 → 212 (208 active + 4 deprecated audit-trail). 53 items with realizuje_skladbu (39 dům + 14 sklad + 2 external) + 34 explicit null markers (reviewed-as-not-applicable)",
+        f"Total items: {_tot} ({_dum} dům + {_skl} sklad) — vč. CEV +3 (komín/zídky/drenáž), anchor-gap +2 (přesun hmot/lešení), terasa-area fix + venkovní schody na terénu. {_n_skladba} items s realizuje_skladbu.",
         "Patterns 17 (Phase 0a) + 31 (CEV) + 15 (Work-First) + 24 (multi-namespace) applied throughout. No catalog code touched — Phase 5 (URS matching) gated behind frozen-baseline confirmation.",
     ]
     for line in lines:
