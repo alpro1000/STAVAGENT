@@ -24,5 +24,9 @@ if [ $SHARED_EXIT -ne 0 ]; then
   exit 1
 fi
 
-echo "✅ All critical tests passed!"
+# R2 — Python format/lint gate for concrete-agent (ruff + black, no mypy)
+echo "🐍 Checking staged Python (concrete-agent) with ruff + black..."
+"$REPO_ROOT/scripts/python_lint_check.sh" || exit 1
+
+echo "✅ All critical checks passed!"
 exit 0
