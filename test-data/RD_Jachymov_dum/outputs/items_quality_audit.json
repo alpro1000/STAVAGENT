@@ -2,15 +2,15 @@
   "_schema_version": "1.0",
   "_generated_at": "2026-06-01",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 224,
-  "items_total_incl_deprecated": 228,
-  "issues_found_total": 74,
+  "items_checked": 230,
+  "items_total_incl_deprecated": 234,
+  "issues_found_total": 78,
   "summary_by_dimension": {
     "urs_family_consistency": 32,
-    "subdodavatel_logical": 42
+    "subdodavatel_logical": 46
   },
   "summary_by_severity": {
-    "informational": 74
+    "informational": 78
   },
   "issues": [
     {
@@ -1094,6 +1094,64 @@
       "reason": "Subdodavatel 'bourac' neodpovídá HSV-6 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260219_dum.HSV6.018",
       "popis": "Demontáž stávajícího vnějšího keramického obkladu suterénní stěny (sokl) tl. 20 "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Komunikace + vjezd",
+      "current_subdodavatel": "komunikace",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'komunikace' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV5.002",
+      "popis": "Napojení vjezdu na ulici Dvořákova — vydláždění z betonových dlaždic + spádování"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "PSV-76 Zámečnictví",
+      "current_subdodavatel": "zamecnik",
+      "expected_set": [
+        "klempir",
+        "okennar",
+        "okenni_zaluzie_kastlik_purenit",
+        "specialista_RC3_dvere",
+        "truhlar",
+        "zamecnik_PSV"
+      ],
+      "reason": "Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.PSV76.002",
+      "popis": "Vjezdová brána na pozemku investora (ocelová) — dodávka + montáž"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "M-21 ELI silnoproud",
+      "current_subdodavatel": "elektrikar",
+      "expected_set": [
+        "elektroinstalater"
+      ],
+      "reason": "Subdodavatel 'elektrikar' neodpovídá M-21 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.M21.008",
+      "popis": "Hlavní vypínač elektrické energie TOTAL STOP + požární značení rozvodného zaříze"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "PSV-95 Detekce požární",
+      "current_subdodavatel": "topenar",
+      "expected_set": [
+        "elektroinstalater",
+        "revize_specialista"
+      ],
+      "reason": "Subdodavatel 'topenar' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.PSV95.003",
+      "popis": "Předávací protokol krbu na tuhá paliva + kontrola bezpečných vzdáleností (800 mm"
     }
   ]
 }

@@ -3,22 +3,22 @@
   "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01.xlsx",
   "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01_v2.xlsx",
   "totals": {
-    "total": 228,
-    "active": 224,
+    "total": 234,
+    "active": 230,
     "deprecated": 4,
-    "dum_active": 196,
-    "sklad_active": 28,
+    "dum_active": 199,
+    "sklad_active": 31,
     "otazky_total": 21,
     "patterns": 20,
     "urs_verified": 8,
-    "urs_verified_pct": "3.5"
+    "urs_verified_pct": "3.4"
   },
   "souhrn_changes": [],
   "var_b_dum_notes": [
-    "200 rows enriched (of 200 data rows)"
+    "203 rows enriched (of 203 data rows)"
   ],
   "var_b_sklad_notes": [
-    "28 rows enriched (of 28 data rows)"
+    "31 rows enriched (of 31 data rows)"
   ],
   "cross_verification_sheet": {
     "sheet": "Cross_verification",

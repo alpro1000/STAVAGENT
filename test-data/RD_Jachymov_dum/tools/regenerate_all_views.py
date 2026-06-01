@@ -33,6 +33,7 @@ TOOLS = ROOT / "tools"
 PIPELINE = [
     ("atomic_decomposition.py", "atomic_decomposition_map.json"),
     ("atomic_worklist_excel.py", "ATOMIC_WORKLIST.xlsx"),
+    ("atomic_flat_export.py", "ATOMIC_FLAT_*.xlsx (FLAT deliverable — 1 row/atomic op)"),
     ("phase2_excel_generator.py", "VSE_VARIANTY.xlsx (File A base)"),
     ("extend_phase4_excel.py", "VSE_VARIANTY_v2.xlsx (+ skladba cols)"),
     ("finalize_phase4_excel_v2.py", "VSE_VARIANTY_v2_final.xlsx (+ Var_E)"),

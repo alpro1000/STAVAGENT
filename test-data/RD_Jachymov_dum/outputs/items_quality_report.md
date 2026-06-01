@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
 **Generated:** 2026-06-01
-**Items checked:** 224 (active, excl. 4 deprecated)
-**Issues flagged:** 74
+**Items checked:** 230 (active, excl. 4 deprecated)
+**Issues flagged:** 78
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,10 +17,10 @@
 
 | Dimension | Issues |
 |---|--:|
-| subdodavatel_logical | 42 |
+| subdodavatel_logical | 46 |
 | urs_family_consistency | 32 |
 
-**By severity:** informational=74
+**By severity:** informational=78
 
 
 ---
@@ -64,7 +64,7 @@
 
 ---
 
-## subdodavatel_logical (42 issues)
+## subdodavatel_logical (46 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -110,3 +110,7 @@
 | `260219_dum.HSV7.009` | ⚪ informational | Provětrávaná mezera s kotevním roštem 40 mm + keramický obkl | Subdodavatel 'obkladac' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260219_dum.HSV5.018` | ⚪ informational | Pojistná hydroizolační folie pod hliníkovou falcovanou kryti | Subdodavatel 'pokryvac' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260219_dum.HSV6.018` | ⚪ informational | Demontáž stávajícího vnějšího keramického obkladu suterénní  | Subdodavatel 'bourac' neodpovídá HSV-6 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV5.002` | ⚪ informational | Napojení vjezdu na ulici Dvořákova — vydláždění z betonových | Subdodavatel 'komunikace' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvore |
+| `260217_sklad.PSV76.002` | ⚪ informational | Vjezdová brána na pozemku investora (ocelová) — dodávka + mo | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
+| `260219_dum.M21.008` | ⚪ informational | Hlavní vypínač elektrické energie TOTAL STOP + požární znače | Subdodavatel 'elektrikar' neodpovídá M-21 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
+| `260219_dum.PSV95.003` | ⚪ informational | Předávací protokol krbu na tuhá paliva + kontrola bezpečných | Subdodavatel 'topenar' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
