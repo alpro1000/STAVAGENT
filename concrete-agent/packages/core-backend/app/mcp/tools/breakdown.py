@@ -262,6 +262,14 @@ async def create_work_breakdown(
             "catalog_bound": not work_first,
         }
 
-    except Exception as e:
-        logger.error(f"[MCP/Breakdown] Error: {e}")
-        return {"error": str(e), "items": [], "total_items": 0}
+    except Exception:
+        # Fail loud (#1262). The old handler swallowed every exception into an
+        # error-dict that DROPPED `mode`/`catalog_bound` — so a TypeError (e.g. a
+        # stubbed callable with the wrong signature) silently became a downstream
+        # KeyError on `result["mode"]`, masking the real cause. create_work_breakdown
+        # is pure/deterministic: an exception here is a bug, not a recoverable
+        # runtime condition. Log the full traceback and re-raise so the real error
+        # surfaces in CI / the caller instead of quietly breaking the response
+        # contract.
+        logger.exception("[MCP/Breakdown] create_work_breakdown failed")
+        raise
