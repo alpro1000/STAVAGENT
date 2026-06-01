@@ -3,31 +3,8 @@
   "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01_v2.xlsx",
   "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01_v2_final.xlsx",
   "namespace_fix": {
-    "items_renamed": 2,
-    "per_item_changes": [
-      {
-        "id": "260217_sklad.HSV3.004",
-        "before": [
-          "S03a",
-          "S04"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S04_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV3.005",
-        "before": [
-          "S03a",
-          "S04"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S04_sklad"
-        ]
-      }
-    ]
+    "items_renamed": 0,
+    "per_item_changes": []
   },
   "var_e_extension": {
     "sklad_skladby_added": 6,

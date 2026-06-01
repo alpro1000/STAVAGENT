@@ -252,6 +252,47 @@ def short_id(full_id: str) -> str:
     return full_id.split(".", 1)[1] if "." in full_id else full_id
 
 
+
+# --- Auto montáž/materiál split (Pattern 41) for split-appropriate single items ---
+_KOMPLET = ("beton", "nabetonáv", "mazanin", "potěr", "omítk", "malb", "výmalb",
+            "penetrac", "impregnac", "hutněn", "zásyp", "násyp", " lože", "stěrk",
+            "samonivel", "zmonolit", "zdiv", "dozdív", "nadezdív", "příčk",
+            "porotherm", "cihl", "tvárnic", "klemba", "klenba", "bílá vana", "deska podlahy")
+_LABOR = ("bourán", "demont", "sejmut", "hloub", "výkop", "odvoz", "likvidac",
+          "pažen", "revize", "geodet", "vytýčen", "bozp", "pojišt", "koordin",
+          "kolaudac", "protokol", "průzkum", "dočasn", "vyklíz", "přesun", "zábor",
+          "rozhled", "předávac", "staveništ", "doprava", "ošetř", "zaměřen",
+          "podstojk", "vyveze", "spádování", "odvodn", "značen", "vypínač",
+          "kontrola", "příprava fasád")
+_SPLIT_RULES = [
+    (("výztuž", "kari", "b500"), ("Dodávka betonářské oceli B500B", 0.0)),
+    (("pororošt",), ("Dodávka ocelových pororoštů", 0.02)),
+    (("ipe", "hea", "upe", "ipn", "jekl", "úhelník", "trapéz", "ocelov"), ("Dodávka oceli S235 (válcované profily)", 0.03)),
+    (("bednění",), ("Pronájem bednění", 0.0)),
+    (("vata", "eps", "xps", "pir", "kročej", "perlit", "tepeln", "izolace"), ("Dodávka izolačních desek/rohoží", 0.05)),
+    (("obklad", "dlažb"), ("Dodávka obkladu/dlažby", 0.10)),
+    (("krokv", "klešt", "pozedni", "námět", "stropnic", "trám", "záklop", "palubk", "biodesk", "kvh", "lať", "kontralat", "řeziv"), ("Dodávka řeziva C24 (impregnované)", 0.10)),
+    (("nopov", "folie", "fólie", "pás", "hydroizol", "parotěs", "geotext", "protiradon"), ("Dodávka folie/pásu", 0.10)),
+    (("sdk", "sádrovlák", "fermacell"), ("Dodávka SDK desek + profilů", 0.10)),
+    (("krytin",), ("Dodávka krytiny", 0.10)),
+    (("okno", "dveř", "vrata", "brána", "zábradl", "schodiště ze", "stupně", "parapet", "žaluzi",
+      "dřez", "kamna", "kotel", "krb", "zásobník", "bojler", "hlásič", "hasicí", "sanit",
+      "baterie", "svítidl", "umyvadl", "sprchov", "digesto", "čerpadl", "wc kombi", "vana koupel"),
+     ("Dodávka výrobku", 0.0)),
+]
+
+def _auto_split(popis: str):
+    t = popis.lower()
+    if any(k in t for k in _LABOR):
+        return None
+    if any(k in t for k in _KOMPLET):
+        return None
+    for kws, params in _SPLIT_RULES:
+        if any(k in t for k in kws):
+            return params
+    return None
+
+
 def main() -> None:
     # Defensive load — input file may be missing / malformed / lack key
     try:
@@ -320,26 +361,56 @@ def main() -> None:
             })
             decomposed_keys.add(key)
         else:
-            # Carry 1:1 (atomic or lump-sum VRN)
-            poradi += 1
-            atomic_ops.append({
-                "poradi": poradi,
-                "objekt": it["objekt"],
-                "kapitola": it["kapitola"],
-                "atomic_id": short_id(it["id"]),
-                "atomic_operace_popis": it["popis"],
-                "mj": it["mj"],
-                "mnozstvi": it["mnozstvi"],
-                "urs_kod_kandidat": it.get("urs_code_proposed"),
-                "status": "carried_verified" if it.get("urs_status") == "matched_websearch_verified"
-                          else (it.get("cross_verification_status") or it.get("urs_status") or "needs_lookup"),
-                "parent_frozen_item_id": it["id"],
-                "parent_kapitola": it["kapitola"],
-                "realizuje_skladbu": rs,
-                "qty_formula": it.get("mnozstvi_formula"),
-                "pozn": "Carried 1:1 (atomic — no decomposition needed)",
-                "decomposition_type": "atomic_1to1",
-            })
+            _sp = _auto_split(it["popis"])
+            if _sp is None:
+                # Carry 1:1 (atomic / komplet / služba — no split)
+                poradi += 1
+                atomic_ops.append({
+                    "poradi": poradi,
+                    "objekt": it["objekt"],
+                    "kapitola": it["kapitola"],
+                    "atomic_id": short_id(it["id"]),
+                    "atomic_operace_popis": it["popis"],
+                    "mj": it["mj"],
+                    "mnozstvi": it["mnozstvi"],
+                    "urs_kod_kandidat": it.get("urs_code_proposed"),
+                    "status": "carried_verified" if it.get("urs_status") == "matched_websearch_verified"
+                              else (it.get("cross_verification_status") or it.get("urs_status") or "needs_lookup"),
+                    "parent_frozen_item_id": it["id"],
+                    "parent_kapitola": it["kapitola"],
+                    "realizuje_skladbu": rs,
+                    "qty_formula": it.get("mnozstvi_formula"),
+                    "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+                    "decomposition_type": "atomic_1to1",
+                })
+            else:
+                _mat_lab, _ztr = _sp
+                _q = it["mnozstvi"]
+                _matq = round(_q * (1 + _ztr), 2) if isinstance(_q, (int, float)) else None
+                _base = short_id(it["id"])
+                _legs = (
+                    ("a", "Montáž — " + it["popis"], _q, it.get("urs_code_proposed"),
+                     (it.get("urs_status") or "needs_lookup"), it.get("mnozstvi_formula"), "Montáž (práce)."),
+                    ("b", "Dodávka — " + _mat_lab + " (" + it["popis"][:46] + ")", _matq, None,
+                     "needs_lookup", ("= montáž × %.2f" % (1 + _ztr) if _ztr else "= montáž 1:1"),
+                     ("Materiál (dodávka). " + ("Pronájem." if "ronájem" in _mat_lab else ("Ztratné %d %%." % int(_ztr * 100))))),
+                )
+                for _suf, _lab, _qv, _urs, _st, _fm, _pz in _legs:
+                    poradi += 1
+                    atomic_ops.append({
+                        "poradi": poradi, "objekt": it["objekt"], "kapitola": it["kapitola"],
+                        "atomic_id": _base + _suf, "atomic_operace_popis": _lab, "mj": it["mj"],
+                        "mnozstvi": _qv, "urs_kod_kandidat": _urs, "status": _st,
+                        "parent_frozen_item_id": it["id"], "parent_kapitola": it["kapitola"],
+                        "realizuje_skladbu": rs, "qty_formula": _fm, "pozn": _pz,
+                        "decomposition_type": "auto_montaz_material",
+                    })
+                decomp_map.append({
+                    "parent_frozen_item_id": it["id"], "parent_kapitola": it["kapitola"],
+                    "parent_popis": it["popis"][:120], "parent_mj": it["mj"],
+                    "parent_qty": it["mnozstvi"], "n_atomic_children": 2,
+                    "atomic_children_ids": [_base + "a", _base + "b"],
+                })
 
     # Família distribution
     familia_dist = Counter()

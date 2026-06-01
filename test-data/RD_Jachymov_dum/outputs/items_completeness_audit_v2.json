@@ -3120,9 +3120,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA160",
+        "HEA180",
         "HEA200",
-        "HEA180"
+        "HEA160"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3194,9 +3194,9 @@
       "description": "TZ ARS — opěrná stěna / bílá vana",
       "tz_mention_count": 5,
       "tz_mention_sample": [
-        "Opěrná stěn",
-        "opěrná stěn",
-        "Opěrné stěn"
+        "bílá vana",
+        "Opěrné stěn",
+        "opěrné stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3208,8 +3208,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický dvorek",
-        "anglický \ndvorek"
+        "anglický \ndvorek",
+        "anglický dvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3221,8 +3221,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasa",
-        "terasy"
+        "terasy",
+        "terasa"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3246,9 +3246,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "EI 180",
+        "EI 90",
         "Protipožární",
-        "EI 90"
+        "EI 180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3260,9 +3260,9 @@
       "description": "TZ ARS — tepelné čerpadlo (PSV-73)",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "multisplit",
         "TČ",
-        "tepelné čerpadl"
+        "tepelné čerpadl",
+        "multisplit"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3274,8 +3274,8 @@
       "description": "TZ ARS — elektrokotel / kotel",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "kotel",
-        "elektrokotel"
+        "elektrokotel",
+        "kotel"
       ],
       "items_keyword_hit": true,
       "status": "covered",
