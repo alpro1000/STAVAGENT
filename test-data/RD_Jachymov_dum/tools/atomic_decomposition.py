@@ -73,6 +73,24 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "b", "popis": "Štěrkový obsyp drenáže frakce 16/32 mm", "mj": "m", "qty": 12.0, "urs": "212", "status": "family_only", "qty_formula": "= HSV1.015 délka drenáže 12 m", "pozn": "Obsyp drenáže (212/174 família)."},
         {"suffix": "c", "popis": "Geotextilie obalení drenáže + napojení do dešťové kanalizace", "mj": "m", "qty": 12.0, "urs": "693", "status": "family_only", "qty_formula": "= HSV1.015 délka 12 m", "pozn": "Geotextilie obal + napojení (693 família)."},
     ],
+    # KROV — montáž 762332xxx (m/bm, ocelové spojky, by průřez cm²) + dodávka řeziva C24 (m³) split per ÚRS.
+    # Leaf-bind 2026-05-31 (KROS catalog + MCP): krokve/kleštiny/pozednice 120-224 cm² = 762332122; námětky 50-120 = 762332121.
+    ("260219_dum.HSV5.001", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Montáž krokví 100/180 mm — vázaná konstrukce krovu pomocí ocelových spojek, hraněné řezivo (průřez 180 cm², přes 120 do 224)", "mj": "m", "qty": 156.0, "urs": "762332122", "status": "carried_verified", "qty_formula": "= HSV5.001 délka krokví 156 bm", "pozn": "Montáž 762332122 (266 Kč/m, KROS). Materiál = op b."},
+        {"suffix": "b", "popis": "Dodávka hranolového řeziva C24 pro krokve 100/180 mm vč. 10 % prořezu (fungicidní + protihmyzí impregnace)", "mj": "m³", "qty": 3.09, "urs": "60512136", "status": "family_only", "qty_formula": "= 156 × 0.10 × 0.18 × 1.10 = 3.09 m³", "pozn": "Hranol řezivo do 288 cm² (60512136). Impregnace dle TZ statika §6.2."},
+    ],
+    ("260219_dum.HSV5.002", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Montáž kleštin 2×60/180 mm — vázaná konstrukce krovu pomocí ocelových spojek (průřez 216 cm², přes 120 do 224)", "mj": "m", "qty": 110.0, "urs": "762332122", "status": "carried_verified", "qty_formula": "= HSV5.002 délka kleštin 110 bm", "pozn": "Montáž 762332122 (266 Kč/m). Materiál = op b."},
+        {"suffix": "b", "popis": "Dodávka hranolového řeziva C24 pro kleštiny 2×60/180 mm vč. 10 % prořezu + impregnace", "mj": "m³", "qty": 1.31, "urs": "60512136", "status": "family_only", "qty_formula": "= 110 × 0.06 × 0.18 × 1.10 = 1.31 m³", "pozn": "Hranol řezivo (60512136)."},
+    ],
+    ("260219_dum.HSV5.003", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Montáž pozednic 140/160 mm — vázaná konstrukce krovu pomocí ocelových spojek (průřez 224 cm², přes 120 do 224)", "mj": "m", "qty": 19.4, "urs": "762332122", "status": "carried_verified", "qty_formula": "= HSV5.003 délka pozednic ~19.4 bm", "pozn": "Montáž 762332122. Kotvení do ŽB věnce = samostatně (CHYBÍ DETAIL — závitové tyče/kotvy)."},
+        {"suffix": "b", "popis": "Dodávka hranolového řeziva C24 pro pozednice 140/160 mm vč. 10 % prořezu + impregnace", "mj": "m³", "qty": 0.48, "urs": "60512136", "status": "family_only", "qty_formula": "= 19.4 × 0.14 × 0.16 × 1.10 = 0.48 m³", "pozn": "Hranol řezivo (60512136)."},
+    ],
+    ("260219_dum.HSV5.004", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Montáž námětků 60/100 mm — vázaná konstrukce krovu pomocí ocelových spojek (průřez 60 cm², přes 50 do 120)", "mj": "m", "qty": 19.2, "urs": "762332121", "status": "carried_verified", "qty_formula": "= HSV5.004 délka námětků 19.2 bm", "pozn": "Montáž 762332121 (206 Kč/m, KROS)."},
+        {"suffix": "b", "popis": "Dodávka hranolového řeziva C24 pro námětky 60/100 mm vč. 10 % prořezu + impregnace", "mj": "m³", "qty": 0.127, "urs": "605", "status": "needs_lookup", "qty_formula": "= 19.2 × 0.06 × 0.10 × 1.10 = 0.127 m³", "pozn": "Hranol řezivo 605 família — leaf dle krátké délky <6 m (60512136 je 6-8 m). Verify."},
+    ],
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Lepení + kotvení desek EPS 70F grey λ=0.032 tl. 160 mm — ETICS kontaktní zateplení fasády", "mj": "m²", "qty": 276.7, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.002 plocha fasády 276.7 m²", "pozn": "Lepení+kotvení EPS (713/622 família). Leaf dle tl. 160 mm — verify."},
