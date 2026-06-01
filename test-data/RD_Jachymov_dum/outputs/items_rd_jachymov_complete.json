@@ -1987,12 +1987,12 @@
       "mnozstvi": 156.0,
       "mnozstvi_formula": "(2 sklony × 12 krokví × 6.5 m délka) = 156",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "762331911",
+      "urs_code_proposed": "762332122",
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "matched_catalog",
+      "urs_confidence": 0.9,
       "source": "TZ ARS dům §4 + statika §4 — krokve 100/180; DXF KR=111 INSERTs corroborates (krokve+sloupky+námětky combined)",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2005,8 +2005,11 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.gala-drevo.cz/clanky/proc-na-krovy-pouzivat-kvh-hranoly--jsou-opravdu-drazsi/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED; KROV_762332_LEAF_BIND_2026-05-31",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "urs_code_proposed_was": "762331911",
+      "urs_code_family_6digit": "762332",
+      "correct_code_hint": "KROS/ÚRS 762332122 — Montáž vázaných konstrukcí krovů pravidelných pomocí ocelových spojek z hraněného řeziva, průřezová plocha přes 120 do 224 cm² (prvek 180 cm² (100×180)). MJ = m (bm). Materiál hranol C24 (m³, +10 % prořez) = samostatná op v atomic worklist (60512136 hranol do 288 cm²). Ověřit způsob spoje (ocelové spojky vs tesařské spoje 762332131/132). Dříve 762331xxx (méně přesné)."
     },
     {
       "objekt": "260219_dum",
@@ -2019,12 +2022,12 @@
       "mnozstvi": 110.0,
       "mnozstvi_formula": "11 pozic × 2 ks × ~5 m délka = 110",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "762331912",
+      "urs_code_proposed": "762332122",
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "matched_catalog",
+      "urs_confidence": 0.9,
       "source": "TZ statika dům §4 — 2× 60/180 kleštiny",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2035,8 +2038,11 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.gala-drevo.cz/clanky/proc-na-krovy-pouzivat-kvh-hranoly--jsou-opravdu-drazsi/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED; KROV_762332_LEAF_BIND_2026-05-31",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "urs_code_proposed_was": "762331912",
+      "urs_code_family_6digit": "762332",
+      "correct_code_hint": "KROS/ÚRS 762332122 — Montáž vázaných konstrukcí krovů pravidelných pomocí ocelových spojek z hraněného řeziva, průřezová plocha přes 120 do 224 cm² (prvek 216 cm² (2×60×180)). MJ = m (bm). Materiál hranol C24 (m³, +10 % prořez) = samostatná op v atomic worklist (60512136 hranol do 288 cm²). Ověřit způsob spoje (ocelové spojky vs tesařské spoje 762332131/132). Dříve 762331xxx (méně přesné)."
     },
     {
       "objekt": "260219_dum",
@@ -2049,12 +2055,12 @@
       "mnozstvi": 19.4,
       "mnozstvi_formula": "polovina obvodu (2 dlouhé strany) = ~20",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "762331923",
+      "urs_code_proposed": "762332122",
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "family_verified_leaf_needs_production_lookup",
-      "urs_confidence": 0.8,
+      "urs_status": "matched_catalog",
+      "urs_confidence": 0.9,
       "source": "TZ ARS + statika — pozednice kotvené do věnce",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2065,8 +2071,11 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://forum.tzb-info.cz/119036-kotveni-pozednice",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED; KROV_762332_LEAF_BIND_2026-05-31",
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "urs_code_proposed_was": "762331923",
+      "urs_code_family_6digit": "762332",
+      "correct_code_hint": "KROS/ÚRS 762332122 — Montáž vázaných konstrukcí krovů pravidelných pomocí ocelových spojek z hraněného řeziva, průřezová plocha přes 120 do 224 cm² (prvek 224 cm² (140×160)). MJ = m (bm). Materiál hranol C24 (m³, +10 % prořez) = samostatná op v atomic worklist (60512136 hranol do 288 cm²). Ověřit způsob spoje (ocelové spojky vs tesařské spoje 762332131/132). Dříve 762331xxx (méně přesné)."
     },
     {
       "objekt": "260219_dum",
@@ -2079,12 +2088,12 @@
       "mnozstvi": 19.2,
       "mnozstvi_formula": "24 krokví × 0.8 m námětek = 19.2",
       "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "762331911",
+      "urs_code_proposed": "762332121",
       "urs_alternatives": [
         "762341110"
       ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
+      "urs_status": "matched_catalog",
+      "urs_confidence": 0.9,
       "source": "TZ ARS dům §4 — námětky v dolní části pro přesah",
       "subdodavatel": "krov_tesarsky_kompletni",
       "subdodavatel_status": "mapped",
@@ -2093,7 +2102,11 @@
       "notes": null,
       "id": "260219_dum.HSV5.004",
       "realizuje_skladbu": null,
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "urs_code_proposed_was": "762331911",
+      "urs_code_family_6digit": "762332",
+      "correct_code_hint": "KROS/ÚRS 762332121 — Montáž vázaných konstrukcí krovů pravidelných pomocí ocelových spojek z hraněného řeziva, průřezová plocha přes 50 do 120 cm² (prvek 60 cm² (60×100)). MJ = m (bm). Materiál hranol C24 (m³, +10 % prořez) = samostatná op v atomic worklist (60512136 hranol do 288 cm²). Ověřit způsob spoje (ocelové spojky vs tesařské spoje 762332131/132). Dříve 762331xxx (méně přesné).",
+      "_audit_gap_fixed": "KROV_762332_LEAF_BIND_2026-05-31"
     },
     {
       "objekt": "260219_dum",
@@ -6732,7 +6745,7 @@
     "items_total_after": 212
   },
   "_phase3_5_namespace_finalize_log": {
-    "applied_at": "2026-05-31",
+    "applied_at": "2026-06-01",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
     "items_renamed": 0,
     "per_item_changes": []
@@ -6863,5 +6876,19 @@
     },
     "snapshot_before": "outputs/items_pre_terasa_area_fix.json",
     "items_total": 215
+  },
+  "_krov_leaf_bind_log": {
+    "applied_at": "2026-05-31",
+    "tag": "KROV_762332_LEAF_BIND_2026-05-31",
+    "source": "KROS/ÚRS catalog (group 762332, ocelové spojky) + STAVAGENT MCP search",
+    "method": "Classify krov timber by průřezová plocha cm², not element name",
+    "changes": [
+      "260219_dum.HSV5.001 → 762332122 (přes 120 do 224 cm²)",
+      "260219_dum.HSV5.002 → 762332122 (přes 120 do 224 cm²)",
+      "260219_dum.HSV5.003 → 762332122 (přes 120 do 224 cm²)",
+      "260219_dum.HSV5.004 → 762332121 (přes 50 do 120 cm²)"
+    ],
+    "material_split": "atomic_decomposition.py — montáž 762332xxx (m) + dodávka řeziva C24 60512136 (m³)",
+    "snapshot_before": "outputs/items_pre_krov_codes.json"
   }
 }
