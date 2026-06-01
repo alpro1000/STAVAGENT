@@ -2,7 +2,7 @@
   "_schema_version": "2.0",
   "_generated_at": "2026-06-01",
   "_generated_by": "tools/completeness_check_v2.py",
-  "_items_total": 228,
+  "_items_total": 234,
   "_rooms_total": 25,
   "_sections_present": [
     "A",
@@ -211,7 +211,7 @@
         "gap_flag": false
       }
     ],
-    "n_orphans": 12
+    "n_orphans": 18
   },
   "section_B_subdodavatel": {
     "coverage": [
@@ -359,7 +359,7 @@
       {
         "trade": "topenar",
         "label_cz": "Topenář (ÚT rozvody + kotle + radiátory + TUV)",
-        "n_items": 5,
+        "n_items": 6,
         "kapitoly_expected": [
           "PSV-73"
         ],
@@ -479,7 +479,7 @@
       {
         "trade": "geodet",
         "label_cz": "Geodet (vytýčení, polohopis, výškopis)",
-        "n_items": 2,
+        "n_items": 3,
         "kapitoly_expected": [
           "VRN"
         ],
@@ -1190,7 +1190,7 @@
         "label": "ELI silnoproud — rozvody",
         "applicable": true,
         "status": "ok",
-        "n_hits": 7,
+        "n_hits": 8,
         "sample_ids": [
           "260219_dum.M21.001",
           "260219_dum.M21.002",
@@ -1202,7 +1202,7 @@
         "label": "ELI svítidla + zásuvky",
         "applicable": true,
         "status": "ok",
-        "n_hits": 4,
+        "n_hits": 5,
         "sample_ids": [
           "260219_dum.M21.001",
           "260219_dum.M21.004",
@@ -1214,10 +1214,11 @@
         "label": "PD / detekce požární",
         "applicable": true,
         "status": "ok",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.PSV95.001",
-          "260219_dum.PSV95.002"
+          "260219_dum.PSV95.002",
+          "260219_dum.PSV95.003"
         ]
       },
       {
@@ -1237,10 +1238,11 @@
         "label": "Geodet + vytýčení",
         "applicable": true,
         "status": "ok",
-        "n_hits": 2,
+        "n_hits": 3,
         "sample_ids": [
           "260219_dum.VRN.501",
-          "260217_sklad.VRN.101"
+          "260217_sklad.VRN.101",
+          "260217_sklad.VRN.003"
         ]
       },
       {
@@ -1430,8 +1432,8 @@
       },
       "vytápěcí_prvky": {
         "status": "PARTIAL",
-        "reason": "8 global items match keywords; no per-podlaží split — verify allocation",
-        "n_hits": 8,
+        "reason": "9 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 9,
         "sample_ids": [
           "260219_dum.PSV72.009",
           "260219_dum.PSV73.001",
@@ -1493,8 +1495,8 @@
       },
       "vytápěcí_prvky": {
         "status": "PARTIAL",
-        "reason": "8 global items match keywords; no per-podlaží split — verify allocation",
-        "n_hits": 8,
+        "reason": "9 global items match keywords; no per-podlaží split — verify allocation",
+        "n_hits": 9,
         "sample_ids": [
           "260219_dum.PSV72.009",
           "260219_dum.PSV73.001",
@@ -3033,7 +3035,7 @@
     "_status": "INFORMATIONAL_ONLY",
     "_method": "Σ(qty × Methvin průměrná sazba) per kapitola → aggregate per gate",
     "_disclaimer": "Methvin rates have INCONSISTENT UNITS per kapitola (Kč/m³ vs Kč/m² vs Kč/ks) and are aggregated naively — results are NOT reliable for ratio analysis. Treated as informational ballpark only. Real cenotvorba requires unit-aware per-item rates from URS catalog. Verdict 'OUT OF RANGE' for this section is EXPECTED and not treated as a gap in consolidated_gaps.",
-    "total_estimate_czk_ballpark": 80496439.525,
+    "total_estimate_czk_ballpark": 80549439.525,
     "per_kapitola_czk": {
       "HSV-1": 111091.5,
       "HSV-2": 12471300.0,
@@ -3043,20 +3045,20 @@
       "HSV-6": 363955.0,
       "HSV-7": 1867205.0,
       "PSV-71": 207400.0,
-      "PSV-76": 4006950.0,
+      "PSV-76": 4021950.0,
       "PSV-77": 429939.0,
       "PSV-78": 600180.0,
-      "PSV-95": 25000.0,
+      "PSV-95": 30000.0,
       "PSV-72": 1352000.0,
       "PSV-73": 2775000.0,
-      "M-21": 2436000.0,
-      "VRN": 18210000.0
+      "M-21": 2439000.0,
+      "VRN": 18240000.0
     },
     "per_gate_breakdown": [
       {
         "gate": "HSV",
         "estimate_czk": 50453970.525,
-        "pct_of_total": 0.6267851202205083,
+        "pct_of_total": 0.6263727075262973,
         "typical_range_pct": [
           0.45,
           0.55
@@ -3066,8 +3068,8 @@
       },
       {
         "gate": "PSV",
-        "estimate_czk": 9396469.0,
-        "pct_of_total": 0.11673148595698711,
+        "estimate_czk": 9416469.0,
+        "pct_of_total": 0.1169029735716215,
         "typical_range_pct": [
           0.25,
           0.35
@@ -3077,8 +3079,8 @@
       },
       {
         "gate": "TZB",
-        "estimate_czk": 2436000.0,
-        "pct_of_total": 0.030262208047642215,
+        "estimate_czk": 2439000.0,
+        "pct_of_total": 0.0302795402970248,
         "typical_range_pct": [
           0.15,
           0.2
@@ -3088,8 +3090,8 @@
       },
       {
         "gate": "VRN",
-        "estimate_czk": 18210000.0,
-        "pct_of_total": 0.22622118577486236,
+        "estimate_czk": 18240000.0,
+        "pct_of_total": 0.22644477860505632,
         "typical_range_pct": [
           0.05,
           0.1
@@ -3193,8 +3195,8 @@
       "tz_mention_count": 5,
       "tz_mention_sample": [
         "bílá vana",
-        "opěrná stěn",
-        "Opěrná stěn"
+        "opěrné stěn",
+        "Opěrné stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3206,8 +3208,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický dvorek",
-        "anglický \ndvorek"
+        "anglický \ndvorek",
+        "anglický dvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3219,8 +3221,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasy",
-        "terasa"
+        "terasa",
+        "terasy"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3244,9 +3246,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "EI 180",
-        "EI 90",
-        "Protipožární"
+        "protipožární",
+        "Protipožární",
+        "EI 90"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3258,9 +3260,9 @@
       "description": "TZ ARS — tepelné čerpadlo (PSV-73)",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "tepelné čerpadl",
         "TČ",
-        "multisplit"
+        "multisplit",
+        "tepelné čerpadl"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3285,8 +3287,8 @@
       "description": "TZ ARS — krb (PSV-73)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "Krb",
-        "krb"
+        "krb",
+        "Krb"
       ],
       "items_keyword_hit": true,
       "status": "covered",

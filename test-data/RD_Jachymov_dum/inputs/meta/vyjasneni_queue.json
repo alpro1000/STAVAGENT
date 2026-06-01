@@ -354,6 +354,22 @@
       "working_assumption": "Ponecháno 150 mm dle HSV2.012 (statika).",
       "next_action": "Projektante/statiku: potvrdit tl. ŽB desky 1.NP (120 vs 150 mm).",
       "_source": "skladby_audit_2026-06-01"
+    },
+    {
+      "id": 32,
+      "severity": "major",
+      "status": "open",
+      "category": "rozpor_PD_verify_projektant",
+      "title": "Rozpor v B zprávě — systém vytápění (TČ vzduch-vzduch vs vzduch/voda)",
+      "context": "B zpráva uvádí na jednom místě TČ vzduch-vzduch / multisplit s vnitřními jednotkami (= items PSV73.005/006), jinde TČ vzduch/voda. To jsou DVA různé systémy (multisplit vs otopná voda/radiátory). Cena i rozvody se liší.",
+      "blocks": [
+        "PSV73.005 multisplit venkovní j.",
+        "PSV73.006 multisplit vnitřní j.",
+        "PSV73.008 rozvody otopné"
+      ],
+      "working_assumption": "Ponecháno TČ vzduch-vzduch / multisplit (PSV73.005/006) dle převažující části B zprávy.",
+      "next_action": "Projektante: potvrďte systém vytápění — TČ vzduch-vzduch (multisplit, bez otopné vody) NEBO TČ vzduch/voda (radiátory/podlahovka)? Ovlivní PSV73 + rozvody.",
+      "_source": "B zpráva crosscheck 2026-06-01 (ChatGPT review)"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",

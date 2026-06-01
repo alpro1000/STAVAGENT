@@ -9,15 +9,15 @@
     "pattern_32": "Separate deliverable — does not modify File A audit or items.json"
   },
   "_frozen_baseline_preflight": {
-    "items_json_count": 228,
+    "items_json_count": 234,
     "expected": 212,
     "frozen_unchanged": false
   },
   "_summary": {
-    "frozen_items_total": 228,
-    "atomic_operations_total": 272,
-    "items_decomposed": 36,
-    "atomic_children_from_decomposition": 80,
+    "frozen_items_total": 234,
+    "atomic_operations_total": 281,
+    "items_decomposed": 42,
+    "atomic_children_from_decomposition": 89,
     "items_carried_1to1": 192,
     "atomic_per_kapitola": {
       "HSV-1 Zemní práce": 25,
@@ -25,11 +25,13 @@
       "HSV-3 Svislé konstrukce": 10,
       "HSV-4 Vodorovné": 29,
       "HSV-5 Komunikace + schodiště": 1,
+      "HSV-5 Komunikace + vjezd": 3,
       "HSV-5 Krov + střecha": 29,
       "HSV-6 Bourací práce": 18,
       "HSV-7 Fasáda + zateplení": 5,
       "HSV-7 Fasáda ETICS": 9,
-      "M-21 ELI silnoproud": 7,
+      "M-21 ELI silnoproud": 9,
+      "M-24 VZT": 1,
       "PSV-71 Izolace HI": 3,
       "PSV-71 Izolace TI": 2,
       "PSV-72 ZTI": 28,
@@ -37,14 +39,15 @@
       "PSV-76 Klempíř": 5,
       "PSV-76 Truhlář": 3,
       "PSV-76 Výplně otvorů": 13,
-      "PSV-76 Zámečnictví": 4,
+      "PSV-76 Zámečnictví": 5,
       "PSV-77 Podlahy": 10,
       "PSV-78 Povrchové úpravy": 20,
-      "PSV-95 Detekce požární": 2,
+      "PSV-95 Detekce požární": 3,
       "VRN — BOZP": 1,
       "VRN — Dokumentace": 1,
       "VRN — Doprava + odpad": 5,
       "VRN — Geodet": 2,
+      "VRN — Geodet / PČR": 1,
       "VRN — Kolaudace": 1,
       "VRN — Lešení": 1,
       "VRN — Pojištění + zábory": 2,
@@ -55,7 +58,7 @@
       "VRN — Zařízení staveniště": 4
     },
     "familia_distribution": {
-      "(blank)": 31,
+      "(blank)": 40,
       "012": 1,
       "030": 13,
       "031": 3,
@@ -550,6 +553,75 @@
       "n_atomic_children": 1,
       "atomic_children_ids": [
         "HSV6.018a"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260217_sklad.HSV5.002",
+      "parent_kapitola": "HSV-5 Komunikace + vjezd",
+      "parent_popis": "Napojení vjezdu na ulici Dvořákova — vydláždění z betonových dlaždic + spádování na pozemek investora + odvodnění dešťov",
+      "parent_mj": "m²",
+      "parent_qty": null,
+      "n_atomic_children": 3,
+      "atomic_children_ids": [
+        "HSV5.002a",
+        "HSV5.002b",
+        "HSV5.002c"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260217_sklad.PSV76.002",
+      "parent_kapitola": "PSV-76 Zámečnictví",
+      "parent_popis": "Vjezdová brána na pozemku investora (ocelová) — dodávka + montáž",
+      "parent_mj": "ks",
+      "parent_qty": 1,
+      "n_atomic_children": 1,
+      "atomic_children_ids": [
+        "PSV76.002a"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260217_sklad.VRN.003",
+      "parent_kapitola": "VRN — Geodet / PČR",
+      "parent_popis": "Vytyčení + kontrola rozhledových trojúhelníků (Vn=40 km/h, Dz=25 m) dle požadavku DI PČR",
+      "parent_mj": "soubor",
+      "parent_qty": 1,
+      "n_atomic_children": 1,
+      "atomic_children_ids": [
+        "VRN.003a"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260219_dum.M24.001",
+      "parent_kapitola": "M-24 VZT",
+      "parent_popis": "Lokální odtah digestoří kuchyní (1.NP + 3.NP) — dodávka + montáž digestoře + prostup fasádou/střechou + zpětná klapka",
+      "parent_mj": "ks",
+      "parent_qty": 2,
+      "n_atomic_children": 1,
+      "atomic_children_ids": [
+        "M24.001a"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260219_dum.M21.008",
+      "parent_kapitola": "M-21 ELI silnoproud",
+      "parent_popis": "Hlavní vypínač elektrické energie TOTAL STOP + požární značení rozvodného zařízení a uzávěrů (voda/elektro)",
+      "parent_mj": "soubor",
+      "parent_qty": 1,
+      "n_atomic_children": 2,
+      "atomic_children_ids": [
+        "M21.008a",
+        "M21.008b"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260219_dum.PSV95.003",
+      "parent_kapitola": "PSV-95 Detekce požární",
+      "parent_popis": "Předávací protokol krbu na tuhá paliva + kontrola bezpečných vzdáleností (800 mm směr sálání / 400 mm strany, nehořlavá ",
+      "parent_mj": "soubor",
+      "parent_qty": 1,
+      "n_atomic_children": 1,
+      "atomic_children_ids": [
+        "PSV95.003a"
       ]
     }
   ],
@@ -5342,6 +5414,159 @@
       ],
       "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)",
       "pozn": "Bourání.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 273,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-5 Komunikace + vjezd",
+      "atomic_id": "HSV5.002a",
+      "atomic_operace_popis": "Betonová dlažba napojení vjezdu na komunikaci Dvořákova",
+      "mj": "m²",
+      "mnozstvi": null,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV5.002",
+      "parent_kapitola": "HSV-5 Komunikace + vjezd",
+      "realizuje_skladbu": [],
+      "qty_formula": "neurčeno — situace C.3.R1 OVĚŘIT",
+      "pozn": "Dlažba (Dodatek PD č.1).",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 274,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-5 Komunikace + vjezd",
+      "atomic_id": "HSV5.002b",
+      "atomic_operace_popis": "Podkladní vrstva kameniva pod dlažbu vjezdu",
+      "mj": "m²",
+      "mnozstvi": null,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV5.002",
+      "parent_kapitola": "HSV-5 Komunikace + vjezd",
+      "realizuje_skladbu": [],
+      "qty_formula": "neurčeno — OVĚŘIT",
+      "pozn": "Podklad.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 275,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-5 Komunikace + vjezd",
+      "atomic_id": "HSV5.002c",
+      "atomic_operace_popis": "Spádování + odvodnění dešťové vody na pozemek investora",
+      "mj": "soubor",
+      "mnozstvi": null,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV5.002",
+      "parent_kapitola": "HSV-5 Komunikace + vjezd",
+      "realizuje_skladbu": [],
+      "qty_formula": "neurčeno — OVĚŘIT",
+      "pozn": "Odvodnění dle DI PČR (ne na komunikaci).",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 276,
+      "objekt": "260217_sklad",
+      "kapitola": "PSV-76 Zámečnictví",
+      "atomic_id": "PSV76.002a",
+      "atomic_operace_popis": "Vjezdová brána ocelová — dodávka + montáž",
+      "mj": "ks",
+      "mnozstvi": 1,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.PSV76.002",
+      "parent_kapitola": "PSV-76 Zámečnictví",
+      "realizuje_skladbu": [],
+      "qty_formula": "= 1 brána",
+      "pozn": "Dodatek PD č.1.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 277,
+      "objekt": "260217_sklad",
+      "kapitola": "VRN — Geodet / PČR",
+      "atomic_id": "VRN.003a",
+      "atomic_operace_popis": "Vytyčení + kontrola rozhledových trojúhelníků (Vn=40, Dz=25 m)",
+      "mj": "soubor",
+      "mnozstvi": 1,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.VRN.003",
+      "parent_kapitola": "VRN — Geodet / PČR",
+      "realizuje_skladbu": [],
+      "qty_formula": "= 1 soubor",
+      "pozn": "DI PČR.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 278,
+      "objekt": "260219_dum",
+      "kapitola": "M-24 VZT",
+      "atomic_id": "M24.001a",
+      "atomic_operace_popis": "Lokální odtah digestoře kuchyně + prostup + zpětná klapka",
+      "mj": "ks",
+      "mnozstvi": 2,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260219_dum.M24.001",
+      "parent_kapitola": "M-24 VZT",
+      "realizuje_skladbu": [],
+      "qty_formula": "= 2 kuchyně (1.NP + 3.NP)",
+      "pozn": "B zpráva VZT.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 279,
+      "objekt": "260219_dum",
+      "kapitola": "M-21 ELI silnoproud",
+      "atomic_id": "M21.008a",
+      "atomic_operace_popis": "Hlavní vypínač elektrické energie TOTAL STOP",
+      "mj": "soubor",
+      "mnozstvi": 1,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260219_dum.M21.008",
+      "parent_kapitola": "M-21 ELI silnoproud",
+      "realizuje_skladbu": [],
+      "qty_formula": "= 1 soubor",
+      "pozn": "PBŘ 16.05.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 280,
+      "objekt": "260219_dum",
+      "kapitola": "M-21 ELI silnoproud",
+      "atomic_id": "M21.008b",
+      "atomic_operace_popis": "Požární značení rozvodů + uzávěrů (voda/elektro)",
+      "mj": "soubor",
+      "mnozstvi": 1,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260219_dum.M21.008",
+      "parent_kapitola": "M-21 ELI silnoproud",
+      "realizuje_skladbu": [],
+      "qty_formula": "= 1 soubor",
+      "pozn": "PBŘ 16.06.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 281,
+      "objekt": "260219_dum",
+      "kapitola": "PSV-95 Detekce požární",
+      "atomic_id": "PSV95.003a",
+      "atomic_operace_popis": "Předávací protokol krbu + kontrola bezpečných vzdáleností",
+      "mj": "soubor",
+      "mnozstvi": 1,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260219_dum.PSV95.003",
+      "parent_kapitola": "PSV-95 Detekce požární",
+      "realizuje_skladbu": [],
+      "qty_formula": "= 1 soubor",
+      "pozn": "PBŘ. Revize spalin NEDUBLOVAT (PSV73.007).",
       "decomposition_type": "fixture"
     }
   ]

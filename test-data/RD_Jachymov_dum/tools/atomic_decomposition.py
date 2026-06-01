@@ -146,6 +146,28 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "d", "popis": "Celoplošné bednění prkna 25 mm — vikýře", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= plocha fasády vikýřů", "pozn": "Vrstva 4 bednění."},
         {"suffix": "e", "popis": "Falcovaný hliníkový plech — krycí vrstva vikýře", "mj": "m²", "qty": 26, "urs": None, "status": "needs_lookup", "qty_formula": "= 24 × 1.10", "pozn": "Vrstva 5 plech."},
     ],
+    # ===== DODATEK PD č.1 + PBŘ + B zpráva GAPS 2026-06-01 (N1-N6, P41) =====
+    ("260217_sklad.HSV5.002", "HSV-5 Komunikace + vjezd"): [
+        {"suffix": "a", "popis": "Betonová dlažba napojení vjezdu na komunikaci Dvořákova", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — situace C.3.R1 OVĚŘIT", "pozn": "Dlažba (Dodatek PD č.1)."},
+        {"suffix": "b", "popis": "Podkladní vrstva kameniva pod dlažbu vjezdu", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — OVĚŘIT", "pozn": "Podklad."},
+        {"suffix": "c", "popis": "Spádování + odvodnění dešťové vody na pozemek investora", "mj": "soubor", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — OVĚŘIT", "pozn": "Odvodnění dle DI PČR (ne na komunikaci)."},
+    ],
+    ("260217_sklad.PSV76.002", "PSV-76 Zámečnictví"): [
+        {"suffix": "a", "popis": "Vjezdová brána ocelová — dodávka + montáž", "mj": "ks", "qty": 1, "urs": None, "status": "needs_lookup", "qty_formula": "= 1 brána", "pozn": "Dodatek PD č.1."},
+    ],
+    ("260217_sklad.VRN.003", "VRN — Geodet / PČR"): [
+        {"suffix": "a", "popis": "Vytyčení + kontrola rozhledových trojúhelníků (Vn=40, Dz=25 m)", "mj": "soubor", "qty": 1, "urs": None, "status": "needs_lookup", "qty_formula": "= 1 soubor", "pozn": "DI PČR."},
+    ],
+    ("260219_dum.M24.001", "M-24 VZT"): [
+        {"suffix": "a", "popis": "Lokální odtah digestoře kuchyně + prostup + zpětná klapka", "mj": "ks", "qty": 2, "urs": None, "status": "needs_lookup", "qty_formula": "= 2 kuchyně (1.NP + 3.NP)", "pozn": "B zpráva VZT."},
+    ],
+    ("260219_dum.M21.008", "M-21 ELI silnoproud"): [
+        {"suffix": "a", "popis": "Hlavní vypínač elektrické energie TOTAL STOP", "mj": "soubor", "qty": 1, "urs": None, "status": "needs_lookup", "qty_formula": "= 1 soubor", "pozn": "PBŘ 16.05."},
+        {"suffix": "b", "popis": "Požární značení rozvodů + uzávěrů (voda/elektro)", "mj": "soubor", "qty": 1, "urs": None, "status": "needs_lookup", "qty_formula": "= 1 soubor", "pozn": "PBŘ 16.06."},
+    ],
+    ("260219_dum.PSV95.003", "PSV-95 Detekce požární"): [
+        {"suffix": "a", "popis": "Předávací protokol krbu + kontrola bezpečných vzdáleností", "mj": "soubor", "qty": 1, "urs": None, "status": "needs_lookup", "qty_formula": "= 1 soubor", "pozn": "PBŘ. Revize spalin NEDUBLOVAT (PSV73.007)."},
+    ],
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Lepení + kotvení desek EPS 70F grey λ=0.032 tl. 160 mm — ETICS kontaktní zateplení fasády", "mj": "m²", "qty": 276.7, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.002 plocha fasády 276.7 m²", "pozn": "Lepení+kotvení EPS (713/622 família). Leaf dle tl. 160 mm — verify."},
