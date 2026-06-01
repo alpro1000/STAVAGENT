@@ -6526,6 +6526,34 @@
       "urs_code_family_6digit": null,
       "correct_code_hint": "Venkovní betonové schody na terénu z dílců do lože — família ÚRS ověřit (kandidáti: 935 drobné betonové konstrukce / 917-919 osazení betonových dílců / 564 lože). Leaf z app.urs.cz. Pattern 26: kód blank dokud neověřeno.",
       "_audit_gap_fixed": "SITUACE_STAIRS_ADD_2026-05-29"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-5 Krov + střecha",
+      "subkapitola": "Spojovací prostředky krovu — svorníky tesařských spojů",
+      "popis": "Montáž svorníků / šroubů tesařských spojů krovu délky přes 150 do 300 mm — spojení kleštin 2×60/180 mm s krokvemi (svorník cca 250 mm, M12), vč. tyče závitové + matic + podložek",
+      "mj": "ks",
+      "mnozstvi": 50,
+      "mnozstvi_formula": "11 pozic kleštin × 2 konce × 2 svorníky/spoj = 44 ks + rezerva ≈ 50 ks",
+      "mnozstvi_confidence": 0.6,
+      "urs_code_proposed": "762085112",
+      "urs_alternatives": [],
+      "urs_status": "matched_catalog",
+      "urs_confidence": 0.85,
+      "source": "KROS/ÚRS catalog (762085112 montáž svorníků tesařských spojů) + STAVAGENT MCP; TZ statika §4 krov ocelové spojky",
+      "subdodavatel": "tesar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "OVĚŘIT — průměr (M12/M16), pevnostní třída (4.6/8.8), délka a počet svorníků dle statického / tesařského detailu krovu.",
+      "_data_quality": "catalog_estimate",
+      "id": "260219_dum.HSV5.017",
+      "realizuje_skladbu": "Krov — spojovací prostředky",
+      "urs_code_family_6digit": "762085",
+      "correct_code_hint": "KROS 762085112 — Montáž svorníků/šroubů tesařských spojů délky přes 150 do 300 mm (MJ ks). Materiál samostatně (atomic): tyč závitová Pz 4.6 M12 31197004 (m), matice DIN 934-8 M12 3111006 (100 ks), podložka DIN 440 D12 31121004 (100 ks). Status ODHAD/OVĚŘIT dle statiky. NEZAHRNUJE: kotvení pozednice do věnce (samostatně ~20 ks), kovové úhelníky 762086111 (kg), hřebíky/vruty (pomocný materiál).",
+      "_audit_gap_fixed": "KROV_SVORNIKY_ADD_2026-05-31"
     }
   ],
   "_summary_total": {
@@ -6890,5 +6918,11 @@
     ],
     "material_split": "atomic_decomposition.py — montáž 762332xxx (m) + dodávka řeziva C24 60512136 (m³)",
     "snapshot_before": "outputs/items_pre_krov_codes.json"
+  },
+  "_krov_svorniky_log": {
+    "applied_at": "2026-05-31",
+    "added": "260219_dum.HSV5.017 Montáž svorníků tesařských spojů krovu (762085112, 50 ks) + material split",
+    "snapshot_before": "outputs/items_pre_krov_svorniky.json",
+    "items_total": 216
   }
 }

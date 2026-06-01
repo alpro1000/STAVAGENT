@@ -2,15 +2,15 @@
   "_schema_version": "1.0",
   "_generated_at": "2026-06-01",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 211,
-  "items_total_incl_deprecated": 215,
-  "issues_found_total": 58,
+  "items_checked": 212,
+  "items_total_incl_deprecated": 216,
+  "issues_found_total": 59,
   "summary_by_dimension": {
     "urs_family_consistency": 29,
-    "subdodavatel_logical": 29
+    "subdodavatel_logical": 30
   },
   "summary_by_severity": {
-    "informational": 58
+    "informational": 59
   },
   "issues": [
     {
@@ -851,6 +851,22 @@
       "reason": "Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260219_dum.HSV1.016",
       "popis": "Venkovní schody na terénu z betonových dílců do betonového lože — rameno 1: 8×17"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "tesar",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'tesar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.017",
+      "popis": "Montáž svorníků / šroubů tesařských spojů krovu délky přes 150 do 300 mm — spoje"
     }
   ]
 }
