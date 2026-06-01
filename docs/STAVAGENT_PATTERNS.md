@@ -2,9 +2,14 @@
 
 <!--
 Pattern numbering audit 2026-06-01 (RD Jáchymov skladby + sokl reconcile pass):
-Sequential 1..44 validated (no duplicates, no gaps).
-last_number: 44
-next_pattern: 45  ← use this for any new additions.
+Sequential 1..45 validated (no duplicates, no gaps).
+last_number: 45
+next_pattern: 46  ← use this for any new additions.
+
+Added 2026-06-01 (Výměry-First task): Pattern 45 (Výměry-First — measurement
+register before the work list; every qty references a výměra). "Full Decomposition"
+verified = existing Pattern 41 (NOT duplicated); Pattern 41 enriched with the
+qty-traces-to-výměra + universal-unit corollary.
 last_audit: 2026-06-01
 
 Added 2026-06-01 (RD Jáchymov skladby/sokl session): Pattern 42 (Renovation
@@ -1905,6 +1910,7 @@ One family code stands in for "the whole item" (labor + material merged into a s
 - Pattern 15 / 16 (Work-First / Universal Work Ontology) — the montáž/materiál split is the catalog-phase refinement of one work-ontology item into N catalog lines
 - Pattern 26 (Honest fallback) + Pattern 34 (Honest cost transparency) — OVĚŘIT-flagging applies the same honesty discipline to judgment quantities
 - Pattern 2 (Audit trail) — each material leaf needs its own `qty_formula`
+- Pattern 45 (Výměry-First) — the qty of **both** legs (montáž + each materiál) must trace to a row in the výměry register, not float; the universal unit of measure (room / prvek / úsek) is the granularity of that register
 
 ---
 
@@ -1982,6 +1988,43 @@ Every numeric quantity not taken verbatim from PD has a geometric `qty_formula` 
 - Pattern 26 (Honest fallback hierarchy for missing data)
 - Pattern 41 (OVĚŘIT-flagging of judgment quantities)
 - Pattern 2 (Audit trail — formula mandatory)
+
+---
+
+## Pattern 45: Výměry-First — measurement register before the work list
+
+**Source:** RD Jáchymov Výměry-First task (2026-06-01); anti-pattern caught live in the sklad audit (21.2 vs 17.6).
+
+### Problem
+When `mnozstvi` is attached ad-hoc to each work item, quantities **float**: the same physical element gets two different areas in two items (sklad floor: 21.2 m² footprint in štěrk/lože vs 17.6 m² DXF inner room in dlažba), and there is no single place that says "this element measures X". Mismatch is invisible until someone adds the numbers.
+
+### Principle
+Measure **first**, derive the work list **from** the measurements:
+```
+1. VÝMĚRY register  — every plocha/objem/délka/výška, tagged measured / derived / estimate / blank
+2. Work list DERIVED from the výměry
+3. Each work qty → REFERENCES a výměra row   (never an independently-invented number)
+```
+The register is the **single source** for quantities; a work item's `mnozstvi` is a *pointer* into it (+ a `qty_formula` if derived). Where no výměra exists, the qty is `null` (Pattern 44), not invented.
+
+### Universal (Pattern 16 corollary, one layer earlier)
+One pipeline for every object; only the **unit of measure** changes: room → `místnost` (plocha/výška); bridge → `prvek` (objem/bednění/výška); hala → `konstrukce` (plocha/rozpon); opěrná zeď → `úsek` (délka/výška/líce). The výměry-register schema is shared; only its rows differ.
+
+### Invariant
+Every numeric `mnozstvi` either references a single výměra row (one element = one area) or is `null`. No two work items carry conflicting quantities for the same physical element. The register tags each výměra `measured / derived / estimate / blank`.
+
+### MCP corollary
+Výměry-First is the missing deterministic MCP stage: `host-vision → VÝMĚRY register → validate → work breakdown derived from výměry → montáž/materiál split (Pattern 41)`. Makes qty come from measurements deterministically, not from the air.
+
+### Anti-pattern
+"podlaha 21 m²" as a single floating line; or the same element measured 21.2 in one item and 17.6 in another (sklad). Quantities invented per-item with no shared register.
+
+### Related
+- Pattern 41 (Full Decomposition / montáž-materiál split) — *downstream*: each derived work is decomposed; both legs' qty trace back here
+- Pattern 44 (Geometry-bounded estimate vs strict null) — how a výměra is tagged estimate vs blank
+- Pattern 16 (Universal Work Ontology) — same universality, one layer later (works); Pattern 45 is the measurement layer
+- Pattern 40 (Host-delegated vision + MCP gate) — vision feeds the výměry register
+- Pattern 31 (CEV) — extraction completeness feeds the register
 
 ---
 
