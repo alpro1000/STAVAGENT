@@ -125,6 +125,20 @@ mcp.tool()(uep_get_reconciliation_rules)
 mcp.tool()(uep_get_dwg_conversion_status)
 
 
+# ── Tool 16: Object Type Detector (W3b activated as a tool) ──────────────────
+
+from app.mcp.tools.detect_object_type import detect_object_type  # noqa: E402
+
+mcp.tool()(detect_object_type)
+
+
+# ── Tool 17: Soupis Export (first deliverable — promotes the soupis script) ──
+
+from app.mcp.tools.export import export_soupis  # noqa: E402
+
+mcp.tool()(export_soupis)
+
+
 # ── Startup policy-registry validation (PR2 — AC4) ──────────────────────────
 # Every registered workflow tool MUST have a manifest. Validation runs at import
 # (server startup) and raises RegistryValidationError on drift, so the server
@@ -166,6 +180,8 @@ _REGISTERED_TOOL_NAMES = {
     "uep_get_coverage_matrix",
     "uep_get_reconciliation_rules",
     "uep_get_dwg_conversion_status",
+    "detect_object_type",
+    "export_soupis",
 }
 
 validate_registry(

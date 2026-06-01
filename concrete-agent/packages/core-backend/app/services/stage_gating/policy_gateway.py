@@ -54,9 +54,11 @@ class PolicyError(str, Enum):
 
 
 # Tools permitted to write while a session is in a terminal state — the
-# documented re-export exception (task §3). Empty for now: no re-export tool
-# exists in PR2's tool set. Kept as an explicit allow-list, not ad-hoc logic.
-RE_EXPORT_ALLOW_LIST: frozenset[str] = frozenset()
+# documented re-export exception (task §3). `export_soupis` renders the soupis
+# deliverable from COMMITTED and drives COMMITTED → EXPORTED, so it must be allowed
+# to run (writes_state) in that terminal state. Kept as an explicit allow-list,
+# not ad-hoc logic.
+RE_EXPORT_ALLOW_LIST: frozenset[str] = frozenset({"export_soupis"})
 
 
 @dataclass(frozen=True)
