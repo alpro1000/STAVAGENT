@@ -2722,33 +2722,6 @@
       "kapitola_group": "HSV",
       "_gate": "HSV",
       "kapitola": "HSV-6 Bourací práce",
-      "subkapitola": "Demontáž oken a dveří",
-      "popis": "Demontáž všech oken a dveří stávajících (recyklace)",
-      "mj": "ks",
-      "mnozstvi": 25,
-      "mnozstvi_formula": "odhad — ~10 oken + ~15 dveří (vstupní + vnitřní)",
-      "mnozstvi_confidence": 0.75,
-      "urs_code_proposed": "968071120",
-      "urs_alternatives": [
-        "968061120"
-      ],
-      "urs_status": "needs_production_lookup",
-      "urs_confidence": 0.65,
-      "source": "TZ ARS dům §3 — VŠECHNY okna a dveře demontovány",
-      "subdodavatel": "bourani_demolice",
-      "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [
-        5
-      ],
-      "status_flag": "ready_for_phase2",
-      "notes": null,
-      "id": "260219_dum.HSV6.010"
-    },
-    {
-      "objekt": "260219_dum",
-      "kapitola_group": "HSV",
-      "_gate": "HSV",
-      "kapitola": "HSV-6 Bourací práce",
       "subkapitola": "Demontáž zařizovacích předmětů",
       "popis": "Demontáž všech sanitárních zařizovacích předmětů (WC, umyvadla, baterie, sprcha)",
       "mj": "ks",
@@ -5823,10 +5796,10 @@
         3
       ],
       "status_flag": "ready_for_phase2",
-      "notes": null,
+      "notes": "F2: agregát HSV6.010 odstraněn (double-count); demontáž oken/dveří detailně = HSV6.013 (16 oken) + HSV6.014 (2 vstupní) + HSV6.015 (15 vnitřních) = 33 ks.",
       "id": "260219_dum.HSV6.013",
       "_data_quality": "audit_v2_fix",
-      "_audit_gap_fixed": "GAP_002",
+      "_audit_gap_fixed": "F2_DEDUP_DEMONTAZ_OKEN_2026-06-01",
       "_added_at": "2026-05-19"
     },
     {
@@ -7464,5 +7437,14 @@
     "added_items": 6,
     "snapshot_before": "outputs/items_pre_dodatek_pbr.json",
     "items_total": 234
+  },
+  "_f2_f3_log": {
+    "applied_at": "2026-06-01",
+    "f2_removed": [
+      "260219_dum.HSV6.010"
+    ],
+    "f3_vyjasneni": 33,
+    "snapshot_before": "outputs/items_pre_f2f3.json",
+    "items_total": 233
   }
 }
