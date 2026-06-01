@@ -2,15 +2,15 @@
   "_schema_version": "1.0",
   "_generated_at": "2026-06-01",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 212,
-  "items_total_incl_deprecated": 216,
-  "issues_found_total": 59,
+  "items_checked": 224,
+  "items_total_incl_deprecated": 228,
+  "issues_found_total": 74,
   "summary_by_dimension": {
-    "urs_family_consistency": 29,
-    "subdodavatel_logical": 30
+    "urs_family_consistency": 32,
+    "subdodavatel_logical": 42
   },
   "summary_by_severity": {
-    "informational": 59
+    "informational": 74
   },
   "issues": [
     {
@@ -867,6 +867,233 @@
       "reason": "Subdodavatel 'tesar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260219_dum.HSV5.017",
       "popis": "Montáž svorníků / šroubů tesařských spojů krovu délky přes 150 do 300 mm — spoje"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "713191",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.015",
+      "popis": "Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový strop 1.NP/2.NP"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "izolater_TI",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.015",
+      "popis": "Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový strop 1.NP/2.NP"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "izolater_TI",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.016",
+      "popis": "Separační geotextilie pod suchý podsyp — trámový strop 1.NP/2.NP"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "713121",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 713121 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.017",
+      "popis": "Tepelná/akustická izolace minerální vata výplň mezi ocelové nosníky stropu 2.NP/"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "izolater_TI",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.017",
+      "popis": "Tepelná/akustická izolace minerální vata výplň mezi ocelové nosníky stropu 2.NP/"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "suchá_vystavba",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'suchá_vystavba' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.018",
+      "popis": "Roznášecí sádrovláknité dílce Fermacell 2E22 tl. 25 mm — suchá skladba nad cihel"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "urs_code": "713191",
+      "first_digit": "7",
+      "expected_first_digits": [
+        "4"
+      ],
+      "reason": "URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260219_dum.HSV4.019",
+      "popis": "Desky kročejové izolace (Isover T-P) tl. 30 mm — suchá skladba nad klembou S08"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "izolater_TI",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.019",
+      "popis": "Desky kročejové izolace (Isover T-P) tl. 30 mm — suchá skladba nad klembou S08"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "suchá_vystavba",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'suchá_vystavba' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.020",
+      "popis": "Vyrovnávací suchý podsyp keramzit/liapor + dřevěný rošt tl. 50 mm — nad klembou "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-4 Vodorovné",
+      "current_subdodavatel": "suchá_vystavba",
+      "expected_set": [
+        "krov_tesarsky_kompletni",
+        "ocel_zamecnik_konstrukce",
+        "ocelobeton_strop_IPE_trapez",
+        "podlahar",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'suchá_vystavba' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV4.021",
+      "popis": "Separační vrstva pod suchý podsyp — nad cihelnou klembou S08"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-7 Fasáda + zateplení",
+      "current_subdodavatel": "fasader",
+      "expected_set": [
+        "fasadnik_etics",
+        "klempir"
+      ],
+      "reason": "Subdodavatel 'fasader' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV7.007",
+      "popis": "Sanační zateplení soklu — sanační izolační deska Styrcon 200 + lepící tmel (Leps"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-7 Fasáda + zateplení",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "fasadnik_etics",
+        "klempir"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV7.008",
+      "popis": "Drenážní vrstva — nopová folie tl. 20 mm na suterénní stěnu pod úrovní terénu"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-7 Fasáda + zateplení",
+      "current_subdodavatel": "obkladac",
+      "expected_set": [
+        "fasadnik_etics",
+        "klempir"
+      ],
+      "reason": "Subdodavatel 'obkladac' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV7.009",
+      "popis": "Provětrávaná mezera s kotevním roštem 40 mm + keramický obklad 20 mm — sokl nad "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-5 Krov + střecha",
+      "current_subdodavatel": "pokryvac",
+      "expected_set": [
+        "biodeska_konstrukcni",
+        "izolater_TI",
+        "klempir",
+        "krov_tesarsky_kompletni",
+        "plech_falcovany_hlinik"
+      ],
+      "reason": "Subdodavatel 'pokryvac' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV5.018",
+      "popis": "Pojistná hydroizolační folie pod hliníkovou falcovanou krytinu (nad celoplošným "
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-6 Bourací práce",
+      "current_subdodavatel": "bourac",
+      "expected_set": [
+        "azbestovy_specialista",
+        "bourani_demolice",
+        "mykolog"
+      ],
+      "reason": "Subdodavatel 'bourac' neodpovídá HSV-6 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260219_dum.HSV6.018",
+      "popis": "Demontáž stávajícího vnějšího keramického obkladu suterénní stěny (sokl) tl. 20 "
     }
   ]
 }

@@ -98,6 +98,54 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "c", "popis": "Matice přesná šestihranná Pz DIN 934-8 M12", "mj": "100 ks", "qty": 1, "urs": "3111006", "status": "family_only", "qty_formula": "= 50 svorníků × 2 = 100 ks = 1×100ks", "pozn": "Matice (3111006), 2 na svorník."},
         {"suffix": "d", "popis": "Podložka pod dřevěnou konstrukci DIN 440 D 12 mm", "mj": "100 ks", "qty": 1, "urs": "31121004", "status": "family_only", "qty_formula": "= 50 svorníků × 2 = 100 ks = 1×100ks", "pozn": "Podložka (31121004), 2 na svorník."},
     ],
+    # ===== SKLADBY GAPS 2026-06-01 (P41 montáž/materiál split) =====
+    ("260219_dum.HSV4.015", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Montáž kročejové izolace Isover T-P 30 mm — strop S07", "mj": "m²", "qty": 59.5, "urs": "713191", "status": "family_only", "qty_formula": "= plocha stropu S07", "pozn": "Montáž izolace."},
+        {"suffix": "b", "popis": "Deska kročejová Isover T-P 30 mm — materiál", "mj": "m²", "qty": 62.5, "urs": None, "status": "needs_lookup", "qty_formula": "= 59.5 × 1.05 prořez", "pozn": "Materiál izolace."},
+    ],
+    ("260219_dum.HSV4.016", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Separační geotextilie — dodávka + pokládka, strop S07", "mj": "m²", "qty": 65.5, "urs": None, "status": "needs_lookup", "qty_formula": "= 59.5 × 1.10 přesahy", "pozn": "Montáž+materiál."},
+    ],
+    ("260219_dum.HSV4.017", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Montáž min. vaty mezi ocel. nosníky — strop S09", "mj": "m²", "qty": 104.4, "urs": "713121", "status": "family_only", "qty_formula": "= plocha stropu S09", "pozn": "Montáž."},
+        {"suffix": "b", "popis": "Minerální vata 180/200 mm — materiál", "mj": "m²", "qty": 109.6, "urs": None, "status": "needs_lookup", "qty_formula": "= 104.4 × 1.05", "pozn": "Materiál."},
+    ],
+    ("260219_dum.HSV4.018", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Fermacell 2E22 25 mm — montáž+materiál, S08 (plocha neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV4.019", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Kročejová izolace 30 mm — montáž+materiál, S08 (neurčeno)", "mj": "m²", "qty": None, "urs": "713191", "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV4.020", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Suchý podsyp keramzit/liapor + dřevěný rošt 50 mm — S08 (neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV4.021", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Separační vrstva — S08 (neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV7.007", "HSV-7 Fasáda + zateplení"): [
+        {"suffix": "a", "popis": "Montáž sanační izolační desky Styrcon 200 + armovací — sokl S03", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)", "pozn": "Montáž."},
+        {"suffix": "b", "popis": "Sanační deska Styrcon 200 + lepící tmel + armovací stěrka+tkanina — materiál", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 × 1.05", "pozn": "Materiál."},
+    ],
+    ("260219_dum.HSV7.008", "HSV-7 Fasáda + zateplení"): [
+        {"suffix": "a", "popis": "Drenážní nopová folie 20 mm — dodávka+montáž, sokl pod terénem S03a", "mj": "m²", "qty": 25, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 × 1.10", "pozn": "Montáž+materiál."},
+    ],
+    ("260219_dum.HSV7.009", "HSV-7 Fasáda + zateplení"): [
+        {"suffix": "a", "popis": "Kotevní rošt 40 mm provětraného soklu — montáž+materiál S03b", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 (OVĚŘIT)", "pozn": "Rošt."},
+        {"suffix": "b", "popis": "Keramický obklad soklu 20 mm — montáž+materiál", "mj": "m²", "qty": 24, "urs": "781", "status": "family_only", "qty_formula": "= 23 × 1.05", "pozn": "Obklad."},
+    ],
+    ("260219_dum.HSV5.018", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Pojistná HI folie pod Al krytinu — dodávka+montáž S10", "mj": "m²", "qty": 155, "urs": None, "status": "needs_lookup", "qty_formula": "= 140.94 × 1.10 přesahy", "pozn": "Montáž+materiál."},
+    ],
+    ("260219_dum.HSV6.018", "HSV-6 Bourací práce"): [
+        {"suffix": "a", "popis": "Demontáž vnějšího keram. obkladu suterénu (sokl) 20 mm", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)", "pozn": "Bourání."},
+    ],
+    ("260219_dum.HSV5.016", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Fasádní minerální izolace λ0.035 180 mm + kotvy fasády — vikýře S12b", "mj": "m²", "qty": 24, "urs": "713", "status": "family_only", "qty_formula": "= 4 vikýře × ~6 m²", "pozn": "Vrstva 1 izolace."},
+        {"suffix": "b", "popis": "Paropropustná fasádní folie s UV odolností — vikýře", "mj": "m²", "qty": 26, "urs": None, "status": "needs_lookup", "qty_formula": "= 24 × 1.10", "pozn": "Vrstva 2 folie."},
+        {"suffix": "c", "popis": "Svislý nosný rastr 40×60 mm + ochranný nátěr — vikýře", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= plocha fasády vikýřů", "pozn": "Vrstva 3 rastr."},
+        {"suffix": "d", "popis": "Celoplošné bednění prkna 25 mm — vikýře", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= plocha fasády vikýřů", "pozn": "Vrstva 4 bednění."},
+        {"suffix": "e", "popis": "Falcovaný hliníkový plech — krycí vrstva vikýře", "mj": "m²", "qty": 26, "urs": None, "status": "needs_lookup", "qty_formula": "= 24 × 1.10", "pozn": "Vrstva 5 plech."},
+    ],
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Lepení + kotvení desek EPS 70F grey λ=0.032 tl. 160 mm — ETICS kontaktní zateplení fasády", "mj": "m²", "qty": 276.7, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.002 plocha fasády 276.7 m²", "pozn": "Lepení+kotvení EPS (713/622 família). Leaf dle tl. 160 mm — verify."},
