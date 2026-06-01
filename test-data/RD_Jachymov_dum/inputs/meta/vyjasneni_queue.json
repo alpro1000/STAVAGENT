@@ -384,6 +384,21 @@
       "working_assumption": "Jáma svahovaná 1:0,5 (statika). Pažení sklad NEPŘIDÁNO. Rýhy přípojek pažit dle BOZP.",
       "next_action": "Statiku/projektante: potvrďte, že objem výkopu skladu počítá se svahováním 1:0,5 + je dostupný prostor pro svah v prudkém svahu; pažení jen rýhy přípojek dle BOZP?",
       "_source": "D.2.1 TZ statika sklad §4.2 + ChatGPT review 2026-06-01"
+    },
+    {
+      "id": 35,
+      "severity": "major",
+      "status": "open",
+      "category": "rozpor_PD_verify_projektant",
+      "title": "Sokl — rozpor PD: TZ ARS (XPS + cihelný) vs výkres S03/pohledy (sanační Styrcon + keramický)",
+      "context": "TZ ARS dům (text): 'V soklové části XPS + obklad z cihelného obkladu'. Skladba S03 + Řez A-A (S03b -0.200/-0.975) + pohledy (materiál C) uvádějí sanační Styrcon 200 + keramický obklad. Je to JEDEN sokl. ROZHODNUTO investorem: platí VÝKRES (Styrcon sanační + keramický). HSV7.003 (TZ varianta XPS+cihelný) odstraněn — jinak dvojí obklad (cihelný 13.5 + keramický 23 = 36.5 m² na soklu ~23 m²). Plocha S03 soklu 23 m² je obvod×výška BEZ řadovka faktoru — má být ×0.7 (≈16 m²).",
+      "blocks": [
+        "HSV7.007/008/009 sokl S03 (Styrcon+keramický)",
+        "HSV6.018 demontáž obkladu"
+      ],
+      "working_assumption": "Aplikován výkres S03 (Styrcon 200 sanační + keramický obklad). HSV7.003 (XPS+cihelný) odstraněn. Omítka HSV7.006 snížena 290.2→276.7 (sokl není omítka).",
+      "next_action": "Projektante: potvrďte sokl = sanační Styrcon 200 + keramický obklad (výkres), NE XPS + cihelný (TZ ARS text). + délka soklu (řadovka): plocha ≈16 nebo 23 m²?",
+      "_source": "TZ ARS dům + skladba S03 + Řez A-A + pohledy C — crosscheck 2026-06-01"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",

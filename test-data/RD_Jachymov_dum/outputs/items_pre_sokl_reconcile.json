@@ -2844,6 +2844,40 @@
       "kapitola_group": "HSV",
       "_gate": "HSV",
       "kapitola": "HSV-7 Fasáda ETICS",
+      "subkapitola": "ETICS sokl XPS",
+      "popis": "ETICS sokl — XPS λ=0.034 tl. 120 mm + soklový profil + cihelný obklad spárovaný",
+      "mj": "m²",
+      "mnozstvi": 13.5,
+      "mnozstvi_formula": "obvod 38.7 m × 0.5 m výška sokl × 0.7 (řadovka) = 13.5 m²",
+      "mnozstvi_confidence": 0.9,
+      "urs_code_proposed": "622223111",
+      "urs_alternatives": [
+        "622223121"
+      ],
+      "urs_status": "family_verified_leaf_needs_production_lookup",
+      "urs_confidence": 0.8,
+      "source": "TZ ARS dům §3.2 — sokl XPS + cihelný obklad + DXF perimeter",
+      "subdodavatel": "fasadnik_etics",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "_data_quality": "dxf_deterministic",
+      "_previous_mnozstvi": 14.35,
+      "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
+      "id": "260219_dum.HSV7.003",
+      "realizuje_skladbu": [
+        "S01"
+      ],
+      "cross_verification_status": "FAMILY_VERIFIED",
+      "cross_verification_evidence_url": "https://baumit.cz/produkty/komponenty-pro-zateplovani/zakladaci-profily/soklovy-profil-etics",
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
+    },
+    {
+      "objekt": "260219_dum",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-7 Fasáda ETICS",
       "subkapitola": "Špalety EPS",
       "popis": "Špalety oken — EPS přesah 35-40 mm + síťka + omítka",
       "mj": "bm",
@@ -2910,8 +2944,8 @@
       "subkapitola": "Tenkovrstvá omítka pastovitá",
       "popis": "Tenkovrstvá pastovitá probarvená omítka, lomená bílá NCS NZÚ — finální vrstva ETICS",
       "mj": "m²",
-      "mnozstvi": 276.7,
-      "mnozstvi_formula": "ETICS fasáda 276.7 m² (sokl = keramický obklad S03, NE omítka)",
+      "mnozstvi": 290.2,
+      "mnozstvi_formula": "ETICS plocha 276.7 m² + sokl 13.5 m² = 290.2 m²",
       "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "622521111",
       "urs_alternatives": [
@@ -2924,7 +2958,7 @@
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
-      "notes": "Sokl odečten z omítky (290.2→276.7): sokl je keramický obklad dle S03/pohledy, ne omítka.",
+      "notes": null,
       "_data_quality": "dxf_deterministic",
       "_previous_mnozstvi": 307.55,
       "_recalc_reason": "External perimeter 38.70 m (DXF) replaces prior fallback 41.0 m",
@@ -2936,7 +2970,7 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.cz.weber/ncs-odstiny-dle-nzu-2023",
-      "_audit_gap_fixed": "SOKL_RECONCILE_2026-06-01"
+      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
     },
     {
       "objekt": "260219_dum",
@@ -6719,11 +6753,9 @@
       "source": "Řez A-A sokl tags (S03b -0.200/-0.975) + obvod ETICS",
       "subdodavatel": "fasader",
       "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [
-        35
-      ],
+      "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
-      "notes": "OVĚŘIT plochu soklu dle skutečné výšky odkopu. | SOKL RECONCILE: zvolena varianta výkres S03 (Styrcon+keramický) proti TZ ARS (XPS+cihelný). HSV7.003 odstraněn (dvojí obklad). Plocha 23 m² OVĚŘIT — aplikovat řadovka 0.7 (≈16 m²) + délku podvalu (vyjasnění #35).",
+      "notes": "OVĚŘIT plochu soklu dle skutečné výšky odkopu.",
       "_data_quality": "catalog_estimate",
       "id": "260219_dum.HSV7.007",
       "realizuje_skladbu": [
@@ -6779,11 +6811,9 @@
       "source": "Řez A-A sokl tags S03b + obvod ETICS",
       "subdodavatel": "obkladac",
       "subdodavatel_status": "mapped",
-      "vyjasneni_ref": [
-        35
-      ],
+      "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
-      "notes": "OVĚŘIT plochu + rozsah provětraného soklu. | SOKL RECONCILE: zvolena varianta výkres S03 (Styrcon+keramický) proti TZ ARS (XPS+cihelný). HSV7.003 odstraněn (dvojí obklad). Plocha 23 m² OVĚŘIT — aplikovat řadovka 0.7 (≈16 m²) + délku podvalu (vyjasnění #35).",
+      "notes": "OVĚŘIT plochu + rozsah provětraného soklu.",
       "_data_quality": "catalog_estimate",
       "id": "260219_dum.HSV7.009",
       "realizuje_skladbu": [
