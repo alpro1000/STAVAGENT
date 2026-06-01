@@ -292,7 +292,14 @@ def _run_breakdown(**kwargs):
             r.cena = 100.0
             return [r]
 
-    with patch.object(clf, "_classify", lambda n: {"element_type": "jine"}), patch.dict(
+    with patch.object(
+        clf,
+        "_classify",
+        # Mirror the real _classify(name, object_code=None, object_type=None)
+        # signature (W3/W3b): create_work_breakdown now threads object_code +
+        # object_type, so the stub must accept and ignore them (#1262).
+        lambda n, object_code=None, object_type=None: {"element_type": "jine"},
+    ), patch.dict(
         clf.ELEMENT_TYPES, {"jine": fake_profile}, clear=False
     ), patch.object(ot, "_get_catalog", lambda: FakeCat()):
         elements = [{"name": "Pilíř P2", "volume_m3": 10, "concrete_class": "C30/37"}]
