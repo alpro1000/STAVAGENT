@@ -2589,7 +2589,7 @@
       "atomic_id": "HSV3.001",
       "atomic_operace_popis": "Zadní opěrná stěna — prefabrikované betonové bloky Herkul H-BLOK Standard, vazba běhounová s posunem 0.5",
       "mj": "ks",
-      "mnozstvi": 60,
+      "mnozstvi": 18,
       "urs_kod_kandidat": "311233815",
       "status": "needs_production_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV3.001",
@@ -2597,7 +2597,7 @@
       "realizuje_skladbu": [
         "S04_sklad"
       ],
-      "qty_formula": "opěrná stěna S04 face 6.35 × 3.0 m (řez A-A: stěna 3000 + zákl. 1000) = 19.05 m² ÷ ~0.32 m²/blok ≈ 60 ks (OVĚŘIT rozměr H-BLOK z tech. listu)",
+      "qty_formula": "S04 líc 6.35 × 3.0 m = 19.05 m² ÷ 1.08 m²/blok (H-BLOK Standard 1800×600mm líc, web-ověřeno) = 17.6 → 18 ks; layout: 4 bloky/řada × 5 řad = 20 ks (s řezy) — použito 18 ks plocha-přesné",
       "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
       "decomposition_type": "atomic_1to1"
     },
