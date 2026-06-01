@@ -7289,31 +7289,8 @@
   "_phase3_5_namespace_finalize_log": {
     "applied_at": "2026-06-01",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
-    "items_renamed": 2,
-    "per_item_changes": [
-      {
-        "id": "260217_sklad.HSV3.004",
-        "before": [
-          "S03a",
-          "S04"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S04_sklad"
-        ]
-      },
-      {
-        "id": "260217_sklad.HSV3.005",
-        "before": [
-          "S03a",
-          "S04"
-        ],
-        "after": [
-          "S03a_sklad",
-          "S04_sklad"
-        ]
-      }
-    ]
+    "items_renamed": 0,
+    "per_item_changes": []
   },
   "_phase5b_websearch_log": {
     "applied_at": "2026-05-27",
