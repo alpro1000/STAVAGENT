@@ -174,10 +174,6 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "b", "popis": "Armovací vrstva ETICS — lepicí/stěrková hmota (zatírací) + vmáčknutí tkaniny", "mj": "m²", "qty": 276.7, "urs": "622", "status": "family_only", "qty_formula": "= HSV7.002 plocha 276.7 m²", "pozn": "Stěrková hmota armovací vrstvy (622 família). Pletivo viz suffix c."},
         {"suffix": "c", "popis": "Výztužná síťka — sklovláknité pletivo vtlačené do tmelu, stěn (ETICS)", "mj": "m²", "qty": 276.7, "urs": "622142001", "status": "leaf_verified", "qty_formula": "= HSV7.002 plocha 276.7 m² (přesahy v spotřebě)", "pozn": "ÚRS 622142001 — uživatelem ověřeno z KROS katalogu (Pletivo vnějších ploch sklovláknité, stěn, m²)."},
     ],
-    ("260219_dum.HSV7.003", "HSV-7 Fasáda ETICS"): [
-        {"suffix": "a", "popis": "Lepení + kotvení desek XPS λ=0.034 tl. 120 mm + soklový profil — ETICS sokl", "mj": "m²", "qty": 13.5, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.003 plocha soklu 13.5 m²", "pozn": "Sokl XPS lepení + soklový profil (713/622 família)."},
-        {"suffix": "b", "popis": "Cihelný obklad soklu spárovaný (na armovací vrstvu)", "mj": "m²", "qty": 13.5, "urs": "781", "status": "family_only", "qty_formula": "= HSV7.003 plocha soklu 13.5 m²", "pozn": "Cihelný obklad spárovaný (781 família obklady)."},
-    ],
     ("260219_dum.HSV7.004", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Špalety oken — EPS přesah 35-40 mm lepení + kotvení", "mj": "bm", "qty": 82.2, "urs": "622", "status": "family_only", "qty_formula": "= HSV7.004 obvod špalet 82.2 bm", "pozn": "Špalety EPS přesah (622 família)."},
         {"suffix": "b", "popis": "Špalety oken — armovací vrstva síťka + omítka", "mj": "bm", "qty": 82.2, "urs": "622", "status": "family_only", "qty_formula": "= HSV7.004 obvod 82.2 bm", "pozn": "Armovací vrstva + omítka špalet (622 família)."},
