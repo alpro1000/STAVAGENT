@@ -1,10 +1,20 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-06-01 (RD Jáchymov skladby + sokl reconcile pass):
-Sequential 1..45 validated (no duplicates, no gaps).
-last_number: 45
-next_pattern: 46  ← use this for any new additions.
+Pattern numbering audit 2026-06-01 (RD Jáchymov H-BLOK provenance pass):
+Sequential 1..46 validated (no duplicates, no gaps).
+last_number: 46
+next_pattern: 47  ← use this for any new additions.
+
+Added 2026-06-01 (RD Jáchymov H-BLOK count session): Pattern 46 (Weakest-link
+provenance — tag of a derived quantity = min provenance of its inputs on
+measured>derived>estimate>blank; confidence is orthogonal). Pattern 25 enriched
+with the physical-product-dimension corollary (manufacturer datasheet blocked →
+generic-analogue dimension is estimate-by-analogy, never promoted to
+manufacturer-confirmed; cross-ref Pattern 10). Origin: H-BLOK count was tagged
+measured because plocha was measured, hiding that the 1.08 m²/blok dimension was
+a web-analogy (BB6, not Herkul tech list) — caught live by the user; conf 0.82
+was correct, the measured status was wrong.
 
 Added 2026-06-01 (Výměry-First task): Pattern 45 (Výměry-First — measurement
 register before the work list; every qty references a výměra). "Full Decomposition"
@@ -1278,11 +1288,22 @@ WebSearch is the **fallback**, not the first resort. Explicit priority when veri
 
 **Why the ladder matters:** RD Jáchymov Phase 5B used WebSearch for 60 queries and got mostly FAMILY_VERIFIED (chapter confirmed, leaf not) — because Google snippets of a paywalled catalog can't expose 9-digit leaves. The MCP `find_urs_code` tool, when available, would have returned actual leaves for many of those. Reach for the API tool first; drop to WebSearch only on miss. Never invert the order (WebSearch-first wastes the authoritative source).
 
+### Physical product dimensions — same ladder, same honesty downgrade (enrichment 2026-06-01, H-BLOK)
+
+The ladder governs not only catalog **codes** but any **manufacturer fact** — including physical product **dimensions** (block size, panel module, profile cross-section). When the manufacturer's own datasheet is unreachable (H-BLOK: `hblok.cz` returned 403) and you substitute a **generic analogue's** dimension (a plain BB6 stacking block of the same gross size standing in for the interlocking H-BLOK Standard module), that value is an **estimate-by-analogy**:
+
+- Tag it `estimate`, never `measured` / `manufacturer-confirmed` (feeds Pattern 46 as the weak input).
+- Keep the `OVĚŘIT u <manufacturer>` flag — the analogue is a placeholder until the real datasheet confirms.
+- Cross-ref **Pattern 10**: an *analogue's* datasheet ≠ the *specified* product's datasheet, exactly as a vendor datasheet ≠ the project specification.
+- Never silently promote "web said ~1800×600" to "Herkul tech list says 1800×600" — the source chain must stay visible in `_source` / `mnozstvi_status`.
+
 ### Related
 - Pattern 11 (KROS FTS matching) — primary matcher; Pattern 25 is verification layer
 - Pattern 21 (Multi-factor selection) — feeds candidates to verify
 - Pattern 26 (Honest fallback hierarchy) — what to do with verification results
 - Pattern 34 (Cost transparency) — explain $0.50-1.00 budget to user
+- Pattern 46 (Weakest-link provenance) — a web-analogy dimension is the `estimate` input that caps the derived qty
+- Pattern 10 (Vendor Datasheet ≠ Project Specification) — analogue spec ≠ specified-product spec
 
 ---
 
@@ -2025,6 +2046,45 @@ Výměry-First is the missing deterministic MCP stage: `host-vision → VÝMĚRY
 - Pattern 16 (Universal Work Ontology) — same universality, one layer later (works); Pattern 45 is the measurement layer
 - Pattern 40 (Host-delegated vision + MCP gate) — vision feeds the výměry register
 - Pattern 31 (CEV) — extraction completeness feeds the register
+
+---
+
+## Pattern 46: Weakest-link provenance for derived quantities
+
+**Source:** RD Jáchymov — H-BLOK count (plocha measured ÷ block-size estimate), 2026-06-01.
+
+### Problem
+A computed quantity is a function of several inputs, each with its own provenance (`measured` / `derived` / `estimate` / `blank`, per Pattern 45). The temptation is to tag the *result* by its **strongest** input — "the wall area is measured, so the block count is measured" — when the result is only as trustworthy as its **weakest** input. The block dimension was an unverified web-analogy (estimate), so the count cannot be `measured`.
+
+### Principle
+The provenance tag of a derived quantity is the **minimum** provenance of its inputs on the ordering:
+```
+measured  >  derived  >  estimate  >  blank
+```
+`tag(result) = min(tag(input_i))` — the weakest link wins.
+
+**Confidence is orthogonal to provenance.** A quantity can be tagged `estimate` and still carry a high `mnozstvi_confidence` (the H-BLOK count is `estimate`, conf `0.82`) — confidence says "how sure am I of the number", provenance says "where did each factor come from". Never collapse one into the other.
+
+### Test (H-BLOK)
+```
+count = plocha líce 19.05 m² (řez A-A → measured)
+      ÷ 1.08 m²/blok (web-analogy BB6, NOT Herkul tech list → estimate)
+→ count = ESTIMATE   (min(measured, estimate) = estimate)
+→ confidence 0.82, OVĚŘIT retained
+```
+
+### Invariant
+Every derived quantity carries `tag = min(provenance of its inputs)`; `mnozstvi_confidence` and the provenance tag are recorded as **separate** fields and never conflated.
+
+### Anti-pattern
+Tagging the H-BLOK count `measured` because the wall area is measured — hiding that the block dimension is an unverified analogy. (Caught live by the user: confidence 0.82 was right, the `measured` status was wrong.)
+
+### Related
+- Pattern 45 (Výměry-First) — *defines* the `measured / derived / estimate / blank` tags; Pattern 46 defines how to **assign** the tag to a multi-factor derivation
+- Pattern 44 (Geometry-bounded estimate vs strict null) — when one input is `blank`/absent, the derivation collapses to `null`, not `estimate`
+- Pattern 29 (Continuous source provenance) — provenance lives per input factor, not only per item
+- Pattern 25 (Web search fallback) — a web-analogy input is `estimate`, never promoted
+- Pattern 10 (Vendor Datasheet ≠ Project Specification) — an analogue's spec ≠ the specified product's spec
 
 ---
 
