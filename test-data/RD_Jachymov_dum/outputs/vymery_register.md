@@ -72,3 +72,28 @@ S08 klemba (HSV4.018-021) · vjezd dlažba (HSV5.002) — vyjasnění V1 / Dodat
 | **W2/W3/W4/W5** | vyjasnění (#35 sokl, #33 hloubka, +#36 lichoběžník plocha + prefa výška) | ❓ DXF/projektant |
 
 Žádné dvojí počítání (jako sokl domu) — jen výměra-mismatche + odhady. Deterministické (W1, DS3) lze opravit hned; geometrie-závislé (lichoběžník, prefa výška) → vyjasnění #36.
+
+---
+
+## 6. SKLAD — measured update z výkresů (2026-06-01, vision P39)
+
+Zdroje: D.1.1.01 (půdorys střechy), D.1.1.02 (půdorys suterénu), D.1.1.03 Řez A-A, D.1.1.04 Řez B-B + legendy.
+
+| Výměra | Hodnota | Tag | Zdroj |
+|---|---|---|---|
+| Parking stání | **44.60 m²** | measured | legenda místností (NE 44.71 polygon) |
+| Sklad room 0.01 | **17.60 m²** | measured | legenda místností |
+| Schodiště | **5.50 m²** (9×179.5×250) | measured | legenda + řez |
+| Světlá výška skladu | **2.68–2.79 m** | measured | Řez B-B |
+| Stěna floor→deck | ~3.23 m | measured | Řez A-A (−3.230 → ±0.000) |
+| Opěrná stěna S04 | ~3.0 m (3000) | measured | Řez A-A |
+| Stěny pod terénem (S03a+S04) | ~33 m² | derived | řez × obvod, OVĚŘIT |
+
+### Resolved this pass
+- **W1** sklad podlaha 21.2 → **17.6** (legenda confirmed) — HSV1.005/2.005 FIXED.
+- **DS3** stropnice 10 → **11 ks** (6.35/0.625) — HSV4.001 FIXED.
+- **W2** dům sokl 23 → **16** (řadovka 0.7, jedna báze) — HSV7.007/008/009 + HSV6.018 FIXED + vyjasnění #35.
+- **NEW** HI/protiradon (HSV3.004) + drenáž nopová folie (HSV3.005) stěn S03a+S04 — gap z výkresu, ~33 m² OVĚŘIT.
+
+### Skladby S01-S05 — všechny mapovány na položky ✓
+S01 podlaha (dlažba+drť+pláň), S02 strop (pororošt/IPE180/HI/záklop/KVH 100/160), S03a/b stěny (ztracené bednění 250 + HI/protiradon/drenáž), S04 opěrná stěna (prefa bloky 600 = HSV3.001 + HI/drenáž), S05 schodiště.

@@ -408,8 +408,8 @@
       "subkapitola": "Štěrkový násyp pod desku skladu",
       "popis": "Zhutněný štěrkopískový násyp pod podlahu skladu + štěrkopísek pro IPE patky",
       "mj": "m³",
-      "mnozstvi": 3.2,
-      "mnozstvi_formula": "podlaha sklad 21.2 m² × 0.15 m štěrku",
+      "mnozstvi": 2.64,
+      "mnozstvi_formula": "podlaha sklad 17.6 m² (legenda místností) × 0.15 m podkladní kamenná drť",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "174101101",
       "urs_alternatives": [
@@ -427,7 +427,8 @@
       "id": "260217_sklad.HSV1.005",
       "realizuje_skladbu": [
         "S01_sklad"
-      ]
+      ],
+      "_audit_gap_fixed": "W1_PODLAHA_17.6_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1006,8 +1007,8 @@
       "subkapitola": "Štěrkopískové lože",
       "popis": "Štěrkopískové lože pod podlahu skladu + pod schodišťovou desku",
       "mj": "m³",
-      "mnozstvi": 2.12,
-      "mnozstvi_formula": "21.2 × 0.10 = 2.12",
+      "mnozstvi": 1.76,
+      "mnozstvi_formula": "podlaha sklad 17.6 m² (legenda) × 0.10 m kladecí kamenná drť",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "174101101",
       "urs_alternatives": [
@@ -1028,7 +1029,7 @@
       ],
       "cross_verification_status": "CROSS_DISCIPLINE_OK",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-1-Zemni-prace-(2020-I)/17/",
-      "_audit_gap_fixed": "URS_PHASE5B_CROSS_DISCIPLINE_OK"
+      "_audit_gap_fixed": "W1_PODLAHA_17.6_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1805,8 +1806,8 @@
       "subkapitola": "Dřevěné stropnice skladu",
       "popis": "Dřevěné stropnice 100/160 mm á 625 mm primární zastřešení skladu — rezivo C24 fungicidní",
       "mj": "bm",
-      "mnozstvi": 33.9,
-      "mnozstvi_formula": "rozpon 3.34 × počet stropnic (6.35/0.625 = 10) = ~10 ks × 3.34 = 33.4",
+      "mnozstvi": 36.74,
+      "mnozstvi_formula": "6.35/0.625 = 10.16 → 11 ks × 3.34 m (rozpon 3.1 + uložení) = 36.74 bm",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "762341110",
       "urs_alternatives": [
@@ -1824,7 +1825,8 @@
       "realizuje_skladbu": [
         "S02_sklad"
       ],
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "_audit_gap_fixed": "DS3_STROPNICE_11_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -6710,8 +6712,8 @@
       "subkapitola": "Sokl suterénu — sanační zateplení (S03)",
       "popis": "Sanační zateplení soklu — sanační izolační deska Styrcon 200 + lepící tmel (Lepstyr plus) + armovací vrstva s tkaninou + penetrace",
       "mj": "m²",
-      "mnozstvi": 23,
-      "mnozstvi_formula": "= obvod 38.7 m × výška soklu 0.6 m ≈ 23 m²",
+      "mnozstvi": 16,
+      "mnozstvi_formula": "obvod 38.7 m × výška soklu 0.6 m × řadovka 0.7 (volný obvod) = 16.3 ≈ 16 m² (OVĚŘIT)",
       "mnozstvi_confidence": 0.5,
       "urs_code_proposed": null,
       "urs_status": "needs_production_lookup",
@@ -6729,8 +6731,8 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "_audit_gap_fixed": "SKLADBY_GAPS_2026-06-01",
-      "mnozstvi_status": "odhad z obvodu 38.7 m × výška soklu 0.6 m — OVĚŘIT",
+      "_audit_gap_fixed": "W2_SOKL_23to16_RADOVKA_2026-06-01",
+      "mnozstvi_status": "odhad obvod×výška×řadovka 0.7 — OVĚŘIT (vyjasnění #35)",
       "correct_code_hint": "ÚRS 711/783 sanační deska — leaf needs lookup"
     },
     {
@@ -6741,8 +6743,8 @@
       "subkapitola": "Sokl pod terénem — drenážní nopová folie (S03a)",
       "popis": "Drenážní vrstva — nopová folie tl. 20 mm na suterénní stěnu pod úrovní terénu",
       "mj": "m²",
-      "mnozstvi": 23,
-      "mnozstvi_formula": "= obvod 38.7 m × výška pod terénem ≈ 23 m²",
+      "mnozstvi": 16,
+      "mnozstvi_formula": "obvod 38.7 m × výška soklu 0.6 m × řadovka 0.7 (volný obvod) = 16.3 ≈ 16 m² (OVĚŘIT)",
       "mnozstvi_confidence": 0.5,
       "urs_code_proposed": null,
       "urs_status": "needs_production_lookup",
@@ -6758,8 +6760,8 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "_audit_gap_fixed": "SKLADBY_GAPS_2026-06-01",
-      "mnozstvi_status": "odhad z obvodu × výška — OVĚŘIT",
+      "_audit_gap_fixed": "W2_SOKL_23to16_RADOVKA_2026-06-01",
+      "mnozstvi_status": "odhad obvod×výška×řadovka 0.7 — OVĚŘIT (vyjasnění #35)",
       "correct_code_hint": "ÚRS 711 nopová folie drenážní — leaf needs lookup"
     },
     {
@@ -6770,8 +6772,8 @@
       "subkapitola": "Sokl nad terénem — provětraný obklad (S03b)",
       "popis": "Provětrávaná mezera s kotevním roštem 40 mm + keramický obklad 20 mm — sokl nad úrovní terénu",
       "mj": "m²",
-      "mnozstvi": 23,
-      "mnozstvi_formula": "= obvod 38.7 m × výška soklu nad terénem ≈ 23 m²",
+      "mnozstvi": 16,
+      "mnozstvi_formula": "obvod 38.7 m × výška soklu 0.6 m × řadovka 0.7 (volný obvod) = 16.3 ≈ 16 m² (OVĚŘIT)",
       "mnozstvi_confidence": 0.5,
       "urs_code_proposed": null,
       "urs_status": "needs_production_lookup",
@@ -6789,8 +6791,8 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "_audit_gap_fixed": "SKLADBY_GAPS_2026-06-01",
-      "mnozstvi_status": "odhad z obvodu × výška — OVĚŘIT",
+      "_audit_gap_fixed": "W2_SOKL_23to16_RADOVKA_2026-06-01",
+      "mnozstvi_status": "odhad obvod×výška×řadovka 0.7 — OVĚŘIT (vyjasnění #35)",
       "correct_code_hint": "ÚRS 781 obklady keramické + rošt — leaf needs lookup"
     },
     {
@@ -6829,8 +6831,8 @@
       "subkapitola": "Demontáž vnějšího keram. obkladu suterénu (S03 stávající)",
       "popis": "Demontáž stávajícího vnějšího keramického obkladu suterénní stěny (sokl) tl. 20 mm",
       "mj": "m²",
-      "mnozstvi": 23,
-      "mnozstvi_formula": "= obvod 38.7 m × výška soklu 0.6 m ≈ 23 m²",
+      "mnozstvi": 16,
+      "mnozstvi_formula": "obvod 38.7 m × výška soklu 0.6 m × řadovka 0.7 (volný obvod) = 16.3 ≈ 16 m² (OVĚŘIT)",
       "mnozstvi_confidence": 0.5,
       "urs_code_proposed": null,
       "urs_status": "needs_production_lookup",
@@ -6846,8 +6848,8 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "_audit_gap_fixed": "SKLADBY_GAPS_2026-06-01",
-      "mnozstvi_status": "odhad z obvodu × výška — OVĚŘIT",
+      "_audit_gap_fixed": "W2_SOKL_23to16_RADOVKA_2026-06-01",
+      "mnozstvi_status": "odhad obvod×výška×řadovka 0.7 — OVĚŘIT (vyjasnění #35)",
       "correct_code_hint": "ÚRS 965/978 bourání obkladů — leaf needs lookup"
     },
     {
@@ -7006,6 +7008,66 @@
       "id": "260219_dum.PSV95.003",
       "realizuje_skladbu": [],
       "_audit_gap_fixed": "DODATEK_PBR_GAPS_2026-06-01"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Hydroizolace + protiradon stěn pod terénem (S03a+S04)",
+      "popis": "Hydroizolace + protiradonová ochrana obvodových stěn (S03a) + opěrné stěny (S04) pod úrovní terénu — asfaltová penetrace + 2× HI a protiradonový pás z modif. asfaltu 2×4 mm",
+      "mj": "m²",
+      "mnozstvi": 33,
+      "mnozstvi_formula": "= S04 6.35×3.0 ≈19 + S03a 2×3.6×~2.0 ≈14 = 33 m² (řez D.1.1.03/04, OVĚŘIT)",
+      "mnozstvi_confidence": 0.5,
+      "urs_code_proposed": null,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.0,
+      "urs_kapitola_hint": "ÚRS 711 izolace proti vodě + protiradon",
+      "source": "skladba S03a+S04 řez D.1.1.03/04 + legenda materiálu",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "OVĚŘIT plochu pod terénem dle řezu/geodézie.",
+      "_data_quality": "catalog_estimate",
+      "id": "260217_sklad.HSV3.004",
+      "realizuje_skladbu": [
+        "S03a_sklad",
+        "S04_sklad"
+      ],
+      "mnozstvi_status": "odhad z řezů: S04 19 + S03a 14 ≈ 33 m² — OVĚŘIT výšku pod terénem",
+      "_audit_gap_fixed": "SKLAD_WALL_HI_2026-06-01"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "subkapitola": "Drenáž nopová folie stěn pod terénem (S03a+S04)",
+      "popis": "Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny (S03a) + opěrnou stěnu (S04) pod úrovní terénu",
+      "mj": "m²",
+      "mnozstvi": 33,
+      "mnozstvi_formula": "= plocha stěn pod terénem 33 m² (řez D.1.1.03/04, OVĚŘIT)",
+      "mnozstvi_confidence": 0.5,
+      "urs_code_proposed": null,
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.0,
+      "urs_kapitola_hint": "ÚRS 711 nopová folie drenážní",
+      "source": "skladba S03a+S04 řez D.1.1.03/04",
+      "subdodavatel": "izolater_HI",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": "OVĚŘIT plochu pod terénem dle řezu/geodézie.",
+      "_data_quality": "catalog_estimate",
+      "id": "260217_sklad.HSV3.005",
+      "realizuje_skladbu": [
+        "S03a_sklad",
+        "S04_sklad"
+      ],
+      "mnozstvi_status": "odhad z řezů: S04 19 + S03a 14 ≈ 33 m² — OVĚŘIT výšku pod terénem",
+      "_audit_gap_fixed": "SKLAD_WALL_HI_2026-06-01"
     }
   ],
   "_summary_total": {
@@ -7227,8 +7289,31 @@
   "_phase3_5_namespace_finalize_log": {
     "applied_at": "2026-06-01",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
-    "items_renamed": 0,
-    "per_item_changes": []
+    "items_renamed": 2,
+    "per_item_changes": [
+      {
+        "id": "260217_sklad.HSV3.004",
+        "before": [
+          "S03a",
+          "S04"
+        ],
+        "after": [
+          "S03a_sklad",
+          "S04_sklad"
+        ]
+      },
+      {
+        "id": "260217_sklad.HSV3.005",
+        "before": [
+          "S03a",
+          "S04"
+        ],
+        "after": [
+          "S03a_sklad",
+          "S04_sklad"
+        ]
+      }
+    ]
   },
   "_phase5b_websearch_log": {
     "applied_at": "2026-05-27",

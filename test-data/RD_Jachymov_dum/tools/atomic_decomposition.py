@@ -123,21 +123,21 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "a", "popis": "Separační vrstva — S08 (neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
     ],
     ("260219_dum.HSV7.007", "HSV-7 Fasáda + zateplení"): [
-        {"suffix": "a", "popis": "Montáž sanační izolační desky Styrcon 200 + armovací — sokl S03", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)", "pozn": "Montáž."},
-        {"suffix": "b", "popis": "Sanační deska Styrcon 200 + lepící tmel + armovací stěrka+tkanina — materiál", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 × 1.05", "pozn": "Materiál."},
+        {"suffix": "a", "popis": "Montáž sanační izolační desky Styrcon 200 + armovací — sokl S03", "mj": "m²", "qty": 16, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 × řadovka 0.7 ≈ 16 (OVĚŘIT)", "pozn": "Montáž."},
+        {"suffix": "b", "popis": "Sanační deska Styrcon 200 + lepící tmel + armovací stěrka+tkanina — materiál", "mj": "m²", "qty": 17, "urs": None, "status": "needs_lookup", "qty_formula": "= 16 × 1.05", "pozn": "Materiál."},
     ],
     ("260219_dum.HSV7.008", "HSV-7 Fasáda + zateplení"): [
-        {"suffix": "a", "popis": "Drenážní nopová folie 20 mm — dodávka+montáž, sokl pod terénem S03a", "mj": "m²", "qty": 25, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 × 1.10", "pozn": "Montáž+materiál."},
+        {"suffix": "a", "popis": "Drenážní nopová folie 20 mm — dodávka+montáž, sokl pod terénem S03a", "mj": "m²", "qty": 18, "urs": None, "status": "needs_lookup", "qty_formula": "= 16 × 1.10", "pozn": "Montáž+materiál."},
     ],
     ("260219_dum.HSV7.009", "HSV-7 Fasáda + zateplení"): [
-        {"suffix": "a", "popis": "Kotevní rošt 40 mm provětraného soklu — montáž+materiál S03b", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 (OVĚŘIT)", "pozn": "Rošt."},
-        {"suffix": "b", "popis": "Keramický obklad soklu 20 mm — montáž+materiál", "mj": "m²", "qty": 24, "urs": "781", "status": "family_only", "qty_formula": "= 23 × 1.05", "pozn": "Obklad."},
+        {"suffix": "a", "popis": "Kotevní rošt 40 mm provětraného soklu — montáž+materiál S03b", "mj": "m²", "qty": 16, "urs": None, "status": "needs_lookup", "qty_formula": "= 16 (OVĚŘIT)", "pozn": "Rošt."},
+        {"suffix": "b", "popis": "Keramický obklad soklu 20 mm — montáž+materiál", "mj": "m²", "qty": 17, "urs": "781", "status": "family_only", "qty_formula": "= 16 × 1.05", "pozn": "Obklad."},
     ],
     ("260219_dum.HSV5.018", "HSV-5 Krov + střecha"): [
         {"suffix": "a", "popis": "Pojistná HI folie pod Al krytinu — dodávka+montáž S10", "mj": "m²", "qty": 155, "urs": None, "status": "needs_lookup", "qty_formula": "= 140.94 × 1.10 přesahy", "pozn": "Montáž+materiál."},
     ],
     ("260219_dum.HSV6.018", "HSV-6 Bourací práce"): [
-        {"suffix": "a", "popis": "Demontáž vnějšího keram. obkladu suterénu (sokl) 20 mm", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)", "pozn": "Bourání."},
+        {"suffix": "a", "popis": "Demontáž vnějšího keram. obkladu suterénu (sokl) 20 mm", "mj": "m²", "qty": 16, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 × řadovka 0.7 ≈ 16 (OVĚŘIT)", "pozn": "Bourání."},
     ],
     ("260219_dum.HSV5.016", "HSV-5 Krov + střecha"): [
         {"suffix": "a", "popis": "Fasádní minerální izolace λ0.035 180 mm + kotvy fasády — vikýře S12b", "mj": "m²", "qty": 24, "urs": "713", "status": "family_only", "qty_formula": "= 4 vikýře × ~6 m²", "pozn": "Vrstva 1 izolace."},
@@ -167,6 +167,14 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
     ],
     ("260219_dum.PSV95.003", "PSV-95 Detekce požární"): [
         {"suffix": "a", "popis": "Předávací protokol krbu + kontrola bezpečných vzdáleností", "mj": "soubor", "qty": 1, "urs": None, "status": "needs_lookup", "qty_formula": "= 1 soubor", "pozn": "PBŘ. Revize spalin NEDUBLOVAT (PSV73.007)."},
+    ],
+    # ===== SKLAD WALL HI/DRENÁŽ 2026-06-01 (S03a+S04 pod terénem, P41) =====
+    ("260217_sklad.HSV3.004", "HSV-3 Svislé konstrukce"): [
+        {"suffix": "a", "popis": "Asfaltová penetrace obvodových + opěrné stěny pod terénem (S03a+S04)", "mj": "m²", "qty": 33, "urs": None, "status": "needs_lookup", "qty_formula": "= plocha stěn pod terénem 33 m² (OVĚŘIT)", "pozn": "Penetrace."},
+        {"suffix": "b", "popis": "2× HI a protiradonový pás z modif. asfaltu 2×4 mm — stěny pod terénem", "mj": "m²", "qty": 33, "urs": None, "status": "needs_lookup", "qty_formula": "= 33 m² (2 vrstvy ve spotřebě)", "pozn": "HI + protiradon (711). Materiál 2×4mm."},
+    ],
+    ("260217_sklad.HSV3.005", "HSV-3 Svislé konstrukce"): [
+        {"suffix": "a", "popis": "Drenážní nopová folie 20 mm — dodávka+montáž, stěny pod terénem (S03a+S04)", "mj": "m²", "qty": 36, "urs": None, "status": "needs_lookup", "qty_formula": "= 33 × 1.10 přesahy", "pozn": "Drenáž nopová folie (711)."},
     ],
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [

@@ -9,20 +9,20 @@
     "pattern_32": "Separate deliverable — does not modify File A audit or items.json"
   },
   "_frozen_baseline_preflight": {
-    "items_json_count": 232,
+    "items_json_count": 234,
     "expected": 212,
     "frozen_unchanged": false
   },
   "_summary": {
-    "frozen_items_total": 232,
-    "atomic_operations_total": 279,
-    "items_decomposed": 41,
-    "atomic_children_from_decomposition": 88,
+    "frozen_items_total": 234,
+    "atomic_operations_total": 282,
+    "items_decomposed": 43,
+    "atomic_children_from_decomposition": 91,
     "items_carried_1to1": 191,
     "atomic_per_kapitola": {
       "HSV-1 Zemní práce": 25,
       "HSV-2 Základové a ŽB": 19,
-      "HSV-3 Svislé konstrukce": 10,
+      "HSV-3 Svislé konstrukce": 13,
       "HSV-4 Vodorovné": 29,
       "HSV-5 Komunikace + schodiště": 1,
       "HSV-5 Komunikace + vjezd": 3,
@@ -58,7 +58,7 @@
       "VRN — Zařízení staveniště": 4
     },
     "familia_distribution": {
-      "(blank)": 40,
+      "(blank)": 43,
       "012": 1,
       "030": 13,
       "031": 3,
@@ -492,7 +492,7 @@
       "parent_kapitola": "HSV-7 Fasáda + zateplení",
       "parent_popis": "Sanační zateplení soklu — sanační izolační deska Styrcon 200 + lepící tmel (Lepstyr plus) + armovací vrstva s tkaninou +",
       "parent_mj": "m²",
-      "parent_qty": 23,
+      "parent_qty": 16,
       "n_atomic_children": 2,
       "atomic_children_ids": [
         "HSV7.007a",
@@ -504,7 +504,7 @@
       "parent_kapitola": "HSV-7 Fasáda + zateplení",
       "parent_popis": "Drenážní vrstva — nopová folie tl. 20 mm na suterénní stěnu pod úrovní terénu",
       "parent_mj": "m²",
-      "parent_qty": 23,
+      "parent_qty": 16,
       "n_atomic_children": 1,
       "atomic_children_ids": [
         "HSV7.008a"
@@ -515,7 +515,7 @@
       "parent_kapitola": "HSV-7 Fasáda + zateplení",
       "parent_popis": "Provětrávaná mezera s kotevním roštem 40 mm + keramický obklad 20 mm — sokl nad úrovní terénu",
       "parent_mj": "m²",
-      "parent_qty": 23,
+      "parent_qty": 16,
       "n_atomic_children": 2,
       "atomic_children_ids": [
         "HSV7.009a",
@@ -538,7 +538,7 @@
       "parent_kapitola": "HSV-6 Bourací práce",
       "parent_popis": "Demontáž stávajícího vnějšího keramického obkladu suterénní stěny (sokl) tl. 20 mm",
       "parent_mj": "m²",
-      "parent_qty": 23,
+      "parent_qty": 16,
       "n_atomic_children": 1,
       "atomic_children_ids": [
         "HSV6.018a"
@@ -611,6 +611,29 @@
       "n_atomic_children": 1,
       "atomic_children_ids": [
         "PSV95.003a"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260217_sklad.HSV3.004",
+      "parent_kapitola": "HSV-3 Svislé konstrukce",
+      "parent_popis": "Hydroizolace + protiradonová ochrana obvodových stěn (S03a) + opěrné stěny (S04) pod úrovní terénu — asfaltová penetrace",
+      "parent_mj": "m²",
+      "parent_qty": 33,
+      "n_atomic_children": 2,
+      "atomic_children_ids": [
+        "HSV3.004a",
+        "HSV3.004b"
+      ]
+    },
+    {
+      "parent_frozen_item_id": "260217_sklad.HSV3.005",
+      "parent_kapitola": "HSV-3 Svislé konstrukce",
+      "parent_popis": "Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny (S03a) + opěrnou stěnu (S04) pod úrovní terénu",
+      "parent_mj": "m²",
+      "parent_qty": 33,
+      "n_atomic_children": 1,
+      "atomic_children_ids": [
+        "HSV3.005a"
       ]
     }
   ],
@@ -945,7 +968,7 @@
       "atomic_id": "HSV1.005",
       "atomic_operace_popis": "Zhutněný štěrkopískový násyp pod podlahu skladu + štěrkopísek pro IPE patky",
       "mj": "m³",
-      "mnozstvi": 3.2,
+      "mnozstvi": 2.64,
       "urs_kod_kandidat": "174101101",
       "status": "needs_production_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV1.005",
@@ -953,7 +976,7 @@
       "realizuje_skladbu": [
         "S01_sklad"
       ],
-      "qty_formula": "podlaha sklad 21.2 m² × 0.15 m štěrku",
+      "qty_formula": "podlaha sklad 17.6 m² (legenda místností) × 0.15 m podkladní kamenná drť",
       "pozn": "Carried 1:1 (atomic — no decomposition needed)",
       "decomposition_type": "atomic_1to1"
     },
@@ -1281,7 +1304,7 @@
       "atomic_id": "HSV2.005",
       "atomic_operace_popis": "Štěrkopískové lože pod podlahu skladu + pod schodišťovou desku",
       "mj": "m³",
-      "mnozstvi": 2.12,
+      "mnozstvi": 1.76,
       "urs_kod_kandidat": "174101101",
       "status": "CROSS_DISCIPLINE_OK",
       "parent_frozen_item_id": "260217_sklad.HSV2.005",
@@ -1290,7 +1313,7 @@
         "S01_sklad",
         "S05_sklad"
       ],
-      "qty_formula": "21.2 × 0.10 = 2.12",
+      "qty_formula": "podlaha sklad 17.6 m² (legenda) × 0.10 m kladecí kamenná drť",
       "pozn": "Carried 1:1 (atomic — no decomposition needed)",
       "decomposition_type": "atomic_1to1"
     },
@@ -1775,7 +1798,7 @@
       "atomic_id": "HSV4.001",
       "atomic_operace_popis": "Dřevěné stropnice 100/160 mm á 625 mm primární zastřešení skladu — rezivo C24 fungicidní",
       "mj": "bm",
-      "mnozstvi": 33.9,
+      "mnozstvi": 36.74,
       "urs_kod_kandidat": "762341110",
       "status": "needs_production_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV4.001",
@@ -1783,7 +1806,7 @@
       "realizuje_skladbu": [
         "S02_sklad"
       ],
-      "qty_formula": "rozpon 3.34 × počet stropnic (6.35/0.625 = 10) = ~10 ks × 3.34 = 33.4",
+      "qty_formula": "6.35/0.625 = 10.16 → 11 ks × 3.34 m (rozpon 3.1 + uložení) = 36.74 bm",
       "pozn": "Carried 1:1 (atomic — no decomposition needed)",
       "decomposition_type": "atomic_1to1"
     },
@@ -5244,7 +5267,7 @@
       "atomic_id": "HSV7.007a",
       "atomic_operace_popis": "Montáž sanační izolační desky Styrcon 200 + armovací — sokl S03",
       "mj": "m²",
-      "mnozstvi": 23,
+      "mnozstvi": 16,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260219_dum.HSV7.007",
@@ -5252,7 +5275,7 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)",
+      "qty_formula": "= obvod 38.7 × 0.6 × řadovka 0.7 ≈ 16 (OVĚŘIT)",
       "pozn": "Montáž.",
       "decomposition_type": "fixture"
     },
@@ -5263,7 +5286,7 @@
       "atomic_id": "HSV7.007b",
       "atomic_operace_popis": "Sanační deska Styrcon 200 + lepící tmel + armovací stěrka+tkanina — materiál",
       "mj": "m²",
-      "mnozstvi": 24,
+      "mnozstvi": 17,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260219_dum.HSV7.007",
@@ -5271,7 +5294,7 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "qty_formula": "= 23 × 1.05",
+      "qty_formula": "= 16 × 1.05",
       "pozn": "Materiál.",
       "decomposition_type": "fixture"
     },
@@ -5282,7 +5305,7 @@
       "atomic_id": "HSV7.008a",
       "atomic_operace_popis": "Drenážní nopová folie 20 mm — dodávka+montáž, sokl pod terénem S03a",
       "mj": "m²",
-      "mnozstvi": 25,
+      "mnozstvi": 18,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260219_dum.HSV7.008",
@@ -5290,7 +5313,7 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "qty_formula": "= 23 × 1.10",
+      "qty_formula": "= 16 × 1.10",
       "pozn": "Montáž+materiál.",
       "decomposition_type": "fixture"
     },
@@ -5301,7 +5324,7 @@
       "atomic_id": "HSV7.009a",
       "atomic_operace_popis": "Kotevní rošt 40 mm provětraného soklu — montáž+materiál S03b",
       "mj": "m²",
-      "mnozstvi": 23,
+      "mnozstvi": 16,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260219_dum.HSV7.009",
@@ -5309,7 +5332,7 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "qty_formula": "= 23 (OVĚŘIT)",
+      "qty_formula": "= 16 (OVĚŘIT)",
       "pozn": "Rošt.",
       "decomposition_type": "fixture"
     },
@@ -5320,7 +5343,7 @@
       "atomic_id": "HSV7.009b",
       "atomic_operace_popis": "Keramický obklad soklu 20 mm — montáž+materiál",
       "mj": "m²",
-      "mnozstvi": 24,
+      "mnozstvi": 17,
       "urs_kod_kandidat": "781",
       "status": "family_only",
       "parent_frozen_item_id": "260219_dum.HSV7.009",
@@ -5328,7 +5351,7 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "qty_formula": "= 23 × 1.05",
+      "qty_formula": "= 16 × 1.05",
       "pozn": "Obklad.",
       "decomposition_type": "fixture"
     },
@@ -5358,7 +5381,7 @@
       "atomic_id": "HSV6.018a",
       "atomic_operace_popis": "Demontáž vnějšího keram. obkladu suterénu (sokl) 20 mm",
       "mj": "m²",
-      "mnozstvi": 23,
+      "mnozstvi": 16,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260219_dum.HSV6.018",
@@ -5366,7 +5389,7 @@
       "realizuje_skladbu": [
         "S03"
       ],
-      "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)",
+      "qty_formula": "= obvod 38.7 × 0.6 × řadovka 0.7 ≈ 16 (OVĚŘIT)",
       "pozn": "Bourání.",
       "decomposition_type": "fixture"
     },
@@ -5521,6 +5544,66 @@
       "realizuje_skladbu": [],
       "qty_formula": "= 1 soubor",
       "pozn": "PBŘ. Revize spalin NEDUBLOVAT (PSV73.007).",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 280,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "atomic_id": "HSV3.004a",
+      "atomic_operace_popis": "Asfaltová penetrace obvodových + opěrné stěny pod terénem (S03a+S04)",
+      "mj": "m²",
+      "mnozstvi": 33,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV3.004",
+      "parent_kapitola": "HSV-3 Svislé konstrukce",
+      "realizuje_skladbu": [
+        "S03a",
+        "S04"
+      ],
+      "qty_formula": "= plocha stěn pod terénem 33 m² (OVĚŘIT)",
+      "pozn": "Penetrace.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 281,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "atomic_id": "HSV3.004b",
+      "atomic_operace_popis": "2× HI a protiradonový pás z modif. asfaltu 2×4 mm — stěny pod terénem",
+      "mj": "m²",
+      "mnozstvi": 33,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV3.004",
+      "parent_kapitola": "HSV-3 Svislé konstrukce",
+      "realizuje_skladbu": [
+        "S03a",
+        "S04"
+      ],
+      "qty_formula": "= 33 m² (2 vrstvy ve spotřebě)",
+      "pozn": "HI + protiradon (711). Materiál 2×4mm.",
+      "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 282,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "atomic_id": "HSV3.005a",
+      "atomic_operace_popis": "Drenážní nopová folie 20 mm — dodávka+montáž, stěny pod terénem (S03a+S04)",
+      "mj": "m²",
+      "mnozstvi": 36,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV3.005",
+      "parent_kapitola": "HSV-3 Svislé konstrukce",
+      "realizuje_skladbu": [
+        "S03a",
+        "S04"
+      ],
+      "qty_formula": "= 33 × 1.10 přesahy",
+      "pozn": "Drenáž nopová folie (711).",
       "decomposition_type": "fixture"
     }
   ]
