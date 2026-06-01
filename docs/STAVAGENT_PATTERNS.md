@@ -1,11 +1,16 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-05-29 (terasa-miss anti-hallucination pass):
-Sequential 1..40 validated (no duplicates, no gaps).
-last_number: 40
-next_pattern: 41  ← use this for any new additions.
-last_audit: 2026-05-29
+Pattern numbering audit 2026-06-01 (krov leaf-binding pass):
+Sequential 1..41 validated (no duplicates, no gaps).
+last_number: 41
+next_pattern: 42  ← use this for any new additions.
+last_audit: 2026-06-01
+
+Added 2026-06-01 (RD Jáchymov krov leaf-binding, PRs #1264 + #1265):
+Pattern 41 (Montáž / materiál split — one work item → 1 labor leaf + N
+material leaves; family 6-digit code resolves labor only; judgment
+quantities flagged OVĚŘIT + exclusion list).
 
 Added 2026-05-29 (RD Jáchymov terasa 762 miss): Pattern 39 (Vision-first
 reading for drawings) + Pattern 40 (Host-delegated vision + MCP validation
@@ -1857,6 +1862,42 @@ The terasa miss happened in a Claude Code session reading the řez as text. Gene
 - Pattern 39 (Vision-first) — *what* the host must do
 - Pattern 31 (CEV) — MCP deterministic layers feed the cross-check
 - Pattern 29 (Source provenance) — the grounded fields the gate requires
+
+---
+
+## Pattern 41: Montáž / materiál split — one work item → 1 labor leaf + N material leaves
+
+**Source:** RD Jáchymov krov leaf-binding (2026-05-31 → 06-01, PRs #1264 krov members + #1265 svorníky tesařských spojů).
+
+### Problem
+The Czech ÚRS / KROS catalog prices **labor (montáž) separately from material**. A 6-digit *family* code resolves the **labor operation only**, priced per MJ of installed work:
+- `762332` = montáž krovů (m / m² of member)
+- `762085` = montáž svorníků/šroubů tesařských spojů (ks)
+
+The material it consumes is a **separate catalog line with its own code, its own MJ, and its own quantity** (řezivo m³, tyč závitová m, matice/podložky `100 ks`). Folding material into the montáž quantity — or treating one family code as "the whole item" — double-distorts both the unit and the price and makes the tender line unauditable.
+
+Second failure mode: quantities or specs that depend on **statika / tesařský detail** (svorník Ø M12, count 50) are *estimates*, but the labor code is *real*. Recording the code as "matched" while silently treating the estimate as fact hides the uncertainty — and a lone montáž line tends to **silently absorb adjacent scope** (kotvení pozednice, úhelníky, hřebíky) that has its own codes.
+
+### Solution
+1. **Decompose each physical work item into atomic operations** — exactly **one montáž (labor) leaf + N material leaves**, each carrying its own `urs_code` + `mj` + `qty` + `qty_formula`, stored as `atomic_decomposition` children. The parent items.json item keeps the headline montáž MJ + qty.
+   - Krov svorníky `HSV5.017`: montáž `762085112` (ks, 50) + tyč závitová `31197004` (m, 14 = 50×0.25×1.10) + matice `3111006` (100 ks, 1) + podložka `31121004` (100 ks, 1).
+   - Krov members `HSV5.001–006`: montáž `762332122/121` (m / m²) + řezivo `605…` (m³, with prořez %).
+2. **MJ of montáž ≠ MJ of material.** Montáž is per-member (m / ks / m²); material is per-volume / length / selling-unit (`100 ks`). Never reuse one quantity for both.
+3. **Material qty = engineering formula with explicit prořez / odpad** — řezivo ×1.10; závitová tyč = length × count × prořez; spojovací materiál = count × per-joint multiplier rounded to the selling unit (`100 ks`).
+4. **Judgment-driven quantities flagged honestly** — when count / diameter / length depends on statika or a detail absent from the source, the labor code stays `matched_catalog` but the item gets `mnozstvi_confidence ≤ 0.6` + a `status: OVĚŘIT` note **naming exactly what to confirm** (M12/M16, length, count dle statiky).
+5. **Explicit exclusion list** (`NEZAHRNUJE: …`) on the item so the montáž line cannot silently swallow adjacent scope that has its own codes (kotvení pozednice → samostatně, úhelníky `762086111` kg, hřebíky/vruty → pomocný materiál).
+
+### Invariant
+Every montáž leaf that consumes material has ≥ 1 sibling material leaf **with a different MJ**; no item's montáž qty equals its material qty unless the units are physically identical. Every OVĚŘIT item carries a **named verification target + an exclusion list** — never a bare estimate dressed as fact.
+
+### Anti-pattern
+One family code stands in for "the whole item" (labor + material merged into a single ks/m line). Or an estimated count (50 ks svorníků) recorded as `matched` with full confidence and no OVĚŘIT flag, letting the line quietly absorb kotvení / úhelníky / hřebíky scope.
+
+### Related
+- Pattern 11 (FTS5 + MJ equivalence) — matches each leaf to its catalog code; **this** pattern says *how many* leaves there are
+- Pattern 15 / 16 (Work-First / Universal Work Ontology) — the montáž/materiál split is the catalog-phase refinement of one work-ontology item into N catalog lines
+- Pattern 26 (Honest fallback) + Pattern 34 (Honest cost transparency) — OVĚŘIT-flagging applies the same honesty discipline to judgment quantities
+- Pattern 2 (Audit trail) — each material leaf needs its own `qty_formula`
 
 ---
 
