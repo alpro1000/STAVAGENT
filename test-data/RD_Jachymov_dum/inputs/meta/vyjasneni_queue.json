@@ -302,6 +302,58 @@
       "working_assumption": "NEPŘIDÁNO (mimo TZ — závisí na tom zda komín/prostupy procházejí novou střechou).",
       "next_action": "Karle, ověř zda komín nebo VZT/ZTI prostupy procházejí novou střechou → pokud ano, doplníme klempířské lemování (ks dle počtu prostupů).",
       "_source": "chatgpt_review_2026-05-29"
+    },
+    {
+      "id": 28,
+      "severity": "major",
+      "status": "open",
+      "category": "skladby_gap_verify_projektant",
+      "title": "S08 strop cihelná klemba mezi patry — plocha / poloha",
+      "context": "S08 je v legendě skladeb s plnou skladbou, ALE řez A-A ani B-B ji nepretíná (pretínají S07 trámový + S09 ocelobeton) a skladby_per_zone_v2.json jí nepřiřadil plochu (S06/S07/S09 plochu mají). Buď legenda generická (S08 se nepoužívá), nebo se použije v nesekcované oblasti.",
+      "blocks": [
+        "HSV4.018-021 suchá skladba S08 (qty=neurčeno)"
+      ],
+      "working_assumption": "Práce HSV4.018-021 ZALOŽENY s qty=null. Cihelná klemba 150 = stávající.",
+      "next_action": "Karle/projektante: má dům cihelnou klembu mezi patry (S08)? Pokud ano — kde (které místnosti) a jaká plocha m²? Doplníme množství.",
+      "_source": "skladby_audit_2026-06-01 + Řez A-A/B-B vision"
+    },
+    {
+      "id": 29,
+      "severity": "minor",
+      "status": "open",
+      "category": "skladby_gap_verify_projektant",
+      "title": "S12 podkroví — vnitřní omítka sádrová vs vápenocementová",
+      "context": "Skladba S12 (obvodová stěna podkroví) předepisuje vnitřní omítku SÁDROVOU stříkanou, ale PSV78 v items.json je vápenocementová jádrová + štuk (globální).",
+      "blocks": [],
+      "working_assumption": "PSV78 vápenocementová ponechána.",
+      "next_action": "Karle: v podkroví (3.NP) sádrová stříkaná omítka, nebo sjednotit na vápenocementovou?",
+      "_source": "skladby_audit_2026-06-01"
+    },
+    {
+      "id": 30,
+      "severity": "minor",
+      "status": "open",
+      "category": "bourani_rozsah_verify_projektant",
+      "title": "Otlučení stávajících vnitřních omítek (S01/S02/S03)",
+      "context": "Skladby S01-S03 stávající mají vnitřní omítky 10-15 mm. items.json nemá položku otlučení vnitřních omítek (jen příprava fasády HSV7.001). Záleží na rozsahu rekonstrukce — soudržné omítky mohou zůstat.",
+      "blocks": [
+        "BR1 otlučení vnitřních omítek"
+      ],
+      "working_assumption": "NEPŘIDÁNO (závisí na rozsahu — nevymýšlím plochu).",
+      "next_action": "Karle: otloukají se vnitřní omítky kompletně, nebo zůstávají soudržné části? Pokud bourat → doplníme m².",
+      "_source": "skladby_audit_2026-06-01"
+    },
+    {
+      "id": 31,
+      "severity": "minor",
+      "status": "open",
+      "category": "drift_verify_statika",
+      "title": "S05 betonová deska 1.NP — 120 mm (skladba) vs 150 mm (statika/items)",
+      "context": "Skladba S05 (návrh) uvádí betonovou desku vyztuženou 120 mm; items HSV2.012 má ŽB desku 150 mm (C25/30 XC2 + kari). Ponecháno 150 mm (statika vítězí nad skladbou).",
+      "blocks": [],
+      "working_assumption": "Ponecháno 150 mm dle HSV2.012 (statika).",
+      "next_action": "Projektante/statiku: potvrdit tl. ŽB desky 1.NP (120 vs 150 mm).",
+      "_source": "skladby_audit_2026-06-01"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",

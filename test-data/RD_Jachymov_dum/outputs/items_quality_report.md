@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
 **Generated:** 2026-06-01
-**Items checked:** 212 (active, excl. 4 deprecated)
-**Issues flagged:** 59
+**Items checked:** 224 (active, excl. 4 deprecated)
+**Issues flagged:** 74
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,15 +17,15 @@
 
 | Dimension | Issues |
 |---|--:|
-| subdodavatel_logical | 30 |
-| urs_family_consistency | 29 |
+| subdodavatel_logical | 42 |
+| urs_family_consistency | 32 |
 
-**By severity:** informational=59
+**By severity:** informational=74
 
 
 ---
 
-## urs_family_consistency (29 issues)
+## urs_family_consistency (32 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -58,10 +58,13 @@
 | `260219_dum.M21.007` | ⚪ informational | Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revi | URS kód 996019011 prvních digit '9' neodpovídá M-21 expected ['0', '2', '7'] — likely cross-category položka per Corpus  |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | URS kód 877315111 prvních digit '8' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
 | `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | URS kód 121301101 prvních digit '1' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus |
+| `260219_dum.HSV4.015` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový str | URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
+| `260219_dum.HSV4.017` | ⚪ informational | Tepelná/akustická izolace minerální vata výplň mezi ocelové  | URS kód 713121 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
+| `260219_dum.HSV4.019` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — suchá sklad | URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
 
 ---
 
-## subdodavatel_logical (30 issues)
+## subdodavatel_logical (42 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -87,11 +90,23 @@
 | `260219_dum.PSV77.004` | ⚪ informational | Nášlapná vrstva biodeska (smrk masiv) nebo OSB v 3.NP spací  | Subdodavatel 'biodeska_konstrukcni' neodpovídá PSV-77 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Ang |
 | `260219_dum.PSV95.002` | ⚪ informational | Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné | Subdodavatel 'VRN_management' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický  |
 | `260219_dum.M21.007` | ⚪ informational | Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revi | Subdodavatel 'revize_specialista' neodpovídá M-21 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglick |
-| `260219_dum.VRN.001` | ⚪ informational | Kontejnery na suť tříděnou velkoobjemové (beton/cihly, dřevo | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
-| `260219_dum.VRN.003` | ⚪ informational | Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné +  | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
+| `260219_dum.VRN.101` | ⚪ informational | Kontejnery na suť tříděnou velkoobjemové (beton/cihly, dřevo | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
+| `260219_dum.VRN.103` | ⚪ informational | Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné +  | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
 | `260217_sklad.VRN.001` | ⚪ informational | Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) aut | Subdodavatel 'prefa_bloky_specialista' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Ang |
 | `260217_sklad.VRN.002` | ⚪ informational | Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (dr | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | Subdodavatel 'izolater_HI' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
 | `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek d |
 | `260219_dum.HSV1.016` | ⚪ informational | Venkovní schody na terénu z betonových dílců do betonového l | Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
 | `260219_dum.HSV5.017` | ⚪ informational | Montáž svorníků / šroubů tesařských spojů krovu délky přes 1 | Subdodavatel 'tesar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dla |
+| `260219_dum.HSV4.015` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový str | Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260219_dum.HSV4.016` | ⚪ informational | Separační geotextilie pod suchý podsyp — trámový strop 1.NP/ | Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260219_dum.HSV4.017` | ⚪ informational | Tepelná/akustická izolace minerální vata výplň mezi ocelové  | Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260219_dum.HSV4.018` | ⚪ informational | Roznášecí sádrovláknité dílce Fermacell 2E22 tl. 25 mm — suc | Subdodavatel 'suchá_vystavba' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
+| `260219_dum.HSV4.019` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — suchá sklad | Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260219_dum.HSV4.020` | ⚪ informational | Vyrovnávací suchý podsyp keramzit/liapor + dřevěný rošt tl.  | Subdodavatel 'suchá_vystavba' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
+| `260219_dum.HSV4.021` | ⚪ informational | Separační vrstva pod suchý podsyp — nad cihelnou klembou S08 | Subdodavatel 'suchá_vystavba' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
+| `260219_dum.HSV7.007` | ⚪ informational | Sanační zateplení soklu — sanační izolační deska Styrcon 200 | Subdodavatel 'fasader' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek d |
+| `260219_dum.HSV7.008` | ⚪ informational | Drenážní vrstva — nopová folie tl. 20 mm na suterénní stěnu  | Subdodavatel 'izolater_HI' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260219_dum.HSV7.009` | ⚪ informational | Provětrávaná mezera s kotevním roštem 40 mm + keramický obkl | Subdodavatel 'obkladac' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
+| `260219_dum.HSV5.018` | ⚪ informational | Pojistná hydroizolační folie pod hliníkovou falcovanou kryti | Subdodavatel 'pokryvac' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
+| `260219_dum.HSV6.018` | ⚪ informational | Demontáž stávajícího vnějšího keramického obkladu suterénní  | Subdodavatel 'bourac' neodpovídá HSV-6 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |

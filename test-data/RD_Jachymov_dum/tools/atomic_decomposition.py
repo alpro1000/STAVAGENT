@@ -64,7 +64,7 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
     # PSV76.002 Truhlář = dřevěná POCHOZÍ vrstva terasy (terče + podklad = HSV1.005, split-by-trade).
     # ŘEZ C-C: prkna garapa 25 mm na dřevěném roštu z hranolů 50 mm. Rošt opraven hliníkový→dřevěný.
     # Situace: terasa (line-hatch zpevněné plochy) = 9.23 m² (dvorek dlažba = HSV1.004 = 16.54).
-    ("260219_dum.PSV76.002", "PSV-76 Truhlář"): [
+    ("260219_dum.PSV76.302", "PSV-76 Truhlář"): [
         {"suffix": "a", "popis": "Podkladní rošt z dřevěných hranolů 50 mm na rektifikovatelných terčích — terasa za opěrnou stěnou", "mj": "m²", "qty": 9.23, "urs": "762", "status": "family_only", "qty_formula": "= PSV76.002 plocha terasy 9.23 m² (situace měření)", "pozn": "ŘEZ C-C: dřevěný rošt z hranolů (NE hliníkový — oprava). Família 762 tesařské/truhlářské. Terče viz HSV1.005a."},
         {"suffix": "b", "popis": "Terasová dřevěná prkna garapa 145×25 mm — montáž na dřevěný rošt, terasa za opěrnou stěnou", "mj": "m²", "qty": 9.23, "urs": "762", "status": "family_only", "qty_formula": "= PSV76.002 plocha terasy 9.23 m² (situace měření)", "pozn": "Pochozí dřevěná vrstva (garapa prkna 25 mm). Família 762. Kód 771474112 byl WRONG domain (dlaždice) — odstraněn (Pattern 26)."},
     ],
@@ -97,6 +97,54 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "b", "popis": "Tyč závitová Pz 4.6 M12 — materiál svorníků krovu", "mj": "m", "qty": 14.0, "urs": "31197004", "status": "family_only", "qty_formula": "= 50 ks × 0.25 m × 1.10 prořez = 13.75 → 14 m", "pozn": "Materiál svorníku (31197004)."},
         {"suffix": "c", "popis": "Matice přesná šestihranná Pz DIN 934-8 M12", "mj": "100 ks", "qty": 1, "urs": "3111006", "status": "family_only", "qty_formula": "= 50 svorníků × 2 = 100 ks = 1×100ks", "pozn": "Matice (3111006), 2 na svorník."},
         {"suffix": "d", "popis": "Podložka pod dřevěnou konstrukci DIN 440 D 12 mm", "mj": "100 ks", "qty": 1, "urs": "31121004", "status": "family_only", "qty_formula": "= 50 svorníků × 2 = 100 ks = 1×100ks", "pozn": "Podložka (31121004), 2 na svorník."},
+    ],
+    # ===== SKLADBY GAPS 2026-06-01 (P41 montáž/materiál split) =====
+    ("260219_dum.HSV4.015", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Montáž kročejové izolace Isover T-P 30 mm — strop S07", "mj": "m²", "qty": 59.5, "urs": "713191", "status": "family_only", "qty_formula": "= plocha stropu S07", "pozn": "Montáž izolace."},
+        {"suffix": "b", "popis": "Deska kročejová Isover T-P 30 mm — materiál", "mj": "m²", "qty": 62.5, "urs": None, "status": "needs_lookup", "qty_formula": "= 59.5 × 1.05 prořez", "pozn": "Materiál izolace."},
+    ],
+    ("260219_dum.HSV4.016", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Separační geotextilie — dodávka + pokládka, strop S07", "mj": "m²", "qty": 65.5, "urs": None, "status": "needs_lookup", "qty_formula": "= 59.5 × 1.10 přesahy", "pozn": "Montáž+materiál."},
+    ],
+    ("260219_dum.HSV4.017", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Montáž min. vaty mezi ocel. nosníky — strop S09", "mj": "m²", "qty": 104.4, "urs": "713121", "status": "family_only", "qty_formula": "= plocha stropu S09", "pozn": "Montáž."},
+        {"suffix": "b", "popis": "Minerální vata 180/200 mm — materiál", "mj": "m²", "qty": 109.6, "urs": None, "status": "needs_lookup", "qty_formula": "= 104.4 × 1.05", "pozn": "Materiál."},
+    ],
+    ("260219_dum.HSV4.018", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Fermacell 2E22 25 mm — montáž+materiál, S08 (plocha neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV4.019", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Kročejová izolace 30 mm — montáž+materiál, S08 (neurčeno)", "mj": "m²", "qty": None, "urs": "713191", "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV4.020", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Suchý podsyp keramzit/liapor + dřevěný rošt 50 mm — S08 (neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV4.021", "HSV-4 Vodorovné"): [
+        {"suffix": "a", "popis": "Separační vrstva — S08 (neurčeno)", "mj": "m²", "qty": None, "urs": None, "status": "needs_lookup", "qty_formula": "neurčeno — V1", "pozn": "VYJASNĚNÍ V1."},
+    ],
+    ("260219_dum.HSV7.007", "HSV-7 Fasáda + zateplení"): [
+        {"suffix": "a", "popis": "Montáž sanační izolační desky Styrcon 200 + armovací — sokl S03", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)", "pozn": "Montáž."},
+        {"suffix": "b", "popis": "Sanační deska Styrcon 200 + lepící tmel + armovací stěrka+tkanina — materiál", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 × 1.05", "pozn": "Materiál."},
+    ],
+    ("260219_dum.HSV7.008", "HSV-7 Fasáda + zateplení"): [
+        {"suffix": "a", "popis": "Drenážní nopová folie 20 mm — dodávka+montáž, sokl pod terénem S03a", "mj": "m²", "qty": 25, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 × 1.10", "pozn": "Montáž+materiál."},
+    ],
+    ("260219_dum.HSV7.009", "HSV-7 Fasáda + zateplení"): [
+        {"suffix": "a", "popis": "Kotevní rošt 40 mm provětraného soklu — montáž+materiál S03b", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= 23 (OVĚŘIT)", "pozn": "Rošt."},
+        {"suffix": "b", "popis": "Keramický obklad soklu 20 mm — montáž+materiál", "mj": "m²", "qty": 24, "urs": "781", "status": "family_only", "qty_formula": "= 23 × 1.05", "pozn": "Obklad."},
+    ],
+    ("260219_dum.HSV5.018", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Pojistná HI folie pod Al krytinu — dodávka+montáž S10", "mj": "m²", "qty": 155, "urs": None, "status": "needs_lookup", "qty_formula": "= 140.94 × 1.10 přesahy", "pozn": "Montáž+materiál."},
+    ],
+    ("260219_dum.HSV6.018", "HSV-6 Bourací práce"): [
+        {"suffix": "a", "popis": "Demontáž vnějšího keram. obkladu suterénu (sokl) 20 mm", "mj": "m²", "qty": 23, "urs": None, "status": "needs_lookup", "qty_formula": "= obvod 38.7 × 0.6 ≈ 23 (OVĚŘIT)", "pozn": "Bourání."},
+    ],
+    ("260219_dum.HSV5.016", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Fasádní minerální izolace λ0.035 180 mm + kotvy fasády — vikýře S12b", "mj": "m²", "qty": 24, "urs": "713", "status": "family_only", "qty_formula": "= 4 vikýře × ~6 m²", "pozn": "Vrstva 1 izolace."},
+        {"suffix": "b", "popis": "Paropropustná fasádní folie s UV odolností — vikýře", "mj": "m²", "qty": 26, "urs": None, "status": "needs_lookup", "qty_formula": "= 24 × 1.10", "pozn": "Vrstva 2 folie."},
+        {"suffix": "c", "popis": "Svislý nosný rastr 40×60 mm + ochranný nátěr — vikýře", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= plocha fasády vikýřů", "pozn": "Vrstva 3 rastr."},
+        {"suffix": "d", "popis": "Celoplošné bednění prkna 25 mm — vikýře", "mj": "m²", "qty": 24, "urs": None, "status": "needs_lookup", "qty_formula": "= plocha fasády vikýřů", "pozn": "Vrstva 4 bednění."},
+        {"suffix": "e", "popis": "Falcovaný hliníkový plech — krycí vrstva vikýře", "mj": "m²", "qty": 26, "urs": None, "status": "needs_lookup", "qty_formula": "= 24 × 1.10", "pozn": "Vrstva 5 plech."},
     ],
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [
@@ -160,7 +208,7 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "c", "popis": "Sprchová / vanová baterie termostatická — dodávka + montáž", "mj": "ks", "qty": 3, "urs": "725", "status": "family_only", "qty_formula": "1× vana 1.NP + 2× sprcha 2.NP+3.NP", "pozn": "Baterie termostat (725 família)."},
         {"suffix": "d", "popis": "Dřezová baterie kuchyňská — dodávka + montáž", "mj": "ks", "qty": 2, "urs": "725", "status": "family_only", "qty_formula": "2× kuchyně (1.06 + 3.05)", "pozn": "Dřezová baterie (725 família)."},
     ],
-    ("260219_dum.PSV76.003", "PSV-76 Klempíř"): [
+    ("260219_dum.PSV76.103", "PSV-76 Klempíř"): [
         {"suffix": "a", "popis": "Dešťové svody Pzn Ø100 mm — 4 svody", "mj": "bm", "qty": 28.0, "urs": "764", "status": "family_only", "qty_formula": "4 svody × ~7 m výška = 28 bm", "pozn": "Klempířské svody (764 família)."},
         {"suffix": "b", "popis": "Podokapní žlaby Pzn — po obvodu střechy", "mj": "bm", "qty": 15.5, "urs": "764", "status": "family_only", "qty_formula": "= PSV76.003 celkem 43.5 bm − svody 28 bm = 15.5 bm žlaby", "pozn": "Klempířské žlaby (764 família)."},
     ],

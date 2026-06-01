@@ -151,7 +151,7 @@ def extend_var_e(wb) -> dict:
             if code_suffix in codes:
                 ids.append(it["id"].split(".", 1)[1])
                 if (it.get("mj") or "").lower() in ("m²", "m2") and it.get("mnozstvi"):
-                    total_area = max(total_area, float(it["mnozstvi"]))
+                    total_area = max(total_area, float(it["mnozstvi"] or 0))
         return ids, total_area, ", ".join(ids[:5])
 
     # Per S-code row

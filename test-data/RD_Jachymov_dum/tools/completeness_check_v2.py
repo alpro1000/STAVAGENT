@@ -292,16 +292,16 @@ def section_G_cross_element(items: list[dict], dxf: dict) -> dict:
     # Parapety: often measured in bm (linear meters per okno) not ks — accept both
     parapety_items = [it for it in items if "parapet" in norm(it["popis"]) and "spalet" not in norm(it["popis"])]
     parapety_ks_sum = sum(
-        it.get("mnozstvi", 0) for it in parapety_items
+        (it.get("mnozstvi") or 0) for it in parapety_items
         if it.get("mj") in ("ks", "kpl", "sada")
     )
     parapety_bm_sum = sum(
-        it.get("mnozstvi", 0) for it in parapety_items
+        (it.get("mnozstvi") or 0) for it in parapety_items
         if it.get("mj") in ("bm", "m")
     )
     parapety_has_items = bool(parapety_items)
     spalety_items = [it for it in items if "spalet" in norm(it["popis"])]
-    spalety_bm_sum = sum(it.get("mnozstvi", 0) for it in spalety_items if it.get("mj") in ("bm", "m"))
+    spalety_bm_sum = sum((it.get("mnozstvi") or 0) for it in spalety_items if it.get("mj") in ("bm", "m"))
     oplech_items = [it for it in items if "oplech" in norm(it["popis"]) and "parapet" in norm(it["popis"])]
     oplech_ks_sum = _sum_ks(oplech_items)
 
@@ -347,13 +347,13 @@ def section_G_cross_element(items: list[dict], dxf: dict) -> dict:
     # 3. Krov / krokve chain
     dxf_krokve_blocks = dxf.get("konstrukce", {}).get("krokve_KR_blocks", {}).get("insert_count", 0)
     krokve_items = [it for it in items if "krokv" in norm(it["popis"])]
-    krokve_bm = sum(it.get("mnozstvi", 0) for it in krokve_items if it.get("mj") == "bm")
+    krokve_bm = sum((it.get("mnozstvi") or 0) for it in krokve_items if it.get("mj") == "bm")
     klestiny_items = [it for it in items if "klestin" in norm(it["popis"])]
-    klestiny_bm = sum(it.get("mnozstvi", 0) for it in klestiny_items if it.get("mj") == "bm")
+    klestiny_bm = sum((it.get("mnozstvi") or 0) for it in klestiny_items if it.get("mj") == "bm")
     pozednice_items = [it for it in items if "pozednic" in norm(it["popis"])]
-    pozednice_bm = sum(it.get("mnozstvi", 0) for it in pozednice_items if it.get("mj") == "bm")
+    pozednice_bm = sum((it.get("mnozstvi") or 0) for it in pozednice_items if it.get("mj") == "bm")
     hea_items = [it for it in items if any(t in norm(it["popis"]) for t in ("hea", "vaznic"))]
-    hea_ks_or_bm = sum(it.get("mnozstvi", 0) for it in hea_items)
+    hea_ks_or_bm = sum((it.get("mnozstvi") or 0) for it in hea_items)
 
     chains["krokve"] = {
         "dxf_krokve_blocks_count": dxf_krokve_blocks,
@@ -385,7 +385,7 @@ def section_G_cross_element(items: list[dict], dxf: dict) -> dict:
     ]
     sanit_items_ks = _sum_ks(sanit_items)
     rozvody_voda_items = [it for it in items if "vodovod" in norm(it["popis"]) or "rozvod vod" in norm(it["popis"])]
-    rozvody_voda_bm = sum(it.get("mnozstvi", 0) for it in rozvody_voda_items if it.get("mj") in ("bm", "m"))
+    rozvody_voda_bm = sum((it.get("mnozstvi") or 0) for it in rozvody_voda_items if it.get("mj") in ("bm", "m"))
 
     chains["sanit"] = {
         "dxf_sanit_count": dxf_sanit_count,
@@ -402,7 +402,7 @@ def section_G_cross_element(items: list[dict], dxf: dict) -> dict:
 
 def _sum_ks(items: list[dict]) -> float:
     """Sum mnozstvi for items where mj indicates 'ks'."""
-    return sum(it.get("mnozstvi", 0) for it in items if it.get("mj") in ("ks", "kpl", "sada"))
+    return sum((it.get("mnozstvi") or 0) for it in items if it.get("mj") in ("ks", "kpl", "sada"))
 
 
 def _delta_pct(actual: float, expected: float) -> float:
@@ -487,9 +487,9 @@ def section_H_material_balance(items: list[dict], dxf: dict) -> dict:
             t = item_text(it)
             if any(norm(k) in t for k in kws) and any(t2 in t for t2 in ["podlah", "naslapn"]):
                 if it.get("objekt") == "260219_dum":
-                    sd += it.get("mnozstvi", 0)
+                    sd += (it.get("mnozstvi") or 0)
                 elif it.get("objekt") == "260217_sklad":
-                    ss += it.get("mnozstvi", 0)
+                    ss += (it.get("mnozstvi") or 0)
         floor_sums_dum[bucket] = sd
         floor_sums_sklad[bucket] = ss
 
@@ -529,7 +529,7 @@ def section_H_material_balance(items: list[dict], dxf: dict) -> dict:
             if exclude and any(norm(e) in popis_norm for e in exclude):
                 continue
             if it.get("mj") in ("m²", "m2"):
-                s += it.get("mnozstvi", 0)
+                s += (it.get("mnozstvi") or 0)
         etics[label] = s
     out["fasada_etics"] = {
         "per_kategorie_m2": etics,
@@ -562,10 +562,10 @@ def section_H_material_balance(items: list[dict], dxf: dict) -> dict:
             obklad_items.append(it)
         elif "omitk" in p and not any(x in p for x in ("fasad", "tenkovrstv")):
             omitka_items.append(it)
-    omitka_sum = sum(it.get("mnozstvi", 0) for it in omitka_items)
-    vymal_sum = sum(it.get("mnozstvi", 0) for it in vymal_items)
-    obklad_sum = sum(it.get("mnozstvi", 0) for it in obklad_items)
-    sdk_sum = sum(it.get("mnozstvi", 0) for it in sdk_items)
+    omitka_sum = sum((it.get("mnozstvi") or 0) for it in omitka_items)
+    vymal_sum = sum((it.get("mnozstvi") or 0) for it in vymal_items)
+    obklad_sum = sum((it.get("mnozstvi") or 0) for it in obklad_items)
+    sdk_sum = sum((it.get("mnozstvi") or 0) for it in sdk_items)
 
     # Total paint-able surface = interior omítka (stěny) + SDK podhled (stropy)
     paintable_total = omitka_sum + sdk_sum
@@ -641,7 +641,7 @@ def section_I_cost_ratio(items: list[dict]) -> dict:
         rate = METHVIN_RATES_CZK.get(kapitola)
         if rate is None:
             continue
-        qty = it.get("mnozstvi", 0)
+        qty = (it.get("mnozstvi") or 0)
         if not qty:
             continue
         per_kapitola[kapitola] += qty * rate
