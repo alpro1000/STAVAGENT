@@ -347,6 +347,30 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+
+## 2026-06-01 — Session: Výměry-First + H-BLOK count + vymery_souhrn 38 místností
+**Rozhodnuto:**
+- vymery_souhrn.json kompletně doplněn: 38 jednotek (32 measured, 4 derived, 2 estimate)
+  — všechny místnosti 1.PP/1.NP/2.NP/3.NP + dům prvky (fasáda, sokl, střecha) + sklad prvky
+- H-BLOK Standard count opraveno 60→18 ks:
+  web-ověřeno Herkul H-BLOK Standard líc 1800×600 mm = 1.08 m²/blok; 19.05/1.08=17.6→18 ks
+  (layout 4×5=20 ks s řezy — poznámka ve formula); OVĚŘIT definitiv u Herkul zachován
+- Regenerace 11 kroků: All OK, docx==queue(31)
+- Commit + push: 6b3ec695 on claude/busy-einstein-zMx5F
+
+**Odmítnuto:**
+- Tech list přímo z hblok.cz (403 Forbidden); použito cross-ref BB6 1800×600 z web search
+
+**Otevřené otázky:**
+- OVĚŘIT H-BLOK definitiv: potvrdit 1800×600mm přímo u Herkul a.s.
+- Světlé výšky místností: použity odhady z řezů (OVĚŘIT měřením na stavbě)
+- URS matching pro materiál-legs (needs_lookup): part 5b stále čeká
+
+**Co dál:**
+- Part 5b URS/KROS catalog matching (189 položky → urs_code_proposed)
+- Vyjasnění queue: 31 položek pro Karla Šmída
+
+
 > Each session adds a section here. Format:
 > `## YYYY-MM-DD — Session: {topic}` + Rozhodnuto / Odmítnuto / Otevřené otázky / Co dál
 

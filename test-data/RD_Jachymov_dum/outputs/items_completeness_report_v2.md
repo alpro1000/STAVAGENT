@@ -149,10 +149,10 @@ Legend: ✓=hit | flr=covered_at_floor_level | glb=covered_globally | ⚪=N/A | 
 
 | Gate | Estimate Kč | % of total | Typical range | Verdict |
 |---|--:|--:|---|---|
-| HSV | 50,525,079 | 62.7% | 45–55% | OUT OF RANGE (typical 45-55%) |
+| HSV | 50,420,079 | 62.6% | 45–55% | OUT OF RANGE (typical 45-55%) |
 | PSV | 9,416,469 | 11.7% | 25–35% | OUT OF RANGE (typical 25-35%) |
 | TZB | 2,439,000 | 3.0% | 15–20% | OUT OF RANGE (typical 15-20%) |
-| VRN | 18,240,000 | 22.6% | 5–10% | OUT OF RANGE (typical 5-10%) |
+| VRN | 18,240,000 | 22.7% | 5–10% | OUT OF RANGE (typical 5-10%) |
 
 ---
 

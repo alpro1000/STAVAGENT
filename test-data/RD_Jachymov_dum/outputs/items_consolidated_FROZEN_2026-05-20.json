@@ -1291,16 +1291,16 @@
       "subkapitola": "H-BLOK opěrná stěna",
       "popis": "Zadní opěrná stěna — prefabrikované betonové bloky Herkul H-BLOK Standard, vazba běhounová s posunem 0.5",
       "mj": "ks",
-      "mnozstvi": 60,
-      "mnozstvi_formula": "opěrná stěna S04 face 6.35 × 3.0 m (řez A-A: stěna 3000 + zákl. 1000) = 19.05 m² ÷ ~0.32 m²/blok ≈ 60 ks (OVĚŘIT rozměr H-BLOK z tech. listu)",
-      "mnozstvi_confidence": 0.75,
+      "mnozstvi": 18,
+      "mnozstvi_formula": "S04 líc 6.35 × 3.0 m = 19.05 m² (řez A-A measured) ÷ ~1.08 m²/blok = 17.6 → 18 ks. POZOR: rozměr bloku 1800×600 mm je ODHAD z analogie (web BB6 stejných gabaritů + AI-souhrn), NE z Herkul tech. listu napřímo (hblok.cz nedostupný). H-BLOK má interlocking profil — modul může být jiný. OVĚŘIT u Herkul.",
+      "mnozstvi_confidence": 0.82,
       "urs_code_proposed": "311233815",
       "urs_alternatives": [
         "317143811"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §[19] tech. list H-BLOK Standard Herkul a.s. (Obrnice) + řez A-A výška 3000",
+      "source": "TZ statika sklad §[19] H-BLOK Standard Herkul (Obrnice). Rozměr bloku NEověřen z tech. listu — odhad 1800×600 mm z web-analogie (BB6 stejný gabarit). Plocha líce 19.05 m² je measured (řez A-A); count 18 ks je estimate závislý na rozměru bloku.",
       "subdodavatel": "prefa_bloky_specialista",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -1311,8 +1311,8 @@
         "S04_sklad"
       ],
       "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
-      "mnozstvi_status": "count 60 ks odhad — face 19.05 m² (výška 3.0 m measured); OVĚŘIT rozměr bloku",
-      "_audit_gap_fixed": "PREFA_HEIGHT3.0_2026-06-01"
+      "mnozstvi_status": "count 18 ks = ESTIMATE (plocha 19.05 m² measured, ale rozměr bloku 1800×600 mm odhad z web-analogie BB6, NE Herkul tech list); OVĚŘIT rozměr u Herkul a.s.",
+      "_audit_gap_fixed": "HBLOK_ROZMERY_ESTIMATE_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
