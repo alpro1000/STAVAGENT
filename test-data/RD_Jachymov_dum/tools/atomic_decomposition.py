@@ -171,7 +171,8 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Lepení + kotvení desek EPS 70F grey λ=0.032 tl. 160 mm — ETICS kontaktní zateplení fasády", "mj": "m²", "qty": 276.7, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.002 plocha fasády 276.7 m²", "pozn": "Lepení+kotvení EPS (713/622 família). Leaf dle tl. 160 mm — verify."},
-        {"suffix": "b", "popis": "Armovací vrstva — výztužná síťka + lepicí stěrka (zatírací) na ETICS", "mj": "m²", "qty": 276.7, "urs": "622", "status": "family_only", "qty_formula": "= HSV7.002 plocha 276.7 m²", "pozn": "Armovací vrstva síťka+stěrka (622 família). Finální omítka je samostatně HSV7.006."},
+        {"suffix": "b", "popis": "Armovací vrstva ETICS — lepicí/stěrková hmota (zatírací) + vmáčknutí tkaniny", "mj": "m²", "qty": 276.7, "urs": "622", "status": "family_only", "qty_formula": "= HSV7.002 plocha 276.7 m²", "pozn": "Stěrková hmota armovací vrstvy (622 família). Pletivo viz suffix c."},
+        {"suffix": "c", "popis": "Výztužná síťka — sklovláknité pletivo vtlačené do tmelu, stěn (ETICS)", "mj": "m²", "qty": 276.7, "urs": "622142001", "status": "leaf_verified", "qty_formula": "= HSV7.002 plocha 276.7 m² (přesahy v spotřebě)", "pozn": "ÚRS 622142001 — uživatelem ověřeno z KROS katalogu (Pletivo vnějších ploch sklovláknité, stěn, m²)."},
     ],
     ("260219_dum.HSV7.003", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Lepení + kotvení desek XPS λ=0.034 tl. 120 mm + soklový profil — ETICS sokl", "mj": "m²", "qty": 13.5, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.003 plocha soklu 13.5 m²", "pozn": "Sokl XPS lepení + soklový profil (713/622 família)."},
