@@ -370,6 +370,20 @@
       "working_assumption": "Ponecháno TČ vzduch-vzduch / multisplit (PSV73.005/006) dle převažující části B zprávy.",
       "next_action": "Projektante: potvrďte systém vytápění — TČ vzduch-vzduch (multisplit, bez otopné vody) NEBO TČ vzduch/voda (radiátory/podlahovka)? Ovlivní PSV73 + rozvody.",
       "_source": "B zpráva crosscheck 2026-06-01 (ChatGPT review)"
+    },
+    {
+      "id": 33,
+      "severity": "minor",
+      "status": "open",
+      "category": "vykop_verify_statika",
+      "title": "Sklad výkop — svahovaná jáma 1:0,5 v prudkém svahu (hloubka >2 m)",
+      "context": "Sklad je zasazen do prudkého svahu. Statika D.2.1: 'Stavební jáma bude svahovaná, přípustný sklon dočasných výkopů 1:0,5 (F4)' — řešeno SVAHOVÁNÍM, ne pažením (HSV1.006 pažení do 2 m je DŮM). Sklad jámy jsou nezapažené (správně). Otevřené: zda objem hloubení 260217_sklad.HSV1.002 zahrnuje přídavek za svahování 1:0,5 a zda je v prudkém svahu dostupný dočasný zábor/prostor pro svah.",
+      "blocks": [
+        "260217_sklad.HSV1.002 hloubení jam (objem vs svahování)"
+      ],
+      "working_assumption": "Jáma svahovaná 1:0,5 (statika). Pažení sklad NEPŘIDÁNO. Rýhy přípojek pažit dle BOZP.",
+      "next_action": "Statiku/projektante: potvrďte, že objem výkopu skladu počítá se svahováním 1:0,5 + je dostupný prostor pro svah v prudkém svahu; pažení jen rýhy přípojek dle BOZP?",
+      "_source": "D.2.1 TZ statika sklad §4.2 + ChatGPT review 2026-06-01"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",
