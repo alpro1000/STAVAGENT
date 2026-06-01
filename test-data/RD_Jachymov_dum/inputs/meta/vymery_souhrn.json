@@ -1,0 +1,30 @@
+{
+  "_schema": "vymery_souhrn_v1",
+  "_purpose": "VÝMĚRY-First register (Pattern 45) — měřená báze pro qty prací. Zdroj výkresy + legendy + řezy.",
+  "_generated_for": "RD Jáchymov dům 260219 + sklad 260217",
+  "rows": [
+    {"jednotka":"0.01 schodiště","objekt":"dům 1.PP","plocha_m2":3.4,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S04/S06","zdroj":"půdorys 1.PP stav","status":"measured"},
+    {"jednotka":"0.03 sklep 1","objekt":"dům 1.PP","plocha_m2":22.2,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S04","zdroj":"půdorys 1.PP stav","status":"measured"},
+    {"jednotka":"1.01 vstup+chodba","objekt":"dům 1.NP návrh","plocha_m2":9.1,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S05/S07","zdroj":"půdorys 1.NP návrh","status":"measured"},
+    {"jednotka":"1.04 obývací+kuchyně","objekt":"dům 1.NP návrh","plocha_m2":24.4,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S05/S07","zdroj":"půdorys 1.NP návrh","status":"measured"},
+    {"jednotka":"1.05 ložnice","objekt":"dům 1.NP návrh","plocha_m2":14.5,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S05/S07","zdroj":"půdorys 1.NP návrh","status":"measured"},
+    {"jednotka":"2.05 společný pokoj","objekt":"dům 2.NP návrh","plocha_m2":22.1,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S07/S09","zdroj":"půdorys 2.NP návrh","status":"measured"},
+    {"jednotka":"2.07 pokoj II","objekt":"dům 2.NP návrh","plocha_m2":14.4,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S07/S09","zdroj":"půdorys 2.NP návrh","status":"measured"},
+    {"jednotka":"3.05 obývací+kuchyně","objekt":"dům 3.NP návrh","plocha_m2":32.8,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S09/S10","zdroj":"půdorys 3.NP návrh","status":"measured"},
+    {"jednotka":"3.06 ložnice","objekt":"dům 3.NP návrh","plocha_m2":12.8,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S09/S10","zdroj":"půdorys 3.NP návrh","status":"measured"},
+    {"jednotka":"Σ byt 1.NP/2.NP/3.NP","objekt":"dům návrh","plocha_m2":150.6,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"—","zdroj":"48.2+49.6+52.8","status":"derived"},
+    {"jednotka":"Fasáda ETICS (S01/S12a)","objekt":"dům — prvek","plocha_m2":276.7,"svetla_vyska_m":13.0,"obvod_m":38.7,"objem_m3":null,"skladba":"S01 ETICS","zdroj":"38.7×0.55 volná×13.0","status":"derived"},
+    {"jednotka":"Sokl (S03)","objekt":"dům — prvek","plocha_m2":16.0,"svetla_vyska_m":0.6,"obvod_m":38.7,"objem_m3":null,"skladba":"S03 sanační","zdroj":"38.7×0.6×řadovka0.7","status":"estimate"},
+    {"jednotka":"Strop trámový S07","objekt":"dům — prvek","plocha_m2":59.5,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S07","zdroj":"skladby_per_zone","status":"measured"},
+    {"jednotka":"Strop ocelobeton S09","objekt":"dům — prvek","plocha_m2":104.4,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S09","zdroj":"skladby_per_zone","status":"measured"},
+    {"jednotka":"Střecha S10","objekt":"dům — prvek","plocha_m2":140.94,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S10","zdroj":"skladby_per_zone","status":"measured"},
+    {"jednotka":"Krov krokve","objekt":"dům — prvek","plocha_m2":null,"svetla_vyska_m":null,"obvod_m":156.0,"objem_m3":null,"skladba":"S10","zdroj":"krov výkres (bm)","status":"measured"},
+
+    {"jednotka":"0.01 sklad zahr. techniky","objekt":"sklad — místnost","plocha_m2":17.6,"svetla_vyska_m":2.68,"obvod_m":null,"objem_m3":null,"skladba":"S01 podlaha","zdroj":"legenda místností + řez B-B","status":"measured"},
+    {"jednotka":"1.01 parking stání","objekt":"sklad — střecha","plocha_m2":44.6,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S02 deck","zdroj":"legenda místností (D.1.1.01)","status":"measured"},
+    {"jednotka":"1.02 schodiště","objekt":"sklad","plocha_m2":5.5,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S05","zdroj":"legenda (9×179.5×250)","status":"measured"},
+    {"jednotka":"Opěrná stěna S04 (H-BLOK)","objekt":"sklad — prvek","plocha_m2":19.05,"svetla_vyska_m":3.0,"obvod_m":6.35,"objem_m3":11.43,"skladba":"S04 prefa 600","zdroj":"řez A-A: stěna 3000 + zákl. 1000","status":"measured"},
+    {"jednotka":"Obvodové stěny S03a/b","objekt":"sklad — prvek","plocha_m2":46.5,"svetla_vyska_m":2.4,"obvod_m":19.4,"objem_m3":null,"skladba":"S03 ztrac. bednění 250","zdroj":"obvod 19.4 × výška 2.4","status":"derived"},
+    {"jednotka":"Stěny pod terénem (HI) S03a+S04","objekt":"sklad — prvek","plocha_m2":33.0,"svetla_vyska_m":null,"obvod_m":null,"objem_m3":null,"skladba":"S03a+S04 HI/drenáž","zdroj":"S04 19 + S03a 14 (řez)","status":"estimate"}
+  ]
+}
