@@ -91,6 +91,13 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "a", "popis": "Montáž námětků 60/100 mm — vázaná konstrukce krovu pomocí ocelových spojek (průřez 60 cm², přes 50 do 120)", "mj": "m", "qty": 19.2, "urs": "762332121", "status": "carried_verified", "qty_formula": "= HSV5.004 délka námětků 19.2 bm", "pozn": "Montáž 762332121 (206 Kč/m, KROS)."},
         {"suffix": "b", "popis": "Dodávka hranolového řeziva C24 pro námětky 60/100 mm vč. 10 % prořezu + impregnace", "mj": "m³", "qty": 0.127, "urs": "605", "status": "needs_lookup", "qty_formula": "= 19.2 × 0.06 × 0.10 × 1.10 = 0.127 m³", "pozn": "Hranol řezivo 605 família — leaf dle krátké délky <6 m (60512136 je 6-8 m). Verify."},
     ],
+    # KROV svorníky — montáž 762085112 (ks) + materiál (tyč závitová m + matice/podložky 100 ks). OVĚŘIT M12 dle statiky.
+    ("260219_dum.HSV5.017", "HSV-5 Krov + střecha"): [
+        {"suffix": "a", "popis": "Montáž svorníků/šroubů tesařských spojů krovu délky přes 150 do 300 mm — spoje kleštin 2×60/180 s krokvemi", "mj": "ks", "qty": 50, "urs": "762085112", "status": "carried_verified", "qty_formula": "= HSV5.017 počet svorníků 50 ks (11 pozic × 2 konce × 2)", "pozn": "Montáž 762085112. OVĚŘIT M12/M16 + délku dle statiky/tesařského detailu."},
+        {"suffix": "b", "popis": "Tyč závitová Pz 4.6 M12 — materiál svorníků krovu", "mj": "m", "qty": 14.0, "urs": "31197004", "status": "family_only", "qty_formula": "= 50 ks × 0.25 m × 1.10 prořez = 13.75 → 14 m", "pozn": "Materiál svorníku (31197004)."},
+        {"suffix": "c", "popis": "Matice přesná šestihranná Pz DIN 934-8 M12", "mj": "100 ks", "qty": 1, "urs": "3111006", "status": "family_only", "qty_formula": "= 50 svorníků × 2 = 100 ks = 1×100ks", "pozn": "Matice (3111006), 2 na svorník."},
+        {"suffix": "d", "popis": "Podložka pod dřevěnou konstrukci DIN 440 D 12 mm", "mj": "100 ks", "qty": 1, "urs": "31121004", "status": "family_only", "qty_formula": "= 50 svorníků × 2 = 100 ks = 1×100ks", "pozn": "Podložka (31121004), 2 na svorník."},
+    ],
     # HSV2.012 — KEPT ATOMIC (kari výztuž = separate HSV2.013). Not in DECOMP.
     ("260219_dum.HSV7.002", "HSV-7 Fasáda ETICS"): [
         {"suffix": "a", "popis": "Lepení + kotvení desek EPS 70F grey λ=0.032 tl. 160 mm — ETICS kontaktní zateplení fasády", "mj": "m²", "qty": 276.7, "urs": "713", "status": "family_only", "qty_formula": "= HSV7.002 plocha fasády 276.7 m²", "pozn": "Lepení+kotvení EPS (713/622 família). Leaf dle tl. 160 mm — verify."},

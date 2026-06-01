@@ -16,9 +16,9 @@
     "URS vyber audit"
   ],
   "sheet_count": 5,
-  "active_items": 211,
+  "active_items": 212,
   "items_per_objekt": {
-    "260219": 183,
+    "260219": 184,
     "260217": 28
   },
   "excluded_deprecated": [
@@ -44,7 +44,7 @@
     "violations": []
   },
   "per_so_cena_ranges": {
-    "SO_260219_Dum": "I53:I449",
+    "SO_260219_Dum": "I53:I451",
     "SO_260217_Sklad": "I33:I98"
   }
 }

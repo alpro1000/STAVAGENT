@@ -3,10 +3,10 @@
   "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01.xlsx",
   "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01_v2.xlsx",
   "totals": {
-    "total": 215,
-    "active": 211,
+    "total": 216,
+    "active": 212,
     "deprecated": 4,
-    "dum_active": 183,
+    "dum_active": 184,
     "sklad_active": 28,
     "otazky_total": 21,
     "patterns": 20,
@@ -15,7 +15,7 @@
   },
   "souhrn_changes": [],
   "var_b_dum_notes": [
-    "187 rows enriched (of 187 data rows)"
+    "188 rows enriched (of 188 data rows)"
   ],
   "var_b_sklad_notes": [
     "28 rows enriched (of 28 data rows)"
