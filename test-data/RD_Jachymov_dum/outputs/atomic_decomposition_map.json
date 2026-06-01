@@ -2597,7 +2597,7 @@
       "realizuje_skladbu": [
         "S04_sklad"
       ],
-      "qty_formula": "S04 líc 6.35 × 3.0 m = 19.05 m² ÷ 1.08 m²/blok (H-BLOK Standard 1800×600mm líc, web-ověřeno) = 17.6 → 18 ks; layout: 4 bloky/řada × 5 řad = 20 ks (s řezy) — použito 18 ks plocha-přesné",
+      "qty_formula": "S04 líc 6.35 × 3.0 m = 19.05 m² (řez A-A measured) ÷ ~1.08 m²/blok = 17.6 → 18 ks. POZOR: rozměr bloku 1800×600 mm je ODHAD z analogie (web BB6 stejných gabaritů + AI-souhrn), NE z Herkul tech. listu napřímo (hblok.cz nedostupný). H-BLOK má interlocking profil — modul může být jiný. OVĚŘIT u Herkul.",
       "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
       "decomposition_type": "atomic_1to1"
     },
