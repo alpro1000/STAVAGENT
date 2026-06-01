@@ -55,9 +55,8 @@ def test_side_effect_level_has_six_values():
     }
 
 
-def test_nine_workflow_tools_have_manifests():
+def test_workflow_tools_have_manifests():
     for tool in (
-        "read_project_documentation",
         "analyze_construction_document",
         "parse_construction_budget",
         "classify_construction_element",
@@ -66,6 +65,8 @@ def test_nine_workflow_tools_have_manifests():
         "find_urs_code",
         "find_otskp_code",
         "search_czech_construction_norms",
+        "detect_object_type",
+        "export_soupis",
     ):
         assert get_manifest(tool) is not None, tool
 

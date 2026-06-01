@@ -74,6 +74,9 @@ EXPECTED_TOOLS = [
     "uep_get_coverage_matrix",
     "uep_get_reconciliation_rules",
     "uep_get_dwg_conversion_status",
+    # TASK_MCP_DetectType_and_Export — W3b detector as a tool + first deliverable.
+    "detect_object_type",
+    "export_soupis",
 ]
 
 

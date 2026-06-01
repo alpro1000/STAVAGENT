@@ -1211,6 +1211,16 @@ TOOL_DESCRIPTIONS = {
         "+ LibreDWG binárek na PATH. Vrací status fallback řetězce + operátorské "
         "doporučení pro deployment."
     ),
+    "detect_object_type": (
+        "Určí typ stavebního objektu (most / opěrná zeď / pozemní stavba) z názvu "
+        "objektu a věty charakteristiky — deterministicky, bez jazykového modelu. "
+        "Nese _source s polem, které volbu určilo."
+    ),
+    "export_soupis": (
+        "Vyexportuje dělíverabl — soupis prací v Excelu (KROS formát) ze "
+        "strukturovaného seznamu položek. Deterministický render; provenience "
+        "(_source) zachována v metadatech odpovědi, KROS list zůstává čistý."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -1231,6 +1241,8 @@ TOOL_ORDER = [
     "uep_get_coverage_matrix",
     "uep_get_reconciliation_rules",
     "uep_get_dwg_conversion_status",
+    "detect_object_type",
+    "export_soupis",
 ]
 
 
@@ -1460,6 +1472,56 @@ async def rest_advisor(
 
     from app.mcp.tools.advisor import get_construction_advisor
     return await get_construction_advisor(**body.model_dump())
+
+
+@router.get("/tools/detect-object-type")
+async def rest_detect_object_type(
+    object_name: str,
+    charakteristika: str = "",
+    authorization: Optional[str] = Header(None),
+):
+    """Detect construction object type (free tool, no auth required).
+
+    Deterministic — name + charakteristika only, no LLM. Returns object_type
+    (bridge | retaining_wall | building | None) + `_source`.
+    """
+    from app.mcp.tools.detect_object_type import detect_object_type
+    return await detect_object_type(
+        object_name=object_name, charakteristika=charakteristika
+    )
+
+
+class ExportSoupisRequest(BaseModel):
+    # Structured work items (typically create_work_breakdown output). Optional so a
+    # project_id-only call can load a stored breakdown.
+    items: Optional[list[dict]] = None
+    project_id: Optional[str] = None
+    deliverable: str = "soupis_praci"
+    # Opt-in stage gating: a supplied session_id activates the policy gateway
+    # (export_soupis is allowed in COMMITTED via RE_EXPORT_ALLOW_LIST).
+    session_id: Optional[str] = None
+
+
+@router.post("/tools/export-soupis")
+async def rest_export_soupis(
+    body: ExportSoupisRequest,
+    authorization: Optional[str] = Header(None),
+):
+    """Export the soupis-prací deliverable to xlsx (10 credits)."""
+    # Single server-side policy enforcement point (tools stay dumb). Session-less
+    # calls pass through; a supplied session_id activates stage gating.
+    from app.mcp.stage_gating_gateway import enforce_or_raise
+    await enforce_or_raise(tool_name="export_soupis", session_id=body.session_id)
+
+    api_key = _extract_bearer(authorization)
+    credit_check = mcp_auth.check_credits(api_key or "", "export_soupis")
+    if not credit_check["ok"]:
+        raise HTTPException(status_code=402, detail=credit_check["error"])
+
+    from app.mcp.tools.export import export_soupis
+    return await export_soupis(
+        items=body.items, project_id=body.project_id, deliverable=body.deliverable
+    )
 
 
 # ── Helper ───────────────────────────────────────────────────────────────────

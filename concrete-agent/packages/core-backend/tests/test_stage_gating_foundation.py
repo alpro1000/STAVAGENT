@@ -93,7 +93,7 @@ def test_loader_parses_all_states_and_tools():
     for state in WorkflowState:
         assert state in cfg.tools_by_state
     # _all_stages tools are merged into every state.
-    assert "read_project_documentation" in cfg.tools_allowed_in(
+    assert "parse_construction_budget" in cfg.tools_allowed_in(
         WorkflowState.CATALOG_BINDING
     )
     # Catalog tools only in CATALOG_BINDING.

@@ -71,19 +71,6 @@ class ToolManifest:
 # All current tools are read-only/deterministic (side_effect_level=none); the
 # commit/render/decision categories will gain entries in later PRs.
 TOOL_MANIFESTS: dict[str, ToolManifest] = {
-    "read_project_documentation": ToolManifest(
-        tool_name="read_project_documentation",
-        category=ToolCategory.DOCUMENT_PROCESSING,
-        side_effect_level=SideEffectLevel.NONE,
-        requires_session=False,
-        writes_state=False,
-        audit_required=False,
-        replayable=True,
-        billable=False,
-        credits=0,
-        requires_confirmation=False,
-        version="1.0.0",
-    ),
     "analyze_construction_document": ToolManifest(
         tool_name="analyze_construction_document",
         category=ToolCategory.DOCUMENT_PROCESSING,
@@ -185,6 +172,37 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
         replayable=True,
         billable=True,
         credits=1,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
+    # W3b object-type detector exposed as a tool (document-analysis time).
+    # Deterministic, free, read-only.
+    "detect_object_type": ToolManifest(
+        tool_name="detect_object_type",
+        category=ToolCategory.DOCUMENT_PROCESSING,
+        side_effect_level=SideEffectLevel.NONE,
+        requires_session=False,
+        writes_state=False,
+        audit_required=False,
+        replayable=True,
+        billable=False,
+        credits=0,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
+    # First deliverable export (soupis prací). Deterministic render. writes_state
+    # so it drives COMMITTED → EXPORTED; allowed in the terminal COMMITTED state
+    # only via RE_EXPORT_ALLOW_LIST (policy_gateway).
+    "export_soupis": ToolManifest(
+        tool_name="export_soupis",
+        category=ToolCategory.RENDER,
+        side_effect_level=SideEffectLevel.DRAFT_ONLY,
+        requires_session=False,
+        writes_state=True,
+        audit_required=True,
+        replayable=True,
+        billable=True,
+        credits=10,
         requires_confirmation=False,
         version="1.0.0",
     ),
