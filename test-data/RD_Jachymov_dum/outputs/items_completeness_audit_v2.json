@@ -3120,9 +3120,9 @@
       "description": "TZ statika — HEA profily",
       "tz_mention_count": 3,
       "tz_mention_sample": [
-        "HEA180",
         "HEA200",
-        "HEA160"
+        "HEA160",
+        "HEA180"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3168,8 +3168,8 @@
       "description": "TZ ARS — komínové těleso (zachované / nové)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "komín",
-        "Komín"
+        "Komín",
+        "komín"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3195,8 +3195,8 @@
       "tz_mention_count": 5,
       "tz_mention_sample": [
         "bílá vana",
-        "opěrné stěn",
-        "Opěrné stěn"
+        "Opěrné stěn",
+        "opěrné stěn"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3208,8 +3208,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický \ndvorek",
-        "anglický dvorek"
+        "anglický dvorek",
+        "anglický \ndvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3221,8 +3221,8 @@
       "description": "TZ ARS — terasa (materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "terasa",
-        "terasy"
+        "terasy",
+        "terasa"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3246,9 +3246,9 @@
       "description": "TZ PBŘ — fire-rated dveře (PSV-76)",
       "tz_mention_count": 4,
       "tz_mention_sample": [
-        "protipožární",
         "Protipožární",
-        "EI 90"
+        "EI 90",
+        "protipožární"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3260,9 +3260,9 @@
       "description": "TZ ARS — tepelné čerpadlo (PSV-73)",
       "tz_mention_count": 3,
       "tz_mention_sample": [
+        "tepelné čerpadl",
         "TČ",
-        "multisplit",
-        "tepelné čerpadl"
+        "multisplit"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3287,8 +3287,8 @@
       "description": "TZ ARS — krb (PSV-73)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "krb",
-        "Krb"
+        "Krb",
+        "krb"
       ],
       "items_keyword_hit": true,
       "status": "covered",
