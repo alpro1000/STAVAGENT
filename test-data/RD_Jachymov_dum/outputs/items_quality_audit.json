@@ -2,15 +2,15 @@
   "_schema_version": "1.0",
   "_generated_at": "2026-06-01",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 228,
-  "items_total_incl_deprecated": 232,
-  "issues_found_total": 78,
+  "items_checked": 230,
+  "items_total_incl_deprecated": 234,
+  "issues_found_total": 80,
   "summary_by_dimension": {
     "urs_family_consistency": 32,
-    "subdodavatel_logical": 46
+    "subdodavatel_logical": 48
   },
   "summary_by_severity": {
-    "informational": 78
+    "informational": 80
   },
   "issues": [
     {
@@ -1152,6 +1152,34 @@
       "reason": "Subdodavatel 'topenar' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260219_dum.PSV95.003",
       "popis": "Předávací protokol krbu na tuhá paliva + kontrola bezpečných vzdáleností (800 mm"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "ocel_zamecnik_konstrukce",
+        "prefa_bloky_specialista",
+        "zednik"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV3.004",
+      "popis": "Hydroizolace + protiradonová ochrana obvodových stěn (S03a) + opěrné stěny (S04)"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-3 Svislé konstrukce",
+      "current_subdodavatel": "izolater_HI",
+      "expected_set": [
+        "ocel_zamecnik_konstrukce",
+        "prefa_bloky_specialista",
+        "zednik"
+      ],
+      "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV3.005",
+      "popis": "Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny (S03a) + opěrnou stěn"
     }
   ]
 }

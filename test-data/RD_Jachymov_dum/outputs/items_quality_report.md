@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
 **Generated:** 2026-06-01
-**Items checked:** 228 (active, excl. 4 deprecated)
-**Issues flagged:** 78
+**Items checked:** 230 (active, excl. 4 deprecated)
+**Issues flagged:** 80
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,10 +17,10 @@
 
 | Dimension | Issues |
 |---|--:|
-| subdodavatel_logical | 46 |
+| subdodavatel_logical | 48 |
 | urs_family_consistency | 32 |
 
-**By severity:** informational=78
+**By severity:** informational=80
 
 
 ---
@@ -64,7 +64,7 @@
 
 ---
 
-## subdodavatel_logical (46 issues)
+## subdodavatel_logical (48 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -114,3 +114,5 @@
 | `260217_sklad.PSV76.002` | ⚪ informational | Vjezdová brána na pozemku investora (ocelová) — dodávka + mo | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
 | `260219_dum.M21.008` | ⚪ informational | Hlavní vypínač elektrické energie TOTAL STOP + požární znače | Subdodavatel 'elektrikar' neodpovídá M-21 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
 | `260219_dum.PSV95.003` | ⚪ informational | Předávací protokol krbu na tuhá paliva + kontrola bezpečných | Subdodavatel 'topenar' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
+| `260217_sklad.HSV3.004` | ⚪ informational | Hydroizolace + protiradonová ochrana obvodových stěn (S03a)  | Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260217_sklad.HSV3.005` | ⚪ informational | Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny ( | Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
