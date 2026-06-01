@@ -64,7 +64,7 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
     # PSV76.002 Truhlář = dřevěná POCHOZÍ vrstva terasy (terče + podklad = HSV1.005, split-by-trade).
     # ŘEZ C-C: prkna garapa 25 mm na dřevěném roštu z hranolů 50 mm. Rošt opraven hliníkový→dřevěný.
     # Situace: terasa (line-hatch zpevněné plochy) = 9.23 m² (dvorek dlažba = HSV1.004 = 16.54).
-    ("260219_dum.PSV76.002", "PSV-76 Truhlář"): [
+    ("260219_dum.PSV76.302", "PSV-76 Truhlář"): [
         {"suffix": "a", "popis": "Podkladní rošt z dřevěných hranolů 50 mm na rektifikovatelných terčích — terasa za opěrnou stěnou", "mj": "m²", "qty": 9.23, "urs": "762", "status": "family_only", "qty_formula": "= PSV76.002 plocha terasy 9.23 m² (situace měření)", "pozn": "ŘEZ C-C: dřevěný rošt z hranolů (NE hliníkový — oprava). Família 762 tesařské/truhlářské. Terče viz HSV1.005a."},
         {"suffix": "b", "popis": "Terasová dřevěná prkna garapa 145×25 mm — montáž na dřevěný rošt, terasa za opěrnou stěnou", "mj": "m²", "qty": 9.23, "urs": "762", "status": "family_only", "qty_formula": "= PSV76.002 plocha terasy 9.23 m² (situace měření)", "pozn": "Pochozí dřevěná vrstva (garapa prkna 25 mm). Família 762. Kód 771474112 byl WRONG domain (dlaždice) — odstraněn (Pattern 26)."},
     ],
@@ -208,7 +208,7 @@ DECOMP: dict[tuple[str, str], list[dict]] = {
         {"suffix": "c", "popis": "Sprchová / vanová baterie termostatická — dodávka + montáž", "mj": "ks", "qty": 3, "urs": "725", "status": "family_only", "qty_formula": "1× vana 1.NP + 2× sprcha 2.NP+3.NP", "pozn": "Baterie termostat (725 família)."},
         {"suffix": "d", "popis": "Dřezová baterie kuchyňská — dodávka + montáž", "mj": "ks", "qty": 2, "urs": "725", "status": "family_only", "qty_formula": "2× kuchyně (1.06 + 3.05)", "pozn": "Dřezová baterie (725 família)."},
     ],
-    ("260219_dum.PSV76.003", "PSV-76 Klempíř"): [
+    ("260219_dum.PSV76.103", "PSV-76 Klempíř"): [
         {"suffix": "a", "popis": "Dešťové svody Pzn Ø100 mm — 4 svody", "mj": "bm", "qty": 28.0, "urs": "764", "status": "family_only", "qty_formula": "4 svody × ~7 m výška = 28 bm", "pozn": "Klempířské svody (764 família)."},
         {"suffix": "b", "popis": "Podokapní žlaby Pzn — po obvodu střechy", "mj": "bm", "qty": 15.5, "urs": "764", "status": "family_only", "qty_formula": "= PSV76.003 celkem 43.5 bm − svody 28 bm = 15.5 bm žlaby", "pozn": "Klempířské žlaby (764 família)."},
     ],

@@ -731,7 +731,7 @@
         "revize_specialista"
       ],
       "reason": "Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
-      "item_id": "260219_dum.VRN.001",
+      "item_id": "260219_dum.VRN.101",
       "popis": "Kontejnery na suť tříděnou velkoobjemové (beton/cihly, dřevo, kovy, EPS, sádra, "
     },
     {
@@ -747,7 +747,7 @@
         "revize_specialista"
       ],
       "reason": "Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
-      "item_id": "260219_dum.VRN.003",
+      "item_id": "260219_dum.VRN.103",
       "popis": "Likvidace stavební suti dle vyhl. 8/2021 Sb. — skládkovné + recyklace + třídění "
     },
     {

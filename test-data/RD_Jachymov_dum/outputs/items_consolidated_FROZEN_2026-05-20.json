@@ -3119,7 +3119,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV71.001",
+      "id": "260219_dum.PSV71.101",
       "urs_code_proposed_was": "713141121",
       "urs_code_family_6digit": "713121",
       "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = izolace STŘECH plochých, item = PODLAHA EPS. Hint: Podlahy = TKP 713-12 (vrstvy podlah), NOT 713-14 (střechy).",
@@ -3152,7 +3152,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": "D2: tl. opraveno 30→40 mm dle skladby S09 (text authoritative).",
-      "id": "260219_dum.PSV71.002",
+      "id": "260219_dum.PSV71.102",
       "urs_code_proposed_was": "713141111",
       "urs_code_family_6digit": "713121",
       "urs_verification_note": "WebSearch verified WRONG LEAF: Same wrong-family — kročejová EPS podlaha, not střecha. Hint: Kročejová izolace mezi vrstvy podlahy = TKP 713-12.",
@@ -3510,7 +3510,7 @@
       "_data_quality": "dxf_perimeter_ratio_estimate",
       "_previous_mnozstvi": 46.0,
       "_recalc_reason": "Klempířina total 173.8 m z DXF (Path C Tier 3) replaces estimate ~46 bm. +70% více klempířiny.",
-      "id": "260219_dum.PSV76.001",
+      "id": "260219_dum.PSV76.101",
       "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
       "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
@@ -3541,7 +3541,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "_data_quality": "dxf_deterministic",
-      "id": "260219_dum.PSV76.002",
+      "id": "260219_dum.PSV76.102",
       "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
       "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
@@ -3574,7 +3574,7 @@
       "_data_quality": "dxf_perimeter_ratio_estimate",
       "_previous_mnozstvi": 56.0,
       "_recalc_reason": "Svody 43 bm z DXF split (NE 56 bm odhad)",
-      "id": "260219_dum.PSV76.003",
+      "id": "260219_dum.PSV76.103",
       "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
       "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
@@ -3604,7 +3604,7 @@
       "status_flag": "ready_for_phase2",
       "notes": null,
       "_data_quality": "dxf_perimeter_ratio_estimate",
-      "id": "260219_dum.PSV76.004",
+      "id": "260219_dum.PSV76.104",
       "klempir_reconciliation_note": "PSV-76 Klempíř items sum 159.9 m vs DXF MA_klempíř + SM__ klempířina total 173.8 m, Δ -8.0 % (-13.9 m). Within ±15 % tolerance per CEV Matrix D.4 verdict (gate-3). FLAG for Karel site walkthrough — possible missing klempíř segment (small). Source: outputs/cev_matrix_d_cross_doc_consistency.json D.4.",
       "cross_verification_status": "FAMILY_VERIFIED_CHAPTER_MATCH",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu201/800-764-Konstrukce-klempirske-(2020-I)/16/",
@@ -3635,7 +3635,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.001",
+      "id": "260219_dum.PSV76.201",
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.obchodprodilnu.cz/produkty/stavebni-prvky-a-materialy/rosty-schodnice/schodnice-ocelove.html",
       "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
@@ -3664,7 +3664,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.002",
+      "id": "260219_dum.PSV76.202",
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.obchodprodilnu.cz/produkty/stavebni-prvky-a-materialy/rosty-schodnice/schodnice-ocelove.html",
       "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED"
@@ -3692,7 +3692,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.003"
+      "id": "260219_dum.PSV76.203"
     },
     {
       "objekt": "260219_dum",
@@ -3717,7 +3717,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.004",
+      "id": "260219_dum.PSV76.204",
       "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
@@ -3743,7 +3743,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.001"
+      "id": "260219_dum.PSV76.301"
     },
     {
       "objekt": "260219_dum",
@@ -3768,7 +3768,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.PSV76.002",
+      "id": "260219_dum.PSV76.302",
       "urs_code_proposed_was": "771474112",
       "urs_code_family_6digit": "762",
       "cross_verification_status": "REZ_CC_CORRECTED_wood_deck_762_split_by_trade",
@@ -5404,7 +5404,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.101"
     },
     {
       "objekt": "260219_dum",
@@ -5431,7 +5431,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.201"
     },
     {
       "objekt": "260219_dum",
@@ -5458,7 +5458,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.301"
     },
     {
       "objekt": "260219_dum",
@@ -5485,7 +5485,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.002"
+      "id": "260219_dum.VRN.302"
     },
     {
       "objekt": "260219_dum",
@@ -5512,7 +5512,7 @@
       ],
       "status_flag": "needs_subdod_mapping",
       "notes": "Subdod 'mykolog' (autorizovaný mykolog dřeva) není v current mapping. Specialty surveyor; FLAG pro batch update.",
-      "id": "260219_dum.VRN.001",
+      "id": "260219_dum.VRN.401",
       "_audit_gap_fixed": "PER_DRAWING_ENRICHMENT_POZN_2_05",
       "_added_via_audit": "cev_per_drawing_annotations_audit_2026-05-26"
     },
@@ -5541,7 +5541,7 @@
       ],
       "status_flag": "needs_subdod_mapping",
       "notes": "Subdod 'azbestovy_specialista' (autorizovaný technik azbestu, odběr vzorků + laboratorní posudek) není v current mapping. Specialty surveyor; FLAG pro batch update.",
-      "id": "260219_dum.VRN.002"
+      "id": "260219_dum.VRN.402"
     },
     {
       "objekt": "260219_dum",
@@ -5566,7 +5566,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.501"
     },
     {
       "objekt": "260219_dum",
@@ -5591,7 +5591,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.601"
     },
     {
       "objekt": "260219_dum",
@@ -5616,7 +5616,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.701"
     },
     {
       "objekt": "260219_dum",
@@ -5641,7 +5641,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.001"
+      "id": "260219_dum.VRN.801"
     },
     {
       "objekt": "260219_dum",
@@ -5668,7 +5668,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.002"
+      "id": "260219_dum.VRN.102"
     },
     {
       "objekt": "260219_dum",
@@ -5696,7 +5696,7 @@
       ],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260219_dum.VRN.003"
+      "id": "260219_dum.VRN.103"
     },
     {
       "objekt": "260217_sklad",
@@ -5771,7 +5771,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.VRN.001"
+      "id": "260217_sklad.VRN.101"
     },
     {
       "objekt": "260217_sklad",
@@ -5796,7 +5796,7 @@
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
-      "id": "260217_sklad.VRN.001"
+      "id": "260217_sklad.VRN.201"
     },
     {
       "objekt": "260219_dum",
@@ -7283,6 +7283,23 @@
     "d2_fixed": 1,
     "snapshot_before": "outputs/items_pre_skladby_gaps.json",
     "sokl_estimate_m2": 23,
+    "items_total": 228
+  },
+  "_schema_fix_log": {
+    "applied_at": "2026-06-01",
+    "pattern": 28,
+    "renumbered": 26,
+    "atomic_keys_updated": 2,
+    "remap_sample": [
+      "260219_dum.PSV71.001 → 260219_dum.PSV71.101",
+      "260219_dum.PSV71.002 → 260219_dum.PSV71.102",
+      "260219_dum.PSV76.001 → 260219_dum.PSV76.101",
+      "260219_dum.PSV76.002 → 260219_dum.PSV76.102",
+      "260219_dum.PSV76.003 → 260219_dum.PSV76.103",
+      "260219_dum.PSV76.004 → 260219_dum.PSV76.104",
+      "260219_dum.PSV76.001 → 260219_dum.PSV76.201",
+      "260219_dum.PSV76.002 → 260219_dum.PSV76.202"
+    ],
     "items_total": 228
   }
 }
