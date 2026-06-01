@@ -1,11 +1,18 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-06-01 (krov leaf-binding pass):
-Sequential 1..41 validated (no duplicates, no gaps).
-last_number: 41
-next_pattern: 42  ← use this for any new additions.
+Pattern numbering audit 2026-06-01 (RD Jáchymov skladby + sokl reconcile pass):
+Sequential 1..44 validated (no duplicates, no gaps).
+last_number: 44
+next_pattern: 45  ← use this for any new additions.
 last_audit: 2026-06-01
+
+Added 2026-06-01 (RD Jáchymov skladby/sokl session): Pattern 42 (Renovation
+skladba = two work groups: STÁVAJÍCÍ→bourání + NÁVRH→konstrukční, never merge),
+Pattern 43 (PD cross-source contradiction → reconcile, don't duplicate; the
+double-count is the tell), Pattern 44 (Geometry-bounded estimate vs strict null).
+The radon wrong-document citation (source said 'TZ statika §5.5'; radon was in
+'Souhrnná TZ B.3.9') is a live instance of Pattern 29, not a new pattern.
 
 Added 2026-06-01 (RD Jáchymov krov leaf-binding, PRs #1264 + #1265):
 Pattern 41 (Montáž / materiál split — one work item → 1 labor leaf + N
@@ -1898,6 +1905,83 @@ One family code stands in for "the whole item" (labor + material merged into a s
 - Pattern 15 / 16 (Work-First / Universal Work Ontology) — the montáž/materiál split is the catalog-phase refinement of one work-ontology item into N catalog lines
 - Pattern 26 (Honest fallback) + Pattern 34 (Honest cost transparency) — OVĚŘIT-flagging applies the same honesty discipline to judgment quantities
 - Pattern 2 (Audit trail) — each material leaf needs its own `qty_formula`
+
+---
+
+## Pattern 42: Renovation skladba = two work groups (bourání + nové)
+
+**Source:** RD Jáchymov skladby workflow (S01–S12 in three states: stávající / bourání / návrh).
+
+### Problem
+A renovation project's skladby arrive in 2–3 states — **STÁVAJÍCÍ** (existing), **BOURÁNÍ** (demolition), **NÁVRH** (new). Treating one skladba as a single work item conflates demolition with new construction → either the bourání is missed (demolice not priced) or a new layer is billed where the old layer actually stays.
+
+### Solution
+One skladba → **two parallel work groups, never merged**:
+- **STÁVAJÍCÍ vrstvy that are removed → BOURÁNÍ položky** (HSV-6 demolice: sejmutí / demontáž / otlučení)
+- **NÁVRH vrstvy → KONSTRUKČNÍ položky** (new HSV/PSV; montáž/materiál split per Pattern 41)
+- **Existing layers that are KEPT → no položka** (`ℹ️ stávající`: zdivo, cihelná klenba, trámy, záklop retained in a reconstruction)
+- **Surface finishes** (vnitřní omítka, výmalba, nášlap, obklad) → global PSV položky, not per-skladba
+
+Each item carries `realizuje_skladbu` + `_source="skladba S0X stávající|návrh"`.
+
+### Invariant
+Every removed STÁVAJÍCÍ layer has a bourání položka; every NÁVRH layer has a konstrukční položka (or is covered by a global PSV); KEPT layers have neither. Bourání-gaps and návrh-gaps are audited **separately**.
+
+### Related
+- Pattern 15 (Work-First, Catalog-Last) — upstream
+- Pattern 41 (Montáž/materiál split) — applies to each NÁVRH konstrukční item
+- Pattern 31 (CEV) — extraction completeness before grouping
+
+---
+
+## Pattern 43: PD cross-source contradiction → reconcile, don't duplicate
+
+**Source:** RD Jáchymov sokl (TZ ARS text vs výkres S03 / Řez A-A vs pohledy material C).
+
+### Problem
+Different PD documents describe the **same physical element differently**:
+- TZ ARS text: sokl = XPS + cihelný obklad
+- výkres S03 + Řez A-A + pohledy (C): sokl = sanační Styrcon 200 + keramický obklad
+
+If each source is faithfully turned into a položka, you get **parallel items for one physical element** → double-count. The tell: sub-quantities of one element **sum beyond its physical envelope** (cihelný 13.5 m² + keramický 23 m² = 36.5 m² of cladding on a ~23 m² sokl).
+
+### Principle
+Parallel items citing conflicting PD sources are the **symptom of PD self-contradiction**, not legitimate separate work. Do **not** silently keep both (double-count) and do **not** silently pick one (hidden assumption — Pattern 3). Instead:
+1. **Detect** via envelope check — `Σ(sub-quantities of one element) ≤ physical envelope`; the excess is the duplicate.
+2. **Surface the rozpor explicitly** with every citation (which document says what).
+3. **Human / projektant decides** which source wins.
+4. **Remove the superseded source's item(s)** — not keep both — and **cascade consequences** (e.g. omítka area drops when the sokl becomes keramický obklad, not omítka).
+5. **Leave a vyjasnění trail** documenting the contradiction + the decision applied.
+
+### Invariant
+One physical element = one build-up in the soupis. `Σ sub-areas ≤ envelope`. Every resolved contradiction leaves a vyjasnění with all conflicting citations + the chosen source.
+
+### Related
+- Pattern 3 (Triangulation — no silent winner) — this is the intra-PD-document case
+- Pattern 33 (Project synthesis before audit decisions)
+- Pattern 29 (Source provenance) — a wrong-document citation is the sibling failure (radon: source said statika §5.5; radon was in Souhrnná TZ B.3.9)
+
+---
+
+## Pattern 44: Geometry-bounded estimate vs strict null
+
+**Source:** RD Jáchymov — sokl 23 m² (estimate) vs S08 plocha (null) vs vjezd plocha (null).
+
+### Problem
+When PD gives no explicit quantity, the temptation is to invent a number. A fabricated quantity with no geometric basis is a hallucination that **looks like data** and silently inflates the soupis.
+
+### Principle
+Estimate a quantity **only when it derives from known physical geometry via a deterministic formula** — e.g. `sokl = obvod 38.7 m (DXF) × výška 0.6 × řadovka 0.7`. Record `mnozstvi_status` = the formula + `OVĚŘIT`. Where **no geometry exists** (S08 area never attributed in the řez/per-zone; vjezd plocha absent from the situace), use **strict `mnozstvi: null`** + `status: "neurčeno"` + a vyjasnění — **never a guessed number**.
+
+**Test:** can you write the qty as a formula over *measured* inputs? **Yes → estimate + OVĚŘIT. No → null.**
+
+### Invariant
+Every numeric quantity not taken verbatim from PD has a geometric `qty_formula` over measured inputs; quantities with no derivable geometry are `null`, not estimated. "Estimate from known geometry ≠ hallucination; no geometry → null."
+
+### Related
+- Pattern 26 (Honest fallback hierarchy for missing data)
+- Pattern 41 (OVĚŘIT-flagging of judgment quantities)
+- Pattern 2 (Audit trail — formula mandatory)
 
 ---
 
