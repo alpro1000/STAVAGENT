@@ -1,71 +1,106 @@
 # Skladby cross-check audit — RD Jáchymov dům (260219)
 
-> **Type:** read-only cross-check. `items_rd_jachymov_complete.json` (188 dům položek) × `inputs/skladby_navrh.md` (S01–S12).
-> **Date:** 2026-06-01 · **Gate:** STOP před dogenerací — approve gaps níže, pak generuji (Pattern 41 split + `_source="skladba S0X"`).
-> **Legend:** ✅ pokryto (skladba-tagged) · 🟦 pokryto jinde (globální PSV — omítky/malby/podlahy/obklady/izolace, ne per-skladba) · 🟡 GAP (vrstva nenalezena) · ⚠️ DRIFT (tloušťka ≠ návrh) · ⛔ BLOCKER (chybí celá skladba / schema bug) · ℹ️ stávající (renovace, bez nové položky)
+> **Type:** read-only cross-check. `items_rd_jachymov_complete.json` (188 dům položek) × `inputs/skladby_navrh.md` (STÁVAJÍCÍ / BOURÁNÍ / NÁVRH, S01–S12) + poznámky 2.01–2.05.
+> **Date:** 2026-06-01 (v2 — two-group lens) · **Gate:** STOP před dogenerací.
+> **Princip:** jedna skladba = 2 skupiny — **STÁVAJÍCÍ→bourání** (HSV-6) a **NÁVRH→konstrukční** (HSV/PSV). Auditováno odděleně, nemíchat.
+> **Legend:** ✅ pokryto · 🟦 globální PSV/HSV (ne per-skladba) · 🟡 GAP · ⚠️ DRIFT · ⛔/❓ VYJASNĚNÍ · ℹ️ stávající (zachováno, bez akce)
 
 ---
 
-## 0. Schema-integrity bug (mimo skladby, ale BLOCKER)
+## 0. HEADLINE — S08 verdikt (klemba mezi patry)
 
-⛔ **Duplicitní `id` — porušení Pattern 28 (globally-unique entity IDs):**
-- `260219_dum.PSV71.001` = **2 různé položky**: „HI pod ŽB deskou 1.NP" (namespace HI) **i** „Podlahový EPS 150 λ0.035 120 mm" (namespace TI)
-- `260219_dum.PSV71.002` = **2 různé položky**: „Odvětrání radonu" (HI) **i** „Kročejová EPS 150/30 dB 30 mm" (TI)
+**Otázka:** S08 je v legendě, ale řez A-A/B-B ji nekříží (kříží jen S05/06/07/09). „Může být i to i to?"
 
-Stejný `id` pro 4 fyzicky odlišné práce → kolize v každém indexu/exportu, který klíčuje na `id`. **Fix:** přečíslovat TI namespace (např. `PSV71.011/012`) nebo prefixovat namespace do `id`. Nezávislé na skladbách — doporučuji opravit při téže dogeneraci.
+**Zjištění (grounded, ne z fantazie):**
+- `outputs/skladby_per_zone_v2.json` → S08 „strop cihelná klenba mezi patry", `tz_explicit: true`, `tz_source: "PDF řez D.1.1.2.2.21 — legenda S08"`. **ALE chybí `applies_to_area_m2`** — na rozdíl od S06 (~50 m²), **S07 (59,5 m²)**, **S09 (104,4 m²)**, kterým plocha přiřazena byla.
+- Legenda OCR (`cev_ocr_skladby_legenda.json`) potvrzuje kód S08 v legendě (text garbled).
+- Půdorysy v `inputs/vykresy_pdf/` jsou pro tento účet **nedostupné** (Read permission denied) → polohu klenby si NEMOHU sám ověřit.
 
----
+**Odpověď na „i to i to":** **NE — S07 a S08 jsou DVA různé stropy, ne overlap.** Historické domy běžně míchají dřevěný trámový strop (S07) a cihelnou klenbu (S08) **ve stejném podlaží, ale v jiných místnostech/traktech**. Legenda = všechny skladby; řez = jen protnuté. Takže S08 v legendě + chybí v řezu = **normální**, NEznamená duplicitu se S07.
 
-## 1. Verdikt po skladbách
-
-| Skladba | Stav | Pokrytí / poznámka |
-|---|---|---|
-| **S01** obvodová stěna + ETICS | ✅ | ETICS EPS grey 160 λ0.032 = `HSV7.002` (popis „ne 200 fallback" — drift dořešen ✅). Omítky/malby/obklady 🟦 PSV78. Zdivo 450 ℹ️ stávající + `HSV3.001` lokální dozdívky. Břizolit příprava = `HSV7.001`. Finiš `HSV7.006`. **Pozn:** návrh „silikonová omítka 2 mm", item „pastovitá probarvená" — ověřit typ. |
-| **S02** společná stěna řadovky | ✅ | Zdivo 300 ℹ️ stávající. Omítky 🟦 PSV78. **Pozn:** `HSV3.007` (příčky pórobeton 150) tagged S02 — sporné (příčky ≠ společná stěna 300); příčky nemají vlastní skladbu v návrhu. |
-| **S03** suterénní stěna + sanační zateplení | 🟡 **GAP** | Pro **dům** existují jen `S03a_sklad`/`S03b_sklad` (sklad 260217). Pro dům suterén: sanační zateplení soklu (Lepstyr + **Styrcon 200** + armovací), **S03a drenážní nopová folie 20 mm**, **S03b provětraný sokl rošt 40 + keram. obklad 20** — nenalezeno. `HSV1.015` drenáž je za **opěrnou** stěnou, ne suterén. ⚠️ Ověřit TZ: má dům suterén sanační zateplení, nebo jen sklad? |
-| **S04** podlaha v suterénu | 🟡 částečně | Nášlap 1.PP = `PSV77.003` (dlažba technické místnosti) 🟦. Báze (epoxid + beton 100 + štěrkopísek 50) — pro dům nenalezena (jen `S04_sklad`). ℹ️ pravděpodobně stávající podlaha — ověřit. |
-| **S05** podlaha 1.NP na terénu | ⚠️ **DRIFT** | EPS 150 podl. 120 = `PSV71.001`(TI) ✅. HI asfalt = `PSV71.001`(HI) ✅. Potěr kari 50 = `PSV77.005` ✅. Štěrk = `HSV1.008` ✅. Radon = `PSV71.002` ✅. **DRIFT:** návrh „betonová deska vyztužená **120 mm**" vs `HSV2.012` „ŽB deska **150 mm**". Ověřit (statika může 150 chtít). Samonivelační stěrka 5 mm 🟡 nezvlášť. |
-| **S06** klemba suterén/přízemí | ✅ | Zásyp perlitbeton 100 = `HSV4.008` (návrh 80–180 ✓), roznos TB2 50 = `HSV4.009` ✅. Klemba 150 + nosníky ℹ️ stávající (`HSV4.007` vyvezení). Nášlap/omítka/malba 🟦. |
-| **S07** trámový strop mezi patry | 🟡 **GAP** | Min. vata mezi trámy 180 = `HSV4.011` ✅. SDK EI30 = `HSV4.012` ✅. Liapor 50 = `HSV4.013` ✅. Fermacell 25 = `HSV4.014` ✅. Záklop 20 ℹ️ stávající. **GAP:** **kročejová izolace Isover T-P 30 mm** pro trámový strop — nenalezena (`PSV71.002` kročejová je explicitně „nad ocelobeton 2.NP/3.NP" = S09, ne S07). Separační geotextilie 🟡. |
-| **S08** klemba mezi patry | ⛔ **BLOCKER** | **0 položek.** Dům má S06 (1.PP/1.NP), S07 (1.NP/2.NP), S09 (2.NP/3.NP) — kam patří S08 (cihelná klemba mezi patry)? Možná smíšený strop per trakt. **Nelze rozhodnout z textu → ověřit TZ/výkres (per tvůj pokyn: S08 generovat JEN když TZ potvrdí, že v domě je).** |
-| **S09** ocelobeton podkroví | ⚠️ **DRIFT + GAP** | Nabetonávka 60 = `HSV2.010` ✅, výztuž `HSV2.011` ✅, IPE180 `HSV4.002` ✅, HEA180/200 `HSV4.003/004` ✅, trapéz 40S/160 `HSV4.005` ✅ (= košický plech 40), SDK EI30 `HSV4.006` ✅. **DRIFT:** kročejová návrh **40 mm** vs `PSV71.002` **30 mm**. **GAP:** **minerální vata výplň 180/200 mm mezi ocel. nosníky** — nenalezena. Betonová mazanina 60 (horní) vs nabetonávka 60 (dolní) — ověřit, zda nejsou 2 vrstvy. |
-| **S10** šikmá střecha | ✅ (1 ?) | Bednění 25 `HSV5.012` ✅, Al krytina `HSV5.013` ✅, doplňková HI `HSV5.010` ✅, kontralatě 40×60 `HSV5.011` ✅, PIR 160 λ0.022 `HSV5.009` ✅, parotěsná `HSV5.008` ✅, palubka/bednění 20 `HSV5.007` ✅, krokve 180 `HSV5.001` ✅. 🟡 **pojistná HI folie přímo pod Al krytinu** (horní, odlišná od doplňkové nad PIR) — ověřit, zda není zvlášť potřeba. |
-| **S11** lehký strop mezipatří | ✅ | Biodeska/OSB 22 = `HSV5.014` ✅. |
-| **S12** obvodová stěna podkroví | ✅ | Nadezdívka Porotherm 30 = `HSV3.002` ✅. **Pozn:** návrh „omítka **sádrová** stříkaná", PSV78 je vápenocementová — ověřit typ omítky v podkroví. |
-| **S12a** fasáda omítka ETICS | ✅ | = S01 ETICS (`HSV7.002/004/005/006`). ✅ |
-| **S12b** fasáda falcovaný plech | 🟡 under-decomposed | `HSV5.016` = JEDNA bundled položka „provětrávaná fasáda min. vata + plech". Návrh = 5 vrstev: **min. vata 180 λ0.035 + kotvy / paropropustná folie UV / rastr 40×60 / bednění prkna 25 / falc. plech**. Doporučen rozpad (Pattern 41 montáž/materiál). |
+**Disposition S08 = ❓ VYJASNĚNÍ PROJEKTANTOVI (negeneruji):** S08 je v legendě, ale **nemá přiřazenou plochu** (S06/S07/S09 mají) a řez ji nekříží. Buď (a) legenda je generická a S08 se v domě nepoužívá, nebo (b) použije se v nekvantifikované oblasti. Per tvůj pokyn „S08 generovat JEN když TZ/výkres potvrdí + nevymýšlet" → **dotaz do vyjasnění**, ne položka. Pokud projektant potvrdí plochu: cihelná klemba 150 = STÁVAJÍCÍ (ne bourání) + nová suchá skladba shora (6 vrstev NÁVRH), `_source="skladba S08 legenda"`.
 
 ---
 
-## 2. Gap-souhrn (k approve před dogenerací)
+## 1. Poznámky 2.01–2.05 — všechny pokryty ✅ (žádný gap)
 
-### ⛔ Blockery — VERIFY TZ první (nehádám)
-| # | Co | Akce |
-|---|---|---|
-| B1 | **S08 cihelná klemba mezi patry** — 0 položek | Ověřit TZ/výkres, zda dům má cihelnou klembu mezi patry. JEN pak generovat (per tvůj pokyn). |
-| B2 | **Duplicitní id `PSV71.001`/`PSV71.002`** (Pattern 28) | Přečíslovat TI namespace. Nezávislé na skladbách. |
-
-### 🟡 Gaps — pravděpodobně generovat (po approve)
-| # | Skladba | Chybějící vrstva | Pozn. |
+| Pozn | Obsah | Položka | Stav |
 |---|---|---|---|
-| G1 | S03 (dům) | sanační zateplení soklu (Styrcon 200 + lepidlo + armovací) + nopová folie 20 (S03a) + provětraný sokl obklad (S03b) | Ověřit, zda dům, ne jen sklad |
-| G2 | S07 | kročejová izolace Isover T-P **30 mm** (trámový strop) | + separační geotextilie |
-| G3 | S09 | minerální vata výplň **180/200 mm** mezi ocel. nosníky | |
-| G4 | S12b | rozpad bundlu `HSV5.016` na 5 vrstev (min. vata 180 / folie / rastr / bednění 25 / plech) | Pattern 41 |
-| G5 | S10 | pojistná HI folie pod Al krytinu (horní underlay) | ověřit nutnost |
-
-### ⚠️ Drifty — VERIFY (možná záměr, neměnit bez potvrzení)
-| # | Skladba | Návrh | items.json | |
-|---|---|---|---|---|
-| D1 | S05 | betonová deska 120 mm | `HSV2.012` ŽB deska 150 mm | statika? |
-| D2 | S09 | kročejová 40 mm | `PSV71.002` 30 mm | sjednotit |
-
-### ✅ Potvrzené shody (žádná akce)
-ETICS EPS grey 160 λ0.032 (S01/S12a) · PIR 160 λ0.022 (S10) · min. vata mezi trámy 180 (S07) · perlitbeton 100+50 (S06) · podl. EPS 150 = 120 (S05) · biodeska 22 (S11) · zdivo 300/Porotherm (S02/S12) · povrchové úpravy globálně 🟦 PSV77/PSV78.
+| 2.01 | nový vstup — lehká ocel. konstrukce přes mezipodestu | `PSV76.001` (Ocelové schodiště ze zahrady na mezipodestu UPE200) | ✅ |
+| 2.02 | opěrná stěna bílá vana + drenáž | `HSV2.001/002/003` BV + `HSV1.015` drenáž | ✅ |
+| 2.03 | nová stropnice (statika) | `HSV4.001` IPE180 (+ `HSV4.002`) | ✅ |
+| 2.04 | ŽB ztužující věnec (statika) | `HSV2.007/008/009` | ✅ |
+| 2.05 | mykologický průzkum + dřevokazný hmyz | `VRN.001` (Mykologický průzkum + dřevokazný hmyz) | ✅ už existuje |
 
 ---
 
-## 3. Pozn. k metodice
-- Povrchové vrstvy skladeb (vnitřní omítka 15, výmalba, nášlap, obklad) NEjsou per-skladba — kryjí je globální PSV položky (`PSV78` omítky/malby, `PSV77` podlahy, `PSV78.008-011` obklady, `PSV71` izolace). Proto NEflagovány jako chybějící.
-- „ℹ️ stávající" = renovace zachovává konstrukci (zdivo 450/300/600, klemba, záklop) → bez nové položky, jen příprava/lokální oprava.
-- Dogenerace (po approve) půjde per vrstva s montáž/materiál split (Pattern 41), `_source="skladba S0X"` (Pattern 29), family-kód kde známý / blank jinak (Pattern 26 — žádný find_urs_code wrong-leaf).
+## 2. Schema-integrity bug (BLOCKER, mimo skladby)
+
+⛔ **Duplicitní `id` — porušení Pattern 28**, systémové (seq se restartuje per subkapitola uvnitř téže kapitoly):
+- `PSV71.001` ×2 (HI pod deskou / EPS 150), `PSV71.002` ×2 (radon / kročejová)
+- `PSV76.001` ×4 (Truhlář / Zámečnictví / Klempíř / Výplně otvorů)
+- `VRN.001` ×mnoho (každá VRN subkapitola má vlastní .001)
+
+**Fix:** prefix namespace do `id` nebo globálně unikátní seq. Doporučeno opravit při téže dogeneraci.
+
+---
+
+## 3. Verdikt po skladbách — DVĚ skupiny
+
+| Sk | BOURÁNÍ (stávající→demolice) | NÁVRH (nové konstrukční) |
+|---|---|---|
+| **S01** | omítky/výmalba interiér: 🟡 otlučení nesoudržných omítek nenalezeno (jen `HSV7.001` příprava fasády). Zdivo ℹ️ zachováno. | ETICS 160 `HSV7.002` ✅ · finiš `HSV7.006` ✅ · omítky 🟦 PSV78. Pozn: silikonová vs „pastovitá" — ověřit. |
+| **S02** | ℹ️ stěna zachována; omítky 🟡 (viz S01) | omítky 🟦 PSV78. `HSV3.007` příčky 150 tagged S02 — sporné. |
+| **S03** | vnější keram. obklad 20 (stávající) → 🟡 demontáž obkladu suterénu nenalezena | 🟡 **GAP** sanační zateplení soklu (Styrcon 200 + lepidlo + armovací) + S03a nopová folie 20 + S03b provětraný sokl obklad — jen `_sklad`. Ověřit dům. |
+| **S04** | ℹ️ beton 100 stávající zachován (suterén) | nášlap 1.PP `PSV77.003` 🟦. Báze (epoxid/beton) jen `_sklad` — 🟡 ověřit dům. |
+| **S05** | nášlap + betonový potěr 80 → `HSV6.008` sejmutí podlah ✅ | ⚠️ **DRIFT** betonová deska návrh 120 vs `HSV2.012` 150. EPS 150=120 ✅ · HI ✅ · potěr 50 `PSV77.005` ✅ · radon ✅. Samonivel 5 🟡. |
+| **S06** | zásypy klenby → `HSV4.007` vyvezení ✅ | perlitbeton 100 `HSV4.008` + roznos 50 `HSV4.009` ✅. Klemba 150 ℹ️ zachována. |
+| **S07** | trámový strop 2.NP / záklop / zásyp → `HSV6.004` + `HSV6.009` + `HSV6.008` ✅ | min. vata 180 `HSV4.011` ✅ · SDK EI30 `HSV4.012` ✅ · Liapor 50 `HSV4.013` ✅ · Fermacell 25 `HSV4.014` ✅. 🟡 **GAP kročejová Isover T-P 30 mm** + separační geotextilie. Trámy/záklop ℹ️ zachováno. |
+| **S08** | ❓ viz §0 (vyjasnění) | ❓ viz §0 — negeneruji bez potvrzení |
+| **S09** | nosné trámy + záklop podkroví → `HSV6.004` ✅ | ocelobeton `HSV4.002-006` + nabetonávka `HSV2.010/011` ✅. ⚠️ **DRIFT kročejová 40 vs `PSV71.002` 30.** 🟡 **GAP min. vata výplň 180/200 mezi nosníky.** |
+| **S10** | stávající plech krytina + krov → `HSV6.002` + `HSV6.001` ✅ | bednění 25 `HSV5.012` · Al krytina `HSV5.013` · doplň. HI `HSV5.010` · kontralatě `HSV5.011` · PIR 160 `HSV5.009` · parotěsná `HSV5.008` · palubka 20 `HSV5.007` · krokve `HSV5.001` ✅. 🟡 pojistná HI pod krytinu (horní) ověřit. |
+| **S11** | — (nová konstrukce) | biodeska 22 `HSV5.014` ✅ |
+| **S12** | — (nadezdívka) | Porotherm 30 `HSV3.002` ✅. Omítka sádrová vs PSV78 vápenocem. — ověřit. |
+| **S12a** | — | = S01 ETICS `HSV7.002/004/005/006` ✅ |
+| **S12b** | — | 🟡 bundle `HSV5.016` → rozpad na 5 vrstev (min. vata 180 / folie / rastr / bednění 25 / plech) — P41 |
+
+---
+
+## 4. Gap-souhrn (k approve) — rozděleno
+
+### ❓ VYJASNĚNÍ (verify TZ/projektant — negeneruji)
+| # | Co |
+|---|---|
+| V1 | **S08 klemba mezi patry** — v legendě, bez plochy, řez nekříží, půdorysy nedostupné. Potvrdit, zda dům S08 má + plochu. |
+| V2 | **S12 omítka** sádrová stříkaná vs PSV78 vápenocementová — typ v podkroví? |
+
+### 🧱 BOURÁNÍ-gaps (stávající→demolice, po approve)
+| # | Sk | Chybí bourání položka |
+|---|---|---|
+| BR1 | S01/S02/S03 | otlučení nesoudržných **vnitřních omítek** před novými (pokud projekt vyžaduje — možná zůstávají) — ověřit |
+| BR2 | S03 | demontáž stávajícího **vnějšího keramického obkladu** suterénu (20 mm) |
+
+### 🔨 NÁVRH-gaps (nové konstrukční, po approve)
+| # | Sk | Chybí konstrukční vrstva |
+|---|---|---|
+| G1 | S03 | sanační zateplení soklu (Styrcon 200 + lepidlo + armovací) + nopová folie 20 (S03a) + provětraný sokl obklad (S03b) — ověřit dům |
+| G2 | S07 | kročejová izolace Isover T-P **30 mm** + separační geotextilie |
+| G3 | S09 | minerální vata výplň **180/200 mm** mezi ocel. nosníky |
+| G4 | S12b | rozpad bundlu `HSV5.016` → 5 vrstev (P41) |
+| G5 | S10 | pojistná HI folie pod Al krytinu (horní) — ověřit nutnost |
+
+### ⚠️ DRIFTs (verify — možná záměr)
+| # | Sk | Návrh | items.json |
+|---|---|---|---|
+| D1 | S05 | betonová deska 120 mm | `HSV2.012` ŽB deska 150 mm (statika?) |
+| D2 | S09 | kročejová 40 mm | `PSV71.002` 30 mm |
+
+### ✅ Potvrzené shody
+ETICS EPS grey 160 λ0.032 (S01/S12a, „ne 200 fallback") · PIR 160 λ0.022 (S10) · min. vata trámy 180 (S07) · perlitbeton 100+50 (S06) · podl. EPS 150=120 (S05) · biodeska 22 (S11) · Porotherm 30 (S12) · bourání krov/krytina/strop/podlahy ✅ HSV6 · poznámky 2.01–2.05 ✅.
+
+---
+
+## 5. Metodika
+- Povrchové vrstvy (vnitřní omítka, výmalba, nášlap, obklad) = globální PSV (`PSV77/PSV78/PSV71`) 🟦, ne per-skladba → neflagováno jako chybějící.
+- „ℹ️ stávající" = renovace zachovává (zdivo, klenba S06/S08, trámy, záklop).
+- Dogenerace (po approve): NÁVRH-gap → konstrukční (montáž/materiál split P41); BOURÁNÍ-gap → demontáž stávající vrstvy; `_source="skladba S0X stávající|návrh"` (P29); family-kód kde znám / blank jinak (P26, žádný find_urs_code wrong-leaf); rekonstrukce verify TZ (P9).
