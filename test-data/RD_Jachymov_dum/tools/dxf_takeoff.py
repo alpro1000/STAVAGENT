@@ -26,9 +26,16 @@ from pathlib import Path
 
 import ezdxf
 
+try:
+    from shapely.geometry import Polygon, Point
+    _HAS_SHAPELY = True
+except ImportError:  # room association degrades gracefully without shapely
+    _HAS_SHAPELY = False
+
 MM2_TO_M2 = 1e6
 MM_TO_M = 1000.0
 HERE = Path(__file__).parent
+_ROOM_RE = re.compile(r"\d+\.\d+")  # room number e.g. 0.01 / 1.02
 
 
 def _poly(e):
@@ -54,6 +61,59 @@ def classify(name, rules):
         if r["match"].lower() in low:
             return r
     return None
+
+
+def associate_rooms(msp, room_layer="obrysy míst", label_layer="čísla míst", radius_m=5.0):
+    """A1+A2: point-in-polygon match of room-number labels to room polygons.
+
+    Returns [{cislo, nazev, area_m2, _source}] for labeled rooms only — which
+    also separates the active view's rooms from other views/details on the same
+    sheet (unlabeled polygons are dropped). Requires shapely.
+    """
+    if not _HAS_SHAPELY:
+        return []
+    labels = []
+    for e in list(msp.query("MTEXT")) + list(msp.query("TEXT")):
+        if label_layer.lower() not in e.dxf.layer.lower():
+            continue
+        t = _clean(e.text if hasattr(e, "text") else e.dxf.text)
+        if t:
+            labels.append((t, e.dxf.insert[0], e.dxf.insert[1]))
+    cisla = [(t, x, y) for t, x, y in labels if _ROOM_RE.fullmatch(t)]
+    nazvy = [(t, x, y) for t, x, y in labels
+             if not _ROOM_RE.fullmatch(t) and not t.startswith("v.")
+             and "IPE" not in t and "/" not in t]
+
+    def nearest_name(x, y):
+        best, bd = None, radius_m * MM_TO_M
+        for t, nx, ny in nazvy:
+            dd = ((nx - x) ** 2 + (ny - y) ** 2) ** 0.5
+            if dd < bd:
+                bd, best = dd, t
+        return best
+
+    polys = []
+    for e in msp.query("LWPOLYLINE"):
+        if room_layer.lower() not in e.dxf.layer.lower():
+            continue
+        pts = [(p[0], p[1]) for p in e.get_points()]
+        if len(pts) >= 3:
+            try:
+                pg = Polygon(pts)
+                if pg.area > 0:
+                    polys.append(pg)
+            except Exception:
+                pass
+
+    rooms = []
+    for c, x, y in cisla:
+        pt = Point(x, y)
+        hit = [pg.area for pg in polys if pg.contains(pt)]
+        if hit:
+            rooms.append({"cislo": c, "nazev": nearest_name(x, y),
+                          "area_m2": round(min(hit) / MM2_TO_M2, 2),
+                          "conf": 1.0, "_source": "DXF room-label ∈ polygon"})
+    return rooms
 
 
 def takeoff(dxf_path, slovnik_path=None):
@@ -106,16 +166,22 @@ def takeoff(dxf_path, slovnik_path=None):
                                  "conf": 1.0, "_source": f"DXF block '{name}'"})
         elif br is None:
             unknown.append(f"[block] {name}")
-    return {"vymery": vymery, "blocks": block_counts, "unknown_layers": unknown}
+    rooms = associate_rooms(msp)
+    return {"rooms": rooms, "vymery": vymery, "blocks": block_counts, "unknown_layers": unknown}
 
 
 def main(dxf, slovnik=None):
     res = takeoff(dxf, slovnik)
-    print("=== VÝMĚRY auto-fill from DXF (conf 1.0 deterministic) ===")
+    print("=== MÍSTNOSTI (A1 label↔polygon, A2 view-filtered) ===")
+    for r in res["rooms"]:
+        print(f"  {r['cislo']:6} {str(r['nazev'])[:26]:26} {r['area_m2']:>8} m² conf=1.0 | {r['_source']}")
+    if not res["rooms"]:
+        print("  (none — shapely missing or no labeled rooms)")
+    print("\n=== Ostatní VÝMĚRY auto-fill (conf 1.0) ===")
     seen = set()
     for v in res["vymery"]:
-        if v["role"] == "label":
-            continue
+        if v["role"] == "label" or v["element"] == "mistnost_podlaha":
+            continue  # rooms handled above
         key = (v["element"], v["qty"])
         if key in seen:
             continue
