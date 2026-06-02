@@ -190,6 +190,22 @@ TOOL_MANIFESTS: dict[str, ToolManifest] = {
         requires_confirmation=False,
         version="1.0.0",
     ),
+    # Stage-1 TZ field extractor (autonomy: raw TZ text → recipe input). Reuses
+    # the pdfplumber extractor + concrete-class regex (document.py); LLM only on a
+    # murky materials section. Read-only document processing, billable like analyze.
+    "extract_tz_fields": ToolManifest(
+        tool_name="extract_tz_fields",
+        category=ToolCategory.DOCUMENT_PROCESSING,
+        side_effect_level=SideEffectLevel.NONE,
+        requires_session=False,
+        writes_state=False,
+        audit_required=True,
+        replayable=True,
+        billable=True,
+        credits=10,
+        requires_confirmation=False,
+        version="1.0.0",
+    ),
     # First deliverable export (soupis prací). Deterministic render. writes_state
     # so it drives COMMITTED → EXPORTED; allowed in the terminal COMMITTED state
     # only via RE_EXPORT_ALLOW_LIST (policy_gateway).

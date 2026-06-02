@@ -1221,6 +1221,12 @@ TOOL_DESCRIPTIONS = {
         "strukturovaného seznamu položek. Deterministický render; provenience "
         "(_source) zachována v metadatech odpovědi, KROS list zůstává čistý."
     ),
+    "extract_tz_fields": (
+        "Stádium 1: přečte z technické zprávy autoritativní TEXTOVÁ pole "
+        "(název + charakteristika objektu, seznam prvků, třída betonu na prvek) "
+        "z podepsaných sekcí — ne fulltextem. Výstup = vstup receptu (object + "
+        "elements). Objemy (výměry) jsou stádium 2 → volume_m3=null."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -1243,6 +1249,7 @@ TOOL_ORDER = [
     "uep_get_dwg_conversion_status",
     "detect_object_type",
     "export_soupis",
+    "extract_tz_fields",
 ]
 
 
@@ -1521,6 +1528,32 @@ async def rest_export_soupis(
     from app.mcp.tools.export import export_soupis
     return await export_soupis(
         items=body.items, project_id=body.project_id, deliverable=body.deliverable
+    )
+
+
+class ExtractTzFieldsRequest(BaseModel):
+    # One of text / file_base64 must be supplied. `text` is the already-extracted
+    # page-marked TZ text; `file_base64` is a PDF that the shared pdfplumber
+    # extractor reads.
+    text: Optional[str] = None
+    file_base64: Optional[str] = None
+    filename: str = ""
+
+
+@router.post("/tools/extract-tz-fields")
+async def rest_extract_tz_fields(
+    body: ExtractTzFieldsRequest,
+    authorization: Optional[str] = Header(None),
+):
+    """Extract stage-1 TEXT fields from a technical report (10 credits)."""
+    api_key = _extract_bearer(authorization)
+    credit_check = mcp_auth.check_credits(api_key or "", "extract_tz_fields")
+    if not credit_check["ok"]:
+        raise HTTPException(status_code=402, detail=credit_check["error"])
+
+    from app.mcp.tools.extract_tz_fields import extract_tz_fields
+    return await extract_tz_fields(
+        text=body.text, file_base64=body.file_base64, filename=body.filename
     )
 
 
