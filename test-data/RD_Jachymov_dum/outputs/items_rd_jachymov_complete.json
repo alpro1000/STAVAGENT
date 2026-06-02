@@ -954,10 +954,10 @@
       "_gate": "HSV",
       "kapitola": "HSV-2 Základové a ŽB",
       "subkapitola": "Patky parking — horní",
-      "popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300 mm × 6 ks",
+      "popis": "Patky parking horní část — zdivo z tvárnic ztraceného bednění 300×300 mm (lost formwork, zůstává v konstrukci), 6 patek á 300×300×500 mm",
       "mj": "ks",
       "mnozstvi": 6,
-      "mnozstvi_formula": "6 ks (= spodní, výkres D.1.1.02)",
+      "mnozstvi_formula": "6 patek horní á 300×300×500 mm = 6 sloupků z tvárnic ZB 300×300 (á 2 řady po 250 = 12 tvárnic); zálivka C25/30 + výztuž samostatně (HSV2.004 / HSV3.003)",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "311233812",
       "urs_alternatives": [
@@ -974,7 +974,8 @@
       "id": "260217_sklad.HSV2.003",
       "realizuje_skladbu": null,
       "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
-      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01"
+      "_audit_gap_fixed": "TVARNICE_SPLIT_FIX_2026-06-02 — materiál-leg byl chybně ocel S235 (auto-split chytil IPE180); ztracené bednění → komplet",
+      "mnozstvi_status": "tvárnice ztraceného bednění (komplet položka, NE ocel/pronájem) — 6 sloupků; zálivka v HSV2.004"
     },
     {
       "objekt": "260217_sklad",

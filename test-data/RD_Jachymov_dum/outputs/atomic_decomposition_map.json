@@ -15,14 +15,14 @@
   },
   "_summary": {
     "frozen_items_total": 247,
-    "atomic_operations_total": 374,
-    "items_decomposed": 122,
-    "atomic_children_from_decomposition": 249,
-    "items_carried_1to1": 125,
+    "atomic_operations_total": 371,
+    "items_decomposed": 119,
+    "atomic_children_from_decomposition": 243,
+    "items_carried_1to1": 128,
     "atomic_per_kapitola": {
       "HSV-1 Zemní práce": 29,
-      "HSV-2 Základové a ŽB": 26,
-      "HSV-3 Svislé konstrukce": 18,
+      "HSV-2 Základové a ŽB": 25,
+      "HSV-3 Svislé konstrukce": 16,
       "HSV-4 Vodorovné": 37,
       "HSV-5 Komunikace + schodiště": 1,
       "HSV-5 Komunikace + vjezd": 3,
@@ -60,7 +60,7 @@
       "VRN — Zařízení staveniště": 4
     },
     "familia_distribution": {
-      "(blank)": 129,
+      "(blank)": 126,
       "012": 1,
       "030": 13,
       "031": 3,
@@ -219,18 +219,6 @@
       ]
     },
     {
-      "parent_frozen_item_id": "260217_sklad.HSV2.003",
-      "parent_kapitola": "HSV-2 Základové a ŽB",
-      "parent_popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300 mm × 6 ks",
-      "parent_mj": "ks",
-      "parent_qty": 6,
-      "n_atomic_children": 2,
-      "atomic_children_ids": [
-        "HSV2.003a",
-        "HSV2.003b"
-      ]
-    },
-    {
       "parent_frozen_item_id": "260219_dum.HSV3.003",
       "parent_kapitola": "HSV-3 Svislé konstrukce",
       "parent_popis": "Ocelové překlady IPN160 ve dvojici nad otvory pro nové dveře/okna v 1.NP a 2.NP (8 otvorů odhad)",
@@ -264,30 +252,6 @@
       "atomic_children_ids": [
         "HSV3.005a",
         "HSV3.005b"
-      ]
-    },
-    {
-      "parent_frozen_item_id": "260217_sklad.HSV3.002",
-      "parent_kapitola": "HSV-3 Svislé konstrukce",
-      "parent_popis": "Obvodové stěny skladu S03a/b — tvarovky ztraceného bednění tl. 250 mm, výška 14 řad × 250 = 3.5 m + zalití C25/30",
-      "parent_mj": "m²",
-      "parent_qty": 62.5,
-      "n_atomic_children": 2,
-      "atomic_children_ids": [
-        "HSV3.002a",
-        "HSV3.002b"
-      ]
-    },
-    {
-      "parent_frozen_item_id": "260217_sklad.HSV3.003",
-      "parent_kapitola": "HSV-3 Svislé konstrukce",
-      "parent_popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
-      "parent_mj": "kg",
-      "parent_qty": 1875,
-      "n_atomic_children": 2,
-      "atomic_children_ids": [
-        "HSV3.003a",
-        "HSV3.003b"
       ]
     },
     {
@@ -2321,8 +2285,8 @@
       "poradi": 43,
       "objekt": "260217_sklad",
       "kapitola": "HSV-2 Základové a ŽB",
-      "atomic_id": "HSV2.003a",
-      "atomic_operace_popis": "Montáž — Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300 mm × 6 ks",
+      "atomic_id": "HSV2.003",
+      "atomic_operace_popis": "Patky parking horní část — zdivo z tvárnic ztraceného bednění 300×300 mm (lost formwork, zůstává v konstrukci), 6 patek á 300×300×500 mm",
       "mj": "ks",
       "mnozstvi": 6,
       "urs_kod_kandidat": "311233812",
@@ -2330,29 +2294,12 @@
       "parent_frozen_item_id": "260217_sklad.HSV2.003",
       "parent_kapitola": "HSV-2 Základové a ŽB",
       "realizuje_skladbu": null,
-      "qty_formula": "6 ks (= spodní, výkres D.1.1.02)",
-      "pozn": "Montáž (práce).",
-      "decomposition_type": "auto_montaz_material"
+      "qty_formula": "6 patek horní á 300×300×500 mm = 6 sloupků z tvárnic ZB 300×300 (á 2 řady po 250 = 12 tvárnic); zálivka C25/30 + výztuž samostatně (HSV2.004 / HSV3.003)",
+      "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+      "decomposition_type": "atomic_1to1"
     },
     {
       "poradi": 44,
-      "objekt": "260217_sklad",
-      "kapitola": "HSV-2 Základové a ŽB",
-      "atomic_id": "HSV2.003b",
-      "atomic_operace_popis": "Dodávka — Dodávka oceli S235 (válcované profily) (Dvoustupňové patky pro IPE180 — horní část z t)",
-      "mj": "ks",
-      "mnozstvi": 6.18,
-      "urs_kod_kandidat": null,
-      "status": "needs_lookup",
-      "parent_frozen_item_id": "260217_sklad.HSV2.003",
-      "parent_kapitola": "HSV-2 Základové a ŽB",
-      "realizuje_skladbu": null,
-      "qty_formula": "= montáž × 1.03",
-      "pozn": "Materiál (dodávka). Ztratné 3 %.",
-      "decomposition_type": "auto_montaz_material"
-    },
-    {
-      "poradi": 45,
       "objekt": "260217_sklad",
       "kapitola": "HSV-2 Základové a ŽB",
       "atomic_id": "HSV2.004",
@@ -2369,7 +2316,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 46,
+      "poradi": 45,
       "objekt": "260217_sklad",
       "kapitola": "HSV-2 Základové a ŽB",
       "atomic_id": "HSV2.005",
@@ -2389,7 +2336,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 47,
+      "poradi": 46,
       "objekt": "260217_sklad",
       "kapitola": "HSV-2 Základové a ŽB",
       "atomic_id": "HSV2.006",
@@ -2408,7 +2355,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 48,
+      "poradi": 47,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.001",
@@ -2428,7 +2375,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 49,
+      "poradi": 48,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.002",
@@ -2447,7 +2394,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 50,
+      "poradi": 49,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.003a",
@@ -2466,7 +2413,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 51,
+      "poradi": 50,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.003b",
@@ -2485,7 +2432,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 52,
+      "poradi": 51,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.004a",
@@ -2504,7 +2451,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 53,
+      "poradi": 52,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.004b",
@@ -2523,7 +2470,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 54,
+      "poradi": 53,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.005a",
@@ -2542,7 +2489,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 55,
+      "poradi": 54,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.005b",
@@ -2561,7 +2508,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 56,
+      "poradi": 55,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.006",
@@ -2578,7 +2525,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 57,
+      "poradi": 56,
       "objekt": "260219_dum",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.007",
@@ -2597,7 +2544,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 58,
+      "poradi": 57,
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.001",
@@ -2616,11 +2563,11 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 59,
+      "poradi": 58,
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
-      "atomic_id": "HSV3.002a",
-      "atomic_operace_popis": "Montáž — Obvodové stěny skladu S03a/b — tvarovky ztraceného bednění tl. 250 mm, výška 14 řad × 250 = 3.5 m + zalití C25/30",
+      "atomic_id": "HSV3.002",
+      "atomic_operace_popis": "Obvodové stěny skladu S03a/b — tvarovky ztraceného bednění tl. 250 mm, výška 14 řad × 250 = 3.5 m + zalití C25/30",
       "mj": "m²",
       "mnozstvi": 62.5,
       "urs_kod_kandidat": "311233811",
@@ -2632,39 +2579,19 @@
         "S03b_sklad"
       ],
       "qty_formula": "3 strany trapézu (6010-1000 dveře)+(7000-600 prefa)+(7033-600 prefa)=17843 mm = 17.84 m × výška 14 řad×0.25 = 3.5 m = 62.5 m²",
-      "pozn": "Montáž (práce).",
-      "decomposition_type": "auto_montaz_material"
+      "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+      "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 60,
+      "poradi": 59,
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
-      "atomic_id": "HSV3.002b",
-      "atomic_operace_popis": "Dodávka — Pronájem bednění (Obvodové stěny skladu S03a/b — tvarovky ztrace)",
-      "mj": "m²",
-      "mnozstvi": 62.5,
-      "urs_kod_kandidat": null,
-      "status": "needs_lookup",
-      "parent_frozen_item_id": "260217_sklad.HSV3.002",
-      "parent_kapitola": "HSV-3 Svislé konstrukce",
-      "realizuje_skladbu": [
-        "S03a_sklad",
-        "S03b_sklad"
-      ],
-      "qty_formula": "= montáž 1:1",
-      "pozn": "Materiál (dodávka). Pronájem.",
-      "decomposition_type": "auto_montaz_material"
-    },
-    {
-      "poradi": 61,
-      "objekt": "260217_sklad",
-      "kapitola": "HSV-3 Svislé konstrukce",
-      "atomic_id": "HSV3.003a",
-      "atomic_operace_popis": "Montáž — Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
+      "atomic_id": "HSV3.003",
+      "atomic_operace_popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
       "mj": "kg",
       "mnozstvi": 1875,
       "urs_kod_kandidat": "273361821",
-      "status": "family_verified_leaf_needs_production_lookup",
+      "status": "FAMILY_VERIFIED",
       "parent_frozen_item_id": "260217_sklad.HSV3.003",
       "parent_kapitola": "HSV-3 Svislé konstrukce",
       "realizuje_skladbu": [
@@ -2672,31 +2599,11 @@
         "S03b_sklad"
       ],
       "qty_formula": "62.5 m² × 30 kg/m² (zalití C25/30) = 1875 kg",
-      "pozn": "Montáž (práce).",
-      "decomposition_type": "auto_montaz_material"
+      "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+      "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 62,
-      "objekt": "260217_sklad",
-      "kapitola": "HSV-3 Svislé konstrukce",
-      "atomic_id": "HSV3.003b",
-      "atomic_operace_popis": "Dodávka — Dodávka betonářské oceli B500B (Výztuž B500B do tvarovek ztraceného bednění (~)",
-      "mj": "kg",
-      "mnozstvi": 1875.0,
-      "urs_kod_kandidat": null,
-      "status": "needs_lookup",
-      "parent_frozen_item_id": "260217_sklad.HSV3.003",
-      "parent_kapitola": "HSV-3 Svislé konstrukce",
-      "realizuje_skladbu": [
-        "S03a_sklad",
-        "S03b_sklad"
-      ],
-      "qty_formula": "= montáž 1:1",
-      "pozn": "Materiál (dodávka). Ztratné 0 %.",
-      "decomposition_type": "auto_montaz_material"
-    },
-    {
-      "poradi": 63,
+      "poradi": 60,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.001",
@@ -2713,7 +2620,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 64,
+      "poradi": 61,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.002",
@@ -2732,7 +2639,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 65,
+      "poradi": 62,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.003",
@@ -2751,7 +2658,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 66,
+      "poradi": 63,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.004",
@@ -2770,7 +2677,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 67,
+      "poradi": 64,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.005a",
@@ -2789,7 +2696,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 68,
+      "poradi": 65,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.005b",
@@ -2808,7 +2715,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 69,
+      "poradi": 66,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.006",
@@ -2827,7 +2734,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 70,
+      "poradi": 67,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.007",
@@ -2846,7 +2753,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 71,
+      "poradi": 68,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.008",
@@ -2865,7 +2772,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 72,
+      "poradi": 69,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.009",
@@ -2884,7 +2791,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 73,
+      "poradi": 70,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.010",
@@ -2903,7 +2810,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 74,
+      "poradi": 71,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.011a",
@@ -2922,7 +2829,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 75,
+      "poradi": 72,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.011b",
@@ -2941,7 +2848,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 76,
+      "poradi": 73,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.012a",
@@ -2960,7 +2867,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 77,
+      "poradi": 74,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.012b",
@@ -2979,7 +2886,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 78,
+      "poradi": 75,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.013",
@@ -2998,7 +2905,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 79,
+      "poradi": 76,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.014a",
@@ -3017,7 +2924,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 80,
+      "poradi": 77,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.014b",
@@ -3036,7 +2943,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 81,
+      "poradi": 78,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.001a",
@@ -3055,7 +2962,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 82,
+      "poradi": 79,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.001b",
@@ -3074,7 +2981,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 83,
+      "poradi": 80,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.002",
@@ -3093,7 +3000,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 84,
+      "poradi": 81,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.003a",
@@ -3112,7 +3019,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 85,
+      "poradi": 82,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.003b",
@@ -3131,7 +3038,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 86,
+      "poradi": 83,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.004a",
@@ -3150,7 +3057,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 87,
+      "poradi": 84,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.004b",
@@ -3169,7 +3076,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 88,
+      "poradi": 85,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.005",
@@ -3188,7 +3095,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 89,
+      "poradi": 86,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.006a",
@@ -3207,7 +3114,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 90,
+      "poradi": 87,
       "objekt": "260217_sklad",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.006b",
@@ -3226,7 +3133,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 91,
+      "poradi": 88,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.001a",
@@ -3243,7 +3150,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 92,
+      "poradi": 89,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.001b",
@@ -3260,7 +3167,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 93,
+      "poradi": 90,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.002a",
@@ -3277,7 +3184,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 94,
+      "poradi": 91,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.002b",
@@ -3294,7 +3201,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 95,
+      "poradi": 92,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.003a",
@@ -3311,7 +3218,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 96,
+      "poradi": 93,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.003b",
@@ -3328,7 +3235,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 97,
+      "poradi": 94,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.004a",
@@ -3345,7 +3252,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 98,
+      "poradi": 95,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.004b",
@@ -3362,7 +3269,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 99,
+      "poradi": 96,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.005a",
@@ -3379,7 +3286,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 100,
+      "poradi": 97,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.005b",
@@ -3396,7 +3303,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 101,
+      "poradi": 98,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.006a",
@@ -3413,7 +3320,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 102,
+      "poradi": 99,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.006b",
@@ -3430,7 +3337,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 103,
+      "poradi": 100,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.007a",
@@ -3449,7 +3356,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 104,
+      "poradi": 101,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.007b",
@@ -3468,7 +3375,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 105,
+      "poradi": 102,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.008a",
@@ -3487,7 +3394,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 106,
+      "poradi": 103,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.008b",
@@ -3506,7 +3413,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 107,
+      "poradi": 104,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.009a",
@@ -3525,7 +3432,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 108,
+      "poradi": 105,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.009b",
@@ -3544,7 +3451,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 109,
+      "poradi": 106,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.010a",
@@ -3563,7 +3470,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 110,
+      "poradi": 107,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.010b",
@@ -3582,7 +3489,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 111,
+      "poradi": 108,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.011a",
@@ -3601,7 +3508,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 112,
+      "poradi": 109,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.011b",
@@ -3620,7 +3527,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 113,
+      "poradi": 110,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.012a",
@@ -3639,7 +3546,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 114,
+      "poradi": 111,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.012b",
@@ -3658,7 +3565,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 115,
+      "poradi": 112,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.013a",
@@ -3677,7 +3584,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 116,
+      "poradi": 113,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.013b",
@@ -3696,7 +3603,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 117,
+      "poradi": 114,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.014a",
@@ -3715,7 +3622,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 118,
+      "poradi": 115,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.014b",
@@ -3734,7 +3641,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 119,
+      "poradi": 116,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.015",
@@ -3751,7 +3658,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 120,
+      "poradi": 117,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.016a",
@@ -3770,7 +3677,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 121,
+      "poradi": 118,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.016b",
@@ -3789,7 +3696,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 122,
+      "poradi": 119,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.016c",
@@ -3808,7 +3715,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 123,
+      "poradi": 120,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.016d",
@@ -3827,7 +3734,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 124,
+      "poradi": 121,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.016e",
@@ -3846,7 +3753,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 125,
+      "poradi": 122,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.001",
@@ -3863,7 +3770,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 126,
+      "poradi": 123,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.002",
@@ -3880,7 +3787,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 127,
+      "poradi": 124,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.003",
@@ -3897,7 +3804,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 128,
+      "poradi": 125,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.004",
@@ -3914,7 +3821,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 129,
+      "poradi": 126,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.005",
@@ -3931,7 +3838,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 130,
+      "poradi": 127,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.006",
@@ -3948,7 +3855,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 131,
+      "poradi": 128,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.007",
@@ -3965,7 +3872,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 132,
+      "poradi": 129,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.008",
@@ -3982,7 +3889,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 133,
+      "poradi": 130,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.009",
@@ -3999,7 +3906,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 134,
+      "poradi": 131,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.011",
@@ -4016,7 +3923,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 135,
+      "poradi": 132,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.012",
@@ -4033,7 +3940,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 136,
+      "poradi": 133,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.001",
@@ -4052,7 +3959,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 137,
+      "poradi": 134,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.002a",
@@ -4072,7 +3979,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 138,
+      "poradi": 135,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.002b",
@@ -4092,7 +3999,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 139,
+      "poradi": 136,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.002c",
@@ -4112,7 +4019,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 140,
+      "poradi": 137,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.004a",
@@ -4132,7 +4039,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 141,
+      "poradi": 138,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.004b",
@@ -4152,7 +4059,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 142,
+      "poradi": 139,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.005a",
@@ -4172,7 +4079,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 143,
+      "poradi": 140,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.005b",
@@ -4192,7 +4099,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 144,
+      "poradi": 141,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda ETICS",
       "atomic_id": "HSV7.006",
@@ -4213,7 +4120,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 145,
+      "poradi": 142,
       "objekt": "260219_dum",
       "kapitola": "PSV-71 Izolace HI",
       "atomic_id": "PSV71.001a",
@@ -4230,7 +4137,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 146,
+      "poradi": 143,
       "objekt": "260219_dum",
       "kapitola": "PSV-71 Izolace HI",
       "atomic_id": "PSV71.001b",
@@ -4247,7 +4154,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 147,
+      "poradi": 144,
       "objekt": "260219_dum",
       "kapitola": "PSV-71 Izolace HI",
       "atomic_id": "PSV71.002",
@@ -4264,7 +4171,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 148,
+      "poradi": 145,
       "objekt": "260219_dum",
       "kapitola": "PSV-71 Izolace HI",
       "atomic_id": "PSV71.003",
@@ -4281,7 +4188,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 149,
+      "poradi": 146,
       "objekt": "260219_dum",
       "kapitola": "PSV-71 Izolace TI",
       "atomic_id": "PSV71.101",
@@ -4298,7 +4205,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 150,
+      "poradi": 147,
       "objekt": "260219_dum",
       "kapitola": "PSV-71 Izolace TI",
       "atomic_id": "PSV71.102",
@@ -4317,7 +4224,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 151,
+      "poradi": 148,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.001a",
@@ -4334,7 +4241,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 152,
+      "poradi": 149,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.001b",
@@ -4351,7 +4258,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 153,
+      "poradi": 150,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.002a",
@@ -4368,7 +4275,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 154,
+      "poradi": 151,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.002b",
@@ -4385,7 +4292,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 155,
+      "poradi": 152,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.003a",
@@ -4402,7 +4309,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 156,
+      "poradi": 153,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.003b",
@@ -4419,7 +4326,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 157,
+      "poradi": 154,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.004a",
@@ -4436,7 +4343,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 158,
+      "poradi": 155,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.004b",
@@ -4453,7 +4360,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 159,
+      "poradi": 156,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.005a",
@@ -4470,7 +4377,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 160,
+      "poradi": 157,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.005b",
@@ -4487,7 +4394,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 161,
+      "poradi": 158,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.006a",
@@ -4504,7 +4411,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 162,
+      "poradi": 159,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.006b",
@@ -4521,7 +4428,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 163,
+      "poradi": 160,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.007a",
@@ -4538,7 +4445,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 164,
+      "poradi": 161,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.007b",
@@ -4555,7 +4462,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 165,
+      "poradi": 162,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.008",
@@ -4572,7 +4479,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 166,
+      "poradi": 163,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.009a",
@@ -4589,7 +4496,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 167,
+      "poradi": 164,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.009b",
@@ -4606,7 +4513,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 168,
+      "poradi": 165,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.010a",
@@ -4623,7 +4530,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 169,
+      "poradi": 166,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.010b",
@@ -4640,7 +4547,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 170,
+      "poradi": 167,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.101a",
@@ -4657,7 +4564,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 171,
+      "poradi": 168,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.101b",
@@ -4674,7 +4581,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 172,
+      "poradi": 169,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.102a",
@@ -4691,7 +4598,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 173,
+      "poradi": 170,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.102b",
@@ -4708,7 +4615,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 174,
+      "poradi": 171,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.103a",
@@ -4725,7 +4632,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 175,
+      "poradi": 172,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.103b",
@@ -4742,7 +4649,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 176,
+      "poradi": 173,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Klempíř",
       "atomic_id": "PSV76.104",
@@ -4759,7 +4666,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 177,
+      "poradi": 174,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.201",
@@ -4776,7 +4683,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 178,
+      "poradi": 175,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.202a",
@@ -4793,7 +4700,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 179,
+      "poradi": 176,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.202b",
@@ -4810,7 +4717,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 180,
+      "poradi": 177,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.203a",
@@ -4827,7 +4734,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 181,
+      "poradi": 178,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.203b",
@@ -4844,7 +4751,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 182,
+      "poradi": 179,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.204a",
@@ -4861,7 +4768,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 183,
+      "poradi": 180,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.204b",
@@ -4878,7 +4785,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 184,
+      "poradi": 181,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Truhlář",
       "atomic_id": "PSV76.301a",
@@ -4895,7 +4802,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 185,
+      "poradi": 182,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Truhlář",
       "atomic_id": "PSV76.301b",
@@ -4912,7 +4819,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 186,
+      "poradi": 183,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Truhlář",
       "atomic_id": "PSV76.302a",
@@ -4929,7 +4836,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 187,
+      "poradi": 184,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Truhlář",
       "atomic_id": "PSV76.302b",
@@ -4946,7 +4853,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 188,
+      "poradi": 185,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.001",
@@ -4963,7 +4870,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 189,
+      "poradi": 186,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.002a",
@@ -4980,7 +4887,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 190,
+      "poradi": 187,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.002b",
@@ -4997,7 +4904,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 191,
+      "poradi": 188,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.003a",
@@ -5014,7 +4921,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 192,
+      "poradi": 189,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.003b",
@@ -5031,7 +4938,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 193,
+      "poradi": 190,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.004a",
@@ -5048,7 +4955,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 194,
+      "poradi": 191,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.004b",
@@ -5065,7 +4972,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 195,
+      "poradi": 192,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.005",
@@ -5082,7 +4989,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 196,
+      "poradi": 193,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.006",
@@ -5099,7 +5006,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 197,
+      "poradi": 194,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.007a",
@@ -5116,7 +5023,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 198,
+      "poradi": 195,
       "objekt": "260219_dum",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.007b",
@@ -5133,7 +5040,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 199,
+      "poradi": 196,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.001a",
@@ -5150,7 +5057,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 200,
+      "poradi": 197,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.001b",
@@ -5167,7 +5074,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 201,
+      "poradi": 198,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.002a",
@@ -5184,7 +5091,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 202,
+      "poradi": 199,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.002b",
@@ -5201,7 +5108,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 203,
+      "poradi": 200,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.003a",
@@ -5218,7 +5125,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 204,
+      "poradi": 201,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.003b",
@@ -5235,7 +5142,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 205,
+      "poradi": 202,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.004a",
@@ -5252,7 +5159,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 206,
+      "poradi": 203,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.004b",
@@ -5269,7 +5176,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 207,
+      "poradi": 204,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.005",
@@ -5286,7 +5193,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 208,
+      "poradi": 205,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.006",
@@ -5303,7 +5210,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 209,
+      "poradi": 206,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.007",
@@ -5320,7 +5227,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 210,
+      "poradi": 207,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.008a",
@@ -5337,7 +5244,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 211,
+      "poradi": 208,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.008b",
@@ -5354,7 +5261,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 212,
+      "poradi": 209,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.009a",
@@ -5371,7 +5278,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 213,
+      "poradi": 210,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.009b",
@@ -5388,7 +5295,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 214,
+      "poradi": 211,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.010a",
@@ -5405,7 +5312,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 215,
+      "poradi": 212,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.010b",
@@ -5422,7 +5329,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 216,
+      "poradi": 213,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.011a",
@@ -5439,7 +5346,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 217,
+      "poradi": 214,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.011b",
@@ -5456,7 +5363,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 218,
+      "poradi": 215,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.012",
@@ -5473,7 +5380,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 219,
+      "poradi": 216,
       "objekt": "260219_dum",
       "kapitola": "PSV-95 Detekce požární",
       "atomic_id": "PSV95.001a",
@@ -5490,7 +5397,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 220,
+      "poradi": 217,
       "objekt": "260219_dum",
       "kapitola": "PSV-95 Detekce požární",
       "atomic_id": "PSV95.001b",
@@ -5507,7 +5414,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 221,
+      "poradi": 218,
       "objekt": "260219_dum",
       "kapitola": "PSV-95 Detekce požární",
       "atomic_id": "PSV95.002a",
@@ -5524,7 +5431,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 222,
+      "poradi": 219,
       "objekt": "260219_dum",
       "kapitola": "PSV-95 Detekce požární",
       "atomic_id": "PSV95.002b",
@@ -5541,7 +5448,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 223,
+      "poradi": 220,
       "objekt": "260217_sklad",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.001a",
@@ -5558,7 +5465,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 224,
+      "poradi": 221,
       "objekt": "260217_sklad",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.001b",
@@ -5575,7 +5482,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 225,
+      "poradi": 222,
       "objekt": "260217_sklad",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.001",
@@ -5594,7 +5501,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 226,
+      "poradi": 223,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.001",
@@ -5611,7 +5518,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 227,
+      "poradi": 224,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.002a",
@@ -5628,7 +5535,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 228,
+      "poradi": 225,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.002b",
@@ -5645,7 +5552,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 229,
+      "poradi": 226,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.003a",
@@ -5662,7 +5569,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 230,
+      "poradi": 227,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.003b",
@@ -5679,7 +5586,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 231,
+      "poradi": 228,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004a",
@@ -5696,7 +5603,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 232,
+      "poradi": 229,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004b",
@@ -5713,7 +5620,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 233,
+      "poradi": 230,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004c",
@@ -5730,7 +5637,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 234,
+      "poradi": 231,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005a",
@@ -5747,7 +5654,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 235,
+      "poradi": 232,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005b",
@@ -5764,7 +5671,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 236,
+      "poradi": 233,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005c",
@@ -5781,7 +5688,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 237,
+      "poradi": 234,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006a",
@@ -5798,7 +5705,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 238,
+      "poradi": 235,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006b",
@@ -5815,7 +5722,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 239,
+      "poradi": 236,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006c",
@@ -5832,7 +5739,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 240,
+      "poradi": 237,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.007a",
@@ -5849,7 +5756,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 241,
+      "poradi": 238,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.007b",
@@ -5866,7 +5773,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 242,
+      "poradi": 239,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.008a",
@@ -5883,7 +5790,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 243,
+      "poradi": 240,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.008b",
@@ -5900,7 +5807,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 244,
+      "poradi": 241,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.008c",
@@ -5917,7 +5824,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 245,
+      "poradi": 242,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.008d",
@@ -5934,7 +5841,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 246,
+      "poradi": 243,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.009a",
@@ -5951,7 +5858,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 247,
+      "poradi": 244,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.009b",
@@ -5968,7 +5875,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 248,
+      "poradi": 245,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.010a",
@@ -5985,7 +5892,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 249,
+      "poradi": 246,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.010b",
@@ -6002,7 +5909,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 250,
+      "poradi": 247,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.001a",
@@ -6019,7 +5926,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 251,
+      "poradi": 248,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.001b",
@@ -6036,7 +5943,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 252,
+      "poradi": 249,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.002a",
@@ -6053,7 +5960,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 253,
+      "poradi": 250,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.002b",
@@ -6070,7 +5977,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 254,
+      "poradi": 251,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.003a",
@@ -6087,7 +5994,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 255,
+      "poradi": 252,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.003b",
@@ -6104,7 +6011,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 256,
+      "poradi": 253,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.004a",
@@ -6121,7 +6028,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 257,
+      "poradi": 254,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.004b",
@@ -6138,7 +6045,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 258,
+      "poradi": 255,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.005a",
@@ -6155,7 +6062,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 259,
+      "poradi": 256,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.005b",
@@ -6172,7 +6079,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 260,
+      "poradi": 257,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.006",
@@ -6189,7 +6096,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 261,
+      "poradi": 258,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.007",
@@ -6206,7 +6113,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 262,
+      "poradi": 259,
       "objekt": "260219_dum",
       "kapitola": "PSV-73 Vytápění",
       "atomic_id": "PSV73.008",
@@ -6223,7 +6130,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 263,
+      "poradi": 260,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.001",
@@ -6240,7 +6147,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 264,
+      "poradi": 261,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.002",
@@ -6257,7 +6164,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 265,
+      "poradi": 262,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.003",
@@ -6274,7 +6181,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 266,
+      "poradi": 263,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.004",
@@ -6291,7 +6198,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 267,
+      "poradi": 264,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.005a",
@@ -6308,7 +6215,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 268,
+      "poradi": 265,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.005b",
@@ -6325,7 +6232,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 269,
+      "poradi": 266,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.006",
@@ -6342,7 +6249,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 270,
+      "poradi": 267,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.007",
@@ -6359,7 +6266,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 271,
+      "poradi": 268,
       "objekt": "260219_dum",
       "kapitola": "VRN — Zařízení staveniště",
       "atomic_id": "VRN.001",
@@ -6376,7 +6283,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 272,
+      "poradi": 269,
       "objekt": "260219_dum",
       "kapitola": "VRN — Zařízení staveniště",
       "atomic_id": "VRN.002",
@@ -6393,7 +6300,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 273,
+      "poradi": 270,
       "objekt": "260219_dum",
       "kapitola": "VRN — Zařízení staveniště",
       "atomic_id": "VRN.003",
@@ -6410,7 +6317,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 274,
+      "poradi": 271,
       "objekt": "260219_dum",
       "kapitola": "VRN — Doprava + odpad",
       "atomic_id": "VRN.101",
@@ -6427,7 +6334,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 275,
+      "poradi": 272,
       "objekt": "260219_dum",
       "kapitola": "VRN — BOZP",
       "atomic_id": "VRN.201",
@@ -6444,7 +6351,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 276,
+      "poradi": 273,
       "objekt": "260219_dum",
       "kapitola": "VRN — Pojištění + zábory",
       "atomic_id": "VRN.301",
@@ -6461,7 +6368,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 277,
+      "poradi": 274,
       "objekt": "260219_dum",
       "kapitola": "VRN — Pojištění + zábory",
       "atomic_id": "VRN.302",
@@ -6478,7 +6385,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 278,
+      "poradi": 275,
       "objekt": "260219_dum",
       "kapitola": "VRN — Průzkumy",
       "atomic_id": "VRN.401",
@@ -6495,7 +6402,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 279,
+      "poradi": 276,
       "objekt": "260219_dum",
       "kapitola": "VRN — Průzkumy",
       "atomic_id": "VRN.402",
@@ -6512,7 +6419,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 280,
+      "poradi": 277,
       "objekt": "260219_dum",
       "kapitola": "VRN — Geodet",
       "atomic_id": "VRN.501",
@@ -6529,7 +6436,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 281,
+      "poradi": 278,
       "objekt": "260219_dum",
       "kapitola": "VRN — Dokumentace",
       "atomic_id": "VRN.601",
@@ -6546,7 +6453,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 282,
+      "poradi": 279,
       "objekt": "260219_dum",
       "kapitola": "VRN — Revize",
       "atomic_id": "VRN.701",
@@ -6563,7 +6470,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 283,
+      "poradi": 280,
       "objekt": "260219_dum",
       "kapitola": "VRN — Kolaudace",
       "atomic_id": "VRN.801",
@@ -6580,7 +6487,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 284,
+      "poradi": 281,
       "objekt": "260219_dum",
       "kapitola": "VRN — Doprava + odpad",
       "atomic_id": "VRN.102",
@@ -6597,7 +6504,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 285,
+      "poradi": 282,
       "objekt": "260219_dum",
       "kapitola": "VRN — Doprava + odpad",
       "atomic_id": "VRN.103",
@@ -6614,7 +6521,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 286,
+      "poradi": 283,
       "objekt": "260217_sklad",
       "kapitola": "VRN — Doprava + odpad",
       "atomic_id": "VRN.001",
@@ -6631,7 +6538,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 287,
+      "poradi": 284,
       "objekt": "260217_sklad",
       "kapitola": "VRN — Doprava + odpad",
       "atomic_id": "VRN.002",
@@ -6648,7 +6555,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 288,
+      "poradi": 285,
       "objekt": "260217_sklad",
       "kapitola": "VRN — Geodet",
       "atomic_id": "VRN.101",
@@ -6665,7 +6572,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 289,
+      "poradi": 286,
       "objekt": "260217_sklad",
       "kapitola": "VRN — Společné",
       "atomic_id": "VRN.201",
@@ -6682,7 +6589,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 290,
+      "poradi": 287,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.013",
@@ -6699,7 +6606,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 291,
+      "poradi": 288,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.014",
@@ -6716,7 +6623,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 292,
+      "poradi": 289,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.015",
@@ -6733,7 +6640,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 293,
+      "poradi": 290,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.013a",
@@ -6750,7 +6657,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 294,
+      "poradi": 291,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.013b",
@@ -6767,7 +6674,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 295,
+      "poradi": 292,
       "objekt": "260219_dum",
       "kapitola": "VRN — Zařízení staveniště",
       "atomic_id": "VRN.020",
@@ -6784,7 +6691,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 296,
+      "poradi": 293,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.014a",
@@ -6801,7 +6708,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 297,
+      "poradi": 294,
       "objekt": "260219_dum",
       "kapitola": "PSV-76 Výplně otvorů",
       "atomic_id": "PSV76.014b",
@@ -6818,7 +6725,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 298,
+      "poradi": 295,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004.Aa",
@@ -6835,7 +6742,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 299,
+      "poradi": 296,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004.Ab",
@@ -6852,7 +6759,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 300,
+      "poradi": 297,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004.Ba",
@@ -6869,7 +6776,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 301,
+      "poradi": 298,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004.Bb",
@@ -6886,7 +6793,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 302,
+      "poradi": 299,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004.Ca",
@@ -6903,7 +6810,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 303,
+      "poradi": 300,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.004.Cb",
@@ -6920,7 +6827,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 304,
+      "poradi": 301,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005.Aa",
@@ -6937,7 +6844,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 305,
+      "poradi": 302,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005.Ab",
@@ -6954,7 +6861,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 306,
+      "poradi": 303,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005.Ba",
@@ -6971,7 +6878,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 307,
+      "poradi": 304,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005.Bb",
@@ -6988,7 +6895,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 308,
+      "poradi": 305,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005.Ca",
@@ -7005,7 +6912,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 309,
+      "poradi": 306,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.005.Cb",
@@ -7022,7 +6929,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 310,
+      "poradi": 307,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006.Aa",
@@ -7039,7 +6946,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 311,
+      "poradi": 308,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006.Ab",
@@ -7056,7 +6963,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 312,
+      "poradi": 309,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006.Ba",
@@ -7073,7 +6980,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 313,
+      "poradi": 310,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006.Bb",
@@ -7090,7 +6997,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 314,
+      "poradi": 311,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006.Ca",
@@ -7107,7 +7014,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 315,
+      "poradi": 312,
       "objekt": "260219_dum",
       "kapitola": "PSV-72 ZTI",
       "atomic_id": "PSV72.006.Cb",
@@ -7124,7 +7031,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 316,
+      "poradi": 313,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.012.1_PP",
@@ -7141,7 +7048,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 317,
+      "poradi": 314,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.012.1_NP",
@@ -7158,7 +7065,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 318,
+      "poradi": 315,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.012.2_NP",
@@ -7175,7 +7082,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 319,
+      "poradi": 316,
       "objekt": "260219_dum",
       "kapitola": "PSV-78 Povrchové úpravy",
       "atomic_id": "PSV78.012.3_NP",
@@ -7192,7 +7099,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 320,
+      "poradi": 317,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.016",
@@ -7209,7 +7116,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 321,
+      "poradi": 318,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.017",
@@ -7226,7 +7133,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 322,
+      "poradi": 319,
       "objekt": "260219_dum",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.015a",
@@ -7243,7 +7150,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 323,
+      "poradi": 320,
       "objekt": "260219_dum",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.015b",
@@ -7260,7 +7167,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 324,
+      "poradi": 321,
       "objekt": "260219_dum",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.015c",
@@ -7277,7 +7184,7 @@
       "decomposition_type": "skladba_vrstva"
     },
     {
-      "poradi": 325,
+      "poradi": 322,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + schodiště",
       "atomic_id": "HSV5.001",
@@ -7296,7 +7203,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 326,
+      "poradi": 323,
       "objekt": "260219_dum",
       "kapitola": "VRN — Přesun hmot",
       "atomic_id": "VRN.PM01",
@@ -7313,7 +7220,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 327,
+      "poradi": 324,
       "objekt": "260219_dum",
       "kapitola": "VRN — Lešení",
       "atomic_id": "VRN.PM02",
@@ -7330,7 +7237,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 328,
+      "poradi": 325,
       "objekt": "260219_dum",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.016",
@@ -7347,7 +7254,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 329,
+      "poradi": 326,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.017a",
@@ -7364,7 +7271,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 330,
+      "poradi": 327,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.017b",
@@ -7381,7 +7288,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 331,
+      "poradi": 328,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.017c",
@@ -7398,7 +7305,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 332,
+      "poradi": 329,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.017d",
@@ -7415,7 +7322,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 333,
+      "poradi": 330,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.015a",
@@ -7434,7 +7341,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 334,
+      "poradi": 331,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.015b",
@@ -7453,7 +7360,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 335,
+      "poradi": 332,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.016a",
@@ -7472,7 +7379,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 336,
+      "poradi": 333,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.017a",
@@ -7491,7 +7398,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 337,
+      "poradi": 334,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.017b",
@@ -7510,7 +7417,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 338,
+      "poradi": 335,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.018a",
@@ -7529,7 +7436,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 339,
+      "poradi": 336,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.019a",
@@ -7548,7 +7455,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 340,
+      "poradi": 337,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.020a",
@@ -7567,7 +7474,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 341,
+      "poradi": 338,
       "objekt": "260219_dum",
       "kapitola": "HSV-4 Vodorovné",
       "atomic_id": "HSV4.021a",
@@ -7586,7 +7493,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 342,
+      "poradi": 339,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda + zateplení",
       "atomic_id": "HSV7.007a",
@@ -7605,7 +7512,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 343,
+      "poradi": 340,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda + zateplení",
       "atomic_id": "HSV7.007b",
@@ -7624,7 +7531,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 344,
+      "poradi": 341,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda + zateplení",
       "atomic_id": "HSV7.008a",
@@ -7643,7 +7550,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 345,
+      "poradi": 342,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda + zateplení",
       "atomic_id": "HSV7.009a",
@@ -7662,7 +7569,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 346,
+      "poradi": 343,
       "objekt": "260219_dum",
       "kapitola": "HSV-7 Fasáda + zateplení",
       "atomic_id": "HSV7.009b",
@@ -7681,7 +7588,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 347,
+      "poradi": 344,
       "objekt": "260219_dum",
       "kapitola": "HSV-5 Krov + střecha",
       "atomic_id": "HSV5.018a",
@@ -7700,7 +7607,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 348,
+      "poradi": 345,
       "objekt": "260219_dum",
       "kapitola": "HSV-6 Bourací práce",
       "atomic_id": "HSV6.018a",
@@ -7719,7 +7626,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 349,
+      "poradi": 346,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + vjezd",
       "atomic_id": "HSV5.002a",
@@ -7736,7 +7643,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 350,
+      "poradi": 347,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + vjezd",
       "atomic_id": "HSV5.002b",
@@ -7753,7 +7660,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 351,
+      "poradi": 348,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + vjezd",
       "atomic_id": "HSV5.002c",
@@ -7770,7 +7677,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 352,
+      "poradi": 349,
       "objekt": "260217_sklad",
       "kapitola": "PSV-76 Zámečnictví",
       "atomic_id": "PSV76.002a",
@@ -7787,7 +7694,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 353,
+      "poradi": 350,
       "objekt": "260217_sklad",
       "kapitola": "VRN — Geodet / PČR",
       "atomic_id": "VRN.003a",
@@ -7804,7 +7711,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 354,
+      "poradi": 351,
       "objekt": "260219_dum",
       "kapitola": "M-24 VZT",
       "atomic_id": "M24.001a",
@@ -7821,7 +7728,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 355,
+      "poradi": 352,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.008a",
@@ -7838,7 +7745,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 356,
+      "poradi": 353,
       "objekt": "260219_dum",
       "kapitola": "M-21 ELI silnoproud",
       "atomic_id": "M21.008b",
@@ -7855,7 +7762,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 357,
+      "poradi": 354,
       "objekt": "260219_dum",
       "kapitola": "PSV-95 Detekce požární",
       "atomic_id": "PSV95.003a",
@@ -7872,7 +7779,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 358,
+      "poradi": 355,
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.004a",
@@ -7892,7 +7799,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 359,
+      "poradi": 356,
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.004b",
@@ -7912,7 +7819,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 360,
+      "poradi": 357,
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.005a",
@@ -7932,7 +7839,7 @@
       "decomposition_type": "fixture"
     },
     {
-      "poradi": 361,
+      "poradi": 358,
       "objekt": "260217_sklad",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.007",
@@ -7951,7 +7858,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 362,
+      "poradi": 359,
       "objekt": "260217_sklad",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.008",
@@ -7968,7 +7875,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 363,
+      "poradi": 360,
       "objekt": "260217_sklad",
       "kapitola": "PSV-76 Zámečnické konstrukce",
       "atomic_id": "PSV76.003",
@@ -7985,7 +7892,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 364,
+      "poradi": 361,
       "objekt": "260217_sklad",
       "kapitola": "PSV-76 Zámečnické konstrukce",
       "atomic_id": "PSV76.004a",
@@ -8002,7 +7909,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 365,
+      "poradi": 362,
       "objekt": "260217_sklad",
       "kapitola": "PSV-76 Zámečnické konstrukce",
       "atomic_id": "PSV76.004b",
@@ -8019,7 +7926,7 @@
       "decomposition_type": "auto_montaz_material"
     },
     {
-      "poradi": 366,
+      "poradi": 363,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.003",
@@ -8036,7 +7943,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 367,
+      "poradi": 364,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.004",
@@ -8053,7 +7960,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 368,
+      "poradi": 365,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.005",
@@ -8070,7 +7977,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 369,
+      "poradi": 366,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.006",
@@ -8087,7 +7994,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 370,
+      "poradi": 367,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.007",
@@ -8104,7 +8011,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 371,
+      "poradi": 368,
       "objekt": "260217_sklad",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.009",
@@ -8121,7 +8028,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 372,
+      "poradi": 369,
       "objekt": "260217_sklad",
       "kapitola": "HSV-1 Zemní práce",
       "atomic_id": "HSV1.010",
@@ -8138,7 +8045,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 373,
+      "poradi": 370,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.008",
@@ -8157,7 +8064,7 @@
       "decomposition_type": "atomic_1to1"
     },
     {
-      "poradi": 374,
+      "poradi": 371,
       "objekt": "260217_sklad",
       "kapitola": "HSV-5 Komunikace + zpevněné plochy",
       "atomic_id": "HSV5.009",
