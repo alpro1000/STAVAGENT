@@ -116,6 +116,34 @@ def associate_rooms(msp, room_layer="obrysy míst", label_layer="čísla míst",
     return rooms
 
 
+def dedup_rooms(rooms):
+    """#2 multi-floor dedup: one DXF sheet redraws the same room across floor
+    plans (stav twice + návrh) → collapse to unique rooms.
+
+    - patro = číslo prefix (0=suterén/1.PP, 1=1.NP, 2=2.NP, 3=3.NP)
+    - key = (číslo, round(area,1)); exact duplicates collapse, named entry wins
+      (the named draw is the návrh — carries název)
+    - verze = 'návrh' when named, else 'stav' (this sheet labels only the návrh
+      plan; stav redraws have no nearby název)
+    Distinct areas under one číslo (stav layout ≠ návrh layout) are kept as
+    separate verze rows — both are real (stav feeds bourání, návrh feeds new work).
+    """
+    by_key = {}
+    for r in rooms:
+        cislo = str(r.get("cislo", ""))
+        key = (cislo, round(r.get("area_m2") or 0, 1))
+        prev = by_key.get(key)
+        if prev is None or (not prev.get("nazev") and r.get("nazev")):
+            by_key[key] = dict(r)
+    out = []
+    for (cislo, _area), r in by_key.items():
+        r["patro"] = cislo.split(".")[0] if "." in cislo else "?"
+        r["verze"] = "návrh" if r.get("nazev") else "stav"
+        out.append(r)
+    out.sort(key=lambda r: (r["patro"], r["cislo"], r["verze"]))
+    return out
+
+
 def takeoff(dxf_path, slovnik_path=None):
     slovnik = json.loads((Path(slovnik_path) if slovnik_path else HERE / "dxf_layer_slovnik.json").read_text())
     lrules, brules = slovnik["layer_rules"], slovnik["block_rules"]
@@ -166,17 +194,23 @@ def takeoff(dxf_path, slovnik_path=None):
                                  "conf": 1.0, "_source": f"DXF block '{name}'"})
         elif br is None:
             unknown.append(f"[block] {name}")
-    rooms = associate_rooms(msp)
+    rooms = dedup_rooms(associate_rooms(msp))
     return {"rooms": rooms, "vymery": vymery, "blocks": block_counts, "unknown_layers": unknown}
 
 
 def main(dxf, slovnik=None):
     res = takeoff(dxf, slovnik)
-    print("=== MÍSTNOSTI (A1 label↔polygon, A2 view-filtered) ===")
+    print("=== MÍSTNOSTI (A1 label↔polygon · A2 view-filter · #2 dedup patro/verze) ===")
+    cur = None
     for r in res["rooms"]:
-        print(f"  {r['cislo']:6} {str(r['nazev'])[:26]:26} {r['area_m2']:>8} m² conf=1.0 | {r['_source']}")
+        if r.get("patro") != cur:
+            cur = r.get("patro")
+            print(f"  --- patro {cur} ---")
+        print(f"  {r['cislo']:6} [{r.get('verze','?'):5}] {str(r['nazev'] or '')[:24]:24} {r['area_m2']:>8} m²")
     if not res["rooms"]:
         print("  (none — shapely missing or no labeled rooms)")
+    else:
+        print(f"  Σ {len(res['rooms'])} unique (číslo×area) rooms")
     print("\n=== Ostatní VÝMĚRY auto-fill (conf 1.0) ===")
     seen = set()
     for v in res["vymery"]:
