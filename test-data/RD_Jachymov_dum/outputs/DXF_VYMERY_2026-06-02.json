@@ -1,0 +1,870 @@
+{
+  "_generated": "2026-06-02",
+  "_pattern": "49 DXF-First + 45 Výměry",
+  "objekty": {
+    "260217_sklad": {
+      "rooms": [
+        {
+          "cislo": "1.01",
+          "nazev": "stání",
+          "area_m2": 44.57,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.02",
+          "nazev": "schodiště",
+          "area_m2": 5.5,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.01",
+          "nazev": "sklad zahradní techniky",
+          "area_m2": 17.56,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        }
+      ],
+      "counts": [
+        {
+          "element": "dverni_otvor",
+          "qty": 1,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'PSR_Prázdný_dveřní_otvor'"
+        },
+        {
+          "element": "plot_dreveny_segment",
+          "qty": 19,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'PLOT_DREVENY_04'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '1.01'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'stání'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '1.02'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'schodiště'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '0.01'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'sklad zahradní techniky'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'v.673,40'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'v.673,30'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 6,
+          "_source": "DXF text 'IPE 180'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 10,
+          "_source": "DXF text '100/160'"
+        }
+      ],
+      "unknown_layers": [
+        "SM__02d_tenka další",
+        "SM__06_dvojčerchovaná",
+        "km__02_tlustá",
+        "km__03_velmi tlustá",
+        "km__tenká",
+        "[block] BMW",
+        "[block] název",
+        "[block] investor",
+        "[block] projektový stupeň",
+        "[block] projektant",
+        "[block] datum",
+        "[block] část",
+        "[block] hlavní projektant",
+        "[block] BMW_2d",
+        "[block] hlavní vstup",
+        "[block] vstup",
+        "[block] výškový systém",
+        "[block] KR",
+        "[block] zlab rez"
+      ]
+    },
+    "260219_dum": {
+      "rooms": [
+        {
+          "cislo": "1.01",
+          "nazev": null,
+          "area_m2": 12.45,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.03",
+          "nazev": null,
+          "area_m2": 0.68,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.02",
+          "nazev": null,
+          "area_m2": 3.65,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.04",
+          "nazev": null,
+          "area_m2": 1.49,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.05",
+          "nazev": null,
+          "area_m2": 4.11,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.07",
+          "nazev": null,
+          "area_m2": 9.4,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.06",
+          "nazev": null,
+          "area_m2": 24.0,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.02",
+          "nazev": null,
+          "area_m2": 5.9,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.03",
+          "nazev": null,
+          "area_m2": 2.35,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.05",
+          "nazev": null,
+          "area_m2": 14.08,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.06",
+          "nazev": null,
+          "area_m2": 15.75,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.04",
+          "nazev": null,
+          "area_m2": 15.54,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.01",
+          "nazev": null,
+          "area_m2": 7.25,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.02",
+          "nazev": null,
+          "area_m2": 57.39,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.01",
+          "nazev": null,
+          "area_m2": 7.45,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.02",
+          "nazev": null,
+          "area_m2": 4.37,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.04",
+          "nazev": null,
+          "area_m2": 2.29,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.03",
+          "nazev": null,
+          "area_m2": 22.2,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.01",
+          "nazev": null,
+          "area_m2": 3.52,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.01",
+          "nazev": null,
+          "area_m2": 12.45,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.02",
+          "nazev": null,
+          "area_m2": 3.65,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.04",
+          "nazev": null,
+          "area_m2": 1.49,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.05",
+          "nazev": null,
+          "area_m2": 4.11,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.07",
+          "nazev": null,
+          "area_m2": 9.4,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.06",
+          "nazev": null,
+          "area_m2": 24.0,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.02",
+          "nazev": null,
+          "area_m2": 5.9,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.03",
+          "nazev": null,
+          "area_m2": 2.35,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.05",
+          "nazev": null,
+          "area_m2": 14.08,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.06",
+          "nazev": null,
+          "area_m2": 15.75,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.04",
+          "nazev": null,
+          "area_m2": 15.54,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.01",
+          "nazev": null,
+          "area_m2": 7.25,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.02",
+          "nazev": null,
+          "area_m2": 57.39,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.01",
+          "nazev": null,
+          "area_m2": 7.45,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.02",
+          "nazev": null,
+          "area_m2": 4.37,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.04",
+          "nazev": null,
+          "area_m2": 2.29,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.03",
+          "nazev": null,
+          "area_m2": 22.2,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.01",
+          "nazev": null,
+          "area_m2": 3.52,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.01",
+          "nazev": "chodba",
+          "area_m2": 9.11,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.03",
+          "nazev": "koupelna",
+          "area_m2": 2.59,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.02",
+          "nazev": "zádveří",
+          "area_m2": 3.04,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.05",
+          "nazev": "ložnice",
+          "area_m2": 14.48,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.04",
+          "nazev": "obývací pokojě",
+          "area_m2": 24.35,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.02",
+          "nazev": "chodba",
+          "area_m2": 4.23,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.01",
+          "nazev": "schodiště",
+          "area_m2": 7.25,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.03",
+          "nazev": "koupelna",
+          "area_m2": 2.54,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.07",
+          "nazev": "pokoj II",
+          "area_m2": 14.38,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.04",
+          "nazev": "chodba",
+          "area_m2": 1.61,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "2.05",
+          "nazev": "společný pokoj",
+          "area_m2": 22.05,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.06",
+          "nazev": "pokoj I",
+          "area_m2": 9.03,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.01",
+          "nazev": "koupelna",
+          "area_m2": 7.6,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.02",
+          "nazev": "chodba",
+          "area_m2": 4.14,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.03",
+          "nazev": "chodba",
+          "area_m2": 2.42,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.04",
+          "nazev": "koupelna",
+          "area_m2": 4.81,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.06",
+          "nazev": "ložnice",
+          "area_m2": 12.76,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "3.05",
+          "nazev": "obývací pokojě",
+          "area_m2": 32.84,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.02",
+          "nazev": "chodba",
+          "area_m2": 4.37,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.04",
+          "nazev": "sklep 2",
+          "area_m2": 2.29,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.03",
+          "nazev": "sklep 1",
+          "area_m2": 22.2,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "0.01",
+          "nazev": "chodba",
+          "area_m2": 3.36,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.06",
+          "nazev": "chodba",
+          "area_m2": 3.78,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        },
+        {
+          "cislo": "1.08",
+          "nazev": "chodba",
+          "area_m2": 3.94,
+          "conf": 1.0,
+          "_source": "DXF room-label ∈ polygon"
+        }
+      ],
+      "counts": [
+        {
+          "element": "dverni_otvor",
+          "qty": 1,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'PSR_Prázdný_dveřní_otvor'"
+        },
+        {
+          "element": "dvere",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'dveře'"
+        },
+        {
+          "element": "sanita_wc",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'WC s nádržkou 1_4'"
+        },
+        {
+          "element": "sanita_vana",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'Vana 01_5'"
+        },
+        {
+          "element": "sanita_umyvadlo",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'Umyvadlo 01_8'"
+        },
+        {
+          "element": "spotrebic_sporak",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'Elektrický sporák 01_42'"
+        },
+        {
+          "element": "sanita_vana",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'Sprch vana_6'"
+        },
+        {
+          "element": "sanita_wc",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'WC s nádržkou 1_7'"
+        },
+        {
+          "element": "sanita_umyvadlo",
+          "qty": 3,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'Umyvadlo 01_9'"
+        },
+        {
+          "element": "sanita_umyvadlo",
+          "qty": 2,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'umyvadlo'"
+        },
+        {
+          "element": "sanita_wc",
+          "qty": 3,
+          "mj": "ks",
+          "conf": 1.0,
+          "_source": "DXF block 'WC_ZAVES_DURAVIT STARCK3'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '1.01'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '1.03'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '1.02'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '1.04'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '1.05'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '1.07'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 4,
+          "_source": "DXF text '1.06'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '2.02'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '2.03'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '2.05'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 2,
+          "_source": "DXF text '2.06'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '2.04'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '2.01'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '3.02'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '3.01'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '0.02'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '0.04'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '0.03'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text '0.01'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'zádveří'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 3,
+          "_source": "DXF text 'koupelna'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 2,
+          "_source": "DXF text 'ložnice'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 2,
+          "_source": "DXF text 'obývací pokojě'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'pokoj II'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 7,
+          "_source": "DXF text 'chodba'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'společný pokoj'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'pokoj I'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '3.03'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '3.04'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '3.06'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '3.05'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'anglický dvorek'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'terasa'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'schody ze zahrady'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 2,
+          "_source": "DXF text 'operná zídka'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text '1.08'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'sklep 1'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'sklep 2'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'schodiště'"
+        },
+        {
+          "element": "cislo_mistnosti",
+          "qty": 1,
+          "_source": "DXF text 'přístup do patra'"
+        }
+      ],
+      "unknown_layers": [
+        "SM__02d_tenka další",
+        "SM__02e_tenka schody",
+        "SM__06_dvojčerchovaná",
+        "km_R_návrh_tlustá",
+        "km_R_návrh_tlustá 2",
+        "km_R_návrh_velmi tlustá",
+        "km_R_návrh_velmi tlustá 2",
+        "[block] KR",
+        "[block] název",
+        "[block] investor",
+        "[block] projektant",
+        "[block] část",
+        "[block] hlavní projektant",
+        "[block] projektový stupeň",
+        "[block] datum",
+        "[block] zahrada",
+        "[block] výškový systém",
+        "[block] legena povrchy stav",
+        "[block] poznámky_návrh",
+        "[block] postel 900 x 2000",
+        "[block] tv_120",
+        "[block] lednice",
+        "[block] indukce",
+        "[block] trouba_mikrovlnka",
+        "[block] drez_2",
+        "[block] mycka_nadobi",
+        "[block] židle_jídelní",
+        "[block] L pohovka II",
+        "[block] postel 900x2000",
+        "[block] HOM_025",
+        "[block] okno 1.NP vzadu",
+        "[block] okno malé vzadu",
+        "[block] okno male 3.NP vzadu",
+        "[block] okno 3.NP vzadu",
+        "[block] okno 2.NP",
+        "[block] okno 3.NP",
+        "[block] okno 1.NP",
+        "[block] poznámky návrh",
+        "[block] povrchové materiály novrh",
+        "[block] poznámka DSP"
+      ]
+    }
+  }
+}
