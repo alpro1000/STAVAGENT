@@ -44,6 +44,15 @@ from app.mcp.tools.document import PATTERNS, _extract_pdf_text
 logger = logging.getLogger(__name__)
 
 _CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3})
+
+# Injectable seams — module-level, NOT public-tool params. FastMCP builds a JSON
+# schema from the registered tool's signature, and a Callable can't be expressed
+# in JSON schema (PydanticInvalidForJsonSchema: CallableSchema). Keeping these as
+# module globals (tests monkeypatch them) keeps extract_tz_fields' schema clean.
+# `_TEXT_EXTRACTOR` defaults to the shared pdfplumber extractor; `_LLM` is the
+# murky-materials fallback hook (default None → deterministic-only).
+_TEXT_EXTRACTOR: Callable[[Path], str] = _extract_pdf_text
+_LLM: Optional[Callable[[str], list[dict]]] = None
 _PAGE_RE = re.compile(r"^---\s*PAGE\s+(\d+)\s*---\s*$", re.I)
 _SO_CODE_RE = re.compile(r"\bSO[\s\-]?(\d{2,3})\b")
 
@@ -290,9 +299,6 @@ async def extract_tz_fields(
     text: Optional[str] = None,
     file_base64: Optional[str] = None,
     filename: str = "",
-    *,
-    _text_extractor: Optional[Callable[[Path], str]] = None,
-    _llm: Optional[Callable[[str], list[dict]]] = None,
 ) -> dict:
     """Extract authoritative TEXT fields from a technical report (TZ) — stage 1.
 
@@ -326,7 +332,7 @@ async def extract_tz_fields(
             return {"error": "Provide either text= or file_base64=",
                     "object": {}, "elements": []}
         try:
-            text = _decode_to_text(file_base64, filename, _text_extractor)
+            text = _decode_to_text(file_base64, filename, _TEXT_EXTRACTOR)
         except Exception as exc:
             logger.error("[MCP/ExtractTZ] could not read PDF: %s", exc)
             return {"error": str(exc), "object": {}, "elements": []}
@@ -336,7 +342,7 @@ async def extract_tz_fields(
     sections = _segment_sections(text)
     obj = _extract_object(sections, text)
     elements, unbound = _extract_elements(
-        sections, obj.get("object_code"), None, _llm)
+        sections, obj.get("object_code"), None, _LLM)
 
     return {
         "object": obj,

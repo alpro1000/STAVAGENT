@@ -215,9 +215,12 @@ def test_file_base64_uses_injected_extractor():
 
     The real pdfplumber parse is already covered by document.py; here we only
     verify the base64 → extractor → sections glue, with the extractor injected
-    so the test needs no pdfplumber.
+    via the module-level seam (it's NOT a tool param — Callable can't be in the
+    FastMCP JSON schema) so the test needs no pdfplumber.
     """
     import base64
+
+    import app.mcp.tools.extract_tz_fields as etf
 
     captured = {}
 
@@ -226,8 +229,13 @@ def test_file_base64_uses_injected_extractor():
         return SO202_TZ_TEXT
 
     payload = base64.b64encode(b"%PDF-1.4 fake bytes").decode()
-    res = asyncio.run(extract_tz_fields(
-        file_base64=payload, filename="SO-202_TZ.pdf", _text_extractor=fake_extractor))
+    original = etf._TEXT_EXTRACTOR
+    etf._TEXT_EXTRACTOR = fake_extractor
+    try:
+        res = asyncio.run(extract_tz_fields(
+            file_base64=payload, filename="SO-202_TZ.pdf"))
+    finally:
+        etf._TEXT_EXTRACTOR = original
 
     assert captured.get("path_exists") is True  # decoded bytes were written to a temp file
     assert res["object"]["object_code"] in ("SO 202", "SO-202", "SO202"), res["object"]
