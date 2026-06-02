@@ -1,10 +1,16 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-06-01 (RD Jáchymov sklad obmer pass):
-Sequential 1..48 validated (no duplicates, no gaps).
-last_number: 48
-next_pattern: 49  ← use this for any new additions.
+Pattern numbering audit 2026-06-02 (RD Jáchymov DXF-takeoff prototype):
+Sequential 1..49 validated (no duplicates, no gaps).
+last_number: 49
+next_pattern: 50  ← use this for any new additions.
+
+Added 2026-06-02 (DXF-takeoff P0 prototype): Pattern 49 (DXF-First — parse
+vector structure before vision; complementary to Pattern 39 by source type:
+raster→39, vector→49). Origin: RD Jáchymov řezy read by vision while the DXF
+held areas/layers deterministically; prototype validated 17.6/44.6/62.5 +
+counts (IPE 6, trámy 10) from the sklad DXF.
 
 Added 2026-06-01 (RD Jáchymov sklad ruční obmer): Pattern 47 (Fence-post
 counting — `length ÷ spacing` is intervals not pieces; verify against drawn
@@ -2158,6 +2164,52 @@ Adding a standalone "ŽB ztužující věnec" m³ line on top of a filled-tvárn
 - Pattern 43 (PD contradiction → reconcile) — sibling, but the duplicate there comes from *conflicting documents*; here from a *named integral sub-feature*
 - Pattern 41 (Montáž/materiál split) — legitimate decomposition (real separate legs) vs Pattern 48 (illegitimate split of an integral part)
 - Pattern 45 (Výměry-First) — the register's one-element-one-area discipline surfaces the overlap
+
+---
+
+## Pattern 49: DXF-First — vector structure before vision
+
+**Source:** RD Jáchymov — DXF-takeoff prototype validated manual obmer (2026-06-02).
+
+### Problem
+We read engineering drawings as **images** (vision / PDF raster) and re-measured by hand, even when the source was a **vector DXF/DWG** — which already contains the elements as structured geometry (layers, closed polylines, blocks, dimensions, text). Vision-on-a-vector throws away determinism.
+
+### Principle
+For a **vector** source (DXF/DWG), parse the structure **first** (conf 1.0 where geometry is clean), and fall back to vision **only** where the vector is ambiguous:
+```
+1. DXF parse (conf 1.0)  — closed LWPOLYLINE → area; INSERT → count;
+                            DIMENSION → length; TEXT/MTEXT → labels/counts
+2. Vision (conf ~0.85)   — only where DXF is ambiguous (layer slovník gap,
+                            hidden logic) — Pattern 39 / walk_drawings
+3. TZ cross-ref          — validation
+```
+
+### Not a conflict with Pattern 39 — complementary by source type
+- **Pattern 39 (Vision-first)** = **raster** sources (scanned PDF, image-only drawings) — no vector structure to parse, vision is the only route.
+- **Pattern 49 (DXF-First)** = **vector** sources (DXF/DWG) — structure exists, parse it before vision.
+The decision key is the **source format**, not preference. Raster → 39. Vector → 49 then 39 for the gaps.
+
+### What is deterministic vs what still needs reasoning
+- ✅ **Horizontal areas** (floor, deck) — directly from closed polylines (sklad floor 17.6 → DXF 17.56; stání 44.6 → 44.57).
+- ✅ **Counts** — repeated blocks (INSERT) + label tallies (IPE 180 ×6, trámy 100/160 ×10).
+- ⚠️ **Vertical areas** (wall face 62.5) — **derived**, not in the plan: DXF perimeter (17.54 m) × height from řez (3.5 m) = 61.4. The plan has the footprint/perimeter, not the face.
+- ⚠️ **Layer names are draftsman-semantic** (`km_/SM_/IP_/Z_` by line-type/discipline, not element) → a **layer slovník** (accumulated mapping) is required for auto-classification; gaps go to vision.
+- ⚠️ **Hidden logic** (patky = 2 rows; S01 vynos beyond wall) — not explicit in DXF → vision/reasoning (Pattern 39 / walk_drawings).
+
+### Invariant
+For a vector DXF/DWG, the deterministic parse runs **before** any vision pass; vision is invoked only for the flagged-ambiguous remainder, and every DXF-derived quantity carries its layer + entity as `_source`.
+
+### Anti-pattern
+Vision-first on a vector DXF — re-measuring by eye what a polyline already gives at conf 1.0 (RD Jáchymov řezy were read by vision while the DXF held the areas/layers deterministically).
+
+### Acceptance
+Areas extracted from DXF reconcile with the manual obmer; vision used only where DXF did not resolve. (Prototype: `test-data/RD_Jachymov_dum/tools/dxf_takeoff_prototype.py`.)
+
+### Related
+- Pattern 39 (Vision-first) — the raster sibling; 49 hands the gaps to 39
+- Pattern 40 (Host-delegated vision + MCP gate) — walk_drawings is the vision fallback for 49
+- Pattern 45 (Výměry-First) — DXF auto-fills the výměry register (conf 1.0)
+- Pattern 47 (Fence-post counting) — block/label counts from DXF are authoritative over `length÷spacing`
 
 ---
 

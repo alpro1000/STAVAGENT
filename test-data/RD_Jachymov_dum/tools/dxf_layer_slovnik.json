@@ -1,0 +1,41 @@
+{
+  "_schema": "dxf_layer_slovnik v1",
+  "_note": "Accumulative layer-name -> element mapping for DXF-First takeoff (Pattern 49). Match = case-insensitive substring on layer name. Seeded from RD Jáchymov sklad (260217). Grows per project; unknown layers are reported by the parser for accumulation. role: area|length|count|dimension|label|table|hatch_fill|skip.",
+  "_seeded_from": "test-data/RD_Jachymov_dum/inputs/vykresy_dxf/260217_sklad/RD Ja_chymov vjezd _ DPZ _ 02.dxf",
+  "layer_rules": [
+    {"match": "obrysy míst",   "element": "mistnost_podlaha",  "role": "area",      "conf": 1.0, "note": "room outline -> floor area (validated 17.56=17.6, 44.57=44.6)"},
+    {"match": "tabulka míst",  "element": "tabulka_mistnosti", "role": "table",     "conf": 1.0},
+    {"match": "čísla míst",    "element": "cislo_mistnosti",   "role": "label",     "conf": 1.0},
+    {"match": "vnější zdi",    "element": "obvodova_stena",    "role": "length",    "conf": 0.9, "note": "wall footprint -> perimeter; face area = perimeter x height(rez)"},
+    {"match": "bourán",        "element": "bourani",           "role": "area",      "conf": 0.9},
+    {"match": "dveře",         "element": "dvere",             "role": "count",     "conf": 0.9},
+    {"match": "oplocení",      "element": "plot",              "role": "length",    "conf": 0.9},
+    {"match": "hydroizolace",  "element": "hydroizolace",      "role": "area",      "conf": 0.85},
+    {"match": "ocel heb",      "element": "ocel_sloupek",      "role": "count",     "conf": 0.9},
+    {"match": "kóty",          "element": "_dimension",        "role": "dimension", "conf": 1.0},
+    {"match": "návrh šrafa",   "element": "_navrh_hatch",      "role": "hatch_fill","conf": 0.7},
+    {"match": "šrafa",         "element": "_hatch",            "role": "hatch_fill","conf": 0.6},
+    {"match": "šrafy",         "element": "_hatch",            "role": "hatch_fill","conf": 0.6},
+    {"match": "solid fill",    "element": "_solid_fill",       "role": "hatch_fill","conf": 0.6},
+    {"match": "rozpiska",      "element": "_titleblock",       "role": "skip",      "conf": 1.0},
+    {"match": "popis",         "element": "_annotation",       "role": "skip",      "conf": 1.0},
+    {"match": "razítko",       "element": "_annotation",       "role": "skip",      "conf": 1.0},
+    {"match": "legenda",       "element": "_annotation",       "role": "skip",      "conf": 1.0},
+    {"match": "severka",       "element": "_annotation",       "role": "skip",      "conf": 1.0},
+    {"match": "netisk",        "element": "_noplot",           "role": "skip",      "conf": 1.0},
+    {"match": "měření",        "element": "_survey",           "role": "skip",      "conf": 1.0},
+    {"match": "mereni",        "element": "_survey",           "role": "skip",      "conf": 1.0},
+    {"match": "katastr",       "element": "_cadastre",         "role": "skip",      "conf": 1.0},
+    {"match": "geometrie",     "element": "_construction_geom","role": "skip",      "conf": 1.0},
+    {"match": "draft",         "element": "_draft",            "role": "skip",      "conf": 1.0},
+    {"match": "defpoints",     "element": "_defpoints",        "role": "skip",      "conf": 1.0},
+    {"match": "textové bloky", "element": "_textblocks",       "role": "skip",      "conf": 1.0},
+    {"match": "výškové kóty",  "element": "_level_dim",        "role": "dimension", "conf": 1.0},
+    {"match": "bubliny",       "element": "_callout",          "role": "skip",      "conf": 1.0}
+  ],
+  "block_rules": [
+    {"match": "PLOT_DREVENY", "element": "plot_dreveny_segment", "role": "count"},
+    {"match": "řezová značka", "element": "_section_mark",       "role": "skip"},
+    {"match": "severka",       "element": "_annotation",         "role": "skip"}
+  ]
+}
