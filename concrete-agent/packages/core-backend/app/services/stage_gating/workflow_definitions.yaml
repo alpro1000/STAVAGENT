@@ -23,7 +23,6 @@ version: 1
 # to decide STAGE_VIOLATION. Tools allowed in "all stages" are listed under
 # `_all_stages` and merged into every state's effective allow-list by the loader.
 _all_stages:
-  - read_project_documentation
   - parse_construction_budget
   - search_czech_construction_norms
 
@@ -31,6 +30,7 @@ states:
   DOCUMENT_ANALYSIS:
     tools:
       - analyze_construction_document
+      - detect_object_type
   WORK_ATOMIZATION:
     tools:
       - analyze_construction_document
@@ -53,7 +53,10 @@ states:
     tools: []
   COMMITTED:
     terminal: true
-    tools: []
+    # export_soupis renders the deliverable and drives COMMITTED → EXPORTED. It is
+    # writes_state in a terminal state, allowed only via RE_EXPORT_ALLOW_LIST.
+    tools:
+      - export_soupis
   EXPORTED:
     terminal: true
     tools: []

@@ -57,6 +57,8 @@ TOOL_COSTS = {
     "uep_get_reconciliation_rules": 0,
     "uep_get_dwg_conversion_status": 0,
     "create_work_breakdown": 20,
+    "detect_object_type": 0,  # deterministic wrapper over the W3b detector — free
+    "export_soupis": 10,  # deterministic deliverable render (soupis prací)
 }
 
 FREE_CREDITS = 200

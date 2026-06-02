@@ -1,0 +1,17 @@
+# ADK Spike — dependencies (SPIKE-ONLY, time-boxed evaluation).
+#
+# Do NOT merge into concrete-agent/packages/core-backend/requirements.txt.
+# Install into an isolated venv so the prod dep tree + Cloud Build are untouched:
+#
+#   python -m venv .adk-spike-venv
+#   .adk-spike-venv/bin/pip install -r spikes/adk_orchestrator/requirements-adk-spike.txt
+#
+# Pins reflect what the spike was validated against (2026-06-01).
+google-adk==2.1.0          # ADK orchestration layer under evaluation
+litellm                    # Claude planner via LiteLlm (Anthropic / Bedrock) — ADK multi-provider
+mcp                        # MCP stdio client/server (ADK MCPToolset transport)
+fastmcp                    # the app's existing MCP server object (app.mcp.server.mcp)
+openpyxl                   # real .xlsx render (app.utils.soupis_exporter)
+opentelemetry-sdk          # OTel tracing (criterion #4)
+opentelemetry-exporter-otlp
+httpx                      # transitively used by some tool modules on import

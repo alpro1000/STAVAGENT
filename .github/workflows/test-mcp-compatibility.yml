@@ -23,6 +23,10 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_element_name_normalizer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250b.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_detect_object_type.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_export_soupis.py'
+      - 'concrete-agent/packages/core-backend/tests/test_thin_hybrid_recipe.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -45,6 +49,10 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_element_name_normalizer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_so250b.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_detect_object_type.py'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_export_soupis.py'
+      - 'concrete-agent/packages/core-backend/tests/test_thin_hybrid_recipe.py'
 
 jobs:
   mcp-compatibility:
@@ -149,4 +157,8 @@ jobs:
             tests/test_element_name_normalizer.py \
             tests/test_mcp_golden_so250.py \
             tests/test_mcp_golden_so202.py \
+            tests/test_mcp_golden_so250b.py \
+            tests/test_mcp_golden_detect_object_type.py \
+            tests/test_mcp_golden_export_soupis.py \
+            tests/test_thin_hybrid_recipe.py \
             -v --tb=short

@@ -81,6 +81,8 @@ async def create_work_breakdown(
     project_type: str = "most",
     catalog: str = "otskp",
     mode: str = MODE_WORK_FIRST,
+    project_id: Optional[str] = None,
+    object_types: Optional[dict] = None,
 ) -> dict:
     """From a list of structural elements, create a complete bill of quantities
     (výkaz výměr / soupis prací) with OTSKP/ÚRS codes and prices.
@@ -148,13 +150,27 @@ async def create_work_breakdown(
         all_items = []
         otskp_catalog = _get_catalog()
 
+        # W3b: resolve the authoritative object type per element. Priority:
+        # explicit `object_types` map (already-resolved, e.g. from project state)
+        # → cache read by SO code (project_id) → None (W3 name+code fallback, #76).
+        # Detection itself happens ONCE at document-analysis time, NOT here — this
+        # path only reads the cache (criterion #75).
+        from app.mcp.tools.object_type_detector import get_cached_object_type
+
+        explicit_types = object_types or {}
+
         for elem in elements:
             name = elem.get("name", "")
             if not name:
                 continue
 
-            # Step 1: Classify element
-            classification = _classify(name)
+            so_code = elem.get("object_code")
+            object_type = explicit_types.get(so_code) if so_code else None
+            if object_type is None:
+                object_type = get_cached_object_type(project_id, so_code)
+
+            # Step 1: Classify element (object_type is authoritative when present)
+            classification = _classify(name, object_code=so_code, object_type=object_type)
             etype = classification["element_type"]
             profile = ELEMENT_TYPES.get(etype, ELEMENT_TYPES["jine"])
 
@@ -246,6 +262,14 @@ async def create_work_breakdown(
             "catalog_bound": not work_first,
         }
 
-    except Exception as e:
-        logger.error(f"[MCP/Breakdown] Error: {e}")
-        return {"error": str(e), "items": [], "total_items": 0}
+    except Exception:
+        # Fail loud (#1262). The old handler swallowed every exception into an
+        # error-dict that DROPPED `mode`/`catalog_bound` — so a TypeError (e.g. a
+        # stubbed callable with the wrong signature) silently became a downstream
+        # KeyError on `result["mode"]`, masking the real cause. create_work_breakdown
+        # is pure/deterministic: an exception here is a bug, not a recoverable
+        # runtime condition. Log the full traceback and re-raise so the real error
+        # surfaces in CI / the caller instead of quietly breaking the response
+        # contract.
+        logger.exception("[MCP/Breakdown] create_work_breakdown failed")
+        raise

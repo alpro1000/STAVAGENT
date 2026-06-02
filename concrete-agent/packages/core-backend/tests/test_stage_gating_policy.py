@@ -55,9 +55,8 @@ def test_side_effect_level_has_six_values():
     }
 
 
-def test_nine_workflow_tools_have_manifests():
+def test_workflow_tools_have_manifests():
     for tool in (
-        "read_project_documentation",
         "analyze_construction_document",
         "parse_construction_budget",
         "classify_construction_element",
@@ -66,6 +65,8 @@ def test_nine_workflow_tools_have_manifests():
         "find_urs_code",
         "find_otskp_code",
         "search_czech_construction_norms",
+        "detect_object_type",
+        "export_soupis",
     ):
         assert get_manifest(tool) is not None, tool
 
@@ -292,7 +293,14 @@ def _run_breakdown(**kwargs):
             r.cena = 100.0
             return [r]
 
-    with patch.object(clf, "_classify", lambda n: {"element_type": "jine"}), patch.dict(
+    with patch.object(
+        clf,
+        "_classify",
+        # Mirror the real _classify(name, object_code=None, object_type=None)
+        # signature (W3/W3b): create_work_breakdown now threads object_code +
+        # object_type, so the stub must accept and ignore them (#1262).
+        lambda n, object_code=None, object_type=None: {"element_type": "jine"},
+    ), patch.dict(
         clf.ELEMENT_TYPES, {"jine": fake_profile}, clear=False
     ), patch.object(ot, "_get_catalog", lambda: FakeCat()):
         elements = [{"name": "Pilíř P2", "volume_m3": 10, "concrete_class": "C30/37"}]

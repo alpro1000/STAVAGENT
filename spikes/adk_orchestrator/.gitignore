@@ -1,0 +1,7 @@
+# transient run logs
+out_run.log
+out_stderr.log
+# spike venv (if created inside the tree)
+.adk-spike-venv/
+__pycache__/
+*.pyc

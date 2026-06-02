@@ -3182,8 +3182,8 @@
       "description": "TZ ARS — vikýře (počet, materiál)",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "vikýř",
-        "Vikýř"
+        "Vikýř",
+        "vikýř"
       ],
       "items_keyword_hit": true,
       "status": "covered",
@@ -3209,8 +3209,8 @@
       "description": "TZ ARS — anglický dvorek",
       "tz_mention_count": 2,
       "tz_mention_sample": [
-        "anglický \ndvorek",
-        "anglický dvorek"
+        "anglický dvorek",
+        "anglický \ndvorek"
       ],
       "items_keyword_hit": true,
       "status": "covered",

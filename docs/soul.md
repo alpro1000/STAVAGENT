@@ -376,6 +376,32 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ---
 
+### 2026-05-31 — Session: W3b — activate object_type from TZ into work breakdown (classifier #71–#76)
+
+**Topic:** Fresh branch `claude/w3b-activate-object-type` from origin/main (W3 #1261 merged as squash `2fb89ae4`). Completes W3: the classifier accepted an authoritative `object_type` but nobody filled it → production still used the fragile name+code fallback. Recon confirmed `create_work_breakdown` (breakdown.py:157, `_classify(name)`) is the real atomization caller, passing nothing. Red→green TDD.
+
+**Rozhodnuto:**
+- **New module `object_type_detector.py`** (pure, no LLM, mirrors W3 normalizer): `detect_object_type(object_name, charakteristika) -> bridge|retaining_wall|building|None`. **Detects ONLY from name + charakteristika sentence, NEVER full text** — SO-250's geology section mentions neighbouring `mostní objekt`/`lávka SO 222`; full-text `most` would falsely flag the wall as bridge (#71 guard test locks this). Wall wins over bridge when explicit wall wording present (adj `zárubní/úhlová/opěrná` + noun `zeď/stěn` co-occur, so a bridge `opěra mostu` isn't caught).
+- **Cache key = SO code** (`object_types: {"SO 250":"retaining_wall","SO 202":"bridge"}`) — project is heterogeneous (most + zeď coexist), NOT project-level. Legacy `project_type` (catalog selector, default "most") explicitly NOT used as a type source.
+- **Producer/consumer split:** `detect_and_cache_object_type` runs ONCE per object at document-analysis time (idempotent — returns cached without re-detecting, #75), saves via `project_cache.save_field`. `create_work_breakdown` only READS the cache by SO code (`get_cached_object_type`) and threads `object_type` into `_classify(name, object_code, object_type)`. Cache miss → None → W3 fallback (#76, no #63–#70 regression).
+- **breakdown.py threading:** added `project_id` + `object_types` params (additive); per-element resolution priority explicit map → cache by SO → None.
+- **Tests** `test_mcp_golden_so250b.py` (skip-proof sync `asyncio.run`, like so250): #71 detect + fulltext-noise guard, #72 threaded to each element, #73 bridge generic `Dřík`→`driky_piliru` (the activation payoff), #74 wall→`operna_zed`, #75 detect-once spy + fake cache, #76 undetermined→fallback. **10 passed; 41 total incl. W3 #63–#70 + normalizer regression green.** CI: so250b wired into `test-mcp-compatibility.yml`.
+
+**Odmítnuto:**
+- Full-text type detection — the explicit SO-250 false-bridge trap; name+charakteristika only.
+- Project-level single type — heterogeneous stavba; keyed by SO code.
+- Touching W3 classifier/normalizer (consumer already correct), `provider_router`/`ai_reasoner`, calculator, sister TS classifier.
+
+**Otevřené otázky / risks:**
+- The **producer** (calling `detect_and_cache_object_type` at document-analysis time) is provided as a module fn but not yet wired into a live document-analysis entry point — the orchestrator's real WORK_ATOMIZATION loop is still a PR3a stub. W3b ships the mechanism + the breakdown consumer; hooking the producer into the live ingest is a follow-up when that path is built. Until then callers pass `object_types` explicitly (as tests do).
+- Sister TS classifier still diverges (W3 carry-forward, unchanged).
+
+**Co dál:**
+- Open PR W3b → main (draft → ready after CI green, like W3).
+- Wire the producer into the document-analysis entry point once the live atomization loop exists.
+
+---
+
 ### 2026-05-31 — Session: W3 element-name normalization layer (SO-250 probe, classifier #63–#70)
 
 **Topic:** Fresh branch `claude/w3-normalize-element-name` from origin/main. Contract `docs/tasks/TASK_W3_NormalizeElementName_SO250.md` (renamed to avoid collision with the existing `TASK_Orchestrator_WorkOntology_SO250.md` #1–#20 extraction task). Red→green TDD on the MCP element classifier.
