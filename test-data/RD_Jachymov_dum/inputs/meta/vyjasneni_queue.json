@@ -441,6 +441,51 @@
       "working_assumption": "Položka zařazena 18.5 bm, materiál OVĚŘIT.",
       "next_action": "Projektante: materiál + provedení zábradlí stání (1.0 m)?",
       "_source": "výkresy sklad D.1.1.01/03 + ruční obmer 2026-06-01"
+    },
+    {
+      "id": 39,
+      "severity": "major",
+      "status": "open",
+      "category": "verify_projektant",
+      "title": "Trubky u pasů — účel (drenáž vs odvětrání radonu) + Ø",
+      "context": "Řez: 2 trubky v štěrkovém obsypu podél pasů (Ø~150 × 6.35 m a Ø120-130 × 6.01 m). V legendě ani popisu NEuvedeno, zda drenáž nebo odvětrání radonu, ani přesný Ø.",
+      "blocks": [
+        "260217_sklad.HSV1.009",
+        "260217_sklad.HSV1.010"
+      ],
+      "working_assumption": "Položky zařazeny s geometrií z řezu, účel jako drenáž/radon provizorně.",
+      "next_action": "Projektante: trubky u pasů = drenáž NEBO odvětrání radonu? + jmenovitý Ø + materiál (PVC/PE flexi)?",
+      "_source": "výkresy sklad + ruční obmer 2026-06-01"
+    },
+    {
+      "id": 40,
+      "severity": "major",
+      "status": "open",
+      "category": "verify_projektant",
+      "title": "Dveřní otvor sklad — výška",
+      "context": "Plocha S03a tvárnic počítána s odečtem dveřního otvoru 1000 mm šířky; výška otvoru předpokládána 2000 mm (nepopsáno).",
+      "blocks": [
+        "260217_sklad.HSV3.002"
+      ],
+      "working_assumption": "Výška dveří 2000 mm provizorně.",
+      "next_action": "Projektante: výška dveřního otvoru skladu (RC3 dveře)?",
+      "_source": "výkresy sklad + ruční obmer 2026-06-01"
+    },
+    {
+      "id": 41,
+      "severity": "major",
+      "status": "open",
+      "category": "verify_projektant",
+      "title": "Schodiště S05 — komplet prefa s podestou vs rozložit na vrstvy",
+      "context": "Skladba S05: schod z betonového prefa bloku + kladecí vrstva zavlhlý beton + podkladní betonová deska. Rozloženo na 3 položky (HSV5.001 stupně + HSV5.008 deska + HSV5.009 lože). Alternativa: dodávka komplet prefa schodiště s podestou jako 1 ks.",
+      "blocks": [
+        "260217_sklad.HSV5.001",
+        "260217_sklad.HSV5.008",
+        "260217_sklad.HSV5.009"
+      ],
+      "working_assumption": "Rozloženo na 3 vrstvy dle skladby S05.",
+      "next_action": "Projektante: schodiště S05 = monolit na místě (prefa stupně + lože + deska) NEBO dodávka komplet prefa schodiště s podestou?",
+      "_source": "výkresy sklad + ruční obmer 2026-06-01"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",
