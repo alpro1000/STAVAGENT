@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
-**Generated:** 2026-06-01
-**Items checked:** 230 (active, excl. 4 deprecated)
-**Issues flagged:** 80
+**Generated:** 2026-06-02
+**Items checked:** 243 (active, excl. 4 deprecated)
+**Issues flagged:** 93
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,15 +17,15 @@
 
 | Dimension | Issues |
 |---|--:|
-| subdodavatel_logical | 48 |
-| urs_family_consistency | 32 |
+| subdodavatel_logical | 58 |
+| urs_family_consistency | 35 |
 
-**By severity:** informational=80
+**By severity:** informational=93
 
 
 ---
 
-## urs_family_consistency (32 issues)
+## urs_family_consistency (35 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -57,14 +57,17 @@
 | `260219_dum.PSV95.002` | ⚪ informational | Přenosný hasicí přístroj 34A dle PBŘ — min. 1 ks na společné | URS kód 966067121 prvních digit '9' neodpovídá PSV-95 expected ['0', '3'] — likely cross-category položka per Corpus Pat |
 | `260219_dum.M21.007` | ⚪ informational | Výchozí revize elektrické instalace dle ČSN 33 2000-6 + revi | URS kód 996019011 prvních digit '9' neodpovídá M-21 expected ['0', '2', '7'] — likely cross-category položka per Corpus  |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | URS kód 877315111 prvních digit '8' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
-| `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | URS kód 121301101 prvních digit '1' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus |
+| `260217_sklad.HSV5.001` | ⚪ informational | Schodiště S05 — prefabrikované betonové stupně (2× 9 stupňů  | URS kód 121301101 prvních digit '1' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus |
 | `260219_dum.HSV4.015` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový str | URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
 | `260219_dum.HSV4.017` | ⚪ informational | Tepelná/akustická izolace minerální vata výplň mezi ocelové  | URS kód 713121 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
 | `260219_dum.HSV4.019` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — suchá sklad | URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
+| `260217_sklad.HSV1.007` | ⚪ informational | Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou d | URS kód 564231111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
+| `260217_sklad.HSV5.006` | ⚪ informational | Podkladní beton pod odvodňovací žlab (průřez 0.06 m²) | URS kód 273321411 prvních digit '2' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus |
+| `260217_sklad.HSV5.008` | ⚪ informational | Podkladní betonová deska pod prefa schodiště S05 | URS kód 273313611 prvních digit '2' neodpovídá HSV-5 expected ['5', '6', '7'] — likely cross-category položka per Corpus |
 
 ---
 
-## subdodavatel_logical (48 issues)
+## subdodavatel_logical (58 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -95,7 +98,7 @@
 | `260217_sklad.VRN.001` | ⚪ informational | Doprava prefa H-BLOK Standard z výrobny Herkul (Obrnice) aut | Subdodavatel 'prefa_bloky_specialista' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Ang |
 | `260217_sklad.VRN.002` | ⚪ informational | Likvidace odpadu sklad — kameny ze zídek + výkop + dřevo (dr | Subdodavatel 'bourani_demolice' neodpovídá VRN default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický d |
 | `260219_dum.HSV1.015` | ⚪ informational | Drenáž za opěrnou stěnou (bílou vanou) — drenážní trubka DN1 | Subdodavatel 'izolater_HI' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
-| `260217_sklad.HSV5.001` | ⚪ informational | Sklad mezipodesta schodiště — prefa betonové stupně (9 ks ×  | Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek d |
+| `260217_sklad.HSV5.001` | ⚪ informational | Schodiště S05 — prefabrikované betonové stupně (2× 9 stupňů  | Subdodavatel 'betonar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek d |
 | `260219_dum.HSV1.016` | ⚪ informational | Venkovní schody na terénu z betonových dílců do betonového l | Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
 | `260219_dum.HSV5.017` | ⚪ informational | Montáž svorníků / šroubů tesařských spojů krovu délky přes 1 | Subdodavatel 'tesar' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dla |
 | `260219_dum.HSV4.015` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový str | Subdodavatel 'izolater_TI' neodpovídá HSV-4 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
@@ -110,9 +113,19 @@
 | `260219_dum.HSV7.009` | ⚪ informational | Provětrávaná mezera s kotevním roštem 40 mm + keramický obkl | Subdodavatel 'obkladac' neodpovídá HSV-7 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260219_dum.HSV5.018` | ⚪ informational | Pojistná hydroizolační folie pod hliníkovou falcovanou kryti | Subdodavatel 'pokryvac' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260219_dum.HSV6.018` | ⚪ informational | Demontáž stávajícího vnějšího keramického obkladu suterénní  | Subdodavatel 'bourac' neodpovídá HSV-6 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
-| `260217_sklad.HSV5.002` | ⚪ informational | Napojení vjezdu na ulici Dvořákova — vydláždění z betonových | Subdodavatel 'komunikace' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvore |
+| `260217_sklad.HSV5.002` | ⚪ informational | Vjezd Dvořákova (POZN 01) — zpevněná plocha z hladké betonov | Subdodavatel 'komunikace' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvore |
 | `260217_sklad.PSV76.002` | ⚪ informational | Vjezdová brána na pozemku investora (ocelová) — dodávka + mo | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
 | `260219_dum.M21.008` | ⚪ informational | Hlavní vypínač elektrické energie TOTAL STOP + požární znače | Subdodavatel 'elektrikar' neodpovídá M-21 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
 | `260219_dum.PSV95.003` | ⚪ informational | Předávací protokol krbu na tuhá paliva + kontrola bezpečných | Subdodavatel 'topenar' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260217_sklad.HSV3.004` | ⚪ informational | Hydroizolace + protiradonová ochrana obvodových stěn (S03a)  | Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
 | `260217_sklad.HSV3.005` | ⚪ informational | Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny ( | Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260217_sklad.HSV1.007` | ⚪ informational | Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou d | Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.PSV76.003` | ⚪ informational | Oplocení podél vjezdu — délka dle situace, materiál OVĚŘIT ( | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
+| `260217_sklad.PSV76.004` | ⚪ informational | Zábradlí v. 1.0 m kolem části stání — materiál OVĚŘIT (kov/d | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
+| `260217_sklad.HSV5.003` | ⚪ informational | Pískové lože pod dlažbu vjezdu tl. 40 mm (POZN 01) | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV5.004` | ⚪ informational | Štěrkový zhutněný podklad pod dlažbu vjezdu tl. 150 mm (POZN | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV5.005` | ⚪ informational | Liniový odvodňovací žlab (prefa žlabovka š. 160 mm) podél vj | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV5.006` | ⚪ informational | Podkladní beton pod odvodňovací žlab (průřez 0.06 m²) | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV5.007` | ⚪ informational | Okapový/odvodňovací žlab na straně 6010 mm — typ OVĚŘIT | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV5.008` | ⚪ informational | Podkladní betonová deska pod prefa schodiště S05 | Subdodavatel 'zelezobetonarsky_specialny' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 |
+| `260217_sklad.HSV5.009` | ⚪ informational | Kladecí vrstva ze zavlhlého betonu pod prefa stupně S05 | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |

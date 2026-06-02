@@ -1,6 +1,6 @@
 {
-  "_generated_at": "2026-06-01",
-  "output_file": "outputs/Vykaz_vymer_RD_Jachymov_KROS_format_2026-06-01_v3_final.xlsx",
+  "_generated_at": "2026-06-02",
+  "output_file": "outputs/Vykaz_vymer_RD_Jachymov_KROS_format_2026-06-02_v3_final.xlsx",
   "pattern_compliance": {
     "pattern_15": "items.json untouched (read-only)",
     "pattern_25_26": "status icons (✓⚠❌?) per honest fallback hierarchy",
@@ -16,10 +16,10 @@
     "URS vyber audit"
   ],
   "sheet_count": 5,
-  "active_items": 230,
+  "active_items": 243,
   "items_per_objekt": {
     "260219": 197,
-    "260217": 33
+    "260217": 46
   },
   "excluded_deprecated": [
     {
@@ -45,6 +45,6 @@
   },
   "per_so_cena_ranges": {
     "SO_260219_Dum": "I53:I469",
-    "SO_260217_Sklad": "I34:I106"
+    "SO_260217_Sklad": "I34:I114"
   }
 }

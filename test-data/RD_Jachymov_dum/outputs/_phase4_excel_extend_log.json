@@ -1,24 +1,24 @@
 {
-  "applied_at": "2026-06-01",
-  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01.xlsx",
-  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-01_v2.xlsx",
+  "applied_at": "2026-06-02",
+  "source_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-02.xlsx",
+  "target_xlsx": "outputs/Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_2026-06-02_v2.xlsx",
   "totals": {
-    "total": 234,
-    "active": 230,
+    "total": 247,
+    "active": 243,
     "deprecated": 4,
     "dum_active": 197,
-    "sklad_active": 33,
+    "sklad_active": 46,
     "otazky_total": 21,
     "patterns": 20,
     "urs_verified": 8,
-    "urs_verified_pct": "3.4"
+    "urs_verified_pct": "3.2"
   },
   "souhrn_changes": [],
   "var_b_dum_notes": [
     "201 rows enriched (of 201 data rows)"
   ],
   "var_b_sklad_notes": [
-    "33 rows enriched (of 33 data rows)"
+    "46 rows enriched (of 46 data rows)"
   ],
   "cross_verification_sheet": {
     "sheet": "Cross_verification",
