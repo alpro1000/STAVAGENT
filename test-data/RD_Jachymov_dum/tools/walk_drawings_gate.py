@@ -35,14 +35,33 @@ class Element:
     dimensions: dict = field(default_factory=dict)
 
 
-def _dxf_area_hit(area, dxf_result, tol=0.05):
-    if area is None or not dxf_result:
+def _label_link(el_type, room):
+    """Type-aware linkage: the element must reference the room by číslo OR share a
+    název keyword — area proximity alone is NOT enough (removes coincidental matches)."""
+    t = el_type.lower()
+    cislo = str(room.get("cislo", ""))
+    if cislo and cislo in t:
+        return f"číslo {cislo}"
+    nazev = (room.get("nazev") or "").lower()
+    for w in re.findall(r"[a-zřčšžýáíéúůňťďě]{4,}", nazev):
+        if w in t:
+            return f"název '{w}'"
+    return None
+
+
+def _dxf_area_hit(el, dxf_result, tol=0.05):
+    """Type-aware: match a DXF room only when area is within tol AND there is a
+    label linkage (číslo/název) — not bare area coincidence."""
+    if el.area_m2 is None or not dxf_result:
         return None
     for obj in dxf_result.get("objekty", {}).values():
         for r in obj.get("rooms", []):
             a = r.get("area_m2")
-            if a and abs(a - area) / max(a, area) <= tol:
-                return f"DXF room {r.get('cislo')} = {a} m²"
+            if not (a and abs(a - el.area_m2) / max(a, el.area_m2) <= tol):
+                continue
+            link = _label_link(el.type, r)
+            if link:
+                return f"DXF room {r.get('cislo')} = {a} m² (linked by {link})"
     return None
 
 
@@ -73,7 +92,7 @@ def validate_element(el: Element, dxf_result=None, tz_text="") -> dict:
         return {"verdict": "REJECTED_UNGROUNDED", "confidence": 0.0,
                 "evidence": [], "note": "no _source — P40 gate rejects ungrounded vision"}
 
-    dxf = _dxf_area_hit(el.area_m2, dxf_result) or _dxf_count_hit(el.count, el.type, dxf_result)
+    dxf = _dxf_area_hit(el, dxf_result) or _dxf_count_hit(el.count, el.type, dxf_result)
     tz = _tz_hit(el, tz_text)
     if dxf:
         evidence.append(dxf)
