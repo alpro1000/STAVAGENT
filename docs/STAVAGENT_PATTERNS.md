@@ -1,10 +1,19 @@
 # STAVAGENT Product Patterns
 
 <!--
-Pattern numbering audit 2026-06-01 (RD Jáchymov H-BLOK provenance pass):
-Sequential 1..46 validated (no duplicates, no gaps).
-last_number: 46
-next_pattern: 47  ← use this for any new additions.
+Pattern numbering audit 2026-06-01 (RD Jáchymov sklad obmer pass):
+Sequential 1..48 validated (no duplicates, no gaps).
+last_number: 48
+next_pattern: 49  ← use this for any new additions.
+
+Added 2026-06-01 (RD Jáchymov sklad ruční obmer): Pattern 47 (Fence-post
+counting — `length ÷ spacing` is intervals not pieces; verify against drawn
+symbol count, apply edge-condition ±1/round-up) + Pattern 48 (Integral part /
+attribute ≠ separate line item — a named sub-feature already inside a parent's
+quantity, or a spec attribute, is a qualifier not a standalone line; distinct
+from Pattern 6 cross-SO and Pattern 43 PD-contradiction duplication). Origin:
+sklad trámy/patky fence-post (7→6, 10.16→11) + ztužující věnec = top course of
+filled tvárnice wall (already in 14-row count), not a separate ŽB line.
 
 Added 2026-06-01 (RD Jáchymov H-BLOK count session): Pattern 46 (Weakest-link
 provenance — tag of a derived quantity = min provenance of its inputs on
@@ -2085,6 +2094,70 @@ Tagging the H-BLOK count `measured` because the wall area is measured — hiding
 - Pattern 29 (Continuous source provenance) — provenance lives per input factor, not only per item
 - Pattern 25 (Web search fallback) — a web-analogy input is `estimate`, never promoted
 - Pattern 10 (Vendor Datasheet ≠ Project Specification) — an analogue's spec ≠ the specified product's spec
+
+---
+
+## Pattern 47: Fence-post counting — `length ÷ spacing` is intervals, not pieces
+
+**Source:** RD Jáchymov sklad — H-BLOK patky (7 vs 6), IPE180 (7 vs 6), stropnice (10.16 → 11), trámy (10), 2026-06-01.
+
+### Problem
+Counting discrete elements (patky, nosníky, sloupky, krokve, stropnice, blocks) by `count = length ÷ spacing` returns the number of **intervals (gaps)**, not the number of **elements**. The true count depends on the edge condition and is `intervals ± 1` or a round-up — never the bare division. Shipping `length ÷ spacing` as the count is the classic fence-post (off-by-one) error.
+
+### The edge condition decides the correction
+```
+elements at BOTH ends (posts/patky on edges):  count = intervals + 1
+elements CENTERED in each bay:                  count = intervals (= round-up of L/s)
+edge OFFSETS eat into the span:                 count < L/s  (fewer fit)
+```
+- Patky: `7000 / 1000 = 7` intervals, but drawing edge offsets `785 + 5×1000 + 435` → **6** patky (offsets leave room for only 6).
+- Stropnice: `6.35 / 0.625 = 10.16` → **round up to 11** (a partial bay still needs a beam).
+- The division is an **estimate**; the authoritative count is **read off the drawing** (count the symbols), not computed.
+
+### Principle
+`length ÷ spacing` produces a *candidate* count to sanity-check against the drawing — never the shipped quantity on its own. When a drawing exists, **count the drawn symbols** (Pattern 39 vision) and let that win; the division only flags gross mismatch. When no drawing detail exists, apply the explicit edge-condition correction and tag `estimate` + `OVĚŘIT`.
+
+### Invariant
+No discrete-element count is shipped as a bare `length ÷ spacing`. Either it equals the drawn symbol count, or it carries an explicit edge-condition term (`+1` / round-up / offset) in `mnozstvi_formula`.
+
+### Anti-pattern
+`count = 7000/1000 = 7 patek` shipped verbatim — the drawing shows 6 (off-by-one from edge offsets). Caught live by the user on H-BLOK patky.
+
+### Related
+- Pattern 39 (Vision-first reading) — the drawn symbol count is authoritative over the division
+- Pattern 44 (Geometry-bounded estimate) — `L÷s` is a geometry-bounded estimate, tagged accordingly
+- Pattern 46 (Weakest-link provenance) — a counted-by-division quantity is `estimate` until the drawing confirms it
+
+---
+
+## Pattern 48: Integral part / attribute ≠ separate line item
+
+**Source:** RD Jáchymov sklad — ztužující věnec = top course of the filled tvárnice wall (already counted), 2026-06-01.
+
+### Problem
+A feature with its **own name and its own drawing annotation** (ztužující věnec, pracovní spára, podkladní nátěr, pohledový beton) is tempting to enter as a **separate položka** — but if it is physically **part of an item already counted**, or is an **attribute** of an element rather than a discrete work, adding it **double-counts**. This is distinct from cross-SO duplication (Pattern 6) and from PD-contradiction duplication (Pattern 43): here there is **one source, one element**, and the duplicate comes from mistaking a named sub-feature for separate scope.
+
+### Two faces
+1. **Integral sub-part already in the parent's quantity.** The ztužující věnec is the top filled course of the `tvárnice ztraceného bednění` wall — already inside the wall's 14-row volume (Pattern 47's count). Its function (load distribution, ztužení per ČSN EN 1996) is real, but its **concrete is not new** — only its *reinforcement* may differ (a rebar attribute, not a new volume line). A separate "ŽB věnec" item would bill the same m³ twice.
+2. **Attribute, not work.** `pohledový beton`, `vodostavební beton`, exposure class — these are **properties** of an element that change its *unit price / spec*, not separate operations. They belong as a qualifier on the existing item, never as their own line.
+
+### Test
+> Does this named thing have **its own material volume / labor that no other item already carries**? **Yes → separate položka. No (it's inside a parent quantity, or it's a spec attribute) → qualifier on the parent, not a new line.**
+
+### Principle
+Before adding a named element, check whether its quantity is **already inside** another item's measured quantity (integral part) or whether it is a **spec attribute** of an element. If either, fold it into the parent (as a note / reinforcement adjustment / price qualifier) — do not create a parallel line.
+
+### Invariant
+Every line item carries material/labor that **no other item already counts**. Named integral sub-parts and spec attributes are qualifiers on their parent, never standalone lines.
+
+### Anti-pattern
+Adding a standalone "ŽB ztužující věnec" m³ line on top of a filled-tvárnice wall whose top course already includes it — billing the same concrete twice. (Caught by reasoning from ČSN EN 1996 + the 14-row count, before shipping.)
+
+### Related
+- Pattern 6 (No Work Duplication) — sibling anti-double-count, but *across SO objects*; Pattern 48 is *within one element*
+- Pattern 43 (PD contradiction → reconcile) — sibling, but the duplicate there comes from *conflicting documents*; here from a *named integral sub-feature*
+- Pattern 41 (Montáž/materiál split) — legitimate decomposition (real separate legs) vs Pattern 48 (illegitimate split of an integral part)
+- Pattern 45 (Výměry-First) — the register's one-element-one-area discipline surfaces the overlap
 
 ---
 
