@@ -2,15 +2,15 @@
   "_schema_version": "1.0",
   "_generated_at": "2026-06-02",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 243,
-  "items_total_incl_deprecated": 247,
-  "issues_found_total": 93,
+  "items_checked": 245,
+  "items_total_incl_deprecated": 249,
+  "issues_found_total": 95,
   "summary_by_dimension": {
     "urs_family_consistency": 35,
-    "subdodavatel_logical": 58
+    "subdodavatel_logical": 60
   },
   "summary_by_severity": {
-    "informational": 93
+    "informational": 95
   },
   "issues": [
     {
@@ -1382,6 +1382,42 @@
       "reason": "Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260217_sklad.HSV5.009",
       "popis": "Kladecí vrstva ze zavlhlého betonu pod prefa stupně S05"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "current_subdodavatel": "tesar",
+      "expected_set": [
+        "bednici_tesar",
+        "bila_vana_csb02",
+        "izolater_HI",
+        "podlahar",
+        "prefa_bloky_specialista",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'tesar' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV2.007",
+      "popis": "Bednění základových pasů + spodních patek (prostý beton) — tradiční / systémové,"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "current_subdodavatel": "zelezarsky",
+      "expected_set": [
+        "bednici_tesar",
+        "bila_vana_csb02",
+        "izolater_HI",
+        "podlahar",
+        "prefa_bloky_specialista",
+        "zednik",
+        "zelezobetonarsky_specialny"
+      ],
+      "reason": "Subdodavatel 'zelezarsky' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV2.008",
+      "popis": "Výztuž B500B vkládaná do tvárnic ztraceného bednění — patky horní (6 sloupků) + "
     }
   ]
 }

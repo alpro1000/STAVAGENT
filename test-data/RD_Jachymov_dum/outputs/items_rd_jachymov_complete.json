@@ -985,8 +985,8 @@
       "subkapitola": "Beton patek + zídek — zalití",
       "popis": "Beton C25/30 XC3 XF1 XA1 pro zalití tvarovek ZB patek + lemujících zídek parkingu",
       "mj": "m³",
-      "mnozstvi": 1.75,
-      "mnozstvi_formula": "patky horní (0.3×0.3×0.5×6 = 0.27) + věnec nad patkami 2 řady ztrac.bednění (0.5 v × 6.35 d × 0.3 š = 0.95) + zídka lemující (~0.5) = ~1.72 ≈ 1.75 m³",
+      "mnozstvi": 1.77,
+      "mnozstvi_formula": "zálivka tvárnic ZB: patky horní (0.3×0.3×0.5×6=0.27) + věnec 2 řady (2×0.25 v × 0.3 š × 6.7 d=1.00) + zídka lemující (~0.5) = 1.77 m³",
       "mnozstvi_confidence": 0.8,
       "urs_code_proposed": "273321321",
       "urs_alternatives": [
@@ -994,7 +994,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §3 + výkres D.1.1.02 — věnec 2 řady nad 6 patkami, šířka tvárnic 300 mm",
+      "source": "TZ statika sklad §3 + výkres D.1.1.02 — věnec délka 6.7 m (ruční obmer)",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -1002,7 +1002,7 @@
       "notes": null,
       "id": "260217_sklad.HSV2.004",
       "realizuje_skladbu": null,
-      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01"
+      "_audit_gap_fixed": "VENEC_6.7_2026-06-02"
     },
     {
       "objekt": "260217_sklad",
@@ -7412,6 +7412,66 @@
       "realizuje_skladbu": [
         "S05_sklad"
       ]
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Bednění základů (pasy + patky spodní)",
+      "popis": "Bednění základových pasů + spodních patek (prostý beton) — tradiční / systémové, oboustranné kde nelze betonovat do rýhy",
+      "mj": "m²",
+      "mnozstvi": 25.4,
+      "mnozstvi_formula": "patky spodní 6×4×0.5×0.5=6.0 + pasy 2 strany×0.5×19.4 obvod=19.4 = 25.4 m² (část lze betonovat do rýhy → OVĚŘIT)",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": "273351215",
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "výkres D.1.1.02 + řez — bednění základů; podíl do rýhy vs systémové OVĚŘIT",
+      "subdodavatel": "tesar",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        42
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.007",
+      "urs_code_proposed_was": "273313811",
+      "urs_code_family_6digit": "271313",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = ZÁKLADY DESKY C 25/30, item = ZÁKLADOVÉ PASY C16/20 XC0. Hint: Základové pasy = TKP 271 (pasy), NOT 273 (desky); class C16/20 leaf needed.",
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": []
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-2 Základové a ŽB",
+      "subkapitola": "Výztuž tvárnic ZB patek + věnce",
+      "popis": "Výztuž B500B vkládaná do tvárnic ztraceného bednění — patky horní (6 sloupků) + ztužující věnec nad patkami",
+      "mj": "kg",
+      "mnozstvi": 153,
+      "mnozstvi_formula": "zálivka tvárnic ZB 1.27 m³ (patky horní 0.27 + věnec 1.00) × 120 kg/m³ (= stěna 30 kg/m² ÷ 0.25) = 153 kg",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": "273361821",
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "TZ statika sklad §3 — výztuž B500B do tvárnic ZB; sazba dle stěny S03a (HSV3.003)",
+      "subdodavatel": "zelezarsky",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        42
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV2.008",
+      "urs_code_proposed_was": "273313811",
+      "urs_code_family_6digit": "271313",
+      "urs_verification_note": "WebSearch verified WRONG LEAF: URS leaf = ZÁKLADY DESKY C 25/30, item = ZÁKLADOVÉ PASY C16/20 XC0. Hint: Základové pasy = TKP 271 (pasy), NOT 273 (desky); class C16/20 leaf needed.",
+      "urs_websearch_verified_at": "2026-05-19",
+      "realizuje_skladbu": []
     }
   ],
   "_summary_total": {

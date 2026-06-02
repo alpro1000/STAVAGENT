@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
 **Generated:** 2026-06-02
-**Items checked:** 243 (active, excl. 4 deprecated)
-**Issues flagged:** 93
+**Items checked:** 245 (active, excl. 4 deprecated)
+**Issues flagged:** 95
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,10 +17,10 @@
 
 | Dimension | Issues |
 |---|--:|
-| subdodavatel_logical | 58 |
+| subdodavatel_logical | 60 |
 | urs_family_consistency | 35 |
 
-**By severity:** informational=93
+**By severity:** informational=95
 
 
 ---
@@ -67,7 +67,7 @@
 
 ---
 
-## subdodavatel_logical (58 issues)
+## subdodavatel_logical (60 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -129,3 +129,5 @@
 | `260217_sklad.HSV5.007` | ⚪ informational | Okapový/odvodňovací žlab na straně 6010 mm — typ OVĚŘIT | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
 | `260217_sklad.HSV5.008` | ⚪ informational | Podkladní betonová deska pod prefa schodiště S05 | Subdodavatel 'zelezobetonarsky_specialny' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 |
 | `260217_sklad.HSV5.009` | ⚪ informational | Kladecí vrstva ze zavlhlého betonu pod prefa stupně S05 | Subdodavatel 'zednik' neodpovídá HSV-5 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.HSV2.007` | ⚪ informational | Bednění základových pasů + spodních patek (prostý beton) — t | Subdodavatel 'tesar' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dla |
+| `260217_sklad.HSV2.008` | ⚪ informational | Výztuž B500B vkládaná do tvárnic ztraceného bednění — patky  | Subdodavatel 'zelezarsky' neodpovídá HSV-2 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvore |

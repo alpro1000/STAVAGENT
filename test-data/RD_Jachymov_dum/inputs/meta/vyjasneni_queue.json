@@ -486,6 +486,23 @@
       "working_assumption": "Rozloženo na 3 vrstvy dle skladby S05.",
       "next_action": "Projektante: schodiště S05 = monolit na místě (prefa stupně + lože + deska) NEBO dodávka komplet prefa schodiště s podestou?",
       "_source": "výkresy sklad + ruční obmer 2026-06-01"
+    },
+    {
+      "id": 42,
+      "severity": "major",
+      "status": "open",
+      "category": "verify_projektant",
+      "title": "Základy sklad — bednění (do rýhy vs systémové) + výztuž pasů/patek spodních",
+      "context": "Pasy (HSV2.001) + patky spodní (HSV2.002) = prostý beton C16/20 (dle TZ bez výztuže). Bednění (HSV2.007) odhadnuto na plné systémové — část lze betonovat přímo do rýhy/figury (bez bednění). Výztuž (HSV2.008) započtena POUZE do tvárnic ZB (patky horní + věnec); prostý beton pasů/patek spodních bez výztuže dle TZ.",
+      "blocks": [
+        "260217_sklad.HSV2.007",
+        "260217_sklad.HSV2.008",
+        "260217_sklad.HSV2.001",
+        "260217_sklad.HSV2.002"
+      ],
+      "working_assumption": "Bednění plné systémové 25.4 m²; výztuž jen tvárnice ZB 153 kg; pasy/patky spodní prostý beton bez výztuže.",
+      "next_action": "Projektante: 1) podíl bednění do rýhy vs systémové u pasů? 2) jsou pasy/patky spodní opravdu prostý beton bez výztuže (dle TZ), nebo vyztužené?",
+      "_source": "TZ statika sklad §3 + výkres D.1.1.02 + ruční obmer 2026-06-02"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",
