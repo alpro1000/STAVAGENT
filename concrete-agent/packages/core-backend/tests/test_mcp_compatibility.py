@@ -77,6 +77,8 @@ EXPECTED_TOOLS = [
     # TASK_MCP_DetectType_and_Export — W3b detector as a tool + first deliverable.
     "detect_object_type",
     "export_soupis",
+    # TASK_Extract_Stage1_TZFields — stage-1 TZ text field extractor.
+    "extract_tz_fields",
 ]
 
 
