@@ -45,7 +45,9 @@ def _dxf_hit(element_type, area_m2, count, dxf_rooms, dxf_counts, tol=0.05) -> O
     if dxf_rooms and area_m2:
         for r in dxf_rooms:
             a = r.get("area_m2")
-            if a and abs(a - area_m2) / max(a, area_m2) <= tol and _label_link(element_type, r):
+            # max(..., 0.001) guards division even if the truthy guards above are
+            # ever relaxed (sub-mm² areas are never real rooms anyway).
+            if a and abs(a - area_m2) / max(a, area_m2, 0.001) <= tol and _label_link(element_type, r):
                 return f"DXF room {r.get('cislo')} = {a} m²"
     if dxf_counts and count is not None:
         for c in dxf_counts:
