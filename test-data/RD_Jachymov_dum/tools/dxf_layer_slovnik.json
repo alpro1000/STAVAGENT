@@ -12,6 +12,15 @@
     {"match": "oplocení",      "element": "plot",              "role": "length",    "conf": 0.9},
     {"match": "hydroizolace",  "element": "hydroizolace",      "role": "area",      "conf": 0.85},
     {"match": "ocel heb",      "element": "ocel_sloupek",      "role": "count",     "conf": 0.9},
+    {"match": "nosné stěny",   "element": "nosna_stena",       "role": "length",    "conf": 0.9, "note": "dům: load-bearing wall footprint -> obvod"},
+    {"match": "obklad",        "element": "obklad",            "role": "area",      "conf": 0.85},
+    {"match": "zateplení",     "element": "zatepleni_etics",   "role": "area",      "conf": 0.85},
+    {"match": "zařizováky",    "element": "sanita_zarizovak",  "role": "count",     "conf": 0.85, "note": "dům: sanitární zařizovací předměty"},
+    {"match": "klempíř",       "element": "klempirina",        "role": "length",    "conf": 0.8},
+    {"match": "okna",          "element": "okno",              "role": "count",     "conf": 0.85},
+    {"match": "nábytek",       "element": "_nabytek",          "role": "skip",      "conf": 1.0, "note": "návrh furniture — not a takeoff item"},
+    {"match": "nepouzit",      "element": "_unused",           "role": "skip",      "conf": 1.0},
+    {"match": "čárkovaná",     "element": "_linetype",         "role": "skip",      "conf": 0.6, "note": "line-type layer, not element-semantic"},
     {"match": "kóty",          "element": "_dimension",        "role": "dimension", "conf": 1.0},
     {"match": "návrh šrafa",   "element": "_navrh_hatch",      "role": "hatch_fill","conf": 0.7},
     {"match": "šrafa",         "element": "_hatch",            "role": "hatch_fill","conf": 0.6},
@@ -35,7 +44,18 @@
   ],
   "block_rules": [
     {"match": "PLOT_DREVENY", "element": "plot_dreveny_segment", "role": "count"},
+    {"match": "WC",           "element": "sanita_wc",           "role": "count"},
+    {"match": "Vana",         "element": "sanita_vana",         "role": "count"},
+    {"match": "Umyvadlo",     "element": "sanita_umyvadlo",     "role": "count"},
+    {"match": "Sprch",        "element": "sanita_sprcha",       "role": "count"},
+    {"match": "sporák",       "element": "spotrebic_sporak",    "role": "count"},
+    {"match": "Prázdný_dveřní", "element": "dverni_otvor",      "role": "count"},
+    {"match": "dveře",        "element": "dvere",               "role": "count"},
+    {"match": "WALL_",        "element": "_wall_block",         "role": "skip"},
+    {"match": "skříňka",      "element": "_nabytek",            "role": "skip"},
     {"match": "řezová značka", "element": "_section_mark",       "role": "skip"},
-    {"match": "severka",       "element": "_annotation",         "role": "skip"}
+    {"match": "severka",       "element": "_annotation",         "role": "skip"},
+    {"match": "legenda",       "element": "_annotation",         "role": "skip"},
+    {"match": "razítko",       "element": "_annotation",         "role": "skip"}
   ]
 }
