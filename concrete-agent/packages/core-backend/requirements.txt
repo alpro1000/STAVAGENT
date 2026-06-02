@@ -4,9 +4,9 @@
 # ==========================================
 # API FRAMEWORK
 # ==========================================
-fastapi==0.115.0
+fastapi==0.136.3
 uvicorn[standard]>=0.35.0
-python-multipart==0.0.17
+python-multipart==0.0.30
 # Production server (for deployment)
 gunicorn>=23.0.0
 
@@ -14,10 +14,10 @@ gunicorn>=23.0.0
 # AI MODELS
 # ==========================================
 # Anthropic Claude API
-anthropic==0.40.0
+anthropic==0.105.2
 
 # Google Gemini API (FREE alternative - 1500 req/day)
-google-generativeai==0.8.3
+google-generativeai==0.8.6
 
 # OpenAI GPT-4 Vision (optional for Workflow B)
 openai>=1.54.3,<3
@@ -46,12 +46,12 @@ google-cloud-storage>=2.0.0
 # GOOGLE DRIVE API (Day 1: OAuth2 Integration)
 # ==========================================
 # OAuth2 authentication
-google-auth==2.25.2
-google-auth-oauthlib==1.2.0
-google-auth-httplib2==0.2.0
+google-auth==2.53.0
+google-auth-oauthlib==1.4.0
+google-auth-httplib2==0.4.0
 
 # Google Drive API client
-google-api-python-client==2.110.0
+google-api-python-client==2.197.0
 
 # Credential encryption
 cryptography==41.0.7
@@ -75,7 +75,7 @@ pandas>=2.2.0
 openpyxl>=3.1.0
 # xlrd==2.0.1
 pdfplumber>=0.11.0  # Для проверки PDF
-PyYAML==6.0.2  # KB loader YAML support (B4 default_ceilings, B6/B7 INDEX.yaml)
+PyYAML==6.0.3  # KB loader YAML support (B4 default_ceilings, B6/B7 INDEX.yaml)
 python-docx>=1.1.0  # DOCX parsing for document summary
 ezdxf>=1.3.0  # DXF parsing (Libuše DWG/DXF pipeline, Phase 0.5)
 shapely>=2.0  # Geometric computations for room polygons + facade nets (Phase 0.5)
@@ -105,7 +105,7 @@ python-slugify>=8.0.0
 # ==========================================
 httpx==0.28.1
 aiofiles==24.1.0
-requests==2.32.3
+requests==2.34.2
 
 # ==========================================
 # LOGGING (Production)
@@ -117,7 +117,7 @@ colorlog>=6.10.1  # Explicit version to avoid hash mismatch on Render
 # ==========================================
 # DEVELOPMENT & TESTING (Optional)
 # ==========================================
-pytest==8.3.4
+pytest==8.4.2
 pytest-asyncio>=0.21.0
 rich>=13.7.0  # Beautiful terminal output for test scripts
 # pytest-cov==6.0.0
@@ -129,23 +129,23 @@ rich>=13.7.0  # Beautiful terminal output for test scripts
 # DATABASE - Phase 4 Backend Infrastructure
 # ==========================================
 # PostgreSQL with async support
-sqlalchemy[asyncio]==2.0.36
-asyncpg==0.29.0  # Async PostgreSQL driver
-psycopg2-binary==2.9.10  # Sync driver (fallback)
+sqlalchemy[asyncio]==2.0.50
+asyncpg==0.31.0  # Async PostgreSQL driver
+psycopg2-binary==2.9.12  # Sync driver (fallback)
 PyJWT>=2.10.1  # Validate Portal-issued user JWTs (PR3b); floor matches mcp's transitive requirement (fastmcp→mcp→pyjwt[crypto]>=2.10.1)
-alembic==1.14.0  # Database migrations
+alembic==1.18.4  # Database migrations
 
 # ==========================================
 # REDIS - Phase 4 Backend Infrastructure
 # ==========================================
 # Redis for caching, sessions, and Pub/Sub
-redis[hiredis]==5.0.1  # Redis client with C parser for performance
+redis[hiredis]==5.3.1  # Redis client with C parser for performance
 
 # ==========================================
 # CELERY - Phase 4 Backend Infrastructure
 # ==========================================
 # Celery for background task processing
-celery[redis]==5.4.0  # Task queue with Redis broker
+celery[redis]==5.6.3  # Task queue with Redis broker
 
 # ==========================================
 # MCP SERVER (Model Context Protocol)
@@ -156,10 +156,10 @@ fastmcp>=3.2.0
 bcrypt>=4.0.0
 
 # Advanced Excel export
-xlsxwriter==3.2.0
+xlsxwriter==3.2.9
 
 # PDF generation (for reports)
-reportlab==4.2.5
+reportlab==4.5.1
 weasyprint==62.3
 
 # ==========================================
