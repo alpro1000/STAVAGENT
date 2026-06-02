@@ -9,18 +9,18 @@
     "pattern_32": "Separate deliverable — does not modify File A audit or items.json"
   },
   "_frozen_baseline_preflight": {
-    "items_json_count": 234,
+    "items_json_count": 238,
     "expected": 212,
     "frozen_unchanged": false
   },
   "_summary": {
-    "frozen_items_total": 234,
-    "atomic_operations_total": 360,
-    "items_decomposed": 121,
-    "atomic_children_from_decomposition": 247,
-    "items_carried_1to1": 113,
+    "frozen_items_total": 238,
+    "atomic_operations_total": 365,
+    "items_decomposed": 122,
+    "atomic_children_from_decomposition": 249,
+    "items_carried_1to1": 116,
     "atomic_per_kapitola": {
-      "HSV-1 Zemní práce": 25,
+      "HSV-1 Zemní práce": 27,
       "HSV-2 Základové a ŽB": 26,
       "HSV-3 Svislé konstrukce": 18,
       "HSV-4 Vodorovné": 37,
@@ -39,6 +39,7 @@
       "PSV-76 Klempíř": 7,
       "PSV-76 Truhlář": 4,
       "PSV-76 Výplně otvorů": 25,
+      "PSV-76 Zámečnické konstrukce": 3,
       "PSV-76 Zámečnictví": 8,
       "PSV-77 Podlahy": 12,
       "PSV-78 Povrchové úpravy": 24,
@@ -58,7 +59,7 @@
       "VRN — Zařízení staveniště": 4
     },
     "familia_distribution": {
-      "(blank)": 121,
+      "(blank)": 124,
       "012": 1,
       "030": 13,
       "031": 3,
@@ -66,7 +67,7 @@
       "131": 2,
       "132": 3,
       "151": 1,
-      "174": 3,
+      "174": 4,
       "181": 1,
       "210": 6,
       "212": 2,
@@ -79,7 +80,7 @@
       "342": 3,
       "375": 1,
       "411": 9,
-      "564": 5,
+      "564": 6,
       "596": 1,
       "605": 4,
       "612": 11,
@@ -267,9 +268,9 @@
     {
       "parent_frozen_item_id": "260217_sklad.HSV3.002",
       "parent_kapitola": "HSV-3 Svislé konstrukce",
-      "parent_popis": "Obvodové stěny skladu — tvarovky ztraceného bednění tl. 250 mm × výška 2.4 m + zalití C25/30",
+      "parent_popis": "Obvodové stěny skladu S03a/b — tvarovky ztraceného bednění tl. 250 mm, výška 14 řad × 250 = 3.5 m + zalití C25/30",
       "parent_mj": "m²",
-      "parent_qty": 46.5,
+      "parent_qty": 62.5,
       "n_atomic_children": 2,
       "atomic_children_ids": [
         "HSV3.002a",
@@ -281,7 +282,7 @@
       "parent_kapitola": "HSV-3 Svislé konstrukce",
       "parent_popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
       "parent_mj": "kg",
-      "parent_qty": 1398,
+      "parent_qty": 1875,
       "n_atomic_children": 2,
       "atomic_children_ids": [
         "HSV3.003a",
@@ -1571,6 +1572,18 @@
       "atomic_children_ids": [
         "HSV3.005a"
       ]
+    },
+    {
+      "parent_frozen_item_id": "260217_sklad.PSV76.004",
+      "parent_kapitola": "PSV-76 Zámečnické konstrukce",
+      "parent_popis": "Zábradlí v. 1.0 m kolem části stání — materiál OVĚŘIT (kov/dřevo neuveden)",
+      "parent_mj": "bm",
+      "parent_qty": 18.5,
+      "n_atomic_children": 2,
+      "atomic_children_ids": [
+        "PSV76.004a",
+        "PSV76.004b"
+      ]
     }
   ],
   "atomic_operations": [
@@ -1904,7 +1917,7 @@
       "atomic_id": "HSV1.005",
       "atomic_operace_popis": "Zhutněný štěrkopískový násyp pod podlahu skladu + štěrkopísek pro IPE patky",
       "mj": "m³",
-      "mnozstvi": 2.64,
+      "mnozstvi": 3.54,
       "urs_kod_kandidat": "174101101",
       "status": "needs_production_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV1.005",
@@ -1912,7 +1925,7 @@
       "realizuje_skladbu": [
         "S01_sklad"
       ],
-      "qty_formula": "podlaha sklad 17.6 m² (legenda místností) × 0.15 m podkladní kamenná drť",
+      "qty_formula": "S01 plocha 23.6 m² (místnost 17.6 + vynos za stěnu 6.0 dle řezu) × 0.15 m podkladní drť 4-8 = 3.54 m³",
       "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
       "decomposition_type": "atomic_1to1"
     },
@@ -2606,9 +2619,9 @@
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.002a",
-      "atomic_operace_popis": "Montáž — Obvodové stěny skladu — tvarovky ztraceného bednění tl. 250 mm × výška 2.4 m + zalití C25/30",
+      "atomic_operace_popis": "Montáž — Obvodové stěny skladu S03a/b — tvarovky ztraceného bednění tl. 250 mm, výška 14 řad × 250 = 3.5 m + zalití C25/30",
       "mj": "m²",
-      "mnozstvi": 46.5,
+      "mnozstvi": 62.5,
       "urs_kod_kandidat": "311233811",
       "status": "needs_production_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV3.002",
@@ -2617,7 +2630,7 @@
         "S03a_sklad",
         "S03b_sklad"
       ],
-      "qty_formula": "obvod 19.4 m × výška 2.4 m = 46.6",
+      "qty_formula": "3 strany trapézu (6010-1000 dveře)+(7000-600 prefa)+(7033-600 prefa)=17843 mm = 17.84 m × výška 14 řad×0.25 = 3.5 m = 62.5 m²",
       "pozn": "Montáž (práce).",
       "decomposition_type": "auto_montaz_material"
     },
@@ -2626,9 +2639,9 @@
       "objekt": "260217_sklad",
       "kapitola": "HSV-3 Svislé konstrukce",
       "atomic_id": "HSV3.002b",
-      "atomic_operace_popis": "Dodávka — Pronájem bednění (Obvodové stěny skladu — tvarovky ztraceného be)",
+      "atomic_operace_popis": "Dodávka — Pronájem bednění (Obvodové stěny skladu S03a/b — tvarovky ztrace)",
       "mj": "m²",
-      "mnozstvi": 46.5,
+      "mnozstvi": 62.5,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV3.002",
@@ -2648,7 +2661,7 @@
       "atomic_id": "HSV3.003a",
       "atomic_operace_popis": "Montáž — Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
       "mj": "kg",
-      "mnozstvi": 1398,
+      "mnozstvi": 1875,
       "urs_kod_kandidat": "273361821",
       "status": "family_verified_leaf_needs_production_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV3.003",
@@ -2657,7 +2670,7 @@
         "S03a_sklad",
         "S03b_sklad"
       ],
-      "qty_formula": "46.6 × 30 kg/m² = 1398",
+      "qty_formula": "62.5 m² × 30 kg/m² (zalití C25/30) = 1875 kg",
       "pozn": "Montáž (práce).",
       "decomposition_type": "auto_montaz_material"
     },
@@ -2668,7 +2681,7 @@
       "atomic_id": "HSV3.003b",
       "atomic_operace_popis": "Dodávka — Dodávka betonářské oceli B500B (Výztuž B500B do tvarovek ztraceného bednění (~)",
       "mj": "kg",
-      "mnozstvi": 1398.0,
+      "mnozstvi": 1875.0,
       "urs_kod_kandidat": null,
       "status": "needs_lookup",
       "parent_frozen_item_id": "260217_sklad.HSV3.003",
@@ -5565,9 +5578,9 @@
       "objekt": "260217_sklad",
       "kapitola": "PSV-77 Podlahy",
       "atomic_id": "PSV77.001",
-      "atomic_operace_popis": "Betonová dlažba do pískového lože — povrch podlahy skladu (~21 m²)",
+      "atomic_operace_popis": "Betonová dlažba 50 mm do kladecího lože — podlaha skladu + vynos za stěnu",
       "mj": "m²",
-      "mnozstvi": 17.6,
+      "mnozstvi": 23.6,
       "urs_kod_kandidat": null,
       "status": "wrong_leaf_disambiguation_needed",
       "parent_frozen_item_id": "260217_sklad.PSV77.001",
@@ -5575,7 +5588,7 @@
       "realizuje_skladbu": [
         "S01_sklad"
       ],
-      "qty_formula": "DXF sklad_DPZ km_tabulka místností room 0.01 (sklad zahradní techniky) = 17.60 m² (inner usable area per DXF room table, walls excluded). Prior estimate 21.209 m² (outer 6.35×3.34) over-counted by 17.0% — walls of tvarovky ZB tl. 250 mm take ~3.6 m² of outer footprint.",
+      "qty_formula": "plocha S01 = místnost 17.6 (legenda) + vynos za stěnu 6.0 (6010×1000 řez) = 23.6 m²",
       "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
       "decomposition_type": "atomic_1to1"
     },
@@ -7916,6 +7929,93 @@
       "qty_formula": "= 33 × 1.10 přesahy",
       "pozn": "Drenáž nopová folie (711).",
       "decomposition_type": "fixture"
+    },
+    {
+      "poradi": 361,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-1 Zemní práce",
+      "atomic_id": "HSV1.007",
+      "atomic_operace_popis": "Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou dlažbu skladu",
+      "mj": "m³",
+      "mnozstvi": 0.94,
+      "urs_kod_kandidat": "564231111",
+      "status": "needs_production_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV1.007",
+      "parent_kapitola": "HSV-1 Zemní práce",
+      "realizuje_skladbu": [
+        "S01_sklad"
+      ],
+      "qty_formula": "S01 plocha 23.6 m² × 0.04 m = 0.94 m³",
+      "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+      "decomposition_type": "atomic_1to1"
+    },
+    {
+      "poradi": 362,
+      "objekt": "260217_sklad",
+      "kapitola": "HSV-1 Zemní práce",
+      "atomic_id": "HSV1.008",
+      "atomic_operace_popis": "Zásyp za prefabrikovanou opěrnou stěnou S04 — materiál dle PD (NEuveden v legendě, OVĚŘIT)",
+      "mj": "m³",
+      "mnozstvi": 23.5,
+      "urs_kod_kandidat": "174101101",
+      "status": "needs_production_lookup",
+      "parent_frozen_item_id": "260217_sklad.HSV1.008",
+      "parent_kapitola": "HSV-1 Zemní práce",
+      "realizuje_skladbu": [],
+      "qty_formula": "průřez zásypu 3.61 m² (řez A-A) × délka 6.5 m = 23.5 m³",
+      "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+      "decomposition_type": "atomic_1to1"
+    },
+    {
+      "poradi": 363,
+      "objekt": "260217_sklad",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "atomic_id": "PSV76.003",
+      "atomic_operace_popis": "Oplocení podél vjezdu — délka dle situace, materiál OVĚŘIT (kov/dřevo neuveden)",
+      "mj": "bm",
+      "mnozstvi": 3.8,
+      "urs_kod_kandidat": null,
+      "status": "needs_production_lookup",
+      "parent_frozen_item_id": "260217_sklad.PSV76.003",
+      "parent_kapitola": "PSV-76 Zámečnické konstrukce",
+      "realizuje_skladbu": [],
+      "qty_formula": "šířka 7775 − 4000 (posuvná vrata) = 3775 mm ≈ 3.8 bm",
+      "pozn": "Carried 1:1 (atomic / komplet / služba — no split)",
+      "decomposition_type": "atomic_1to1"
+    },
+    {
+      "poradi": 364,
+      "objekt": "260217_sklad",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "atomic_id": "PSV76.004a",
+      "atomic_operace_popis": "Montáž — Zábradlí v. 1.0 m kolem části stání — materiál OVĚŘIT (kov/dřevo neuveden)",
+      "mj": "bm",
+      "mnozstvi": 18.5,
+      "urs_kod_kandidat": null,
+      "status": "needs_production_lookup",
+      "parent_frozen_item_id": "260217_sklad.PSV76.004",
+      "parent_kapitola": "PSV-76 Zámečnické konstrukce",
+      "realizuje_skladbu": [],
+      "qty_formula": "obvod části stání ≈ 18.5 bm (D.1.1.01), výška 1.0 m",
+      "pozn": "Montáž (práce).",
+      "decomposition_type": "auto_montaz_material"
+    },
+    {
+      "poradi": 365,
+      "objekt": "260217_sklad",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "atomic_id": "PSV76.004b",
+      "atomic_operace_popis": "Dodávka — Dodávka výrobku (Zábradlí v. 1.0 m kolem části stání — materiál)",
+      "mj": "bm",
+      "mnozstvi": 18.5,
+      "urs_kod_kandidat": null,
+      "status": "needs_lookup",
+      "parent_frozen_item_id": "260217_sklad.PSV76.004",
+      "parent_kapitola": "PSV-76 Zámečnické konstrukce",
+      "realizuje_skladbu": [],
+      "qty_formula": "= montáž 1:1",
+      "pozn": "Materiál (dodávka). Ztratné 0 %.",
+      "decomposition_type": "auto_montaz_material"
     }
   ]
 }

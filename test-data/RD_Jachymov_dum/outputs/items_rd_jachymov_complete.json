@@ -409,9 +409,9 @@
       "subkapitola": "Štěrkový násyp pod desku skladu",
       "popis": "Zhutněný štěrkopískový násyp pod podlahu skladu + štěrkopísek pro IPE patky",
       "mj": "m³",
-      "mnozstvi": 2.64,
-      "mnozstvi_formula": "podlaha sklad 17.6 m² (legenda místností) × 0.15 m podkladní kamenná drť",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi": 3.54,
+      "mnozstvi_formula": "S01 plocha 23.6 m² (místnost 17.6 + vynos za stěnu 6.0 dle řezu) × 0.15 m podkladní drť 4-8 = 3.54 m³",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "174101101",
       "urs_alternatives": [
         "174201101",
@@ -419,7 +419,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF podlaha skladu 6.35×3.34 = 21.2 m²",
+      "source": "legenda místností 17.6 m² + vynos S01 za stěnu 6010×1000 mm dle řezu B-B (neviditelný na půdorysu)",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -429,7 +429,7 @@
       "realizuje_skladbu": [
         "S01_sklad"
       ],
-      "_audit_gap_fixed": "W1_PODLAHA_17.6_2026-06-01"
+      "_audit_gap_fixed": "S01_AREA_23.6_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1324,18 +1324,18 @@
       "_gate": "HSV",
       "kapitola": "HSV-3 Svislé konstrukce",
       "subkapitola": "Tvarovky ZB obvod skladu",
-      "popis": "Obvodové stěny skladu — tvarovky ztraceného bednění tl. 250 mm × výška 2.4 m + zalití C25/30",
+      "popis": "Obvodové stěny skladu S03a/b — tvarovky ztraceného bednění tl. 250 mm, výška 14 řad × 250 = 3.5 m + zalití C25/30",
       "mj": "m²",
-      "mnozstvi": 46.5,
-      "mnozstvi_formula": "obvod 19.4 m × výška 2.4 m = 46.6",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi": 62.5,
+      "mnozstvi_formula": "3 strany trapézu (6010-1000 dveře)+(7000-600 prefa)+(7033-600 prefa)=17843 mm = 17.84 m × výška 14 řad×0.25 = 3.5 m = 62.5 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": "311233811",
       "urs_alternatives": [
         "311233821"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §4 + DXF DIMENSION obvod",
+      "source": "výkres D.1.1.02/03 — 14 řad tvárnic × 250 mm (řady začínají pod úrovní podlahy od pasu); světlá 2.68 je vnitřní svět, NE výška tvárnic",
       "subdodavatel": "zednik",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -1345,7 +1345,8 @@
       "realizuje_skladbu": [
         "S03a_sklad",
         "S03b_sklad"
-      ]
+      ],
+      "_audit_gap_fixed": "S03A_HEIGHT_3.5_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1355,8 +1356,8 @@
       "subkapitola": "Výztuž ZB tvarovek",
       "popis": "Výztuž B500B do tvarovek ztraceného bednění (~30 kg/m² stěny při zalití C25/30)",
       "mj": "kg",
-      "mnozstvi": 1398,
-      "mnozstvi_formula": "46.6 × 30 kg/m² = 1398",
+      "mnozstvi": 1875,
+      "mnozstvi_formula": "62.5 m² × 30 kg/m² (zalití C25/30) = 1875 kg",
       "mnozstvi_confidence": 0.8,
       "urs_code_proposed": "273361821",
       "urs_alternatives": [
@@ -1364,7 +1365,7 @@
       ],
       "urs_status": "family_verified_leaf_needs_production_lookup",
       "urs_confidence": 0.8,
-      "source": "B4_productivity Methvin — výztuž do ZB tvarovek tl. 250 mm",
+      "source": "= HSV3.002 plocha (62.5 m²) × 30 kg/m²",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -1379,7 +1380,7 @@
       ],
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/cenova-soustava-urs/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "_audit_gap_fixed": "S03A_HEIGHT_3.5_2026-06-01",
       "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
@@ -4511,11 +4512,11 @@
       "_gate": "PSV",
       "kapitola": "PSV-77 Podlahy",
       "subkapitola": "Betonová dlažba sklad",
-      "popis": "Betonová dlažba do pískového lože — povrch podlahy skladu (~21 m²)",
+      "popis": "Betonová dlažba 50 mm do kladecího lože — podlaha skladu + vynos za stěnu",
       "mj": "m²",
-      "mnozstvi": 17.6,
-      "mnozstvi_formula": "DXF sklad_DPZ km_tabulka místností room 0.01 (sklad zahradní techniky) = 17.60 m² (inner usable area per DXF room table, walls excluded). Prior estimate 21.209 m² (outer 6.35×3.34) over-counted by 17.0% — walls of tvarovky ZB tl. 250 mm take ~3.6 m² of outer footprint.",
-      "mnozstvi_confidence": 0.95,
+      "mnozstvi": 23.6,
+      "mnozstvi_formula": "plocha S01 = místnost 17.6 (legenda) + vynos za stěnu 6.0 (6010×1000 řez) = 23.6 m²",
+      "mnozstvi_confidence": 0.85,
       "urs_code_proposed": null,
       "urs_alternatives": [
         "596211xxx_betonova_dlazba_piskove_loze",
@@ -4523,7 +4524,7 @@
       ],
       "urs_status": "wrong_leaf_disambiguation_needed",
       "urs_confidence": 0.5,
-      "source": "DXF sklad_DPZ km_tabulka místností + Phase 3.5 sklad qty crosscheck (Pattern 17 Phase 0a Layer 2 + Pattern 31 CEV Matrix D.2)",
+      "source": "legenda místností 17.6 + vynos S01 za stěnu (řez B-B)",
       "subdodavatel": "podlahar",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -4537,7 +4538,7 @@
       "realizuje_skladbu": [
         "S01_sklad"
       ],
-      "_audit_gap_fixed": "PHASE_3_5_SKLAD_QTY_DXF_VERIFY",
+      "_audit_gap_fixed": "S01_AREA_23.6_2026-06-01",
       "_added_via_audit": "phase_3_5_sklad_qty_crosscheck_2026-05-26"
     },
     {
@@ -7076,6 +7077,110 @@
       ],
       "mnozstvi_status": "odhad z řezů: S04 19 + S03a 14 ≈ 33 m² — OVĚŘIT výšku pod terénem",
       "_audit_gap_fixed": "SKLAD_WALL_HI_2026-06-01"
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Kladecí lože pod dlažbu",
+      "popis": "Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou dlažbu skladu",
+      "mj": "m³",
+      "mnozstvi": 0.94,
+      "mnozstvi_formula": "S01 plocha 23.6 m² × 0.04 m = 0.94 m³",
+      "mnozstvi_confidence": 0.85,
+      "urs_code_proposed": "564231111",
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "skladba S01 — kladecí vrstva kamenná drť 4-8 mm 40 mm (vrstva dříve chyběla)",
+      "subdodavatel": "zednik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.007",
+      "realizuje_skladbu": [
+        "S01_sklad"
+      ]
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "HSV",
+      "_gate": "HSV",
+      "kapitola": "HSV-1 Zemní práce",
+      "subkapitola": "Zásyp za prefa opěrnou stěnou",
+      "popis": "Zásyp za prefabrikovanou opěrnou stěnou S04 — materiál dle PD (NEuveden v legendě, OVĚŘIT)",
+      "mj": "m³",
+      "mnozstvi": 23.5,
+      "mnozstvi_formula": "průřez zásypu 3.61 m² (řez A-A) × délka 6.5 m = 23.5 m³",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": "174101101",
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "řez A-A — klín zásypu za S04; materiál v legendě NEuveden → OVĚŘIT",
+      "subdodavatel": "zemni_prace",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        36
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.HSV1.008",
+      "realizuje_skladbu": []
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "subkapitola": "Oplocení (plot)",
+      "popis": "Oplocení podél vjezdu — délka dle situace, materiál OVĚŘIT (kov/dřevo neuveden)",
+      "mj": "bm",
+      "mnozstvi": 3.8,
+      "mnozstvi_formula": "šířka 7775 − 4000 (posuvná vrata) = 3775 mm ≈ 3.8 bm",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "D.1.1.01 půdorys střechy — plot u vjezdu; materiál + přesná délka OVĚŘIT",
+      "subdodavatel": "zamecnik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        37
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.PSV76.003",
+      "realizuje_skladbu": []
+    },
+    {
+      "objekt": "260217_sklad",
+      "kapitola_group": "PSV",
+      "_gate": "PSV",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "subkapitola": "Zábradlí stání",
+      "popis": "Zábradlí v. 1.0 m kolem části stání — materiál OVĚŘIT (kov/dřevo neuveden)",
+      "mj": "bm",
+      "mnozstvi": 18.5,
+      "mnozstvi_formula": "obvod části stání ≈ 18.5 bm (D.1.1.01), výška 1.0 m",
+      "mnozstvi_confidence": 0.7,
+      "urs_code_proposed": null,
+      "urs_alternatives": [],
+      "urs_status": "needs_production_lookup",
+      "urs_confidence": 0.6,
+      "source": "D.1.1.01 — zábradlí 1.0 m kolem části plochy; materiál OVĚŘIT",
+      "subdodavatel": "zamecnik",
+      "subdodavatel_status": "mapped",
+      "vyjasneni_ref": [
+        38
+      ],
+      "status_flag": "ready_for_phase2",
+      "notes": null,
+      "id": "260217_sklad.PSV76.004",
+      "realizuje_skladbu": []
     }
   ],
   "_summary_total": {

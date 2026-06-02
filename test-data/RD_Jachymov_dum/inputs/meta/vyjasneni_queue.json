@@ -399,6 +399,48 @@
       "working_assumption": "Aplikován výkres S03 (Styrcon 200 sanační + keramický obklad). HSV7.003 (XPS+cihelný) odstraněn. Omítka HSV7.006 snížena 290.2→276.7 (sokl není omítka).",
       "next_action": "Projektante: potvrďte sokl = sanační Styrcon 200 + keramický obklad (výkres), NE XPS + cihelný (TZ ARS text). + délka soklu (řadovka): plocha ≈16 nebo 23 m²?",
       "_source": "TZ ARS dům + skladba S03 + Řez A-A + pohledy C — crosscheck 2026-06-01"
+    },
+    {
+      "id": 36,
+      "severity": "major",
+      "status": "open",
+      "category": "material_neuveden_verify_projektant",
+      "title": "Zásyp za prefa opěrnou stěnou S04 — materiál neuveden v legendě",
+      "context": "Řez A-A: za prefa stěnou S04 klín zásypu ~3.61 m² × 6.5 m = 23.5 m³. Legenda materiálů neuvádí, čím se zasypává (rostlá zemina / štěrkopísek / jiné).",
+      "blocks": [
+        "260217_sklad.HSV1.008"
+      ],
+      "working_assumption": "Položka zařazena s objemem 23.5 m³, materiál jako zemina (174101101) provizorně.",
+      "next_action": "Projektante: čím se provádí zásyp za opěrnou stěnou S04? (zemina / štěrkopísek / drť)",
+      "_source": "výkresy sklad D.1.1.01/03 + ruční obmer 2026-06-01"
+    },
+    {
+      "id": 37,
+      "severity": "major",
+      "status": "open",
+      "category": "material_neuveden_verify_projektant",
+      "title": "Oplocení (plot) u vjezdu — materiál + délka",
+      "context": "D.1.1.01: plot u vjezdu. Délka odhad 7775−4000 (vrata) = 3.8 bm. Materiál (kov/dřevo/pletivo) ani výška v legendě neuvedeny. Sloupek u vrat v PD nerozkreslen.",
+      "blocks": [
+        "260217_sklad.PSV76.003"
+      ],
+      "working_assumption": "Položka zařazena 3.8 bm, materiál OVĚŘIT.",
+      "next_action": "Projektante: materiál + výška + přesná délka oplocení u vjezdu? + specifikace sloupku u vrat?",
+      "_source": "výkresy sklad D.1.1.01/03 + ruční obmer 2026-06-01"
+    },
+    {
+      "id": 38,
+      "severity": "major",
+      "status": "open",
+      "category": "material_neuveden_verify_projektant",
+      "title": "Zábradlí stání 1.0 m — materiál",
+      "context": "D.1.1.01: zábradlí v. 1.0 m kolem části stání ~18.5 bm. Materiál (ocel/dřevo) neuveden.",
+      "blocks": [
+        "260217_sklad.PSV76.004"
+      ],
+      "working_assumption": "Položka zařazena 18.5 bm, materiál OVĚŘIT.",
+      "next_action": "Projektante: materiál + provedení zábradlí stání (1.0 m)?",
+      "_source": "výkresy sklad D.1.1.01/03 + ruční obmer 2026-06-01"
     }
   ],
   "_anchor_gaps_note": "Vyjasnění #22-24 added 2026-05-29 from anchor checklist Stage 1A. PM01 přesun hmot + PM02 lešení were ADDED to items.json (technical necessities); PM03/PM04/PM06 recorded here as open questions (not in ARS dům TZ — Alexander principle: NE add work not in TZ).",

@@ -2,15 +2,15 @@
   "_schema_version": "1.0",
   "_generated_at": "2026-06-02",
   "_generated_by": "tools/quality_audit.py",
-  "items_checked": 230,
-  "items_total_incl_deprecated": 234,
-  "issues_found_total": 80,
+  "items_checked": 234,
+  "items_total_incl_deprecated": 238,
+  "issues_found_total": 84,
   "summary_by_dimension": {
-    "urs_family_consistency": 32,
-    "subdodavatel_logical": 48
+    "urs_family_consistency": 33,
+    "subdodavatel_logical": 51
   },
   "summary_by_severity": {
-    "informational": 80
+    "informational": 84
   },
   "issues": [
     {
@@ -1180,6 +1180,66 @@
       "reason": "Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
       "item_id": "260217_sklad.HSV3.005",
       "popis": "Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny (S03a) + opěrnou stěn"
+    },
+    {
+      "dimension": "urs_family_consistency",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "urs_code": "564231111",
+      "first_digit": "5",
+      "expected_first_digits": [
+        "1"
+      ],
+      "reason": "URS kód 564231111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 04 (workflow gate ≠ catalog kapitola). Example: 'Anglický dvorek dlažba' v HSV-1 chapter má kód 564 (TKP dlažba) — legitimate. Verify.",
+      "item_id": "260217_sklad.HSV1.007",
+      "popis": "Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou dlažbu skladu"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "HSV-1 Zemní práce",
+      "current_subdodavatel": "zednik",
+      "expected_set": [
+        "VRN_management",
+        "zemni_prace"
+      ],
+      "reason": "Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.HSV1.007",
+      "popis": "Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou dlažbu skladu"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "current_subdodavatel": "zamecnik",
+      "expected_set": [
+        "klempir",
+        "okennar",
+        "okenni_zaluzie_kastlik_purenit",
+        "specialista_RC3_dvere",
+        "truhlar",
+        "zamecnik_PSV"
+      ],
+      "reason": "Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.PSV76.003",
+      "popis": "Oplocení podél vjezdu — délka dle situace, materiál OVĚŘIT (kov/dřevo neuveden)"
+    },
+    {
+      "dimension": "subdodavatel_logical",
+      "severity": "informational",
+      "kapitola": "PSV-76 Zámečnické konstrukce",
+      "current_subdodavatel": "zamecnik",
+      "expected_set": [
+        "klempir",
+        "okennar",
+        "okenni_zaluzie_kastlik_purenit",
+        "specialista_RC3_dvere",
+        "truhlar",
+        "zamecnik_PSV"
+      ],
+      "reason": "Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dlažba' executed podlahárem, ne zemními pracemi). Verify reflects real trade assignment for this work.",
+      "item_id": "260217_sklad.PSV76.004",
+      "popis": "Zábradlí v. 1.0 m kolem části stání — materiál OVĚŘIT (kov/dřevo neuveden)"
     }
   ]
 }

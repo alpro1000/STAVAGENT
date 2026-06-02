@@ -1,8 +1,8 @@
 # Position-by-position Quality Audit — RD Jáchymov
 
 **Generated:** 2026-06-02
-**Items checked:** 230 (active, excl. 4 deprecated)
-**Issues flagged:** 80
+**Items checked:** 234 (active, excl. 4 deprecated)
+**Issues flagged:** 84
 
 > Pragmatic stylistic-quality worksheet. NOT auto-fixed — human review per row.
 > Goal is to surface ~50-100 actionable issues, not exhaustive noise.
@@ -17,15 +17,15 @@
 
 | Dimension | Issues |
 |---|--:|
-| subdodavatel_logical | 48 |
-| urs_family_consistency | 32 |
+| subdodavatel_logical | 51 |
+| urs_family_consistency | 33 |
 
-**By severity:** informational=80
+**By severity:** informational=84
 
 
 ---
 
-## urs_family_consistency (32 issues)
+## urs_family_consistency (33 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -61,10 +61,11 @@
 | `260219_dum.HSV4.015` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — trámový str | URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
 | `260219_dum.HSV4.017` | ⚪ informational | Tepelná/akustická izolace minerální vata výplň mezi ocelové  | URS kód 713121 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
 | `260219_dum.HSV4.019` | ⚪ informational | Desky kročejové izolace (Isover T-P) tl. 30 mm — suchá sklad | URS kód 713191 prvních digit '7' neodpovídá HSV-4 expected ['4'] — likely cross-category položka per Corpus Pattern 04 ( |
+| `260217_sklad.HSV1.007` | ⚪ informational | Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou d | URS kód 564231111 prvních digit '5' neodpovídá HSV-1 expected ['1'] — likely cross-category položka per Corpus Pattern 0 |
 
 ---
 
-## subdodavatel_logical (48 issues)
+## subdodavatel_logical (51 issues)
 
 | item_id | severity | popis (truncated) | reason |
 |---|---|---|---|
@@ -116,3 +117,6 @@
 | `260219_dum.PSV95.003` | ⚪ informational | Předávací protokol krbu na tuhá paliva + kontrola bezpečných | Subdodavatel 'topenar' neodpovídá PSV-95 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek  |
 | `260217_sklad.HSV3.004` | ⚪ informational | Hydroizolace + protiradonová ochrana obvodových stěn (S03a)  | Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
 | `260217_sklad.HSV3.005` | ⚪ informational | Drenážní vrstva — nopová folie tl. 20 mm na obvodové stěny ( | Subdodavatel 'izolater_HI' neodpovídá HSV-3 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvor |
+| `260217_sklad.HSV1.007` | ⚪ informational | Kladecí lože z kamenné drti 4-8 mm tl. 40 mm pod betonovou d | Subdodavatel 'zednik' neodpovídá HSV-1 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek dl |
+| `260217_sklad.PSV76.003` | ⚪ informational | Oplocení podél vjezdu — délka dle situace, materiál OVĚŘIT ( | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
+| `260217_sklad.PSV76.004` | ⚪ informational | Zábradlí v. 1.0 m kolem části stání — materiál OVĚŘIT (kov/d | Subdodavatel 'zamecnik' neodpovídá PSV-76 default set — typically Pattern 04 cross-category (e.g. HSV-1 'Anglický dvorek |
