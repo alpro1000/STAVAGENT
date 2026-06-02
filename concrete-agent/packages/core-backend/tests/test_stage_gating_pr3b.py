@@ -271,6 +271,67 @@ def test_endpoint_full_takeoff_durable_pause_resume(db_endpoint):  # AC11
     assert b2["workflow_state"] == WorkflowState.EXPORTED.value
 
 
+# SO-202 recipe inputs (NO `nuance` — the live default decider is the Vertex
+# reasoner, which needs creds CI lacks; the nuance LLM branch is covered by the
+# in-memory test_thin_hybrid_recipe with a stub decider). Real object + elements
+# still drive classify / breakdown / calculate / export through asyncio.run.
+_SO202_RECIPE_OPTIONS = {
+    "target_output": "full",
+    "object": {
+        "object_code": "SO-202",
+        "object_name": "Most na sil. I/6 přes Lomnický potok",
+        "charakteristika": "Trvalý dálniční most o třech polích.",
+    },
+    "elements": [
+        {"name": "NK mostovka", "object_code": "SO-202", "volume_m3": 605,
+         "concrete_class": "C35/45", "is_prestressed": True, "span_m": 20, "num_spans": 6},
+        {"name": "Dřík", "object_code": "SO-202", "volume_m3": 20, "concrete_class": "C35/45"},
+        {"name": "Piloty OP1 Ø900", "object_code": "SO-202", "volume_m3": 50.9,
+         "concrete_class": "C30/37"},
+    ],
+}
+
+
+def test_endpoint_recipe_real_inputs_dispatches_tools_async(db_endpoint):
+    """Live /orchestrate with REAL pipeline inputs → the recipe actually dispatches
+    the async MCP tools (classify / create_work_breakdown / calculate / export) via
+    asyncio.run inside the `asyncio.to_thread` worker. Proves asyncio.run does not
+    fail on live dispatch (not just the empty-payload pass-through walk)."""
+    headers = {"Authorization": f"Bearer {db_endpoint.make_token()}"}
+    pid = str(uuid4())
+
+    r1 = db_endpoint.client.post(
+        "/api/v1/orchestrate",
+        headers=headers,
+        json={"project_id": pid, "options": _SO202_RECIPE_OPTIONS},
+    )
+    assert r1.status_code == 200, r1.text
+    b1 = r1.json()
+    assert b1["status"] == "paused_for_input"
+    assert b1["workflow_state"] == WorkflowState.COMMIT_PENDING.value
+
+    # WORK_ATOMIZATION really invoked the async tools (asyncio.run dispatch worked).
+    atom = next(s for s in b1["steps"] if s["state"] == "WORK_ATOMIZATION")
+    assert "classify_construction_element" in atom["tools_invoked"], atom
+    assert "create_work_breakdown" in atom["tools_invoked"], atom
+    # Real grounded work items came out of the dispatch (not an empty no-op).
+    assert atom.get("work_items_verified", 0) > 0, atom
+
+    # Resume → export runs (another async tool via asyncio.run) → completed.
+    r2 = db_endpoint.client.post(
+        "/api/v1/orchestrate",
+        headers=headers,
+        json={"project_id": pid, "session_id": b1["session_id"],
+              "confirmation_token": "ok"},
+    )
+    assert r2.status_code == 200, r2.text
+    b2 = r2.json()
+    assert b2["status"] == "completed"
+    assert b2["workflow_state"] == WorkflowState.EXPORTED.value
+    committed = next(s for s in b2["steps"] if s["state"] == "COMMITTED")
+    assert "export_soupis" in committed["tools_invoked"], committed
+
+
 def test_cross_user_isolation_through_endpoint(db_endpoint):  # AC18
     headers_a = {"Authorization": f"Bearer {db_endpoint.make_token()}"}
     headers_b = {"Authorization": f"Bearer {db_endpoint.make_token()}"}

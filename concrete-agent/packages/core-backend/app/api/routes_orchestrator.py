@@ -56,7 +56,15 @@ router = APIRouter(prefix="/api/v1", tags=["orchestrator"])
 
 # Parsed once per process (config is data; cheap, immutable).
 _CONFIG = load_workflow_config()
-_TOOL_RUNNER = make_checkpoint_tool_runner(_CONFIG)
+# Live dispatch = the deterministic pipeline recipe (detect → classify → nuance →
+# breakdown → calculate → export). The checkpoint runner remains importable as a
+# manual fallback; it is NOT used on errors (the recipe fails loud).
+from app.services.stage_gating.recipe_runner import (  # noqa: E402
+    make_recipe_tool_runner,
+    run_traced,
+)
+
+_TOOL_RUNNER = make_recipe_tool_runner(_CONFIG)
 
 
 def _session_factory():
@@ -128,7 +136,8 @@ def _run_blocking(principal: Principal, body: OrchestrateBody) -> OrchestrateRes
         confirmation_token=body.confirmation_token,
         user_response=body.user_response,
     )
-    return _build_orchestrator().run(request)
+    # One root request span → child span per tool-call (OTel; graceful no-op shim).
+    return run_traced(_build_orchestrator(), request)
 
 
 @router.post("/orchestrate", response_model=OrchestrateResponse)
