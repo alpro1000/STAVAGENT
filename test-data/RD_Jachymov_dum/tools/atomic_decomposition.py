@@ -257,7 +257,7 @@ def short_id(full_id: str) -> str:
 _KOMPLET = ("beton", "nabetonáv", "mazanin", "potěr", "omítk", "malb", "výmalb",
             "penetrac", "impregnac", "hutněn", "zásyp", "násyp", " lože", "stěrk",
             "samonivel", "zmonolit", "zdiv", "dozdív", "nadezdív", "příčk",
-            "porotherm", "cihl", "tvárnic", "klemba", "klenba", "bílá vana", "deska podlahy")
+            "porotherm", "cihl", "tvárnic", "tvarov", "ztracen", "klemba", "klenba", "bílá vana", "deska podlahy")
 _LABOR = ("bourán", "demont", "sejmut", "hloub", "výkop", "odvoz", "likvidac",
           "pažen", "revize", "geodet", "vytýčen", "bozp", "pojišt", "koordin",
           "kolaudac", "protokol", "průzkum", "dočasn", "vyklíz", "přesun", "zábor",

@@ -1,7 +1,7 @@
 # Completeness Audit v2 — RD Jáchymov
 
 **Generated:** 2026-06-02
-**Items:** 247 | **Rooms:** 25 | **Sections:** A–J (10)
+**Items:** 249 | **Rooms:** 25 | **Sections:** A–J (10)
 
 > Tato kontrola dělá strukturovaný sweep po 10 osách. Cíl: poskytnout worksheet kde
 > uživatel vidí potenciální mezery. Není garance úplnosti.
@@ -149,10 +149,10 @@ Legend: ✓=hit | flr=covered_at_floor_level | glb=covered_globally | ⚪=N/A | 
 
 | Gate | Estimate Kč | % of total | Typical range | Verdict |
 |---|--:|--:|---|---|
-| HSV | 50,483,270 | 62.4% | 45–55% | OUT OF RANGE (typical 45-55%) |
-| PSV | 9,756,369 | 12.1% | 25–35% | OUT OF RANGE (typical 25-35%) |
+| HSV | 51,286,160 | 62.8% | 45–55% | OUT OF RANGE (typical 45-55%) |
+| PSV | 9,756,369 | 11.9% | 25–35% | OUT OF RANGE (typical 25-35%) |
 | TZB | 2,439,000 | 3.0% | 15–20% | OUT OF RANGE (typical 15-20%) |
-| VRN | 18,240,000 | 22.5% | 5–10% | OUT OF RANGE (typical 5-10%) |
+| VRN | 18,240,000 | 22.3% | 5–10% | OUT OF RANGE (typical 5-10%) |
 
 ---
 
