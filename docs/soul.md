@@ -348,6 +348,72 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-02 — Session: MCP orchestrator arc — audit recs → tools → ADK spike → thin-hybrid recipe
+
+**Kontext:** dlouhá session, jeden oblouk: uzavřít MCP/orchestrátor díry z auditu,
+rozhodnout ADK-vs-vlastní, postavit tonký gibrid-dispečer pro WORK_ATOMIZATION.
+Všechno přes branch-per-task + PR (uživatel zakládá PR z UI). Prod (provider_router,
+W3-klasifikátor/normalizátor, stage_gating sessions/audit, Bedrock) NEDOTÝKAT.
+
+**Rozhodnuto (smergováno do main):**
+- **#1262 W3b** — activate object_type (#71-#76). Opraveno červené CI: test-stub `_classify`
+  lambda dostala podpis `(name, object_code=None, object_type=None)`; `create_work_breakdown`
+  except → **fail-loud** (re-raise, ne tichý error-dict bez `mode`). Merged `37a23f7e`.
+- **#1278 MCP tulzy** — `detect_object_type` (tenký wrapper nad W3b detektorem) +
+  `export_soupis` (deterministický render přes `soupis_exporter.export_soupis_xlsx`,
+  provenance v metadatech, ne v KROS-sloupcích). EXPORTED zpřístupněn:
+  `RE_EXPORT_ALLOW_LIST={"export_soupis"}` + YAML COMMITTED. Mrtvý
+  `read_project_documentation` smazán. EXPECTED_TOOLS 16→18. Merged.
+- **#1280 ADK spike** — izolovaný v `spikes/adk_orchestrator/` (venv-only deps, prod
+  requirements/CI netknuté). **Rozhodnutí: (b) vlastní tenký gibrid, NE ADK.** Důvody z
+  měření: ADK MCPToolset attach + OTel jdou reprodukovat v ~20 řádcích; ADK nereuse-uje
+  stage_gating/provider_router; lock-in v agent-graph vrstvě. Merged `aa4d1baf`.
+
+**Rozhodnuto (PR #1281 — OPEN, zelené CI, NEMERGOVÁNO):**
+- **Thin-hybrid recipe orchestrator** (#85-#92) — `recipe_runner.py` nahrazuje
+  `make_checkpoint_tool_runner` jako `_TOOL_RUNNER` v `routes_orchestrator`. Recept:
+  DOCUMENT_ANALYSIS→detect (cache by SO) · WORK_ATOMIZATION→classify(thread object_type)
+  →nuance-hook(JEDEN decider-call, recorded+reused přes projekt-store)→breakdown→calculate
+  · COMMITTED→export_soupis. Nuance decider default = **Vertex Gemini reasoner**
+  (`HybridMultiRoleOrchestrator._invoke_llm_async`), NE Bedrock; testy injektují stub.
+  OTel: `run_traced` root-span + child per tool-call; graceful shim (`_tracing.py`),
+  `opentelemetry-sdk` přidán do requirements. **#86 dokázáno:** generické „Dřík" @ SO-202
+  bez kontextu = `operna_zed` (RED), s threaded `object_type=bridge` = `driky_piliru`.
+- **Fail-loud rozhodnutí:** tulza VYVOLANÁ a spadla → STATUS_ERROR; stav dosažen ale
+  prázdné pipeline-vstupy (žádné items) → PASS-THROUGH (no-op), NE error. `_export_step`
+  na prázdném work-listu vrací `exported=False`, nepadá.
+- **asyncio.run potvrzeno:** živá cesta = `orchestrate`(async)→`await asyncio.to_thread(
+  _run_blocking)`→worker thread BEZ běžícího loopu→`orch.run`(sync)→`_call_tool`→`asyncio.run`.
+  Žádné `get_event_loop/run_until_complete`. Nový DB-gated endpoint test
+  `test_endpoint_recipe_real_inputs_dispatches_tools_async` (real SO-202 vstupy, bez nuance
+  kvůli chybějícím Vertex creds v CI) dokazuje asyncio.run na živém multi-tool dispatchi.
+- **Audit recommendations PR #1260** (dřívější branch `claude/code-plugins-audit-setup-paw6S`):
+  R1 read-deny `.claude/settings.json`, R2 ruff+black pre-commit gate, R3 cross-user-isolation
+  reviewer subagent (`.claude/agents/`), R6 secret-scan pre-commit. **R4 (MCP-compat pytest
+  guard) ODLOŽEN.**
+
+**Odmítnuto / honest:**
+- ADK jako orchestrační vrstva (viz výše).
+- Claude přes Bedrock v receptu (provider_router serviruje Claude přes Bedrock/Anthropic,
+  Vertex = jen Gemini). Recept používá Vertex Gemini.
+
+**Otevřené otázky / Co dál:**
+- **PR #1281 čeká na review/merge** (zelené: MCP Tools Compatibility ×2 + Coverage).
+- **#93 (volitelné, separátní PR):** provider_router honesty-fix — Bedrock-first preference
+  pro EXTRACT/CONTRADICTION je mrtvá konfigurace (bez AWS creds tiše jdou na Gemini); odrazit
+  realitu. Není bloker.
+- **Další pipeline krok: `extract_vymery`** — recept teď bere hotové struktury z
+  `request.options` (SO-202 golden); extract-vrstva (field-finder z TZ) je příští úloha.
+- Drift `ELEMENT_TYPES(22) ↔ WORK_TEMPLATES(9)`; zpřísnění grounding-gate; Claude-on-Vertex
+  Model Garden jako volitelný upgrade plánovače (region europe-west1/us-east5 + povolit MG).
+- **Lokální DB-gated pr3b recept (pro příště):** `apt-get install postgresql`; `initdb` jako
+  user `postgres` (`-A trust -U mcp_test`); aplikovat `migrations/*.sql` v pořadí; venv s
+  plným `requirements.txt` (+ pdfplumber/pandas/aiofiles/psycopg2-binary/asyncpg/opentelemetry-sdk);
+  `DATABASE_URL=postgresql://mcp_test:mcp_test@localhost:5432/mcp_test` +
+  `STAGEGATING_REQUIRE_ENDPOINT_TESTS=1` → 104 passed / 2 skipped / 0 failed.
+- ⚠️ default branch má 255+ Dependabot vulnerabilities (1 critical) — mrknout před Cemex.
+
+
 ## 2026-06-01 — Session: Výměry-First + H-BLOK count + vymery_souhrn 38 místností
 **Rozhodnuto:**
 - vymery_souhrn.json kompletně doplněn: 38 jednotek (32 measured, 4 derived, 2 estimate)
