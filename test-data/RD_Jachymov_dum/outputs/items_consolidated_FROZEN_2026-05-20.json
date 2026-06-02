@@ -376,11 +376,11 @@
       "_gate": "HSV",
       "kapitola": "HSV-1 Zemní práce",
       "subkapitola": "Hloubení parkingových patek",
-      "popis": "Hloubení patek pro stojky IPE180 zastřešení parkingu, 500×500 mm × 1.0 m hl. × 7 ks",
+      "popis": "Hloubení patek pro stojky IPE180 zastřešení parkingu, 500×500 mm × 1.0 m hl. × 6 ks",
       "mj": "m³",
-      "mnozstvi": 1.75,
-      "mnozstvi_formula": "DXF: 7 patek × 0.5 × 0.5 × 1.0 (TZ rozteč 1000 mm × 7 m parking)",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 1.5,
+      "mnozstvi_formula": "6 patek × 0.5 × 0.5 × 1.0 m hl. = 1.5 m³",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "132211101",
       "urs_alternatives": [
         "132201101",
@@ -388,7 +388,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "DXF sklad_DPZ LWPOLYLINE 7000 mm parking + TZ rozteč 1000 mm = 7 patek",
+      "source": "výkres D.1.1.02 — 6 patek spočítáno (řada 785+5×1000+435 mm), rozteč IPE 1000 mm",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -398,7 +398,8 @@
       "notes": null,
       "id": "260217_sklad.HSV1.004",
       "realizuje_skladbu": null,
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -438,8 +439,8 @@
       "subkapitola": "Odvoz výkopu sklad",
       "popis": "Odvoz výkopku z hloubení skladu + figur + patek na deponii do 8 km",
       "mj": "m³",
-      "mnozstvi": 32.1,
-      "mnozstvi_formula": "= součet hloubení sklad + figura + patky (25.5+4.85+1.75)",
+      "mnozstvi": 31.85,
+      "mnozstvi_formula": "= součet hloubení sklad + figura + patky (25.5+4.85+1.5)",
       "mnozstvi_confidence": 0.95,
       "urs_code_proposed": null,
       "urs_alternatives": [
@@ -449,7 +450,7 @@
       ],
       "urs_status": "wrong_leaf_disambiguation_needed",
       "urs_confidence": 0.5,
-      "source": "= součet HSV-1 sklad hloubení",
+      "source": "= součet HSV-1 sklad hloubení (patky 6 ks)",
       "subdodavatel": "zemni_prace",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -462,7 +463,8 @@
       "urs_code_family_6digit": "162701",
       "urs_verification_note": "WebSearch verified WRONG LEAF: Same wrong-leaf as HSV1.007 — 9-10 km vs 'do 8 km'. Hint: Wahrscheinlich 162701104 (8-9 km)",
       "urs_websearch_verified_at": "2026-05-19",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01"
     },
     {
       "objekt": "260219_dum",
@@ -920,18 +922,18 @@
       "_gate": "HSV",
       "kapitola": "HSV-2 Základové a ŽB",
       "subkapitola": "Patky parking — spodní",
-      "popis": "Dvoustupňové patky pro IPE180 zastřešení parkingu — spodní část prostý beton C16/20 500×500×500 mm × 7 ks",
+      "popis": "Dvoustupňové patky pro IPE180 zastřešení parkingu — spodní část prostý beton C16/20 500×500×500 mm × 6 ks",
       "mj": "ks",
-      "mnozstvi": 7,
-      "mnozstvi_formula": "DXF: 7 ks (rozteč 1000 mm × 7000 mm parking délka)",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 6,
+      "mnozstvi_formula": "6 ks (výkres D.1.1.02 — 6 štvercových patek pod IPE180)",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "273313811",
       "urs_alternatives": [
         "273313611"
       ],
       "urs_status": "family_verified_leaf_needs_production_lookup",
       "urs_confidence": 0.8,
-      "source": "DXF sklad_DPZ LWPOLYLINE 7000 mm + rozteč 1000 mm = 7 patek",
+      "source": "D.1.1.02 (6 patek + 6× IPE180 spočítáno na výkrese; rozteč 1000, řada 785+5×1000+435)",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -943,7 +945,7 @@
       "realizuje_skladbu": null,
       "cross_verification_status": "FAMILY_VERIFIED",
       "cross_verification_evidence_url": "https://www.cs-urs.cz/podminky/cu202/801-1-Budovy-a-haly---zdene-a-monoliticke-(2020-II)/20/",
-      "_audit_gap_fixed": "URS_PHASE5B_FAMILY_VERIFIED",
+      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01",
       "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
     },
     {
@@ -952,18 +954,18 @@
       "_gate": "HSV",
       "kapitola": "HSV-2 Základové a ŽB",
       "subkapitola": "Patky parking — horní",
-      "popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300 mm × 7 ks",
+      "popis": "Dvoustupňové patky pro IPE180 — horní část z tvarovek ztraceného bednění 300×300 mm × 6 ks",
       "mj": "ks",
-      "mnozstvi": 7,
-      "mnozstvi_formula": "7 ks (= spodní)",
-      "mnozstvi_confidence": 0.9,
+      "mnozstvi": 6,
+      "mnozstvi_formula": "6 ks (= spodní, výkres D.1.1.02)",
+      "mnozstvi_confidence": 0.95,
       "urs_code_proposed": "311233812",
       "urs_alternatives": [
         "311233811"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §4 — dvoustupňová konstrukce",
+      "source": "D.1.1.02 (6 patek + 6× IPE180 spočítáno na výkrese; rozteč 1000, řada 785+5×1000+435)",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -971,7 +973,8 @@
       "notes": null,
       "id": "260217_sklad.HSV2.003",
       "realizuje_skladbu": null,
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -981,8 +984,8 @@
       "subkapitola": "Beton patek + zídek — zalití",
       "popis": "Beton C25/30 XC3 XF1 XA1 pro zalití tvarovek ZB patek + lemujících zídek parkingu",
       "mj": "m³",
-      "mnozstvi": 1.8,
-      "mnozstvi_formula": "patky horní (0.3×0.3×0.5×7) + zídka (odhad ~1 m³)",
+      "mnozstvi": 1.75,
+      "mnozstvi_formula": "patky horní (0.3×0.3×0.5×6 = 0.27) + zídka lemující + věnec nad patkami (odhad ~1.5 m³) = ~1.75 m³",
       "mnozstvi_confidence": 0.8,
       "urs_code_proposed": "273321321",
       "urs_alternatives": [
@@ -990,14 +993,15 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §4 — C25/30 XC3 XF1 XA1 pro vyztužené konstrukce",
+      "source": "TZ statika sklad §3 + výkres D.1.1.02 (6 patek)",
       "subdodavatel": "zelezobetonarsky_specialny",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
       "status_flag": "ready_for_phase2",
       "notes": null,
       "id": "260217_sklad.HSV2.004",
-      "realizuje_skladbu": null
+      "realizuje_skladbu": null,
+      "_audit_gap_fixed": "PATKY_7to6_DRAWING_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1292,15 +1296,15 @@
       "popis": "Zadní opěrná stěna — prefabrikované betonové bloky Herkul H-BLOK Standard, vazba běhounová s posunem 0.5",
       "mj": "ks",
       "mnozstvi": 18,
-      "mnozstvi_formula": "S04 líc 6.35 × 3.0 m = 19.05 m² (řez A-A measured) ÷ ~1.08 m²/blok = 17.6 → 18 ks. POZOR: rozměr bloku 1800×600 mm je ODHAD z analogie (web BB6 stejných gabaritů + AI-souhrn), NE z Herkul tech. listu napřímo (hblok.cz nedostupný). H-BLOK má interlocking profil — modul může být jiný. OVĚŘIT u Herkul.",
-      "mnozstvi_confidence": 0.82,
+      "mnozstvi_formula": "S04 líc 6.35 × 3.0 m = 19.05 m²; blok 1800×600 mm (výkres D.1.1.02/03: délka 1800, 5 řad × 600 výška = 3000) → 3 celé (1800×3=5400) + 1 kus 950 mm na řadu, vazba na zámek; 5 řad × ~3.5 bloku ≈ 18 ks",
+      "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "311233815",
       "urs_alternatives": [
         "317143811"
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §[19] H-BLOK Standard Herkul (Obrnice). Rozměr bloku NEověřen z tech. listu — odhad 1800×600 mm z web-analogie (BB6 stejný gabarit). Plocha líce 19.05 m² je measured (řez A-A); count 18 ks je estimate závislý na rozměru bloku.",
+      "source": "TZ statika sklad §[19] H-BLOK Standard Herkul + výkres D.1.1.02/D.1.1.03 — blok 1800×600 mm POTVRZENO výkresem (dříve web-analogie, nyní měřeno z výkresu); objem 6.35×3.0×0.6 = 11.43 m³",
       "subdodavatel": "prefa_bloky_specialista",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -1311,8 +1315,8 @@
         "S04_sklad"
       ],
       "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
-      "mnozstvi_status": "count 18 ks = ESTIMATE (plocha 19.05 m² measured, ale rozměr bloku 1800×600 mm odhad z web-analogie BB6, NE Herkul tech list); OVĚŘIT rozměr u Herkul a.s.",
-      "_audit_gap_fixed": "HBLOK_ROZMERY_ESTIMATE_2026-06-01"
+      "mnozstvi_status": "count 18 ks — rozměr bloku 1800×600 mm POTVRZEN výkresem D.1.1.02/03 (upgrade z estimate na measured); ks vs m³ dle ceníku Herkul OVĚŘIT",
+      "_audit_gap_fixed": "HBLOK_DRAWING_CONFIRMED_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1893,10 +1897,10 @@
       "_gate": "HSV",
       "kapitola": "HSV-4 Vodorovné",
       "subkapitola": "IPE180 parking — sekundární",
-      "popis": "Sekundární zastřešení parkingu — IPE180 v rozteči 1000 mm × délka 7 m × 7 ks",
+      "popis": "Sekundární zastřešení parkingu — IPE180 v rozteči 1000 mm × délka 6 m × 6 ks",
       "mj": "kg",
-      "mnozstvi": 921,
-      "mnozstvi_formula": "7 ks × 7 m × 18.8 kg/m = 921",
+      "mnozstvi": 790,
+      "mnozstvi_formula": "6 ks IPE180 × 7.0 m × 18.8 kg/m = 789.6 → 790 kg (výkres D.1.1.02: 6 nosníků)",
       "mnozstvi_confidence": 0.9,
       "urs_code_proposed": "411321414",
       "urs_alternatives": [
@@ -1904,7 +1908,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §1.4 + DXF LWPOLYLINE 7000 mm + rozteč 1000 mm",
+      "source": "výkres D.1.1.02 — 6× IPE180 á 7.0 m; ČSN hmotnost 18.8 kg/m",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [
@@ -1916,7 +1920,8 @@
       "realizuje_skladbu": [
         "S02_sklad"
       ],
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby). POZOR množství: statika — IPE180 á 1000 mm, stání 7.0 m, pnuty přes stěnu na patky; nosníky pravděpodobně rozpětí ~3.3–4 m (ne 7 m délka každý) → 49 lm může být ~20–30 % nadhodnoceno. Ověřit počet × délku z výkresu / RFEM modelu."
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby). POZOR množství: statika — IPE180 á 1000 mm, stání 7.0 m, pnuty přes stěnu na patky; nosníky pravděpodobně rozpětí ~3.3–4 m (ne 7 m délka každý) → 49 lm může být ~20–30 % nadhodnoceno. Ověřit počet × délku z výkresu / RFEM modelu.",
+      "_audit_gap_fixed": "IPE_7to6_DRAWING_2026-06-01"
     },
     {
       "objekt": "260217_sklad",
@@ -1959,8 +1964,8 @@
       "subkapitola": "Žárový zinek IPE + pororošty",
       "popis": "Žárově zinková povrchová úprava IPE180 + pororoštů dle ČSN EN ISO 12944 (C3 prostředí)",
       "mj": "kg",
-      "mnozstvi": 1551,
-      "mnozstvi_formula": "= hmotnost IPE180 (921 kg) + odhad pororoštů (21 m² × 30 kg/m²) = ~1551",
+      "mnozstvi": 1420,
+      "mnozstvi_formula": "IPE 790 kg + pororošt 630 kg = 1420 kg žárově zinkováno (IPE 6 ks)",
       "mnozstvi_confidence": 0.8,
       "urs_code_proposed": "783201001",
       "urs_alternatives": [
@@ -1968,7 +1973,7 @@
       ],
       "urs_status": "needs_production_lookup",
       "urs_confidence": 0.65,
-      "source": "TZ statika sklad §1.4 + ČSN EN ISO 12944 — žárový zinek pro pojezdové ocel",
+      "source": "= HSV4.004 (6 ks) + HSV4.005 pororošt hmotnost",
       "subdodavatel": "ocel_zamecnik_konstrukce",
       "subdodavatel_status": "mapped",
       "vyjasneni_ref": [],
@@ -1978,7 +1983,8 @@
       "realizuje_skladbu": [
         "S02_sklad"
       ],
-      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby)."
+      "statika_validation": "Profil/materiál ověřen dle statiky D.2 (TeAnau, RFEM 5.39) — shoda. Množství ODHAD; přesný výkaz oceli/dřeva/výztuže v DPS (statika §7: definitivní dimenzování v dokumentaci pro provedení stavby).",
+      "_audit_gap_fixed": "IPE_7to6_DRAWING_2026-06-01"
     },
     {
       "objekt": "260219_dum",
@@ -7289,7 +7295,7 @@
     "items_total_after": 212
   },
   "_phase3_5_namespace_finalize_log": {
-    "applied_at": "2026-06-01",
+    "applied_at": "2026-06-02",
     "purpose": "Retroactive namespace-suffix tagging for sklad items per Pattern 24 (multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid confusion with dům S01-S12b namespace.",
     "items_renamed": 0,
     "per_item_changes": []
