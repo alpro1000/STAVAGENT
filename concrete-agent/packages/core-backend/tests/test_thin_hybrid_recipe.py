@@ -270,3 +270,16 @@ def test_92_runs_without_aws_credentials():
         assert not os.environ.get(v)  # sandbox has none
     res, _, _, _ = _run()  # stub decider → no real LLM; must not crash
     assert res.status == STATUS_COMPLETED, res.error
+
+
+# ── regression: generic walk with NO recipe inputs completes (empty pipeline) ──
+# Mirrors the live /orchestrate full-takeoff walk that carries no SO-202 options:
+# empty elements → empty breakdown → export has nothing to render. That is an
+# empty precondition, NOT a tool failure, so the recipe must COMPLETE (the export
+# step skips), not fail loud. Guards the pr3b endpoint contract.
+
+def test_generic_walk_without_inputs_completes():
+    res, _, _, _ = _run(options={})
+    assert res.status == STATUS_COMPLETED, res.error
+    committed = next((s for s in res.steps if s["state"] == "COMMITTED"), None)
+    assert committed is not None  # reached the end without erroring

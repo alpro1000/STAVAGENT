@@ -224,8 +224,14 @@ def _export_step(ctx: StepContext) -> StepResult:
 
     wa = ctx.session.partials.get(WorkflowState.WORK_ATOMIZATION.value, {})
     items = wa.get("breakdown_items") or []
+    if not items:
+        # No atomized work (e.g. a generic /orchestrate walk that carried no recipe
+        # inputs) → there is no deliverable to render. Complete cleanly. This is an
+        # empty precondition, NOT a tool failure, so it must not fail loud.
+        return StepResult(outputs={"deliverable": None, "row_count": 0, "exported": False})
     exp = _call_tool("export_soupis", export_soupis(items=items))
     if "error" in exp:
+        # Real failure: export was given items and the tool errored → fail loud.
         raise RuntimeError(f"export_soupis failed: {exp['error']}")
     return StepResult(
         outputs={
@@ -233,6 +239,7 @@ def _export_step(ctx: StepContext) -> StepResult:
             "row_count": exp.get("row_count"),
             "source_preserved": exp.get("source_preserved"),
             "file_base64": exp.get("file_base64"),
+            "exported": True,
         },
         tools_invoked=["export_soupis"],
     )
