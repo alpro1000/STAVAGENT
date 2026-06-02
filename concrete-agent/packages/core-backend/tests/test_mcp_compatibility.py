@@ -79,6 +79,8 @@ EXPECTED_TOOLS = [
     "export_soupis",
     # TASK_Extract_Stage1_TZFields — stage-1 TZ text field extractor.
     "extract_tz_fields",
+    # Part B (DXF-First roadmap) — host-vision validation gate (Tool 19).
+    "validate_drawing_element",
 ]
 
 

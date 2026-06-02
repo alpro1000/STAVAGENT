@@ -146,6 +146,13 @@ from app.mcp.tools.extract_tz_fields import extract_tz_fields  # noqa: E402
 mcp.tool()(extract_tz_fields)
 
 
+# ── Tool 19: walk_drawings — host-vision validation gate (Part B, P40 + P49) ──
+
+from app.mcp.tools.walk_drawings import validate_drawing_element  # noqa: E402
+
+mcp.tool()(validate_drawing_element)
+
+
 # ── Startup policy-registry validation (PR2 — AC4) ──────────────────────────
 # Every registered workflow tool MUST have a manifest. Validation runs at import
 # (server startup) and raises RegistryValidationError on drift, so the server
@@ -168,6 +175,9 @@ _STAGE_GATING_EXEMPT_TOOLS = {
     "uep_get_coverage_matrix",
     "uep_get_reconciliation_rules",
     "uep_get_dwg_conversion_status",
+    # validate_drawing_element is a deterministic grounding gate (Part B), not a
+    # document→export state-machine stage — exempt like advisor/pump.
+    "validate_drawing_element",
 }
 
 _REGISTERED_TOOL_NAMES = {
@@ -190,6 +200,7 @@ _REGISTERED_TOOL_NAMES = {
     "detect_object_type",
     "export_soupis",
     "extract_tz_fields",
+    "validate_drawing_element",
 }
 
 validate_registry(
