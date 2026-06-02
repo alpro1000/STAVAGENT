@@ -77,23 +77,38 @@ def main() -> int:
     manual = _load_manual_areas()
     lines = [f"# DXF auto-takeoff × manual Výměry — cross-check ({today})", "",
              "DXF = deterministic ground truth (Pattern 49). Manual = vymery_souhrn.json.", ""]
+    import re as _re
+
+    def _linked(room, jednotka):
+        """Type-aware: manual row references the DXF room by číslo or shares a název keyword."""
+        j = jednotka.lower()
+        if str(room.get("cislo", "")) and str(room["cislo"]) in j:
+            return True
+        for w in _re.findall(r"[a-zřčšžýáíéúůňťďě]{4,}", (room.get("nazev") or "").lower()):
+            if w in j:
+                return True
+        return False
+
     dxf_rooms = [(obj, r) for obj, data in result["objekty"].items() for r in data["rooms"]]
-    matched = mism = dxf_only = 0
-    lines.append("| DXF místnost | DXF m² | nejbližší manual | manual m² | verdikt |")
+    matched = labelless = dxf_only = 0
+    lines.append("| DXF místnost | DXF m² | manual (type-linked) | manual m² | verdikt |")
     lines.append("|---|---|---|---|---|")
     for obj, r in dxf_rooms:
         a = r["area_m2"]
-        best = min(manual, key=lambda m: abs(m[1] - a), default=None) if manual else None
-        if best and abs(best[1] - a) / max(a, best[1]) <= 0.05:
-            verdikt = "✓ MATCH"; matched += 1
-        elif best and abs(best[1] - a) / max(a, best[1]) <= 0.15:
-            verdikt = "⚠ blízko"; mism += 1
+        in_tol = [m for m in manual if abs(m[1] - a) / max(a, m[1]) <= 0.05]
+        linked = [m for m in in_tol if _linked(r, m[0])]
+        if linked:
+            best = min(linked, key=lambda m: abs(m[1] - a)); verdikt = "✓ MATCH"; matched += 1
+        elif in_tol:
+            best = min(in_tol, key=lambda m: abs(m[1] - a)); verdikt = "≈ area-only (no label)"; labelless += 1
         else:
-            verdikt = "DXF-only"; dxf_only += 1
-        bn, bm = (best or ("—", 0))
-        lines.append(f"| {r['cislo']} {str(r['nazev'] or '')[:18]} | {a} | {str(bn)[:22]} | {bm or '—'} | {verdikt} |")
-    lines += ["", f"**Σ:** {matched} MATCH · {mism} blízko · {dxf_only} DXF-only · "
-              f"{len(dxf_rooms)} DXF rooms vs {len(manual)} manual."]
+            best = ("—", 0); verdikt = "DXF-only"; dxf_only += 1
+        bn, bm = best
+        lines.append(f"| {r['cislo']} {str(r['nazev'] or '')[:18]} | {a} | {str(bn)[:24]} | {bm or '—'} | {verdikt} |")
+    lines += ["", f"**Σ:** {matched} MATCH (type-linked) · {labelless} area-only · {dxf_only} DXF-only · "
+              f"{len(dxf_rooms)} DXF rooms vs {len(manual)} manual.",
+              "", "_Type-aware (Pattern 49 refinement): MATCH requires číslo/název linkage, "
+              "not bare area coincidence — removes false matches._"]
     out_md = ROOT / "outputs" / f"DXF_VYMERY_crosscheck_{today}.md"
     out_md.write_text("\n".join(lines), encoding="utf-8")
 
