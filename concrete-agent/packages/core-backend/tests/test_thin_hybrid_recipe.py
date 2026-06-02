@@ -260,7 +260,8 @@ def test_91_replay_reuses_decision_decider_called_once():
 
 def test_92_reasoner_is_vertex_not_bedrock():
     import app.services.stage_gating.recipe_runner as rr
-    src = open(rr.__file__, encoding="utf-8").read()
+    with open(rr.__file__, encoding="utf-8") as f:
+        src = f.read()
     assert "boto3" not in src and "bedrock" not in src.lower(), "recipe must not touch Bedrock"
     assert callable(rr.make_reasoner_decider())
 

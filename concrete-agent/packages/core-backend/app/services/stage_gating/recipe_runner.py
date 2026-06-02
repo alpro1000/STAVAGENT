@@ -66,6 +66,15 @@ def _default_saver(project_id: str, field: str, value: Any) -> None:
 
 # ── async-tool bridge: run an MCP coroutine inside a child span ──────────────
 def _call_tool(name: str, coro) -> dict:
+    # `asyncio.run` is safe here: the recipe runner is driven by the synchronous
+    # `StageGatingOrchestrator.run`, which the live transport invokes via
+    # `await asyncio.to_thread(_run_blocking, ...)` (routes_orchestrator.py) — i.e.
+    # on a worker thread with NO running event loop. The stage-gating in-memory
+    # tests likewise call `orch.run(...)` from a plain (non-async) test function.
+    # So there is never a running loop in this thread, and `asyncio.run` neither
+    # raises "event loop is already running" nor needs get_event_loop()/
+    # run_until_complete. The child span nests under the request root span because
+    # it is opened in this same synchronous frame before the coroutine runs.
     with _tracer.start_as_current_span(f"recipe.tool.{name}") as span:
         result = asyncio.run(coro)
         if hasattr(span, "set_attribute"):
