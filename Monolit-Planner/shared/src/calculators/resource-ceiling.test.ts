@@ -113,10 +113,78 @@ describe('ResourceCeiling — defaults registry', () => {
     expect(d.time?.allow_night_shift).toBe(true);
   });
 
-  it('Phase 2-7 elements (no default yet) return undefined', () => {
+  it('Phase 3-7 elements (no default yet) return undefined', () => {
+    // Group B-F per task §6 — pozemní svislé (stena/sloup), speciální
+    // (pilota/nadrz/podzemni_stena/schodiste), mostní spodní stavba
+    // (driky_piliru/opery/...), mostní NK (rigel/...), most svršek (rimsa).
     expect(getDefaultCeiling('rimsa')).toBeUndefined();
     expect(getDefaultCeiling('pilota')).toBeUndefined();
-    expect(getDefaultCeiling('zakladova_deska')).toBeUndefined();
+    expect(getDefaultCeiling('stena')).toBeUndefined();
+  });
+
+  // ─── Phase 2 Group A defaults — pozemní vodorovné ─────────────────────────
+  it('Phase 2 Group A: all 6 pozemní vodorovné typy have defaults', () => {
+    expect(getDefaultCeiling('stropni_deska')).toBeDefined();
+    expect(getDefaultCeiling('zakladova_deska')).toBeDefined();
+    expect(getDefaultCeiling('zakladovy_pas')).toBeDefined();
+    expect(getDefaultCeiling('zakladova_patka')).toBeDefined();
+    expect(getDefaultCeiling('podkladni_beton')).toBeDefined();
+    expect(getDefaultCeiling('pruvlak')).toBeDefined();
+  });
+
+  it('stropni_deska default: 12 lidí, 2 soupravy (obrátkovost), 1 čerpadlo, 1 jeřáb, props 1 sada', () => {
+    const d = getDefaultCeiling('stropni_deska')!;
+    expect(d.workforce?.num_workers_total).toBe(12);
+    expect(d.workforce?.num_carpenters).toBe(4);
+    expect(d.workforce?.num_finishers).toBe(1);
+    expect(d.formwork?.num_formwork_sets).toBe(2);
+    expect(d.formwork?.num_props_sets).toBe(1);
+    expect(d.equipment?.num_pumps).toBe(1);
+    expect(d.equipment?.num_cranes).toBe(1);
+    expect(d.source).toBe('kb_default');
+    expect(d.confidence).toBe(0.85);
+  });
+
+  it('zakladova_deska default: 10 lidí, finišéři (hladička), bez jeřábu', () => {
+    const d = getDefaultCeiling('zakladova_deska')!;
+    expect(d.workforce?.num_workers_total).toBe(10);
+    expect(d.workforce?.num_finishers).toBe(1);
+    expect(d.equipment?.num_pumps).toBe(1);
+    expect(d.equipment?.num_cranes).toBeUndefined();
+  });
+
+  it('zakladovy_pas default: 8 lidí, bez pumps + bez cranes (výsyp / žlab)', () => {
+    const d = getDefaultCeiling('zakladovy_pas')!;
+    expect(d.workforce?.num_workers_total).toBe(8);
+    expect(d.equipment?.num_pumps).toBeUndefined();
+    expect(d.equipment?.num_cranes).toBeUndefined();
+  });
+
+  it('zakladova_patka default: 8 lidí, 2 soupravy, bez pumps', () => {
+    const d = getDefaultCeiling('zakladova_patka')!;
+    expect(d.workforce?.num_workers_total).toBe(8);
+    expect(d.formwork?.num_formwork_sets).toBe(2);
+    expect(d.equipment?.num_pumps).toBeUndefined();
+  });
+
+  it('podkladni_beton default: 4 lidí, bez bednění (do výkopu), s pumpou', () => {
+    const d = getDefaultCeiling('podkladni_beton')!;
+    expect(d.workforce?.num_workers_total).toBe(4);
+    expect(d.workforce?.num_concrete_workers).toBe(3);
+    expect(d.workforce?.num_rebar_workers).toBeUndefined();
+    expect(d.workforce?.num_finishers).toBeUndefined();
+    expect(d.formwork).toBeUndefined();
+    expect(d.equipment?.num_pumps).toBe(1);
+  });
+
+  it('pruvlak default: 10 lidí, 2 soupravy, stojky 1 sada, jeřáb 1', () => {
+    const d = getDefaultCeiling('pruvlak')!;
+    expect(d.workforce?.num_workers_total).toBe(10);
+    expect(d.workforce?.num_finishers).toBe(1);
+    expect(d.formwork?.num_formwork_sets).toBe(2);
+    expect(d.formwork?.num_props_sets).toBe(1);
+    expect(d.equipment?.num_pumps).toBe(1);
+    expect(d.equipment?.num_cranes).toBe(1);
   });
 });
 

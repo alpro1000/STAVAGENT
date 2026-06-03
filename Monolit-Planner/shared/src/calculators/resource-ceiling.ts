@@ -430,7 +430,173 @@ export const RESOURCE_CEILING_DEFAULTS: Partial<Record<StructuralElementType, Re
     confidence: 0.85,
     source: 'kb_default',
   },
-  // TODO Phase 2–7: zbývajících 22 typů (Group A–F per task §6).
+  // ─── Phase 2 Group A — pozemní vodorovné (task §6) ────────────────────────
+  // Per audit §6.1 R2 + KB YAML mirror v
+  // `concrete-agent/.../B4_production_benchmarks/default_ceilings/<el>.yaml`.
+  //
+  // Defaults calibrated proti `computePourCrew(volume, n_pump, element_type)`
+  // (Level 0/1/2/3 buckets) + orchestrator DEFAULTS.crew_size=4 alignment
+  // pro avoid first-time-user default-vs-default false-positive violations
+  // (per Phase 1 Foundation C learnings).
+  stropni_deska: {
+    workforce: {
+      num_workers_total: 12,
+      num_carpenters: 4,
+      num_rebar_workers: 4,
+      num_concrete_workers: 4,
+      num_vibrators: 2,
+      num_finishers: 1,       // krycí vrstva (relevance true)
+    },
+    formwork: {
+      num_formwork_sets: 2,   // matches orchestrator DEFAULTS.num_sets=2 (obrátkovost)
+      num_props_sets: 1,      // Dokaflex / SKYDECK stojky povinné
+    },
+    equipment: {
+      num_pumps: 1,
+      plant_rate_m3_h: 60,
+      mixer_delivery_m3_h: 40,
+      num_cranes: 1,          // ElementProfile.needs_crane=true
+      crane_max_load_kg: 4000,
+    },
+    time: {
+      shifts_per_day: 1,
+      shift_h: 10,
+      allow_night_shift: false,
+    },
+    confidence: 0.85,
+    source: 'kb_default',
+  },
+
+  zakladova_deska: {
+    workforce: {
+      num_workers_total: 10,
+      num_carpenters: 4,
+      num_rebar_workers: 4,
+      num_concrete_workers: 4,
+      num_vibrators: 2,
+      num_finishers: 1,       // relevance true — velká plocha → hladička
+    },
+    formwork: {
+      num_formwork_sets: 2,   // matches orchestrator DEFAULTS.num_sets=2 (obrátkovost)
+    },
+    equipment: {
+      num_pumps: 1,
+      plant_rate_m3_h: 60,
+      mixer_delivery_m3_h: 40,
+      // num_cranes vynecháno — relevance.num_cranes=false
+    },
+    time: {
+      shifts_per_day: 1,
+      shift_h: 10,
+      allow_night_shift: false,
+    },
+    confidence: 0.85,
+    source: 'kb_default',
+  },
+
+  zakladovy_pas: {
+    workforce: {
+      num_workers_total: 8,
+      num_carpenters: 4,
+      num_rebar_workers: 4,
+      num_concrete_workers: 3,
+      num_vibrators: 1,
+    },
+    formwork: {
+      num_formwork_sets: 2,   // matches orchestrator DEFAULTS.num_sets=2 (obrátkovost)
+    },
+    equipment: {
+      plant_rate_m3_h: 50,
+      mixer_delivery_m3_h: 35,
+      // num_pumps + num_cranes vynechány — relevance false (výsyp / žlab)
+    },
+    time: {
+      shifts_per_day: 1,
+      shift_h: 10,
+      allow_night_shift: false,
+    },
+    confidence: 0.85,
+    source: 'kb_default',
+  },
+
+  zakladova_patka: {
+    workforce: {
+      num_workers_total: 8,
+      num_carpenters: 4,
+      num_rebar_workers: 4,
+      num_concrete_workers: 3,
+      num_vibrators: 1,
+    },
+    formwork: {
+      num_formwork_sets: 2,   // matches orchestrator DEFAULTS.num_sets=2 (obrátkovost)
+    },
+    equipment: {
+      plant_rate_m3_h: 40,
+      mixer_delivery_m3_h: 30,
+      // num_pumps + num_cranes vynechány — relevance false
+    },
+    time: {
+      shifts_per_day: 1,
+      shift_h: 10,
+      allow_night_shift: false,
+    },
+    confidence: 0.85,
+    source: 'kb_default',
+  },
+
+  podkladni_beton: {
+    workforce: {
+      num_workers_total: 4,
+      // num_carpenters vynecháno (relevance true but needs_formwork=false →
+      // engine demand=0). num_rebar_workers/vibrators/finishers vynechány
+      // per relevance false.
+      num_concrete_workers: 3,  // Level 0 — vetší volume bucket (≥50 m³)
+    },
+    // formwork vynecháno — relevance.num_formwork_sets=false (do výkopu)
+    equipment: {
+      num_pumps: 1,             // ElementProfile.pump_typical=true
+      plant_rate_m3_h: 60,
+      mixer_delivery_m3_h: 40,
+    },
+    time: {
+      shifts_per_day: 1,
+      shift_h: 10,
+      allow_night_shift: false,
+    },
+    confidence: 0.85,
+    source: 'kb_default',
+  },
+
+  pruvlak: {
+    workforce: {
+      num_workers_total: 10,
+      num_carpenters: 4,
+      num_rebar_workers: 4,
+      num_concrete_workers: 3,  // Level 1-2 (malý objem)
+      num_vibrators: 1,
+      num_finishers: 1,         // relevance true — krycí vrstva horizontálního nosníku
+    },
+    formwork: {
+      num_formwork_sets: 2,     // matches orchestrator DEFAULTS.num_sets=2 (obrátkovost)
+      num_props_sets: 1,        // stojky povinné — needs_supports=true
+    },
+    equipment: {
+      num_pumps: 1,
+      plant_rate_m3_h: 50,
+      mixer_delivery_m3_h: 35,
+      num_cranes: 1,            // ElementProfile.needs_crane=true
+      crane_max_load_kg: 4000,
+    },
+    time: {
+      shifts_per_day: 1,
+      shift_h: 10,
+      allow_night_shift: false,
+    },
+    confidence: 0.85,
+    source: 'kb_default',
+  },
+
+  // TODO Phase 3–7: zbývajících 16 typů (Group B–F per task §6).
 };
 
 /**
