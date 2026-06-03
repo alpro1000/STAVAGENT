@@ -457,6 +457,10 @@ async def calculate_concrete_works(
             provided: `num_tacts = ceil(formwork_length_bm / cycle_length_bm)`.
     """
     try:
+        # Stage-1 extract (extract_tz_fields) ships volume_m3=None — volumes are
+        # stage 2 (drawings). Coalesce to 0.0 so the whole pipeline passes through
+        # without crashing on arithmetic; the result is simply zero-quantity.
+        volume_m3 = volume_m3 or 0.0
         # ── Collect formwork override warnings up-front ──────────────────
         # `override_warnings` is the channel for semantic validation hits
         # (e.g. T-bednění specified for a foundation). The result picks them

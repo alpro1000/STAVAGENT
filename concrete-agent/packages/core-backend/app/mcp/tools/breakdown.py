@@ -174,8 +174,10 @@ async def create_work_breakdown(
             etype = classification["element_type"]
             profile = ELEMENT_TYPES.get(etype, ELEMENT_TYPES["jine"])
 
-            # Step 2: Get quantities
-            volume = elem.get("volume_m3", 0)
+            # Step 2: Get quantities. Stage-1 extract ships volume_m3=None
+            # (volumes are stage 2) — coalesce to 0 so the qty<=0 skip applies
+            # cleanly instead of crashing on a None comparison.
+            volume = elem.get("volume_m3", 0) or 0
             height = elem.get("height_m", 3.0)
             concrete_class = elem.get("concrete_class", "C30/37")
             rebar_tons = elem.get("rebar_tons", volume * profile["rebar_kg_m3"] / 1000 if volume else 0)

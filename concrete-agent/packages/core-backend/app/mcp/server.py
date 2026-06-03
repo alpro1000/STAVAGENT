@@ -139,6 +139,13 @@ from app.mcp.tools.export import export_soupis  # noqa: E402
 mcp.tool()(export_soupis)
 
 
+# ── Tool 18: TZ field extractor (stage 1 — autonomy: raw TZ → recipe input) ──
+
+from app.mcp.tools.extract_tz_fields import extract_tz_fields  # noqa: E402
+
+mcp.tool()(extract_tz_fields)
+
+
 # ── Startup policy-registry validation (PR2 — AC4) ──────────────────────────
 # Every registered workflow tool MUST have a manifest. Validation runs at import
 # (server startup) and raises RegistryValidationError on drift, so the server
@@ -182,6 +189,7 @@ _REGISTERED_TOOL_NAMES = {
     "uep_get_dwg_conversion_status",
     "detect_object_type",
     "export_soupis",
+    "extract_tz_fields",
 }
 
 validate_registry(

@@ -31,6 +31,7 @@ states:
     tools:
       - analyze_construction_document
       - detect_object_type
+      - extract_tz_fields
   WORK_ATOMIZATION:
     tools:
       - analyze_construction_document

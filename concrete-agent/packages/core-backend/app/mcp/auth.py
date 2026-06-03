@@ -59,6 +59,7 @@ TOOL_COSTS = {
     "create_work_breakdown": 20,
     "detect_object_type": 0,  # deterministic wrapper over the W3b detector — free
     "export_soupis": 10,  # deterministic deliverable render (soupis prací)
+    "extract_tz_fields": 10,  # stage-1 TZ field extraction (mirrors analyze)
 }
 
 FREE_CREDITS = 200
