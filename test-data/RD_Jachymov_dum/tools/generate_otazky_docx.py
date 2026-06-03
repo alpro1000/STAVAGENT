@@ -31,7 +31,7 @@ from docx.shared import Cm, Pt, RGBColor
 
 PROJ = Path(__file__).resolve().parent.parent
 QUEUE_JSON = PROJ / "inputs" / "meta" / "vyjasneni_queue.json"
-OUT = PROJ / "outputs" / "Otazky_pro_Karla_a_projektanty_2026-05-29.docx"
+OUT = PROJ / "outputs" / "Otazky_pro_Karla_a_projektanty.docx"
 
 # ───────────────────────────────────────────────────────────────────────────
 # Otázky — friendly Czech rewrite pro Karel'a (per #id z queue)

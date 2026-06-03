@@ -43,7 +43,7 @@ SKLADBY_JSON_FALLBACK = OUT / "skladby_per_zone.json"
 URS_VERIFICATIONS_JSON = OUT / "urs_websearch_verifications.json"
 
 TODAY = date.today().isoformat()
-TARGET = OUT / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}.xlsx"
+TARGET = OUT / "Vykaz_vymer_RD_Jachymov_VSE_VARIANTY.xlsx"
 
 # ───────────────────────────────────────────────────────────────────────────
 # Styling

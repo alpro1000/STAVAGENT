@@ -33,7 +33,7 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).resolve().parent.parent
 MAP_PATH = ROOT / "outputs" / "atomic_decomposition_map.json"
-TARGET = ROOT / "outputs" / "Vykaz_vymer_RD_Jachymov_ATOMIC_WORKLIST_2026-05-27.xlsx"
+TARGET = ROOT / "outputs" / "Vykaz_vymer_RD_Jachymov_ATOMIC_WORKLIST.xlsx"
 
 # Styles
 THIN = Side(border_style="thin", color="999999")

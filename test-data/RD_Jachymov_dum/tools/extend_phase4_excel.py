@@ -38,8 +38,8 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTPUTS = ROOT / "outputs"
 TODAY = str(date.today())
 
-SOURCE_XLSX = OUTPUTS / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}.xlsx"
-TARGET_XLSX = OUTPUTS / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}_v2.xlsx"
+SOURCE_XLSX = OUTPUTS / "Vykaz_vymer_RD_Jachymov_VSE_VARIANTY.xlsx"
+TARGET_XLSX = OUTPUTS / "Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_v2.xlsx"
 
 THIN = Side(border_style="thin", color="888888")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
