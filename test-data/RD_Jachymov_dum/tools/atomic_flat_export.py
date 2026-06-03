@@ -76,7 +76,7 @@ def main() -> None:
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = f"A1:{openpyxl.utils.get_column_letter(len(COLS))}{len(ops)+1}"
 
-    out = OUT / f"ATOMIC_FLAT_{date.today().isoformat()}.xlsx"
+    out = OUT / "ATOMIC_FLAT.xlsx"
     wb.save(out)
     n_null = sum(1 for o in ops if o.get("mnozstvi") is None)
     print(f"OK — {out.name}: {len(ops)} atomic operations (1 row each), {n_null} qty=neurčeno.")

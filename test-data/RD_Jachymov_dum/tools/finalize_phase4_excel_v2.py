@@ -78,8 +78,9 @@ def fix_namespace() -> dict:
             changes += 1
 
     # Add Phase 3.5+ log entry
-    data.setdefault("_phase3_5_namespace_finalize_log", {}).update({
-        "applied_at": TODAY,
+    _ns_log = data.setdefault("_phase3_5_namespace_finalize_log", {})
+    _ns_log.setdefault("applied_at", TODAY)  # idempotent — preserve first-applied date (no churn)
+    _ns_log.update({
         "purpose": (
             "Retroactive namespace-suffix tagging for sklad items per Pattern 24 "
             "(multi-namespace S-code/F-code handling). Bare SN → SN_sklad to avoid "
@@ -107,7 +108,7 @@ BODY_ALIGN_LEFT = Alignment(horizontal="left", vertical="top", wrap_text=True)
 
 
 def latest_v2_xlsx() -> Path:
-    cands = sorted(OUTPUTS.glob("Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_*_v2.xlsx"))
+    cands = sorted(OUTPUTS.glob("Vykaz_vymer_RD_Jachymov_VSE_VARIANTY*_v2.xlsx"))
     if not cands:
         raise FileNotFoundError("No _v2 Excel found — run extend_phase4_excel.py first")
     return cands[-1]
@@ -287,7 +288,7 @@ def main() -> None:
 
     # Part 2 — extend Var_E + Souhrn in Excel
     src = latest_v2_xlsx()
-    target = OUTPUTS / f"Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_{TODAY}_v2_final.xlsx"
+    target = OUTPUTS / "Vykaz_vymer_RD_Jachymov_VSE_VARIANTY_v2_final.xlsx"
 
     wb = load_workbook(str(src))
     var_e_result = extend_var_e(wb)

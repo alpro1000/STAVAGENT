@@ -57,7 +57,7 @@ def main() -> None:
     ws.freeze_panes = "A3"
     ws.auto_filter.ref = f"A2:{openpyxl.utils.get_column_letter(len(COLS))}{len(rows)+2}"
 
-    out = OUT / f"VYMERY_SOUHRN_{date.today().isoformat()}.xlsx"
+    out = OUT / "VYMERY_SOUHRN.xlsx"
     wb.save(out)
     from collections import Counter
     st = Counter(r.get("status") for r in rows)

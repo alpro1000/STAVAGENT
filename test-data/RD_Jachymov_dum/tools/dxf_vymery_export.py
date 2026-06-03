@@ -70,7 +70,7 @@ def main() -> int:
             "unknown_layers": t["unknown_layers"],
         }
 
-    out_json = ROOT / "outputs" / f"DXF_VYMERY_{today}.json"
+    out_json = ROOT / "outputs" / "DXF_VYMERY.json"
     out_json.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # cross-check DXF room areas vs manual register
@@ -109,7 +109,7 @@ def main() -> int:
               f"{len(dxf_rooms)} DXF rooms vs {len(manual)} manual.",
               "", "_Type-aware (Pattern 49 refinement): MATCH requires číslo/název linkage, "
               "not bare area coincidence — removes false matches._"]
-    out_md = ROOT / "outputs" / f"DXF_VYMERY_crosscheck_{today}.md"
+    out_md = ROOT / "outputs" / "DXF_VYMERY_crosscheck.md"
     out_md.write_text("\n".join(lines), encoding="utf-8")
 
     print(f"  [dxf] {len(sheets)} sheet(s) → {out_json.name} + {out_md.name} "

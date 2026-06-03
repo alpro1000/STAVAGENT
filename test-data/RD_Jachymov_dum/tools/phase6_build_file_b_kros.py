@@ -40,7 +40,7 @@ from openpyxl.utils import get_column_letter
 ROOT = Path(__file__).resolve().parent.parent
 ITEMS_PATH = ROOT / "outputs" / "items_rd_jachymov_complete.json"
 TODAY = date.today().isoformat()
-OUT_PATH = ROOT / "outputs" / f"Vykaz_vymer_RD_Jachymov_KROS_format_{TODAY}_v3_final.xlsx"
+OUT_PATH = ROOT / "outputs" / "Vykaz_vymer_RD_Jachymov_KROS_format_v3_final.xlsx"
 LOG_PATH = ROOT / "outputs" / "phase6_file_b_validation_log.json"
 
 # === Stavba header constants ===
