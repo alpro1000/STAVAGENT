@@ -323,6 +323,11 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Když si nejsi jistý — zeptej se, neháděj mlčky.
 - Definuj kritéria úspěchu PŘED kódem, pak iteruj k jejich splnění.
 
+**Dependency & merge discipline (learned 2026-06-02, PRs #1285/#1294/#1295):**
+- **Pinning a library → check its transitive requirements against the other hard pins.** Pinning `google-cloud-aiplatform==1.154.0` forced `google-auth>=2.47.0` (conflicted with the `==2.25.2` pin). Always smoke a dependency change with a **clean `pip install -r requirements.txt`** (fresh venv, `--dry-run` ok) — **never `--ignore-installed` or other bypasses**, which hide resolver conflicts (the #1285 smoke hid it; the clean CI install exposed it).
+- **After EVERY merge, verify the change actually landed on `origin/main`** via `git log`/`grep` — **through a `git worktree` off `origin/main`, not a local ref** (which may be stale). Squash/merge can silently drop commits: #1285's merge lost the `google-auth` bump → main shipped install-broken until #1295.
+- **Business / regulatory dates** (BIM law, SDK removal, model retirement) — **confirm from the official primary source, never from memory/chat.** This session a "year of runway" assumption was wrong; user caught it; re-checked against `cloud.google.com` docs → urgency corrected by facts.
+
 ## Session Setup — Effort & Thinking
 
 **ОБЯЗАТЕЛЬНО в начале каждой сессии:**
@@ -440,6 +445,10 @@ After **EVERY** change to modules wrapped by MCP tools, verify the wrapper still
 **How to check:** `cd concrete-agent/packages/core-backend && python -m pytest tests/test_mcp_compatibility.py -v`
 
 **If broken:** update MCP wrapper in `app/mcp/tools/`, not the backend module.
+
+**Authoring rules for MCP tools (learned 2026-06-02, PR #1294):**
+- **No `Callable` in a tool's public signature.** FastMCP builds a JSON schema from the registered function's parameters; a `Callable` annotation raises `PydanticInvalidForJsonSchema: CallableSchema` at registration and cascades into *every* fastmcp-loading test. Inject test seams (extractors, LLM hooks) via **module-level globals/defaults** the tests monkeypatch — never as function params. (Ref: `extract_tz_fields` `_TEXT_EXTRACTOR`/`_LLM`.)
+- **A new tool must sync ALL counters in one change** or CI breaks piecemeal: `_REGISTERED_TOOL_NAMES` (`server.py`) · `TOOL_ORDER` + `TOOL_DESCRIPTIONS` (`routes.py`) · `TOOL_COSTS` (`auth.py`) · `ToolManifest` (`tool_manifest.py`) · YAML stage allow-list (`workflow_definitions.yaml`) · **and `EXPECTED_TOOLS` in `tests/test_mcp_compatibility.py`** (the last is the easiest to forget — it's invisible locally without fastmcp installed).
 
 ---
 
