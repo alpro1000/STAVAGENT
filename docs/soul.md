@@ -348,6 +348,50 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-03 — Session: DXF-First automated takeoff (Part A+B) + walk_drawings MCP tool + git hygiene
+
+**Rozhodnuto:**
+- **DXF-First takeoff (Pattern 49)** — celá Část A+B z `TASK_Automated_Takeoff_DXF_Vision_BIM.md`
+  smergeována do main přes per-PR řetěz:
+  - A1 room-label assoc + A2 view separation (#1287): point-in-polygon, 3/3 místnosti
+    (0.01 sklad 17.56, 1.01 stání 44.57, 1.02 schodiště 5.5 — všechny ✓)
+  - A3 slovník růst na dům DXF (#1288): 28→38 layer + 3→14 block rules, auto-count sanity
+    (WC/vana/umyvadlo/sprcha) — zaplnilo gap smety
+  - A4 pipeline integrace (#1289): DXF krok v `regenerate_all_views.py`, cross-check vs manual
+  - #1 type-aware cross-ref (#1291): MATCH vyžaduje číslo/název linkage → 59→39 pravých shod
+  - #2 multi-floor dedup (#1292): 61→39 unique (patro+verze)
+- **walk_drawings MCP gate (P40)** — Part B smergeováno (#1290 prototype + #1293 wiring):
+  registrovaná tulza `validate_drawing_element` = **Tool 19** (modul `walk_drawings.py`).
+  Count **19→20** (18 + extract_tz_fields z #1294 + validate_drawing_element). Synchronizováno
+  všech 5 registr-povrchů (server `_REGISTERED` + routes `TOOL_ORDER`/`TOOL_DESCRIPTIONS` +
+  auth `TOOL_COSTS=0` + test `EXPECTED_TOOLS`). CI plné green (408 passed, Postgres+Redis, live count=20).
+- **Kanonické jméno = `validate_drawing_element`** (modul/flow = `walk_drawings`, NE jméno tulzy);
+  kosmeticky vyjasněno v server komentáři / docstring / design-doc / PATTERNS.md / TASK.
+- **Git hygiena (#1298)** — output churn (binární xlsx/docx regen) blokoval branch checkout:
+  generátory → date-less jména, 34 deliverables + 8 audit/log projekcí gitignored+untracked,
+  `applied_at` v finalize → idempotentní (items.json + FROZEN už nečurní). 2. regenerate = 0 churn.
+  Snapshot doručeného balíčku v `snapshots/delivered_RD_Jachymov/` (tracked, audit). README date-less.
+
+**Odmítnuto:**
+- Install-fail v CI NEBYL PyPI flaka — byl to **lost-in-merge google-auth pin** (#1285 ztratil
+  bump, #1295 re-aplikoval `google-auth>=2.47.0` pro aiplatform 1.154.0). Rebase #1293 na main
+  to vyřešil deterministicky (clean `pip install --dry-run` resolves).
+- Mazání 10 merged-větví z prostředí (push --delete → 403; MCP nemá delete-branch) →
+  Alexander smaže přes UI.
+
+**Otevřené otázky / co zbývá v DXF:**
+- walk_drawings **end-to-end** (host → submit_element REST → gate) — gate v main + unit-testy,
+  ale plný cyklus + host-prompt + e2e test nezadrátováno.
+- Slovník růst na nové projekty (Libuše/SO-250) — akumulativně, po cestě.
+- multi-floor dedup verze=named/unnamed je heuristika (ne layer-based stav/návrh) — refinement.
+
+**Co dál:**
+- **Cemex demo-prep (podání 28.06, ~25 dní od 03.06) = HLAVNÍ priorita** — ODDĚLENOU session.
+  Resource Ceiling pro mostovku (326→~40 dní do/po), demo-script (větev `cemex-demo-prep`, bez PR),
+  modul CZK/m³ betonu vedle kalkulátoru.
+- walk_drawings e2e + slovník růst = po Cemexu / na pozadí.
+
+
 ## 2026-06-02 — Session: extract stage 1 + Vertex SDK freeze + main install-fix
 
 **MERGED do main (tip 25df8d0):**
