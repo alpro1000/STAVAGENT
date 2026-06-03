@@ -1227,6 +1227,12 @@ TOOL_DESCRIPTIONS = {
         "z podepsaných sekcí — ne fulltextem. Výstup = vstup receptu (object + "
         "elements). Objemy (výměry) jsou stádium 2 → volume_m3=null."
     ),
+    "validate_drawing_element": (
+        "Ověřovací brána pro host-vision prvky z výkresů (Part B, vzor 40 + 49). "
+        "Deterministicky ukotví tvrzení hosta proti DXF odečtu + TZ a přiřadí "
+        "confidence (vision+DXF+TZ=0.95 … vision-only=0.60+OVĚŘIT); bez _source = "
+        "REJECTED. Sama nedělá vidění — jen skóruje. Bez jazykového modelu."
+    ),
 }
 
 # Canonical tool order (matches app/mcp/server.py registration order).
@@ -1250,6 +1256,7 @@ TOOL_ORDER = [
     "detect_object_type",
     "export_soupis",
     "extract_tz_fields",
+    "validate_drawing_element",
 ]
 
 

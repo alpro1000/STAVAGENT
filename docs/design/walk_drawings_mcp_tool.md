@@ -1,7 +1,12 @@
 # walk_drawings — MCP tool design (Part B, Pattern 40 host-delegated vision)
 
+> **Naming:** `walk_drawings` is the **module / flow concept** (the host "walks"
+> the drawings). The **registered MCP tool name is `validate_drawing_element`** —
+> canonical everywhere in the registry (server / routes / auth / test). Read
+> "walk_drawings" below as the module/flow, never as the tool name.
+
 **Status:** prototype gate built (`test-data/RD_Jachymov_dum/tools/walk_drawings_gate.py`);
-MCP server wiring = next implementation step.
+wired into the MCP server as `validate_drawing_element` (Tool 19, PR #1293).
 **Purpose:** the vision fallback for what DXF-First (Pattern 49) cannot give — the
 **hidden logic** Alexander reasons by hand (patky = 2 rows; S01 vynos beyond the
 wall; wall face = obvod × řez height). DXF runs first (conf 1.0); walk_drawings
@@ -72,8 +77,9 @@ no `_source` → REJECTED.
   2.02=5.9). Production must match within the element's type/region, not bare number.
 - **Region scoping** — pass the active view/room context so the gate checks against
   the right DXF subset (ties into A2 view separation).
-- **MCP server** — expose as `walk_drawings` tool in `concrete-agent/app/mcp/tools/`
-  alongside the existing 9 tools; host-delegation prompt + `submit_element` endpoint.
+- **MCP server** — ✅ done: registered as tool `validate_drawing_element` (module
+  `concrete-agent/app/mcp/tools/walk_drawings.py`), Tool 19. Remaining: host-delegation
+  prompt + `submit_element` REST endpoint.
 
 ## Relation to the 3 automation levels (Část D)
 

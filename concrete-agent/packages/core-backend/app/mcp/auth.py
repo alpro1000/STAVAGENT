@@ -60,6 +60,7 @@ TOOL_COSTS = {
     "detect_object_type": 0,  # deterministic wrapper over the W3b detector — free
     "export_soupis": 10,  # deterministic deliverable render (soupis prací)
     "extract_tz_fields": 10,  # stage-1 TZ field extraction (mirrors analyze)
+    "validate_drawing_element": 0,  # deterministic grounding gate (Part B) — free
 }
 
 FREE_CREDITS = 200
