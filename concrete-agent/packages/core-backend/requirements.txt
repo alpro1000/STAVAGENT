@@ -46,7 +46,7 @@ google-cloud-storage>=2.0.0
 # GOOGLE DRIVE API (Day 1: OAuth2 Integration)
 # ==========================================
 # OAuth2 authentication
-google-auth==2.25.2
+google-auth>=2.47.0,<3.0.0  # floor raised for google-cloud-aiplatform==1.154.0 (needs >=2.47.0); satisfies oauthlib/httplib2/api-client/generativeai too. Was ==2.25.2 (pre-aiplatform-freeze).
 google-auth-oauthlib==1.2.0
 google-auth-httplib2==0.2.0
 
