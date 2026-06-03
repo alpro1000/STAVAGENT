@@ -2207,7 +2207,7 @@ Areas extracted from DXF reconcile with the manual obmer; vision used only where
 
 ### Related
 - Pattern 39 (Vision-first) — the raster sibling; 49 hands the gaps to 39
-- Pattern 40 (Host-delegated vision + MCP gate) — walk_drawings is the vision fallback for 49
+- Pattern 40 (Host-delegated vision + MCP gate) — the walk_drawings flow is the vision fallback for 49 (registered MCP tool: `validate_drawing_element`, module `walk_drawings.py`)
 - Pattern 45 (Výměry-First) — DXF auto-fills the výměry register (conf 1.0)
 - Pattern 47 (Fence-post counting) — block/label counts from DXF are authoritative over `length÷spacing`
 

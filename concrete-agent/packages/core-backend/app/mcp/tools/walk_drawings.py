@@ -1,5 +1,8 @@
 """
-MCP Tool: walk_drawings (validate_drawing_element)
+Module: walk_drawings  (concept: the host "walks" the drawings)
+Registered MCP tool name: validate_drawing_element  ← canonical, used everywhere
+in the registry (server / routes / auth / test). "walk_drawings" is only the
+module/flow name, never the tool name.
 
 Part B of the automated-takeoff roadmap (Pattern 40 host-delegated vision +
 Pattern 49 DXF-First). The HOST (ChatGPT/Claude/Gemini vision) walks each drawing

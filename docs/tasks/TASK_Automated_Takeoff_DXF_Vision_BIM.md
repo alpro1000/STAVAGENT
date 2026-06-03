@@ -74,7 +74,9 @@ Output: structured elements [{type, area, count, dimensions, layer, _source}]
 Где DXF неполный/неоднозначный → host vision проходит чертёж рассуждая (как
 Alexander вручную).
 
-### MCP tool walk_drawings (host-delegated vision)
+### MCP tool — module `walk_drawings`, registered tool name `validate_drawing_element` (host-delegated vision)
+> Канон: имя зарегистрированной тулзы = `validate_drawing_element` (в модуле
+> `walk_drawings.py`). «walk_drawings» здесь — имя модуля/потока, не имя тулзы.
 ```
 1. MCP инструктирует host (ChatGPT/Claude/Gemini vision):
    "Пройди КАЖДЫЙ чертёж как rozpočtář. Per element опиши:

@@ -146,7 +146,8 @@ from app.mcp.tools.extract_tz_fields import extract_tz_fields  # noqa: E402
 mcp.tool()(extract_tz_fields)
 
 
-# ── Tool 19: walk_drawings — host-vision validation gate (Part B, P40 + P49) ──
+# ── Tool 19: module walk_drawings (concept: host walks drawings) ─────────────
+# Registered tool name = validate_drawing_element (Part B, P40 + P49).
 
 from app.mcp.tools.walk_drawings import validate_drawing_element  # noqa: E402
 
