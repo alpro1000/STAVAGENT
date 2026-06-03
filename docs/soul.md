@@ -348,6 +348,50 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-03 — Session: Resource Ceiling Phase 2 Group A — recon + dovedení odložené větve do PR #1300
+
+**Rozhodnuto:**
+- **#1300 Resource Ceiling Phase 2 Group A smergeováno do main** (squash `8d92c012`). 6 pozemních
+  vodorovných typů (`podkladni_beton`, `pruvlak`, `stropni_deska`, `zakladova_deska`,
+  `zakladova_patka`, `zakladovy_pas`) dostalo KB-kalibrované defaulty v B4
+  `default_ceilings/<el>.yaml` + zrcadlo v `resource-ceiling.ts` (`RESOURCE_CEILING_DEFAULTS`,
+  `source: 'kb_default'`). Před tím měl main jen 2 Phase-1 reference elementy (`operne_zdi`,
+  `mostovkova_deska`); ostatní padaly na auto-derived dolní mez.
+- **Kalibrace proti `computePourCrew()` bucketům + orchestrator DEFAULTS** (num_sets=2, crew_size=4)
+  → first-time-user nedostává falešné ⛔ INFEASIBLE z default-vs-default porovnání.
+- **Dovedeno cherry-pickem JEDNOHO commitu** `8baaad3d` z odložené větve
+  `claude/review-resource-ceiling-pr-3wEjV` na čerstvý `origin/main` (`02deaa84`) →
+  nová větev `claude/resource-ceiling-group-a` → PR #1300. **NE rebase** staré větve
+  (3949 squash-orphan commitů). Aplikováno bez konfliktu (6 YAML + golden net-new,
+  `.ts` diff čistě aditivní +168/−3).
+- **Ověřeno** na nové větvi: cherry-pick 0 konfliktů · `tsc` clean · targeted
+  `resource-ceiling`+`golden-group-a` 50/50 · **plný shared-suite 1225/1225** (29 souborů,
+  žádné regrese). CI flake (Build Frontend `npm ci` ECONNRESET) = transient, pře-kiknuto
+  `rerun_failed_jobs`; paralelní run téhož commitu byl zelený. Merge ověřen i přes
+  `git` na `origin/main` (ne jen API) — 6 YAML + golden potvrzeny IN-MAIN.
+
+**Odmítnuto:**
+- Rebase odložené větve (3949 squash-orphan commitů) — místo toho cherry-pick čisté delty.
+- Jakákoli nová fíčra — recon potvrdil, že Group A nebyla mezitím udělána jinou cestou
+  (main `RESOURCE_CEILING_DEFAULTS` měl jen 2 Phase-1 záznamy; 6 YAML + golden chyběly).
+
+**Otevřené otázky / dluhy:**
+- Resource Ceiling Phase 3-4 (Group B+C+D+E+F, zbývajících 16 typů) stále otevřené per backlog.
+- Resource Ceiling UI form (Expert panel) + Foundation C2 auto-recovery split — beze změny.
+
+**Co dál:**
+- Zavřen backlog **P0 Resource Ceiling Phase 2 Group A** → odškrtnout v CLAUDE.md TODO.
+- DXF-spike stádium 2 (původní zadání této session) zůstává — DXF takeoff je z velké části
+  už v main (Pattern 49, viz entry níže); dořešit jen sklad/dům cross-check čísla 17.6/62.5/44.6.
+
+**Pravidlo vyučené (→ CLAUDE.md / Pattern 12):**
+- **Odloženou větev verifikovat reconem podle OBSAHU, ne podle grafu commitů** — squash-merge
+  orphans (Pattern 12) způsobí, že `git log HEAD..branch` lže (3949 «chybějících» commitů,
+  jejichž obsah JE v main pod jinými SHA). Pravá unikátní delta = porovnat soubory
+  (existence v `origin/main`, diff `.ts`, test-cherry-pick do worktree). Hotovou práci
+  pak dovést **cherry-pickem jednoho commitu na čerstvý main**, ne rebasem celé větve.
+
+
 ## 2026-06-03 — Session: DXF-First automated takeoff (Part A+B) + walk_drawings MCP tool + git hygiene
 
 **Rozhodnuto:**
