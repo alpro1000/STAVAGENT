@@ -348,7 +348,46 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
-## 2026-06-01 — Session: Výměry-First + H-BLOK count + vymery_souhrn 38 místností
+## 2026-06-02 — Session: extract stage 1 + Vertex SDK freeze + main install-fix
+
+**MERGED do main (tip 25df8d0):**
+- #1262 W3b activate object_type (37a23f7e) — `_classify` stub-signature fix + fail-loud breakdown handler.
+- #1278 MCP tools `detect_object_type` + `export_soupis`; EXPORTED reachable; dead `read_project_documentation` removed.
+- #1280 ADK-spike (izolováno v `spikes/`, venv-only) → ROZHODNUTÍ: stavíme vlastní tenký hybrid, NE ADK. `REPORT.md` = ADR.
+- #1281 thin-hybrid recipe orchestrator (#85–#92): `recipe_runner` zaplnil WORK_ATOMIZATION dispatch-stub; nuance decider = Vertex Gemini (v testech stub-injekce); OTel root+child spans; fail-loud vs empty-pass-through split; DB-gated endpoint-test prokázal `asyncio.run` na živém dispatchi (to_thread-worker, žádný running loop → `asyncio.run` bezpečný).
+- #1285 freeze `google-cloud-aiplatform==1.154.0` (CVE-2026-2473-safe ≥1.133.0 + obsahuje `vertexai.*` moduly + smoke-ověřeno). **ROZMRAZIT po migraci na google-genai.**
+- #1295 fix main install: `google-auth==2.25.2` → `>=2.47.0,<3.0.0` (požadavek aiplatform 1.154.0; při merge #1285 se bump ztratil — main byl install-broken, #1295 opravil).
+- #1294 `extract_tz_fields` (#94–#100) — stádium 1 extrakce polí TZ. Registr konzistentní na 19 nástrojích (`TOOL_ORDER`=`_REGISTERED`=`EXPECTED_TOOLS`=19).
+
+**Rozhodnuto (Vertex SDK — z prvopramene, 3 úrovně):**
+- vertexai generative SDK deprecated 2025-06-24, removal **2026-06-24** — ale jen z BUDOUCÍCH releasů SDK (dok `genai-vertexai-sdk`: "SDK releases after June 24, 2026 won't include these modules"). Zapinovaný wheel 1.154.0 immutable, moduly uvnitř.
+- Modely gemini-2.5-flash/pro/flash-lite retirement **2026-10-16** (dok `model-versions`). `textembedding-gecko@003` — datum nedoloženo, ALE `vertex_embeddings.py` se nikde neimportuje = mrtvý kód, nehraje roli.
+- ⇒ Okno Cemex (podání 2026-06-28) **BEZPEČNÉ** na zapinované 1.154.0.
+
+**Odmítnuto:**
+- ADK jako orchestrační vrstva (#1280) — vlastní tenký hybrid místo toho.
+- Plný 125h DXF/IFC/BIM parser jako závazek — `TASK_Automated_Takeoff_DXF_Vision_BIM.md` je referenční ADR, ne commitment.
+- Spěšná migrace vertexai.* před Cemexem — fakty sňaly urgenci.
+
+**Otevřené otázky / dluhy:**
+- Migrace `vertexai.*` → `google-genai`: PO Cemexu, reálný deadline ~2026-09-16…10-16. Dotčeno: `gemini_client.py` (GenerativeModel) + dead `vertex_embeddings.py` (TextEmbeddingModel — vypéct nebo migrovat). Smoke Gemini na ŽIVÝCH credech povinný. Pak rozmrazit pin #1285.
+- Stádium 2 GUARD: `volume=None` se koalescuje na 0 (čestné pro stádium 1), ale na stádiu 2 objem, který SE MĚL extrahovat ale je None, musí vyplout jako OVĚŘIT, NE tiše 0.
+- Opc: #93 provider_router honesty-fix (Bedrock-first pro EXTRACT/CONTRADICTION = mrtvý konfig, tiše jde na Gemini); ELEMENT_TYPES(22)↔WORK_TEMPLATES(9) drift; grounding-gate hardening.
+- Backlog-hygiena: 255+ dependabot (1 critical zavřen #1285-freeze); `python-multipart` 0.0.17→0.0.18+ (dosažitelný upload-DoS, high) — po Cemexu.
+
+**Co dál:**
+- DXF-spike (= extract stádium 2, výměry z výkresů): jeden soubor RD Jáchymov přes `ezdxf` → plochy/count/layers → porovnat s ručním obměrem 17.6/62.5/44.6 → STOP-gate. NE plný parser. Insight „DXF = struktura ne obrázek, DXF-first před vision" — správný, držet.
+
+**Pravidla vyučená touto session (→ CLAUDE.md):**
+1. Injekce závislostí do MCP-nástrojů — JEN přes module-level globals/defaulty, NIKDY `Callable` v public signatuře (FastMCP staví JSON-schema ze signatury → `CallableSchema` crash, kaskádou valí všechny fastmcp-testy).
+2. Nový MCP-nástroj → synchronizovat VŠECHNY počítadla naráz: `_REGISTERED_TOOL_NAMES`, `TOOL_ORDER`, `TOOL_DESCRIPTIONS`, `TOOL_COSTS`, manifest, YAML allow-list, A `EXPECTED_TOOLS` v compat-testu (poslední se zapomíná — lokálně bez fastmcp není vidět).
+3. Pin knihovny → zkontrolovat její TRANZITIVNÍ požadavky proti ostatním tvrdým pinům (pin aiplatform vynutil bump google-auth). Smoke VŽDY čistým `pip install` bez `--ignore-installed`/obcházení — jinak resolver-konflikty nevidíš (smoke #1285 je skryl, čistý CI-install odkryl).
+4. Po KAŽDÉM merge → `git log`/`grep` na origin/main že změna reálně dojela (squash může ztratit commity: #1285 ztratil google-auth-bump → main install-broken). Ověřovat přes worktree z origin/main, ne lokální ref (může být stale).
+5. Business/regulatorní data (BIM-zákon, SDK removal, model retirement) — potvrzovat z OFICIÁLNÍHO prvopramene, ne z chatu. Tato session: chyba „rok rezervy" chycena uživatelem → přeověřeno → urgence sňata fakty.
+
+**Stav:** vše smergeno do main (25df8d0), install resolvuje čistě, MCP-registr = 19 nástrojů konzistentně. Pracovní strom čistý. Otevřené PR žádné.
+
+
 **Rozhodnuto:**
 - vymery_souhrn.json kompletně doplněn: 38 jednotek (32 measured, 4 derived, 2 estimate)
   — všechny místnosti 1.PP/1.NP/2.NP/3.NP + dům prvky (fasáda, sokl, střecha) + sklad prvky
