@@ -348,6 +348,61 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-04 — Session: SSOT MCP delegate — Phase 2a (calculate) shipped, classify deferred
+
+**Rozhodnuto:**
+- **`calculate_concrete_works` (MCP) DELEGUJE na canonical engine** — POST `/api/calculate`
+  (Phase 1 thin wrapper nad `planElement`, už v mainu `398b628`). Tool teď mapuje MCP
+  argumenty → `PlannerInput`, forwarduje **PlannerOutput verbatim + `source:"monolit_planner_api"`**,
+  žádný divergentní Python přepočet. Klíčová oprava SSOT: mostovková deska `rebar_ratio_kg_m3`
+  = **150** (ne starých Python `180`).
+- **Retired divergentní Python calc** v `calculator.py`: `_lateral_pressure` / `_select_formwork`
+  / `_calculate_tacts` / `_estimate_days` / `CURING_DAYS_TABLE` / `EXPOSURE_MIN_CURING` /
+  `_try_monolit_api` + ELEMENT_TYPES-fallback. Zůstal jen read-only formwork-override **warning**
+  surface (KNOWN_FORMWORK_SYSTEMS — „T-bednění pro základ" hint), mergovaný do engine `warnings[]`.
+  `calculate_pump` (TOV) netknutý.
+- **Nový seam `app/mcp/tools/monolit_delegate.py`** — jediné místo, kde MCP sahá na engine.
+  Vlastní fail-mode kontrakt: 200 → verbatim · 4xx → `engine_invalid_input` (bez retry) ·
+  5xx → `engine_error` (1 retry) · timeout/conn → `engine_unavailable` (retry, cold-start budget).
+  Nikdy tiché číslo. Monkeypatch-able `_http_post` (per MCP authoring rule — žádný Callable v signature).
+- **MCP-only typy** `zdivo_obklad`/`izolacni_stena`/`sachta`/`tunel_rampa` (nejsou v engine
+  `StructuralElementType` union) → explicitní `unsupported_element_type` BEZ volání enginu.
+  Soft-alias mapa pro `deska→stropni_deska`, `operna_zed→operne_zdi`, `pricinik→rigel`,
+  `zaklady→zakladovy_pas`, `jine→other`.
+- **Testy:** nový `test_mcp_ssot_delegation.py` (verbatim forward + fail-mode + unsupported,
+  16/16); reconciled `test_mcp_compatibility.py` (6 calculator testů) + `test_mcp_golden_so202.py`
+  (8 calculate pravidel) + `test_thin_hybrid_recipe.py` na **PlannerOutput shape**. Engine se
+  injektuje přes `conftest.py::calculate_replay` — offline replay zachycený z **živého enginu**
+  (`replay_calculate.json`, keyed canonical-payload, number-normalized kvůli fastmcp float coercion).
+  Jest anchor `engine.parity.test.js` (18/18): endpoint===planElement pro parity-set + rebar-150
+  anchor + SO-202 domain (curing≥9, pile≥80, prestress≥11, fixed_scaffolding override). Lokálně
+  zelené: ssot_delegation 16 · compat calc/clf/golden/recipe 65 · jest 18.
+- **SO-202 golden audit:** 7/9 pravidel přežije delegaci beze změny intentu (engine je splňuje,
+  jen v jiných polích). R8 = jediná doménová odchylka: engine auto-doporučuje **MSS** pro 6×20 m
+  (≥4 pole), TZ §7.2 chtělo pevnou skruž → golden teď posílá `construction_technology=
+  'fixed_scaffolding'` explicitně (engine override ctí). `curing_class` engine nevystavuje →
+  assert padl na `formwork.curing_days` (substantivní hodnotu).
+
+**Odmítnuto / odloženo (Phase 2b):**
+- **classify-delegace VYŇATA z této fáze** (rozhodnutí Alexandra, var. D). Důvod: W3 SO-250
+  klasifikátor má **divergentní type-vocabulary** (`operna_zed` vs engine `operne_zdi`, prostý
+  `zaklady`, MCP-only `zdivo_obklad`) + head-noun dizambiguaci (`obklad` ne „do dříku", NK ne
+  „trám", dřík stěny ≠ dřík pilíře), kterou canonical engine NEreprodukuje. Sverочná tabulka:
+  **7/9 SO-250 goldenů by se rozbilo** (dřík stěny→driky_piliru, obklad→driky_piliru, základ→other).
+  `classifier.py` vrácen na W3 origin; `breakdown.py`/`advisor.py` netknuté (zůstávají Python).
+- breakdown C1 (množství z `/api/calculate`) + advisor inline-Python retire → Phase 2b
+  (závisí na classify-delegaci).
+
+**Otevřené otázky:**
+- Phase 2b: buď engine absorbuje W3 normalizaci (head-noun + `operne_zdi`/`zaklady_oper`
+  mapping + cladding handling) PŘED tím, než classify deleguje, NEBO hybrid (W3 Python
+  pre-layer autoritativní pro svou nomenklaturu + engine pro paritní typy/čísla).
+
+**Co dál:**
+- Push Phase 2a na `claude/wonderful-albattani-eO5aY` (čistý commit, bez PR dokud Alexandr neřekne).
+- Phase 2b: classify reconciliation (W3 vs engine vocabulary), pak breakdown C1 + advisor.
+
+
 ## 2026-06-03 — Session: Resource Ceiling Phase 2 Group A — recon + dovedení odložené větve do PR #1300
 
 **Rozhodnuto:**
