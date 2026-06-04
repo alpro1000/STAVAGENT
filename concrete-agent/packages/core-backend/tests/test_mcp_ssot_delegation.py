@@ -92,6 +92,32 @@ class _RecordingPost:
         return self.behaviour
 
 
+class _SequencePost:
+    """Fake `_http_post` returning/raising a DIFFERENT behaviour per call.
+
+    Each item is a (status, body) tuple to return or an Exception to raise. A
+    hard cap turns a non-terminating retry loop into a fast, explicit failure
+    instead of a hang.
+    """
+
+    def __init__(self, behaviours, hard_cap: int = 12):
+        self.behaviours = list(behaviours)
+        self.hard_cap = hard_cap
+        self.calls: list[str] = []
+
+    async def __call__(self, path: str, payload: dict):
+        self.calls.append(path)
+        if len(self.calls) > self.hard_cap:
+            raise AssertionError(
+                f"delegate() made > {self.hard_cap} calls — no termination ceiling (infinite retry loop)"
+            )
+        idx = len(self.calls) - 1
+        behaviour = self.behaviours[idx] if idx < len(self.behaviours) else self.behaviours[-1]
+        if isinstance(behaviour, Exception):
+            raise behaviour
+        return behaviour
+
+
 @pytest.fixture(autouse=True)
 def _offline_and_fast(monkeypatch):
     """Make every delegation test deterministic and offline.
@@ -238,3 +264,51 @@ async def test_calculate_unsupported_type_not_delegated(monkeypatch, element):
     assert result.get("element_type") == element
     assert fake.calls == [], "unsupported type must not reach the engine"
     assert "schedule" not in result
+
+
+# ── Independent retry budgets (Amazon-Q finding) ─────────────────────────────
+
+@pytest.mark.asyncio
+async def test_retry_5xx_budget_not_consumed_by_prior_timeout(monkeypatch):
+    """BUG: a timeout must NOT consume the 5xx retry budget.
+
+    Sequence [timeout, 5xx, 5xx]: the 5xx still gets its OWN retry → 3 calls
+    (timeout + 5xx + 5xx-retry). The old shared counter cut it off after 2."""
+    seq = _SequencePost([
+        httpx.ConnectError("cold start"),
+        (500, {"error": "engine_error"}),
+        (500, {"error": "engine_error"}),
+    ])
+    monkeypatch.setattr(md, "_http_post", seq)
+
+    result = await calculate_concrete_works(
+        element_type="stena", volume_m3=30, concrete_class="C25/30", height_m=2.8
+    )
+    assert result.get("error") == "engine_error"
+    assert len(seq.calls) == 3, (
+        "5xx retry was starved by the prior timeout — expected 3 calls "
+        f"(timeout + 5xx + 5xx-retry), got {len(seq.calls)}"
+    )
+
+
+@pytest.mark.asyncio
+async def test_retry_alternating_failures_terminate(monkeypatch):
+    """Alternating timeout↔5xx must terminate via the total-iteration ceiling,
+    never loop. [timeout, timeout, 5xx, 5xx] → engine_error after exactly 4
+    calls (2 unavailable + 1 server-error retry budgets, then stop)."""
+    seq = _SequencePost([
+        httpx.ConnectError("t1"),
+        httpx.ConnectError("t2"),
+        (500, {"error": "engine_error"}),
+        (500, {"error": "engine_error"}),
+    ])
+    monkeypatch.setattr(md, "_http_post", seq)
+
+    result = await calculate_concrete_works(
+        element_type="stena", volume_m3=30, concrete_class="C25/30", height_m=2.8
+    )
+    assert result.get("error") in ("engine_error", "engine_unavailable")
+    assert len(seq.calls) == 4, (
+        "alternating timeout↔5xx did not terminate at the expected ceiling — "
+        f"expected 4 calls, got {len(seq.calls)}"
+    )

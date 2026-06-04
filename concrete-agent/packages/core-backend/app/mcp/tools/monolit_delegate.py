@@ -13,8 +13,14 @@ fail-mode contract (per task §3, refined in review):
 
     200            → return the TS result verbatim.
     4xx            → permanent bad-input error → EngineInvalidInput, NO retry.
-    5xx            → engine error → ONE retry; if it repeats → EngineError.
-    timeout / conn → cold start (2–8 s) → EngineUnavailable, retry, ~30 s budget.
+    5xx            → engine error → up to _RETRIES_5XX retry, then EngineError.
+    timeout / conn → cold start (2–8 s) → up to _RETRIES_UNAVAILABLE retries,
+                     then EngineUnavailable.
+
+The two retry budgets are INDEPENDENT: a spent timeout retry never consumes the
+5xx retry, and vice-versa. A hard ceiling on total loop iterations
+(_MAX_TOTAL_ATTEMPTS = _RETRIES_UNAVAILABLE + _RETRIES_5XX + 1) guarantees an
+alternating timeout↔5xx sequence always terminates.
 
 NEVER fall back to a divergent Python calculation. A failure is surfaced as a
 typed exception (the tools translate it to an `{"error": <kind>, …}` dict) — it
@@ -45,10 +51,16 @@ MONOLIT_API_URL = os.getenv(
 _CONNECT_TIMEOUT_S = 8.0
 _READ_TIMEOUT_S = 30.0
 
-# Retry budget. Unavailable (conn/timeout) is transient on cold start → retry.
-# 5xx engine errors get exactly ONE retry (task §3). 4xx never retries.
-_RETRIES_UNAVAILABLE = 2  # → up to 3 attempts
-_RETRIES_5XX = 1          # → up to 2 attempts
+# Retry budget — tracked INDEPENDENTLY per failure type (a spent timeout retry
+# must not consume the 5xx retry, and vice-versa). Unavailable (conn/timeout) is
+# transient on cold start → retry. 5xx engine errors get exactly ONE retry
+# (task §3). 4xx never retries.
+_RETRIES_UNAVAILABLE = 2  # → up to 3 unavailable attempts
+_RETRIES_5XX = 1          # → up to 2 server-error attempts
+# Hard ceiling on total loop iterations — guarantees an alternating
+# timeout↔5xx sequence always terminates (defence-in-depth over the per-type
+# budgets, which already bound the total but are easy to regress).
+_MAX_TOTAL_ATTEMPTS = _RETRIES_UNAVAILABLE + _RETRIES_5XX + 1
 # Backoff between retries (seconds). Tests set this to 0 to stay instant.
 _RETRY_BACKOFF_S = 0.5
 
@@ -123,8 +135,14 @@ async def delegate(path: str, payload: dict) -> dict:
     """POST to the canonical engine and enforce the fail-mode contract.
 
     Returns the engine's JSON body on 2xx. Raises EngineInvalidInput (4xx, no
-    retry), EngineError (5xx after one retry), or EngineUnavailable
-    (connect/timeout after retries). Never returns a Python-computed fallback.
+    retry), EngineError (5xx after up to _RETRIES_5XX retries), or
+    EngineUnavailable (connect/timeout after up to _RETRIES_UNAVAILABLE retries).
+    Never returns a Python-computed fallback.
+
+    The two retry budgets are tracked INDEPENDENTLY — a spent timeout retry must
+    not consume the 5xx retry (and vice-versa). A hard ceiling on total
+    iterations (`_MAX_TOTAL_ATTEMPTS`) guarantees an alternating timeout↔5xx
+    sequence always terminates.
     """
     import httpx
 
@@ -137,18 +155,20 @@ async def delegate(path: str, payload: dict) -> dict:
         httpx.TimeoutException,
     )
 
-    last_unavailable: Optional[Exception] = None
-    attempt = 0
+    unavailable_retries = 0  # consumed ONLY by connect/timeout failures
+    server_error_retries = 0  # consumed ONLY by 5xx responses
+    iteration = 0
     while True:
+        iteration += 1
         try:
             status, body = await _http_post(path, payload)
         except transport_errors as exc:
-            # Cold start / network blip → unavailable. Retry within budget.
-            last_unavailable = exc
-            if attempt < _RETRIES_UNAVAILABLE:
-                attempt += 1
+            # Cold start / network blip → unavailable. Retry within its OWN
+            # budget (independent of the 5xx budget) and the total ceiling.
+            if unavailable_retries < _RETRIES_UNAVAILABLE and iteration < _MAX_TOTAL_ATTEMPTS:
+                unavailable_retries += 1
                 if _RETRY_BACKOFF_S:
-                    await asyncio.sleep(_RETRY_BACKOFF_S * attempt)
+                    await asyncio.sleep(_RETRY_BACKOFF_S * unavailable_retries)
                 continue
             raise EngineUnavailable(
                 f"Canonical engine unreachable at {MONOLIT_API_URL}{path}: {exc!r}"
@@ -169,11 +189,12 @@ async def delegate(path: str, payload: dict) -> dict:
                 detail=body,
             )
 
-        # 5xx — engine_error. Retry exactly once, then surface as engine error.
-        if attempt < _RETRIES_5XX:
-            attempt += 1
+        # 5xx — engine_error. Retry within its OWN budget (independent of the
+        # unavailable budget) and the total ceiling, then surface as engine error.
+        if server_error_retries < _RETRIES_5XX and iteration < _MAX_TOTAL_ATTEMPTS:
+            server_error_retries += 1
             if _RETRY_BACKOFF_S:
-                await asyncio.sleep(_RETRY_BACKOFF_S * attempt)
+                await asyncio.sleep(_RETRY_BACKOFF_S * server_error_retries)
             continue
         raise EngineError(
             f"Engine error ({status}): {_err_text(body)}",
