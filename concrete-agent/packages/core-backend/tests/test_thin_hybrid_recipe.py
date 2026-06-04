@@ -42,7 +42,18 @@ from app.services.stage_gating import (
 from app.services.stage_gating.orchestrator import STATUS_COMPLETED, STATUS_PAUSED
 from app.services.stage_gating.recipe_runner import make_recipe_tool_runner, run_traced
 
+import pytest
+
 CFG = load_workflow_config()
+
+
+@pytest.fixture(autouse=True)
+def _offline_engine(calculate_replay):
+    """Phase 2a (TASK_FIX_SSOT_MCP_Delegate): the recipe's WORK_ATOMIZATION step
+    calls calculate_concrete_works, which now delegates to POST /api/calculate.
+    Serve it from captured live-engine fixtures (tests/conftest.py) so the recipe
+    runs fully offline — never reaching the live Cloud Run engine in CI."""
+    yield
 
 # ── SO-202 ready structures (from golden fixtures; extract layer is the next task) ─
 SO202_OBJECT = {
