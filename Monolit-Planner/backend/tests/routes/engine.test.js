@@ -60,6 +60,45 @@ describe('POST /api/calculate — thin delegate to planElement', () => {
     const res = await request(app).post('/api/calculate').send({ volume_m3: 10 });
     expect(res.status).toBe(400);
   });
+
+  test('400 when volume_m3 negative', async () => {
+    const res = await request(app).post('/api/calculate').send({ element_type: 'stena', volume_m3: -1 });
+    expect(res.status).toBe(400);
+  });
+
+  test('400 when volume_m3 above domain ceiling (100000)', async () => {
+    const res = await request(app).post('/api/calculate').send({ element_type: 'stena', volume_m3: 100001, has_dilatacni_spary: false });
+    expect(res.status).toBe(400);
+  });
+
+  test('400 when element_type too long (>100 chars)', async () => {
+    const res = await request(app).post('/api/calculate').send({ element_type: 'x'.repeat(101), volume_m3: 10 });
+    expect(res.status).toBe(400);
+  });
+
+  test('400 when element_name too long (>500 chars)', async () => {
+    const res = await request(app).post('/api/calculate').send({ element_name: 'x'.repeat(501), volume_m3: 10 });
+    expect(res.status).toBe(400);
+  });
+
+  // Lower-bound parity (probe-confirmed): volume_m3=0 is VALID for pilota (volume
+  // derives from pile geometry) → 200; for non-pilota the rebar engine throws
+  // ("mass_t must be positive") → surfaced as a generic 500 engine_error, NOT
+  // pre-rejected, so the endpoint mirrors the engine.
+  test('volume_m3=0 with pilota → 200 (engine derives volume from geometry)', async () => {
+    const input = { element_type: 'pilota', volume_m3: 0, has_dilatacni_spary: false };
+    const direct = norm(planElement(input));
+    const res = await request(app).post('/api/calculate').send(input);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(direct);
+  });
+
+  test('volume_m3=0 with stena → 500 engine_error, no leaked detail', async () => {
+    const res = await request(app).post('/api/calculate').send({ element_type: 'stena', volume_m3: 0, has_dilatacni_spary: false });
+    expect(res.status).toBe(500);
+    expect(res.body).toEqual({ error: 'engine_error' });
+    expect(res.body.detail).toBeUndefined();
+  });
 });
 
 describe('POST /api/classify — thin delegate to classifyElement', () => {
@@ -86,6 +125,11 @@ describe('POST /api/classify — thin delegate to classifyElement', () => {
 
   test('400 when name missing', async () => {
     const res = await request(app).post('/api/classify').send({});
+    expect(res.status).toBe(400);
+  });
+
+  test('400 when name too long (>500 chars)', async () => {
+    const res = await request(app).post('/api/classify').send({ name: 'x'.repeat(501) });
     expect(res.status).toBe(400);
   });
 });

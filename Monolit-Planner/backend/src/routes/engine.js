@@ -19,6 +19,11 @@ import { planElement, classifyElement } from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
+// Domain-sane input bounds (hardening — not blind, see engine.test.js probe notes).
+const MAX_NAME_LEN = 500;          // element_name / classify name
+const MAX_TYPE_LEN = 100;          // element_type code
+const MAX_VOLUME_M3 = 100000;      // absurdly large for a single element, but finite
+
 /**
  * Map the MCP classifier's 3-value `object_type` to the TS classifier's
  * boolean `is_bridge`. The TS context is intentionally narrower (only bridge
@@ -42,17 +47,37 @@ function resolveIsBridge(body) {
 router.post('/calculate', (req, res) => {
   const input = req.body || {};
 
-  if (typeof input.volume_m3 !== 'number' || !Number.isFinite(input.volume_m3) || input.volume_m3 < 0) {
-    return res.status(400).json({ error: 'volume_m3 (non-negative number) is required' });
+  // volume_m3: finite, >= 0, within a domain-sane ceiling. We deliberately allow
+  // 0 (parity with the engine): pilota derives its volume from pile geometry and
+  // runs fine at volume_m3=0, while non-pilota types make the rebar engine throw
+  // ("mass_t must be positive") — that throw is surfaced as engine_error below,
+  // not pre-rejected, so the endpoint mirrors the engine exactly.
+  if (
+    typeof input.volume_m3 !== 'number' ||
+    !Number.isFinite(input.volume_m3) ||
+    input.volume_m3 < 0 ||
+    input.volume_m3 > MAX_VOLUME_M3
+  ) {
+    return res
+      .status(400)
+      .json({ error: `volume_m3 must be a number in [0, ${MAX_VOLUME_M3}]` });
   }
   if (!input.element_type && !input.element_name) {
     return res.status(400).json({ error: 'element_type or element_name is required' });
+  }
+  if (input.element_name != null && (typeof input.element_name !== 'string' || input.element_name.length > MAX_NAME_LEN)) {
+    return res.status(400).json({ error: `element_name must be a string up to ${MAX_NAME_LEN} chars` });
+  }
+  if (input.element_type != null && (typeof input.element_type !== 'string' || input.element_type.length > MAX_TYPE_LEN)) {
+    return res.status(400).json({ error: `element_type must be a string up to ${MAX_TYPE_LEN} chars` });
   }
 
   try {
     return res.json(planElement(input));
   } catch (err) {
-    return res.status(500).json({ error: 'engine_error', detail: String(err?.message || err) });
+    // Detail to server logs only (Phase 2 debugging); client gets a generic error.
+    console.error('[engine] /api/calculate failed:', err);
+    return res.status(500).json({ error: 'engine_error' });
   }
 });
 
@@ -63,14 +88,15 @@ router.post('/calculate', (req, res) => {
  */
 router.post('/classify', (req, res) => {
   const body = req.body || {};
-  if (!body.name || typeof body.name !== 'string') {
-    return res.status(400).json({ error: 'name (string) is required' });
+  if (!body.name || typeof body.name !== 'string' || body.name.length > MAX_NAME_LEN) {
+    return res.status(400).json({ error: `name (non-empty string up to ${MAX_NAME_LEN} chars) is required` });
   }
 
   try {
     return res.json(classifyElement(body.name, { is_bridge: resolveIsBridge(body) }));
   } catch (err) {
-    return res.status(500).json({ error: 'engine_error', detail: String(err?.message || err) });
+    console.error('[engine] /api/classify failed:', err);
+    return res.status(500).json({ error: 'engine_error' });
   }
 });
 
