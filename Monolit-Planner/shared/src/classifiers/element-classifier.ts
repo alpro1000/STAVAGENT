@@ -17,6 +17,8 @@ import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import type { PourMethod, FormworkFilterResult, ConcreteConsistency } from '../calculators/lateral-pressure.js';
 import { calculateLateralPressure, filterFormworkByPressure, inferPourMethod } from '../calculators/lateral-pressure.js';
+import { ELEMENT_CLASSIFICATION_RULES } from '../kb-generated/element-classification-rules.js';
+import { normalizeElementName, type ConstructionContext } from './element-name-normalizer.js';
 
 // ─── Rebar labor-rate category (BUG A, v4.24) ────────────────────────────────
 
@@ -109,6 +111,32 @@ export interface ElementProfile {
   has_kridla_detected?: boolean;
   /** Prefabricated element (info only — calculator doesn't compute prefab) */
   is_prefab?: boolean;
+
+  // --- Reject + signal ladder (TASK_2b Gate 3) ---
+  /**
+   * Whether this is a concrete structural element. `false` = an explicit REJECT
+   * (e.g. stone masonry cladding, special non-structural material) — distinct
+   * from the residual 'other'. Absent / true = a concrete element. Consumers
+   * must not fabricate rebar/formwork for a reject (see planElement).
+   */
+  is_concrete_element?: boolean;
+  /** Why it was rejected as not-a-concrete-element (e.g. 'masonry_cladding'). */
+  reject_reason?: string;
+  /**
+   * Ranked alternative classifications, populated only when the result is
+   * genuinely ambiguous (a close runner-up). Lets the orchestrator surface a
+   * pick-list + a human confirm instead of a confidently-wrong single answer.
+   */
+  candidates?: ElementCandidate[];
+}
+
+/** A ranked classification candidate (TASK_2b Gate 3 signal ladder). */
+export interface ElementCandidate {
+  /** Engine element type, or a reject concept id (e.g. 'zdivo_obklad'). */
+  element_type: string;
+  confidence: number;
+  /** Coarse parity family (from the KB roll-up), when known. */
+  family?: string;
 }
 
 // ─── Element Catalog ─────────────────────────────────────────────────────────
@@ -651,164 +679,30 @@ interface KeywordRule {
   priority: number;
 }
 
-const KEYWORD_RULES: KeywordRule[] = [
-  // ─── Bridge elements (higher priority) ───
-  {
-    element_type: 'mostovkova_deska',
-    keywords: [
-      'mostovka', 'mostovkov', 'mostova deska', 'mostní deska', 'mostni deska',
-      'deska mostu', 'nosna konstrukce', 'nosná konstrukce', 'bridge deck',
-      'nosne tram', 'nosné trám', 'nosna konstr', 'nosná konstr',
-      'predpj bet', 'předpj bet', 'predpjat', 'předpjat',
-      'nosnik most', 'nosník most', 'podelny nosnik', 'podélný nosník',
-      'mostni svrsek', 'mostní svršek', 'superstructure',
-      'hlavni nosnik', 'hlavní nosník', 'komorovy nosnik', 'komorový nosník',
-      'deska nosne', 'deska nosné', 'nosna deska', 'nosná deska',
-      'мостов', 'мостовая плита', 'пролетное строение',
-    ],
-    priority: 10,
-  },
-  { element_type: 'rimsa', keywords: [
-    'rimsa', 'říms', 'rimsov', 'rimsova deska', 'římsová deska',
-    'zabradeln zid', 'zábradelní zíd', 'zabradel', 'zábradel',
-    'parapet', 'cornice', 'coping',
-    'римс', 'карниз',
-  ], priority: 10 },
-  { element_type: 'prechodova_deska', keywords: [
-    'prechodova deska', 'přechodová deska', 'prechodove desky', 'přechodové desky',
-    'prechodov', 'přechodov', 'transition slab', 'approach slab',
-  ], priority: 11 },
-  { element_type: 'mostni_zavirne_zidky', keywords: [
-    'zavirn', 'závěrn', 'zavirne zidky', 'závěrné zídky',
-    'zidka most', 'zídka most',
-    'closure wall', 'end wall',
-  ], priority: 9 },
-  { element_type: 'rigel', keywords: [
-    'pricnik', 'příčník', 'pricni', 'příčn',
-    'pricnik most', 'příčník most',
-    'rigel', 'ригель',
-    'hlavice pilir', 'hlavice pilíř', 'hlavic', 'pier cap', 'crossbeam',
-    'diafragm', 'diaphragm',
-  ], priority: 9 },
-  { element_type: 'zaklady_piliru', keywords: [
-    'zaklad pilir', 'základ pilíř', 'zaklady piliru', 'základy pilířů',
-    'zaklady', 'základy',
-    'pilotov zaklad', 'pilotový základ',
-    'zakladovy blok', 'základový blok', 'blok oper', 'blok opěr',
-    'plosny zaklad most', 'plošný základ most',
-    'фундамент опор', 'фундамент пилон',
-  ], priority: 10 },
-  // Phase 3 Gate 2a: zaklady_oper recognition. Higher priority than
-  // zaklady_piliru so "základ opěry" specifically matches zaklady_oper
-  // instead of falling through to the generic "základy" keyword. Other
-  // "opěr"-related keywords (e.g. "blok opěr") stay with zaklady_piliru
-  // to avoid changing existing classification behavior in this commit.
-  { element_type: 'zaklady_oper', keywords: [
-    'zaklad oper', 'základ opěr', 'zaklady oper', 'základy opěr',
-    'opera zaklad', 'opěra základ', 'opery zaklad', 'opěry základ',
-    'mostni opera zaklad', 'mostní opěra základ',
-    'zaklad mostni opery', 'základ mostní opěry',
-  ], priority: 11 },
-  { element_type: 'driky_piliru', keywords: [
-    'drik', 'dřík', 'driky pilir', 'dříky pilíř',
-    'pilir most', 'pilíř most',
-    'mostni pilir', 'mostní pilíř', 'mostni pilire', 'mostní pilíře',
-    'stativ', 'stativa',
-    'telo pilir', 'tělo pilíř', 'telo oper', 'tělo opěr',
-    'pier stem', 'pier shaft', 'pylon',
-    'тело опор', 'столб моста',
-  ], priority: 8 },
-  { element_type: 'operne_zdi', keywords: [
-    'opern', 'opěrn', 'operna zed', 'opěrná zeď',
-    'operne zdi most', 'opěrné zdi most',
-    // P0 BUG #1 fix (2026-05-14, SO-250 audit): zárubní zeď (cut/anchored
-    // retaining wall) is structurally the same family as opěrná zeď —
-    // engine should reach for the same vertical-wall formwork systems
-    // (TRIO/Framax) and difficulty_factor. Without these keywords the
-    // dřík of a zárubní zeď fell through to 'other' on a part_name that
-    // lacked the word "opěrná".
-    'zarubn', 'zárubn',
-    'zarubni zed', 'zárubní zeď',
-    'kotven zed', 'kotvená zeď',
-    'gabionov', 'gabion',
-    'retaining wall',
-    'подпорн стен',
-  ], priority: 8 },
-  { element_type: 'kridla_opery', keywords: [
-    'kridl', 'křídl', 'kridla', 'křídla', 'křídlo',
-    'wing wall', 'mostni kridl', 'mostní křídl',
-  ], priority: 9 },
-  { element_type: 'opery_ulozne_prahy', keywords: [
-    'opera', 'opěra', 'opery', 'opěry',
-    'ulozn', 'úložn', 'ulozne prah', 'úložné prah',
-    'prah', 'sedlo',
-    'mostni oper', 'mostní opěr', 'mostni opery', 'mostní opěry',
-    'abutment', 'bearing seat',
-  ], priority: 7 },
+/**
+ * Keyword rules sourced from the single KB artifact (TASK_2b Gate 2a):
+ * dictionaries.cs.keywords[type] = { include[], priority }. Built in declaration
+ * order (object key order = YAML order) so the scoring tiebreak (first rule wins
+ * on equal score+priority) matches the legacy inline table. `reject`-family types
+ * (zdivo_obklad) are NOT activated here — Gate 3 does that. The podkladní-beton
+ * reinforced-concrete exclusion stays inline in the scoring loop (algorithm, not
+ * a keyword list). The head-noun ALGORITHM is added as a pre-layer in Gate 2b.
+ */
+function buildKeywordRulesFromKB(): KeywordRule[] {
+  const cores = ELEMENT_CLASSIFICATION_RULES.type_core as Record<string, { family: string }>;
+  const rules: KeywordRule[] = [];
+  for (const [etype, kw] of Object.entries(ELEMENT_CLASSIFICATION_RULES.dictionaries.cs.keywords)) {
+    if (cores[etype]?.family === 'reject') continue; // reject family activated in Gate 3
+    rules.push({
+      element_type: etype as StructuralElementType,
+      keywords: [...kw.include],
+      priority: kw.priority,
+    });
+  }
+  return rules;
+}
 
-  // ─── Building elements ───
-  { element_type: 'stropni_deska', keywords: [
-    'stropni', 'stropní', 'strop', 'podlah', 'podlažní', 'floor slab',
-    'перекрыт', 'плита перекрыт', 'монолитн перекрыт',
-  ], priority: 7 },
-  { element_type: 'zakladova_deska', keywords: [
-    'zakladova deska', 'základová deska', 'zakladni deska', 'základní deska',
-    'foundation slab', 'фундаментн плит', 'фундаментн деск',
-  ], priority: 9 },
-  { element_type: 'zakladovy_pas', keywords: [
-    'zakladovy pas', 'základový pás', 'zakladove pasy', 'základové pásy',
-    'zaklady', 'základy',
-    'strip found', 'ленточн фундамент',
-  ], priority: 9 },
-  { element_type: 'zakladova_patka', keywords: [
-    'patka', 'patky', 'zakladova patka', 'základová patka', 'pad found',
-    'столбчат фундамент',
-  ], priority: 8 },
-  { element_type: 'stena', keywords: [
-    'stena', 'stěna', 'zed', 'zeď', 'jadro', 'jádro', 'core wall', 'shear wall',
-    'стена', 'монолитн стен', 'ядро жесткости',
-  ], priority: 6 },
-  { element_type: 'sloup', keywords: [
-    'sloup', 'pilir', 'pilíř', 'column', 'pillar',
-    'колонн', 'столб', 'пилон',
-  ], priority: 6 },
-  { element_type: 'pruvlak', keywords: [
-    'pruvlak', 'průvlak', 'tram', 'trám', 'beam', 'girder', 'preklad', 'překlad',
-    'nosnik', 'nosník',
-    'балк', 'прогон', 'ригель здан',
-  ], priority: 6 },
-  { element_type: 'schodiste', keywords: [
-    'schodist', 'schodiště', 'schody', 'staircase', 'stairs', 'stupne', 'stupně',
-    'лестниц',
-  ], priority: 8 },
-  { element_type: 'nadrz', keywords: [
-    'nadrz', 'nádrž', 'jimka', 'jímka', 'bazen', 'bazén', 'nadoba', 'nádoba',
-    'tank', 'reservoir', 'pool', 'vodojem',
-    'резервуар', 'ёмкость', 'бассейн', 'отстойник',
-  ], priority: 8 },
-  { element_type: 'podzemni_stena', keywords: [
-    'podzemni stena', 'podzemní stěna', 'milansk', 'milánsk', 'diaphragm wall',
-    'стена в грунт', 'милан',
-  ], priority: 9 },
-  { element_type: 'pilota', keywords: [
-    'pilota', 'piloty', 'mikropilot', 'vrtana pilota', 'vrtaná pilota', 'bored pile',
-    'свая', 'буронабивн',
-  ], priority: 8 },
-  // BUG 11: new element types
-  { element_type: 'podkladni_beton', keywords: [
-    'podkladni beton', 'podkladní beton', 'podklad beton', 'podbet',
-    'lean concrete', 'blinding',
-    // OTSKP forms: "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30"
-    'podkladni a vyplnove', 'podkladní a výplňové',
-    'vyplnove vrstvy', 'výplňové vrstvy',
-    'podkl vrst',  // abbreviated OTSKP "PODKL VRSTVY Z(E)..."
-  ], priority: 7 },
-  { element_type: 'podlozkovy_blok', keywords: [
-    'podlozkovy blok', 'podložiskový blok', 'podlozisk', 'podložisk',
-    'bearing block', 'bearing pad', 'loziskovy blok', 'ložiskový blok',
-    'blok pod lozisko', 'blok pod ložisko',
-  ], priority: 9 },
-];
+const KEYWORD_RULES: KeywordRule[] = buildKeywordRulesFromKB();
 
 /**
  * Normalize Czech text for keyword matching: lowercase + strip diacritics
@@ -822,28 +716,75 @@ function normalize(text: string): string {
 
 // ─── Main API ────────────────────────────────────────────────────────────────
 
-/** Bridge element types — get priority boost in bridge context */
-const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
-  'zaklady_piliru', 'zaklady_oper', 'driky_piliru', 'rimsa', 'operne_zdi',
-  'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'kridla_opery',
-  'mostni_zavirne_zidky', 'prechodova_deska',
-]);
+/** Bridge element types — priority boost in bridge context (KB-sourced, Gate 2a).
+ *  Membership = type_core[t].bridge_boost (faithful mirror of the legacy set —
+ *  distinct from the parity `family`). */
+const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>(
+  (Object.entries(ELEMENT_CLASSIFICATION_RULES.type_core) as [StructuralElementType, { bridge_boost?: boolean }][])
+    .filter(([, c]) => c.bridge_boost === true)
+    .map(([t]) => t),
+);
 
-/** Building element types that have bridge equivalents */
-const BRIDGE_EQUIVALENT: Partial<Record<StructuralElementType, StructuralElementType>> = {
-  sloup: 'driky_piliru',              // "pilíř" in bridge context = dříky pilířů, not sloup
-  zakladova_deska: 'zaklady_piliru',  // "základy" in bridge context = základy pilířů
-  zakladovy_pas: 'zaklady_piliru',
-  zakladova_patka: 'zaklady_piliru',  // "patky" in bridge context = základy pilířů
-  stropni_deska: 'mostovkova_deska',  // "deska" in bridge context = mostovková deska
-  pruvlak: 'rigel',                   // "trám/nosník" in bridge context = příčník
-  stena: 'operne_zdi',                // "stěna" in bridge context = opěrná zeď
-};
+/** Building types that upgrade to a bridge equivalent in bridge context
+ *  (KB-sourced from bridge_remap; e.g. sloup→driky_piliru, stěna→operne_zdi). */
+const BRIDGE_EQUIVALENT =
+  ELEMENT_CLASSIFICATION_RULES.bridge_remap as Partial<Record<StructuralElementType, StructuralElementType>>;
 
 /** Classification context — optional hints to improve accuracy */
 export interface ClassificationContext {
   /** Is this element part of a bridge/mostní objekt? (SO-xxx prefix, bridge_id present) */
   is_bridge?: boolean;
+  /**
+   * Authoritative construction-object context (TASK_2b Gate 2b), classified once
+   * from the TZ and threaded per item. Takes precedence over `is_bridge` and lets
+   * the head-noun layer disambiguate a wall stem (retaining_wall) from a bridge
+   * pier (bridge). When absent, context falls back to `is_bridge`.
+   */
+  construction_context?: ConstructionContext;
+}
+
+/** Resolve the effective construction context: explicit construction_context is
+ *  authoritative; else fall back to the legacy is_bridge flag. (No name-based
+ *  derivation in Gate 2b — only explicit signals drive context.)
+ *
+ *  LIVE-PATH NOTE (TASK_2b Gate 2b): every live caller — the orchestrator
+ *  (planner-orchestrator.ts: `input.is_bridge ? {is_bridge:true} : undefined`)
+ *  and the frontend (useCalculator: is_bridge derived from an SO-xxx bridge_id)
+ *  — supplies only `is_bridge`. The Gate-2b head-noun rules branch solely on
+ *  bridge-vs-not (a dřík is a pier in a bridge, a wall stem otherwise), so
+ *  'retaining_wall' and 'building' are currently BEHAVIORALLY IDENTICAL (both
+ *  non-bridge → wall). The bridge-vs-not outcomes (#73/#74) are therefore fully
+ *  reachable live via is_bridge; the explicit 3-way construction_context is
+ *  test-only and inert for now. When a future rule must distinguish
+ *  retaining_wall from building, thread an object-level type (the backend parser
+ *  already derives 'retaining_wall' in services/parser.js — object-metadata, NOT
+ *  name-based) through PlannerInput → here. */
+function resolveConstructionContext(context?: ClassificationContext): ConstructionContext | undefined {
+  if (context?.construction_context) return context.construction_context;
+  if (context?.is_bridge) return 'bridge';
+  return undefined;
+}
+
+/** Coarse parity family for an engine type, from the KB roll-up (Gate 3 candidates). */
+function familyOf(elementType: string): string | undefined {
+  return (ELEMENT_CLASSIFICATION_RULES.type_core as Record<string, { family?: string }>)[elementType]?.family;
+}
+
+/**
+ * Explicit REJECT result (TASK_2b Gate 3): "not a concrete structural element".
+ * Distinct from the residual 'other' via is_concrete_element=false + a reason, so
+ * the orchestrator can skip rebar/formwork instead of fabricating them. element_type
+ * stays 'other' so downstream type-driven code keeps a valid (zero-ish) profile.
+ */
+function rejectProfile(reason: string, confidence = 0.9): ElementProfile {
+  return {
+    element_type: 'other',
+    confidence,
+    ...ELEMENT_CATALOG.other,
+    classification_source: 'keywords',
+    is_concrete_element: false,
+    reject_reason: reason,
+  };
 }
 
 /**
@@ -855,7 +796,8 @@ export interface ClassificationContext {
  */
 export function classifyElement(name: string, context?: ClassificationContext): ElementProfile {
   const normalized = normalize(name);
-  const isBridge = context?.is_bridge ?? false;
+  const constructionContext = resolveConstructionContext(context);
+  const isBridge = constructionContext === 'bridge';
 
   // ─── Early-exit rules: special materials/non-structural ───
   // PODKLADNÍ/VÝPLŇOVÉ = plain concrete → podkladni_beton (unless reinforced)
@@ -866,21 +808,21 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     }
     return { element_type: 'podkladni_beton', confidence: 0.95, ...ELEMENT_CATALOG.podkladni_beton };
   }
-  // STŘÍKANÝ = shotcrete, special technology
+  // STŘÍKANÝ = shotcrete, special technology — not a standard concrete element.
   if (/strikan|stříkan|torkret|nastrik|nástřik/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('shotcrete');
   }
-  // IZOLAČNÍ VRSTVY = insulation layers, no structural formwork
+  // IZOLAČNÍ VRSTVY = insulation layers, no structural formwork.
   if (/izolacn\s*vrst|izolační\s*vrst/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('insulation_layer');
   }
-  // ZÁLIVKA SPÁR = joint grouting, no formwork
+  // ZÁLIVKA SPÁR = joint grouting, no formwork.
   if (/zalivk\s*spar|zálivk\s*spár|zalivkov|zálivkov/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('joint_grouting');
   }
-  // MONOLITICKÁ VOZOVKA = road surface, not structural element
+  // MONOLITICKÁ VOZOVKA = road surface, not a structural element.
   if (/monolitick\S*\s*vozovk|betonov\S*\s*vozovk|betonový\s*kryt/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('road_surface');
   }
 
   // P0 BUG #1 disambiguation (2026-05-14, SO-250 audit):
@@ -934,15 +876,34 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     }
   }
 
+  // ─── Head-noun pre-layer (TASK_2b Gate 2b) ───
+  // When a governing head noun is resolved, classify on its canonical form so a
+  // modifier/tail word ("trám" of an NK, "do dříku" tail) does not decide the
+  // type. Non-head names keep the raw normalized string → zero behavior change.
+  const head = normalizeElementName(name, constructionContext);
+  const matchStr = head.headFired ? normalize(head.canonical) : normalized;
+
+  // ─── Reject (TASK_2b Gate 3): not a concrete structural element ───
+  // The head-noun layer resolves stone masonry CLADDING (lícové zdivo / obklad
+  // z lomového kamene) as head='obklad' on the tail-stripped core, so a spurious
+  // "…do dříku" tail cannot win. This is a reject, not a concrete element.
+  if (head.head === 'obklad') {
+    return rejectProfile('masonry_cladding');
+  }
+
   // ─── Keyword scoring (fallback) ───
   let bestType: StructuralElementType = 'other';
   let bestScore = 0;
   let bestPriority = 0;
+  let bestBasePriority = 0;
+  let runnerType: StructuralElementType = 'other';
+  let runnerScore = 0;
+  let runnerBasePriority = 0;
 
   for (const rule of KEYWORD_RULES) {
     let matchCount = 0;
     for (const kw of rule.keywords) {
-      if (normalized.includes(normalize(kw))) {
+      if (matchStr.includes(normalize(kw))) {
         matchCount++;
       }
     }
@@ -964,9 +925,17 @@ export function classifyElement(name: string, context?: ClassificationContext): 
       const contextBoost = isBridge && BRIDGE_ELEMENT_TYPES.has(rule.element_type) ? 5 : 0;
       const score = matchCount * 10 + rule.priority + contextBoost;
       if (score > bestScore || (score === bestScore && (rule.priority + contextBoost) > bestPriority)) {
+        runnerType = bestType;
+        runnerScore = bestScore;
+        runnerBasePriority = bestBasePriority;
         bestScore = score;
         bestType = rule.element_type;
         bestPriority = rule.priority + contextBoost;
+        bestBasePriority = rule.priority;
+      } else if (score > runnerScore && rule.element_type !== bestType) {
+        runnerType = rule.element_type;
+        runnerScore = score;
+        runnerBasePriority = rule.priority;
       }
     }
   }
@@ -976,7 +945,42 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     bestType = BRIDGE_EQUIVALENT[bestType]!;
   }
 
-  const confidence = bestType === 'other' ? 0.3 : Math.min(1.0, 0.6 + bestScore * 0.04);
+  // ─── Signal ladder (TASK_2b Gate 3): honest confidence + ranked alternatives ──
+  // Confidence reflects signal strength, deliberately tiered:
+  //   1.0  — deterministic catalog-code match (OTSKP rule). Reserved; pinned.
+  //   0.9  — confident keyword/name match. A CONSCIOUS ceiling that sits ABOVE
+  //          the fuzzy/AI tiers (URS ≈ 0.80, Perplexity ≈ 0.85, raw AI ≈ 0.70 per
+  //          the project confidence convention) because a deterministic regex on
+  //          the head-noun is more reliable than an LLM guess — yet strictly
+  //          BELOW 1.0, since a name (unlike a recognized code) can still be
+  //          wrong. Keyword classification must never impersonate a code match.
+  //   ≤0.7 — genuinely ambiguous (a close runner-up of a different type) → drop
+  //          the band AND emit ranked candidates, so the orchestrator can ask a
+  //          human instead of shipping a confidently-wrong type into rebar/price.
+  const isOther = bestType === 'other';
+  // Genuine ambiguity = a close runner-up of a DIFFERENT type AT THE SAME
+  // SPECIFICITY. The specificity guard (bestBasePriority <= runnerBasePriority)
+  // means a MORE-specific keyword winning over a generic sub-match is NOT
+  // flagged: e.g. "opěrná stěna" → operne_zdi (base prio 8) cleanly beats the
+  // generic 'stěna' → stena (base prio 6); the small score gap is specificity,
+  // not a tie. (W3 even mis-picks stena here — the engine is intentionally finer.)
+  const ambiguous =
+    !isOther &&
+    runnerType !== 'other' &&
+    runnerType !== bestType &&
+    bestScore - runnerScore <= 3 &&
+    bestBasePriority <= runnerBasePriority;
+  const confidence = isOther
+    ? 0.3
+    : ambiguous
+      ? Math.min(0.7, 0.5 + bestScore * 0.03)
+      : Math.min(0.9, 0.6 + bestScore * 0.04);
+  const candidates: ElementCandidate[] | undefined = ambiguous
+    ? [
+        { element_type: bestType, confidence, family: familyOf(bestType) },
+        { element_type: runnerType, confidence: Math.min(confidence, 0.6), family: familyOf(runnerType) },
+      ]
+    : undefined;
   const catalog = ELEMENT_CATALOG[bestType];
   const meta = extractOtskpMetadata(name);
 
@@ -985,6 +989,7 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     confidence,
     ...catalog,
     classification_source: 'keywords',
+    ...(candidates ? { candidates } : {}),
     ...(meta.concrete_class ? { concrete_class_detected: meta.concrete_class } : {}),
     ...(meta.is_prestressed !== undefined ? { is_prestressed_detected: meta.is_prestressed } : {}),
   };

@@ -80,6 +80,21 @@ const INTEGRATIONS = [
     validate: validateUcebniceMostuPour,
     render: renderUcebniceMostuPour,
   },
+  {
+    // TASK_2b — element-classification rule-DATA. Source lives in the
+    // concrete-agent KB (so the W3 Python classifier reads it natively inside
+    // the concrete-agent Docker image); the TS engine imports this generated
+    // artifact. `yamlAbs` overrides the default kb/ source dir for this one
+    // integration. The head-noun ALGORITHM is code, never in this data.
+    name: 'element-classification-rules',
+    yamlAbs: resolve(
+      REPO_ROOT,
+      'concrete-agent/packages/core-backend/app/classifiers/element_rules/element_types.yaml',
+    ),
+    sourceLabel: 'concrete-agent/packages/core-backend/app/classifiers/element_rules/element_types.yaml',
+    validate: validateElementClassification,
+    render: renderElementClassification,
+  },
 ];
 
 // ─── Index re-export ──────────────────────────────────────────────────────
@@ -169,6 +184,40 @@ function validateUcebniceMostuPour(data) {
   for (const [key, seq] of Object.entries(data.pour_sequences)) {
     if (!seq.recommended_sequence || !Array.isArray(seq.recommended_sequence)) {
       throw new Error(`pour_sequences.${key}.recommended_sequence must be array`);
+    }
+  }
+}
+
+function validateElementClassification(data) {
+  for (const key of ['version', 'type_core', 'w3_family', 'bridge_remap', 'object_type_aliases', 'dictionaries']) {
+    if (!(key in data)) throw new Error(`element_types.yaml missing top-level key: ${key}`);
+  }
+  if (!data.dictionaries.cs || !data.dictionaries.cs.keywords) {
+    throw new Error('element_types.yaml: dictionaries.cs.keywords is required');
+  }
+  // Every keyword type and every bridge_remap target must be a known concept.
+  for (const t of Object.keys(data.dictionaries.cs.keywords)) {
+    if (!(t in data.type_core)) {
+      throw new Error(`dictionaries.cs.keywords.${t} is not declared in type_core`);
+    }
+  }
+  for (const [from, to] of Object.entries(data.bridge_remap)) {
+    if (!(from in data.type_core)) throw new Error(`bridge_remap source '${from}' not in type_core`);
+    if (!(to in data.type_core)) throw new Error(`bridge_remap target '${to}' not in type_core`);
+  }
+  // Directed roll-up invariant: family(engineType) === w3_family[w3_name]. This
+  // guarantees the engine-fine→W3-coarse equivalence never crosses a family.
+  for (const [t, core] of Object.entries(data.type_core)) {
+    if (!core.w3_name) throw new Error(`type_core.${t} missing w3_name`);
+    if (!core.family) throw new Error(`type_core.${t} missing family`);
+    const wf = data.w3_family[core.w3_name];
+    if (wf === undefined) {
+      throw new Error(`type_core.${t}.w3_name='${core.w3_name}' has no w3_family entry`);
+    }
+    if (wf !== core.family) {
+      throw new Error(
+        `family mismatch for ${t}: family='${core.family}' but w3_family['${core.w3_name}']='${wf}'`,
+      );
     }
   }
 }
@@ -343,6 +392,34 @@ export const SOURCE_CITATION = ${jsonLit(data.source_citation)} as const;
 `;
 }
 
+function renderElementClassification(data) {
+  const citation = {
+    source: 'concrete-agent/packages/core-backend/app/classifiers/element_rules/element_types.yaml',
+    schema_version: data.version,
+    note:
+      'Single source of truth for element-type classification rule-DATA. The ' +
+      'head-noun ALGORITHM is code (TASK_2b Gate 2), never in this artifact. ' +
+      'The W3 Python classifier reads the YAML source directly; this generated ' +
+      'artifact keeps the TS engine in lockstep (drift-guarded by gen:knowledge:check).',
+  };
+  return `/**
+ * AUTO-GENERATED FILE — DO NOT EDIT.
+ * Source: concrete-agent/packages/core-backend/app/classifiers/element_rules/element_types.yaml
+ * Regenerate: npm run gen:knowledge
+ *
+ * Element-classification rule-DATA consumed by the TS engine. The head-noun
+ * decision is NOT here — it lives in code (TASK_2b Gate 2). The Python W3 side
+ * reads the YAML source directly; this artifact keeps the two in lockstep.
+ */
+
+export const SOURCE_CITATION = ${jsonLit(citation)} as const;
+
+export const ELEMENT_CLASSIFICATION_RULES = ${jsonLit(data)} as const;
+
+export type ElementClassificationRules = typeof ELEMENT_CLASSIFICATION_RULES;
+`;
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────
 
 function sha256(s) {
@@ -367,11 +444,14 @@ function run() {
   let skipCount = 0;
 
   for (const integration of INTEGRATIONS) {
-    const yamlPath = resolve(KB_DIR, integration.yaml);
+    // Most integrations source from kb/<name>.yaml; an integration may set
+    // `yamlAbs` to source from elsewhere in the monorepo (e.g. concrete-agent).
+    const yamlPath = integration.yamlAbs ?? resolve(KB_DIR, integration.yaml);
+    const srcLabel = integration.sourceLabel ?? integration.yaml;
     const tsPath = resolve(OUT_DIR, `${integration.name}.ts`);
 
     if (!existsSync(yamlPath)) {
-      console.warn(`⚠ ${integration.yaml} missing — skipping ${integration.name}.ts`);
+      console.warn(`⚠ ${srcLabel} missing — skipping ${integration.name}.ts`);
       skipCount++;
       continue;
     }
@@ -381,14 +461,14 @@ function run() {
     try {
       parsed = yaml.load(raw);
     } catch (err) {
-      console.error(`✖ YAML parse failed for ${integration.yaml}: ${err.message}`);
+      console.error(`✖ YAML parse failed for ${srcLabel}: ${err.message}`);
       process.exit(3);
     }
 
     try {
       integration.validate(parsed);
     } catch (err) {
-      console.error(`✖ Schema validation failed for ${integration.yaml}: ${err.message}`);
+      console.error(`✖ Schema validation failed for ${srcLabel}: ${err.message}`);
       process.exit(4);
     }
 
