@@ -18,6 +18,7 @@ import { FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import type { PourMethod, FormworkFilterResult, ConcreteConsistency } from '../calculators/lateral-pressure.js';
 import { calculateLateralPressure, filterFormworkByPressure, inferPourMethod } from '../calculators/lateral-pressure.js';
 import { ELEMENT_CLASSIFICATION_RULES } from '../kb-generated/element-classification-rules.js';
+import { normalizeElementName, type ConstructionContext } from './element-name-normalizer.js';
 
 // ─── Rebar labor-rate category (BUG A, v4.24) ────────────────────────────────
 
@@ -707,6 +708,22 @@ const BRIDGE_EQUIVALENT =
 export interface ClassificationContext {
   /** Is this element part of a bridge/mostní objekt? (SO-xxx prefix, bridge_id present) */
   is_bridge?: boolean;
+  /**
+   * Authoritative construction-object context (TASK_2b Gate 2b), classified once
+   * from the TZ and threaded per item. Takes precedence over `is_bridge` and lets
+   * the head-noun layer disambiguate a wall stem (retaining_wall) from a bridge
+   * pier (bridge). When absent, context falls back to `is_bridge`.
+   */
+  construction_context?: ConstructionContext;
+}
+
+/** Resolve the effective construction context: explicit construction_context is
+ *  authoritative; else fall back to the legacy is_bridge flag. (No name-based
+ *  derivation in Gate 2b — only explicit signals drive context.) */
+function resolveConstructionContext(context?: ClassificationContext): ConstructionContext | undefined {
+  if (context?.construction_context) return context.construction_context;
+  if (context?.is_bridge) return 'bridge';
+  return undefined;
 }
 
 /**
@@ -718,7 +735,8 @@ export interface ClassificationContext {
  */
 export function classifyElement(name: string, context?: ClassificationContext): ElementProfile {
   const normalized = normalize(name);
-  const isBridge = context?.is_bridge ?? false;
+  const constructionContext = resolveConstructionContext(context);
+  const isBridge = constructionContext === 'bridge';
 
   // ─── Early-exit rules: special materials/non-structural ───
   // PODKLADNÍ/VÝPLŇOVÉ = plain concrete → podkladni_beton (unless reinforced)
@@ -797,6 +815,13 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     }
   }
 
+  // ─── Head-noun pre-layer (TASK_2b Gate 2b) ───
+  // When a governing head noun is resolved, classify on its canonical form so a
+  // modifier/tail word ("trám" of an NK, "do dříku" tail) does not decide the
+  // type. Non-head names keep the raw normalized string → zero behavior change.
+  const head = normalizeElementName(name, constructionContext);
+  const matchStr = head.headFired ? normalize(head.canonical) : normalized;
+
   // ─── Keyword scoring (fallback) ───
   let bestType: StructuralElementType = 'other';
   let bestScore = 0;
@@ -805,7 +830,7 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   for (const rule of KEYWORD_RULES) {
     let matchCount = 0;
     for (const kw of rule.keywords) {
-      if (normalized.includes(normalize(kw))) {
+      if (matchStr.includes(normalize(kw))) {
         matchCount++;
       }
     }

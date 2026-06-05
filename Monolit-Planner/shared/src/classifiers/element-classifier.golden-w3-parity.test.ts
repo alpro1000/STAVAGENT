@@ -38,6 +38,19 @@
  */
 import { describe, it, expect } from 'vitest';
 import { classifyElement } from './element-classifier.js';
+import { ELEMENT_CLASSIFICATION_RULES as KB } from '../kb-generated/element-classification-rules.js';
+
+// ── Directed roll-up: engine-fine type → coarse parity family, and W3-coarse
+//    type → the same family (condition 1: parity at the FAMILY level — the
+//    engine may be MORE precise, never cross into a foreign family). Transitory:
+//    used only until the MCP side delegates typing to the engine.
+const familyOf = (engineType: string): string | undefined =>
+  (KB.type_core as Record<string, { family: string }>)[engineType]?.family;
+const w3Family = (w3CoarseType: string): string | undefined =>
+  (KB.w3_family as Record<string, string>)[w3CoarseType];
+/** Assert the engine output rolls up to the same family as the W3 expectation. */
+const expectW3Family = (engineType: string, w3Expected: string) =>
+  expect(familyOf(engineType)).toBe(w3Family(w3Expected));
 
 describe('W3 parity — CONTROLS (must stay green after every gate)', () => {
   it('foundation of a pier (head unambiguous)', () => {
@@ -69,24 +82,32 @@ describe('W3 parity — CONTROLS (must stay green after every gate)', () => {
   });
 });
 
-describe('W3 parity — RED targets (flip .fails → it at the owning gate)', () => {
-  // ── Gate 2 — head-noun layer ───────────────────────────────────────────────
-  it.fails('#68 [Gate2] NK head beats "trám" modifier → mostovkova_deska (now: rigel)', () => {
-    expect(classifyElement('Trámy dvoutrámové nosné konstrukce', { is_bridge: true }).element_type)
-      .toBe('mostovkova_deska');
+describe('W3 parity — GREEN at Gate 2b (head-noun + context layer)', () => {
+  it('#68 NK head beats "trám" modifier → deck family (was rigel)', () => {
+    const t = classifyElement('Trámy dvoutrámové nosné konstrukce', { is_bridge: true }).element_type;
+    expectW3Family(t, 'mostovkova_deska');           // family parity
+    expect(t).toBe('mostovkova_deska');              // engine-suite pins the fine type
   });
-  it.fails('#66 [Gate2] head noun "základ" must not fall to residual "other"', () => {
-    // Exact foundation target resolved with the head-noun layer; here we only
-    // assert it stops being the residual category.
-    expect(classifyElement('Železobetonový základ 0,56×2,75').element_type)
-      .not.toBe('other');
+  it('#66 head noun "základ" rolls up to the foundation family (was "other")', () => {
+    const t = classifyElement('Železobetonový základ 0,56×2,75').element_type;
+    expectW3Family(t, 'zaklady');                    // W3 'zaklady' → foundation
+    expect(familyOf(t)).toBe('foundation');
+    // Fine type (zaklady_piliru vs zakladovy_pas) is the engine suite's concern,
+    // NOT W3 parity — so it is intentionally not pinned here.
   });
-  it.fails('#74 [Gate2] bare "Dřík" with no bridge context defaults to wall, not pier', () => {
-    // W3 default direction: a stem with no context is a wall stem (operne_zdi),
-    // not a bridge pier. Engine currently defaults to driky_piliru.
-    expect(classifyElement('Dřík').element_type).toBe('operne_zdi');
+  it('#74 bare "Dřík" with no context defaults to the wall family, not pier', () => {
+    const t = classifyElement('Dřík').element_type;
+    expectW3Family(t, 'operna_zed');                 // W3 'operna_zed' → wall
+    expect(t).toBe('operne_zdi');
   });
+  it('#63 "Dřík konstrukce" in retaining_wall context is a wall, not a pier', () => {
+    const t = classifyElement('Dřík konstrukce', { construction_context: 'retaining_wall' }).element_type;
+    expectW3Family(t, 'operna_zed');
+    expect(t).toBe('operne_zdi');
+  });
+});
 
+describe('W3 parity — RED targets (flip .fails → it at the owning gate)', () => {
   // ── Gate 3 — reject ────────────────────────────────────────────────────────
   it.fails('#65 [Gate3] "obklad … do dříku" is cladding (reject), never a pier', () => {
     // Head is *obklad*; "do dříku" is a prepositional tail. Target = the explicit
