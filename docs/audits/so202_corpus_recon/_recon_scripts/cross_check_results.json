@@ -1,0 +1,5605 @@
+{
+  "golden_match": [
+    {
+      "code": "272325",
+      "golden": {
+        "prvek": "Základy",
+        "typ": "Základy pilířů",
+        "objem": 867.136,
+        "vyztuz": "150"
+      },
+      "found_n": 8,
+      "soupis_mnozstvi": 867.136,
+      "soupis_mj": "M3",
+      "soupis_nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "delta_pct": 0.0,
+      "concrete_class_in_name": "C30/37"
+    },
+    {
+      "code": "317325",
+      "golden": {
+        "prvek": "Římsy",
+        "typ": "Římsa",
+        "objem": 266.328,
+        "vyztuz": "113"
+      },
+      "found_n": 12,
+      "soupis_mnozstvi": 266.328,
+      "soupis_mj": "M3",
+      "soupis_nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "delta_pct": 0.0,
+      "concrete_class_in_name": "C30/37"
+    },
+    {
+      "code": "333325",
+      "golden": {
+        "prvek": "Opěry A KŘÍDLA",
+        "typ": "Opěry (bundled)",
+        "objem": 557.851,
+        "vyztuz": "115"
+      },
+      "found_n": 7,
+      "soupis_mnozstvi": 557.851,
+      "soupis_mj": "M3",
+      "soupis_nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "delta_pct": 0.0,
+      "concrete_class_in_name": "C30/37"
+    },
+    {
+      "code": "334326",
+      "golden": {
+        "prvek": "Pilíře",
+        "typ": "Dříky pilířů",
+        "objem": 361.384,
+        "vyztuz": "173"
+      },
+      "found_n": 2,
+      "soupis_mnozstvi": 361.384,
+      "soupis_mj": "M3",
+      "soupis_nazev": "MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C40/50 (B50)",
+      "delta_pct": 0.0,
+      "concrete_class_in_name": "C40/50"
+    },
+    {
+      "code": "420324",
+      "golden": {
+        "prvek": "Přechodové desky",
+        "typ": "Přechodová deska",
+        "objem": 81.9,
+        "vyztuz": "151"
+      },
+      "found_n": 2,
+      "soupis_mnozstvi": 81.9,
+      "soupis_mj": "M3",
+      "soupis_nazev": "PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30",
+      "delta_pct": 0.0,
+      "concrete_class_in_name": "C25/30"
+    },
+    {
+      "code": "422336",
+      "golden": {
+        "prvek": "NK trám předpjatá",
+        "typ": "Mostovková deska",
+        "objem": 2697.941,
+        "vyztuz": "174 měkká + 31 předp."
+      },
+      "found_n": 2,
+      "soupis_mnozstvi": 2697.941,
+      "soupis_mj": "M3",
+      "soupis_nazev": "MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET DO C40/50",
+      "delta_pct": 0.0,
+      "concrete_class_in_name": "C40/50"
+    }
+  ],
+  "concrete_items_all": [
+    {
+      "znacka": "CET_955265",
+      "nazev": "Práce zemní pro podzemní tratě síťové",
+      "mnozstvi": "48855.600000",
+      "mj": "JV",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "CET_955265",
+      "nazev": "Práce zemní pro podzemní tratě síťové",
+      "mnozstvi": "63123.600000",
+      "mj": "JV",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "CET_955265",
+      "nazev": "Práce zemní pro podzemní tratě síťové",
+      "mnozstvi": "31561.800000",
+      "mj": "JV",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "CET_955265",
+      "nazev": "Práce zemní pro podzemní tratě síťové",
+      "mnozstvi": "103074.000000",
+      "mj": "JV",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "241.946000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96616",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU",
+      "mnozstvi": "241.946000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96618",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ KOVOVÝCH",
+      "mnozstvi": "19.061000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "1211.678000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "423.820000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "11411",
+      "nazev": "ODSTRAN DLAŽEB VODNÍCH KORYT Z BETON DÍLCŮ VČET PODKLADU",
+      "mnozstvi": "1.680000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "245.510000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96616",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU",
+      "mnozstvi": "1211.678000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "9.741000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "160.239000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "2.262000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96616",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU",
+      "mnozstvi": "9.741000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "50.490000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "120.711000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "16.599000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96616",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU",
+      "mnozstvi": "50.490000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "015670",
+      "nazev": "POPLATKY ZA LIKVIDACI ODPADŮ NEBEZPEČNÝCH - 17 01 06*  KONTAMINOVANÁ STAVEBNÍ SUŤ A BETONY Z DEMOLIC",
+      "mnozstvi": "3.300000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "981247",
+      "nazev": "DEMOLICE BUDOV BETON S PODÍLEM KONSTR DO 20%, ODVOZ DO 16KM",
+      "mnozstvi": "1629.000000",
+      "mj": "M3OP",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "48.960000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272324",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C25/30",
+      "mnozstvi": "66.825000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "25.300000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "139.961000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "613.068000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "451315",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "142.960000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "85.750000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "465512",
+      "nazev": "DLAŽBY Z LOMOVÉHO KAMENE NA MC",
+      "mnozstvi": "177.901000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "12.231000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "574D68",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY MODIFIK ACL 22+, 22S TL. 70MM",
+      "mnozstvi": "165062.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E58",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 22+, 22S TL. 60MM",
+      "mnozstvi": "6634.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "582621",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM ŠEDÝCH TL 60MM DO LOŽE Z MC",
+      "mnozstvi": "2754.100000",
+      "mj": "M2",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "170.050000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "895122",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 80",
+      "mnozstvi": "52.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "911EC1",
+      "nazev": "SVODIDLO BETON, ÚROVEŇ ZADRŽ H2 VÝŠ 1,1M - DODÁVKA A MONTÁŽ",
+      "mnozstvi": "197.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "911ED1",
+      "nazev": "SVODIDLO BETON, ÚROVEŇ ZADRŽ H3 VÝŠ 1,1M - DODÁVKA A MONTÁŽ",
+      "mnozstvi": "416.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917211",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 50MM",
+      "mnozstvi": "134.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9182JR",
+      "nazev": "VTOK JÍMKY BETONOVÉ VČET DLAŽBY PROPUSTU Z TRUB DN PŘES 1600MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "2879.200000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "93531",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,09 M2",
+      "mnozstvi": "3167.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "93532",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,12 M2",
+      "mnozstvi": "10285.100000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "5.400000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "5.460000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "93531",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,09 M2",
+      "mnozstvi": "91.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "93532",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,12 M2",
+      "mnozstvi": "91.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "14.220000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "22.665000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "13.690000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "15.944000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "574D68",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY MODIFIK ACL 22+, 22S TL. 70MM",
+      "mnozstvi": "4186.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E58",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 22+, 22S TL. 60MM",
+      "mnozstvi": "8695.300000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "73.580000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "49.000000",
+      "mj": "M",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF4",
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9183E2",
+      "nazev": "PROPUSTY Z TRUB DN 800MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "27.730000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183F2",
+      "nazev": "PROPUSTY Z TRUB DN 1000MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "17.450000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183G2",
+      "nazev": "PROPUSTY Z TRUB DN 1200MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "26.660000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "706.000000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XF3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "93532",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,12 M2",
+      "mnozstvi": "7.800000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "1.584000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272324",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C25/30",
+      "mnozstvi": "6.555000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "3.400000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "317365",
+      "nazev": "VÝZTUŽ ŘÍMS Z OCELI 10505, B500B",
+      "mnozstvi": "0.374000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "27.600000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "333365",
+      "nazev": "VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B",
+      "mnozstvi": "4.140000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451311",
+      "nazev": "PODKL A VÝPLŇ VRSTVY Z PROST BET DO C8/10",
+      "mnozstvi": "6.116000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "6.769000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "14.741000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "15.630000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "20.580000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "2802.215000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "2808.800000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "2952.820000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "22.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "895112",
+      "nazev": "DRENÁŽNÍ ŠACHTICE NORMÁLNÍ Z BETON DÍLCŮ ŠN 80",
+      "mnozstvi": "6.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "29.477000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "914913",
+      "nazev": "SLOUPKY A STOJKY DZ Z OCEL TRUBEK ZABETON DEMONTÁŽ",
+      "mnozstvi": "17.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "9.880000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183E2",
+      "nazev": "PROPUSTY Z TRUB DN 800MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "30.800000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "32.000000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XF3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "93557",
+      "nazev": "ŽLABY Z DÍLCŮ Z BETONU SVĚTLÉ ŠÍŘKY DO 500MM VČET MŘÍŽÍ",
+      "mnozstvi": "170.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "243.590000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "6.624000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272324",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C25/30",
+      "mnozstvi": "19.665000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "9.600000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "317365",
+      "nazev": "VÝZTUŽ ŘÍMS Z OCELI 10505, B500B",
+      "mnozstvi": "1.056000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "76.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "333365",
+      "nazev": "VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B",
+      "mnozstvi": "11.520000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451311",
+      "nazev": "PODKL A VÝPLŇ VRSTVY Z PROST BET DO C8/10",
+      "mnozstvi": "23.504000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "12.178000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "43.860000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "24.790000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "52.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "18515.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "290.700000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "18907.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "19355.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "64.800000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "895112",
+      "nazev": "DRENÁŽNÍ ŠACHTICE NORMÁLNÍ Z BETON DÍLCŮ ŠN 80",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "55.253000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "914913",
+      "nazev": "SLOUPKY A STOJKY DZ Z OCEL TRUBEK ZABETON DEMONTÁŽ",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "84.700000",
+      "mj": "M",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF4",
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "28.740000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183E2",
+      "nazev": "PROPUSTY Z TRUB DN 800MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "25.500000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183G2",
+      "nazev": "PROPUSTY Z TRUB DN 1200MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "16.730000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "488.000000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XF3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "93532",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,12 M2",
+      "mnozstvi": "765.500000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "4.368000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "6.324000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "12.599000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "7.492000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "1.512000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "2090.300000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "107.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "2128.600000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "2177.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "30.276000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "104.100000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183C2",
+      "nazev": "PROPUSTY Z TRUB DN 500MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "8.640000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183F2",
+      "nazev": "PROPUSTY Z TRUB DN 1000MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "26.260000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "447.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "5.109000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "4.441000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "4.540000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "9.248000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "56122",
+      "nazev": "VÁLCOVANÝ BETON TL DO 100MM",
+      "mnozstvi": "149.300000",
+      "mj": "M2",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "56124",
+      "nazev": "VÁLCOVANÝ BETON TL DO 200MM",
+      "mnozstvi": "339.200000",
+      "mj": "M2",
+      "concrete_class": "C20/25",
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "174.500000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574D68",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY MODIFIK ACL 22+, 22S TL. 70MM",
+      "mnozstvi": "5233.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E58",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 22+, 22S TL. 60MM",
+      "mnozstvi": "10612.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "6.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "4.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "15.262000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "914913",
+      "nazev": "SLOUPKY A STOJKY DZ Z OCEL TRUBEK ZABETON DEMONTÁŽ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "243.000000",
+      "mj": "M",
+      "concrete_class": "C35/45",
+      "exposures": [
+        "XF4",
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "917426",
+      "nazev": "CHODNÍKOVÉ OBRUBY Z KAMENNÝCH OBRUBNÍKŮ ŠÍŘ 250MM",
+      "mnozstvi": "182.200000",
+      "mj": "M",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9183C2",
+      "nazev": "PROPUSTY Z TRUB DN 500MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "8.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "29.770000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "598.500000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XF3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "37.760000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "532.300000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E56",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 60MM",
+      "mnozstvi": "541.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "582611",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM ŠEDÝCH TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "124.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917212",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 80MM",
+      "mnozstvi": "161.200000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "1.872000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272324",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C25/30",
+      "mnozstvi": "7.200000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "2.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "15.990000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "36.289000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "13.177000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "465512",
+      "nazev": "DLAŽBY Z LOMOVÉHO KAMENE NA MC",
+      "mnozstvi": "23.239000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "4.248000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "7664.700000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "187.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E56",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 60MM",
+      "mnozstvi": "7719.800000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "582611",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM ŠEDÝCH TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "459.500000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "22.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "33.894000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "917212",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 80MM",
+      "mnozstvi": "612.700000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "311.400000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "9.210000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183E2",
+      "nazev": "PROPUSTY Z TRUB DN 800MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "17.800000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183F2",
+      "nazev": "PROPUSTY Z TRUB DN 1000MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "18.720000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "31.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A34",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11+ TL. 40MM",
+      "mnozstvi": "869.700000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "903.500000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E66",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 70MM",
+      "mnozstvi": "937.700000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "8.071000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "8.777000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "5.090000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "9.024000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "5535.400000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "141.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "5655.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "5790.700000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89721",
+      "nazev": "VPUSŤ KANALIZAČNÍ HORSKÁ KOMPLETNÍ MONOLITICKÁ BETONOVÁ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "38.752000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "10.020000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183E2",
+      "nazev": "PROPUSTY Z TRUB DN 800MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "8.800000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183G2",
+      "nazev": "PROPUSTY Z TRUB DN 1200MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "24.100000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "701.000000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XF3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "0.980000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "2.110000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "2.470000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "465922",
+      "nazev": "DLAŽBY Z BETONOVÝCH DLAŽDIC NA MC",
+      "mnozstvi": "6.400000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.290000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "523.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "534.800000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "548.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89952A",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C20/25",
+      "mnozstvi": "7.340000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9182D",
+      "nazev": "VTOKOVÉ JÍMKY BETONOVÉ VČETNĚ DLAŽBY PROPUSTU Z TRUB DN DO 600MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "11.540000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "33.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "6.523000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "6.719000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "4.480000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "8.432000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "1790.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "114.600000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "1824.500000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "1862.800000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "28.047000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "19.620000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183F2",
+      "nazev": "PROPUSTY Z TRUB DN 1000MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "18.900000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "350.000000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XF3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "1.760000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "3.920000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "431325",
+      "nazev": "SCHODIŠŤ KONSTR ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "9.920000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "2.324000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "3.409000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "1.711000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "1.872000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "582611",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM ŠEDÝCH TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "1100.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917212",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 80MM",
+      "mnozstvi": "758.200000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "16.760000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "1019.300000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C66",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 70MM",
+      "mnozstvi": "1040.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "416.700000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C66",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 70MM",
+      "mnozstvi": "428.500000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "296.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C66",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 70MM",
+      "mnozstvi": "303.600000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "239.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C66",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 70MM",
+      "mnozstvi": "246.400000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "294.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "304.300000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A55",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 16 TL. 60MM",
+      "mnozstvi": "370.600000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "1.824000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "2.834000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "1.610000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "1.152000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "12.980000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "820.800000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "837.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "855.900000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "1.970000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "2.060000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "2.090000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "1.960000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "1.150000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "574D68",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY MODIFIK ACL 22+, 22S TL. 70MM",
+      "mnozstvi": "1086.400000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E58",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 22+, 22S TL. 60MM",
+      "mnozstvi": "2255.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899524",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "8.340000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "13.360000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "1538.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "1565.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "911DC9R",
+      "nazev": "SVODIDLO BETON, ÚROVEŇ ZADRŽ H2 VÝŠ 1,0M - NÁJEM",
+      "mnozstvi": "1.000000",
+      "mj": "kpl",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "911DCR",
+      "nazev": "SVODIDLO BETON, ÚROVEŇ ZADRŽ H2 VÝŠ 1,0M - MONTÁŽ A DEMONTÁŽ S PŘESUNEM",
+      "mnozstvi": "1020.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "55.950000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "4.602000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "1317.057000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "293.277000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "11352",
+      "nazev": "ODSTRANĚNÍ CHODNÍKOVÝCH A SILNIČNÍCH OBRUBNÍKŮ BETONOVÝCH",
+      "mnozstvi": "97.240000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "4.677000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21341",
+      "nazev": "DRENÁŽNÍ VRSTVY Z PLASTBETONU (PLASTMALTY)",
+      "mnozstvi": "1.595000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "867.136000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "266.328000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "557.851000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "334326",
+      "nazev": "MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C40/50 (B50)",
+      "mnozstvi": "361.384000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": []
+    },
+    {
+      "znacka": "420324",
+      "nazev": "PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30",
+      "mnozstvi": "81.900000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "422336",
+      "nazev": "MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET DO C40/50",
+      "mnozstvi": "2697.941000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": []
+    },
+    {
+      "znacka": "42838",
+      "nazev": "KLOUB ZE ŽELEZOBETONU VČET VÝZTUŽE",
+      "mnozstvi": "46.800000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "20.088000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "120.481000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451313",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C16/20",
+      "mnozstvi": "35.552000",
+      "mj": "M3",
+      "concrete_class": "C16/20",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "87.040000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "160.019000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "12.733000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "267.840000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "78383",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S4 (OS-C)",
+      "mnozstvi": "146.779000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917212",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 80MM",
+      "mnozstvi": "74.980000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "36.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917225R",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 250MM",
+      "mnozstvi": "104.615000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "59.100000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "93639",
+      "nazev": "ZAÚSTĚNÍ SKLUZŮ (VČET DLAŽBY Z LOM KAMENE)",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "291.600000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "219.207000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "3.872000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21341",
+      "nazev": "DRENÁŽNÍ VRSTVY Z PLASTBETONU (PLASTMALTY)",
+      "mnozstvi": "1.650000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "1070.224000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "304.130000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "674.230000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "333326",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50",
+      "mnozstvi": "2.304000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": []
+    },
+    {
+      "znacka": "334326",
+      "nazev": "MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C40/50 (B50)",
+      "mnozstvi": "405.434000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": []
+    },
+    {
+      "znacka": "420324",
+      "nazev": "PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30",
+      "mnozstvi": "76.050000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "422336",
+      "nazev": "MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET DO C40/50",
+      "mnozstvi": "3321.904000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": []
+    },
+    {
+      "znacka": "42838",
+      "nazev": "KLOUB ZE ŽELEZOBETONU VČET VÝZTUŽE",
+      "mnozstvi": "46.800000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "18.549000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "210.205000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "139.373000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": []
+    },
+    {
+      "znacka": "46131",
+      "nazev": "PATKY Z PROSTÉHO BETONU",
+      "mnozstvi": "21.374000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "25.052000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "360.720000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "78383",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S4 (OS-C)",
+      "mnozstvi": "188.280000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917212",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 80MM",
+      "mnozstvi": "174.300000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "36.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "7.758000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "349.893000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XA1",
+        "XD1"
+      ]
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "22.562000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XC4",
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "333326",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50",
+      "mnozstvi": "600.243000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": [
+        "XC4",
+        "XF4",
+        "XD3",
+        "XC4",
+        "XF2",
+        "XD1"
+      ]
+    },
+    {
+      "znacka": "421326",
+      "nazev": "MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C40/50",
+      "mnozstvi": "375.161000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": [
+        "XC4",
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "7.452000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XC4",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451311",
+      "nazev": "PODKL A VÝPLŇ VRSTVY Z PROST BET DO C8/10",
+      "mnozstvi": "64.599000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "554.199000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "52.862000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "12.153000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "631384",
+      "nazev": "MAZANINA ZE ŽELEZOBETONU DO C25/30 VČET VÝZTUŽE",
+      "mnozstvi": "27.815000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XC2",
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "30.324000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917223",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 100MM",
+      "mnozstvi": "142.912000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PRÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍR DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "132.080000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "9.530000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "118.080000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "1.794000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "421127",
+      "nazev": "MOSTNÍ NOSNÉ DESKOVÉ KONSTR Z DÍLCŮ ŽELBET DO C50/60 (B60)",
+      "mnozstvi": "318.669000",
+      "mj": "M3",
+      "concrete_class": "C50/60",
+      "exposures": []
+    },
+    {
+      "znacka": "421326",
+      "nazev": "MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C40/50",
+      "mnozstvi": "55.250000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": []
+    },
+    {
+      "znacka": "431125",
+      "nazev": "SCHODIŠŤ KONSTR Z DÍLCŮ ŽELEZOBETON DO C30/37 (B37)",
+      "mnozstvi": "11.016000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "567.622000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "105.685000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "4.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917212",
+      "nazev": "ZÁHONOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 80MM",
+      "mnozstvi": "91.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "9.634000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "15.919000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "2712.960000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XC2",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "261814",
+      "nazev": "VRTY PRO KOTVENÍ A INJEKTÁŽ TŘ III A IV NA POVRCHU D DO 35MM",
+      "mnozstvi": "19.200000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "27232",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU",
+      "mnozstvi": "699.000000",
+      "mj": "M3",
+      "concrete_class": "C35/45",
+      "exposures": [
+        "XC2",
+        "XA2"
+      ]
+    },
+    {
+      "znacka": "285394",
+      "nazev": "DODATEČNÉ KOTVENÍ VLEPENÍM BETONÁŘSKÉ VÝZTUŽE D DO 25MM DO VRTŮ",
+      "mnozstvi": "64.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "311325",
+      "nazev": "ZDI A STĚNY PODP A VOL ZE ŽELEZOBET DO C30/37",
+      "mnozstvi": "2.930000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XC4",
+        "XD3",
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "33.410000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XC4",
+        "XF4",
+        "XD3"
+      ]
+    },
+    {
+      "znacka": "333326",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50",
+      "mnozstvi": "1002.420000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": [
+        "XC4",
+        "XF2",
+        "XD2",
+        "XC4",
+        "XF2",
+        "XD2"
+      ]
+    },
+    {
+      "znacka": "421326",
+      "nazev": "MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C40/50",
+      "mnozstvi": "2541.200000",
+      "mj": "M3",
+      "concrete_class": "C40/50",
+      "exposures": [
+        "XC4",
+        "XD2",
+        "XF2"
+      ]
+    },
+    {
+      "znacka": "451311",
+      "nazev": "PODKL A VÝPLŇ VRSTVY Z PROST BET DO C8/10",
+      "mnozstvi": "176.700000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.180000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "451315",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.900000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "22.990000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "451322",
+      "nazev": "PODKL A VÝPLŇ VRSTVY ZE ŽELEZOBET DO C12/15",
+      "mnozstvi": "99.528000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451366",
+      "nazev": "VÝZTUŽ PODKL VRSTEV Z KARI-SÍTÍ",
+      "mnozstvi": "3.388000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "457314",
+      "nazev": "VYROVNÁVACÍ A SPÁDOVÝ PROSTÝ BETON C25/30",
+      "mnozstvi": "174.900000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "129.600000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "78383",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S4 (OS-C)",
+      "mnozstvi": "170.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89711",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ MONOLIT BETON",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917223",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 100MM",
+      "mnozstvi": "188.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "16.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "16.000000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "291.946000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "33312",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA Z DÍLCŮ ŽELEZOBETON",
+      "mnozstvi": "50.000000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "91913",
+      "nazev": "ŘEZÁNÍ BETONOVÝCH KONSTRUKCÍ",
+      "mnozstvi": "12.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "16.000000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96616",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU",
+      "mnozstvi": "291.946000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96618",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ KOVOVÝCH",
+      "mnozstvi": "19.061000",
+      "mj": "T",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "17511",
+      "nazev": "OBSYP POTRUBÍ A OBJEKTŮ SE ZHUTNĚNÍM",
+      "mnozstvi": "708.069000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "21331",
+      "nazev": "DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)",
+      "mnozstvi": "0.535000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "148.700000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "333325",
+      "nazev": "MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37",
+      "mnozstvi": "72.700000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "334325",
+      "nazev": "MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)",
+      "mnozstvi": "146.300000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "4.131000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "30.424000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "13.425000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "461315",
+      "nazev": "PATKY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "4.620000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "582611",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM ŠEDÝCH TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "20.100000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "917223",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 100MM",
+      "mnozstvi": "46.000000",
+      "mj": "M",
+      "concrete_class": "C35/45",
+      "exposures": [
+        "XF4",
+        "XF4",
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "49.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272324",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C25/30",
+      "mnozstvi": "837.200000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3",
+        "XA2",
+        "XC2"
+      ]
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "172.743000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XD3",
+        "XC4"
+      ]
+    },
+    {
+      "znacka": "327325",
+      "nazev": "ZDI OPĚRNÉ, ZÁRUBNÍ, NÁBŘEŽNÍ ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)",
+      "mnozstvi": "805.500000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4",
+        "XD3",
+        "XC4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "231.840000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "251.355000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF2",
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "78382",
+      "nazev": "NÁTĚRY BETON KONSTR TYP S2 (OS-B)",
+      "mnozstvi": "644.563000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "11.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "12.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897626",
+      "nazev": "VPUSŤ ŠTĚRBINOVÝCH ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "7.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897726",
+      "nazev": "ČISTÍCÍ KUSY ŠTĚRBIN ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "150.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "116.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "26.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "4.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89415R",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "47.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897626",
+      "nazev": "VPUSŤ ŠTĚRBINOVÝCH ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "14.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897726",
+      "nazev": "ČISTÍCÍ KUSY ŠTĚRBIN ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "7.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "402.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "131.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "8.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89414R",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "11.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897626",
+      "nazev": "VPUSŤ ŠTĚRBINOVÝCH ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "6.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897726",
+      "nazev": "ČISTÍCÍ KUSY ŠTĚRBIN ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "116.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "152.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "42.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "16.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89415R",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "86.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897626",
+      "nazev": "VPUSŤ ŠTĚRBINOVÝCH ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897726",
+      "nazev": "ČISTÍCÍ KUSY ŠTĚRBIN ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "160.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "132.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "23.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89415R",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "896145",
+      "nazev": "SPADIŠTĚ KANALIZAČ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "48.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897626",
+      "nazev": "VPUSŤ ŠTĚRBINOVÝCH ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897726",
+      "nazev": "ČISTÍCÍ KUSY ŠTĚRBIN ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "168.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "17.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "10.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "32.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89415R",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "42.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897626",
+      "nazev": "VPUSŤ ŠTĚRBINOVÝCH ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "73.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "897726",
+      "nazev": "ČISTÍCÍ KUSY ŠTĚRBIN ŽLABŮ Z BETON DÍLCŮ SV. ŠÍŘKY DO 400MM",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "2930.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "935111",
+      "nazev": "ŠTĚRBINOVÉ ŽLABY Z BETONOVÝCH DÍLCŮ ŠÍŘ DO 400MM VÝŠ DO 500MM BEZ OBRUBY",
+      "mnozstvi": "181.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "93638R",
+      "nazev": "DROBNÉ DOPLŇK KONSTR BETON MONOLIT DO C30/37 S VÝZTUŽÍ",
+      "mnozstvi": "1.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "2.721000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.140000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "81445",
+      "nazev": "POTRUBÍ Z TRUB BETONOVÝCH DN DO 300MM",
+      "mnozstvi": "10.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "895113",
+      "nazev": "DRENÁŽNÍ ŠACHTICE NORMÁLNÍ Z BETON DÍLCŮ ŠN 100",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "0.500000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89952A",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C20/25",
+      "mnozstvi": "2.147000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.420000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "285362",
+      "nazev": "KOTVENÍ NA POVRCHU Z BETONÁŘSKÉ VÝZTUŽE DL. DO 4M",
+      "mnozstvi": "98.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "6.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9181CA",
+      "nazev": "ČELA PROPUSTU Z TRUB DN DO 500MM Z BETONU DO C 20/25",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "12.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "8.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "896146",
+      "nazev": "SPADIŠTĚ KANALIZAČ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "4.000000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "896157",
+      "nazev": "SPADIŠTĚ KANALIZAČ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894145",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 300MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894146",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 400MM",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894157",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 500MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "894158",
+      "nazev": "ŠACHTY KANALIZAČNÍ Z BETON DÍLCŮ NA POTRUBÍ DN DO 600MM",
+      "mnozstvi": "6.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "896158",
+      "nazev": "SPADIŠTĚ KANALIZAČ Z BETON DÍLCŮ NA POTRUBÍ DN DO 600MM",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "285362",
+      "nazev": "KOTVENÍ NA POVRCHU Z BETONÁŘSKÉ VÝZTUŽE DL. DO 4M",
+      "mnozstvi": "158.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "893315",
+      "nazev": "ŠACHTY ARMATURNÍ Z PROST BETONU PŮDORYS PLOCHY DO 5,5M2",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "386385",
+      "nazev": "KOMPLETNÍ KONSTRUKCE JÍMEK ZE ŽELEZOBETONU C30/37 VČETNĚ VÝZTUŽE",
+      "mnozstvi": "26.790000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.469000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.490000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89952A",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C20/25",
+      "mnozstvi": "3.298000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "6.700000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "386385",
+      "nazev": "KOMPLETNÍ KONSTRUKCE JÍMEK ZE ŽELEZOBETONU C30/37 VČETNĚ VÝZTUŽE",
+      "mnozstvi": "29.900000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.420000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.490000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89952A",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C20/25",
+      "mnozstvi": "5.603000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "6.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "386385",
+      "nazev": "KOMPLETNÍ KONSTRUKCE JÍMEK ZE ŽELEZOBETONU C30/37 VČETNĚ VÝZTUŽE",
+      "mnozstvi": "25.520000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.560000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.490000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "7679R",
+      "nazev": "OPLOCENÍ Z VYSOKOPEVNOSTNÍHO PLETIVA",
+      "mnozstvi": "183.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89952A",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C20/25",
+      "mnozstvi": "3.192000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "8.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "386385",
+      "nazev": "KOMPLETNÍ KONSTRUKCE JÍMEK ZE ŽELEZOBETONU C30/37 VČETNĚ VÝZTUŽE",
+      "mnozstvi": "27.290000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.490000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.490000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "7679R",
+      "nazev": "OPLOCENÍ Z VYSOKOPEVNOSTNÍHO PLETIVA",
+      "mnozstvi": "274.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89952A",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C20/25",
+      "mnozstvi": "3.192000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "935212",
+      "nazev": "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM",
+      "mnozstvi": "7.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.420000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.756000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "895122",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 80",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "1.680000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "2.268000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "895122",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 80",
+      "mnozstvi": "12.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "12.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "1.260000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "1.512000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "895122",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 80",
+      "mnozstvi": "9.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "9.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.420000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "3.780000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "895122",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 80",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "3.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.280000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.756000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "895122",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 80",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89536",
+      "nazev": "DRENÁŽNÍ VÝUSŤ Z PROST BETONU",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89914",
+      "nazev": "ŠACHTOVÉ BETONOVÉ SKRUŽE SAMOSTATNÉ",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.140000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "895123",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 100",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.140000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "895123",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 100",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.140000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "895123",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 100",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "22.133000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "461314",
+      "nazev": "PATKY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.560000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XF1"
+      ]
+    },
+    {
+      "znacka": "81445",
+      "nazev": "POTRUBÍ Z TRUB BETONOVÝCH DN DO 300MM",
+      "mnozstvi": "83.300000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "895123",
+      "nazev": "DRENÁŽNÍ ŠACHTICE KONTROLNÍ Z BETON DÍLCŮ ŠK 100",
+      "mnozstvi": "4.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272314",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "21.102000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "79.863000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "272314",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "1.414000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "272314",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "2.952000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "574A04",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11+",
+      "mnozstvi": "1.278000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574D08",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY MODIFIK ACL 22+, 22S",
+      "mnozstvi": "2.237000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E06",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S",
+      "mnozstvi": "3.834000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "014101R",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "0.180000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "2.835000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "466921",
+      "nazev": "DLAŽBY VEGETAČNÍ Z BETONOVÝCH DLAŽDIC NA SUCHO",
+      "mnozstvi": "24.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "702720",
+      "nazev": "ODDĚLENÍ KABELŮ VE VÝKOPU BETONOVOU DESKOU",
+      "mnozstvi": "50.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "8981A",
+      "nazev": "KABEL KOMORY Z BETONOVÝCH DÍLCŮ DO 1,5M3",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "1.757000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "94.507000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "8981A",
+      "nazev": "KABEL KOMORY Z BETONOVÝCH DÍLCŮ DO 1,5M3",
+      "mnozstvi": "7.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899574",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ ZE ŽELEZOBETONU DO C25/30 VČETNĚ VÝZTUŽE",
+      "mnozstvi": "159.228000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": [
+        "XA1"
+      ]
+    },
+    {
+      "znacka": "014101R",
+      "nazev": "POPLATKY ZA SKLÁDKU",
+      "mnozstvi": "1.536000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "2.160000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "466921",
+      "nazev": "DLAŽBY VEGETAČNÍ Z BETONOVÝCH DLAŽDIC NA SUCHO",
+      "mnozstvi": "1.440000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96716",
+      "nazev": "VYBOURÁNÍ ČÁSTÍ KONSTRUKCÍ ŽELEZOBET",
+      "mnozstvi": "1.536000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "1.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "4.320000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "466921",
+      "nazev": "DLAŽBY VEGETAČNÍ Z BETONOVÝCH DLAŽDIC NA SUCHO",
+      "mnozstvi": "1.920000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "123.281000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342125",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL Z DÍLCŮ ŽELBET DO C30/37",
+      "mnozstvi": "25.688000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342325",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL ZE ŽELBET DO C30/37",
+      "mnozstvi": "17.036000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "347125",
+      "nazev": "STĚNY PROTIHLUKOVÉ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "1333.400000",
+      "mj": "M2",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "0.778000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "23.880000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "582614",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM BAREV TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "348.600000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "83.932000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342125",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL Z DÍLCŮ ŽELBET DO C30/37",
+      "mnozstvi": "26.376000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "347125",
+      "nazev": "STĚNY PROTIHLUKOVÉ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "720.000000",
+      "mj": "M2",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "582614",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM BAREV TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "273.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "170.408000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342125",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL Z DÍLCŮ ŽELBET DO C30/37",
+      "mnozstvi": "42.144000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342325",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL ZE ŽELBET DO C30/37",
+      "mnozstvi": "2.664000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "347125",
+      "nazev": "STĚNY PROTIHLUKOVÉ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "1463.100000",
+      "mj": "M2",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "5.530000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "6.720000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "582614",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM BAREV TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "624.400000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "160.517000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342125",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL Z DÍLCŮ ŽELBET DO C30/37",
+      "mnozstvi": "26.880000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "347125",
+      "nazev": "STĚNY PROTIHLUKOVÉ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "1270.400000",
+      "mj": "M2",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "582614",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM BAREV TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "392.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "174.082000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342125",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL Z DÍLCŮ ŽELBET DO C30/37",
+      "mnozstvi": "28.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "347125",
+      "nazev": "STĚNY PROTIHLUKOVÉ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "1140.000000",
+      "mj": "M2",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "0.302000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.980000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "582614",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM BAREV TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "420.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "029725",
+      "nazev": "OSTAT POŽAD - GEOT MONIT V PODZ - ZAŘ NA MĚŘ HYDROST TLAKU",
+      "mnozstvi": "4.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "96615",
+      "nazev": "BOURÁNÍ KONSTRUKCÍ Z PROSTÉHO BETONU",
+      "mnozstvi": "7.330000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "7679R",
+      "nazev": "OPLOCENÍ Z VYSOKOPEVNOSTNÍHO PLETIVA",
+      "mnozstvi": "12426.000000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "318125",
+      "nazev": "ZDI ODDĚLOVACÍ A OHRADNÍ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "15.996000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "33812",
+      "nazev": "SLOUPKY OHRADNÍ A PLOTOVÉ Z DÍLCŮ ŽELEZOBETON",
+      "mnozstvi": "11.606000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "451312",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15",
+      "mnozstvi": "13.090000",
+      "mj": "M3",
+      "concrete_class": "C12/15",
+      "exposures": []
+    },
+    {
+      "znacka": "451315",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "0.680000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "461125",
+      "nazev": "PATKY Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "57.596000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451313",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C16/20",
+      "mnozstvi": "6.100000",
+      "mj": "M3",
+      "concrete_class": "C16/20",
+      "exposures": []
+    },
+    {
+      "znacka": "56330",
+      "nazev": "VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI",
+      "mnozstvi": "502.500000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574A34",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11+ TL. 40MM",
+      "mnozstvi": "882.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C56",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16+, 16S TL. 60MM",
+      "mnozstvi": "882.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E46",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 50MM",
+      "mnozstvi": "882.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "581151",
+      "nazev": "CEMENTOBETONOVÝ KRYT JEDNOVRSTVÝ NEVYZTUŽENÝ TŘ.L TL. DO 250MM",
+      "mnozstvi": "180.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "582611",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM ŠEDÝCH TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "6.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "899523",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C16/20",
+      "mnozstvi": "7.200000",
+      "mj": "M3",
+      "concrete_class": "C16/20",
+      "exposures": []
+    },
+    {
+      "znacka": "917224",
+      "nazev": "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM",
+      "mnozstvi": "228.300000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "91723",
+      "nazev": "OBRUBY Z BETON KRAJNÍKŮ",
+      "mnozstvi": "51.400000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9183D2",
+      "nazev": "PROPUSTY Z TRUB DN 600MM ŽELEZOBETONOVÝCH",
+      "mnozstvi": "14.500000",
+      "mj": "M",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "9.45",
+      "nazev": "BETON C30/37FX4 - KRYT ZÁKLADŮ STOŽÁRU",
+      "mnozstvi": "0.030000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "9.46",
+      "nazev": "BETON C25/30FX2 K OBETONOVÁNÍ SLOUPU OSVĚTLENÍ",
+      "mnozstvi": "0.560000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "40.000000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451313",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C16/20",
+      "mnozstvi": "5.000000",
+      "mj": "M3",
+      "concrete_class": "C16/20",
+      "exposures": []
+    },
+    {
+      "znacka": "272313",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C16/20",
+      "mnozstvi": "0.900000",
+      "mj": "M3",
+      "concrete_class": "C16/20",
+      "exposures": []
+    },
+    {
+      "znacka": "272325",
+      "nazev": "ZÁKLADY ZE ŽELEZOBETONU DO C30/37",
+      "mnozstvi": "28.100000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "311325",
+      "nazev": "ZDI A STĚNY PODP A VOL ZE ŽELEZOBET DO C30/37",
+      "mnozstvi": "5.500000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "31811",
+      "nazev": "ZDI ODDĚLOVACÍ A OHRADNÍ Z DÍLCŮ BETON",
+      "mnozstvi": "1.200000",
+      "mj": "M3",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "457385",
+      "nazev": "VYROVNÁVACÍ A SPÁD ŽELEZOBETON DO C30/37 VČET VÝZTUŽE",
+      "mnozstvi": "1.500000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "1.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272314",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C25/30",
+      "mnozstvi": "3.100000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "33817C",
+      "nazev": "SLOUPKY PLOTOVÉ Z DÍLCŮ KOVOVÝCH  DO BETONOVÝCH PATEK",
+      "mnozstvi": "63.000000",
+      "mj": "KS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "33817D",
+      "nazev": "VZPĚRY PLOTOVÉ Z DÍLCŮ KOVOVÝCH  DO BETONOVÝCH PATEK",
+      "mnozstvi": "20.000000",
+      "mj": "KS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "272315",
+      "nazev": "ZÁKLADY Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "40.000000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "317325",
+      "nazev": "ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)",
+      "mnozstvi": "4.000000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "45.150000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF2"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "14.080000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "574A33",
+      "nazev": "ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11 TL. 40MM",
+      "mnozstvi": "6444.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574C55",
+      "nazev": "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 16 TL. 60MM",
+      "mnozstvi": "6766.200000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "574E76",
+      "nazev": "ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 16+, 16S TL. 80MM",
+      "mnozstvi": "7088.400000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "89712",
+      "nazev": "VPUSŤ KANALIZAČNÍ ULIČNÍ KOMPLETNÍ Z BETONOVÝCH DÍLCŮ",
+      "mnozstvi": "5.000000",
+      "mj": "KUS",
+      "concrete_class": null,
+      "exposures": []
+    },
+    {
+      "znacka": "918115",
+      "nazev": "ČELA PROPUSTU Z BETONU DO C 30/37",
+      "mnozstvi": "19.200000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "93532",
+      "nazev": "ŽLABY A RIGOLY MONOLITICKÉ BETONOVÉ PRŮŘEZ 0,12 M2",
+      "mnozstvi": "322.000000",
+      "mj": "M",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "14.400000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "6.400000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "45131A",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25",
+      "mnozstvi": "7.200000",
+      "mj": "M3",
+      "concrete_class": "C20/25",
+      "exposures": [
+        "XF3"
+      ]
+    },
+    {
+      "znacka": "467315",
+      "nazev": "STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C30/37",
+      "mnozstvi": "3.840000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "914921",
+      "nazev": "SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCEL TRUBEK DO PATKY - DODÁVKA A MONTÁŽ",
+      "mnozstvi": "2.000000",
+      "mj": "KUS",
+      "concrete_class": "C30/37",
+      "exposures": [
+        "XF4"
+      ]
+    },
+    {
+      "znacka": "899525",
+      "nazev": "OBETONOVÁNÍ POTRUBÍ Z PROSTÉHO BETONU DO C30/37",
+      "mnozstvi": "26.000000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "224325",
+      "nazev": "PILOTY ZE ŽELEZOBETONU C30/37",
+      "mnozstvi": "174.082000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "342125",
+      "nazev": "STĚNY A PŘÍČKY VÝPLŇ A ODDĚL Z DÍLCŮ ŽELBET DO C30/37",
+      "mnozstvi": "28.800000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "347125",
+      "nazev": "STĚNY PROTIHLUKOVÉ Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "1140.000000",
+      "mj": "M2",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "434125",
+      "nazev": "SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37",
+      "mnozstvi": "0.302000",
+      "mj": "M3",
+      "concrete_class": "C30/37",
+      "exposures": []
+    },
+    {
+      "znacka": "451314",
+      "nazev": "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30",
+      "mnozstvi": "0.980000",
+      "mj": "M3",
+      "concrete_class": "C25/30",
+      "exposures": []
+    },
+    {
+      "znacka": "582614",
+      "nazev": "KRYTY Z BETON DLAŽDIC SE ZÁMKEM BAREV TL 60MM DO LOŽE Z KAM",
+      "mnozstvi": "420.000000",
+      "mj": "M2",
+      "concrete_class": null,
+      "exposures": []
+    }
+  ],
+  "concrete_classes_in_soupis": {
+    "C30/37": 219,
+    "C25/30": 113,
+    "C20/25": 69,
+    "C12/15": 39,
+    "C40/50": 12,
+    "C35/45": 6,
+    "C16/20": 5,
+    "C225/30": 4,
+    "C45/55": 3,
+    "C50/60": 2
+  },
+  "exposures_in_soupis": {
+    "XF4": 80,
+    "XF3": 70,
+    "XA1": 13,
+    "XC4": 12,
+    "XD3": 11,
+    "XF1": 11,
+    "XF2": 6,
+    "XC2": 4,
+    "XD2": 3,
+    "XD1": 2,
+    "XA2": 2
+  },
+  "tz_geometry_presence": {
+    "C35/45": {
+      "present_in_text": true,
+      "first_pat_hits": 2
+    },
+    "XF2": {
+      "present_in_text": true,
+      "first_pat_hits": 1
+    },
+    "XD1": {
+      "present_in_text": true,
+      "first_pat_hits": 2
+    },
+    "XC4": {
+      "present_in_text": true,
+      "first_pat_hits": 5
+    },
+    "span 32.0": {
+      "present_in_text": true,
+      "first_pat_hits": 4
+    },
+    "span 44.5": {
+      "present_in_text": true,
+      "first_pat_hits": 3
+    },
+    "span_pattern 32+44.5+32": {
+      "present_in_text": true,
+      "first_pat_hits": 2
+    },
+    "konstr. výška 2.40": {
+      "present_in_text": true,
+      "first_pat_hits": 1
+    },
+    "šířka NK 13.65": {
+      "present_in_text": true,
+      "first_pat_hits": 5
+    },
+    "dvoutrám": {
+      "present_in_text": true,
+      "first_pat_hits": 4
+    },
+    "Y1860": {
+      "present_in_text": true,
+      "first_pat_hits": 2
+    },
+    "22-lanové / 22 lan": {
+      "present_in_text": true,
+      "first_pat_hits": 2
+    },
+    "150 mm² / PL2": {
+      "present_in_text": true,
+      "first_pat_hits": 4
+    },
+    "pevná skruž": {
+      "present_in_text": false,
+      "first_pat_hits": 0
+    },
+    "3 etapy": {
+      "present_in_text": false,
+      "first_pat_hits": 0
+    },
+    "předpjat": {
+      "present_in_text": true,
+      "first_pat_hits": 3
+    }
+  },
+  "notes": [],
+  "soupis_total_polozka": 3373,
+  "tz_total_chars": 64448
+}
