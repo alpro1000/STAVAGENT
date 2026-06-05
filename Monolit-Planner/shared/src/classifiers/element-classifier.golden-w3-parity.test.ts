@@ -159,12 +159,22 @@ describe('W3 parity — GREEN at Gate 3 (reject + honest signal ladder)', () => 
     expect(r.confidence).toBe(1.0);
   });
   it('a genuinely ambiguous bare name → low confidence + ranked candidates', () => {
-    // "Opěrná stěna" ties operne_zdi (wall) against stena (wall) within the
-    // priority margin → the engine flags it instead of a confident single type.
-    const r = classifyElement('Opěrná stěna levá');
+    // A SAME-SPECIFICITY tie (stena vs pruvlak, both priority 6, equal hits) is
+    // genuinely ambiguous → flagged with ranked candidates. Contrast with
+    // "Opěrná stěna" (below), where the more-specific operne_zdi cleanly wins.
+    const r = classifyElement('Deska trám stěna');
     expect(r.candidates?.length).toBeGreaterThanOrEqual(2);
     expect(r.candidates![0].element_type).toBe(r.element_type);
     expect(r.confidence).toBeLessThanOrEqual(0.7);
+  });
+  it('"Opěrná stěna" is a CLEAN operne_zdi win, not under-confident (specificity guard)', () => {
+    // operne_zdi (specific 'opěrn', priority 8) beats the generic 'stěna' → stena
+    // (priority 6). A specificity win is NOT a tie — no candidates, full 0.9. The
+    // engine is intentionally finer here than W3 (which mis-picks stena).
+    const r = classifyElement('Opěrná stěna levá');
+    expect(r.element_type).toBe('operne_zdi');
+    expect(r.confidence).toBe(0.9);
+    expect(r.candidates).toBeUndefined();
   });
   it('a reject flows through planElement gracefully — no rebar, no cost, no crash', () => {
     const plan = planElement({

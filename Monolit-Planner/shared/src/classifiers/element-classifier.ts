@@ -895,8 +895,10 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   let bestType: StructuralElementType = 'other';
   let bestScore = 0;
   let bestPriority = 0;
+  let bestBasePriority = 0;
   let runnerType: StructuralElementType = 'other';
   let runnerScore = 0;
+  let runnerBasePriority = 0;
 
   for (const rule of KEYWORD_RULES) {
     let matchCount = 0;
@@ -925,12 +927,15 @@ export function classifyElement(name: string, context?: ClassificationContext): 
       if (score > bestScore || (score === bestScore && (rule.priority + contextBoost) > bestPriority)) {
         runnerType = bestType;
         runnerScore = bestScore;
+        runnerBasePriority = bestBasePriority;
         bestScore = score;
         bestType = rule.element_type;
         bestPriority = rule.priority + contextBoost;
+        bestBasePriority = rule.priority;
       } else if (score > runnerScore && rule.element_type !== bestType) {
         runnerType = rule.element_type;
         runnerScore = score;
+        runnerBasePriority = rule.priority;
       }
     }
   }
@@ -953,8 +958,18 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   //          the band AND emit ranked candidates, so the orchestrator can ask a
   //          human instead of shipping a confidently-wrong type into rebar/price.
   const isOther = bestType === 'other';
+  // Genuine ambiguity = a close runner-up of a DIFFERENT type AT THE SAME
+  // SPECIFICITY. The specificity guard (bestBasePriority <= runnerBasePriority)
+  // means a MORE-specific keyword winning over a generic sub-match is NOT
+  // flagged: e.g. "opěrná stěna" → operne_zdi (base prio 8) cleanly beats the
+  // generic 'stěna' → stena (base prio 6); the small score gap is specificity,
+  // not a tie. (W3 even mis-picks stena here — the engine is intentionally finer.)
   const ambiguous =
-    !isOther && runnerType !== 'other' && runnerType !== bestType && bestScore - runnerScore <= 3;
+    !isOther &&
+    runnerType !== 'other' &&
+    runnerType !== bestType &&
+    bestScore - runnerScore <= 3 &&
+    bestBasePriority <= runnerBasePriority;
   const confidence = isOther
     ? 0.3
     : ambiguous
