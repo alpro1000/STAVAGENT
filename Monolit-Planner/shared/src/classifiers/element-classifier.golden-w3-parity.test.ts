@@ -38,6 +38,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { classifyElement } from './element-classifier.js';
+import { planElement, type PlannerInput } from '../calculators/planner-orchestrator.js';
 import { ELEMENT_CLASSIFICATION_RULES as KB } from '../kb-generated/element-classification-rules.js';
 
 // ── Directed roll-up: engine-fine type → coarse parity family, and W3-coarse
@@ -105,6 +106,33 @@ describe('W3 parity — GREEN at Gate 2b (head-noun + context layer)', () => {
     expectW3Family(t, 'operna_zed');
     expect(t).toBe('operne_zdi');
   });
+});
+
+describe('W3 parity — LIVE path (orchestrator planElement, not hand-fed context)', () => {
+  // Proves the head-noun layer fires through the real engine entry point
+  // (planElement → classifyElement), driven only by is_bridge — exactly what the
+  // orchestrator and UI supply. element_type omitted so the name is classified.
+  const base: PlannerInput = {
+    volume_m3: 120, formwork_area_m2: 80,
+    has_dilatacni_spary: true, spara_spacing_m: 10, total_length_m: 50, adjacent_sections: true,
+  };
+  const liveType = (element_name: string, is_bridge: boolean) =>
+    planElement({ ...base, element_type: undefined, element_name, is_bridge }).element.type;
+
+  it('#74 live: bare "Dřík" on a non-bridge object → wall (operne_zdi)', () => {
+    expect(liveType('Dřík', false)).toBe('operne_zdi');
+  });
+  it('#73 live: "Dřík" on a bridge object (is_bridge) → pier (driky_piliru)', () => {
+    expect(liveType('Dřík', true)).toBe('driky_piliru');
+  });
+  it('#68 live: NK head beats "trám" on a bridge object → mostovkova_deska', () => {
+    expect(liveType('Trámy dvoutrámové nosné konstrukce', true)).toBe('mostovkova_deska');
+  });
+  // The #63 OUTCOME (a retaining-wall dřík → wall) is identical to #74's
+  // non-bridge result and is thus also reachable live via is_bridge=false; the
+  // explicit construction_context='retaining_wall' is test-only + inert in 2b
+  // (no rule distinguishes retaining_wall from building yet). See
+  // resolveConstructionContext() for the threading plan when that changes.
 });
 
 describe('W3 parity — RED targets (flip .fails → it at the owning gate)', () => {

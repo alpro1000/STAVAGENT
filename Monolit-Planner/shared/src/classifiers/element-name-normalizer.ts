@@ -74,6 +74,16 @@ export function normalizeElementName(name: string, context?: ConstructionContext
       : { canonical: 'opěrná zeď', headFired: true, head: 'dřík' };
   }
 
+  // NOTE — deliberately NO "pilíř → pier" head rule here. W3's normalizer maps
+  // any 'pilíř' to a pier shaft unconditionally; porting that would make the
+  // ENGINE LESS precise, because the engine already distinguishes a building
+  // pilíř (→ sloup) from a bridge pier (→ driky_piliru via the bridge_remap)
+  // using context. "Beton pilířů C30/37" with no context must stay sloup; only
+  // a bridge context promotes it. So 'pilíř' flows untouched through the normal
+  // keyword path (sloup) + bridge-remap — the engine being finer than W3, which
+  // the directed family roll-up explicitly permits (engine may be more precise,
+  // never cross a foreign family). Do NOT add a pilíř branch.
+
   // 3. 'Základ' (but not 'základová deska') → the plural the keyword rule
   //    expects (#66), recovering the head past a brittle suffix. Guarded by
   //    "no oper/pilir": "základ opěry"/"základ pilíře" carry a genitive

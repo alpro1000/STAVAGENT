@@ -719,7 +719,20 @@ export interface ClassificationContext {
 
 /** Resolve the effective construction context: explicit construction_context is
  *  authoritative; else fall back to the legacy is_bridge flag. (No name-based
- *  derivation in Gate 2b — only explicit signals drive context.) */
+ *  derivation in Gate 2b — only explicit signals drive context.)
+ *
+ *  LIVE-PATH NOTE (TASK_2b Gate 2b): every live caller — the orchestrator
+ *  (planner-orchestrator.ts: `input.is_bridge ? {is_bridge:true} : undefined`)
+ *  and the frontend (useCalculator: is_bridge derived from an SO-xxx bridge_id)
+ *  — supplies only `is_bridge`. The Gate-2b head-noun rules branch solely on
+ *  bridge-vs-not (a dřík is a pier in a bridge, a wall stem otherwise), so
+ *  'retaining_wall' and 'building' are currently BEHAVIORALLY IDENTICAL (both
+ *  non-bridge → wall). The bridge-vs-not outcomes (#73/#74) are therefore fully
+ *  reachable live via is_bridge; the explicit 3-way construction_context is
+ *  test-only and inert for now. When a future rule must distinguish
+ *  retaining_wall from building, thread an object-level type (the backend parser
+ *  already derives 'retaining_wall' in services/parser.js — object-metadata, NOT
+ *  name-based) through PlannerInput → here. */
 function resolveConstructionContext(context?: ClassificationContext): ConstructionContext | undefined {
   if (context?.construction_context) return context.construction_context;
   if (context?.is_bridge) return 'bridge';
