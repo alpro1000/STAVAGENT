@@ -8,6 +8,10 @@ on:
       - '.github/workflows/monolit-planner-ci.yml'
       - 'kb/**'
       - 'scripts/gen-knowledge.mjs'
+      # TASK_2b: element-classification rule-DATA sources from concrete-agent;
+      # editing it must trigger the gen:knowledge:check drift guard (single
+      # source — no silent fork between YAML and the generated TS artifact).
+      - 'concrete-agent/packages/core-backend/app/classifiers/element_rules/**'
       - 'package.json'
       - 'package-lock.json'
   pull_request:
@@ -16,6 +20,7 @@ on:
       - 'Monolit-Planner/**'
       - 'kb/**'
       - 'scripts/gen-knowledge.mjs'
+      - 'concrete-agent/packages/core-backend/app/classifiers/element_rules/**'
 
 jobs:
   # Job 1: Lint and Type Check
