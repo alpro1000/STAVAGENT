@@ -348,6 +348,56 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-05 — Session: SO202 corpus — Core Engine recon (RECON ONLY)
+
+**Rozhodnuto:**
+- Recon-only task — **žádný produkční fix, žádné golden testy.** Výstup:
+  `docs/audits/so202_corpus_recon/2026-06-05_recon.md` + reprodukovatelné skripty
+  v `_recon_scripts/` (`run_recon.py`, `cross_check.py`, + JSON). Korpus
+  `test-data/SO_202_D6_OV_Z/` (32 souborů: 30 PDF + AspeEsticon-XC4 soupis + marker).
+- Interview (uživatel): engine vrstva = **lokální parsery z repa** (ne živé MCP);
+  ground-truth = **deterministicky + označit mezeru** (bez OCR/vize na 28 výkresů).
+- Spuštěny REÁLNÉ Core Engine funkce: `document_classifier.classify_document_enhanced`,
+  `format_detector.detect_format`, `analyze_construction_document` (regex),
+  `extract_tz_fields`, `detect_object_type`, `PDFParser`, `KROSParser`, `xc4_parser`.
+
+**Nálezy (top, deskriptivní — pro navazující golden/fix task):**
+- 🔴 `KROSParser` vytáhne z AspeEsticon-XC4 soupisu (root `<XC4>`, **3373 `<polozka>`**)
+  **0 položek** — `_has_xc4_prices` natvrdo nastaví `OTSKP_XC4` a předběhne `ASPE_XC4`
+  větev; dedikovaný `xc4_parser` (umí 3373/3373) je nedosažitelný. `SourceFormat` enum
+  AspeEsticon vůbec nezná. → celý soupis SO 202 se v produkční cestě ztratí.
+- 🟠 `extract_tz_fields` na TZ i statice: špatný `object_code=SO 101` (≠ 202, chytá
+  referencovaný silniční SO), prázdné name/charakteristika → `detect_object_type=None`,
+  31/37 narativních false-positive „elementů". ALE 6 odrážkových prvků zváže třídu
+  správně (NK→C35/45).
+- 🟠 Klasifikátor: **23/28 výkresů mislabeled** (mostly `RO` @0.43) — sparse text razítka
+  + RO keyword bleed; bridge názvy (Tvar*/Vyztuz*/VPR/MZ…) minou VY filename pattern.
+  Pattern 39 (vision-first) empiricky potvrzen.
+- 🟡 Geometrie/technologie NK (3 pole, 32+44,5+32, v2,40, š13,65, dvoutrám, 22-lan,
+  PL2, 3 etapy skruže) je **100 % v textu TZ, ale 0 % strukturovaně zachycena** —
+  `analyze` regex dá jen materiály + plochý nepojmenovaný seznam kót; `extract_tz_fields`
+  jen `{element, concrete_class, volume_m3=None}`.
+- ⚠️ Soupis třída = katalogová mez **„DO C40/50"** u NK/dříků pilířů vs skutečná TZ
+  **C35/45**; objemy 6 betonových prvků **Δ 0,00 %** vs golden (přes `xc4` direct parse).
+
+**Odmítnuto:**
+- Živé MCP cross-check, OCR/vize výkresů, jakákoliv oprava parserů, jakýkoliv golden test
+  — vše out of scope (golden testy gated na revizi tohoto reconu).
+
+**Otevřené otázky:**
+- Pořadí fixů před golden testy: #1 (KROS XC4 routing) + #2 (extract_tz_fields object_code)
+  jsou pravděpodobně prerekvizity smysluplných soupis/TZ goldenů.
+- Geometry pole TZ — implementovat (Stage 2 / DXF / vision), nebo zafixovat „pominuto"
+  jako baseline golden?
+
+**Co dál:**
+- Revize reconu uživatelem → teprve pak navazující golden-test/fix task (gated).
+- Korpus `test-data/SO_202_D6_OV_Z/` ponechán jako referenční baseline.
+- Env pozn.: recon container potřeboval `pip install pdfplumber pydantic openpyxl lxml
+  sqlalchemy` + `--force-reinstall --no-deps cffi` (rozbitá systémová cryptography rust
+  binding blokovala pdfminer/pdfplumber import).
+
+
 ## 2026-06-05 — Session: TASK_2b — Engine learns W3 element typing (Gates 0–5)
 
 **Rozhodnuto:**
