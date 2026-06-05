@@ -399,7 +399,21 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
   non-bridge → wall) and test-only; thread object_type from the backend parser when a rule
   needs the distinction.
 - **sk/de dictionaries** — structure is in place (`dictionaries.<lang>`), only `cs` filled.
-- Restoring the general kb generator for ALL knowledge tables stays a post-Cemex tail.
+
+**Convergence note — W3 Python goldens that FLIP at MCP-delegation:**
+When the MCP/Python side delegates typing to the engine (engine becomes canon), the
+following SO-250 goldens flip their LITERAL assertion because the engine vocabulary
+differs from W3's — but the **parity FAMILY is preserved in every case** (audited:
+ZERO family-level divergence, so delegation is family-safe). Delegation must either
+map engine→W3 vocab via `type_core[t].w3_name` / `w3_family`, OR update these literals:
+- `operna_zed` → engine `operne_zdi` (wall): `test_mcp_golden_so250.py` #63 (L56);
+  `test_mcp_golden_so250b.py` #74 (L154), #76 (L202).
+- `zaklady` → engine `zaklady_piliru` (foundation; granularity): `so250.py` #66 (L100),
+  #69 (L146), #69b (L157).
+- `zdivo_obklad` → engine reject (`element_type='other'` + `is_concrete_element=false`,
+  reject family): `so250.py` #65 (L85).
+NB: NO golden asserts a W3-specific BUG (e.g. a wrong type the engine corrects across
+families) — the audit found none; every W3 golden is family-consistent with the engine.
 
 **Co dál:** Gate 5 closeout (this entry). Next: MCP classify-delegation recon, or the
 PositionDecomposition / sub-elements UI phase.
