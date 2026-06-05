@@ -877,7 +877,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
   if (isReject) {
     warnings.push(
       `⚠️ "${input.element_name ?? profile.element_type}" není betonový konstrukční prvek` +
-        `${profile.reject_reason ? ` (${profile.reject_reason})` : ''} — vyztužení přeskočeno (0 kg); ověřte ručně.`,
+        `${profile.reject_reason ? ` (${profile.reject_reason})` : ''} — vyztužení (0 kg) i náklady vynulovány. ` +
+        `Objem, bednění a harmonogram NEJSOU směrodatné (dopočteno přes fallback 'other'); ověřte ručně.`,
     );
   }
 
@@ -2414,7 +2415,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 9. Assemble Output ───────────────────────────────────────────────
 
-  return {
+  const plannerOutput: PlannerOutput = {
     element: {
       type: elementType,
       label_cs: profile.label_cs,
@@ -2522,6 +2523,19 @@ export function planElement(input: PlannerInput): PlannerOutput {
     resource_ceiling: effectiveResourceCeiling,
     resource_violations: resourceViolations,
   };
+
+  // Reject (Gate 3 robustness): planElement is the single authoritative site for
+  // a reject's outputs. Rebar is already zeroed above; here we also null every
+  // fabricated COST so a non-concrete element never ships a price. Objem/bednění/
+  // harmonogram keep their (fallback-'other') shape but the warning above marks
+  // them non-authoritative. Full structural zeroing is a decomposition concern.
+  if (isReject) {
+    const zeroedCosts = Object.fromEntries(
+      Object.entries(plannerOutput.costs).map(([key, value]) => [key, typeof value === 'number' ? 0 : value]),
+    ) as PlannerOutput['costs'];
+    return { ...plannerOutput, costs: zeroedCosts };
+  }
+  return plannerOutput;
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────

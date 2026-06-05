@@ -941,10 +941,17 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   }
 
   // ─── Signal ladder (TASK_2b Gate 3): honest confidence + ranked alternatives ──
-  // Keyword classification NEVER claims the deterministic 1.0 reserved for an
-  // OTSKP/catalog-code match — it tops out at 0.9. A close runner-up of a
-  // different family means genuinely ambiguous → lower band + candidates, so the
-  // orchestrator can ask instead of shipping a confidently-wrong type into rebar.
+  // Confidence reflects signal strength, deliberately tiered:
+  //   1.0  — deterministic catalog-code match (OTSKP rule). Reserved; pinned.
+  //   0.9  — confident keyword/name match. A CONSCIOUS ceiling that sits ABOVE
+  //          the fuzzy/AI tiers (URS ≈ 0.80, Perplexity ≈ 0.85, raw AI ≈ 0.70 per
+  //          the project confidence convention) because a deterministic regex on
+  //          the head-noun is more reliable than an LLM guess — yet strictly
+  //          BELOW 1.0, since a name (unlike a recognized code) can still be
+  //          wrong. Keyword classification must never impersonate a code match.
+  //   ≤0.7 — genuinely ambiguous (a close runner-up of a different type) → drop
+  //          the band AND emit ranked candidates, so the orchestrator can ask a
+  //          human instead of shipping a confidently-wrong type into rebar/price.
   const isOther = bestType === 'other';
   const ambiguous =
     !isOther && runnerType !== 'other' && runnerType !== bestType && bestScore - runnerScore <= 3;

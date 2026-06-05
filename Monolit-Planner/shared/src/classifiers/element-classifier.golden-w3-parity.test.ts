@@ -166,13 +166,25 @@ describe('W3 parity — GREEN at Gate 3 (reject + honest signal ladder)', () => 
     expect(r.candidates![0].element_type).toBe(r.element_type);
     expect(r.confidence).toBeLessThanOrEqual(0.7);
   });
-  it('a reject flows through planElement gracefully — no rebar, no crash', () => {
+  it('a reject flows through planElement gracefully — no rebar, no cost, no crash', () => {
     const plan = planElement({
       volume_m3: 30, formwork_area_m2: 40, has_dilatacni_spary: false,
       element_type: undefined, element_name: 'Lícový obklad z lomového kamene',
     });
+    // planElement is the single authoritative site: rebar AND all fabricated
+    // costs are zeroed for a reject; the warning marks downstream non-authoritative.
     expect(plan.rebar.mass_kg).toBe(0);
-    expect(plan.warnings.some((w) => w.includes('není betonový konstrukční prvek'))).toBe(true);
+    expect(plan.costs.total_labor_czk).toBe(0);
+    expect(plan.costs.formwork_rental_czk).toBe(0);
+    expect(plan.warnings.some((w) => w.includes('NEJSOU směrodatné'))).toBe(true);
+  });
+  it('obklad-reject is HEAD-gated — only when obklad is the governing noun', () => {
+    // Nominative head (after tail-strip) → reject.
+    expect(classifyElement('Obklad stěny').is_concrete_element).toBe(false);
+    // Oblique / adjectival / modifier forms must NOT reject (obklad not the head).
+    expect(classifyElement('Stěna s obkladem').element_type).toBe('stena');
+    expect(classifyElement('Stěna obkladová').element_type).toBe('stena');
+    expect(classifyElement('Stěna s obkladem').is_concrete_element).not.toBe(false);
   });
 });
 
