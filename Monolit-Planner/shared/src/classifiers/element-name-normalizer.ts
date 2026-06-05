@@ -64,6 +64,14 @@ export function normalizeElementName(name: string, context?: ConstructionContext
     return { canonical: 'nosná konstrukce', headFired: true, head: 'nosná konstrukce' };
   }
 
+  // 2. Lícové zdivo / obklad z lomového kamene — masonry CLADDING, the head noun
+  //    (#65). Resolved on the tail-stripped core so "…kotvený do dříku" cannot
+  //    masquerade as a pier. head='obklad' signals a REJECT to the classifier
+  //    (not a concrete structural element) — materialized in Gate 3.
+  if (/licov\w*\s*(?:obklad|zdiv)/.test(low) || /\bobklad\b/.test(low) || /kamenn\w*\s*zdiv/.test(low) || /lomov\w*\s*kam/.test(low)) {
+    return { canonical: 'lícový obklad zdivo', headFired: true, head: 'obklad' };
+  }
+
   // 2. 'Dřík' is context-sensitive (#63 / #73 / #74): a pier shaft in a bridge,
   //    a retaining-wall stem otherwise. Guarded by "no pilíř" so explicit
   //    "dříky pilířů" keeps flowing through the normal keyword path (and the

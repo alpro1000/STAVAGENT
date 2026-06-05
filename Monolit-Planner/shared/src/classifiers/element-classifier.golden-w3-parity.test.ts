@@ -135,24 +135,48 @@ describe('W3 parity — LIVE path (orchestrator planElement, not hand-fed contex
   // resolveConstructionContext() for the threading plan when that changes.
 });
 
-describe('W3 parity — RED targets (flip .fails → it at the owning gate)', () => {
-  // ── Gate 3 — reject ────────────────────────────────────────────────────────
-  it.fails('#65 [Gate3] "obklad … do dříku" is cladding (reject), never a pier', () => {
-    // Head is *obklad*; "do dříku" is a prepositional tail. Target = the explicit
-    // reject value (W3 zdivo_obklad). Until that exists, assert "not a pier".
-    expect(classifyElement('Lícový obklad z lomového kamene kotvený do dříku').element_type)
-      .not.toBe('driky_piliru');
+describe('W3 parity — GREEN at Gate 3 (reject + honest signal ladder)', () => {
+  it('#65 "obklad … do dříku" is masonry cladding (reject), never a pier', () => {
+    // Head is *obklad*; "do dříku" is a prepositional tail (stripped). Result is
+    // an explicit REJECT, not a concrete element — distinct from residual 'other'.
+    const r = classifyElement('Lícový obklad z lomového kamene kotvený do dříku');
+    expect(r.element_type).not.toBe('driky_piliru');
+    expect(r.is_concrete_element).toBe(false);
+    expect(r.reject_reason).toBe('masonry_cladding');
   });
-
-  // ── Gate 3 — honest confidence ─────────────────────────────────────────────
-  it.fails('[Gate3] keyword-fallback must NOT report a fake 1.0 confidence', () => {
-    // "Opěrná stěna levá" matches by keyword (src=keywords) yet the engine
-    // currently reports confidence 1.0 — the bogus "z klíčových slov 100%".
+  it('special non-structural materials (shotcrete, grouting) reject too', () => {
+    expect(classifyElement('Stříkaný beton torkret').is_concrete_element).toBe(false);
+    expect(classifyElement('Zálivkové malty').reject_reason).toBe('joint_grouting');
+  });
+  it('keyword-fallback reports honest confidence < deterministic 1.0', () => {
     const r = classifyElement('Opěrná stěna levá');
     expect(r.classification_source).toBe('keywords');
     expect(r.confidence).toBeLessThan(1.0);
   });
+  it('OTSKP code-rung keeps the genuine deterministic 1.0 (unchanged)', () => {
+    const r = classifyElement('ŘÍMSOVÁ DESKA');
+    expect(r.classification_source).toBe('otskp');
+    expect(r.confidence).toBe(1.0);
+  });
+  it('a genuinely ambiguous bare name → low confidence + ranked candidates', () => {
+    // "Opěrná stěna" ties operne_zdi (wall) against stena (wall) within the
+    // priority margin → the engine flags it instead of a confident single type.
+    const r = classifyElement('Opěrná stěna levá');
+    expect(r.candidates?.length).toBeGreaterThanOrEqual(2);
+    expect(r.candidates![0].element_type).toBe(r.element_type);
+    expect(r.confidence).toBeLessThanOrEqual(0.7);
+  });
+  it('a reject flows through planElement gracefully — no rebar, no crash', () => {
+    const plan = planElement({
+      volume_m3: 30, formwork_area_m2: 40, has_dilatacni_spary: false,
+      element_type: undefined, element_name: 'Lícový obklad z lomového kamene',
+    });
+    expect(plan.rebar.mass_kg).toBe(0);
+    expect(plan.warnings.some((w) => w.includes('není betonový konstrukční prvek'))).toBe(true);
+  });
+});
 
+describe('W3 parity — RED targets (flip .fails → it at the owning gate)', () => {
   // ── Gate 4 — dřík/opěra suppression ────────────────────────────────────────
   it.fails('[Gate4] "Dřík opěry" is an abutment (opery_ulozne_prahy), not a pier', () => {
     expect(classifyElement('Dřík opěry OP1', { is_bridge: true }).element_type)

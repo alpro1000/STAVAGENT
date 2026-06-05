@@ -111,6 +111,32 @@ export interface ElementProfile {
   has_kridla_detected?: boolean;
   /** Prefabricated element (info only — calculator doesn't compute prefab) */
   is_prefab?: boolean;
+
+  // --- Reject + signal ladder (TASK_2b Gate 3) ---
+  /**
+   * Whether this is a concrete structural element. `false` = an explicit REJECT
+   * (e.g. stone masonry cladding, special non-structural material) — distinct
+   * from the residual 'other'. Absent / true = a concrete element. Consumers
+   * must not fabricate rebar/formwork for a reject (see planElement).
+   */
+  is_concrete_element?: boolean;
+  /** Why it was rejected as not-a-concrete-element (e.g. 'masonry_cladding'). */
+  reject_reason?: string;
+  /**
+   * Ranked alternative classifications, populated only when the result is
+   * genuinely ambiguous (a close runner-up). Lets the orchestrator surface a
+   * pick-list + a human confirm instead of a confidently-wrong single answer.
+   */
+  candidates?: ElementCandidate[];
+}
+
+/** A ranked classification candidate (TASK_2b Gate 3 signal ladder). */
+export interface ElementCandidate {
+  /** Engine element type, or a reject concept id (e.g. 'zdivo_obklad'). */
+  element_type: string;
+  confidence: number;
+  /** Coarse parity family (from the KB roll-up), when known. */
+  family?: string;
 }
 
 // ─── Element Catalog ─────────────────────────────────────────────────────────
@@ -739,6 +765,28 @@ function resolveConstructionContext(context?: ClassificationContext): Constructi
   return undefined;
 }
 
+/** Coarse parity family for an engine type, from the KB roll-up (Gate 3 candidates). */
+function familyOf(elementType: string): string | undefined {
+  return (ELEMENT_CLASSIFICATION_RULES.type_core as Record<string, { family?: string }>)[elementType]?.family;
+}
+
+/**
+ * Explicit REJECT result (TASK_2b Gate 3): "not a concrete structural element".
+ * Distinct from the residual 'other' via is_concrete_element=false + a reason, so
+ * the orchestrator can skip rebar/formwork instead of fabricating them. element_type
+ * stays 'other' so downstream type-driven code keeps a valid (zero-ish) profile.
+ */
+function rejectProfile(reason: string, confidence = 0.9): ElementProfile {
+  return {
+    element_type: 'other',
+    confidence,
+    ...ELEMENT_CATALOG.other,
+    classification_source: 'keywords',
+    is_concrete_element: false,
+    reject_reason: reason,
+  };
+}
+
 /**
  * Classify a construction element by name/description.
  *
@@ -760,21 +808,21 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     }
     return { element_type: 'podkladni_beton', confidence: 0.95, ...ELEMENT_CATALOG.podkladni_beton };
   }
-  // STŘÍKANÝ = shotcrete, special technology
+  // STŘÍKANÝ = shotcrete, special technology — not a standard concrete element.
   if (/strikan|stříkan|torkret|nastrik|nástřik/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('shotcrete');
   }
-  // IZOLAČNÍ VRSTVY = insulation layers, no structural formwork
+  // IZOLAČNÍ VRSTVY = insulation layers, no structural formwork.
   if (/izolacn\s*vrst|izolační\s*vrst/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('insulation_layer');
   }
-  // ZÁLIVKA SPÁR = joint grouting, no formwork
+  // ZÁLIVKA SPÁR = joint grouting, no formwork.
   if (/zalivk\s*spar|zálivk\s*spár|zalivkov|zálivkov/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('joint_grouting');
   }
-  // MONOLITICKÁ VOZOVKA = road surface, not structural element
+  // MONOLITICKÁ VOZOVKA = road surface, not a structural element.
   if (/monolitick\S*\s*vozovk|betonov\S*\s*vozovk|betonový\s*kryt/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    return rejectProfile('road_surface');
   }
 
   // P0 BUG #1 disambiguation (2026-05-14, SO-250 audit):
@@ -835,10 +883,20 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   const head = normalizeElementName(name, constructionContext);
   const matchStr = head.headFired ? normalize(head.canonical) : normalized;
 
+  // ─── Reject (TASK_2b Gate 3): not a concrete structural element ───
+  // The head-noun layer resolves stone masonry CLADDING (lícové zdivo / obklad
+  // z lomového kamene) as head='obklad' on the tail-stripped core, so a spurious
+  // "…do dříku" tail cannot win. This is a reject, not a concrete element.
+  if (head.head === 'obklad') {
+    return rejectProfile('masonry_cladding');
+  }
+
   // ─── Keyword scoring (fallback) ───
   let bestType: StructuralElementType = 'other';
   let bestScore = 0;
   let bestPriority = 0;
+  let runnerType: StructuralElementType = 'other';
+  let runnerScore = 0;
 
   for (const rule of KEYWORD_RULES) {
     let matchCount = 0;
@@ -865,9 +923,14 @@ export function classifyElement(name: string, context?: ClassificationContext): 
       const contextBoost = isBridge && BRIDGE_ELEMENT_TYPES.has(rule.element_type) ? 5 : 0;
       const score = matchCount * 10 + rule.priority + contextBoost;
       if (score > bestScore || (score === bestScore && (rule.priority + contextBoost) > bestPriority)) {
+        runnerType = bestType;
+        runnerScore = bestScore;
         bestScore = score;
         bestType = rule.element_type;
         bestPriority = rule.priority + contextBoost;
+      } else if (score > runnerScore && rule.element_type !== bestType) {
+        runnerType = rule.element_type;
+        runnerScore = score;
       }
     }
   }
@@ -877,7 +940,25 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     bestType = BRIDGE_EQUIVALENT[bestType]!;
   }
 
-  const confidence = bestType === 'other' ? 0.3 : Math.min(1.0, 0.6 + bestScore * 0.04);
+  // ─── Signal ladder (TASK_2b Gate 3): honest confidence + ranked alternatives ──
+  // Keyword classification NEVER claims the deterministic 1.0 reserved for an
+  // OTSKP/catalog-code match — it tops out at 0.9. A close runner-up of a
+  // different family means genuinely ambiguous → lower band + candidates, so the
+  // orchestrator can ask instead of shipping a confidently-wrong type into rebar.
+  const isOther = bestType === 'other';
+  const ambiguous =
+    !isOther && runnerType !== 'other' && runnerType !== bestType && bestScore - runnerScore <= 3;
+  const confidence = isOther
+    ? 0.3
+    : ambiguous
+      ? Math.min(0.7, 0.5 + bestScore * 0.03)
+      : Math.min(0.9, 0.6 + bestScore * 0.04);
+  const candidates: ElementCandidate[] | undefined = ambiguous
+    ? [
+        { element_type: bestType, confidence, family: familyOf(bestType) },
+        { element_type: runnerType, confidence: Math.min(confidence, 0.6), family: familyOf(runnerType) },
+      ]
+    : undefined;
   const catalog = ELEMENT_CATALOG[bestType];
   const meta = extractOtskpMetadata(name);
 
@@ -886,6 +967,7 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     confidence,
     ...catalog,
     classification_source: 'keywords',
+    ...(candidates ? { candidates } : {}),
     ...(meta.concrete_class ? { concrete_class_detected: meta.concrete_class } : {}),
     ...(meta.is_prestressed !== undefined ? { is_prestressed_detected: meta.is_prestressed } : {}),
   };

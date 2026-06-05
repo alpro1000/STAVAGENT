@@ -867,6 +867,20 @@ export function planElement(input: PlannerInput): PlannerOutput {
     throw new Error('Either element_name or element_type must be provided');
   }
 
+  // ─── 1·reject. Not a concrete structural element (TASK_2b Gate 3) ──────────
+  // A reject (stone masonry cladding, shotcrete, insulation, grouting, road
+  // surface …) must not silently receive a fabricated rebar/formwork plan. Flag
+  // it and zero the concrete-only quantities so the pipeline runs without
+  // crashing or inventing reinforcement. Rich per-material handling (simple
+  // volume) is the decomposition phase, not here.
+  const isReject = profile.is_concrete_element === false;
+  if (isReject) {
+    warnings.push(
+      `⚠️ "${input.element_name ?? profile.element_type}" není betonový konstrukční prvek` +
+        `${profile.reject_reason ? ` (${profile.reject_reason})` : ''} — vyztužení přeskočeno (0 kg); ověřte ručně.`,
+    );
+  }
+
   const elementType = profile.element_type;
   const isPrestressed = input.is_prestressed === true;
 
@@ -1680,7 +1694,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       ? (pourDecision.tact_volume_m3 * 100) // B500B: 100 kg/m³ for prestressed NK
       : undefined;
 
-  const rebarResult = calculateRebarLite({
+  const rebarComputed = calculateRebarLite({
     element_type: elementType,
     volume_m3: pourDecision.tact_volume_m3,
     mass_kg: rebarMassOverride,
@@ -1690,6 +1704,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
     k,
     wage_czk_h: wageRebar,
   });
+  // Reject (not a concrete element): zero the reinforcement quantities so the
+  // plan carries no fabricated rebar/labor/cost (the engine estimates from the
+  // 'other' fallback ratio otherwise). Graceful — shape preserved, numbers nulled.
+  const rebarResult: RebarLiteResult = isReject
+    ? {
+        ...rebarComputed,
+        mass_kg: 0, mass_t: 0, mass_range_kg: [0, 0],
+        labor_hours: 0, duration_days: 0, cost_labor: 0,
+        optimistic_days: 0, most_likely_days: 0, pessimistic_days: 0,
+      }
+    : rebarComputed;
 
   // Prestressing tendons Y1860 — separate calculation (not included in rebarResult)
   let prestressRebarInfo: { mass_kg_per_tact: number; mass_t_total: number; cost_czk_per_kg: number } | undefined;
