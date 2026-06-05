@@ -32,6 +32,10 @@ class KROSParser:
         """
         project_prefix = f"[project={project_id}] " if project_id else ""
 
+        # Callers (e.g. SmartParser.parse_xml) hand us a str path; the signature
+        # is typed Path and uses file_path.name — coerce so str input never raises.
+        file_path = Path(file_path)
+
         logger.info("%s🧱 Parsing KROS XML: %s", project_prefix, file_path.name)
 
         kros_format = "UNKNOWN"
@@ -149,15 +153,20 @@ class KROSParser:
 
     @staticmethod
     def _has_xc4_prices(root: ET.Element) -> bool:
-        """Return True if the XML tree contains XC4 price-list nodes."""
+        """Return True only for a genuine KROS XC4 *price-list* — one that carries
+        ``<CenoveSoustavy>`` price nodes (the only thing the OTSKP_XC4 path parses).
+
+        An AspeEsticon XC4 *export* (soupis prací) wraps its work items in the same
+        ``<XC4>`` root but has NO price list. Keying on the bare ``<XC4>`` tag forced
+        every such soupis down the price-list path, which finds 0 ``<CenoveSoustavy>``
+        and drops all ``<polozka>`` (0 parsed). With this guard the export instead
+        falls through to ``_detect_format`` → ``ASPE_XC4`` → the dedicated parser.
+        """
 
         def _local(tag: str) -> str:
-            return tag.split("}")[-1] if tag else ""
+            return tag.split("}")[-1].lower() if tag else ""
 
-        if _local(root.tag) == "XC4":
-            return True
-
-        return root.find(".//XC4") is not None
+        return any(_local(el.tag) == "cenovesoustavy" for el in root.iter())
 
     # ------------------------------------------------------------------
     # XC4 Cenové soustavy (TSKP / OTSKP)
