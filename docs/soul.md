@@ -348,6 +348,63 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-05 — Session: TASK_2b — Engine learns W3 element typing (Gates 0–5)
+
+**Rozhodnuto:**
+- Element-classification rule-**DATA** extracted to a single source of truth:
+  `concrete-agent/.../app/classifiers/element_rules/element_types.yaml` (ships in the
+  concrete-agent Docker image so the W3 Python classifier reads it natively). The TS
+  engine imports a committed generated artifact
+  `Monolit-Planner/shared/src/kb-generated/element-classification-rules.ts`. Reused the
+  EXISTING general generator `scripts/gen-knowledge.mjs` (one INTEGRATION entry +
+  `yamlAbs` override), NOT a parallel one. CI-blocking drift guard (`gen:knowledge:check`)
+  extended to the concrete-agent `element_rules/**` path.
+- Head-noun **ALGORITHM** ported into the engine as a pure pre-layer
+  (`element-name-normalizer.ts`), mirroring the W3 Python `element_name_normalizer.py`:
+  NK-beats-trám, context-`dřík` (bridge=pier / else wall), `základ` canonicalization,
+  obklad→reject, dřík/opěra genitive suppression. **Selective** port — W3's unconditional
+  `pilíř→pier` deliberately NOT ported (engine stays finer: building pilíř→sloup).
+- `ClassificationContext` gains optional `construction_context` (bridge|retaining_wall|
+  building), authoritative over `is_bridge` (back-compat additive).
+- Explicit **reject** (`is_concrete_element=false` + `reject_reason`) for stone masonry
+  cladding + special materials; `planElement` is the single authoritative site — zeroes
+  rebar + all costs, warns "NEJSOU směrodatné".
+- **Signal ladder**: OTSKP code = 1.0 (pinned); keyword ≤ 0.9 (conscious tier above
+  fuzzy/AI, below code); genuine same-specificity tie → ≤0.7 + `candidates[]`. Specificity
+  guard: a more-specific keyword win is not "ambiguous".
+- **dřík/opěra bug fixed once on BOTH runtimes** via the genitive-`opěr` qualifier (same
+  logic as the `základ`-guard); `telo oper` removed from the pier keyword list. Confident
+  abutment (0.9, no near-tie).
+- Parity asserted at **family level** (directed engine-fine → W3-coarse roll-up via
+  `w3_family`); fine grain guarded by the engine suite, not W3.
+- Engine 1249/1249 shared green; W3 19/19 SO-250 Python goldens green (CI MCP-Compatibility
+  #336 = first real pytest run of the fix); all 4 CI workflows green on `d3eb623`.
+
+**Odmítnuto:**
+- Parallel scoped generator (existing general one extended instead).
+- Porting W3's `pilíř→pier` rule (would make the engine less precise).
+- Name-based context derivation in 2b (only explicit signals).
+- Flagging "opěrná stěna" as ambiguous (specificity win, not a tie).
+
+**Otevřené otázky / Deferred (decomposition phase or follow-up):**
+- **MCP classify-delegation** — the MCP/Python side delegating typing to the engine
+  (mirrors Phase-2a calc convergence). Only after parity proven. The W3↔engine family
+  roll-up map is transitory until then.
+- **UI-display reject** — a dedicated pre-compute reject badge in the calculator
+  (frontend reads `is_concrete_element`). Today a reject shows as "Jiné" (not a confident
+  wrong type) + the post-compute `plan.warnings` surfaces it; richer display deferred.
+- **Rich reject handling** — simple-volume for prostý/podkladní beton + full structural
+  zeroing of formwork/schedule for rejects (only rebar+costs zeroed now).
+- **3-way `construction_context`** — retaining_wall vs building is currently inert (both
+  non-bridge → wall) and test-only; thread object_type from the backend parser when a rule
+  needs the distinction.
+- **sk/de dictionaries** — structure is in place (`dictionaries.<lang>`), only `cs` filled.
+- Restoring the general kb generator for ALL knowledge tables stays a post-Cemex tail.
+
+**Co dál:** Gate 5 closeout (this entry). Next: MCP classify-delegation recon, or the
+PositionDecomposition / sub-elements UI phase.
+
+
 ## 2026-06-04 — Session: SSOT MCP delegate Phase 2a + Docker deploy hotfix — SHIPPED, prod live
 
 **Smergeováno do main:**
