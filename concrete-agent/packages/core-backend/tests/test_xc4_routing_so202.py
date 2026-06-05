@@ -165,6 +165,30 @@ def test_format_detector_price_list_stays_otskp():
         os.unlink(path)
 
 
+# ── Discriminator priority: positive soupis signal beats an embedded price list ─
+
+def test_export_with_embedded_price_list_routes_as_soupis():
+    """objekty+polozka (soupis) wins even when a <CenoveSoustavy> is embedded →
+    ASPE_XC4 (parsed), not OTSKP_XC4. _has_xc4_prices, _detect_format and
+    format_detector must all agree (soupis wins)."""
+    xml = ASPE_XC4.replace(
+        "</stavba>",
+        "</stavba>\n  <KL><CenoveSoustavy><typ_CS>OTSKP</typ_CS><Polozky>"
+        "<Polozka><znacka>011</znacka><nazev>cenik</nazev><MJ>m3</MJ>"
+        "<jedn_cena>100</jedn_cena></Polozka></Polozky></CenoveSoustavy></KL>",
+    )
+    root = ET.fromstring(xml)
+    assert KROSParser._has_xc4_prices(root) is False  # soupis wins over price list
+    path = _write_tmp(xml)
+    try:
+        result = KROSParser().parse(Path(path))
+        assert result["document_info"]["kros_format"] == "ASPE_XC4", result["document_info"]
+        assert len(result["positions"]) == 2, result["positions"]
+        assert detect_format(path) == SourceFormat.XML_ASPE_XC4
+    finally:
+        os.unlink(path)
+
+
 # ── Corpus-gated golden: real SO-202 AspeEsticon export ───────────────────────
 
 _CORPUS = (

@@ -134,6 +134,15 @@ class KROSParser:
         Returns:
             "KROS_UNIXML", "KROS_TABULAR", or "UNKNOWN"
         """
+        # AspeEsticon XC4 soupis export FIRST — the positive soupis signal
+        # (<objekty> + lowercase <polozka> work items) beats the UNIXML capital
+        # <Polozka> marker, so a soupis that embeds a KROS price-list reference
+        # still routes to ASPE_XC4. Safe: real KROS UNIXML uses <objekt> (singular)
+        # + <zdroj_konstrukce>, never <objekty> + lowercase <polozka>; .find is
+        # case-sensitive so the two families never collide.
+        if root.find(".//objekty") is not None and root.find(".//polozka") is not None:
+            return "ASPE_XC4"
+
         # Check for UNIXML markers
         if root.find(".//Polozky") is not None or root.find(".//Polozka") is not None:
             return "KROS_UNIXML"
@@ -142,13 +151,6 @@ class KROSParser:
         if root.find(".//TZ") is not None or root.find(".//Row") is not None:
             return "KROS_TABULAR"
 
-        # Check for AspeEsticon XC4 markers
-        if root.find(".//objekty") is not None and root.find(".//polozka") is not None:
-            source = root.findtext(".//zdroj")
-            if source and source.strip().lower() == "aspeesticon":
-                return "ASPE_XC4"
-            return "ASPE_XC4"
-
         return "UNKNOWN"
 
     @staticmethod
@@ -156,12 +158,21 @@ class KROSParser:
         """Return True only for a genuine KROS XC4 *price-list* — one that carries
         ``<CenoveSoustavy>`` price nodes (the only thing the OTSKP_XC4 path parses).
 
-        An AspeEsticon XC4 *export* (soupis prací) wraps its work items in the same
-        ``<XC4>`` root but has NO price list. Keying on the bare ``<XC4>`` tag forced
-        every such soupis down the price-list path, which finds 0 ``<CenoveSoustavy>``
-        and drops all ``<polozka>`` (0 parsed). With this guard the export instead
-        falls through to ``_detect_format`` → ``ASPE_XC4`` → the dedicated parser.
+        Discriminator priority (kept in lock-step with ``_detect_format`` and
+        ``format_detector._detect_xml_subtype``): the positive **soupis** signal
+        wins. An AspeEsticon export (``<objekty>`` + ``<polozka>`` work items) is a
+        bill of quantities, never a price catalogue — even if it embeds a
+        ``<CenoveSoustavy>`` reference — so it routes to ``ASPE_XC4`` (parsed), not
+        the price-list path. Keying on the bare ``<XC4>`` root tag used to force
+        every such soupis to OTSKP_XC4, which found 0 ``<CenoveSoustavy>`` and
+        dropped all ``<polozka>`` (0 parsed).
         """
+
+        # Positive soupis signal beats price-list: an AspeEsticon work-breakdown
+        # (objekty + polozka) is never a price file. Mirrors _detect_format's ASPE
+        # check so detection and routing can never disagree.
+        if root.find(".//objekty") is not None and root.find(".//polozka") is not None:
+            return False
 
         def _local(tag: str) -> str:
             return tag.split("}")[-1].lower() if tag else ""
