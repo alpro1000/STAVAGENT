@@ -189,7 +189,7 @@ function validateUcebniceMostuPour(data) {
 }
 
 function validateElementClassification(data) {
-  for (const key of ['version', 'type_core', 'bridge_remap', 'object_type_aliases', 'dictionaries']) {
+  for (const key of ['version', 'type_core', 'w3_family', 'bridge_remap', 'object_type_aliases', 'dictionaries']) {
     if (!(key in data)) throw new Error(`element_types.yaml missing top-level key: ${key}`);
   }
   if (!data.dictionaries.cs || !data.dictionaries.cs.keywords) {
@@ -204,6 +204,21 @@ function validateElementClassification(data) {
   for (const [from, to] of Object.entries(data.bridge_remap)) {
     if (!(from in data.type_core)) throw new Error(`bridge_remap source '${from}' not in type_core`);
     if (!(to in data.type_core)) throw new Error(`bridge_remap target '${to}' not in type_core`);
+  }
+  // Directed roll-up invariant: family(engineType) === w3_family[w3_name]. This
+  // guarantees the engine-fine→W3-coarse equivalence never crosses a family.
+  for (const [t, core] of Object.entries(data.type_core)) {
+    if (!core.w3_name) throw new Error(`type_core.${t} missing w3_name`);
+    if (!core.family) throw new Error(`type_core.${t} missing family`);
+    const wf = data.w3_family[core.w3_name];
+    if (wf === undefined) {
+      throw new Error(`type_core.${t}.w3_name='${core.w3_name}' has no w3_family entry`);
+    }
+    if (wf !== core.family) {
+      throw new Error(
+        `family mismatch for ${t}: family='${core.family}' but w3_family['${core.w3_name}']='${wf}'`,
+      );
+    }
   }
 }
 

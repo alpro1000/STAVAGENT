@@ -17,6 +17,7 @@ import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import type { PourMethod, FormworkFilterResult, ConcreteConsistency } from '../calculators/lateral-pressure.js';
 import { calculateLateralPressure, filterFormworkByPressure, inferPourMethod } from '../calculators/lateral-pressure.js';
+import { ELEMENT_CLASSIFICATION_RULES } from '../kb-generated/element-classification-rules.js';
 
 // ─── Rebar labor-rate category (BUG A, v4.24) ────────────────────────────────
 
@@ -651,164 +652,30 @@ interface KeywordRule {
   priority: number;
 }
 
-const KEYWORD_RULES: KeywordRule[] = [
-  // ─── Bridge elements (higher priority) ───
-  {
-    element_type: 'mostovkova_deska',
-    keywords: [
-      'mostovka', 'mostovkov', 'mostova deska', 'mostní deska', 'mostni deska',
-      'deska mostu', 'nosna konstrukce', 'nosná konstrukce', 'bridge deck',
-      'nosne tram', 'nosné trám', 'nosna konstr', 'nosná konstr',
-      'predpj bet', 'předpj bet', 'predpjat', 'předpjat',
-      'nosnik most', 'nosník most', 'podelny nosnik', 'podélný nosník',
-      'mostni svrsek', 'mostní svršek', 'superstructure',
-      'hlavni nosnik', 'hlavní nosník', 'komorovy nosnik', 'komorový nosník',
-      'deska nosne', 'deska nosné', 'nosna deska', 'nosná deska',
-      'мостов', 'мостовая плита', 'пролетное строение',
-    ],
-    priority: 10,
-  },
-  { element_type: 'rimsa', keywords: [
-    'rimsa', 'říms', 'rimsov', 'rimsova deska', 'římsová deska',
-    'zabradeln zid', 'zábradelní zíd', 'zabradel', 'zábradel',
-    'parapet', 'cornice', 'coping',
-    'римс', 'карниз',
-  ], priority: 10 },
-  { element_type: 'prechodova_deska', keywords: [
-    'prechodova deska', 'přechodová deska', 'prechodove desky', 'přechodové desky',
-    'prechodov', 'přechodov', 'transition slab', 'approach slab',
-  ], priority: 11 },
-  { element_type: 'mostni_zavirne_zidky', keywords: [
-    'zavirn', 'závěrn', 'zavirne zidky', 'závěrné zídky',
-    'zidka most', 'zídka most',
-    'closure wall', 'end wall',
-  ], priority: 9 },
-  { element_type: 'rigel', keywords: [
-    'pricnik', 'příčník', 'pricni', 'příčn',
-    'pricnik most', 'příčník most',
-    'rigel', 'ригель',
-    'hlavice pilir', 'hlavice pilíř', 'hlavic', 'pier cap', 'crossbeam',
-    'diafragm', 'diaphragm',
-  ], priority: 9 },
-  { element_type: 'zaklady_piliru', keywords: [
-    'zaklad pilir', 'základ pilíř', 'zaklady piliru', 'základy pilířů',
-    'zaklady', 'základy',
-    'pilotov zaklad', 'pilotový základ',
-    'zakladovy blok', 'základový blok', 'blok oper', 'blok opěr',
-    'plosny zaklad most', 'plošný základ most',
-    'фундамент опор', 'фундамент пилон',
-  ], priority: 10 },
-  // Phase 3 Gate 2a: zaklady_oper recognition. Higher priority than
-  // zaklady_piliru so "základ opěry" specifically matches zaklady_oper
-  // instead of falling through to the generic "základy" keyword. Other
-  // "opěr"-related keywords (e.g. "blok opěr") stay with zaklady_piliru
-  // to avoid changing existing classification behavior in this commit.
-  { element_type: 'zaklady_oper', keywords: [
-    'zaklad oper', 'základ opěr', 'zaklady oper', 'základy opěr',
-    'opera zaklad', 'opěra základ', 'opery zaklad', 'opěry základ',
-    'mostni opera zaklad', 'mostní opěra základ',
-    'zaklad mostni opery', 'základ mostní opěry',
-  ], priority: 11 },
-  { element_type: 'driky_piliru', keywords: [
-    'drik', 'dřík', 'driky pilir', 'dříky pilíř',
-    'pilir most', 'pilíř most',
-    'mostni pilir', 'mostní pilíř', 'mostni pilire', 'mostní pilíře',
-    'stativ', 'stativa',
-    'telo pilir', 'tělo pilíř', 'telo oper', 'tělo opěr',
-    'pier stem', 'pier shaft', 'pylon',
-    'тело опор', 'столб моста',
-  ], priority: 8 },
-  { element_type: 'operne_zdi', keywords: [
-    'opern', 'opěrn', 'operna zed', 'opěrná zeď',
-    'operne zdi most', 'opěrné zdi most',
-    // P0 BUG #1 fix (2026-05-14, SO-250 audit): zárubní zeď (cut/anchored
-    // retaining wall) is structurally the same family as opěrná zeď —
-    // engine should reach for the same vertical-wall formwork systems
-    // (TRIO/Framax) and difficulty_factor. Without these keywords the
-    // dřík of a zárubní zeď fell through to 'other' on a part_name that
-    // lacked the word "opěrná".
-    'zarubn', 'zárubn',
-    'zarubni zed', 'zárubní zeď',
-    'kotven zed', 'kotvená zeď',
-    'gabionov', 'gabion',
-    'retaining wall',
-    'подпорн стен',
-  ], priority: 8 },
-  { element_type: 'kridla_opery', keywords: [
-    'kridl', 'křídl', 'kridla', 'křídla', 'křídlo',
-    'wing wall', 'mostni kridl', 'mostní křídl',
-  ], priority: 9 },
-  { element_type: 'opery_ulozne_prahy', keywords: [
-    'opera', 'opěra', 'opery', 'opěry',
-    'ulozn', 'úložn', 'ulozne prah', 'úložné prah',
-    'prah', 'sedlo',
-    'mostni oper', 'mostní opěr', 'mostni opery', 'mostní opěry',
-    'abutment', 'bearing seat',
-  ], priority: 7 },
+/**
+ * Keyword rules sourced from the single KB artifact (TASK_2b Gate 2a):
+ * dictionaries.cs.keywords[type] = { include[], priority }. Built in declaration
+ * order (object key order = YAML order) so the scoring tiebreak (first rule wins
+ * on equal score+priority) matches the legacy inline table. `reject`-family types
+ * (zdivo_obklad) are NOT activated here — Gate 3 does that. The podkladní-beton
+ * reinforced-concrete exclusion stays inline in the scoring loop (algorithm, not
+ * a keyword list). The head-noun ALGORITHM is added as a pre-layer in Gate 2b.
+ */
+function buildKeywordRulesFromKB(): KeywordRule[] {
+  const cores = ELEMENT_CLASSIFICATION_RULES.type_core as Record<string, { family: string }>;
+  const rules: KeywordRule[] = [];
+  for (const [etype, kw] of Object.entries(ELEMENT_CLASSIFICATION_RULES.dictionaries.cs.keywords)) {
+    if (cores[etype]?.family === 'reject') continue; // reject family activated in Gate 3
+    rules.push({
+      element_type: etype as StructuralElementType,
+      keywords: [...kw.include],
+      priority: kw.priority,
+    });
+  }
+  return rules;
+}
 
-  // ─── Building elements ───
-  { element_type: 'stropni_deska', keywords: [
-    'stropni', 'stropní', 'strop', 'podlah', 'podlažní', 'floor slab',
-    'перекрыт', 'плита перекрыт', 'монолитн перекрыт',
-  ], priority: 7 },
-  { element_type: 'zakladova_deska', keywords: [
-    'zakladova deska', 'základová deska', 'zakladni deska', 'základní deska',
-    'foundation slab', 'фундаментн плит', 'фундаментн деск',
-  ], priority: 9 },
-  { element_type: 'zakladovy_pas', keywords: [
-    'zakladovy pas', 'základový pás', 'zakladove pasy', 'základové pásy',
-    'zaklady', 'základy',
-    'strip found', 'ленточн фундамент',
-  ], priority: 9 },
-  { element_type: 'zakladova_patka', keywords: [
-    'patka', 'patky', 'zakladova patka', 'základová patka', 'pad found',
-    'столбчат фундамент',
-  ], priority: 8 },
-  { element_type: 'stena', keywords: [
-    'stena', 'stěna', 'zed', 'zeď', 'jadro', 'jádro', 'core wall', 'shear wall',
-    'стена', 'монолитн стен', 'ядро жесткости',
-  ], priority: 6 },
-  { element_type: 'sloup', keywords: [
-    'sloup', 'pilir', 'pilíř', 'column', 'pillar',
-    'колонн', 'столб', 'пилон',
-  ], priority: 6 },
-  { element_type: 'pruvlak', keywords: [
-    'pruvlak', 'průvlak', 'tram', 'trám', 'beam', 'girder', 'preklad', 'překlad',
-    'nosnik', 'nosník',
-    'балк', 'прогон', 'ригель здан',
-  ], priority: 6 },
-  { element_type: 'schodiste', keywords: [
-    'schodist', 'schodiště', 'schody', 'staircase', 'stairs', 'stupne', 'stupně',
-    'лестниц',
-  ], priority: 8 },
-  { element_type: 'nadrz', keywords: [
-    'nadrz', 'nádrž', 'jimka', 'jímka', 'bazen', 'bazén', 'nadoba', 'nádoba',
-    'tank', 'reservoir', 'pool', 'vodojem',
-    'резервуар', 'ёмкость', 'бассейн', 'отстойник',
-  ], priority: 8 },
-  { element_type: 'podzemni_stena', keywords: [
-    'podzemni stena', 'podzemní stěna', 'milansk', 'milánsk', 'diaphragm wall',
-    'стена в грунт', 'милан',
-  ], priority: 9 },
-  { element_type: 'pilota', keywords: [
-    'pilota', 'piloty', 'mikropilot', 'vrtana pilota', 'vrtaná pilota', 'bored pile',
-    'свая', 'буронабивн',
-  ], priority: 8 },
-  // BUG 11: new element types
-  { element_type: 'podkladni_beton', keywords: [
-    'podkladni beton', 'podkladní beton', 'podklad beton', 'podbet',
-    'lean concrete', 'blinding',
-    // OTSKP forms: "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30"
-    'podkladni a vyplnove', 'podkladní a výplňové',
-    'vyplnove vrstvy', 'výplňové vrstvy',
-    'podkl vrst',  // abbreviated OTSKP "PODKL VRSTVY Z(E)..."
-  ], priority: 7 },
-  { element_type: 'podlozkovy_blok', keywords: [
-    'podlozkovy blok', 'podložiskový blok', 'podlozisk', 'podložisk',
-    'bearing block', 'bearing pad', 'loziskovy blok', 'ložiskový blok',
-    'blok pod lozisko', 'blok pod ložisko',
-  ], priority: 9 },
-];
+const KEYWORD_RULES: KeywordRule[] = buildKeywordRulesFromKB();
 
 /**
  * Normalize Czech text for keyword matching: lowercase + strip diacritics
@@ -822,23 +689,19 @@ function normalize(text: string): string {
 
 // ─── Main API ────────────────────────────────────────────────────────────────
 
-/** Bridge element types — get priority boost in bridge context */
-const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
-  'zaklady_piliru', 'zaklady_oper', 'driky_piliru', 'rimsa', 'operne_zdi',
-  'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'kridla_opery',
-  'mostni_zavirne_zidky', 'prechodova_deska',
-]);
+/** Bridge element types — priority boost in bridge context (KB-sourced, Gate 2a).
+ *  Membership = type_core[t].bridge_boost (faithful mirror of the legacy set —
+ *  distinct from the parity `family`). */
+const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>(
+  (Object.entries(ELEMENT_CLASSIFICATION_RULES.type_core) as [StructuralElementType, { bridge_boost?: boolean }][])
+    .filter(([, c]) => c.bridge_boost === true)
+    .map(([t]) => t),
+);
 
-/** Building element types that have bridge equivalents */
-const BRIDGE_EQUIVALENT: Partial<Record<StructuralElementType, StructuralElementType>> = {
-  sloup: 'driky_piliru',              // "pilíř" in bridge context = dříky pilířů, not sloup
-  zakladova_deska: 'zaklady_piliru',  // "základy" in bridge context = základy pilířů
-  zakladovy_pas: 'zaklady_piliru',
-  zakladova_patka: 'zaklady_piliru',  // "patky" in bridge context = základy pilířů
-  stropni_deska: 'mostovkova_deska',  // "deska" in bridge context = mostovková deska
-  pruvlak: 'rigel',                   // "trám/nosník" in bridge context = příčník
-  stena: 'operne_zdi',                // "stěna" in bridge context = opěrná zeď
-};
+/** Building types that upgrade to a bridge equivalent in bridge context
+ *  (KB-sourced from bridge_remap; e.g. sloup→driky_piliru, stěna→operne_zdi). */
+const BRIDGE_EQUIVALENT =
+  ELEMENT_CLASSIFICATION_RULES.bridge_remap as Partial<Record<StructuralElementType, StructuralElementType>>;
 
 /** Classification context — optional hints to improve accuracy */
 export interface ClassificationContext {

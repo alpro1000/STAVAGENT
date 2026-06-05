@@ -36,40 +36,71 @@ updated: "2026-06-05"
 
 # ── type_core — language-neutral ontology ───────────────────────────────────
 # orientation: horizontal | vertical | special
-# family: bridge | building | both | special | reject
-# bridge_remap: when set, this (building) type upgrades to the target in a real
-#   bridge context. w3_name: the equivalent W3 (Python) classifier type id.
+# family: COARSE parity family for the directed engine-fine → W3-coarse roll-up
+#   (TASK_2b Gate 2). Engine may be MORE precise than W3, but must never cross
+#   into a foreign family. By construction family == w3_family[w3_name].
+# bridge_boost: engine scoring flag — these types get the bridge-context priority
+#   boost (faithful mirror of the legacy BRIDGE_ELEMENT_TYPES set, NOT == family).
+# w3_name: the equivalent W3 (Python) classifier type id.
 type_core:
   # ─ bridge ─
-  zaklady_piliru:       { orientation: vertical,   family: bridge,   w3_name: zaklady_piliru }
-  zaklady_oper:         { orientation: vertical,   family: bridge,   w3_name: zaklady_piliru }
-  driky_piliru:         { orientation: vertical,   family: bridge,   w3_name: driky_piliru }
-  rimsa:                { orientation: horizontal, family: bridge,   w3_name: rimsa }
-  operne_zdi:           { orientation: vertical,   family: both,     w3_name: operna_zed }
-  mostovkova_deska:     { orientation: horizontal, family: bridge,   w3_name: mostovkova_deska }
-  rigel:                { orientation: vertical,   family: bridge,   w3_name: pricinik }
-  opery_ulozne_prahy:   { orientation: vertical,   family: bridge,   w3_name: opery_ulozne_prahy }
-  kridla_opery:         { orientation: vertical,   family: bridge,   w3_name: kridla_opery }
-  mostni_zavirne_zidky: { orientation: vertical,   family: bridge,   w3_name: opery_ulozne_prahy }
-  prechodova_deska:     { orientation: horizontal, family: bridge,   w3_name: prechodova_deska }
-  podkladni_beton:      { orientation: horizontal, family: special,  w3_name: jine }
-  podlozkovy_blok:      { orientation: horizontal, family: bridge,   w3_name: jine }
+  zaklady_piliru:       { orientation: vertical,   family: foundation, w3_name: zaklady_piliru,     bridge_boost: true }
+  zaklady_oper:         { orientation: vertical,   family: foundation, w3_name: zaklady_piliru,     bridge_boost: true }
+  driky_piliru:         { orientation: vertical,   family: pier,       w3_name: driky_piliru,       bridge_boost: true }
+  rimsa:                { orientation: horizontal, family: cornice,    w3_name: rimsa,              bridge_boost: true }
+  operne_zdi:           { orientation: vertical,   family: wall,       w3_name: operna_zed,         bridge_boost: true }
+  mostovkova_deska:     { orientation: horizontal, family: deck,       w3_name: mostovkova_deska,   bridge_boost: true }
+  rigel:                { orientation: vertical,   family: beam,       w3_name: pricinik,           bridge_boost: true }
+  opery_ulozne_prahy:   { orientation: vertical,   family: abutment,   w3_name: opery_ulozne_prahy, bridge_boost: true }
+  kridla_opery:         { orientation: vertical,   family: abutment,   w3_name: kridla_opery,       bridge_boost: true }
+  mostni_zavirne_zidky: { orientation: vertical,   family: abutment,   w3_name: opery_ulozne_prahy, bridge_boost: true }
+  prechodova_deska:     { orientation: horizontal, family: transition, w3_name: prechodova_deska,   bridge_boost: true }
+  podkladni_beton:      { orientation: horizontal, family: residual,   w3_name: jine }
+  podlozkovy_blok:      { orientation: horizontal, family: residual,   w3_name: jine }
   # ─ building ─
-  zakladova_deska:      { orientation: horizontal, family: building, w3_name: zakladova_deska, bridge_remap: zaklady_piliru }
-  zakladovy_pas:        { orientation: vertical,   family: building, w3_name: zaklady,         bridge_remap: zaklady_piliru }
-  zakladova_patka:      { orientation: vertical,   family: building, w3_name: zaklady_piliru,  bridge_remap: zaklady_piliru }
-  stropni_deska:        { orientation: horizontal, family: building, w3_name: deska,           bridge_remap: mostovkova_deska }
-  stena:                { orientation: vertical,   family: building, w3_name: stena,           bridge_remap: operne_zdi }
-  sloup:                { orientation: vertical,   family: building, w3_name: sloup,           bridge_remap: driky_piliru }
-  pruvlak:              { orientation: horizontal, family: building, w3_name: pruvlak,         bridge_remap: rigel }
-  schodiste:            { orientation: horizontal, family: building, w3_name: schodiste }
-  nadrz:                { orientation: vertical,   family: building, w3_name: nadrz }
-  podzemni_stena:       { orientation: vertical,   family: building, w3_name: stena }
-  pilota:               { orientation: vertical,   family: both,     w3_name: pilota }
+  zakladova_deska:      { orientation: horizontal, family: foundation, w3_name: zakladova_deska, bridge_remap: zaklady_piliru }
+  zakladovy_pas:        { orientation: vertical,   family: foundation, w3_name: zaklady,         bridge_remap: zaklady_piliru }
+  zakladova_patka:      { orientation: vertical,   family: foundation, w3_name: zaklady_piliru,  bridge_remap: zaklady_piliru }
+  stropni_deska:        { orientation: horizontal, family: slab,       w3_name: deska,           bridge_remap: mostovkova_deska }
+  stena:                { orientation: vertical,   family: wall,       w3_name: stena,           bridge_remap: operne_zdi }
+  sloup:                { orientation: vertical,   family: column,     w3_name: sloup,           bridge_remap: driky_piliru }
+  pruvlak:              { orientation: horizontal, family: beam,       w3_name: pruvlak,         bridge_remap: rigel }
+  schodiste:            { orientation: horizontal, family: stair,      w3_name: schodiste }
+  nadrz:                { orientation: vertical,   family: tank,       w3_name: nadrz }
+  podzemni_stena:       { orientation: vertical,   family: wall,       w3_name: stena }
+  pilota:               { orientation: vertical,   family: pile,       w3_name: pilota }
   # ─ residual ─
-  other:                { orientation: vertical,   family: special,  w3_name: jine }
+  other:                { orientation: vertical,   family: residual,   w3_name: jine }
   # ─ explicit reject (NOT a concrete structural element) — materialized in Gate 3 ─
-  zdivo_obklad:         { orientation: vertical,   family: reject,   w3_name: zdivo_obklad }
+  zdivo_obklad:         { orientation: vertical,   family: reject,     w3_name: zdivo_obklad }
+
+# ── w3_family — directed roll-up of W3 coarse types → parity family ─────────
+# W3 (Python) emits a coarser vocabulary than the engine. A W3-parity golden
+# asserts family(engine_output) == w3_family[w3_expected]. Fine-grain engine
+# distinctions (zakladovy_pas vs zaklady_piliru) are guarded by the engine's own
+# suite, NOT by W3 parity. Transitory: lives only until the MCP side delegates
+# typing to the engine. Invariant: type_core[t].family == w3_family[w3_name[t]].
+w3_family:
+  zaklady_piliru: foundation
+  zaklady: foundation
+  zakladova_deska: foundation
+  driky_piliru: pier
+  operna_zed: wall
+  stena: wall
+  mostovkova_deska: deck
+  deska: slab
+  rimsa: cornice
+  pricinik: beam
+  pruvlak: beam
+  opery_ulozne_prahy: abutment
+  kridla_opery: abutment
+  prechodova_deska: transition
+  sloup: column
+  schodiste: stair
+  nadrz: tank
+  pilota: pile
+  zdivo_obklad: reject
+  jine: residual
 
 # ── bridge_remap — neutral type→type in real bridge context ─────────────────
 # (mirrors the engine BRIDGE_EQUIVALENT table; also derivable from type_core.bridge_remap)
