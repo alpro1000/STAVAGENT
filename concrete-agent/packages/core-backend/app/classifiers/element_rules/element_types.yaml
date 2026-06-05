@@ -179,12 +179,13 @@ dictionaries:
           zaklad mostni opery, základ mostní opěry]
       driky_piliru:
         priority: 8
-        # NOTE: 'telo oper'/'tělo opěr' (abutment body) is intentionally LEFT
-        # here for Gate-1 faithfulness; Gate 4 removes it + adds the dřík/opěra
-        # suppression rule (this is the bug, preserved for now).
+        # Gate 4: 'telo oper'/'tělo opěr' (abutment body) REMOVED from the pier
+        # list — body/stem of an opěra is an abutment (opery_ulozne_prahy), not a
+        # pier. 'telo pilir' (pier body) stays. The dřík/opěra suppression lives
+        # in the head-noun normalizer (genitive-opěr ⇒ abutment).
         include: [drik, dřík, driky pilir, dříky pilíř, pilir most, pilíř most,
           mostni pilir, mostní pilíř, mostni pilire, mostní pilíře,
-          stativ, stativa, telo pilir, tělo pilíř, telo oper, tělo opěr,
+          stativ, stativa, telo pilir, tělo pilíř,
           pier stem, pier shaft, pylon, тело опор, столб моста]
       operne_zdi:
         priority: 8

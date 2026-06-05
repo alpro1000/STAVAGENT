@@ -20,6 +20,7 @@ matcher sees.
 
 Reference: docs/tasks/TASK_W3_NormalizeElementName_SO250.md §2, §3.
 """
+
 from __future__ import annotations
 
 import re
@@ -53,12 +54,12 @@ _EXISTING_STATUS = re.compile(
 # noun. Cut the name at the first such marker so the head NP remains (task §2).
 # Conservative, curated set (the task's own examples) to avoid over-stripping.
 _TAIL_MARKERS = re.compile(
-    r"\s+(?:z|ze)\s+\w"          # "z lomového kamene"
-    r"|\s+kotven\w*"              # "kotvený do dříku"
-    r"|\s+obložen\w*"            # "obložen lomovým kamenem"
-    r"|\s+vlepen\w*"             # "vlepenými kotvami"
-    r"|\s+pro\s+založen"         # "pro založení"
-    r"|\s+na\s+líci",            # "na líci"
+    r"\s+(?:z|ze)\s+\w"  # "z lomového kamene"
+    r"|\s+kotven\w*"  # "kotvený do dříku"
+    r"|\s+obložen\w*"  # "obložen lomovým kamenem"
+    r"|\s+vlepen\w*"  # "vlepenými kotvami"
+    r"|\s+pro\s+založen"  # "pro založení"
+    r"|\s+na\s+líci",  # "na líci"
     re.I,
 )
 
@@ -70,9 +71,11 @@ _DIMENSIONS = re.compile(r"\d+[\.,]?\d*\s*[x×]\s*\d+[\.,]?\d*|\b\d+[\.,]\d+\b")
 class NormalizedName:
     """Output of the normalization layer, consumed by the classifier."""
 
-    canonical_name: str          # string the rule table matches on
-    construction_context: Optional[str]  # 'bridge' | 'retaining_wall' | 'building' | None
-    status: str                  # 'nový' | 'stávající'
+    canonical_name: str  # string the rule table matches on
+    construction_context: Optional[
+        str
+    ]  # 'bridge' | 'retaining_wall' | 'building' | None
+    status: str  # 'nový' | 'stávající'
     original_name: str
     head_noun: Optional[str] = None  # canonical head, when one was resolved
 
@@ -143,6 +146,12 @@ def _canonical_head(core: str, context: Optional[str]) -> tuple[str, Optional[st
     # 3. 'Dřík' is context-sensitive (#63 vs #64):
     #    bridge/pier context → pier shaft; otherwise → retaining-wall stem.
     if re.search(r"dřík", low) and not re.search(r"pilíř", low):
+        # dřík OF an opěra (abutment stem): the genitive 'opěry' qualifier governs
+        # — same logic as the 'základ opěry' → zaklady_oper guard below. A
+        # co-occurring 'opěr' (and no pilíř) ⇒ abutment (úložný práh), NOT a pier,
+        # regardless of bridge context (an opěra IS a bridge element).
+        if re.search(r"opěr", low):
+            return "opěra úložný práh", "opěra"
         if context == "bridge":
             return "dřík pilíře", "dřík"
         return "opěrná zeď", "opěrná zeď"

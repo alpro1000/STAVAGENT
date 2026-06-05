@@ -77,6 +77,14 @@ export function normalizeElementName(name: string, context?: ConstructionContext
   //    "dříky pilířů" keeps flowing through the normal keyword path (and the
   //    engine's finer pilíř handling). A co-occurring opěr is left for Gate 4.
   if (/drik/.test(low) && !/pilir/.test(low)) {
+    // dřík OF an opěra (abutment stem): the genitive 'opěry' qualifier governs —
+    // same logic as the základ-guard ("základ opěry" stays zaklady_oper). A
+    // co-occurring 'opěr' (and no pilíř) ⇒ abutment, NOT a pier. Canonicalize to
+    // the abutment head so it matches opery_ulozne_prahy CONFIDENTLY (multiple
+    // keyword hits, no 'dřík' left → driky_piliru scores 0, no ambiguous near-tie).
+    if (/oper/.test(low)) {
+      return { canonical: 'opěra úložný práh', headFired: true, head: 'opěra' };
+    }
     return context === 'bridge'
       ? { canonical: 'dřík pilíře', headFired: true, head: 'dřík' }
       : { canonical: 'opěrná zeď', headFired: true, head: 'dřík' };

@@ -188,10 +188,20 @@ describe('W3 parity — GREEN at Gate 3 (reject + honest signal ladder)', () => 
   });
 });
 
-describe('W3 parity — RED targets (flip .fails → it at the owning gate)', () => {
-  // ── Gate 4 — dřík/opěra suppression ────────────────────────────────────────
-  it.fails('[Gate4] "Dřík opěry" is an abutment (opery_ulozne_prahy), not a pier', () => {
-    expect(classifyElement('Dřík opěry OP1', { is_bridge: true }).element_type)
-      .toBe('opery_ulozne_prahy');
+describe('W3 parity — GREEN at Gate 4 (dřík/opěra genitive suppression)', () => {
+  it('"Dřík opěry" is an abutment (opery_ulozne_prahy), not a pier — CONFIDENTLY', () => {
+    // Same genitive-opěry logic as the základ-guard: dřík + opěr (no pilíř) ⇒
+    // abutment. Must be a CONFIDENT result, not an ambiguous near-tie with pier.
+    const r = classifyElement('Dřík opěry OP1', { is_bridge: true });
+    expect(r.element_type).toBe('opery_ulozne_prahy');
+    expect(r.confidence).toBeGreaterThanOrEqual(0.9);
+    expect(r.candidates).toBeUndefined(); // no near-tie
+    // Holds without bridge context too (abutment doesn't depend on is_bridge).
+    expect(classifyElement('Dřík opěry OP1').element_type).toBe('opery_ulozne_prahy');
+  });
+  it('"Tělo opěry" (abutment body) → abutment now that telo_oper left the pier list', () => {
+    expect(classifyElement('Tělo opěry', { is_bridge: true }).element_type).toBe('opery_ulozne_prahy');
+    // "Tělo pilíře" (pier body) stays a pier — telo_pilir kept.
+    expect(classifyElement('Tělo pilíře', { is_bridge: true }).element_type).toBe('driky_piliru');
   });
 });
