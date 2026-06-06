@@ -7,6 +7,8 @@
 
 > Rule: a claim with no code anchor does not exist. If marketing wants to say it, it must point to a line here.
 
+> **CORRECTION 2026-06-06 (post-review):** The original sweep tiered **DWG/DXF ingestion as STUB** because it only inspected `app/parsers/`. That was wrong. A real, deployed DWG→DXF→extract pipeline lives in `app/services/uep/` (`dwg_extractor.py`, `dxf_extractor.py`, `registry.py:42,75`) + `app/infrastructure/dwg_converter.py` (LibreDWG `dwg2dxf`, installed in the deployed image via `concrete-agent/.../Dockerfile:43`), exposed over MCP as the **live** `uep_run_extraction` tool. DWG/DXF is **LIVE (best-effort)** — see §2. The live landing's "PDF, DWG" is therefore **substantiated, not an overclaim.** §4 and §7-item-1 corrected accordingly. Lesson: the UEP subsystem (`app/services/uep/`) was not in the original sweep scope.
+
 ---
 
 ## 1. Headline verdict
@@ -28,6 +30,7 @@ The product is **substantially more real than the docs claim in some places, and
 | **7-engine calculator pipeline** | LIVE | `pour-decision.ts`, `element-scheduler.ts`, `formwork-3phase`, `rebar-lite.ts`, `pour-task-engine.ts`, `lateral-pressure.ts`, `pile-engine.ts` | Each engine has its own test file. |
 | **Pile engine** | LIVE | `pile-engine.test.ts` (62 tests) | Productivity table Ø600/900/1200/1500 × geology × casing. |
 | **Element classifier (deterministic)** | LIVE | `app/mcp/tools/classifier.py` + `element_name_normalizer.py` (195 lines pure regex) | Keyword+OTSKP, no LLM in core. |
+| **DWG / DXF ingestion (UEP)** | LIVE (best-effort) | `app/services/uep/dwg_extractor.py`, `dxf_extractor.py` (ezdxf), `registry.py:42,75`; `app/infrastructure/dwg_converter.py` (LibreDWG `dwg2dxf`); `Dockerfile:43`; MCP `uep_run_extraction` | `.dwg`→DXF (ODA 0.95 / LibreDWG 0.80)→ezdxf extract; registered in base dispatch table, exposed live over MCP. Caveat: `dwg2dxf` install is best-effort in the image (`Dockerfile:43` `|| echo WARNING`); `uep_get_dwg_conversion_status` probes it at runtime. |
 | **Budget parsers: XLSX / XML(KROS) / PDF** | LIVE | `smart_parser.py` (399), `xlsx_komplet_parser.py` (201), `xlsx_rtsrozp_parser.py` (216), `kros_parser.py` (567), `pdf_parser.py` (313) | Substantial implementations, no stubs. |
 | **Workflow A (parse→audit→export)** | LIVE | `workflow_a.py` | 6-stage, caching, artifacts. |
 | **LLM chain Vertex→Gemini→Bedrock→Claude→GPT-4V→Perplexity** | LIVE | `gemini_client.py`, `bedrock_client.py`, `claude_client.py`, `gpt4_client.py`, `perplexity_client.py` | Vertex default (no key, ADC). |
@@ -45,7 +48,7 @@ The product is **substantially more real than the docs claim in some places, and
 | Resource ceiling "for 24 types" | BETA | `resource-ceiling.ts` (~231, `TODO Phase 3-7`) | Only **6 of 24** types have KB defaults (Group A). Say "Phase 2 — 6 foundational types; rest roadmapped." |
 | Workflow B (drawing → estimate) | BETA | `workflow_b.py` (`ENABLE_WORKFLOW_B=False` default) | Wired but disabled by default. Mark "Beta / early access." |
 | MSS (posuvná skruž) | BETA | `bridge-technology.ts` `calculateMSSCost/Schedule` | Code runs, but **no golden test against a real MSS project**. |
-| OCR for scanned PDFs (MinerU) | BETA | `core/mineru_client.py` exists, NOT wired into main parser chain | Scanned PDFs currently rely on pdfplumber only. |
+| OCR for scanned PDFs (MinerU) | BETA | UEP `pdf_tz_extractor.py:81-87` detects scanned PDFs → flags `ocr_required` (zero facts); MinerU service deployed on Cloud Run; auto-routing UEP→MinerU is "PR2 wiring" (operator-routed today) | Detection gate + deployed OCR service are real; the automatic hand-off is not yet end-to-end. "OCR on Cloud Run" as infra is true; "fully automatic OCR pipeline" is not. |
 | `find_urs_code` | BETA→LIVE | `app/mcp/tools/urs.py:19-83` | LIVE only if `PERPLEXITY_API_KEY` set; otherwise fails. |
 | SO-250 "tested" | BETA | classification tests only (`element-classifier.test.ts`) | NO orchestrator golden test (unlike SO-202/203). Don't equate with them. |
 
@@ -55,7 +58,7 @@ The product is **substantially more real than the docs claim in some places, and
 
 | Claim | Tier | Evidence |
 |---|---|---|
-| **DWG / DXF ingestion** | STUB | **NO DXF/DWG parser exists** in `app/parsers/`. Agent found zero implementation. ⚠️ The LIVE landing currently lists "PDF, DWG" as accepted upload formats (Klasifikátor module + workflow + FAQ) — this is the one real **overclaim on the live page**. |
+| ~~DWG / DXF ingestion~~ | ~~STUB~~ → **LIVE** | **RETRACTED — see §2.** Original sweep missed `app/services/uep/`. DWG/DXF is a live UEP pipeline. The landing's "PDF, DWG" is correct. |
 | "Offline ČSN standards database" | STUB | `search_czech_construction_norms` is Perplexity **web** search + small local KB, not a local norms DB. |
 | Phase 0a completeness-audit **enforcement** | STUB | Documented in CLAUDE.md as mandatory gate; no gate() enforcement found in code. |
 
@@ -84,7 +87,7 @@ Also note: README §3.2/§3.4 describes the analyzer as "PDF-to-structured-data 
 
 ## 7. Overclaim risk list (for any deck / copy review)
 
-1. **DWG upload** — live landing promises it; no parser. → Either remove "DWG" from accepted formats, or label it roadmap.
+1. ~~**DWG upload** — live landing promises it; no parser.~~ **RETRACTED** — DWG/DXF is a live UEP pipeline (§2). Keep "PDF, DWG" on the landing. (One residual nuance: `dwg2dxf` binary install is best-effort in the image; if it ever fails to install, `.dwg` uploads return `DWG_CONVERSION_FAILED` — operational, not a copy issue.)
 2. **"Resource ceiling for all elements"** — only 6/24. → Caveat.
 3. **"MinerU OCR pipeline"** — not wired. → Don't present as a live step.
 4. **README "10-minute scenario" step 1 (MinerU OCR)** — overstates the live path.

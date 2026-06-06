@@ -6,7 +6,7 @@
 **Scope:** Text-only reconciliation. **Binaries NOT edited** — this is an edit list for the author.
 **Method:** Text extracted from PPTX slide XML; each claim checked against a `file:line` code anchor.
 
-> Verdict: the deck is **strong and mostly true**. The core thesis (DECOMPOSE vs MATCH, deterministic-first, confidence per number, MCP-exposed) is fully backed by code. Six wording fixes below; one is HIGH (CAD/"Drawings" ingest), the rest are MEDIUM/LOW precision tightenings.
+> Verdict: the deck is **strong and mostly true**. The core thesis (DECOMPOSE vs MATCH, deterministic-first, confidence per number, MCP-exposed) is fully backed by code. After the DWG correction (B1 retracted, B2 downgraded), the real fixes are **commercial-maturity wording**, not capability overclaims: B3 KROS export, B4 residential KROS pricing, B5 subscription tiers (MEDIUM); B6/B7 (LOW). No HIGH-severity capability overclaim remains.
 
 ---
 
@@ -27,16 +27,11 @@
 
 ## B. Fixes required
 
-### B1 — HIGH — Slide 4, step "01 Ingest: Drawings, technical reports (TZ) and bills of quantities"
-**Problem:** "Drawings" implies CAD/DWG/DXF ingest. **No DXF/DWG parser exists** (`app/parsers/` — STUB, no code found). Same overclaim as the live landing's "PDF, DWG" upload promise.
-**Reality:** Live ingest = PDF (text via pdfplumber), Excel `výkaz výměr`, XML (KROS UNIXML import). OCR for scanned/drawing PDFs is BETA (MinerU not wired into the main chain).
-**Fix options:**
-- (a) Drop "Drawings": *"Technical reports (TZ) and bills of quantities (výkaz výměr), in PDF / Excel / XML."*
-- (b) Keep but mark roadmap: *"…and drawings (CAD ingest on the roadmap)."*
+### ~~B1 — Slide 4 "01 Ingest: Drawings"~~ — RETRACTED (claim is TRUE)
+**Original flag was wrong.** It rested on the capability-truth STUB finding for DWG, which was itself an error (sweep only looked at `app/parsers/`). DWG/DXF ingest IS live via UEP: `app/services/uep/dwg_extractor.py` + `dxf_extractor.py` + `registry.py:42,75`, DWG→DXF via LibreDWG (`app/infrastructure/dwg_converter.py`, `Dockerfile:43`), exposed over MCP (`uep_run_extraction`). **"Ingest: Drawings" is substantiated — no change.** (Residual nuance: `dwg2dxf` binary install is best-effort; operational, not a copy issue.)
 
-### B2 — MEDIUM — Slide 4, infra line "FastAPI + OCR on Cloud Run"
-**Problem:** Implies OCR is part of the live pipeline. The MinerU OCR service is deployed (`mineru_service`, Cloud Run europe-west1) but **not wired into the main parser chain** (`core/mineru_client.py` exists, unintegrated — BETA).
-**Fix:** Either remove "OCR" from the live-infra line, or footnote it as "OCR service (beta)". Safer: *"FastAPI on Cloud Run, Cloud SQL, Vertex AI."*
+### B2 — LOW (downgraded from MEDIUM) — Slide 4, infra line "FastAPI + OCR on Cloud Run"
+**Status:** Largely TRUE. MinerU OCR is deployed on Cloud Run; UEP's `pdf_tz_extractor.py:81-87` detects scanned PDFs and flags `ocr_required`. The only gap is that the automatic UEP→MinerU hand-off is still "PR2 wiring" (operator-routed today). "OCR on Cloud Run" as **infrastructure** is accurate; just don't imply a fully-automatic OCR pipeline elsewhere. **No change required** (optional: footnote OCR auto-routing as "in progress").
 
 ### B3 — MEDIUM — Slide 4, step "04 Price & export: … export to Excel / KROS"
 **Problem:** Live productized export is **Excel / CSV** (matches landing). For KROS there is a UNIXML **importer** (`app/services/uep/unixml_extractor.py:122` — *reads* KROS) and a one-off pilot script that *wrote* UNIXML (Žihle `soupis_praci_FINAL.xml`). No live in-app "export to KROS" button found.
@@ -61,5 +56,5 @@
 ## C. RU deck note
 `STAVAGENT_Deck_RU.pdf` mirrors the EN claims — apply B1–B5 to the matching RU slides.
 
-## D. Cross-link: live landing has the same B1 issue
-The live landing (`stavagent-portal/frontend/src/pages/LandingPage.tsx`) lists "PDF, DWG" as accepted upload formats (Klasifikátor module + workflow + FAQ). Same DWG/CAD overclaim as deck B1 — fix both together. (See capability_truth.md §4.)
+## D. Cross-link: live landing "PDF, DWG" is CORRECT
+~~Same DWG/CAD overclaim as deck B1.~~ **RETRACTED.** The live landing's "PDF, DWG" (`LandingPage.tsx` Klasifikátor module + workflow + FAQ) is substantiated by the live UEP DWG pipeline. **Do not remove it.** (See capability_truth.md §2 + the CORRECTION banner.)
