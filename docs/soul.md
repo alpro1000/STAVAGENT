@@ -351,6 +351,13 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-06 — Session: Knowledge-architecture audit + governance remediation (Phase 0/1/2)
+**Rozhodnuto:** Audit governance/rules/memory vrstvy (odlišná osa od domain-KB `knowledge_audit/`). Report → `docs/audits/knowledge_architecture/2026-06-06_*.md`. Remediation v phasích: **P0** C1 (steering layout přepsán na skutečný monorepo — `structure.md` v2.0 + `tech.md`), C6 (Monolit dvojí CLAUDE → jeden canonical `CLAUDE.md`, stale Render verze do archivu), C5 (settings.json — rozlišeny user-global vs repo permissions). **P1** C2/C3/C4 (DB jména, MCP URL, AI-tier/kredity), C9 (soul §2 v4.24→v4.34), C10 (husky 34→61 testů), C7/C8 (concrete-agent patterns 40→49 + date), D1 (CALCULATOR_PHILOSOPHY ×3 → 1 canon domain.md §1 + stuby). **P2** archiv 14 dead SESSION_/WEEK_ logů, nový `docs/steering/context-index.md` (3-tier mapa), per-service CLAUDE stuby (portal/URS/registry/registry-backend/mineru).
+**Nálezy:** Domain-KB osa zdravá (kb/ codegen + drift-guard). Governance osa měla 11 rozporů (2 HIGH) — kořen: **chybí drift-check governance↔realita** (na rozdíl od `gen:knowledge:check`).
+**Odmítnuto:** Těžký context-router (anti-bloat). Merge stale Render obsahu do canonical (archivován místo toho).
+**Otevřené otázky:** effort "high vs max" (sjednoceno na high-default); fyzický přesun `docs/normy/`→KB B7 (gated, neřešeno).
+**Co dál:** **Phase 3 (po Cemex):** drift-guard governance↔realita + trigger update steering/soul §2 + rozhodnutí o SessionStart hooku. Formula testy 61/61 green. Žádný PR (no-PR-unless-asked).
+
 ## 2026-06-05 — Session: SO202 corpus — Core Engine recon (RECON ONLY)
 
 **Rozhodnuto:**
