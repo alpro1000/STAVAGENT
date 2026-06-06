@@ -17,6 +17,8 @@ Před JAKOUKOLIV prací přečti v tomto pořadí:
 5. `docs/steering/domain.md` — construction rules, OTSKP/ÚRS, skruž, rebar matrix
 6. `docs/soul.md` — aktuální stav, recent decisions, session log
 
+**Mapa kontextu (co číst kdy, 3 tiery):** [`docs/steering/context-index.md`](docs/steering/context-index.md) — lehký index governance/domain/project vrstev + per-service CLAUDE soubory.
+
 Pokud kterýkoliv soubor chybí nebo je outdated → **STOP** a informuj Alexandra.
 
 Po session **POVINNĚ** přidej entry do `docs/soul.md` §9 (Session log):
@@ -59,7 +61,7 @@ steering vyhrává a skill se znovu distilluje. Viz
 >
 > **Changelog — v4.27.0 (2026-05-03 — Gate 2 closed, PR #<TBD>):** Element classification correctness across all 24 element types via Option W architectural principle. Phase 1 golden test framework (`Monolit-Planner/shared/src/calculators/golden-so202.test.ts` + `golden-vp4-forestina.test.ts` Vitest fixtures, 11 tests baseline pre-Gap-8). Phase 2 Gap #8 RESOLVED — Top 50 + VARIOKIT HD 200 reclassified per canonical §9.1 / §9.2: Top 50 → `pour_role: 'formwork'` + `formwork_subtype: 'nosnikove'` (Vrstva 1 — kontaktní povrch); VARIOKIT HD 200 → `pour_role: 'formwork_beam'` (NEW enum, Vrstva 2 — horizontální nosníky). `PourRole` union expanded; `FormworkSubtype` type alias added (`'ramove' | 'nosnikove' | 'stropni' | 'beam'`). 4 atomic commits (`6d2784f` types + `b60d24d` Top 50 + `b2fc701` VARIOKIT HD + `0ccc371` Re-Snapshot docs). Phase 3 Mostní (10 typů) — added `zaklady_oper` element type (Option α literal parallel pattern, `78d5dd9`); applied **Option W principle** (canonical `recommended_formwork[0]` over algorithmic optimization) to horizontal selector (`06f744a`) + vertical selector with DIN 18218 pressure-filter safety preserved (`18f36da`); 6-test verification regression net (`6849c45`). Phase 4 Pozemní (13 typů) — single regression net commit (`86b9a4e`, 12 tests) — pre-emption pattern proven: all elements auto-fixed by Option W extension, no further code changes. Phase 5 closeout (audit corrections + migration plan + this entry + `next-session.md` + PR creation, 5 commits). 11 commits on `gate-2-element-classification` branch. **1036 tests passing** (was 1002 baseline pre-Gate-2, +34 new across phases). 4 golden test fixtures automated. **16 stop-and-ask instances** during Gate 1 + Gate 2 implementation — pattern principle: investigative thinking before code = vastly fewer broken commits. References: `Monolit-Planner/docs/AUDIT_Podpera_Terminologie.md` (Gap #8 RESOLVED, Section 0 + A.3 + C.3), `Monolit-Planner/docs/MIGRATION_PLAN_GATE2_TO_GATE4.md` (Phase 1-4 DONE markers + Section 5b architectural insights + Section 5d carry-forward to Gate 3 / Gate 4 / Gate 7), `docs/CALCULATOR_PHILOSOPHY.md` (unchanged), canonical doc `Section 9` (unchanged, cleanup deferred to Gate 7).
 >
-> **Changelog — v4.26.0 (2026-04-29):** Cost-optimization sweep cut projected GCP burn ~$70–90/mo: Cloud SQL `availabilityType` REGIONAL→ZONAL, `concrete-agent` min-instances 1→0 (in-memory KB cache lost on cold start, accepted), Cloud Run old-revision cleanup across 6 services, Artifact Registry cleanup policy `keep-last-5 + delete >30d` applied (~663 GB → expected 30–80 GB), Cloud Logging `_Default` retention 30→7 d. Registry classification round-trip via `services/classificationCodec.ts` repurposes the previously-idle `registry_items.sync_metadata TEXT` column to ship 16 classifier fields (rowRole, parentItemId, sectionId, popisDetail, `_rawCells`, originalTyp, classification confidence/source, source_format/row_index, por, cenovaSoustava, varianta, …) without a DB migration; pull side `applyClassificationBlob` re-hydrates `ParsedItem`. `App.tsx loadFromPortal` dedupe also matches by `portalLink.portalProjectId` (fixes duplicate import on Portal-linked projects). Ribbon feature flag retired — `ribbonFeatureFlag.ts` + `RibbonFlagToggle.tsx` deleted, `App.tsx` shrunk 1517→871 lines, `RibbonLayout` always mounted. Portal "Stáhnout z Registru" kiosk-row button removed (was 401 + no-op `sheets:[]` push to a PUSH endpoint); monolit's analogous button got missing `authHeader()` for free. Cloud Build pipeline confirmed healthy (false-alarm "trigger broken" from prior session resolved). Outstanding: `VITE_DISABLE_AUTH=true` still set in Portal Vercel Production — must flip + redeploy. Spec + follow-ups in `docs/SESSION_HANDOFF_2026_04_29.md` + `docs/SYNC_AUDIT_2026_04_29.md`.
+> **Changelog — v4.26.0 (2026-04-29):** Cost-optimization sweep cut projected GCP burn ~$70–90/mo: Cloud SQL `availabilityType` REGIONAL→ZONAL, `concrete-agent` min-instances 1→0 (in-memory KB cache lost on cold start, accepted), Cloud Run old-revision cleanup across 6 services, Artifact Registry cleanup policy `keep-last-5 + delete >30d` applied (~663 GB → expected 30–80 GB), Cloud Logging `_Default` retention 30→7 d. Registry classification round-trip via `services/classificationCodec.ts` repurposes the previously-idle `registry_items.sync_metadata TEXT` column to ship 16 classifier fields (rowRole, parentItemId, sectionId, popisDetail, `_rawCells`, originalTyp, classification confidence/source, source_format/row_index, por, cenovaSoustava, varianta, …) without a DB migration; pull side `applyClassificationBlob` re-hydrates `ParsedItem`. `App.tsx loadFromPortal` dedupe also matches by `portalLink.portalProjectId` (fixes duplicate import on Portal-linked projects). Ribbon feature flag retired — `ribbonFeatureFlag.ts` + `RibbonFlagToggle.tsx` deleted, `App.tsx` shrunk 1517→871 lines, `RibbonLayout` always mounted. Portal "Stáhnout z Registru" kiosk-row button removed (was 401 + no-op `sheets:[]` push to a PUSH endpoint); monolit's analogous button got missing `authHeader()` for free. Cloud Build pipeline confirmed healthy (false-alarm "trigger broken" from prior session resolved). Outstanding: `VITE_DISABLE_AUTH=true` still set in Portal Vercel Production — must flip + redeploy. Spec + follow-ups in `docs/archive/completed-sessions/SESSION_HANDOFF_2026_04_29.md` + `docs/SYNC_AUDIT_2026_04_29.md`.
 >
 > **Changelog — v4.25.0 (2026-04-23):** Registry row classifier v1.1 rewrite shipped in two merges (PR #1006 core module + PR #1008/#1009 integration, twin-merge auto-dedup). Universal column auto-detection replaces 3-format gate; Typ-column fast-path + content-heuristic fallback. 87 vitest tests added (first tests in rozpocet-registry) covering all 13 edge cases from `docs/ROW_CLASSIFICATION_ALGORITHM.md` v1.1. Integration verified on 3 real fixtures: 482 mains + 2097 subs + 70 sections + 0 orphans across 2649 classified items. New "Překlasifikovat" button in ItemsTable toolbar reconstructs from per-item `_rawCells` preserved at import. Spec + follow-ups in `rozpocet-registry/docs/ROW_CLASSIFICATION_ALGORITHM.md` + `TASK_ClassifierRewrite.md` + `next-session.md` §14-17.
 >
@@ -137,13 +139,13 @@ STAVAGENT/
 
 | Service | URL | Custom Domain |
 |---------|-----|---------------|
-| concrete-agent (CORE) | concrete-agent-1086027517695.europe-west3.run.app | — |
-| portal backend | stavagent-portal-backend-1086027517695.europe-west3.run.app | — |
+| concrete-agent (CORE) | concrete-agent-3uxelthc4q-ey.a.run.app | — |
+| portal backend | stavagent-portal-backend-3uxelthc4q-ey.a.run.app | — |
 | portal frontend | www.stavagent.cz | www.stavagent.cz |
-| Kalkulátor betonáže — backend (Monolit-Planner repo) | monolit-planner-api-1086027517695.europe-west3.run.app | — |
+| Kalkulátor betonáže — backend (Monolit-Planner repo) | monolit-planner-api-3uxelthc4q-ey.a.run.app | — |
 | Kalkulátor betonáže — frontend (Monolit-Planner repo) | monolit-planner-frontend.vercel.app | **kalkulator.stavagent.cz** |
-| Klasifikátor (URS_MATCHER_SERVICE repo) | urs-matcher-service-1086027517695.europe-west3.run.app | **klasifikator.stavagent.cz** |
-| Registry backend | rozpocet-registry-backend-1086027517695.europe-west3.run.app | — |
+| Klasifikátor (URS_MATCHER_SERVICE repo) | urs-matcher-service-3uxelthc4q-ey.a.run.app | **klasifikator.stavagent.cz** |
+| Registry backend | rozpocet-registry-backend-3uxelthc4q-ey.a.run.app | — |
 | Registry frontend | stavagent-backend-ktwx.vercel.app | **registry.stavagent.cz** |
 
 **DB:** Cloud SQL PostgreSQL 15 (`stavagent-db`): `stavagent_portal`, `monolit_planner`, `rozpocet_registry`
@@ -153,7 +155,7 @@ STAVAGENT/
 |-------------|--------|------|--------|
 | Vertex AI Gemini (primary) | `gemini-2.5-flash` (default), `gemini-2.5-pro` (heavy) | ADC | $1,000 GCP |
 | Perplexity AI | sonar (web-search) | `PPLX_API_KEY` in GCP SM | $5,000 |
-| AWS Bedrock (us-east-1) | Claude 3 Haiku/Sonnet/Opus | GCP SM secrets | $20 + $84 Free Tier |
+| AWS Bedrock (us-east-1) | Claude 3 Haiku (deployed: `anthropic.claude-3-haiku-20240307-v1:0` per cloudbuild `BEDROCK_MODEL_ID`; catalog: Haiku/Sonnet/Opus) | GCP SM secrets | $20 + $84 Free Tier |
 
 **Note:** `gemini-2.5-flash-lite` returns 404 in europe-west3. Use `gemini-2.5-flash`.
 
@@ -317,7 +319,7 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 
 **Commits:** `FEAT:`, `FIX:`, `REFACTOR:`, `DOCS:`, `STYLE:`, `TEST:`, `WIP:`
 **Branches:** `claude/<task-description>-<random5chars>`
-**Git Hooks (Husky):** Pre-commit: 34 formula tests (~470ms). Pre-push: branch + tests.
+**Git Hooks (Husky):** Pre-commit: 61 formula tests (~470ms, `Monolit-Planner/shared/src/formulas.test.ts`). Pre-push: branch + tests.
 
 **Karpathy rules (anti-bloat):**
 - Pokud lze 200 řádků napsat za 50 — napiš za 50.
@@ -341,7 +343,9 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 4. Если не уверен в имени файла, SHA, API или пакете — ПРОВЕРЬ через Grep / Glob / Read. Никогда не фабрикуй пути, коммиты, имена.
 5. Для STAVAGENT (1500+ commits, 24 element types, 7 engines) поверхностный анализ = баги в проде. Думай глубоко.
 
-**Reference settings.json (user owns this file, не Claude Code):**
+**Два разных файла настроек — не путать:**
+
+1. **`~/.claude/settings.json`** (user-global, НЕ в репо, user owns it) — effort + env:
 ```json
 {
   "effortLevel": "high",
@@ -352,6 +356,8 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 }
 ```
 > ⚠️ Эти ключи не верифицированы против актуальной Claude Code docs — если харнес их игнорирует, проверь `/help` или попроси Claude настроить SessionStart hook вместо этого.
+
+2. **`.claude/settings.json`** (committed в репо) — **только `permissions`** (allow/deny). Сейчас: allow = read-only GitHub MCP; deny = чтение `test-data/**`, KB JSON/XML, `docs/normy/**.pdf`, OTSKP xml, URS CSV (защита контекста от больших data-файлов). Здесь **нет** `effortLevel`/`env` — они в user-global файле выше.
 
 ## 📋 Workflow discipline (Spec-Driven Development)
 
@@ -463,11 +469,11 @@ DATABASE_URL=postgresql+asyncpg://...
 MULTI_ROLE_LLM=gemini
 GEMINI_MODEL=gemini-2.5-flash
 # Monolit-Planner
-VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
+VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
 JWT_SECRET=<same as Portal>
 # URS_MATCHER_SERVICE
-STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 LLM_TIMEOUT_MS=90000
 # stavagent-portal
 VITE_DISABLE_AUTH=true  # local dev only
@@ -573,4 +579,4 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 
 ---
 
-**Per-service docs:** `concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.MD`, `docs/STAVAGENT_CONTRACT.md`
+**Per-service docs:** `concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.md`, `docs/STAVAGENT_CONTRACT.md`

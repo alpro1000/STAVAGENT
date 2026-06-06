@@ -150,7 +150,7 @@ NODE_ENV = production
 
 ### 6.1 Health Check
 ```bash
-curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
+curl https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/health
 ```
 
 Ответ:
@@ -160,14 +160,14 @@ curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
 
 ### 6.2 Создать тестовый проект
 ```bash
-curl -X POST https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/api/registry/projects \
+curl -X POST https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/api/registry/projects \
   -H "Content-Type: application/json" \
   -d '{"project_name":"Test Project","user_id":1}'
 ```
 
 ### 6.3 Получить проекты
 ```bash
-curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/api/registry/projects?user_id=1
+curl https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/api/registry/projects?user_id=1
 ```
 
 ---

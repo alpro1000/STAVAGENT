@@ -338,7 +338,7 @@ If you see `⚠️  MCP routes not mounted: ...` instead: a startup error in `ap
 All eight target the production URL. Save the output of #3 (the `client_id` + `client_secret`) for #4.
 
 ```bash
-SVC="https://concrete-agent-1086027517695.europe-west3.run.app"
+SVC="https://concrete-agent-3uxelthc4q-ey.a.run.app"
 ```
 
 ### 6.1 — Service health
@@ -506,7 +506,7 @@ This proves the brokered flow works through a real Anthropic Connectors-Director
 2. If a previous STAVAGENT connector exists: click **Remove**. Confirm.
 3. Click **Add Connector** → paste URL:
    ```
-   https://concrete-agent-1086027517695.europe-west3.run.app/mcp
+   https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp
    ```
 4. **Do NOT click "Advanced settings"** — the whole point of DCR is that
    claude.ai broker registers itself; you should not be asked for a

@@ -100,9 +100,9 @@ Each position has unique identity across kiosks:
 
 1. `UNIFIED_ARCHITECTURE_IMPLEMENTATION_PLAN.md` - 12-week plan
 2. `docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md` - Quick summary
-3. `docs/WEEK_1_PROGRESS.md` - Week 1 details
-4. `docs/WEEK_2_PROGRESS.md` - Week 2 details
-5. `docs/WEEK_3_PROGRESS.md` - Week 3 details
+3. `docs/archive/completed-sessions/WEEK_1_PROGRESS.md` - Week 1 details
+4. `docs/archive/completed-sessions/WEEK_2_PROGRESS.md` - Week 2 details
+5. `docs/archive/completed-sessions/WEEK_3_PROGRESS.md` - Week 3 details
 6. `docs/WEEK_4_SUMMARY.md` - This document
 7. `PR_DESCRIPTION_UNIFIED_REGISTRY_FOUNDATION.md` - PR description
 

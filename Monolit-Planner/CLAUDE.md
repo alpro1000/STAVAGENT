@@ -75,9 +75,10 @@ monolit-planner/
 │   └── package.json
 │
 ├── render.yaml                       ← Legacy deployment config (не используется)
-├── CLAUDE.MD                         ← 📄 AI Context Document (this file)
+├── CLAUDE.md                         ← 📄 AI Context Document (this file)
 ├── DEVELOPMENT_PLAN.md               ← 🚀 Strategic Development Plan (NEW!)
-├── claude.md                         ← Session logs
+│   (legacy lowercase `claude.md` — staré session logy v4.3.3/Render —
+│    archivován do docs/archive/legacy/, viz též docs/SESSIONS_ARCHIVE.md)
 ├── README.md
 └── .gitignore
 ```
@@ -531,7 +532,7 @@ monolit-planner/
 ├── shared/           ← Общие типы и формулы
 ├── render.yaml       ← Legacy конфиг (не используется)
 ├── DEPLOY.md         ← Инструкции
-├── CLAUDE.MD         ← ⭐ ЭТОТ ФАЙЛ (для AI)
+├── CLAUDE.md         ← ⭐ ЭТОТ ФАЙЛ (для AI)
 └── README.md         ← Пользовательская документация
 ```
 
@@ -911,7 +912,7 @@ cd backend && npm start
 3. Docker image → Artifact Registry → Cloud Run deploy
 
 URLs:
-- Backend: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+- Backend: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
 - Frontend: `https://monolit-planner-frontend.vercel.app`
 - Trigger: `gcloud builds triggers import --source=triggers/monolit.yaml --region=europe-west3`
 
