@@ -47,10 +47,10 @@
 
 | Kiosk | URL | Repo path | Status |
 |---|---|---|---|
-| Portal | `stavagent.cz` | `apps/portal` | beta |
-| Registr | `registry.stavagent.cz` | `apps/registry` | v4.24 produkce |
-| Kalkulátor | `kalkulator.stavagent.cz` | `apps/monolit-planner` | v4.24 produkce |
-| Klasifikátor | `klasifikator.stavagent.cz` | `apps/klasifikator` | produkce |
+| Portal | `stavagent.cz` | `stavagent-portal/` | beta |
+| Registr | `registry.stavagent.cz` | `rozpocet-registry/` (+ `rozpocet-registry-backend/`) | v4.24 produkce |
+| Kalkulátor | `kalkulator.stavagent.cz` | `Monolit-Planner/` (`shared/`+`backend/`+`frontend/`) | v4.24 produkce |
+| Klasifikátor | `klasifikator.stavagent.cz` | `URS_MATCHER_SERVICE/` | produkce |
 
 **Stack:**
 - TypeScript, React 19, Vite
@@ -67,12 +67,12 @@
 
 ### 3.1 Core Engine
 
-- **Repo:** `alpro1000/STAVAGENT` (root, `app/` dir)
+- **Repo path:** `concrete-agent/packages/core-backend/` (monorepo, **ne** root `app/`)
 - **Framework:** FastAPI (Python 3.11)
 - **Region:** `europe-west3` (Frankfurt — EU data residency)
-- **Deploy:** Cloud Build trigger `cloudbuild-portal.yaml` (branch `^main$`)
+- **Deploy:** Cloud Build trigger `cloudbuild-concrete.yaml` (branch `^main$`)
 - **Container:** Docker
-- **Knowledge base struktura:** `app/knowledge_base/B0_sources/`, `B1_otksp/`, ..., `B9_validation/` (viz `docs/steering/domain.md`)
+- **Knowledge base struktura:** `concrete-agent/packages/core-backend/app/knowledge_base/B0_sources/`, `B1_*/`, ..., `B13_*/` (viz `docs/steering/domain.md`)
 
 ### 3.2 MinerU OCR Service
 
@@ -104,8 +104,8 @@
 
 ### 4.2 Local (knowledge)
 
-- **OTSKP SQLite:** `app/knowledge_base/B1_otksp/otskp.db` (17 904 položek)
-- **URS local cache (P0 roadmap):** `catalogs/urs_local_cache.jsonl` — 6-8K stažených ÚRS položek, 10× speedup vs HTTP
+- **OTSKP SQLite:** `concrete-agent/packages/core-backend/app/knowledge_base/B1_*/otskp.db` (17 904 položek)
+- **URS local cache (P0 roadmap, zatím neexistuje):** plánovaný local cache 6-8K stažených ÚRS položek, 10× speedup vs HTTP
 
 ### 4.3 Co se **NEPOUŽÍVÁ**
 
@@ -329,3 +329,4 @@ Pokud v repu **různá konvence** — sjednotit podle většiny.
 | Date | Version | Notes |
 |---|---|---|
 | 19.05.2026 | 1.0 | Initial steering, synthesized from Project_Knowledge_Snapshot.md §3-4 + Master_Brief.md §1.4 + recent updates v userMemories |
+| 06.06.2026 | 1.1 | **C1 fix** (knowledge-architecture audit): §2 repo-path sloupec + §3.1 Core path/deploy + §3.1/§4.2 KB path opraveny z fiktivního `app/`+`apps/` na skutečný monorepo (`concrete-agent/packages/core-backend/…` + per-service složky). Core deploy trigger opraven `cloudbuild-portal.yaml`→`cloudbuild-concrete.yaml`. (DB jména §4.1, MCP URL §7, AI-tier kredity §5 → Phase 1.) |
