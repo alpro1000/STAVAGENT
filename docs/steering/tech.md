@@ -97,8 +97,8 @@
 - **Cloud SQL PostgreSQL** (region `europe-west3`)
 - **DB names:**
   - `stavagent_portal` — auth, projekty, billing
-  - `stavagent_registry` — Registr workshop data
-  - `stavagent_calculator` — Kalkulátor sessions
+  - `rozpocet_registry` — Registr workshop data
+  - `monolit_planner` — Kalkulátor sessions
 - **Připojení:** Private VPC, Cloud SQL Proxy
 - **Backup:** automatic daily, retention 7 dní
 
@@ -130,8 +130,8 @@
 
 ### 5.2 Tier 2 — AWS Bedrock (fallback)
 
-- **Model:** Claude Sonnet 4
-- **Credit:** $1,000 (AWS Activate)
+- **Model:** Claude 3 Haiku/Sonnet/Opus (region `us-east-1`, secrets v GCP SM)
+- **Credit:** $20 + $84 Free Tier (Vertex/GCP credit $1 000 patří Tier 1, ne sem)
 - **Použití:** Když Vertex selže nebo potřeba větší kontext
 
 ### 5.3 Tier 3 — Perplexity (norms research)
@@ -152,11 +152,10 @@
 
 **Pravidlo:** Data s vyšším confidence **se nepřepisují** daty s nižším.
 
-### 5.5 Co se **NEPOUŽÍVÁ** v AI tier
+### 5.5 AI tier — co NENÍ primary
 
-- ❌ OpenAI GPT-4 (drahé, EU data residency horší)
 - ❌ Self-hosted LLM (provozní overhead nevybalancovaný benefitem)
-- ❌ Direct Anthropic API (jdeme přes Bedrock kvůli enterprise credits)
+- ⚠️ OpenAI a direct Anthropic/Claude API **nejsou primary** — vyhýbat se kde to jde (cena, EU data residency). **Ale**: v Core LLM chainu existují jako poslední fallback. Skutečný řetězec (root CLAUDE.md): **Vertex AI → Bedrock → Gemini API → Claude API → OpenAI**.
 
 ---
 
@@ -177,7 +176,7 @@
 
 ## 7. MCP Server (agentic interface)
 
-- **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp`
+- **URL:** `https://concrete-agent-1086027517695.europe-west3.run.app/mcp` (kanonická forma dle root CLAUDE.md; `…-3uxelthc4q-ey.a.run.app` je ekvivalentní Cloud Run alias)
 - **Verze:** v1.0 live
 - **Tools:** 9 (2 free + 7 paid 1-20 credits)
   - `find_otskp_code` (free)
@@ -340,3 +339,4 @@ Obsahuje **pouze `permissions`** (allow/deny) — žádný `effortLevel`/`env`:
 | 19.05.2026 | 1.0 | Initial steering, synthesized from Project_Knowledge_Snapshot.md §3-4 + Master_Brief.md §1.4 + recent updates v userMemories |
 | 06.06.2026 | 1.1 | **C1 fix** (knowledge-architecture audit): §2 repo-path sloupec + §3.1 Core path/deploy + §3.1/§4.2 KB path opraveny z fiktivního `app/`+`apps/` na skutečný monorepo (`concrete-agent/packages/core-backend/…` + per-service složky). Core deploy trigger opraven `cloudbuild-portal.yaml`→`cloudbuild-concrete.yaml`. (DB jména §4.1, MCP URL §7, AI-tier kredity §5 → Phase 1.) |
 | 06.06.2026 | 1.2 | **C5 fix**: §13 přepsán — rozlišeny dva soubory: user-global `~/.claude/settings.json` (effort/env) vs committed `.claude/settings.json` (jen `permissions`). Env klíč sjednocen `AUTO_COMPACT_WINDOW`→`CLAUDE_CODE_AUTO_COMPACT_WINDOW` (shoda s root CLAUDE.md). |
+| 06.06.2026 | 1.3 | **C2/C3/C4 fix** (Phase 1): §4.1 DB jména `stavagent_registry`→`rozpocet_registry`, `stavagent_calculator`→`monolit_planner` (shoda s realitou + root CLAUDE.md). §7 MCP URL sjednoceno na `…-1086027517695.europe-west3.run.app` formu. §5.2 Bedrock model/kredit opraven (Claude 3 H/S/O, $20+$84; $1 000 patří Vertexu). §5.5 absolutní "NEPOUŽÍVÁ OpenAI/Anthropic" → "ne primary, deep fallback v Core chainu". |

@@ -317,7 +317,7 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 
 **Commits:** `FEAT:`, `FIX:`, `REFACTOR:`, `DOCS:`, `STYLE:`, `TEST:`, `WIP:`
 **Branches:** `claude/<task-description>-<random5chars>`
-**Git Hooks (Husky):** Pre-commit: 34 formula tests (~470ms). Pre-push: branch + tests.
+**Git Hooks (Husky):** Pre-commit: 61 formula tests (~470ms, `Monolit-Planner/shared/src/formulas.test.ts`). Pre-push: branch + tests.
 
 **Karpathy rules (anti-bloat):**
 - Pokud lze 200 řádků napsat za 50 — napiš za 50.

@@ -21,11 +21,14 @@
 
 ---
 
-## 2. Current state snapshot (19.05.2026)
+## 2. Current state snapshot (06.06.2026)
+
+> ⚠️ **Maintenance:** при каждом version bump обнови строку "в продакшне" ниже.
+> Детальный live state = root `CLAUDE.md` changelog + §9 Session log этого файла.
 
 ### 2.1 Production
 
-- **v4.24** в продакшне (PR #983 deployed)
+- **v4.34** в продакшне (детальный changelog — root `CLAUDE.md`; 1249 shared tests, 24 element types)
 - **Gate 1** PR #1058 merged (29.04.2026)
 - **Gate 2** PR #1064 merged (15 commits, branch `gate-2-element-classification`). Tests 1002 → 1036. Element types 22 → 23 (zaklady_oper added).
 - **MCP v1.0** live с биллингом
