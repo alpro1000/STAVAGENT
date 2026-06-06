@@ -1334,7 +1334,7 @@ zelený na PR #1305 (`2c2eb5b`) + prod=tools:20.
 - Rewrite CLAUDE.md from scratch (per task §7).
 - Cleanup historických changelog entries (per task §7).
 - Trim CLAUDE.md k 300-line limitu (separátní follow-up taska).
-- Update per-service CLAUDE.md souborů (`concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.MD`).
+- Update per-service CLAUDE.md souborů (`concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.md`).
 
 **Otevřené otázky:**
 - Žádné — všechny edits byly mechanické per task §3.

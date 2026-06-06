@@ -604,7 +604,7 @@ CREATE TABLE time_norms_cache (
 
 - **Multi-Role API:** `/concrete-agent/docs/MULTI_ROLE_API.md`
 - **Knowledge Base:** `/concrete-agent/docs/KB_TRAINING_GUIDE.md`
-- **Feature Flags:** `/Monolit-Planner/CLAUDE.MD` (section 7.2)
+- **Feature Flags:** `/Monolit-Planner/CLAUDE.md` (section 7.2)
 
 ---
 

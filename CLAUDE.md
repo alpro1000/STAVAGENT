@@ -573,4 +573,4 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 
 ---
 
-**Per-service docs:** `concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.MD`, `docs/STAVAGENT_CONTRACT.md`
+**Per-service docs:** `concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.md`, `docs/STAVAGENT_CONTRACT.md`

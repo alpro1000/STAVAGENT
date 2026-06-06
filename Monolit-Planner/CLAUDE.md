@@ -75,9 +75,10 @@ monolit-planner/
 │   └── package.json
 │
 ├── render.yaml                       ← Legacy deployment config (не используется)
-├── CLAUDE.MD                         ← 📄 AI Context Document (this file)
+├── CLAUDE.md                         ← 📄 AI Context Document (this file)
 ├── DEVELOPMENT_PLAN.md               ← 🚀 Strategic Development Plan (NEW!)
-├── claude.md                         ← Session logs
+│   (legacy lowercase `claude.md` — staré session logy v4.3.3/Render —
+│    archivován do docs/archive/legacy/, viz též docs/SESSIONS_ARCHIVE.md)
 ├── README.md
 └── .gitignore
 ```
@@ -531,7 +532,7 @@ monolit-planner/
 ├── shared/           ← Общие типы и формулы
 ├── render.yaml       ← Legacy конфиг (не используется)
 ├── DEPLOY.md         ← Инструкции
-├── CLAUDE.MD         ← ⭐ ЭТОТ ФАЙЛ (для AI)
+├── CLAUDE.md         ← ⭐ ЭТОТ ФАЙЛ (для AI)
 └── README.md         ← Пользовательская документация
 ```
 
