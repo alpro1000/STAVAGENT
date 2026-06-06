@@ -912,7 +912,7 @@ cd backend && npm start
 3. Docker image → Artifact Registry → Cloud Run deploy
 
 URLs:
-- Backend: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+- Backend: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
 - Frontend: `https://monolit-planner-frontend.vercel.app`
 - Trigger: `gcloud builds triggers import --source=triggers/monolit.yaml --region=europe-west3`
 

@@ -138,7 +138,7 @@ curl -X POST http://localhost:3001/api/positions/{POSITION_ID}/suggest-days
 
 ```bash
 # Backend (.env)
-CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+CORE_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 CORE_TIMEOUT=90000  # 90s for cold start
 ```
 

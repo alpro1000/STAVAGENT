@@ -176,7 +176,7 @@
 
 ## 7. MCP Server (agentic interface)
 
-- **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp` (gcloud `status.url` — **verified live** 2026-06-06: `/mcp` 307→`/mcp/`→401 bez auth). Project-number alias `…-1086027517695.europe-west3.run.app` (jak uvádí root CLAUDE.md) může též resolvovat, ale gcloud canonical je tato `.a.run.app` forma.
+- **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp/` (trailing slash; gcloud `status.url` host, **verified live** 2026-06-06: `/mcp` 307→`/mcp/`, `/mcp/`→401 auth-gated). Project-number forma `…-1086027517695.europe-west3.run.app` je možný alias, ale gcloud-verified canonical je tato `.a.run.app` forma (`gcloud run services list --region europe-west3`).
 - **Verze:** v1.0 live
 - **Tools:** 9 (2 free + 7 paid 1-20 credits)
   - `find_otskp_code` (free)

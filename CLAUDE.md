@@ -139,13 +139,13 @@ STAVAGENT/
 
 | Service | URL | Custom Domain |
 |---------|-----|---------------|
-| concrete-agent (CORE) | concrete-agent-1086027517695.europe-west3.run.app | — |
-| portal backend | stavagent-portal-backend-1086027517695.europe-west3.run.app | — |
+| concrete-agent (CORE) | concrete-agent-3uxelthc4q-ey.a.run.app | — |
+| portal backend | stavagent-portal-backend-3uxelthc4q-ey.a.run.app | — |
 | portal frontend | www.stavagent.cz | www.stavagent.cz |
-| Kalkulátor betonáže — backend (Monolit-Planner repo) | monolit-planner-api-1086027517695.europe-west3.run.app | — |
+| Kalkulátor betonáže — backend (Monolit-Planner repo) | monolit-planner-api-3uxelthc4q-ey.a.run.app | — |
 | Kalkulátor betonáže — frontend (Monolit-Planner repo) | monolit-planner-frontend.vercel.app | **kalkulator.stavagent.cz** |
-| Klasifikátor (URS_MATCHER_SERVICE repo) | urs-matcher-service-1086027517695.europe-west3.run.app | **klasifikator.stavagent.cz** |
-| Registry backend | rozpocet-registry-backend-1086027517695.europe-west3.run.app | — |
+| Klasifikátor (URS_MATCHER_SERVICE repo) | urs-matcher-service-3uxelthc4q-ey.a.run.app | **klasifikator.stavagent.cz** |
+| Registry backend | rozpocet-registry-backend-3uxelthc4q-ey.a.run.app | — |
 | Registry frontend | stavagent-backend-ktwx.vercel.app | **registry.stavagent.cz** |
 
 **DB:** Cloud SQL PostgreSQL 15 (`stavagent-db`): `stavagent_portal`, `monolit_planner`, `rozpocet_registry`
@@ -155,7 +155,7 @@ STAVAGENT/
 |-------------|--------|------|--------|
 | Vertex AI Gemini (primary) | `gemini-2.5-flash` (default), `gemini-2.5-pro` (heavy) | ADC | $1,000 GCP |
 | Perplexity AI | sonar (web-search) | `PPLX_API_KEY` in GCP SM | $5,000 |
-| AWS Bedrock (us-east-1) | Claude 3 Haiku/Sonnet/Opus | GCP SM secrets | $20 + $84 Free Tier |
+| AWS Bedrock (us-east-1) | Claude 3 Haiku (deployed: `anthropic.claude-3-haiku-20240307-v1:0` per cloudbuild `BEDROCK_MODEL_ID`; catalog: Haiku/Sonnet/Opus) | GCP SM secrets | $20 + $84 Free Tier |
 
 **Note:** `gemini-2.5-flash-lite` returns 404 in europe-west3. Use `gemini-2.5-flash`.
 
@@ -469,11 +469,11 @@ DATABASE_URL=postgresql+asyncpg://...
 MULTI_ROLE_LLM=gemini
 GEMINI_MODEL=gemini-2.5-flash
 # Monolit-Planner
-VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
+VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
 JWT_SECRET=<same as Portal>
 # URS_MATCHER_SERVICE
-STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 LLM_TIMEOUT_MS=90000
 # stavagent-portal
 VITE_DISABLE_AUTH=true  # local dev only

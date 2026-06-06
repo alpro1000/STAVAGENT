@@ -66,7 +66,7 @@
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │          concrete-agent (CORE)                              │
-│          https://concrete-agent-1086027517695.europe-west3.run.app                │
+│          https://concrete-agent-3uxelthc4q-ey.a.run.app                │
 │                                                             │
 │  POST /api/v1/multi-role/ask                               │
 │                                                             │
@@ -141,7 +141,7 @@
 
 import axios from 'axios';
 
-const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
+const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT || '30000');
 
 /**
