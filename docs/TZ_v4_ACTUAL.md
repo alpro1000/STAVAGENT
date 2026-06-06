@@ -228,7 +228,7 @@ rm -rf extracted_data/
 - Monolit adapter (backward compatible)
 - Registry TOV adapter
 
-**Документация:** `docs/WEEK_4_SUMMARY.md`
+**Документация:** `docs/archive/completed-sessions/WEEK_4_SUMMARY.md`
 
 ---
 
@@ -321,7 +321,7 @@ AI:
 | `SESSION_START.md` | Команды для новой сессии |
 | `NEXT_SESSION.md` | Детали последней сессии |
 | `docs/BUGFIX_2026_03_09.md` | Сегодняшние исправления |
-| `docs/WEEK_4_SUMMARY.md` | Unified Registry Foundation |
+| `docs/archive/completed-sessions/WEEK_4_SUMMARY.md` | Unified Registry Foundation |
 
 ---
 

@@ -5,6 +5,8 @@
 **Mode:** **Phase 1 — read-only.** Zero modifications outside this audit file. No governance changed. No product code touched.
 **Author:** Claude Code (audit-first discipline, per `docs/steering/conventions.md §6`)
 
+> **Remediation status (2026-06-06):** Phase 0 (P0: C1/C5/C6), Phase 1 (P1: C2/C3/C4/C7/C8/C9/C10/D1 + domain.md path) and Phase 2 (P2: archive 14 dead logs, governance context-index, per-service CLAUDE stubs, vision-doc dedup banner) **applied** on this branch — see commits `FIX(governance): …`. Phase 3 (drift-guard + steering update trigger + SessionStart decision) **deferred to post-Cemex** per maintainer. This document remains the point-in-time findings record; §3/§4 describe the pre-fix state.
+
 ---
 
 ## 0. Scope & relationship to prior audits
