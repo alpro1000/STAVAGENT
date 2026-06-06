@@ -130,7 +130,7 @@
 
 ### 5.2 Tier 2 — AWS Bedrock (fallback)
 
-- **Model:** Claude 3 Haiku/Sonnet/Opus (region `us-east-1`, secrets v GCP SM)
+- **Model:** **deployed** `anthropic.claude-3-haiku-20240307-v1:0` (Claude 3 Haiku) — dle `BEDROCK_MODEL_ID` v `cloudbuild-concrete.yaml`/`cloudbuild-urs.yaml` (production source of truth, `BEDROCK_ENABLED=true`). Katalog v `app/core/bedrock_client.py`: 3-haiku/sonnet/opus (us-east-1). ⚠️ code-level default se rozchází mezi kopiemi (`claude-3-5-haiku` vs `claude-haiku-4-5`) — deployed env přebíjí obě.
 - **Credit:** $20 + $84 Free Tier (Vertex/GCP credit $1 000 patří Tier 1, ne sem)
 - **Použití:** Když Vertex selže nebo potřeba větší kontext
 
@@ -176,7 +176,7 @@
 
 ## 7. MCP Server (agentic interface)
 
-- **URL:** `https://concrete-agent-1086027517695.europe-west3.run.app/mcp` (kanonická forma dle root CLAUDE.md; `…-3uxelthc4q-ey.a.run.app` je ekvivalentní Cloud Run alias)
+- **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp` (gcloud `status.url` — **verified live** 2026-06-06: `/mcp` 307→`/mcp/`→401 bez auth). Project-number alias `…-1086027517695.europe-west3.run.app` (jak uvádí root CLAUDE.md) může též resolvovat, ale gcloud canonical je tato `.a.run.app` forma.
 - **Verze:** v1.0 live
 - **Tools:** 9 (2 free + 7 paid 1-20 credits)
   - `find_otskp_code` (free)
@@ -300,7 +300,7 @@ Effort + thinking + auto-compact:
 - `effortLevel: "high"` (default; `"max"` volitelně, ale dražší pro velké repo)
 - `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1`
 - `CLAUDE_CODE_AUTO_COMPACT_WINDOW=400000`
-> ⚠️ Klíče neověřeny proti aktuální Claude Code docs — pokud je harness ignoruje, ověř `/help` nebo SessionStart hook.
+> ⚠️ **Doporučené hodnoty**, ne garance — soubor nemusí existovat (ověřeno 2026-06-06: v Cloud Shell je `~/.claude/settings.json` prázdný a žádné `CLAUDE_CODE_*`/`EFFORT` env nejsou nastaveny). Klíče neověřeny proti aktuální Claude Code docs — pokud je harness ignoruje, ověř `/help` nebo SessionStart hook.
 
 ### 13.2 `.claude/settings.json` — committed v repu
 
@@ -339,4 +339,5 @@ Obsahuje **pouze `permissions`** (allow/deny) — žádný `effortLevel`/`env`:
 | 19.05.2026 | 1.0 | Initial steering, synthesized from Project_Knowledge_Snapshot.md §3-4 + Master_Brief.md §1.4 + recent updates v userMemories |
 | 06.06.2026 | 1.1 | **C1 fix** (knowledge-architecture audit): §2 repo-path sloupec + §3.1 Core path/deploy + §3.1/§4.2 KB path opraveny z fiktivního `app/`+`apps/` na skutečný monorepo (`concrete-agent/packages/core-backend/…` + per-service složky). Core deploy trigger opraven `cloudbuild-portal.yaml`→`cloudbuild-concrete.yaml`. (DB jména §4.1, MCP URL §7, AI-tier kredity §5 → Phase 1.) |
 | 06.06.2026 | 1.2 | **C5 fix**: §13 přepsán — rozlišeny dva soubory: user-global `~/.claude/settings.json` (effort/env) vs committed `.claude/settings.json` (jen `permissions`). Env klíč sjednocen `AUTO_COMPACT_WINDOW`→`CLAUDE_CODE_AUTO_COMPACT_WINDOW` (shoda s root CLAUDE.md). |
-| 06.06.2026 | 1.3 | **C2/C3/C4 fix** (Phase 1): §4.1 DB jména `stavagent_registry`→`rozpocet_registry`, `stavagent_calculator`→`monolit_planner` (shoda s realitou + root CLAUDE.md). §7 MCP URL sjednoceno na `…-1086027517695.europe-west3.run.app` formu. §5.2 Bedrock model/kredit opraven (Claude 3 H/S/O, $20+$84; $1 000 patří Vertexu). §5.5 absolutní "NEPOUŽÍVÁ OpenAI/Anthropic" → "ne primary, deep fallback v Core chainu". |
+| 06.06.2026 | 1.3 | **C2/C4 fix** (Phase 1): §4.1 DB jména `stavagent_registry`→`rozpocet_registry`, `stavagent_calculator`→`monolit_planner`. §5.2 Bedrock — deployed `claude-3-haiku-20240307` (dle cloudbuild). §5.5 absolutní "NEPOUŽÍVÁ OpenAI/Anthropic" → "ne primary, deep fallback v Core chainu". |
+| 06.06.2026 | 1.4 | **C3 oprava** (gcloud verifikace): §7 MCP URL vrácena na `concrete-agent-3uxelthc4q-ey.a.run.app/mcp` (gcloud `status.url`, verified live) — předchozí "standardizace" na project-number formu byla chyba (verifikace proti realitě, ne proti jinému dokumentu). §13.1 doplněno, že `~/.claude/settings.json` je doporučení, ne garance (v Cloud Shell prázdný). |
