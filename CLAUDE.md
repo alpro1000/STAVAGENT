@@ -341,7 +341,9 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 4. Если не уверен в имени файла, SHA, API или пакете — ПРОВЕРЬ через Grep / Glob / Read. Никогда не фабрикуй пути, коммиты, имена.
 5. Для STAVAGENT (1500+ commits, 24 element types, 7 engines) поверхностный анализ = баги в проде. Думай глубоко.
 
-**Reference settings.json (user owns this file, не Claude Code):**
+**Два разных файла настроек — не путать:**
+
+1. **`~/.claude/settings.json`** (user-global, НЕ в репо, user owns it) — effort + env:
 ```json
 {
   "effortLevel": "high",
@@ -352,6 +354,8 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 }
 ```
 > ⚠️ Эти ключи не верифицированы против актуальной Claude Code docs — если харнес их игнорирует, проверь `/help` или попроси Claude настроить SessionStart hook вместо этого.
+
+2. **`.claude/settings.json`** (committed в репо) — **только `permissions`** (allow/deny). Сейчас: allow = read-only GitHub MCP; deny = чтение `test-data/**`, KB JSON/XML, `docs/normy/**.pdf`, OTSKP xml, URS CSV (защита контекста от больших data-файлов). Здесь **нет** `effortLevel`/`env` — они в user-global файле выше.
 
 ## 📋 Workflow discipline (Spec-Driven Development)
 

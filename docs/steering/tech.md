@@ -284,22 +284,31 @@ Pokud v repu **různá konvence** — sjednotit podle většiny.
 
 ---
 
-## 13. Cloud Code settings
+## 13. Claude Code settings (dva různé soubory — neплést)
 
-`~/.claude/settings.json`:
+### 13.1 `~/.claude/settings.json` — user-global (NENÍ v repu, vlastní ho user)
+
+Effort + thinking + auto-compact:
 ```json
 {
   "effortLevel": "high",
   "env": {
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "AUTO_COMPACT_WINDOW": "400000"
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "400000"
   }
 }
 ```
-
-- `effortLevel: "high"` (ne `"max"` — moc drahé pro velké repo)
+- `effortLevel: "high"` (default; `"max"` volitelně, ale dražší pro velké repo)
 - `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1`
-- `AUTO_COMPACT_WINDOW=400000`
+- `CLAUDE_CODE_AUTO_COMPACT_WINDOW=400000`
+> ⚠️ Klíče neověřeny proti aktuální Claude Code docs — pokud je harness ignoruje, ověř `/help` nebo SessionStart hook.
+
+### 13.2 `.claude/settings.json` — committed v repu
+
+Obsahuje **pouze `permissions`** (allow/deny) — žádný `effortLevel`/`env`:
+- **allow:** read-only GitHub MCP (PR/commits/code search)
+- **deny (ochrana kontextu před velkými data-soubory):** `test-data/**`, `*.dxf`/`*.dwg`/`*.db`/`*.mdb`, KB `*.json`/`*.xml` v `concrete-agent/.../knowledge_base/**`, `Monolit-Planner/2025_03 OTSKP.xml`, `docs/normy/**.pdf`, `URS_MATCHER_SERVICE/backend/data/**.csv`
+- Také zde: `.claude/skills/` (2 skills) + `.claude/agents/` (cross-user-isolation-reviewer)
 
 ---
 
@@ -330,3 +339,4 @@ Pokud v repu **různá konvence** — sjednotit podle většiny.
 |---|---|---|
 | 19.05.2026 | 1.0 | Initial steering, synthesized from Project_Knowledge_Snapshot.md §3-4 + Master_Brief.md §1.4 + recent updates v userMemories |
 | 06.06.2026 | 1.1 | **C1 fix** (knowledge-architecture audit): §2 repo-path sloupec + §3.1 Core path/deploy + §3.1/§4.2 KB path opraveny z fiktivního `app/`+`apps/` na skutečný monorepo (`concrete-agent/packages/core-backend/…` + per-service složky). Core deploy trigger opraven `cloudbuild-portal.yaml`→`cloudbuild-concrete.yaml`. (DB jména §4.1, MCP URL §7, AI-tier kredity §5 → Phase 1.) |
+| 06.06.2026 | 1.2 | **C5 fix**: §13 přepsán — rozlišeny dva soubory: user-global `~/.claude/settings.json` (effort/env) vs committed `.claude/settings.json` (jen `permissions`). Env klíč sjednocen `AUTO_COMPACT_WINDOW`→`CLAUDE_CODE_AUTO_COMPACT_WINDOW` (shoda s root CLAUDE.md). |
