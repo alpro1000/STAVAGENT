@@ -54,7 +54,6 @@ _CONCRETE_RE = PATTERNS["concrete_class"]  # C(\d{2,3})/(\d{2,3})
 _TEXT_EXTRACTOR: Callable[[Path], str] = _extract_pdf_text
 _LLM: Optional[Callable[[str], list[dict]]] = None
 _PAGE_RE = re.compile(r"^---\s*PAGE\s+(\d+)\s*---\s*$", re.I)
-_SO_CODE_RE = re.compile(r"\bSO[\s\-]?(\d{2,3})\b")
 
 # Signed-section headers (matched on heading-like lines only — see _is_heading).
 _SECTION_HEADERS: dict[str, re.Pattern] = {
@@ -65,10 +64,21 @@ _SECTION_HEADERS: dict[str, re.Pattern] = {
         r"materiál|specifikace\s+betonu|třídy\s+betonu|použité\s+materiály", re.I),
 }
 
-# Object-name label inside the identifikace section.
-_NAME_LABEL_RE = re.compile(r"(?:Označení|Název)\s+objektu\s*:\s*(.+)", re.I)
+# Object-name label. Colon is OPTIONAL — real TZs write "Název objektu Most na D6 …"
+# with no colon; the synthetic goldens use ":". Both match.
+_NAME_LABEL_RE = re.compile(r"(?:Označení|Název)\s+objektu\s*:?\s*(.+)", re.I)
+# Charakteristika label line: "Charakteristika [mostu/objektu/stavby] <text>".
+_CHARAKT_LABEL_RE = re.compile(
+    r"charakteristik\w*(?:\s+(?:most\w*|objektu|stavby))?\s*:?\s*(.+)", re.I)
 # Leading "SO 250 – " / "SO-250: " prefix to strip off a descriptive name.
 _NAME_CODE_PREFIX_RE = re.compile(r"^\s*SO[\s\-]?\d{2,3}\s*[–\-:]\s*", re.I)
+# Trailing " … SO 101" crossed-object code embedded in a descriptive object name.
+_NAME_TRAIL_SO_RE = re.compile(r"\s+SO[\s\-]?(\d{2,3})\s*$", re.I)
+# OBSAH / table-of-contents line carries dotted leaders — never real content.
+_TOC_LINE_RE = re.compile(r"\.{4,}")
+# A new field / numbered-section line ends a scanned charakteristika paragraph.
+_NEW_FIELD_RE = re.compile(
+    r"^(?:\d+(?:\.\d+)*\.?\s|katastr|obec|kraj|stavba|název|označení|charakteristik)", re.I)
 
 # Named structural-element stems (diacritic-safe — Pattern 30). Order matters:
 # NK / mostovka first so a "Nosná konstrukce" line is not mis-stemmed.
@@ -135,29 +145,74 @@ def _src(section: str, page: Optional[int], confidence: float) -> dict:
     return {"section": section, "page": page, "confidence": confidence}
 
 
-def _extract_object_code(sections, full_text: str) -> tuple[Optional[str], Optional[int]]:
-    """SO code from the identifikace section first (a code can't be poisoned by
-    'most'), then anywhere as a last resort."""
-    ident_text, ident_page = _section_text(sections, "identifikace")
-    for hay, page in ((ident_text, ident_page), (full_text, None)):
-        m = _SO_CODE_RE.search(hay)
-        if m:
-            return f"SO {m.group(1)}", page
+def _extract_object_code(
+    sections, full_text: str, filename: str = ""
+) -> tuple[Optional[str], Optional[int]]:
+    """The document's OWN SO code — REUSING the classifier's deterministic SO logic
+    (not a parallel extractor). Filename FIRST (authoritative): a TZ body carries the
+    crossed-road "SO 101" both inside the object name ("Most na D6 … SO 101") and in
+    the geology, so a body scan picks the wrong code. Then the classifier's content
+    section-IDs (first structural SO in the text). Mirrors the so_code priority of
+    classify_document_enhanced."""
+    from app.services.document_classifier import extract_section_ids, extract_so_code
+
+    code = extract_so_code(filename or "")
+    if code:
+        return code, None
+    for sid in extract_section_ids(full_text):
+        if sid.get("type") == "SO":
+            return f"SO {sid['id']}", None
     return None, None
 
 
-def _extract_object(sections, full_text: str) -> dict:
-    """Object code + name + charakteristika, each grounded, from signed sections
-    only — NEVER from the geology/full text (the bridge-poison trap)."""
+def _scan_label_value(
+    full_text: str, label_re: re.Pattern, *, paragraph: bool = False
+) -> Optional[str]:
+    """First non-TOC line matching an explicit label → its captured value.
+
+    Scanning an EXPLICIT label is safe from the bridge-poison trap (the label is
+    authoritative — SO-250's own "Název objektu" reads "Zárubní zeď", never "most");
+    OBSAH/TOC lines (dotted leaders) are skipped because they list section titles,
+    not content. With ``paragraph=True`` the value is extended with the following
+    content lines (until a blank/page/new-field break) and trimmed to ≤2 sentences —
+    real TZs wrap the charakteristika across lines."""
+    lines = full_text.splitlines()
+    for i, ln in enumerate(lines):
+        if _TOC_LINE_RE.search(ln):
+            continue
+        m = label_re.search(ln)
+        if not m:
+            continue
+        if not paragraph:
+            return m.group(1).strip() or None
+        chunk = [m.group(1).strip()]
+        for nxt in lines[i + 1:i + 5]:
+            s = nxt.strip()
+            if not s or _PAGE_RE.match(nxt) or _TOC_LINE_RE.search(nxt) or _NEW_FIELD_RE.match(s):
+                break
+            chunk.append(s)
+        body = " ".join(c for c in chunk if c).strip()
+        parts = re.split(r"(?<=[.!?])\s+", body)
+        return " ".join(parts[:2]).strip() or None
+    return None
+
+
+def _extract_object(sections, full_text: str, filename: str = "") -> dict:
+    """Object code + name + charakteristika, each grounded. The object code reuses
+    the classifier (filename-first). Name + charakteristika prefer the signed section
+    and fall back to a whole-document explicit-label scan when that section is absent
+    or hidden behind the OBSAH/TOC (the real-TZ shape) — the label is authoritative,
+    so this stays clear of the geology bridge-poison trap."""
     ident_text, ident_page = _section_text(sections, "identifikace")
     char_text, char_page = _section_text(sections, "charakteristika")
 
-    code, code_page = _extract_object_code(sections, full_text)
+    code, _ = _extract_object_code(sections, full_text, filename)
 
-    # Name: prefer the explicit "Označení/Název objektu:" label; strip a leading
-    # SO-code prefix to keep the descriptive name. Fallback: the descriptive tail
-    # after an SO code in the identifikace section (NOT full text).
-    name, name_conf = None, 0.0
+    # Name: explicit label in the identifikace section first; strip a leading SO-code
+    # prefix. Then the descriptive tail after an SO code in the section. Last, a
+    # whole-document label scan (real TZs keep "Název objektu" behind the OBSAH/TOC),
+    # trimming the trailing crossed-object code ("Most na D6 … SO 101" → "Most na D6 …").
+    name, name_conf, name_src = None, 0.0, "identifikace"
     m = _NAME_LABEL_RE.search(ident_text)
     if m:
         name = _NAME_CODE_PREFIX_RE.sub("", m.group(1)).strip()
@@ -166,10 +221,21 @@ def _extract_object(sections, full_text: str) -> dict:
         m2 = re.search(r"SO[\s\-]?\d{2,3}\s*[–\-:]\s*(.+)", ident_text)
         if m2:
             name, name_conf = m2.group(1).strip(), 0.8
+    if not name:
+        scanned = _scan_label_value(full_text, _NAME_LABEL_RE)
+        if scanned:
+            name, name_conf, name_src = (_NAME_CODE_PREFIX_RE.sub("", scanned).strip() or None), 0.9, "document"
+    # Trim a trailing CROSSED-object code ("Most na D6 … SO 101" → "Most na D6 …"),
+    # but KEEP the object's own code if a name happens to end with it.
+    if name:
+        mt = _NAME_TRAIL_SO_RE.search(name)
+        if mt and (not code or mt.group(1) != re.sub(r"\D", "", code)):
+            name = name[:mt.start()].strip() or None
 
-    # Charakteristika: first ≤2 sentences of the charakteristika section (drop the
-    # heading line). None when the section is absent (→ verify, never invented).
-    charakteristika, char_conf = None, 0.0
+    # Charakteristika: ≤2 sentences of the signed charakteristika section (heading
+    # line dropped). Fallback to a whole-document "Charakteristika <…> <text>" inline
+    # label (real TZs put it on a label line, not under a heading).
+    charakteristika, char_conf, char_src = None, 0.0, "charakteristika"
     if char_text:
         body = "\n".join(
             ln for ln in char_text.splitlines()
@@ -179,6 +245,10 @@ def _extract_object(sections, full_text: str) -> dict:
             parts = re.split(r"(?<=[.!?])\s+", body)
             charakteristika = " ".join(parts[:2]).strip()
             char_conf = 1.0
+    if not charakteristika:
+        scanned = _scan_label_value(full_text, _CHARAKT_LABEL_RE, paragraph=True)
+        if scanned:
+            charakteristika, char_conf, char_src = scanned, 0.9, "document"
 
     return {
         "object_code": code,
@@ -186,9 +256,9 @@ def _extract_object(sections, full_text: str) -> dict:
         "charakteristika": charakteristika,
         "needs_verify": name is None or charakteristika is None,
         "_source": {
-            "object_code": _src("identifikace", code_page, 1.0 if code else 0.0),
-            "object_name": _src("identifikace", ident_page, name_conf),
-            "charakteristika": _src("charakteristika", char_page, char_conf),
+            "object_code": _src("classifier", None, 1.0 if code else 0.0),
+            "object_name": _src(name_src, ident_page, name_conf),
+            "charakteristika": _src(char_src, char_page, char_conf),
         },
     }
 
@@ -340,7 +410,7 @@ async def extract_tz_fields(
         return {"error": "Empty document text", "object": {}, "elements": []}
 
     sections = _segment_sections(text)
-    obj = _extract_object(sections, text)
+    obj = _extract_object(sections, text, filename)
     elements, unbound = _extract_elements(
         sections, obj.get("object_code"), None, _LLM)
 
