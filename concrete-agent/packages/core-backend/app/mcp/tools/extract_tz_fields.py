@@ -381,10 +381,15 @@ _NK_HEIGHT_RE = re.compile(
 _NK_WIDTH_RE = re.compile(
     r"š[íi][řr]k\w*\s+(?:nosn[áéeě]\w*\s+konstrukc\w*|NK)\s+(?:čin[íi]\s+)?"
     r"(\d{1,2}[.,]\d{1,3})\s*m\b", re.I)
-# Cross-section → calculator nk_subtype vocabulary (calculator._NK_SUBTYPE_TO_ENGINE
-# keys). Order matters: specific stems before the generic "desk".
+# Cross-section → the calculator's nk_subtype INPUT vocabulary, i.e. the KEYS of
+# calculator._NK_SUBTYPE_TO_ENGINE (NOT the engine-internal values it maps to:
+# 'dvoutramovy' is the public input form, 'dvoutram' is post-map). The emitted
+# values are byte-identical to that live vocab — guarded by
+# test_tz_geometry_so202.test_cross_section_values_are_in_live_calculator_vocab so
+# the two can never fork. Order matters: specific stems before the generic "desk".
 _CROSS_SECTION = [
     (re.compile(r"dvoutr[áa]m", re.I), "dvoutramovy"),
+    (re.compile(r"v[íi]cetr[áa]m", re.I), "vicetramovy"),
     (re.compile(r"jednotr[áa]m", re.I), "jednotramovy"),
     (re.compile(r"komor", re.I), "komorovy"),
     (re.compile(r"sp[řr]a[žz]en", re.I), "sprazeny"),

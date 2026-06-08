@@ -167,6 +167,30 @@ def test_filename_and_content_paths_identical():
         assert a[k] == b[k], (k, a[k], b[k])
 
 
+# ── Single source: cross-section vocab IS the calculator's live nk_subtype ────
+
+def test_cross_section_values_are_in_live_calculator_vocab():
+    """Every cross_section_type the extractor can emit is byte-identical to the live
+    calculator nk_subtype INPUT vocabulary (the keys of _NK_SUBTYPE_TO_ENGINE) — so
+    the two can never fork. 'dvoutramovy' is the input form; 'dvoutram' is the
+    engine-internal value it maps to, which the extractor must NOT emit."""
+    from app.mcp.tools.calculator import _NK_SUBTYPE_TO_ENGINE
+    from app.mcp.tools.extract_tz_fields import _CROSS_SECTION
+
+    emitted = {value for _, value in _CROSS_SECTION}
+    vocab = set(_NK_SUBTYPE_TO_ENGINE)              # nk_subtype keys = input vocab
+    engine = set(_NK_SUBTYPE_TO_ENGINE.values())    # post-map; must NOT be emitted
+    assert emitted <= vocab, f"cross_section drift from nk_subtype vocab: {emitted - vocab}"
+    assert not (emitted & (engine - vocab)), "extractor emits an engine-internal value"
+
+
+def test_vicetram_cross_section_in_vocab():
+    g = _geo("--- PAGE 1 ---\nNový most. Spojitá monolitická vícetrámová konstrukce "
+             "z předpjatého betonu o 3 polích o rozpětích 25,0+30,0+25,0 m. "
+             "Konstrukční výška 1,50 m. Šířka nosné konstrukce 9,80 m.")
+    assert g["cross_section_type"] == "vicetramovy", g
+
+
 # ── Corpus-gated golden: the real SO-202 TZ ───────────────────────────────────
 
 _CORPUS_TZ = (
