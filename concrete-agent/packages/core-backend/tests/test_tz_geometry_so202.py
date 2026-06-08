@@ -153,7 +153,8 @@ def test_every_extracted_value_is_source_grounded():
     g = _geo(GEO_TRAP)
     for field in ("num_spans", "span_lengths_m", "nk_height_m", "nk_width_m",
                   "cross_section_type"):
-        s = g["_source"][field]
+        s = g["_source"].get(field)
+        assert s is not None, f"Missing _source for {field}"
         assert s["section"] and s["snippet"] and s["confidence"] > 0, (field, s)
         assert s["page"] is not None, (field, s)
 
