@@ -14,9 +14,13 @@ const __dir = dirname(fileURLToPath(import.meta.url));
 const DATA = join(__dir, '..', 'data');
 
 export function loadData() {
-  const corpus = JSON.parse(readFileSync(join(DATA, 'corpus.json'), 'utf8'));
-  const findings = JSON.parse(readFileSync(join(DATA, 'catalog-findings.json'), 'utf8'));
-  return { corpus, findings };
+  try {
+    const corpus = JSON.parse(readFileSync(join(DATA, 'corpus.json'), 'utf8'));
+    const findings = JSON.parse(readFileSync(join(DATA, 'catalog-findings.json'), 'utf8'));
+    return { corpus, findings };
+  } catch (error) {
+    throw new Error(`Failed to load sandbox data files (data/corpus.json, data/catalog-findings.json): ${error.message}`);
+  }
 }
 
 export function runPipeline() {

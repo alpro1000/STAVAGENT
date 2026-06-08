@@ -42,6 +42,7 @@ function findingFor(atomKey, findings) {
 function classifyStatus(finding) {
   if (!finding) return { status: 'not_verified', confidence: 0, code: null };
   const top = finding.top;
+  if (!top) return { status: 'not_verified', confidence: 0, code: null }; // malformed finding (no top) → honest not_verified
   if (top.code && top.code !== 'N/A') {
     // A concrete code matched. ÚRS matcher/web is never 'exact'; high conf → candidate.
     return { status: 'candidate', confidence: top.confidence, code: top.code, description: top.description, unit: top.unit };

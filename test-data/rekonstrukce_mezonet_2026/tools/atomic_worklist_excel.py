@@ -23,6 +23,7 @@ deliverable; URS kód = secondary, doplní se z app.urs.cz / KROS.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -148,6 +149,8 @@ def build_souhrn(wb, data):
     ws.column_dimensions["A"].width = 40
     ws.column_dimensions["B"].width = 18
     ws.column_dimensions["C"].width = 56
+    if "_summary" not in data or "cost" not in data.get("_summary", {}):
+        raise KeyError("Missing required keys '_summary' / '_summary.cost' in atomic_decomposition_map.json")
     summ = data["_summary"]
     cost = summ["cost"]
     r = 1
@@ -288,8 +291,18 @@ def build_sanity(wb, data):
 
 
 def main():
-    with MAP_PATH.open(encoding="utf8") as f:
-        data = json.load(f)
+    try:
+        with MAP_PATH.open(encoding="utf8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print(f"Error: input map not found: {MAP_PATH} (run export-atomic-map.mjs first)", file=sys.stderr)
+        sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(f"Error: invalid JSON in {MAP_PATH}: {e}", file=sys.stderr)
+        sys.exit(1)
+    if "atomic_operations" not in data or not isinstance(data["atomic_operations"], list):
+        print(f"Error: missing/malformed 'atomic_operations' list in {MAP_PATH}", file=sys.stderr)
+        sys.exit(1)
     ops = data["atomic_operations"]
 
     wb = Workbook()
