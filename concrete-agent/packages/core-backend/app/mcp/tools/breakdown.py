@@ -223,6 +223,18 @@ async def create_work_breakdown(
                 # tracing it to the originating input element + work template —
                 # the grounding-gate (Pattern 29) marks items without `_source`
                 # as UNVERIFIED. Catalog binding is NOT done here (Pattern 15).
+                #
+                # The row contract is designed ONCE here so downstream stages fill
+                # existing keys rather than re-cutting it:
+                #   - classification provenance (confidence + source) is stamped
+                #     where classification actually drives the item — so it is no
+                #     longer dropped at the recipe's atomize seam.
+                #   - reserved catalog/price slots (otskp_code / unit_price_czk /
+                #     total_price_czk) start None; CATALOG_BINDING / PRICING fill
+                #     the SAME keys (the work_with_catalog path below already does).
+                #   - calc slot starts honest-blank (calc=None,
+                #     calc_status="not_calculated"); the recipe's calculate step
+                #     fills it for the elements the engine actually computes.
                 item = {
                     "work_description": work_name,
                     "unit": tmpl["unit"],
@@ -231,6 +243,17 @@ async def create_work_breakdown(
                     "element_name": name,
                     "element_type": etype,
                     "_source": f"element:{name} / template:{tmpl['work']}",
+                    # classification provenance (separate from any calc confidence)
+                    "classification_confidence": classification.get("confidence"),
+                    "classification_source": classification.get("classification_source"),
+                    # reserved slots — CATALOG_BINDING / PRICING (not filled here)
+                    "otskp_code": None,
+                    "unit_price_czk": None,
+                    "total_price_czk": None,
+                    # calc enrichment — honest-blank until the engine computes it
+                    "calc": None,
+                    "calc_status": "not_calculated",
+                    "calc_warnings": [],
                 }
                 all_items.append(item)
 
@@ -250,7 +273,9 @@ async def create_work_breakdown(
                 sections[sec] = []
             sections[sec].append(item)
 
-        total_price = sum(it.get("total_price_czk", 0) for it in all_items)
+        # `total_price_czk` is a reserved slot that starts None (filled by PRICING);
+        # coalesce so the sum works whether it is unset, None, or a real price.
+        total_price = sum(it.get("total_price_czk") or 0 for it in all_items)
 
         return {
             "items": all_items,

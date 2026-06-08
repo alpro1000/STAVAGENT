@@ -57,6 +57,16 @@ def _items_to_soupis_data(items: list, project_id: Optional[str]) -> dict:
     for idx, it in enumerate(items, 1):
         hsv = str(it.get("hsv_section") or "").upper()
         typ = "PSV" if hsv.startswith("PSV") else "HSV"
+        # Visible Zdroj label, calc-status-aware (Q4): a row the engine did NOT
+        # compute (honest-blank) gets an explicit "NEPOČÍTÁNO" marker so it is
+        # visually distinct from a fully-processed row — a soupis must not read as
+        # complete where lines were never calculated. Computed rows show the plain
+        # classification source.
+        _cls_src = it.get("classification_source") or "klasifikace"
+        if it.get("calc_status") == "computed":
+            zdroj_label = it.get("classification_source") or ""
+        else:
+            zdroj_label = f"{_cls_src} · NEPOČÍTÁNO"
         positions.append(
             {
                 "poradi": idx,
@@ -67,6 +77,16 @@ def _items_to_soupis_data(items: list, project_id: Optional[str]) -> dict:
                 "mj": it.get("unit") or it.get("mj") or "",
                 "mnozstvi": it.get("quantity", it.get("mnozstvi", "")),
                 "section": hsv or None,
+                # Fill the EXISTING visible KROS columns (renderer already declares
+                # Zdroj + Důvěra and reads these keys): confidence ← classification
+                # confidence (a real scalar); source ← calc-status-aware label so an
+                # uncomputed (honest-blank) row is visually distinct (Q4). The richer
+                # calc numbers stay in the response metadata, NOT in the KROS columns.
+                # The raw `_source` work→template provenance is preserved separately
+                # in source_map.
+                "confidence": it.get("classification_confidence"),
+                "source": zdroj_label,
+                "calc_status": it.get("calc_status"),
             }
         )
     return {
@@ -148,6 +168,29 @@ async def export_soupis(
             if not (isinstance(src, str) and src.strip()):
                 source_preserved = False
 
+        # Carried calculator output reaches the deliverable METADATA (not the KROS
+        # columns): one calc block per computed element + the aggregated warnings.
+        # Numbers stay traceable to their element; nothing is fabricated for the
+        # elements the engine did not compute (they are simply absent here).
+        calc_summary: list[dict[str, Any]] = []
+        calc_warnings: list[str] = []
+        seen_elements: set = set()
+        for it in resolved:
+            if it.get("calc_status") == "computed":
+                en = it.get("element_name")
+                if en not in seen_elements:
+                    seen_elements.add(en)
+                    calc_summary.append(
+                        {
+                            "element_name": en,
+                            "element_type": it.get("element_type"),
+                            "calc": it.get("calc"),
+                        }
+                    )
+            for w in it.get("calc_warnings") or []:
+                if w not in calc_warnings:
+                    calc_warnings.append(w)
+
         return {
             "deliverable": deliverable,
             "file_base64": base64.b64encode(xlsx_bytes).decode("ascii"),
@@ -155,6 +198,8 @@ async def export_soupis(
             "row_count": len(resolved),
             "source_preserved": source_preserved,
             "source_map": source_map,
+            "calc_summary": calc_summary,
+            "calc_warnings": calc_warnings,
             "_source": f"export_soupis:{deliverable} ← {len(resolved)} work items",
         }
 
