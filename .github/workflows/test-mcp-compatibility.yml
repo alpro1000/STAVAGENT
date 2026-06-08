@@ -29,6 +29,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_thin_hybrid_recipe.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_extract_tz_fields.py'
       - 'concrete-agent/packages/core-backend/tests/test_xc4_routing_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -57,6 +58,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_thin_hybrid_recipe.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_extract_tz_fields.py'
       - 'concrete-agent/packages/core-backend/tests/test_xc4_routing_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
 
 jobs:
   mcp-compatibility:
@@ -167,4 +169,5 @@ jobs:
             tests/test_thin_hybrid_recipe.py \
             tests/test_mcp_golden_extract_tz_fields.py \
             tests/test_xc4_routing_so202.py \
+            tests/test_tz_object_code_so202.py \
             -v --tb=short
