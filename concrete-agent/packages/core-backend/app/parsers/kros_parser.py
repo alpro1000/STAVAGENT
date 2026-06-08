@@ -32,6 +32,10 @@ class KROSParser:
         """
         project_prefix = f"[project={project_id}] " if project_id else ""
 
+        # Callers (e.g. SmartParser.parse_xml) hand us a str path; the signature
+        # is typed Path and uses file_path.name — coerce so str input never raises.
+        file_path = Path(file_path)
+
         logger.info("%s🧱 Parsing KROS XML: %s", project_prefix, file_path.name)
 
         kros_format = "UNKNOWN"
@@ -130,6 +134,15 @@ class KROSParser:
         Returns:
             "KROS_UNIXML", "KROS_TABULAR", or "UNKNOWN"
         """
+        # AspeEsticon XC4 soupis export FIRST — the positive soupis signal
+        # (<objekty> + lowercase <polozka> work items) beats the UNIXML capital
+        # <Polozka> marker, so a soupis that embeds a KROS price-list reference
+        # still routes to ASPE_XC4. Safe: real KROS UNIXML uses <objekt> (singular)
+        # + <zdroj_konstrukce>, never <objekty> + lowercase <polozka>; .find is
+        # case-sensitive so the two families never collide.
+        if root.find(".//objekty") is not None and root.find(".//polozka") is not None:
+            return "ASPE_XC4"
+
         # Check for UNIXML markers
         if root.find(".//Polozky") is not None or root.find(".//Polozka") is not None:
             return "KROS_UNIXML"
@@ -138,26 +151,33 @@ class KROSParser:
         if root.find(".//TZ") is not None or root.find(".//Row") is not None:
             return "KROS_TABULAR"
 
-        # Check for AspeEsticon XC4 markers
-        if root.find(".//objekty") is not None and root.find(".//polozka") is not None:
-            source = root.findtext(".//zdroj")
-            if source and source.strip().lower() == "aspeesticon":
-                return "ASPE_XC4"
-            return "ASPE_XC4"
-
         return "UNKNOWN"
 
     @staticmethod
     def _has_xc4_prices(root: ET.Element) -> bool:
-        """Return True if the XML tree contains XC4 price-list nodes."""
+        """Return True only for a genuine KROS XC4 *price-list* — one that carries
+        ``<CenoveSoustavy>`` price nodes (the only thing the OTSKP_XC4 path parses).
+
+        Discriminator priority (kept in lock-step with ``_detect_format`` and
+        ``format_detector._detect_xml_subtype``): the positive **soupis** signal
+        wins. An AspeEsticon export (``<objekty>`` + ``<polozka>`` work items) is a
+        bill of quantities, never a price catalogue — even if it embeds a
+        ``<CenoveSoustavy>`` reference — so it routes to ``ASPE_XC4`` (parsed), not
+        the price-list path. Keying on the bare ``<XC4>`` root tag used to force
+        every such soupis to OTSKP_XC4, which found 0 ``<CenoveSoustavy>`` and
+        dropped all ``<polozka>`` (0 parsed).
+        """
+
+        # Positive soupis signal beats price-list: an AspeEsticon work-breakdown
+        # (objekty + polozka) is never a price file. Mirrors _detect_format's ASPE
+        # check so detection and routing can never disagree.
+        if root.find(".//objekty") is not None and root.find(".//polozka") is not None:
+            return False
 
         def _local(tag: str) -> str:
-            return tag.split("}")[-1] if tag else ""
+            return tag.split("}")[-1].lower() if tag else ""
 
-        if _local(root.tag) == "XC4":
-            return True
-
-        return root.find(".//XC4") is not None
+        return any(_local(el.tag) == "cenovesoustavy" for el in root.iter())
 
     # ------------------------------------------------------------------
     # XC4 Cenové soustavy (TSKP / OTSKP)

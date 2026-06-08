@@ -20,6 +20,7 @@ class SourceFormat(str, Enum):
     XLSX_RTSROZP = "xlsx_rtsrozp"
     XML_OTSKP = "xml_otskp"
     XML_TSKP = "xml_tskp"
+    XML_ASPE_XC4 = "xml_aspe_xc4"
     IFC = "ifc"
     DXF = "dxf"
     PDF_TZ = "pdf_tz"
