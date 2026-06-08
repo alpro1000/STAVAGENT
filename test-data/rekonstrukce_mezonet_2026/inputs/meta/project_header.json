@@ -1,0 +1,21 @@
+{
+  "project": "Rekonstrukce mezonetu",
+  "project_id": "rekonstrukce_mezonet_2026",
+  "type": "rekonstrukce bytu (interiér / PSV)",
+  "procurement_mode": "privatni",
+  "primary_catalog": "urs",
+  "stupen_dokumentace": "podklad pro nabídku (3D půdorysy + scope majitele)",
+  "objekty": [
+    { "id": "prizemi", "label": "Přízemí (druhý svět / dvojvýška)", "plocha_m2": 34.7 },
+    { "id": "patro", "label": "Patro", "plocha_m2": 141.2, "pozn": "vč. terasy 32 m² (venkovní)" }
+  ],
+  "podklady": [
+    "inputs/podklady/Cenova_nabidka_rekonstrukce_1.xlsx — nabídka mistra (přes ChatGPT), 1 127 350 Kč",
+    "inputs/podklady/pudorysy_areas.md — výměry z 3D půdorysů (M&M Reality, orientační)",
+    "inputs/meta/scope_majitel.md — zadání majitele (rozsah prací)"
+  ],
+  "deliverable": "outputs/Vykaz_vymer_Mezonet_ATOMIC_WORKLIST.xlsx (build artifact — gitignored; zdroj = outputs/atomic_decomposition_map.json)",
+  "method": "UWO Work-First → Catalog-Last (sandbox/uwo-interier-mezonet) → HK212 atomic worklist Excel",
+  "areas_disclaimer": "Výměry z 3D půdorysů jsou ORIENTAČNÍ.",
+  "dph": "NENÍ zašito — rekonstrukce bytu obvykle snížená sazba 12 %, uplatnit po ověření podmínek."
+}
