@@ -120,8 +120,9 @@ def test_num_spans_inferred_from_sequence_is_flagged():
     assert g["span_lengths_m"] == [28.0, 35.0, 28.0], g
     assert g["num_spans"] == 3, g                                # inferred from len
     assert "num_spans" in g["needs_verify"], g                  # flagged as inferred
-    assert g["_source"]["num_spans"]["section"] == "inferred", g
-    assert g["_source"]["num_spans"]["confidence"] < 1.0, g
+    s = g["_source"].get("num_spans")                           # sparse _source → .get()
+    assert s is not None and s["section"] == "inferred", g
+    assert s["confidence"] < 1.0, g
 
 
 # ── Honest-blank: extract what's there, blank what isn't, never guess ─────────
