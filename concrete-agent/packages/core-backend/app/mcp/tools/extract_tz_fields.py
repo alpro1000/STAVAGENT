@@ -348,6 +348,216 @@ def _extract_elements(
     return elements, unbound
 
 
+# ── Gate 3 — NK geometry from prose (additive; segmenter untouched) ────────────
+# A bridge TZ describes BOTH the new monolithic NK AND the old prefab ("Petra")
+# deck being demolished. A geometry value is classified by the description it sits
+# UNDER — the nearest PRECEDING existing-bridge marker (stávající / prefabr / Petra
+# / demolice) vs new-design marker (spojitá / předpjatá / section-type / "tvoří").
+# See _is_existing.
+_GEO_OLD_RE = re.compile(
+    r"st[áa]vaj[íi]c|p[ůu]vodn[íi]|prefabr|petra|odbour|zbour|bour[áa]n|demolic|snese", re.I)
+_GEO_NEW_RE = re.compile(
+    r"spojit|p[řr]edpj|dvoutr[áa]m|jednotr[áa]m|komorov|sp[řr]a[žz]en|navr[hž]|tvo[řr][íi]", re.I)
+_PAGE_MARK_RE = re.compile(r"---\s*PAGE\s+(\d+)\s*---", re.I)
+
+# "o 3 polích" / "o třech polích" — span COUNT (digit or Czech genitive word-number).
+_CZ_SPAN_WORDNUM = {
+    "jedno": 1, "jednom": 1, "dvou": 2, "dve": 2, "dvě": 2, "tří": 3, "tri": 3,
+    "třech": 3, "trech": 3, "čtyř": 4, "ctyr": 4, "čtyřech": 4, "ctyrech": 4,
+    "pěti": 5, "peti": 5, "šesti": 6, "sesti": 6, "sedmi": 7, "osmi": 8,
+}
+_NUM_SPANS_RE = re.compile(
+    r"o\s+(\d{1,2}|jednom?|dvou|dv[ěe]|t[řr][íi]|t[řr]ech|čty[řr]ech|čty[řr]|"
+    r"p[ěe]ti|šesti|sedmi|osmi)\s+pol[ií]", re.I)
+# "+"-separated span sequence in metres ("32,0+44,5+32,0 m").
+_SPAN_SEQ_RE = re.compile(
+    r"((?:\d{1,3}(?:[.,]\d+)?\s*\+\s*){1,9}\d{1,3}(?:[.,]\d+)?)\s*m\b")
+# NK construction height — the number must FOLLOW "konstrukční výška/výškou"
+# directly; "konstrukční výškou s rozpětím … 44,50 m" is a SPAN, not a height.
+_NK_HEIGHT_RE = re.compile(
+    r"konstrukčn[íi]\s+v[ýy]šk\w*\s+(\d{1,2}[.,]\d{1,3})\s*m\b", re.I)
+# NK width — "šířka nosné konstrukce 13,65 m" / "šířka NK činí 12,64 m"
+# (NOT "šířka mostu", NOT "šířka římsy").
+_NK_WIDTH_RE = re.compile(
+    r"š[íi][řr]k\w*\s+(?:nosn[áéeě]\w*\s+konstrukc\w*|NK)\s+(?:čin[íi]\s+)?"
+    r"(\d{1,2}[.,]\d{1,3})\s*m\b", re.I)
+# Cross-section → calculator nk_subtype vocabulary (calculator._NK_SUBTYPE_TO_ENGINE
+# keys). Order matters: specific stems before the generic "desk".
+_CROSS_SECTION = [
+    (re.compile(r"dvoutr[áa]m", re.I), "dvoutramovy"),
+    (re.compile(r"jednotr[áa]m", re.I), "jednotramovy"),
+    (re.compile(r"komor", re.I), "komorovy"),
+    (re.compile(r"sp[řr]a[žz]en", re.I), "sprazeny"),
+    (re.compile(r"deskov", re.I), "deskovy"),
+]
+# Structural-system categorical sub-descriptors.
+_SYS_CONTINUITY = [(re.compile(r"spojit", re.I), "spojita"),
+                   (re.compile(r"prost[áýé]\s+(?:nosn|konstrukc|pole|most)", re.I), "prosta")]
+_SYS_CASTING = [(re.compile(r"monolit", re.I), "monolit"),
+                (re.compile(r"prefa", re.I), "prefa")]
+_SYS_PRESTRESS = [(re.compile(r"p[řr]edpj|p[řr]edep", re.I), "predpjaty"),
+                  (re.compile(r"m[ěe]kk[áéou]\w*\s+v[ýy]ztu", re.I), "mekky")]
+
+
+def _parse_cz_num(s: str) -> Optional[float]:
+    """Czech decimal comma → float ('44,5' → 44.5)."""
+    try:
+        return float(s.strip().replace(" ", "").replace(",", "."))
+    except (ValueError, AttributeError):
+        return None
+
+
+def _page_at(text: str, pos: int) -> Optional[int]:
+    """Page of the last '--- PAGE n ---' marker before pos (provenance)."""
+    page = None
+    for m in _PAGE_MARK_RE.finditer(text[:pos + 1]):
+        page = int(m.group(1))
+    return page
+
+
+def _is_existing(text: str, start: int, end: int, lookback: int = 400, fwd: int = 60) -> bool:
+    """Classify a geometry value by the description it sits UNDER: the NEAREST
+    PRECEDING strong marker decides (existing-bridge vs new-design language). A
+    symmetric window would bleed — an old value written just before the new §NK
+    section would look 'new'; the preceding context is what the value is written
+    under. A tight forward look catches a sequence immediately bound to an old
+    marker ('26,30+… z prefabrikovaných')."""
+    pre = text[max(0, start - lookback):start]
+    old_pre = list(_GEO_OLD_RE.finditer(pre))
+    new_pre = list(_GEO_NEW_RE.finditer(pre))
+    last_old = old_pre[-1].end() if old_pre else -1
+    last_new = new_pre[-1].end() if new_pre else -1
+    if last_old != last_new:                 # nearer preceding marker wins
+        return last_old > last_new
+    return bool(_GEO_OLD_RE.search(text[end:end + fwd]))  # no preceding → look just ahead
+
+
+def _geo_src(text: str, m: "re.Match", confidence: float) -> dict:
+    """Provenance for a geometry value: section + page + matched snippet."""
+    return {"section": "prose", "page": _page_at(text, m.start()),
+            "snippet": m.group(0).strip()[:120], "confidence": confidence}
+
+
+def _first_clean(text: str, regex: "re.Pattern"):
+    """First regex match NOT in an existing-bridge negative context."""
+    for m in regex.finditer(text):
+        if not _is_existing(text, m.start(), m.end()):
+            return m
+    return None
+
+
+def _first_keyword(text: str, table):
+    """First (regex → value) in priority order with a clean (non-neg) match."""
+    for rgx, value in table:
+        for m in rgx.finditer(text):
+            if not _is_existing(text, m.start(), m.end()):
+                return value, m
+    return None, None
+
+
+def _extract_geometry(full_text: str) -> dict:
+    """Deterministic NK geometry from TZ prose (declension/preposition-tolerant,
+    Czech decimal comma, honest-blank). Drawings/DXF are out of scope. Nothing is
+    guessed: a fact that is not cleanly in the prose comes back None/[] with a
+    `needs_verify` flag, never a fabricated value (poison-guard)."""
+    src: dict = {}
+    needs_verify: list[str] = []
+
+    # span LENGTHS — ordered "+"-sequence (existing-bridge sequences skipped).
+    parsed = []
+    for cm in _SPAN_SEQ_RE.finditer(full_text):
+        if _is_existing(full_text, cm.start(), cm.end()):
+            continue
+        vals = [_parse_cz_num(x) for x in re.split(r"\s*\+\s*", cm.group(1))]
+        if len(vals) >= 2 and all(v is not None for v in vals):
+            parsed.append((cm, vals))
+
+    # span COUNT — stated "o N polích" (conf 1.0); the span sequence is chosen to
+    # match it. If the count is contested/absent it is inferred from the sequence
+    # length (conf 0.7, flagged) — honest about the inference.
+    num_spans, num_spans_m = None, None
+    m = _first_clean(full_text, _NUM_SPANS_RE)
+    if m:
+        tok = m.group(1).lower()
+        num_spans = int(tok) if tok.isdigit() else _CZ_SPAN_WORDNUM.get(tok)
+        if num_spans is not None:
+            num_spans_m = m
+
+    chosen = None
+    if num_spans is not None:
+        match_n = [p for p in parsed if len(p[1]) == num_spans]
+        if match_n:
+            chosen = match_n[0]
+    if chosen is None and parsed and len({tuple(v) for _, v in parsed}) == 1:
+        chosen = parsed[0]  # all clean candidates agree
+    span_lengths = list(chosen[1]) if chosen else []
+    if chosen:
+        src["span_lengths_m"] = _geo_src(full_text, chosen[0], 1.0)
+    else:
+        needs_verify.append("span_lengths_m")
+
+    num_spans_inferred = False
+    if num_spans is None and span_lengths:
+        num_spans, num_spans_inferred = len(span_lengths), True
+    if num_spans_m is not None:
+        src["num_spans"] = _geo_src(full_text, num_spans_m, 1.0)
+    elif num_spans is not None:
+        src["num_spans"] = {"section": "inferred", "page": None,
+                            "snippet": f"len(span_lengths)={num_spans}", "confidence": 0.7}
+    if num_spans is None or num_spans_inferred:
+        needs_verify.append("num_spans")  # absent or inferred → flag
+
+    spans_consistent = (None if (num_spans is None or not span_lengths)
+                        else num_spans == len(span_lengths))
+    total = round(sum(span_lengths), 3) if span_lengths else None
+
+    # NK construction height + width.
+    nk_height = nk_width = None
+    hm = _first_clean(full_text, _NK_HEIGHT_RE)
+    if hm:
+        nk_height = _parse_cz_num(hm.group(1))
+        src["nk_height_m"] = _geo_src(full_text, hm, 1.0)
+    else:
+        needs_verify.append("nk_height_m")
+    wm = _first_clean(full_text, _NK_WIDTH_RE)
+    if wm:
+        nk_width = _parse_cz_num(wm.group(1))
+        src["nk_width_m"] = _geo_src(full_text, wm, 1.0)
+    else:
+        needs_verify.append("nk_width_m")
+
+    # Cross-section type (calculator vocab) + structural system (sub-descriptors).
+    cross_section, csm = _first_keyword(full_text, _CROSS_SECTION)
+    if csm:
+        src["cross_section_type"] = _geo_src(full_text, csm, 1.0)
+    else:
+        needs_verify.append("cross_section_type")
+
+    continuity, cmA = _first_keyword(full_text, _SYS_CONTINUITY)
+    casting, cmB = _first_keyword(full_text, _SYS_CASTING)
+    prestress, cmC = _first_keyword(full_text, _SYS_PRESTRESS)
+    structural_system = {"continuity": continuity, "casting": casting,
+                         "prestress": prestress}
+    for key, mm in (("continuity", cmA), ("casting", cmB), ("prestress", cmC)):
+        if mm:
+            src[f"structural_system.{key}"] = _geo_src(full_text, mm, 1.0)
+    if not any((continuity, casting, prestress)):
+        needs_verify.append("structural_system")
+
+    return {
+        "num_spans": num_spans,
+        "span_lengths_m": span_lengths,
+        "spans_consistent": spans_consistent,
+        "total_span_length_m": total,
+        "nk_height_m": nk_height,
+        "nk_width_m": nk_width,
+        "cross_section_type": cross_section,
+        "structural_system": structural_system,
+        "needs_verify": needs_verify,
+        "_source": src,
+    }
+
+
 def _decode_to_text(
     file_base64: str, filename: str, extractor: Optional[Callable[[Path], str]]
 ) -> str:
@@ -411,6 +621,7 @@ async def extract_tz_fields(
 
     sections = _segment_sections(text)
     obj = _extract_object(sections, text, filename)
+    obj["geometry"] = _extract_geometry(text)  # Gate 3 — NK geometry from prose
     elements, unbound = _extract_elements(
         sections, obj.get("object_code"), None, _LLM)
 
