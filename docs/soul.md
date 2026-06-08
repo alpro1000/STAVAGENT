@@ -351,6 +351,69 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-08 — Session: SO202 Ingest Fix — Gate 1+2+3 (XC4 routing + TZ object-code + NK geometry z prózy)
+
+**Rozhodnuto:**
+- Tři sekvenční gaty navazující na recon (2026-06-05 níže), každý **gated/STOP** před mergem,
+  **minimální chirurgické additive** změny, **deterministicky** (bez sítě/DB/AI). Každý gate
+  spárován s golden testem: hermetic synthetic + **corpus-gated** reálný SO202 — oba běží v CI
+  (ne skip), s doloženým verbatim CI-logem že corpus testy PASSED na finálním HEAD. Branch per
+  gate (PR1/PR2/PR3), squash-merge.
+- **Gate 1 — XC4 routing** (PR #1311, squash `450158d`): AspeEsticon-XC4 soupis
+  (`E_Soupis praci_XC4_DI-009.xml`, 3373 `<polozka>`) byl `KROSParser`em poslán do
+  OTSKP-XC4 ceníkové větve → **0 položek**. Rozlišovač dává AspeEsticon (`<objekty>` +
+  `<zdroj>AspeEsticon`, lowercase `<polozka>`) vlastní identitu a routuje na dedikovaný
+  `xc4_parser` (**0 → 3373**). Soubor s `<objekty>` I `<CenoveSoustavy>` → soupis (priorita).
+  Reálný ceník (`<Polozka>` capital) beze změny (stále OTSKP-XC4); `_has_xc4_prices` nemá jiné
+  konzumenty.
+- **Gate 2 — TZ object-code** (PR #1314, squash `70afd18`): `extract_tz_fields` vracel cizí
+  `SO 101` (křížená dálnice, ref. v geologii + vnořeno v názvu) a prázdné name/charakteristika
+  → `detect_object_type` nepotvrdil most. Fix **reusuje deterministickou SO-logiku klasifikátoru**
+  (`extract_so_code(filename)` → `extract_section_ids(text)`), ne paralelní extraktor;
+  name/charakteristika přes celodokumentový scan explicitního labelu (colon-optional „Název
+  objektu", skip TOC dotted-leader řádků), trailing cizí `SO 101` z názvu odříznut. Oba vstupní
+  cesty (s/bez filename) → SO 202; poison-guard SO 250 zárubní zeď NEní most. (Amazon Q: 2×
+  `next()` bez defaultu v testech opraveno; produkční kód grepnut — čistý.)
+- **Gate 3 — NK geometry z prózy** (PR #1316, squash `69bfc4d`): po Gate 2 byla geometrie NK
+  0 % strukturovaná. Additive vrstva `_extract_geometry` v `extract_tz_fields` (segmenter +
+  MCP signatura NEtknuté): `num_spans` + uspořádaný `span_lengths_m` (+`spans_consistent`,
+  total), `nk_height_m`, `nk_width_m`, `cross_section_type`, `structural_system
+  {continuity,casting,prestress}`, per-field `_source` grounding, `needs_verify[]`. Česká
+  desetinná čárka, skloňování/předložky (root-regex), číslovky slovy („o **třech** polích").
+  **Existing-bridge poison** (TZ popisuje novou NK i bouraný prefab „Petra"): hodnota
+  klasifikována podle **nearest-preceding-marker** (popis, pod nímž stojí), ne symetrickým
+  oknem → bere nové `32,0+44,5+32,0`/`2,40`/`13,65`/dvoutrám místo starých `26,30+…`/`1,15`/
+  `12,64`. Honest-blank ladder (regex 1.0 / inferred count 0.7+flag / absent → None+`needs_verify`).
+- **Single-source (zámek):** `cross_section_type` čerpá z živého kalkulátorového `nk_subtype`
+  slovníku (`_NK_SUBTYPE_TO_ENGINE` klíče = input vocab) přes drift-guard test
+  `test_cross_section_values_are_in_live_calculator_vocab` (emitted ⊆ vocab; engine-internal
+  `dvoutram` se NEemituje, jen input form `dvoutramovy`). Žádný fork slovníku.
+- **CI důkaz na finálním HEAD `21a1585`** (MCP-Compatibility job 80160139957, success): všech
+  14 geometry testů + drift-guard + 2 corpus-gated **PASSED** (ne skip/error); `447 passed,
+  2 skipped` (2 skipy = nesouvisející DB-session testy). Po squashi ověřeno na `origin/main`
+  (`_extract_geometry` @463, call-site @629, test file, workflow trigger wired) — squash nic
+  nezahodil.
+
+**Odmítnuto:**
+- Síťový/MCP cross-check, OCR/vize výkresů, golden mimo SO202 korpus.
+- Paralelní SO-extraktor v Gate 2 (reuse klasifikátoru místo toho).
+- Symetrické negative-context okno v Gate 3 (křehké na kompaktní próze → nearest-preceding-marker).
+- Fork `nk_subtype` slovníku (drift-guard místo toho).
+- Předpětí/výstavbové fáze v geometrii (must-have only; odloženo).
+
+**Otevřené otázky / Residual (tracking, non-blocker):**
+- **nearest-preceding-marker** provalidován na SO202 + 5 hermetic fixtures — **přeověřit na
+  širším korpusu reálných mostních TZ** (jiné formulace „nová/stávající" markeru) později.
+- Geometrie zatím jen z prózy TZ; výkresy/DXF (přesné kóty, příčný řez) out of scope těchto gatů.
+
+**Co dál:**
+- SO202 ingest blokery #1 (XC4) + #2 (object_code) z reconu uzavřeny; geometry pole TZ
+  z reconu „Otevřené otázky" vyřešeno. Korpus `test-data/SO_202_D6_OV_Z/` ponechán jako
+  corpus-gated baseline.
+- Squash-merge orphans (Pattern 12): obsah Gate 1/2/3 na main, větvové commity orphaned;
+  recon větev (`d771a3f`) byla taková orphan (obsah na main přes #1310) — designated branch
+  `claude/funny-wright-JGSlV` resetnut na post-merge main pro tento §9 zápis.
+
 ## 2026-06-06 — Session: Knowledge-architecture audit + governance remediation (Phase 0/1/2)
 **Rozhodnuto:** Audit governance/rules/memory vrstvy (odlišná osa od domain-KB `knowledge_audit/`). Report → `docs/audits/knowledge_architecture/2026-06-06_*.md`. Remediation v phasích: **P0** C1 (steering layout přepsán na skutečný monorepo — `structure.md` v2.0 + `tech.md`), C6 (Monolit dvojí CLAUDE → jeden canonical `CLAUDE.md`, stale Render verze do archivu), C5 (settings.json — rozlišeny user-global vs repo permissions). **P1** C2/C3/C4 (DB jména, MCP URL, AI-tier/kredity), C9 (soul §2 v4.24→v4.34), C10 (husky 34→61 testů), C7/C8 (concrete-agent patterns 40→49 + date), D1 (CALCULATOR_PHILOSOPHY ×3 → 1 canon domain.md §1 + stuby). **P2** archiv 14 dead SESSION_/WEEK_ logů, nový `docs/steering/context-index.md` (3-tier mapa), per-service CLAUDE stuby (portal/URS/registry/registry-backend/mineru).
 **Nálezy:** Domain-KB osa zdravá (kb/ codegen + drift-guard). Governance osa měla 11 rozporů (2 HIGH) — kořen: **chybí drift-check governance↔realita** (na rozdíl od `gen:knowledge:check`).
