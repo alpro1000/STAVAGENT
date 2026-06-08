@@ -141,10 +141,37 @@ def test_nk_concrete_class_bound():
 def test_label_scan_retaining_wall_not_poisoned():
     obj = _extract(SO250_TRAP_TEXT, filename="250_01_TechnickaZprava.pdf")["object"]
     assert obj["object_code"] in ("SO 250", "SO-250", "SO250"), obj
+    # The label scan grabbed the AUTHORITATIVE value (the wall), not the geology bridge.
+    assert "zárubní zeď" in (obj["object_name"] or "").lower(), obj
     assert "most" not in (obj["object_name"] or "").lower(), obj
     assert "lávk" not in (obj["object_name"] or "").lower(), obj
     d = _detect(obj)
-    assert d["object_type"] == "retaining_wall", d
+    assert d["object_type"] == "retaining_wall", d  # NOT bridge, despite geology "most"
+
+
+def test_scan_label_skips_toc_dotted_line_takes_real():
+    """A dotted-leader OBSAH/TOC line that matches the label is skipped; the scan
+    returns the REAL content line that follows."""
+    from app.mcp.tools.extract_tz_fields import _NAME_LABEL_RE, _scan_label_value
+
+    txt = (
+        "Název objektu .................................. 5\n"  # OBSAH/TOC entry
+        "Název objektu Most přes potok\n"                       # real content line
+    )
+    assert _scan_label_value(txt, _NAME_LABEL_RE) == "Most přes potok"
+
+
+def test_trailing_so_strip_keeps_own_code_trims_foreign():
+    # Foreign crossed code (SO 101) is trimmed from the SO-202 trap name.
+    foreign = _extract(SO202_TRAP_TEXT, filename="202_01_TechnickaZprava.pdf")["object"]
+    assert "SO 101" not in (foreign["object_name"] or ""), foreign
+    # A name ending with the object's OWN code keeps it (own ≠ crossed).
+    own_text = (
+        "--- PAGE 1 ---\nNázev objektu Most SO 202\n"
+        "4.3. POUŽITÉ MATERIÁLY\n• Nosná konstrukce C35/45\n"
+    )
+    obj = _extract(own_text, filename="202_01_TechnickaZprava.pdf")["object"]
+    assert obj["object_name"] == "Most SO 202", obj
 
 
 # ── Corpus-gated golden: the real SO-202 TZ ───────────────────────────────────
@@ -176,3 +203,12 @@ def test_so202_corpus_nk_class_c35_45():
     nk = next(e for e in res["elements"]
               if e["name"].strip().lower().endswith("nosná konstrukce"))
     assert nk["concrete_class"] == "C35/45", nk
+
+
+@pytest.mark.skipif(not _CORPUS_TZ.exists(), reason=f"SO-202 TZ absent: {_CORPUS_TZ}")
+def test_so202_corpus_object_code_content_fallback_no_filename():
+    """MCP-tool entry on the real TZ with text only (NO filename) → classifier
+    content tier (extract_section_ids) → SO 202, never the crossed SO 101."""
+    obj = _extract(_real_tz_text(), filename="")["object"]
+    assert obj["object_code"] in ("SO 202", "SO-202", "SO202"), obj["object_code"]
+    assert obj["object_code"] not in ("SO 101", "SO-101", "SO101"), obj["object_code"]

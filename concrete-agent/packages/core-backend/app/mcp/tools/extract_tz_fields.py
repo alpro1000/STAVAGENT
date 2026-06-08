@@ -73,7 +73,7 @@ _CHARAKT_LABEL_RE = re.compile(
 # Leading "SO 250 – " / "SO-250: " prefix to strip off a descriptive name.
 _NAME_CODE_PREFIX_RE = re.compile(r"^\s*SO[\s\-]?\d{2,3}\s*[–\-:]\s*", re.I)
 # Trailing " … SO 101" crossed-object code embedded in a descriptive object name.
-_NAME_TRAIL_SO_RE = re.compile(r"\s+SO[\s\-]?\d{2,3}\s*$", re.I)
+_NAME_TRAIL_SO_RE = re.compile(r"\s+SO[\s\-]?(\d{2,3})\s*$", re.I)
 # OBSAH / table-of-contents line carries dotted leaders — never real content.
 _TOC_LINE_RE = re.compile(r"\.{4,}")
 # A new field / numbered-section line ends a scanned charakteristika paragraph.
@@ -225,9 +225,12 @@ def _extract_object(sections, full_text: str, filename: str = "") -> dict:
         scanned = _scan_label_value(full_text, _NAME_LABEL_RE)
         if scanned:
             name, name_conf, name_src = (_NAME_CODE_PREFIX_RE.sub("", scanned).strip() or None), 0.9, "document"
-    # Drop a trailing crossed-object code ("Most na D6 … SO 101" → "Most na D6 …").
+    # Trim a trailing CROSSED-object code ("Most na D6 … SO 101" → "Most na D6 …"),
+    # but KEEP the object's own code if a name happens to end with it.
     if name:
-        name = _NAME_TRAIL_SO_RE.sub("", name).strip() or None
+        mt = _NAME_TRAIL_SO_RE.search(name)
+        if mt and (not code or mt.group(1) != re.sub(r"\D", "", code)):
+            name = name[:mt.start()].strip() or None
 
     # Charakteristika: ≤2 sentences of the signed charakteristika section (heading
     # line dropped). Fallback to a whole-document "Charakteristika <…> <text>" inline
