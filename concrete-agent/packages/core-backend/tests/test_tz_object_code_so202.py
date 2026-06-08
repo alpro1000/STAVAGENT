@@ -132,7 +132,8 @@ def test_detect_object_type_confirms_bridge():
 
 def test_nk_concrete_class_bound():
     res = _extract(SO202_TRAP_TEXT, filename="202_01_TechnickaZprava.pdf")
-    nk = next(e for e in res["elements"] if "nosná" in e["name"].lower())
+    nk = next((e for e in res["elements"] if "nosná" in e["name"].lower()), None)
+    assert nk is not None, f"NK element not found in {res['elements']}"
     assert nk["concrete_class"] == "C35/45", nk
 
 
@@ -200,8 +201,9 @@ def test_so202_corpus_object_code_and_bridge():
 @pytest.mark.skipif(not _CORPUS_TZ.exists(), reason=f"SO-202 TZ absent: {_CORPUS_TZ}")
 def test_so202_corpus_nk_class_c35_45():
     res = _extract(_real_tz_text(), filename="202_01_TechnickaZprava.pdf")
-    nk = next(e for e in res["elements"]
-              if e["name"].strip().lower().endswith("nosná konstrukce"))
+    nk = next((e for e in res["elements"]
+              if e["name"].strip().lower().endswith("nosná konstrukce")), None)
+    assert nk is not None, f"NK element not found in {res['elements']}"
     assert nk["concrete_class"] == "C35/45", nk
 
 
