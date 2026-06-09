@@ -49,12 +49,31 @@ async def parse_construction_budget(
         # Decode base64 to temp file
         file_bytes = base64.b64decode(file_base64)
 
-        with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+        # Deterministic format routing (content-sniff + extension): a KROS XML
+        # soupis must reach the KROS parser, NOT the xlsx/zip reader — feeding XML
+        # to openpyxl silently yields 0 items (the Gap A bug). Content wins over a
+        # (possibly mislabeled) filename; an unrecognized format is an HONEST error,
+        # never a silent 0.
+        kind = _detect_file_kind(file_bytes, filename)
+        if kind == "unknown":
+            return {
+                "error": (
+                    f"Unrecognized soupis format for '{filename}': the content is "
+                    "neither a KROS XML nor an XLSX workbook."
+                ),
+                "items": [],
+                "total_items": 0,
+                "format_detected": "unknown",
+            }
+
+        with tempfile.NamedTemporaryFile(
+            suffix=(".xml" if kind == "xml" else ".xlsx"), delete=False
+        ) as tmp:
             tmp.write(file_bytes)
             tmp_path = Path(tmp.name)
 
         try:
-            result = await _parse_file(tmp_path, filename)
+            result = await _parse_file(tmp_path, filename, kind=kind)
             return result
         finally:
             tmp_path.unlink(missing_ok=True)
@@ -64,10 +83,33 @@ async def parse_construction_budget(
         return {"error": str(e), "items": [], "format_detected": None}
 
 
-async def _parse_file(file_path: Path, filename: str) -> dict:
-    """Parse Excel file using existing parsers."""
+async def _parse_file(file_path: Path, filename: str, kind: str = "xlsx") -> dict:
+    """Parse a soupis/budget file using the existing parsers.
 
-    # Try format detection
+    `kind` ('xml' | 'xlsx') is the deterministic routing decision made by the
+    caller (content-sniff + extension). XML → the existing KROS parser (it already
+    handles the KROS/XC4 soupis — reused, not re-implemented); XLSX → the
+    keyword-dispatched xlsx parsers. Both paths normalize through the SAME
+    `_normalize_items` block — one item contract, no fork.
+    """
+    # KROS XML soupis → the KROS parser. Its `positions` already use the field
+    # aliases `_normalize_items` understands (code/description/unit/quantity), so
+    # the join consumes them identically to the xlsx items.
+    if kind == "xml":
+        from app.parsers.kros_parser import KROSParser
+
+        result = KROSParser().parse(file_path)
+        items = result.get("positions", result.get("items", []))
+        normalized = _normalize_items(items)
+        return {
+            "items": normalized,
+            "total_items": len(normalized),
+            "format_detected": "kros_xml",
+            "filename": filename,
+            "diagnostics": result.get("diagnostics", {}),
+        }
+
+    # Try format detection (filename keyword → xlsx sub-format)
     detected_format = _detect_format(filename)
 
     items = []
@@ -109,7 +151,23 @@ async def _parse_file(file_path: Path, filename: str) -> dict:
                 "format_detected": detected_format,
             }
 
-    # Normalize items to a consistent format
+    normalized = _normalize_items(items)
+    return {
+        "items": normalized,
+        "total_items": len(normalized),
+        "format_detected": detected_format,
+        "filename": filename,
+        "diagnostics": diagnostics,
+    }
+
+
+def _normalize_items(items: list) -> list:
+    """Map parser positions/items → the canonical item contract the join consumes.
+
+    Single normalization site for EVERY parser path (xlsx sub-formats + KROS XML)
+    so a second item form is never forked. Tolerates both English and Czech field
+    aliases (code/kod, description/popis/name, unit/mj, quantity/mnozstvi, …).
+    """
     normalized = []
     for item in items:
         if isinstance(item, dict):
@@ -121,14 +179,28 @@ async def _parse_file(file_path: Path, filename: str) -> dict:
                 "unit_price": item.get("unit_price", item.get("jc", item.get("jednotkova_cena", 0))),
                 "total_price": item.get("total_price", item.get("celkem", 0)),
             })
+    return normalized
 
-    return {
-        "items": normalized,
-        "total_items": len(normalized),
-        "format_detected": detected_format,
-        "filename": filename,
-        "diagnostics": diagnostics,
-    }
+
+def _detect_file_kind(file_bytes: bytes, filename: str) -> str:
+    """Deterministic soupis-format routing: 'xml' (KROS) | 'xlsx' | 'unknown'.
+
+    Content-sniff wins over the (possibly mislabeled) filename — xlsx/xlsm/xlsb are
+    ZIP containers (PK magic), a KROS soupis is XML (`<?xml` / leading `<`). The
+    filename extension is only a fallback when the content is inconclusive. No LLM.
+    """
+    name = (filename or "").lower()
+    if file_bytes[:4] == b"PK\x03\x04":          # ZIP container → xlsx family
+        return "xlsx"
+    head = file_bytes.lstrip()[:5]
+    if head[:5] == b"<?xml" or head[:1] == b"<":  # XML content
+        return "xml"
+    # Content inconclusive → trust the extension.
+    if name.endswith((".xlsx", ".xlsm", ".xlsb", ".xls")):
+        return "xlsx"
+    if name.endswith(".xml"):
+        return "xml"
+    return "unknown"
 
 
 def _detect_format(filename: str) -> str:
