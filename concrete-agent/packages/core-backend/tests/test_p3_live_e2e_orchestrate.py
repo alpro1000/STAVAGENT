@@ -58,6 +58,16 @@ def _require_env(name: str) -> str:
     return val
 
 
+def _step(steps: list, state: str) -> dict:
+    """Find the step record for `state`, or fail with the available states — a
+    clear, actionable message instead of a bare StopIteration when the live
+    pipeline did not reach the expected state."""
+    found = next((s for s in steps if s.get("state") == state), None)
+    if found is None:
+        pytest.fail(f"{state} step not found; available: {[s.get('state') for s in steps]}")
+    return found
+
+
 def test_live_orchestrate_quantifies_from_documents():
     import httpx
 
@@ -88,12 +98,12 @@ def test_live_orchestrate_quantifies_from_documents():
         b1 = r1.json()
 
         # the document → join wiring fired LIVE against the real document tools
-        da = next(s for s in b1["steps"] if s["state"] == "DOCUMENT_ANALYSIS")
+        da = _step(b1["steps"], "DOCUMENT_ANALYSIS")
         assert "extract_tz_fields" in da["tools_invoked"], da
         assert "parse_construction_budget" in da["tools_invoked"], da
 
         # the EXTRACTED + quantified elements drove atomization (no caller elements)
-        atom = next(s for s in b1["steps"] if s["state"] == "WORK_ATOMIZATION")
+        atom = _step(b1["steps"], "WORK_ATOMIZATION")
         assert "create_work_breakdown" in atom["tools_invoked"], atom
         assert atom.get("work_items_verified", 0) > 0, atom
 
@@ -108,7 +118,7 @@ def test_live_orchestrate_quantifies_from_documents():
         b2 = r2.json()
         assert b2["status"] == "completed", b2
         assert b2["workflow_state"] == "EXPORTED", b2
-        committed = next(s for s in b2["steps"] if s["state"] == "COMMITTED")
+        committed = _step(b2["steps"], "COMMITTED")
         assert "export_soupis" in committed["tools_invoked"], committed
 
         # Opportunistic (only if the response surfaces committed outputs): the
