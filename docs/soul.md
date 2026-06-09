@@ -351,6 +351,42 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-09 — Session: doc→quantified-elements front-half (P1+P2+P3 shipped) + scoped validation + Gap A
+
+**Rozhodnuto:**
+- Front-half "documents → quantified elements[]" zaveden po fázích (design-first → gated PRs):
+  **P1 #1321** pure soupis→element join (`soupis_quantity_join.py`) + TS-mirrored volume-geometry
+  cross-check (`volume_geometry.py`, pin B — parity-guard parsuje `element-classifier.ts`).
+  **P2 #1322** wiring do `DOCUMENT_ANALYSIS` (`recipe_runner._document_analysis_step` volá
+  `extract_tz_fields` + `parse_construction_budget` → join → cache `elements[]` +
+  `quantification_summary`; `_atomize_step` fallback na `options['elements']`); divergence jede do
+  deliverable jako **ingest** warning (`origin:"ingest:soupis_vs_geometry"`, NE v `calc_warnings`).
+  **P3 #1323** env-gated live e2e (`test_p3_live_e2e_orchestrate.py`, skip-by-default, NENÍ CI gate)
+  + runbook `docs/specs/doc_to_quantified_elements/e2e_runbook.md`.
+- **Scoped validace na reálném SO-202** (real parsers + P1 join, bez serveru) odhalila 2 upstream díry,
+  které offline goldeny (čisté fixtury) maskovaly. Join sám robustní (honest-blank, no fabrication,
+  čisté bullety dostaly reálné objemy Opěry→949.6 / Římsy→632.2).
+- **Gap A FIX (PR #<TBD>):** `parse_construction_budget` mis-routoval **XML soupis** do xlsx/zip-readeru
+  → `BadZipFile` → tichá 0. Fix: deterministický `_detect_file_kind` (content-sniff `PK`/`<?xml` +
+  extension fallback) **uvnitř tulu** → XML dispatch do existujícího `KROSParser` → normalizace přes
+  **sdílený `_normalize_items`** (žádný fork). **Honest-error** na neznámém formátu (ne tichá 0).
+  Golden na **reálném SO-202 XML** (corpus-gated): tul vrací 3373 pozic / 1217 m³; join na čistých
+  bulletech → reálné objemy. xlsx path beze změny; KROSParser nezměněn.
+
+**Odmítnuto:**
+- Dumpnout divergenci do `calc_warnings` (maskovalo by se jako calc — proto sibling `quantification_warnings`).
+- Měnit KROSParser / P1 join / xlsx-path (fungují); psát nový parsing (jen dispatch + reuse).
+
+**Otevřené otázky / residual:**
+- **Live e2e NIKDY neproběhl** proti živému stacku (Postgres+Monolit+JWT) — runbook napsán, neexekuován;
+  pečeť u Alexandra. Spuštěn dnes proti reálnému SO-202 by **selhal** kvůli Gap A/B.
+- **Gap B (TZ element-list noise):** `extract_tz_fields` vrací na reálném TZ 37 "elementů" (6 reálných
+  bulletů + 31 prózních fragmentů) → garbage match + ambiguity. **Další task, ne teď.** Geometrie čistá.
+
+**Co dál:**
+- Po mergi Gap A: Gap B (zpřesnit TZ element-list extraction); pak má smysl live e2e seal.
+- Deferred (design §7): non-beton field mapping, non-monolit width, CATALOG_BINDING/PRICING, in-flow reconciler.
+
 ## 2026-06-08 — Session: Calc-output + confidence passthrough to deliverable (gated, additive, PR #1319)
 
 **Rozhodnuto:**
