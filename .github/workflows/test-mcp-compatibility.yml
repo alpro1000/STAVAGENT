@@ -1,6 +1,7 @@
 name: MCP Compatibility Test
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
