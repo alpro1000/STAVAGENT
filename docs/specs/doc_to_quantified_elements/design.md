@@ -205,6 +205,10 @@ The numeric chain becomes end-to-end **document → element → calc → deliver
   warnings ride. **No auto-resolution.** §8.2 asserts the divergence signal is present at the
   deliverable (committed `quantification_summary` + a divergence `warnings` line), not just at the
   join output — closing the same gap #1319 had to retrofit for calc numbers.
+  **Origin preserved (P2 constraint):** the divergence warning rides the `calc_warnings` *transport*
+  but is an **ingest** finding (`soupis↔TZ`), not a calc finding — it carries an explicit
+  `origin: "ingest:soupis_vs_geometry"` (+ the `quantification_summary` audit record) so it never
+  masquerades as a calculator warning. Shared rail, distinct identity.
 
 ---
 
