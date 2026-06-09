@@ -31,6 +31,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_xc4_routing_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_tz_geometry_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_calc_provenance_passthrough.py'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -61,6 +62,7 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_xc4_routing_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_tz_geometry_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_calc_provenance_passthrough.py'
 
 jobs:
   mcp-compatibility:
@@ -173,4 +175,5 @@ jobs:
             tests/test_xc4_routing_so202.py \
             tests/test_tz_object_code_so202.py \
             tests/test_tz_geometry_so202.py \
+            tests/test_calc_provenance_passthrough.py \
             -v --tb=short

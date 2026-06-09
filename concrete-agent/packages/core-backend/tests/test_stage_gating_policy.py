@@ -313,7 +313,9 @@ def test_breakdown_work_first_is_default_and_codeless():
     assert r["mode"] == "work_first"
     assert r["catalog_bound"] is False
     assert r["total_price_czk"] == 0
-    assert all("otskp_code" not in i for i in r["items"])
+    # Reserved-slot contract: work_first leaves the catalog slot present but
+    # UNFILLED (None), not omitted — CATALOG_BINDING fills the SAME key later.
+    assert all(i.get("otskp_code") is None for i in r["items"])
     # every item is grounded with a _source (feeds the grounding-gate)
     assert all("_source" in i for i in r["items"])
 
@@ -322,14 +324,17 @@ def test_breakdown_work_with_catalog_attaches_codes():
     r = _run_breakdown(mode="work_with_catalog")
     assert r["mode"] == "work_with_catalog"
     assert r["catalog_bound"] is True
-    assert any("otskp_code" in i for i in r["items"])
+    # slot is always present now (reserved) — assert a REAL code was filled (truthy)
+    assert any(i.get("otskp_code") for i in r["items"])
 
 
 def test_breakdown_catalog_none_alias_forces_work_first():
     r = _run_breakdown(mode="work_with_catalog", catalog="none")
     assert r["mode"] == "work_first"
     assert r["catalog_bound"] is False
-    assert all("otskp_code" not in i for i in r["items"])
+    # Reserved-slot contract: work_first leaves the catalog slot present but
+    # UNFILLED (None), not omitted — CATALOG_BINDING fills the SAME key later.
+    assert all(i.get("otskp_code") is None for i in r["items"])
 
 
 # ── enforce_or_raise async-context safety (review fix) ────────────────────────

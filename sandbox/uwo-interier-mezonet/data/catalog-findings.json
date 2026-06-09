@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "what": "Recorded REAL one-time probe of the live STAVAGENT MCP find_urs_code / find_otskp_code, frozen for offline replay.",
+    "probed_at": "2026-06-08",
+    "procurement_mode": "privatni",
+    "primary_catalog": "urs",
+    "note": "Privátní rekonstrukce → ÚRS primary, OTSKP nerelevantní. find_urs_code vrací kód+popis+jednotku+confidence (BEZ jednotkové ceny — ÚRS je licencovaná data). The hypothetical '111 vs 784' family mismatch did NOT reproduce this run; the matcher returned the correct 783 family for 'odstranění nátěrů'. Instead we recorded the REAL false-plausible cases observed (kotel 'Podmínky použití' row, štuk 'sloupů' element-mismatch, perlinka 'Příplatek' surcharge row) — same sanity-flag principle, honest data."
+  },
+  "probes": [
+    {
+      "atom_key": "priprava_odstraneni_nateru",
+      "query": "Odstranění starých nátěrů stěn (oškrabání), vnitřní",
+      "top": { "code": "783823215", "description": "Odstranění nátěrů z omítek oškrábáním", "unit": "m2", "confidence": 0.92, "source": "urs_matcher_service", "family": "783" },
+      "alternates": [
+        { "code": "783823216", "description": "Odstranění nátěrů z omítek stěn oškrábáním", "unit": "m2", "confidence": 0.88, "family": "783" },
+        { "code": "784111111", "description": "Odstranění malby oškrábáním", "unit": "m2", "confidence": 0.54, "family": "784" }
+      ]
+    },
+    {
+      "atom_key": "malba",
+      "query": "Malba stěn a stropů vnitřní dvojnásobná, bílá",
+      "top": { "code": "N/A", "description": "oddíl MALBY/NATĚRAČSKÉ 784 identifikován, konkrétní kód mimo otevřené zdroje (licencováno)", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "784" },
+      "alternates": []
+    },
+    {
+      "atom_key": "stuk",
+      "query": "Štuková omítka vnitřní stěn jednovrstvá",
+      "top": { "code": "N/A", "description": "oddíl omítky 611-613 identifikován; přesný kód mimo otevřené zdroje", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "613" },
+      "alternates": [
+        { "code": "613321141", "description": "Vápenocementová omítka štuková dvouvrstvá vnitřních pilířů nebo sloupů nanášená ručně", "unit": "m2", "confidence": 0.34, "family": "613", "_observed_issue": "element-mismatch: pilíře/sloupy, ne stěny" }
+      ]
+    },
+    {
+      "atom_key": "armovaci_sterka_perlinka",
+      "query": "Armovací stěrka s výztužnou perlinkou (skleněná tkanina) na stěny",
+      "top": { "code": "N/A", "description": "armovací stěrka s perlinkou — konkrétní kód neurčen z otevřených zdrojů", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "612" },
+      "alternates": [
+        { "code": "612181011", "description": "Sádrová stěrka vnitřních povrchů Příplatek k cenám za každý další 1 mm stěrky stěn", "unit": "m2", "confidence": 0.42, "family": "612", "_observed_issue": "surcharge row (Příplatek), ne základní položka; sádrová ne armovací" }
+      ]
+    },
+    {
+      "atom_key": "obklad_sten",
+      "query": "Obklad keramický vnitřních stěn koupelny lepený do tmelu",
+      "top": { "code": "781472216", "description": "Montáž keramických obkladů stěn lepených cementovým flexibilním lepidlem hladkých přes 9 do 12 ks/m2", "unit": "m2", "confidence": 0.74, "source": "urs_matcher_service", "family": "781" },
+      "alternates": []
+    },
+    {
+      "atom_key": "dlazba_podlah",
+      "query": "Dlažba keramická podlah lepená do tmelu, koupelna",
+      "top": { "code": "N/A", "description": "dlažby podlah (oddíl 771) — kód neurčen z otevřených zdrojů, licencováno", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "771" },
+      "alternates": []
+    },
+    {
+      "atom_key": "hydroizolace_koupelna",
+      "query": "Hydroizolační stěrka pod obklad a dlažbu v koupelně",
+      "top": { "code": "N/A", "description": "hydroizolace proti vodě pod keramiku (oddíl izolace 711) — kód v placených DB, neurčen", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "711" },
+      "alternates": []
+    },
+    {
+      "atom_key": "vinyl_pokladka",
+      "query": "Pokládka vinylové podlahy (lepené/zámkové) včetně podložky",
+      "top": { "code": "N/A", "description": "PSV podlahy z pružných krytin (oddíl 776) — konkrétní kód neurčen", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "776" },
+      "alternates": []
+    },
+    {
+      "atom_key": "parket_brouseni_lak",
+      "query": "Broušení a lakování parket (renovace dřevěné podlahy)",
+      "top": { "code": "N/A", "description": "podlahy dřevěné/parketové (oddíl 775/82) — renovace, kód neurčen z otevřených zdrojů", "unit": "m2", "confidence": 0.5, "source": "perplexity_urs_search", "family": "775" },
+      "alternates": []
+    },
+    {
+      "atom_key": "sdk_podhled",
+      "query": "Sádrokartonový podhled na nosné konstrukci, opláštění deskou",
+      "top": { "code": "763131411", "description": "Podhled ze sádrokartonových desek, zavěšená konstrukce CD/UD, jednoduše opláštěná deskou standardní A", "unit": "m2", "confidence": 0.97, "source": "urs_matcher_service", "family": "763" },
+      "alternates": [
+        { "code": "763131412", "description": "Podhled SDK CD/UD jednoduše opláštěná deska A, tl.", "unit": "m2", "confidence": 0.9, "family": "763" },
+        { "code": "763132261", "description": "Podhled SDK samostatný požární předěl dvouvrstvá nosná konstrukce", "unit": "m2", "confidence": 0.48, "family": "763", "_observed_issue": "požární předěl, ne běžný podhled" }
+      ]
+    },
+    {
+      "atom_key": "elektroinstalace",
+      "query": "Elektroinstalace bytu kompletní nové rozvody včetně revize",
+      "top": { "code": "N/A", "description": "silnoproud byt: nutno rozdělit (demontáž / rozvody / přístroje / rozvaděč / revize) — komplet kód neexistuje", "unit": "soubor", "confidence": 0.5, "source": "perplexity_urs_search", "family": "M21" },
+      "alternates": []
+    },
+    {
+      "atom_key": "plynovy_kotel_vymena",
+      "query": "Výměna plynového kotle, demontáž starého a montáž nového včetně spalinové cesty a revize",
+      "top": { "code": "N/A", "description": "oddíl 5805 Plynové kotle identifikován; konkrétní položka dle výkonu (do/nad 50 kW) v placeném ceníku", "unit": "ks", "confidence": 0.5, "source": "perplexity_urs_search", "family": "5805" },
+      "alternates": [
+        { "code": "580507201", "description": "Vybraná položka - Podmínky použití - CS ÚRS", "unit": "ks", "confidence": 0.56, "family": "5805", "_observed_issue": "NENÍ montážní položka — 'Podmínky použití' (metadata/condition row), false-plausible" },
+        { "code": "580507311", "description": "Vybraná položka - Podmínky použití - CS ÚRS", "unit": "ks", "confidence": 0.5, "family": "5805", "_observed_issue": "NENÍ montážní položka — 'Podmínky použití'" }
+      ]
+    }
+  ]
+}

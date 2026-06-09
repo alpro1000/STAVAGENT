@@ -67,6 +67,10 @@ test-data/libuse/inputs/dxf/*.dxf
 test-data/*/inputs/dxf/*.dxf
 test-data/*/sources/*/dxf/*.dxf
 
+# Mezonet rekonstrukce regenerated deliverable (build artifact — single-source
+# projection from outputs/atomic_decomposition_map.json via tools/atomic_worklist_excel.py).
+test-data/rekonstrukce_mezonet_2026/outputs/Vykaz_vymer_Mezonet_ATOMIC_WORKLIST.xlsx
+
 # libredwg in-tree clone (build script clones to /tmp by default)
 /libredwg/
 
