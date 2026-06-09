@@ -351,6 +351,63 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-08 — Session: Calc-output + confidence passthrough to deliverable (gated, additive, PR #1319)
+
+**Rozhodnuto:**
+- Navazuje na pipeline-state recon (`docs/audits/pipeline_state_recon/2026-06-08…`),
+  který našel šev: recipe spustí kalkulátor, ale jeho `PlannerOutput` **zahodí**
+  (drží jen pár jmen klíčů) a na témže švu **dropne classification confidence**.
+  Hirurgická gated-taska, **additive**, kalkulátor (SSOT delegace do Monolitu)
+  **netknut**. Pre-implementation interview (AskUserQuestion) PŘED kódem — 5 bodů
+  odsouhlaseno + 3 doplňky uživatele (Q1/Q3/Q4) zapracovány.
+- **Work-item kontrakt (1× v `breakdown.py`):** stamp `classification_confidence`
+  + `classification_source` tam, kde klasifikace řídí item; **rezervované sloty**
+  `otskp_code`/`unit_price_czk`/`total_price_czk` = None (CATALOG_BINDING/PRICING
+  naplní stejné klíče později); `calc`=None + `calc_status="not_calculated"` +
+  `calc_warnings=[]` jako **explicitní honest-blank** (Q3 — stav, ne chybějící pole).
+- **recipe_runner `_atomize_step`:** kurátorovaný **calc subset** (resource
+  quantities + schedule metrics `total_days`/`num_tacts`/`resources`) + warnings se
+  přenese na work-items počítaného prvku (deck); plný provenance-tagged
+  `PlannerOutput` → `calc_metadata` v step metadatech (`_source` = `calculator:<el>
+  ← monolit_planner_api`, Q1/AC3 replay-grounded); engine error → honest-blank
+  (žádná vymyšlená čísla). Přenesené číslo nese `_source` (AC3) jako prácová provenance.
+- **export.py:** plní **existující viditelné** sloupce KROS soupisu `Důvěra` ←
+  classification confidence (reálný skalár) + `Zdroj` ← calc-status-aware label;
+  honest-blank řádek dostává explicitní **`NEPOČÍTÁNO`** marker (Q4 — vizuálně
+  odlišný, soupis nevypadá kompletní tam, kde se nepočítalo). Bohatší calc čísla +
+  agregované warnings → metadata odpovědi (`calc_summary`/`calc_warnings`), NE do
+  KROS sloupců. `_source` work→template + source_map + grounding-gate beze změny.
+- **Golden (hermetic, offline):** `test_calc_provenance_passthrough.py` mockuje
+  Monolit odpověď na delegačním švu (`monolit_delegate._http_post` → `fake_post`,
+  sentinel `total_days=1234`; neznámá cesta → `raise AssertionError`, tj. živá
+  služba by FAILnula, neskipla) — 8 testů. Wired do `test-mcp-compatibility.yml`.
+- **CI důkaz na finálním HEAD `ac01cdd2`** (MCP-Compatibility job 80175537633,
+  success): všech 8 passthrough goldenů **PASSED** (ne skip), registrace tulů
+  **nepoškozena** (`test_mcp_server_imports` + `test_all_tools_registered` +
+  `test_no_unexpected_tools` PASSED; zero-registration-diff vůči main), 2 flipnuté
+  policy-testy PASSED (+ zpevněn vacuous-pass). Souhrn `455 passed, 2 skipped`.
+- **Merged jako PR #1319 (squash → `a7df366f`)** — Pattern 12 orphan (obsah na main,
+  větvové commity orphaned). HEAD před mergem srovnán na CI-verified `ac01cdd2`
+  (drop docs-only §9 commitu z větve, ať se nemerguje neověřený HEAD; soul.md je
+  mimo CI-trigger-paths → §9 jde post-merge separátně, jako celou sezónu).
+
+**Odmítnuto:**
+- Změna kalkulátoru / jeho kontraktu / Monolit delegace (jen se přestal zahazovat výstup).
+- Front-půlka (dokumenty → elements) — příští taska. CATALOG_BINDING/PRICING zůstávají
+  no-op (jen rezervované sloty). Reconciler v potoku. Celý `PlannerOutput` na řádek
+  (kurátorovaný subset + plný v metadatech). Single composite confidence (separátní pole).
+
+**Otevřené otázky / Residual:**
+- Kalkulátor v recipe běží zatím **jen pro deck** (mostovkova_deska) — ostatní prvky
+  honest-blank. Rozšíření na víc prvků = navazující taska.
+- `Zdroj` label volí classification_source; doménově možná chtít čistší cz štítek
+  (kalkulátor/StavAgent) — drobnost, neřešeno.
+
+**Co dál:**
+- Front-half (extract → quantified elements feed) + propagace calc na víc prvků +
+  případně CATALOG_BINDING wiring. (Konverguje s UWO Catalog-Last status-enumem.)
+
+
 ## 2026-06-08 — Session: UWO sandbox — Work-First na interiér/PSV ( remont mezonetu), runnable offline fixture
 **Rozhodnuto:** Groundwork + golden fixture pro UWO (navazuje na design spec). Samostatný zero-dep offline sandbox `sandbox/uwo-interier-mezonet/` (běží `node --test`, žádná síť/DB/AI). **Interview (4 odpovědi):** runnable harnes · šablony uvnitř testdata-projektu · baseline ±10–15 % · reálný ÚRS proba 1×. Reálný kejs: rekonstrukce mezonetu (3D půdorysy M&M + scope majitele + `Cenova_nabidka_rekonstrukce_1.xlsx` mistra, 1 127 350 Kč). 4-fázový pipeline (scope-router → Work-First decomposer → Catalog-Last adapter se status-enumem `exact|candidate|group_only|not_verified` → orientační cost). 10 sekcí → 33 work-atomů; koupelna = balík 7 atomů (nikdy 1 kód). **Jednorázový reálný proba** živého STAVAGENT MCP `find_urs_code` (privátní→ÚRS) zmražen v `data/catalog-findings.json`. Headline: UWO grand **1 435 990 Kč orientačně, +27,4 % vs mistr** — odhalené mezery: malba (stěny+podhledy), hydroizolace, montáž ZP, samonivelační stěrka, **celá výměna kotle**, ochrana schodiště, odvoz suti, administrativa, hodinové. 9/9 acceptance testů green.
 **Odmítnuto:** monolitní atomy na interiéru (router guard) · falešný „kód nalezen" (adapter vrací honest status) · catalog-first. Hypotéza „111 vs 784 family-mismatch" se NEpotvrdila (matcher vrátil správné 783); místo toho zmraženy REÁLNÉ false-plausible kódy (kotel „Podmínky použití", štuk „sloupů", perlinka „Příplatek") → sanity-flagy.
