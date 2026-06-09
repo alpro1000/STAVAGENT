@@ -50,6 +50,27 @@ NUANCE_DECISIONS_FIELD = "nuance_decisions"
 # {action, chosen_source, chosen_value, reason}. It NEVER computes a number.
 Decider = Callable[[dict], dict]
 
+# Curated calculator-output subset carried onto a work-item (§2 interview:
+# resource quantities + schedule metrics; the full PlannerOutput goes to the
+# deliverable metadata, not duplicated per row). Warnings ride alongside in
+# `calc_warnings`. Keys absent from the engine output stay absent (honest-blank).
+_CALC_SUBSET_KEYS = ("total_days", "num_tacts", "resources")
+
+
+def _calc_subset(calc: dict, *, element_name: str) -> dict:
+    """Pick the curated, source-grounded subset of a PlannerOutput for a work-item.
+
+    A carried number is traceable to the calc/element it came from (`_source`),
+    consistent with the work-item `_source` provenance — the numeric chain becomes
+    as replayable as the work provenance. NEVER fabricates: a missing key is simply
+    absent, never defaulted to a number.
+    """
+    subset = {k: calc[k] for k in _CALC_SUBSET_KEYS if k in calc}
+    subset["_source"] = (
+        f"calculator:{element_name} ← {calc.get('source', 'monolit_planner_api')}"
+    )
+    return subset
+
 
 # ── project-state loader/saver (W3b contract: loader→(payload, path)) ────────
 def _default_loader(project_id: str):
@@ -159,7 +180,13 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
                 name=el["name"], object_code=el.get("object_code"), object_type=object_type
             ),
         )
-        classified.append({"name": el["name"], "element_type": c.get("element_type")})
+        classified.append({
+            "name": el["name"],
+            "element_type": c.get("element_type"),
+            # classification confidence is no longer dropped at the seam
+            "classification_confidence": c.get("confidence"),
+            "classification_source": c.get("classification_source"),
+        })
     if elements:
         tools_invoked.append("classify_construction_element")
 
@@ -197,10 +224,15 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
     items = bd.get("items", [])
     tools_invoked.append("create_work_breakdown")
 
-    # 4) calculate_concrete_works — enrich the deck with schedule
+    # 4) calculate_concrete_works — the engine's output is NO LONGER discarded.
+    #    Its curated subset + warnings are carried onto the calculated element's
+    #    work-items; the full PlannerOutput is kept in the step metadata
+    #    (replayable). Elements the engine does not compute stay honest-blank
+    #    (calc=None, calc_status="not_calculated") from the breakdown contract.
     deck_name = next((c["name"] for c in classified if c["element_type"] == "mostovkova_deska"), None)
     deck = next((e for e in elements if e.get("name") == deck_name), None) if deck_name else None
     calc_keys = []
+    calc_metadata: Optional[dict] = None
     if deck:
         calc = _call_tool(
             "calculate_concrete_works",
@@ -211,8 +243,33 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
                 is_prestressed=bool(deck.get("is_prestressed")),
             ),
         )
-        calc_keys = sorted(calc.keys())[:6]
         tools_invoked.append("calculate_concrete_works")
+        calc_keys = sorted(calc.keys())[:6]
+        if "error" in calc:
+            # Honest-blank: the engine failed (unavailable / invalid input). Do NOT
+            # invent numbers — items keep calc_status="not_calculated"; the failure
+            # is recorded in metadata so the gap is visible, not silent.
+            calc_metadata = {
+                "element_name": deck_name, "element_type": "mostovkova_deska",
+                "status": "error", "error": calc.get("error"), "warnings": [],
+            }
+        else:
+            subset = _calc_subset(calc, element_name=deck_name)
+            warnings = list(calc.get("warnings") or [])
+            for it in items:
+                if it.get("element_name") == deck_name:
+                    it["calc"] = subset
+                    it["calc_status"] = "computed"
+                    it["calc_warnings"] = warnings
+            # Full PlannerOutput → deliverable metadata (replayable), not per-row.
+            # Carries its own `_source` so the raw stash is provenance-grounded —
+            # a replay knows which element/engine produced it (AC3), same as the
+            # per-row calc subset.
+            calc_metadata = {
+                "element_name": deck_name, "element_type": "mostovkova_deska",
+                "status": "computed", "raw": calc, "warnings": warnings,
+                "_source": subset["_source"],
+            }
 
     outputs: dict[str, Any] = {
         "object_type": object_type,
@@ -221,6 +278,8 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
         "breakdown_total_items": bd.get("total_items"),
         "calculate_keys": calc_keys,
     }
+    if calc_metadata is not None:
+        outputs["calc_metadata"] = calc_metadata
     if decision is not None:
         outputs["nuance_decision"] = decision
 
@@ -248,6 +307,9 @@ def _export_step(ctx: StepContext) -> StepResult:
             "row_count": exp.get("row_count"),
             "source_preserved": exp.get("source_preserved"),
             "file_base64": exp.get("file_base64"),
+            # carried calculator output reaches the COMMITTED deliverable metadata
+            "calc_summary": exp.get("calc_summary"),
+            "calc_warnings": exp.get("calc_warnings"),
             "exported": True,
         },
         tools_invoked=["export_soupis"],
