@@ -1,11 +1,13 @@
 # Design — Document → quantified-`elements[]` (front-half, monolit/most-doména)
 
 **Date:** 2026-06-08
-**Type:** DESIGN PROPOSAL (design-first; **no code** — recon + design + phased plan + test strategy)
+**Type:** DESIGN PROPOSAL → APPROVED 2026-06-09. **P1 (pure join) LANDED** (§12). P2/P3 = separate gated tasks.
 **Scope:** concrete-agent stage-gating recipe — closing the **primary manual seam** (recon §3.1)
 for the **monolit/bridge domain only** (where the back-half already runs end-to-end).
-**Status:** 🛑 STOP for review. Implementation = separate gated tasks after design approval.
 **Based on:** `docs/audits/pipeline_state_recon/2026-06-08_pipeline_recon.md` (the seam + exact loci).
+**Review pins folded in:** **B** — single-source the divergence bands/formula against the canonical TS
+engine, never hardcode in Python (§5.6, §8.1, §12). **A** — the divergence-flag carriage to the
+deliverable is *traced*, not just claimed, and *asserted* in the offline golden (§6, §8.2).
 
 ---
 
@@ -156,11 +158,16 @@ map_soupis_to_elements(parsed_budget, tz_elements, geometry, *, classify) -> ele
    `quantity_status="missing"`. It is **kept** in the list (never dropped), flows to
    WORK_ATOMIZATION, and is surfaced (it will read honest-blank in the export exactly like the
    PR #1319 `NEPOČÍTÁNO` marker).
-6. **Divergence cross-check (D3/D5):** when both a soupis volume and `geometry` exist for the deck,
-   compute `expected = f(geometry)` (reuse the engine's `estimateExpectedVolume` semantics:
-   `span_total × nk_width × subtype_eq_thickness`); ratio-check (the engine's `<0.3 / >3` critical,
-   `0.3–0.7 / 1.5–3` warning bands). On drift set `quantity_divergence = {soupis, geometry_expected,
-   ratio, severity}`. **Never** overwrite the soupis volume; **never** auto-resolve.
+6. **Divergence cross-check (D3/D5 + pin B):** when both a soupis volume and `geometry` exist for the
+   deck, compute `expected = f(geometry)` and ratio-check. **Pin B — the bands + the formula are NOT
+   hardcoded in Python.** They live once in the canonical TS engine (`DECK_SUBTYPE_EQ_THICKNESS_M`,
+   `estimateExpectedVolume`, `checkVolumeGeometry` — `<0.3 / >3` critical, `0.3–0.7 / 1.5–3` warning,
+   `0.7–1.5` OK). The Python side is a deterministic *mirror* (`volume_geometry.py`) whose constants,
+   thickness table, and formula shape are **asserted equal to the TS source by a parsing parity test**
+   (`test_volume_geometry_parity.py`) — a TS change that isn't mirrored goes RED. This keeps the two
+   nets (this soupis↔TZ flag + the engine's own `checkVolumeGeometry`) on **one set of numbers**. On
+   drift set `quantity_divergence = {soupis, geometry_expected, ratio, severity}`. **Never** overwrite
+   the soupis volume; **never** auto-resolve.
 
 **Reuse anchors:** Monolit already does steps 1–4 on the TS side — `mapSmetaToField` (beton+m3 →
 `volume_m3`) + `detectWorkType`/`detectCatalog` in `tz-text-extractor.ts` / `position-linking.ts`,
@@ -187,8 +194,17 @@ The numeric chain becomes end-to-end **document → element → calc → deliver
 - **Honest-blank:** `quantity_status="missing"` element → `volume_m3=None` → deck calc skipped →
   PR #1319 honest-blank path → export `NEPOČÍTÁNO` marker. **One consistent honest-blank semantics**
   across both gates.
-- **Divergence flag:** surfaced in `quantification_summary` + as a row-level warning
-  (`⚠️ soupis 605 m³ vs geometrie ~660 m³`), no auto-resolution.
+- **Divergence flag — carriage TRACED, not assumed (pin A):** the lesson of #1319 was that a value
+  computed early evaporates unless its path to the deliverable is explicit. The join sets
+  `element.quantity_divergence` (structured). P2 must carry it via **two existing channels, no new
+  plumbing**: (1) the DA step folds divergent elements into `quantification_summary{extracted,
+  missing, divergent}` in `partials[DOCUMENT_ANALYSIS]` (audit record, lands in the committed
+  session state); (2) for each divergent element the DA step pushes one `⚠️ soupis X m³ vs geometrie
+  ~Y m³` line into the **same `warnings[]` channel** that PR #1319 already routes to `calc_warnings`
+  and renders in the export. So the flag reaches the deliverable on the identical rails the calc
+  warnings ride. **No auto-resolution.** §8.2 asserts the divergence signal is present at the
+  deliverable (committed `quantification_summary` + a divergence `warnings` line), not just at the
+  join output — closing the same gap #1319 had to retrofit for calc numbers.
 
 ---
 
@@ -196,8 +212,8 @@ The numeric chain becomes end-to-end **document → element → calc → deliver
 
 | Phase | Deliverable | Test | Wiring | Risk |
 |---|---|---|---|---|
-| **P1 — the join (pure)** | `map_soupis_to_elements(...)` deterministic function: filter→classify→group→provenance→honest-blank→divergence-flag. **No recipe wiring.** | **Hermetic unit** (§8.1) — fully offline | none (standalone module) | low — pure fn, no I/O |
-| **P2 — wire into DOCUMENT_ANALYSIS** | extend `_detect_step`→`_document_analysis_step`: call `extract_tz_fields` + `parse_construction_budget` from `options.documents`, run P1 join, cache quantified `elements[]`; `_atomize_step` reads DA partials (fallback `options["elements"]`). | **Offline recipe golden** (§8.2) mocking `monolit_delegate._http_post` (as PR #1319) | one step + one read line; YAML untouched | low-med — back-compat fallback keeps `test_thin_hybrid_recipe.py` green |
+| **P1 — the join (pure)** ✅ **LANDED** | `map_soupis_to_elements(...)` + `volume_geometry.py` (TS mirror): filter→classify→group→provenance→honest-blank→divergence-flag. **No recipe wiring.** | **Hermetic unit** (§8.1) + **TS-parity drift guard** (pin B) — 14 tests, fully offline | none (standalone module) | low — pure fn, no I/O |
+| **P2 — wire into DOCUMENT_ANALYSIS** | extend `_detect_step`→`_document_analysis_step`: call `extract_tz_fields` + `parse_construction_budget` from `options.documents`, run P1 join, cache quantified `elements[]` + `quantification_summary` + push divergence `warnings`; `_atomize_step` reads DA partials (fallback `options["elements"]`). | **Offline recipe golden** (§8.2) mocking `monolit_delegate._http_post` (as PR #1319) — **asserts the divergence flag reaches the deliverable (pin A)** | one step + one read line; YAML untouched | low-med — back-compat fallback keeps `test_thin_hybrid_recipe.py` green |
 | **P3 — live e2e seal (env-gated)** | documented runbook + an env-gated smoke through `/orchestrate` (real Postgres+Monolit+JWT) | **env-gated** (§8.3), skipped in CI | marker only | n/a (out of CI gate) |
 
 **Out of this plan (later increments, recon §3):** non-beton field mapping (bednění m2 →
@@ -209,14 +225,20 @@ PRICING wiring; in-flow reconciler across the 12 rules; multi-element-instance d
 
 ## 8. Test strategy (designed-in, per D6)
 
-### 8.1 Hermetic unit (P1) — fully offline, no network/DB/AI
-Fixture: a small parsed-budget dict (a beton+m3 line per element + a bednění+m2 line + a noise
-line) + extracted `tz_elements` (`volume_m3=None`) + a `geometry` dict. Assert:
-- matched elements get summed `volume_m3` with `_source.volume_m3` + confidence;
-- M→1 grouping (two beton lines, one element_type → summed);
+### 8.1 Hermetic unit (P1) — fully offline, no network/DB/AI ✅ DONE (§12)
+`test_soupis_quantity_join.py` (9 tests) — parsed-budget dict (beton+m3 line + bednění m2 + výztuž t
++ noise výkop m3) + `tz_elements` (`volume_m3=None`) + a `geometry` dict, injected stub classifier:
+- matched elements get summed `volume_m3` with `_source.volume_m3` + confidence (≤0.9 keyword cap);
+- M→1 grouping (two beton lines, one element_type → summed, `n_lines=2`);
 - unmatched element → `volume_m3=None`, `quantity_status="missing"` (honest-blank, still present);
-- divergence: geometry-expected far from soupis → `quantity_divergence` set, soupis volume **unchanged**;
-- non-beton lines never land in `volume_m3`.
+- same-type ambiguity → both `quantity_status="ambiguous"` + `candidates[]`, **never** a silent split;
+- divergence: geometry far from soupis → `quantity_divergence` set, soupis volume **unchanged**;
+- non-beton (m2/t) + unmatched m3 (výkop) never land in `volume_m3`; inputs not mutated.
+
+**Pin B — TS-parity drift guard:** `test_volume_geometry_parity.py` (5 tests) parses
+`element-classifier.ts` and asserts the Python mirror's deck-thickness table, default fallback,
+`0.3/0.7/1.5/3` bands, and formula shape are identical — a TS-only change goes RED. Negatively
+verified: perturbing a Python constant makes the guard fail (proven, not assumed).
 
 ### 8.2 Offline recipe golden (P2) — mirrors the PR #1319 harness
 Drive the in-process recipe with `options.documents = {tz_text: <SO-202 excerpt>,
@@ -224,7 +246,11 @@ soupis_file_base64: <tiny xlsx fixture>}` and **mock `monolit_delegate._http_pos
 PlannerOutput, `raise AssertionError` on any other path → live leak fails, never skips). Assert:
 - `partials[DOCUMENT_ANALYSIS]["elements"]` carries the quantified deck (`volume_m3` from the soupis fixture);
 - WORK_ATOMIZATION computes the deck from the **extracted** volume (not a caller-supplied one);
-- the deliverable carries the number + `_source.volume_m3` provenance + honest-blank for an unmatched element.
+- the deliverable carries the number + `_source.volume_m3` provenance + honest-blank for an unmatched element;
+- **pin A — divergence reaches the deliverable:** with a geometry fixture that diverges from the soupis
+  volume, assert the **committed** `quantification_summary.divergent > 0` AND a `⚠️ … vs geometrie …`
+  line is present in the deliverable's `warnings`/`calc_warnings` — i.e. the flag survives the whole
+  pipeline, not just the join. (A consistent-geometry control asserts no false divergence warning.)
 Wired into `.github/workflows/test-mcp-compatibility.yml` (runs, not skipped).
 
 ### 8.3 Live e2e (P3) — env-gated, outside CI (the part that needs the live stack)
@@ -239,7 +265,7 @@ covers the recipe path deterministically, this is the manual/staged seal.
 
 ## 9. Scope boundaries / explicit non-goals (task §7)
 
-- **No implementation code in this task** — design only. 🛑 STOP after this proposal.
+- **P1 = the pure join only.** P2 (recipe wiring) + P3 (env-gated e2e) are separate gated tasks.
 - **Monolit/bridge first.** No non-monolit width (renovation/professions) here.
 - **No `elements[]` fork** — fields are filled on the existing shape.
 - **No Monolit/calculator/delegation change** — this is about *filling* `elements[]`, not computing.
@@ -258,16 +284,41 @@ covers the recipe path deterministically, this is the manual/staged seal.
    large books (SO-202 = 3373 položek). Acceptable for P2, or prefer a project-cache handle the
    caller pre-uploads? *(Recommendation: base64 for P2 fixtures; handle-based transport is a P3
    concern.)*
-3. **Where the divergence band lives:** reuse the engine's exact `0.3/3` + `0.7/1.5` bands in the
-   Python join, or compute expected-volume server-side only and let the engine's own
-   `checkVolumeGeometry` be the single source? *(Recommendation: flag in the join for soupis↔TZ;
-   the engine check remains a second independent net.)*
+3. ~~**Where the divergence band lives**~~ **RESOLVED by pin B.** The bands/formula live once in the
+   canonical TS engine; the Python join uses a mirror (`volume_geometry.py`) guarded by a parsing
+   parity test. The two nets (soupis↔TZ flag + the engine's own `checkVolumeGeometry`) share one set
+   of numbers, drift-guarded.
 
 ---
 
-## 11. STOP — for review
+## 11. Review pins — disposition
 
-No code written, no behaviour changed. The implementation phases (P1 join, P2 wiring, P3 env-gated
-e2e) are **separate gated tasks after approval of this design** — each additive, deterministic where
-possible, golden-paired, with a verbatim CI log on the final HEAD (P1/P2) and the env-gated runbook
-(P3).
+| Pin | Ask | Disposition |
+|---|---|---|
+| **B** | Don't hardcode divergence bands/formula in Python; single-source or parity-test vs TS engine. | ✅ **Done in P1.** `volume_geometry.py` mirrors the TS; `test_volume_geometry_parity.py` parses `element-classifier.ts` and asserts equality (table, default, `0.3/0.7/1.5/3` bands, formula shape). Negatively verified to bite. |
+| **A** | Divergence-flag carriage to deliverable is claimed but not traced — trace it + assert in golden 8.2. | ✅ **Traced + designed into P2** (§6, §7, §8.2): carried via `quantification_summary` (committed) + a `⚠️` line on the existing `warnings`→`calc_warnings` rail; 8.2 asserts the flag at the **deliverable**, not just the join. Implemented when P2 lands. |
+| honest-blank | keep, never fabricate. | ✅ kept (`quantity_status="missing"`, element retained), unit-tested. |
+| ambiguity | flag + `candidates[]`, never silent split; multi-instance deferred. | ✅ as agreed; unit-tested; open question #1 deferred. |
+
+---
+
+## 12. Implementation status
+
+**P1 — LANDED** (this branch). Pure join + TS-mirrored cross-check, no recipe wiring, no behaviour
+change to any existing path.
+
+| Artifact | Path |
+|---|---|
+| Join (pure fn) | `concrete-agent/.../app/services/stage_gating/soupis_quantity_join.py` |
+| Cross-check (TS mirror, pin B) | `concrete-agent/.../app/services/stage_gating/volume_geometry.py` |
+| Hermetic unit (§8.1) | `concrete-agent/.../tests/test_soupis_quantity_join.py` (9) |
+| TS-parity drift guard (pin B) | `concrete-agent/.../tests/test_volume_geometry_parity.py` (5) |
+
+**14/14 new tests green; `test_thin_hybrid_recipe.py` baseline still 11/11** (additive, no
+regression). The join is wired into nothing yet — `_atomize_step` still reads `options["elements"]`;
+P2 is the wiring task.
+
+**Next (separate gated tasks):** P2 — extend DOCUMENT_ANALYSIS to call `extract_tz_fields` +
+`parse_construction_budget`, run the join, cache `elements[]` + `quantification_summary`, push
+divergence warnings; `_atomize_step` reads DA partials (fallback `options["elements"]`); offline
+recipe golden asserting pins A. P3 — env-gated live e2e runbook.
