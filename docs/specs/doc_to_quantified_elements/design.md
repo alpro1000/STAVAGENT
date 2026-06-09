@@ -308,8 +308,8 @@ covers the recipe path deterministically, this is the manual/staged seal.
 
 ## 12. Implementation status
 
-**P1 — LANDED** (this branch). Pure join + TS-mirrored cross-check, no recipe wiring, no behaviour
-change to any existing path.
+**P1 — LANDED** (merged to main, PR #1321, squash `3b4d93fe`). Pure join + TS-mirrored cross-check,
+no recipe wiring, no behaviour change to any existing path.
 
 | Artifact | Path |
 |---|---|
@@ -318,11 +318,20 @@ change to any existing path.
 | Hermetic unit (§8.1) | `concrete-agent/.../tests/test_soupis_quantity_join.py` (9) |
 | TS-parity drift guard (pin B) | `concrete-agent/.../tests/test_volume_geometry_parity.py` (5) |
 
-**14/14 new tests green; `test_thin_hybrid_recipe.py` baseline still 11/11** (additive, no
-regression). The join is wired into nothing yet — `_atomize_step` still reads `options["elements"]`;
-P2 is the wiring task.
+**P2 — LANDED** (this branch). DOCUMENT_ANALYSIS now calls `extract_tz_fields` +
+`parse_construction_budget` from `options['documents']`, runs the P1 join (classifier `_classify`
+seam), and caches quantified `elements[]` + `quantification_summary`. `_atomize_step` reads the DA
+partials' elements, falling back to `options['elements']` (full back-compat). Divergences reach the
+COMMITTED deliverable as **ingest** warnings (`origin: "ingest:soupis_vs_geometry"`) in a sibling
+`quantification_warnings` field — pin A — **never** folded into `calc_warnings`.
 
-**Next (separate gated tasks):** P2 — extend DOCUMENT_ANALYSIS to call `extract_tz_fields` +
-`parse_construction_budget`, run the join, cache `elements[]` + `quantification_summary`, push
-divergence warnings; `_atomize_step` reads DA partials (fallback `options["elements"]`); offline
-recipe golden asserting pins A. P3 — env-gated live e2e runbook.
+| Artifact | Path |
+|---|---|
+| DA wiring + helpers + carriage | `concrete-agent/.../app/services/stage_gating/recipe_runner.py` (`_document_analysis_step`, `_quantify_from_documents`, `_summarize_quantification`, `_atomize_step`, `_export_step`) |
+| Offline recipe golden (§8.2, pin A) | `concrete-agent/.../tests/test_p2_document_analysis_quantity.py` (5) |
+
+**5/5 new P2 tests green; `test_thin_hybrid_recipe.py` (11) + `test_calc_provenance_passthrough.py`
+(8) baselines unchanged** (additive, no regression). No MCP tool signature changed — the recipe only
+calls the existing tools + the deterministic `_classify` core.
+
+**Next (separate gated task):** P3 — env-gated live e2e runbook (real Postgres + Monolit + JWT).
