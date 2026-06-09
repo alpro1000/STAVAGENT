@@ -334,4 +334,16 @@ COMMITTED deliverable as **ingest** warnings (`origin: "ingest:soupis_vs_geometr
 (8) baselines unchanged** (additive, no regression). No MCP tool signature changed — the recipe only
 calls the existing tools + the deterministic `_classify` core.
 
-**Next (separate gated task):** P3 — env-gated live e2e runbook (real Postgres + Monolit + JWT).
+**P3 — LANDED** (this branch). Env-gated **live** end-to-end seal + runbook — the one test that
+exercises the REAL stack (Postgres session store + Portal-JWT principal + real document tools + P1
+join + live Monolit) through `/orchestrate`. Opt-in (`STAGEGATING_LIVE_E2E=1`), **skipped by
+default**, **not a CI gate** (CI collects it → import-clean + SKIPPED).
+
+| Artifact | Path |
+|---|---|
+| Env-gated live e2e (§8.3) | `concrete-agent/.../tests/test_p3_live_e2e_orchestrate.py` (1, skip-by-default) |
+| Operating runbook | `docs/specs/doc_to_quantified_elements/e2e_runbook.md` |
+
+The whole phased plan is now landed: **design (approved) → P1 (#1321) → P2 (#1322) → P3 (this PR)**.
+Deferred follow-ups (outside this plan) remain per §7: non-beton field mapping, non-monolit width,
+CATALOG_BINDING/PRICING wiring, in-flow reconciler, multi-element-instance disambiguation.
