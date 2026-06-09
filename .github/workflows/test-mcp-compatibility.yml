@@ -32,6 +32,12 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_tz_geometry_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_calc_provenance_passthrough.py'
+      - 'concrete-agent/packages/core-backend/tests/test_soupis_quantity_join.py'
+      - 'concrete-agent/packages/core-backend/tests/test_volume_geometry_parity.py'
+      # Pin B: the parity guard asserts the Python volume-geometry mirror equals
+      # the canonical TS engine. A change to the TS constants/bands must trigger
+      # this workflow so the guard runs — otherwise TS drift lands silently.
+      - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -63,6 +69,9 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_tz_geometry_so202.py'
       - 'concrete-agent/packages/core-backend/tests/test_calc_provenance_passthrough.py'
+      - 'concrete-agent/packages/core-backend/tests/test_soupis_quantity_join.py'
+      - 'concrete-agent/packages/core-backend/tests/test_volume_geometry_parity.py'
+      - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
 
 jobs:
   mcp-compatibility:
@@ -176,4 +185,6 @@ jobs:
             tests/test_tz_object_code_so202.py \
             tests/test_tz_geometry_so202.py \
             tests/test_calc_provenance_passthrough.py \
+            tests/test_soupis_quantity_join.py \
+            tests/test_volume_geometry_parity.py \
             -v --tb=short
