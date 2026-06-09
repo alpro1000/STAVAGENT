@@ -366,12 +366,12 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - **Scoped validace na reálném SO-202** (real parsers + P1 join, bez serveru) odhalila 2 upstream díry,
   které offline goldeny (čisté fixtury) maskovaly. Join sám robustní (honest-blank, no fabrication,
   čisté bullety dostaly reálné objemy Opěry→949.6 / Římsy→632.2).
-- **Gap A FIX (PR #<TBD>):** `parse_construction_budget` mis-routoval **XML soupis** do xlsx/zip-readeru
+- **Gap A FIX (PR #1324, MERGED):** `parse_construction_budget` mis-routoval **XML soupis** do xlsx/zip-readeru
   → `BadZipFile` → tichá 0. Fix: deterministický `_detect_file_kind` (content-sniff `PK`/`<?xml` +
   extension fallback) **uvnitř tulu** → XML dispatch do existujícího `KROSParser` → normalizace přes
   **sdílený `_normalize_items`** (žádný fork). **Honest-error** na neznámém formátu (ne tichá 0).
   Golden na **reálném SO-202 XML** (corpus-gated): tul vrací 3373 pozic / 1217 m³; join na čistých
-  bulletech → reálné objemy. xlsx path beze změny; KROSParser nezměněn.
+  bulletech → reálné objemy. xlsx path beze změny; KROSParser nezměněn. CI na finálním HEAD `7a3bbdcc`: 480 passed / 3 skipped, 6/6 Gap-A testů PASSED (oba corpus-gated na reálném XML).
 
 **Odmítnuto:**
 - Dumpnout divergenci do `calc_warnings` (maskovalo by se jako calc — proto sibling `quantification_warnings`).
@@ -384,7 +384,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
   bulletů + 31 prózních fragmentů) → garbage match + ambiguity. **Další task, ne teď.** Geometrie čistá.
 
 **Co dál:**
-- Po mergi Gap A: Gap B (zpřesnit TZ element-list extraction); pak má smysl live e2e seal.
+- Gap A merged → deployed live-invokace aktualizována na reálný XML soupis (env-var `STAGEGATING_E2E_SOUPIS_XLSX` přijímá XML path — jméno historické); pečeť dělá Alexander proti deployed stacku. Gap B (TZ element-list noise) — po pečeti.
 - Deferred (design §7): non-beton field mapping, non-monolit width, CATALOG_BINDING/PRICING, in-flow reconciler.
 
 ## 2026-06-08 — Session: Calc-output + confidence passthrough to deliverable (gated, additive, PR #1319)
