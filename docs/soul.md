@@ -351,6 +351,46 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-10 — Session: Monolit seam-fix — единый источник сводки (čel-časy, harmonogram, KPI)
+
+**Rozhodnuto:**
+- Recon (tentýž den, STOP gate) potvrdil: kalkulátor (`CalculatorResult`) a sводná Monolit
+  (`FlatKPIPanel`/`FlatGantt`/`ElementBlock`/exporter) počítaly čas a člověkohodiny NEZÁVISLE
+  (326.7 d vs 622.8 d vs ~357 d; 7 862 / 14 092 / 14 952 h na SO-202 mostovce 605 m³).
+- Seam-fix (branch `claude/bold-hawking-v2e7b4`): nový shared modul
+  `shared/src/calculators/labor-projection.ts` — JEDINÝ zdroj: `buildScheduleProjection(plan)`
+  (total + reálné fáze s překryvy, tvar `schedule_info.phases` který mrtvá větev FlatGantt/exporter
+  už očekávala) + `buildLaborProjection(plan)` (kanonické normohodiny ×0.8 per operace, včetně
+  viditelné podstroky **ošetřování betonu** 1 os.×5 h/den; přítomnost = ÷0.8). `K_UTIL=0.8` canon.
+- Domain decisions (Alexander, fixní): normohodina = lidé×směna×0.8×dny (kánon, normy+termíny);
+  přítomnost = ÷0.8; **peníze VŽDY z přítomnosti** (směna 10 h placená celá); zrání = kalendářní
+  span/overlay, nikdy sekvenční sčítanec; KPI «Čas» = total enginu, bez harmonogramu →
+  `NEPOČÍTÁNO`; peněžní vzorec (KROS÷burn) NIKDY jako druhý "čas" — přesunut do **«Krytí mezd»**
+  (budget-months ÷ plan-months, semafor ≥1 zelená / <1 červená, oba vstupy v tooltip).
+- Writers: Aplikovat zapisuje plnou projekci (`useCalculator` → `buildScheduleProjection`;
+  `buildWorkDrafts` čte `buildLaborProjection` — TOV `normHours`=kánon, `hours`=přítomnost,
+  `totalCost`=přítomnost×sazba; `buildPileWorkDrafts` sloučen do projection-driven builderu).
+- Readers: FlatGantt fáze z projekce + roll-up = Σ element totals (zrání overlay
+  `--zrani` třída); FlatKPIPanel «Čas» z `schedule_total_days` (+ `Nevypočtených` badge,
+  mixed projekt = částečná suma — interview answer), «Krytí mezd» v Náklady kartě;
+  `calculateHeaderKPI` + `summarizeScheduleProjections` v shared/formulas; Celk.hod buňka
+  zobrazuje kánon z TOV; exporter.js «Doba realizace (harmonogram)» + «Krytí mezd» řádek
+  (interview: exporter v scope).
+- AC na SO-202: všechny tři view = **326.7 d** (bylo 622.8/357); jedno kanonické číslo
+  **14 681.6 Nh** / 18 352 h přítomnost (tři čísla zanikla); hermetic suite
+  `labor-projection.test.ts` 13 testů. **1262 shared** (1249+13) + 58 backend Jest + tsc + vite OK.
+
+**Odmítnuto:**
+- Přenos `planElement` do Core (samostatný budoucí krok). Oprava interního dluhu 220.5 vs 307.8 d
+  (Souhrn «Dní» nyní zobrazuje projection-days; engine sub-results nezměněny). Změna KROS/cen.
+
+**Otevřené otázky:**
+- Starý nerouted `KPIPanel.tsx`/`MainApp` stále ukazuje peněžní `estimated_months` jako čas —
+  mimo routing, mimo scope. `costs.total_labor_czk` zahrnuje props_labor a UI «Celkem práce»
+  přičítá propsLabor znovu (pre-existing, recon poznámka) — samostatný cleanup.
+
+**Co dál:** STOP gate — merge dělá Alexander po review PR.
+
 ## 2026-06-09 — Session: doc→quantified-elements front-half (P1+P2+P3 shipped) + scoped validation + Gap A
 
 **Rozhodnuto:**

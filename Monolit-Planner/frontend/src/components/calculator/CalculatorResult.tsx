@@ -8,7 +8,7 @@
 
 import { useMemo, useState } from 'react';
 import { TriangleAlert, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
-import { addWorkDays, type PlannerOutput } from '@stavagent/monolit-shared';
+import { addWorkDays, buildLaborProjection, type PlannerOutput } from '@stavagent/monolit-shared';
 import PlannerGantt from '../PlannerGantt';
 import { exportPlanToXLSX } from '../../utils/exportPlanXLSX';
 import { Card, KPICard, Row, CollapsibleSection } from './ui';
@@ -1019,13 +1019,21 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
             ? plan.costs.total_labor_czk + mssRental
             : plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
 
-          const nT = plan.pour_decision.num_tacts;
-          const k = 0.8;
-          const fwDays = (plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT;
-          const fwH = fwDays * plan.resources.crew_size_formwork * plan.resources.shift_h * k;
-          const rbDays = plan.rebar.duration_days * nT;
-          const rbH = rbDays * plan.resources.crew_size_rebar * plan.resources.shift_h * k;
-          const pourH = plan.pour.total_pour_hours * nT;
+          // Canonical labor projection — the SAME numbers Aplikovat persists
+          // into TOV entries and the planner summary reads (seam fix 2026-06).
+          // Normohodiny = crew × shift × 0.8 × days from the real schedule.
+          const labor = buildLaborProjection(plan);
+          const opByKey = new Map(labor.operations.map(o => [o.key, o]));
+          const fwMon = opByKey.get('bedneni_montaz');
+          const fwDem = opByKey.get('bedneni_demontaz');
+          const fwDays = (fwMon?.days ?? 0) + (fwDem?.days ?? 0);
+          const fwH = (fwMon?.norm_hours ?? 0) + (fwDem?.norm_hours ?? 0);
+          const rbDays = opByKey.get('vyztuz')?.days ?? 0;
+          const rbH = opByKey.get('vyztuz')?.norm_hours ?? 0;
+          const pourDays = opByKey.get('beton')?.days ?? 0;
+          const pourH = opByKey.get('beton')?.norm_hours ?? 0;
+          const curingOp = opByKey.get('osetrovani');
+          const podperyOp = opByKey.get('podpery');
           const rentalDays = plan.schedule.total_days + 2;
           const rentalMonths = (rentalDays / 30).toFixed(1);
           // Per-takt work cost on MSS = total formwork_labor minus mob/demob
@@ -1080,15 +1088,28 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                     <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
                       <td style={cl}>Betonáž (práce)</td>
                       <td style={cs}>{formatCZK(plan.costs.pour_labor_czk)}</td>
-                      <td style={cs}>—</td>
-                      <td style={cs}>{formatNum(pourH, 1)} h</td>
+                      <td style={cs}>{formatNum(pourDays, 1)}</td>
+                      <td style={cs}>{formatNum(pourH, 0)} h</td>
                     </tr>
+                    {/* Ošetřování betonu — visible line in the element's
+                        person-hours (1 os. × ~5 h/den over the curing span).
+                        Not part of plan.costs — its money lives in TOV. */}
+                    {curingOp && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                        <td style={cl} title="1 osoba × ~5 h/den po dobu zrání — kropení, zakrytí fólií. Náklady nejsou v engine costs; objeví se v TOV pozice.">
+                          Ošetřování betonu (zrání)
+                        </td>
+                        <td style={cs}>—</td>
+                        <td style={cs}>{formatNum(curingOp.days, 1)}</td>
+                        <td style={cs}>{formatNum(curingOp.norm_hours, 0)} h</td>
+                      </tr>
+                    )}
                     {propsLabor > 0 && !isMss && (
                       <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
                         <td style={cl}>Stojky (práce)</td>
                         <td style={cs}>{formatCZK(propsLabor)}</td>
                         <td style={cs}>{plan.props ? formatNum(plan.props.assembly_days + plan.props.disassembly_days, 1) : '—'}</td>
-                        <td style={cs}>—</td>
+                        <td style={cs}>{podperyOp ? `${formatNum(podperyOp.norm_hours, 0)} h` : '—'}</td>
                       </tr>
                     )}
                     {/* D1 (2026-04-16): mostovka ALWAYS needs skruž. If
@@ -1180,7 +1201,10 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                     <tr style={{ borderTop: '2px solid var(--r0-slate-300)' }}>
                       <td style={{ ...cl, fontWeight: 700 }}>Celkem práce</td>
                       <td style={cb}>{formatCZK(plan.costs.total_labor_czk + propsLabor)}</td>
-                      <td style={cs} colSpan={2}></td>
+                      <td style={cs}></td>
+                      <td style={cb} title={`Kanonické normohodiny (×0,8). Přítomnost (placené hodiny): ${formatNum(labor.total_presence_hours, 0)} h`}>
+                        {formatNum(labor.total_norm_hours, 0)} h
+                      </td>
                     </tr>
                     <tr>
                       <td style={{ ...cl, fontWeight: 700 }}>Celkem vše</td>

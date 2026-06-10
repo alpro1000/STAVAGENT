@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   planElement,
+  buildScheduleProjection,
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
@@ -1408,10 +1409,11 @@ export default function useCalculator() {
                       num_tacts: plan.pour_decision.num_tacts,
                       num_sets: form.num_sets,
                     },
-                    schedule_info: {
-                      total_days: plan.schedule.total_days,
-                      tact_count: plan.pour_decision.num_tacts,
-                    },
+                    // Full schedule projection: total + real phase intervals
+                    // with overlaps. FlatGantt + exporter read `phases`
+                    // (previously a dead branch) instead of re-deriving a
+                    // sequential estimate from position days.
+                    schedule_info: buildScheduleProjection(plan),
                   };
                   // Write to positions via Monolit backend (TOV split routing)
                   const bridgeId = positionContext.bridge_id || positionContext.project_id || '';

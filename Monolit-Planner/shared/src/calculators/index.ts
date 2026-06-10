@@ -27,6 +27,7 @@ export * from './lateral-pressure.js';
 export * from './bridge-technology.js';
 export * from './position-linking.js';
 export * from './planner-orchestrator.js';
+export * from './labor-projection.js';
 export * from './batchCalculator.js';
 
 // Classifiers
