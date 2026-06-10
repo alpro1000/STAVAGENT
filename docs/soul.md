@@ -351,6 +351,59 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-10 — Session: Live-seal blockers (#1327) + ŽIVÁ PEČEŤ front-half PASSED
+
+**ŽIVÁ PEČEŤ — PASSED.** Po merge #1327 + deploy Alexander zopakoval runbook
+(`docs/specs/doc_to_quantified_elements/e2e_runbook.md`): **1 passed, 19.32 s**,
+proti deployed stacku (Cloud Run + Cloud SQL + Portal JWT + živý Monolit),
+reálný **SO-202 XML soupis** (`E_Soupis praci_XC4_DI-009.xml`) + TZ text,
+**BEZ caller-supplied `elements`**. P3-residual UZAVŘEN — front-half
+(dokumenty → join → quantified elements[] → kalkulace → deliverable) je
+zapečetěn end-to-end živě. Plán design → P1 #1321 → P2 #1322 → P3 #1323 →
+Gap A #1324 → blockers #1327 → pečeť: KOMPLET.
+
+**MERGED do main (#1327, 409d8f1c) — tři prod-defekty z PRVNÍ živé pečeti (+ čtvrtý latentní z reconu):**
+- **Part A (б-zero):** provisioning psaný pro PŘEDPOKLÁDANÉ vlastní UUID schéma users/projects
+  500koval proti reálné Portal-tabulce (id INTEGER, bez status) — `UndefinedColumn` →
+  `DatatypeMismatch`. Recon: provisioned řádky NIKDO nečte (existovaly jen kvůli FK
+  `orchestrator_sessions`), a orchestrátorové tabulky žádná migrace nevytvářela (jen CI fixture
+  přes create_all — 4. vrstva: `UndefinedTable` by byla další). Fix: migrace
+  `012_orchestrator_tables.sql` (sessions + audit + append-only trigger, **plain indexed UUID
+  user_id/project_id, ŽÁDNÉ FK** — konvence audit-tabulky); FK v ORM modelu odstraněny;
+  `ensure_user/project_provisioned` SMAZÁNY — **orchestrátor nikdy nezapisuje do Portal-owned
+  tabulek**. Izolace beze změny (app-level principal-vs-session compare).
+- **Part B:** deploy-config nese `JWT_SECRET=JWT_SECRET:latest` (byl manual-only, každý deploy
+  ho smetl → „JWT auth is not configured") + substituce `_REDIS_URL`/`_VPC_CONNECTOR`
+  (hodnoty plní Alexander v triggeru; empty-safe omission přes bash-step — žádný tichý
+  ''-overwrite). Ruční restore-ritual mrtvý.
+- **Part C:** `_CRITICAL_SCHEMA` rozšířeno o obě orchestrátorové tabulky — drift schématu =
+  `SchemaDriftError` na startu (Cloud Run drží předchozí revizi), ne 500 na živém requestu.
+- **Goldens** (`test_live_seal_portal_schema.py`, DB-gated, scratch schema): fixture replikuje
+  POZOROVANÝ prod-tvar (integer-id users BEZ status) — negativně ověřeno, že reprodukuje oba
+  prod-errory doslova. JWT submit+resume projde s **0 zápisy do users**; audit + append-only
+  trigger fungují; drift-check projde na 012 a hlasitě padá s názvem sloupce po jeho dropnutí.
+  Lokálně ověřeno proti reálnému PG16 (3/3 goldens + 8/8 pr3b endpoint testů); CI na finálním
+  HEAD `8662188f`: 483 passed.
+
+**Vestigiální ALTER (zaznamenat, nezapomenout):** `users.status` v prod DB `stavagent_portal` —
+ruční `ALTER TABLE users ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'active'`
+provedený 2026-06-10 během debuggingu první pečeti. Po б-zero ho orchestrátor **NEPOUŽÍVÁ**
+(žádné zápisy do Portal users) — sloupec je vestigiální a neškodný; tabulku vlastní Portal,
+případné odstranění je rozhodnutí Portal-strany, ne concrete-agenta.
+
+**Rozhodnuto:**
+- **б-zero** (interview): žádná principal-tabulka, žádné FK na Portal users/projects, provisioning
+  odstraněn — nic výsledek provisioning nečte, FK na integer-id Portal users není ani vyjádřitelný.
+- Deploy-env: JWT hned (secret-ref existuje), REDIS/VPC přes trigger-substituce (hodnoty nejsou v repu).
+- Drift-chování: fail-fast reuse existujícího mechanismu (SchemaDriftError → rollback revize).
+
+**Odmítnuto:** (а) adaptace provisioning na Portal-schéma (zápisy do ŽIVÉ Portal users tabulky na
+každý JWT request + UUID→integer mapping); (б-table) vlastní principal-tabulka (nikdo by ji nečetl).
+
+**Co dál:** Gap B — šum element-listu v `extract_tz_fields` (6 čistých bullets + ~31 prose-fragmentů
+na reálné TZ; geometry-path je čistá, nesahat). Pečeť prošla i s šumem (čisté bullets dostaly objemy),
+ale kvalita quantification se Gap B výrazně zvedne. Samostatná gated-úloha.
+
 ## 2026-06-09 — Session: doc→quantified-elements front-half (P1+P2+P3 shipped) + scoped validation + Gap A
 
 **Rozhodnuto:**
