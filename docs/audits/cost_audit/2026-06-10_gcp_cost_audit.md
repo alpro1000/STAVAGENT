@@ -19,9 +19,9 @@ GCP. **В песочнице нет gcloud/ADC** — всё, что добира
 | Статья (Kč/мес, act+fcst) | Причина (факт) | Можно убрать/ужать? | Экономия ≈est | Риск / усилие |
 |---|---|---|---|---|
 | **Cloud Build 1 980** | Все 6 пайплайнов на `machineType: E2_HIGHCPU_8` ($0.0156/мин, вне free tier); живые триггеры без `includedFiles` → 5 билдов на каждый пуш в main (4 умирают как платные guard-FAILURE); manual `gcloud builds submit` во время сессий; concrete-билд тяжёлый (6Gi-образ, timeout 3600s) | ДА: (1) default-пул e2-standard-2 = 2 500 free мин/мес; (2) реимпорт триггеров (includedFiles УЖЕ в репо); (3) батчить мержи | **~1 200–1 700** | Низкий / низкое. Билды медленнее ~1.5–2× |
-| **Cloud Run 1 956** | `cloudbuild-concrete.yaml`: **`--min-instances=1` + `--memory=6Gi`** зашиты в каждый деплой concrete-agent (PR3 IFC budget). Idle min-instance 2vCPU/6Gi ≈ $50–55/мес ≈est уже сам по себе; если на сервисе включён instance-based billing / no-cpu-throttling `[GCLOUD]` — до $160/мес. Остальные сервисы: MinerU min=0/4Gi/2cpu (по репо — **H3 про MinerU опровергнута**), monolit/portal/urs/registry без явных флагов (живые значения `[GCLOUD]`) | ДА: min-instances 1→0 (cold start ~10–30 s, прецедент v4.26 — уже принимали) ИЛИ оставить min=1, но гарантировать request-based billing; 6Gi трогать нельзя без потери IFC | **~900–1 600** | Средний / низкое. Cold start у MCP-коннектора + первый запрос после простоя |
-| **Memorystore Redis 943** | Fixed-cost 24/7 (Basic ~1GB ≈est, `stavagent-redis`, 10.229.246.227). **Единственный fail-closed потребитель — DCR rate-limiter `/register`** (`app/mcp/rate_limit.py`, 10/IP/час, данные = счётчики байтового размера, TTL 1 ч). Redis-сессии (`app/core/session.py`) — 0 прод-вызовов (только тесты); Celery — мёртв (Dockerfile CMD = только uvicorn, ни воркера, ни `.delay()` из роутов); KB-кэш — 1 потребитель (`monolit_adapter`, cache-aside TTL 1 ч) | **ДА, целиком** — H1 ПОДТВЕРЖДЕНА кодом. Rate-limiter → Postgres (atomic UPSERT, 10 строк/час нагрузки); monolit-кэш → in-memory fallback | **943** | Низкий / среднее (≈1 PR). Детали §2 |
-| **Compute Engine 406** | Инстансы VPC-коннектора `stavagent-vpc-connector` (мин. 2 × e2-micro 24/7 ≈est $15–18/мес — сходится с биллингом). Egress `private-ranges-only`; в deploy-конфигах коннектор есть ТОЛЬКО у concrete-agent; Cloud SQL ходит через `--set-cloudsql-instances` (auth-proxy socket, VPC не нужен) → **коннектор существует только ради Redis** | ДА — уходит вместе с Redis (после `[GCLOUD]`-подтверждения, что других потребителей нет) | **406** | Низкий / минимальное (после Redis) |
+| **Cloud Run 1 956** | `cloudbuild-concrete.yaml`: **`--min-instances=1` + `--memory=6Gi`** зашиты в каждый деплой concrete-agent (PR3 IFC budget); живая ревизия ✅ 2vCPU/6Gi/min=1/max=3, request-based billing. Idle min-instance ≈ $50–55/мес ≈est. Остальные: MinerU min=0/4Gi/2cpu (**H3 про MinerU опровергнута**), monolit/portal/urs/registry ✅ 1cpu/512Mi/min=0 — уже right-sized | ДА: min-instances 1→0 (cold start ~10–30 s, прецедент v4.26 — уже принимали); 6Gi трогать нельзя без потери IFC | **~900–1 300** | Средний / низкое. Cold start у MCP-коннектора + первый запрос после простоя |
+| **Memorystore Redis 943** | Fixed-cost 24/7 ✅ **BASIC 1GB** (`stavagent-mcp-rate-limit`, создан 2026-05-20, 10.229.246.227 — имя инстанса само говорит о единственном назначении). **Единственный fail-closed потребитель — DCR rate-limiter `/register`** (`app/mcp/rate_limit.py`, 10/IP/час, данные = счётчики байтового размера, TTL 1 ч). Redis-сессии (`app/core/session.py`) — 0 прод-вызовов (только тесты); Celery — мёртв (Dockerfile CMD = только uvicorn, ни воркера, ни `.delay()` из роутов); KB-кэш — 1 потребитель (`monolit_adapter`, cache-aside TTL 1 ч) | **ДА, целиком** — H1 ПОДТВЕРЖДЕНА кодом. Rate-limiter → Postgres (atomic UPSERT, 10 строк/час нагрузки); monolit-кэш → in-memory fallback | **943** | Низкий / среднее (≈1 PR). Детали §2 |
+| **Compute Engine 406** | Инстансы VPC-коннектора `stavagent-vpc-connector` ✅ **e2-micro, min=2/max=10** (2 × e2-micro 24/7 = строка биллинга). ✅ Annotation стоит ТОЛЬКО на concrete-agent; Cloud SQL ходит через auth-proxy → **коннектор существует только ради Redis** | ДА — уходит вместе с Redis | **406** | Низкий / минимальное (после Redis) |
 | **Cloud SQL 307** | `db-f1-micro` ZONAL (handoff 2026-04-29) — уже минимальный tier, биллингу соответствует | **НЕТ** — не трогаем; наоборот, кандидат на приём Redis-нагрузки (orchestrator-сессии уже здесь) | 0 | — |
 | Прочее ~200 | Artifact Registry (cleanup-политика уже стоит, v4.26), Logging (retention 7d уже), Secret Manager | Нет действий | 0 | — |
 
@@ -54,37 +54,42 @@ GCP. **В песочнице нет gcloud/ADC** — всё, что добира
 | session.py, Celery | **удалить/заархивировать ничего не нужно** — код можно оставить, он не исполняется | Отдельная cleanup-задача по желанию, к деньгам отношения не имеет |
 | Реально требует Memorystore | **ничего** | — |
 
-### 2.3 Тариф `[GCLOUD]`
+### 2.3 Тариф — ✅ ПОДТВЕРЖДЕНО (gcloud, 2026-06-10)
 
-Размер/tier инстанса в репо не зафиксирован. Биллинг (943 Kč/мес ≈ $41) сходится с
-Basic ~1 GB в europe-west3 ≈est. Подтвердить: §7 п.1.
+Живой инстанс называется **`stavagent-mcp-rate-limit`** (имя `stavagent-redis` из
+runbook'а устарело): **BASIC tier, 1 GB**, Redis 7.0, host 10.229.246.227 (совпадает
+с кодом), создан **2026-05-20** — в эпоху DCR-деплоя, т.е. инстанс был заведён
+буквально только под rate-limiter. 943 Kč/мес = факт за Basic 1GB 24/7.
 
-### 2.4 VPC-коннектор
+### 2.4 VPC-коннектор — ✅ ПОДТВЕРЖДЕНО (gcloud, 2026-06-10)
 
-Подтверждено по репо: упоминания `--vpc-connector` есть только в
-`cloudbuild-concrete.yaml` (+docs); живое имя `stavagent-vpc-connector`,
-egress `private-ranges-only` (soul.md). Cloud SQL коннектор не использует.
-Финальная проверка «никто другой не подключён» — §7 п.2. **Если Redis уходит —
-коннектор уходит целиком**, вместе с substitutions `_REDIS_URL`/`_VPC_CONNECTOR`
-в триггере (станут неактуальны — empty-safe bash-step уже корректно их опускает).
+`stavagent-vpc-connector`: **e2-micro, minInstances=2, maxInstances=10**, network
+default, READY — т.е. 2 × e2-micro 24/7 = строка Compute Engine (406 Kč/мес)
+подтверждена. Annotation-проверка всех Cloud Run сервисов: `vpc-access-connector`
+стоит **только на concrete-agent** (egress `private-ranges-only`); monolit / portal /
+urs / registry — без коннектора. Cloud SQL ходит через auth-proxy. **Если Redis
+уходит — коннектор уходит целиком**, вместе с substitutions
+`_REDIS_URL`/`_VPC_CONNECTOR` в триггере (станут неактуальны — empty-safe
+bash-step уже корректно их опускает).
 
 ---
 
 ## 3. Cloud Run (задание §2)
 
-Codified-конфиг (по репо; живые ревизии — §7 п.3):
+Живые ревизии — ✅ ПОДТВЕРЖДЕНО (gcloud, 2026-06-10):
 
-| Сервис | CPU | Mem | min | max | Источник |
+| Сервис | CPU | Mem | min | max | Примечание |
 |---|---|---|---|---|---|
-| concrete-agent | не задан (≥2 vCPU обязателен при 6Gi) | **6Gi** | **1** | 10 (runbook) | `cloudbuild-concrete.yaml` (каждый деплой) |
-| mineru | 2 | 4Gi | **0** | 2, concurrency=1, timeout 200 | `cloudbuild-mineru.yaml` |
-| monolit / portal / urs / registry | флаги не задаются → живые значения унаследованы от ручных настроек `[GCLOUD]` | | | | cloudbuild-*.yaml |
+| concrete-agent | **2000m** | **6Gi** | **1** | 3 | startup-cpu-boost, gen1; cpu-throttling-override отсутствует → **request-based billing** (хороший случай) |
+| monolit / portal / urs / registry | 1000m | 512Mi | **0** | 3 | уже right-sized |
+| mineru | 2 | 4Gi | **0** | 2, concurrency=1 | живёт в **europe-west1** (describe в west3 → NOT_FOUND; repo-конфиг = источник) |
 
 - **Виновник — concrete-agent**: idle min-instance 2vCPU/6Gi ≈ $50–55/мес ≈est
-  (Tier-1 idle rates); если CPU always-allocated — кратно больше. Это
-  консистентно объясняет львиную долю статьи 1 956 Kč.
-- **MinerU (H3-подозрение) опровергнут по repo-конфигу**: min=0, узкие лимиты.
-  Частота вызовов — §7 п.4 (request count из метрик).
+  (Tier-1 idle rates, request-based подтверждён — сценарий «кратно больше при
+  always-allocated» снят). Это объясняет бо́льшую часть статьи 1 956 Kč;
+  остаток = активные запросы (live e2e, MCP-трафик) — разрез по SKU в §7 п.6.
+- **MinerU (H3-подозрение) опровергнут**: min=0, узкие лимиты. Частота вызовов —
+  §7 п.4 (request count из метрик, регион europe-west1).
 - Keep-alive workflow (каждые 14 мин, concrete/monolit/urs): при request-based
   billing стоит ~0 (греет инстанс, но instance-time между запросами не
   биллится). Пинг concrete-agent при min=1 избыточен. НЕ статья расхода —
@@ -141,7 +146,7 @@ Codified-конфиг (по репо; живые ревизии — §7 п.3):
 | 1 | **Триггеры: реимпорт с includedFiles** (файлы готовы) | ~90 + чистая история | ~минуты `[GCLOUD]` | ~0 |
 | 2 | **Cloud Build → default-пул** (6 yaml, удалить machineType) | 1 200–1 700 | 1 маленький PR | низкий (медленнее билды) |
 | 3 | **Убить Memorystore + VPC-коннектор**: rate-limiter → Postgres UPSERT (порт `rate_limit.py`, fail-closed сохранить), monolit-кэш → in-memory, удалить REDIS_URL/_VPC_CONNECTOR из триггера, снести инстанс+коннектор | **1 349** | 1 PR + 2 `[GCLOUD]`-операции | низкий-средний: единственный прод-путь — DCR `/register`; smoke-тест хэндшейка Claude.ai обязателен |
-| 4 | **concrete-agent min-instances 1→0** (или billing-mode-фикс при сохранении min=1) | 900–1 600 | 1-строчный PR в cloudbuild | средний: cold start MCP/first-request |
+| 4 | **concrete-agent min-instances 1→0** (request-based billing уже подтверждён → экономия = idle-составляющая min-инстанса) | ~1 000–1 300 | 1-строчный PR в cloudbuild | средний: cold start MCP/first-request |
 | 5 | Батчинг мержей (дисциплина, не код) | ~200–400 | 0 | 0 |
 
 **Целевая цифра:** 6 334 → **~1 500–2 200 Kč/мес**
@@ -162,36 +167,26 @@ Codified-конфиг (по репо; живые ревизии — §7 п.3):
 - **Мёртвый код Celery/session.py** — не исполняется и не стоит денег; чистка =
   отдельная hygiene-задача без приоритета.
 
-## 7. Данные от Александра `[GCLOUD]` (не блокируют план, уточняют числа)
+## 7. Данные от Александра `[GCLOUD]`
+
+**Получено 2026-06-10:** п.1 ✅ (инстанс = `stavagent-mcp-rate-limit`, BASIC 1GB,
+Redis 7.0, создан 2026-05-20), п.2 ✅ (коннектор e2-micro min=2/max=10; на нём
+только concrete-agent), п.3 ✅ (таблица в §3; mineru — в europe-west1).
+
+**Ещё открыто (уточняет числа, план не блокирует):**
 
 ```bash
-# 1. Redis tier/size (подтверждение 943 Kč)
-gcloud redis instances describe stavagent-redis --region=europe-west3 \
-  --format='value(tier,memorySizeGb,state)'
-
-# 2. VPC-коннектор: spec + что-нибудь ещё на нём сидит?
-gcloud compute networks vpc-access connectors describe stavagent-vpc-connector \
-  --region=europe-west3
-for s in concrete-agent monolit-planner-api stavagent-portal-backend \
-         urs-matcher-service rozpocet-registry-backend mineru-service; do
-  echo "== $s"; gcloud run services describe $s --region=europe-west3 \
-    --format='value(spec.template.metadata.annotations)' | tr ',' '\n' | grep -i vpc
-done
-
-# 3. Живые ревизии всех сервисов: CPU/mem/min/max/billing-mode
-for s in concrete-agent monolit-planner-api stavagent-portal-backend \
-         urs-matcher-service rozpocet-registry-backend mineru-service; do
-  echo "== $s"; gcloud run services describe $s --region=europe-west3 --format=yaml \
-    | grep -E 'cpu|memory|minScale|maxScale|cpu-throttling|billing'
-done
-
 # 4. Утилизация: Console → Cloud Run → каждый сервис → Metrics (Request count,
-#    Billable instance time, 30d). Особо MinerU request count.
+#    Billable instance time, 30d). Особо MinerU (регион europe-west1!).
 
-# 5. Cloud Build за 30 дней: счётчик + длительности + триггер/manual
+# 5. Cloud Build за 30 дней: счётчик + длительности + триггер/manual.
+#    ВАЖНО: builds живут в global (и часть, возможно, в europe-west3) — снять оба:
+gcloud builds list --limit=400 \
+  --format='table(createTime.date(),status,buildTriggerId,timing.BUILD.duration)' \
+  > builds_30d_global.txt
 gcloud builds list --region=europe-west3 --limit=400 \
   --format='table(createTime.date(),status,buildTriggerId,timing.BUILD.duration)' \
-  > builds_30d.txt
+  > builds_30d_west3.txt
 
 # 6. Биллинг-разрез Cloud Run по SKU (idle vs active vs memory) —
 #    Console → Billing → Reports → Group by SKU, filter Cloud Run.
