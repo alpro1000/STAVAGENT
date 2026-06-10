@@ -109,6 +109,28 @@ _CRITICAL_SCHEMA: dict[str, set[str]] = {
         "issued_at", "access_expires_at", "refresh_expires_at",
         "revoked_at", "rotated_from", "last_used_at",
     },
+    # Columns the /orchestrate JWT path unconditionally reads/writes
+    # (SyncSqlAlchemySessionRepository + SyncAuditLogWriter against the ORM
+    # models; canonical DDL = migrations/012_orchestrator_tables.sql). Added
+    # after the first live seal (2026-06-10): the prod schema diverged from
+    # the code's assumptions and surfaced as 500s on live requests — this
+    # check turns that class of drift into an explicit startup failure
+    # (Cloud Run keeps the previous revision).
+    "orchestrator_sessions": {
+        "id", "user_id", "project_id",
+        "workflow_state", "status", "expires_at",
+        "partials", "aggregates", "drafts",
+        "decisions", "conversation_log", "tool_calls_log",
+        "created_at", "updated_at",
+    },
+    "orchestrator_audit_log": {
+        "id", "session_id", "user_id", "project_id",
+        "event_type",
+        "tool_name", "tool_version",
+        "inputs_hash", "outputs_hash", "policy_hash", "core_engine_version",
+        "transition_from", "transition_to", "transition_source",
+        "detail", "created_at",
+    },
 }
 
 

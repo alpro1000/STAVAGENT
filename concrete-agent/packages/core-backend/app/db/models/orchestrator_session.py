@@ -5,16 +5,17 @@ across HITL pauses/resumes. Tracks one state-machine position per session with
 JSONB buckets for partials / aggregates / drafts / decisions / logs so PR3 can
 replay a recorded session.
 
-Tenant isolation: user_id + project_id are UUID FKs (matching the existing ORM
-convention in project.py / job.py). RLS hardening is the parallel cross-user
-isolation P0 task — NOT this PR (task §4 + "What Is NOT Included"). This model
-only guarantees the columns + indexes are present.
+Tenant isolation: user_id + project_id are PLAIN indexed UUIDs, NOT FKs (б-zero,
+live-seal blockers 2026-06-10). The shared production DB is Portal-owned — its
+`users.id` is INTEGER, so a UUID FK to it is not even expressible, and nothing
+in the orchestrator path ever reads the users/projects rows; isolation is
+enforced in app code (principal.user_id vs session.user_id). Same convention as
+orchestrator_audit_log. Canonical DDL: migrations/012_orchestrator_tables.sql.
 
 Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md §4
 """
-from sqlalchemy import CheckConstraint, Column, DateTime, ForeignKey, String
+from sqlalchemy import CheckConstraint, Column, DateTime, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import relationship  # noqa: F401  (relationships deferred, see below)
 
 from app.db.models.base import Base
 
@@ -44,19 +45,9 @@ class OrchestratorSession(Base):
 
     __tablename__ = "orchestrator_sessions"
 
-    # Tenant isolation (UUID FKs — same convention as projects/background_jobs).
-    user_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
-    )
-    project_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("projects.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
-    )
+    # Tenant isolation keys (plain indexed UUIDs — NOT FKs; see module docstring).
+    user_id = Column(UUID(as_uuid=True), nullable=False, index=True)
+    project_id = Column(UUID(as_uuid=True), nullable=False, index=True)
 
     # State-machine position + lifecycle status.
     workflow_state = Column(
@@ -98,11 +89,6 @@ class OrchestratorSession(Base):
             name="check_orchestrator_session_workflow_state",
         ),
     )
-
-    # Relationships deferred (same pattern as the rest of app/db/models/* —
-    # back_populates wired once all models register without circular imports).
-    # user = relationship("User")
-    # project = relationship("Project")
 
     # NOTE: created_at / updated_at are inherited from Base -> TimestampMixin,
     # which sets `onupdate=datetime.utcnow` on updated_at. All writes in PR1 go

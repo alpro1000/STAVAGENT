@@ -7,10 +7,15 @@ of its own; the cross-service principal is the Portal-issued user JWT (HS256,
 shared `JWT_SECRET`, claims: `userId` / `email` / `name` / `role`). This module
 validates that token and resolves it to a `Principal`.
 
-Because concrete-agent's `users` table is its own database (the Portal `userId`
-may not exist here), `ensure_user_provisioned` idempotently upserts a row for the
-authenticated principal so the `orchestrator_sessions.user_id` FK is satisfiable
-(the "auto-provision" decision).
+No auto-provisioning (б-zero, live-seal blockers 2026-06-10). The former
+`ensure_user_provisioned` / `ensure_project_provisioned` upserts were written
+for an ASSUMED own UUID `users`/`projects` schema; the shared production
+database is Portal-owned (`users.id` is INTEGER), so they could only 500
+(UndefinedColumn / DatatypeMismatch — exactly the first live seal). They
+existed solely to satisfy the `orchestrator_sessions` FKs, which migration
+012_orchestrator_tables.sql replaced with plain indexed UUIDs (nothing ever
+reads the provisioned rows; isolation is the app-level principal-vs-session
+compare). This service must never write Portal-owned tables.
 
 Reference: docs/tasks/TASK_Orchestrator_StageGating_MVP.md AC9, AC18; Domain Rules.
 """
@@ -106,85 +111,6 @@ async def require_principal(
         )
 
 
-def ensure_user_provisioned(principal: Principal, session_factory) -> None:
-    """Idempotently upsert a `users` row for the principal (auto-provision).
-
-    The Portal `userId` may not exist in concrete-agent's own `users` table, so
-    the `orchestrator_sessions.user_id` FK would fail. This inserts a minimal row
-    (id + email + an UNUSABLE password_hash) ON CONFLICT DO NOTHING, so the FK is
-    satisfiable without coupling to external provisioning.
-
-    password_hash is an *unusable* sentinel — the Django convention: a `'!'`
-    prefix (which no bcrypt/argon2 verifier can ever match — bcrypt.checkpw on a
-    non-`$2…$` string raises rather than returning True) PLUS per-row randomness
-    so the value is non-empty, structurally impossible to authenticate against,
-    and unpredictable. concrete-agent has no password-login path today regardless
-    (the only auth is this JWT principal + the MCP api-key system), so these rows
-    can never log in; the unusable hash is defence-in-depth for any future
-    password flow.
-    """
-    import secrets
-
-    from sqlalchemy import text
-    from sqlalchemy.exc import IntegrityError
-
-    email = principal.email or f"{principal.user_id}@jwt.external"
-    role = principal.role or "user"
-    # Unusable password marker: '!' prefix (never a valid bcrypt/argon2 hash) +
-    # 32 random hex chars (unpredictable, unique per row).
-    unusable_password = f"!jwt-provisioned-{secrets.token_hex(16)}"
-
-    stmt = text(
-        """
-        INSERT INTO users (id, email, password_hash, role, status, email_verified)
-        VALUES (:id, :email, :pw, :role, 'active', true)
-        ON CONFLICT (id) DO NOTHING
-        """
-    )
-    with session_factory() as session:
-        try:
-            session.execute(
-                stmt,
-                {
-                    "id": principal.user_id,
-                    "email": email,
-                    "role": role,
-                    "pw": unusable_password,
-                },
-            )
-            session.commit()
-        except IntegrityError:
-            # Email-uniqueness collision with a different id (rare) — the user
-            # effectively exists; nothing to provision.
-            session.rollback()
-
-
-def ensure_project_provisioned(
-    *, user_id: UUID, project_id: UUID, session_factory
-) -> None:
-    """Idempotently upsert a `projects` row so the session FK is satisfiable.
-
-    `orchestrator_sessions.project_id` is a NOT NULL FK to `projects`, and (like
-    `users`) the caller's project may live in the Portal DB, not concrete-agent's.
-    Same auto-provision rationale: insert a minimal owned row ON CONFLICT DO
-    NOTHING. `workflow` honors the table CHECK ('workflow_a' | 'workflow_b').
-    """
-    from sqlalchemy import text
-
-    stmt = text(
-        """
-        INSERT INTO projects (id, user_id, name, workflow, status)
-        VALUES (:id, :user_id, :name, 'workflow_a', 'draft')
-        ON CONFLICT (id) DO NOTHING
-        """
-    )
-    with session_factory() as session:
-        session.execute(
-            stmt,
-            {
-                "id": project_id,
-                "user_id": user_id,
-                "name": f"Orchestrator session project {project_id}",
-            },
-        )
-        session.commit()
+# NOTE: ensure_user_provisioned / ensure_project_provisioned were REMOVED here
+# (б-zero) — see the module docstring. Do not reintroduce writes to the
+# Portal-owned users/projects tables from this service.

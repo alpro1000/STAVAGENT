@@ -31,8 +31,6 @@ from pydantic import BaseModel, Field
 
 from app.api.auth_principal import (
     Principal,
-    ensure_project_provisioned,
-    ensure_user_provisioned,
     require_principal,
 )
 from app.core.config import settings
@@ -116,17 +114,13 @@ class OrchestrateResponse(BaseModel):
 
 
 def _run_blocking(principal: Principal, body: OrchestrateBody) -> OrchestrateResult:
-    """Synchronous work: provision FKs, then drive the orchestrator one turn.
+    """Synchronous work: drive the orchestrator one turn (worker thread).
 
-    Runs in a worker thread. Auto-provisioning the user + project keeps the
-    session FKs satisfiable for ids that originate in the Portal DB. The owner is
-    bound to the authenticated principal, never to a body field.
+    No provisioning: orchestrator_sessions keys user_id/project_id as plain
+    indexed UUIDs (no FKs — б-zero, live-seal blockers 2026-06-10), so the
+    orchestrator never writes to the Portal-owned users/projects tables. The
+    owner is bound to the authenticated principal, never to a body field.
     """
-    factory = _session_factory()
-    ensure_user_provisioned(principal, factory)
-    ensure_project_provisioned(
-        user_id=principal.user_id, project_id=body.project_id, session_factory=factory
-    )
     request = OrchestrateRequest(
         user_id=principal.user_id,
         project_id=body.project_id,
