@@ -135,17 +135,17 @@ bash-step уже корректно их опускает).
   Следствие: фиксы №1 (includedFiles — docs-пуши перестают стартовать билды
   вообще) + №2 (default-пул) вместе убивают бо́льшую часть статьи; точный остаток
   покажет SKU-отчёт (§7 п.6).
-- **🔴 `c5efd974` = `concrete-agent-deploy` — 0 SUCCESS за всю видимую выборку**
-  (✅ опознан через `triggers list`). Диагноз по совмещению с историей: его
-  real-build FAILUREs при зелёных остальных (June 2 13:39/13:42) приходятся на
-  документированное окно **install-broken main** (#1285 потерял google-auth bump
-  → чистый `pip install` падал → Docker-билд падал; закрыто #1295, 2026-06-02).
-  **После #1295 ни один concrete-трогающий пуш через триггер не проходил** —
-  деплой 2026-06-10 шёл manual submit'ом (guard skipped, trigger-substitutions
-  НЕ применяются → тот самый REDIS_URL-wipe из handoff). Т.е. триггерный деплой
-  ядра не верифицирован после фикса — это тот же открытый хвост handoff'а
-  («первый мерж, трогающий concrete-agent/, его проверит»), теперь с конкретикой:
-  следить, что c5efd974 зеленеет + WARN-строк по substitutions нет.
+- **`c5efd974` = `concrete-agent-deploy` — РАБОТАЕТ корректно** (✅ опознан через
+  `triggers list`; ✅ верифицирован build-логами 2026-06-10). Все его красные
+  билды в выборке = **guard-cancel** («No changes in concrete-agent/ — cancelling
+  build», Step #0 exit 1) — в т.ч. события «4 SUCCESS + concrete FAILURE»
+  (мульти-сервисные пуши, не трогавшие concrete-agent/). При реальных изменениях
+  триггер успешно деплоит: лог показывает Step #4 deploy-concrete → revision
+  `concrete-agent-00399-hd9`, 100 % traffic. *(Ранняя гипотеза аудита «совпадает
+  с install-broken окном #1285→#1295» снята — корреляция опровергнута чтением
+  лога.)* Остаточная проверка одна: в логе deploy-степа успешного триггерного
+  билда не должно быть WARN-строк «substitution empty» (т.е. _REDIS_URL/
+  _VPC_CONNECTOR из триггера реально применились к ревизии).
 - **Полная карта триггеров** (✅ gcloud): b619aca1=portal, c5efd974=concrete,
   d4c3870e=urs, 5413fa63=monolit, 35ea1f25=registry — 5 без includedFiles;
   **74d3e963=build-mineru-service в шторме не появляется ни разу** — единственный
@@ -173,7 +173,7 @@ bash-step уже корректно их опускает).
 |---|---|---|---|---|
 | 1 | **Триггеры: реимпорт с includedFiles** (файлы готовы; ~80 % билдов — guard-FAILUREs на docs-пушах — перестают стартовать) | **~1 200–1 600** + чистая история | ~минуты `[GCLOUD]` | ~0 |
 | 2 | **Cloud Build → default-пул** (6 yaml, удалить machineType; остаток билдов попадает в 2 500 free мин/мес) | ~300–500 (остаток статьи) | 1 маленький PR | низкий (медленнее билды) |
-| 2b | **Верифицировать триггерный деплой concrete-agent** (`c5efd974`: 0 SUCCESS в выборке; real-fails = install-broken окно #1285→#1295, после фикса не проверялся) — первый concrete-трогающий мерж: триггер зелёный + нет WARN по substitutions | входит в №1/№2 | наблюдение на первом мерже | ~0 |
+| 2b | ~~Верифицировать триггер concrete~~ → **✅ триггер работает** (build-лог: guard-cancel на нерелевантных пушах, успешный deploy revision 00399-hd9 на реальных). Остаток: проверить в логе успешного билда отсутствие WARN «substitution empty» (применение _REDIS_URL/_VPC_CONNECTOR) — отпадает целиком после задачи №3 | — | 1 взгляд в лог | ~0 |
 | 3 | **Убить Memorystore + VPC-коннектор**: rate-limiter → Postgres UPSERT (порт `rate_limit.py`, fail-closed сохранить), monolit-кэш → in-memory, удалить REDIS_URL/_VPC_CONNECTOR из триггера, снести инстанс+коннектор | **1 349** | 1 PR + 2 `[GCLOUD]`-операции | низкий-средний: единственный прод-путь — DCR `/register`; smoke-тест хэндшейка Claude.ai обязателен |
 | 4 | **concrete-agent min-instances 1→0** (request-based billing уже подтверждён → экономия = idle-составляющая min-инстанса) | ~1 000–1 300 | 1-строчный PR в cloudbuild | средний: cold start MCP/first-request |
 | 5 | Батчинг мержей (дисциплина, не код) | ~200–400 | 0 | 0 |
