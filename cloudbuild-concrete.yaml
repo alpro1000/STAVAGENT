@@ -7,6 +7,13 @@ substitutions:
   _CLOUD_SQL_INSTANCE: stavagent-db
   _TAG: latest
   _FORCE_DEPLOY: 'false'
+  # Part B (live-seal blockers 2026-06-10): REDIS_URL + the VPC connector used
+  # to exist only as manual `gcloud run services update` edits, and every deploy
+  # wiped them (`--set-env-vars` replaces the full env map). Set the real values
+  # in the Cloud Build TRIGGER substitutions; empty default = flag omitted
+  # (deploy proceeds without them — same as before, no silent ''-overwrite).
+  _REDIS_URL: ''
+  _VPC_CONNECTOR: ''
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -64,39 +71,63 @@ steps:
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent
       - --all-tags
 
+  # Deploy runs through bash so the REDIS_URL / VPC-connector flags can be
+  # OMITTED when their substitutions are empty — gcloud rejects empty flag
+  # values, and an unconditional `--set-env-vars=...,REDIS_URL=` would
+  # silently overwrite the live value with '' (Part B, live-seal blockers
+  # 2026-06-10). Flag semantics are unchanged from the previous args-style
+  # step; only JWT_SECRET (secret-ref) + the two conditional flags are new.
   - name: gcr.io/cloud-builders/gcloud
     id: deploy-concrete
     waitFor: [push-concrete]
+    entrypoint: bash
     args:
-      - run
-      - deploy
-      - concrete-agent
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
-      - --region=$_REGION
-      - --platform=managed
-      - --allow-unauthenticated
-      - --port=8000
-      - --min-instances=1
-      # `--set-cloudsql-instances` (not `--add-`) so each deploy is idempotent:
-      # the previous list is replaced rather than appended to. This matters
-      # because Cloud Run treats the cloudsql-instances list as an immutable
-      # spec of the revision; an `--add-` deploy on top of a service whose
-      # previous revision had different (e.g. stale or wrong-region) entries
-      # can produce a revision where the Auth Proxy sidecar fails to mount
-      # the right socket, leaving `/cloudsql/INSTANCE/.s.PGSQL.5432` absent
-      # and libpq returning ENOENT (the 2026-05-14 MCP bug —
-      # docs/audits/mcp_status/2026-05-14_cloudsql_connection_bug.md §2).
-      - --set-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
-      - --set-env-vars=GEMINI_MODEL=gemini-2.5-flash,MULTI_ROLE_LLM=vertex-ai-gemini,VERTEX_LOCATION=europe-west3,GOOGLE_PROJECT_ID=project-947a512a-481d-49b5-81c,AWS_DEFAULT_REGION=us-east-1,BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0,BEDROCK_ENABLED=true
-      # PR3 — IFC streaming budget is 1.5 GB per job (RssAbortGuard at
-      # 95 %). Container needs headroom for the runtime + cached parsers;
-      # 6 GiB keeps a 1 GB IFC + concurrent DWG conversion safe.
-      - --memory=6Gi
-      # PR3 §15.4 — strict streaming on a 1-2 GB IFC fixture can run
-      # well past 600 s. Cloud Run hard cap is 3600 s; we set 1800 s
-      # (30 min) which matches the longest observed pilot run.
-      - --timeout=1800
-      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,XAI_API_KEY=XAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest
+      - -c
+      - |
+        set -euo pipefail
+        # `--set-cloudsql-instances` (not `--add-`) so each deploy is idempotent:
+        # the previous list is replaced rather than appended to. This matters
+        # because Cloud Run treats the cloudsql-instances list as an immutable
+        # spec of the revision; an `--add-` deploy on top of a service whose
+        # previous revision had different (e.g. stale or wrong-region) entries
+        # can produce a revision where the Auth Proxy sidecar fails to mount
+        # the right socket, leaving `/cloudsql/INSTANCE/.s.PGSQL.5432` absent
+        # and libpq returning ENOENT (the 2026-05-14 MCP bug —
+        # docs/audits/mcp_status/2026-05-14_cloudsql_connection_bug.md §2).
+        #
+        # `--set-env-vars` replaces the WHOLE env map each deploy — that is
+        # exactly why manually-added env vars kept getting wiped. Everything
+        # the service needs must therefore be in THIS list (or in
+        # --update-secrets below).
+        ENV_VARS="GEMINI_MODEL=gemini-2.5-flash,MULTI_ROLE_LLM=vertex-ai-gemini,VERTEX_LOCATION=europe-west3,GOOGLE_PROJECT_ID=project-947a512a-481d-49b5-81c,AWS_DEFAULT_REGION=us-east-1,BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0,BEDROCK_ENABLED=true"
+        EXTRA_FLAGS=()
+        if [ -n "${_REDIS_URL}" ]; then
+          ENV_VARS="$${ENV_VARS},REDIS_URL=${_REDIS_URL}"
+        else
+          echo "WARN: _REDIS_URL substitution empty — REDIS_URL not set on this revision (fill it in the Cloud Build trigger)."
+        fi
+        if [ -n "${_VPC_CONNECTOR}" ]; then
+          EXTRA_FLAGS+=(--vpc-connector="${_VPC_CONNECTOR}")
+        else
+          echo "WARN: _VPC_CONNECTOR substitution empty — VPC connector not set on this revision (fill it in the Cloud Build trigger)."
+        fi
+        gcloud run deploy concrete-agent \
+          --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG} \
+          --region=$_REGION \
+          --platform=managed \
+          --allow-unauthenticated \
+          --port=8000 \
+          --min-instances=1 \
+          --set-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE} \
+          --set-env-vars="$${ENV_VARS}" \
+          --memory=6Gi \
+          --timeout=1800 \
+          --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,XAI_API_KEY=XAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,JWT_SECRET=JWT_SECRET:latest \
+          "$${EXTRA_FLAGS[@]}"
+        # (--memory: PR3 IFC streaming budget 1.5 GB/job, RssAbortGuard 95 %;
+        #  --timeout: PR3 §15.4, longest observed pilot run ≈ 30 min.
+        #  JWT_SECRET secret-ref added 2026-06-10 — it was manual-only and
+        #  every deploy dropped it, killing the /orchestrate JWT path.)
 
   # NOTE 2026-05-14 — the previous `psql -f migrations/*.sql` step that
   # used to live here was a silent no-op (Cloud Build VM has no
