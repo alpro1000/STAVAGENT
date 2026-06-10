@@ -123,7 +123,7 @@ steps:
           --memory=6Gi \
           --timeout=1800 \
           --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,XAI_API_KEY=XAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,JWT_SECRET=JWT_SECRET:latest \
-          "$${EXTRA_FLAGS[@]}"
+          $${EXTRA_FLAGS[@]+"$${EXTRA_FLAGS[@]}"}
         # (--memory: PR3 IFC streaming budget 1.5 GB/job, RssAbortGuard 95 %;
         #  --timeout: PR3 §15.4, longest observed pilot run ≈ 30 min.
         #  JWT_SECRET secret-ref added 2026-06-10 — it was manual-only and
