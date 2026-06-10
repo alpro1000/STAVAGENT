@@ -82,7 +82,7 @@ bash-step уже корректно их опускает).
 |---|---|---|---|---|---|
 | concrete-agent | **2000m** | **6Gi** | **1** | 3 | startup-cpu-boost, gen1; cpu-throttling-override отсутствует → **request-based billing** (хороший случай) |
 | monolit / portal / urs / registry | 1000m | 512Mi | **0** | 3 | уже right-sized |
-| mineru | 2 | 4Gi | **0** | 2, concurrency=1 | живёт в **europe-west1** (describe в west3 → NOT_FOUND; repo-конфиг = источник) |
+| mineru | 2 | 4Gi | **0** | 2, concurrency=1 | ✅ подтверждено живьём в **europe-west1** (2cpu/4Gi/min=0/max=2) — **H3 закрыта целиком** |
 
 - **Виновник — concrete-agent**: idle min-instance 2vCPU/6Gi ≈ $50–55/мес ≈est
   (Tier-1 idle rates, request-based подтверждён — сценарий «кратно больше при
@@ -121,10 +121,17 @@ bash-step уже корректно их опускает).
   красных билда/мес в истории. Дополнение к заданию: guard остаётся как
   defence-in-depth ПОСЛЕ переноса фильтрации на includedFiles — подтверждаю,
   guard-степ в yaml не трогать.
-- **Арифметика не сходится только на триггерных билдах:** 1 980 Kč ≈ $86 ≈
-  5 500 highcpu-мин/мес, а ~31 реальный триггерный билд × даже 40 мин ≈ 1 250 мин.
-  Разрыв → manual `gcloud builds submit` / deploy-all (билдит все 6) во время
-  сессий + возможно более длинные concrete-билды. Точный разрез — §7 п.5.
+- **Арифметика билд-минут — открытый вопрос, сузился (gcloud 2026-06-10):**
+  global-пул (`gcloud builds list` без `--region`) за 30 дней содержит **один**
+  manual submit (2026-06-10, concrete, 5м08с) — manual-submits НЕ главный
+  драйвер этого месяца. Реальный concrete-билд с layer-кэшем = **~5 мин**
+  (5м06с–5м40с по истории) ≈ $0.08/билд. Триггерные билды живут в
+  **europe-west3-пуле** (триггеры `location: europe-west3`) — но грубая оценка
+  «58 мержей × (4 guard-мин + 5 реальных мин) ≈ 520 мин ≈ $8/мес» объясняет лишь
+  малую долю статьи 1 980 Kč ≈ 5 500 highcpu-мин. **До west3-листинга и
+  SKU-разреза (§7) статья Cloud Build считается неразложенной** — состав фиксов
+  (default-пул, includedFiles, батчинг) от этого не меняется, но размер экономии
+  по п.2 плана может сдвинуться в любую сторону.
 
 **Рекомендации (по убыванию эффекта):**
 1. **Убрать `options.machineType` из всех 6 cloudbuild-yaml** → default-пул
@@ -171,7 +178,9 @@ bash-step уже корректно их опускает).
 
 **Получено 2026-06-10:** п.1 ✅ (инстанс = `stavagent-mcp-rate-limit`, BASIC 1GB,
 Redis 7.0, создан 2026-05-20), п.2 ✅ (коннектор e2-micro min=2/max=10; на нём
-только concrete-agent), п.3 ✅ (таблица в §3; mineru — в europe-west1).
+только concrete-agent), п.3 ✅ (таблица в §3; mineru подтверждён в europe-west1,
+2cpu/4Gi/min=0/max=2), п.5-global ✅ (1 manual submit за 30 дней; concrete-билд
+≈ 5 мин — см. §4).
 
 **Ещё открыто (уточняет числа, план не блокирует):**
 
@@ -179,17 +188,16 @@ Redis 7.0, создан 2026-05-20), п.2 ✅ (коннектор e2-micro min=2
 # 4. Утилизация: Console → Cloud Run → каждый сервис → Metrics (Request count,
 #    Billable instance time, 30d). Особо MinerU (регион europe-west1!).
 
-# 5. Cloud Build за 30 дней: счётчик + длительности + триггер/manual.
-#    ВАЖНО: builds живут в global (и часть, возможно, в europe-west3) — снять оба:
-gcloud builds list --limit=400 \
-  --format='table(createTime.date(),status,buildTriggerId,timing.BUILD.duration)' \
-  > builds_30d_global.txt
+# 5b. Триггерные билды (живут в west3-пуле, в global-листинге их НЕТ):
 gcloud builds list --region=europe-west3 --limit=400 \
   --format='table(createTime.date(),status,buildTriggerId,timing.BUILD.duration)' \
   > builds_30d_west3.txt
 
-# 6. Биллинг-разрез Cloud Run по SKU (idle vs active vs memory) —
-#    Console → Billing → Reports → Group by SKU, filter Cloud Run.
+# 6. Биллинг-разрез по SKU — ГЛАВНЫЙ оставшийся пруф:
+#    Console → Billing → Reports → Group by: SKU →
+#    (а) filter Cloud Build — какие машино-минуты/регион реально биллятся
+#        (закроет разрыв «5 500 мин vs ~520 объяснённых», §4);
+#    (б) filter Cloud Run — idle vs active vs memory.
 ```
 
 ---
