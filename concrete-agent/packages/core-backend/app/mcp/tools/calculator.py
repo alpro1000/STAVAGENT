@@ -296,7 +296,8 @@ async def calculate_concrete_works(
         volume_m3: Total concrete volume in m³ for ONE structure.
             For bridges with num_bridges=2 (LM+PM), enter volume for 1 bridge —
             total is computed as volume_m3 × num_bridges.
-            Example: SO-202 bridge deck NK = 605 m³ per bridge.
+            Example: SO-202 bridge deck NK = 693.35 m³ per bridge
+            (VV pos. 422336: 1 386.700 m³ both bridges ÷ 2).
 
         concrete_class: Concrete class per ČSN EN 206.
             Format 'C{cube}/{cylinder}'. Typical values:
@@ -391,7 +392,9 @@ async def calculate_concrete_works(
             - mss: movable scaffolding system (posuvná skruž), for ≥4 spans
             - cantilever: balanced cantilever / CFT (letmá betonáž), spans >40m
             If omitted, recommended automatically from span_m + num_spans.
-            Example: SO-202 TZ specifies 'fixed_scaffolding' (1 tact per span).
+            Example: SO-202 TZ §7.2 specifies 'fixed_scaffolding' with the
+            whole deck poured in ONE tact («betonáž NK na pevné skruži
+            v jednom taktu») — NOT one tact per span.
 
         num_bridges: Number of independent bridge structures in the object.
             - 1: single bridge (default)
