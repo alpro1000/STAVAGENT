@@ -1613,13 +1613,24 @@ export function planElement(input: PlannerInput): PlannerOutput {
     elementType === 'schodiste' ? 'schodiste' :
     null;
 
+  // PDPS recalibration (2026-06-11, STOP gate A decision): for a PRESTRESSED
+  // bridge deck the seasonal skruž table does NOT gate odskružení — the gate
+  // is prestress completion (TZ §6.5.2: napínání ≥ 7 dní od betonáže při
+  // fcm ≥ 33 MPa; odskružení až PO napnutí). The seasonal ČSN 73 6244 hold
+  // applies to non-prestressed decks where the concrete alone must carry.
+  // Props hold for the prestressed deck = curing + prestress (see §7a0).
+  const skruzSeasonalFloorApplies = !(isPrestressed && elementType === 'mostovkova_deska');
+  if (!skruzSeasonalFloorApplies && profile.needs_supports) {
+    log.push(`Skruž: sezónní minimum (ČSN 73 6244) NEAPLIKOVÁNO — předpjatá NK, ` +
+      `odskružení až po napnutí kabelů (TZ §6.5.2); skruž drží zrání + předpětí.`);
+  }
   const skruzTableLookup = skruzConstructionType ? PROPS_MIN_DAYS[skruzConstructionType]?.[seasonForCuring] : undefined;
-  if (profile.needs_supports && skruzConstructionType && skruzTableLookup === undefined) {
+  if (skruzSeasonalFloorApplies && profile.needs_supports && skruzConstructionType && skruzTableLookup === undefined) {
     const fallbackDays = elementType === 'mostovkova_deska' ? 21 : 14;
     log.push(`WARN: PROPS_MIN_DAYS['${skruzConstructionType}']['${seasonForCuring}'] not found — using fallback ${fallbackDays}d.`);
     warnings.push(`Skruž: sezónní tabulka PROPS_MIN_DAYS neobsahuje hodnotu pro "${seasonForCuring}" — použito ${fallbackDays} dní.`);
   }
-  const skruzMinDays = profile.needs_supports && skruzConstructionType
+  const skruzMinDays = skruzSeasonalFloorApplies && profile.needs_supports && skruzConstructionType
     ? (skruzTableLookup ?? (elementType === 'mostovkova_deska' ? 21 : 14))
     : 0;
   if (skruzMinDays > 0) {
@@ -1991,7 +2002,12 @@ export function planElement(input: PlannerInput): PlannerOutput {
       element_type: elementType,
       height_m: input.height_m,
       formwork_area_m2: fwAreaTotal,
-      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
+      // Prestressed deck: skruž holds until cables are stressed + grouted
+      // (TZ §6.5.2 — odskružení po napnutí), i.e. curing + prestress.
+      // Non-prestressed: seasonal ČSN 73 6244 minimum (skruzMinDays) or curing.
+      hold_days: (isPrestressed && elementType === 'mostovkova_deska')
+        ? curingDays + prestressDays
+        : (skruzMinDays > 0 ? skruzMinDays : curingDays),
       crew_size: crew,
       shift_h: shift,
       k,

@@ -209,8 +209,8 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
-Node.js/Express + React. **132 endpoints**, **1262 shared tests**, **~43K LOC**.
-Structure: `shared/` (1262 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **132 endpoints**, **1269 shared tests**, **~43K LOC**.
+Structure: `shared/` (1269 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
@@ -297,7 +297,7 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 1262 | ~43K |
+| Monolit-Planner | 132 | 1269 | ~43K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 200 | ~16K |
 | **TOTAL** | **~391** | **1425+** | **~152K** |
@@ -540,6 +540,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 ## TODO / Backlog
 
 ### Manual Actions
+- [ ] **🔐 Ротация пароля `stavagent_portal`** — засветился в чат-логе сессии 2026-06-11: `gcloud sql users set-password stavagent_portal --instance=stavagent-db` → обновить DSN-секреты в Secret Manager, использующие этого юзера (CONCRETE_DATABASE_URL и сёстры) → редеплой потребителей
 - [ ] **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → GCP Secret Manager
 - [ ] **LEMONSQUEEZY_WEBHOOK_SECRET**: set in GCP Secret Manager (Lemon Squeezy → Settings → Webhooks → Signing secret)
 - [x] ~~**Change DB password** — `StavagentPortal2026!` leaked in git history~~ ✅ **Rotated** (Apr 2026). Historical string remains in git history but is no longer valid against any environment.

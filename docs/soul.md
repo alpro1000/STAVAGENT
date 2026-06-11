@@ -351,6 +351,117 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: GCP cost-аудит + пачка А (триггеры/Cloud Build) + пачка Б №3 (Redis retirement) — EXECUTED
+
+**Rozhodnuto:**
+- **Cost-аудит** (`docs/audits/cost_audit/2026-06-10_gcp_cost_audit.md`, PR #1331):
+  6.3k Kč/мес разложено до причин; адресуемо ~4.2k. H1 ✅ (Redis
+  `stavagent-mcp-rate-limit` BASIC 1GB = только DCR-limiter; VPC-коннектор
+  e2-micro min=2 — только ради Redis), H2 ✅ (E2_HIGHCPU_8 вне free tier +
+  live-триггеры без includedFiles: ~2 400 билдов/мес, ~80 % платные
+  guard-cancel'ы), H3 ✅ concrete min=1/6Gi (MinerU чист). Цель ~1.5–2.2k.
+- **Пачка А исполнена:** триггеры пересозданы с includedFiles (docs-пуш = 0
+  билдов; runbook #1332 + hotfixes #1335/#1338/#1339), все 6 cloudbuild-yaml
+  на default-пул (#1333, 2 500 free мин/мес). **Три инцидента за день, все
+  пойманы гейтами, ни один не повторился** — verified can/cannot-таблица в
+  `triggers_reimport_runbook.md`: `location` режется на import; update-через-
+  import мёртв; `beta export` = describe-мусор; legacy-SA создаётся, но убивает
+  каждый билд; без SA — INVALID_ARGUMENT на create (grandfather у старых);
+  канон = delete → import репо-yaml с user-managed **compute-SA**.
+- **Пачка Б №3 исполнена до конца (шаги 1–5):** DCR rate-limiter Redis → Postgres
+  atomic UPSERT (миграция 013, PR #1337; fail-closed сохранён, rollback-гигиена
+  shared-коннекта, 21+4 goldens verbatim в CI: 487 passed); monolit-кэш →
+  in-memory fallback. Smoke #1 и #2 зелёные (DCR-проба `400×10 → 429` на проде
+  ДО и ПОСЛЕ снятия env; боевые тулзы через claude.ai-коннектор; логи чистые).
+  Шаг 3: ревизия 00405-ls8 без REDIS_URL/коннектора; шаг 5: **Memorystore
+  `stavagent-mcp-rate-limit` + `stavagent-vpc-connector` СНЕСЕНЫ** →
+  **−1 349 Kč/мес**, класс багов «деплой снёс REDIS_URL» закрыт навсегда.
+  Гигиена: `_REDIS_URL`/`_VPC_CONNECTOR`-блоки выпилены из cloudbuild-concrete
+  (этим же PR).
+
+**Odmítnuto:**
+- Upstash как замена Memorystore — новый вендор в auth-пути против ethos.
+- Перебор update-пути import'а после двух INVALID_ARGUMENT — переключились на
+  проверенный CREATE-путь вместо третьего эксперимента.
+- Ужимать 6Gi/убирать keep-alive — не cost-драйверы (аудит §6).
+
+**Otevřené otázky:**
+- 🔐 **Ротация пароля `stavagent_portal`** — засветился в чат-логе сессии
+  11.06 (`gcloud sql users set-password` + 4 DSN-секрета + редеплой потребителей).
+- Пачка Б №4: concrete `min-instances` 1→0 (~1.0–1.3k Kč/мес) — **отложено
+  решением Александра 11.06 («оставим пока как есть»)**; если вернёмся —
+  gated-задача с замером cold-start.
+- Биллинг-верификация через ~3 суток: строки Memorystore/Compute Engine → 0,
+  Cloud Build ↓; SKU-разрез (аудит §7 п.6) — опционально.
+- Мёртвый Redis-код (`app/core/redis_client.py`, `session.py`, Celery-таски) —
+  hygiene-задача без приоритета; runbook §6 NB: redis-deps в requirements.txt
+  пока остаются (импорты живы в неиспользуемых модулях).
+
+**Co dál:** мониторинг первого триггерного concrete-билда после этого PR
+(WARN-строк больше нет по построению) → №4 по go → биллинг-чек.
+
+**Rozhodnuto:**
+- Golden §5f SO-202 KV překalibrován na PDPS: TZ §7.2 «betonáž NK na pevné skruži
+  v jednom taktu» / §6.11.3 «v jedné etapě». Vstup: 693.35 m³ (VV 422336: 1 386.700
+  oba mosty ÷ 2), C35/45 XF2 třída 4, dvoutram, 12 kabelů one_sided,
+  `working_joints_allowed: 'no'` (legitimní 1-takt páka kontraktu),
+  `rebar_mass_kg: 104000` (VV 422365 ÷ 2 — VV vyhrává nad engine heuristikou
+  100 kg/m³ pro předpjatou NK). Dřívější 605 m³ = odhad, superseded.
+- Engine snapshot (kandidátní goldens, fixace po STOP gate A): num_tacts=1,
+  4+1 čerpadel (MEGA zálivka ≥500 NEBLOKUJE — warnings + resource-ceiling ⛔),
+  curing 21 d (≥9 floor tř. 4), prestress 25 d (wait 21 + 2 + 2), skruž 46 d,
+  total 89.5 prac. d/most, Top 50 + Staxo 40.
+- Interview: starý 6-takt case = SYNTETIKA («NOT PDPS») do merge Žalmanov goldenu
+  (Part C); pak smazat. Permissions: test-data deny zúžen per-extension
+  (md/txt čitelné, PDF/XML/XLSX/JSON/images dál zavřené). Part A z čerstvého main
+  PO merge seam-fix #1334.
+- Provenance konvence v golden MD: každé číslo `[TZ §X]` / `[VV pos. N]` / `[odhad]`
+  (retrospektivně: §5a–5e objemy elementů označeny [odhad]).
+- Relabel (hodnoty NEZMĚNĚNY — synthetic probes, ne PDPS-pravda): engine.parity
+  (SSOT kotvy pro Python replay fixtures — změna hodnot = re-capture
+  concrete-agent fixtures), engine.test, planner-advisor, capture_ssot_fixtures,
+  labor-projection.test (multi-takt tvar záměrný — overlapy/zrání overlay
+  vyžadují >1 takt). MCP docstring calculator.py opraven: 605→693.35 + «1 tact
+  per span»→«jeden takt celé NK» (text-only, bez MCP compat dopadu).
+  TASK_Orchestrator_WorkOntology_SO202 čísla 605→693.35.
+- Engine nesoulad ZAZNAMENÁN, neřešen (exclusion): multi-bridge větev orchestrátoru
+  (`num_bridges:2`) dělí volume_m3 jako součet obou mostů, MCP docstring tvrdí
+  per-bridge vstup. Golden proto modeluje 1 most bez num_bridges.
+
+**Odmítnuto:** změna kontraktu kalkulátoru; re-capture Python fixtures (probe
+hodnoty stačí relabelovat); oprava volume-geometry warning heuristiky (očekávaný
+output, dvoutram eq-thickness — warning je v goldenů zachycen).
+
+**Otevřené otázky:** task uvádí «6 polí 15+5×20+15» — aritmeticky 7 hodnot/130 m;
+repo-doložené je 15+4×20+15 = 110 m ≈ NK 111.5 (použito). Confirm na STOP gate A.
+
+**STOP gate A rozhodnutí (Alexander, 2026-06-11) — aplikováno v témže PR (#1336):**
+- Rozpětí potvrzeno 15+4×20+15 (výkres 18 Tvar NK; TZ §2.1 «5×20» = překlep,
+  správně §6.5.1) — v goldenů zaznamenán vnitřní rozpor TZ.
+- «21 d pryč»: sezónní skruž floor ČSN 73 6244 se na PŘEDPJATOU mostovku
+  neaplikuje (gate odskružení = po napnutí, TZ §6.5.2; tržně CN SAFE 8 d).
+  Engine změna (orchestrator): `skruzSeasonalFloorApplies` guard + props
+  hold = curing + prestress pro předpjatou NK. Snapshot v2: curing 9 d,
+  prestress 13 d (wait 9+2+2), skruž post-pour 22 d, total 89.5 → 77.5 d.
+  Residuál (zaznamenán): wait⊂zrání sekvenčně (22 d vs PDPS-min ~11 / CN 8) —
+  scheduler debt, samostatně.
+- Nh-snímek (vlastní výkon, kánon ×0.8): celkem 3 576.6 Nh / 5.16 Nh/m³
+  (armování 892.8 / předpětí 520 / betonáž 51.2 / skruž+bednění 2 106.6 /
+  ošetřování 6 ⚠️). Nález: scheduler curing-fáze span 1.5 d vs curing_days 9
+  → ošetřování podhodnoceno; kandidát fix v labor-projection
+  (days=max(span,curing_days)) — čeká rozhodnutí, neměněno mlčky.
+- CN SAFE 26-027C (19.02.2026) ověřeno z PDF, zapsáno jako srovnávací
+  fixtura §5h: Meccano 1 527.6 m²/most (rozvinutá 13.7 m ≠ plocha NK
+  1 209.775 [TZ §2.1]), POLY 5 838.3 m³/most, harmonogram 114/97 d
+  (+10 rozebrání predmontáže), rekapitulace 15 608 460 Kč. Model = VŽDY
+  vlastní výkon; CN = externí cena pro srovnání, ne vstup enginu.
+- Semantika 2 mostů (PRINCIP, implementace Part C): SO202 = objekt, LM/PM =
+  podobjekty s plnou sadou elementů; VV ÷ 2; sekvenční harmonogram se
+  sdílenou sadou skruže — uzavírá num_bridges recon-nesoulad.
+
+**Co dál:** merge PR #1336 → Part B (TZ-consistency validation rule)
+→ Part C (Žalmanov golden, docs v test-data/SO_202_D6_OV_Z/).
+
 ## 2026-06-10 — Session: Monolit seam-fix — единый источник сводки (čel-časy, harmonogram, KPI)
 
 **Rozhodnuto:**

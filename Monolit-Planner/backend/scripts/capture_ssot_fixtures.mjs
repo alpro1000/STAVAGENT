@@ -39,6 +39,9 @@ function contractHash() {
 // ── Parity set (same elements as the jest parity + task spec) ────────────────
 // Each `calculate` input is exactly the PlannerInput the MCP payload-builder
 // produces; each `classify` input is the { name, is_bridge } body MCP POSTs.
+// NOTE: synthetic probe inputs pinned to the Python replay fixtures — NOT
+// PDPS truth (SO-202 PDPS = 1 takt / 693.35 m³, golden-so202.test.ts §5f).
+// Changing values here requires re-capturing concrete-agent fixtures.
 const CALCULATE_CASES = {
   // ── parity set ──
   'parity/mostovkova_deska': {

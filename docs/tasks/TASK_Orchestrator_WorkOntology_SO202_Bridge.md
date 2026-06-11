@@ -195,7 +195,8 @@ For each of the 9 element types defined in the golden test §10 Očekávané vst
 
 **Element type 6: Nosná konstrukce — mostovková deska (2 mosty)**
 - C35/45 XF2, **curing class 4 (CRITICAL — TKP 18 §7.8.3)**
-- Volume per most ≈ 605 m³ (estimated 5 m²/bm × 111.5 m NK length)
+- Volume per most = **693.35 m³** (VV pos. 422336: 1 386.700 m³ oba mosty ÷ 2;
+  dřívější ≈605 m³ byl odhad 5 m²/bm × 111.5 m — superseded, Part A recal 2026-06-11)
 - Two trámy per most, výška 1.1 m, šířka 1.6-2.1 m proměnná
 - Vnější konzola 2.0 m, vnitřní 1.75 m
 - Středová deska 2.3 m, výška 0.25-0.35 m
@@ -315,7 +316,7 @@ Additional domain rules:
 2. ProjectContext populated with all 9 element type categories, all concrete classes (full §7.8.1 enumeration), all exposure classes, all curing classes per §7.8.3, all 7 etapy výstavby from §7.2, construction technology (pevná skruž v 1 etapě), all norms cited.
 3. Work ontology items generated for all 9 element types. Each type has at least one work item (some types have multiple, e.g., piloty has aggregation by support).
 4. Piloty count totals 122 (61 LM + 61 PM) within ±2 (accommodating any per-support drawing discrepancies).
-5. Mostovka NK volume calculated per most ≈ 605 m³ within ±5% (estimated from 5 m²/bm × 111.5 m NK length).
+5. Mostovka NK volume calculated per most = 693.35 m³ within ±5% (VV pos. 422336 ÷ 2; the older ≈605 m³ odhad is superseded — Part A recal 2026-06-11).
 6. Prestressing detected: 12 kabelů per most (6 per trám), 156 lan total per most.
 7. NK curing window enforced ≥9 days for curing class 4 at 15°C (Validation Rule 1).
 8. NK prestress schedule enforced ≥11 days total (7+2+2) sequential (Validation Rule 2).

@@ -1,5 +1,5 @@
 name: monolit-deploy
-location: europe-west3
+# location задаётся флагом --region при `gcloud builds triggers import` — поле в yaml import НЕ принимает (.location: unused, инцидент 2026-06-11)
 github:
   owner: alpro1000
   name: STAVAGENT
@@ -11,7 +11,7 @@ includedFiles:
 substitutions:
   _REGION: europe-west3
   _TAG: $SHORT_SHA
-serviceAccount: projects/project-947a512a-481d-49b5-81c/serviceAccounts/1086027517695@cloudbuild.gserviceaccount.com
+serviceAccount: projects/project-947a512a-481d-49b5-81c/serviceAccounts/1086027517695-compute@developer.gserviceaccount.com  # ОБЯЗАТЕЛЕН и должен быть user-managed (инциденты 2+3: explicit legacy-SA режется на билде, отсутствие поля — INVALID_ARGUMENT на create)
 
 approvalConfig:
   approvalRequired: false

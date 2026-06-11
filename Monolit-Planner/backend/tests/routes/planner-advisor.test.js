@@ -8,6 +8,9 @@ import { buildApproachPrompt } from '../../src/routes/advisor-prompt.js';
 
 describe('buildApproachPrompt', () => {
   test('SO-202 mostovka — includes prestress + bridge + exposure', () => {
+    // SO-202-shaped prompt fixture. volume 605 = old odhad kept as a
+    // synthetic value (prompt builder doesn't assert PDPS truth);
+    // PDPS volume is 693.35 m³ (VV 422336 ÷ 2) — golden-so202.test.ts §5f.
     const prompt = buildApproachPrompt({
       elementLabel: 'Mostovková deska',
       element_type: 'mostovkova_deska',

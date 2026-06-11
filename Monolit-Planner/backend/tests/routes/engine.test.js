@@ -33,6 +33,8 @@ describe('POST /api/calculate — thin delegate to planElement', () => {
   });
 
   test('parity: mostovka (bridge deck) full output', async () => {
+    // Synthetic probe input (NOT PDPS — SO-202 PDPS = 1 takt / 693.35 m³,
+    // see shared golden-so202.test.ts §5f). Parity only needs ANY input.
     const input = {
       element_type: 'mostovkova_deska', volume_m3: 605, height_m: 6,
       has_dilatacni_spary: false, concrete_class: 'C35/45', is_prestressed: true,
