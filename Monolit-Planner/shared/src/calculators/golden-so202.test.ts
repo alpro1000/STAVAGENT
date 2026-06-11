@@ -147,15 +147,25 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       expect(plan.schedule.total_days).toBeGreaterThan(0);
     });
 
-    it('curing: třída ošetřování 4 floor — ≥ 9 dní @15°C (TKP 18 §7.8.3)', () => {
+    it('curing: třída ošetřování 4 — 9 d @15°C; seasonal skruž floor NOT applied (TZ §6.5.2)', () => {
       const plan = planElement(input);
       expect(plan.formwork.curing_days).toBeGreaterThanOrEqual(9);
+      // STOP gate A decision (2026-06-11): for a PRESTRESSED deck the
+      // ČSN 73 6244 seasonal table (podzim_jaro = 21 d) does NOT gate
+      // odskružení — the gate is prestress completion. 21 would mean
+      // the floor leaked back in.
+      expect(plan.formwork.curing_days).toBeLessThan(21);
     });
 
-    it('prestress: ≥ 7 dní od betonáže + napínání + injektáž (≥ 11 d total)', () => {
+    it('prestress: PDPS minimum — wait max(7, curing) + napínání + injektáž (TZ §6.5.2)', () => {
       const plan = planElement(input);
       expect(plan.prestress).toBeDefined();
+      // 12 cables one-sided: wait 9 (curing tř. 4) + stressing 2 + grouting 2 = 13
       expect(plan.prestress!.days).toBeGreaterThanOrEqual(11);
+      expect(plan.prestress!.days).toBeLessThanOrEqual(15);
+      // skruž holds curing + prestress (odskružení po napnutí), not the
+      // old double-floored 46 d
+      expect(plan.prestress!.skruz_total_days).toBeLessThanOrEqual(25);
     });
 
     it('formwork system: Top 50 (formwork, nosnikove) — Gap #8 RESOLVED in Gate 2.1', () => {
