@@ -388,7 +388,31 @@ output, dvoutram eq-thickness — warning je v goldenů zachycen).
 **Otevřené otázky:** task uvádí «6 polí 15+5×20+15» — aritmeticky 7 hodnot/130 m;
 repo-doložené je 15+4×20+15 = 110 m ≈ NK 111.5 (použito). Confirm na STOP gate A.
 
-**Co dál:** STOP gate A → merge → Part B (TZ-consistency validation rule)
+**STOP gate A rozhodnutí (Alexander, 2026-06-11) — aplikováno v témže PR (#1336):**
+- Rozpětí potvrzeno 15+4×20+15 (výkres 18 Tvar NK; TZ §2.1 «5×20» = překlep,
+  správně §6.5.1) — v goldenů zaznamenán vnitřní rozpor TZ.
+- «21 d pryč»: sezónní skruž floor ČSN 73 6244 se na PŘEDPJATOU mostovku
+  neaplikuje (gate odskružení = po napnutí, TZ §6.5.2; tržně CN SAFE 8 d).
+  Engine změna (orchestrator): `skruzSeasonalFloorApplies` guard + props
+  hold = curing + prestress pro předpjatou NK. Snapshot v2: curing 9 d,
+  prestress 13 d (wait 9+2+2), skruž post-pour 22 d, total 89.5 → 77.5 d.
+  Residuál (zaznamenán): wait⊂zrání sekvenčně (22 d vs PDPS-min ~11 / CN 8) —
+  scheduler debt, samostatně.
+- Nh-snímek (vlastní výkon, kánon ×0.8): celkem 3 576.6 Nh / 5.16 Nh/m³
+  (armování 892.8 / předpětí 520 / betonáž 51.2 / skruž+bednění 2 106.6 /
+  ošetřování 6 ⚠️). Nález: scheduler curing-fáze span 1.5 d vs curing_days 9
+  → ošetřování podhodnoceno; kandidát fix v labor-projection
+  (days=max(span,curing_days)) — čeká rozhodnutí, neměněno mlčky.
+- CN SAFE 26-027C (19.02.2026) ověřeno z PDF, zapsáno jako srovnávací
+  fixtura §5h: Meccano 1 527.6 m²/most (rozvinutá 13.7 m ≠ plocha NK
+  1 209.775 [TZ §2.1]), POLY 5 838.3 m³/most, harmonogram 114/97 d
+  (+10 rozebrání predmontáže), rekapitulace 15 608 460 Kč. Model = VŽDY
+  vlastní výkon; CN = externí cena pro srovnání, ne vstup enginu.
+- Semantika 2 mostů (PRINCIP, implementace Part C): SO202 = objekt, LM/PM =
+  podobjekty s plnou sadou elementů; VV ÷ 2; sekvenční harmonogram se
+  sdílenou sadou skruže — uzavírá num_bridges recon-nesoulad.
+
+**Co dál:** merge PR #1336 → Part B (TZ-consistency validation rule)
 → Part C (Žalmanov golden, docs v test-data/SO_202_D6_OV_Z/).
 
 ## 2026-06-10 — Session: Monolit seam-fix — единый источник сводки (čel-časy, harmonogram, KPI)
