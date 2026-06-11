@@ -388,7 +388,8 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 **Otevřené otázky:**
 - 🔐 **Ротация пароля `stavagent_portal`** — засветился в чат-логе сессии
   11.06 (`gcloud sql users set-password` + 4 DSN-секрета + редеплой потребителей).
-- Пачка Б №4: concrete `min-instances` 1→0 (~1.0–1.3k Kč/мес) — отдельная
+- Пачка Б №4: concrete `min-instances` 1→0 (~1.0–1.3k Kč/мес) — **отложено
+  решением Александра 11.06 («оставим пока как есть»)**; если вернёмся —
   gated-задача с замером cold-start.
 - Биллинг-верификация через ~3 суток: строки Memorystore/Compute Engine → 0,
   Cloud Build ↓; SKU-разрез (аудит §7 п.6) — опционально.
