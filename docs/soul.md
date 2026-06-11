@@ -351,6 +351,44 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 0 recon (READ-ONLY)
+
+**Rozhodnuto (§2 pre-impl interview):**
+- Merge timing: **každou fázi po готовности CI** (ne post-Cemex hold), ale honor
+  freeze window — fáze musí landnout před ~21.06 nebo staging-only poté.
+- Vector index: **pgvector v Cloud SQL** (concrete-agent DB), reuse nepoužitý
+  `app/integrations/vertex_embeddings.py` (gecko@003, 768-dim).
+- Kiosk matching engine: **migrovat teď na Core/MCP** (Phase 3 dělá kiosk skutečně
+  tenkým — nahradí lokální matching stack voláními Core).
+- Dead subsystémy: **nechat subsystem 3** (už je Core-proxy = seam pro migraci),
+  **odstranit jen subsystem 4** (role-debate / 6-rolový orchestrator + conflictResolver).
+
+**Zjištěno (recon, 3 paralelní Explore agenti):**
+- §1.2 потврзено přesně: `find_otskp_code` (`app/mcp/tools/otskp.py`) = plochý substring
+  search + `confidence=1.0` hardcoded na každý DB-hit (l.186/~210); žádný UWO gate;
+  žádný param prefilter. `create_work_breakdown` už defaultuje `work_first` (Pattern 15).
+- NOVÉ: kiosk URS_MATCHER NENÍ tenký UI — má vlastní plný matching stack (lokální
+  SQLite ~39K ÚRS, 4-fázový LLM batch pipeline, otskpCatalogService, perplexityClient,
+  learned-mappings KB) + plný 6-rolový orchestrator (NE 3 role z tasku). Subsystem 3
+  už proxy do Core (`documentExtractionService.js`). DebugCollector v tomto kiosku
+  NEEXISTUJE → je to nová věc pro Phase 3.
+- Vertex: `vertex_embeddings.py` existuje ale je nepoužitý scaffolding. Žádný pgvector
+  dnes (PG15 + Alembic + Czech FTS). ⚠️ `textembedding-gecko@003` je legacy model —
+  ověřit lifecycle před Phase 1.
+
+**Odmítnuto / out of scope:** reranker model (P6, jen seam) · Vertex RAG · DACH
+adaptéry · calculator element-classifier (net-touch) · cross-user isolation (P0 jinde)
+· pricing/TOV/AI-quantities.
+
+**Otevřené otázky:** UI placement «разбивка» (samostatná záložka kiosku vs Registry/
+Portal) — neforcováno v interview, vyřešit v Phase 3 design proposalu. Ověřit validní
+náhradu schema-example kódu `113472111` (Phase 2). Ověřit gecko@003 lifecycle.
+
+**Co dál:** STOP gate. Čeká na go-ahead (Alexander) pro Phase 1 (Core: UWO gate +
+pgvector embeddings retrieve + param prefilter + pluggable ranking seam + honest
+confidence). Report: `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`.
+
+
 ## 2026-06-11 — Session: Golden recalibration SO-202 KV — Part A (PDPS 1 takt + provenance)
 
 **Rozhodnuto:**

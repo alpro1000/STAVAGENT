@@ -1,8 +1,33 @@
-# next-session.md — Phase D / Phase E (post Phase C + Phase A docs ship)
+# next-session.md
 
-**Last updated:** 2026-05-26
-**Current branch:** `main` (no active feature branch — both PR #1223 and #1224 merged)
-**Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +26 days)
+**Last updated:** 2026-06-11
+**Current branch:** `claude/upbeat-dirac-krnyqi`
+**Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +10 days)
+
+---
+
+## 🔵 ACTIVE TASK — Classifier Kiosk Full Fix (Frontend + MCP + Backend)
+
+**Where we are:** Phase 0 recon DONE + §2 interview DONE. **STOP gate** — awaiting
+go-ahead for Phase 1. No code written yet.
+
+**Recon report:** `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`
+**Task file:** `TASK_Classifier_Kiosk_FullFix_Frontend_MCP_Backend_1.md` (uploaded)
+
+**Interview decisions:**
+- Merge each phase as CI passes (NOT post-Cemex) — but land before ~21.06 or staging-only.
+- Vector index = **pgvector in Cloud SQL**; reuse unused `vertex_embeddings.py`.
+- **Migrate** kiosk matching engine to Core/MCP (Phase 3) — kiosk has its own full
+  stack today, not a thin UI.
+- Keep subsystem 3 (Core proxy), remove only subsystem 4 (6-role orchestrator).
+
+**Phase 1 (next) — Core:** code-lookup branch · UWO gate before code search · pgvector
+embeddings retrieve (recall fix) · deterministic param prefilter · pluggable ranking
+seam (deterministic default, full popis, audited, replayable) · honest confidence
+(kill hardcoded 1.0 in `app/mcp/tools/otskp.py` l.186/~210). STOP + report after.
+
+**Open before Phase 1:** verify `textembedding-gecko@003` lifecycle (legacy model);
+plan valid OTSKP code to replace docstring example `113472111` (Phase 2).
 
 ---
 
