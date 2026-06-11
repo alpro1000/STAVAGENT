@@ -142,13 +142,15 @@ async def find_otskp_code(
 ) -> dict:
     """Find OTSKP catalog codes for Czech transport/engineering structures.
 
-    Database of 17,904 verified items from the Czech OTSKP pricing system
-    (cenová soustava OTSKP pro dopravní a inženýrské stavby).
-    AI models do NOT know these 9-digit codes — this tool searches the
-    real database with text matching and returns exact prices.
+    Searches the loaded OTSKP catalog (Czech pricing system for transport and
+    engineering structures; the catalog version is stamped in result provenance).
+    AI models do NOT know these codes — this tool searches the real database
+    and returns the catalogue's exact prices.
 
-    Each result includes: 9-digit code, Czech description, unit (m³, m², t, ks),
-    unit price in CZK, and confidence (1.0 for database match).
+    Each result includes: code, Czech description, unit (m³, m², t, ks), unit
+    price in CZK, and an HONEST confidence — exact code lookup = 1.0; a text
+    search is gated by work-type + explicit parameters and ranked, so a bare
+    keyword hit is capped below 1.0 (never a hardcoded 1.0 on any DB match).
 
     FREE tool (0 credits). Use for bridges, roads, tunnels, railways.
     For building construction, use find_urs_code instead.

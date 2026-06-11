@@ -8,9 +8,9 @@
 
 ## 🔵 ACTIVE TASK — Classifier Kiosk Full Fix (Frontend + MCP + Backend)
 
-**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1a SHIPPED** (deterministic
-chain + honest confidence + seams + 19 hermetic tests green). **STOP gate** — Phase 1b
-(infra) is next on this branch.
+**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1 (1a+1b) CODE COMPLETE**
+(chain + honest confidence + seams + pgvector infra + ingestion; **27 hermetic tests green**).
+**STOP gate** — pending CI (MCP compat + goldens SO250/SO202) + deploy ops; Alexander merges.
 
 **Recon report:** `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`
 (updated with corrections 1–3 + model verification + acceptance #11/#12).
@@ -30,15 +30,26 @@ UWO gate + param prefilter + honest confidence (keyword ≤0.9, embeddings 0.70�
 the chain; exact code lookup stays 1.0. `tests/test_catalog_matching.py` (19 hermetic, green).
 NB: MCP compat suite unrunnable locally (no `fastmcp` — Debian PyJWT blocks install) → confirm on CI.
 
-**Phase 1b (next) — infra behind the seam:**
-- Rewrite `app/integrations/vertex_embeddings.py` → `gemini-embedding-001`, `output_dimensionality=768`.
-- Alembic migration: `CREATE EXTENSION vector` + `otskp_embeddings(code, embedding vector(768), popis)`, HNSW cosine.
-- Index 17,904 OTSKP items (batch embed) + a pgvector `_EMBEDDINGS_PROVIDER` impl wired into the seam.
-- Learned-mappings Core table + human-confirm-0.99 rule (acceptance #11).
-- Then run full pytest + **verbatim CI log on phase HEAD**, STOP before merge.
+**Phase 1b DONE (code, this branch):**
+- `vertex_embeddings.py` rewritten → **text-multilingual-embedding-002 @ 768** (gecko@003
+  RETIRED 2025-05-24; gemini-embedding-001@768 = post-google-genai upgrade, same dim).
+  SDK reason: repo only has vertexai (removed 2026-06-24) — don't build on a new SDK mid-freeze.
+- `EMBEDDING_MODEL`/`EMBEDDING_DIM`/`OTSKP_CATALOG_VERSION`/`CATALOG_GCS_BUCKET` in config.py.
+- Alembic `2026_06_11_otskp_embeddings_pgvector` (down=orch_sg_pr3b_audit): `CREATE EXTENSION
+  vector` + `otskp_embeddings(code,popis,unit,price,embedding vector(EMBEDDING_DIM))` HNSW cosine.
+- `app/services/catalog_embeddings.py`: pgvector provider + `register_embeddings_provider()`.
+- `scripts/ingest_otskp_catalog.py`: GCS SFDI XML → otskp.db (+ `--index` pgvector). XML not committed.
+- `tests/test_catalog_embeddings.py` (8 hermetic). Data Store answer: **separate bucket
+  `gs://stavagent-catalogs`** (norms bucket is whole-bucket console-synced, no prefix filter).
 
-**Phase 2 carry:** fix `find_otskp_code` docstring example `113472111` (malformed 9-digit;
-real OTSKP transport codes are 6-char) → a verified code.
+**Ops/deploy (runbook §8.4 in recon doc):** create catalogs bucket + upload SFDI XML →
+`alembic upgrade head` → run ingestion `--index` → call `register_embeddings_provider()` at
+startup → confirm CI green. **CI to confirm:** MCP compat (no local fastmcp) + goldens SO250/SO202.
+
+**Deferred:** learned-mappings Core table + human-confirm-0.99 (acceptance #11, lands Phase 3
+w/ kiosk migration) · local ÚRS-2018 fallback 0.60–0.65 + "ověřit…" UI flag (acceptance #12,
+Phase 3) · **Phase 2:** fix `find_otskp_code` docstring example `113472111` (malformed 9-digit;
+real OTSKP codes are 6-char) → verified code.
 
 ---
 

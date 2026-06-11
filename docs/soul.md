@@ -351,6 +351,38 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1b (embeddings infra + OTSKP 2026 ingestion)
+
+**Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`, code-only — ops na deploy):**
+- **Embedding model revize:** gecko@003 **RETIRED 2025-05-24** + repo má jen vertexai
+  (removed 2026-06-24, migrace na google-genai) → interim **text-multilingual-embedding-002
+  @768** (native, drop-in na current vertexai API, no new dep), gemini-embedding-001@768 =
+  post-migrace upgrade (stejný dim → žádné re-dimenzování pgvector). `EMBEDDING_MODEL/
+  EMBEDDING_DIM/OTSKP_CATALOG_VERSION/CATALOG_GCS_BUCKET` v config.py.
+- `vertex_embeddings.py` přepsán (sync, ADC, task_type, output_dimensionality, import-safe).
+- Alembic `2026_06_11_otskp_embeddings_pgvector` (head=orch_sg_pr3b_audit): `CREATE EXTENSION
+  vector` + `otskp_embeddings(... embedding vector(EMBEDDING_DIM))` HNSW cosine.
+- `app/services/catalog_embeddings.py`: pgvector provider (degrade-to-keyword on error) +
+  `register_embeddings_provider()` → wire do `catalog_matching._EMBEDDINGS_PROVIDER`.
+- `scripts/ingest_otskp_catalog.py`: GCS SFDI XML → otskp.db (+ `--index` pgvector). XML
+  necommitovat (žije v GCS). Pure `parse_otskp_xml` testovaný.
+- `tests/test_catalog_embeddings.py` (8 hermetic). **Celkem 27 hermetic green** (1a+1b).
+- otskp.py docstring: "17,904" + "(1.0 for database match)" → honest, version-stamped.
+
+**Data Store otázka (catalogs/ exclusion) — ANSWER:** norms bucket `stavagent-cenik-norms`
+je whole-bucket console-sync, žádný prefix-filter → `catalogs/` by znečistil RAG korpus.
+**Doporučení (v config): separátní bucket `gs://stavagent-catalogs`.** Fallback: gcsSource
+restrict na `B[3567]/` (console-only, fragile).
+
+**Odmítnuto / deferred:** live GCS upload + indexing (deploy) · learned-mappings Core table +
+human-confirm-0.99 (acceptance #11, Phase 3 s kiosk-migrací) · local ÚRS-2018 fallback
+0.60–0.65 + "ověřit proti aktuálnímu katalogu" UI flag (acceptance #12, Phase 3) · Phase 2
+docstring example-code fix.
+
+**Co dál:** CI potvrdit (MCP compat — lokálně chybí fastmcp — + goldeny SO250/SO202). STOP
+před merge (Alexander). Runbook: recon doc §8.4.
+
+
 ## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1a (deterministic chain + honest confidence)
 
 **Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`):**

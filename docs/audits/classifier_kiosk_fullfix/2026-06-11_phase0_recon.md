@@ -231,7 +231,64 @@ rates / TOV / AI writing quantities.
 
 ---
 
-## 8. STOP
+## 8. Phase 1b — infra (model revision, Data Store, OTSKP 2026, runbook)
 
-Phase 0 read-only recon complete. Awaiting go-ahead (Alexander) for Phase 1.
-No code written. No data mutated.
+### 8.1 Embedding model — revised by SDK constraint (verified 2026-06-11)
+`requirements.txt` has only `google-generativeai==0.8.3` (old SDK) + `vertexai`
+(via `google-cloud-aiplatform==1.154.0`, **frozen for Cemex**, `vertexai` REMOVED
+2026-06-24, migrating to `google-genai` after). Building new embedding code on a
+SDK removed in 13 days is wrong. So:
+- **Interim model = `text-multilingual-embedding-002`** (native 768, multilingual,
+  drop-in on the current `vertexai.language_models.TextEmbeddingModel` API that
+  `gemini_client.py` already uses; no new dep, no normalization caveat).
+- **`gemini-embedding-001` @ output_dimensionality=768** = the post-google-genai
+  upgrade. **Both 768** → the pgvector column never re-dimensions on the swap.
+- `EMBEDDING_MODEL` / `EMBEDDING_DIM` are settings (config.py) — swap = config + re-embed.
+
+### 8.2 Data Store question (catalogs/ exclusion) — ANSWER
+`gs://stavagent-cenik-norms` is synced **whole-bucket via the Vertex console**
+(`vertex_search.py` datastore `urs-otskp-csn-norms-cenik`; `scripts/gcs_sort.sh`
++ `scripts/INDEX.json` only organise B3–B7). **No prefix filter, no IaC.** A
+`catalogs/` prefix in that bucket WOULD be ingested into the norms RAG corpus.
+**Recommendation (implemented in config): a SEPARATE bucket
+`gs://stavagent-catalogs`** for catalog XML (`settings.CATALOG_GCS_BUCKET`) — clean
+isolation, no fragile console-only include filter. Catalog XML is ingestion data,
+never RAG knowledge. (Fallback if a separate bucket is refused: restrict the
+datastore import `gcsSource` to `B[3567]/` — console-only, fragile.)
+
+### 8.3 OTSKP 2026 ingestion
+SFDI open-format XML (`2026_OTSKP_sfdi_otevreny_format.xml`) is the primary;
+AspeEsticon export is cross-check only. Structure = same `XC4 …> Polozka`
+(`znacka/nazev/MJ/jedn_cena/technicka_specifikace`) as 2025_03 + the URS_MATCHER
+importer. XML is NOT committed — repo stores `scripts/ingest_otskp_catalog.py`,
+data lives in GCS. Provenance label = `settings.OTSKP_CATALOG_VERSION` ("OTSKP 2026").
+Indexing runs directly on the 2026 base (no double re-index). Tool docstring's
+"17,904" softened to a version-stamped, count-agnostic description.
+
+### 8.4 Deploy runbook (1b — not runnable in CI; ops steps)
+1. Create `gs://stavagent-catalogs`; upload SFDI XML to `catalogs/`. Confirm the
+   norms Data Store sync does NOT include it (separate bucket → automatic).
+2. `alembic upgrade head` → installs `vector` ext + `otskp_embeddings(vector(768))`.
+3. `python scripts/ingest_otskp_catalog.py --gcs gs://stavagent-catalogs/catalogs/2026_OTSKP_sfdi_otevreny_format.xml --db-out app/otskp.db --index`
+   (builds otskp.db + embeds + upserts into pgvector). Note the real item count;
+   update any remaining hardcoded counts.
+4. At startup, after the catalog is indexed, call
+   `catalog_embeddings.register_embeddings_provider()` to wire the seam.
+5. Confirm MCP compat suite green on CI (fastmcp unavailable locally).
+
+### 8.5 What 1b delivers vs defers
+**Delivered (code + hermetic tests, 27 green):** model/dim config · embeddings
+client rewrite (retired-gecko → multilingual-002) · pgvector Alembic migration ·
+pgvector provider + chain wiring · GCS→otskp.db ingestion script (pure parser
+tested) · Data Store recommendation · honest docstring.
+**Deferred (ops/Phase 3):** live GCS upload + indexing run (deploy) · learned-mappings
+Core table + human-confirm-0.99 (acceptance #11; lands with the kiosk migration,
+Phase 3) · local ÚRS-2018 fallback at conf 0.60–0.65 + "ověřit proti aktuálnímu
+katalogu" UI flag (acceptance #12; ÚRS branch / Phase 3) · Phase 2 docstring
+example-code fix.
+
+## 9. STOP
+
+Phase 1 (1a + 1b) code on branch `claude/upbeat-dirac-krnyqi`. Hermetic suite 27
+green locally; MCP compat + goldens SO250/SO202 confirmed on CI. STOP before merge
+(Alexander merges). No live data mutated (GCS/DB indexing is a deploy step).
