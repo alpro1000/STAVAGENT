@@ -540,6 +540,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 ## TODO / Backlog
 
 ### Manual Actions
+- [ ] **🔐 Ротация пароля `stavagent_portal`** — засветился в чат-логе сессии 2026-06-11: `gcloud sql users set-password stavagent_portal --instance=stavagent-db` → обновить DSN-секреты в Secret Manager, использующие этого юзера (CONCRETE_DATABASE_URL и сёстры) → редеплой потребителей
 - [ ] **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → GCP Secret Manager
 - [ ] **LEMONSQUEEZY_WEBHOOK_SECRET**: set in GCP Secret Manager (Lemon Squeezy → Settings → Webhooks → Signing secret)
 - [x] ~~**Change DB password** — `StavagentPortal2026!` leaked in git history~~ ✅ **Rotated** (Apr 2026). Historical string remains in git history but is no longer valid against any environment.
