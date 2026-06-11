@@ -175,6 +175,16 @@ describe('Labor projection — one canonical person-hours figure', () => {
     expect(osetrovani!.label_cs).toContain('ošetřování');
   });
 
+  it('ošetřování days = max(schedule curing span, curing_days) — never below curing_days', () => {
+    // SO-202 PDPS finding (STOP gate A): the scheduler can compress the zrání
+    // span in tact_details (1.5 d) while curing_days = 9 — the ošetřovatel is
+    // on site for the full curing period regardless.
+    const osetrovani = labor.operations.find(op => op.key === 'osetrovani')!;
+    expect(osetrovani.days).toBeGreaterThanOrEqual(plan.formwork.curing_days);
+    expect(osetrovani.norm_hours).toBeCloseTo(
+      1 * CURING_SHIFT_H * K_UTIL * osetrovani.days, 1);
+  });
+
   it('mostovka breakdown contains all expected operations', () => {
     const keys = labor.operations.map(op => op.key);
     expect(keys).toContain('beton');

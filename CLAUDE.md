@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.35.0
-**Last Updated:** 2026-06-10
+**Version:** 4.35.1
+**Last Updated:** 2026-06-11
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -44,6 +44,8 @@ steering vyhrává a skill se znovu distilluje. Viz
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing nine domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.35.1 (2026-06-11 — ošetřování betonu days = max(span, curing_days)):** STOP gate A finding from the SO-202 KV golden recalibration (PR #1336 §5f-Nh ⚠️) resolved: `labor-projection.ts` now bases the ošetřování betonu line on **max(schedule zrání span, curing_days)** — the scheduler compresses the zrání span in tact_details (PDPS 1 takt: 1.5 d) while `curing_days` = 9 (třída 4 @15 °C); the ošetřovatel is on site for the full curing period, and a multi-tact calendar span > curing_days is preserved by max(). SO-202 KV: 6 → **36 Nh**; §5f-Nh CELKEM 3 576.6 → **3 606.6 Nh** (4 508.3 h presence, 5.20 Nh/m³) — golden MD table re-snapshotted from a live engine run. New golden assertion (§5f-Nh, regression guard ≥ 36 Nh) + hermetic labor-projection test. **1271 shared tests** (was 1269), tsc clean. Scheduler-internal compressed-span debt (1.5 d, related to 220.5/307.8 + wait⊂zrání) stays a separate task.
 >
 > **Changelog — v4.35.0 (2026-06-10 — Monolit summary seam fix: single source for person-hours, harmonogram, KPI):** Recon confirmed the calculator summary (`CalculatorResult`) and the Monolit Planner summary (`FlatKPIPanel`/`FlatGantt`/`ElementBlock`/XLSX exporter) computed time and person-hours INDEPENDENTLY (SO-202 mostovka 605 m³: 326.7 d vs 622.8 d vs ~357 d; 7,862 / 14,092 / 14,952 h). New single source `Monolit-Planner/shared/src/calculators/labor-projection.ts`: `buildScheduleProjection(plan)` (engine total + real phase intervals with overlaps, in the `schedule_info.phases` shape the previously-dead FlatGantt/exporter branches already expected) + `buildLaborProjection(plan)` (canonical normohodiny = crew × shift × **0.8** × days per operation, incl. a visible **ošetřování betonu** line 1 os.×5 h/d; presence = ÷0.8; money ALWAYS presence × rate). Aplikovat persists the full projection; TOV entries carry `normHours`=canon / `hours`=presence / `totalCost`=presence×rate. Readers stop recomputing: FlatGantt renders projection phases (zrání = translucent overlay, never a sequential addend) and rolls up Σ element totals; FlatKPIPanel «Čas» reads new `HeaderKPI.schedule_total_days` (no schedule → honest `NEPOČÍTÁNO`; mixed project → partial sum + `Nevypočtených` badge); the old money formula (KROS ÷ crew burn rate) is NEVER shown as time — it moved into **«Krytí mezd»** = budget-months ÷ plan-months semaphore (≥1 green / <1 red, both inputs in tooltip; also in the XLSX KPI sheet, replacing the money-based «Odhadovaná doba trvání»). `calculateHeaderKPI` gains additive `schedule_total_days` / `schedule_elements_calculated|uncalculated` / `wage_coverage_ratio` via `summarizeScheduleProjections()`. Acceptance on SO-202: all three views show **326.7 d**; one canonical **14,681.6 Nh** (18,352 h presence). Hermetic suite `labor-projection.test.ts` (13 tests). **1262 shared tests** (was 1249) + 58 backend Jest, tsc + vite clean. Explicitly NOT done: engine move to Core, the 220.5-vs-307.8 d internal engine debt, KROS/pricing changes, unrouted legacy `KPIPanel`.
 >
@@ -209,8 +211,8 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
-Node.js/Express + React. **132 endpoints**, **1269 shared tests**, **~43K LOC**.
-Structure: `shared/` (1269 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **132 endpoints**, **1271 shared tests**, **~43K LOC**.
+Structure: `shared/` (1271 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
@@ -297,7 +299,7 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 1269 | ~43K |
+| Monolit-Planner | 132 | 1271 | ~43K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 200 | ~16K |
 | **TOTAL** | **~391** | **1425+** | **~152K** |

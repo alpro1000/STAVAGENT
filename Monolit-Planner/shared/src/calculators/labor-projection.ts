@@ -13,8 +13,9 @@
  *     efficiency, norm reconciliation and durations.
  *   - Presence hours       = normohodiny / 0.8 (crew × shift × days).
  *   - Money is ALWAYS paid on presence (a 10h shift is paid in full).
- *   - Ošetřovatel betonu (1 person × ~5 h/day over the curing span) is part
- *     of the element's person-hours as a VISIBLE "ošetřování betonu" line.
+ *   - Ošetřovatel betonu (1 person × ~5 h/day over max(schedule zrání span,
+ *     curing_days)) is part of the element's person-hours as a VISIBLE
+ *     "ošetřování betonu" line.
  *   - Zrání is a calendar span, never a sequential work addend.
  */
 
@@ -241,10 +242,15 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
     if (agg.vyztuž > 0) {
       operations.push(makeOp('vyztuz', 'výztuž', rbCrew, shift, agg.vyztuž));
     }
-    if (agg.zrani > 0) {
-      // Visible "ošetřování betonu" line — part of the element's person-hours,
-      // never smeared into betonáž. Days = calendar span of curing.
-      operations.push(makeOp('osetrovani', 'ošetřování betonu', 1, CURING_SHIFT_H, agg.zrani));
+    // Visible "ošetřování betonu" line — part of the element's person-hours,
+    // never smeared into betonáž. Days = max(calendar span of curing from the
+    // schedule, curing_days): tact_details can underestimate the span when the
+    // scheduler compresses the zrání phase (SO-202 PDPS: span 1.5 d vs
+    // curing_days 9), while a multi-tact calendar span can legitimately
+    // exceed curing_days — the ošetřovatel is on site for the longer of the two.
+    const curingBase = Math.max(agg.zrani, plan.formwork.curing_days || 0);
+    if (curingBase > 0) {
+      operations.push(makeOp('osetrovani', 'ošetřování betonu', 1, CURING_SHIFT_H, curingBase));
     }
     if (plan.props?.needed && plan.props.labor_hours > 0) {
       operations.push(makeOpFromNorm(

@@ -351,6 +351,41 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: SO-202 KV kalibrace — ošetřování betonu = max(span, curing_days)
+
+**Rozhodnuto:**
+- STOP gate A nález z PR #1336 (§5f-Nh ⚠️) VYŘEŠEN rozhodnutím Alexandra:
+  `labor-projection.ts` počítá dny ošetřování jako **max(span fáze zrání ze
+  scheduleru, curing_days)** — scheduler-fáze zrání v tact_details má pro
+  PDPS 1 takt komprimovaný span 1.5 d, zatímco `curing_days` = 9 (třída 4
+  @15 °C); ošetřovatel je na stavbě po celou dobu zrání. SO-202 KV: 1.5 d /
+  6 Nh → **9 d / 36 Nh**; CELKEM §5f-Nh 3 576.6 → **3 606.6 Nh** (4 508.3 h
+  přítomnost, 5.20 Nh/m³). U multi-takt elementů kalendářní span legitimně
+  přesahuje curing_days — max() jej zachovává.
+- Golden MD §5f-Nh tabulka aktualizována na engine-snapshot (verified live
+  run), ⚠️ poznámka nahrazena ✅ resolved záznamem.
+- Testy: golden assertion v `golden-so202.test.ts` §5f-Nh (9 d → 36 Nh +
+  regression guard ≥36) + hermetic test v `labor-projection.test.ts`
+  (days ≥ curing_days, kánon formule). **1271 shared tests** (1269 + 2),
+  tsc clean.
+- Větev vedena od čerstvého main (#1336 verifikováno na main přes diff —
+  byte-identické, vč. STOP-gate commitů; Pattern 12 check OK). Stará větev
+  `claude/bold-hawking-v2e7b4` (orphan #1332) ne-force-pushnuta — merge main.
+
+**Odmítnuto:**
+- Báze dnů «vždy přesně curing_days» (ignorovat span) — u multi-takt
+  elementů by zahodila překrývající se kalendářní periodu > curing_days.
+- Oprava v `aggregateScheduleDays` (formulas.ts) — agg.zrani je korektní
+  calendar-span pro Gantt/Aplikovat; podhodnocení je specifikum projekce
+  ošetřovatele, fix patří do labor-projection (per §5f-Nh kandidát).
+
+**Otevřené otázky:**
+- Vnitřní dluh scheduleru (komprimovaný zrání-span 1.5 d v tact_details,
+  příbuzný 220.5/307.8 + wait⊂zrání overlap) — samostatný task, nezměněno.
+
+**Co dál:** Part B/C golden recalibration dle plánu (Žalmanov multi-takt
+etalon → odstranění §5f-SYN syntetiky).
+
 ## 2026-06-11 — Session: GCP cost-аудит + пачка А (триггеры/Cloud Build) + пачка Б №3 (Redis retirement) — EXECUTED
 
 **Rozhodnuto:**

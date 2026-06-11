@@ -20,6 +20,7 @@
 import { describe, it, expect } from 'vitest';
 import { planElement } from './planner-orchestrator.js';
 import type { PlannerInput } from './planner-orchestrator.js';
+import { buildLaborProjection, K_UTIL, CURING_SHIFT_H } from './labor-projection.js';
 
 describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
   describe('§5b Základ opěry OP1 (C25/30 XF1, ~35 m³ odhad, h=1.2m)', () => {
@@ -183,6 +184,22 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       expect(plan.element.profile.rebar_ratio_kg_m3).toBe(150);
       const totalRebarT = (plan.rebar.mass_kg * plan.pour_decision.num_tacts) / 1000;
       expect(totalRebarT).toBeCloseTo(104.0, 0);
+    });
+
+    it('§5f-Nh: ošetřování betonu spans the full curing period — 9 d → 36 Nh, not the compressed scheduler span (1.5 d)', () => {
+      // STOP gate A finding resolved (2026-06-11, decision Alexander):
+      // labor-projection days = max(schedule zrání span, curing_days).
+      // PDPS 1 takt: tact_details zrání span is 1.5 d (scheduler-internal
+      // compression), curing_days = 9 (třída ošetřování 4 @15 °C) → 9 wins.
+      const plan = planElement(input);
+      const labor = buildLaborProjection(plan);
+      const osetrovani = labor.operations.find(op => op.key === 'osetrovani')!;
+      expect(osetrovani).toBeDefined();
+      expect(osetrovani.days).toBeCloseTo(plan.formwork.curing_days, 1);
+      expect(osetrovani.norm_hours).toBeCloseTo(
+        1 * CURING_SHIFT_H * K_UTIL * plan.formwork.curing_days, 1);
+      // Regression guard against the old underestimated line (6.0 Nh)
+      expect(osetrovani.norm_hours).toBeGreaterThanOrEqual(36);
     });
   });
 
