@@ -30,6 +30,51 @@ from app.core.cache import get_cache
 
 logger = logging.getLogger(__name__)
 
+
+class _MemFallbackCache:
+    """In-process TTL cache used when Redis is unavailable.
+
+    The enrich cache is pure cache-aside (TTL 1h, miss = recompute) — losing
+    cross-instance sharing only costs repeat enrichment work, never
+    correctness. Before this fallback existed, an unreachable Redis turned
+    the WHOLE enrich call into an error response (cost-audit 2026-06-10
+    §2.1); after the Redis retirement (task 3) this is the only cache.
+    """
+
+    def __init__(self) -> None:
+        self._store: Dict[str, tuple] = {}  # key -> (expires_at_ts, value)
+
+    async def get(self, key: str):
+        import time
+        entry = self._store.get(key)
+        if entry is None:
+            return None
+        expires_at, value = entry
+        if time.time() >= expires_at:
+            del self._store[key]
+            return None
+        return value
+
+    async def set(self, key: str, value, ttl: int = 3600) -> bool:
+        import time
+        self._store[key] = (time.time() + ttl, value)
+        return True
+
+    async def health_check(self) -> dict:
+        return {"status": "in_memory_fallback", "entries": len(self._store)}
+
+
+_mem_fallback_cache = _MemFallbackCache()
+
+
+async def _acquire_cache():
+    """Redis cache when reachable, in-memory fallback otherwise."""
+    try:
+        return await get_cache()
+    except Exception as exc:  # noqa: BLE001 — any Redis failure degrades, not breaks
+        logger.warning("Redis cache unavailable, using in-memory fallback: %s", exc)
+        return _mem_fallback_cache
+
 # ============================================================================
 # REQUEST/RESPONSE MODELS
 # ============================================================================
@@ -169,15 +214,20 @@ class MonolitAdapter:
         start_time = datetime.utcnow()
 
         try:
-            # Get cache
-            self.cache = await get_cache()
+            # Get cache (Redis or in-memory fallback — never raises)
+            self.cache = await _acquire_cache()
 
             # Process each position
             for position in request.positions:
                 try:
-                    # Try cache first
+                    # Try cache first; a cache that dies mid-loop degrades
+                    # to a miss, never to a failed position.
                     cache_key = f"monolit:enrich:{position.code}"
-                    cached_result = await self.cache.get(cache_key)
+                    try:
+                        cached_result = await self.cache.get(cache_key)
+                    except Exception:  # noqa: BLE001
+                        self.cache = _mem_fallback_cache
+                        cached_result = None
 
                     if cached_result:
                         enrichment = MonolitEnrichmentResult(**cached_result)
@@ -186,8 +236,12 @@ class MonolitAdapter:
                         # Enrich position
                         enrichment = await self._enrich_position(position)
 
-                        # Cache result
-                        await self.cache.set(cache_key, enrichment.dict(), ttl=3600)
+                        # Cache result (best-effort — a failed write is a
+                        # future cache miss, not a failed position)
+                        try:
+                            await self.cache.set(cache_key, enrichment.dict(), ttl=3600)
+                        except Exception:  # noqa: BLE001
+                            self.cache = _mem_fallback_cache
 
                     enrichments.append(enrichment)
 
@@ -411,7 +465,7 @@ async def health_check() -> Dict[str, Any]:
     - Database
     """
     try:
-        cache = await get_cache()
+        cache = await _acquire_cache()
         kb_status = True  # TODO: Implement KB health check
         cache_status = await cache.health_check() if hasattr(cache, "health_check") else True
 

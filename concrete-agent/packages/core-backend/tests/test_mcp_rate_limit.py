@@ -1,27 +1,43 @@
 """
-Tests for the Redis-backed /register rate limiter (Gate 6).
+Tests for the Postgres-backed /register rate limiter (Gate 6; ex-Redis,
+cost-audit task 3).
 
-Two layers covered:
+Three layers covered:
 
   1. Pure helpers (`extract_client_ip`, `_parse_whitelist`,
-     `reload_whitelist_from_env`) — no Redis required.
-  2. `check_register_rate_limit` against a FAKE Redis client that
-     records every `eval()` call and simulates atomic INCR+EXPIRE
-     semantics. We monkeypatch `app.core.redis_client.get_redis` so
-     no real Redis or asyncio event loop fragility is involved.
-  3. Endpoint integration — POST /api/v1/mcp/oauth/register exercises
-     the 429 + Retry-After + audit-row path and the 503 fail-closed
-     path.
+     `reload_whitelist_from_env`) — no DB required.
+  2. Goldens against a FIXTURE Postgres (DATABASE_URL; CI service container
+     or local PG16). Self-sufficient: the module fixture applies migration
+     013 idempotently. Covers the 11th-request boundary, separate buckets,
+     window expiry reset, and TRUE concurrency (11 threads, each with its
+     own pooled connection, exactly 10 allowed).
+  3. Fail-closed without any DB — `_get_conn` monkeypatched to raise →
+     status=unavailable, no local fallback counting, whitelist still works.
 
-Reference: TASK_DCR_KBYamlLoader.md Gate 6.
+Endpoint integration (429 + Retry-After + audit row, 503 fail-closed) lives
+in test_mcp_dcr_endpoint.py / test_mcp_dcr_integration.py via monkeypatched
+`check_register_rate_limit` — unchanged by the Redis→Postgres port.
+
+Reference: TASK_DCR_KBYamlLoader.md Gate 6;
+docs/audits/cost_audit/2026-06-10_gcp_cost_audit.md §2.2.
 """
 
 import asyncio
-import re
+import os
+import uuid
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 import pytest
 
 from app.mcp import rate_limit as rl
+
+_HAS_PG = bool(os.getenv("DATABASE_URL") or os.getenv("MCP_DATABASE_URL"))
+
+requires_pg = pytest.mark.skipif(
+    not _HAS_PG,
+    reason="DATABASE_URL not set — fixture-Postgres rate-limit goldens skipped",
+)
 
 
 # ── extract_client_ip ───────────────────────────────────────────────────────
@@ -90,221 +106,215 @@ def test_whitelist_empty_when_blank(monkeypatch):
     assert rl._parse_whitelist() == set()
 
 
-# ── Fake Redis with Lua-script simulation ───────────────────────────────────
+# ── UPSERT statement sanity (replaces the Lua-script sanity tests) ──────────
 
 
-class _FakeRedisInternalClient:
-    """Stands in for `RedisClient._client` (the redis.asyncio.Redis instance).
-
-    Implements just enough `eval()` semantics to model atomic
-    INCR-with-EXPIRE-on-first. Records every call so tests can
-    assert on key shape / TTL value.
-    """
-    def __init__(self):
-        self.counters: dict[str, int] = {}
-        self.ttls: dict[str, int] = {}
-        self.eval_calls: list[tuple] = []
-        self.raise_on_eval = False
-
-    async def eval(self, script, numkeys, key, ttl):
-        self.eval_calls.append((script, numkeys, key, ttl))
-        if self.raise_on_eval:
-            raise RuntimeError("simulated Redis outage")
-        prev = self.counters.get(key, 0)
-        new_val = prev + 1
-        self.counters[key] = new_val
-        if new_val == 1:
-            self.ttls[key] = int(ttl)
-        return new_val
+def test_upsert_sql_is_single_statement_increment_or_reset():
+    """Defensive: the whole transition must live in ONE statement —
+    splitting it into SELECT+UPDATE would reopen the burst race the
+    Redis Lua script existed to close."""
+    sql = rl._UPSERT_BUCKET_SQL
+    assert "ON CONFLICT (bucket_key) DO UPDATE" in sql
+    assert sql.rstrip().endswith("RETURNING count")
+    # Window reset must be conditional (fixed window, not sliding)
+    assert sql.count("CASE") == 2
 
 
-class _FakeRedisClient:
-    """Stands in for the high-level RedisClient (the one get_redis() returns)."""
-    def __init__(self):
-        self._client = _FakeRedisInternalClient()
-        self._prefix = "concrete:"
-
-    def _make_key(self, key: str) -> str:
-        return f"{self._prefix}{key}"
-
-
-@pytest.fixture
-def fake_redis(monkeypatch):
-    """Replace get_redis() with our fake."""
-    client = _FakeRedisClient()
-
-    async def fake_get_redis():
-        return client
-
-    # Patch on the module path that rate_limit.check_register_rate_limit imports.
-    import app.core.redis_client
-    monkeypatch.setattr(app.core.redis_client, "get_redis", fake_get_redis)
-
-    # Reset whitelist state so prior tests don't leak.
-    monkeypatch.delenv("MCP_RATE_LIMIT_WHITELIST", raising=False)
-    rl.reload_whitelist_from_env()
-
-    return client
-
-
-# Async helper for awaiting in sync test bodies.
-def _run(coro):
-    return asyncio.get_event_loop().run_until_complete(coro)
-
-
-# ── check_register_rate_limit happy path ────────────────────────────────────
-
-
-def test_first_ten_requests_allowed(fake_redis):
-    """First 10 increments → allowed, current = 1..10."""
-    for i in range(1, 11):
-        result = _run(rl.check_register_rate_limit("203.0.113.1"))
-        assert result["status"] == rl.RateLimitResult.ALLOWED, f"hit #{i}"
-        assert result["current"] == i
-        assert result["limit"] == 10
-
-
-def test_eleventh_request_exceeded(fake_redis):
-    """11th → exceeded with retry_after = window."""
-    for _ in range(10):
-        _run(rl.check_register_rate_limit("203.0.113.1"))
-    result = _run(rl.check_register_rate_limit("203.0.113.1"))
-    assert result["status"] == rl.RateLimitResult.EXCEEDED
-    assert result["current"] == 11
-    assert result["retry_after"] == 3600
-
-
-def test_different_ips_separate_buckets(fake_redis):
-    """Two IPs each get their own 10-quota bucket."""
-    for _ in range(10):
-        r1 = _run(rl.check_register_rate_limit("1.1.1.1"))
-        r2 = _run(rl.check_register_rate_limit("2.2.2.2"))
-        assert r1["status"] == rl.RateLimitResult.ALLOWED
-        assert r2["status"] == rl.RateLimitResult.ALLOWED
-    # 11th on either is exceeded, but the OTHER bucket is still at 10
-    r3 = _run(rl.check_register_rate_limit("1.1.1.1"))
-    assert r3["status"] == rl.RateLimitResult.EXCEEDED
-
-
-def test_ttl_set_only_on_first_increment(fake_redis):
-    """Lua atomic guarantees EXPIRE runs only when INCR returns 1."""
-    for _ in range(5):
-        _run(rl.check_register_rate_limit("203.0.113.5"))
-    key = fake_redis._make_key(f"{rl.REGISTER_RATE_LIMIT_KEY_PREFIX}203.0.113.5")
-    # TTL recorded once (on hit #1) — subsequent INCRs don't touch ttls dict.
-    assert fake_redis._client.ttls[key] == rl.REGISTER_RATE_LIMIT_WINDOW_SECONDS
-    # All five eval() calls used the same key + same TTL argument
-    for call in fake_redis._client.eval_calls:
-        _, numkeys, k, ttl = call
-        assert numkeys == 1
-        assert k == key
-        assert ttl == str(rl.REGISTER_RATE_LIMIT_WINDOW_SECONDS)
-
-
-def test_window_expiration_resets_counter(fake_redis):
-    """Simulate TTL expiry by clearing the counters dict — counter resets."""
-    for _ in range(10):
-        _run(rl.check_register_rate_limit("203.0.113.1"))
-    # Simulate TTL fire-off
-    fake_redis._client.counters.clear()
-    fake_redis._client.ttls.clear()
-    # First call after expiry → counter back to 1, allowed
-    result = _run(rl.check_register_rate_limit("203.0.113.1"))
-    assert result["status"] == rl.RateLimitResult.ALLOWED
-    assert result["current"] == 1
-
-
-# ── Redis unreachable → fail closed ─────────────────────────────────────────
-
-
-def test_redis_unreachable_fails_closed(fake_redis):
-    """eval() raises → status=unavailable, NOT allowed."""
-    fake_redis._client.raise_on_eval = True
-    result = _run(rl.check_register_rate_limit("203.0.113.1"))
-    assert result["status"] == rl.RateLimitResult.UNAVAILABLE
-    assert "error_description" in result
-    assert result["retry_after"] == 3600
-
-
-def test_redis_unreachable_does_not_increment_locally(fake_redis):
-    """Fail-closed path must NOT fall back to any in-memory counter
-    (defensive — would silently re-open the DoS surface)."""
-    fake_redis._client.raise_on_eval = True
-    for _ in range(20):
-        result = _run(rl.check_register_rate_limit("203.0.113.1"))
-        assert result["status"] == rl.RateLimitResult.UNAVAILABLE
-
-
-# ── Whitelist bypass ────────────────────────────────────────────────────────
-
-
-def test_whitelist_bypasses_limit(fake_redis, monkeypatch):
-    monkeypatch.setenv("MCP_RATE_LIMIT_WHITELIST", "10.0.0.7")
-    rl.reload_whitelist_from_env()
-
-    # 100 hits in a row — all allowed
-    for _ in range(100):
-        result = _run(rl.check_register_rate_limit("10.0.0.7"))
-        assert result["status"] == rl.RateLimitResult.ALLOWED
-        assert result["whitelisted"] is True
-        assert result["current"] == 0  # no bucket touched
-
-    # Redis was never consulted — eval() not called for whitelisted IPs
-    assert fake_redis._client.eval_calls == []
-
-
-def test_whitelist_does_not_bypass_for_other_ips(fake_redis, monkeypatch):
-    monkeypatch.setenv("MCP_RATE_LIMIT_WHITELIST", "10.0.0.7")
-    rl.reload_whitelist_from_env()
-    # Different IP gets normal treatment
-    for _ in range(10):
-        _run(rl.check_register_rate_limit("203.0.113.1"))
-    result = _run(rl.check_register_rate_limit("203.0.113.1"))
-    assert result["status"] == rl.RateLimitResult.EXCEEDED
-
-
-# ── Concurrency: serialized through Redis Lua atomicity ─────────────────────
-
-
-def test_concurrent_11_requests_exactly_10_allowed(fake_redis):
-    """Fire 11 awaitables concurrently. Lua atomic INCR guarantees
-    exactly one allowed → exceeded boundary, no double-allow, no skip."""
-    async def hammer():
-        return await asyncio.gather(*[
-            rl.check_register_rate_limit("203.0.113.99")
-            for _ in range(11)
-        ])
-
-    results = _run(hammer())
-    allowed = [r for r in results if r["status"] == rl.RateLimitResult.ALLOWED]
-    exceeded = [r for r in results if r["status"] == rl.RateLimitResult.EXCEEDED]
-    assert len(allowed) == 10
-    assert len(exceeded) == 1
-    # Counter values must be 1..10 + 11 (no gaps or duplicates)
-    all_counters = sorted(r["current"] for r in results)
-    assert all_counters == list(range(1, 12))
-
-
-# ── Lua script content sanity ───────────────────────────────────────────────
-
-
-def test_lua_script_has_incr_and_expire():
-    """Defensive: the script we send to Redis must call both INCR and
-    EXPIRE. A future edit accidentally dropping the EXPIRE would let
-    counters grow forever — silent DoS gate failure."""
-    assert "INCR" in rl._LUA_INCR_WITH_EXPIRE
-    assert "EXPIRE" in rl._LUA_INCR_WITH_EXPIRE
-    # And the EXPIRE must be conditional on first increment (not on every call).
-    assert re.search(r"current\s*==\s*1", rl._LUA_INCR_WITH_EXPIRE)
-
-
-def test_lua_script_returns_current():
-    """The script must `return current` so the caller can decide
-    allowed/exceeded — without it we'd never see the counter value."""
-    assert rl._LUA_INCR_WITH_EXPIRE.rstrip().endswith("return current")
+def test_upsert_sql_binds_interval_not_interpolates():
+    """`(%s * INTERVAL '1 second')` routes the window through parameter
+    binding — never interpolate into an INTERVAL literal (soul.md §9
+    SQL-bind refactor)."""
+    assert "(%s * INTERVAL '1 second')" in rl._UPSERT_BUCKET_SQL
+    assert "INTERVAL '%s" not in rl._UPSERT_BUCKET_SQL
 
 
 def test_bucket_key_format_includes_namespace_and_ip():
     """Operational requirement: keys must be greppable by IP."""
     expected = f"{rl.REGISTER_RATE_LIMIT_KEY_PREFIX}1.2.3.4"
     assert expected == "rate:dcr_register:1.2.3.4"
+
+
+# ── Fixture Postgres lane ───────────────────────────────────────────────────
+
+_MIGRATION_013 = (
+    Path(__file__).parent.parent / "migrations" / "013_mcp_rate_limit_buckets.sql"
+)
+
+
+@pytest.fixture(scope="module")
+def pg_schema():
+    """Apply migration 013 idempotently so the lane is self-sufficient
+    (locally and in CI, regardless of whether the workflow's psql loop
+    already ran it)."""
+    from app.mcp import auth as mcp_auth
+    conn = mcp_auth._get_db()
+    with conn.cursor() as cur:
+        cur.execute(_MIGRATION_013.read_text())
+    conn.commit()
+    yield
+
+
+@pytest.fixture
+def pg_ip(pg_schema, monkeypatch):
+    """Unique IP per test (no cross-test bucket pollution) + row cleanup."""
+    monkeypatch.delenv("MCP_RATE_LIMIT_WHITELIST", raising=False)
+    rl.reload_whitelist_from_env()
+    ip = f"test-{uuid.uuid4().hex[:12]}"
+    yield ip
+    from app.mcp import auth as mcp_auth
+    conn = mcp_auth._get_db()
+    with conn.cursor() as cur:
+        cur.execute(
+            "DELETE FROM mcp_rate_limit_buckets WHERE bucket_key LIKE %s",
+            (f"{rl.REGISTER_RATE_LIMIT_KEY_PREFIX}test-%",),
+        )
+    conn.commit()
+
+
+def _run(coro):
+    return asyncio.new_event_loop().run_until_complete(coro)
+
+
+@requires_pg
+def test_first_ten_requests_allowed(pg_ip):
+    """GOLDEN: first 10 increments → allowed, current = 1..10."""
+    for i in range(1, 11):
+        result = _run(rl.check_register_rate_limit(pg_ip))
+        assert result["status"] == rl.RateLimitResult.ALLOWED, f"hit #{i}"
+        assert result["current"] == i
+        assert result["limit"] == 10
+
+
+@requires_pg
+def test_eleventh_request_exceeded(pg_ip):
+    """GOLDEN: 11th → exceeded with retry_after = window."""
+    for _ in range(10):
+        _run(rl.check_register_rate_limit(pg_ip))
+    result = _run(rl.check_register_rate_limit(pg_ip))
+    assert result["status"] == rl.RateLimitResult.EXCEEDED
+    assert result["current"] == 11
+    assert result["retry_after"] == 3600
+
+
+@requires_pg
+def test_different_ips_separate_buckets(pg_ip):
+    """Two IPs each get their own 10-quota bucket."""
+    other_ip = f"test-{uuid.uuid4().hex[:12]}"
+    for _ in range(10):
+        r1 = _run(rl.check_register_rate_limit(pg_ip))
+        r2 = _run(rl.check_register_rate_limit(other_ip))
+        assert r1["status"] == rl.RateLimitResult.ALLOWED
+        assert r2["status"] == rl.RateLimitResult.ALLOWED
+    r3 = _run(rl.check_register_rate_limit(pg_ip))
+    assert r3["status"] == rl.RateLimitResult.EXCEEDED
+
+
+@requires_pg
+def test_window_expiration_resets_counter(pg_ip):
+    """An expired window resets count to 1 IN the same UPSERT — simulate
+    expiry by rewinding window_start past the window."""
+    from app.mcp import auth as mcp_auth
+    for _ in range(10):
+        _run(rl.check_register_rate_limit(pg_ip))
+    conn = mcp_auth._get_db()
+    with conn.cursor() as cur:
+        cur.execute(
+            "UPDATE mcp_rate_limit_buckets SET window_start = NOW() - INTERVAL '2 hours' "
+            "WHERE bucket_key = %s",
+            (f"{rl.REGISTER_RATE_LIMIT_KEY_PREFIX}{pg_ip}",),
+        )
+    conn.commit()
+    result = _run(rl.check_register_rate_limit(pg_ip))
+    assert result["status"] == rl.RateLimitResult.ALLOWED
+    assert result["current"] == 1
+
+
+@requires_pg
+def test_concurrent_11_threads_exactly_10_allowed(pg_ip):
+    """TRUE concurrency: 11 threads, each with its OWN pooled connection
+    (auth pool is thread-local), hammer one bucket. The PK row lock on
+    ON CONFLICT serializes them — exactly one allowed→exceeded boundary,
+    counters 1..11 with no gaps or duplicates."""
+    def hit():
+        return _run(rl.check_register_rate_limit(pg_ip))
+
+    with ThreadPoolExecutor(max_workers=11) as pool:
+        results = list(pool.map(lambda _: hit(), range(11)))
+
+    allowed = [r for r in results if r["status"] == rl.RateLimitResult.ALLOWED]
+    exceeded = [r for r in results if r["status"] == rl.RateLimitResult.EXCEEDED]
+    assert len(allowed) == 10
+    assert len(exceeded) == 1
+    assert sorted(r["current"] for r in results) == list(range(1, 12))
+
+
+@requires_pg
+def test_failed_statement_does_not_poison_shared_connection(pg_ip):
+    """The limiter shares the thread-local auth connection. A failed
+    statement must roll back so the NEXT query on the same connection
+    works — an aborted-tx leak would break auth calls downstream."""
+    from app.mcp import auth as mcp_auth
+    bad_sql = rl._UPSERT_BUCKET_SQL
+    try:
+        rl._UPSERT_BUCKET_SQL = "INSERT INTO no_such_table VALUES (1)"
+        result = _run(rl.check_register_rate_limit(pg_ip))
+        assert result["status"] == rl.RateLimitResult.UNAVAILABLE
+    finally:
+        rl._UPSERT_BUCKET_SQL = bad_sql
+    # Same thread → same pooled connection → must be usable again
+    conn = mcp_auth._get_db()
+    with conn.cursor() as cur:
+        cur.execute("SELECT 1 AS ok")
+        assert cur.fetchone()["ok"] == 1
+    conn.rollback()
+
+
+# ── Postgres unreachable → fail closed (no DB needed) ───────────────────────
+
+
+@pytest.fixture
+def db_down(monkeypatch):
+    monkeypatch.delenv("MCP_RATE_LIMIT_WHITELIST", raising=False)
+    rl.reload_whitelist_from_env()
+
+    def boom():
+        raise RuntimeError("simulated Postgres outage")
+
+    monkeypatch.setattr(rl, "_get_conn", boom)
+
+
+def test_db_unreachable_fails_closed(db_down):
+    """GOLDEN: _get_conn raises → status=unavailable, NOT allowed."""
+    result = _run(rl.check_register_rate_limit("203.0.113.1"))
+    assert result["status"] == rl.RateLimitResult.UNAVAILABLE
+    assert "error_description" in result
+    assert result["retry_after"] == 3600
+
+
+def test_db_unreachable_does_not_increment_locally(db_down):
+    """Fail-closed path must NOT fall back to any in-memory counter
+    (defensive — would silently re-open the DoS surface)."""
+    for _ in range(20):
+        result = _run(rl.check_register_rate_limit("203.0.113.1"))
+        assert result["status"] == rl.RateLimitResult.UNAVAILABLE
+
+
+def test_whitelist_bypasses_even_with_db_down(db_down, monkeypatch):
+    """Whitelist short-circuits BEFORE any DB access — CI smoke bastions
+    keep working through a database outage."""
+    monkeypatch.setenv("MCP_RATE_LIMIT_WHITELIST", "10.0.0.7")
+    rl.reload_whitelist_from_env()
+    for _ in range(100):
+        result = _run(rl.check_register_rate_limit("10.0.0.7"))
+        assert result["status"] == rl.RateLimitResult.ALLOWED
+        assert result["whitelisted"] is True
+        assert result["current"] == 0
+
+
+def test_whitelist_does_not_bypass_for_other_ips(db_down, monkeypatch):
+    monkeypatch.setenv("MCP_RATE_LIMIT_WHITELIST", "10.0.0.7")
+    rl.reload_whitelist_from_env()
+    # Different IP gets normal treatment — and with the DB down that
+    # means fail-closed, never silent allow.
+    result = _run(rl.check_register_rate_limit("203.0.113.1"))
+    assert result["status"] == rl.RateLimitResult.UNAVAILABLE

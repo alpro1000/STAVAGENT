@@ -1,39 +1,48 @@
 """
-Redis-backed rate limiter for the /register DCR endpoint.
+Postgres-backed rate limiter for the /register DCR endpoint.
 
-Why Redis instead of the in-memory bucket in app/mcp/auth.py
-============================================================
+History: born Redis-backed (Memorystore + Lua INCR-with-conditional-EXPIRE).
+Cost-audit 2026-06-10 (docs/audits/cost_audit/2026-06-10_gcp_cost_audit.md
+§2.2) established this limiter was the ONLY hard Redis consumer in
+production — a Basic 1GB instance + a VPC connector existed solely to store
+these counters. Ported to Cloud SQL Postgres (task №3); same invariants.
+
+Why a shared store instead of the in-memory bucket in app/mcp/auth.py
+=====================================================================
 - /register is a public endpoint (RFC 7591). No second auth layer
   in front of it — the in-memory bucket is per-Cloud-Run-instance,
   so an autoscaled service has effectively N × rate_limit room. A
   DoS sender can exhaust the registration table by exploiting that.
-- Redis is already in the stack (sessions, KB cache). Using it for
-  rate limiting adds no infrastructure.
-- Atomicity matters: INCR-then-EXPIRE-if-first must be one round-trip
-  so a concurrent burst can't double-count or skip the TTL.
+- Postgres is already the MCP auth store (mcp_api_keys, oauth tables);
+  using it for rate limiting REMOVES infrastructure (Redis + VPC).
+- Atomicity matters: increment-or-reset must be one round-trip so a
+  concurrent burst can't double-count or skip the window reset.
 
-Lua atomicity
-=============
-The two operations (INCR + EXPIRE) run inside a single Redis-side
-script. Redis guarantees Lua scripts execute atomically — no other
-command observes intermediate state, no race between INCR and EXPIRE.
-The TTL is only set on the FIRST increment so the window doesn't
-slide forward on every request (otherwise an attacker keeping just
-under 10/h could keep the bucket alive forever).
+UPSERT atomicity
+================
+The whole counter transition lives in a single
+INSERT ... ON CONFLICT (bucket_key) DO UPDATE ... RETURNING statement
+(migration 013). Postgres row-locks the PK on conflict, so concurrent
+requests serialize on the bucket row — the same guarantee the Redis Lua
+script provided. The window is FIXED, not sliding: window_start is only
+(re)set on the first increment of a window, so an attacker keeping just
+under 10/h cannot keep the bucket alive forever.
 
 Fail-closed
 ===========
-If Redis is unreachable, /register returns 503 — NOT a quiet fallback
+If Postgres is unreachable, /register returns 503 — NOT a quiet fallback
 to in-memory or open mode. The endpoint has no other gate; degrading
-gracefully here means handing the door key to anyone who can DoS
-Redis. Service startup deliberately does NOT depend on this module —
-Redis liveness only matters at /register call time.
+gracefully here means handing the door key to anyone who can DoS the
+database. Service startup deliberately does NOT depend on this module —
+DB liveness only matters at /register call time. (If Postgres is down the
+whole MCP auth plane is down anyway — no availability regression vs Redis.)
 
 Whitelist
 =========
 `MCP_RATE_LIMIT_WHITELIST=ip1,ip2` env bypasses the limit for the
 listed IPs. Intended for CI smoke tests and load tests from
-allow-listed bastions. Default empty.
+allow-listed bastions. Default empty. Whitelist short-circuits BEFORE
+any DB access — it works even with the database down.
 
 IP source trust
 ===============
@@ -62,18 +71,27 @@ REGISTER_RATE_LIMIT_MAX = 10
 REGISTER_RATE_LIMIT_WINDOW_SECONDS = 3600
 
 
-# ── Lua script ──────────────────────────────────────────────────────────────
+# ── UPSERT — the whole increment-or-reset transition in one statement ──────
 #
-# KEYS[1] = bucket key (e.g. "concrete:rate:dcr_register:1.2.3.4")
-# ARGV[1] = TTL in seconds (applied only on first increment)
-#
-# Returns the new counter value.
-_LUA_INCR_WITH_EXPIRE = """
-local current = redis.call('INCR', KEYS[1])
-if current == 1 then
-    redis.call('EXPIRE', KEYS[1], ARGV[1])
-end
-return current
+# %s params: bucket_key, window_seconds (×3).
+# The `(%s * INTERVAL '1 second')` form routes the integer through proper
+# parameter binding (same pattern as mint_token_pair, soul.md §9 SQL-bind
+# refactor) — never interpolate into an INTERVAL literal.
+_UPSERT_BUCKET_SQL = """
+INSERT INTO mcp_rate_limit_buckets (bucket_key, window_start, count)
+VALUES (%s, NOW(), 1)
+ON CONFLICT (bucket_key) DO UPDATE SET
+    count = CASE
+        WHEN mcp_rate_limit_buckets.window_start <= NOW() - (%s * INTERVAL '1 second')
+        THEN 1
+        ELSE mcp_rate_limit_buckets.count + 1
+    END,
+    window_start = CASE
+        WHEN mcp_rate_limit_buckets.window_start <= NOW() - (%s * INTERVAL '1 second')
+        THEN NOW()
+        ELSE mcp_rate_limit_buckets.window_start
+    END
+RETURNING count
 """.strip()
 
 
@@ -122,6 +140,52 @@ def extract_client_ip(request) -> str:
     return "unknown"
 
 
+# ── DB access (module-level seam — tests monkeypatch `_get_conn`) ──────────
+
+
+def _get_conn():
+    """Return the thread-local psycopg2 connection from the MCP auth pool.
+
+    Lazy import — keeps psycopg2/app.mcp.auth out of the cold-start path
+    when this module is imported by routes.py. Module-level function (not a
+    parameter) per the MCP authoring rule: test seams are globals to
+    monkeypatch, never Callable params.
+    """
+    from app.mcp import auth as mcp_auth
+    return mcp_auth._get_db()
+
+
+def _upsert_bucket(bucket_key: str) -> int:
+    """One-round-trip increment-or-reset. Returns the new counter value.
+
+    The shared auth pool runs with autocommit=False — commit on success,
+    rollback on ANY failure so the thread-local connection is never left
+    in an aborted-transaction state for the auth calls that follow on the
+    same thread.
+    """
+    conn = _get_conn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                _UPSERT_BUCKET_SQL,
+                (
+                    bucket_key,
+                    REGISTER_RATE_LIMIT_WINDOW_SECONDS,
+                    REGISTER_RATE_LIMIT_WINDOW_SECONDS,
+                ),
+            )
+            row = cur.fetchone()
+        conn.commit()
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:  # noqa: BLE001 — connection may already be dead
+            pass
+        raise
+    # auth pool uses RealDictCursor → row is a dict.
+    return int(row["count"])
+
+
 # ── Public API ──────────────────────────────────────────────────────────────
 
 
@@ -129,7 +193,7 @@ class RateLimitResult:
     """Pseudo-enum return values. Strings (not Enum) so logging is cheap."""
     ALLOWED = "allowed"
     EXCEEDED = "exceeded"
-    UNAVAILABLE = "unavailable"  # Redis unreachable → fail closed
+    UNAVAILABLE = "unavailable"  # Postgres unreachable → fail closed
 
 
 async def check_register_rate_limit(client_ip: str) -> dict:
@@ -153,38 +217,17 @@ async def check_register_rate_limit(client_ip: str) -> dict:
             "whitelisted": True,
         }
 
-    # Lazy import — keep app.core.config out of the cold-start path
-    # when this module is imported by routes.py.
-    try:
-        from app.core.redis_client import get_redis
-    except Exception as exc:  # noqa: BLE001 — defensive at module level
-        logger.error("[MCP/RateLimit] redis_client import failed: %s", exc)
-        return {
-            "status": RateLimitResult.UNAVAILABLE,
-            "error_description": "Rate limiter unavailable (import failure)",
-            "retry_after": REGISTER_RATE_LIMIT_WINDOW_SECONDS,
-        }
-
     bucket_key = f"{REGISTER_RATE_LIMIT_KEY_PREFIX}{client_ip or 'unknown'}"
 
     try:
-        redis = await get_redis()
-        # RedisClient prefixes keys with "concrete:"; we call its
-        # internal client to send the Lua script directly so the
-        # script sees the same prefixed key it later observes via
-        # `await redis.get(key)` etc.
-        prefixed_key = redis._make_key(bucket_key)
-        current = await redis._client.eval(
-            _LUA_INCR_WITH_EXPIRE,
-            1,                                      # numkeys
-            prefixed_key,                           # KEYS[1]
-            str(REGISTER_RATE_LIMIT_WINDOW_SECONDS),  # ARGV[1]
-        )
-        current = int(current)
-    except Exception as exc:  # noqa: BLE001 — broad on purpose: ANY Redis
+        # Sync psycopg2 on the event loop — same idiom as the Bearer
+        # middleware's primary-key lookups (~5-10 ms on Cloud SQL,
+        # dominated by tool execution; soul.md §9 accepted trade-off).
+        current = _upsert_bucket(bucket_key)
+    except Exception as exc:  # noqa: BLE001 — broad on purpose: ANY DB
                               # path failure must fail closed.
         logger.error(
-            "[MCP/RateLimit] Redis unavailable, failing closed for ip=%s: %s",
+            "[MCP/RateLimit] Postgres unavailable, failing closed for ip=%s: %s",
             client_ip, exc,
         )
         return {

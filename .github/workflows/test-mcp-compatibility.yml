@@ -104,19 +104,11 @@ jobs:
           --health-interval=5s
           --health-timeout=5s
           --health-retries=10
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
 
     env:
       DATABASE_URL: postgresql://mcp_test:mcp_test@localhost:5432/mcp_test
-      REDIS_URL: redis://localhost:6379/0
+      # REDIS_URL removed 2026-06-11 — the DCR rate limiter is Postgres-backed
+      # (migration 013, cost-audit task 3); no test in this lane needs Redis.
 
     steps:
       - name: Checkout code
@@ -175,6 +167,7 @@ jobs:
             tests/test_mcp_dcr_endpoint.py \
             tests/test_mcp_middleware_bearer.py \
             tests/test_mcp_rate_limit.py \
+            tests/test_monolit_cache_fallback.py \
             tests/test_mcp_dcr_integration.py \
             tests/test_stage_gating_foundation.py \
             tests/test_stage_gating_policy.py \
