@@ -813,10 +813,10 @@ async def oauth_register(request: Request):
     `oauth_client_id` FK; failure rows carry NULL FK + status + error_code.
 
     Rate limited (Gate 6): 10 registrations / hour per source IP via
-    Redis-backed atomic Lua INCR+EXPIRE. Fail-closed: Redis unreachable
-    → 503 (NOT graceful fallback — this is a public endpoint with no
-    second auth layer). MCP_RATE_LIMIT_WHITELIST env can bypass for
-    CI smoke tests. See app/mcp/rate_limit.py.
+    Postgres atomic UPSERT (migration 013; ex-Redis, cost-audit task 3).
+    Fail-closed: DB unreachable → 503 (NOT graceful fallback — this is a
+    public endpoint with no second auth layer). MCP_RATE_LIMIT_WHITELIST
+    env can bypass for CI smoke tests. See app/mcp/rate_limit.py.
     """
     raw_body = await request.body()
     payload_hash = _hash_payload(raw_body)
