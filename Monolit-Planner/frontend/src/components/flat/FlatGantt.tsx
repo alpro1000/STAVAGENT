@@ -64,9 +64,12 @@ export default function FlatGantt({ positions }: Props) {
     return sortPartsBySequence(partNames);
   }, [positions, customOrder]);
 
-  // Compute bars
-  const bars = useMemo(() => {
-    if (!positions.length || !partOrder.length) return [];
+  // Compute bars. Parts are laid sequentially; phases WITHIN a part keep
+  // their real intervals from metadata.schedule_info.phases (overlaps incl.
+  // zrání preserved), so the roll-up equals Σ element schedule totals — the
+  // same number ElementBlock "Celkem dní" and KPI "Čas" show (seam fix 2026-06).
+  const { bars, projectTotalDays } = useMemo(() => {
+    if (!positions.length || !partOrder.length) return { bars: [] as GanttBar[], projectTotalDays: 0 };
     const result: GanttBar[] = [];
     let currentDay = 1;
 
@@ -108,7 +111,10 @@ export default function FlatGantt({ positions }: Props) {
         currentDay += dayOffset || 1;
       }
     }
-    return result;
+    // Roll-up from element totals (NOT max bar end): for calculated elements
+    // the schedule total can exceed the last phase end (scheduler tail), and
+    // it is the single source the other summary views read.
+    return { bars: result, projectTotalDays: Math.round((currentDay - 1) * 10) / 10 };
   }, [positions, partOrder]);
 
   // Drag & drop handlers
@@ -152,8 +158,9 @@ export default function FlatGantt({ positions }: Props) {
   const maxDay = Math.max(...bars.map(b => b.startDay + b.duration), 1);
   const dayWidth = Math.max(16, Math.min(40, 800 / maxDay));
 
-  // KPI summary
-  const totalDays = maxDay - 1;
+  // KPI summary — schedule roll-up (Σ element totals), same number as
+  // ElementBlock "Celkem dní" and FlatKPIPanel "Čas".
+  const totalDays = projectTotalDays;
   const totalM3 = positions.filter(p => p.subtype === 'beton').reduce((s, p) => s + (p.concrete_m3 || 0), 0);
   const totalCost = positions.reduce((s, p) => s + (p.kros_total_czk || 0), 0);
 
@@ -213,7 +220,8 @@ export default function FlatGantt({ positions }: Props) {
               </div>
               <div style={{ flex: 1, position: 'relative', height: 24 }}>
                 {partBars.map((bar, i) => {
-                  const barColor = bar.subtype.includes('bedn') ? 'flat-gantt__bar--bedneni'
+                  const barColor = bar.subtype.includes('zrán') ? 'flat-gantt__bar--zrani'
+                    : bar.subtype.includes('bedn') ? 'flat-gantt__bar--bedneni'
                     : bar.subtype.includes('výztuž') ? 'flat-gantt__bar--vystuz'
                     : 'flat-gantt__bar--beton';
                   return (
@@ -240,6 +248,7 @@ export default function FlatGantt({ positions }: Props) {
           <span><span className="flat-gantt__bar flat-gantt__bar--beton" style={{ display: 'inline-block', width: 16, height: 10, verticalAlign: 'middle', marginRight: 4 }} /> Beton</span>
           <span><span className="flat-gantt__bar flat-gantt__bar--bedneni" style={{ display: 'inline-block', width: 16, height: 10, verticalAlign: 'middle', marginRight: 4 }} /> Bednění</span>
           <span><span className="flat-gantt__bar flat-gantt__bar--vystuz" style={{ display: 'inline-block', width: 16, height: 10, verticalAlign: 'middle', marginRight: 4 }} /> Výztuž</span>
+          <span><span className="flat-gantt__bar flat-gantt__bar--zrani" style={{ display: 'inline-block', width: 16, height: 10, marginTop: 0, verticalAlign: 'middle', marginRight: 4 }} /> Zrání (překryv)</span>
           <span><span className="flat-gantt__bar flat-gantt__bar--estimate" style={{ display: 'inline-block', width: 16, height: 10, verticalAlign: 'middle', marginRight: 4, background: 'var(--stone-500)' }} /> Odhad</span>
           <span style={{ marginLeft: 'auto', fontStyle: 'italic' }}>Přetáhněte části pro změnu pořadí</span>
         </div>

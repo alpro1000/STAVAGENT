@@ -1385,6 +1385,15 @@
   background: var(--blue-500);
 }
 
+/* Zrání = calendar span (technological pause), rendered as a translucent
+   overlay UNDER the work bars — never a sequential addend. */
+.flat-gantt__bar--zrani {
+  background: var(--green-500, #22c55e);
+  opacity: 0.3;
+  height: 10px;
+  margin-top: 4px;
+}
+
 .flat-gantt__bar--estimate {
   opacity: 0.4;
   background-image: repeating-linear-gradient(

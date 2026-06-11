@@ -82,6 +82,25 @@ export interface HeaderKPI {
 
   // Constants
   rho_t_per_m3: number;
+
+  // --- Schedule projection roll-up (seam fix 2026-06) ---
+  // Real schedule total: Σ metadata.schedule_info.total_days across elements
+  // that went through Aplikovat (parts laid sequentially, phases within an
+  // element overlap). null = no element carries a schedule → UI shows
+  // NEPOČÍTÁNO instead of a money-derived "time".
+  schedule_total_days?: number | null;
+  /** Elements (parts with a beton position) that carry a schedule projection */
+  schedule_elements_calculated?: number;
+  /** Elements without a schedule projection (surfaced as "Nevypočtených") */
+  schedule_elements_uncalculated?: number;
+  /**
+   * Krytí mezd = budget-months ÷ plan-months. estimated_months (how long the
+   * KROS budget can pay the average crew) over the real schedule in months.
+   * ≥1 = budget covers wages, <1 = wages exceed KROS revenue. null when no
+   * schedule exists (a ratio without a denominator does not exist).
+   * Presented as a ratio/semaphore — never as a second "time" number.
+   */
+  wage_coverage_ratio?: number | null;
 }
 
 export interface Bridge {

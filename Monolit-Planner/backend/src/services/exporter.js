@@ -845,25 +845,49 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     regimeRow.getCell(2).alignment = { horizontal: 'right' };
     regimeRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
 
-    // Odhadovaná doba trvání - formulas for automatic calculation
-    const durationRow = kpiSheet.addRow(['Odhadovaná doba trvání', null, null]);
+    // Doba realizace — REAL schedule total (Σ metadata.schedule_info.total_days
+    // across elements that went through the calculator's Aplikovat). When no
+    // element carries a schedule the cell is an honest NEPOČÍTÁNO — the
+    // money-derived estimate is NOT a time (it lives in Krytí mezd below).
+    const scheduleDays = header_kpi.schedule_total_days;
+    const durationRow = kpiSheet.addRow(['Doba realizace (harmonogram)', null, null]);
     applyDataRowStyle(durationRow, false);
     durationRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
-
-    // Column B: Months = Σ Pracovní dny / days_per_month
-    durationRow.getCell(2).value = {
-      formula: `ROUND(B${workDaysRow.number}/${header_kpi.days_per_month},1)&" měsíců"`,
-      result: `${formatNumber(header_kpi.estimated_months)} měsíců`
-    };
+    if (scheduleDays != null) {
+      const scheduleMonths = scheduleDays / (header_kpi.days_per_month || 30);
+      durationRow.getCell(2).value = `${formatNumber(scheduleDays)} prac. dní`;
+      durationRow.getCell(3).value = `≈ ${formatNumber(scheduleMonths)} měsíců`;
+    } else {
+      durationRow.getCell(2).value = 'NEPOČÍTÁNO';
+      durationRow.getCell(3).value = '(žádný element neprošel kalkulátorem)';
+    }
     durationRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
     durationRow.getCell(2).alignment = { horizontal: 'right' };
-
-    // Column C: Weeks = Σ Pracovní dny / 7
-    durationRow.getCell(3).value = {
-      formula: `ROUND(B${workDaysRow.number}/7,1)&" týdnů"`,
-      result: `${formatNumber(header_kpi.estimated_weeks)} týdnů`
-    };
     durationRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
+
+    // Krytí mezd — budget-months ÷ plan-months semaphore. ≥1 = the KROS
+    // budget covers the crew wages, <1 = wages exceed KROS revenue. Both
+    // source numbers shown so the ratio is auditable. Never presented as a
+    // second "time" number.
+    const coverage = header_kpi.wage_coverage_ratio;
+    const coverageRow = kpiSheet.addRow(['Krytí mezd (rozpočet ÷ plán)', null, null]);
+    applyDataRowStyle(coverageRow, true);
+    coverageRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+    if (coverage != null && scheduleDays != null) {
+      const scheduleMonths = scheduleDays / (header_kpi.days_per_month || 30);
+      coverageRow.getCell(2).value = `${formatNumber(coverage)}× ${coverage >= 1 ? '(kryto)' : '(mzdy převyšují)'}`;
+      coverageRow.getCell(3).value = `rozpočet ${formatNumber(header_kpi.estimated_months)} měs. ÷ plán ${formatNumber(scheduleMonths)} měs.`;
+      coverageRow.getCell(2).font = {
+        name: 'Calibri', size: 10, bold: true,
+        color: { argb: coverage >= 1 ? 'FF27AE60' : 'FFE74C3C' }
+      };
+    } else {
+      coverageRow.getCell(2).value = 'NEPOČÍTÁNO';
+      coverageRow.getCell(3).value = '(poměr bez harmonogramu neexistuje)';
+      coverageRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textMuted } };
+    }
+    coverageRow.getCell(2).alignment = { horizontal: 'right' };
+    coverageRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
     kpiSheet.addRow([]);
 
     // ============= SHEET 3: MATERIALS AGGREGATION (with formulas referencing Detaily) =============
