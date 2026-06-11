@@ -8,26 +8,37 @@
 
 ## 🔵 ACTIVE TASK — Classifier Kiosk Full Fix (Frontend + MCP + Backend)
 
-**Where we are:** Phase 0 recon DONE + §2 interview DONE. **STOP gate** — awaiting
-go-ahead for Phase 1. No code written yet.
+**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1a SHIPPED** (deterministic
+chain + honest confidence + seams + 19 hermetic tests green). **STOP gate** — Phase 1b
+(infra) is next on this branch.
 
 **Recon report:** `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`
+(updated with corrections 1–3 + model verification + acceptance #11/#12).
 **Task file:** `TASK_Classifier_Kiosk_FullFix_Frontend_MCP_Backend_1.md` (uploaded)
 
-**Interview decisions:**
-- Merge each phase as CI passes (NOT post-Cemex) — but land before ~21.06 or staging-only.
-- Vector index = **pgvector in Cloud SQL**; reuse unused `vertex_embeddings.py`.
-- **Migrate** kiosk matching engine to Core/MCP (Phase 3) — kiosk has its own full
-  stack today, not a thin UI.
-- Keep subsystem 3 (Core proxy), remove only subsystem 4 (6-role orchestrator).
+**Interview decisions:** merge-per-CI (land before ~21.06) · pgvector in Cloud SQL ·
+migrate kiosk engine to Core (Phase 3) · keep subsystem 3 / remove subsystem 4.
+**Corrections (user, before Phase 1):** (1) learned-mappings migrate to Core, human-confirm
+0.99 ONLY, no AI auto-learn (acceptance #11); (2) local ÚRS ~39K — migrate to Core fallback
+or record web-only, never silent (acceptance #12); (3) **gecko@003 RETIRED 2025-05-24** →
+use **gemini-embedding-001 @ output_dimensionality=768**, pgvector cosine, `EMBEDDING_DIM` const.
 
-**Phase 1 (next) — Core:** code-lookup branch · UWO gate before code search · pgvector
-embeddings retrieve (recall fix) · deterministic param prefilter · pluggable ranking
-seam (deterministic default, full popis, audited, replayable) · honest confidence
-(kill hardcoded 1.0 in `app/mcp/tools/otskp.py` l.186/~210). STOP + report after.
+**Phase 1a DONE (this branch):** `app/services/catalog_matching.py` — work-type axis +
+UWO gate + param prefilter + honest confidence (keyword ≤0.9, embeddings 0.70–0.80, never
+1.0) + pluggable audited/replayable ranking seam + embeddings retrieve seam
+(`_EMBEDDINGS_PROVIDER`, monkeypatchable). `find_otskp_code` fulltext path rewired through
+the chain; exact code lookup stays 1.0. `tests/test_catalog_matching.py` (19 hermetic, green).
+NB: MCP compat suite unrunnable locally (no `fastmcp` — Debian PyJWT blocks install) → confirm on CI.
 
-**Open before Phase 1:** verify `textembedding-gecko@003` lifecycle (legacy model);
-plan valid OTSKP code to replace docstring example `113472111` (Phase 2).
+**Phase 1b (next) — infra behind the seam:**
+- Rewrite `app/integrations/vertex_embeddings.py` → `gemini-embedding-001`, `output_dimensionality=768`.
+- Alembic migration: `CREATE EXTENSION vector` + `otskp_embeddings(code, embedding vector(768), popis)`, HNSW cosine.
+- Index 17,904 OTSKP items (batch embed) + a pgvector `_EMBEDDINGS_PROVIDER` impl wired into the seam.
+- Learned-mappings Core table + human-confirm-0.99 rule (acceptance #11).
+- Then run full pytest + **verbatim CI log on phase HEAD**, STOP before merge.
+
+**Phase 2 carry:** fix `find_otskp_code` docstring example `113472111` (malformed 9-digit;
+real OTSKP transport codes are 6-char) → a verified code.
 
 ---
 

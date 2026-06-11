@@ -140,6 +140,20 @@ migration uses; subsystem 4 goes.
   rule-based 1.0 → Vertex bounded fallback ~0.70).
 - Retrieve in basket: deterministic keyword **+ Vertex embeddings** (recall fix).
   Index OTSKP into **pgvector** (new Alembic migration); reuse `vertex_embeddings.py`.
+  **CORRECTION 3 (model verification before migration) — VERIFIED 2026-06-11:**
+  `textembedding-gecko@003` was **RETIRED 2025-05-24** (cloud.google.com), not just
+  legacy → existing `vertex_embeddings.py` would 404; it must be **rewritten**, not
+  reused as-is. Verified current options: `gemini-embedding-001` (GA, 100+ langs,
+  MTEB-multilingual leader; default 3072-dim, truncatable to 768/1536/3072 via
+  `output_dimensionality` MRL; 768 = 0.26% quality loss; max 2048 input tokens;
+  manual L2-norm needed below 3072) · `text-multilingual-embedding-002` (native
+  768-dim, stable) · `text-embedding-005` (EN/code, gecko successor).
+  **DECISION:** `gemini-embedding-001` @ `output_dimensionality=768`, pgvector
+  **cosine** distance (cosine operator absorbs the normalization caveat). Dimension =
+  a single config constant `EMBEDDING_DIM` (no magic 768 literal) so the column is
+  swappable. 768 chosen deliberately (quality≈3072, 4× smaller/faster HNSW than 3072).
+  `text-multilingual-embedding-002` is the documented fallback. Migration is written
+  to this verified dimension.
 - Deterministic param prefilter (concrete_class, soil_class, šířka, hloubka,
   ruční/strojní, pažení, vzdálenost odvozu) **after** retrieve, **before** ranking.
 - Ranking = **named pluggable step** `(query, candidates[]) → candidates[]`, default =
@@ -147,6 +161,14 @@ migration uses; subsystem 4 goes.
   prose). Ranking call written to audit; replay reads recorded order. Ranking never
   overrides 1.0 (code) / 0.99 (human). Vertex candidate = AI-band (~0.70–0.80), never 1.0.
 - Honest confidence + provenance (no hardcoded 1.0 on bare DB hit).
+- **CORRECTION 1 (learned-mappings — migrate to Core, close confidence-laundering):**
+  the kiosk learned-mappings KB (`concreteAgentKB.js`) content migrates to a Core
+  table (learned/confirmed mappings) — it is the future reranker training corpus +
+  accumulated human confirmations. **Only the kiosk copy is deleted.** The current
+  kiosk auto-learn at conf ≥ 0.85 is **confidence-laundering** (the system writes its
+  own KB from Perplexity matches, which later resurface as "learned" with high
+  confidence) → **does NOT migrate.** Core rule: learned-mappings accept **only
+  human-confirmed codes (0.99)**. (New acceptance #11.)
 - **STOP + report.**
 
 ### Phase 2 — MCP
@@ -159,7 +181,15 @@ migration uses; subsystem 4 goes.
 ### Phase 3 — Frontend (kiosk → thin) + engine migration
 - Migrate kiosk matching (single-name, list/batch) to Core/MCP calls; remove the
   local matching engine duplication (ursMatcher / universalMatcher / batch pipeline /
-  otskpCatalogService / perplexityClient / learned-mappings as the source of truth).
+  otskpCatalogService / perplexityClient). **Data is migrated, not dropped** — see
+  CORRECTION 1 (learned-mappings) and CORRECTION 2 (ÚRS SQLite) below.
+- **CORRECTION 2 (local ÚRS SQLite ~39K — conscious fate, no silent loss):** today
+  the kiosk has an offline ÚRS fallback (local SQLite ~39K) that Core lacks (Core ÚRS
+  = web-on-demand: Perplexity + URS Matcher HTTP). Killing the kiosk engine must NOT
+  silently drop it. **Preferred:** migrate the 39K ÚRS SQLite into Core as a
+  local-fallback layer on the ÚRS branch (also the future ÚRS embeddings-index
+  candidate). **Alternative:** an explicit "accept web-only ÚRS" decision recorded in
+  the Phase 3 audit. One of the two — never silent.
 - **Keep subsystem 3** (Core proxy). **Remove subsystem 4** (role debate: roles.js +
   orchestrator.js + conflictResolver.js + `/api/project-analysis/*` + "Rozšířený režim"
   UI + `block-match` route).
@@ -187,6 +217,8 @@ migration uses; subsystem 4 goes.
 | 8 | MCP tool returns carrier, not table | 2 |
 | 9 | Frontend no own matching logic; subsystem 4 removed; confirmation screen; provenance/confidence visible | 3 |
 | 10 | Existing goldens green; new tests green; verbatim CI log on final HEAD; idempotent; backup before write | all |
+| 11 | **learned-mappings accept records ONLY with human-confirm 0.99** (no auto-learn from AI-confidence; kiosk auto-learn ≥0.85 does not migrate) | 1 (Core rule) / 3 (kiosk copy removed) |
+| 12 | Local ÚRS ~39K fate is explicit: migrated to Core fallback OR "web-only" recorded in audit — never silently dropped | 3 |
 
 ---
 

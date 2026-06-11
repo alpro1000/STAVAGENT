@@ -351,6 +351,38 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1a (deterministic chain + honest confidence)
+
+**Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`):**
+- Nový `concrete-agent/.../app/services/catalog_matching.py` — Work-First chain:
+  work-type axis (`classify_work_type`) + element-family axis (reuse `_classify`) →
+  **UWO gate** (`passes_uwo_gate`) → **param prefilter** (concrete_class) → **honest
+  confidence** (keyword ≤0.9, embeddings 0.70–0.80, NIKDY 1.0 zde) → **pluggable
+  ranking seam** (`rank` + audit `input/output_codes`, replayable, deterministic
+  default) → carrier (candidates+confidence+provenance). Embeddings retrieve seam
+  `_EMBEDDINGS_PROVIDER` (module-global, monkeypatchovatelný — ne function param,
+  FastMCP CallableSchema pravidlo).
+- `find_otskp_code` fulltext větev přepojena přes chain; **hardcoded 1.0 na DB-hit
+  pryč**; exact code lookup zůstává 1.0 (verified DB row). Contract `results`/
+  `total_found`/fields zachován (compat-safe; compat test neasserovala 1.0).
+- `tests/test_catalog_matching.py` — **19 hermetic testů green** (AC 1,2,3,4,6,7 +
+  e2e přes find_otskp_code s fake katalogem). Fix: `predpinaci` pravidlo PŘED
+  `vyztuz` (předpínací výztuž = jiný OTSKP basket než B500).
+
+**Před-kód korekce (user):** gecko@003 **RETIRED 2025-05-24** → gemini-embedding-001
+@768 / pgvector cosine / `EMBEDDING_DIM` const (migrace AŽ po verifikaci modelu).
+Learned-mappings → Core, human-confirm 0.99 only (no AI auto-learn, acceptance #11).
+Local ÚRS ~39K → Core fallback nebo web-only do auditu (acceptance #12).
+
+**Odmítnuto / deferred:** Phase 1b (vertex_embeddings rewrite + pgvector Alembic
+migrace 768-dim + index 17 904 OTSKP + provider wire do seamu + learned-mappings
+table) = další commit na téže větvi. MCP compat suite lokálně neběží (chybí
+`fastmcp` — Debian PyJWT blokuje install) → potvrdit na CI.
+
+**Co dál:** Phase 1b infra za seamem → full pytest + verbatim CI log na HEAD fáze →
+STOP před merge. Phase 2: fix docstring example `113472111` (malformed 9-digit).
+
+
 ## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 0 recon (READ-ONLY)
 
 **Rozhodnuto (§2 pre-impl interview):**
