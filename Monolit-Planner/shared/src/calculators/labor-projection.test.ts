@@ -11,7 +11,12 @@
  * presence (= norm / 0.8) reserved for money.
  *
  * No network / DB / AI — pure engine + formulas (golden convention).
- * Acceptance case: SO-202 §5f Mostovka NK, 605 m³ (same as recon + goldens).
+ *
+ * Input below = the SO-202-shaped SYNTHETIC multi-tact case (605 m³ /
+ * 6 tacts — same numbers the seam-fix recon used). NOT PDPS: per TZ §7.2
+ * the real SO-202 NK is poured in ONE tact (693.35 m³ per VV 422336 ÷ 2,
+ * see golden-so202.test.ts §5f). The multi-tact shape is deliberate here —
+ * phase overlaps and the zrání overlay only exist with >1 tact.
  */
 
 import { describe, it, expect } from 'vitest';

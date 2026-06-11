@@ -24,6 +24,11 @@ app.use('/api', engineRouter);
 const norm = (x) => JSON.parse(JSON.stringify(x));
 
 // Same element set as the concrete-agent parity fixtures + the jest parity.
+// NOTE (Part A recalibration 2026-06-11): these are SYNTHETIC PROBE inputs
+// pinned to the captured Python replay fixtures — they are NOT PDPS truth.
+// The PDPS SO-202 NK is 1 tact / 693.35 m³ (VV 422336 ÷ 2, TZ §7.2) — see
+// shared golden-so202.test.ts §5f. Changing values here requires re-capturing
+// concrete-agent engine_fixtures.json + replay_calculate.json.
 const PARITY = {
   mostovkova_deska: { element_type: 'mostovkova_deska', volume_m3: 605, concrete_class: 'C35/45', height_m: 6, span_m: 20, num_spans: 6, is_prestressed: true, has_dilatacni_spary: false },
   rimsa: { element_type: 'rimsa', volume_m3: 12.5, concrete_class: 'C30/37', height_m: 0.5, has_dilatacni_spary: false },
@@ -66,6 +71,9 @@ describe('SSOT parity — canonical profile rebar ratios (the "150 not 180" anch
   }
 });
 
+// Domain anchors below assert FLOORS (curing ≥ 9, prestress ≥ 11, technology
+// honored) — valid regardless of volume/tact shape. Inputs reuse the synthetic
+// probe set above (NOT PDPS — PDPS shape lives in shared golden-so202.test.ts).
 describe('SSOT parity — SO-202 domain anchors through the endpoint', () => {
   test('NK curing ≥ 9 days (class 4 @ 15°C)', async () => {
     const res = await request(app).post('/api/calculate').send({

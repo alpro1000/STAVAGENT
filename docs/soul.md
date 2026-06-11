@@ -351,6 +351,46 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: Golden recalibration SO-202 KV — Part A (PDPS 1 takt + provenance)
+
+**Rozhodnuto:**
+- Golden §5f SO-202 KV překalibrován na PDPS: TZ §7.2 «betonáž NK na pevné skruži
+  v jednom taktu» / §6.11.3 «v jedné etapě». Vstup: 693.35 m³ (VV 422336: 1 386.700
+  oba mosty ÷ 2), C35/45 XF2 třída 4, dvoutram, 12 kabelů one_sided,
+  `working_joints_allowed: 'no'` (legitimní 1-takt páka kontraktu),
+  `rebar_mass_kg: 104000` (VV 422365 ÷ 2 — VV vyhrává nad engine heuristikou
+  100 kg/m³ pro předpjatou NK). Dřívější 605 m³ = odhad, superseded.
+- Engine snapshot (kandidátní goldens, fixace po STOP gate A): num_tacts=1,
+  4+1 čerpadel (MEGA zálivka ≥500 NEBLOKUJE — warnings + resource-ceiling ⛔),
+  curing 21 d (≥9 floor tř. 4), prestress 25 d (wait 21 + 2 + 2), skruž 46 d,
+  total 89.5 prac. d/most, Top 50 + Staxo 40.
+- Interview: starý 6-takt case = SYNTETIKA («NOT PDPS») do merge Žalmanov goldenu
+  (Part C); pak smazat. Permissions: test-data deny zúžen per-extension
+  (md/txt čitelné, PDF/XML/XLSX/JSON/images dál zavřené). Part A z čerstvého main
+  PO merge seam-fix #1334.
+- Provenance konvence v golden MD: každé číslo `[TZ §X]` / `[VV pos. N]` / `[odhad]`
+  (retrospektivně: §5a–5e objemy elementů označeny [odhad]).
+- Relabel (hodnoty NEZMĚNĚNY — synthetic probes, ne PDPS-pravda): engine.parity
+  (SSOT kotvy pro Python replay fixtures — změna hodnot = re-capture
+  concrete-agent fixtures), engine.test, planner-advisor, capture_ssot_fixtures,
+  labor-projection.test (multi-takt tvar záměrný — overlapy/zrání overlay
+  vyžadují >1 takt). MCP docstring calculator.py opraven: 605→693.35 + «1 tact
+  per span»→«jeden takt celé NK» (text-only, bez MCP compat dopadu).
+  TASK_Orchestrator_WorkOntology_SO202 čísla 605→693.35.
+- Engine nesoulad ZAZNAMENÁN, neřešen (exclusion): multi-bridge větev orchestrátoru
+  (`num_bridges:2`) dělí volume_m3 jako součet obou mostů, MCP docstring tvrdí
+  per-bridge vstup. Golden proto modeluje 1 most bez num_bridges.
+
+**Odmítnuto:** změna kontraktu kalkulátoru; re-capture Python fixtures (probe
+hodnoty stačí relabelovat); oprava volume-geometry warning heuristiky (očekávaný
+output, dvoutram eq-thickness — warning je v goldenů zachycen).
+
+**Otevřené otázky:** task uvádí «6 polí 15+5×20+15» — aritmeticky 7 hodnot/130 m;
+repo-doložené je 15+4×20+15 = 110 m ≈ NK 111.5 (použito). Confirm na STOP gate A.
+
+**Co dál:** STOP gate A → merge → Part B (TZ-consistency validation rule)
+→ Part C (Žalmanov golden, docs v test-data/SO_202_D6_OV_Z/).
+
 ## 2026-06-10 — Session: Monolit seam-fix — единый источник сводки (čel-časy, harmonogram, KPI)
 
 **Rozhodnuto:**
