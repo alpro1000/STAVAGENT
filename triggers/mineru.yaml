@@ -13,7 +13,7 @@ includedFiles:
 substitutions:
   _REGION: europe-west3
   _TAG: $SHORT_SHA
-# serviceAccount НЕ указывать: явный легаси-SA (…@cloudbuild.gserviceaccount.com) отвергается валидацией Cloud Build («provide a user-managed service account or leave unset»). Unset → дефолтный выбор SA, проверено билдами до 2026-06-11. Инцидент №2 runbook.
+serviceAccount: projects/project-947a512a-481d-49b5-81c/serviceAccounts/1086027517695-compute@developer.gserviceaccount.com  # ОБЯЗАТЕЛЕН и должен быть user-managed (инциденты 2+3: explicit legacy-SA режется на билде, отсутствие поля — INVALID_ARGUMENT на create)
 
 approvalConfig:
   approvalRequired: false

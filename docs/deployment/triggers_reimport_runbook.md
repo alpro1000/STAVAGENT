@@ -26,27 +26,37 @@ build-история.
 удалением старого — ВСЕГДА верификационный гейт; любой ERROR = STOP, удаление
 не выполнять.
 
-## 🔴 POST-MORTEM, инцидент №2 (2026-06-11, та же болезнь — вторая итерация)
+## 🔴 POST-MORTEM, инциденты №2 + №3 (2026-06-11) — serviceAccount, обе стороны
 
-Первый билд через реимпортированный триггер (mineru, мерж #1333) отброшен ДО
-старта (0 steps): `invalid value for build.service_account: provide a
-user-managed service account or leave unset`. Репо-yaml несли явный
-`serviceAccount: …@cloudbuild.gserviceaccount.com` (легаси-SA Cloud Build) —
-новая валидация отвергает его при явном указании; старые триггеры жили без
-поля (дефолтный выбор SA, билды проходили). Поле удалено из всех репо-yaml.
+**№2:** первый билд через реимпортированный триггер (mineru, мерж #1333)
+отброшен ДО старта (0 steps): `invalid value for build.service_account` —
+**explicit legacy-SA** (`…@cloudbuild.gserviceaccount.com`) отвергается
+валидацией ПРИ СТАРТЕ БИЛДА (триггер с ним создаётся без ошибок!).
 
-**Корень обоих инцидентов один: поля describe-экспорта ≠ схема import.**
-Канонический strip-список при любом «describe → правка → import» цикле:
+**№3:** фикс «убрать поле» (как подсказывал текст ошибки «or leave unset»)
+дал `INVALID_ARGUMENT` на **create** — для новых региональных триггеров поле
+**ОБЯЗАТЕЛЬНО и должно быть user-managed SA**. Старые триггеры без поля —
+grandfathered. Рабочее значение: **compute-SA**
+(`1086027517695-compute@developer.gserviceaccount.com`) — дефолтный выбор
+нового Cloud Build; его билды (AR push + Run deploy) проходили и до фикса,
+роли есть. Пререквизит `options.logging: CLOUD_LOGGING_ONLY` уже стоит во
+всех cloudbuild-yaml. ✅ Подтверждено 2026-06-11 10:03Z: все 6 триггеров
+пересозданы с compute-SA, гейт зелёный.
 
-```bash
-grep -vE '^(createTime|updateTime|resourceName|location|serviceAccount):'
-# id ОСТАВЛЯТЬ — он гарантирует update-in-place вместо
-# неподтверждённого матчинга по имени.
-```
+**Подтверждённые «нельзя» этого цикла (3 инцидента):**
 
-Фикс живых триггеров: describe каждого → strip по списку (id сохранить) →
-import → гейт «ровно 6, serviceAccount пуст, includedFiles/substitutions на
-месте».
+| Приём | Вердикт |
+|---|---|
+| `import` файла с `location:` | ❌ `.location: unused` (№1) |
+| `import` как UPDATE (с `id`, любой strip) | ❌ generic `INVALID_ARGUMENT` — update-путь мёртв |
+| `gcloud beta builds triggers export` | ❌ бесполезен: отдаёт тот же describe-мусор (createTime/resourceName/id/approvalConfig:{}) |
+| create без `serviceAccount` | ❌ `INVALID_ARGUMENT` (№3) |
+| create с legacy-SA | ⚠️ создаётся, но КАЖДЫЙ билд отбрасывается на старте (№2) |
+| **Канон: delete → import репо-yaml (CREATE) с user-managed SA** | ✅ проверено многократно |
+
+**Прочее:** бэкапы — в `~/trigger_backups` (домашка персистентна; `/tmp`
+Cloud Shell обнуляется между сессиями). Между мутирующим шагом и удалением —
+ВСЕГДА гейт (№1).
 
 ---
 
