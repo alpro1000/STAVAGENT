@@ -8,6 +8,26 @@ build-история.
 
 ---
 
+## 🔴 POST-MORTEM первого прогона (2026-06-11)
+
+Первый прогон v1 этого runbook'а упал и частично сломал CI/CD:
+
+1. **Все 6 import'ов упали** с `ERROR: .location: unused` — поле `location:` в
+   `triggers/*.yaml` команда `import` не принимает (локацию задаёт `--region`).
+   Поле удалено из всех репо-yaml этим же фиксом.
+2. **Шаг удаления (§5) был выполнен ПОСЛЕ упавших import'ов** → 5 сервисов
+   остались без деплой-триггеров до восстановления. Дефект runbook v1: удаление
+   стояло до верификации, без STOP-гейта. **Исправлено: §4.1 — жёсткий гейт.**
+3. Восстановление: re-import без `location:` (бэкапы §1 не понадобились, но
+   обязательны). §7 при этом отработал чисто — substitution-хвост handoff §3
+   закрыт: `✅ WARN нет` + `REDIS_URL` присутствует на ревизии 00399-hd9.
+
+**Урок (универсальный для destructive-runbook'ов):** между мутирующим шагом и
+удалением старого — ВСЕГДА верификационный гейт; любой ERROR = STOP, удаление
+не выполнять.
+
+---
+
 ## ⚠️ Два факта, из-за которых runbook не сводится к одному import
 
 1. **Имена в репо ≠ живым у 5 из 6 триггеров.** `triggers import` матчится по
@@ -67,6 +87,9 @@ grep -A4 "^substitutions:" /tmp/concrete-agent-deploy-patched.yaml
 
 ## 4. Импорт (concrete — из патченной копии, остальные — из репо)
 
+> Репо-yaml после фикса 2026-06-11 уже БЕЗ поля `location:` (import его не
+> принимает). Если работаешь со старым checkout'ом — `git pull` сначала.
+
 ```bash
 gcloud builds triggers import --region=europe-west3 \
   --source=/tmp/concrete-agent-deploy-patched.yaml
@@ -75,6 +98,19 @@ for f in triggers/monolit.yaml triggers/portal.yaml triggers/urs.yaml \
   gcloud builds triggers import --region=europe-west3 --source="$f"
 done
 ```
+
+### 4.1 🛑 ГЕЙТ перед удалением — НЕ пропускать
+
+```bash
+gcloud builds triggers list --region=europe-west3 \
+  --format='table(name,includedFiles)'
+```
+
+**Условие прохода:** ни один import выше не вернул ERROR, И в списке видны ВСЕ
+новые имена (`concrete-agent-deploy`, `monolit-deploy`, `portal-deploy`,
+`urs-deploy`, `registry-backend-deploy`, `mineru-service-deploy`) с непустым
+`includedFiles`. **Любой ERROR или отсутствующее имя → STOP. §5 НЕ выполнять**
+— иначе сервисы останутся без деплой-триггеров (инцидент 2026-06-11).
 
 ## 5. Удалить старые имена (теперь это дубликаты БЕЗ includedFiles)
 
