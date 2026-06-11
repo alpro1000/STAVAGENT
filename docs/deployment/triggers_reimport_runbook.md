@@ -26,6 +26,28 @@ build-история.
 удалением старого — ВСЕГДА верификационный гейт; любой ERROR = STOP, удаление
 не выполнять.
 
+## 🔴 POST-MORTEM, инцидент №2 (2026-06-11, та же болезнь — вторая итерация)
+
+Первый билд через реимпортированный триггер (mineru, мерж #1333) отброшен ДО
+старта (0 steps): `invalid value for build.service_account: provide a
+user-managed service account or leave unset`. Репо-yaml несли явный
+`serviceAccount: …@cloudbuild.gserviceaccount.com` (легаси-SA Cloud Build) —
+новая валидация отвергает его при явном указании; старые триггеры жили без
+поля (дефолтный выбор SA, билды проходили). Поле удалено из всех репо-yaml.
+
+**Корень обоих инцидентов один: поля describe-экспорта ≠ схема import.**
+Канонический strip-список при любом «describe → правка → import» цикле:
+
+```bash
+grep -vE '^(createTime|updateTime|resourceName|location|serviceAccount):'
+# id ОСТАВЛЯТЬ — он гарантирует update-in-place вместо
+# неподтверждённого матчинга по имени.
+```
+
+Фикс живых триггеров: describe каждого → strip по списку (id сохранить) →
+import → гейт «ровно 6, serviceAccount пуст, includedFiles/substitutions на
+месте».
+
 ---
 
 ## ⚠️ Два факта, из-за которых runbook не сводится к одному import
