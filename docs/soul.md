@@ -431,8 +431,17 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - Vnitřní dluh scheduleru (komprimovaný zrání-span 1.5 d v tact_details,
   příbuzný 220.5/307.8 + wait⊂zrání overlap) — samostatný task, nezměněno.
 
+- Kodifikační batch (docs-only, samostatný PR): **Patterns 51–57** zapsány
+  do `docs/STAVAGENT_PATTERNS.md` + po řádku do CLAUDE.md backlogu.
+  Implementace 51–55 ODLOŽENA na jeden „physics validation rules" batch
+  PO Part C (na Part B post-extraction cross-check infra — společný seam);
+  56 při Fáze 3 crew/cost recon; 57 = průběžná provenance disciplína.
+  Zapsat pattern ≠ implementovat pravidlo — kodifikace hned dokud je
+  čerstvá, kód až na svou vrstvu konvejeru.
+
 **Co dál:** Part B/C golden recalibration dle plánu (Žalmanov multi-takt
-etalon → odstranění §5f-SYN syntetiky).
+etalon → odstranění §5f-SYN syntetiky); po Part C physics-rules batch
+(Patterns 51–55).
 
 ## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1b (embeddings infra + OTSKP 2026 ingestion)
 
