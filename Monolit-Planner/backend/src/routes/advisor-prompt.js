@@ -69,6 +69,8 @@ Zohledni: geologii, HPV, přebetonování +0.5m, technologickou přestávku 7 dn
   if (geomParts.length) sections.push('GEOMETRIE:\n' + geomParts.join('\n'));
 
   // ── Computed results (engine already calculated) ──
+  // The advisor mirrors the orchestrator: every engine-resolved value listed
+  // here is authoritative — the LLM adds risks, norms and context on top.
   if (ctx.computed_results && typeof ctx.computed_results === 'object') {
     const cr = ctx.computed_results;
     let computedText = 'JIŽ SPOČÍTÁNO ENGINE (nepřepisuj, doplň kontext):';
@@ -76,7 +78,17 @@ Zohledni: geologii, HPV, přebetonování +0.5m, technologickou přestávku 7 dn
     if (cr.curing_days) computedText += `\n- Zrání: ${cr.curing_days} dní`;
     if (cr.prestress_days) computedText += `\n- Předpětí: ${cr.prestress_days} dní`;
     if (cr.num_tacts) computedText += `\n- Záběry: ${cr.num_tacts}`;
+    if (cr.pour_hours) computedText += `\n- Betonáž záběru: ${cr.pour_hours} h`;
+    if (cr.pumps_required) computedText += `\n- Čerpadla: ${cr.pumps_required}`;
+    if (cr.formwork_system) computedText += `\n- Bednění: ${cr.formwork_system}`;
+    if (cr.pour_mode) computedText += `\n- Režim betonáže: ${cr.pour_mode}`;
     sections.push(computedText);
+    if (Array.isArray(cr.warnings) && cr.warnings.length > 0) {
+      sections.push(
+        'VAROVÁNÍ ENGINE (zohledni v rizicích, necituj doslova):\n' +
+        cr.warnings.slice(0, 6).map((w) => `- ${String(w).slice(0, 220)}`).join('\n')
+      );
+    }
   }
 
   // ── TZ excerpt ──
@@ -121,6 +133,8 @@ PRAVIDLA:
 - Monolitická = celý objem v 1 záběru (12-16h, příplatek 25% od 10h)
 - Chess pattern: min. 24h tvrdnutí mezi sousedy
 - Nepřepisuj computed_results — doplň kontext, rizika, normy
+- Pokud JIŽ SPOČÍTÁNO uvádí Záběry / režim betonáže, nastav recommended_tacts
+  a pour_mode na STEJNÉ hodnoty — tvá přidaná hodnota jsou key_points, risks a normy
 - Pokud tz_excerpt obsahuje konkrétní čísla, cituj je
 
 ODPOVĚZ POUZE VALIDNÍM JSON.`);

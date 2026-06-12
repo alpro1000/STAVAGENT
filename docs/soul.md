@@ -407,6 +407,32 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 **Co dál:** po approve PR Part B → Part C (plný Žalmanov golden, regex
 extrakce technologie, náhrada dočasné fixtury).
 
+**Dodatek (stejný den, po merge PR #1347 — service polish round):**
+- **MCP `calculate_concrete_works` — 3 tiše ztracená pole opravena:** `width_m`,
+  `formwork_length_bm`, `cycle_length_bm` byly v signatuře + docstringu, ale
+  `_build_planner_payload` je zahazoval (regrese SSOT delegace #1304 vs
+  pre-SSOT lokální engine). Překlad na kanonická pole: width→`nk_width_m`
+  (mostovka) / `formwork_area_m2` odhad (V/tl. horizontal, V/š×2 vertical,
+  vzorec identický s pre-SSOT); length_bm→`formwork_area_m2` (bm systémy
+  konzumují area input jako množství v jednotce systému);
+  length+cycle→`num_tacts_override` (římsa, ceil(L/cyklus)). Replay fixture
+  přegenerována lokálním `planElement` (týž SSOT kód); římsa 156 bm / 26 →
+  6 záběrů asserted. MCP compat suite 25→27 testů, 27/27 green.
+- **AI advisor — hlavní seam bug:** frontend posílá obohacená pole UVNITŘ
+  `calculator_context`, backend je destrukturoval z TOP-LEVEL body → sekce
+  MOSTNÍ NK / PŘEDPĚTÍ / JIŽ SPOČÍTÁNO ENGINE nikdy nefiraly z reálného
+  frontendu. Fix: merge `{...calculator_context, ...req.body}` (top-level
+  vyhrává; staří volači beze změny). Advisor = zrcadlo orchestratoru:
+  computed_results rozšířeny (pour_mode, pour_hours_per_tact,
+  pumps_required, formwork system, top-6 warnings vč. validation flags),
+  prompt builder je vypisuje + nové pravidlo «nastav recommended_tacts a
+  pour_mode na STEJNÉ hodnoty»; frontend contradiction guard přepíše AI
+  takty na engine hodnotu + viditelná poznámka (nikdy tichý override).
+  Robustnější JSON extrakce (přímý parse → outermost-brace slice);
+  fallback render už nemrzačí čárky v prozě. Backend Jest 58→60.
+- Security review diffu: 0 nálezů (oba top kandidáty — body merge a LLM
+  JSON parse — trasovány end-to-end, žádný nový sink).
+
 
 
 ## 2026-06-12 — Session: SO-202 KV kalibrace — potvrzené normy jako data (pokračování)
