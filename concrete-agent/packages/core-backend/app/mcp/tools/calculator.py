@@ -15,6 +15,7 @@ refused as `unsupported_element_type` rather than estimated.
 """
 
 import logging
+import math
 from typing import Optional
 
 from app.mcp.tools.monolit_delegate import (
@@ -43,6 +44,17 @@ _MCP_TO_ENGINE_TYPE = {
 # refuse rather than compute a divergent simplified estimate.
 _ENGINE_UNSUPPORTED_TYPES = frozenset({
     "zdivo_obklad", "izolacni_stena", "sachta", "tunel_rampa",
+})
+
+# Engine catalog orientation (mirror of shared ELEMENT_CATALOG) — used ONLY to
+# translate the MCP-level `width_m` hint into the engine's canonical
+# `formwork_area_m2` estimate (horizontal: V/thickness; vertical: V/width × 2,
+# same formula the pre-SSOT local engine used). The engine itself stays the
+# single source of truth for everything downstream of the estimate.
+_HORIZONTAL_ENGINE_TYPES = frozenset({
+    "zaklady_piliru", "zaklady_oper", "rimsa", "mostovkova_deska", "rigel",
+    "prechodova_deska", "zakladova_deska", "stropni_deska", "pruvlak",
+    "schodiste", "podkladni_beton", "podlozkovy_blok",
 })
 
 # nk_subtype (MCP docstring vocabulary) → bridge_deck_subtype (engine enum).
@@ -183,12 +195,23 @@ def _build_planner_payload(
     preferred_manufacturer: Optional[str],
     formwork_system_name: Optional[str],
     rental_czk_override: Optional[float],
+    width_m: Optional[float] = None,
+    formwork_length_bm: Optional[float] = None,
+    cycle_length_bm: Optional[float] = None,
 ) -> dict:
     """Map MCP arguments → canonical engine PlannerInput.
 
     `element_type` is the (already alias-resolved) engine type. None values are
     omitted so the engine applies its own defaults; `has_dilatacni_spary` is
     always sent (the engine requires it) defaulting to monolithic (false).
+
+    MCP-level hints with no 1:1 engine field are translated, not dropped:
+    - width_m → nk_width_m (bridge deck) or a formwork_area_m2 estimate
+      (other elements, only when the caller didn't supply the area);
+    - formwork_length_bm → formwork_area_m2 for bm-unit systems (the engine
+      consumes the area input as quantity in the system's unit);
+    - formwork_length_bm + cycle_length_bm → num_tacts_override for říms
+      (Czech practice 25–30 m záběry).
     """
     payload: dict = {
         "element_type": element_type,
@@ -221,6 +244,32 @@ def _build_planner_payload(
         mapped = _NK_SUBTYPE_TO_ENGINE.get(nk_subtype)
         if mapped:
             payload["bridge_deck_subtype"] = mapped
+
+    # ── width_m hint translation ──────────────────────────────────────────
+    if width_m and width_m > 0:
+        if element_type == "mostovkova_deska":
+            payload["nk_width_m"] = float(width_m)
+        elif "formwork_area_m2" not in payload and volume_m3:
+            if element_type in _HORIZONTAL_ENGINE_TYPES:
+                payload["formwork_area_m2"] = round(
+                    float(volume_m3) / max(0.15, width_m), 2
+                )
+            else:
+                payload["formwork_area_m2"] = round(
+                    float(volume_m3) / max(0.2, width_m) * 2, 2
+                )
+
+    # ── T-bednění (bm) quantity + záběr override ─────────────────────────
+    spec = KNOWN_FORMWORK_SYSTEMS.get(formwork_system_name or "")
+    is_bm = (spec or {}).get("unit") == "bm" or element_type == "rimsa"
+    if formwork_length_bm and formwork_length_bm > 0 and is_bm:
+        # Engine consumes the area input as quantity in the system's unit;
+        # for bm systems that quantity IS the linear length.
+        payload["formwork_area_m2"] = float(formwork_length_bm)
+        if cycle_length_bm and cycle_length_bm > 0:
+            payload["num_tacts_override"] = max(
+                1, math.ceil(formwork_length_bm / cycle_length_bm)
+            )
     return payload
 
 
@@ -531,6 +580,9 @@ async def calculate_concrete_works(
             preferred_manufacturer=preferred_manufacturer,
             formwork_system_name=formwork_system_name,
             rental_czk_override=rental_czk_override,
+            width_m=width_m,
+            formwork_length_bm=formwork_length_bm,
+            cycle_length_bm=cycle_length_bm,
         )
 
         try:

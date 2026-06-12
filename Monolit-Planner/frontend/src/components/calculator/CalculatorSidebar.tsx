@@ -688,8 +688,10 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               {advisor.approach && !advisor.approach.parsed && advisor.approach.text && (
                 <div style={{ marginBottom: 8, color: 'var(--r0-ai-muted)', fontSize: 12, lineHeight: 1.5 }}>
                   {advisor.approach.text
+                    // break only on JSON field separators ("…", "…) — plain
+                    // prose commas inside reasoning sentences stay intact
+                    .replace(/",\s*/g, '"\n')
                     .replace(/[{}"]/g, '')
-                    .replace(/,\s*/g, '\n')
                     .split('\n')
                     .filter((line: string) => line.trim())
                     .slice(0, 10)

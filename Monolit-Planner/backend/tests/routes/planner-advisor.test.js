@@ -97,6 +97,44 @@ describe('buildApproachPrompt', () => {
     expect(prompt).toContain('JSON');
   });
 
+  test('computed_results full mirror — pour facts + engine warnings + mirror rule', () => {
+    const prompt = buildApproachPrompt({
+      elementLabel: 'Mostovková deska',
+      element_type: 'mostovkova_deska',
+      volume_m3: 693.35,
+      concrete_class: 'C35/45',
+      computed_results: {
+        total_days: 77.5,
+        num_tacts: 1,
+        pour_mode: 'monolithic',
+        pour_hours: 16.3,
+        pumps_required: 2,
+        formwork_system: 'Top 50',
+        warnings: ['⚠️ Vstup se odchyluje od dokumentace: TZ předepisuje betonáž v 1 taktu'],
+      },
+    });
+    expect(prompt).toContain('Betonáž záběru: 16.3 h');
+    expect(prompt).toContain('Čerpadla: 2');
+    expect(prompt).toContain('Bednění: Top 50');
+    expect(prompt).toContain('Režim betonáže: monolithic');
+    expect(prompt).toContain('VAROVÁNÍ ENGINE');
+    expect(prompt).toContain('odchyluje od dokumentace');
+    // mirror rule: AI must echo engine tacts/mode, not recompute them
+    expect(prompt).toContain('nastav recommended_tacts');
+  });
+
+  test('computed_results without warnings — no VAROVÁNÍ ENGINE section', () => {
+    const prompt = buildApproachPrompt({
+      elementLabel: 'Stěna',
+      element_type: 'stena',
+      volume_m3: 30,
+      concrete_class: 'C25/30',
+      computed_results: { total_days: 7, num_tacts: 1 },
+    });
+    expect(prompt).toContain('Celkem dní: 7');
+    expect(prompt).not.toContain('VAROVÁNÍ ENGINE');
+  });
+
   test('tz_excerpt is truncated at 2000 chars', () => {
     const longText = 'x'.repeat(3000);
     const prompt = buildApproachPrompt({

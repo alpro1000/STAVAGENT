@@ -57,6 +57,11 @@ async function fetchWithRetry(url, options, retries = 1) {
  * Returns: { approach, formwork_suggestion, norms, warnings }
  */
 router.post('/', async (req, res) => {
+  // The frontend (v4.18+) nests the enriched fields (exposure_class,
+  // curing_class, span_m, computed_results, …) inside `calculator_context`;
+  // older/external callers send them top-level. Merge both shapes —
+  // explicit top-level keys win.
+  const body = { ...(req.body?.calculator_context || {}), ...req.body };
   const {
     element_type,
     element_name,
@@ -82,7 +87,7 @@ router.post('/', async (req, res) => {
     extracted_params,
     user_question,
     computed_results,
-  } = req.body;
+  } = body;
 
   if (!element_type && !element_name) {
     return res.status(400).json({ error: 'element_type nebo element_name je povinný' });
@@ -142,6 +147,11 @@ router.post('/', async (req, res) => {
           curing_class,
           is_prestressed,
           height_m,
+          span_m,
+          num_spans,
+          construction_technology,
+          // Engine-computed plan — the advisor supplements, never overrides
+          computed_results,
         },
       }),
       signal: controller.signal,

@@ -287,6 +287,34 @@ async def test_calculator_formwork_override_rimsa_t(mcp_server, calculate_replay
     assert system.get("unit") == "bm", (
         f"říms T-bednění must report unit='bm', got {system.get('unit')!r}"
     )
+    # formwork_length_bm + cycle_length_bm are forwarded, not dropped:
+    # 156 bm / 26 bm-per-záběr → 6 tacts (Czech practice 25–30 m záběry).
+    assert data["pour_decision"]["num_tacts"] == 6, (
+        f"cycle override not honored: expected 6 tacts, "
+        f"got {data['pour_decision']['num_tacts']!r}"
+    )
+
+
+@pytest.mark.asyncio
+async def test_calculator_width_hint_forwarded(mcp_server, calculate_replay):
+    """width_m is translated into the engine's formwork_area_m2 estimate
+    (vertical: volume / width × 2) instead of being silently dropped."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "stena",
+            "volume_m3": 30,
+            "concrete_class": "C25/30",
+            "height_m": 2.8,
+            "width_m": 0.3,
+        },
+    )
+    data = result.structured_content
+    assert data.get("source") == "monolit_planner_api"
+    # 30 / 0.3 × 2 = 200 m² — the replay fixture is keyed on the translated
+    # payload, so a hit here proves the hint reached the engine.
+    assert data["element"]["type"] == "stena"
+    assert data["schedule"]["total_days"] > 0
 
 
 @pytest.mark.asyncio

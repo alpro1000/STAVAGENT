@@ -884,13 +884,22 @@ export default function useCalculator() {
         construction_technology: form.construction_technology || undefined,
         bridge_deck_subtype: form.bridge_deck_subtype || undefined,
       };
-      // Include computed results if available
+      // Include computed results if available — the advisor mirrors the
+      // orchestrator: it sees the full engine-resolved plan and supplements
+      // it (risks, norms, key points), never recomputes it.
       if (result) {
         calculatorContext.computed_results = {
-          total_days: result.schedule?.total_days,
-          curing_days: result.formwork?.curing_days,
-          prestress_days: result.prestress?.days,
-          num_tacts: result.pour_decision?.num_tacts,
+          total_days: result.schedule?.total_days ?? undefined,
+          curing_days: result.formwork?.curing_days ?? undefined,
+          prestress_days: result.prestress?.days ?? undefined,
+          num_tacts: result.pour_decision?.num_tacts ?? undefined,
+          pour_mode: result.pour_decision?.pour_mode ?? undefined,
+          pour_hours: result.pour_decision?.pour_hours_per_tact ?? undefined,
+          pumps_required: result.pour_decision?.pumps_required ?? undefined,
+          formwork_system: result.formwork?.system?.name ?? undefined,
+          warnings: Array.isArray(result.warnings) && result.warnings.length > 0
+            ? result.warnings.slice(0, 6)
+            : undefined,
         };
       }
       const res = await fetch(`${API_URL}/api/planner-advisor`, {
@@ -922,20 +931,33 @@ export default function useCalculator() {
             data.approach.text = 'AI asistent vrátil neplatnou odpověď. Zkuste znovu za chvíli.';
             data.approach.parsed = null;
           } else {
-            try {
-              // BUG 2: Improved JSON extraction — try greedy last-match first
-              const jsonMatch = text.match(/\{[\s\S]*\}/);
-              if (jsonMatch) {
-                const parsed = JSON.parse(jsonMatch[0]);
-                // Validate expected schema
-                if (parsed && typeof parsed === 'object' && (
-                  parsed.pour_mode || parsed.klicove_body || parsed.reasoning
-                )) {
-                  data.approach.parsed = parsed;
-                }
+            // JSON extraction: direct parse first (clean response), then the
+            // outermost {...} slice (response wrapped in prose/markdown).
+            const tryParse = (s: string): Record<string, unknown> | null => {
+              try {
+                const p = JSON.parse(s);
+                return p && typeof p === 'object' && !Array.isArray(p) ? p : null;
+              } catch { return null; }
+            };
+            let parsed = tryParse(text.trim());
+            if (!parsed) {
+              const first = text.indexOf('{');
+              const last = text.lastIndexOf('}');
+              if (first !== -1 && last > first) parsed = tryParse(text.slice(first, last + 1));
+            }
+            if (parsed && (parsed.pour_mode || parsed.klicove_body || parsed.reasoning)) {
+              // Advisor mirrors the orchestrator: engine-resolved values are
+              // authoritative. A contradicting AI recommendation becomes a
+              // visible note, never a silent override.
+              const engineTacts = result?.pour_decision?.num_tacts;
+              const aiTacts = Number(parsed.recommended_tacts);
+              if (engineTacts && Number.isFinite(aiTacts) && aiTacts > 0 && aiTacts !== engineTacts) {
+                parsed.recommended_tacts = engineTacts;
+                const note = `AI navrhovalo ${aiTacts} záběrů — engine spočítal ${engineTacts}, platí engine.`;
+                parsed.warnings = [note, ...(Array.isArray(parsed.warnings) ? parsed.warnings as string[] : [])];
               }
-            } catch {
-              // JSON parse failed — show text as-is (markdown), not raw JSON attempt
+              data.approach.parsed = parsed;
+            } else if (!parsed) {
               console.warn('AI Advisor: could not parse JSON from response, using text fallback');
             }
           }
