@@ -351,6 +351,64 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
+
+**Rozhodnuto (interview Alexander před kódem):**
+- Q1 (nosič TZ-faktu): kanonické pole technologie v extraction NEEXISTUJE
+  (ověřeno: TS tz-text-extractor ani W3 extract_tz_fields technologii
+  neextrahují) → varianta «bez extraktoru»: additive `PlannerInput.tz_facts`
+  (typ `TzFacts` — technology / pour_stages_count / quote / anchor);
+  regex-extrakce technologie = Part C. Extraction kontrakt NEZMĚNĚN.
+- Q2 (povrch): flag = ⚠️ řádek do existujícího `plan.warnings[]` (renderuje
+  stávající banner bez frontend práce) + strukturní sibling
+  `plan.validation_flags?: ValidationFlag[]` zrcadlící pattern
+  `resource_violations`. Frontend render = Fáze 4, NE scope.
+- Q3 (registr): minimální seznam, ne framework —
+  `shared/src/calculators/validation-rules.ts`: `ValidationFlag` {rule_id,
+  severity warning|hint, message (1 řádek CZ s emoji prefixem), tz_value,
+  tz_quote, tz_anchor, input_value} + `ValidationRule` {rule_id, run(ctx)}
+  + `VALIDATION_RULES` list + `runValidationRules(ctx)`. Batch Patterns
+  51–55 po Part C jen pushne do seznamu.
+- Pravidlo `tz_construction_consistency` (generic, ne jen mosty): dva
+  fasety — technology mismatch + pour-stage-count mismatch (proti
+  engine-resolved `pour_decision.num_tacts`). Rozpor = VIDITELNÝ FLAG,
+  nikdy gate — doménová opora přímo v Žalmanov TZ §4.1.6: «Postup výstavby
+  může budoucí zhotovitel upravit dle svých možností a potřeb»; flag
+  jednou větou proговаривает důsledky (přepočet statiky stadií, u
+  předpjatých spojky kabelů, nový TePř). Shoda = ticho; neznámá
+  dokumentace = ticho (no guess). Wired v OBOU assembly paths
+  (main §8c + pile mirror).
+- **TZ facts digesty (addendum Alexandra):** verbatim formulace technologie
+  s kotvami (sekce + strana) extrahovány z obou TZ PDF a uloženy vedle PDF
+  jako vždy-čitelné md: `test-data/SO_202_D6_KV_OV/D-01-02-01_01_tz_facts.md`
+  (KV: §6.11.3 str. 32 «v jedné etapě na pevné skruži»; §7.2 str. 34
+  «betonáž NK na pevné skruži v jednom taktu») +
+  `test-data/SO_202_D6_OV_Z/202_01_TechnickaZprava_tz_facts.md` (Žalmanov:
+  §4.1.6 str. 11 «na pevné skruži ve třech etapách», směr O1→O4; §5.1
+  str. 15). Zdroj citací pro fixtury Part B + cílové fráze pro regex Part C.
+- Testy (hermetic, bez AI/network): 12 nových v `validation-rules.test.ts`
+  — unit registr (ticho bez faktů / bez fasetů / engine-auto vstup; mismatch
+  taktů s quote+anchor+oběma hodnotami; mismatch technologie; čistá shoda)
+  + KV engine-integrated (1 takt → čisto; 6 taktů → flag §7.2 v obou
+  površích, plán dál vzniká = flag není gate) + Žalmanov DOČASNÁ fixtura
+  (1 takt → flag §4.1.6; 3 etapy → čisto; Part C nahradí plným goldenem)
+  + negativ (bez tz_facts → pravidlo mlčí). **1294 shared tests** (1282
+  + 12), tsc shared + frontend clean.
+
+**Odmítnuto:**
+- Rozšíření tz-text-extractoru o regex technologie v Part B — fixtury
+  kryjí verified facts, extraktor patří Part C.
+- Blokace/gate při rozporu — proti doméně (zhotovitel smí stavět jinak).
+- Framework pro pravidla — seznam + jeden interface stačí.
+
+**Otevřené otázky:**
+- STOP gate Part B: schválení → PR. Merge = pouze Alexander.
+
+**Co dál:** po approve PR Part B → Part C (plný Žalmanov golden, regex
+extrakce technologie, náhrada dočasné fixtury).
+
+
+
 ## 2026-06-12 — Session: SO-202 KV kalibrace — potvrzené normy jako data (pokračování)
 
 **Rozhodnuto:**

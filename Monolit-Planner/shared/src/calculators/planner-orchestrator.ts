@@ -30,6 +30,8 @@ import type { ConcreteClass, CementType, ElementType, Season, ConstructionType, 
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { ResourceCeiling, CeilingViolation, EngineeringDemand } from './resource-ceiling.js';
 import { applyResourceCeilingDefaults, checkCeilingFeasibility } from './resource-ceiling.js';
+import type { TzFacts, ValidationFlag } from './validation-rules.js';
+import { runValidationRules } from './validation-rules.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -279,6 +281,10 @@ export interface PlannerInput {
   nk_width_m?: number;
   /** Construction technology override. Auto-recommended if not given. */
   construction_technology?: 'fixed_scaffolding' | 'mss' | 'cantilever';
+  /** Facts known from the project documents (TZ) with quote anchors —
+   *  consumed ONLY by validation rules (input-vs-documentation cross-check).
+   *  Never affects the schedule or any engine computation. */
+  tz_facts?: TzFacts;
   /** MSS tact duration override (days per span). Auto from deck subtype if not given. */
   mss_tact_days?: number;
   /** MSS mobilization cost override (Kč). */
@@ -540,6 +546,10 @@ export interface PlannerOutput {
    * `warnings[]` (textuální paralelní fronta pro UI banner).
    */
   resource_violations: CeilingViolation[];
+  /** Input-vs-documentation cross-check flags (validation-rules registry).
+   *  Structured sibling of the ⚠️ lines pushed into warnings[] — same
+   *  pattern as resource_violations. Visible flag, never a gate. */
+  validation_flags?: ValidationFlag[];
 
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
@@ -2440,6 +2450,18 @@ export function planElement(input: PlannerInput): PlannerOutput {
     }
   }
 
+  // ─── 8c. Validation rules — input vs documentation (Part B) ───────────
+  // Visible flag, never a gate: the zhotovitel may deviate from the PD,
+  // but the deviation must be a conscious decision (see validation-rules.ts).
+  const validationFlags = runValidationRules({
+    tz_facts: input.tz_facts,
+    construction_technology: input.construction_technology,
+    num_tacts: pourDecision.num_tacts,
+  });
+  for (const f of validationFlags) {
+    warnings.push(f.message);
+  }
+
   // ─── 9. Assemble Output ───────────────────────────────────────────────
 
   const plannerOutput: PlannerOutput = {
@@ -2546,6 +2568,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings,
     decision_log: [...log, ...pourDecision.decision_log],
     // Resource Ceiling Phase 1 plumbing (Foundation B).
+    validation_flags: validationFlags.length > 0 ? validationFlags : undefined,
     // Engine integration (populating resource_violations from
     // checkCeilingFeasibility against pour-decision / pour-task / scheduler
     // demand) ships in Foundation C.
@@ -2898,6 +2921,18 @@ function runPilePath(
   // formwork. Use a flat split that the result card knows how to render.
   const totalLaborCZK = pile.costs.total_labor_czk + rebarResult.cost_labor;
 
+  // Validation rules — input vs documentation (Part B); pile-path mirror
+  // of orchestrator §8c. Generic: fires only when tz_facts carry a
+  // documented value that the input contradicts.
+  const pileValidationFlags = runValidationRules({
+    tz_facts: input.tz_facts,
+    construction_technology: input.construction_technology,
+    num_tacts: pourDecision.num_tacts,
+  });
+  for (const f of pileValidationFlags) {
+    warnings.push(f.message);
+  }
+
   // ── 8. Final return ───────────────────────────────────────────────────
   return {
     element: {
@@ -2974,6 +3009,7 @@ function runPilePath(
     // commonly hits num_cranes (armokoš transport) — Foundation C check.
     resource_ceiling: applyResourceCeilingDefaults('pilota', input.resource_ceiling),
     resource_violations: [],
+    validation_flags: pileValidationFlags.length > 0 ? pileValidationFlags : undefined,
   };
 }
 

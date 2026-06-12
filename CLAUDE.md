@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.36.0
+**Version:** 4.37.0
 **Last Updated:** 2026-06-12
 **Repository:** STAVAGENT (Monorepo)
 
@@ -44,6 +44,8 @@ steering vyhrává a skill se znovu distilluje. Viz
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing nine domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.37.0 (2026-06-12 — Part B: validation rule «calculator input vs TZ technology»):** New cross-check registry `Monolit-Planner/shared/src/calculators/validation-rules.ts` — minimal list + one interface (NOT a framework): `ValidationFlag` {rule_id, severity warning|hint, message, tz_value, tz_quote, tz_anchor, input_value}, `VALIDATION_RULES` list, `runValidationRules(ctx)`; the post-Part-C physics batch (Patterns 51–55) registers into the same list. First rule `tz_construction_consistency` (generic, any object type): flags a calculator input contradicting the documented construction technology — technology facet (pevná skruž / MSS / letmá) + pour-stage facet (vs engine-resolved `pour_decision.num_tacts`). Contradiction = VISIBLE FLAG, never a gate (Žalmanov TZ §4.1.6 itself: «Postup výstavby může budoucí zhotovitel upravit…»); message spells out the consequences (statics of construction stages, spojky kabelů, new TePř) in one line. Match = clean; unknown documentation = silent (no guess). Carried by additive `PlannerInput.tz_facts` (extraction contract untouched — technology regex is Part C); surfaced as ⚠️ line in existing `warnings[]` + structured sibling `PlannerOutput.validation_flags[]` (mirror of resource_violations); wired in BOTH assembly paths (main §8c + pile mirror). Verbatim TZ quotes with section+page anchors extracted to always-readable digests `test-data/SO_202_D6_KV_OV/D-01-02-01_01_tz_facts.md` (KV §7.2 str. 34 «v jednom taktu») + `test-data/SO_202_D6_OV_Z/202_01_TechnickaZprava_tz_facts.md` (Žalmanov §4.1.6 str. 11 «ve třech etapách») — fixture source for Part B, regex targets for Part C. 12 hermetic tests (KV both sides, TEMPORARY Žalmanov fixture both sides, negative silence, unit registry) → **1294 shared tests**, tsc shared + frontend clean.
 >
 > **Changelog — v4.36.0 (2026-06-12 — SO-202 KV calibration: confirmed labor norms as data):** Four interview-confirmed productivity norms applied as **DATA with provenance** `[normy potvrzené Alexander, 2026-06]` in new `Monolit-Planner/shared/src/calculators/labor-norms.ts` (per task convention — records with `source` fields, not formula constants): armování **18 Nh/t** · předpětí **35 Nh/t** of Y1860 strands · skruž+bednění **3.1 Nh/m² of CONTACT area** (rozvinutá, not půdorys) · betonáž **mega-pour crew model** [Caltrans Bridge Deck Construction Manual (Oct 2015) Table 1.1 + bridge method statement]: 12 persons on ONE finishing front (Caltrans T1.1 = 11: foreman + 2 rake + machine operator + 2 finishers + broom/cure + 2 vibrators + bridge carpenter watching falsework + truck tender, + 1 záloha per Alexander); 2 pumps FEED the front (trámy + deska) and do NOT multiply the crew; pump operators are external (not in Nh); rate 40–45 m³/h FINISHING-governed → hours = V / 42.5 mid; crew rotation > 12 h stays armed — second 12-person shift, constant headcount, Nh not doubled; gated on engine `pumps_required ≥ 2`. `buildLaborProjection` consumes the norms with canon fallback when the basis input is missing; new `LaborOperationProjection.norm_source` carries per-operation provenance. Two additive engine passthroughs (echo only, schedule untouched): `PlannerInput.formwork_contact_area_m2` → `formwork.contact_area_m2` and `prestress_strand_mass_kg` → `prestress.strand_mass_kg`. SO-202 §5f-Nh re-snapshotted live: armování 1 872.0 · předpětí 672.4 (19.21 t [VV 422373 ÷ 2]) · betonáž 156.6 (0.23 Nh/m³, pour 16.3 h fits the 1.6 d betonáž phase) · skruž+bednění 4 735.5 (1 527.6 m² [CN SAFE]) · ošetřování 36.0 → **CELKEM 7 472.5 Nh / 9 340.6 h presence / 10.78 Nh/m³** (8–12 corridor golden assertion). **Schedule invariant verified: 77.5 d / curing 9 / prestress 13 unchanged** (hermetic assertion plan-with-norms ≡ plan-without). +11 tests → **1282 shared tests**, tsc shared + frontend clean.
 >
@@ -213,8 +215,8 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
-Node.js/Express + React. **132 endpoints**, **1282 shared tests**, **~43K LOC**.
-Structure: `shared/` (1282 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **132 endpoints**, **1294 shared tests**, **~43K LOC**.
+Structure: `shared/` (1294 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
@@ -301,7 +303,7 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 1282 | ~43K |
+| Monolit-Planner | 132 | 1294 | ~43K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 200 | ~16K |
 | **TOTAL** | **~391** | **1425+** | **~152K** |
