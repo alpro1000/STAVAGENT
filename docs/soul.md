@@ -453,6 +453,54 @@ pgvector embeddings retrieve + param prefilter + pluggable ranking seam + honest
 confidence). Report: `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`.
 
 
+## 2026-06-11 — Session: GCP cost-аудит + пачка А (триггеры/Cloud Build) + пачка Б №3 (Redis retirement) — EXECUTED
+
+**Rozhodnuto:**
+- **Cost-аудит** (`docs/audits/cost_audit/2026-06-10_gcp_cost_audit.md`, PR #1331):
+  6.3k Kč/мес разложено до причин; адресуемо ~4.2k. H1 ✅ (Redis
+  `stavagent-mcp-rate-limit` BASIC 1GB = только DCR-limiter; VPC-коннектор
+  e2-micro min=2 — только ради Redis), H2 ✅ (E2_HIGHCPU_8 вне free tier +
+  live-триггеры без includedFiles: ~2 400 билдов/мес, ~80 % платные
+  guard-cancel'ы), H3 ✅ concrete min=1/6Gi (MinerU чист). Цель ~1.5–2.2k.
+- **Пачка А исполнена:** триггеры пересозданы с includedFiles (docs-пуш = 0
+  билдов; runbook #1332 + hotfixes #1335/#1338/#1339), все 6 cloudbuild-yaml
+  на default-пул (#1333, 2 500 free мин/мес). **Три инцидента за день, все
+  пойманы гейтами, ни один не повторился** — verified can/cannot-таблица в
+  `triggers_reimport_runbook.md`: `location` режется на import; update-через-
+  import мёртв; `beta export` = describe-мусор; legacy-SA создаётся, но убивает
+  каждый билд; без SA — INVALID_ARGUMENT на create (grandfather у старых);
+  канон = delete → import репо-yaml с user-managed **compute-SA**.
+- **Пачка Б №3 исполнена до конца (шаги 1–5):** DCR rate-limiter Redis → Postgres
+  atomic UPSERT (миграция 013, PR #1337; fail-closed сохранён, rollback-гигиена
+  shared-коннекта, 21+4 goldens verbatim в CI: 487 passed); monolit-кэш →
+  in-memory fallback. Smoke #1 и #2 зелёные (DCR-проба `400×10 → 429` на проде
+  ДО и ПОСЛЕ снятия env; боевые тулзы через claude.ai-коннектор; логи чистые).
+  Шаг 3: ревизия 00405-ls8 без REDIS_URL/коннектора; шаг 5: **Memorystore
+  `stavagent-mcp-rate-limit` + `stavagent-vpc-connector` СНЕСЕНЫ** →
+  **−1 349 Kč/мес**, класс багов «деплой снёс REDIS_URL» закрыт навсегда.
+  Гигиена: `_REDIS_URL`/`_VPC_CONNECTOR`-блоки выпилены из cloudbuild-concrete
+  (этим же PR).
+
+**Odmítnuto:**
+- Upstash как замена Memorystore — новый вендор в auth-пути против ethos.
+- Перебор update-пути import'а после двух INVALID_ARGUMENT — переключились на
+  проверенный CREATE-путь вместо третьего эксперимента.
+- Ужимать 6Gi/убирать keep-alive — не cost-драйверы (аудит §6).
+
+**Otevřené otázky:**
+- 🔐 **Ротация пароля `stavagent_portal`** — засветился в чат-логе сессии
+  11.06 (`gcloud sql users set-password` + 4 DSN-секрета + редеплой потребителей).
+- Пачка Б №4: concrete `min-instances` 1→0 (~1.0–1.3k Kč/мес) — **отложено
+  решением Александра 11.06 («оставим пока как есть»)**; если вернёмся —
+  gated-задача с замером cold-start.
+- Биллинг-верификация через ~3 суток: строки Memorystore/Compute Engine → 0,
+  Cloud Build ↓; SKU-разрез (аудит §7 п.6) — опционально.
+- Мёртвый Redis-код (`app/core/redis_client.py`, `session.py`, Celery-таски) —
+  hygiene-задача без приоритета; runbook §6 NB: redis-deps в requirements.txt
+  пока остаются (импорты живы в неиспользуемых модулях).
+
+**Co dál:** мониторинг первого триггерного concrete-билда после этого PR
+(WARN-строк больше нет по построению) → №4 по go → биллинг-чек.
 ## 2026-06-11 — Session: Golden recalibration SO-202 KV — Part A (PDPS 1 takt + provenance)
 
 **Rozhodnuto:**
