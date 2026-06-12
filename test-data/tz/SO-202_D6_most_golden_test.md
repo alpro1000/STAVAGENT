@@ -307,6 +307,13 @@ tact_volume_m3            = 693.35
 technology                = fixed_scaffolding ✓
 formwork_system           = Top 50 (formwork / nosnikove, DOKA)
 props_system              = Staxo 40 (h=7.795 < 8)
+                            [engine: Staxo 40 — nekalibrováno; kánon: třída
+                            těžké skruže + statický návrh (EN 12812); volba
+                            systému (Staxo 100 / Doka SL-1 / PERI VARIOKIT /
+                            dodavatelská POLY…) = parametr výběru dle zatížení
+                            nohy, výšky, průjezdného profilu a systému
+                            subdodavatele — scope Fáze 2; průjezdný profil ⇒
+                            věže + překlenutí]
 pumps_required            = 4 + 1 záložní (MEGA zálivka ≥ 500 m³)
 pour_hours (4 pumps)      = ~6.8 h / 1 pump scénář ~18–23 h @30–40 m³/h
 curing_days               = 9 (třída 4 @15°C, TKP 18 §7.8.3) — sezónní skruž

@@ -8,6 +8,16 @@
  *
  * Schedule is NEVER derived from these norms — they calibrate person-hours
  * (Nh) only; durations stay with the engine scheduler.
+ *
+ * FRONT-CAPACITY STAFFING (domain principle — Pattern 50):
+ * A crew is sized by the CAPACITY OF ITS WORK FRONT, never by the volume
+ * or the deadline. The pour/work rate is set by the front's bottleneck
+ * (finishing operations / crane cycle / edge length / access), not by how
+ * many people you add. When time is short, the levers are duration, crew
+ * rotation (second shift, constant headcount) or a SECOND front — never
+ * inflating the crew on one front. Nh = crew(front) × duration.
+ * Source: Caltrans Bridge Deck Construction Manual Table 1.1 + potvrzeno
+ * Alexander, 2026-06.
  */
 
 export interface LaborNormRecord<T> {
