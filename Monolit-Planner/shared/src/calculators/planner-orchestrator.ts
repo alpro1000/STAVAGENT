@@ -67,6 +67,10 @@ export interface PlannerInput {
   volume_m3: number;
   /** Formwork area per tact (m²). If not given, estimated from volume, height, and element geometry */
   formwork_area_m2?: number;
+  /** KONTAKTNÍ (rozvinutá) plocha bednění (m²) — differs from formwork_area_m2
+   *  (půdorys) for skruž decks (SO-202: 1 527.6 vs 1 209.78). Labor-projection
+   *  only (skruž+bednění Nh/m² norm); does NOT affect the schedule. */
+  formwork_contact_area_m2?: number;
   /** Height from ground/floor to underside of element (m). Used for props calculation.
    *  For mostovkova_deska: this is the prop height (terén → spodek desky), typ. 4–20 m.
    *  For the deck cross-section thickness, use deck_thickness_m (separate field). */
@@ -258,6 +262,9 @@ export interface PlannerInput {
   prestress_cables_count?: number;
   /** Tensioning method: one-sided (~6/day) or both-sides (~10/day). Default both. */
   prestress_tensioning?: 'one_sided' | 'both_sides';
+  /** Mass of prestressing strands (kg), e.g. from VV. Labor-projection only
+   *  (předpětí Nh/t norm); does NOT affect the schedule. */
+  prestress_strand_mass_kg?: number;
 
   // --- Bridge deck subtype ---
   /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
@@ -392,6 +399,8 @@ export interface PlannerOutput {
     strategies: ReturnType<typeof calculateStrategiesDetailed>;
     /** Shape correction applied (1.0 if none) */
     shape_correction: number;
+    /** Echo of input contact area (m²) — labor-projection norm basis only */
+    contact_area_m2?: number;
   };
 
   // --- Obrátkovost (repetitive elements) ---
@@ -508,6 +517,8 @@ export interface PlannerOutput {
     days: number;
     crew_size: number;
     skruz_total_days: number;  // curing + prestress
+    /** Echo of input strand mass (kg) — labor-projection norm basis only */
+    strand_mass_kg?: number;
   };
 
   // --- Resource ceiling (Phase 1 plumbing) ----------------------------------
@@ -2448,6 +2459,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       three_phase: threePhase,
       strategies: strategiesWithRebar,
       shape_correction: shapeCorrection,
+      contact_area_m2: input.formwork_contact_area_m2,
     },
     obratkovost: obratkovostResult,
     rebar: rebarResult,
@@ -2478,6 +2490,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
         days: prestressDays,
         crew_size: 5,
         skruz_total_days: skruzTotalDays,
+        strand_mass_kg: input.prestress_strand_mass_kg,
       },
     } : {}),
     props: propsResult,

@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.35.1
-**Last Updated:** 2026-06-11
+**Version:** 4.36.0
+**Last Updated:** 2026-06-12
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -44,6 +44,8 @@ steering vyhrává a skill se znovu distilluje. Viz
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing nine domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.36.0 (2026-06-12 — SO-202 KV calibration: confirmed labor norms as data):** Four interview-confirmed productivity norms applied as **DATA with provenance** `[normy potvrzené Alexander, 2026-06]` in new `Monolit-Planner/shared/src/calculators/labor-norms.ts` (per task convention — records with `source` fields, not formula constants): armování **18 Nh/t** · předpětí **35 Nh/t** of Y1860 strands · skruž+bednění **3.1 Nh/m² of CONTACT area** (rozvinutá, not půdorys) · betonáž **mega-pour crew model** (12-person čета = 4 ukládka + 3 vibrace + 2 finiš + 3 čerpadlo/koordinace per pump line × 2 lines = 24 on site; tandem effective 30–40 m³/h → hours = V / 35 mid; crew rotation > 12 h stays armed — constant headcount, Nh not doubled; gated on engine `pumps_required ≥ 2`). `buildLaborProjection` consumes the norms with canon fallback when the basis input is missing; new `LaborOperationProjection.norm_source` carries per-operation provenance. Two additive engine passthroughs (echo only, schedule untouched): `PlannerInput.formwork_contact_area_m2` → `formwork.contact_area_m2` and `prestress_strand_mass_kg` → `prestress.strand_mass_kg`. SO-202 §5f-Nh re-snapshotted live: armování 1 872.0 · předpětí 672.4 (19.21 t [VV 422373 ÷ 2]) · betonáž 380.4 (0.55 Nh/m³) · skruž+bednění 4 735.5 (1 527.6 m² [CN SAFE]) · ošetřování 36.0 → **CELKEM 7 696.3 Nh / 9 620.4 h presence / 11.10 Nh/m³** (8–12 corridor golden assertion). **Schedule invariant verified: 77.5 d / curing 9 / prestress 13 unchanged** (hermetic assertion plan-with-norms ≡ plan-without). +10 tests → **1281 shared tests**, tsc shared + frontend clean.
 >
 > **Changelog — v4.35.1 (2026-06-11 — ošetřování betonu days = max(span, curing_days)):** STOP gate A finding from the SO-202 KV golden recalibration (PR #1336 §5f-Nh ⚠️) resolved: `labor-projection.ts` now bases the ošetřování betonu line on **max(schedule zrání span, curing_days)** — the scheduler compresses the zrání span in tact_details (PDPS 1 takt: 1.5 d) while `curing_days` = 9 (třída 4 @15 °C); the ošetřovatel is on site for the full curing period, and a multi-tact calendar span > curing_days is preserved by max(). SO-202 KV: 6 → **36 Nh**; §5f-Nh CELKEM 3 576.6 → **3 606.6 Nh** (4 508.3 h presence, 5.20 Nh/m³) — golden MD table re-snapshotted from a live engine run. New golden assertion (§5f-Nh, regression guard ≥ 36 Nh) + hermetic labor-projection test. **1271 shared tests** (was 1269), tsc clean. Scheduler-internal compressed-span debt (1.5 d, related to 220.5/307.8 + wait⊂zrání) stays a separate task.
 >
@@ -211,8 +213,8 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
-Node.js/Express + React. **132 endpoints**, **1271 shared tests**, **~43K LOC**.
-Structure: `shared/` (1271 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **132 endpoints**, **1281 shared tests**, **~43K LOC**.
+Structure: `shared/` (1281 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
@@ -299,7 +301,7 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 1271 | ~43K |
+| Monolit-Planner | 132 | 1281 | ~43K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 200 | ~16K |
 | **TOTAL** | **~391** | **1425+** | **~152K** |

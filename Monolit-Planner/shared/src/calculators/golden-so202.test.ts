@@ -118,6 +118,11 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       // VV 422365: 208.005 t B500B oba mosty ÷ 2 = 104.0 t per bridge
       // (= 150 kg/m³ — VV beats the engine's 100 kg/m³ prestressed-NK heuristic)
       rebar_mass_kg: 104000,
+      // VV 422373: 38.420 t lan Y1860 oba mosty ÷ 2 = 19.21 t per bridge
+      prestress_strand_mass_kg: 19210,
+      // CN SAFE 26-027C: kontaktní plocha bednění NK 1 527.6 m²/most
+      // (rozvinutá 13.7 × 111.5 vč. přesahů — ≠ půdorysná 1 209.775 m²)
+      formwork_contact_area_m2: 1527.6,
     };
 
     it('classification: mostovkova_deska needs_supports', () => {
@@ -200,6 +205,24 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
         1 * CURING_SHIFT_H * K_UTIL * plan.formwork.curing_days, 1);
       // Regression guard against the old underestimated line (6.0 Nh)
       expect(osetrovani.norm_hours).toBeGreaterThanOrEqual(36);
+    });
+
+    it('§5f-Nh: CELKEM in the 8–12 Nh/m³ corridor [normy potvrzené Alexander + CN SAFE implied]', () => {
+      const plan = planElement(input);
+      const labor = buildLaborProjection(plan);
+      const nhPerM3 = labor.total_norm_hours / 693.35;
+      expect(nhPerM3).toBeGreaterThanOrEqual(8);
+      expect(nhPerM3).toBeLessThanOrEqual(12);
+      // Component sanity (±15 % philosophy not needed — norms are exact data):
+      // skruž + bednění = 3.1 Nh/m² × 1 527.6 m² kontakt ≈ 4 735.6 Nh
+      const fwNh = labor.operations
+        .filter(op => ['bedneni_montaz', 'bedneni_demontaz', 'podpery'].includes(op.key))
+        .reduce((s, op) => s + op.norm_hours, 0);
+      expect(fwNh).toBeCloseTo(4735.6, 0);
+      // betonáž v koridoru 0.5–0.6 Nh/m³ (24 os. × V/35 m³/h × 0.8)
+      const beton = labor.operations.find(op => op.key === 'beton')!;
+      expect(beton.norm_hours / 693.35).toBeGreaterThanOrEqual(0.5);
+      expect(beton.norm_hours / 693.35).toBeLessThanOrEqual(0.6);
     });
   });
 

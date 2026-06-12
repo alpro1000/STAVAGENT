@@ -28,6 +28,7 @@ import {
   K_UTIL,
   CURING_SHIFT_H,
 } from './labor-projection.js';
+import { LABOR_NORMS } from './labor-norms.js';
 import {
   calculatePositionFields,
   calculateHeaderKPI,
@@ -156,9 +157,10 @@ describe('Labor projection — one canonical person-hours figure', () => {
     expect(labor.operations.length).toBeGreaterThan(0);
     for (const op of labor.operations) {
       expect(op.presence_hours).toBeCloseTo(op.norm_hours / K_UTIL, 1);
-      if (op.key !== 'podpery') {
-        // props come from the engine's normative hours; all other operations
-        // follow the fixed canon formula exactly
+      if (op.key !== 'podpery' && !op.norm_source) {
+        // props come from the engine's normative hours and norm_source ops
+        // from confirmed norms (LABOR_NORMS); all other operations follow
+        // the fixed canon formula exactly
         expect(op.norm_hours).toBeCloseTo(op.crew * op.shift_h * K_UTIL * op.days, 1);
       }
     }
@@ -196,6 +198,135 @@ describe('Labor projection — one canonical person-hours figure', () => {
   });
 
   it('pilota projects NO formwork operations (pažnice / tremie)', () => {
+    const pilePlan = planElement({
+      element_type: 'pilota',
+      volume_m3: 50,
+      pile_diameter_mm: 900,
+      pile_length_m: 12,
+      pile_count: 8,
+      concrete_class: 'C25/30',
+    } as PlannerInput);
+    const pileLabor = buildLaborProjection(pilePlan);
+    const keys = pileLabor.operations.map(op => op.key);
+    expect(keys).not.toContain('bedneni_montaz');
+    expect(keys).not.toContain('bedneni_demontaz');
+    expect(keys).toContain('vrtani');
+  });
+});
+
+describe('Confirmed labor norms (LABOR_NORMS) — data with provenance, canon fallback', () => {
+  // PDPS-shaped plan with all norm bases present (golden §5f input)
+  const PDPS_INPUT: PlannerInput = {
+    element_type: 'mostovkova_deska',
+    volume_m3: 693.35,
+    formwork_area_m2: 1209.78,
+    formwork_contact_area_m2: 1527.6,
+    height_m: 7.795,
+    nk_width_m: 10.85,
+    has_dilatacni_spary: false,
+    working_joints_allowed: 'no',
+    concrete_class: 'C35/45',
+    exposure_class: 'XF2',
+    curing_class: 4,
+    temperature_c: 15,
+    bridge_deck_subtype: 'dvoutram',
+    span_m: 20,
+    num_spans: 6,
+    construction_technology: 'fixed_scaffolding',
+    is_prestressed: true,
+    prestress_cables_count: 12,
+    prestress_tensioning: 'one_sided',
+    prestress_strand_mass_kg: 19210,
+    rebar_mass_kg: 104000,
+  } as PlannerInput;
+  const pdpsPlan = planElement(PDPS_INPUT);
+  const pdpsLabor = buildLaborProjection(pdpsPlan);
+
+  it('armování: 18 Nh/t × rebar mass — norm-based with provenance', () => {
+    const vyztuz = pdpsLabor.operations.find(op => op.key === 'vyztuz')!;
+    const massT = (pdpsPlan.rebar.mass_kg * pdpsPlan.pour_decision.num_tacts) / 1000;
+    expect(massT).toBeCloseTo(104.0, 0);
+    expect(vyztuz.norm_hours).toBeCloseTo(LABOR_NORMS.armovani_nh_per_t.value * massT, 1);
+    expect(vyztuz.norm_source).toBe(LABOR_NORMS.armovani_nh_per_t.source);
+  });
+
+  it('předpětí: 35 Nh/t × strand mass (Y1860, VV) — norm-based with provenance', () => {
+    const predpeti = pdpsLabor.operations.find(op => op.key === 'predpeti')!;
+    expect(predpeti.norm_hours).toBeCloseTo(
+      LABOR_NORMS.predpeti_nh_per_t.value * 19.21, 1);
+    expect(predpeti.norm_source).toBe(LABOR_NORMS.predpeti_nh_per_t.source);
+  });
+
+  it('předpětí: canon fallback when strand mass is unknown', () => {
+    const { prestress_strand_mass_kg: _omit, ...rest } = PDPS_INPUT as Record<string, unknown>;
+    const plan = planElement(rest as unknown as PlannerInput);
+    const predpeti = buildLaborProjection(plan).operations.find(op => op.key === 'predpeti')!;
+    expect(predpeti.norm_source).toBeUndefined();
+    expect(predpeti.norm_hours).toBeCloseTo(
+      predpeti.crew * predpeti.shift_h * K_UTIL * predpeti.days, 1);
+  });
+
+  it('skruž + bednění: 3.1 Nh/m² KONTAKTNÍ plochy across montáž + demontáž + podpěry', () => {
+    const fwOps = pdpsLabor.operations.filter(op =>
+      op.key === 'bedneni_montaz' || op.key === 'bedneni_demontaz' || op.key === 'podpery');
+    expect(fwOps.length).toBe(3);
+    const totalFwNh = fwOps.reduce((s, op) => s + op.norm_hours, 0);
+    expect(totalFwNh).toBeCloseTo(
+      LABOR_NORMS.skruz_bedneni_nh_per_m2_kontakt.value * 1527.6, 0);
+    for (const op of fwOps) {
+      expect(op.norm_source).toBe(LABOR_NORMS.skruz_bedneni_nh_per_m2_kontakt.source);
+    }
+  });
+
+  it('skruž + bednění: canon fallback when contact area is unknown', () => {
+    const { formwork_contact_area_m2: _omit, ...rest } = PDPS_INPUT as Record<string, unknown>;
+    const plan = planElement(rest as unknown as PlannerInput);
+    const ops = buildLaborProjection(plan).operations;
+    const montaz = ops.find(op => op.key === 'bedneni_montaz')!;
+    expect(montaz.norm_source).toBeUndefined();
+    expect(montaz.norm_hours).toBeCloseTo(
+      montaz.crew * montaz.shift_h * K_UTIL * montaz.days, 1);
+    // podpěry stay on the engine props norm in the fallback path
+    expect(ops.find(op => op.key === 'podpery')).toBeDefined();
+  });
+
+  it('betonáž mega-pour: crew 12/linku × 2 linky × (V / 35 m³/h) × 0.8; rotation > 12 h stays armed', () => {
+    const beton = pdpsLabor.operations.find(op => op.key === 'beton')!;
+    const model = LABOR_NORMS.betonaz_crew_model.value;
+    const crewOnSite = model.crew_per_pump_line * model.pump_lines; // 24
+    const rateMid = (model.effective_rate_m3h_min + model.effective_rate_m3h_max) / 2; // 35
+    const pourHours = 693.35 / rateMid; // 19.81 h
+    expect(pourHours).toBeGreaterThan(12); // crew relief (rotation) fires
+    expect(beton.crew).toBe(crewOnSite);
+    expect(beton.norm_hours).toBeCloseTo(crewOnSite * pourHours * K_UTIL, 1);
+    expect(beton.norm_source).toBe(LABOR_NORMS.betonaz_crew_model.source);
+  });
+
+  it('betonáž: canon fallback on a single-pump pour', () => {
+    const plan = planElement({
+      element_type: 'zaklady_piliru',
+      volume_m3: 35,
+      height_m: 1.2,
+      has_dilatacni_spary: false,
+      concrete_class: 'C25/30',
+    });
+    expect(plan.pour_decision.pumps_required).toBeLessThan(2);
+    const beton = buildLaborProjection(plan).operations.find(op => op.key === 'beton')!;
+    expect(beton.norm_source).toBeUndefined();
+    expect(beton.norm_hours).toBeCloseTo(
+      beton.crew * beton.shift_h * K_UTIL * beton.days, 1);
+  });
+
+  it('norms calibrate Nh ONLY — the schedule does not move (77.5 d / curing 9 / prestress 13)', () => {
+    const { formwork_contact_area_m2: _a, prestress_strand_mass_kg: _b, ...withoutNormInputs } =
+      PDPS_INPUT as Record<string, unknown>;
+    const bare = planElement(withoutNormInputs as unknown as PlannerInput);
+    expect(pdpsPlan.schedule.total_days).toBe(bare.schedule.total_days);
+    expect(pdpsPlan.formwork.curing_days).toBe(bare.formwork.curing_days);
+    expect(pdpsPlan.prestress!.days).toBe(bare.prestress!.days);
+  });
+
+  it('legacy pilota path untouched by norms (rig-crew canon)', () => {
     const pilePlan = planElement({
       element_type: 'pilota',
       volume_m3: 50,

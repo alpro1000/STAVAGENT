@@ -11,6 +11,11 @@
  * Domain decisions (fixed):
  *   - Normohodina (canon)  = crew × shift × K_UTIL(0.8) × days. Used for
  *     efficiency, norm reconciliation and durations.
+ *   - Confirmed productivity norms (LABOR_NORMS, data with provenance)
+ *     override the canon for Nh when their basis inputs are present
+ *     (armování Nh/t, předpětí Nh/t lan, skruž+bednění Nh/m² kontakt,
+ *     betonáž mega-pour crew model). Days ALWAYS stay with the scheduler —
+ *     norms never move the schedule.
  *   - Presence hours       = normohodiny / 0.8 (crew × shift × days).
  *   - Money is ALWAYS paid on presence (a 10h shift is paid in full).
  *   - Ošetřovatel betonu (1 person × ~5 h/day over max(schedule zrání span,
@@ -22,6 +27,7 @@
 import type { PlannerOutput } from './planner-orchestrator.js';
 import { aggregateScheduleDays } from '../formulas.js';
 import type { StructuralElementType } from './pour-decision.js';
+import { LABOR_NORMS } from './labor-norms.js';
 
 /** Time utilization factor: norm hours = presence hours × K_UTIL. */
 export const K_UTIL = 0.8;
@@ -137,6 +143,9 @@ export interface LaborOperationProjection {
   norm_hours: number;
   /** Presence hours = norm_hours / K_UTIL — the paid hours */
   presence_hours: number;
+  /** Provenance when norm_hours comes from a confirmed norm (LABOR_NORMS)
+   *  instead of the crew × shift × K_UTIL × days canon. */
+  norm_source?: string;
 }
 
 export interface LaborProjection {
@@ -166,7 +175,8 @@ function makeOp(
   };
 }
 
-/** Norm-hours-first variant: engine already produced normative hours (props). */
+/** Norm-hours-first variant: norm hours come from a confirmed norm or the
+ *  engine (props) instead of the canon formula. Days stay from the schedule. */
 function makeOpFromNorm(
   key: LaborOperationKey,
   label_cs: string,
@@ -174,6 +184,7 @@ function makeOpFromNorm(
   shift_h: number,
   days: number,
   norm_hours: number,
+  norm_source?: string,
 ): LaborOperationProjection {
   const norm = round1(norm_hours);
   return {
@@ -184,6 +195,7 @@ function makeOpFromNorm(
     days: round1(days),
     norm_hours: norm,
     presence_hours: round1(norm / K_UTIL),
+    ...(norm_source ? { norm_source } : {}),
   };
 }
 
@@ -231,16 +243,74 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
     const hasFormwork = !NO_FORMWORK_ELEMENTS.has(plan.element.type);
 
     if (agg.beton > 0) {
-      operations.push(makeOp('beton', 'betonáž', fwCrew, shift, agg.beton));
+      // Mega-pour crew model (confirmed norm): when the engine pour needs a
+      // pump tandem, Nh = (12 os./linku × pump_lines) × (V / tandem rate mid)
+      // × K_UTIL. Crew relief at pour > 12 h stays armed engine-side —
+      // on-site headcount is constant, so Nh does not double.
+      const pourModel = LABOR_NORMS.betonaz_crew_model.value;
+      const totalVolume = plan.tact_volumes
+        ? plan.tact_volumes.reduce((s, v) => s + v, 0)
+        : plan.pour_decision.tact_volume_m3 * numTacts;
+      if (plan.pour_decision.pumps_required >= pourModel.pump_lines && totalVolume > 0) {
+        const rateMid = (pourModel.effective_rate_m3h_min + pourModel.effective_rate_m3h_max) / 2;
+        const crewOnSite = pourModel.crew_per_pump_line * pourModel.pump_lines;
+        const pourHours = totalVolume / rateMid;
+        operations.push(makeOpFromNorm(
+          'beton', 'betonáž', crewOnSite, shift, agg.beton,
+          crewOnSite * pourHours * K_UTIL,
+          LABOR_NORMS.betonaz_crew_model.source,
+        ));
+      } else {
+        operations.push(makeOp('beton', 'betonáž', fwCrew, shift, agg.beton));
+      }
     }
-    if (agg.bedneni > 0 && hasFormwork) {
-      operations.push(makeOp('bedneni_montaz', 'montáž bednění', fwCrew, shift, agg.bedneni));
+
+    // Skruž + bednění (confirmed norm): when the KONTAKTNÍ plocha is known,
+    // total Nh = 3.1 Nh/m² × contact area, distributed over the formwork
+    // operations (montáž / demontáž / podpěry) proportionally to their
+    // schedule days. Fallback: per-operation canon.
+    const contactAreaM2 = plan.formwork.contact_area_m2 ?? 0;
+    const propsDays = plan.props?.needed && plan.props.labor_hours > 0
+      ? plan.props.assembly_days + plan.props.disassembly_days
+      : 0;
+    const fwShares: Array<[LaborOperationKey, string, number]> = [];
+    if (agg.bedneni > 0 && hasFormwork) fwShares.push(['bedneni_montaz', 'montáž bednění', agg.bedneni]);
+    if (agg.odbedneni > 0 && hasFormwork) fwShares.push(['bedneni_demontaz', 'demontáž bednění', agg.odbedneni]);
+    if (propsDays > 0) fwShares.push(['podpery', 'podpěrná konstrukce', propsDays]);
+    const fwShareDays = fwShares.reduce((s, [, , d]) => s + d, 0);
+
+    if (contactAreaM2 > 0 && hasFormwork && fwShareDays > 0) {
+      const totalFwNh = LABOR_NORMS.skruz_bedneni_nh_per_m2_kontakt.value * contactAreaM2;
+      for (const [key, label, days] of fwShares) {
+        operations.push(makeOpFromNorm(
+          key, label, fwCrew, shift, days,
+          totalFwNh * (days / fwShareDays),
+          LABOR_NORMS.skruz_bedneni_nh_per_m2_kontakt.source,
+        ));
+      }
+    } else {
+      if (agg.bedneni > 0 && hasFormwork) {
+        operations.push(makeOp('bedneni_montaz', 'montáž bednění', fwCrew, shift, agg.bedneni));
+      }
+      if (agg.odbedneni > 0 && hasFormwork) {
+        operations.push(makeOp('bedneni_demontaz', 'demontáž bednění', fwCrew, shift, agg.odbedneni));
+      }
     }
-    if (agg.odbedneni > 0 && hasFormwork) {
-      operations.push(makeOp('bedneni_demontaz', 'demontáž bednění', fwCrew, shift, agg.odbedneni));
-    }
+
     if (agg.vyztuž > 0) {
-      operations.push(makeOp('vyztuz', 'výztuž', rbCrew, shift, agg.vyztuž));
+      // Armování (confirmed norm): Nh = 18 Nh/t × rebar mass. Mass is always
+      // known from the engine (per-tact mass × tacts); canon stays as the
+      // zero-mass fallback.
+      const rebarMassT = (plan.rebar.mass_kg * numTacts) / 1000;
+      if (rebarMassT > 0) {
+        operations.push(makeOpFromNorm(
+          'vyztuz', 'výztuž', rbCrew, shift, agg.vyztuž,
+          LABOR_NORMS.armovani_nh_per_t.value * rebarMassT,
+          LABOR_NORMS.armovani_nh_per_t.source,
+        ));
+      } else {
+        operations.push(makeOp('vyztuz', 'výztuž', rbCrew, shift, agg.vyztuž));
+      }
     }
     // Visible "ošetřování betonu" line — part of the element's person-hours,
     // never smeared into betonáž. Days = max(calendar span of curing from the
@@ -252,17 +322,30 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
     if (curingBase > 0) {
       operations.push(makeOp('osetrovani', 'ošetřování betonu', 1, CURING_SHIFT_H, curingBase));
     }
-    if (plan.props?.needed && plan.props.labor_hours > 0) {
+    if (propsDays > 0 && !(contactAreaM2 > 0 && hasFormwork && fwShareDays > 0)) {
+      // Engine props norm — only when the skruž+bednění contact-area norm
+      // didn't already cover podpěry in the distribution above.
       operations.push(makeOpFromNorm(
         'podpery', 'podpěrná konstrukce',
         fwCrew, shift,
-        plan.props.assembly_days + plan.props.disassembly_days,
-        plan.props.labor_hours,
+        propsDays,
+        plan.props!.labor_hours,
       ));
     }
     if (plan.prestress && (agg.predpeti > 0 || plan.prestress.days > 0)) {
       const prDays = agg.predpeti || round1(plan.prestress.days * numTacts);
-      operations.push(makeOp('predpeti', 'předpětí', plan.prestress.crew_size || 5, shift, prDays));
+      // Předpětí (confirmed norm): Nh = 35 Nh/t × strand mass (Y1860) when
+      // the mass is known (e.g. from VV); canon fallback otherwise.
+      const strandT = (plan.prestress.strand_mass_kg ?? 0) / 1000;
+      if (strandT > 0) {
+        operations.push(makeOpFromNorm(
+          'predpeti', 'předpětí', plan.prestress.crew_size || 5, shift, prDays,
+          LABOR_NORMS.predpeti_nh_per_t.value * strandT,
+          LABOR_NORMS.predpeti_nh_per_t.source,
+        ));
+      } else {
+        operations.push(makeOp('predpeti', 'předpětí', plan.prestress.crew_size || 5, shift, prDays));
+      }
     }
   }
 

@@ -351,6 +351,48 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-12 — Session: SO-202 KV kalibrace — potvrzené normy jako data (pokračování)
+
+**Rozhodnuto:**
+- Čtyři potvrzené normy z interview aplikovány jako **DATA se zdrojem**
+  `[normy potvrzené Alexander, 2026-06]` v novém modulu
+  `Monolit-Planner/shared/src/calculators/labor-norms.ts` (per konvence
+  tasku — ne konstanty ve formulích): armování **18 Nh/t** · předpětí
+  **35 Nh/t lan Y1860** · skruž+bednění **3.1 Nh/m² KONTAKTNÍ plochy** ·
+  betonáž **crew-model** (čета 12 = 4+3+2+3 na čerpadlovou linku × 2 linky
+  = 24 os.; tandem efektivně 30–40 m³/h → hodiny = V / 35 střed; rotace
+  čet > 12 h zůstává vzvedená, headcount konstantní → Nh se nedubluje).
+- Projekce (`buildLaborProjection`) konzumuje normy s **canon-fallbackem**,
+  když báze chybí; nový field `LaborOperationProjection.norm_source` nese
+  provenance per operace. Betonáž crew-model gated na engine
+  `pumps_required ≥ 2` (mega-pour), žádný nový threshold.
+- Dva additive vstupy protaženy enginem (POUZE echo, harmonogram nedotčen):
+  `formwork_contact_area_m2` (SO-202: 1 527.6 [CN SAFE 26-027C]) +
+  `prestress_strand_mass_kg` (19 210 [VV 422373 ÷ 2]).
+- §5f-Nh přesnímkováno z živého enginu: armování 1 872.0 · předpětí 672.4 ·
+  betonáž 380.4 (0.55 Nh/m³ ✓ koridor 0.5–0.6) · skruž+bednění 4 735.5
+  (≈ 4 736 ✓) · ošetřování 36.0 → **CELKEM 7 696.3 Nh / 9 620.4 h /
+  11.10 Nh/m³** (koridor 8–12 ✓, výpočetní očekávání ~11.1 trefeno přesně).
+  **Harmonogram nehnut: 77.5 d / curing 9 / prestress 13** (hermetic
+  assertion plan-s-normami ≡ plan-bez-norem).
+- Testy: +10 (8 hermetic per norma vč. fallbacků + schedule-invariant,
+  1 golden koridor §5f-Nh, 1 legacy pilota canon) → **1281 shared tests**,
+  tsc shared + frontend clean.
+
+**Odmítnuto:**
+- Normy jako konstanty přímo ve formulích projekce — proti konvenci tasku;
+  data module s provenance per záznam.
+- Betonáž crew-model univerzálně (i 1-pump malé prvky) — 24 os. na patku je
+  nesmysl; gate = engine pumps_required ≥ pump_lines.
+- Interpretace «30–40 m³/h per čerpadlo» (→ 9.9 h, 0.28 Nh/m³) — neodpovídá
+  koridoru betonáže 0.5–0.6 ani CELKEM ~11.1; potvrzená aritmetika = tandem
+  efektivně 30–40 celkem, 24 os. on site, 19.8 h s rotací.
+
+**Otevřené otázky:**
+- STOP gate B: schválení snapshotu → PR. (PR se nevytváří před approve.)
+
+**Co dál:** po approve PR; pak Part B/C golden recalibration dle plánu.
+
 ## 2026-06-11 — Session: SO-202 KV kalibrace — ošetřování betonu = max(span, curing_days)
 
 **Rozhodnuto:**
