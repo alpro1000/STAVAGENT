@@ -269,7 +269,7 @@ Indexing runs directly on the 2026 base (no double re-index). Tool docstring's
 1. Create `gs://stavagent-catalogs`; upload SFDI XML to `catalogs/`. Confirm the
    norms Data Store sync does NOT include it (separate bucket → automatic).
 2. `alembic upgrade head` → installs `vector` ext + `otskp_embeddings(vector(768))`.
-3. `python scripts/ingest_otskp_catalog.py --gcs gs://stavagent-catalogs/catalogs/2026_OTSKP_sfdi_otevreny_format.xml --db-out app/otskp.db --index`
+3. `python scripts/ingest_otskp_catalog.py --gcs gs://stavagent-catalogs/otskp/2026_OTSKP_sfdi_otevreny_format.xml --db-out app/otskp.db --index`
    (builds otskp.db + embeds + upserts into pgvector). Note the real item count;
    update any remaining hardcoded counts.
 4. At startup, after the catalog is indexed, call

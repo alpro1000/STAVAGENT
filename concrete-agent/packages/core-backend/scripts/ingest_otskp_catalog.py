@@ -7,13 +7,13 @@ The catalog XML lives in GCS (NOT committed to the repo — it is ingestion data
 not knowledge). Primary source is the SFDI open-format file; the AspeEsticon
 export is a heavier cross-check only.
 
-    Primary:    gs://stavagent-catalogs/catalogs/2026_OTSKP_sfdi_otevreny_format.xml
-    Cross-check: gs://stavagent-catalogs/catalogs/2026_OTSKP_aspe_esticon.xml
+    Primary:    gs://stavagent-catalogs/otskp/2026_OTSKP_sfdi_otevreny_format.xml
+    Cross-check: gs://stavagent-catalogs/otskp/2026_OTSKP_aspe_esticon.xml
 
 Usage:
     # download + build otskp.db (provenance-stamped), print the real item count
     python scripts/ingest_otskp_catalog.py \
-        --gcs gs://stavagent-catalogs/catalogs/2026_OTSKP_sfdi_otevreny_format.xml \
+        --gcs gs://stavagent-catalogs/otskp/2026_OTSKP_sfdi_otevreny_format.xml \
         --db-out app/otskp.db --catalog-version "OTSKP 2026"
 
     # also embed + upsert into the otskp_embeddings pgvector table
