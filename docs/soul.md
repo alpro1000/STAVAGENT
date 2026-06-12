@@ -359,9 +359,13 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
   `Monolit-Planner/shared/src/calculators/labor-norms.ts` (per konvence
   tasku — ne konstanty ve formulích): armování **18 Nh/t** · předpětí
   **35 Nh/t lan Y1860** · skruž+bednění **3.1 Nh/m² KONTAKTNÍ plochy** ·
-  betonáž **crew-model** (čета 12 = 4+3+2+3 na čerpadlovou linku × 2 linky
-  = 24 os.; tandem efektivně 30–40 m³/h → hodiny = V / 35 střed; rotace
-  čet > 12 h zůstává vzvedená, headcount konstantní → Nh se nedubluje).
+  betonáž **crew-model** (KOREKCE dle světových referencí, provenance
+  [Caltrans Deck Constr. Manual Table 1.1; method statement 40–45 m³/h
+  finishing-governed; potvrzeno Alexander]: JEDEN finiš-front, 2 čerpadla
+  ho krmí a NEnásobí četу; 12 os. on site = Caltrans T1.1 11 + 1 záloha,
+  strojníci čerpadel externí; tempo 40–45 m³/h finishing-governed →
+  16.3 h střed; rotace > 12 h druhou směnou 12 os., headcount konstantní
+  → Nh se nedubluje).
 - Projekce (`buildLaborProjection`) konzumuje normy s **canon-fallbackem**,
   když báze chybí; nový field `LaborOperationProjection.norm_source` nese
   provenance per operace. Betonáž crew-model gated na engine
@@ -370,23 +374,25 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
   `formwork_contact_area_m2` (SO-202: 1 527.6 [CN SAFE 26-027C]) +
   `prestress_strand_mass_kg` (19 210 [VV 422373 ÷ 2]).
 - §5f-Nh přesnímkováno z živého enginu: armování 1 872.0 · předpětí 672.4 ·
-  betonáž 380.4 (0.55 Nh/m³ ✓ koridor 0.5–0.6) · skruž+bednění 4 735.5
-  (≈ 4 736 ✓) · ošetřování 36.0 → **CELKEM 7 696.3 Nh / 9 620.4 h /
-  11.10 Nh/m³** (koridor 8–12 ✓, výpočetní očekávání ~11.1 trefeno přesně).
+  betonáž 156.6 (0.23 Nh/m³ ✓ koridor 0.2–0.3) · skruž+bednění 4 735.5
+  (≈ 4 736 ✓) · ošetřování 36.0 → **CELKEM 7 472.5 Nh / 9 340.6 h /
+  10.78 Nh/m³** (koridor 8–12 ✓, očekávání ~10.8 trefeno). Fáze-check:
+  betonáž-fáze 1.6 d × 10 h = 16 h ≈ modelová zálivka 16.3 h — drží.
   **Harmonogram nehnut: 77.5 d / curing 9 / prestress 13** (hermetic
   assertion plan-s-normami ≡ plan-bez-norem).
-- Testy: +10 (8 hermetic per norma vč. fallbacků + schedule-invariant,
-  1 golden koridor §5f-Nh, 1 legacy pilota canon) → **1281 shared tests**,
-  tsc shared + frontend clean.
+- Testy: +11 (hermetic per norma vč. fallbacků + schedule-invariant +
+  Caltrans-breakdown integrity, golden koridor §5f-Nh, legacy pilota canon)
+  → **1282 shared tests**, tsc shared + frontend clean.
 
 **Odmítnuto:**
 - Normy jako konstanty přímo ve formulích projekce — proti konvenci tasku;
   data module s provenance per záznam.
 - Betonáž crew-model univerzálně (i 1-pump malé prvky) — 24 os. na patku je
   nesmysl; gate = engine pumps_required ≥ pump_lines.
-- Interpretace «30–40 m³/h per čerpadlo» (→ 9.9 h, 0.28 Nh/m³) — neodpovídá
-  koridoru betonáže 0.5–0.6 ani CELKEM ~11.1; potvrzená aritmetika = tandem
-  efektivně 30–40 celkem, 24 os. on site, 19.8 h s rotací.
+- První interpretace «12/linku × 2 čerpadla = 24 os., tandem 30–40 m³/h»
+  — superseded světovými referencemi (Caltrans T1.1 + method statement):
+  čerpadla krmí JEDEN finiš-front a četу nenásobí; armádu kreslit nelze,
+  lidé jsou omezený zdroj. Betonáž byla nadhodnocena 2.4× (380.4 → 156.6).
 
 **Otevřené otázky:**
 - STOP gate B: schválení snapshotu → PR. (PR se nevytváří před approve.)

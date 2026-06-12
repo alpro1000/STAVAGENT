@@ -219,10 +219,11 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
         .filter(op => ['bedneni_montaz', 'bedneni_demontaz', 'podpery'].includes(op.key))
         .reduce((s, op) => s + op.norm_hours, 0);
       expect(fwNh).toBeCloseTo(4735.6, 0);
-      // betonáž v koridoru 0.5–0.6 Nh/m³ (24 os. × V/35 m³/h × 0.8)
+      // betonáž v koridoru 0.2–0.3 Nh/m³ (12 os. na 1 finiš-front ×
+      // V/42.5 m³/h finishing-governed × 0.8 — Caltrans Table 1.1 model)
       const beton = labor.operations.find(op => op.key === 'beton')!;
-      expect(beton.norm_hours / 693.35).toBeGreaterThanOrEqual(0.5);
-      expect(beton.norm_hours / 693.35).toBeLessThanOrEqual(0.6);
+      expect(beton.norm_hours / 693.35).toBeGreaterThanOrEqual(0.2);
+      expect(beton.norm_hours / 693.35).toBeLessThanOrEqual(0.3);
     });
   });
 

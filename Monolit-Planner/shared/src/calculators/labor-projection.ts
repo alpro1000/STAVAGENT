@@ -244,8 +244,10 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
 
     if (agg.beton > 0) {
       // Mega-pour crew model (confirmed norm): when the engine pour needs a
-      // pump tandem, Nh = (12 os./linku × pump_lines) × (V / tandem rate mid)
-      // × K_UTIL. Crew relief at pour > 12 h stays armed engine-side —
+      // pump tandem, Nh = 12 os. on ONE finishing front × (V / finishing-
+      // governed rate mid) × K_UTIL. Pumps feed the front, they don't
+      // multiply the crew; strojníci čerpadel are external (not in Nh).
+      // Crew relief at pour > 12 h stays armed — second shift takes over,
       // on-site headcount is constant, so Nh does not double.
       const pourModel = LABOR_NORMS.betonaz_crew_model.value;
       const totalVolume = plan.tact_volumes
@@ -253,7 +255,7 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
         : plan.pour_decision.tact_volume_m3 * numTacts;
       if (plan.pour_decision.pumps_required >= pourModel.pump_lines && totalVolume > 0) {
         const rateMid = (pourModel.effective_rate_m3h_min + pourModel.effective_rate_m3h_max) / 2;
-        const crewOnSite = pourModel.crew_per_pump_line * pourModel.pump_lines;
+        const crewOnSite = pourModel.crew_on_site;
         const pourHours = totalVolume / rateMid;
         operations.push(makeOpFromNorm(
           'beton', 'betonáž', crewOnSite, shift, agg.beton,

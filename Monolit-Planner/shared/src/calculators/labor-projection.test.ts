@@ -290,16 +290,25 @@ describe('Confirmed labor norms (LABOR_NORMS) — data with provenance, canon fa
     expect(ops.find(op => op.key === 'podpery')).toBeDefined();
   });
 
-  it('betonáž mega-pour: crew 12/linku × 2 linky × (V / 35 m³/h) × 0.8; rotation > 12 h stays armed', () => {
+  it('betonáž mega-pour: 12 os. on ONE finishing front × (V / 42.5 m³/h) × 0.8; rotation > 12 h stays armed', () => {
     const beton = pdpsLabor.operations.find(op => op.key === 'beton')!;
     const model = LABOR_NORMS.betonaz_crew_model.value;
-    const crewOnSite = model.crew_per_pump_line * model.pump_lines; // 24
-    const rateMid = (model.effective_rate_m3h_min + model.effective_rate_m3h_max) / 2; // 35
-    const pourHours = 693.35 / rateMid; // 19.81 h
-    expect(pourHours).toBeGreaterThan(12); // crew relief (rotation) fires
-    expect(beton.crew).toBe(crewOnSite);
-    expect(beton.norm_hours).toBeCloseTo(crewOnSite * pourHours * K_UTIL, 1);
+    const rateMid = (model.effective_rate_m3h_min + model.effective_rate_m3h_max) / 2; // 42.5
+    const pourHours = 693.35 / rateMid; // 16.3 h
+    expect(pourHours).toBeGreaterThan(12); // crew relief (second shift) fires
+    // Pumps feed the front — they do NOT multiply the crew (Caltrans model)
+    expect(beton.crew).toBe(model.crew_on_site); // 12, not 12 × pump_lines
+    expect(beton.norm_hours).toBeCloseTo(model.crew_on_site * pourHours * K_UTIL, 1);
     expect(beton.norm_source).toBe(LABOR_NORMS.betonaz_crew_model.source);
+  });
+
+  it('betonáž crew breakdown (Caltrans Table 1.1 + záloha) sums to crew_on_site', () => {
+    const model = LABOR_NORMS.betonaz_crew_model.value;
+    const sum = Object.values(model.breakdown).reduce((s, n) => s + n, 0);
+    expect(sum).toBe(model.crew_on_site);
+    // Caltrans Table 1.1 composition = 11 (foreman 1 + rake 2 + operator 1 +
+    // finishers 2 + broom/cure 1 + vibrators 2 + carpenter 1 + truck tender 1)
+    expect(sum - model.breakdown.zaloha).toBe(11);
   });
 
   it('betonáž: canon fallback on a single-pump pour', () => {

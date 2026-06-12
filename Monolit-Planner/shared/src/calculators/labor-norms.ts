@@ -16,20 +16,29 @@ export interface LaborNormRecord<T> {
   source: string;
 }
 
-/** Mega-pour crew model: one complete pour crew per pump line. */
+/** Mega-pour crew model: ONE finishing front fed by a pump tandem. */
 export interface PourCrewModel {
-  /** Persons per pump line (ukládka 4 + vibrace 3 + finiš 2 + čerpadlo/koordinace 3) */
-  crew_per_pump_line: number;
+  /** Persons on site on the single finishing front. Pump operators arrive
+   *  WITH the pumps (external service) and are NOT part of the crew Nh. */
+  crew_on_site: number;
+  /** Caltrans Deck Construction Manual Table 1.1 composition (11) +
+   *  1 záloha/parťák per Alexander. Sums to crew_on_site. */
   breakdown: {
-    ukladka: number;
+    predak: number;
+    rozhrnovani: number;
+    operator_listy: number;
+    finiseri: number;
+    brum_osetrovani: number;
     vibrace: number;
-    finis: number;
-    cerpadlo_koordinace: number;
+    tesar_dozor_skruze: number;
+    prijem_domichavacu: number;
+    zaloha: number;
   };
-  /** Pump lines on a mega-pour (tandem; PDK — záložní line manned) */
+  /** Pumps feeding the ONE front (tandem: trámy + deska; PDK záložní manned).
+   *  Pumps do NOT multiply the crew — also the projection gating threshold. */
   pump_lines: number;
-  /** Effective TANDEM throughput (m³/h) — domíchávač logistics limited,
-   *  not nominal pump capacity. Projection uses the midpoint. */
+  /** Pour rate of the front (m³/h) — FINISHING-governed, not pump capacity.
+   *  Projection uses the midpoint. */
   effective_rate_m3h_min: number;
   effective_rate_m3h_max: number;
 }
@@ -59,19 +68,36 @@ export const LABOR_NORMS = {
     source: `${SOURCE_ALEXANDER} (plocha kontaktní: CN SAFE implied)`,
   } as LaborNormRecord<number>,
 
-  /** Betonáž mega-pour crew model: čета 12/linku × 2 čerpadlové linky =
-   *  24 os. on site; tandem effective 30–40 m³/h → hours = V / rate_mid;
-   *  Nh = crew × hours × K_UTIL. Crew relief (rotation) at pour > 12 h
-   *  stays armed engine-side — headcount on site is constant, so Nh does
-   *  not double. Applied when the engine pour needs ≥ pump_lines pumps. */
+  /** Betonáž mega-pour crew model: 12 os. on site on ONE finishing front
+   *  (Caltrans Table 1.1: foreman 1 + rake 2 + machine operator 1 + finishers
+   *  2 + broom/cure 1 + vibrators 2 + bridge carpenter watching falsework 1 +
+   *  truck tender 1 = 11, + 1 záloha per Alexander); 2 čerpadla feed the
+   *  front (trámy + deska) — pumps do NOT multiply the crew, strojníci
+   *  čerpadel are external; rate 40–45 m³/h FINISHING-governed → hours =
+   *  V / rate_mid; Nh = crew × hours × K_UTIL. Crew relief (rotation) at
+   *  pour > 12 h stays armed — a second 12-person shift takes over,
+   *  headcount on site constant, so Nh does not double. Applied when the
+   *  engine pour needs ≥ pump_lines pumps. */
   betonaz_crew_model: {
     value: {
-      crew_per_pump_line: 12,
-      breakdown: { ukladka: 4, vibrace: 3, finis: 2, cerpadlo_koordinace: 3 },
+      crew_on_site: 12,
+      breakdown: {
+        predak: 1,
+        rozhrnovani: 2,
+        operator_listy: 1,
+        finiseri: 2,
+        brum_osetrovani: 1,
+        vibrace: 2,
+        tesar_dozor_skruze: 1,
+        prijem_domichavacu: 1,
+        zaloha: 1,
+      },
       pump_lines: 2,
-      effective_rate_m3h_min: 30,
-      effective_rate_m3h_max: 40,
+      effective_rate_m3h_min: 40,
+      effective_rate_m3h_max: 45,
     },
-    source: SOURCE_ALEXANDER,
+    source: 'Caltrans Bridge Deck Construction Manual (Oct 2015) Table 1.1; ' +
+      'bridge deck method statement 40–45 m³/h finishing-governed; ' +
+      'potvrzeno Alexander, 2026-06',
   } as LaborNormRecord<PourCrewModel>,
 } as const;
