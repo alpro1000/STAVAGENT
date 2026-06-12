@@ -20,6 +20,7 @@
 import { describe, it, expect } from 'vitest';
 import { planElement } from './planner-orchestrator.js';
 import type { PlannerInput } from './planner-orchestrator.js';
+import { buildLaborProjection, K_UTIL, CURING_SHIFT_H } from './labor-projection.js';
 
 describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
   describe('§5b Základ opěry OP1 (C25/30 XF1, ~35 m³ odhad, h=1.2m)', () => {
@@ -117,6 +118,11 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       // VV 422365: 208.005 t B500B oba mosty ÷ 2 = 104.0 t per bridge
       // (= 150 kg/m³ — VV beats the engine's 100 kg/m³ prestressed-NK heuristic)
       rebar_mass_kg: 104000,
+      // VV 422373: 38.420 t lan Y1860 oba mosty ÷ 2 = 19.21 t per bridge
+      prestress_strand_mass_kg: 19210,
+      // CN SAFE 26-027C: kontaktní plocha bednění NK 1 527.6 m²/most
+      // (rozvinutá 13.7 × 111.5 vč. přesahů — ≠ půdorysná 1 209.775 m²)
+      formwork_contact_area_m2: 1527.6,
     };
 
     it('classification: mostovkova_deska needs_supports', () => {
@@ -183,6 +189,41 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       expect(plan.element.profile.rebar_ratio_kg_m3).toBe(150);
       const totalRebarT = (plan.rebar.mass_kg * plan.pour_decision.num_tacts) / 1000;
       expect(totalRebarT).toBeCloseTo(104.0, 0);
+    });
+
+    it('§5f-Nh: ošetřování betonu spans the full curing period — 9 d → 36 Nh, not the compressed scheduler span (1.5 d)', () => {
+      // STOP gate A finding resolved (2026-06-11, decision Alexander):
+      // labor-projection days = max(schedule zrání span, curing_days).
+      // PDPS 1 takt: tact_details zrání span is 1.5 d (scheduler-internal
+      // compression), curing_days = 9 (třída ošetřování 4 @15 °C) → 9 wins.
+      const plan = planElement(input);
+      const labor = buildLaborProjection(plan);
+      const osetrovani = labor.operations.find(op => op.key === 'osetrovani')!;
+      expect(osetrovani).toBeDefined();
+      expect(osetrovani.days).toBeCloseTo(plan.formwork.curing_days, 1);
+      expect(osetrovani.norm_hours).toBeCloseTo(
+        1 * CURING_SHIFT_H * K_UTIL * plan.formwork.curing_days, 1);
+      // Regression guard against the old underestimated line (6.0 Nh)
+      expect(osetrovani.norm_hours).toBeGreaterThanOrEqual(36);
+    });
+
+    it('§5f-Nh: CELKEM in the 8–12 Nh/m³ corridor [normy potvrzené Alexander + CN SAFE implied]', () => {
+      const plan = planElement(input);
+      const labor = buildLaborProjection(plan);
+      const nhPerM3 = labor.total_norm_hours / 693.35;
+      expect(nhPerM3).toBeGreaterThanOrEqual(8);
+      expect(nhPerM3).toBeLessThanOrEqual(12);
+      // Component sanity (±15 % philosophy not needed — norms are exact data):
+      // skruž + bednění = 3.1 Nh/m² × 1 527.6 m² kontakt ≈ 4 735.6 Nh
+      const fwNh = labor.operations
+        .filter(op => ['bedneni_montaz', 'bedneni_demontaz', 'podpery'].includes(op.key))
+        .reduce((s, op) => s + op.norm_hours, 0);
+      expect(fwNh).toBeCloseTo(4735.6, 0);
+      // betonáž v koridoru 0.2–0.3 Nh/m³ (12 os. na 1 finiš-front ×
+      // V/42.5 m³/h finishing-governed × 0.8 — Caltrans Table 1.1 model)
+      const beton = labor.operations.find(op => op.key === 'beton')!;
+      expect(beton.norm_hours / 693.35).toBeGreaterThanOrEqual(0.2);
+      expect(beton.norm_hours / 693.35).toBeLessThanOrEqual(0.3);
     });
   });
 

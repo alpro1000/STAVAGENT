@@ -3,8 +3,16 @@
 <!--
 Pattern numbering audit 2026-06-02 (RD Jáchymov DXF-takeoff prototype):
 Sequential 1..49 validated (no duplicates, no gaps).
-last_number: 49
-next_pattern: 50  ← use this for any new additions.
+last_number: 50
+next_pattern: 51  ← use this for any new additions.
+
+Added 2026-06-12 (SO-202 KV labor-norm calibration): Pattern 50
+(Front-capacity staffing — crew sized by the work front's capacity, not by
+volume/deadline; rate = front bottleneck (finishing / crane cycle / edge /
+access); time pressure ⇒ duration / rotation / second front, never crew
+inflation; Nh = crew(front) × duration. Source: Caltrans Deck Constr.
+Manual Table 1.1 + potvrzeno Alexander). Origin: first-pass SO-202 betonáž
+model drew 24 people on one finishing front (2.4× overestimate).
 
 Added 2026-06-02 (DXF-takeoff P0 prototype): Pattern 49 (DXF-First — parse
 vector structure before vision; complementary to Pattern 39 by source type:
@@ -2210,6 +2218,33 @@ Areas extracted from DXF reconcile with the manual obmer; vision used only where
 - Pattern 40 (Host-delegated vision + MCP gate) — the walk_drawings flow is the vision fallback for 49 (registered MCP tool: `validate_drawing_element`, module `walk_drawings.py`)
 - Pattern 45 (Výměry-First) — DXF auto-fills the výměry register (conf 1.0)
 - Pattern 47 (Fence-post counting) — block/label counts from DXF are authoritative over `length÷spacing`
+
+---
+
+## Pattern 50: Front-capacity staffing — crew sized by the work front, not by volume or deadline
+
+**Source:** SO-202 KV labor-norm calibration (2026-06-12) — Caltrans Bridge Deck Construction Manual (Oct 2015) Table 1.1 + bridge deck method statement; potvrzeno Alexander.
+
+### Problem
+When a pour (or any operation) is large or the deadline is tight, the naive model inflates the crew: "more m³ → more people", "2 pumps → 2 crews". This draws an army that physically cannot fit on the front — the SO-202 first-pass model put 24 people on one deck pour (12 per pump line × 2) and overestimated betonáž 2.4× (380.4 vs 156.6 Nh). People are a limited resource; the engine even warns about it (resource ceiling).
+
+### Principle
+A crew is sized by the **capacity of its work front**, never by volume or deadline:
+- The rate is set by the **front's bottleneck** — finishing operations / crane cycle / edge length / access — not by added headcount. (SO-202 deck: 40–45 m³/h FINISHING-governed; the 2 pumps merely feed the front and do not multiply the crew; pump operators are external, not in crew Nh.)
+- When time is short, the levers are **duration**, **crew rotation** (second shift, constant on-site headcount, Nh does not double) or a **second front** — never inflating the crew on one front.
+- **Nh = crew(front) × duration.**
+
+Reference crew for a bridge deck front (Caltrans Table 1.1): foreman 1 + rake 2 + machine operator 1 + finishers 2 + broom/cure 1 + vibrators 2 + bridge carpenter watching falsework 1 + truck tender 1 = 11 (+ 1 záloha per Alexander = 12).
+
+### Anti-pattern
+Multiplying the crew by the number of pumps/machines feeding one front, or back-solving headcount from a deadline ("we need it in X hours → Y people").
+
+### Invariant
+In labor projections, a confirmed front-crew model carries its provenance (`norm_source`) and a crew constant per front; volume changes the **hours**, rotation changes the **shifts** — neither changes the on-site headcount.
+
+### Related
+- Pattern 3 (Triangulation) — world references (Caltrans) beat numbers argued from memory
+- `Monolit-Planner/shared/src/calculators/labor-norms.ts` — reference implementation (`betonaz_crew_model`, domain header)
 
 ---
 
