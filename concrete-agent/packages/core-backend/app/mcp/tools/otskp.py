@@ -14,6 +14,8 @@ import re
 from pathlib import Path
 from typing import Optional
 
+from app.services.catalog_matching import match_catalog, retrieve_candidates
+
 logger = logging.getLogger(__name__)
 
 # Lazy-loaded singleton
@@ -140,13 +142,15 @@ async def find_otskp_code(
 ) -> dict:
     """Find OTSKP catalog codes for Czech transport/engineering structures.
 
-    Database of 17,904 verified items from the Czech OTSKP pricing system
-    (cenová soustava OTSKP pro dopravní a inženýrské stavby).
-    AI models do NOT know these 9-digit codes — this tool searches the
-    real database with text matching and returns exact prices.
+    Searches the loaded OTSKP catalog (Czech pricing system for transport and
+    engineering structures; the catalog version is stamped in result provenance).
+    AI models do NOT know these codes — this tool searches the real database
+    and returns the catalogue's exact prices.
 
-    Each result includes: 9-digit code, Czech description, unit (m³, m², t, ks),
-    unit price in CZK, and confidence (1.0 for database match).
+    Each result includes: code, Czech description, unit (m³, m², t, ks), unit
+    price in CZK, and an HONEST confidence — exact code lookup = 1.0; a text
+    search is gated by work-type + explicit parameters and ranked, so a bare
+    keyword hit is capped below 1.0 (never a hardcoded 1.0 on any DB match).
 
     FREE tool (0 credits). Use for bridges, roads, tunnels, railways.
     For building construction, use find_urs_code instead.
@@ -198,22 +202,50 @@ async def find_otskp_code(
                 "note": f"Code '{code}' not found in OTSKP database",
             }
 
-        # Fulltext search
-        results = catalog.search(query, limit=max_results)
+        # Fulltext search → deterministic Work-First chain.
+        # Recall: search by the whole query AND by each significant token, dedup
+        # by code (the SQLite LIKE path matches whole phrases only, so a token
+        # sweep is what actually surfaces candidates).
+        def keyword_search_fn(q: str) -> list[dict]:
+            by_code: dict[str, dict] = {}
+            terms = [q] + [w for w in re.split(r"\s+", q) if len(w) >= 3]
+            for term in terms:
+                for r in catalog.search(term, limit=max_results * 4):
+                    by_code.setdefault(r.code, {
+                        "code": r.code,
+                        "description": r.nazev,
+                        "unit": r.mj,
+                        "unit_price_czk": r.cena,
+                        "source": "keyword",
+                    })
+            return list(by_code.values())
+
+        raw = retrieve_candidates(query, keyword_search_fn, limit=max_results * 4)
+        carrier = match_catalog(query, raw)
+        ranked = carrier["candidates"][:max_results]
         return {
             "results": [
                 {
-                    "code": r.code,
-                    "description": r.nazev,
-                    "unit": r.mj,
-                    "unit_price_czk": r.cena,
-                    "confidence": 1.0,
+                    "code": c["code"],
+                    "description": c["description"],
+                    "unit": c.get("unit", ""),
+                    "unit_price_czk": c.get("unit_price_czk", 0.0),
+                    # Honest confidence from the chain (NOT a hardcoded 1.0 on a
+                    # bare DB hit). 1.0 is reserved for the exact code-lookup
+                    # branch above; keyword caps at 0.9, embeddings at ~0.70–0.80.
+                    "confidence": c["confidence"],
                     "source": "OTSKP 1/2025",
+                    "work_type": c["work_type"],
+                    "element_family": c["element_family"],
+                    "provenance": c["provenance"],
                 }
-                for r in results
+                for c in ranked
             ],
-            "total_found": len(results),
+            "total_found": len(ranked),
             "query": query,
+            "query_work_type": carrier["query_work_type"],
+            "query_element_family": carrier["query_element_family"],
+            "ranking_audit": carrier["ranking_audit"],
         }
 
     except Exception as e:

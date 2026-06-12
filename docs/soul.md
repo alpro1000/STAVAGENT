@@ -351,6 +351,108 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1b (embeddings infra + OTSKP 2026 ingestion)
+
+**Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`, code-only — ops na deploy):**
+- **Embedding model revize:** gecko@003 **RETIRED 2025-05-24** + repo má jen vertexai
+  (removed 2026-06-24, migrace na google-genai) → interim **text-multilingual-embedding-002
+  @768** (native, drop-in na current vertexai API, no new dep), gemini-embedding-001@768 =
+  post-migrace upgrade (stejný dim → žádné re-dimenzování pgvector). `EMBEDDING_MODEL/
+  EMBEDDING_DIM/OTSKP_CATALOG_VERSION/CATALOG_GCS_BUCKET` v config.py.
+- `vertex_embeddings.py` přepsán (sync, ADC, task_type, output_dimensionality, import-safe).
+- Alembic `2026_06_11_otskp_embeddings_pgvector` (head=orch_sg_pr3b_audit): `CREATE EXTENSION
+  vector` + `otskp_embeddings(... embedding vector(EMBEDDING_DIM))` HNSW cosine.
+- `app/services/catalog_embeddings.py`: pgvector provider (degrade-to-keyword on error) +
+  `register_embeddings_provider()` → wire do `catalog_matching._EMBEDDINGS_PROVIDER`.
+- `scripts/ingest_otskp_catalog.py`: GCS SFDI XML → otskp.db (+ `--index` pgvector). XML
+  necommitovat (žije v GCS). Pure `parse_otskp_xml` testovaný.
+- `tests/test_catalog_embeddings.py` (8 hermetic). **Celkem 27 hermetic green** (1a+1b).
+- otskp.py docstring: "17,904" + "(1.0 for database match)" → honest, version-stamped.
+
+**Data Store otázka (catalogs/ exclusion) — ANSWER:** norms bucket `stavagent-cenik-norms`
+je whole-bucket console-sync, žádný prefix-filter → `catalogs/` by znečistil RAG korpus.
+**Doporučení (v config): separátní bucket `gs://stavagent-catalogs`.** Fallback: gcsSource
+restrict na `B[3567]/` (console-only, fragile).
+
+**Odmítnuto / deferred:** live GCS upload + indexing (deploy) · learned-mappings Core table +
+human-confirm-0.99 (acceptance #11, Phase 3 s kiosk-migrací) · local ÚRS-2018 fallback
+0.60–0.65 + "ověřit proti aktuálnímu katalogu" UI flag (acceptance #12, Phase 3) · Phase 2
+docstring example-code fix.
+
+**Co dál:** CI potvrdit (MCP compat — lokálně chybí fastmcp — + goldeny SO250/SO202). STOP
+před merge (Alexander). Runbook: recon doc §8.4.
+
+
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1a (deterministic chain + honest confidence)
+
+**Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`):**
+- Nový `concrete-agent/.../app/services/catalog_matching.py` — Work-First chain:
+  work-type axis (`classify_work_type`) + element-family axis (reuse `_classify`) →
+  **UWO gate** (`passes_uwo_gate`) → **param prefilter** (concrete_class) → **honest
+  confidence** (keyword ≤0.9, embeddings 0.70–0.80, NIKDY 1.0 zde) → **pluggable
+  ranking seam** (`rank` + audit `input/output_codes`, replayable, deterministic
+  default) → carrier (candidates+confidence+provenance). Embeddings retrieve seam
+  `_EMBEDDINGS_PROVIDER` (module-global, monkeypatchovatelný — ne function param,
+  FastMCP CallableSchema pravidlo).
+- `find_otskp_code` fulltext větev přepojena přes chain; **hardcoded 1.0 na DB-hit
+  pryč**; exact code lookup zůstává 1.0 (verified DB row). Contract `results`/
+  `total_found`/fields zachován (compat-safe; compat test neasserovala 1.0).
+- `tests/test_catalog_matching.py` — **19 hermetic testů green** (AC 1,2,3,4,6,7 +
+  e2e přes find_otskp_code s fake katalogem). Fix: `predpinaci` pravidlo PŘED
+  `vyztuz` (předpínací výztuž = jiný OTSKP basket než B500).
+
+**Před-kód korekce (user):** gecko@003 **RETIRED 2025-05-24** → gemini-embedding-001
+@768 / pgvector cosine / `EMBEDDING_DIM` const (migrace AŽ po verifikaci modelu).
+Learned-mappings → Core, human-confirm 0.99 only (no AI auto-learn, acceptance #11).
+Local ÚRS ~39K → Core fallback nebo web-only do auditu (acceptance #12).
+
+**Odmítnuto / deferred:** Phase 1b (vertex_embeddings rewrite + pgvector Alembic
+migrace 768-dim + index 17 904 OTSKP + provider wire do seamu + learned-mappings
+table) = další commit na téže větvi. MCP compat suite lokálně neběží (chybí
+`fastmcp` — Debian PyJWT blokuje install) → potvrdit na CI.
+
+**Co dál:** Phase 1b infra za seamem → full pytest + verbatim CI log na HEAD fáze →
+STOP před merge. Phase 2: fix docstring example `113472111` (malformed 9-digit).
+
+
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 0 recon (READ-ONLY)
+
+**Rozhodnuto (§2 pre-impl interview):**
+- Merge timing: **každou fázi po готовности CI** (ne post-Cemex hold), ale honor
+  freeze window — fáze musí landnout před ~21.06 nebo staging-only poté.
+- Vector index: **pgvector v Cloud SQL** (concrete-agent DB), reuse nepoužitý
+  `app/integrations/vertex_embeddings.py` (gecko@003, 768-dim).
+- Kiosk matching engine: **migrovat teď na Core/MCP** (Phase 3 dělá kiosk skutečně
+  tenkým — nahradí lokální matching stack voláními Core).
+- Dead subsystémy: **nechat subsystem 3** (už je Core-proxy = seam pro migraci),
+  **odstranit jen subsystem 4** (role-debate / 6-rolový orchestrator + conflictResolver).
+
+**Zjištěno (recon, 3 paralelní Explore agenti):**
+- §1.2 потврзено přesně: `find_otskp_code` (`app/mcp/tools/otskp.py`) = plochý substring
+  search + `confidence=1.0` hardcoded na každý DB-hit (l.186/~210); žádný UWO gate;
+  žádný param prefilter. `create_work_breakdown` už defaultuje `work_first` (Pattern 15).
+- NOVÉ: kiosk URS_MATCHER NENÍ tenký UI — má vlastní plný matching stack (lokální
+  SQLite ~39K ÚRS, 4-fázový LLM batch pipeline, otskpCatalogService, perplexityClient,
+  learned-mappings KB) + plný 6-rolový orchestrator (NE 3 role z tasku). Subsystem 3
+  už proxy do Core (`documentExtractionService.js`). DebugCollector v tomto kiosku
+  NEEXISTUJE → je to nová věc pro Phase 3.
+- Vertex: `vertex_embeddings.py` existuje ale je nepoužitý scaffolding. Žádný pgvector
+  dnes (PG15 + Alembic + Czech FTS). ⚠️ `textembedding-gecko@003` je legacy model —
+  ověřit lifecycle před Phase 1.
+
+**Odmítnuto / out of scope:** reranker model (P6, jen seam) · Vertex RAG · DACH
+adaptéry · calculator element-classifier (net-touch) · cross-user isolation (P0 jinde)
+· pricing/TOV/AI-quantities.
+
+**Otevřené otázky:** UI placement «разбивка» (samostatná záložka kiosku vs Registry/
+Portal) — neforcováno v interview, vyřešit v Phase 3 design proposalu. Ověřit validní
+náhradu schema-example kódu `113472111` (Phase 2). Ověřit gecko@003 lifecycle.
+
+**Co dál:** STOP gate. Čeká na go-ahead (Alexander) pro Phase 1 (Core: UWO gate +
+pgvector embeddings retrieve + param prefilter + pluggable ranking seam + honest
+confidence). Report: `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`.
+
+
 ## 2026-06-11 — Session: GCP cost-аудит + пачка А (триггеры/Cloud Build) + пачка Б №3 (Redis retirement) — EXECUTED
 
 **Rozhodnuto:**
@@ -399,6 +501,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Co dál:** мониторинг первого триггерного concrete-билда после этого PR
 (WARN-строк больше нет по построению) → №4 по go → биллинг-чек.
+## 2026-06-11 — Session: Golden recalibration SO-202 KV — Part A (PDPS 1 takt + provenance)
 
 **Rozhodnuto:**
 - Golden §5f SO-202 KV překalibrován na PDPS: TZ §7.2 «betonáž NK na pevné skruži

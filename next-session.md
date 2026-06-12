@@ -1,8 +1,63 @@
-# next-session.md — Phase D / Phase E (post Phase C + Phase A docs ship)
+# next-session.md
 
-**Last updated:** 2026-05-26
-**Current branch:** `main` (no active feature branch — both PR #1223 and #1224 merged)
-**Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +26 days)
+**Last updated:** 2026-06-11
+**Current branch:** `claude/upbeat-dirac-krnyqi`
+**Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +10 days)
+
+---
+
+## 🔵 ACTIVE TASK — Classifier Kiosk Full Fix (Frontend + MCP + Backend)
+
+**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1 (1a+1b) MERGED to main**
+(CI HEAD db7b2c4 GREEN: `487 passed, 3 skipped`). Post-merge ops + live recall proof pending,
+then **Phase 2 (MCP)**.
+
+**Post-merge order (recon §10):** (a) `gsutil mb gs://stavagent-catalogs` + mv catalogs/ out of
+norms bucket → (b) deploy Core + ingestion runbook §8.4 (alembic pgvector → otskp.db from
+SFDI-2026 → `--index`; footgun: force rebuild wipes VPC connector + REDIS_URL) → (c) Alexander's
+live MCP probe `beton mostních pilířů C35/45` (correct pier-concrete code top-N, honest conf,
+obklad/přechod filtered) = Phase 1 proven E2E. Cheap insurance: 1× manual SO250 breakdown
+end-to-end BEFORE 21.06 (demo path on new code). **Aug SDK-migration task:** model swap to
+gemini-embedding-001 = full re-embed of 17,904 items (same 768 dim, different vector space).
+
+**Recon report:** `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`
+(updated with corrections 1–3 + model verification + acceptance #11/#12).
+**Task file:** `TASK_Classifier_Kiosk_FullFix_Frontend_MCP_Backend_1.md` (uploaded)
+
+**Interview decisions:** merge-per-CI (land before ~21.06) · pgvector in Cloud SQL ·
+migrate kiosk engine to Core (Phase 3) · keep subsystem 3 / remove subsystem 4.
+**Corrections (user, before Phase 1):** (1) learned-mappings migrate to Core, human-confirm
+0.99 ONLY, no AI auto-learn (acceptance #11); (2) local ÚRS ~39K — migrate to Core fallback
+or record web-only, never silent (acceptance #12); (3) **gecko@003 RETIRED 2025-05-24** →
+use **gemini-embedding-001 @ output_dimensionality=768**, pgvector cosine, `EMBEDDING_DIM` const.
+
+**Phase 1a DONE (this branch):** `app/services/catalog_matching.py` — work-type axis +
+UWO gate + param prefilter + honest confidence (keyword ≤0.9, embeddings 0.70–0.80, never
+1.0) + pluggable audited/replayable ranking seam + embeddings retrieve seam
+(`_EMBEDDINGS_PROVIDER`, monkeypatchable). `find_otskp_code` fulltext path rewired through
+the chain; exact code lookup stays 1.0. `tests/test_catalog_matching.py` (19 hermetic, green).
+NB: MCP compat suite unrunnable locally (no `fastmcp` — Debian PyJWT blocks install) → confirm on CI.
+
+**Phase 1b DONE (code, this branch):**
+- `vertex_embeddings.py` rewritten → **text-multilingual-embedding-002 @ 768** (gecko@003
+  RETIRED 2025-05-24; gemini-embedding-001@768 = post-google-genai upgrade, same dim).
+  SDK reason: repo only has vertexai (removed 2026-06-24) — don't build on a new SDK mid-freeze.
+- `EMBEDDING_MODEL`/`EMBEDDING_DIM`/`OTSKP_CATALOG_VERSION`/`CATALOG_GCS_BUCKET` in config.py.
+- Alembic `2026_06_11_otskp_embeddings_pgvector` (down=orch_sg_pr3b_audit): `CREATE EXTENSION
+  vector` + `otskp_embeddings(code,popis,unit,price,embedding vector(EMBEDDING_DIM))` HNSW cosine.
+- `app/services/catalog_embeddings.py`: pgvector provider + `register_embeddings_provider()`.
+- `scripts/ingest_otskp_catalog.py`: GCS SFDI XML → otskp.db (+ `--index` pgvector). XML not committed.
+- `tests/test_catalog_embeddings.py` (8 hermetic). Data Store answer: **separate bucket
+  `gs://stavagent-catalogs`** (norms bucket is whole-bucket console-synced, no prefix filter).
+
+**Ops/deploy (runbook §8.4 in recon doc):** create catalogs bucket + upload SFDI XML →
+`alembic upgrade head` → run ingestion `--index` → call `register_embeddings_provider()` at
+startup → confirm CI green. **CI to confirm:** MCP compat (no local fastmcp) + goldens SO250/SO202.
+
+**Deferred:** learned-mappings Core table + human-confirm-0.99 (acceptance #11, lands Phase 3
+w/ kiosk migration) · local ÚRS-2018 fallback 0.60–0.65 + "ověřit…" UI flag (acceptance #12,
+Phase 3) · **Phase 2:** fix `find_otskp_code` docstring example `113472111` (malformed 9-digit;
+real OTSKP codes are 6-char) → verified code.
 
 ---
 
