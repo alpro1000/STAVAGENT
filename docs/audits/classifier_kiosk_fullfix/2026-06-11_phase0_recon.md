@@ -290,5 +290,30 @@ example-code fix.
 ## 9. STOP
 
 Phase 1 (1a + 1b) code on branch `claude/upbeat-dirac-krnyqi`. Hermetic suite 27
-green locally; MCP compat + goldens SO250/SO202 confirmed on CI. STOP before merge
+green locally; **CI HEAD db7b2c4 GREEN — verbatim: `487 passed, 3 skipped, 25
+warnings in 71.74s`** (run 399, MCP Tools Compatibility). STOP before merge
 (Alexander merges). No live data mutated (GCS/DB indexing is a deploy step).
+
+## 10. Post-merge verification + caveats (Alexander notes, 2026-06-11)
+
+1. **CI gate honoured:** merge only the CI-green HEAD (db7b2c4) — confirmed above.
+2. **Model-swap is NOT free (record in the August SDK-migration task):** moving
+   `text-multilingual-embedding-002` → `gemini-embedding-001` keeps the pgvector
+   column dim (both 768) BUT vectors live in different spaces → all 17,904+ items
+   must be **re-embedded** (one batch run, cheap, but a re-embed — not a config
+   swap). Trigger it together with the vertexai→google-genai migration (≤2026-06-24).
+3. **Goldens "not affected" is an assertion, not a test:** `find_otskp_code`
+   changed behaviour (different results + confidence) under a preserved contract,
+   and the Cemex demo path runs through Core. Cheap insurance: after merge+deploy,
+   run ONE SO250 breakdown end-to-end by hand **before 21.06** so the demo path is
+   verified on the new code, not on faith.
+4. **Acceptance #4 (recall) is proven only LIVE.** Order after merge:
+   - (a) separate catalog bucket — `gsutil mb -l europe-west3 gs://stavagent-catalogs`
+     then `gsutil mv "gs://stavagent-cenik-norms/catalogs/*" gs://stavagent-catalogs/otskp/`
+     (also removes `catalogs/` from the norms-synced bucket → Data Store clean).
+   - (b) deploy Core + run ingestion runbook §8.4 (alembic pgvector → otskp.db from
+     SFDI-2026 → `--index`). Footgun: a force rebuild WIPES the VPC connector +
+     `REDIS_URL` — restore by hand.
+   - (c) live MCP probe `beton mostních pilířů C35/45`: correct pier-concrete code
+     in top-N with honest confidence, `obklad`/`přechod desky` filtered out =
+     Phase 1 proven end-to-end (the before/after artefact).

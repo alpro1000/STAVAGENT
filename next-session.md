@@ -8,9 +8,17 @@
 
 ## 🔵 ACTIVE TASK — Classifier Kiosk Full Fix (Frontend + MCP + Backend)
 
-**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1 (1a+1b) CODE COMPLETE**
-(chain + honest confidence + seams + pgvector infra + ingestion; **27 hermetic tests green**).
-**STOP gate** — pending CI (MCP compat + goldens SO250/SO202) + deploy ops; Alexander merges.
+**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1 (1a+1b) MERGED to main**
+(CI HEAD db7b2c4 GREEN: `487 passed, 3 skipped`). Post-merge ops + live recall proof pending,
+then **Phase 2 (MCP)**.
+
+**Post-merge order (recon §10):** (a) `gsutil mb gs://stavagent-catalogs` + mv catalogs/ out of
+norms bucket → (b) deploy Core + ingestion runbook §8.4 (alembic pgvector → otskp.db from
+SFDI-2026 → `--index`; footgun: force rebuild wipes VPC connector + REDIS_URL) → (c) Alexander's
+live MCP probe `beton mostních pilířů C35/45` (correct pier-concrete code top-N, honest conf,
+obklad/přechod filtered) = Phase 1 proven E2E. Cheap insurance: 1× manual SO250 breakdown
+end-to-end BEFORE 21.06 (demo path on new code). **Aug SDK-migration task:** model swap to
+gemini-embedding-001 = full re-embed of 17,904 items (same 768 dim, different vector space).
 
 **Recon report:** `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`
 (updated with corrections 1–3 + model verification + acceptance #11/#12).
