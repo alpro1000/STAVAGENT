@@ -8,17 +8,27 @@
 
 ## 🔵 ACTIVE TASK — Classifier Kiosk Full Fix (Frontend + MCP + Backend)
 
-**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1 (1a+1b) MERGED to main**
-(CI HEAD db7b2c4 GREEN: `487 passed, 3 skipped`). Post-merge ops + live recall proof pending,
-then **Phase 2 (MCP)**.
+**Where we are:** Phase 0 recon DONE · §2 interview DONE · **Phase 1 (1a+1b) MERGED** (#1343,
+CI green `487 passed`) · **startup-wiring follow-up MERGED** (#1344) · **ops-hardening MERGED**
+(#1354: migration id ≤32, ingest sys.path/local-path/retry, token-aware batching, embed retry,
+landing 17 940 · OTSKP 2026). **Phase 2 is GATED on the live #4 proof** (user decision 2026-06-13).
 
-**Post-merge order (recon §10):** (a) `gsutil mb gs://stavagent-catalogs` + mv catalogs/ out of
-norms bucket → (b) deploy Core + ingestion runbook §8.4 (alembic pgvector → otskp.db from
-SFDI-2026 → `--index`; footgun: force rebuild wipes VPC connector + REDIS_URL) → (c) Alexander's
-live MCP probe `beton mostních pilířů C35/45` (correct pier-concrete code top-N, honest conf,
-obklad/přechod filtered) = Phase 1 proven E2E. Cheap insurance: 1× manual SO250 breakdown
-end-to-end BEFORE 21.06 (demo path on new code). **Aug SDK-migration task:** model swap to
-gemini-embedding-001 = full re-embed of 17,904 items (same 768 dim, different vector space).
+**NEXT (user-driven ops — Phase 2 does NOT start until this passes):**
+1. Cloud Build auto-redeploys Core on the #1354 merge. After any force rebuild: restore VPC
+   connector + REDIS_URL.
+2. Re-run ingest with the fixes (runbook recon §8.4): `alembic -c ../../alembic.ini upgrade head`
+   (stamp `orch_sg_pr3b_audit` first if the DB pre-dates Alembic) → ingest `--index` (now token-safe).
+3. Live MCP probe `beton mostních pilířů C35/45`: pier-concrete code top-N, honest confidence,
+   `obklad`/`přechod desky` filtered = **acceptance #4 proven** → THEN Phase 2.
+
+**Phase 2 (when unblocked):** make `find_urs_code` + siblings return the carrier shape
+(candidates+confidence+provenance, honest-blank, confidence ladder — AC#8); fix the `113472111`
+docstring example with a **verified** 2026 OTSKP code (deferred to live catalog — user decision);
+update MCP tool-desc counts 17 904 → 17 940; rebake `otskp.db` to 2026 (exact-lookup prices).
+
+**Phase 3:** kiosk→thin migration · learned-mappings Core table (human-confirm 0.99, #11) ·
+ÚRS BYOK 3-tier seam (#12 + BYOK scope, recon §8.5). **Post-Cemex debt:** startup-SQL↔Alembic align.
+**Before 21.06:** 1× manual SO250 breakdown E2E (demo-path insurance on the new code).
 
 **Recon report:** `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`
 (updated with corrections 1–3 + model verification + acceptance #11/#12).
