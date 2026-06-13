@@ -351,6 +351,43 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-13 — Session: Živá napojení Part B/C + Faze 5 Step 1 (project-wrapper)
+
+**Smergováno do main (4 PR):**
+- **#1351 tz_facts wiring** — provod extraktoru do validation rule. Frontend
+  `buildInput` staví `tz_facts.construction` z `tzText` (auto), předvyplní
+  radio Technologie jen když prázdné (tz_facts oddělený kanál, nepřepisuje
+  vstup → flag fíruje). MCP `calculate_concrete_works` + 4 optional params
+  (tz_technology/tz_pour_stages/tz_quote/tz_anchor) → tz_facts. MCP compat
+  28/28. **Part B/C tím přestala být test-only — flag dojde do živé Varování
+  card i do Claude.ai/ChatGPT.** ⚠️ LIVE check na kalkulator.stavagent.cz po
+  deploy = PENDING (netvrdit hotové, dokud neproběhne na webu).
+- **#1352 recon-mapa polí** (docs-only) — rentgen kalkulátoru před Fází 5.
+  `docs/audits/calculator_field_map/2026-06-13_recon.md`. ROOT po kódu:
+  `planElement(input: PlannerInput)` = jeden element/volání; v PlannerInput
+  není pole elementů → agregace projektu strukturálně nemožná. + geometrie
+  ↔takty rozpojené (~7/23 typů má geom), 3 nekompatibilní mechanismy
+  množnosti, legacy tact-pole polu-zapojená, mrtvá pole (price_*, kridla).
+- **#1353 Faze 5 Step 1 — planProject() project-wrapper** (interview:
+  Path A / nezávisle+suma / nový vstup, planElement netknut). Nový
+  `shared/.../project-planner.ts`: `planProject(elements[])` prožene každý
+  element NEZMĚNĚNÝM `planElement`, agreguje objem/Nh (canon
+  buildLaborProjection)/peníze/rozvrh (sekvenční SUMA, null=NEPOČÍTÁNO),
+  honest-blank (padlý element izolován + počítán jako Nevypočtených N,
+  parciální suma). Paritní test: planProject([x]).elements[0].plan ≡
+  planElement(x). 1309 shared tests; goldens drží. Engine core byte-identical.
+
+**Faze 5 maršrut (5 kroků, každý PR + STOP gate, merge = Alexander):**
+Step 1 ✅ smergován. Step 2 = geometrie↔takty na úrovni elementu (interview
+příště: rozšířit geom pokrytí z ~7/23 nebo honest-blank na zbytku). Step 3
+legacy cleanup, Step 4 TZ persistence v project.json, Step 5 studio.
+
+**Otevřené hvosty:** LIVE check #1351 (po deploy); MULTIFLEX bez height +
+podkladni_beton rebar=0 throw (backlog, Step 3 je podebere); Patterns 51-55
+(samostatný batch, mimo Fázi 5).
+
+
+
 ## 2026-06-13 — Session: tz_facts napojení (živá fíčura Part B/C, úzký PR)
 
 **Scope (potvrzeno Alexandrem):** úzký provod tz_facts — extraktor (hotový)
