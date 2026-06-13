@@ -108,3 +108,45 @@ def test_register_defaults_to_pgvector_provider(monkeypatch):
     monkeypatch.setattr(cm, "_EMBEDDINGS_PROVIDER", None)
     ce.register_embeddings_provider()
     assert cm._EMBEDDINGS_PROVIDER is ce.pgvector_provider
+
+
+# ── ingest hardening (runbook ops-feedback) ──────────────────────────────────
+def test_doc_text_truncates_overlong_spec():
+    from scripts.ingest_otskp_catalog import _MAX_TEXT_CHARS, _doc_text
+    item = {"nazev": "Beton pilířů", "spec": "X" * 50000}  # multi-page spec
+    assert len(_doc_text(item)) == _MAX_TEXT_CHARS
+
+
+def test_token_budgeted_batches_splits_on_budget():
+    from scripts.ingest_otskp_catalog import _BATCH_TOKEN_BUDGET, _token_budgeted_batches
+    big = "Y" * (_BATCH_TOKEN_BUDGET * 4)  # one item alone ≈ the whole budget
+    pairs = [({"code": str(n)}, big) for n in range(3)]
+    batches = list(_token_budgeted_batches(pairs))
+    assert len(batches) == 3  # never packs two budget-filling items together
+    assert all(len(b) == 1 for b in batches)
+
+
+def test_token_budgeted_batches_respects_max_items():
+    from scripts.ingest_otskp_catalog import _MAX_BATCH_ITEMS, _token_budgeted_batches
+    pairs = [({"code": str(n)}, "short") for n in range(_MAX_BATCH_ITEMS + 5)]
+    batches = list(_token_budgeted_batches(pairs))
+    assert max(len(b) for b in batches) <= _MAX_BATCH_ITEMS
+    assert sum(len(b) for b in batches) == _MAX_BATCH_ITEMS + 5
+
+
+def test_load_xml_text_reads_local_path(tmp_path):
+    from scripts.ingest_otskp_catalog import load_xml_text, parse_otskp_xml
+    p = tmp_path / "otskp.xml"
+    p.write_text(_XML_PLAIN, encoding="utf-8")
+    items = parse_otskp_xml(load_xml_text(str(p)))  # non-gs:// → local read, no GCS
+    assert len(items) == 2
+
+
+def test_pgvector_migration_revision_id_within_alembic_limit():
+    # alembic_version.version_num defaults to VARCHAR(32) — a longer id fails the
+    # journal write (the runbook bug). Guard it here.
+    import pathlib
+    import re
+    mig = pathlib.Path(__file__).resolve().parent.parent / "alembic" / "versions" / "2026_06_11_otskp_embeddings_pgvector.py"
+    m = re.search(r'^revision:\s*str\s*=\s*"([^"]+)"', mig.read_text(), re.M)
+    assert m and len(m.group(1)) <= 32, "revision id must be ≤ 32 chars"
