@@ -426,6 +426,27 @@ deviation 1 takt → flag; Σ tact_volumes kontrola). 1304 shared tests. KV gold
 trám 1100 dopsán jako provenance [výkres KV]. PR vytvořen — **merge = Alexander**.
 Findings (MULTIFLEX, podkladni rebar=0) v backlogu. **Part C hotov = Fáze 1 finál.**
 
+**Dodatek 3 (2026-06-13, lekce + honest frontend/MCP status):**
+- **Pattern 39 lekce pro budoucí goldeny:** zdroj «schéma předpětí 202_18»
+  (TAKT 43.25/44.25/23.0, spáry ZA pilíři v zóně malých momentů) se ukázal
+  SILNĚJŠÍ než text zadání («32+44.5+32» = rozpětí, ne takty). Vizuální
+  čtení výkresu chytlo tichou chybu distribuce, kterou by text neodhalil.
+  Alexander potvrdil. Trojitá shoda exposure/lana (TZ §2 + VV + 202_18) +
+  uzavření obou PENDING ZDROJEM, ne analogií. **Regola: u golden taktů/objemů
+  výkres (schéma předpětí / podélný řez) > text zadání > analogie sesterského
+  mostu.**
+- **HONEST status validation rule (Part B/C) v produkci:** ověřeno grepem —
+  `tz_facts` NENÍ napojen ve frontendu (`frontend/src` 0 výskytů) ANI
+  forwardován v MCP (`calculator.py` 0 výskytů). Frontend má pole
+  `construction_technology` (radio), ale NESTAVÍ `tz_facts` z extraktoru a
+  neposílá ho do `planElement`. Důsledek: validation rule + Žalmanov flag
+  jsou pokryty VÝHRADNĚ hermetic shared testy; v živém frontendu/MCP rule
+  MLČÍ (po dizajnu «no docs → silent»), tj. fíčura zatím v produkci NEAKTIVNÍ
+  dokud se `tz_facts` nenapojí. NEoznačeno jako hotové. Part C deliverable A
+  (regex extraktor) běží, ale jeho výstup (construction_technology +
+  pour_stages_count) zatím nikdo nemapuje do `tz_facts`.
+- **#1348 advisor/MCP polish:** žádná živá kontrola na kalkulator.stavagent.cz
+  po deploy — jen Jest 60 + MCP compat 27. Zůstává otevřený P0.
 
 
 ## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
