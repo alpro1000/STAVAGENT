@@ -351,6 +351,42 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-13 — Session: tz_facts napojení (živá fíčura Part B/C, úzký PR)
+
+**Scope (potvrzeno Alexandrem):** úzký provod tz_facts — extraktor (hotový)
+→ tz_facts → planElement + MCP forward. JEN provod, ŽÁDNÉ jiné pole formuláře,
+ŽÁDNÁ agregace, ŽÁDNÉ nové pole. Recon-mapa polí = SAMOSTATNÉ další zadání.
+
+**Interview (3 otázky):** (1) tz_facts AUTO z textu TZ (bez kliků); (2) radio
+Technologie předvyplnit JEN když prázdné, tz_facts h
+hold ODDĚLENĚ jako zdroj
+srovnání (přepis radia = vstup vždy ≡ TZ → flag nikdy nefíruje, proto oddělený
+kanál); (3) MCP forward v tomto PR.
+
+**Hotovo:**
+- Frontend `useCalculator.buildInput`: z `tzText` zavolá
+  `extractConstructionTechnology`, postaví `input.tz_facts.construction`
+  (technology + pour_stages_count + quote + anchor), VŽDY předá do enginu.
+  NEpřepisuje `form.construction_technology` (vstupní strana). + effect:
+  předvyplní radio Technologie z TZ JEN když prázdné (ruční volbu netrhá →
+  vědomá odchylka stále fíruje flag).
+- MCP `calculate_concrete_works` + `_build_planner_payload`: nové optional
+  params `tz_technology` / `tz_pour_stages` / `tz_quote` / `tz_anchor` →
+  `payload.tz_facts.construction`. Flag teď funguje i pro Claude.ai/ChatGPT.
+- MCP compat test: vstup mss + 12 taktů vs TZ pevná skruž / 3 etapy → flag
+  (oba fasety), plán dál vzniká (ne gate). Replay fixture +1 → MCP compat
+  **28/28**. Frontend tsc + vite build clean; shared beze změny (1304).
+
+**Důsledek:** validation rule + Žalmanov flag teď DOJDOU do živé Varování
+card (frontend) i do MCP — fíčura Part B/C je v produkci AKTIVNÍ (dříve
+test-only). Live ověření na kalkulator.stavagent.cz po deploy zůstává
+PENDING (backlog) — netvrdím hotové, dokud neproběhne na webu.
+
+**Mimo scope (potvrzeno):** recon-mapa polí kalkulátoru (agregace elementů,
+vazba geometrie ↔ takty) = další samostatné zadání.
+
+
+
 ## 2026-06-13 — Session: Part C (finál Fáze 1) — regex-extrakce technologie + Žalmanov golden (STOP gate)
 
 **Interview (před kódem, zodpovězeno Alexandrem):** Q1 zdroj-autorita = jako

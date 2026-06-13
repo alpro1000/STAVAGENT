@@ -17,6 +17,7 @@ import {
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
 import { getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
+import { extractConstructionTechnology } from '@stavagent/monolit-shared';
 import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure, getMostRestrictive } from '@stavagent/monolit-shared';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
@@ -1281,8 +1282,43 @@ export default function useCalculator() {
         if (ch) input.pile_cap_height_m = ch;
       }
     }
+
+    // ── tz_facts wire (Part B/C live) ────────────────────────────────────
+    // Derive the documented construction technology + pour-stage count from
+    // the pasted TZ text and pass it as the SEPARATE comparison source for
+    // the validation rule. Deliberately does NOT touch form.construction_technology
+    // (the user's input side) — if the TZ fact overwrote the user's choice the
+    // two would always match and the contradiction flag could never fire.
+    if (tzText && tzText.trim()) {
+      const tech = extractConstructionTechnology(tzText);
+      if (tech && (tech.technology || tech.pour_stages_count !== undefined)) {
+        input.tz_facts = {
+          construction: {
+            ...(tech.technology ? { technology: tech.technology } : {}),
+            ...(tech.pour_stages_count !== undefined
+              ? { pour_stages_count: tech.pour_stages_count } : {}),
+            quote: tech.quote,
+            anchor: tech.anchor ?? 'TZ (extrahováno z textu)',
+          },
+        };
+      }
+    }
     return input;
   };
+
+  // tz_facts wire — prefill the "Technologie výstavby" radio from the TZ text
+  // ONLY when it is still empty (UX convenience). If the user already chose a
+  // technology by hand we leave it untouched, so a deliberate deviation from
+  // the TZ still surfaces the validation flag. Runs once per distinct tzText.
+  useEffect(() => {
+    if (!tzText || !tzText.trim()) return;
+    if (form.construction_technology) return; // never override a manual choice
+    const tech = extractConstructionTechnology(tzText);
+    if (tech?.technology) {
+      update('construction_technology', tech.technology as FormState['construction_technology']);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tzText]);
 
   // Auto-calculate on first render with defaults
   const firstRun = useMemo(() => {

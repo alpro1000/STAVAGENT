@@ -6394,6 +6394,862 @@
     },
     "resource_violations": []
    }
+  },
+  {
+   "payload": {
+    "element_type": "mostovkova_deska",
+    "volume_m3": 1348.97,
+    "concrete_class": "C35/45",
+    "is_prestressed": true,
+    "num_bridges": 1,
+    "temperature_c": 15,
+    "has_dilatacni_spary": false,
+    "height_m": 10.6,
+    "exposure_class": "XF2",
+    "curing_class": 4,
+    "construction_technology": "mss",
+    "bridge_deck_subtype": "dvoutram",
+    "tz_facts": {
+     "construction": {
+      "quote": "Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.",
+      "anchor": "TZ §4.1.6, str. 11",
+      "technology": "fixed_scaffolding",
+      "pour_stages_count": 3
+     }
+    }
+   },
+   "output": {
+    "element": {
+     "type": "mostovkova_deska",
+     "label_cs": "Mostovková deska",
+     "classification_confidence": 1,
+     "profile": {
+      "element_type": "mostovkova_deska",
+      "confidence": 1,
+      "label_cs": "Mostovková deska",
+      "rebar_category": "slabs_foundations",
+      "rebar_default_diameter_mm": 20,
+      "recommended_formwork": [
+       "MULTIFLEX",
+       "Top 50",
+       "Dokaflex"
+      ],
+      "difficulty_factor": 1.2,
+      "needs_supports": true,
+      "needs_platforms": true,
+      "needs_crane": true,
+      "rebar_ratio_kg_m3": 150,
+      "rebar_ratio_range": [
+       120,
+       180
+      ],
+      "rebar_norm_h_per_t": 50,
+      "strip_strength_pct": 70,
+      "orientation": "horizontal",
+      "max_pour_rate_m3_h": 30,
+      "pump_typical": true
+     }
+    },
+    "pour_decision": {
+     "pour_mode": "sectional",
+     "sub_mode": "independent",
+     "num_sections": 12,
+     "section_volume_m3": 112.41,
+     "max_sections_per_tact": 1,
+     "num_tacts": 12,
+     "tact_volume_m3": 112.41,
+     "t_window_hours": 5,
+     "pumps_required": 1,
+     "retarder_required": false,
+     "backup_pump": false,
+     "pour_hours_per_tact": 4.75,
+     "total_pour_hours": 56.97,
+     "scheduling_mode": "linear",
+     "cure_between_neighbors_h": 0,
+     "warnings": [
+      "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky."
+     ],
+     "decision_log": [
+      "T-window: 5h (season=normal, retarder=false)",
+      "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+      "Working joints: 12 záběrů × 112.4 m³ (max 120 m³/okno)"
+     ]
+    },
+    "formwork": {
+     "system": {
+      "name": "DOKA MSS",
+      "manufacturer": "DOKA",
+      "heights": [
+       "libovolná"
+      ],
+      "assembly_h_m2": 1.2,
+      "disassembly_h_m2": 0.6,
+      "disassembly_ratio": 0.5,
+      "rental_czk_m2_month": 0,
+      "unit": "m2",
+      "description": "DOKA MSS (Movable Scaffolding System) — posuvná skruž pro mosty velkých rozpětí, integruje bednění + nosníky + stojky v jednom rámu",
+      "needs_crane": true,
+      "formwork_category": "special",
+      "pour_role": "mss_integrated",
+      "applicable_element_types": [
+       "mostovkova_deska",
+       "rigel"
+      ],
+      "mss_reuse_factor": 0.35
+     },
+     "assembly_days": 3.54,
+     "disassembly_days": 1.77,
+     "curing_days": 9,
+     "three_phase": {
+      "initial_cost_labor": 74403.58,
+      "middle_cost_labor": 67639.62,
+      "final_cost_labor": 20291.89,
+      "total_cost_labor": 771091.67,
+      "initial_days": 5.84,
+      "middle_days": 5.31,
+      "final_days": 1.59,
+      "middle_tact_count": 10
+     },
+     "strategies": [
+      {
+       "id": "A",
+       "label": "Posloupně (1 sada)",
+       "sets": 1,
+       "total_days": 227.2,
+       "rental_days": 229.2
+      },
+      {
+       "id": "B",
+       "label": "S překrytím (2 sady)",
+       "sets": 2,
+       "total_days": 168.8,
+       "rental_days": 170.8
+      },
+      {
+       "id": "C",
+       "label": "Paralelně (plný)",
+       "sets": 12,
+       "total_days": 18.93,
+       "rental_days": 20.93
+      }
+     ],
+     "shape_correction": 1
+    },
+    "rebar": {
+     "mass_kg": 11241,
+     "mass_t": 11.241,
+     "mass_source": "user",
+     "norm_h_per_t": 8.6,
+     "norm_source": "matrix",
+     "norm_category": "slabs_foundations",
+     "norm_diameter_mm": 20,
+     "labor_hours": 96.67,
+     "duration_days": 3.02,
+     "cost_labor": 38475.69,
+     "optimistic_days": 2.57,
+     "most_likely_days": 3.02,
+     "pessimistic_days": 3.93,
+     "crew_size": 4,
+     "recommended_crew": 3,
+     "element_type": "mostovkova_deska",
+     "confidence": 0.95,
+     "assumptions_log": "element=mostovkova_deska, vol=112.41m³, mass=11.241t (user), norm=8.6h/t (slabs_foundations D20), crew=4, shift=10h"
+    },
+    "pour": {
+     "effective_rate_m3_h": 30,
+     "rate_bottleneck": "element",
+     "pumping_hours": 3.75,
+     "total_pour_hours": 4.75,
+     "pour_days": 0.47,
+     "pump_needed": true,
+     "pumps_required": 1,
+     "backup_pump_recommended": false,
+     "pumps_for_actual_window": {
+      "count": 1,
+      "total_rate_m3_h": 30,
+      "pour_duration_h": 4.75,
+      "scenario": "Skutečná doba betonáže (1 čerpadlo)"
+     },
+     "pour_window_h": 5,
+     "fits_in_window": true,
+     "pour_sessions": 1,
+     "warnings": [],
+     "assumptions_log": "element=mostovkova_deska, vol=112.41m³, Q_eff=30m³/h (element), window=5h, season=normal, retarder=no"
+    },
+    "schedule": {
+     "total_days": 272.4,
+     "sequential_days": 293.2,
+     "savings_days": 20.8,
+     "savings_pct": 7,
+     "tact_details": [
+      {
+       "tact": 1,
+       "set": 1,
+       "assembly": [
+        0,
+        3.5
+       ],
+       "rebar": [
+        1.8,
+        4.8
+       ],
+       "concrete": [
+        4.8,
+        6.4
+       ],
+       "curing": [
+        6.4,
+        7.9
+       ],
+       "prestress": [
+        7.9,
+        20.9
+       ],
+       "stripping": [
+        20.9,
+        22.7
+       ]
+      },
+      {
+       "tact": 2,
+       "set": 1,
+       "assembly": [
+        22.7,
+        26.2
+       ],
+       "rebar": [
+        24.5,
+        27.5
+       ],
+       "concrete": [
+        27.5,
+        29.1
+       ],
+       "curing": [
+        29.1,
+        30.6
+       ],
+       "prestress": [
+        30.6,
+        43.6
+       ],
+       "stripping": [
+        43.6,
+        45.4
+       ]
+      },
+      {
+       "tact": 3,
+       "set": 1,
+       "assembly": [
+        45.4,
+        48.9
+       ],
+       "rebar": [
+        47.2,
+        50.2
+       ],
+       "concrete": [
+        50.2,
+        51.8
+       ],
+       "curing": [
+        51.8,
+        53.3
+       ],
+       "prestress": [
+        53.3,
+        66.3
+       ],
+       "stripping": [
+        66.3,
+        68.1
+       ]
+      },
+      {
+       "tact": 4,
+       "set": 1,
+       "assembly": [
+        68.1,
+        71.6
+       ],
+       "rebar": [
+        69.9,
+        72.9
+       ],
+       "concrete": [
+        72.9,
+        74.5
+       ],
+       "curing": [
+        74.5,
+        76
+       ],
+       "prestress": [
+        76,
+        89
+       ],
+       "stripping": [
+        89,
+        90.8
+       ]
+      },
+      {
+       "tact": 5,
+       "set": 1,
+       "assembly": [
+        90.8,
+        94.3
+       ],
+       "rebar": [
+        92.6,
+        95.6
+       ],
+       "concrete": [
+        95.6,
+        97.2
+       ],
+       "curing": [
+        97.2,
+        98.7
+       ],
+       "prestress": [
+        98.7,
+        111.7
+       ],
+       "stripping": [
+        111.7,
+        113.5
+       ]
+      },
+      {
+       "tact": 6,
+       "set": 1,
+       "assembly": [
+        113.5,
+        117
+       ],
+       "rebar": [
+        115.3,
+        118.3
+       ],
+       "concrete": [
+        118.3,
+        119.9
+       ],
+       "curing": [
+        119.9,
+        121.4
+       ],
+       "prestress": [
+        121.4,
+        134.4
+       ],
+       "stripping": [
+        134.4,
+        136.2
+       ]
+      },
+      {
+       "tact": 7,
+       "set": 1,
+       "assembly": [
+        136.2,
+        139.7
+       ],
+       "rebar": [
+        138,
+        141
+       ],
+       "concrete": [
+        141,
+        142.6
+       ],
+       "curing": [
+        142.6,
+        144.1
+       ],
+       "prestress": [
+        144.1,
+        157.1
+       ],
+       "stripping": [
+        157.1,
+        158.9
+       ]
+      },
+      {
+       "tact": 8,
+       "set": 1,
+       "assembly": [
+        158.9,
+        162.4
+       ],
+       "rebar": [
+        160.7,
+        163.7
+       ],
+       "concrete": [
+        163.7,
+        165.3
+       ],
+       "curing": [
+        165.3,
+        166.8
+       ],
+       "prestress": [
+        166.8,
+        179.8
+       ],
+       "stripping": [
+        179.8,
+        181.6
+       ]
+      },
+      {
+       "tact": 9,
+       "set": 1,
+       "assembly": [
+        181.6,
+        185.1
+       ],
+       "rebar": [
+        183.4,
+        186.4
+       ],
+       "concrete": [
+        186.4,
+        188
+       ],
+       "curing": [
+        188,
+        189.5
+       ],
+       "prestress": [
+        189.5,
+        202.5
+       ],
+       "stripping": [
+        202.5,
+        204.3
+       ]
+      },
+      {
+       "tact": 10,
+       "set": 1,
+       "assembly": [
+        204.3,
+        207.8
+       ],
+       "rebar": [
+        206.1,
+        209.1
+       ],
+       "concrete": [
+        209.1,
+        210.7
+       ],
+       "curing": [
+        210.7,
+        212.2
+       ],
+       "prestress": [
+        212.2,
+        225.2
+       ],
+       "stripping": [
+        225.2,
+        227
+       ]
+      },
+      {
+       "tact": 11,
+       "set": 1,
+       "assembly": [
+        227,
+        230.5
+       ],
+       "rebar": [
+        228.8,
+        231.8
+       ],
+       "concrete": [
+        231.8,
+        233.4
+       ],
+       "curing": [
+        233.4,
+        234.9
+       ],
+       "prestress": [
+        234.9,
+        247.9
+       ],
+       "stripping": [
+        247.9,
+        249.7
+       ]
+      },
+      {
+       "tact": 12,
+       "set": 1,
+       "assembly": [
+        249.7,
+        253.2
+       ],
+       "rebar": [
+        251.5,
+        254.5
+       ],
+       "concrete": [
+        254.5,
+        256.1
+       ],
+       "curing": [
+        256.1,
+        257.6
+       ],
+       "prestress": [
+        257.6,
+        270.6
+       ],
+       "stripping": [
+        270.6,
+        272.4
+       ]
+      }
+     ],
+     "critical_path": [
+      "T0_ASM",
+      "T0_REB",
+      "T0_CON",
+      "T0_CUR",
+      "T0_PRE",
+      "T0_STR",
+      "T1_ASM",
+      "T1_REB",
+      "T1_CON",
+      "T1_CUR",
+      "T1_PRE",
+      "T1_STR",
+      "T2_ASM",
+      "T2_REB",
+      "T2_CON",
+      "T2_CUR",
+      "T2_PRE",
+      "T2_STR",
+      "T3_ASM",
+      "T3_REB",
+      "T3_CON",
+      "T3_CUR",
+      "T3_PRE",
+      "T3_STR",
+      "T4_ASM",
+      "T4_REB",
+      "T4_CON",
+      "T4_CUR",
+      "T4_PRE",
+      "T4_STR",
+      "T5_ASM",
+      "T5_REB",
+      "T5_CON",
+      "T5_CUR",
+      "T5_PRE",
+      "T5_STR",
+      "T6_ASM",
+      "T6_REB",
+      "T6_CON",
+      "T6_CUR",
+      "T6_PRE",
+      "T6_STR",
+      "T7_ASM",
+      "T7_REB",
+      "T7_CON",
+      "T7_CUR",
+      "T7_PRE",
+      "T7_STR",
+      "T8_ASM",
+      "T8_REB",
+      "T8_CON",
+      "T8_CUR",
+      "T8_PRE",
+      "T8_STR",
+      "T9_ASM",
+      "T9_REB",
+      "T9_CON",
+      "T9_CUR",
+      "T9_PRE",
+      "T9_STR",
+      "T10_ASM",
+      "T10_REB",
+      "T10_CON",
+      "T10_CUR",
+      "T10_PRE",
+      "T10_STR",
+      "T11_ASM",
+      "T11_REB",
+      "T11_CON",
+      "T11_CUR",
+      "T11_PRE",
+      "T11_STR"
+     ],
+     "gantt": "Den:  0    5    10    15    20    25    30    35    40    45    50    55    60    65    70    75    80    85    90    95    100    105    110    115    120    125    130    135    140    145    150    155    160    165    170    175    180    185    190    195    200    205    2\nS1:   ████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓█████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓████·░══▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓████░░══▼▼▼▼▼▼▼▼▼▼▼▼▼▓█████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓████·░══▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓████·░══▼▼▼▼▼▼▼▼▼▼▼▼▼▓█████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓█████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓████·░══▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓█████░░═▼▼▼▼▼▼▼▼▼▼▼▼▼▓▓▓\nFW:   ████················▓▓█████················▓▓████·················▓▓████·················▓█████················▓▓████·················▓▓████·················▓█████················▓▓█████················▓▓████·················▓▓████················▓▓█████················▓▓▓\nRB:   ·▒▒▒▒···················▒▒▒▒···················▒▒▒▒··················▒▒▒▒···················▒▒▒▒···················▒▒▒▒··················▒▒▒▒···················▒▒▒▒···················▒▒▒▒···················▒▒▒▒··················▒▒▒▒···················▒▒▒▒··················\n\n█=montáž ▒=výztuž ░=beton ═=zrání ▓=demontáž ·=volno",
+     "utilization": {
+      "formwork_crews": 0.2,
+      "rebar_crews": 0.1,
+      "sets": [
+       0.9
+      ]
+     },
+     "bottleneck": null,
+     "effective_curing_days": 1.5
+    },
+    "resources": {
+     "total_formwork_workers": 4,
+     "total_rebar_workers": 4,
+     "num_formwork_crews": 1,
+     "num_rebar_crews": 1,
+     "crew_size_formwork": 4,
+     "crew_size_rebar": 4,
+     "shift_h": 10,
+     "wage_formwork_czk_h": 398,
+     "wage_rebar_czk_h": 398,
+     "wage_pour_czk_h": 398,
+     "pour_shifts": 1,
+     "pour_simultaneous_headcount": 5,
+     "pour_rostered_headcount": 5,
+     "pour_has_night_premium": false,
+     "pour_crew_breakdown": {
+      "ukladani": 2,
+      "vibrace": 2,
+      "finiseri": 1,
+      "rizeni": 0,
+      "total": 5,
+      "pumps_used": 1
+     }
+    },
+    "prestress": {
+     "days": 13,
+     "crew_size": 5,
+     "skruz_total_days": 22
+    },
+    "costs": {
+     "formwork_labor_czk": 771091.67,
+     "rebar_labor_czk": 461708.28,
+     "pour_labor_czk": 113430,
+     "pour_night_premium_czk": 0,
+     "total_labor_czk": 1346229.95,
+     "formwork_rental_czk": 0,
+     "props_labor_czk": 0,
+     "props_rental_czk": 0,
+     "is_mss_path": true,
+     "mss_mobilization_czk": 0,
+     "mss_demobilization_czk": 0,
+     "mss_rental_czk": 0
+    },
+    "norms_sources": {
+     "formwork_assembly": "DOKA MSS: 1.44 h/m² (základ 1.2 h/m² × faktor obtížnosti 1.2). Zdroj: FORMWORK_SYSTEMS (element-classifier.ts, data z katalogů Doka/PERI/NOE)",
+     "formwork_disassembly": "DOKA MSS: 0.72 h/m² (základ 0.6 h/m² × 1.2). Zdroj: katalog výrobce",
+     "rebar": "8.6 h/t (typ: user). Zdroj: REBAR_NORMS (element-classifier.ts, ČSN 73 0210, oborové průměry)",
+     "curing": "ČSN EN 13670 Tab. NA.2: 9 dní při 15°C, C35/45, CEM_I",
+     "skruz": "ČSN 73 6244 + ČSN EN 13670: min. 9 dní od poslední betonáže (sezóna \"podzim_jaro\", C35/45, 15°C). Porovnáno se zráním dle maturity modelu — použita delší hodnota."
+    },
+    "deadline_check": {
+     "calculated_days": 272.4,
+     "overrun_days": 0,
+     "fits": true,
+     "suggestions": [
+      {
+       "label": "1 čet bednění, 1 čet výztuže, 2 sad",
+       "num_formwork_crews": 1,
+       "num_rebar_crews": 1,
+       "num_sets": 2,
+       "total_days": 67.1,
+       "total_cost_czk": 1346230,
+       "extra_cost_czk": 0,
+       "fits_deadline": true,
+       "cost_breakdown": {
+        "labor_czk": 1346229.95,
+        "rental_czk": 0
+       }
+      },
+      {
+       "label": "1 čet bednění, 1 čet výztuže, 3 sad",
+       "num_formwork_crews": 1,
+       "num_rebar_crews": 1,
+       "num_sets": 3,
+       "total_days": 66.2,
+       "total_cost_czk": 1346230,
+       "extra_cost_czk": 0,
+       "fits_deadline": true,
+       "cost_breakdown": {
+        "labor_czk": 1346229.95,
+        "rental_czk": 0
+       }
+      },
+      {
+       "label": "1 čet bednění, 1 čet výztuže, 4 sad",
+       "num_formwork_crews": 1,
+       "num_rebar_crews": 1,
+       "num_sets": 4,
+       "total_days": 66.2,
+       "total_cost_czk": 1346230,
+       "extra_cost_czk": 0,
+       "fits_deadline": true,
+       "cost_breakdown": {
+        "labor_czk": 1346229.95,
+        "rental_czk": 0
+       }
+      },
+      {
+       "label": "1 čet bednění, 1 čet výztuže, 5 sad",
+       "num_formwork_crews": 1,
+       "num_rebar_crews": 1,
+       "num_sets": 5,
+       "total_days": 66.2,
+       "total_cost_czk": 1346230,
+       "extra_cost_czk": 0,
+       "fits_deadline": true,
+       "cost_breakdown": {
+        "labor_czk": 1346229.95,
+        "rental_czk": 0
+       }
+      },
+      {
+       "label": "1 čet bednění, 1 čet výztuže, 6 sad",
+       "num_formwork_crews": 1,
+       "num_rebar_crews": 1,
+       "num_sets": 6,
+       "total_days": 66.2,
+       "total_cost_czk": 1346230,
+       "extra_cost_czk": 0,
+       "fits_deadline": true,
+       "cost_breakdown": {
+        "labor_czk": 1346229.95,
+        "rental_czk": 0
+       }
+      }
+     ],
+     "cheapest_faster": {
+      "label": "1 čet bednění, 1 čet výztuže, 2 sad",
+      "num_formwork_crews": 1,
+      "num_rebar_crews": 1,
+      "num_sets": 2,
+      "total_days": 67.1,
+      "total_cost_czk": 1346230,
+      "extra_cost_czk": 0,
+      "fits_deadline": true,
+      "cost_breakdown": {
+       "labor_czk": 1346229.95,
+       "rental_czk": 0
+      }
+     },
+     "fastest": {
+      "label": "4 čet bednění, 4 čet výztuže, 6 sad",
+      "num_formwork_crews": 4,
+      "num_rebar_crews": 4,
+      "num_sets": 6,
+      "total_days": 24.7,
+      "total_cost_czk": 1346230,
+      "extra_cost_czk": 0,
+      "fits_deadline": true,
+      "cost_breakdown": {
+       "labor_czk": 1346229.95,
+       "rental_czk": 0
+      }
+     }
+    },
+    "warnings": [
+     "DOKA MSS (MSS) vyžaduje jeřáb (panel 150+ kg) — zajistěte jeřáb na stavbě pro celou dobu montáže.",
+     "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+     "Nosná konstrukce se betonuje PO dokončení spodní stavby (opěry, pilíře, úložné prahy). Ověřte že spodní stavba je hotová.",
+     "Trámový nosník: 2 fáze betonáže — nejdřív trámy, pak deska (pracovní spára).",
+     "Mostovková deska bez spár: použito max. 1 kompletní souprava/y (1 souprava na 1 most). Zadaných 2 souprav bylo omezeno.",
+     "Výztuž rozdělit: B500B (zadáno) + předpínací Y1860S7 (~30 kg/m³, 40.47 t, ~100 Kč/kg). Různí dodavatelé: armovna (B500B) + specializovaná firma (Y1860).",
+     "Trámový nosník — betonáž ve 2 fázích (nejdřív trámy, pauza 6 h pro mírné tuhnutí, pak deska). Doba záběru navýšena o 0.6 dne (1d → 1.6d).",
+     "Předpjatá NK: předpětí a injektáž kanálků PŘED odbedněním skruže. Min. 13 dní. Skruž stojí celkem 22 dní (zrání 9d + předpětí 13d).",
+     "MSS montáž: ~10 lidí (tesaři) × 30 dní = 0.00 M Kč (vlastní síly). Per-takt úprava: tesaři, Nhod × 0.35 (přesun + re-tensioning). MSS demontáž: ~15 dní = 0.00 M Kč.",
+     "⚠️ Vstup se odchyluje od dokumentace: TZ předepisuje pevná skruž [TZ §4.1.6, str. 11: „Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.\"], vstup = výsuvná skruž (MSS). Odchylka od PD = vědomé rozhodnutí zhotovitele (přepočet statiky stadií výstavby, u předpjatých konstrukcí spojky kabelů, nový TePř).",
+     "⚠️ Vstup se odchyluje od dokumentace: TZ předepisuje betonáž ve 3 etapách [TZ §4.1.6, str. 11: „Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.\"], vstup = 12 taktů. Odchylka od PD = vědomé rozhodnutí zhotovitele (přepočet statiky stadií výstavby, u předpjatých konstrukcí spojky kabelů, nový TePř)."
+    ],
+    "decision_log": [
+     "Element: mostovkova_deska (explicit)",
+     "Formwork: MSS shortcut → DOKA MSS (pour_role=mss_integrated)",
+     "Formwork: DOKA MSS (1.44 h/m², df=1.2)",
+     "Pour: sectional/independent, 12 tacts × 112.41m³",
+     "Deck subtype dvoutram: difficulty_factor → 1.2",
+     "Formwork kits capped for monolithic bridge deck: 2 → 1",
+     "Formwork area: 224.8 m² per tact (estimated)",
+     "Season not specified — defaulting to \"podzim_jaro\" (21d skruž hold). Pass season: 'hot'|'normal'|'cold' for accurate results.",
+     "Maturity strip: 9.0d (70% f_ck, 15°C, CEM_I)",
+     "Skruž: sezónní minimum (ČSN 73 6244) NEAPLIKOVÁNO — předpjatá NK, odskružení až po napnutí kabelů (TZ §6.5.2); skruž drží zrání + předpětí.",
+     "MSS reuse factor ×0.35 → per-tact Nhod 1.44→0.504 asm, 0.72→0.252 strike (full mount already in MSS mobilization)",
+     "Prestress rebar Y1860: 3372kg/tact, 40.47t total (30 kg/m³ × 1348.97m³)",
+     "Rebar: 11241kg/tact, 3.02d/tact (user, 1 čet×4 prac.=4 železářů, RCPSP parallel=1)",
+     "Pour: 30m³/h, 4.75h/tact (bottleneck: element)",
+     "Pour crew: 5 lidí (2+2+1+0, 1 čerpadel) for 4.8h pour",
+     "Two-phase mostovka pour: +6h pauza = +0.6d (1d → 1.6d)",
+     "Prestress: 13d = wait 9d (max{7, curing=9}) + stressing 2d (default 2 cables, oboustranné) + grouting 2d. Skruž stojí ještě zrání 9d navíc — celková doba skruže = 22d.",
+     "Props: skipped — MSS integrated layer (stojky + skruž + bednění v jednom, kryto MSS rental)",
+     "Schedule: 272.4d (sequential 293.2d, savings 7%)",
+     "MSS costs: mobilization 0.00 M + demobilization 0.00 M Kč → flowing into formwork_labor (vlastní síly tesaři). Rental 0.00 M Kč bundled separately (pronájem MSS stroje).",
+     "T-window: 5h (season=normal, retarder=false)",
+     "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+     "Working joints: 12 záběrů × 112.4 m³ (max 120 m³/okno)"
+    ],
+    "validation_flags": [
+     {
+      "rule_id": "tz_construction_consistency",
+      "severity": "warning",
+      "tz_value": "pevná skruž",
+      "tz_quote": "Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.",
+      "tz_anchor": "TZ §4.1.6, str. 11",
+      "input_value": "výsuvná skruž (MSS)",
+      "message": "⚠️ Vstup se odchyluje od dokumentace: TZ předepisuje pevná skruž [TZ §4.1.6, str. 11: „Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.\"], vstup = výsuvná skruž (MSS). Odchylka od PD = vědomé rozhodnutí zhotovitele (přepočet statiky stadií výstavby, u předpjatých konstrukcí spojky kabelů, nový TePř)."
+     },
+     {
+      "rule_id": "tz_construction_consistency",
+      "severity": "warning",
+      "tz_value": "betonáž ve 3 etapách",
+      "tz_quote": "Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.",
+      "tz_anchor": "TZ §4.1.6, str. 11",
+      "input_value": "12 taktů",
+      "message": "⚠️ Vstup se odchyluje od dokumentace: TZ předepisuje betonáž ve 3 etapách [TZ §4.1.6, str. 11: „Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.\"], vstup = 12 taktů. Odchylka od PD = vědomé rozhodnutí zhotovitele (přepočet statiky stadií výstavby, u předpjatých konstrukcí spojky kabelů, nový TePř)."
+     }
+    ],
+    "resource_ceiling": {
+     "workforce": {
+      "num_workers_total": 21,
+      "num_carpenters": 4,
+      "num_rebar_workers": 4,
+      "num_concrete_workers": 6,
+      "num_vibrators": 3,
+      "num_finishers": 2,
+      "num_supervisors": 2
+     },
+     "formwork": {
+      "num_formwork_sets": 1,
+      "num_falsework_sets": 1,
+      "num_props_sets": 1
+     },
+     "equipment": {
+      "num_pumps": 2,
+      "num_backup_pumps": 1,
+      "plant_rate_m3_h": 80,
+      "mixer_delivery_m3_h": 60,
+      "num_cranes": 1,
+      "crane_max_load_kg": 6000
+     },
+     "time": {
+      "shifts_per_day": 2,
+      "shift_h": 10,
+      "allow_night_shift": true
+     },
+     "confidence": 0.85,
+     "source": "kb_default"
+    },
+    "resource_violations": []
+   }
   }
  ]
 }

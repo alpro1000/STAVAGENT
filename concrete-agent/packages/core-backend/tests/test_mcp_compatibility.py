@@ -344,6 +344,44 @@ async def test_calculator_formwork_override_mismatch_warning(mcp_server, calcula
 
 
 @pytest.mark.asyncio
+async def test_calculator_tz_facts_forwarded_validation_flag(mcp_server, calculate_replay):
+    """tz_technology/tz_pour_stages are forwarded into the engine's tz_facts so
+    the Part B/C validation rule fires through MCP: input mss + 12 takty
+    contradicts the documented pevná skruž / 3 etapy → VISIBLE flag (not a gate).
+    Wires the rule for Claude.ai / ChatGPT, not just the live frontend."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "mostovkova_deska",
+            "volume_m3": 1348.97,
+            "concrete_class": "C35/45",
+            "exposure_class": "XF2",
+            "curing_class": 4,
+            "nk_subtype": "dvoutramovy",
+            "is_prestressed": True,
+            "height_m": 10.6,
+            "construction_technology": "mss",  # contradicts the TZ fact below
+            "tz_technology": "fixed_scaffolding",
+            "tz_pour_stages": 3,
+            "tz_quote": "Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.",
+            "tz_anchor": "TZ §4.1.6, str. 11",
+        },
+    )
+    data = result.structured_content
+    assert data.get("source") == "monolit_planner_api"
+    # Structured sibling present + carries the TZ quote/anchor
+    flags = data.get("validation_flags") or []
+    assert any(f.get("rule_id") == "tz_construction_consistency" for f in flags), (
+        f"tz_facts not forwarded — validation rule did not fire. Got: {flags!r}"
+    )
+    tech_flag = next(f for f in flags if f.get("tz_value") == "pevná skruž")
+    assert tech_flag["tz_anchor"] == "TZ §4.1.6, str. 11"
+    assert tech_flag["input_value"] == "výsuvná skruž (MSS)"
+    # Flag, not a gate — the plan still computes.
+    assert data["schedule"]["total_days"] > 0
+
+
+@pytest.mark.asyncio
 async def test_calculator_manufacturer_override_only(mcp_server, calculate_replay):
     """preferred_manufacturer pre-filters the engine's auto-selection to PERI."""
     result = await mcp_server.call_tool(
