@@ -12,7 +12,7 @@ column. gecko@003 (768) is retired (2025-05-24) and intentionally NOT used.
 
 Reversible. Apply via `alembic upgrade head`.
 
-Revision ID: catalog_otskp_embeddings_pgvector
+Revision ID: otskp_embeddings_pgvector
 Revises: orch_sg_pr3b_audit
 Create Date: 2026-06-11
 """
@@ -24,8 +24,9 @@ from alembic import op
 
 from app.core.config import settings
 
-# revision identifiers
-revision: str = "catalog_otskp_embeddings_pgvector"
+# revision identifiers — KEEP ≤ 32 chars (Alembic's default alembic_version
+# .version_num is VARCHAR(32); a longer id fails the journal write).
+revision: str = "otskp_embeddings_pgvector"
 down_revision: Union[str, None] = "orch_sg_pr3b_audit"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

@@ -19,6 +19,7 @@ test/CI environment without the SDK or ADC.
 from __future__ import annotations
 
 import logging
+import time
 from typing import List, Optional
 
 from app.core.config import settings
@@ -40,6 +41,7 @@ class VertexEmbeddings:
         self.dim = dim or settings.EMBEDDING_DIM
         self.location = location or settings.EMBEDDING_LOCATION
         self.project_id = project_id or settings.GOOGLE_PROJECT_ID
+        self.max_retries = 5  # transient gRPC 503 / ReadTimeout backoff
         self._model = None
 
     def _ensure_model(self):
@@ -61,8 +63,20 @@ class VertexEmbeddings:
         # output_dimensionality drives MRL truncation (gemini-embedding-001) and
         # is a no-op at the native dim for multilingual-002 — passing it is safe
         # and keeps the column/model contract explicit.
-        embeddings = model.get_embeddings(inputs, output_dimensionality=self.dim)
-        return [e.values for e in embeddings]
+        last_err = None
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                embeddings = model.get_embeddings(inputs, output_dimensionality=self.dim)
+                return [e.values for e in embeddings]
+            except Exception as e:  # noqa: BLE001 — transient gRPC 503 / ReadTimeout / quota
+                last_err = e
+                if attempt == self.max_retries:
+                    break
+                wait = min(2 ** attempt, 30)
+                logger.warning("[VertexEmbeddings] get_embeddings failed (attempt %d/%d): %s — retry in %ds",
+                               attempt, self.max_retries, e, wait)
+                time.sleep(wait)
+        raise RuntimeError(f"Vertex embeddings failed after {self.max_retries} attempts: {last_err}")
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         """Embed catalog item texts for indexing (batch ≤ 250)."""

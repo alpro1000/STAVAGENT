@@ -265,16 +265,39 @@ data lives in GCS. Provenance label = `settings.OTSKP_CATALOG_VERSION` ("OTSKP 2
 Indexing runs directly on the 2026 base (no double re-index). Tool docstring's
 "17,904" softened to a version-stamped, count-agnostic description.
 
-### 8.4 Deploy runbook (1b — not runnable in CI; ops steps)
-1. Create `gs://stavagent-catalogs`; upload SFDI XML to `catalogs/`. Confirm the
-   norms Data Store sync does NOT include it (separate bucket → automatic).
-2. `alembic upgrade head` → installs `vector` ext + `otskp_embeddings(vector(768))`.
+### 8.4 Deploy runbook (1b — ops steps; verified on a live Cloud Shell run)
+Run from `concrete-agent/packages/core-backend` (alembic.ini is in `concrete-agent/`,
+two levels up). The ingest script self-bootstraps `sys.path` (no `PYTHONPATH` needed).
+1. Bucket `gs://stavagent-catalogs/otskp/` (separate from the norms bucket → not synced
+   into the RAG Data Store). cloud-sql-proxy to `…:europe-west3:stavagent-db`; build
+   `DATABASE_URL` from secret `CONCRETE_DATABASE_URL` with host → 127.0.0.1:5432.
+2. `alembic -c ../../alembic.ini upgrade head` → `vector` ext + `otskp_embeddings(vector(768))`.
+   **Existing DB pre-dates Alembic** (raw-SQL startup migrations created the tables, no
+   `alembic_version`) → `upgrade head` fails `users already exists`. One-time fix:
+   `alembic -c ../../alembic.ini stamp orch_sg_pr3b_audit` then re-run upgrade. (Systemic
+   debt: align startup raw-SQL with the Alembic journal — post-Cemex.)
 3. `python scripts/ingest_otskp_catalog.py --gcs gs://stavagent-catalogs/otskp/2026_OTSKP_sfdi_otevreny_format.xml --db-out app/otskp.db --index`
-   (builds otskp.db + embeds + upserts into pgvector). Note the real item count;
-   update any remaining hardcoded counts.
-4. At startup, after the catalog is indexed, call
-   `catalog_embeddings.register_embeddings_provider()` to wire the seam.
-5. Confirm MCP compat suite green on CI (fastmcp unavailable locally).
+   — or pre-`gsutil cp` and pass a **local path** to `--gcs` (avoids Cloud-Shell egress
+   ReadTimeout on the 17 MB file). Logs `Parsed N` (= real count) + `Indexed N`.
+4. `register_embeddings_provider()` is now called automatically at app startup (#1344) —
+   recall activates once the table is populated. No manual step.
+5. **otskp.db (exact code-lookup) is still the bundled 2025_03 build** until re-baked into
+   the image — `find_otskp_code` *prices* stay 2025 until then (the pgvector *recall*
+   index is 2026). Rebake = separate deploy step (Phase 2).
+6. Confirm MCP compat suite green on CI (fastmcp unavailable locally).
+
+### 8.6 Ops-feedback from the live §8.4 run (folded into the runbook above)
+- `alembic.ini` at `concrete-agent/` root, migrations in `core-backend/` → `-c ../../alembic.ini`.
+- Existing DB had no `alembic_version` (raw-SQL startup) → `stamp orch_sg_pr3b_audit` before upgrade.
+- Revision id `catalog_otskp_embeddings_pgvector` (33) > `alembic_version` VARCHAR(32) → **fixed in repo**:
+  id shortened to `otskp_embeddings_pgvector` (25) + a ≤32 convention comment + a guard test.
+- `ModuleNotFoundError: app` from `core-backend` → **fixed**: `sys.path` bootstrap in the script.
+- `download_as_text` ReadTimeout / gRPC 503 on 17 MB from Cloud Shell → **fixed**:
+  `download_to_filename` + retry/backoff + local-path input; embed client gets retry/backoff too.
+- Embedding batch blew the ~20k-token per-request ceiling (multi-page spec items: 22 068 / 26 480
+  tokens) → **fixed**: per-text truncation (8k chars) + token-budgeted batching.
+- **Actual OTSKP 2026 count = 17 940** (was 17 904) → landing badge updated to "17 940 · OTSKP 2026";
+  MCP tool descriptions still cite 17 904 → **Phase 2** (with the otskp.db rebake).
 
 ### 8.5 What 1b delivers vs defers
 **Delivered (code + hermetic tests, 27 green):** model/dim config · embeddings
@@ -286,6 +309,21 @@ Core table + human-confirm-0.99 (acceptance #11; lands with the kiosk migration,
 Phase 3) · local ÚRS-2018 fallback at conf 0.60–0.65 + "ověřit proti aktuálnímu
 katalogu" UI flag (acceptance #12; ÚRS branch / Phase 3) · Phase 2 docstring
 example-code fix.
+
+**Phase 2 (added from runbook run):** rebake `otskp.db` (exact lookup) to OTSKP 2026 into
+the image (prices → 2026) · update MCP tool descriptions count 17 904 → **17 940**
+(server.py instructions, routes.py, otskp.py, breakdown.py, urs.py "seed").
+
+**Phase 3 — ÚRS branch BYOK (scope addition, 2026-06-13):** per-account ÚRS API key,
+**encrypted storage** (alongside the P0 cross-user isolation work), **three tiers behind
+ONE retrieve seam**: licensed ÚRS API 0.85–0.90 → web 0.80 → local-2018 0.6x (with
+"ověřit proti aktuálnímu katalogu"). **Key NEVER in logs or provenance.** Learned-mappings
+store **code + binding only** (human-confirm 0.99) — no replication of catalog názvy;
+cache-of-names policy must be reconciled with the ÚRS licence in the design proposal.
+
+**Systemic debt (post-Cemex):** align the raw-SQL startup migrations with the Alembic
+journal (an existing DB has tables but no `alembic_version` → needs a `stamp`); pick one
+source of truth so `alembic upgrade head` works on a fresh AND an existing DB.
 
 ## 9. STOP
 
