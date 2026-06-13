@@ -182,6 +182,11 @@ References:
   překlep); správně §6.5.1 + výkres 18 (110 m ≈ délka NK 111.5 m).
   Potvrzeno Alexander, STOP gate A 2026-06-11.
 - Šířka NK: 10.25 m (konstrukční), 10.85 m (vč. říms) `[TZ §1]`
+- Průřez NK: dvoutrám, **trám výška 1100 mm**, **koncový příčník 950 mm**,
+  šířka NK 10.25 m `[výkres KV příčný řez NK / příčný řez koncovým příčníkem]`
+  — výkres-potvrzení 2026-06-13 (Part C cross-check); doplněno jako provenance,
+  golden assertions nezměněny. Kontrast s Žalmanov (trám 2400 nad podporou,
+  pole 44.5 m) = názorný důkaz, proč se čísla mezi mosty NEdědí.
 - Plocha NK: 10.85 × 111.5 = 1 209.78 m² (1 most) `[TZ §1 — derived]`
 - Technologie: **PEVNÁ SKRUŽ v 1 taktu** `[TZ §7.2; §6.11.3 „v jedné etapě"]`
 - **Objem NK: 693.35 m³ / most** `[VV pos. 422336: 1 386.700 ÷ 2]`

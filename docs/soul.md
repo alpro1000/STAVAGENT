@@ -390,6 +390,24 @@ potvrzení tact_volumes 32/44.5/32 proti výkresu, NK exposure, dohledání lan
 Y1860, height_m NK. Po odpovědích → snímek VŠECH pozic + fix assertions +
 náhrada dočasné Žalmanov fixtury. Self-merge calc/golden zakázán.
 
+**Dodatek (2026-06-13, oprava záměny mostů + dořešení vstupů Žalmanov):**
+Alexander upozornil, že dřívější příčný řez (trám 2400 / š. 13650, „osou
+uložení") = **Žalmanov [výkres 202_17]**, kdežto řez trám 1100 / š. 10250
+(stěny KARLOVY VARY/PRAHA, „dvoutrámová … z dodatečně předpjatého betonu")
+= **KV**. KV-golden trám-výšku neobsahoval → dopsán provenance (trám 1100,
+koncový příčník 950, š. 10.25 `[výkres KV příčný řez NK]`), assertions
+nezměněny. Žalmanov vstupy dořešeny Z JEHO dokumentů (NEdědit z KV):
+✅ subtype dvoutrám, trám 2400 nad podporou, š. 13.65 `[výkres 202_17]`;
+✅ NK exposure **C35/45-XF2** (XF2+XD1+XC4) `[TZ §2]` — moje dřívější C40/50
+byl VV kód-pásmo „DO C40/50" (**Pattern 53** trap), reálná marka C35/45;
+✅ předpínací lana **41.42 t/most** `[VV 422373: 82.84 ÷2]` (nalezeno ve VV).
+Σ tact_volumes 1348.96 ≈ VV÷2 ✓; Pattern 52 sanity L/48.8 v koridoru ✓.
+**Otevřené (zdroj nečitelný textem, NEhádám):** profil výšky trámu
+(konstant/náběh → tact_volumes) + height_m nad terénem (→ výběr skruže).
+**2 enginové findings do backlogu:** mostovka bez height → MULTIFLEX místo
+Top 50; `podkladni_beton` rebar=0 → throw. Golden MD draft přepsán
+(provenance na každém vstupu). Stále NEmergováno, fixtura nenahrazena.
+
 
 
 ## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
