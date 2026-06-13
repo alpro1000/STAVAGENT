@@ -590,6 +590,8 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **P2: Landing page — visual QA + /register route + SEO subpages**
 - [ ] **P2: Element field visibility map** — full ELEMENT_FIELD_VISIBILITY config for 24 element types
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
+- [ ] **P2: Mostovka formwork selector bez height_m → MULTIFLEX (Part C finding)** — když `mostovkova_deska` nemá `height_m`, selektor vrátí `MULTIFLEX` (pozemní stropní systém) místo falsework `Top 50`/`Staxo`. S výškou (≥ ~5 m) správně → Top 50. Fallback bez výšky by měl pro mostovku preferovat falsework. Odhaleno při Žalmanov golden smoke (`test-data/tz/SO-202_D6_OV_Z_Zalmanov_golden_test.md` §5 FINDING 1). Mimo scope Part C.
+- [ ] **P3: `podkladni_beton` rebar=0 → engine throw (Part C finding)** — `planElement({element_type:'podkladni_beton'})` bez rebar → `calculateRebar` hodí `mass_t must be positive` (rebar-lite negarduje nulu pro prostý beton). Měl by vrátit rebar=0 čistě. Žalmanov golden smoke FINDING 2.
 - [ ] **P3: SAFE cenový katalog** — add SAFE as 3rd vendor alongside DOKA/PERI
 
 ### Product Backlog
