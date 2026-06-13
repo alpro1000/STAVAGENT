@@ -449,7 +449,6 @@ Findings (MULTIFLEX, podkladni rebar=0) v backlogu. **Part C hotov = Fáze 1 fin
   po deploy — jen Jest 60 + MCP compat 27. Zůstává otevřený P0.
 
 
-
 ## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
 
 **Rozhodnuto (interview Alexander před kódem):**
