@@ -351,6 +351,47 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-13 — Session: Part C (finál Fáze 1) — regex-extrakce technologie + Žalmanov golden (STOP gate)
+
+**Interview (před kódem, zodpovězeno Alexandrem):** Q1 zdroj-autorita = jako
+KV (soupis XC4 DI-009 = množství ÷2/most, TZ = technologie/materiál/geometrie,
+výkresy = rozměry); Q2 num_tacts pro 3 nestejné etapy 32/44.5/32 — stávající
+`tact_volumes[3]` STAČÍ (per-záběr v4.0), engine se netrhá, dokumentován
+známý dluh scheduleru (max(tact_volumes) bottleneck); Q3 multi-bridge =
+pravidlo etalonu §5i (golden modeluje 1 podobjekt, num_bridges nezadáno,
+VV÷2), engine se nemění.
+
+**Hotovo (deliverable A — code, testováno):** `extractConstructionTechnology()`
+v `tz-text-extractor.ts` — regex čte `construction_technology`
+(pevná skruž/MSS/letmá) + `pour_stages_count` z prózy TZ; sentence-level
+count guard + dopravní past („Most bude budován po etapách… dopravy" = NE
+takty) ošetřena dvojitě (doprava-guard + chybějící count token u „po etapách").
+Cílové fráze z obou digestů: Žalmanov §4.1.6 „ve třech etapách"→3, KV §7.2
+„v jednom taktu"→1, §6.11.3 „v jedné etapě"→1. `extractFromText` surfacuje
+oba jako ExtractedParams. +9 hermetic testů → **1303 shared tests** (1294→1303),
+tsc clean.
+
+**Hotovo (source-of-truth):** soupis DI-009 je úsekový (SO 101…491, ne
+per-SO!) — SO-202 vyčleněn přes pod-strom `<stavDil ~SO 202~N>`. Authoritative
+VV (oba mosty, ÷2/most): NK trámová předpjatá C40/50 **2697.941 m³ →
+1348.97/most** (potvrzuje odhad 1349 dočasné fixtury ✓); plošné založení
+ŽB C30/37 867.1 m³ (NE piloty — rozdíl od KV ✓); opěry+křídla 557.9; pilíře
+C40/50 361.4; římsy 266.3; přechodové desky 81.9; výztuž per položka. Golden
+MD draft `test-data/tz/SO-202_D6_OV_Z_Zalmanov_golden_test.md` (inputy s plným
+provenance, výstupy enginu PENDING).
+
+**End-to-end smoke (NEfixováno):** NK 3 takty [397.85, 553.26, 397.85],
+num_tacts=3, technologie=TZ → validation rule bez flagu (čisto). FINDING:
+bez height_m selektor vrací MULTIFLEX místo falsework Top 50 (engine/selektor,
+mimo scope — zaznamenáno).
+
+**STOP gate (čeká na Alexandra, NEmergováno):** NK subtype (dvoutrám/vícetrám),
+potvrzení tact_volumes 32/44.5/32 proti výkresu, NK exposure, dohledání lan
+Y1860, height_m NK. Po odpovědích → snímek VŠECH pozic + fix assertions +
+náhrada dočasné Žalmanov fixtury. Self-merge calc/golden zakázán.
+
+
+
 ## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
 
 **Rozhodnuto (interview Alexander před kódem):**

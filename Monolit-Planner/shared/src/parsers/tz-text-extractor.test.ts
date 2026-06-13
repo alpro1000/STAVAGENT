@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 import {
   extractFromText,
   extractSmetaLines,
+  extractConstructionTechnology,
   parseCzechNumber,
   type ExtractedParam,
 } from './tz-text-extractor';
@@ -899,6 +900,72 @@ Celkový objem 605 m³ dle rozpočtu.
       const p = findParam(r, 'element_type');
       expect(p).toBeDefined();
       expect(p!.value).toBe('rimsa');
+    });
+  });
+
+  // ─── Construction-technology extraction (Part C) ──────────────────────
+  describe('extractConstructionTechnology — verbatim TZ digest phrases', () => {
+    it('Žalmanov §4.1.6: "na pevné skruži ve třech etapách" → fixed_scaffolding, 3', () => {
+      const t = 'Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách. ' +
+        'Výstavba je uvažována ve směru od O1 k O4.';
+      const r = extractConstructionTechnology(t);
+      expect(r).not.toBeNull();
+      expect(r!.technology).toBe('fixed_scaffolding');
+      expect(r!.pour_stages_count).toBe(3);
+      expect(r!.confidence).toBe(1.0);
+      expect(r!.quote).toContain('ve třech etapách');
+    });
+
+    it('KV §7.2: "betonáž NK na pevné skruži v jednom taktu" → fixed_scaffolding, 1', () => {
+      const t = 'Předpokládá se betonáž NK na pevné skruži v jednom taktu.';
+      const r = extractConstructionTechnology(t);
+      expect(r!.technology).toBe('fixed_scaffolding');
+      expect(r!.pour_stages_count).toBe(1);
+    });
+
+    it('KV §6.11.3: "v jedné etapě na pevné skruži" → fixed_scaffolding, 1', () => {
+      const t = 'Nosná konstrukce bude betonována v jedné etapě na pevné skruži.';
+      const r = extractConstructionTechnology(t);
+      expect(r!.technology).toBe('fixed_scaffolding');
+      expect(r!.pour_stages_count).toBe(1);
+    });
+
+    it('TRAP: "Most bude budován po etapách ve vazbě na převádění dopravy" → NO stage count', () => {
+      // Road/traffic stages, not pour takty. Must not yield pour_stages_count.
+      const t = 'Most bude budován po etapách ve vazbě na převádění dopravy.';
+      const r = extractConstructionTechnology(t);
+      // No skruž/betonáž anchor + doprava guard + no count token → null or no count
+      expect(r?.pour_stages_count).toBeUndefined();
+    });
+
+    it('TRAP combined with a real pour sentence: counts only the pour one', () => {
+      const t = 'Předpokládá se betonáž NK na pevné skruži v jednom taktu. ' +
+        'Most bude budován po etapách ve vazbě na převádění dopravy.';
+      const r = extractConstructionTechnology(t);
+      expect(r!.technology).toBe('fixed_scaffolding');
+      expect(r!.pour_stages_count).toBe(1); // the traffic sentence is ignored
+    });
+
+    it('MSS: "výsuvná skruž" → mss', () => {
+      const r = extractConstructionTechnology('Betonáž na výsuvné skruži ve dvou taktech.');
+      expect(r!.technology).toBe('mss');
+      expect(r!.pour_stages_count).toBe(2);
+    });
+
+    it('cantilever: "letmá betonáž" → cantilever', () => {
+      const r = extractConstructionTechnology('Nosná konstrukce se provede letmou betonáží.');
+      expect(r!.technology).toBe('cantilever');
+    });
+
+    it('no technology phrase → null', () => {
+      expect(extractConstructionTechnology('Beton C30/37, výztuž B500B.')).toBeNull();
+    });
+
+    it('extractFromText surfaces construction_technology + pour_stages_count params', () => {
+      const t = 'Výstavba nosné konstrukce se předpokládá na pevné skruži ve třech etapách.';
+      const r = extractFromText(t);
+      expect(findParam(r, 'construction_technology')?.value).toBe('fixed_scaffolding');
+      expect(findParam(r, 'pour_stages_count')?.value).toBe(3);
     });
   });
 });
