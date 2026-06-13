@@ -32,7 +32,9 @@
 | NK technologie | pevná skruž **1 takt** `[TZ §7.2]` | pevná skruž **3 etapy** `[TZ §4.1.6]` |
 | NK beton | C35/45 XF2 dvoutrám | C35/45 XF2 dvoutrám `[TZ §2]` (VV kód „DO C40/50" = cenové pásmo, Pattern 53) |
 | NK trám výška | trám **1100 mm**, koncový příčník 950 `[výkres KV příčný řez NK]` | trám **2400 mm nad podporou**, š. 13.65 `[výkres 202_17 příčný řez osou uložení]` |
-| NK rozpětí | 15+4×20+15 (max pole 20) | **32 + 44.5 + 32** (3 pole) `[task; PENDING výkres potvrzení]` |
+| NK rozpětí (pole) | 15+4×20+15 (max pole 20) | **32 + 44.5 + 32** (3 pole, mezi ložisky 108.5 m; +2×1.0 konzoly = 110.5 m) `[výkres 202_18]` |
+| NK **takty betonáže** | 1 takt (celá NK) | **43.25 + 44.25 + 23.0 m** (3 takty, spáry ZA pilíři) `[výkres 202_18 SCHÉMA PŘEDPĚTÍ — TAKT 1/2/3]` — ⚠️ NEROVNÁ se rozpětím! |
+| NK trám výška profil | trám 1100 (pole 20) | **konstantní 2400 mm** (nad pilířem 2400 = v poli 2400) `[výkres 202_17]` |
 | NK objem / most | 693.35 m³ `[VV÷2]` | **1348.97 m³** `[VV 422336: 2697.941 ÷ 2]` |
 | Předpínací lana / most | 19.21 t `[VV÷2]` | **41.42 t** `[VV 422373: 82.84 ÷ 2]` |
 
@@ -102,34 +104,34 @@ exposure_class          = XF2              [TZ §2: NK C35/45-XF2+XD1+XC4, prima
 curing_class            = 4                [konvence: NK = třída 4]
 bridge_deck_subtype     = dvoutram         [výkres 202_17 příčný řez osou uložení]
 nk_width_m              = 13.65            [výkres 202_17]
-trám výška nad podporou = 2.40 m           [výkres 202_17] (profil v poli: PENDING — viz §STOP)
+trám výška              = 2.40 m KONSTANTNÍ [výkres 202_17: nad pilířem 2400 = v poli 2400 → vol ∝ délka]
 is_prestressed          = true             [VV 422336 „PŘEDPJ BET"]
 construction_technology = fixed_scaffolding [TZ §4.1.6]
-num_tacts_override      = 3                 [TZ §4.1.6 „ve třech etapách"]
-tact_volumes            = [397.85, 553.26, 397.85]  [pro-rata délek 32/44.5/32; PENDING profil trámu]
+num_tacts_override      = 3                 [TZ §4.1.6 „ve třech etapách"; výkres 202_18 TAKT 1/2/3]
+tact_volumes            = [527.99, 540.20, 280.78]  [TAKT 43.25/44.25/23.0 m × V/110.5; výkres 202_18 SCHÉMA PŘEDPĚTÍ — NE rozpětí 32/44.5/32, spáry za pilíři]
 rebar_mass_kg           = 234443           [VV 422365 ÷2 ×1000]  (~173.8 kg/m³)
-prestress strands       = 41.42 t          [VV 422373 ÷2]
-height_m (nad terénem)  = PENDING          [výkres pohled — nečitelný textem; STOP otázka]
+prestress strands       = 41.42 t          [VV 422373 ÷2; potvrzeno výkres 202_18 „HMOTNOST LAN 1 most 41.42"]
+height_m (nad terénem)  = 10.6             [výkres 202_04: výška pilíře VPRAVO 10600 mm; LM 10440; terén/dno ~664, soffit ~677 → ~13 m nad dnem potoka]
 temperature_c           = 15               [konvence]
 num_bridges             = NEZADÁNO         [§5i: golden modeluje 1 podobjekt]
 ```
 
-**End-to-end engine smoke (2026-06-13, NEfixováno jako assertion):**
+**Golden snapshot — všechny pozice živým enginem (2026-06-13, FIXOVÁNO):**
 
-| Pozice (1 most) | formwork | num_tacts | curing | total_days | pozn. |
-|---|---|---|---|---|---|
-| NK (height PENDING / test 8 m) | MULTIFLEX / **Top 50** | 3 | 9 | 185.9 | validation flag **NONE** (vstup ≡ TZ ✓); bez výšky → špatný systém (finding) |
-| Základy plošné | Frami Xlife | 4 | 5 | 34.6 | |
-| Opěry+křídla | TRIO | 3 | 7 | 16.1 | XF4 |
-| Dříky pilířů | VARIO GT 24 | 2 | 5 | 14.1 | C35/45 |
-| Přechodové desky | Frami Xlife | 1 | 5 | 7.1 | |
-| Římsy | Římsové bednění T | 2 | 9 | 42.0 | bm |
-| Podkladní/patky | — | — | — | — | engine throw `mass_t must be positive` (rebar=0) → finding |
+| Pozice (1 most) | formwork | num_tacts | curing | total_days | flag | pozn. |
+|---|---|---|---|---|---|---|
+| NK mostovka (h=10.6) | **Top 50** | 3 | 9 | 186 | — | vstup ≡ TZ → validation flag **NONE** ✓ |
+| Základy plošné | Frami Xlife | 4 | 5 | 34.6 | — | C30/37 XF1 |
+| Opěry+křídla | TRIO | 3 | 7 | 16.1 | — | C30/37 XF4 |
+| Dříky pilířů | VARIO GT 24 | 2 | 5 | 14.9 | — | C35/45 (NE C40/50 — Pattern 53) |
+| Přechodové desky | Frami Xlife | 1 | 5 | 7.1 | — | C25/30 XF2 |
+| Římsy | Římsové bednění T | 2 | 9 | 42.0 | — | C30/37 XF4 bm |
 
-- Σ tact_volumes = **1348.96** ≈ VV÷2 1348.97 ✓
-- Pattern 52 sanity: přív. tloušťka 1348.97/(108.5×13.65)=**0.911 m**; pole 44.5 → **L/48.8** — v koridoru L/35–L/50 ✓
-- **FINDING 1 (backlog):** bez `height_m` selektor → MULTIFLEX (pozemní); s výškou → Top 50 falsework. Selektor allow-list/fallback bez výšky = engine, mimo scope Part C.
-- **FINDING 2 (backlog):** `podkladni_beton` (rebar=0) → `calculateRebar` throw `mass_t must be positive`; rebar-lite negarduje nulu.
+- Σ tact_volumes = **1348.97** = VV÷2 1348.97 ✓ (kontrola — golden assertion v `validation-rules.test.ts`)
+- Pattern 52 sanity: přív. tloušťka 1348.97/(110.5×13.65)=**0.895 m**; pole 44.5 → **L/49.7** — v koridoru L/35–L/50 ✓
+- NK fixtura nahrazena v `validation-rules.test.ts` (golden 3 etapy → clean; deviation 1 takt → flag; Σ tact_volumes kontrola).
+- **FINDING 1 (backlog):** bez `height_m` selektor → MULTIFLEX místo Top 50 (engine, mimo scope).
+- **FINDING 2 (backlog):** `podkladni_beton` (rebar=0) → `calculateRebar` throw; rebar-lite negarduje nulu. Patky 461314 (6.37 m³) proto v tabulce vynechány.
 
 ## 6. num_bridges semantika (§5i)
 
@@ -138,21 +140,18 @@ Engine multi-bridge větev dělí volume jako součet OBOU → golden modeluje
 1 most (`num_bridges` nezadáno). Rozpor engine vs MCP docstring = known
 open item, řešen pravidlem etalonu, ne úpravou enginu.
 
-## STOP-gate otázky pro Alexandra (PŘED fixací výstupů)
+## Vstupy — všechny RESOLVED z dokumentů Žalmanov (NE z KV)
 
-**RESOLVED v této iteraci** (z dokumentů Žalmanov, NE z KV):
-- ✅ NK subtype = dvoutrám, š. 13.65, trám 2400 nad podporou `[výkres 202_17]`
-- ✅ NK exposure = XF2 (C35/45-XF2+XD1+XC4) `[TZ §2]` — NE C40/50, NE XF4
-- ✅ Předpínací lana = 41.42 t/most `[VV 422373 ÷2]` (nalezeno ve VV, ne odhad)
+- ✅ NK subtype = dvoutrám, š. 13.65, trám **2400 KONSTANTNÍ** (nad pilířem = v poli) `[výkres 202_17]`
+- ✅ NK exposure = XF2 (C35/45-XF2+XD1+XC4) `[TZ §2 + výkres 202_18 materiály]` — NE C40/50 (Pattern 53), NE XF4
+- ✅ Předpínací lana = 41.42 t/most `[VV 422373 ÷2 = potvrzeno výkres 202_18 „HMOTNOST LAN 1 most 41.42"]`
+- ✅ **Takty betonáže = 43.25 / 44.25 / 23.0 m** `[výkres 202_18 SCHÉMA PŘEDPĚTÍ]` — ⚠️ NEROVNAJÍ se rozpětím (32/44.5/32); pracovní spáry leží ZA pilíři (zóna malých momentů). tact_volumes ∝ délka taktu × konstantní 2400 → [527.99, 540.20, 280.78].
+- ✅ height_m = 10.6 m `[výkres 202_04: výška pilíře VPRAVO 10600; terén/dno ~664, soffit ~677 → ~13 m nad dnem potoka]` → engine vrací Top 50 falsework ✓
 
-**OTEVŘENÉ (zdroj nečitelný textem → nehádám):**
-1. **Profil výšky trámu** — výkres 202_04/202_17 bez textové vrstvy. 2400 je
-   „nad podporou" (osou uložení). Je trám konstantní 2400 nebo náběhový
-   (nižší v poli)? Ovlivní tact_volumes (střední takt 44.5 m): konstantní →
-   pro-rata délek OK; náběhový → střední takt těžší. **Dej hodnotu nebo
-   potvrď pro-rata.**
-2. **height_m NK nad terénem** — výkres pohled, nečitelný textem. Bez něj
-   selektor vrací MULTIFLEX. **Dej výšku** (pak engine → Top 50/Staxo).
+**Korekce oproti task spec:** task uváděl „3 takty 32+44.5+32" — to jsou ROZPĚTÍ
+polí, ne takty. Výkres 202_18 ukazuje skutečné délky taktů 43.25/44.25/23.0
+(spáry posunuté za pilíře). Golden používá hodnoty z výkresu (silnější zdroj).
 
-Po odpovědích → snímek VŠECH pozic živým enginem → fix golden assertions +
-náhrada dočasné Žalmanov fixtury v `validation-rules.test.ts`. PR po approve.
+**Hotovo:** golden assertions snímnuty (tabulka výše); dočasná Žalmanov fixtura
+v `validation-rules.test.ts` nahrazena plným goldenem. Part C = finál Fáze 1.
+PR vytvořen; **merge = Alexander**.

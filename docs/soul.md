@@ -408,6 +408,24 @@ byl VV kód-pásmo „DO C40/50" (**Pattern 53** trap), reálná marka C35/45;
 Top 50; `podkladni_beton` rebar=0 → throw. Golden MD draft přepsán
 (provenance na každém vstupu). Stále NEmergováno, fixtura nenahrazena.
 
+**Dodatek 2 (2026-06-13, výkresy od Alexandra → Part C UZAVŘEN):** Alexander
+poslal výkresy NK (202_17 TvarNK, 202_18 Předpětí + KV D-01-02-01_18/19/20).
+Čteny VIZUÁLNĚ (Pattern 39). Oba PENDING vyřešeny Z VÝKRESŮ:
+✅ trám **konstantní 2400** (202_17: nad pilířem 2400 = v poli 2400) → vol ∝ délka;
+✅ height_m **10.6 m** (202_04: pilíř VPRAVO 10600; terén/dno ~664, soffit ~677
+→ ~13 m nad dnem) → engine vrací Top 50 falsework ✓.
+**KRITICKÁ korekce:** výkres 202_18 SCHÉMA PŘEDPĚTÍ ukazuje **takty betonáže
+43.25/44.25/23.0 m** (spáry ZA pilíři), což NEROVNÁ se rozpětím polí 32/44.5/32
+z task spec! tact_volumes přepočteny ∝ délka taktu × konstantní 2400 →
+**[527.99, 540.20, 280.78]**, Σ = 1348.97 = VV÷2 ✓. Výkres 202_18 navíc
+POTVRZUJE lana (1 most 41.42 t / 2 mosty 82.84) + NK beton 35/45-XF2 (materiály).
+Snímek VŠECH pozic živým enginem zafixován (NK Top 50/curing 9/186 d; spodní
+stavba Frami/TRIO/VARIO; flag NONE — vstup ≡ TZ). **Dočasná Žalmanov fixtura
+NAHRAZENA plným goldenem** v validation-rules.test.ts (3 etapy → clean;
+deviation 1 takt → flag; Σ tact_volumes kontrola). 1304 shared tests. KV golden
+trám 1100 dopsán jako provenance [výkres KV]. PR vytvořen — **merge = Alexander**.
+Findings (MULTIFLEX, podkladni rebar=0) v backlogu. **Part C hotov = Fáze 1 finál.**
+
 
 
 ## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
