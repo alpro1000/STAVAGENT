@@ -198,6 +198,10 @@ def _build_planner_payload(
     width_m: Optional[float] = None,
     formwork_length_bm: Optional[float] = None,
     cycle_length_bm: Optional[float] = None,
+    tz_technology: Optional[str] = None,
+    tz_pour_stages: Optional[int] = None,
+    tz_quote: Optional[str] = None,
+    tz_anchor: Optional[str] = None,
 ) -> dict:
     """Map MCP arguments → canonical engine PlannerInput.
 
@@ -270,6 +274,23 @@ def _build_planner_payload(
             payload["num_tacts_override"] = max(
                 1, math.ceil(formwork_length_bm / cycle_length_bm)
             )
+
+    # ── tz_facts (Part B/C validation rule input) ─────────────────────────
+    # The documented construction technology / pour-stage count from the TZ.
+    # The engine's validation rule compares this against the calculator input
+    # and emits a VISIBLE FLAG (never a gate) on contradiction. Silent when
+    # absent. Carried separately from construction_technology (the input side)
+    # so a deviation can actually fire.
+    if tz_technology or tz_pour_stages is not None:
+        construction: dict = {
+            "quote": tz_quote or "TZ (předáno přes MCP)",
+            "anchor": tz_anchor or "TZ",
+        }
+        if tz_technology:
+            construction["technology"] = tz_technology
+        if tz_pour_stages is not None:
+            construction["pour_stages_count"] = int(tz_pour_stages)
+        payload["tz_facts"] = {"construction": construction}
     return payload
 
 
@@ -297,6 +318,10 @@ async def calculate_concrete_works(
     rental_czk_override: Optional[float] = None,
     formwork_length_bm: Optional[float] = None,
     cycle_length_bm: Optional[float] = None,
+    tz_technology: Optional[str] = None,
+    tz_pour_stages: Optional[int] = None,
+    tz_quote: Optional[str] = None,
+    tz_anchor: Optional[str] = None,
 ) -> dict:
     """Calculate concrete works for a single RC structural element.
 
@@ -513,6 +538,17 @@ async def calculate_concrete_works(
             římsy per Czech practice). Used to recompute `num_tacts` for říms
             elements when both formwork_length_bm and cycle_length_bm are
             provided: `num_tacts = ceil(formwork_length_bm / cycle_length_bm)`.
+        tz_technology: Construction technology documented in the TZ
+            ('fixed_scaffolding' | 'mss' | 'cantilever'). Fed to the engine's
+            validation rule, which flags a VISIBLE WARNING (never a gate) when
+            the calculator's construction_technology contradicts it.
+        tz_pour_stages: Number of NK pour stages/takty documented in the TZ
+            (e.g. 1 = «v jednom taktu», 3 = «ve třech etapách»). Flagged
+            against the engine-resolved num_tacts on mismatch.
+        tz_quote: Verbatim TZ sentence backing tz_technology/tz_pour_stages
+            (shown in the warning). Optional.
+        tz_anchor: Section + page anchor of the quote, e.g. 'TZ §4.1.6, str. 11'.
+            Optional.
     """
     try:
         # Stage-1 extract (extract_tz_fields) ships volume_m3=None — volumes are
@@ -583,6 +619,10 @@ async def calculate_concrete_works(
             width_m=width_m,
             formwork_length_bm=formwork_length_bm,
             cycle_length_bm=cycle_length_bm,
+            tz_technology=tz_technology,
+            tz_pour_stages=tz_pour_stages,
+            tz_quote=tz_quote,
+            tz_anchor=tz_anchor,
         )
 
         try:
