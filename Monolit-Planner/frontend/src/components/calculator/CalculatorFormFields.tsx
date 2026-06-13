@@ -9,7 +9,7 @@
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
 import type { CuringResult, SeasonMode, ConcreteClass, CementType } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure, getElementProfile, getRebarNormForDiameter } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure, getElementProfile, getRebarNormForDiameter, isPrismaticType } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge } from './ui';
 import { ExposureClassesPicker } from './ExposureClassesPicker';
 import { getMostRestrictive } from '@stavagent/monolit-shared';
@@ -190,12 +190,25 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 rectangular geometry and share the D/Š/V entry pattern. */}
             {(() => {
               const elemType = form.element_type;
-              // BUG 7: driky_piliru added — L×W×H for pier shaft, fw area = 2(L+W)×H
-              const geomTypes = [
-                'zaklady_piliru', 'zaklady_oper', 'zakladova_patka', 'zakladovy_pas',
-                'opery_ulozne_prahy', 'driky_piliru',
-              ];
-              if (!geomTypes.includes(elemType)) return null;
+              // Phase 5 Step 2: the L×W×H box derive applies to ALL prismatic
+              // types (isPrismaticType, shared element-geometry) — not just the
+              // original ~7 foundations. Non-prismatic types: pilota + mostovka
+              // have their OWN dedicated geometry blocks; the rest (rimsa,
+              // schodiste, nadrz, other) show a VISIBLE honest-blank note so the
+              // user knows why there is no D×Š×V input here.
+              if (!isPrismaticType(elemType)) {
+                if (elemType === 'pilota' || elemType === 'mostovkova_deska') return null;
+                return (
+                  <div style={{
+                    marginBottom: 10, padding: '6px 10px', fontSize: 12,
+                    color: 'var(--r0-slate-500, #64748b)',
+                    background: 'var(--r0-slate-50, #f8fafc)',
+                    border: '1px dashed var(--r0-slate-200, #e2e8f0)', borderRadius: 6,
+                  }}>
+                    Geometrie D×Š×V nepodporována pro tento typ — zadejte objem ručně.
+                  </div>
+                );
+              }
               return (
                 <div style={{
                   marginBottom: 10, padding: '8px 10px',

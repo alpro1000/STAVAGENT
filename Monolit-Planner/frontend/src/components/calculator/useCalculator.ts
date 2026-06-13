@@ -18,6 +18,7 @@ import {
 } from '@stavagent/monolit-shared';
 import { getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
 import { extractConstructionTechnology } from '@stavagent/monolit-shared';
+import { estimateElementVolume } from '@stavagent/monolit-shared';
 import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure, getMostRestrictive } from '@stavagent/monolit-shared';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
@@ -671,19 +672,23 @@ export default function useCalculator() {
       }
       return;
     }
-    // Horizontal foundation blocks: L × W × H
+    // Prismatic box: L × W × H — via the SHARED element-geometry rule
+    // (single source: the engine + MCP use the same estimateElementVolume).
     const L = parseFloat(form.length_m_input);
     const W = parseFloat(form.width_m_input);
     const H = parseFloat(form.height_m);
     if (L > 0 && W > 0 && H > 0) {
-      const v = Math.round(L * W * H * 100) / 100;
-      const fwArea = Math.round(2 * (L + W) * H * 10) / 10;
-      setForm(prev => {
-        if (Math.abs(v - prev.volume_m3) < 0.01 && prev.formwork_area_m2 === String(fwArea)) {
-          return prev;
-        }
-        return { ...prev, volume_m3: v, formwork_area_m2: String(fwArea) };
-      });
+      const geom = estimateElementVolume(form.element_type, { length_m: L, width_m: W, height_m: H });
+      if (geom.applicable && geom.volume_m3 != null) {
+        const v = geom.volume_m3;
+        const fwArea = geom.formwork_area_m2 ?? 0;
+        setForm(prev => {
+          if (Math.abs(v - prev.volume_m3) < 0.01 && prev.formwork_area_m2 === String(fwArea)) {
+            return prev;
+          }
+          return { ...prev, volume_m3: v, formwork_area_m2: String(fwArea) };
+        });
+      }
     }
   }, [
     form.volume_mode,
@@ -1160,6 +1165,19 @@ export default function useCalculator() {
     if (form.total_length_m > 0) {
       // Still useful for římsa formwork selection + prestress days
       input.total_length_m = form.total_length_m;
+    }
+    // Phase 5 Step 2: forward box geometry + unify the element length into
+    // total_length_m so tacts derive from the element's REAL length (the
+    // geometry↔takty link). Engine-side derive is gated behind !volume, so the
+    // frontend (which sends a derived volume) sets total_length_m itself here.
+    {
+      const gl = parseFloat(form.length_m_input);
+      const gw = parseFloat(form.width_m_input);
+      if (gl > 0) {
+        input.length_m = gl;
+        if (gw > 0) input.width_m = gw;
+        if (!input.total_length_m || input.total_length_m <= 0) input.total_length_m = gl;
+      }
     }
     // Manual záběry (non-uniform volumes) override both tact count and per-tact volume.
     // Bottleneck záběr (largest volume) drives schedule calculation.

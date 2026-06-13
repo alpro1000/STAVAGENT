@@ -196,6 +196,7 @@ def _build_planner_payload(
     formwork_system_name: Optional[str],
     rental_czk_override: Optional[float],
     width_m: Optional[float] = None,
+    length_m: Optional[float] = None,
     formwork_length_bm: Optional[float] = None,
     cycle_length_bm: Optional[float] = None,
     tz_technology: Optional[str] = None,
@@ -248,6 +249,18 @@ def _build_planner_payload(
         mapped = _NK_SUBTYPE_TO_ENGINE.get(nk_subtype)
         if mapped:
             payload["bridge_deck_subtype"] = mapped
+
+    # ── Box geometry passthrough (Phase 5 Step 2) ────────────────────────
+    # Forward length_m/width_m/height_m so the SHARED engine derives volume
+    # (L·W·H) + formwork area for prismatic types when volume_m3 is omitted —
+    # the same element-geometry rule the frontend uses (§4 parity). height_m is
+    # already forwarded above; add the box length/width. The width_m hint
+    # translation below only fires when volume_m3 is truthy, so it does not
+    # collide with the volume-0 derive path.
+    if length_m and length_m > 0:
+        payload["length_m"] = float(length_m)
+    if width_m and width_m > 0 and element_type != "mostovkova_deska":
+        payload["width_m"] = float(width_m)
 
     # ── width_m hint translation ──────────────────────────────────────────
     if width_m and width_m > 0:
@@ -318,6 +331,7 @@ async def calculate_concrete_works(
     rental_czk_override: Optional[float] = None,
     formwork_length_bm: Optional[float] = None,
     cycle_length_bm: Optional[float] = None,
+    length_m: Optional[float] = None,
     tz_technology: Optional[str] = None,
     tz_pour_stages: Optional[int] = None,
     tz_quote: Optional[str] = None,
@@ -409,6 +423,14 @@ async def calculate_concrete_works(
             - Formwork area estimation when formwork_area_m2 not provided
             - Horizontal: area ≈ volume / thickness
             - Vertical: area ≈ volume / width × 2 (both sides)
+
+        length_m: Element box length in meters (Phase 5 Step 2). When
+            volume_m3 is omitted and length_m + width_m + height_m are all
+            given for a PRISMATIC type (wall/slab/column/beam/foundation/
+            abutment/pier), the shared engine derives volume = L·W·H +
+            formwork area = 2(L+W)·H — the same rule the frontend uses
+            (§4 parity). Non-prismatic types (deck/pile/cornice/stairs/tank)
+            ignore it and keep their own quantity source.
 
         formwork_area_m2: Formwork contact area in m². If omitted,
             estimated from volume_m3, width_m, and orientation.
@@ -617,6 +639,7 @@ async def calculate_concrete_works(
             formwork_system_name=formwork_system_name,
             rental_czk_override=rental_czk_override,
             width_m=width_m,
+            length_m=length_m,
             formwork_length_bm=formwork_length_bm,
             cycle_length_bm=cycle_length_bm,
             tz_technology=tz_technology,

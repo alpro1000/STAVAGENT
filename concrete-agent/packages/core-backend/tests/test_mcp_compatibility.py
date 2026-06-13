@@ -382,6 +382,31 @@ async def test_calculator_tz_facts_forwarded_validation_flag(mcp_server, calcula
 
 
 @pytest.mark.asyncio
+async def test_calculator_geometry_derive_from_box_dims(mcp_server, calculate_replay):
+    """Phase 5 Step 2: length_m + width_m + height_m on a prismatic type with no
+    volume_m3 → the SHARED engine derives volume = L·W·H (§4 parity: MCP and the
+    frontend go through the same element-geometry rule). 5×0.4×3 = 6 m³ reaches
+    the engine and drives the plan."""
+    result = await mcp_server.call_tool(
+        "calculate_concrete_works",
+        {
+            "element_type": "stena",
+            "volume_m3": 0,        # omitted → derive from box dims
+            "concrete_class": "C25/30",
+            "exposure_class": "XC3",
+            "height_m": 3.0,
+            "width_m": 0.4,
+            "length_m": 5.0,
+        },
+    )
+    data = result.structured_content
+    assert data.get("source") == "monolit_planner_api"
+    # plan computed on the derived 6 m³ (not a zero-volume crash)
+    assert data["schedule"]["total_days"] > 0
+    assert data["rebar"]["mass_kg"] > 0
+
+
+@pytest.mark.asyncio
 async def test_calculator_manufacturer_override_only(mcp_server, calculate_replay):
     """preferred_manufacturer pre-filters the engine's auto-selection to PERI."""
     result = await mcp_server.call_tool(
