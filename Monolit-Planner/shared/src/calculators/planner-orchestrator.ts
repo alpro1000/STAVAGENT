@@ -32,6 +32,7 @@ import type { ResourceCeiling, CeilingViolation, EngineeringDemand } from './res
 import { applyResourceCeilingDefaults, checkCeilingFeasibility } from './resource-ceiling.js';
 import type { TzFacts, ValidationFlag } from './validation-rules.js';
 import { runValidationRules } from './validation-rules.js';
+import { estimateElementVolume } from './element-geometry.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -77,6 +78,15 @@ export interface PlannerInput {
    *  For mostovkova_deska: this is the prop height (terén → spodek desky), typ. 4–20 m.
    *  For the deck cross-section thickness, use deck_thickness_m (separate field). */
   height_m?: number;
+  /** Phase 5 Step 2: element box length (m). When volume_m3 is omitted and
+   *  length_m × width_m × height_m are all set for a PRISMATIC type, the engine
+   *  derives volume_m3 = L·W·H + formwork_area_m2 = 2(L+W)·H (shared
+   *  element-geometry). length_m also feeds total_length_m (geometry↔takty
+   *  unification) when total_length_m is absent. Non-prismatic types
+   *  (mostovka/pilota/rimsa/…) ignore this and keep their own quantity source. */
+  length_m?: number;
+  /** Phase 5 Step 2: element box width (m). See length_m. */
+  width_m?: number;
   /**
    * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Optional override.
    * When omitted and span_m × nk_width_m are set, auto-derived as volume_m3 / (span_m × nk_width_m).
@@ -838,9 +848,50 @@ export function computePourCrewByPumps(n_pump: number): PourCrewBreakdown {
  * console.log(plan.costs.total_labor_czk);    // 385,000
  * console.log(plan.pour_decision.num_tacts);  // 5
  */
+/**
+ * Phase 5 Step 2 — derive volume/area/length from box geometry (additive).
+ * Returns `input` UNCHANGED when volume_m3 is already supplied (parity +
+ * goldens) or when dims/type don't qualify. Only fills fields that are absent,
+ * so an explicit formwork_area_m2 / total_length_m is never overwritten.
+ */
+function deriveGeometryInput(
+  input: PlannerInput,
+  warnings: string[],
+  log: string[],
+): PlannerInput {
+  const hasVolume = typeof input.volume_m3 === 'number' && input.volume_m3 > 0;
+  if (hasVolume) return input;                 // explicit volume wins — parity
+  const type = input.element_type;
+  if (!type) return input;                     // pre-classification: need a known type
+  if (!input.length_m || !input.width_m || !input.height_m) return input; // dims incomplete
+  const geom = estimateElementVolume(type, {
+    length_m: input.length_m, width_m: input.width_m, height_m: input.height_m,
+  });
+  if (!geom.applicable) {
+    // honest-blank — VISIBLE, never a fabricated box volume.
+    if (geom.reason) warnings.push(`ℹ️ ${geom.reason}`);
+    return input;
+  }
+  if (geom.volume_m3 == null) return input;
+  const next: PlannerInput = { ...input, volume_m3: geom.volume_m3 };
+  if (next.formwork_area_m2 == null) next.formwork_area_m2 = geom.formwork_area_m2;
+  if (next.total_length_m == null) next.total_length_m = input.length_m; // geometry↔takty
+  log.push(
+    `Geometrie: V=${geom.volume_m3} m³, bednění=${geom.formwork_area_m2} m² ` +
+    `z ${input.length_m}×${input.width_m}×${input.height_m} m; total_length_m=${next.total_length_m}`,
+  );
+  return next;
+}
+
 export function planElement(input: PlannerInput): PlannerOutput {
   const log: string[] = [];
   const warnings: string[] = [];
+
+  // Phase 5 Step 2: geometry → volume/area/length derivation (additive, shared).
+  // No-op when volume_m3 is supplied (one-element parity + goldens unchanged);
+  // otherwise derives V/area from box dims for prismatic types and unifies the
+  // geometry length into total_length_m so tacts read the element's real length.
+  input = deriveGeometryInput(input, warnings, log);
 
   // Resource Ceiling Phase 1 (audit R1) — resolve effective ceiling at entry.
   // User input (confidence 0.99) WINS over B4 KB defaults (0.85). For elements
