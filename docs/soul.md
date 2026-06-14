@@ -351,6 +351,49 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-14 — Session (pokračování): Fáze 5 Step 1 + Step 2 (calculator one-element → projekt)
+
+**Smergováno do main (Alexander):**
+- **#1353 Step 1 — planProject() project-wrapper** (interview: Path A / nezávisle+suma /
+  nový vstup, planElement netknut). Projekt = list elementů, prožene každý NEZMĚNĚNÝM
+  planElement, agreguje objem/Nh/peníze/rozvrh (sekvenční suma, null=NEPOČÍTÁNO),
+  honest-blank (padlý element → elements_uncalculated, parciální suma). Paritní test
+  planProject([x]) ≡ planElement(x).
+- **#1357 Step 2 — geometrie↔takty, shared geom rule** (interview: rozšířit na všechny
+  prizmatické / honest-blank non-prismatic / geom v shared / additive). Nový
+  `element-geometry.ts` (estimateElementVolume L·W·H + 2(L+W)·H; honest-blank pro
+  deck/pile/cornice/stairs/tank/other). `planElement.deriveGeometryInput()` additive:
+  derive objem/plochu + unifikace length→total_length_m, **NO-OP při zadaném objemu**
+  (`if(hasVolume) return input;`) → paritu i goldeny nehýbe. PlannerInput.length_m/width_m.
+  MCP length_m passthrough (§4 parity). Frontend: shared fn jako jediný zdroj, blok D×Š×V
+  rozšířen ~7→všechny prizmatické + viditelný honest-blank. 1317 shared tests; goldeny
+  KV+Žalmanov+normy drží; parita drží; MCP compat 29/29.
+
+**Ověřeno na dotaz Alexandra:** mostovku Step 2 NEdělí na 6 taktů — je non-prismatic +
+vždy má objem z VV → deriveGeometryInput je no-op; num_tacts logika netknuta (KV golden
+1 takt, Žalmanov 3 takty drží). Amazon Q bot review (#1357) = HALUCINACE: tvrdil inverted
+`validationResult.success` (0 výskytů) + `eval()` v calculator.py (0 výskytů) — navržená
+oprava by soubor ROZBILA, NEaplikovat.
+
+**Backlog konsolidace (zadáno Alexandrem):** tři nálezy sloučeny do JEDNÉ třídy v
+CLAUDE.md — **engine soft-degradation na neúplném/nulovém povinném vstupu**: (a)
+podkladni_beton rebar=0 throw, (b) mostovka bez height → MULTIFLEX místo Top 50, (c)
+non-prismatic volume=0 crash po honest-blank warningu. Doménově porušení honest-blank na
+úrovni výpočtu → chybí povinný vstup ⇒ prvek NEPOČÍTÁNO + přeskočit v agregaci
+(planProject už umí), ne spadnout. Léčit jako třídu. Rozhodnutí Step 3 vs samostatný
+Step 3.5 padne na interview Step 3 — NEopravovat předtím.
+
+**Fáze 5 maršrut:** Step 1 ✅ · Step 2 ✅ · **Step 3 = legacy/dead-field cleanup
+(NEJrizikovější — mazání polí z boevého výpočtu + rozhodnutí o léčbě degradace) — NOVÁ
+SESSION, ne ocas maratonu** · Step 4 TZ persistence v project.json · Step 5 studio.
+
+**Otevřené hvosty (živé, po deploy):** LIVE check #1351 (tz_facts flag ve Varování) +
+Step 2 (geometrie→objem/takty) na kalkulator.stavagent.cz — PENDING, netvrdit hotové.
+
+Handoff pro Step 3: `docs/handoff/2026-06-14_phase5-step3-next-session.md`.
+
+
+
 ## 2026-06-13 — Session: Živá napojení Part B/C + Faze 5 Step 1 (project-wrapper)
 
 **Smergováno do main (4 PR):**
