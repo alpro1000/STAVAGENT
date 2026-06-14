@@ -241,10 +241,6 @@ export interface FormState {
    * sidebar "Počítat bez cen" checkbox in the new Ceny section.
    */
   price_mode: 'full' | 'schedule_only';
-  /** D3: optional crane rate — extra cost input (0 = odhad). */
-  price_crane_czk_shift: string;
-  /** D3: optional concrete pump hourly rate (0 = odhad). */
-  price_pump_czk_h: string;
 
   // ─── Pile-specific (2026-04-15) ───────────────────────────────────────
   // Read ONLY when element_type === 'pilota'. Routed to PlannerInput.pile_*
@@ -447,10 +443,8 @@ export const DEFAULT_FORM: FormState = {
   curing_class: '',   // auto from element_type
   working_joints_allowed: '',
   preferred_manufacturer: '',
-  // D1/D3 (2026-04-15): price mode + optional crane/pump rates
+  // D1 (2026-04-15): price mode toggle
   price_mode: 'full',
-  price_crane_czk_shift: '',
-  price_pump_czk_h: '',
   // Pile-specific defaults — only consumed when element_type === 'pilota'
   pile_diameter_mm: '',
   pile_length_m: '',

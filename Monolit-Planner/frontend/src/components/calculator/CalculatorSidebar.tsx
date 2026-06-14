@@ -987,24 +987,6 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           </label>
           {form.price_mode === 'full' && (
             <>
-              <div style={{
-                fontSize: 10, color: 'var(--r0-slate-400)',
-                marginBottom: 6, lineHeight: 1.5,
-              }}>
-                Prázdná pole = odhad (zobrazeno s varováním). Vyplněná = vaše sazby.
-              </div>
-              {/* Jeřáb */}
-              <Field label="Jeřáb (Kč/směna)">
-                <NumInput style={inputStyle} value={form.price_crane_czk_shift} min={0}
-                  onChange={v => update('price_crane_czk_shift', String(v))}
-                  placeholder="odhad" />
-              </Field>
-              {/* Čerpadlo */}
-              <Field label="Čerpadlo (Kč/h)">
-                <NumInput style={inputStyle} value={form.price_pump_czk_h} min={0}
-                  onChange={v => update('price_pump_czk_h', String(v))}
-                  placeholder="odhad" />
-              </Field>
               {/* Pile rig — only for pilota */}
               {form.element_type === 'pilota' && (
                 <Field label="Vrtací souprava (Kč/směna)">
