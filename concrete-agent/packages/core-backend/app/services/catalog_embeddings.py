@@ -63,6 +63,28 @@ def _sync_dsn() -> str:
     return dsn.replace("postgresql+asyncpg://", "postgresql://").replace("+asyncpg", "").strip()
 
 
+def _search(query: str, limit: int = 20) -> list[dict]:
+    """Raw embeddings retrieve — RAISES on any failure.
+
+    Diagnostics (``recall_health``) call this so the failing stage surfaces;
+    the public ``pgvector_provider`` wraps it to degrade silently at query time.
+    """
+    import psycopg2
+
+    from app.integrations.vertex_embeddings import get_vertex_embeddings
+
+    vec = get_vertex_embeddings().embed_query(query)
+    vec_lit = _vector_literal(vec)
+    conn = psycopg2.connect(_sync_dsn())
+    try:
+        with conn.cursor() as cur:
+            cur.execute(_SEARCH_SQL, (vec_lit, vec_lit, limit))
+            rows = cur.fetchall()
+    finally:
+        conn.close()
+    return build_candidates_from_rows(rows)
+
+
 def pgvector_provider(query: str, limit: int = 20) -> list[dict]:
     """Embeddings retrieve over `otskp_embeddings`. Returns [] on any failure.
 
@@ -71,23 +93,77 @@ def pgvector_provider(query: str, limit: int = 20) -> list[dict]:
     returns keyword candidates).
     """
     try:
+        return _search(query, limit)
+    except Exception as e:  # pragma: no cover - exercised on deploy, not in CI
+        logger.warning(
+            "[catalog_embeddings] retrieve failed, degrading to keyword-only (query=%r): %s",
+            query, e,
+        )
+        return []
+
+
+def recall_health(probe_query: str = "beton mostních pilířů C35/45") -> dict:
+    """Best-effort end-to-end self-test of the recall path, for startup logging.
+
+    Walks the SAME stages ``pgvector_provider`` uses (DB → Vertex embed → vector
+    search) but surfaces the FAILING stage + error instead of degrading silently,
+    so a single deploy log answers "is recall live, and if not, why?". This is
+    the one place recall failure is loud — every other path is best-effort quiet.
+
+    Never raises. Returns a dict with ``active`` + diagnostics.
+    """
+    health: dict = {
+        "active": False, "stage": None, "rows": None, "dim": None,
+        "model": getattr(settings, "EMBEDDING_MODEL", None),
+        # Region the runtime embeds the QUERY in. Must equal the region the
+        # corpus was embedded in at ingest — a divergence silently breaks recall
+        # (model unavailable in region → embed raises → keyword-only). Surfaced
+        # here so a human can diff it against the ingest log's `loc=…`.
+        "location": getattr(settings, "EMBEDDING_LOCATION", None),
+        "top_similarity": None, "error": None,
+    }
+
+    # Stage 1 — DB reachable + table exists + populated. Isolates the most common
+    # real cause: ingest --index wrote to a DIFFERENT database than the runtime
+    # connects to (rows=0 / relation missing), or the DSN/socket is wrong.
+    try:
         import psycopg2
 
-        from app.integrations.vertex_embeddings import get_vertex_embeddings
-
-        vec = get_vertex_embeddings().embed_query(query)
-        vec_lit = _vector_literal(vec)
         conn = psycopg2.connect(_sync_dsn())
         try:
             with conn.cursor() as cur:
-                cur.execute(_SEARCH_SQL, (vec_lit, vec_lit, limit))
-                rows = cur.fetchall()
+                cur.execute("SELECT count(*) FROM otskp_embeddings")
+                health["rows"] = int(cur.fetchone()[0])
         finally:
             conn.close()
-        return build_candidates_from_rows(rows)
-    except Exception as e:  # pragma: no cover - exercised on deploy, not in CI
-        logger.warning("[catalog_embeddings] retrieve failed, degrading to keyword-only: %s", e)
-        return []
+    except Exception as e:
+        health["stage"] = "db"
+        health["error"] = str(e)
+        return health
+
+    if not health["rows"]:
+        health["stage"] = "empty_table"
+        health["error"] = (
+            "otskp_embeddings has 0 rows — run ingest --index against THIS database"
+        )
+        return health
+
+    # Stage 2 — Vertex embed + vector search round-trip (ADC, model, pgvector
+    # extension, vector-dim agreement all exercised here).
+    try:
+        cands = _search(probe_query, limit=1)
+    except Exception as e:
+        health["stage"] = "search"
+        health["error"] = str(e)
+        return health
+
+    if cands:
+        health["dim"] = getattr(settings, "EMBEDDING_DIM", None)
+        health["top_similarity"] = round(float(cands[0].get("similarity", 0.0)), 4)
+
+    health["active"] = True
+    health["stage"] = "ok"
+    return health
 
 
 def register_embeddings_provider(provider: Optional[callable] = None) -> None:

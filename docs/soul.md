@@ -351,28 +351,53 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
-## 2026-06-15 — Session: Fáze 5 Step 3 PR1+PR2 (legacy/dead-field cleanup) — READY, čeká merge+live
+## 2026-06-15 — Session: Fáze 5 Step 3 PR1+PR2 (legacy/dead-field cleanup) — MERGED (PR #1363), čeká live-check
 
-**Větev:** `claude/phase5-steps1-2-handoff-p0og0u` — **NEsmergováno** (merge calc PR = Alexander, po jednom).
+**Větev:** `claude/phase5-steps1-2-handoff-p0og0u` → **smergováno do main jako jeden celek (PR #1363, merge-commit)** po uzavření gate (grep-proof + CI green). Step 1 #1353 + Step 2 #1357 už v main.
 
-**Pre-implementation interview (Step 3):** (1) **Hybrid** — truly-dead smazat fyzicky (grep-důkaz), half-wired redirect čtenáře/zapisovatele na live path PAK smazat; (2) degradace (soft-degradation class) → **samostatný Step 3.5**, ne teď; (3) **po jednom poli / malé skupině na PR**.
+**Pre-implementation interview (Step 3):** (1) **Hybrid** — truly-dead smazat fyzicky (grep-důkaz), half-wired redirect čtenáře/zapisovatele na live path PAK smazat; (2) degradace (soft-degradation class) → **samostatný Step 3.5**, ne teď; (3) **po jednom poli / malé skupině na PR** (review po PR, merge jako celek).
 **Granice čištění (upřesnil Alexander):** ne grep-«dosáhne motoru», ale «část systému 3 cenových režimů NEBO náhodný přišelec». `price_crane`/`price_pump` = přišelci (náklad patří do TOV); nosná cenová pole NEsahat.
 
-**PR1 — čistý dead-code:** smazány `price_crane_czk_shift` + `price_pump_czk_h` (přišelci, sbírány v sidebaru, nikdy v buildInput/advisoru) + `tact_volume_m3_override` (orphan FormState pole, 0 čtenářů/zapisovatelů; stejnojmenné `input.tact_volume_m3_override` z manual_zabery netknuto). tsc + 1317 shared.
+**PR1 — čistý dead-code:** smazány `price_crane_czk_shift` + `price_pump_czk_h` (přišelci, sbírány v sidebaru, nikdy v buildInput/advisoru) + `tact_volume_m3_override` (orphan FormState pole, 0 čtenářů/zapisovatelů; stejnojmenné `input.tact_volume_m3_override` z manual_zabery netknuto).
 
 **PR2 — orphan + entangled redirect + bugfix:**
 - smazán orphan `CalculatorWizard.tsx` (692 ř., 0 importérů — mrtvý paralelní wizard s vlastním tact_mode tab UI);
 - **advisor redirect na live dilataci**: `has_dilatacni_spary`/`spara_spacing_m` v payloadu teď z `has_dilatation_joints`/`dilatation_spacing_m` (backend klíče nezměněny → advisor-prompt/suggestFormwork/num_sets reasonují nad AKTUÁLNÍ daty, ne stale);
 - **FIX silent tact-loss**: WizardHints `onApplyRecommendedSystem` psal mrtvý `num_tacts_override` (buildInput ignoroval → ztráta) → teď mapuje doporučené N = TOTAL záběry na live model přes shared helper `tactsPerSectionForRecommendedTotal(N, sections)` = `tacts_per_section = ceil(N/sections)` (sekce>1) / `N` (1 sekce);
 - smazána FormState pole `tact_mode`/`has_dilatacni_spary`/`spara_spacing_m`/`num_tacts_override` + typ `TactMode` (0 code-refs, tsc-ověřeno); shared `PlannerInput.*` stejnojmenná pole (z manual_zabery) netknuta;
-- nový shared helper `calculators/tact-mapping.ts` + 5 testů (N invariant: sekce=1→N; dělitelné→total===N; nedělitelné→ceil, total≥N a minimální; nula/garbage→1). shared **1322**, frontend tsc clean.
+- nový shared helper `calculators/tact-mapping.ts` + 5 testů (N invariant). shared **1322**, frontend tsc clean, CI green všechny kódové commity.
 
-**Přeřazeno (NEsmazáno — recon premisa «5 truly-dead» chybná pro 3/5; doporučení KEEP):** `rebar_norm_kg_m3` (živý dual-input → odvozuje engine pole `rebar_mass_kg`), `include_kridla`/`kridla_height_m` (renderují `kridlaFormwork` kartu v CalculatorResult). Nejsou přišelci — každé řídí engine pole nebo render.
+**Přeřazeno (NEsmazáno — recon premisa «5 truly-dead» chybná pro 3/5; KEEP):** `rebar_norm_kg_m3` (živý dual-input → odvozuje `rebar_mass_kg`), `include_kridla`/`kridla_height_m` (renderují `kridlaFormwork` kartu). Nejsou přišelci.
 
-**Flag:** handoff odkazuje `Monolit-Planner/CLAUDE.md §0 — architektura cen (3 režimy)`, ale sekce v souboru NEEXISTUJE (grep prázdný). Substantivní pokyn byl jasný, dodržen; doplnit §0 nebo opravit odkaz v handoffu.
+**§0 cen:** předchozí flag «Monolit-Planner/CLAUDE.md §0 neexistuje» **VYŘEŠEN** — §0 doplněn na main (entry níže), v merge sloučeno.
 
-**STATUS:** PR1+PR2 hotové a zelené, NEsmergováno. Alexander: review grep-důkazů → merge po jednom PR → **live-check advisor/WizardHints na kalkulator.stavagent.cz** (PENDING, mění živé AI + apply-recommended; nepovažovat za hotové bez prohlídky na webu).
-**Dál (po live-verifikaci PR2):** PR3 = low-risk cleanup (2 duplicitní smart-defaults efekty `useCalculator.ts:244-264` + `:712-738`; fyzický dedup duplicitních length-polí které Step 2 sjednotil chováním) → pak **multiplicity-redesign** (`num_identical_elements` ⊥ `num_dilatation_sections` ⊥ `manual_zabery` → list elementů ze Step 1) jako SAMOSTATNÉ interview → pak **Step 3.5** degradation class. **Freeze okno** (Cemex demo 2026-06-28) otevírá 2026-06-21.
+**STATUS:** **MERGED (PR #1363) jako jeden celek.** **PR2 NENÍ done**, dokud neproběhne **live-check na kalkulator.stavagent.cz** (po Cloud Build/Vercel deploy): advisor reaguje na živou dilataci (ne stale); «apply recommended system» aplikuje takty jednou (žádný dvojí počet); sekce=3 → advisor doporučuje jako součet vs reálně aplikováno (overshoot do N = OK, jen poznamenat). **Live-check je manuální (interaktivní SPA) — dělá Alexander** (AI nemá browser na deployed app). PENDING stejného zaběhu: #1351 tz_facts flag ve Varování + Step 2 geometrie.
+**Dál:** **PR3** = low-risk cleanup (2 duplicitní smart-defaults efekty `useCalculator.ts:244-264` + `:712-738`; fyzický dedup duplicitních length-polí) — **samostatná větev, na review** → **multiplicity-redesign NE pod freeze, po 06-21, vlastní interview** → **Step 3.5** degradation. **Freeze** (Cemex demo 06-28) otevírá **06-21**.
+
+**Multiplicity-redesign — vstup ZAFIXOVÁN (Alexander 2026-06-15):** model je **DVOJÚROVŇOVÝ**, ne plochý list. `pozice (1 řádek smety, 1 souhrn) └ list elementů (typ+počet+geometrie→objem) └ záběry/takty elementu (max = bottleneck)`. Smeta vidí JEN souhrn pozice; rozpad žije uvnitř. Fronta: 1 pozice + **vrátit ruční výběr podtypu** (jak bývalo) + vnitřní «rozpad na elementy», do tabulky jde součet. MCP/agent: počítá element po elementu a sčítá (plná detailizace v MCP path; smeta per-element řádky nedrží). Klíč: UI dnes míchá DVĚ osy do bratrských kontrolů — (1) které elementy tvoří pozici, (2) jak se element lije po záběrech — proto `num_identical_elements` ⊥ `num_dilatation_sections` ⊥ `manual_zabery` nesedí (plochý zápis dvojúrovňové reality). Fundament: Step-1 project-carrier (list elementů v engine) obsluhuje OBA surface → redizajn = hlavně re-exprese na frontě + obnova ručního podtypu, ne nový engine. **PIN do interview:** dohledat KONKRÉTNÍ removed/refactored kontrol «ruční výběr podtypu jak bývalo» (přesná obnova, ne rekonstrukce naslepo).
+
+
+## 2026-06-15 — Session (krátká): zachycení cenové architektury (3 režimy) před Step 3
+
+Alexander z paměti rekonstruoval **architekturu cen kalkulátoru = TŘI režimy**, kterou
+recon-mapa NEVIDĚLA (záměr žije v polích UI, ne explicitně v kódu). Bez zápisu by Step 3
+mohl smazat cenové pole jako „mrtvý kód".
+
+**Tři režimy (slot „default + override + vypínač", NE prázdný slot):**
+1. sazby/mzdy předvyplněné (min. 100) + override → rychlá kalkulace s penězi;
+2. vlastní sazby → přesný výpočet pro firmu;
+3. zaškrtávátko „bez cen" → jen normohodiny + dny pronájmu (normogram zdrojů), peníze
+   se nepočítají. **MCP výstup = režim 3.** Firma s libovolnými sazbami obsloužena.
+
+**Důsledek pro Step 3 (legacy cleanup):** hranice čistky NENÍ „dojde do enginu/grep",
+ALE „součást systému tří režimů cen NEBO náhodný přišelec". NOSNÁ pole (sekce Ceny,
+cenová pole bednění, sazby/mzdy) = NEsahat. `price_crane_czk_shift`/`price_pump_czk_h`
+= přišelci (Alexander: patří do TOV-rozpadu) → smazat z kalkulátoru + založit do TOV.
+Zapsáno: `Monolit-Planner/CLAUDE.md §0` + handoff `docs/handoff/2026-06-14_phase5-step3-next-session.md`.
+
+**Pauza:** Step 1+2 v main (zelené). Step 3 (PR2 half-wired tact + mazání z boevého
+výpočtu = NEJrizikovější) čeká na novou session s čerstvou hlavou. Freeze 21., runway
+týden. Live check #1351 + Step 2 na webu = PENDING po deploy.
 
 
 ## 2026-06-14 — Session (pokračování): Fáze 5 Step 1 + Step 2 (calculator one-element → projekt)

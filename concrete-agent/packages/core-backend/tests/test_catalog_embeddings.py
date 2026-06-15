@@ -142,6 +142,104 @@ def test_load_xml_text_reads_local_path(tmp_path):
     assert len(items) == 2
 
 
+# ── recall self-test (startup diagnostics) ───────────────────────────────────
+class _FakeCursor:
+    def __init__(self, count):
+        self._count = count
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def execute(self, *a, **k):
+        pass
+
+    def fetchone(self):
+        return (self._count,)
+
+
+class _FakeConn:
+    def __init__(self, count):
+        self._count = count
+
+    def cursor(self):
+        return _FakeCursor(self._count)
+
+    def close(self):
+        pass
+
+
+def _install_fake_psycopg2(monkeypatch, *, count=0, connect_error=None):
+    import sys
+    import types
+
+    fake = types.ModuleType("psycopg2")
+
+    def connect(dsn, *a, **k):
+        if connect_error is not None:
+            raise connect_error
+        return _FakeConn(count)
+
+    fake.connect = connect
+    monkeypatch.setitem(sys.modules, "psycopg2", fake)
+
+
+def test_recall_health_active(monkeypatch):
+    _install_fake_psycopg2(monkeypatch, count=17940)
+    monkeypatch.setattr(ce, "_search", lambda q, limit=20: [
+        {"code": "272311", "source": "embeddings", "similarity": 0.82}
+    ])
+    h = ce.recall_health()
+    assert h["active"] is True
+    assert h["stage"] == "ok"
+    assert h["rows"] == 17940
+    assert h["top_similarity"] == pytest.approx(0.82)
+    assert h["model"] == ce.settings.EMBEDDING_MODEL
+    assert h["location"] == ce.settings.EMBEDDING_LOCATION  # region in verdict
+
+
+def test_recall_health_empty_table(monkeypatch):
+    _install_fake_psycopg2(monkeypatch, count=0)
+    # _search must never be reached when the table is empty
+    monkeypatch.setattr(ce, "_search", lambda *a, **k: pytest.fail("searched empty table"))
+    h = ce.recall_health()
+    assert h["active"] is False
+    assert h["stage"] == "empty_table"
+    assert h["rows"] == 0
+    assert "0 rows" in h["error"]
+
+
+def test_recall_health_db_unreachable(monkeypatch):
+    _install_fake_psycopg2(monkeypatch, connect_error=OSError("could not connect to socket"))
+    h = ce.recall_health()
+    assert h["active"] is False
+    assert h["stage"] == "db"
+    assert "socket" in h["error"]
+
+
+def test_recall_health_search_fails(monkeypatch):
+    _install_fake_psycopg2(monkeypatch, count=10)
+
+    def boom(q, limit=20):
+        raise RuntimeError("Vertex embeddings failed: 403 permission denied")
+
+    monkeypatch.setattr(ce, "_search", boom)
+    h = ce.recall_health()
+    assert h["active"] is False
+    assert h["stage"] == "search"
+    assert "403" in h["error"]
+
+
+def test_pgvector_provider_swallows_search_errors(monkeypatch):
+    def boom(q, limit=20):
+        raise RuntimeError("db down")
+
+    monkeypatch.setattr(ce, "_search", boom)
+    assert ce.pgvector_provider("beton pilířů") == []  # degrades, never raises
+
+
 def test_pgvector_migration_revision_id_within_alembic_limit():
     # alembic_version.version_num defaults to VARCHAR(32) — a longer id fails the
     # journal write (the runbook bug). Guard it here.
