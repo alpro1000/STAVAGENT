@@ -85,8 +85,6 @@ export interface DocSuggestionsResponse {
 
 // ─── Form state ────────────────────────────────────────────────────────────
 
-export type TactMode = 'spary' | 'manual';
-
 export interface FormState {
   element_type: StructuralElementType;
   // 2026-04-15: element_name + use_name_classification removed.
@@ -135,17 +133,8 @@ export interface FormState {
    * 'from_geometry' and overwrites volume.
    */
   volume_mode: 'manual' | 'from_geometry';
-  /** @deprecated Block A (2026-04): use has_dilatation_joints + tacts_per_section_mode */
-  tact_mode: TactMode;
-  /** @deprecated Block A: kept for backward compat with WizardHints — UI now writes has_dilatation_joints */
-  has_dilatacni_spary: boolean;
-  /** @deprecated Block A: replaced by dilatation_spacing_m (string) */
-  spara_spacing_m: number;
   total_length_m: number;
   adjacent_sections: boolean;
-  /** @deprecated Block A: replaced by tacts_per_section_manual (used only in manual mode) */
-  num_tacts_override: string;
-  tact_volume_m3_override: string;
 
   // ─── Block A (2026-04): hierarchical sections × záběry per section ────────
   /** Has dilatation joints? Used to decide whether num_dilatation_sections is editable. */
@@ -241,10 +230,6 @@ export interface FormState {
    * sidebar "Počítat bez cen" checkbox in the new Ceny section.
    */
   price_mode: 'full' | 'schedule_only';
-  /** D3: optional crane rate — extra cost input (0 = odhad). */
-  price_crane_czk_shift: string;
-  /** D3: optional concrete pump hourly rate (0 = odhad). */
-  price_pump_czk_h: string;
 
   // ─── Pile-specific (2026-04-15) ───────────────────────────────────────
   // Read ONLY when element_type === 'pilota'. Routed to PlannerInput.pile_*
@@ -383,15 +368,10 @@ export const DEFAULT_FORM: FormState = {
   length_m_input: '',
   width_m_input: '',
   volume_mode: 'manual',
-  tact_mode: 'spary',
-  has_dilatacni_spary: false,
-  spara_spacing_m: 10,
   total_length_m: 50,
   adjacent_sections: true,
-  num_tacts_override: '',
-  tact_volume_m3_override: '',
-  // Block A: hierarchical sections × záběry per section (replaces the
-  // legacy tact_mode tab-pair). Default = 1 section, auto-tact-count.
+  // Block A: hierarchical sections × záběry per section.
+  // Default = 1 section, auto-tact-count.
   has_dilatation_joints: false,
   num_dilatation_sections: 1,
   dilatation_spacing_m: '',
@@ -447,10 +427,8 @@ export const DEFAULT_FORM: FormState = {
   curing_class: '',   // auto from element_type
   working_joints_allowed: '',
   preferred_manufacturer: '',
-  // D1/D3 (2026-04-15): price mode + optional crane/pump rates
+  // D1 (2026-04-15): price mode toggle
   price_mode: 'full',
-  price_crane_czk_shift: '',
-  price_pump_czk_h: '',
   // Pile-specific defaults — only consumed when element_type === 'pilota'
   pile_diameter_mm: '',
   pile_length_m: '',

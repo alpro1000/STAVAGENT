@@ -914,11 +914,11 @@ export default function useCalculator() {
         body: JSON.stringify({
           element_type: form.element_type,
           volume_m3: form.volume_m3,
-          has_dilatacni_spary: form.tact_mode === 'spary' ? form.has_dilatacni_spary : false,
+          has_dilatacni_spary: form.has_dilatation_joints,
           concrete_class: form.concrete_class,
           temperature_c: form.temperature_c,
           total_length_m: form.total_length_m,
-          spara_spacing_m: form.spara_spacing_m,
+          spara_spacing_m: form.dilatation_spacing_m ? Number(form.dilatation_spacing_m) : undefined,
           // Phase 2: enriched context
           calculator_context: calculatorContext,
           // Phase 3: TZ text excerpt (if pasted)
@@ -976,8 +976,8 @@ export default function useCalculator() {
       setAdvisorLoading(false);
     }
   }, [form.element_type, form.volume_m3,
-      form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
-      form.total_length_m, form.spara_spacing_m,
+      form.has_dilatation_joints, form.concrete_class, form.temperature_c,
+      form.total_length_m, form.dilatation_spacing_m,
       form.exposure_class, form.curing_class, form.height_m, form.is_prestressed,
       form.span_m, form.num_spans, form.construction_technology, tzText, result]);
 

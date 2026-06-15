@@ -1,8 +1,24 @@
 # next-session.md
 
-**Last updated:** 2026-06-11
-**Current branch:** `claude/upbeat-dirac-krnyqi`
-**Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +10 days)
+**Last updated:** 2026-06-15
+**Current branch:** `claude/phase5-steps1-2-handoff-p0og0u`
+**Production safety status:** ✅ (no freeze active — Cemex CSC pre-demo window opens **2026-06-21**, +6 days)
+
+---
+
+## 🟢 ACTIVE — Fáze 5 Step 3 (calculator legacy/dead-field cleanup) — PR1+PR2 READY, čeká merge+live
+
+**Větev:** `claude/phase5-steps1-2-handoff-p0og0u` (Step 1 #1353 + Step 2 #1357 už v main).
+**Handoff:** `docs/handoff/2026-06-14_phase5-step3-next-session.md` · **recon:** `docs/audits/calculator_field_map/2026-06-13_recon.md` · plný stav `docs/soul.md §9` (2026-06-15).
+
+**Hotové a zelené na větvi (NEsmergováno — merge calc PR = Alexander, po jednom):**
+- **PR1** (dead-code): smazány `price_crane_czk_shift`+`price_pump_czk_h` (přišelci → TOV) + orphan `tact_volume_m3_override`.
+- **PR2** (orphan + redirect + bugfix): smazán orphan `CalculatorWizard.tsx` (692 ř., 0 importérů); advisor + WizardHints redirect na live dilataci (`has_dilatation_joints`/`dilatation_spacing_m`); **FIX silent tact-loss** (apply-recommended psal mrtvý `num_tacts_override` → teď mapuje N=total záběry přes shared `tactsPerSectionForRecommendedTotal`); smazána legacy FormState pole `tact_mode`/`has_dilatacni_spary`/`spara_spacing_m`/`num_tacts_override`+`TactMode`; nový shared helper + 5 testů (N invariant). **shared 1322 / frontend tsc clean.**
+- **KEEP (přeřazeno, NEsmazáno):** `rebar_norm_kg_m3`, `include_kridla`/`kridla_height_m` — živé (engine pole / render karta), ne přišelci.
+
+**Alexander akce:** review grep-důkazů → merge po jednom PR → **live-check advisor/WizardHints na kalkulator.stavagent.cz** (PENDING — mění živé AI; nepovažovat za hotové bez webu).
+**Dál (až po live PR2):** PR3 low-risk cleanup (duplicitní smart-defaults `useCalculator.ts:244-264`+`:712-738`; fyzický dedup duplicitních length-polí) → **multiplicity-redesign** (`num_identical_elements`⊥`num_dilatation_sections`⊥`manual_zabery` → list elementů Step 1) jako SAMOSTATNÉ interview → **Step 3.5** degradation class. **NEzačínat Step 4 před merge Step 3.**
+**Flag:** handoff odkazuje `Monolit-Planner/CLAUDE.md §0` (architektura cen 3 režimy) — sekce NEEXISTUJE; doplnit nebo opravit odkaz.
 
 ---
 

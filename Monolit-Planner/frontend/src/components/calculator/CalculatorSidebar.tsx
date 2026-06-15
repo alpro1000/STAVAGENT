@@ -13,7 +13,7 @@ import { TzTextInput } from './TzTextInput';
 import type { TzHistoryEntry } from './tzStorage';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays, tactsPerSectionForRecommendedTotal } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge, DocWarningsBanner } from './ui';
 import { formatCZK, formatNum, inputStyle, labelStyle } from './helpers';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState } from './types';
@@ -926,8 +926,16 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
             onApplyRecommendedSystem={(systemName, numTacts) => {
               update('formwork_system_name', systemName);
               if (numTacts && numTacts > 1) {
-                update('tact_mode', 'manual');
-                update('num_tacts_override', String(numTacts));
+                // Recommended N = total požadované záběry → map to the live
+                // sections × tacts/section model (shared helper). Previously
+                // this wrote the legacy num_tacts_override, which buildInput
+                // ignored → the recommended tact count was silently lost.
+                const sections = form.has_dilatation_joints
+                  ? Math.max(1, Math.floor(form.num_dilatation_sections || 1))
+                  : 1;
+                const perSection = tactsPerSectionForRecommendedTotal(numTacts, sections);
+                update('tacts_per_section_mode', 'manual');
+                update('tacts_per_section_manual', String(perSection));
               }
             }}
           />
@@ -987,24 +995,6 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           </label>
           {form.price_mode === 'full' && (
             <>
-              <div style={{
-                fontSize: 10, color: 'var(--r0-slate-400)',
-                marginBottom: 6, lineHeight: 1.5,
-              }}>
-                Prázdná pole = odhad (zobrazeno s varováním). Vyplněná = vaše sazby.
-              </div>
-              {/* Jeřáb */}
-              <Field label="Jeřáb (Kč/směna)">
-                <NumInput style={inputStyle} value={form.price_crane_czk_shift} min={0}
-                  onChange={v => update('price_crane_czk_shift', String(v))}
-                  placeholder="odhad" />
-              </Field>
-              {/* Čerpadlo */}
-              <Field label="Čerpadlo (Kč/h)">
-                <NumInput style={inputStyle} value={form.price_pump_czk_h} min={0}
-                  onChange={v => update('price_pump_czk_h', String(v))}
-                  placeholder="odhad" />
-              </Field>
               {/* Pile rig — only for pilota */}
               {form.element_type === 'pilota' && (
                 <Field label="Vrtací souprava (Kč/směna)">
