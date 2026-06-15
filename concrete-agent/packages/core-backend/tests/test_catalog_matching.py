@@ -203,6 +203,59 @@ def test_retrieve_summary_explains_gate():
     assert s["dropped"]["param_prefilter"] == 0
 
 
+# ── Soft class-prefilter for embeddings (live: catalog has no C35/45 for piers) ─
+def test_embeddings_soft_class_prefilter_keeps_and_penalises():
+    # Query names C35/45; the correct pier line is priced C30/37 (the class the
+    # catalog actually carries). Hard prefilter would delete it — embeddings soften.
+    q = "beton mostních pilířů C35/45"
+    raw = [{"code": "334325",
+            "description": "MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37",
+            "unit": "M3", "unit_price_czk": 5000.0, "work_type": "beton",
+            "element_family": "driki_piliru", "source": "embeddings", "similarity": 0.8}]
+    carrier = cm.match_catalog(q, raw)
+    cand = next((c for c in carrier["candidates"] if c["code"] == "334325"), None)
+    assert cand is not None, "class contradiction must NOT drop an embeddings hit"
+    assert cand["provenance"]["param_prefilter"] == "softened"
+    # 0.70 + 0.10*0.8 = 0.78, minus 0.07 soft penalty = 0.71
+    assert cand["confidence"] == pytest.approx(0.71, abs=0.005)
+    s = carrier["retrieve_summary"]
+    assert s["soft_param_mismatch"]["embeddings"] == 1
+    assert s["dropped"]["param_prefilter"] == 0
+    assert s["kept"]["embeddings"] == 1
+
+
+def test_keyword_class_prefilter_still_hard_drops():
+    # Keyword keeps the hard drop — precision unchanged.
+    q = "beton mostních pilířů C35/45"
+    # element_family='jine' is permissive on the family axis, so the candidate
+    # deterministically reaches param_prefilter regardless of the query's family.
+    raw = [{"code": "334324", "description": "MOSTNÍ PILÍŘE … BETONU DO C25/30",
+            "unit": "M3", "unit_price_czk": 4000.0, "work_type": "beton",
+            "element_family": "jine", "source": "keyword"}]
+    carrier = cm.match_catalog(q, raw)
+    assert "334324" not in [c["code"] for c in carrier["candidates"]]
+    assert carrier["retrieve_summary"]["dropped"]["param_prefilter"] == 1
+
+
+def test_soft_penalty_ranks_class_mismatch_below_clean_match():
+    # A clean-class embeddings hit must outrank a class-mismatch one even when the
+    # mismatch has higher similarity — the soft penalty restores that ordering.
+    q = "beton mostních pilířů C35/45"
+    raw = [
+        {"code": "MISMATCH", "description": "MOSTNÍ PILÍŘE … BETONU DO C30/37",
+         "unit": "M3", "unit_price_czk": 1.0, "work_type": "beton",
+         "element_family": "driki_piliru", "source": "embeddings", "similarity": 0.90},
+        {"code": "CLEAN", "description": "MOSTNÍ PILÍŘE … BETONU DO C35/45",
+         "unit": "M3", "unit_price_czk": 1.0, "work_type": "beton",
+         "element_family": "driki_piliru", "source": "embeddings", "similarity": 0.70},
+    ]
+    carrier = cm.match_catalog(q, raw)
+    codes = [c["code"] for c in carrier["candidates"]]
+    assert codes.index("CLEAN") < codes.index("MISMATCH"), "clean class must rank first"
+    by = {c["code"]: c["confidence"] for c in carrier["candidates"]}
+    assert by["CLEAN"] > by["MISMATCH"]
+
+
 # ── AC#7 reranker seam ───────────────────────────────────────────────────────
 def test_ranking_is_pluggable_audited_and_replayable():
     raw = _raw(PILIR_BETON, PILIR_BETON_LOWCLASS)

@@ -132,13 +132,23 @@ def name_score(query: str, name: str) -> float:
     return round(len(q & n) / len(q | n), 4)
 
 
-def honest_confidence(source: str, score: float, params_exact: bool, similarity: float = 0.0) -> float:
+def honest_confidence(source: str, score: float, params_exact: bool,
+                      similarity: float = 0.0, param_contradiction: bool = False) -> float:
     """Confidence ladder — NEVER 1.0 here (that is the code-lookup path).
 
     embeddings → AI band [0.70, 0.80]; keyword → [0.5 .. 0.9].
+
+    ``param_contradiction`` only reaches here for embeddings (keyword still hard-drops
+    on a contradicting param): it softens the AI-band score so a vector hit whose
+    catalog class differs from the query's ranks below a clean-class hit yet stays
+    above keyword noise — the query may name a class (e.g. C35/45) the catalog simply
+    doesn't carry for that element, which must not delete the correct position.
     """
     if source == "embeddings":
-        return round(min(0.80, max(0.70, 0.70 + 0.10 * similarity)), 2)
+        base = 0.70 + 0.10 * similarity
+        if param_contradiction:
+            base -= 0.07
+        return round(min(0.80, max(0.60, base)), 2)
     base = 0.5 + 0.4 * score
     if params_exact:
         base += 0.1
@@ -226,6 +236,9 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
         "retrieved": {"keyword": 0, "embeddings": 0},
         "kept": {"keyword": 0, "embeddings": 0},
         "dropped": {"work_type": 0, "family_axis": 0, "param_prefilter": 0},
+        # embeddings kept despite a class contradiction (soft prefilter), penalised
+        # in confidence rather than dropped.
+        "soft_param_mismatch": {"embeddings": 0},
     }
 
     gated: list[dict] = []
@@ -254,9 +267,17 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
             trace["dropped"]["family_axis"] += 1
             continue
         c_params = c.get("params") or extract_params(popis)
-        if not param_prefilter(q_params, c_params):
-            trace["dropped"]["param_prefilter"] += 1
-            continue
+        param_ok = param_prefilter(q_params, c_params)
+        if not param_ok:
+            # Keyword keeps the hard drop (precision). Embeddings soften: a class
+            # named in the query that the catalog item contradicts must NOT delete a
+            # semantically-correct vector — OTSKP prices on a discrete class ladder
+            # and the queried class may not exist for this element. Keep + penalise.
+            if source == "embeddings":
+                trace["soft_param_mismatch"]["embeddings"] += 1
+            else:
+                trace["dropped"]["param_prefilter"] += 1
+                continue
         trace["kept"][source if source in trace["kept"] else "keyword"] += 1
         score = name_score(query, popis)
         gated.append({
@@ -269,12 +290,13 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
             "score": score,
             "source": source,
             "confidence": honest_confidence(
-                source, score, _params_match(q_params, c_params), c.get("similarity", 0.0)
+                source, score, _params_match(q_params, c_params),
+                c.get("similarity", 0.0), param_contradiction=not param_ok,
             ),
             "provenance": {
                 "retrieve": source,
                 "uwo_gate": {"work_type": c_wt, "element_family": c_ef},
-                "param_prefilter": "passed",
+                "param_prefilter": "passed" if param_ok else "softened",
             },
         })
 
