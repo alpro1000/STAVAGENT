@@ -115,6 +115,11 @@ def recall_health(probe_query: str = "beton mostních pilířů C35/45") -> dict
     health: dict = {
         "active": False, "stage": None, "rows": None, "dim": None,
         "model": getattr(settings, "EMBEDDING_MODEL", None),
+        # Region the runtime embeds the QUERY in. Must equal the region the
+        # corpus was embedded in at ingest — a divergence silently breaks recall
+        # (model unavailable in region → embed raises → keyword-only). Surfaced
+        # here so a human can diff it against the ingest log's `loc=…`.
+        "location": getattr(settings, "EMBEDDING_LOCATION", None),
         "top_similarity": None, "error": None,
     }
 

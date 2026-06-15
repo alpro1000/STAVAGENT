@@ -166,13 +166,13 @@ async def _run_startup() -> None:
         h = recall_health()
         if h["active"]:
             logger.info(
-                "✅ Catalog recall ACTIVE — provider=pgvector model=%s rows=%s dim=%s top_sim=%s",
-                h["model"], h["rows"], h["dim"], h["top_similarity"],
+                "✅ Catalog recall ACTIVE — provider=pgvector model=%s loc=%s rows=%s dim=%s top_sim=%s",
+                h["model"], h["location"], h["rows"], h["dim"], h["top_similarity"],
             )
         else:
             logger.warning(
-                "⚠️  Catalog recall INERT (keyword-only) — stage=%s rows=%s error=%s",
-                h["stage"], h["rows"], h["error"],
+                "⚠️  Catalog recall INERT (keyword-only) — stage=%s loc=%s rows=%s error=%s",
+                h["stage"], h["location"], h["rows"], h["error"],
             )
     except Exception as e:  # noqa: BLE001 — recall is best-effort, never fatal
         logger.warning("⚠️  Catalog embeddings provider not registered: %s", e)
