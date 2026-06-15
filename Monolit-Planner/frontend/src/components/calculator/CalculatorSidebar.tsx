@@ -926,8 +926,18 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
             onApplyRecommendedSystem={(systemName, numTacts) => {
               update('formwork_system_name', systemName);
               if (numTacts && numTacts > 1) {
-                update('tact_mode', 'manual');
-                update('num_tacts_override', String(numTacts));
+                // Recommended N = total požadované záběry → map to the live
+                // sections × tacts/section model. When dilatation sections are
+                // already configured, spread N across them (ceil) so the total
+                // stays ~N rather than sections×N. Previously this wrote the
+                // legacy num_tacts_override, which buildInput ignored → the
+                // recommended tact count was silently lost.
+                const sections = form.has_dilatation_joints
+                  ? Math.max(1, Math.floor(form.num_dilatation_sections || 1))
+                  : 1;
+                const perSection = sections > 1 ? Math.ceil(numTacts / sections) : numTacts;
+                update('tacts_per_section_mode', 'manual');
+                update('tacts_per_section_manual', String(perSection));
               }
             }}
           />

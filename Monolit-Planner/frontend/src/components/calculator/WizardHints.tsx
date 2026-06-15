@@ -298,7 +298,7 @@ export function ReviewHint({
 
   const warnings: string[] = [];
   // Pracovní spáry not confirmed warning
-  if (!form.has_dilatacni_spary) {
+  if (!form.has_dilatation_joints) {
     warnings.push('Pracovní spáry: neurčeno (ověřit v RDS)');
   }
   // Task 3 (2026-04): missing height_m for elements that need supports
