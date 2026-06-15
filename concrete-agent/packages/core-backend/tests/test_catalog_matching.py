@@ -135,6 +135,33 @@ def test_module_level_provider_used_when_not_passed(monkeypatch):
     assert "999999" in [c["code"] for c in raw]
 
 
+# ── Class-stripped retrieval (recall is class-independent; class applies downstream) ─
+@pytest.mark.parametrize("text,expected", [
+    ("beton mostních pilířů C35/45", "beton mostních pilířů"),
+    ("beton mostních pilířů C 30 / 37", "beton mostních pilířů"),
+    ("MOSTNÍ PILÍŘE C40/50 železobeton", "MOSTNÍ PILÍŘE železobeton"),
+    ("beton mostních pilířů", "beton mostních pilířů"),  # no class → unchanged
+])
+def test_strip_concrete_class(text, expected):
+    assert cm.strip_concrete_class(text) == expected
+
+
+def test_retrieve_strips_class_for_embeddings_only():
+    seen = {}
+
+    def kw(q):
+        seen["keyword"] = q
+        return []
+
+    def prov(q, limit):
+        seen["embeddings"] = q
+        return []
+
+    cm.retrieve_candidates("beton mostních pilířů C35/45", kw, embeddings_provider=prov)
+    assert seen["keyword"] == "beton mostních pilířů C35/45"   # full query (LIKE)
+    assert seen["embeddings"] == "beton mostních pilířů"        # class stripped (recall)
+
+
 # ── AC#6 Vertex bounds ───────────────────────────────────────────────────────
 def test_embeddings_candidate_stays_in_ai_band():
     raw = [{"code": PILIR_BETON["code"], "description": PILIR_BETON["nazev"], "unit": "M3",
