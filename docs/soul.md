@@ -351,6 +351,30 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-15 — Session (krátká): zachycení cenové architektury (3 režimy) před Step 3
+
+Alexander z paměti rekonstruoval **architekturu cen kalkulátoru = TŘI režimy**, kterou
+recon-mapa NEVIDĚLA (záměr žije v polích UI, ne explicitně v kódu). Bez zápisu by Step 3
+mohl smazat cenové pole jako „mrtvý kód".
+
+**Tři režimy (slot „default + override + vypínač", NE prázdný slot):**
+1. sazby/mzdy předvyplněné (min. 100) + override → rychlá kalkulace s penězi;
+2. vlastní sazby → přesný výpočet pro firmu;
+3. zaškrtávátko „bez cen" → jen normohodiny + dny pronájmu (normogram zdrojů), peníze
+   se nepočítají. **MCP výstup = režim 3.** Firma s libovolnými sazbami obsloužena.
+
+**Důsledek pro Step 3 (legacy cleanup):** hranice čistky NENÍ „dojde do enginu/grep",
+ALE „součást systému tří režimů cen NEBO náhodný přišelec". NOSNÁ pole (sekce Ceny,
+cenová pole bednění, sazby/mzdy) = NEsahat. `price_crane_czk_shift`/`price_pump_czk_h`
+= přišelci (Alexander: patří do TOV-rozpadu) → smazat z kalkulátoru + založit do TOV.
+Zapsáno: `Monolit-Planner/CLAUDE.md §0` + handoff `docs/handoff/2026-06-14_phase5-step3-next-session.md`.
+
+**Pauza:** Step 1+2 v main (zelené). Step 3 (PR2 half-wired tact + mazání z boevého
+výpočtu = NEJrizikovější) čeká na novou session s čerstvou hlavou. Freeze 21., runway
+týden. Live check #1351 + Step 2 na webu = PENDING po deploy.
+
+
+
 ## 2026-06-14 — Session (pokračování): Fáze 5 Step 1 + Step 2 (calculator one-element → projekt)
 
 **Smergováno do main (Alexander):**
