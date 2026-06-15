@@ -178,6 +178,31 @@ def test_embeddings_still_respects_work_type_axis():
         "embeddings still gated by work-type (beton query vs obklad candidate)"
 
 
+def test_retrieve_summary_explains_gate():
+    # The carrier self-explains why embeddings did/didn't survive — no log-diving.
+    q = "beton mostních pilířů C35/45"  # work_type=beton, family=driki_piliru
+    raw = [
+        # keyword, beton but a different specific family → dropped by family axis
+        {"code": "A", "description": "Beton mostní konstrukce", "unit": "M3",
+         "unit_price_czk": 1.0, "work_type": "beton",
+         "element_family": "opery_ulozne_prahy", "source": "keyword"},
+        # embeddings, same family mismatch → SURVIVES (family axis skipped)
+        {"code": "B", "description": "Beton mostní konstrukce", "unit": "M3",
+         "unit_price_czk": 1.0, "work_type": "beton",
+         "element_family": "opery_ulozne_prahy", "source": "embeddings", "similarity": 0.8},
+        # embeddings, wrong work-type → dropped by work-type
+        {"code": "C", "description": "Obklad", "unit": "M2", "unit_price_czk": 1.0,
+         "work_type": "obklad", "element_family": "jine", "source": "embeddings",
+         "similarity": 0.9},
+    ]
+    s = cm.match_catalog(q, raw)["retrieve_summary"]
+    assert s["retrieved"] == {"keyword": 1, "embeddings": 2}
+    assert s["kept"] == {"keyword": 0, "embeddings": 1}      # only B survived
+    assert s["dropped"]["family_axis"] == 1                  # A (keyword)
+    assert s["dropped"]["work_type"] == 1                    # C (embeddings)
+    assert s["dropped"]["param_prefilter"] == 0
+
+
 # ── AC#7 reranker seam ───────────────────────────────────────────────────────
 def test_ranking_is_pluggable_audited_and_replayable():
     raw = _raw(PILIR_BETON, PILIR_BETON_LOWCLASS)

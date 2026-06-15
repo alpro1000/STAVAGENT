@@ -218,12 +218,23 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
     q_ef = element_family(query)
     q_params = extract_params(query)
 
+    # Gate trace — makes "why isn't there an embeddings hit in the output?"
+    # answerable from the response alone, no log-diving. Distinguishes "provider
+    # returned nothing" (retrieved.embeddings == 0) from "retrieved but filtered"
+    # (kept.embeddings == 0 with a non-zero dropped.* bucket).
+    trace = {
+        "retrieved": {"keyword": 0, "embeddings": 0},
+        "kept": {"keyword": 0, "embeddings": 0},
+        "dropped": {"work_type": 0, "family_axis": 0, "param_prefilter": 0},
+    }
+
     gated: list[dict] = []
     for c in raw_candidates:
         popis = c.get("description", "") or c.get("nazev", "")
         c_wt = c.get("work_type") or classify_work_type(popis)
         c_ef = c.get("element_family") or element_family(popis)
         source = c.get("source", "keyword")
+        trace["retrieved"][source if source in trace["retrieved"] else "keyword"] += 1
         # Embeddings recall exists to REPAIR the keyword classifier's misses, so
         # gating it by that same element-family classifier (24 fuzzy buckets)
         # discards exactly the high-similarity hits it was meant to surface
@@ -234,12 +245,19 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
         # truth. Keyword candidates keep the full two-axis gate.
         if source == "embeddings":
             if not work_type_ok(q_wt, c_wt):
+                trace["dropped"]["work_type"] += 1
                 continue
+        elif not work_type_ok(q_wt, c_wt):
+            trace["dropped"]["work_type"] += 1
+            continue
         elif not passes_uwo_gate(q_wt, q_ef, c_wt, c_ef):
+            trace["dropped"]["family_axis"] += 1
             continue
         c_params = c.get("params") or extract_params(popis)
         if not param_prefilter(q_params, c_params):
+            trace["dropped"]["param_prefilter"] += 1
             continue
+        trace["kept"][source if source in trace["kept"] else "keyword"] += 1
         score = name_score(query, popis)
         gated.append({
             **c,
@@ -267,4 +285,5 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
         "query_work_type": q_wt,
         "query_element_family": q_ef,
         "query_params": q_params,
+        "retrieve_summary": trace,
     }

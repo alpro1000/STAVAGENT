@@ -245,6 +245,10 @@ async def find_otskp_code(
             "query": query,
             "query_work_type": carrier["query_work_type"],
             "query_element_family": carrier["query_element_family"],
+            # Self-explains why embeddings did/didn't make the shortlist:
+            # retrieved.embeddings==0 → provider returned nothing; kept.embeddings==0
+            # with dropped.*>0 → retrieved but filtered (which axis).
+            "retrieve_summary": carrier["retrieve_summary"],
             "ranking_audit": carrier["ranking_audit"],
         }
 
