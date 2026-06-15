@@ -13,7 +13,7 @@ import { TzTextInput } from './TzTextInput';
 import type { TzHistoryEntry } from './tzStorage';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays, tactsPerSectionForRecommendedTotal } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge, DocWarningsBanner } from './ui';
 import { formatCZK, formatNum, inputStyle, labelStyle } from './helpers';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState } from './types';
@@ -927,15 +927,13 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               update('formwork_system_name', systemName);
               if (numTacts && numTacts > 1) {
                 // Recommended N = total požadované záběry → map to the live
-                // sections × tacts/section model. When dilatation sections are
-                // already configured, spread N across them (ceil) so the total
-                // stays ~N rather than sections×N. Previously this wrote the
-                // legacy num_tacts_override, which buildInput ignored → the
-                // recommended tact count was silently lost.
+                // sections × tacts/section model (shared helper). Previously
+                // this wrote the legacy num_tacts_override, which buildInput
+                // ignored → the recommended tact count was silently lost.
                 const sections = form.has_dilatation_joints
                   ? Math.max(1, Math.floor(form.num_dilatation_sections || 1))
                   : 1;
-                const perSection = sections > 1 ? Math.ceil(numTacts / sections) : numTacts;
+                const perSection = tactsPerSectionForRecommendedTotal(numTacts, sections);
                 update('tacts_per_section_mode', 'manual');
                 update('tacts_per_section_manual', String(perSection));
               }

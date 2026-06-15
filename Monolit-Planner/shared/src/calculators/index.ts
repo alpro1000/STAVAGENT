@@ -32,6 +32,7 @@ export * from './project-planner.js';
 export * from './labor-projection.js';
 export * from './labor-norms.js';
 export * from './validation-rules.js';
+export * from './tact-mapping.js';
 export * from './batchCalculator.js';
 
 // Classifiers
