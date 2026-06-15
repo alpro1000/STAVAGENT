@@ -351,6 +351,30 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-15 — Session: Fáze 5 Step 3 PR1+PR2 (legacy/dead-field cleanup) — READY, čeká merge+live
+
+**Větev:** `claude/phase5-steps1-2-handoff-p0og0u` — **NEsmergováno** (merge calc PR = Alexander, po jednom).
+
+**Pre-implementation interview (Step 3):** (1) **Hybrid** — truly-dead smazat fyzicky (grep-důkaz), half-wired redirect čtenáře/zapisovatele na live path PAK smazat; (2) degradace (soft-degradation class) → **samostatný Step 3.5**, ne teď; (3) **po jednom poli / malé skupině na PR**.
+**Granice čištění (upřesnil Alexander):** ne grep-«dosáhne motoru», ale «část systému 3 cenových režimů NEBO náhodný přišelec». `price_crane`/`price_pump` = přišelci (náklad patří do TOV); nosná cenová pole NEsahat.
+
+**PR1 — čistý dead-code:** smazány `price_crane_czk_shift` + `price_pump_czk_h` (přišelci, sbírány v sidebaru, nikdy v buildInput/advisoru) + `tact_volume_m3_override` (orphan FormState pole, 0 čtenářů/zapisovatelů; stejnojmenné `input.tact_volume_m3_override` z manual_zabery netknuto). tsc + 1317 shared.
+
+**PR2 — orphan + entangled redirect + bugfix:**
+- smazán orphan `CalculatorWizard.tsx` (692 ř., 0 importérů — mrtvý paralelní wizard s vlastním tact_mode tab UI);
+- **advisor redirect na live dilataci**: `has_dilatacni_spary`/`spara_spacing_m` v payloadu teď z `has_dilatation_joints`/`dilatation_spacing_m` (backend klíče nezměněny → advisor-prompt/suggestFormwork/num_sets reasonují nad AKTUÁLNÍ daty, ne stale);
+- **FIX silent tact-loss**: WizardHints `onApplyRecommendedSystem` psal mrtvý `num_tacts_override` (buildInput ignoroval → ztráta) → teď mapuje doporučené N = TOTAL záběry na live model přes shared helper `tactsPerSectionForRecommendedTotal(N, sections)` = `tacts_per_section = ceil(N/sections)` (sekce>1) / `N` (1 sekce);
+- smazána FormState pole `tact_mode`/`has_dilatacni_spary`/`spara_spacing_m`/`num_tacts_override` + typ `TactMode` (0 code-refs, tsc-ověřeno); shared `PlannerInput.*` stejnojmenná pole (z manual_zabery) netknuta;
+- nový shared helper `calculators/tact-mapping.ts` + 5 testů (N invariant: sekce=1→N; dělitelné→total===N; nedělitelné→ceil, total≥N a minimální; nula/garbage→1). shared **1322**, frontend tsc clean.
+
+**Přeřazeno (NEsmazáno — recon premisa «5 truly-dead» chybná pro 3/5; doporučení KEEP):** `rebar_norm_kg_m3` (živý dual-input → odvozuje engine pole `rebar_mass_kg`), `include_kridla`/`kridla_height_m` (renderují `kridlaFormwork` kartu v CalculatorResult). Nejsou přišelci — každé řídí engine pole nebo render.
+
+**Flag:** handoff odkazuje `Monolit-Planner/CLAUDE.md §0 — architektura cen (3 režimy)`, ale sekce v souboru NEEXISTUJE (grep prázdný). Substantivní pokyn byl jasný, dodržen; doplnit §0 nebo opravit odkaz v handoffu.
+
+**STATUS:** PR1+PR2 hotové a zelené, NEsmergováno. Alexander: review grep-důkazů → merge po jednom PR → **live-check advisor/WizardHints na kalkulator.stavagent.cz** (PENDING, mění živé AI + apply-recommended; nepovažovat za hotové bez prohlídky na webu).
+**Dál (po live-verifikaci PR2):** PR3 = low-risk cleanup (2 duplicitní smart-defaults efekty `useCalculator.ts:244-264` + `:712-738`; fyzický dedup duplicitních length-polí které Step 2 sjednotil chováním) → pak **multiplicity-redesign** (`num_identical_elements` ⊥ `num_dilatation_sections` ⊥ `manual_zabery` → list elementů ze Step 1) jako SAMOSTATNÉ interview → pak **Step 3.5** degradation class. **Freeze okno** (Cemex demo 2026-06-28) otevírá 2026-06-21.
+
+
 ## 2026-06-14 — Session (pokračování): Fáze 5 Step 1 + Step 2 (calculator one-element → projekt)
 
 **Smergováno do main (Alexander):**
