@@ -145,7 +145,6 @@ export interface FormState {
   adjacent_sections: boolean;
   /** @deprecated Block A: replaced by tacts_per_section_manual (used only in manual mode) */
   num_tacts_override: string;
-  tact_volume_m3_override: string;
 
   // ─── Block A (2026-04): hierarchical sections × záběry per section ────────
   /** Has dilatation joints? Used to decide whether num_dilatation_sections is editable. */
@@ -385,7 +384,6 @@ export const DEFAULT_FORM: FormState = {
   total_length_m: 50,
   adjacent_sections: true,
   num_tacts_override: '',
-  tact_volume_m3_override: '',
   // Block A: hierarchical sections × záběry per section (replaces the
   // legacy tact_mode tab-pair). Default = 1 section, auto-tact-count.
   has_dilatation_joints: false,
