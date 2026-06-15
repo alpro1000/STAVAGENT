@@ -197,6 +197,7 @@ def test_recall_health_active(monkeypatch):
     assert h["rows"] == 17940
     assert h["top_similarity"] == pytest.approx(0.82)
     assert h["model"] == ce.settings.EMBEDDING_MODEL
+    assert h["location"] == ce.settings.EMBEDDING_LOCATION  # region in verdict
 
 
 def test_recall_health_empty_table(monkeypatch):
