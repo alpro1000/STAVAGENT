@@ -145,6 +145,39 @@ def test_embeddings_candidate_stays_in_ai_band():
     assert c["confidence"] != 1.0
 
 
+# ── AC#4 live bug: embeddings skip the family axis, keyword does not ──────────
+def test_embeddings_skip_family_axis_keyword_does_not():
+    # Query resolves to a SPECIFIC family (driki_piliru). A beton candidate the
+    # classifier buckets into ANOTHER specific family is gated out as KEYWORD but
+    # MUST survive as EMBEDDINGS — otherwise recall is dead for specific-family
+    # queries (the live "beton mostních pilířů C35/45" → 0 embeddings symptom).
+    q = "beton mostních pilířů C35/45"
+    base = {"code": "990001", "description": "Beton mostní konstrukce",
+            "unit": "M3", "unit_price_czk": 3000.0,
+            "work_type": "beton", "element_family": "opery_ulozne_prahy"}
+
+    kw = cm.match_catalog(q, [{**base, "source": "keyword"}])
+    assert "990001" not in [c["code"] for c in kw["candidates"]], "keyword keeps family axis"
+
+    emb = cm.match_catalog(q, [{**base, "source": "embeddings", "similarity": 0.83}])
+    survivors = [c for c in emb["candidates"] if c["code"] == "990001"]
+    assert survivors, "embeddings candidate must survive the family axis"
+    assert survivors[0]["source"] == "embeddings"
+    assert 0.70 <= survivors[0]["confidence"] <= 0.80
+
+
+def test_embeddings_still_respects_work_type_axis():
+    # The coarse work-type axis still applies to embeddings: a beton query must
+    # not admit an obklad (cladding) candidate, however high its similarity.
+    q = "beton mostních pilířů C35/45"
+    cand = {"code": "990002", "description": "Obklad kamenný", "unit": "M2",
+            "unit_price_czk": 1000.0, "work_type": "obklad", "element_family": "jine",
+            "source": "embeddings", "similarity": 0.95}
+    carrier = cm.match_catalog(q, [cand])
+    assert "990002" not in [c["code"] for c in carrier["candidates"]], \
+        "embeddings still gated by work-type (beton query vs obklad candidate)"
+
+
 # ── AC#7 reranker seam ───────────────────────────────────────────────────────
 def test_ranking_is_pluggable_audited_and_replayable():
     raw = _raw(PILIR_BETON, PILIR_BETON_LOWCLASS)
