@@ -139,10 +139,30 @@ export function NumInput({ value, onChange, min = 0, max, fallback, step, style,
   const [draft, setDraft] = useState<string | null>(null);
   const editing = draft !== null;
 
+  // Emit to the parent in the same string/number shape the field uses.
+  const emit = (num: number) =>
+    onChange(typeof value === 'string' && fallback === undefined ? String(num) : num);
+
   const handleFocus = () => setDraft(String(value));
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setDraft(e.target.value);
+
+  // Phase 5 #1 fix: commit LIVE on every keystroke so the volume derive,
+  // preview formula and lateral pressure react AS the user types. The field
+  // previously committed only on blur, so form.* (e.g. height_m) kept the
+  // previous value until focus left — the on-screen field showed the new
+  // number while the calculation still used the old one. Range clamping
+  // stays on blur so partial/intermediate input is never fought mid-type.
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setDraft(raw); // keep the exact text → stable cursor, partials preserved
+    const normalized = raw.replace(',', '.').trim();
+    if (normalized === '') return;   // cleared mid-type → don't write garbage
+    const num = parseFloat(normalized);
+    if (isNaN(num)) return;          // partial like "-" or "." → wait to parse
+    emit(num);                       // live, UNclamped (clamp happens on blur)
+  };
+
   const handleBlur = () => {
-    const raw = (draft ?? '').trim();
+    const raw = (draft ?? '').replace(',', '.').trim();
     setDraft(null);
     if (raw === '') {
       onChange(fallback !== undefined ? fallback : '');
@@ -150,9 +170,9 @@ export function NumInput({ value, onChange, min = 0, max, fallback, step, style,
     }
     let num = parseFloat(raw);
     if (isNaN(num)) { onChange(fallback !== undefined ? fallback : ''); return; }
-    if (num < min) num = min;
+    if (num < min) num = min;                       // clamp on blur only
     if (max !== undefined && num > max) num = max;
-    onChange(typeof value === 'string' && fallback === undefined ? String(num) : num);
+    emit(num);
   };
 
   return (
