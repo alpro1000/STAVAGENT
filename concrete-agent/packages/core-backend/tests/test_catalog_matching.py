@@ -256,6 +256,50 @@ def test_soft_penalty_ranks_class_mismatch_below_clean_match():
     assert by["CLEAN"] > by["MISMATCH"]
 
 
+# ── Family-match ranking bonus (precision signal, NOT a gate) ────────────────
+def test_family_match_bonus_in_ranker():
+    cands = [
+        {"code": "OFF", "confidence": 0.78, "score": 0.5, "unit_price_czk": 1.0,
+         "family_match": False},
+        {"code": "MATCH", "confidence": 0.71, "score": 0.4, "unit_price_czk": 1.0,
+         "family_match": True},
+    ]
+    ordered = cm.deterministic_ranker("q", cands)
+    # 0.71 + 0.15 bonus = 0.86 > 0.78 → family match wins despite lower confidence
+    assert [c["code"] for c in ordered] == ["MATCH", "OFF"]
+
+
+def test_match_catalog_sets_family_match(monkeypatch):
+    monkeypatch.setattr(cm, "element_family",
+                        lambda t: "driki_piliru" if "pilíř" in (t or "").lower() else "jine")
+    raw = [
+        {"code": "M", "description": "x", "unit": "M3", "unit_price_czk": 1.0,
+         "work_type": "beton", "element_family": "driki_piliru", "source": "embeddings", "similarity": 0.7},
+        {"code": "O", "description": "x", "unit": "M3", "unit_price_czk": 1.0,
+         "work_type": "beton", "element_family": "jine", "source": "embeddings", "similarity": 0.7},
+    ]
+    carrier = cm.match_catalog("beton mostních pilířů", raw)
+    fm = {c["code"]: c["family_match"] for c in carrier["candidates"]}
+    assert fm["M"] is True and fm["O"] is False
+
+
+def test_family_bonus_outranks_higher_similarity_offfamily(monkeypatch):
+    monkeypatch.setattr(cm, "element_family",
+                        lambda t: "driki_piliru" if "pilíř" in (t or "").lower() else "jine")
+    raw = [
+        {"code": "OFF", "description": "tunel", "unit": "M3", "unit_price_czk": 1.0,
+         "work_type": "beton", "element_family": "jine", "source": "embeddings", "similarity": 0.90},
+        {"code": "MATCH", "description": "pilíř", "unit": "M3", "unit_price_czk": 1.0,
+         "work_type": "beton", "element_family": "driki_piliru", "source": "embeddings", "similarity": 0.70},
+    ]
+    codes = [c["code"] for c in cm.match_catalog("beton mostních pilířů", raw)["candidates"]]
+    # OFF conf 0.79; MATCH conf 0.77 + 0.15 family bonus = 0.92 → MATCH ranks first
+    assert codes.index("MATCH") < codes.index("OFF")
+    # …but the DISPLAYED confidence stays honest (bonus is sort-only)
+    by = {c["code"]: c["confidence"] for c in cm.match_catalog("beton mostních pilířů", raw)["candidates"]}
+    assert by["MATCH"] <= 0.80 and by["OFF"] <= 0.80
+
+
 # ── AC#7 reranker seam ───────────────────────────────────────────────────────
 def test_ranking_is_pluggable_audited_and_replayable():
     raw = _raw(PILIR_BETON, PILIR_BETON_LOWCLASS)

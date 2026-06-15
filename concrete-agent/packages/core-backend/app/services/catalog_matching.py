@@ -156,11 +156,23 @@ def honest_confidence(source: str, score: float, params_exact: bool,
 
 
 # ── Pluggable ranking seam (task §4 reranker contract) ───────────────────────
+# Element-family agreement is a strong PRECISION signal but NOT a gate (a
+# classifier miss must never drop a hit — that lesson is the family-axis fix).
+# It is applied here as a ranking bonus on the sort key only, so a candidate
+# matching the query's specific family outranks an off-family hit even at higher
+# similarity, WITHOUT touching the honest displayed confidence.
+FAMILY_RANK_BONUS = 0.15
+
+
+def _rank_score(c: dict) -> float:
+    return c.get("confidence", 0.0) + (FAMILY_RANK_BONUS if c.get("family_match") else 0.0)
+
+
 def deterministic_ranker(query: str, candidates: list[dict]) -> list[dict]:
-    """Default ranker. Stable order: confidence ↓, score ↓, then cheaper first."""
+    """Default ranker. Stable order: (confidence + family bonus) ↓, score ↓, cheaper first."""
     return sorted(
         candidates,
-        key=lambda c: (-c.get("confidence", 0.0), -c.get("score", 0.0), c.get("unit_price_czk") or 0.0),
+        key=lambda c: (-_rank_score(c), -c.get("score", 0.0), c.get("unit_price_czk") or 0.0),
     )
 
 
@@ -286,6 +298,9 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
             "popis_full": popis,  # reranker (P6) reads full prose
             "work_type": c_wt,
             "element_family": c_ef,
+            # Precision signal for the ranker (NOT a gate): candidate shares the
+            # query's SPECIFIC element family ('jine' is the non-committal residual).
+            "family_match": bool(q_ef and q_ef != "jine" and c_ef == q_ef),
             "params": c_params,
             "score": score,
             "source": source,
