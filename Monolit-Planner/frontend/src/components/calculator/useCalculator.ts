@@ -710,37 +710,12 @@ export default function useCalculator() {
     }
   }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Smart defaults: auto-fill exposure_class, curing_class, concrete_class
-  // when element_type changes AND the user hasn't explicitly set them.
-  // Only apply if the field is empty (= no user override yet).
-  const prevElementTypeRef = useRef(form.element_type);
-  useEffect(() => {
-    if (form.element_type === prevElementTypeRef.current) return;
-    prevElementTypeRef.current = form.element_type;
-    const defaults = getSmartDefaults(form.element_type);
-    setForm(prev => {
-      const updates: Partial<typeof prev> = {};
-      // Only fill empty fields — user overrides are preserved
-      // Task 2 (2026-04-20): auto-suggest full exposure_classes array when
-      // user hasn't picked any yet. The legacy singular stays in sync via
-      // the write-through set at save time (see handleCalculate path).
-      if (!prev.exposure_classes || prev.exposure_classes.length === 0) {
-        if (defaults.exposure_classes.length > 0) {
-          updates.exposure_classes = [...defaults.exposure_classes];
-          // Keep legacy singular mirrored so anyone still reading it
-          // (advisor prompt, docs facts) sees the most-restrictive class.
-          updates.exposure_class = defaults.exposure_class;
-        }
-      }
-      if (!prev.curing_class) updates.curing_class = defaults.curing_class;
-      // Concrete class: only override if still at the generic C30/37 default
-      if (prev.concrete_class === 'C30/37' && defaults.typical_concrete !== 'C30/37') {
-        updates.concrete_class = defaults.typical_concrete;
-      }
-      if (Object.keys(updates).length === 0) return prev;
-      return { ...prev, ...updates };
-    });
-  }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
+  // (Smart-defaults auto-fill is consolidated into the single effect above —
+  // see `smartDefaultsAppliedFor`. A second, near-identical effect used to live
+  // here filling the same exposure/curing/concrete fields on element_type
+  // change; because both only fill empty fields and the effect above runs
+  // first, it was a redundant no-op. Removed in Phase 5 Step 3 PR3.)
+
 
   // ── Document suggestions fetch (once on mount, when portal_project_id is known) ──
   useEffect(() => {
