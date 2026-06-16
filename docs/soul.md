@@ -351,6 +351,22 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-16 — Session: Fáze 5 #1 — NumInput live commit (height stale bug) — MERGED (PR #1372)
+
+**Větev:** `claude/numinput-live-commit-height-stale` → **smergováno do main** (PR #1372, merge-commit `88d7e8a`).
+
+**Phase A (kořen):** `NumInput` (sdílený číselný komponent) commitoval do rodiče JEN na blur — bufroval lokální `draft` a zapisoval `form.*` pouze v `handleBlur`. Dokud bylo pole ve fokusu, na obrazovce nové číslo, ale `form.height_m` drželo předchozí hodnotu → volume-derive, preview-formule i boční tlak četly STAROU výšku až do blur. Reprodukuje «pole 3,0, formule 5×0,75×1,75=6,56». **Samoléčí se na blur** → živý uživatel měl finální výsledek správný; «všechna čísla špatně» z agent-reportu = artefakt psaní bez blur. NE type-change-specific; PR3 nesouvisí.
+
+**Phase B (fix, Option A — Alexander):** `NumInput` teď commituje **živě na onChange** (parsované číslo do rodiče po každém znaku) → volume/preview/boční tlak se aktualizují při psaní. Clamp min/max + empty→fallback přesunuty na **blur** (partial input se nebije mid-type). Lokální `draft` zůstává pro zobrazený text (stabilní kurzor). Prázdný/nevalidní mezistav nepíše smetí (`type=number` posílá `''` pro nevalidní znaky → guard). Decimal-comma normalizace ponechána (inertní pro type=number, browser čárku blokuje sám).
+
+**První frontend test-runner:** vitest + jsdom + @testing-library/react (`vite.config.ts` test blok + `src/test/setup.ts` + `npm test`). `ui.numinput.test.tsx` — 6 DOM commit-timing testů. jest-dom matchers záměrně neimportovány (clash s touto verzí vitest; testy plain matchery).
+
+**Ověřeno:** 6/6 frontend testů; frontend tsc 0; shared goldeny (KV/Žalmanov validation-rules, SO-202/203) + one-element parita 37/37.
+
+**PENDING (po deploy):** ŽIVÁ kontrola na kalkulator.stavagent.cz — psát V u 3 prvků po sobě → objem každého se mění při psaní a je správný bez odchodu z pole. Manuální (AI nemá browser na deployed SPA).
+**Zjištění k §4-parity frontě (audit, samostatná fronta — NEopravováno):** karta Betonáři recountuje `max(3, ceil(V/20))` inline místo engine `pour_crew_breakdown`; tesař-doporučení je frontend `0.6 Nh/m²` (výztuž je engine `recommended_crew`); katalog bednění je hardcoded TS (2024 DOKA/PERI), GCS bucket `gs://stavagent-cenik-norms/` se na této cestě NEČTE.
+
+
 ## 2026-06-15 — Session: Fáze 5 Step 3 PR1+PR2 (legacy/dead-field cleanup) — MERGED (PR #1363), čeká live-check
 
 **Větev:** `claude/phase5-steps1-2-handoff-p0og0u` → **smergováno do main jako jeden celek (PR #1363, merge-commit)** po uzavření gate (grep-proof + CI green). Step 1 #1353 + Step 2 #1357 už v main.
