@@ -189,9 +189,12 @@ dictionaries:
           pier stem, pier shaft, pylon, тело опор, столб моста]
       operne_zdi:
         priority: 8
+        # BUGS#5(3): 'gabion'/'gabionov' MOVED OUT to the gabionova_zed reject type
+        # (gabion = drátokošová konstrukce, NENÍ monolitický ŽB → see reject family).
+        # 'tizn'/'tížn' (tížná/gravity wall) ADDED — that IS a monolithic ŽB wall.
         include: [opern, opěrn, operna zed, opěrná zeď, operne zdi most, opěrné zdi most,
           zarubn, zárubn, zarubni zed, zárubní zeď, kotven zed, kotvená zeď,
-          gabionov, gabion, retaining wall, подпорн стен]
+          tizn, tížn, tizna zed, tížná zeď, retaining wall, подпорн стен]
       kridla_opery:
         priority: 9
         include: [kridl, křídl, kridla, křídla, křídlo,
@@ -272,4 +275,5 @@ dictionaries:
     # ─ early-exit / not-a-concrete-element vocab (Gate-3 reject routing) ─
     reject_materials: [strikan, stříkan, torkret, nastrik, nástřik,
       "izolacn vrst", "izolační vrst", "zalivk spar", "zálivk spár", zalivkov,
-      zálivkov, "monolitick vozovk", "betonov vozovk", betonový kryt]
+      zálivkov, "monolitick vozovk", "betonov vozovk", betonový kryt,
+      gabion, gabionov, dratokos, drátokoš]

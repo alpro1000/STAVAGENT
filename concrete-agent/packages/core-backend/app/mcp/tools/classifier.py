@@ -11,7 +11,12 @@ classification rules (OTSKP patterns + keyword matching).
 
 import logging
 import re
+import unicodedata
+from functools import lru_cache
+from pathlib import Path
 from typing import Optional
+
+import yaml
 
 from app.mcp.tools.element_name_normalizer import normalize_element_name
 
@@ -199,6 +204,17 @@ ELEMENT_TYPES = {
         "orientation": "vertical",
         "formwork": [],
     },
+    "gabionova_zed": {
+        # Gabionová zeď — drátokošová konstrukce plněná kamenivem. NENÍ monolitický
+        # beton (BUGS#5(3)): family=reject → is_concrete_element=False, žádná výztuž,
+        # žádné bednění. Bez toho by gabion spadl do operna_zed = chybný beton-výpočet.
+        "label_cs": "Gabionová zeď (drátokoš — nebetonová)",
+        "difficulty": 1.0,
+        "rebar_kg_m3": 0,
+        "rebar_range": [0, 0],
+        "orientation": "vertical",
+        "formwork": [],
+    },
     "jine": {
         "label_cs": "Jiné / nespecifikováno",
         "difficulty": 1.0,
@@ -209,39 +225,115 @@ ELEMENT_TYPES = {
     },
 }
 
-# ── Classification rules ─────────────────────────────────────────────────────
+# ── Single-source classification rules (TASK_2b / BUGS#5(3)) ─────────────────
+# The keyword DATA lives ONCE in element_types.yaml (the same source the TS engine
+# consumes via its generated kb artifact). W3 reads it directly and scores with the
+# SAME algorithm as the engine (matchCount*10 + priority + bridge boost) → Python↔TS
+# parity by construction; the wall-keyword drift (zárubní/gabion) that motivated
+# BUGS#5(3) is now impossible. The head-noun DECISION stays in the normalizer (code).
+_RULES_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "classifiers" / "element_rules" / "element_types.yaml"
+)
 
-# Bridge context markers
-BRIDGE_MARKERS = re.compile(r"SO[-\s]?\d{3}|most|bridge|přemost|lávk", re.I)
+# W3-only structural types the engine taxonomy does NOT model as distinct concepts
+# (no type_core entry, no engine ELEMENT_CATALOG). Kept as a W3-LOCAL supplement so
+# converging the SHARED types to the YAML does not silently drop W3 capability.
+# Not part of the single-sourced shared set → no drift risk (nothing to drift against).
+_W3_LOCAL_KEYWORDS: dict[str, dict] = {
+    "sachta": {"priority": 8, "include": ["sacht", "vytah", "elevator", "shaft"]},
+    "izolacni_stena": {"priority": 8, "include": ["bila van", "vodon", "watertight",
+                                                  "water tight", "wu beton", "wu-beton"]},
+    "tunel_rampa": {"priority": 8, "include": ["tunel", "rampa", "koryt", "trough",
+                                               "tunnel"]},
+}
 
-# Classification keywords (order matters — first match wins within priority)
-KEYWORD_RULES: list[tuple[re.Pattern, str]] = [
-    # Lícové zdivo / obklad (masonry) — must precede dřík/stěna so a stone
-    # cladding name does not fall through to a concrete element (W3 #65).
-    (re.compile(r"lícov\w*\s*(?:obklad|zdiv)|obklad\b|kamenn\w*\s*zdiv", re.I), "zdivo_obklad"),
-    (re.compile(r"pilot[ay]|vrtan|CFA|mikropilot", re.I), "pilota"),
-    (re.compile(r"mostovk|nosn[aá]\s*konstr|NK\s|hmotn|superstr", re.I), "mostovkova_deska"),
-    (re.compile(r"říms[ay]|corniche|parapetní", re.I), "rimsa"),
-    (re.compile(r"příčník|cross[\s-]?beam|diaphragm", re.I), "pricinik"),
-    (re.compile(r"dřík|pilíř|pier\b|column.*bridge", re.I), "driky_piliru"),
-    (re.compile(r"opěr[ay].*křídl|křídl.*opěr", re.I), "opery_ulozne_prahy"),
-    (re.compile(r"křídl[ao]|wing\s*wall", re.I), "kridla_opery"),
-    (re.compile(r"opěr[ay]|abutment|úložn[ýé]\s*prah", re.I), "opery_ulozne_prahy"),
-    (re.compile(r"přechod.*desk|transition\s*slab", re.I), "prechodova_deska"),
-    (re.compile(r"základov[áé]\s*desk|found.*slab", re.I), "zakladova_deska"),
-    (re.compile(r"základ.*pilíř|patk[ay]|pile\s*cap|foot", re.I), "zaklady_piliru"),
-    (re.compile(r"základ[ůy]|found|zákl\.\s*pás|zákl\.\s*pata", re.I), "zaklady"),
-    (re.compile(r"šacht[ay]|výtah|elevator|shaft", re.I), "sachta"),
-    (re.compile(r"bílá\s*van|vodon|water.*tight|WU[\s-]?beton", re.I), "izolacni_stena"),
-    (re.compile(r"nádrž|jímk|reten[cč]|cistern|tank", re.I), "nadrz"),
-    (re.compile(r"tunel|rampa|koryt|trough|tunnel", re.I), "tunel_rampa"),
-    (re.compile(r"opěrn[áé]\s*z[eě]ď|retaining|gabion|tížn", re.I), "operna_zed"),
-    (re.compile(r"schod|stair", re.I), "schodiste"),
-    (re.compile(r"průvlak|trám|beam|nosník", re.I), "pruvlak"),
-    (re.compile(r"sloup[ůy]?\b|column", re.I), "sloup"),
-    (re.compile(r"desk[ay]|strop|slab|floor\s*slab|ceiling", re.I), "deska"),
-    (re.compile(r"stěn[ay]|wall|zd[ií]", re.I), "stena"),
-]
+# reject family → W3 reject_reason (mirrors the TS engine reject reasons)
+_REJECT_REASONS = {
+    "zdivo_obklad": "masonry_cladding",
+    "gabionova_zed": "gabion_non_concrete",
+}
+
+
+def _normalize(text: Optional[str]) -> str:
+    """Lowercase + strip diacritics — mirrors the TS engine normalize()
+    (element-classifier.ts) so the shared YAML keyword includes match identically."""
+    decomposed = unicodedata.normalize("NFD", (text or "").lower())
+    return "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
+
+
+@lru_cache(maxsize=1)
+def _load_rules() -> dict:
+    """Parse the shared element-rules YAML once (cached)."""
+    with open(_RULES_PATH, encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+@lru_cache(maxsize=1)
+def _keyword_rules() -> list[dict]:
+    """Scored keyword table from the YAML (+ the W3-local supplement). Each rule:
+    {etype, priority, include[normalized], exclude[normalized]}."""
+    data = _load_rules()
+    rules: list[dict] = []
+    for source in (data["dictionaries"]["cs"]["keywords"], _W3_LOCAL_KEYWORDS):
+        for etype, spec in source.items():
+            rules.append(
+                {
+                    "etype": etype,
+                    "priority": int(spec.get("priority", 0)),
+                    "include": [_normalize(k) for k in spec.get("include", [])],
+                    "exclude": [_normalize(k) for k in spec.get("exclude", [])],
+                }
+            )
+    return rules
+
+
+def _match_keyword_type(
+    match_name: str, is_bridge: bool
+) -> tuple[Optional[str], float, Optional[list]]:
+    """Engine-parity keyword scoring (mirror of element-classifier.ts §keyword
+    scoring + signal ladder). Returns (engine_type | None, confidence, candidates).
+
+    score = matchCount*10 + priority + bridge_boost(+5 for bridge_boost types in
+    bridge context). A different-type runner at the SAME score that is NOT a
+    more-specific win (best_base <= runner_base) is genuine ambiguity → confidence
+    drops to 0.7 and ranked candidates are emitted (so the caller can ask a human
+    instead of shipping a confidently-wrong type)."""
+    data = _load_rules()
+    type_core = data["type_core"]
+    bridge_remap = data.get("bridge_remap", {})
+    norm = _normalize(match_name)
+
+    matches: list[tuple[int, int, str]] = []  # (score, base_priority, etype)
+    for rule in _keyword_rules():
+        if rule["exclude"] and any(x and x in norm for x in rule["exclude"]):
+            continue
+        match_count = sum(1 for kw in rule["include"] if kw and kw in norm)
+        if match_count == 0:
+            continue
+        etype = rule["etype"]
+        boost = 5 if (is_bridge and type_core.get(etype, {}).get("bridge_boost")) else 0
+        matches.append((match_count * 10 + rule["priority"] + boost, rule["priority"], etype))
+
+    if not matches:
+        return None, 0.3, None
+
+    matches.sort(key=lambda m: (m[0], m[1]), reverse=True)
+    best_score, best_base, best_type = matches[0]
+    if is_bridge:
+        best_type = bridge_remap.get(best_type, best_type)
+
+    confidence, candidates = 0.9, None
+    if len(matches) > 1:
+        r_score, r_base, r_type = matches[1]
+        r_mapped = bridge_remap.get(r_type, r_type) if is_bridge else r_type
+        if r_mapped != best_type and r_score == best_score and best_base <= r_base:
+            confidence = 0.7
+            candidates = [
+                type_core.get(best_type, {}).get("w3_name", best_type),
+                type_core.get(r_mapped, {}).get("w3_name", r_mapped),
+            ]
+    return best_type, confidence, candidates
 
 
 def _detect_concrete_class(name: str) -> Optional[str]:
@@ -253,73 +345,85 @@ def _detect_prestress(name: str) -> bool:
     return bool(re.search(r"předp[ěj]|prestress|post[\s-]?tens|Y1860", name, re.I))
 
 
-def _classify(
+def _result(
+    etype: str,
+    source: str,
+    confidence: float,
+    norm,
     name: str,
-    object_code: Optional[str] = None,
-    object_type: Optional[str] = None,
+    *,
+    candidates: Optional[list] = None,
+    reject_reason: Optional[str] = None,
 ) -> dict:
-    """Classify element by name.
-
-    The raw name first passes through the normalization layer (W3): the matcher
-    runs on the canonical head-noun string, bridge context is derived from real
-    construction vocabulary (NOT the bare SO-number), and a status flag is set
-    for existing/demolition elements. The KEYWORD_RULES table itself is unchanged
-    — it stays a pure category matcher.
-    """
-    norm = normalize_element_name(name, object_code, object_type)
-    match_name = norm.canonical_name
-    is_bridge = norm.construction_context == "bridge"
-
-    # Try keyword rules (on the normalized head-noun string)
-    for pattern, etype in KEYWORD_RULES:
-        if pattern.search(match_name):
-            # Bridge context: upgrade pozemní types to mostní equivalents. Only
-            # fires for a real bridge context — a retaining wall (SO 250) never
-            # remaps its základ/stěna/deska to pier/deck variants (W3 #69).
-            if is_bridge:
-                bridge_map = {
-                    "sloup": "driky_piliru",
-                    "zaklady": "zaklady_piliru",
-                    "deska": "mostovkova_deska",
-                }
-                etype = bridge_map.get(etype, etype)
-
-            profile = ELEMENT_TYPES.get(etype, ELEMENT_TYPES["jine"])
-            return {
-                "element_type": etype,
-                "label_cs": profile["label_cs"],
-                "confidence": 0.85,
-                "classification_source": "keywords",
-                "difficulty_factor": profile["difficulty"],
-                "rebar_ratio_kg_m3": profile["rebar_kg_m3"],
-                "rebar_ratio_range": profile["rebar_range"],
-                "orientation": profile["orientation"],
-                "recommended_formwork": profile["formwork"],
-                "is_bridge_context": is_bridge,
-                "construction_context": norm.construction_context,
-                "status": norm.status,
-                "concrete_class_detected": _detect_concrete_class(name),
-                "is_prestressed_detected": _detect_prestress(name),
-            }
-
-    # No match
-    profile = ELEMENT_TYPES["jine"]
-    return {
-        "element_type": "jine",
+    """Assemble a classify response from a resolved W3 element type + the
+    normalization result. A reject (reject_reason set) flags is_concrete_element
+    =False (mirror of the TS engine) so the caller skips rebar/formwork/costing."""
+    profile = ELEMENT_TYPES.get(etype, ELEMENT_TYPES["jine"])
+    out = {
+        "element_type": etype,
         "label_cs": profile["label_cs"],
-        "confidence": 0.3,
-        "classification_source": "fallback",
+        "confidence": confidence,
+        "classification_source": source,
         "difficulty_factor": profile["difficulty"],
         "rebar_ratio_kg_m3": profile["rebar_kg_m3"],
         "rebar_ratio_range": profile["rebar_range"],
         "orientation": profile["orientation"],
         "recommended_formwork": profile["formwork"],
-        "is_bridge_context": is_bridge,
+        "is_bridge_context": norm.construction_context == "bridge",
         "construction_context": norm.construction_context,
         "status": norm.status,
         "concrete_class_detected": _detect_concrete_class(name),
         "is_prestressed_detected": _detect_prestress(name),
     }
+    if candidates:
+        out["candidates"] = candidates
+    if reject_reason is not None:
+        out["is_concrete_element"] = False
+        out["reject_reason"] = reject_reason
+    return out
+
+
+def _classify(
+    name: str,
+    object_code: Optional[str] = None,
+    object_type: Optional[str] = None,
+) -> dict:
+    """Classify an element by name.
+
+    The raw name first passes through the normalization layer (head-noun
+    canonicalization + construction context + status — code, per TASK_2b). The
+    matcher then scores the canonical string against the SHARED element-rules YAML
+    with the engine's algorithm (parity by construction). The matched ENGINE type is
+    emitted under its W3 alias (w3_name); a reject (gabionová zeď via early-exit,
+    lícové zdivo via the reject family) carries is_concrete_element=False + a reason.
+    """
+    norm = normalize_element_name(name, object_code, object_type)
+    is_bridge = norm.construction_context == "bridge"
+
+    # GABION early-exit (BUGS#5(3)): a gabionová / drátokošová zeď is wire baskets +
+    # stone, NOT monolithic concrete. Reject ANY name mentioning gabion BEFORE the
+    # concrete scorer (mirror of the TS engine early-exit) — pricing a gabion as a
+    # concrete retaining wall is the worst outcome (confident wrong cost).
+    if "gabion" in _normalize(name):
+        return _result(
+            "gabionova_zed", "keywords", 0.9, norm, name,
+            reject_reason="gabion_non_concrete",
+        )
+
+    engine_type, confidence, candidates = _match_keyword_type(norm.canonical_name, is_bridge)
+    if engine_type is None:
+        return _result("jine", "fallback", 0.3, norm, name)
+
+    type_core = _load_rules()["type_core"]
+    # Emit the W3 alias (w3_name) for the matched engine type — keeps the MCP output
+    # vocabulary stable (calculator.py map / allowed-lists, goldens).
+    etype = type_core.get(engine_type, {}).get("w3_name", engine_type)
+    reject = type_core.get(engine_type, {}).get("family") == "reject"
+    reason = _REJECT_REASONS.get(etype, "not_concrete_element") if reject else None
+    return _result(
+        etype, "keywords", confidence, norm, name,
+        candidates=candidates, reject_reason=reason,
+    )
 
 
 async def classify_construction_element(
