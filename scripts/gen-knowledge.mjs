@@ -69,6 +69,14 @@ const INTEGRATIONS = [
     render: renderDokaFramiCatalog,
   },
   {
+    // Non-DOKA vendor formwork (PERI / ULMA / NOE / Místní). Sibling of the
+    // DOKA catalog; the two are disjoint and composed in formwork-systems.ts.
+    name: 'formwork-catalog-non-doka',
+    yaml: 'formwork_catalog_non_doka.yaml',
+    validate: validateNonDokaFormworkCatalog,
+    render: renderNonDokaFormworkCatalog,
+  },
+  {
     name: 'lateral-pressure-formulas',
     yaml: 'lateral_pressure.yaml',
     validate: validateLateralPressure,
@@ -156,6 +164,25 @@ function validateDokaFramiCatalog(data) {
     }
     if (typeof s.assembly_h_m2 !== 'number') {
       throw new Error(`system ${s.name}: assembly_h_m2 must be a number`);
+    }
+  }
+}
+
+function validateNonDokaFormworkCatalog(data) {
+  if (!Array.isArray(data.systems) || data.systems.length === 0) {
+    throw new Error('systems must be a non-empty array');
+  }
+  for (const s of data.systems) {
+    if (!s.name || !s.manufacturer) {
+      throw new Error(`system missing name or manufacturer: ${JSON.stringify(s)}`);
+    }
+    if (typeof s.assembly_h_m2 !== 'number') {
+      throw new Error(`system ${s.name}: assembly_h_m2 must be a number`);
+    }
+    // Partition guard: DOKA systems live in doka_frami_catalog.yaml only.
+    // Keeping the two catalogs disjoint prevents duplicate/drifting entries.
+    if (s.manufacturer === 'DOKA') {
+      throw new Error(`system ${s.name}: DOKA entries belong in doka_frami_catalog.yaml, not the non-DOKA catalog`);
     }
   }
 }
@@ -319,6 +346,28 @@ import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
  * codegen validation guarantees only allowed values reach the file.
  */
 export const KB_DOKA_FORMWORK_SYSTEMS = (${jsonLit(data.systems)} as unknown) as FormworkSystemSpec[];
+
+export const SOURCE_CITATION = ${jsonLit(data.source_citation)} as const;
+`;
+}
+
+function renderNonDokaFormworkCatalog(data) {
+  return banner('formwork_catalog_non_doka.yaml') + `\
+import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
+
+/**
+ * Non-DOKA formwork systems (PERI / ULMA / NOE / Místní). Sibling of
+ * KB_DOKA_FORMWORK_SYSTEMS — composed AFTER it in formwork-systems.ts so that
+ * FORMWORK_SYSTEMS = [...KB_DOKA_FORMWORK_SYSTEMS, ...KB_NON_DOKA_FORMWORK_SYSTEMS].
+ * List order is preserved verbatim from the previous inline hardcode, so the
+ * default system (FORMWORK_SYSTEMS[0]) and any order-dependent selection are
+ * unchanged.
+ *
+ * JSON literal cast — YAML string fields parse as wide string; FormworkSystemSpec
+ * uses narrow union types (PourRole, FormworkSubtype, …). Cast is safe because
+ * codegen validation guarantees only allowed values reach the file.
+ */
+export const KB_NON_DOKA_FORMWORK_SYSTEMS = (${jsonLit(data.systems)} as unknown) as FormworkSystemSpec[];
 
 export const SOURCE_CITATION = ${jsonLit(data.source_citation)} as const;
 `;
