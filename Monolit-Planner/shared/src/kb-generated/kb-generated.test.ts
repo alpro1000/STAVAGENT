@@ -192,6 +192,57 @@ describe('kb-generated: doka-frami-catalog', () => {
   });
 });
 
+// ─── Non-DOKA formwork catalog (PERI / ULMA / NOE / Místní) ──────────────
+
+import { KB_NON_DOKA_FORMWORK_SYSTEMS } from './formwork-catalog-non-doka.js';
+
+describe('kb-generated: formwork-catalog-non-doka', () => {
+  it('exports 20 non-DOKA systems (PERI ×15, ULMA ×3, NOE ×1, Místní ×1)', () => {
+    expect(KB_NON_DOKA_FORMWORK_SYSTEMS.length).toBe(20);
+  });
+
+  it('contains NO DOKA systems (disjoint partition with doka-frami-catalog)', () => {
+    for (const s of KB_NON_DOKA_FORMWORK_SYSTEMS) {
+      expect(s.manufacturer).not.toBe('DOKA');
+    }
+  });
+
+  it('covers exactly manufacturers PERI / ULMA / NOE / Místní', () => {
+    const m = new Set(KB_NON_DOKA_FORMWORK_SYSTEMS.map(s => s.manufacturer));
+    expect(m).toEqual(new Set(['PERI', 'ULMA', 'NOE', 'Místní']));
+  });
+
+  it('every system carries a positive assembly_h_m2 norm', () => {
+    for (const s of KB_NON_DOKA_FORMWORK_SYSTEMS) {
+      expect(s.assembly_h_m2).toBeGreaterThan(0);
+    }
+  });
+
+  it('TRIO (PERI) keeps verbatim specs: rental 736, 80 kN/m², purchase 4866', () => {
+    const trio = KB_NON_DOKA_FORMWORK_SYSTEMS.find(s => s.name === 'TRIO');
+    expect(trio).toBeDefined();
+    expect(trio!.manufacturer).toBe('PERI');
+    expect(trio!.rental_czk_m2_month).toBe(736);
+    expect(trio!.pressure_kn_m2).toBe(80);
+    expect(trio!.purchase_czk_m2).toBe(4866);
+  });
+
+  it('VARIOKIT Mobile is the PERI MSS (mss_integrated, reuse 0.35, rental 0)', () => {
+    const mss = KB_NON_DOKA_FORMWORK_SYSTEMS.find(s => s.name === 'VARIOKIT Mobile');
+    expect(mss).toBeDefined();
+    expect(mss!.pour_role).toBe('mss_integrated');
+    expect(mss!.mss_reuse_factor).toBe(0.35);
+    expect(mss!.rental_czk_m2_month).toBe(0);
+  });
+
+  it('Tradiční tesařské (Místní) keeps the zero-rental sentinel', () => {
+    const trad = KB_NON_DOKA_FORMWORK_SYSTEMS.find(s => s.name === 'Tradiční tesařské');
+    expect(trad).toBeDefined();
+    expect(trad!.manufacturer).toBe('Místní');
+    expect(trad!.rental_czk_m2_month).toBe(0);
+  });
+});
+
 // ─── Lateral pressure formulas ──────────────────────────────────────────
 
 import {
@@ -320,9 +371,11 @@ describe('kb-generated: engine wire-up backward compat', () => {
     expect(findFormworkSystem('DOKA MSS')).toBeDefined();
   });
 
-  it('FORMWORK_SYSTEMS contains both KB DOKA + hardcoded PERI/ULMA/NOE entries', () => {
+  it('FORMWORK_SYSTEMS composes KB DOKA + KB non-DOKA (PERI/ULMA/NOE/Místní), 30 total', () => {
     const manufacturers = new Set(FORMWORK_SYSTEMS.map(s => s.manufacturer));
     expect(manufacturers.has('DOKA')).toBe(true);
     expect(manufacturers.has('PERI')).toBe(true);
+    // 10 DOKA + 20 non-DOKA, both now KB-generated (Gate C structural single-source).
+    expect(FORMWORK_SYSTEMS.length).toBe(30);
   });
 });
