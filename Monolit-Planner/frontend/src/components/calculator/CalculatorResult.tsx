@@ -109,6 +109,11 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
     };
   }, [startDate, plan.schedule.total_days]);
 
+  // §4 parity Gate B: build the canonical labor projection once — the Bednění
+  // card (recommended tesaři crew) and the labor section below read the SAME
+  // projection, so the recommendation and the labor hours share one Nh source.
+  const laborProjection = useMemo(() => buildLaborProjection(plan), [plan]);
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
       {/* Action buttons */}
@@ -687,6 +692,15 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                 <Row label="Výrobce" value={plan.formwork.system.manufacturer} />
                 <Row label="Pronájem" value={rentalLine} />
                 <Row label="Tesařů celkem" value={`${plan.resources?.total_formwork_workers ?? '-'} (${plan.resources?.num_formwork_crews ?? 1}×${plan.resources?.crew_size_formwork ?? '-'})`} />
+                {laborProjection.formwork_recommended_crew != null
+                  && laborProjection.formwork_recommended_crew !== (plan.resources?.crew_size_formwork ?? 0) && (
+                  <div style={{
+                    background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 6,
+                    padding: '4px 8px', marginTop: 4,
+                  }}>
+                    <Row label={<><TriangleAlert size={14} className="inline" /> Doporučeno</>} value={`${laborProjection.formwork_recommended_crew} tesařů`} bold />
+                  </div>
+                )}
                 {isMss && (
                   <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginTop: 4, fontStyle: 'italic' }}>
                     Bednění + skruž + stojky jsou integrovány v MSS rámu; per-takt Nhod × 0,35 (přesun + re-tensioning).
@@ -1023,7 +1037,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           // Canonical labor projection — the SAME numbers Aplikovat persists
           // into TOV entries and the planner summary reads (seam fix 2026-06).
           // Normohodiny = crew × shift × 0.8 × days from the real schedule.
-          const labor = buildLaborProjection(plan);
+          const labor = laborProjection;
           const opByKey = new Map(labor.operations.map(o => [o.key, o]));
           const fwMon = opByKey.get('bedneni_montaz');
           const fwDem = opByKey.get('bedneni_demontaz');

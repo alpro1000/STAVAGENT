@@ -154,6 +154,13 @@ export interface LaborProjection {
   total_norm_hours: number;
   /** Σ presence_hours — the paid hours */
   total_presence_hours: number;
+  /**
+   * §4 parity Gate B — recommended tesaři crew, derived from the SAME formwork
+   * Nh the labor calc uses (skruz_bedneni_nh_per_m2_kontakt × contact area) via
+   * the rebar recommended_crew pattern. Null when there is no formwork Nh basis
+   * (no contact area / no formwork). Single source: same norm → hours AND crew.
+   */
+  formwork_recommended_crew?: number | null;
 }
 
 function makeOp(
@@ -207,6 +214,9 @@ function makeOpFromNorm(
 export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
   const operations: LaborOperationProjection[] = [];
   const shift = plan.resources.shift_h;
+  // §4 parity Gate B: recommended tesaři crew — set from the SAME formwork Nh
+  // basis below (skruz_bedneni × contact area), via the rebar pattern.
+  let formworkRecommendedCrew: number | null = null;
 
   if (plan.element.type === 'pilota' && plan.pile) {
     // Pile path mirrors buildPileWorkDrafts: rig crew, armokoše, kontraktor
@@ -283,6 +293,9 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
 
     if (contactAreaM2 > 0 && hasFormwork && fwShareDays > 0) {
       const totalFwNh = LABOR_NORMS.skruz_bedneni_nh_per_m2_kontakt.value * contactAreaM2;
+      // Recommended tesaři crew from the SAME Nh (rebar pattern: target 5 d,
+      // K_UTIL productivity, clamp 2–8). Single source — no separate 0.6 formula.
+      formworkRecommendedCrew = Math.max(2, Math.min(8, Math.ceil(totalFwNh / (5 * shift * K_UTIL))));
       for (const [key, label, days] of fwShares) {
         operations.push(makeOpFromNorm(
           key, label, fwCrew, shift, days,
@@ -355,5 +368,6 @@ export function buildLaborProjection(plan: PlannerOutput): LaborProjection {
     operations,
     total_norm_hours: round1(operations.reduce((s, op) => s + op.norm_hours, 0)),
     total_presence_hours: round1(operations.reduce((s, op) => s + op.presence_hours, 0)),
+    formwork_recommended_crew: formworkRecommendedCrew,
   };
 }
