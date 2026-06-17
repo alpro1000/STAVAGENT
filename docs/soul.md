@@ -351,6 +351,21 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-16 — Session: Fáze 5 §4 parity — Gate A + Gate B (advisor = zrcadlo Core) — MERGED
+
+**Cíl §4:** jedno číslo — jeden zdroj; advisory nepočítá své mimo engine. Gaty PO JEDNOM, vlastní větev, STOP do merge (merge = Alexander).
+
+**Gate A — Betonáři: karta čte engine (PR #1384, merge `4d3ce41`).** Karta «Betonáři / záběr» přepočítávala osádku inline `max(3, ceil(tactVol/20))` místo enginu. Reálně se rozcházely — karta ukazovala ŠPATNĚ: operne_zdi 120 m³ a mostovka 664 m³ (1 čerpadlo) → engine **5** (2 ukládka + 2 vibrace + 1 finiš), inline **6**; stena 15 m³ (<20) → 3 v obou. Fix: nový helper `pourCrewRecommended(plan)` = `plan.resources.pour_crew_breakdown.total` (front-capacity z `computePourCrew`, řízení 0 → ZS/VRN); karta čte, inline pryč. BEZ engine-změny (pole už bylo v resources). Hermetic «karta = engine» (3 testy, real planElement). **Živá změna po deploy: karta ukáže 5 místo 6.**
+
+**Gate B — Tesaři: doporučení z enginu, ze stejné normy (PR #1385, merge `1647295`).** Doporučení tesařů bylo frontové pravidlo `0.6 Nh/m² × formwork_area` — vymyšlený duplikát nad reálnou normou enginu. Interview (Alexander): (1) přenést do enginu jako u výztuž; (2) brát REÁLNOU normu enginu, ne 0.6; (3) zobrazit «doporučeno vs zadáno» jako výztuž. Recon: engine UŽ počítá Nh opalubky z `skruz_bedneni_nh_per_m2_kontakt × contact_area` v `buildLaborProjection` (labor-projection.ts:285). Fix: `buildLaborProjection` vrací `formwork_recommended_crew` z TÉHOŽ `totalFwNh` přes rebar-pattern `max(2, min(8, ceil(Nh/(5×shift×K_UTIL))))` — **jedna norma → hodiny I osádka**. Bednění-karta ukazuje amber «Doporučeno N tesařů» (když ≠ crew_size_formwork), jako výztuž; frontové 0.6 odstraněno. Hermetic test (single-Nh + honest-blank).
+**KLÍČOVÉ zjištění (premisa upřesněna):** `contact_area_m2` je VOLITELNÝ vstup (`formwork_contact_area_m2`), NIKDY se neodvozuje. Doporučení (a reálná-norma Nh) fíruje JEN když je contact_area zadána; jinak engine počítá hodiny opalubky z rozvrhu (crew×shift×dny, crew-závislé) → `formwork_recommended_crew = null` (**honest-blank, žádné vymyšlené 0.6**). Premisa «engine už počítá Nh» platí jen s contact_area. Rozšíření pokrytí (default `contact_area ← formwork_area`) by posunulo labor-basis mnoha prvků → SAMOSTATNÉ rozhodnutí, NEbundlováno.
+
+**Gate C — caталог opalubky: RUNTIME = NE (rozhodnuto Variant 1, ZAtím NEzačato).** Ingest-skript čte baket `gs://stavagent-cenik-norms/` → generuje katalog-data V REPU → commit; advisor/engine NIKDY nečtou baket v rantajmu; goldeny hermetic; dif cen 2024→2025 se reviduje. Start AŽ po merge Gate B (teď splněno) — plná postavení u Alexandra; audit-before-code, STOP před merge.
+
+**Ověřeno (A+B):** shared 63/63 (goldeny KV/Žalmanov + SO-202/203 + labor-projection + one-element parita); frontend 9/9 (NumInput + pourcrew DOM testy); tsc 0.
+**Otevřené hvosty:** ŽIVÝ check kalkulator.stavagent.cz (height živě, betonáři 5 ne 6); resolve 2 Q-bot tredů na #1372 (false positives — rozebráno, nemergovat); backlog: Vercel path-filter na `Monolit-Planner/**` (CI hygiena). Odloženo (vlastní interview): multiplicity-redesign (dvojúrovňový model), katalog typů (Základ/Dřík opěry), Step 4 TZ persistence, Step 5 studio, wizardHint3 one-liner.
+
+
 ## 2026-06-16 — Session: Fáze 5 #1 — NumInput live commit (height stale bug) — MERGED (PR #1372)
 
 **Větev:** `claude/numinput-live-commit-height-stale` → **smergováno do main** (PR #1372, merge-commit `88d7e8a`).
