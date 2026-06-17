@@ -99,20 +99,6 @@ def extract_params(text: str) -> dict:
     return params
 
 
-def strip_concrete_class(text: str) -> str:
-    """Remove a concrete-class token (C30/37) for the RETRIEVAL embedding ONLY.
-
-    The class does NOT define the work basket — piers are piers at any class — but
-    leaving it in the embedded query lets a class the catalog lacks (e.g. C35/45,
-    which sits between the catalog's C30/37 and C40/50 pier lines) de-anchor recall
-    into the wrong basket (live: C35/45 pulled the whole shortlist into tunnels,
-    zero series-334 retrieved). Class is still applied downstream via params
-    (param_prefilter + honest_confidence), so precision is unaffected; this only
-    frees recall to find the right element regardless of the queried class.
-    """
-    return re.sub(r"\s{2,}", " ", _CONCRETE_CLASS_RE.sub(" ", text or "")).strip()
-
-
 def param_prefilter(query_params: dict, cand_params: dict) -> bool:
     """Drop a candidate that contradicts an EXPLICIT query param.
 
@@ -238,10 +224,10 @@ def retrieve_candidates(
     for c in keyword_search_fn(query):
         by_code.setdefault(c["code"], {**c, "source": c.get("source", "keyword")})
     if provider is not None:
-        # Embed a CLASS-STRIPPED query: retrieval = work-first recall (class-
-        # independent); the class is re-applied downstream in match_catalog's
-        # param_prefilter + confidence. Keyword search keeps the full query.
-        for c in provider(strip_concrete_class(query), limit):
+        # NOTE: #1367 class-strip reverted (2026-06-17) — it was a regression that
+        # masked, not fixed, the prod query-embed divergence. Full query goes to the
+        # provider (restores C30/37 catalog-class recall, as on rev 00417).
+        for c in provider(query, limit):
             by_code.setdefault(c["code"], {**c, "source": "embeddings"})
     return list(by_code.values())
 

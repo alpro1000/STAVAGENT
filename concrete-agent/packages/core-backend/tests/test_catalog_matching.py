@@ -135,18 +135,11 @@ def test_module_level_provider_used_when_not_passed(monkeypatch):
     assert "999999" in [c["code"] for c in raw]
 
 
-# ── Class-stripped retrieval (recall is class-independent; class applies downstream) ─
-@pytest.mark.parametrize("text,expected", [
-    ("beton mostních pilířů C35/45", "beton mostních pilířů"),
-    ("beton mostních pilířů C 30 / 37", "beton mostních pilířů"),
-    ("MOSTNÍ PILÍŘE C40/50 železobeton", "MOSTNÍ PILÍŘE železobeton"),
-    ("beton mostních pilířů", "beton mostních pilířů"),  # no class → unchanged
-])
-def test_strip_concrete_class(text, expected):
-    assert cm.strip_concrete_class(text) == expected
-
-
-def test_retrieve_strips_class_for_embeddings_only():
+# ── #1367 class-strip REVERTED (2026-06-17): embeddings get the FULL query ──────
+def test_retrieve_passes_full_query_to_embeddings():
+    # The embeddings provider must receive the FULL query (class included — it
+    # improves catalog-class ranking), same string as keyword. Locks in the #1367
+    # revert: no class-stripping before the provider.
     seen = {}
 
     def kw(q):
@@ -158,8 +151,8 @@ def test_retrieve_strips_class_for_embeddings_only():
         return []
 
     cm.retrieve_candidates("beton mostních pilířů C35/45", kw, embeddings_provider=prov)
-    assert seen["keyword"] == "beton mostních pilířů C35/45"   # full query (LIKE)
-    assert seen["embeddings"] == "beton mostních pilířů"        # class stripped (recall)
+    assert seen["keyword"] == "beton mostních pilířů C35/45"
+    assert seen["embeddings"] == "beton mostních pilířů C35/45"  # FULL query, NOT stripped
 
 
 # ── AC#6 Vertex bounds ───────────────────────────────────────────────────────

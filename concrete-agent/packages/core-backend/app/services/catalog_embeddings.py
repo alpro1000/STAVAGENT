@@ -73,7 +73,25 @@ def _search(query: str, limit: int = 20) -> list[dict]:
 
     from app.integrations.vertex_embeddings import get_vertex_embeddings
 
-    vec = get_vertex_embeddings().embed_query(query)
+    emb = get_vertex_embeddings()
+    vec = emb.embed_query(query)
+    # TEMP DIAGNOSTIC (2026-06-17, remove after datum): the SAME line fires from the
+    # startup self-test (recall_health → _search) and from query-time
+    # (pgvector_provider → _search). Comparing the two log entries for an identical
+    # string answers: is startup-vec5 == query-vec5? is it the same client/model/
+    # provider object? if vec5 diverges at identical loc/model → embed client state
+    # mutates between calls; if vec5 identical but top3 diverges → DB/SQL/conn side.
+    try:
+        from app.services import catalog_matching as _cm
+        _prov_id = id(getattr(_cm, "_EMBEDDINGS_PROVIDER", None))
+    except Exception:  # pragma: no cover
+        _prov_id = None
+    logger.info(
+        "[_search.diag] q=%r vec5=%s model=%s dim=%s loc=%s proj=%s "
+        "client_id=%s model_id=%s provider_id=%s",
+        query, [round(float(x), 4) for x in vec[:5]], emb.model_name, emb.dim,
+        emb.location, emb.project_id, id(emb), id(getattr(emb, "_model", None)), _prov_id,
+    )
     vec_lit = _vector_literal(vec)
     conn = psycopg2.connect(_sync_dsn())
     try:
@@ -82,6 +100,7 @@ def _search(query: str, limit: int = 20) -> list[dict]:
             rows = cur.fetchall()
     finally:
         conn.close()
+    logger.info("[_search.diag] q=%r top3=%s", query, [r[0] for r in rows[:3]])
     return build_candidates_from_rows(rows)
 
 
@@ -102,7 +121,7 @@ def pgvector_provider(query: str, limit: int = 20) -> list[dict]:
         return []
 
 
-def recall_health(probe_query: str = "beton mostních pilířů C35/45") -> dict:
+def recall_health(probe_query: str = "beton mostních pilířů") -> dict:
     """Best-effort end-to-end self-test of the recall path, for startup logging.
 
     Walks the SAME stages ``pgvector_provider`` uses (DB → Vertex embed → vector
