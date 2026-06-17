@@ -1319,25 +1319,11 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                       ? 'Pilota: bez tesařů (vrtací souprava + železáři)'
                       : `Celkem tesařů: ${form.num_formwork_crews * form.crew_size}`}
                   </div>
-                  {/* B2 (2026-04-16): formwork crew recommendation. Mirrors
-                      the existing rebar hint style so users see both trades
-                      side-by-side. ~0.6 Nhod/m² is the avg assembly norm
-                      across the DOKA/PERI catalog (Framax 0.55, Dokaflex
-                      0.72) — close enough for a sidebar rule of thumb.
-                      Not shown for pilota (no bednění). */}
-                  {!isPile && form.formwork_area_m2 && parseFloat(form.formwork_area_m2) > 0 && (() => {
-                    const area = parseFloat(form.formwork_area_m2);
-                    const shift = form.shift_h || 10;
-                    const targetDays = 2;
-                    const optimal = Math.max(2, Math.ceil((area * 0.6) / (targetDays * shift)));
-                    const current = form.num_formwork_crews * form.crew_size;
-                    const color = current >= optimal ? 'var(--r0-success-text, #059669)' : 'var(--r0-warn-text, #b45309)';
-                    return (
-                      <div style={{ fontSize: 10, color, marginTop: 2 }}>
-                        Doporučeno ~{optimal} tesařů pro {area.toFixed(0)} m² / {targetDays} dny (0,6 Nh/m²)
-                      </div>
-                    );
-                  })()}
+                  {/* §4 parity Gate B: the recommended tesaři crew moved to the
+                      engine (buildLaborProjection.formwork_recommended_crew —
+                      derived from skruz_bedneni_nh_per_m2_kontakt × contact area)
+                      and is shown in the Bednění result card, like výztuž. The
+                      old frontend 0.6 Nh/m² inline was a duplicate of that norm. */}
                 </div>
 
                 {/* Železáři (výztuž) */}
