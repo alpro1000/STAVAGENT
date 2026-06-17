@@ -12,7 +12,7 @@ import { addWorkDays, buildLaborProjection, type PlannerOutput } from '@stavagen
 import PlannerGantt from '../PlannerGantt';
 import { exportPlanToXLSX } from '../../utils/exportPlanXLSX';
 import { Card, KPICard, Row, CollapsibleSection } from './ui';
-import { formatCZK, formatNum, formatWorkDayRange, subTitle, thStyle, tdStyle } from './helpers';
+import { formatCZK, formatNum, formatWorkDayRange, subTitle, thStyle, tdStyle, pourCrewRecommended } from './helpers';
 import InlineResourcePanel from './InlineResourcePanel';
 import type { FormState } from './types';
 
@@ -617,9 +617,10 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
               finišování), floored at 3, capped at 10. Rostered headcount
               across shifts comes from plan.resources when available. */}
           {(() => {
-            const tactVol = plan.pour_decision.tact_volume_m3 ?? 0;
-            if (tactVol <= 0) return null;
-            const recommended = Math.min(10, Math.max(3, Math.ceil(tactVol / 20)));
+            // §4 parity Gate A: single source — show the engine's front-capacity
+            // pour crew (resources.pour_crew_breakdown.total), not a UI re-derive.
+            const recommended = pourCrewRecommended(plan);
+            if (recommended == null) return null;
             const rostered = plan.resources?.pour_rostered_headcount;
             const simultaneous = plan.resources?.pour_simultaneous_headcount;
             const value = rostered && rostered > 0
