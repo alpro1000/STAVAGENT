@@ -17,12 +17,12 @@
   "dependencies": {
     "@stavagent/portal-shared": "file:../shared",
     "@tanstack/react-query": "^5.17.9",
-    "axios": "^1.6.5",
+    "axios": "^1.18.0",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.9.5",
-    "uuid": "^13.0.0"
+    "react-router-dom": "^7.18.0",
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.26",
@@ -33,6 +33,6 @@
     "puppeteer-core": "^23.11.1",
     "sirv": "^2.0.4",
     "typescript": "^5.3.3",
-    "vite": "^8.0.8"
+    "vite": "^8.0.16"
   }
 }
