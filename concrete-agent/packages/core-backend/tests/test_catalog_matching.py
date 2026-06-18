@@ -62,6 +62,12 @@ def _raw(*items):
     ("Betonářská ocel B500B", "vyztuz"),
     ("Obklad pilířů z lomového kamene", "obklad"),
     ("Bednění mostních pilířů", "bedneni"),
+    # Skruž is its own basket (NK falsework), separate from bednění.
+    ("Skruž pevná pro mostní NK", "skruz"),
+    # Ošetřování must resolve before `beton` despite containing "beton".
+    ("Ošetřování betonu mostovky", "osetrovani"),
+    # `demontáž` must resolve to demolice, not `beton` via "betonových".
+    ("Demontáž betonových základů", "demolice"),
     ("Předpínací výztuž Y1860", "predpinaci"),
     ("Hydroizolace mostovky natavená", "izolace"),
     ("Něco úplně jiného", "ostatni"),
