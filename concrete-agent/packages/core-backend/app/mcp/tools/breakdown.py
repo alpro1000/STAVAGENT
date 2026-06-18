@@ -11,6 +11,8 @@ concrete, insulation...) → OTSKP/ÚRS code matching from the database.
 import logging
 from typing import Optional
 
+from app.services.catalog_matching import classify_work_type
+
 logger = logging.getLogger(__name__)
 
 # Work decomposition templates per element type
@@ -54,25 +56,141 @@ MODE_WORK_FIRST = "work_first"
 MODE_WORK_WITH_CATALOG = "work_with_catalog"
 
 
-def _attach_catalog_codes(items: list[dict], otskp_catalog, catalog: str) -> list[dict]:
+# ── Catalog binding policy (Work-First / Catalog-Last) ────────────────────────
+# Confidence floor for a match to be BOUND to a work row. Below it the row stays
+# code-less with an honest "no reliable match" note rather than surfacing a
+# plausible-but-wrong code.
+OTSKP_CODE_BINDING_FLOOR = 0.60  # calibrated on SO 206 (n=1); revisit as the corpus grows
+
+# Catalog-aware bundling declaration. In OTSKP D6, formwork (bednění/odbednění)
+# and concrete curing (ošetřování) of monolithic members are PRICED INSIDE the
+# concrete item — they have no standalone code. This is a property of the
+# CATALOG, not a global rule: ÚRS/RTS price each work separately, so their sets
+# are empty and every work row is matched. A bundled work-type binds to a
+# deterministic None with reason "zahrnuto v betonu dle OTSKP" (a RULE at
+# confidence 1.0 — NOT a floor-driven "nenalezeno"). Skruž for NK is its OWN
+# work-type (not bedneni) and is therefore matched, not bundled.
+CATALOG_BUNDLING: dict[str, set[str]] = {
+    "otskp": {"bedneni", "osetrovani"},
+    "urs": set(),
+    "rts": set(),
+}
+
+# Canonical work verb per work-type axis. Used to build a clean search query
+# (work verb + element noun) instead of the slash-labelled work_description,
+# which poisons BOTH the work-type and element-family detectors.
+WORK_VERB_CANON: dict[str, str] = {
+    "beton": "beton",
+    "vyztuz": "výztuž",
+    "predpinaci": "předpínací výztuž",
+    "skruz": "skruž",
+    "bedneni": "bednění",
+    "izolace": "izolace",
+}
+
+# Element noun per element type, in BOTH grammatical cases the OTSKP catalog uses
+# by work-type: concrete codes are titled by the element in the NOMINATIVE
+# ("ZÁKLADY ZE ŽELEZOBETONU", "MOSTNÍ OPĚRY A KŘÍDLA"), reinforcement codes are
+# "VÝZTUŽ <element-GENITIVE>" ("VÝZTUŽ ZÁKLADŮ", "VÝZTUŽ MOSTNÍCH OPĚR"). The query
+# must mirror that convention or it mis-ranks (live: nominative "základy" for
+# výztuž pulled niche 74A310 over the real 272364; genitive "základů" for beton
+# pulled telescopic-mast junk over 27232). Nominative is ALSO what the family-axis
+# gate needs for opěry (genitive "opěr" suppresses to family 'jine'); for
+# foundations the 'základ' canon classifies in both cases.
+# TODO(single-source): migrate to `otskp_query_noun_{nom,gen}` element-type fields.
+_OTSKP_QUERY_NOUN: dict[str, dict[str, str]] = {
+    # OTSKP prices abutments + wings in ONE basket ("MOSTNÍ OPĚRY A KŘÍDLA",
+    # 333xx) — so opěry query the SAME combined phrase as křídla. The "a křídel"
+    # tokens also outrank the přechod-desek false-friend ("VÝZTUŽ PŘECHOD DESEK
+    # MOSTNÍCH OPĚR") that hijacks a bare-genitive "mostních opěr".
+    "opery_ulozne_prahy": {"nom": "mostní opěry a křídla", "gen": "mostních opěr a křídel"},
+    "kridla_opery": {"nom": "mostní opěry a křídla", "gen": "mostních opěr a křídel"},
+    "zaklady_oper": {"nom": "základy", "gen": "základů"},
+    "zaklady_piliru": {"nom": "základy", "gen": "základů"},
+    "driky_piliru": {"nom": "mostní pilíře", "gen": "mostních pilířů"},
+    "rimsa": {"nom": "římsy", "gen": "říms"},
+    "mostovkova_deska": {"nom": "mostovka nosná konstrukce", "gen": "mostovky"},
+}
+
+# Work-types whose OTSKP title governs the element GENITIVE ("VÝZTUŽ <gen>").
+_GENITIVE_WORK_TYPES = {"vyztuz", "predpinaci"}
+
+
+def _canonical_query(work_type: str, element_type: str) -> str:
+    """Clean search query: canonical work verb + element noun in the catalog's
+    grammatical case for this work-type (genitive for výztuž/předpětí, nominative
+    otherwise). Replaces the slash-labelled work_description that mis-fires the
+    work-type + element-family detectors. Falls back to the element label's head
+    (before the slash) for unmapped types.
+    """
+    from app.mcp.tools.classifier import ELEMENT_TYPES
+
+    case = "gen" if work_type in _GENITIVE_WORK_TYPES else "nom"
+    forms = _OTSKP_QUERY_NOUN.get(element_type)
+    if forms:
+        noun = forms[case]
+    else:
+        label = (ELEMENT_TYPES.get(element_type) or {}).get("label_cs", "")
+        noun = label.split("/")[0].strip() if label else element_type.replace("_", " ")
+    verb = WORK_VERB_CANON.get(work_type, work_type)
+    suffix = " z oceli" if work_type == "vyztuz" else ""
+    return f"{verb} {noun}{suffix}".strip()
+
+
+async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
     """Catalog-binding step, DECOUPLED from work decomposition.
 
-    Mutates each item in place, attaching OTSKP code + unit/total price when a
-    match is found. This runs only in mode=work_with_catalog — in work_first the
-    breakdown ends on the frozen work list and this is never called (the catalog
-    stage is reached separately, after the WORK_ATOMIZATION → CATALOG_BINDING
-    transition, via find_otskp_code / find_urs_code under CATALOG_BINDING policy).
+    Mutates each item in place. Runs only in mode=work_with_catalog (work_first
+    ends on the frozen code-less list). Two binding outcomes per row:
+
+      * bundled work-type (per CATALOG_BUNDLING) → deterministic None +
+        "zahrnuto v betonu dle OTSKP" (code_status="bundled" — a RULE, not a miss);
+      * otherwise → a clean canonical query routed through the SAME chain as
+        find_otskp_code (retrieve → match_catalog two-axis gate → honest
+        confidence), bound only when the top candidate clears
+        OTSKP_CODE_BINDING_FLOOR; else code-less "no reliable match".
+
+    Single source of truth: matching goes through find_otskp_code/match_catalog,
+    never the naive whole-label catalog.search() — that path surfaced speed bumps
+    / lawn care / roof formwork for abutment concrete (the SO-206 regression).
     """
     if catalog not in ("otskp", "both"):
         return items
+
+    from app.mcp.tools.otskp import find_otskp_code
+
+    bundled = CATALOG_BUNDLING.get("otskp", set())
     for item in items:
-        search_results = otskp_catalog.search(item["work_description"], limit=1)
-        if search_results:
-            r = search_results[0]
-            item["otskp_code"] = r.code
-            item["otskp_description"] = r.nazev
-            item["unit_price_czk"] = r.cena
-            item["total_price_czk"] = round(r.cena * item["quantity"], 0)
+        work_type = classify_work_type(item.get("work_description", ""))
+        if work_type in bundled:
+            item["otskp_code"] = None
+            item["unit_price_czk"] = None
+            item["total_price_czk"] = None
+            item["code_status"] = "bundled"
+            item["code_note"] = "zahrnuto v betonu dle OTSKP"
+            item["code_confidence"] = 1.0
+            continue
+
+        query = _canonical_query(work_type, item.get("element_type", "jine"))
+        item["code_query"] = query
+        result = await find_otskp_code(query, max_results=5)
+        candidates = result.get("results", [])
+        top = candidates[0] if candidates else None
+
+        if top and (top.get("confidence") or 0.0) >= OTSKP_CODE_BINDING_FLOOR:
+            item["otskp_code"] = top["code"]
+            item["otskp_description"] = top["description"]
+            item["unit_price_czk"] = top.get("unit_price_czk")
+            item["total_price_czk"] = round((top.get("unit_price_czk") or 0.0) * item["quantity"], 0)
+            item["code_status"] = "bound"
+            item["code_confidence"] = top.get("confidence")
+        else:
+            item["otskp_code"] = None
+            item["unit_price_czk"] = None
+            item["total_price_czk"] = None
+            item["code_status"] = "no_match"
+            item["code_note"] = "v OTSKP nenalezena spolehlivá shoda"
+            item["code_confidence"] = top.get("confidence") if top else 0.0
     return items
 
 
@@ -145,10 +263,8 @@ async def create_work_breakdown(
     """
     try:
         from app.mcp.tools.classifier import _classify, ELEMENT_TYPES
-        from app.mcp.tools.otskp import _get_catalog
 
         all_items = []
-        otskp_catalog = _get_catalog()
 
         # W3b: resolve the authoritative object type per element. Priority:
         # explicit `object_types` map (already-resolved, e.g. from project state)
@@ -263,7 +379,7 @@ async def create_work_breakdown(
         # forces work-first regardless of `mode`.
         work_first = mode != MODE_WORK_WITH_CATALOG or catalog == "none"
         if not work_first:
-            _attach_catalog_codes(all_items, otskp_catalog, catalog)
+            await _attach_catalog_codes(all_items, catalog)
 
         # Group by HSV section
         sections = {}

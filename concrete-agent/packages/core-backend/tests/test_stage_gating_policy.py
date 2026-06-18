@@ -286,12 +286,19 @@ def _run_breakdown(**kwargs):
     }
 
     class FakeCat:
-        def search(self, q, limit=1):
-            r = MagicMock()
-            r.code = "317321"
-            r.nazev = "X"
-            r.cena = 100.0
-            return [r]
+        # Names mirror the OTSKP titling convention so they survive the
+        # match_catalog work-type gate + OTSKP_CODE_BINDING_FLOOR: a beton query
+        # keeps the beton item, a výztuž query keeps the výztuž item.
+        def search(self, q, limit=10):
+            out = []
+            for code, nazev, cena in (
+                ("317321", "Beton pilíře C30/37", 3000.0),
+                ("317365", "Výztuž pilířů z oceli B500B", 30000.0),
+            ):
+                r = MagicMock()
+                r.code, r.nazev, r.cena = code, nazev, cena
+                out.append(r)
+            return out[:limit]
 
     with patch.object(
         clf,
@@ -335,6 +342,26 @@ def test_breakdown_catalog_none_alias_forces_work_first():
     # Reserved-slot contract: work_first leaves the catalog slot present but
     # UNFILLED (None), not omitted — CATALOG_BINDING fills the SAME key later.
     assert all(i.get("otskp_code") is None for i in r["items"])
+
+
+def test_breakdown_otskp_bundles_formwork_and_curing():
+    """OTSKP prices bednění/odbednění/ošetřování INSIDE the concrete item — those
+    work rows must bind to a deterministic None ("zahrnuto v betonu dle OTSKP",
+    a RULE not a miss), while beton/výztuž are matched via the catalog chain."""
+    r = _run_breakdown(mode="work_with_catalog")
+    by_verb = {i["work_description"].split()[0]: i for i in r["items"]}
+
+    for verb in ("Bednění", "Odbednění", "Ošetřování"):
+        it = by_verb[verb]
+        assert it["code_status"] == "bundled", (verb, it.get("code_status"))
+        assert it["otskp_code"] is None
+        assert "zahrnuto v betonu" in (it.get("code_note") or "")
+        assert it["code_confidence"] == 1.0  # a positive rule, not floor-None
+
+    # Beton + výztuž actually search OTSKP (bound here via the fake catalog).
+    assert by_verb["Beton"]["code_status"] == "bound"
+    assert by_verb["Beton"]["otskp_code"]
+    assert by_verb["Výztuž"]["code_status"] == "bound"
 
 
 # ── enforce_or_raise async-context safety (review fix) ────────────────────────

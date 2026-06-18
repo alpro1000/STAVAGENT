@@ -46,9 +46,18 @@ WORK_TYPE_RULES: list[tuple[re.Pattern, str]] = [
     # resolve BEFORE ordinary `vyztuz`, which the phrase also matches via "výztuž".
     (re.compile(r"předp[íi]n|predpin|předpjat|predpjat|Y1860", re.I), "predpinaci"),
     (re.compile(r"v[ýy]ztuž|vyztuz|armatur|beton[áa]řsk\w*\s*ocel|\bB\s?500", re.I), "vyztuz"),
-    (re.compile(r"bedněn|bedneni|skruž|skruz", re.I), "bedneni"),
-    (re.compile(r"demolic|bour[áa]n|frézov|frezov|odstraněn", re.I), "demolice"),
+    # Skruž (falsework/centering for NK) is a SEPARATE OTSKP basket from bednění —
+    # it carries its own pricing line and must NOT collapse into `bedneni` (which
+    # OTSKP bundles into the concrete item). Resolve before bedneni.
+    (re.compile(r"skruž|skruz", re.I), "skruz"),
+    (re.compile(r"bedněn|bedneni", re.I), "bedneni"),
+    # `demontáž`/`demontov` join demolice so "DEMONTÁŽE BETONOVÝCH ZÁKLADŮ" is not
+    # mis-bucketed as `beton` via the substring "beton" (live SO-206 leak).
+    (re.compile(r"demolic|demont[áa]ž|demontov|bour[áa]n|frézov|frezov|odstraněn", re.I), "demolice"),
     (re.compile(r"v[ýy]kop|zemn[íi]\s*pr[áa]c|n[áa]syp|odkop|odtěžen", re.I), "zemni"),
+    # Ošetřování betonu (curing) resolves BEFORE `beton` (the phrase contains
+    # "beton"); OTSKP bundles it into the concrete item (CATALOG_BUNDLING).
+    (re.compile(r"ošetřov|osetrov|ošetřen|osetren", re.I), "osetrovani"),
     (re.compile(r"beton", re.I), "beton"),
 ]
 
