@@ -210,7 +210,11 @@ def test_export_visible_columns_filled_and_source_preserved(_mock_engine):
     zdroj = [ws.cell(row=r, column=9).value for r in range(5, ws.max_row + 1)]
     duvera = [ws.cell(row=r, column=10).value for r in range(5, ws.max_row + 1)]
     assert "keywords" in zdroj, zdroj                     # computed source visible
-    assert "85%" in duvera, duvera                        # confidence now visible
+    # Důvěra renders classification confidence as a percent. Both fixture elements
+    # are clean keyword wins → 0.90 on the signal ladder (W3 reads the shared
+    # element_types.yaml; keyword ≤ 0.9). Was "85%" when W3 hardcoded a flat
+    # keyword confidence, pre single-sourcing (BUGS#5(3)).
+    assert "90%" in duvera, duvera                        # confidence now visible
 
 
 # ── Q4 — honest-blank export rows are VISUALLY distinct, not an empty gap ──────

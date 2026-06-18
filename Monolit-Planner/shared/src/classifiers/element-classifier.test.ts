@@ -50,6 +50,27 @@ describe('Element Classifier', () => {
       expect(result.element_type).toBe('operne_zdi');
     });
 
+    // ── BUGS#5(3): wall single-source (W3↔YAML) — zárubní / gabion / tížn ──
+    it('zárubní zeď → operne_zdi (single source: zarubn in operne_zdi.include)', () => {
+      expect(classifyElement('Zárubní zeď').element_type).toBe('operne_zdi');
+    });
+
+    it('tížná zeď (gravity wall = monolithic ŽB) → operne_zdi', () => {
+      expect(classifyElement('Tížná zeď').element_type).toBe('operne_zdi');
+    });
+
+    it('gabionová zeď → explicit reject, NOT a concrete wall (BUGS#5(3))', () => {
+      const result = classifyElement('Gabionová zeď');
+      expect(result.is_concrete_element).toBe(false);
+      expect(result.reject_reason).toBe('gabion_non_concrete');
+      expect(result.element_type).not.toBe('operne_zdi');
+    });
+
+    it('gabion is rejected even in a composite name (never priced as concrete)', () => {
+      // safety: ANY gabion mention → reject before the concrete scorer fires
+      expect(classifyElement('Gabionová opěrná zeď').is_concrete_element).toBe(false);
+    });
+
     it('classifies building columns', () => {
       const result = classifyElement('SLOUPY 1.NP');
       expect(result.element_type).toBe('sloup');

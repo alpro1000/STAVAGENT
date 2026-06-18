@@ -824,6 +824,13 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   if (/monolitick\S*\s*vozovk|betonov\S*\s*vozovk|betonový\s*kryt/.test(normalized)) {
     return rejectProfile('road_surface');
   }
+  // GABION = drátokošová zeď (wire baskets + stone), NOT monolithic concrete.
+  // Pricing it as a concrete retaining wall is the worst outcome (confident wrong
+  // cost) — reject ANY gabion mention before the scorer (BUGS#5(3); mirrors the W3
+  // classifier early-exit). 'gabion' was removed from operne_zdi.include in the KB.
+  if (/gabion/.test(normalized)) {
+    return rejectProfile('gabion_non_concrete');
+  }
 
   // P0 BUG #1 disambiguation (2026-05-14, SO-250 audit):
   //   "Základy ze ŽB ... pro zárubní/opěrnou zeď"  →  zaklady_oper

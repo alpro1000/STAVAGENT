@@ -351,6 +351,25 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-17 — Session: BUGS#5(3) — wall klasifikátor single-source (W3↔YAML) + gabion reject
+
+**Spec (interview, postupně):** Fix = **strukturální single-source** (ne minimální keyword-záplata) — W3 klasifikátor čte SDÍLENÝ `element_types.yaml` a matchuje STEJNÝM algoritmem jako TS engine → paritet Python↔TS by construction. Doménová vidlice (Alexander): `opěrná/zárubní/tížná zeď` = monolitický ŽB → `operne_zdi`; `gabionová zeď` = drátokoš, NENÍ beton → **explicit reject** (ne `jine`); gabion v `operne_zdi` = jistý chybný beton-výpočet, horší než `jine`. Výstupní label = **w3_name alias** (ne engine-jména) → MCP-kontrakt stabilní (calculator.py map/allowed-lists, goldeny).
+
+**Audit (před kódem):** Bug byl **W3-only** — `zárubní zeď`→`jine@0.3`, protože W3 `classifier.py` měl HARDCODED `KEYWORD_RULES` (regex) bez `zárub`, zatímco sdílený YAML `operne_zdi.include` `zarubn` UŽ měl (TS to četl, W3 ne = dvojí zdroj = přesně ten drift). `gabionová zeď`→`operna_zed@0.9` na OBOU runtimech + v YAML = živý false-positive beton. `tížn` chyběl v `operne_zdi.include` (jen context-vocab) → TS↔W3 paritní mezera. TS rejecty jdou přes early-exit/head-noun (reject-rodiny SKIPnuté z keyword-loopu, line 695), NE přes skóre.
+
+**Implementace:**
+- **YAML doktrína (jediný zdroj):** `operne_zdi.include` − `gabion`/`gabionov`, + `tizn`/`tížn`/`tizna zed` (`zarubn` zůstává); `gabion`/`dratokos` do `reject_materials` mirroru.
+- **W3 `classifier.py` přepsán:** hardcoded regex `KEYWORD_RULES` (first-match) → čte YAML + skóruje algoritmem enginu (`matchCount*10 + priority + bridge_boost`, signal-ladder 0.9/≤0.7+candidates, exclude honoring, bridge_remap, w3_name alias). Normalizer (head-noun ALGORITMUS) zůstává kód (TASK_2b). `gabion` = **early-exit** (jako TS shotcrete) → `is_concrete_element=False` + `reject_reason=gabion_non_concrete` (bezpečné i v kompozitu „gabionová opěrná zeď").
+- **TS `element-classifier.ts`:** přidán `gabion` reject early-exit (zrcadlo W3); regen kb (`gen:knowledge`) → `operne_zdi` bez gabion, s tížn; drift-guard čistý. `gabion` = early-exit reason na obou (jako shotcrete) — ŽÁDNÝ `gabionova_zed` type_core/keyword (čistá ontologie); jen W3-local `ELEMENT_TYPES['gabionova_zed']` pro reject-profil.
+
+**Konvergenční vedlejší efekt (přiznáno, NUTNÁ pozornost Alexandra při review):** skórer dá `základy` → `zaklady_piliru` (prio 10 > zakladovy_pas 9); normalizer kanonizuje VŠE `základ*` → „základy" → tedy generické základy → `zaklady_piliru` (rebar-hint 100) místo W3-coarse `zaklady` (80). Family-preserving (foundation), hint-level (kalkulátor přepočítává rebar z vlastní matice), **paritet s enginem** (TS čte týž YAML → stejný pick), předdokumentováno jako `zaklady→zaklady_piliru`. 3 goldeny (#66/#69/#69b) přepsány na `zaklady_piliru` (jádro #69 = `is_bridge_context=False` zachováno). NENÍ to wall-bug — vedlejší efekt konvergence; foundation-keyword retuning by sáhl do enginu + plné TS revalidace = samostatná osa, NEbundlováno.
+
+**Ověřeno:** W3 goldeny 17/17 (12 upravených + 5 nových: zárubní→operna_zed, tížn→operna_zed, gabion→reject, masonry→reject, opěrná stable). MCP-compat 4/4 classify asserce ověřeny přímo (fastmcp není lokálně → plný compat v CI; změna aditivní = optional pole). TS shared 1335/1335 (+4 nové) + W3-parity green + shared tsc 0. Regen `gen:knowledge:check` čistý.
+
+**Odmítnuto:** Drift-guarded dual (2 kopie + storož = pořád duplikace, kterou gejt ruší). Plná engine-jména delegace (mění výstupní slovník + 4 konzumenty = scope bez výhody → samostatný gejt = soul §9 end-state). Scoring reject-rodin na W3 (TS je SKIPuje → early-exit je paritní + bezpečnější). Normalizer context-vocab single-source (`_WALL_CONTENT` vs `wall_vocab` — nezpůsobil bug → samostatná osa).
+
+**Co dál:** ŽIVÝ check po deploy (zárubní/gabion na MCP `classify_construction_element` + kalkulátoru). Foundation `zaklady→zaklady_piliru` — Alexander rozhodne: OK (pier-foundation hint), nebo zúžit `zaklady_piliru.include` (vyřadit bare `zaklady`) = samostatný foundation gejt. Normalizer vocab single-source (follow-up). MCP classify-delegation (engine-jména) = budoucí gejt. Větev `claude/beautiful-ramanujan-g0guev` (reset na squash-merged main po Gate C #1388), force-with-lease push, BUGS#5(3) = nový PR.
+
 ## 2026-06-16 — Session: Fáze 5 §4 parity — Gate A + Gate B (advisor = zrcadlo Core) — MERGED
 
 **Cíl §4:** jedno číslo — jeden zdroj; advisory nepočítá své mimo engine. Gaty PO JEDNOM, vlastní větev, STOP do merge (merge = Alexander).
