@@ -206,6 +206,13 @@ export default function PitchPageEn() {
                   src={s.src}
                   alt={s.caption}
                   loading="lazy"
+                  onError={(e) => {
+                    // Hide the figure until its screenshot file exists, so the
+                    // page never shows a broken-image icon. Pure DOM, no state,
+                    // no storage. Once the PNG is added the image loads normally.
+                    const fig = e.currentTarget.closest('figure');
+                    if (fig) (fig as HTMLElement).style.display = 'none';
+                  }}
                   style={{ display: 'block', width: '100%', height: 'auto' }}
                 />
               </div>
