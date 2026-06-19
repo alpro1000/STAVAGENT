@@ -13,6 +13,51 @@
 ---
 ---
 
+# 🟢 ČÁST 0 — PROSTĚ A JEDNODUŠE (čti tohle před hovorem)
+
+## A. Jak to u mě funguje — vysvětli za 1 minutu
+
+**Řekni inženýrovi (RU pro tebe → CZ k vyslovení):**
+
+> 🇷🇺 STAVAGENT считает сметы для стройки. Загружаешь техническое задание → программа достаёт работы, считает бетон, опалубку, арматуру, график — выдаёт смету. Внутри 5 маленьких серверов на Cloud Run + одна база Cloud SQL Postgres. ИИ (Gemini через Vertex) подключается ПОСЛЕДНИМ: сначала правила и каталоги, ИИ только советует и проверяет — это специально, дёшево и предсказуемо. Поиск по нормам (ČSN/TKP) сделан через эмбеддинги — текст превращается в числа, ищется похожее, числа лежат в Postgres (pgvector).
+
+> 🇨🇿 *"STAVAGENT počítá stavební rozpočty. Nahraju zadávací dokumentaci, systém z ní vytáhne práce, spočítá beton, bednění, výztuž, harmonogram. Uvnitř je 5 malých služeb na Cloud Run + jedna Cloud SQL Postgres databáze. AI (Gemini přes Vertex) je až POSLEDNÍ vrstva — nejdřív běží pravidla a katalogy, AI jen radí a kontroluje. Je to schválně: levné a předvídatelné. Vyhledávání v normách (ČSN/TKP) jede přes embeddings — text se převede na čísla, hledá se podobnost, čísla jsou v Postgresu (pgvector)."*
+
+**Problém, kvůli kterému to řeším:** Google zavírá starou knihovnu pro Gemini → musím přejít na novou (`google-genai`).
+
+## B. Co se chci zeptat — 6 otázek, prostě + hotová věta
+
+> Pořadí = priorita. Když stihneš jen 3 → **Q1, Q3, Q4**.
+
+---
+
+**Q1 — Nespadne mi to do 24.6.?** *(abys měl klid, že migrace počká po Cemexu)*
+- 🇷🇺 Старую библиотеку закрывают 24 июня. Я её заморозил на рабочей версии. Мой сервер продолжит работать после этой даты, если я ничего не трогаю? Дедлайн — это про новые версии, а не про отключение моего прода, да?
+- 🇨🇿 *"Staré SDK se odstraňuje 24. 6. Mám ho zapinované na verzi 1.154.0. Když nic neudělám, můj produkční backend na Cloud Run pojede dál i po tom datu, že jo? To removal je jen z nových releasů, ne vypnutí běžícího?"*
+
+**Q2 — Jak se teď správně připojit?** *(abys nepřepisoval kód poslepu)*
+- 🇷🇺 В новой библиотеке как создать клиент для Vertex без ключа (через ADC на Cloud Run)? В доках вижу то `vertexai=True`, то `enterprise=True` — какой сейчас правильный и работает ли старый ещё как алиас?
+- 🇨🇿 *"V novém google-genai SDK — jak vytvořit klienta pro Vertex přes ADC bez klíče na Cloud Run? V dokumentaci vidím jednou `vertexai=True`, jinde `enterprise=True` — který je teď platný a funguje ještě ten starý?"*
+
+**Q3 — Můžu to udělat po částech?** *(rozbít riziko na 2 bezpečné kroky)*
+- 🇷🇺 ИИ у меня в двух местах: чат/советник и поиск по нормам (эмбеддинги). Могу перевести на новую библиотеку ТОЛЬКО чат, а эмбеддинги оставить на старом ещё надолго — чтобы работали параллельно?
+- 🇨🇿 *"AI mám na dvou místech: chat/poradce a vyhledávání v normách přes embeddings. Můžu přejít na nové SDK jen u chatu a embeddings nechat na starém ještě dlouho, ať běží paralelně?"*
+
+**Q4 — ⭐ NEJDŮLEŽITĚJŠÍ: měnit vůbec model embeddings?** *(jediné, co dokumentace neřeší)*
+- 🇷🇺 Поиск по нормам сейчас на модели `text-multilingual-embedding-002`, вектор 768, качество совпадений ~0.82. Новая `gemini-embedding-001` по умолчанию 3072, можно обрезать до 768. Не упадёт ли качество поиска на обрезанных 768 против моей нынешней модели? Или лучше остаться на старой как можно дольше? И правда, что у новой обрезанный вектор надо самому нормализовать (L2)?
+- 🇨🇿 *"Vyhledávání v normách jede na `text-multilingual-embedding-002`, 768 dim, cosine ~0.82. Nový `gemini-embedding-001` má default 3072, jde oříznout na 768. Neklesne kvalita retrievalu na oříznutých 768 proti té mojí? Nebo radši zůstat na staré co nejdéle? A je pravda, že u `gemini-embedding-001` musím oříznutý vektor sám L2-normalizovat?"*
+
+**Q5 — Region a modely** *(praktická drobnost)*
+- 🇷🇺 Я в регионе europe-west3. Какие модели Gemini там точно доступны? `flash-lite` даёт 404. И ок ли ставить location='europe-west3' или сейчас толкают 'global'?
+- 🇨🇿 *"Jsem v europe-west3. Které Gemini modely jsou tam GA? `flash-lite` mi vrací 404. A je ok dávat location='europe-west3', nebo se teď tlačí 'global'?"*
+
+**Q6 — Kredity $2,000** *(byznys, ne technika)*
+- 🇷🇺 $2000 — на какой срок, что покрывают (Cloud Run + Cloud SQL или только Vertex)? Можно потом апгрейд на больший тир? Старые $1000 GCP суммируются?
+- 🇨🇿 *"Těch $2,000 — na jak dlouho, a pokrývají i Cloud Run + Cloud SQL, nebo jen Vertex inference? Jde později přejít na vyšší tier? A sčítá se to s předchozími $1,000?"*
+
+---
+---
+
 # 🇨🇿 ČESKÁ VERZE (pro inženýra)
 
 ## 1. Co je ta migrace — stav v našem kódu
