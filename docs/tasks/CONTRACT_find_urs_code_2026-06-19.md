@@ -66,13 +66,15 @@
 
 | `match_kind` (от тулзы) | Условие | → `status` (adapter) | Примечание |
 |---|---|---|---|
-| `item` | конкретный код, conf ≥ floor | **`candidate`** | URS **никогда** не `exact` (design §5.1: exact = только OTSKP DB) |
-| `item` | conf < floor | `not_verified` | слабый матч — человек биндит |
+| `item` | conf ≥ **0.80** | **`candidate`** | URS **никогда** не `exact` (design §5.1: exact = только OTSKP DB) |
+| `item` | conf < **0.80** | `not_verified` | demotion внутри `item` (слабый матч — человек биндит) |
 | `group` | найдена только skupina/kapitola (prefix) | **`group_only`** | честно «категория, не item» |
 | `raw_context` | текущий случай `code:"N/A"`+`note` | **`not_verified`** | сырой контекст, не код |
 | `none` | пусто | `not_verified` | нет совпадения |
 
 → Adapter получает `group_only` vs `not_verified` **детерминированно из `match_kind`**, а не угадывает по строке кода. Это снимает блокер.
+
+**Floor 0.80 — это demotion ВНУТРИ `match_kind=item`, не первичный классификатор.** Perplexity-мусор и так падает в `raw_context` (не в `item`), поэтому вопрос сопоставимости шкал между ветками почти снят. ⚠️ **Условие до фиксации floor:** подтвердить, что `confidence` matcher_service и perplexity на сопоставимой шкале; если НЕ сопоставимы — floor применять **только к matcher-ветке**.
 
 ---
 
@@ -101,15 +103,18 @@
 
 ---
 
-## 6. Точки ратификации (до кода T1-adapter)
+## 6. РАТИФИЦИРОВАНО — 2026-06-19 (Alexander)
 
-1. **`match_kind` как новое поле тулзы** — ОК? (это единственный реальный must-have от T5 для T1).
-2. **`catalog_version` для URS = null честно** (не выдумывать версию web-источника) — ОК?
-3. **`status` живёт в adapter, не в тулзе** (design §5.1 инвариант) — подтверждаем?
-4. **Floor для URS `candidate`** — переиспользовать OTSKP-floor или отдельный (URS web слабее, 0.80–0.85)? — решить значение.
+1. **`match_kind`** (`item|group|raw_context|none`) — ✅ **да**. Условие: эмить на **КАЖДОМ** результате **ОБЕИМИ** ветками (`matcher_service` И `perplexity`), иначе adapter начнёт сорт-сниффить источник.
+2. **`catalog_version` URS = null честно** — ✅ **да, твёрдо**. Из данных или null, никогда константа (прямой урок Fix 3 — не повторять хардкод `"OTSKP 1/2025"`).
+3. **`status` в adapter, не в тулзе** — ✅ **да** («tools stay dumb», stage-gating принцип). Явный инвариант: **URS-статус максимум `candidate`, НИКОГДА `exact`** — `exact` зарезервирован за OTSKP DB-hit (§5.1). URS web/matcher по определению не даёт `exact`.
+4. **Floor URS `candidate` = 0.80, ОТДЕЛЬНЫЙ** (не переиспользовать OTSKP-floor) — ✅. Природа сигнала другая: OTSKP=DB+embeddings, URS=web/matcher, шкалы не взаимозаменяемы. Живые данные: matcher ~0.85 (рабочий код), perplexity ~0.5 (мусор). 0.80 пускает matcher в `candidate`, рубит perplexity-мусор, 0.05 запас под 0.85 убирает дрожание. Применять как **demotion внутри `match_kind=item`** (см. §3).
 
-После «да» по 1–3 (+значение 4) — T1-adapter MVP строится против §2/§3 без риска переделки.
+⚠️ **Единственная проверка ДО фиксации floor (не предполагать — подтвердить):** сопоставимы ли шкалы `confidence` между matcher и perplexity. Если нет — floor только к matcher-ветке.
+
+**§5.3 разрешено верно:** сигнатура `find_urs_code(description, context)` НЕ меняется (MCP цела), форма `results[]` — аддитивно.
 
 ---
 
-## ГЕЙТ. Это контракт, не код. Жду ратификации §6, затем go на T1-adapter MVP.
+## ГЕЙТ СНЯТ. Контракт ратифицирован. T1-adapter MVP стройте против §2/§3.
+**Остаётся одна проверка по коду** (§6 ⚠️): сопоставимость шкал conf matcher↔perplexity — подтвердить до фиксации floor.
