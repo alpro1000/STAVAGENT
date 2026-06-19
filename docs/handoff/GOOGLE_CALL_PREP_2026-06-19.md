@@ -112,4 +112,50 @@ Google даёт **$2,000 кредитов** (Start Tier) + заодно ревь
 
 ---
 
+# 🔑 Co se REÁLNĚ změní po přechodu na google-genai (a doporučená strategie)
+
+> Numerické SDK detaily níže pocházejí z Google vertex-ai-samples / uživatelské rešerše,
+> **nejsou re-verifikovány touto session** → na hovoru potvrdit u inženýra (označeno „ověřit").
+
+**1. Auth + region — čistší, a léčí náš bug.** Nový vzor:
+`client = genai.Client(vertexai=True, project=PROJECT_ID, location=LOCATION)`.
+Region jde **explicitně do klienta**, ne přes globální `vertexai.init()`. → embeddings i Gemini-chat
+dostanou **nezávislé klienty s nezávislým regionem**, a celý třída bugů s globálním init-collision
+**strukturálně mizí**. ADC beze změny (bez klíče). Vzor **potvrzen** v Google samples.
+
+**2. Embeddings — volání se mění, 768-dim se drží parametrem.**
+Bylo: `TextEmbeddingModel.from_pretrained(...).get_embeddings(...)`.
+Bude: `client.models.embed_content(model="gemini-embedding-001", contents=[...],
+config=EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT", output_dimensionality=768))`.
+⚠️ `gemini-embedding-001` má **default 3072-dim** → `output_dimensionality=768` MUSÍ být explicitně,
+jinak pgvector sloupec nesedí. (ověřit default 3072)
+
+**3. Re-embed je POVINNÝ** i při stejném 768 — `gemini-embedding-001` ≠ `text-multilingual-embedding-002`,
+jiný vektorový prostor. Všech ~17 940 přeembedovat. To je práce, ne řádek.
+
+**4. Batch limit + quota** (ověřit): ~5 textů/volání + 60 req/min pro nové projekty → ingest-skript
+přepsat na limit 5; re-embed bude **pomalejší** než minulý běh. Založit čas.
+
+**5. Nemění se:** pgvector schéma, HNSW index, SQL, retrieve→prefilter→ranking, MCP kontrakty,
+Cloud Run / Cloud SQL. Migrace = jen embed-volání + Gemini-volání, NE architektura.
+
+## ⭐ Doporučená strategie — rozdělit migraci na DVA kroky
+
+Datum 24.06 je o SDK-releasech, náš pin `==1.154.0` drží. Proto NEtahat oba kusy najednou:
+
+| Krok | Co | Proč teď / proč počkat |
+|---|---|---|
+| **1 (hned)** | Gemini-chat → `genai.Client(vertexai=True)` | opraví init-collision, sundá SDK-risk, žádný re-embed |
+| **2 (vědomě později)** | embeddings → `gemini-embedding-001` + re-embed 17 940 | drahé + riziko kvality, dělat až s rozmyslem |
+
+**Otázka na inženýra (klíčová):** je podporovaný **hybrid** — `genai` pro chat + starý
+`TextEmbeddingModel` pro embeddings paralelně po dobu přechodu? Pokud ano → rozbije rizikovou
+migraci na dva bezpečné kroky.
+
+**Druhá otázka (kvalita 768):** `gemini-embedding-001` je optimalizován na 3072. Náš retrieve dává
+cosine ~0.82 na 768 (text-multilingual-embedding-002). Neklesne kvalita po oříznutí na 768? Nebo
+pro katalog raději zůstat na `text-multilingual-embedding-002` co nejdéle?
+
+---
+
 > ⚠️ В корневом `CLAUDE.md` MCP всё ещё описан как «9 tools» — это **устарело**, по коду их **20** (`EXPECTED_TOOLS` в `tests/test_mcp_compatibility.py`). Поправить в отдельной сессии.
