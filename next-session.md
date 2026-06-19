@@ -6,6 +6,49 @@
 
 ---
 
+## 🧭 RETRIEVAL MARATHON — hanging tails (2026-06-17 · freeze ~21.06 · Cemex 28.06)
+
+Phase-1 catalog retrieval (`find_otskp_code`) debugged across this marathon. Merged & live:
+Fix1 #1364 (soft class-prefilter), Fix2 #1366 (family-match rank bonus), Fix3.5 #1367
+(class-strip — **regression, to be reverted**). All MCP-compat green.
+
+### 🔴 BLOCKER — close first (Phase 1)
+**Symptom:** `beton mostních pilířů` (any class) → prod returns tunnels (36xxx); recon returns
+piers (334). **Recon-proven:** vectors healthy (334 top, direct cosine), region **NOT** the
+cause (`cosine(us,eu)=1.0`), **re-embed NOT needed**, **`strip`/#1367 EXONERATED** (bare query —
+strip is a no-op — also fails in prod).
+**Narrowed root (mechanism OPEN, no hypothesis asserted):** in ONE prod process the *same string*
+embeds to **piers at startup** (recall self-test `top_sim=0.8207`) but **tunnels at query-time**.
+Region/model/dim/string all config-identical → something in prod runtime state changes between
+startup-embed and query-embed. **Global-init-collision hypothesis DROPPED** (contradicts cosine=1.0).
+**Gate (point c, FIRST):** log at query-time the actual `model / dim / location / creds` of the
+embedding in prod, compare to the startup self-test → identify what truly diverges. No fix on an
+unproven mechanism.
+**Actions:** (a) **revert #1367** — safe, restores C30/37 (catalog-class) to 00417 PASS; it masks
+the bug for catalog classes, so revert ≠ fix. (b) **root fix — GATED on the prod datum**, do NOT
+implement speculatively.
+
+### 🟡 Calendar — RESOLVED
+`google-cloud-aiplatform==1.154.0` **already pinned** on main (requirements.txt:35; ships
+`vertexai.*`; safe through 24.06 vertexai removal). No PR needed. (No pin PR was ever created —
+none required.)
+
+### 🟢 Before freeze (after blocker)
+- **Fix 3** — keyword `ORDER BY cena → relevance` + hardcoded `source:"OTSKP 1/2025"` → real `catalog_version`.
+- **Fix 4** — rebake `otskp.db` → 2026 (version split: keyword 2025/17904 vs embeddings 2026/17940).
+- **SO250 manual breakdown E2E** — demo-path insurance.
+- **Phase 2 (MCP, short)** — carrier-shape `find_urs_code`, counts → 17 940, fix docstring example code.
+
+### ⚪ Post-Cemex
+- **Phase 3** kiosk→thin: drop UI model selector; ladder Vertex(Gemini)→Bedrock(Claude), DeepSeek out;
+  remove subsystem 4 (6-role); learned-mappings → Core (human-confirm 0.99 only); ÚRS BYOK (3 tiers).
+- **SDK migration** `vertexai`→`google-genai` + `gemini-embedding-001` (late June, Friday-call). Clean-`název`
+  re-embed rides this pass IF decided (currently OFF — vectors are fine).
+- **Alembic debt** — reconcile startup raw-SQL vs Alembic journal.
+- **Embeddings/Gemini region decoupling** — `vertexai.init` is process-global; likely same root as 🔴 blocker.
+
+---
+
 ## 🟢 ACTIVE — Fáze 5 Step 3 (calculator legacy/dead-field cleanup) — PR1+PR2 READY, čeká merge+live
 
 **Větev:** `claude/phase5-steps1-2-handoff-p0og0u` (Step 1 #1353 + Step 2 #1357 už v main).
