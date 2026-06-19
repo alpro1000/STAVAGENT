@@ -6,47 +6,47 @@
 
 ---
 
-## 🧭 RETRIEVAL MARATHON — PAUSED 2026-06-19 (freeze 21.06 LIFTED · token limit)
+## 🧭 RETRIEVAL MARATHON — CLOSED 2026-06-19 (honest result · demo protected)
 
 Phase-1 catalog retrieval (`find_otskp_code`) debugged across this marathon. Merged & live:
 Fix1 #1364 (soft class-prefilter), Fix2 #1366 (family-match rank bonus), **#1390** (revert of
 #1367 class-strip **+** query-time diagnostic log — C30/37 catalog-class restored to PASS;
 **do NOT revert #1390**), **#1389** = this памятка. All MCP-compat green.
 
-### 🔴 BLOCKER — root cause NOT found (paused, GATED)
-**Symptom:** `beton mostních pilířů` (any class) → prod `find_otskp_code` returns ~24 tunnels
-(36xxx); `_search` (the single embeddings path) logs piers (33432). Pier-vs-tunnel flips between
-moments for the *same string*.
+### 🟡 BLOCKER → OBSERVATION (root NOT established — do not invent one) · demo works
+**Current prod state (verified):** `find_otskp_code("beton mostních pilířů C30/37")` at query-time
+→ **series 334 piers**, `334325` at top, `source:embeddings`, `retrieve_summary.kept.embeddings:19`.
+**C30/37 demo case WORKS. Demo protected.**
 
-**Narrowed to ONE leading hypothesis — `embed_query` non-deterministic BETWEEN calls:**
-- embed is **deterministic WITHIN a process**: two `embed_query` of the same text in one process →
-  **identical vector** (hash `cddcea03a655`).
-- but BETWEEN separate runs the `_SEARCH_SQL` result jumps: `vec_test2.py` → **TUNNELS** (36250,
-  sim 0.784); `final_test.py` a minute later → **PIERS** (33432, sim 0.829). Same text, same SQL,
-  same DB, same operator.
-
-**EXCLUDED (all recon-proven, do not re-litigate):**
+**DISPROVEN — every mechanism we chased (do not re-litigate):**
 - **region** — `cosine(us,eu)=1.0` (2-region test).
-- **strip / #1367** — bare query also fails; strip is a no-op → exonerated; now reverted (#1390).
-- **re-embed** — corpus vectors healthy (piers top on direct cosine).
-- **traffic-split** — both behaviours observed on a single revision (00421).
-- **SQL operator / index** — `<=>`, `<#>`, `<->` all return piers.
-- **code-path** — single `_search`, no 2nd embeddings site, no cache (grep-confirmed).
+- **strip / #1367** — bare query also failed; no-op → exonerated; reverted (#1390).
+- **embed-nondeterminism** — `hash_test.py` ×3: embed STABLE (hash `cddcea03a655`, top-5 piers all three).
+- **SQL operator / index** — `final_test`: `<=>`/`<#>`/`<->` all → piers.
+- **init-pollution of global vertexai** — `proof.py`: all 3 cases (clean / second client / `vertexai.init`)
+  → piers. The "second-client pollutes embed" guess from earlier today is **WRONG** — disproven by proof.py.
 
-**NEXT STEP (NOT done):** run `hash_test.py` **3× consecutively**. If the vector hash changes
-between runs → `embed_query` flickers = ROOT. If it stays constant → mechanism is downstream of
-embed, re-open. **Root fix is GATED on this result — do NOT implement speculatively.**
+**What actually happened:** a single transient tunnel episode (`vec_test2` + one prod probe ~05:11)
+that **does NOT reproduce**. Cause **NOT established**. Most likely transient state — under-warmed
+HNSW just after the 00421 deploy, or a brief Vertex hiccup. **No mechanism asserted without facts.**
+
+**Status:** 🔴 → 🟡 observation, NOT a stop. Demo path green. **Action: monitor for tunnel recurrence**;
+if it reappears and reproduces, re-open with the new evidence — not before.
+
+**Structural cure (decided):** full **genai + `gemini-embedding-001` @ 3072 via halfvec** migration
+(design doc on main, **PR #1397**) — post-Cemex; it removes the whole class of global-vertexai-state
+uncertainty by construction. Not a fix for an open bug — a removal of the uncertainty surface.
 
 ### 🟡 Calendar — RESOLVED
 `google-cloud-aiplatform==1.154.0` **already pinned** on main (requirements.txt:35; ships
 `vertexai.*`; safe through 24.06 vertexai removal). No PR needed.
 
-### 🟢 Next session (freeze 21.06 LIFTED)
-- **BLOCKER first** — `hash_test.py` 3× → confirm/deny embed flicker → then (and only then) root fix.
+### 🟢 Next session (freeze 21.06 LIFTED · nothing implemented this session)
+- **Monitor** — watch for tunnel recurrence on `find_otskp_code`; only re-open the blocker if it reproduces.
 - **Fix 3** — keyword `ORDER BY cena → relevance` + hardcoded `source:"OTSKP 1/2025"` → real `catalog_version`.
 - **Fix 4** — rebake `otskp.db` → 2026 (version split: keyword 2025/17904 vs embeddings 2026/17940).
-- **SO250 manual breakdown E2E** — demo-path insurance.
 - **Phase 2 (MCP, short)** — carrier-shape `find_urs_code`, counts → 17 940, fix docstring example code.
+- **genai migration** — `gemini-embedding-001` @ 3072 via halfvec (PR #1397, post-Cemex).
 - **Removed from scope this session:** freeze 21.06 (lifted), clean-`název` re-embed (vectors fine),
   DeepSeek from the ladder.
 
@@ -56,7 +56,7 @@ embed, re-open. **Root fix is GATED on this result — do NOT implement speculat
 - **SDK migration** `vertexai`→`google-genai` + `gemini-embedding-001` (late June, Friday-call). Clean-`název`
   re-embed rides this pass IF decided (currently OFF — vectors are fine).
 - **Alembic debt** — reconcile startup raw-SQL vs Alembic journal.
-- **Embeddings/Gemini region decoupling** — `vertexai.init` is process-global. (NOT the blocker root — region excluded via `cosine(us,eu)=1.0`; tracked separately as hygiene.)
+- **Embeddings/Gemini region decoupling** — `vertexai.init` is process-global. NOT proven to be the blocker root (proof.py → piers in all cases; region excluded via `cosine(us,eu)=1.0`). The genai migration removes the global-state surface structurally (per-client region).
 
 ---
 
