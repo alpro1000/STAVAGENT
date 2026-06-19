@@ -4,7 +4,7 @@
 Этот файл обновляем КАЖДЫЙ цикл: DONE / ADDED / BUGS / TODO.
 Порядок работ — по зависимости, не по спешке.
 
-_Обновлено: 2026-06-17_
+_Обновлено: 2026-06-19_
 
 ---
 
@@ -18,6 +18,8 @@ _Обновлено: 2026-06-17_
 - [x] **БАГ ВЫСОТЫ — ИСПРАВЛЕН (PR #1372, `88d7e8a`).** Корень: `NumInput` (общий числовой компонент, ui.tsx) коммитил на BLUR, не onChange → набранное показывалось в поле, но объём/формула/boční tlak читали старое committed-значение до blur. Фикс (Option A): commit live на onChange, clamp min/max перенесён на onBlur, draft для стабильности курсора. + первый фронт DOM-тест-раннер (vitest+jsdom+@testing-library/react), 6 тестов timing'а. soul §9 = PR #1373. Verified фронт 9/9, goldens+parity 37/37, tsc 0.
 - [x] **§4 parity Гейт A (PR #1384, `4d3ce41`)** — карточка бетонщиков читает engine `pour_crew_breakdown.total` вместо inline `max(3,ceil(V/20))`. Чинит реальный 6→5.
 - [x] **§4 parity Гейт B (PR #1385, `1647295`)** — рекомендация tesařů из движка (`buildLaborProjection.formwork_recommended_crew`), из ТОГО ЖЕ `totalFwNh` что labor-расчёт; `0.6 Nh/m²` убран; honest-blank без `contact_area`. soul §9 A+B = PR #1386 (`fca8239`, текущий прод READY).
+- [x] **BUGS#5(2) catalog-binding — ИСПРАВЛЕН (PR #1395, merge `7a03785`, CI зелёный 06-19).** `create_work_breakdown(work_with_catalog)` шёл через наивный `otskp_catalog.search(work_description)` → мусор (stromy/prahy/nádrže/demolice). Фикс = §4c / Pattern 15: single-source через `find_otskp_code → match_catalog`; catalog-aware `CATALOG_BUNDLING` (OTSKP вшивает bednění/odbednění/ošetřování в beton → детерм. `None` «zahrnuto v betonu», conf 1.0-правило, НЕ floor); чистый канонический запрос (work-verb + element-noun, nominativ beton / genitiv výztuž; opěry+křídla = один košík 333xx); `OTSKP_CODE_BINDING_FLOOR=0.60`. **SO-206: 30 bundled + 20 верных по семье + 0 мусора.** Audit+fix в `docs/bugs/catalog-binding-opery/{analyze,fix}.md`; soul §9.
+- [x] **BUGS#5(3) wall klasifikátor — ИСПРАВЛЕН (PR #1391, `b96d79a`, merge 06-18).** W3 читает shared `element_types.yaml` ТЕМ ЖЕ алгоритмом что TS (паритет by construction); `zárubní/tížná zeď`→`operne_zdi`, `gabion`→explicit reject (НЕ beton). См. BUGS#5(3) ниже.
 
 ## ADDED по ходу (вне исходного плана)
 - N-инвариант вынесен в shared-хелпер + vitest (фронт не имел тест-раннера)
@@ -29,14 +31,16 @@ _Обновлено: 2026-06-17_
 2. [x] **apply-путь PR2 — ПРОВЕРЕН live, ЧИСТ.** «Přijmout doporučení» доносит рекомендованное в носитель (A0=3 → A1=R=2); C1 PASS (A1=S×tps=2), C3 PASS (A1≥R); идемпотентность — UI-гард (кнопка исчезает «✓ už použito», повторно применить нельзя). **PR2 = done.**
 3. [x] **H — RESOLVED, НЕ баг.** Hermetic end-to-end на main: regex `pevn\w*\s+skruz` уже ловит склонения (pevné skruži / pevnou skruží / pevná skruž — все → pevná skruž); цепочка tz_facts подключена (useCalculator → planElement → runValidationRules); правило срабатывает на реальном противоречии (form=letmá vs TZ=pevná skruž ✓; form=pevná vs TZ=letmá ✓). В аудите форма И TZ совпадали (pevná skruž) → правило корректно молчало = **H был незавершён** (Chrome не создал mismatch; letmá была disabled на 30 м). Re-тест: TZ с одной технологией + вручную переключить radio на ДРУГУЮ на НЕзаблокированном элементе. Кода НЕ меняли.
 4. [x] **БАГ ВЫСОТЫ — RESOLVED (PR #1372).** Был не «смена типа сбрасывает V», а `NumInput` commit-on-blur: расчёт читал старое committed-значение пока не уйдёшь из поля. Фикс = commit live onChange, clamp на blur. Прежний «все числа врут» — артефакт browser-агента, печатавшего без blur, НЕ порча данных. Подробности в DONE.
-5. [ ] **CATALOG-BINDING БАГ — воспроизведён на боевом SO 206 (`create_work_breakdown`, 2026-06-17).** Композитная агрегация структурно работает (10 элементов → 50 работ, HSV2/3/4-группировка верная, объёмы протянулись точно), но code-binding слой выдаёт мусор:
-   - **(1) Игнор явного `element_type`.** Передал `driky_piliru`/`kridla_opery` явно → тул переклассифицировал ВСЁ по keywords (`classification_source:"keywords"`) в `opery_ulozne_prahy` (имена содержат «opěry/křídlo»). Непоследовательно: «Základ opěry pod **dříky**»→`opery_ulozne_prahy`, «…pod **křídly**»→`zaklady_piliru`. Keyword-классификация перебивает явный тип.
-   - **(2) Template→code binding для `opery_ulozne_prahy` = мусор.** bednění→`18481 OCHRANA STROMŮ`, beton C35/45→`91791 ZPOMALOVACÍ PRAHY` (асфальт!), výztuž→`382365 VÝZTUŽ NÁDRŽÍ`, один код 91791 на 3 разные работы. `zaklady_piliru`-путь дал ПОЧТИ верное (272315, 334365) → сломана binding-таблица именно семьи опор.
+5. [~] **CATALOG-BINDING БАГ — (2)+(3) RESOLVED (PR #1395 / #1391, 06-19), (1) открыт (A.1). Воспроизведён на боевом SO 206 (`create_work_breakdown`, 2026-06-17).** Композитная агрегация структурно работает (10 элементов → 50 работ, HSV2/3/4-группировка верная, объёмы протянулись точно), но code-binding слой выдавал мусор:
+   - **(1) ⛔ ОТКРЫТ (A.1, отложено в #1395 — чинил binding, не honor-explicit-type → TODO#1b). Игнор явного `element_type`.** Передал `driky_piliru`/`kridla_opery` явно → тул переклассифицировал ВСЁ по keywords (`classification_source:"keywords"`) в `opery_ulozne_prahy` (имена содержат «opěry/křídlo»). Непоследовательно: «Základ opěry pod **dříky**»→`opery_ulozne_prahy`, «…pod **křídly**»→`zaklady_piliru`. Keyword-классификация перебивает явный тип.
+   - **(2) ✅ RESOLVED (PR #1395). Template→code binding для `opery_ulozne_prahy` был мусор.** bednění→`18481 OCHRANA STROMŮ`, beton C35/45→`91791 ZPOMALOVACÍ PRAHY` (асфальт!), výztuž→`382365 VÝZTUŽ NÁDRŽÍ`, один код 91791 на 3 разные работы. `zaklady_piliru`-путь дал ПОЧТИ верное (272315, 334365) → сломана binding-таблица именно семьи опор.
    - **Контраст:** прямой `find_otskp_code` верно дал 333326 (11128,99 Kč/m³, conf 0.83). Retrieval работает; template-binding сломан. → чинить как §4c / Pattern 15 (Work-First, Catalog-Last) путь; seed композита валиден.
-   - **(3) Keyword-gap классификатора — подтверждён ВТОРЫМ независимым прогоном (внешний Opus 4.8 через MCP, 2026-06-17).** `zárubní zeď` / `opěrná zeď` не матчатся по ключевым словам → падают в `jine` (conf 0.3); `operne_zdi` локается только при явном `element_type`. Тот же класс бага, что (1). Registry-фикс (добавить `zárubní/opěrná zeď` в реестр ключевых слов), НЕ rename. _Заметка: это доктрина в действии — система не угадала, а честно показала conf 0.3 и блокнулась (honest-blank). Отдельный таск: audit → один тип реестра → hermetic-тест «zárubní zeď → operne_zdi conf≥0.8»._
+   - **(3) ✅ RESOLVED (PR #1391). Keyword-gap классификатора — подтверждён ВТОРЫМ независимым прогоном (внешний Opus 4.8 через MCP, 2026-06-17).** `zárubní zeď` / `opěrná zeď` не матчатся по ключевым словам → падают в `jine` (conf 0.3); `operne_zdi` локается только при явном `element_type`. Тот же класс бага, что (1). Registry-фикс (добавить `zárubní/opěrná zeď` в реестр ключевых слов), НЕ rename. _Заметка: это доктрина в действии — система не угадала, а честно показала conf 0.3 и блокнулась (honest-blank). Отдельный таск: audit → один тип реестра → hermetic-тест «zárubní zeď → operne_zdi conf≥0.8»._
+6. [ ] **Subtype-variant beton (находка из #1395 — НЕ мусор, правая СЕМЬЯ 333xx).** Биндер садится на верную семью, но не тот под-вариант: SO-206 beton опор → `33311 …Z DÍLCŮ` (prefabrikát) вместо `333313 ZE ŽELEZOBETONU` / `333326` (монолит) — канонический запрос не говорит cast-in-place. Follow-up: дозапросить «ze železobetonu / monolitické» в beton-canonical-query. `docs/bugs/catalog-binding-opery/fix.md §5`.
 
 ## TODO по плану (порядок = зависимости)
 1. [x] **БАГ ВЫСОТЫ — фикс смержен (PR #1372).** См. DONE/BUGS#4.
+1b. [ ] **BUGS#5(1) — honor explicit `element_type` в `create_work_breakdown`** (мелкий, изолированный; #1395 это НЕ трогал — `_classify(name)` безусловный). Когда вызывающий передаёт валидный `element_type` в массиве `elements[]` → использовать его, name = fallback. + hermetic-тест. Закрывает последний хвост BUGS#5.
 2. [ ] One-line фикс `wizardHint3` (`filtered`, не `allSystems`) — свежая ветка, hermetic-guard «hint ≡ engine» (4 м→1 / 8 м→2), STOP до ревью. _Зелёный свет дан; ждём дифф. Таск-файл `TASK_Fix_WizardHint3_Parity.md` готов, НЕ диспатчен._
 3. [ ] H re-тест (НЕ фикс): TZ с одной технологией + ручной mismatch radio на незаблокированном элементе → флаг «Vstup se odchyluje od dokumentace» должен появиться. Плюс soul §9-заметка, чтобы не перезаводить как баг.
 4. [~] **§4 parity — A+B СМЕРЖЕНЫ (см. DONE). Остаётся (c) каталог опалубки = Гейт C (см. #5).** Advisor = зеркало Core. (a) бетонщики ✓ читают engine, (b) tesaři ✓ из движка single-source.
@@ -50,7 +54,7 @@ _Обновлено: 2026-06-17_
    - **gap-типы добавить:** `úložný práh` (сейчас слит в `opery_ulozne_prahy`; для опор с ложисками — анкеры ±2мм), `dřík opěry` в `element_types.yaml` (есть в jsx как `drik_opora`, нет в yaml — источник путаницы), `hlavice pilíře`.
    - **multiplicity-seed:** тоггл «Zahrnout křídla opěr (samostatná sada bednění)» = наполовину готовый композит → обобщить в список под-элементов. `create_work_breakdown(elements=[...])` массив = готовый MCP-seed агрегации (структурно работает на SO 206; binding чинится отдельно, BUGS#5).
    - Поставщик мыслит «sada на дилатацию» (DOKA-набор) — комплект переставляется по дилатационным секциям.
-   - Своё audit + interview. ПОСЛЕ catalog-binding (BUGS#5) + деривации площади (#6).
+   - Своё audit + interview. catalog-binding ✅ СНЯТ (#1395, BUGS#5(2)) — остаётся деривация площади (#6) как единственное предусловие.
 8. [ ] **Выбор производителя — два цельных варианта по поставщику (правка Александра 2026-06-17).** НЕ смешанный. Advisor предлагает по ОДНОМУ цельному комплекту на производителя:
    - **A: всё DOKA** / **B: всё PERI** / (опц. **C: всё ULMA**…) — единая система внутри варианта по всему объекту.
    - Смешанный (поэлементно-оптимальный) — только справочно «inženýrské minimum», НЕ дефолт, НЕ один из выборов (на стройке два проката не держат: двойная логистика/склад/приёмка).
@@ -149,5 +153,5 @@ Mostovka: Vrchní WS10+H20 / Podpěrná Staxo 100 / boky Římsové bednění T
 список под-элементов со sada на дилатацию).
 
 MCP create_work_breakdown (composite, 10 элементов): структура ✓ (50 работ, HSV2/3/4,
-объёмы точны), но catalog-binding = мусор (BUGS#5). Итог 18,5М Kč доверять нельзя;
+объёмы точны), но catalog-binding выдал мусор (BUGS#5(2), **исправлен #1395 06-19** — перепрогнать composite для свежих кодов). На 06-17 итогу 18,5М Kč доверять было нельзя;
 доверять beton 600,243 × 11128,99 из find_otskp_code.
