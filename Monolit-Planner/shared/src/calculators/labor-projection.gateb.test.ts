@@ -25,12 +25,42 @@ describe('§4 parity Gate B — tesaři recommendation from the engine formwork 
     expect(proj.formwork_recommended_crew).toBe(expected);
   });
 
-  it('is null without a contact-area norm basis (honest-blank, no fabricated 0.6)', () => {
+  it('§6: prismatic wall without contact → ODHAD from the two-sided box → crew not null', () => {
     const plan = planElement({
       element_type: 'operne_zdi', volume_m3: 120, height_m: 4,
       formwork_area_m2: 120, concrete_class: 'C30/37', has_dilatacni_spary: false,
     });
+    // BEFORE #6: contact_area_m2 = 0 (passthrough only) → formwork_recommended_crew = null.
+    // AFTER  #6: contact ODHAD = formwork_area_m2 (factor 1.0, two-sided box) → the
+    //           skruz_bedneni norm fires → crew derived. Source flagged 'odhad'.
+    expect(plan.formwork.contact_area_source).toBe('odhad');
+    expect(plan.formwork.contact_area_m2).toBeGreaterThan(0);
+    expect(buildLaborProjection(plan).formwork_recommended_crew).not.toBeNull();
+    // ODHAD provenance is a visible warning naming the two-sided assumption (#4).
+    expect(plan.warnings.some(w => w.includes('ODHAD') && w.includes('dvoustranné'))).toBe(true);
+  });
+
+  it('user-supplied contact → source "user", no ODHAD warning', () => {
+    const plan = planElement({
+      element_type: 'operne_zdi', volume_m3: 120, height_m: 4,
+      formwork_area_m2: 120, formwork_contact_area_m2: 300,
+      concrete_class: 'C30/37', has_dilatacni_spary: false,
+    });
+    expect(plan.formwork.contact_area_source).toBe('user');
+    expect(plan.formwork.contact_area_m2).toBe(300);
+    expect(plan.warnings.some(w => w.includes('Plocha bednění ODHAD'))).toBe(false);
+  });
+
+  it('§6: non-prismatic (deck) without contact stays honest-blank → crew null', () => {
+    // mostovka is non-prismatic → §6 does NOT derive a contact ODHAD → §4-B
+    // honest-blank preserved (no fabricated 0.6, crew null).
+    const plan = planElement({
+      element_type: 'mostovkova_deska', volume_m3: 200, height_m: 6,
+      nk_width_m: 10, span_m: 20, num_spans: 2,
+      concrete_class: 'C35/45', has_dilatacni_spary: false,
+    });
     expect(plan.formwork.contact_area_m2 ?? 0).toBe(0);
+    expect(plan.formwork.contact_area_source).toBeUndefined();
     expect(buildLaborProjection(plan).formwork_recommended_crew).toBeNull();
   });
 });
