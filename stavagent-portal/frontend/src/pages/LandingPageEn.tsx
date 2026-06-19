@@ -37,6 +37,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useHeadMeta } from '../hooks/useHeadMeta';
+import LanguageSwitch from '../components/LanguageSwitch';
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const scrollTo = (id: string) =>
@@ -346,7 +347,7 @@ export default function LandingPageEn() {
     <div lang="en" style={{ minHeight: '100vh', background: 'var(--app-bg-concrete)', overflowX: 'hidden' }}>
 
       {/* ── 0. NAV ── */}
-      <nav style={{
+      <nav className="pub-nav" style={{
         position: 'sticky', top: 0, zIndex: 100,
         background: 'rgba(176,178,181,0.85)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--border-default)',
@@ -357,13 +358,15 @@ export default function LandingPageEn() {
           <img src="/assets/logo.svg" alt="StavAgent" style={{ width: 40, height: 40 }} />
           <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>StavAgent</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('modules')}>Modules</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('who-for')}>Who for</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('how-it-works')}>How it works</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('pricing')}>Pricing</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => navigate('/en/team')}>About</span>
-          <a href="/" style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13, textDecoration: 'none' }}>Česky</a>
+        <div className="pub-nav__actions" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div className="pub-nav__links" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('modules')}>Modules</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('who-for')}>Who for</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('how-it-works')}>How it works</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('pricing')}>Pricing</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => navigate('/en/team')}>About</span>
+          </div>
+          <LanguageSwitch to="/" label="Čeština" />
           <button onClick={goLogin} style={ghostBtn}>
             {isAuthenticated ? <><User size={16} />{user?.name || 'Cabinet'}</> : <><LogIn size={16} />Log in</>}
           </button>
@@ -393,6 +396,11 @@ export default function LandingPageEn() {
           </button>
           <a href="mailto:info@stavagent.cz" style={{ ...ghostBtn, textDecoration: 'none' }}>
             <Mail size={16} /> Book a 20-min demo
+          </a>
+          {/* CTA to the public pitch page (AC#3). Label is functional UI text,
+              not a marketing claim — swap if a preferred wording is provided. */}
+          <a href="/en/pitch" style={{ ...ghostBtn, textDecoration: 'none' }}>
+            View the pitch <ArrowRight size={16} />
           </a>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>

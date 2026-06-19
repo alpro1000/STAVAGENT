@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useHeadMeta } from '../hooks/useHeadMeta';
+import LanguageSwitch from '../components/LanguageSwitch';
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const scrollTo = (id: string) =>
@@ -289,7 +290,7 @@ export default function LandingPage() {
     <div style={{ minHeight: '100vh', background: 'var(--app-bg-concrete)', overflowX: 'hidden' }}>
 
       {/* ── 0. NAV ── */}
-      <nav style={{
+      <nav className="pub-nav" style={{
         position: 'sticky', top: 0, zIndex: 100,
         background: 'rgba(176,178,181,0.85)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--border-default)',
@@ -300,13 +301,15 @@ export default function LandingPage() {
           <img src="/assets/logo.svg" alt="StavAgent" style={{ width: 40, height: 40 }} />
           <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>StavAgent</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('moduly')}>Moduly</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('pro-koho')}>Pro koho</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('jak-to-funguje')}>Jak to funguje</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('cenik')}>Ceník</span>
-          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => navigate('/team')}>O zakladateli</span>
-          <a href="/en/" style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13, textDecoration: 'none' }}>EN</a>
+        <div className="pub-nav__actions" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div className="pub-nav__links" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('moduly')}>Moduly</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('pro-koho')}>Pro koho</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('jak-to-funguje')}>Jak to funguje</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('cenik')}>Ceník</span>
+            <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => navigate('/team')}>O zakladateli</span>
+          </div>
+          <LanguageSwitch to="/en/" label="English" />
           <button onClick={goLogin} style={ghostBtn}>
             {isAuthenticated ? <><User size={16} />{user?.name || 'Kabinet'}</> : <><LogIn size={16} />Přihlásit se</>}
           </button>
