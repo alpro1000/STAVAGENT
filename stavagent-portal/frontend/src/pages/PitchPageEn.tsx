@@ -23,21 +23,22 @@ import { useHeadMeta } from '../hooks/useHeadMeta';
 import LanguageSwitch from '../components/LanguageSwitch';
 
 // ── Provided-asset slots ──────────────────────────────────────────────────────
-// Replace with the provided English page copy (verbatim). Sentinel kept obvious
-// so an un-filled deploy is caught in review.
+// Hero copy is taken verbatim from the provided deck cover (headline + subtitle).
 const PAGE_COPY = {
-  heading: 'STAVAGENT',
-  subheading: '[PROVIDED ENGLISH PRODUCT DESCRIPTION — paste verbatim]',
+  heading: 'From an estimate to a buildable production plan.',
+  subheading: 'A deterministic production-planning engine for construction — with optional agentic access.',
 };
 
 const DECK_HTML_SRC = '/assets/pitch/deck.html';
 const DECK_PDF_HREF = '/assets/pitch/deck.pdf';
 
-// 2–3 product screenshots. Captions come from the provided copy.
+// 2–3 product screenshots. Captions are factual descriptions of each shot
+// (pending the founder's preferred wording). The image files screenshot-1..3.png
+// must be added to public/assets/pitch/ — see the note in this file's header.
 const SCREENSHOTS: { src: string; caption: string }[] = [
-  { src: '/assets/pitch/screenshot-1.png', caption: '[Caption 1 — provided copy]' },
-  { src: '/assets/pitch/screenshot-2.png', caption: '[Caption 2 — provided copy]' },
-  { src: '/assets/pitch/screenshot-3.png', caption: '[Caption 3 — provided copy]' },
+  { src: '/assets/pitch/screenshot-1.png', caption: 'Concrete-works calculator — takt schedule (Gantt) and a cost and norm-hour summary, sequential vs. parallel.' },
+  { src: '/assets/pitch/screenshot-2.png', caption: 'Agentic access — the same engine called from an AI assistant through the MCP server.' },
+  { src: '/assets/pitch/screenshot-3.png', caption: 'Deterministic decomposition — each quantity with its formula, source norm and confidence.' },
 ];
 
 const CONTACT_EMAIL = 'info@stavagent.cz';
