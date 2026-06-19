@@ -41,9 +41,12 @@
 - 🇷🇺 ИИ у меня в двух местах: чат/советник и поиск по нормам (эмбеддинги). Могу перевести только чат, а эмбеддинги оставить на старом надолго — параллельно?
 - 🇨🇿 *„AI mám na dvou místech: chat/poradce a vyhledávání v normách přes embeddings. Můžu přejít na nové SDK jen u chatu a embeddings nechat na starém, ať běží paralelně?"*
 
-**Q4 — ⭐ NEJDŮLEŽITĚJŠÍ: měnit vůbec model embeddings?** *(jediné, co dokumentace neřeší)*
-- 🇷🇺 Поиск по нормам сейчас на `text-multilingual-embedding-002`, вектор 768, качество ~0.82. Новая `gemini-embedding-001` по умолчанию 3072, можно обрезать до 768. Не упадёт ли качество на обрезанных 768 против моей модели? Или лучше остаться на старой подольше? И правда, что у новой обрезанный вектор надо самому L2-нормализовать?
-- 🇨🇿 *„Vyhledávání jede na `text-multilingual-embedding-002`, 768 dim, cosine ~0.82. Nový `gemini-embedding-001` má default 3072, jde oříznout na 768. Neklesne kvalita retrievalu na 768 proti té mojí? Nebo zůstat na staré co nejdéle? A musím u `gemini-embedding-001` oříznutý vektor sám L2-normalizovat?"*
+**Q4 — ⭐ Embeddings: jdu na plných 3072 přes `halfvec` — háček?** *(rozhodnuto: bez ořezu na 768)*
+> Rozhodnutí: NEořezávat na 768. Jít na `gemini-embedding-001` v plných **3072 dim** → odpadá ruční
+> normalizace i otázka ztráty kvality. pgvector `vector` má HNSW limit 2000 dim → obejít přes typ
+> **`halfvec(3072)`** (HNSW až 4000 dim). Re-embed všech ~17 940 stejně nutný.
+- 🇷🇺 Иду на `gemini-embedding-001` в полных 3072 (без обрезки — так нет ни нормализации, ни вопроса о потере качества). Колонку меняю `vector(768)` → `halfvec(3072)`, HNSW-индекс (лимит 2000 обхожу через halfvec). Re-embed всех ~17 940. Видишь подвох для Cloud SQL pg15? И `halfvec` точно есть в нашей версии pgvector?
+- 🇨🇿 *„Půjdu na `gemini-embedding-001` v plných 3072 dim — sloupec `halfvec(3072)` + HNSW (limit 2000 obejdu přes halfvec). Re-embed všech ~17 940. Vidíš nějaký háček pro Cloud SQL pg15? A je `halfvec` v naší verzi pgvectoru?"*
 
 **Q5 — Region a modely**
 - 🇷🇺 Я в europe-west3. Какие модели Gemini там точно есть? `flash-lite` даёт 404. И ок ли location='europe-west3' или толкают 'global'?
@@ -75,7 +78,8 @@
 - `app/api/routes_llm_status.py` — jen probe importy (triviální)
 
 **Krok B — embeddings:**
-- `app/integrations/vertex_embeddings.py` — `embed_content` + L2-norm + re-embed
+- `app/integrations/vertex_embeddings.py` — `embed_content` v **3072 dim** + re-embed
+- DB migrace: sloupec `vector(768)` → **`halfvec(3072)`** + nový HNSW index (žádná ruční normalizace)
 
 **Naposled:** `requirements.txt` ř. 20/35/49 — odpinovat až po A+B.
 
@@ -84,7 +88,7 @@
 | Krok | Co | Kdy / proč |
 |---|---|---|
 | **A — kdykoli, bezpečný** | jen chat → `genai.Client`. Embeddings nechat na starém. | opraví init-collision, sundá SDK-risk, force-JSON jede, **ŽÁDNÝ re-embed** |
-| **B — vědomě později** | embeddings → `gemini-embedding-001` + 768 + L2-norm + re-embed ~17 940 | drahé + riziko kvality; jen když dává smysl (→ Q4) |
+| **B — vědomě později** | embeddings → `gemini-embedding-001` v **3072** (`halfvec(3072)`) + re-embed ~17 940 | plná kvalita modelu #1, bez ořezu/normalizace; schema-migrace vector→halfvec (→ Q4) |
 
 ---
 
@@ -137,32 +141,43 @@ response = client.models.generate_content(
 # async (price_parser): client.aio.models.generate_content(...)
 ```
 
-## Embeddings (krok B)
+## Embeddings (krok B) — ROZHODNUTO: plných 3072, BEZ ořezu
+
 ```python
 from google.genai import types
-import numpy as np
 resp = client.models.embed_content(
     model='gemini-embedding-001',
     contents=['text 1', 'text 2'],              # list = batch
     config=types.EmbedContentConfig(
         task_type='RETRIEVAL_DOCUMENT',         # 'RETRIEVAL_QUERY' pro dotazy
-        output_dimensionality=768,              # ⚠️ default 3072 → MUSÍ explicitně
+        # output_dimensionality NEnastavovat → default 3072 (plná kvalita)
     ),
 )
-v = np.array(resp.embeddings[0].values)
-v = v / np.linalg.norm(v)                       # ⚠️ NÁLEZ: gemini-embedding-001 nenormalizuje sám pro dim≠3072
+# ŽÁDNÁ ruční normalizace — ta byla nutná JEN při ořezu na dim≠3072.
+# Na nativních 3072 model normalizuje sám.
 ```
+
+**DB strana (jednorázová migrace):**
+```sql
+-- pgvector `vector` má HNSW limit 2000 dim → 3072 jen přes halfvec (limit 4000):
+SELECT extversion FROM pg_extension WHERE extname='vector';   -- musí být >= 0.7.0 (jinak ALTER EXTENSION vector UPDATE)
+ALTER TABLE <tab> ALTER COLUMN embedding TYPE halfvec(3072);
+CREATE INDEX ON <tab> USING hnsw (embedding halfvec_cosine_ops);
+```
+Storage ~6 KB/vektor × 17 940 ≈ 108 MB (zanedbatelné).
 
 ## ⚠️ Tři nálezy z dokumentace (které stará rešerše neměla / měla špatně)
 1. **Klient = `enterprise=True`**, ne `vertexai=True` (rebrand). → Q2.
-2. **gemini-embedding-001 vyžaduje ruční L2-normalizaci** pro 768 — jinak se rozbije cosine v pgvectoru (náš retrieve 0.82 by spadl). → Q4.
+2. **Volíme 3072 (halfvec)** místo ořezu na 768 → odpadá ruční L2-normalizace (ta hrozila jen při dim≠3072) i otázka ztráty kvality. pgvector `vector` neumí index >2000 dim, proto **`halfvec(3072)`** (HNSW limit 4000). → Q4.
 3. **Async** se přesouvá na `client.aio.models.*` (týká se `price_parser`).
 
 ## Co se NEMĚNÍ
-pgvector schéma · HNSW index · SQL · retrieve→prefilter→ranking · MCP kontrakty · Cloud Run · Cloud SQL.
+SQL dotazy (cosine) · retrieve→prefilter→ranking · MCP kontrakty · Cloud Run · Cloud SQL.
+(pgvector sloupec + index se PŘI kroku B mění: `vector(768)` → `halfvec(3072)`.)
 
 ## Ověřovací TODO před implementací (ne před hovorem)
 - [ ] `enterprise=True` vs `vertexai=True` — co je v nainstalované verzi (`python -c` test)
+- [ ] **pgvector >= 0.7.0** (kvůli `halfvec`) — `SELECT extversion …`; jinak `ALTER EXTENSION vector UPDATE`
 - [ ] `response_schema` vs `response_json_schema` — přesný název v `GenerateContentConfig`
 - [ ] přesný batch-strop `embed_content` + quota rpm
 - [ ] clean `pip install -r requirements.txt` ve fresh venv (pin → transitive konflikt)
