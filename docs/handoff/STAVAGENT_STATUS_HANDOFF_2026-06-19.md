@@ -179,12 +179,12 @@
 - [ ] Спрятать **Analýza dokumentace (BETA)** из дашборда (не удалять) — но сперва **вытащить chunk-логику и применить в Kalkulátor** (передняя половина «шва»: ТЗ→извлечение→вход калькулятора). Ещё не сделано.
 - [ ] **Multi-Role**: убрать тег/окно из UI; оркестратор припарковать под будущий «шов».
 - [ ] **Атомизатор бетон**: `create_work_breakdown` (MCP) покрывает только бетон/конструктив; живой прогон (20 кредитов) — подтвердить scope.
-- [ ] 🔴 **Атомизатор общестрой**: портировать тест-проверенные шаблоны декомпозиции не-бетонных работ (покраска/монтаж/demolice) в `create_work_breakdown`, биндинг на ÚRS. Логика есть, не добавлена.
+- [x] 🔴 **Атомизатор общестрой (T1-adapter MVP)** — ✅ **шов построен** (ветка `claude/atomizer-localize`; дизайн [`docs/specs/universal-work-decomposer/design.md`](../specs/universal-work-decomposer/design.md) §10 F0–F3). Scope-router (`app/mcp/tools/scope_router.py`) → branch-registry в `breakdown.py` (monolit = WORK_TEMPLATES, **бит-идентично**, golden-guard) → catalog-binding adapter (`app/mcp/tools/catalog_binding_adapter.py`) → `find_urs_code`. Первая не-бетонная секция **malba** (KB `technological_postupy/interier_psv/malba.yaml`) проходит router→decomposer→adapter→find_urs_code→atom-with-code. Honest-blank на неизвестном scope (фотовольтаика → no atoms). Подписи MCP-тулов не тронуты, новый top-level tool НЕ вводился (design §5.3), MCP-compat 29/29 зелёный. Осталось (отдельные таски, 1 YAML = 1 секция): остальные 9 PSV-секций.
 - [ ] Свести киоски **URS-matcher + Generátor výkazu výměr** на единый `create_work_breakdown`.
 - [ ] **Generátor výkazu výměr** — кандидат на **активацию** (бетон-часть рабочая), не на скрытие.
 
 ### 🧩 «Тест-проверено, но не локализовано» (рабочие прототипы без прод-прописки)
-- [ ] Общестроительный атомизатор (шаблоны декомпозиции всех типов работ) — есть тесты, не в MCP/фронте.
+- [x] Общестроительный атомизатор (шаблоны декомпозиции) — ✅ **локализован для MVP-секции malba** (T1-adapter, ветка `claude/atomizer-localize`): из sandbox-эталона в прод-KB + Python-pipeline. Остальные секции — порт по одной.
 - [ ] Chunk-извлечение из Analýzy dokumentace — работало, падало на чанках; код вытащить → Kalkulátor.
 > Это отдельный класс долга — НЕ путать с «не работает». Это готовая логика без прод-прописки.
 
@@ -243,12 +243,13 @@ Klasifikátor stavebních prací · Registr Rozpočtů · Monolit-Planner (plán
 НО разбивка на работы **всех типов** (вкл. покраску, монтаж) **уже есть в тест-проверенном виде** — просто **не добавлена** в `create_work_breakdown` / MCP / прод.
 
 Что готово и где дыра:
-- ✅ Scaffold готов и переиспользуем: классификация элементов (22 типа), Pattern 15 (work-first/catalog-last), привязка к каталогу — **ÚRS-биндинг для общестроя уже есть** (`catalog='urs'`, `project_type='budova'`).
-- 🔴 Дыра одна: **шаблоны декомпозиции для не-бетонных профессий** = твоя тест-проверенная логика, не портирована в decomposition-слой.
+- ✅ Scaffold готов и переиспользуем: классификация элементов (22 типа), Pattern 15 (work-first/catalog-last).
+- ⚠️→✅ **КОРРЕКЦИЯ ÚRS-биндинга (T1 recon FINDINGS §4, теперь закрыто):** утверждение «ÚRS-биндинг для общестроя **уже есть**» было **наполовину неверно по коду**. *Поиск* ÚRS (`find_urs_code`) существовал, но *биндинг в атомизатор* — **НЕТ**: `_attach_catalog_codes` (`breakdown.py`) делал ранний `return` для `catalog != otskp/both` и звал только `find_otskp_code`. При `catalog='urs'` атомизатор отдавал work-first список **без кодов**. **Дыра закрыта в T1** (ветка `claude/atomizer-localize`): новый `catalog_binding_adapter.py` оборачивает `find_urs_code` без смены подписи, нормализует `match_kind` → status-enum (`exact|candidate|group_only|not_verified`, URS максимум `candidate`, никогда `exact`), `breakdown.py` теперь зовёт его на ÚRS-ветке.
+- 🔴→✅ Дыра «шаблоны декомпозиции для не-бетонных профессий» — для секции **malba** портирована (KB YAML + Python decomposer); остальные секции — порт по одной.
 
-→ «Объединить в механизм» = (1) свести параллельные реализации (URS-matcher + Generátor + атомизатор) на `create_work_breakdown` И (2) **расширить decomposition-шаблоны общестроем** из тест-логики (каталог найдётся через ÚRS).
-- [ ] 🔴 Портировать тест-проверенные шаблоны общестроя (покраска/монтаж/demolice) в decomposition-слой `create_work_breakdown`.
-- [ ] ⚠️ Живой прогон (20 кредитов): подтвердить scope — бетон ок, общестрой падает.
+→ «Объединить в механизм» = (1) свести параллельные реализации (URS-matcher + Generátor + атомизатор) на `create_work_breakdown` И (2) **расширить decomposition-шаблоны общестроем** из тест-логики (каталог через ÚRS — биндинг построен).
+- [x] 🔴 Портировать тест-проверенные шаблоны общестроя в decomposition-слой `create_work_breakdown` — ✅ MVP (malba) сделан; остальные 9 секций — таски.
+- [ ] ⚠️ Живой прогон (20 кредитов): подтвердить scope — бетон ок, malba ок, остальной общестрой honest-blank (нет шаблона).
 - [ ] Свести киоски URS-matcher + Generátor на единый инструмент.
 - [ ] **Generátor výkazu výměr** — кандидат на **активацию** (бетон-часть рабочая), не на скрытие.
 
