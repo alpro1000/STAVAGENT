@@ -1,0 +1,44 @@
+# interiér / PSV work-decomposition templates — section "malba" (interior painting).
+#
+# UWO branch 'interier_psv', first section wired end-to-end (design.md §4, §10 F2).
+# Sibling of zemni_prace_bourani/. One mistr's položka → a PACK of work-atoms,
+# CODELESS + PRICELESS at decomposition time (Pattern 15); catalog codes are bound
+# later by the catalog-binding adapter (ÚRS, privátní zakázka).
+#
+# Ported from sandbox/uwo-interier-mezonet/src/templates.mjs (S1 malba_steny finish
+# + the standalone malba atom). Quantity provenance is honest: m² of walls/ceilings
+# is derived_from_scope when geometry exists, else needs_input.
+#
+# NB: NO monolit atoms here (bednění / výztuž / beton / ošetřování). The scope-router
+# guarantees the monolit branch never reaches interiér.
+
+section_code: interier_psv
+section_key: malba
+label_cs: "Malba — vnitřní malířské práce"
+
+source:
+  origin: "sandbox/uwo-interier-mezonet/src/templates.mjs (S1 + malba)"
+  expected_urs_family: "784"   # MALBY / NATĚRAČSKÉ práce (sanity reference only)
+  procurement_default: privatni
+
+# Each atom: key (stable id) · work (Czech description) · unit · qty_source.
+# qty_source: section_m2 = m² from scope geometry (derived_from_scope when present,
+# else needs_input); fixed_1 = one komplet (needs_input).
+atoms:
+  - key: malba_priprava_penetrace
+    work: "Příprava a penetrace podkladu pod malbu"
+    unit: m2
+    qty_source: section_m2
+    quantity_provenance: derived_from_scope
+
+  - key: malba_2x
+    work: "Malba vnitřní 2× — finální nátěr"
+    unit: m2
+    qty_source: section_m2
+    quantity_provenance: derived_from_scope
+
+  - key: malba_zakryti_uklid
+    work: "Zakrytí konstrukcí a úklid po malbě"
+    unit: komplet
+    qty_source: fixed_1
+    quantity_provenance: needs_input

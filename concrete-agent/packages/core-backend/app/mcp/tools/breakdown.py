@@ -46,6 +46,116 @@ WORK_TEMPLATES = {
 }
 
 
+# ── UWO branch registry (design.md §1 / §10 F0) ──────────────────────────────
+# Monolit is ONE registered branch — the existing WORK_TEMPLATES, NOT re-cut. A
+# scope routed to 'monolit' decomposes exactly as before (bit-identical). Non-
+# concrete sections register their own KB-backed branches (this MVP: interier_psv,
+# section "malba"). Adding a section = (router rule + KB branch + dictionary),
+# without touching the concrete path or the other branches.
+SECTION_MONOLIT = "monolit"
+SECTION_INTERIER_PSV = "interier_psv"
+
+# Lazy cache of KB-loaded interiér/PSV section templates: section_key → [atoms].
+_INTERIER_PSV_TEMPLATES: Optional[dict] = None
+
+
+def _load_interier_psv_templates() -> dict:
+    """Load interiér/PSV work-atom templates from KB YAML (lazy, cached).
+
+    Templates live in B5_tech_cards/technological_postupy/interier_psv/<section>.yaml
+    (sibling of zemni_prace_bourani/). This MVP ships only `malba`; more sections
+    register by dropping a YAML here — no code change. A malformed / missing dir
+    yields an empty registry (honest-blank downstream), never a crash.
+    """
+    global _INTERIER_PSV_TEMPLATES
+    if _INTERIER_PSV_TEMPLATES is not None:
+        return _INTERIER_PSV_TEMPLATES
+
+    import yaml
+    from pathlib import Path
+
+    # __file__ = app/mcp/tools/breakdown.py → parent×3 = app/
+    app_dir = Path(__file__).resolve().parent.parent.parent
+    psv_dir = (
+        app_dir / "knowledge_base" / "B5_tech_cards"
+        / "technological_postupy" / "interier_psv"
+    )
+    registry: dict = {}
+    if psv_dir.is_dir():
+        for yaml_path in sorted(psv_dir.glob("*.yaml")):
+            try:
+                data = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or {}
+            except Exception as e:  # pragma: no cover - defensive
+                logger.warning("[UWO/PSV] Skipped %s: %s", yaml_path.name, e)
+                continue
+            key = data.get("section_key")
+            atoms = data.get("atoms")
+            if key and isinstance(atoms, list):
+                registry[key] = data
+    _INTERIER_PSV_TEMPLATES = registry
+    return registry
+
+
+def _decompose_interier_psv(name: str, elem: dict) -> list[dict]:
+    """Decompose ONE interiér/PSV scope item into its PACK of work-atoms.
+
+    Section is resolved by matching the scope name against each KB section's
+    keyword set (the section_key itself + label tokens). MVP: only `malba`. Each
+    atom is codeless/priceless (Pattern 15); quantity comes from scope geometry
+    (area_m2) when present, else honest needs_input. Items with qty ≤ 0 from a
+    `section_m2` source are kept with quantity=None + needs_input (NOT dropped) —
+    the work is real even when the m² is not yet known.
+    """
+    registry = _load_interier_psv_templates()
+    if not registry:
+        return []
+
+    lname = (name or "").lower()
+    # Pick the section whose key/label appears in the scope name.
+    section = None
+    for key, data in registry.items():
+        label = (data.get("label_cs") or "").lower()
+        if key in lname or any(tok and tok in lname for tok in label.replace("—", " ").split()):
+            section = data
+            break
+    if section is None:
+        return []
+
+    area_m2 = elem.get("area_m2") or 0
+    items: list[dict] = []
+    for atom in section.get("atoms", []):
+        qty_source = atom.get("qty_source")
+        if qty_source == "section_m2":
+            quantity = round(area_m2, 2) if area_m2 else None
+            provenance = "derived_from_scope" if area_m2 else "needs_input"
+        elif qty_source == "fixed_1":
+            quantity = 1
+            provenance = atom.get("quantity_provenance", "needs_input")
+        else:
+            quantity = None
+            provenance = "needs_input"
+
+        items.append({
+            "work_description": atom["work"],
+            "unit": atom.get("unit", "m2"),
+            "quantity": quantity,
+            "quantity_provenance": provenance,
+            "section_code": SECTION_INTERIER_PSV,
+            "hsv_section": "PSV",
+            "element_name": name,
+            "element_type": "interier_psv",
+            "_source": f"element:{name} / psv_template:{section.get('section_key')}:{atom['key']}",
+            # reserved catalog/price slots — bound later by the ÚRS adapter
+            "urs_code": None,
+            "unit_price_czk": None,
+            "code_status": "not_calculated",
+            "calc": None,
+            "calc_status": "not_calculated",
+            "calc_warnings": [],
+        })
+    return items
+
+
 # Work-first contract (W2/PR2 — Pattern 15). `mode` is a first-class parameter.
 #   work_first        — produce a frozen, code-less, price-less work list. Catalog
 #                       binding is a SEPARATE stage (CATALOG_BINDING) behind the
@@ -154,6 +264,18 @@ async def _attach_catalog_codes(items: list[dict], catalog: str) -> list[dict]:
     never the naive whole-label catalog.search() — that path surfaced speed bumps
     / lawn care / roof formwork for abutment concrete (the SO-206 regression).
     """
+    # ── ÚRS branch (gap closure, FINDINGS §4 / CONTRACT §5) ──────────────────
+    # Previously this early-returned for catalog != otskp/both — so catalog='urs'
+    # produced a work-first list with NO binding (find_urs_code was never called
+    # from the atomizer). The catalog-binding adapter now binds each work-atom to
+    # ÚRS (privátní zakázka) via find_urs_code, deriving the status-enum from
+    # match_kind. Signatures untouched; the adapter is internal (design.md §5.3).
+    if catalog == "urs":
+        from app.mcp.tools.catalog_binding_adapter import attach_urs_codes
+
+        await attach_urs_codes(items, procurement_mode="privatni")
+        return items
+
     if catalog not in ("otskp", "both"):
         return items
 
@@ -263,8 +385,10 @@ async def create_work_breakdown(
     """
     try:
         from app.mcp.tools.classifier import _classify, ELEMENT_TYPES
+        from app.mcp.tools.scope_router import route_scope
 
         all_items = []
+        unresolved: list[dict] = []  # honest-blank scopes (no template for section)
 
         # W3b: resolve the authoritative object type per element. Priority:
         # explicit `object_types` map (already-resolved, e.g. from project state)
@@ -289,6 +413,36 @@ async def create_work_breakdown(
             classification = _classify(name, object_code=so_code, object_type=object_type)
             etype = classification["element_type"]
             profile = ELEMENT_TYPES.get(etype, ELEMENT_TYPES["jine"])
+
+            # Step 1b: Scope-Router (UWO Stage 1) — decide the branch. The concrete
+            # classifier is AUTHORITATIVE for "is this a concrete element?": a
+            # confident structural type (etype != 'jine') ALWAYS takes the monolit
+            # branch, so every existing concrete caller stays bit-identical and
+            # "Schodiště" (a real concrete stair) is never mis-routed to PSV. The
+            # router only diverts when the classifier falls back to 'jine' AND the
+            # scope is NOT monolit-positive (a 'jine' element whose name still
+            # carries a monolit keyword, e.g. "Beton XY", keeps the concrete-default
+            # template — unchanged). For a non-monolit 'jine' scope:
+            #   * router 'interier_psv' + a matching KB section → PSV branch (pack);
+            #   * otherwise → honest-blank (NO monolit atoms — the cure for
+            #     "sebevědomě-špatně"; an unknown scope like fotovoltaika yields no
+            #     concrete rows).
+            if etype == "jine":
+                route = route_scope(name)
+                if route["section_code"] != SECTION_MONOLIT:
+                    if route["section_code"] == SECTION_INTERIER_PSV:
+                        psv_items = _decompose_interier_psv(name, elem)
+                        if psv_items:
+                            all_items.extend(psv_items)
+                            continue
+                    # No branch / no template for this section → honest-blank.
+                    unresolved.append({
+                        "element_name": name,
+                        "section_code": route["section_code"],
+                        "scope_guard_status": "no_template_for_section",
+                        "_source": f"element:{name} / scope_router:{route['matched_rule']}",
+                    })
+                    continue
 
             # Step 2: Get quantities. Stage-1 extract ships volume_m3=None
             # (volumes are stage 2) — coalesce to 0 so the qty<=0 skip applies
@@ -403,6 +557,10 @@ async def create_work_breakdown(
             "project_type": project_type,
             "mode": MODE_WORK_FIRST if work_first else MODE_WORK_WITH_CATALOG,
             "catalog_bound": not work_first,
+            # UWO scope-guard (design.md §3.1): scopes with no branch/template land
+            # here as honest-blank instead of getting confidently-wrong monolit atoms.
+            "unresolved": unresolved,
+            "scope_guard_status": "no_template_for_section" if unresolved else "ok",
         }
 
     except Exception:
