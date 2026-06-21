@@ -22,6 +22,23 @@ logger = logging.getLogger(__name__)
 _catalog = None
 
 
+def _resolve_catalog_version(row_version: Optional[str]) -> str:
+    """Real per-row catalog_version → settings fallback (Fix 3 / WP2).
+
+    The `source` field is now data-driven: it reflects the row's stamped
+    `catalog_version` when present, falling back to the configured
+    OTSKP_CATALOG_VERSION on a legacy DB / XML row that carries none. NEVER a
+    hardcoded date literal.
+    """
+    if row_version:
+        return row_version
+    try:
+        from app.core.config import settings
+        return settings.OTSKP_CATALOG_VERSION
+    except Exception:  # pragma: no cover - config import is defensive
+        return ""
+
+
 def _get_catalog():
     """Lazy-load OTSKP catalog from XML (17MB, ~17,904 items)."""
     global _catalog
@@ -55,6 +72,14 @@ class _InMemoryOTSKP:
 
     def __init__(self, xml_path: Path):
         self.items: dict = {}
+        # WP2: derive the version from config — NEVER hardcode a new date literal.
+        # This rarely-used XML fallback has no per-row version, so the whole
+        # catalog carries the configured OTSKP_CATALOG_VERSION.
+        try:
+            from app.core.config import settings
+            self.catalog_version = settings.OTSKP_CATALOG_VERSION
+        except Exception:  # pragma: no cover - config import is defensive
+            self.catalog_version = None
         self._load(xml_path)
 
     def _load(self, xml_path: Path):
@@ -94,6 +119,7 @@ class _InMemoryOTSKP:
                 "mj": mj_m.group(1).strip() if mj_m else "",
                 "cena": float(cena_m.group(1)) if cena_m else 0.0,
                 "spec": spec_m.group(1).strip() if spec_m else "",
+                "catalog_version": self.catalog_version,
             }
 
         logger.info(f"[MCP/OTSKP] Loaded {len(self.items)} items from XML")
@@ -120,8 +146,9 @@ class _InMemoryOTSKP:
             score = matched / len(words)
             scored.append((score, item))
 
-        # Sort by score descending, then by price ascending for ties
-        scored.sort(key=lambda x: (-x[0], x[1].get("cena", 0)))
+        # Sort by score descending, then by code ascending for ties (WP1: price
+        # is NEVER a ranking signal — it was the old tie-break, now removed).
+        scored.sort(key=lambda x: (-x[0], str(x[1].get("code", ""))))
         return [_DictItem(item) for _, item in scored[:limit]]
 
 
@@ -133,6 +160,7 @@ class _DictItem:
         self.mj = d["mj"]
         self.cena = d["cena"]
         self.spec = d.get("spec", "")
+        self.catalog_version = d.get("catalog_version")
 
 
 async def find_otskp_code(
@@ -188,7 +216,11 @@ async def find_otskp_code(
                         "unit": item.mj,
                         "unit_price_czk": item.cena,
                         "confidence": 1.0,
-                        "source": "OTSKP 1/2025",
+                        # Data-driven provenance (Fix 3): the row's real
+                        # catalog_version, settings fallback when absent.
+                        "source": _resolve_catalog_version(
+                            getattr(item, "catalog_version", None)
+                        ),
                     }],
                     "total_found": 1,
                     "query": query,
@@ -216,6 +248,7 @@ async def find_otskp_code(
                         "description": r.nazev,
                         "unit": r.mj,
                         "unit_price_czk": r.cena,
+                        "catalog_version": getattr(r, "catalog_version", None),
                         "source": "keyword",
                     })
             return list(by_code.values())
@@ -234,7 +267,10 @@ async def find_otskp_code(
                     # bare DB hit). 1.0 is reserved for the exact code-lookup
                     # branch above; keyword caps at 0.9, embeddings at ~0.70–0.80.
                     "confidence": c["confidence"],
-                    "source": "OTSKP 1/2025",
+                    # Data-driven provenance (Fix 3): the candidate's real
+                    # catalog_version, settings fallback when absent. Mixed
+                    # 2025/2026 output here is EXPECTED (Fix 4's signal).
+                    "source": _resolve_catalog_version(c.get("catalog_version")),
                     "work_type": c["work_type"],
                     "element_family": c["element_family"],
                     "provenance": c["provenance"],
