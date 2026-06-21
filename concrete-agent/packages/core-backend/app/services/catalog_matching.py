@@ -172,16 +172,40 @@ def honest_confidence(source: str, score: float, params_exact: bool,
 # similarity, WITHOUT touching the honest displayed confidence.
 FAMILY_RANK_BONUS = 0.15
 
+# Negative precision signal (FINDINGS_T3 §B.3), sort-key-only — mirror of the
+# family bonus. A candidate whose popis asserts prestressing while the QUERY does
+# not must rank below the plain-concrete hit: the demo regression rides on the
+# Jaccard `score` favouring the shorter předpjatý popis for a plain `beton` query.
+# This is a RANKING penalty, never a gate, never touching displayed confidence.
+# Broader than the WORK_TYPE_RULES `predpinaci` stem so it also catches the OTSKP
+# popis abbreviation "PŘEDPJ BET" (which classify_work_type sees as 'ostatni').
+PRESTRESS_RANK_PENALTY = 0.15
+_PRESTRESS_POPIS_RE = re.compile(r"předp|predp|předpj|predpj|y1860", re.I)
+
+
+def _asserts_prestress(text: str) -> bool:
+    return bool(_PRESTRESS_POPIS_RE.search(text or ""))
+
 
 def _rank_score(c: dict) -> float:
-    return c.get("confidence", 0.0) + (FAMILY_RANK_BONUS if c.get("family_match") else 0.0)
+    score = c.get("confidence", 0.0)
+    if c.get("family_match"):
+        score += FAMILY_RANK_BONUS
+    if c.get("prestress_mismatch"):
+        score -= PRESTRESS_RANK_PENALTY
+    return score
 
 
 def deterministic_ranker(query: str, candidates: list[dict]) -> list[dict]:
-    """Default ranker. Stable order: (confidence + family bonus) ↓, score ↓, cheaper first."""
+    """Default ranker. Stable order: (confidence + family bonus) ↓, score ↓, code ↑.
+
+    Price is NEVER a ranking signal (WP1) — the final tiebreaker is `code`
+    ascending (price-free, deterministic). The `unit_price_czk` value still rides
+    on every candidate as DATA; it is only removed from the sort order.
+    """
     return sorted(
         candidates,
-        key=lambda c: (-_rank_score(c), -c.get("score", 0.0), c.get("unit_price_czk") or 0.0),
+        key=lambda c: (-_rank_score(c), -c.get("score", 0.0), str(c.get("code") or "")),
     )
 
 
@@ -251,6 +275,10 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
     q_wt = classify_work_type(query)
     q_ef = element_family(query)
     q_params = extract_params(query)
+    # Query-level precision flag: did the user ask for prestressing? If NOT, a
+    # candidate popis that asserts předpjatý/předpínací gets a ranking penalty
+    # (sort-key only — see PRESTRESS_RANK_PENALTY).
+    q_prestress = _asserts_prestress(query) or q_wt == "predpinaci"
 
     # Gate trace — makes "why isn't there an embeddings hit in the output?"
     # answerable from the response alone, no log-diving. Distinguishes "provider
@@ -313,9 +341,16 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
             # Precision signal for the ranker (NOT a gate): candidate shares the
             # query's SPECIFIC element family ('jine' is the non-committal residual).
             "family_match": bool(q_ef and q_ef != "jine" and c_ef == q_ef),
+            # Negative precision signal (NOT a gate): candidate asserts prestressing
+            # but the query did not → ranking penalty (see PRESTRESS_RANK_PENALTY).
+            "prestress_mismatch": bool(not q_prestress and _asserts_prestress(popis)),
             "params": c_params,
             "score": score,
             "source": source,
+            # Real per-row catalog version (passthrough, like unit_price_czk — no
+            # gating/confidence logic). None when the retrieve row carried none;
+            # the MCP boundary then stamps settings.OTSKP_CATALOG_VERSION.
+            "catalog_version": c.get("catalog_version"),
             "confidence": honest_confidence(
                 source, score, _params_match(q_params, c_params),
                 c.get("similarity", 0.0), param_contradiction=not param_ok,
@@ -324,6 +359,7 @@ def match_catalog(query: str, raw_candidates: list[dict], *, ranker: Optional[Ca
                 "retrieve": source,
                 "uwo_gate": {"work_type": c_wt, "element_family": c_ef},
                 "param_prefilter": "passed" if param_ok else "softened",
+                "catalog_version": c.get("catalog_version"),
             },
         })
 

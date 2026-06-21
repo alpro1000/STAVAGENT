@@ -26,7 +26,7 @@ from app.core.config import settings
 logger = logging.getLogger(__name__)
 
 _SEARCH_SQL = (
-    "SELECT code, popis, unit, unit_price_czk, "
+    "SELECT code, popis, unit, unit_price_czk, catalog_version, "
     "1 - (embedding <=> %s::vector) AS similarity "
     "FROM otskp_embeddings "
     "ORDER BY embedding <=> %s::vector "
@@ -37,15 +37,24 @@ _SEARCH_SQL = (
 def build_candidates_from_rows(rows) -> list[dict]:
     """Pure mapper: DB rows → chain candidate dicts. Hermetically testable.
 
-    Each row is (code, popis, unit, unit_price_czk, similarity).
+    Each row is (code, popis, unit, unit_price_czk, catalog_version, similarity).
+    A legacy 5-tuple row (no catalog_version) is still accepted — catalog_version
+    falls back to None, and the chain stamps settings.OTSKP_CATALOG_VERSION at the
+    MCP boundary.
     """
     candidates = []
-    for code, popis, unit, price, similarity in rows:
+    for row in rows:
+        if len(row) >= 6:
+            code, popis, unit, price, catalog_version, similarity = row[:6]
+        else:  # legacy 5-tuple (code, popis, unit, price, similarity)
+            code, popis, unit, price, similarity = row[:5]
+            catalog_version = None
         candidates.append({
             "code": code,
             "description": popis,
             "unit": unit or "",
             "unit_price_czk": float(price) if price is not None else 0.0,
+            "catalog_version": catalog_version,
             "source": "embeddings",
             "similarity": float(similarity) if similarity is not None else 0.0,
         })

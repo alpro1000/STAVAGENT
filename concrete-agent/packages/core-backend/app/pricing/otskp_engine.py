@@ -39,6 +39,11 @@ class OTSKPItem:
     mj: str
     cena: float
     spec: str = ""
+    # Real per-row catalog version (e.g. "OTSKP 2026"), stamped by the ingest
+    # (scripts/ingest_otskp_catalog.py). None on a legacy DB predating the column
+    # — the readers below guard the SELECT and the MCP boundary falls back to
+    # settings.OTSKP_CATALOG_VERSION. NEVER a hardcoded date literal.
+    catalog_version: Optional[str] = None
 
 
 @dataclass
@@ -75,33 +80,60 @@ class OTSKPDatabase:
     def __init__(self, db_path: str = "otskp.db"):
         self.db_path = db_path
         self._conn: Optional[sqlite3.Connection] = None
+        # Legacy-DB guard (WP2): an old otskp.db predating the ingest rewrite has
+        # no `catalog_version` column, so SELECTing it would raise. Resolved once,
+        # lazily, from PRAGMA table_info — None until connect() probes it.
+        self._has_catalog_version: Optional[bool] = None
 
     def connect(self):
         self._conn = sqlite3.connect(self.db_path)
         self._conn.row_factory = sqlite3.Row
+        self._has_catalog_version = self._probe_catalog_version_column()
 
-    def close(self):
-        if self._conn:
-            self._conn.close()
+    def _probe_catalog_version_column(self) -> bool:
+        """True iff the `otskp` table carries a `catalog_version` column.
+
+        Guards legacy DBs (WP2): a pre-ingest-rewrite otskp.db lacks the column,
+        so the readers fall back to a version-free SELECT and stamp None (the MCP
+        boundary then uses settings.OTSKP_CATALOG_VERSION).
+        """
+        if not self._conn:
+            return False
+        try:
+            cols = {r[1] for r in self._conn.execute("PRAGMA table_info(otskp)").fetchall()}
+            return "catalog_version" in cols
+        except sqlite3.Error:  # pragma: no cover - defensive on a malformed DB
+            return False
 
     def get(self, code: str) -> Optional[OTSKPItem]:
         """Direct lookup by code."""
         if not self._conn:
             return None
+        cols = "code, nazev, mj, cena, spec"
+        if self._has_catalog_version:
+            cols += ", catalog_version"
         row = self._conn.execute(
-            "SELECT code, nazev, mj, cena, spec FROM otskp WHERE code=?", (code,)
+            f"SELECT {cols} FROM otskp WHERE code=?", (code,)
         ).fetchone()
         if row:
             return OTSKPItem(**dict(row))
         return None
 
     def search(self, keyword: str, limit: int = 10) -> List[OTSKPItem]:
-        """Fulltext search in names."""
+        """Fulltext search in names.
+
+        Ordered by `code` (deterministic), NOT by price — price must never be a
+        ranking signal (WP1). Relevance ranking happens downstream in
+        `deterministic_ranker`; recall only needs a stable top-N.
+        """
         if not self._conn:
             return []
+        cols = "code, nazev, mj, cena, spec"
+        if self._has_catalog_version:
+            cols += ", catalog_version"
         rows = self._conn.execute(
-            "SELECT code, nazev, mj, cena, spec FROM otskp "
-            "WHERE nazev LIKE ? ORDER BY cena LIMIT ?",
+            f"SELECT {cols} FROM otskp "
+            "WHERE nazev LIKE ? ORDER BY code LIMIT ?",
             (f"%{keyword.upper()}%", limit)
         ).fetchall()
         return [OTSKPItem(**dict(r)) for r in rows]
