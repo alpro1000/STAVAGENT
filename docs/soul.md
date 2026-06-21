@@ -351,7 +351,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
-## 2026-06-19 — Session: Fáze 5 #6 — odhad plochy bednění (contact_area) z geometrie, factor 1.0 — MERGED (PR #1399), live-check PENDING
+## 2026-06-19 — Session: Fáze 5 #6 — odhad plochy bednění (contact_area) z geometrie, factor 1.0 — MERGED (PR #1399), live-ověřeno (Test 1)
 
 **Spec (audit + advisor-review):** labor-projekce (norma skruž+bednění 3.1 Nh/m² KONTAKTNÍ + doporučení čety tesařů §4-B) klíčuje na `contact_area_m2`, který byl POUZE passthrough `formwork_contact_area_m2`. Na živém kalkulátoru pole pro contact-area NENÍ → norma + doporučení NIKDY nefíruly (jen v goldenech, co ji podávaly ručně, např. SO-202 1527,6). #6 = když není zadána, odvodit z engine plochy `formwork_area_m2` (dvoustranný box `2(L+Š)·výška`, už se derivuje) pro **prismatic + system-formwork** prvky; non-prismatic (mostovka/římsa/schodiště/nádrž/other) + no-formwork (pažnice/podzemní stěna/podkladní beton) zůstávají **honest-blank** (undefined).
 
@@ -361,11 +361,11 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Ověřeno (hermetic):** tsc shared clean; frontend aditivně clean (jen pre-existing baseUrl deprecation). **1337 shared testů** (1335→1337, gateb null-test split). Goldeny before→after: `labor-projection.gateb` null-test byl operne_zdi (prismatic)→null; #6 odvodí ODHAD→crew≠null → přepsán na ODHAD-cestu + 'user'-cestu + non-prismatic (deck) honest-blank-null. Nedotčeno (ověřeno): SO-202 (podává contact), PDPS canon-fallback (mostovka=non-prismatic, už honest-blank), project-planner (relativní asserce — obě strany se posunou spolu).
 
-**⚠️ ŽIVĚ NEPROVĚŘENO (merged ≠ live):** orchestrator je shared TS, kalkulátor-kiosk ho tahá na BUILD → **široký efekt (canon→norma + ODHAD-warning na KAŽDÉM prismatic prvku) se u živých uživatelů objeví AŽ po rebuild/deploy kalkulátoru.** Live-check (po deploy): SO-250 prismatic → ODHAD-kontakt + ℹ️ warning; ve stejném průchodu pilota = honest-blank. Dokud není nasazeno, efekt není u uživatelů.
+**✅ ŽIVĚ OVĚŘENO (Test 1):** deploy auto-prošel na merge #1399 (kalkulátor-kiosk tahá shared TS na BUILD; Vercel main auto-deploy, žádný deploy-gate → #1399 live na prod kalkulator). Live-check Test 1 (Opěrné zdi 10×0,4×2,0) PROŠEL: ODHAD-warning se zobrazil, contact-area 41,6 m² = `2·(10+0,4)·2,0` = dvoustranný box → **factor 1.0 potvrzen na prod**, klasifikace 100 %. Široký efekt (canon→norma + ODHAD-warning na KAŽDÉM prismatic prvku) je tím u živých uživatelů.
 
 **Odmítnuto:** one-sided factor 0.5 (data vyvrátila); mapa `FORMWORK_SIDEDNESS` (žádná jednostranná rodina v provozu — spekulativní; až vznikne reálná → do `ELEMENT_CATALOG` vedle `recommended_formwork`, NE do element-geometry); UI-badge + MCP-proброс `contact_area_source` TEĎ (warning už viditelný, pole aditivní pod CI; MCP jen pokud demo-cesta pole reálně čte přes MCP — jinak make-work); SDD tři-dok (audit + advisor-odpovědi = spека).
 
-**Co dál:** (ops) **deploy kalkulátoru + live-check #6** ← blokuje další. POTOM **Fix 3** (samostatná session) — čeká na #6 live-confirm: jedna větev v letu, #6-followup se nezakládá jen kvůli zaměstnání (= druhá větev / make-work).
+**Co dál:** deploy + live-check #6 ✅ HOTOVO (Test 1) → **#6 plně uzavřen**. Odblokován **Fix 3** (samostatná session) — jedna větev v letu, #6-followup se nezakládá jen kvůli zaměstnání (= druhá větev / make-work).
 
 ## 2026-06-18 — Session: OTSKP work-row binding fix — single-source match_catalog + bundling-policy + tagger fixes + floor (SO-206)
 
