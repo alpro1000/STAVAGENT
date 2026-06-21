@@ -32,7 +32,7 @@ import type { ResourceCeiling, CeilingViolation, EngineeringDemand } from './res
 import { applyResourceCeilingDefaults, checkCeilingFeasibility } from './resource-ceiling.js';
 import type { TzFacts, ValidationFlag } from './validation-rules.js';
 import { runValidationRules } from './validation-rules.js';
-import { estimateElementVolume } from './element-geometry.js';
+import { estimateElementVolume, isPrismaticType } from './element-geometry.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -415,8 +415,14 @@ export interface PlannerOutput {
     strategies: ReturnType<typeof calculateStrategiesDetailed>;
     /** Shape correction applied (1.0 if none) */
     shape_correction: number;
-    /** Echo of input contact area (m²) — labor-projection norm basis only */
+    /** Contact area (m²) used as the labor-projection (skruž+bednění Nh) basis.
+     *  Either the supplied input or, when absent, a §6 ODHAD from the two-sided
+     *  box geometry (see contact_area_source). */
     contact_area_m2?: number;
+    /** Provenance of contact_area_m2: 'user' = supplied input; 'odhad' = derived
+     *  from formwork_area_m2 (two-sided box, factor 1.0). Undefined = honest-blank
+     *  (non-prismatic / no system formwork → no derivation). */
+    contact_area_source?: 'user' | 'odhad';
   };
 
   // --- Obrátkovost (repetitive elements) ---
@@ -2513,6 +2519,33 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings.push(f.message);
   }
 
+  // ─── §6: contact-area ODHAD ───────────────────────────────────────────
+  // The labor projection (skruž+bednění Nh norm + tesaři crew rec) keys on the
+  // kontaktní plocha bednění. When it isn't supplied, derive it from the engine
+  // formwork area (fwAreaTotal = two-sided box 2(L+Š)·výška) for prismatic,
+  // system-formwork elements — factor 1.0: VP4/SO-250 úhlové ŽB zdi are formed
+  // two-sided (oba líce), so box ≈ documented area (547.4 ≈ 548.6 on VP4).
+  // Non-prismatic (deck/cornice/stairs/tank) + no-formwork (pažnice/guide walls,
+  // podkladní beton) stay honest-blank (undefined) — never a fabricated area.
+  // (pilota never reaches here — the bored-pile path early-returns above.)
+  const noSystemFormwork = elementType === 'podzemni_stena';
+  const derivesContactArea =
+    input.formwork_contact_area_m2 == null &&
+    isPrismaticType(elementType) &&
+    profile.needs_formwork !== false &&
+    !noSystemFormwork &&
+    fwAreaTotal > 0;
+  const contactAreaM2 = input.formwork_contact_area_m2 ?? (derivesContactArea ? fwAreaTotal : undefined);
+  const contactAreaSource: 'user' | 'odhad' | undefined =
+    input.formwork_contact_area_m2 != null ? 'user' : (derivesContactArea ? 'odhad' : undefined);
+  if (derivesContactArea) {
+    warnings.push(
+      `ℹ️ Plocha bednění ODHAD z geometrie (2·(L+Š)·výška = dvoustranné bednění, ` +
+      `oba líce, ${Math.round(fwAreaTotal * 10) / 10} m²) — pro jednostranné bednění ` +
+      `(zárubní zeď u skály / tížná zeď) nebo přesnost zadejte kontaktní plochu.`,
+    );
+  }
+
   // ─── 9. Assemble Output ───────────────────────────────────────────────
 
   const plannerOutput: PlannerOutput = {
@@ -2532,7 +2565,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
       three_phase: threePhase,
       strategies: strategiesWithRebar,
       shape_correction: shapeCorrection,
-      contact_area_m2: input.formwork_contact_area_m2,
+      contact_area_m2: contactAreaM2,
+      contact_area_source: contactAreaSource,
     },
     obratkovost: obratkovostResult,
     rebar: rebarResult,
