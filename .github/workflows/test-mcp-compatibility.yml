@@ -193,4 +193,7 @@ jobs:
             tests/test_p3_live_e2e_orchestrate.py \
             tests/test_gapa_xml_soupis_routing.py \
             tests/test_live_seal_portal_schema.py \
+            tests/test_uwo_atomizer_t1.py \
+            tests/test_chunked_tz_extraction.py \
+            tests/test_otskp_ranking_golden.py \
             -v --tb=short
