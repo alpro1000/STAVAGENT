@@ -351,6 +351,21 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-22 — Session: EN language switch + public /en/pitch page (Cemex outreach)
+
+**Rozhodnuto:**
+- Sdílená komponenta `components/LanguageSwitch.tsx` (orámovaný, labelled "English"/"Čeština" + Globe; plain `<a>` → shareable, refresh-safe, žádné browser-storage) nahradila tichý textový odkaz v nav CZ (`LandingPage`) i EN (`LandingPageEn`). `TeamPage` už byl compliant (ghostBtn + label), neměněn.
+- Public nav dostal presentational responsive pravidlo (`design-system/components.css` `.pub-nav*`): pod 768 px se skryjí section-anchor odkazy a zbytek se zalomí místo ořezu → switch dostupný na mobilu. CZ obsah/sekce/copy beze změny (AC#5).
+- Nová EN-only stránka **`/en/pitch`** (`PitchPageEn`, eager route): self-contained HTML deck v `<iframe>`, Download-PDF, Request-a-pilot (mailto `info@stavagent.cz`), 3 captioned screenshoty (self-hide přes `onError`), kontakt. Hero copy verbatim z obálky deku. EN home má CTA „View the pitch“. Cesta `/en/pitch` (univerzální) zvolena místo `/en/cemex`.
+- Assety v `public/assets/pitch/`: `deck.html` (988 KB, embed as-is), `deck.pdf` (6.5 MB), `screenshot-1..3.png` (kalkulátor / MCP prompt / deterministická dekompozice).
+- Prerender: `/en/pitch` přidán do `prerender.mjs` (`ROUTES_TO_PRERENDER` + `snapshotFiles`) i `.github/workflows/prerender.yml` (smoke + copy). Snapshoty `/`, `/en/`, `/en/pitch` přegenerovány lokálně reálným Puppeteerem a commitnuty (CI action nemůže pushnout do chráněného main). `tsc && vite build` čistý (exit 0).
+
+**Odmítnuto:** `/en/cemex` jako primární cesta · hamburger mobilní menu (stačí responsive skrytí) · restyling deku (embed as-is) · psaní marketingových claimů (copy jen z dodaného deku, captiony faktické).
+
+**Otevřené otázky:** deck tahá React z unpkg CDN za běhu (není 100% standalone — funguje v prohlížeči s internetem) — chce founder verzi bez externí závislosti? · screenshot-1 lze zaměnit za SO-202 whole-object plán.
+
+**Co dál:** founder zreviduje větev `claude/dreamy-ramanujan-ssIIr` a smerguje (PR zatím nevytvořen, dle zadání). Po deployi ověřit `/en/pitch` na produkci (deck iframe, Download-PDF, mailto, switch na mobilu).
+
 ## 2026-06-19 — Session: Fáze 5 #6 — odhad plochy bednění (contact_area) z geometrie, factor 1.0 — MERGED (PR #1399), live-ověřeno (Test 1)
 
 **Spec (audit + advisor-review):** labor-projekce (norma skruž+bednění 3.1 Nh/m² KONTAKTNÍ + doporučení čety tesařů §4-B) klíčuje na `contact_area_m2`, který byl POUZE passthrough `formwork_contact_area_m2`. Na živém kalkulátoru pole pro contact-area NENÍ → norma + doporučení NIKDY nefíruly (jen v goldenech, co ji podávaly ručně, např. SO-202 1527,6). #6 = když není zadána, odvodit z engine plochy `formwork_area_m2` (dvoustranný box `2(L+Š)·výška`, už se derivuje) pro **prismatic + system-formwork** prvky; non-prismatic (mostovka/římsa/schodiště/nádrž/other) + no-formwork (pažnice/podzemní stěna/podkladní beton) zůstávají **honest-blank** (undefined).

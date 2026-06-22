@@ -15,6 +15,7 @@ import './styles/components.css';
 // ── Eager imports (landing CZ + EN + portal + team = main public entry points) ─
 import LandingPage from './pages/LandingPage';
 import LandingPageEn from './pages/LandingPageEn';
+import PitchPageEn from './pages/PitchPageEn';
 import PortalPage from './pages/PortalPage';
 import TeamPage from './pages/TeamPage';
 
@@ -91,6 +92,9 @@ function App() {
               <Route path="/" element={<LandingPage />} />
               <Route path="/en" element={<LandingPageEn />} />
               <Route path="/en/" element={<LandingPageEn />} />
+
+              {/* Public English pitch page (eager — prerendered, shareable link) */}
+              <Route path="/en/pitch" element={<PitchPageEn />} />
 
               {/* About the founder (bilingual, eager — prerendered per Gate 10) */}
               <Route path="/team" element={<TeamPage locale="cs" />} />

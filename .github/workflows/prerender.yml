@@ -60,7 +60,7 @@ jobs:
         working-directory: ./stavagent-portal/frontend
         run: |
           set -euo pipefail
-          for f in dist/index.html dist/en/index.html dist/team/index.html dist/en/team/index.html; do
+          for f in dist/index.html dist/en/index.html dist/team/index.html dist/en/team/index.html dist/en/pitch/index.html; do
             if [ ! -f "$f" ]; then
               echo "::error::Missing prerender output: $f"
               exit 1
@@ -76,11 +76,12 @@ jobs:
       - name: Copy dist HTML to public/prerendered/
         working-directory: ./stavagent-portal/frontend
         run: |
-          mkdir -p public/prerendered/en/team public/prerendered/team
-          cp dist/index.html         public/prerendered/index.html
-          cp dist/en/index.html      public/prerendered/en/index.html
-          cp dist/team/index.html    public/prerendered/team/index.html
-          cp dist/en/team/index.html public/prerendered/en/team/index.html
+          mkdir -p public/prerendered/en/team public/prerendered/team public/prerendered/en/pitch
+          cp dist/index.html          public/prerendered/index.html
+          cp dist/en/index.html       public/prerendered/en/index.html
+          cp dist/team/index.html     public/prerendered/team/index.html
+          cp dist/en/team/index.html  public/prerendered/en/team/index.html
+          cp dist/en/pitch/index.html public/prerendered/en/pitch/index.html
 
       - name: Commit and push if changed
         run: |
