@@ -366,6 +366,96 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 **Co dál:** founder zreviduje větev `claude/dreamy-ramanujan-ssIIr` a smerguje (PR zatím nevytvořen, dle zadání). Po deployi ověřit `/en/pitch` na produkci (deck iframe, Download-PDF, mailto, switch na mobilu).
 
+## 2026-06-21 — Session: [K] Phase-5 kalkulačka (close-out → konsolidace)
+
+**Topic:** [K] kalkulačka session uzavřena a sloučena do jednoho kánonu (STAVAGENT_CANON_Phase5.md). Session stála on-hold, nedispatchovala nic z menu; zafixovala Fix-3 spec, pořadí [K]-fronty a Cemex-lifted přeřazení.
+
+**Rozhodnuto:**
+- Fix 3 patří do [C] (Core/retrieval), ne [K] — správně nepřevzato. Banked spec konverguje s code-verified reconem session C: (A) stamp reálné catalog_version místo hardcode "OTSKP 1/2025"; (B) keyword-kandidáti dle relevance/score, ne ceny; golden C30/37 bez "předpjatý" → ŽB 334325 nad 334335. BUGS#6 (prefab 33311 vs monolit 333326) — neřešit zvlášť, ověřit až po Fix 3.
+- Cemex sňat jako blocker → pořadí čistě value + deps + risk, bez demo-řezu. TODO#7 na plnou hodnotu; mostovka-gaty (#8/#5/redesign) value-itemy dle váhy; post-Cemex (Fix 4 / Phase 3 / genai-3072-halfvec) schedulable ale ne urgentní.
+- Migrace = vlastní vyhrazený cyklus (vlastní rekalibrace prahů pod 3072), Fix 4 jedním re-embed s ní; pin `google-cloud-aiplatform==1.154.0` drží prod.
+- `create_work_breakdown`: #1b serializován PŘED atomizer-общестрой prací, neparalelit.
+- Ride-along (stale TODO#6 + zápis Fix-3-do-PLANu) → do větve dalšího [K]-itemu, NE samostatnou docs-PR.
+
+**Odmítnuto:**
+- Převzít Fix 3 (špatná session — Core doména).
+- Scope-expansion pod svobodou času; rvát do migrace явочным порядком.
+- Samostatná docs-PR pro ride-along.
+
+**Otevřené otázky:** (přeneseno do kánonu)
+- Pořadí Q3↔Q2 — zda zvednout #1b nad T2 (oboje v `create_work_breakdown`).
+
+**Co dál:**
+1. Nahrazeno `STAVAGENT_CANON_Phase5.md` (§3 [K]-fronta). Session uzavřena.
+2. Práce pokračuje v session C dle kánonu, jedna větev v letu.
+
+## 2026-06-21 — Session: Analýza zvec/Lift + KB-RAG + seam-interview (close-out)
+
+**Topic:** Analytická session uzavřena a sloučena do kánonu. Eval vektorových/extrakčních nástrojů (zvec, Lift), architektura KB-RAG grounded-decision-layer, seam-interview (TZ pour-stages → dělení taktů). Žádný kód, žádná větev — výstup je analýza + spec.
+
+**Rozhodnuto:**
+- **Seam spec** (Q11, doporučeno, ratifikovat při dosažení): TZ = podlaha, fyzika dělí dál (engine NIKDY < TZ, flag jen když nucen překročit); ruční > TZ > auto (confidence 0.99 > dokumentace > default); univerzální bez regresí, reálný cíl mostovka NK; auto-apply + viditelný badge "Záběry z TZ: N etap (§…)" + editovatelné. **Řešení díry Q1↔Q2:** ruční prorazí podlahu TZ (ruční vyhrává), ale ruční-pod-TZ → viditelný warning "odchylka od PD (TZ: N etap)".
+- **zvec** (Alibaba embedded hybrid VDB) = kandidát-generátor pod deterministickým re-rankem pro OTSKP matching — revisit post-Phase-5, jen pokud rozhodnuté cesty nedotahují.
+- **Lift** (Datalab schema-constrained, 9B/GPU) = pouze eval-on-Czech-golden, fallback pro těžké skeny.
+- **KB-RAG**: Class-1 numeric = codegen vs Class-2 prose = RAG; pilot na učebnici B6; AŽ PO embedding-vidlici ADR.
+- **Embedding-vidlice = ADR (rozhodnutí, ne build), PŘEDCHÁZÍ jakémukoli embedding-buildu:** sjednotit OTSKP-migraci (gemini-embedding-001 / 3072 / halfvec / pgvector ≥0.7) a KB-RAG (BGE-m3) — jeden stack na oba, nebo explicitně dva.
+
+**Odmítnuto:**
+- "Jeden model na oba" jako předpoklad bez ADR (nemožné, pokud se stacky liší).
+- Stavět KB-RAG nebo migraci před ADR.
+- Seam Option 2 (TZ strict — dokumentace přepisuje fyziku) a Option 3 (status quo, TZ jen flag).
+
+**Otevřené otázky:** (přeneseno do kánonu)
+- Seam Option 1 ×4 — ratifikovat při Q11.
+- Embedding-vidlice ADR — nerozhodnuto, blokuje Tier-2 embedding práce.
+
+**Co dál:**
+1. Nahrazeno `STAVAGENT_CANON_Phase5.md` (seam §4, analýza §7). Session uzavřena.
+2. Itemy naplánovány jako Tier 2 (§7) / Q11; ADR první.
+
+## 2026-06-21 — Session: Capability / positioning audit (close-out)
+
+**Topic:** Audit tvrzení na landing/deck/README proti realitě. Dvě chybná určení DWG, opravená živou prod-probe. Nic neodesláno do marketingu, žádná PR.
+
+**Rozhodnuto:**
+- DWG = wired-but-non-functional na prod. Adapter kód existuje (`app/services/uep/`), ale `uep_get_dwg_conversion_status → any_available:false` (žádný ODA / dwg2dxf binár v nasazeném image) → každý `.dwg` → `DWG_CONVERSION_FAILED`. "PDF, DWG" na landing = dnes nepravdivé funkční tvrzení (deployment důvod, ne chybějící parser). Nativní DXF funguje (bez bináře) — drženo zvlášť.
+- MCP tools = 20 registered (`server.py` `_REGISTERED_TOOL_NAMES`); klasifikace **15 work / 5 introspection**. Marketing-headline = 15 work (nebo "20 total incl. 5 ops" s rozpadem); NIKDY holé "20". README stale "9" → fix. compat-test "11" = subset, glnout později.
+- Element types 24 = source-verified (`pour-decision.ts`). **Test count = 1249 LIVE-VERIFIED (vitest, 1249 passed / 30 files, 0 fail)** — publikovatelné (ne "audit figure").
+- Lekce: registrace v dispatch table ≠ funkční na prod — probe the runtime.
+- Findings zachyceny v audit-docs na `claude/capability-audit-c4p7t` (d5e5821 / 679ca4f / 8297d9c). Nic do marketingu, žádná PR.
+
+**Odmítnuto:**
+- 1. určení "STUB" (kód existuje); 2. určení "LIVE/best-effort" (binár chybí na prod). Obě staženy (dvoukrokový CORRECTION banner v dokumentu).
+- Editace landing/deck/README; otevření PR; stamping audit-čísel na důvěru.
+
+**Otevřené otázky:** (parked)
+- DWG: (a) nainstalovat ODA/libredwg do prod image (Dockerfile, PR3 §3.1) → ponechat "PDF, DWG"; nebo (b) odstranit "DWG" než binár přijde.
+- (resolved) tool count = 15 work / 5 introspection; test count = 1249 LIVE-VERIFIED.
+
+**Co dál:**
+1. Substance → kánon (positioning slot). Větev `claude/capability-audit-c4p7t` zůstává jako plný audit-záznam (nemergováno). Session uzavřena.
+
+## 2026-06-21 — Session: Fix 3 — catalog_version + price-free ranking (Core/retrieval) — MERGED (PR #1404), live-ověřeno
+
+**Topic:** Fix 3 (Core/retrieval) — odstranění hardcoded catalog version + cenového tie-breaku v OTSKP rankingu. Recon → ratifikovaný kontrakt → implementace → **MERGED (PR #1404)**, live-ověřeno na prod-probe.
+
+**Rozhodnuto:**
+- **A — version stamp:** hardcode `"OTSKP 1/2025"` (otskp.py:191/:237) → reálná per-row `catalog_version` ze store (SELECT protažen do `OTSKPItem` + embeddings; fallback `settings.OTSKP_CATALOG_VERSION`; PRAGMA-guard pro legacy DB bez sloupce). In-memory XML fallback odvozuje verzi z configu — žádná nová date-konstanta (WP2).
+- **B — price-free ranking:** keyword SQL `ORDER BY cena` → `ORDER BY code`; `deterministic_ranker` final tie-break `unit_price_czk` → `code` asc; sort-only `PRESTRESS_RANK_PENALTY` (0.15, fíruje jen když dotaz NEžádá předpětí a kandidát ho tvrdí — nikdy gate, netýká se zobrazené confidence). WP1: ceny BYTE-identické, odebrány jen ze sortu; `source` klíč zachován → MCP compat zelená.
+- **Watch-1 (cena neprořezává pool):** ověřeno živě — retrieve dropuje work_type:51 / param:7, **cenou 0**.
+
+**Odmítnuto:**
+- Sahat na betonové ceny (jen sort signal).
+- Přejmenovat `source` klíč (MCP kontrakt).
+- Řešit BUGS#6 (prefab vs monolit) v tomto PR — až po Fix 3.
+
+**Otevřené otázky:**
+- **Fix 4** je teď obnažený (živý výstup ukazuje reálný 2025/2026 split) — počet řádků keyword vs embeddings store vyžaduje DB-přístup (egress zavřený).
+
+**Co dál:**
+1. Live-verified na prod: `OTSKP 2026` na všech výsledcích; golden 334325 (ŽB poz.29) nad 334335 (předpjatý poz.~90); 420324 exact-lookup conf 1.0; Watch-1 zavřen. Q1 reálně uzavřen (merge opravil, ne jen "CI zelená").
+2. Fix 4 (rebake otskp → 2026) svázat s migrací Phase 3.
+
 ## 2026-06-19 — Session: Fáze 5 #6 — odhad plochy bednění (contact_area) z geometrie, factor 1.0 — MERGED (PR #1399), live-ověřeno (Test 1)
 
 **Spec (audit + advisor-review):** labor-projekce (norma skruž+bednění 3.1 Nh/m² KONTAKTNÍ + doporučení čety tesařů §4-B) klíčuje na `contact_area_m2`, který byl POUZE passthrough `formwork_contact_area_m2`. Na živém kalkulátoru pole pro contact-area NENÍ → norma + doporučení NIKDY nefíruly (jen v goldenech, co ji podávaly ručně, např. SO-202 1527,6). #6 = když není zadána, odvodit z engine plochy `formwork_area_m2` (dvoustranný box `2(L+Š)·výška`, už se derivuje) pro **prismatic + system-formwork** prvky; non-prismatic (mostovka/římsa/schodiště/nádrž/other) + no-formwork (pažnice/podzemní stěna/podkladní beton) zůstávají **honest-blank** (undefined).
