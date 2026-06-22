@@ -409,9 +409,24 @@ async def create_work_breakdown(
             if object_type is None:
                 object_type = get_cached_object_type(project_id, so_code)
 
-            # Step 1: Classify element (object_type is authoritative when present)
-            classification = _classify(name, object_code=so_code, object_type=object_type)
-            etype = classification["element_type"]
+            # Step 1: Resolve element type. An EXPLICIT `element_type` on the
+            # input wins over name-classification (#1b — honor explicit
+            # element_type; confidence ladder: caller-provided > classifier).
+            # Closes BUGS#5(1): a passed element_type was silently re-classified
+            # from the name. Falls back to _classify when the field is absent or
+            # not a known type (object_type stays authoritative for the
+            # bridge/building/wall axis on that path).
+            explicit_etype = elem.get("element_type")
+            if explicit_etype and explicit_etype in ELEMENT_TYPES:
+                etype = explicit_etype
+                classification = {
+                    "element_type": etype,
+                    "confidence": 0.99,
+                    "classification_source": "explicit_input",
+                }
+            else:
+                classification = _classify(name, object_code=so_code, object_type=object_type)
+                etype = classification["element_type"]
             profile = ELEMENT_TYPES.get(etype, ELEMENT_TYPES["jine"])
 
             # Step 1b: Scope-Router (UWO Stage 1) — decide the branch. The concrete

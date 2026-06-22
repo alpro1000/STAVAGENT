@@ -211,6 +211,42 @@ def test_raw_context_no_fabricated_code():
         assert it["urs_code"] is None  # never a fabricated code for raw_context
 
 
+# ── #1b: explicit element_type wins over name-classification (BUGS#5(1)) ──────
+def test_explicit_element_type_honored():
+    """A caller-supplied element_type overrides name-classification. 'Stěna'
+    would classify as a wall, but the explicit type forces mostovkova_deska
+    (NK templates) — proving the passed type is no longer silently dropped."""
+    r = asyncio.run(create_work_breakdown(
+        [{"name": "Stěna", "element_type": "mostovkova_deska",
+          "volume_m3": 100.0, "concrete_class": "C35/45"}],
+        project_type="most", catalog="none"))
+    assert r["scope_guard_status"] == "ok"
+    etypes = {it["element_type"] for it in r["items"]}
+    assert etypes == {"mostovkova_deska"}, f"explicit element_type ignored: {etypes}"
+    assert all(it.get("classification_source") == "explicit_input" for it in r["items"])
+
+
+def test_no_explicit_type_falls_back_to_classifier():
+    """Regression guard: without an explicit element_type, name-classification
+    is unchanged (the honor-path must not disturb the existing behaviour)."""
+    r = asyncio.run(create_work_breakdown(
+        [{"name": "Piloty OP1 Ø900", "volume_m3": 50.0}],
+        project_type="most", catalog="none"))
+    etypes = {it["element_type"] for it in r["items"]}
+    assert etypes == {"pilota"}, f"name-classification drifted: {etypes}"
+
+
+def test_unknown_explicit_type_ignored():
+    """A garbage element_type (not in ELEMENT_TYPES) falls back to the
+    classifier instead of crashing or producing an unknown profile."""
+    r = asyncio.run(create_work_breakdown(
+        [{"name": "Piloty OP1 Ø900", "element_type": "not_a_real_type",
+          "volume_m3": 50.0}],
+        project_type="most", catalog="none"))
+    etypes = {it["element_type"] for it in r["items"]}
+    assert etypes == {"pilota"}, f"garbage explicit type not ignored: {etypes}"
+
+
 if __name__ == "__main__":  # offline self-run (no pytest needed)
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     failed = 0
