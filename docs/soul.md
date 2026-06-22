@@ -351,6 +351,29 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-22 — Session: MCP task-queue T1–T5 + #1b + T4 Fix-4 diagnostics (Google-call prep ride-along)
+
+**Topic:** Disciplinovaná fronta MCP/Core úkolů (recon → gate → user-ratify → implement → independent venv test → review → merge). Příprava na call s Google inženýrem (Vertex AI → google-genai migrace) sloučena do `docs/handoff/GOOGLE_CALL_2026-06-19_FULL.md`. Merge-gate tiery zavedeny: features = user gate; triviální/docs = Claude self-merge ride-along.
+
+**Rozhodnuto (merged na main):**
+- **#1b** (`#1407`) — `breakdown.py` ctí explicitní `element_type` z volajícího (`confidence 0.99`, `classification_source="explicit_input"`) místo re-klasifikace. Live-ověřeno přes prod MCP `create_work_breakdown` (explicit `operna_zed` ctěn). +3 #1b goldeny v `test_uwo_atomizer_t1.py`.
+- **T1** (`#1406`/seam) — UWO seam: nové `scope_router.py` + `catalog_binding_adapter.py` (`_FLOORED_SOURCES={"urs_matcher_service"}`, `URS_CANDIDATE_FLOOR=0.80`, `map_status(match_kind, confidence, source)`). Monolit = jedna větev; honest-blank.
+- **T2** (`#1406`) — chunked TZ → quantified elements přes existující join (`chunked_tz_extraction.py` + `document_chunker._value_safe_overlap`). Odblokovává T7.
+- **T5** (`#1408`) — `find_urs_code` carrier-shape parity s `find_otskp_code` (`retrieve_summary` v success i error envelope). Per-result kontrakt T1 (`catalog`/`catalog_version` honest-null/`match_kind`) zachován. 2 hermetické testy.
+- **T4** (`#1409`) — Fix-4 živá diagnostika (Cloud SQL): **pgvector 0.8.1** (≥0.7 → halfvec(3072) ready pro T6, bez `ALTER EXTENSION`); `otskp_embeddings` = **17 940 řádků, všechny `catalog_version='OTSKP 2026'`** (žádný intra-store split); keyword-store **17 904/2025**; **delta 36 → rozštěp je MEZI sklady**. Rozhodnuto: rebake `otskp.db` → 2026/17940 složit do T6 Fáze 3; canon-number sync 17904→17940 (tech.md/product.md/domain.md/CLAUDE.md) až PO rebaku.
+- **CI-discipline** — 4 nové goldeny (`test_uwo_atomizer_t1`, `test_chunked_tz_extraction`, `test_otskp_ranking_golden`, `test_urs_carrier_t5`) přidány do EXPLICITNÍHO allow-listu v `.github/workflows/test-mcp-compatibility.yml` (workflow nespouští celou suite — jen jmenovaný seznam; CI instaluje plný `requirements.txt` → importy se resolvnou).
+- **Rule 605 catch** — `find_urs_code` docstring counter omylem změněn 17 904 → 17 940 (zkopírováno od sousedního OTSKP čísla). User chytil. Revert (`db28de93`) zůstal trčet na `find-urs-carrier-t5` větvi a nedostal se na main po merge #1408 → **#1409** opravil main zpět na **17 904** (správná aktuální URS-matcher seed hodnota).
+
+**Odmítnuto:**
+- Amazon Q bot na #1409 žádal revert 17 904 → 17 940. **Zamítnuto jako chybné** — bot zaměnil URS-matcher seed (17 904, co matcher používá DNES) s OTSKP-canon-sync (17 940 až po rebaku). 17 904 je správná současná hodnota. User merge #1409 potvrdil.
+- `--ignore-installed` / bypass při smoke testu závislostí — vždy clean `pip install -r requirements.txt` v čerstvém venv.
+
+**Otevřené otázky:**
+- **T6** (vector migrace 3072/halfvec) potřebuje embedding-vidlice ADR + odpovědi Google Q2/Q5 z callu; skládá Fix-4 keyword-store rebake do Fáze 3; canon-number sync 17904→17940 až po rebaku.
+- Deck na `/en/pitch` tahá React z unpkg CDN za běhu (ne 100% standalone).
+
+**Co dál (fronta, nezačato):** T6 (vector migr.) · T7 (kiosk cleanup — odblokováno T2) · T9 (URS Perplexity větev) · V1 (šev) · V2 (Pattern 27). Parking: deck Monte-Carlo „live today" claim na `/en/pitch` (přesnost vůči Cemexu), DWG binárka (ODA/libredwg v prod image), „Gate C ingest" recon. **Start příští session:** viz `docs/handoff/2026-06-22_next-session.md`.
+
 ## 2026-06-22 — Session: EN language switch + public /en/pitch page (Cemex outreach)
 
 **Rozhodnuto:**
