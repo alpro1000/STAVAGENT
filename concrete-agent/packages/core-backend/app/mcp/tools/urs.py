@@ -24,7 +24,7 @@ async def find_urs_code(
 
     Searches the ÚRS/RTS pricing system (39,000+ items) via two methods:
     1. Perplexity web search on urs.cz / podminky.urs.cz / cenova-soustava.cz
-    2. URS Matcher Service (4-phase matching with 17,904 seed items)
+    2. URS Matcher Service (4-phase matching with 17,940 seed items)
 
     AI models do NOT reliably know ÚRS codes — this tool searches the real
     catalog. ÚRS codes have format xxx-xx-xxxx (e.g. 273-32-1111).
@@ -60,6 +60,22 @@ async def find_urs_code(
     adapter derives a status-enum deterministically without sort-sniffing the
     source. The status-enum itself lives in the adapter, NOT here ("tools stay
     dumb"); per design §5.1 ÚRS is never ``exact``.
+
+    Returns (carrier shape — parity with find_otskp_code):
+        {
+          "results": [
+            {"code": "784410010", "description": "Malba dvojnásobná …",
+             "unit": "m2", "unit_price_czk": null, "confidence": 0.85,
+             "source": "urs_matcher_service", "catalog": "urs",
+             "catalog_version": null, "match_kind": "item"},
+            ...
+          ],
+          "total_found": 7,
+          "query": "Malba stěn vnitřní 2×",
+          "context": "pozemní stavba, byt",
+          "catalog": "urs",
+          "retrieve_summary": {"perplexity": 3, "matcher": 5, "merged": 7, "kept": 7}
+        }
     """
     try:
         results = []
@@ -88,11 +104,22 @@ async def find_urs_code(
             "context": context,
             # Catalog marker at the envelope level (parity with OTSKP provenance).
             "catalog": "urs",
+            # Retrieve transparency — parity with find_otskp_code.retrieve_summary:
+            # how many candidates each method contributed, after merge, and kept.
+            "retrieve_summary": {
+                "perplexity": len(perplexity_results or []),
+                "matcher": len(matcher_results or []),
+                "merged": len(results),
+                "kept": len(results[:10]),
+            },
         }
 
     except Exception as e:
         logger.error(f"[MCP/URS] Error: {e}")
-        return {"error": str(e), "results": [], "total_found": 0, "catalog": "urs"}
+        return {
+            "error": str(e), "results": [], "total_found": 0, "catalog": "urs",
+            "retrieve_summary": {"perplexity": 0, "matcher": 0, "merged": 0, "kept": 0},
+        }
 
 
 async def _perplexity_urs_search(description: str, context: Optional[str]) -> list[dict]:

@@ -196,4 +196,5 @@ jobs:
             tests/test_uwo_atomizer_t1.py \
             tests/test_chunked_tz_extraction.py \
             tests/test_otskp_ranking_golden.py \
+            tests/test_urs_carrier_t5.py \
             -v --tb=short
