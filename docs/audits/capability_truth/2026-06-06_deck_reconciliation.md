@@ -6,7 +6,7 @@
 **Scope:** Text-only reconciliation. **Binaries NOT edited** — this is an edit list for the author.
 **Method:** Text extracted from PPTX slide XML; each claim checked against a `file:line` code anchor.
 
-> Verdict: the deck is **strong and mostly true**. The core thesis (DECOMPOSE vs MATCH, deterministic-first, confidence per number, MCP-exposed) is fully backed by code. After the DWG correction (B1 retracted, B2 downgraded), the real fixes are **commercial-maturity wording**, not capability overclaims: B3 KROS export, B4 residential KROS pricing, B5 subscription tiers (MEDIUM); B6/B7 (LOW). No HIGH-severity capability overclaim remains.
+> Verdict: the deck is **strong and mostly true**. The core thesis (DECOMPOSE vs MATCH, deterministic-first, confidence per number, MCP-exposed) is fully backed by code. **One functional overclaim: DWG ingest is non-functional on prod (B1) — converter binary missing.** Plus commercial-maturity wording fixes: B3 KROS export, B4 residential KROS pricing, B5 subscription tiers (MEDIUM); B6/B7 (LOW). All deck fixes deferred to a deliberate pass — **nothing edited here, findings captured only.**
 
 ---
 
@@ -27,8 +27,9 @@
 
 ## B. Fixes required
 
-### ~~B1 — Slide 4 "01 Ingest: Drawings"~~ — RETRACTED (claim is TRUE)
-**Original flag was wrong.** It rested on the capability-truth STUB finding for DWG, which was itself an error (sweep only looked at `app/parsers/`). DWG/DXF ingest IS live via UEP: `app/services/uep/dwg_extractor.py` + `dxf_extractor.py` + `registry.py:42,75`, DWG→DXF via LibreDWG (`app/infrastructure/dwg_converter.py`, `Dockerfile:43`), exposed over MCP (`uep_run_extraction`). **"Ingest: Drawings" is substantiated — no change.** (Residual nuance: `dwg2dxf` binary install is best-effort; operational, not a copy issue.)
+### B1 — Slide 4 "01 Ingest: Drawings" — DWG NON-FUNCTIONAL on prod (no edit this pass)
+**Two corrections, both recorded.** (1) The original STUB flag was wrong on *location* (adapter lives in `app/services/uep/`, not `app/parsers/`). (2) But a live prod probe (`uep_get_dwg_conversion_status` → `any_available: false`) shows the DWG→DXF converter binary is **absent in the deployed image** (`Dockerfile:43` install fell through), so every `.dwg` upload → `DWG_CONVERSION_FAILED`. **DWG ingest is wired but non-functional on prod.** Native **DXF** (no binary) works; **DWG** does not.
+**Decision (outside this session):** install ODA/libredwg in the prod image → DWG real → keep "Drawings"; OR scope the slide to DXF/PDF until then. **No deck edit made this pass — finding captured only.** See capability_truth.md §4 + CORRECTION banner.
 
 ### B2 — LOW (downgraded from MEDIUM) — Slide 4, infra line "FastAPI + OCR on Cloud Run"
 **Status:** Largely TRUE. MinerU OCR is deployed on Cloud Run; UEP's `pdf_tz_extractor.py:81-87` detects scanned PDFs and flags `ocr_required`. The only gap is that the automatic UEP→MinerU hand-off is still "PR2 wiring" (operator-routed today). "OCR on Cloud Run" as **infrastructure** is accurate; just don't imply a fully-automatic OCR pipeline elsewhere. **No change required** (optional: footnote OCR auto-routing as "in progress").
@@ -56,5 +57,5 @@
 ## C. RU deck note
 `STAVAGENT_Deck_RU.pdf` mirrors the EN claims — apply B1–B5 to the matching RU slides.
 
-## D. Cross-link: live landing "PDF, DWG" is CORRECT
-~~Same DWG/CAD overclaim as deck B1.~~ **RETRACTED.** The live landing's "PDF, DWG" (`LandingPage.tsx` Klasifikátor module + workflow + FAQ) is substantiated by the live UEP DWG pipeline. **Do not remove it.** (See capability_truth.md §2 + the CORRECTION banner.)
+## D. Cross-link: live landing "PDF, DWG" — non-functional on prod
+The live landing (`LandingPage.tsx` Klasifikátor module + workflow + FAQ) lists "PDF, DWG". The DWG adapter is wired but **non-functional in production** (converter binary missing; live probe `any_available: false` → `.dwg` = `DWG_CONVERSION_FAILED`). So "PDF, DWG" is a false *functional* claim today — fix decided outside this session (install binary → keep; or remove "DWG"). **No landing edit made this pass.** (See capability_truth.md §4 + CORRECTION banner.)

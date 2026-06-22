@@ -7,7 +7,11 @@
 
 > Rule: a claim with no code anchor does not exist. If marketing wants to say it, it must point to a line here.
 
-> **CORRECTION 2026-06-06 (post-review):** The original sweep tiered **DWG/DXF ingestion as STUB** because it only inspected `app/parsers/`. That was wrong. A real, deployed DWG→DXF→extract pipeline lives in `app/services/uep/` (`dwg_extractor.py`, `dxf_extractor.py`, `registry.py:42,75`) + `app/infrastructure/dwg_converter.py` (LibreDWG `dwg2dxf`, installed in the deployed image via `concrete-agent/.../Dockerfile:43`), exposed over MCP as the **live** `uep_run_extraction` tool. DWG/DXF is **LIVE (best-effort)** — see §2. The live landing's "PDF, DWG" is therefore **substantiated, not an overclaim.** §4 and §7-item-1 corrected accordingly. Lesson: the UEP subsystem (`app/services/uep/`) was not in the original sweep scope.
+> **CORRECTION 2026-06-06 (post-review, then post-prod-probe):** Two-step correction, both recorded for honesty.
+> 1. The original sweep tiered **DWG/DXF as STUB** ("no parser in `app/parsers/`"). Wrong on location — a code-complete DWG→DXF→extract adapter exists in `app/services/uep/` (`dwg_extractor.py`, `dxf_extractor.py`, `registry.py:42,75`) + `app/infrastructure/dwg_converter.py` (LibreDWG), exposed over MCP (`uep_run_extraction`).
+> 2. BUT a **live prod probe** of `uep_get_dwg_conversion_status` returns **`any_available: false`** — neither ODAFileConverter nor `dwg2dxf` is on PATH in the deployed image (the `Dockerfile:43` best-effort `|| echo WARNING` install fell through). So every `.dwg` upload fails with **`DWG_CONVERSION_FAILED`**. **Net: DWG is a wired-but-NON-FUNCTIONAL adapter in production — NOT LIVE.** My intermediate "LIVE (best-effort)" tiering is superseded by this — see §3.
+>
+> **Marketing consequence:** the live landing's "PDF, DWG" is currently a **false functional claim** (a user cannot upload a DWG and get a result) — though for a deployment reason (missing binary), not a missing-parser reason. Fix is decided **outside this session**: (a) install ODAFileConverter / libredwg-tools in the prod image (Dockerfile, PR3 §3.1) → DWG becomes real → keep "PDF, DWG"; or (b) remove "DWG" until the binary ships. **No landing/deck/README edit made this pass.** Lesson: "registered in the dispatch table" ≠ "functional on prod" — always probe the runtime, not just the code.
 
 ---
 
@@ -30,7 +34,7 @@ The product is **substantially more real than the docs claim in some places, and
 | **7-engine calculator pipeline** | LIVE | `pour-decision.ts`, `element-scheduler.ts`, `formwork-3phase`, `rebar-lite.ts`, `pour-task-engine.ts`, `lateral-pressure.ts`, `pile-engine.ts` | Each engine has its own test file. |
 | **Pile engine** | LIVE | `pile-engine.test.ts` (62 tests) | Productivity table Ø600/900/1200/1500 × geology × casing. |
 | **Element classifier (deterministic)** | LIVE | `app/mcp/tools/classifier.py` + `element_name_normalizer.py` (195 lines pure regex) | Keyword+OTSKP, no LLM in core. |
-| **DWG / DXF ingestion (UEP)** | LIVE (best-effort) | `app/services/uep/dwg_extractor.py`, `dxf_extractor.py` (ezdxf), `registry.py:42,75`; `app/infrastructure/dwg_converter.py` (LibreDWG `dwg2dxf`); `Dockerfile:43`; MCP `uep_run_extraction` | `.dwg`→DXF (ODA 0.95 / LibreDWG 0.80)→ezdxf extract; registered in base dispatch table, exposed live over MCP. Caveat: `dwg2dxf` install is best-effort in the image (`Dockerfile:43` `|| echo WARNING`); `uep_get_dwg_conversion_status` probes it at runtime. |
+| **DXF ingestion (UEP)** | LIVE | `app/services/uep/dxf_extractor.py` (ezdxf), `registry.py:41,73` | Native `.dxf`→ezdxf extract needs no external binary, so DXF works on prod. (DWG ≠ DXF — see §3.) |
 | **Budget parsers: XLSX / XML(KROS) / PDF** | LIVE | `smart_parser.py` (399), `xlsx_komplet_parser.py` (201), `xlsx_rtsrozp_parser.py` (216), `kros_parser.py` (567), `pdf_parser.py` (313) | Substantial implementations, no stubs. |
 | **Workflow A (parse→audit→export)** | LIVE | `workflow_a.py` | 6-stage, caching, artifacts. |
 | **LLM chain Vertex→Gemini→Bedrock→Claude→GPT-4V→Perplexity** | LIVE | `gemini_client.py`, `bedrock_client.py`, `claude_client.py`, `gpt4_client.py`, `perplexity_client.py` | Vertex default (no key, ADC). |
@@ -58,7 +62,7 @@ The product is **substantially more real than the docs claim in some places, and
 
 | Claim | Tier | Evidence |
 |---|---|---|
-| ~~DWG / DXF ingestion~~ | ~~STUB~~ → **LIVE** | **RETRACTED — see §2.** Original sweep missed `app/services/uep/`. DWG/DXF is a live UEP pipeline. The landing's "PDF, DWG" is correct. |
+| **DWG ingestion (functional claim)** | code-complete adapter, **NON-FUNCTIONAL on prod** | Adapter wired (`app/services/uep/dwg_extractor.py`, `registry.py:42,75`), BUT live probe `uep_get_dwg_conversion_status` → **`any_available: false`** (no ODA / no `dwg2dxf` on PATH; `Dockerfile:43` install fell through). Every `.dwg` upload → `DWG_CONVERSION_FAILED`. → A user cannot upload a DWG and get a result. Do NOT claim "PDF, DWG" as functional until the binary ships in the prod image. **Note:** native DXF (no binary needed) DOES work — see §2. Fix decided outside this session. |
 | "Offline ČSN standards database" | STUB | `search_czech_construction_norms` is Perplexity **web** search + small local KB, not a local norms DB. |
 | Phase 0a completeness-audit **enforcement** | STUB | Documented in CLAUDE.md as mandatory gate; no gate() enforcement found in code. |
 
@@ -78,16 +82,16 @@ Also note: README §3.2/§3.4 describes the analyzer as "PDF-to-structured-data 
 
 | Item | Landing | README | product.md | Truth |
 |---|---|---|---|---|
-| Element types | **24** | 22 | 23 | **24** (landing is right; README/product.md stale) |
-| MCP tools | (module-level) | 9 | 9 (UI/MCP/API) | **20 registered** (`server.py:23-213`) |
-| Test count | (not cited) | — | 1036 / 921 | **1249** |
+| Element types | **24** | 22 | 23 | **24** — SOURCE-VERIFIED (`pour-decision.ts` union = 24 real + `other`). README/product.md stale. Safe to fix; **held pending explicit go** (no edit this pass). |
+| MCP tools | (module-level) | 9 | 9 (UI/MCP/API) | **Ambiguous — DO NOT advertise a number yet.** 20 live-exposed includes ~5 introspection/operational probes (`uep_get_job`, `uep_get_dwg_conversion_status`, `uep_list_supported_formats`, `uep_get_coverage_matrix`, `uep_get_reconciliation_rules`) — not user-facing tools. compat-test asserts 11. True user-facing **work-tool** count = separate deliberate decision (derive exactly from `server.py`). **No number changed this pass.** |
+| Test count | (not cited) | — | 1036 / 921 | **1249 is an AUDIT figure — do NOT stamp on trust.** Re-run `Monolit-Planner/shared` (`npm test`) to confirm the live number before writing it anywhere. **Held pending live run + go.** |
 | Analyzer impl | "v přípravě" (honest) | "MinerU + Gemini" | — | regex + pdfplumber (MCP tool); cross-doc = BETA |
 
 ---
 
 ## 7. Overclaim risk list (for any deck / copy review)
 
-1. ~~**DWG upload** — live landing promises it; no parser.~~ **RETRACTED** — DWG/DXF is a live UEP pipeline (§2). Keep "PDF, DWG" on the landing. (One residual nuance: `dwg2dxf` binary install is best-effort in the image; if it ever fails to install, `.dwg` uploads return `DWG_CONVERSION_FAILED` — operational, not a copy issue.)
+1. **DWG upload — non-functional on prod.** Adapter is wired but the conversion binary is absent in the deployed image (live probe `any_available: false`); `.dwg` → `DWG_CONVERSION_FAILED`. The landing's "PDF, DWG" is a false functional claim today. → Fix outside this session: install ODA/libredwg in the prod image (keep claim) OR remove "DWG" (drop claim). Native DXF is unaffected (works). **No edit made this pass.**
 2. **"Resource ceiling for all elements"** — only 6/24. → Caveat.
 3. **"MinerU OCR pipeline"** — not wired. → Don't present as a live step.
 4. **README "10-minute scenario" step 1 (MinerU OCR)** — overstates the live path.
