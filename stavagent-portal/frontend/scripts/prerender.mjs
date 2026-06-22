@@ -65,7 +65,7 @@ const INDEX_HTML = join(DIST_DIR, 'index.html');
  *                  post-mount <head> state so each dist/<route>/index.html
  *                  ships with the correct canonical + cs/en/x-default set.
  */
-const ROUTES_TO_PRERENDER = ['/', '/en/', '/team', '/en/team'];
+const ROUTES_TO_PRERENDER = ['/', '/en/', '/team', '/en/team', '/en/pitch'];
 
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const POST_RENDER_SETTLE_MS = 200; // small buffer for final synchronous renders
@@ -144,6 +144,7 @@ async function applySnapshotIfPresent() {
     'en/index.html',
     'team/index.html',
     'en/team/index.html',
+    'en/pitch/index.html',
   ];
 
   for (const relPath of snapshotFiles) {

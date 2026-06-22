@@ -735,3 +735,36 @@
     width: 100%;
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Public marketing nav — responsive (landing CZ "/", landing EN "/en/", pitch).
+   The landing navs are a single flex row: section anchor links + locale switch
+   + login + CTA. On phones that row overflows and clips the right edge — incl.
+   the language switch and the CTA. Rules below:
+     • hide the in-page section anchor links < 768px — they are pure scroll-to
+       conveniences, also present in the footer, so nothing is lost;
+     • let the nav and the remaining controls (locale switch, login, CTA) wrap
+       cleanly onto a second line instead of clipping, and free the nav height.
+   Presentational only — no marketing content / section / copy change. Keeps the
+   labelled language switch reachable on every public page on mobile (AC#1).
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pub-nav {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    row-gap: 8px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .pub-nav__links {
+    display: none !important;
+  }
+
+  .pub-nav__actions {
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    row-gap: 8px !important;
+    column-gap: 8px !important;
+  }
+}
