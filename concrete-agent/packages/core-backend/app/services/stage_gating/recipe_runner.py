@@ -198,6 +198,10 @@ def _quantify_from_documents(documents: dict, object_type: Optional[str]):
     from app.mcp.tools.budget import parse_construction_budget
     from app.mcp.tools.classifier import _classify
     from app.mcp.tools.extract_tz_fields import extract_tz_fields
+    from app.services.chunked_tz_extraction import (
+        _CHUNK_THRESHOLD_CHARS,
+        extract_tz_elements_chunked,
+    )
     from app.services.stage_gating.soupis_quantity_join import map_soupis_to_elements
 
     tools: list[str] = []
@@ -206,13 +210,24 @@ def _quantify_from_documents(documents: dict, object_type: Optional[str]):
     if not tz_text and not tz_b64:
         return None, None, None, tools
 
-    tz = _call_tool(
-        "extract_tz_fields",
-        extract_tz_fields(
-            text=tz_text, file_base64=tz_b64, filename=documents.get("tz_filename", "")
-        ),
-    )
-    tools.append("extract_tz_fields")
+    # Long TZ full-text → chunk it and run extract_tz_fields PER CHUNK, merging the
+    # per-chunk element lists by element identity (recon failure-mode A/B/C cure),
+    # before the SAME deterministic join. A base64 PDF or a short text stays on the
+    # single-pass extractor (the chunker would only add boundary risk for no gain).
+    if tz_text and len(tz_text) > _CHUNK_THRESHOLD_CHARS:
+        tz = _call_tool(
+            "extract_tz_fields_chunked",
+            extract_tz_elements_chunked(text=tz_text),
+        )
+        tools.append("extract_tz_fields_chunked")
+    else:
+        tz = _call_tool(
+            "extract_tz_fields",
+            extract_tz_fields(
+                text=tz_text, file_base64=tz_b64, filename=documents.get("tz_filename", "")
+            ),
+        )
+        tools.append("extract_tz_fields")
     if "error" in tz:
         raise RuntimeError(f"extract_tz_fields failed: {tz['error']}")
     tz_elements = tz.get("elements") or []

@@ -33,6 +33,15 @@ _SECTION_HEADING_RE = re.compile(
 )
 
 _PAGE_BREAK = "--- PAGE BREAK ---"
+# The downstream stage-1 extractor (extract_tz_fields) and the pdfplumber L1
+# cascade emit NUMBERED page markers "--- PAGE n ---", NOT the "--- PAGE BREAK ---"
+# sentinel this chunker was originally written for. Depending only on the latter
+# silently collapsed a real TZ to ONE "page", defeating page-group chunking
+# (recon failure-mode C). Recognise both forms.
+_PAGE_MARKER_RE = re.compile(
+    r"^[ \t]*---[ \t]*PAGE(?:[ \t]+\d+)?[ \t]*(?:BREAK)?[ \t]*---[ \t]*$",
+    re.IGNORECASE | re.MULTILINE,
+)
 
 # Min chars to consider a chunk valid
 _MIN_CHUNK_CHARS = 200
@@ -91,10 +100,39 @@ def chunk_pdf_text(
     return _chunk_by_page_groups(pages)
 
 
+def _value_safe_overlap(prev_text: str, max_chars: int = _OVERLAP_CHARS) -> str:
+    """Tail of ``prev_text`` (≤ max_chars) cut on a whitespace boundary so the
+    overlap never severs a value token mid-string.
+
+    The original blind ``prev_text[-500:]`` could split `C30/37` into `…C30/`
+    (end of chunk A) | `37…` (start of overlap on chunk B), so neither chunk's
+    regex matched the full grade (recon failure-mode C). Nudging the cut to the
+    nearest preceding whitespace guarantees the overlap starts at a token
+    boundary; the value survives whole in at least one chunk."""
+    if len(prev_text) <= max_chars:
+        return prev_text
+    cut = len(prev_text) - max_chars
+    # advance the cut forward to the next whitespace so we don't start mid-token
+    while cut < len(prev_text) and not prev_text[cut].isspace():
+        cut += 1
+    tail = prev_text[cut:].lstrip()
+    # guard: if the whole tail was one long token (no whitespace), fall back to
+    # the raw window rather than returning nothing.
+    return tail if tail else prev_text[-max_chars:]
+
+
 def _split_into_pages(text: str) -> List[str]:
-    """Split text by page break markers (from pdfplumber/MinerU)."""
-    if _PAGE_BREAK in text:
-        return [p.strip() for p in text.split(_PAGE_BREAK) if p.strip()]
+    """Split text by page markers (from pdfplumber/MinerU).
+
+    Recognises BOTH the numbered "--- PAGE n ---" marker (the real
+    pdfplumber/extract_tz_fields convention) and the legacy "--- PAGE BREAK ---"
+    sentinel. Depending only on the latter collapsed real TZs to one page
+    (failure-mode C). Triple-newline is the last-resort MinerU fallback."""
+    if _PAGE_MARKER_RE.search(text):
+        parts = _PAGE_MARKER_RE.split(text)
+        pages = [p.strip() for p in parts if p and p.strip()]
+        if pages:
+            return pages
 
     # MinerU sometimes uses triple newlines
     parts = re.split(r"\n{4,}", text)
@@ -209,8 +247,9 @@ def _split_large_section(
                 ),
                 current_text,
             ))
-            # Overlap: keep tail of previous chunk
-            current_text = current_text[-_OVERLAP_CHARS:] + "\n\n" + para
+            # Overlap: keep tail of previous chunk (value-safe — never split a
+            # token like C30/37 across the boundary; recon failure-mode C).
+            current_text = _value_safe_overlap(current_text) + "\n\n" + para
             sub_idx += 1
         else:
             current_text += ("\n\n" if current_text else "") + para
@@ -260,10 +299,10 @@ def _chunk_by_page_groups(pages: List[str]) -> List[Tuple[ChunkInfo, str]]:
         end = min(i + _PAGES_PER_GROUP, total)
         group_pages = pages[i:end]
 
-        # Add overlap from previous page
+        # Add overlap from previous page (value-safe — never split a token like
+        # C30/37 across the page-group boundary; recon failure-mode C).
         if i > 0:
-            prev_text = pages[i - 1]
-            overlap = prev_text[-_OVERLAP_CHARS:] if len(prev_text) > _OVERLAP_CHARS else prev_text
+            overlap = _value_safe_overlap(pages[i - 1])
             group_text = overlap + "\n\n" + ("\n\n" + _PAGE_BREAK + "\n\n").join(group_pages)
         else:
             group_text = ("\n\n" + _PAGE_BREAK + "\n\n").join(group_pages)
