@@ -3,7 +3,7 @@
  * Extracted from PlannerPage.tsx.
  */
 
-import { addWorkDays } from '@stavagent/monolit-shared';
+import { addWorkDays, type PlannerOutput } from '@stavagent/monolit-shared';
 
 export function formatCZK(val: number): string {
   return val.toLocaleString('cs-CZ', { maximumFractionDigits: 0 }) + ' Kč';
@@ -11,6 +11,21 @@ export function formatCZK(val: number): string {
 
 export function formatNum(val: number, decimals = 1): string {
   return val.toLocaleString('cs-CZ', { maximumFractionDigits: decimals });
+}
+
+/**
+ * Betonáři / záběr — the recommended pour-crew size shown in the Betonáž card.
+ * SINGLE SOURCE: returns the engine's front-capacity composition
+ * (computePourCrew → resources.pour_crew_breakdown.total), NOT a UI
+ * re-derivation. Returns null when there is no real pour to display.
+ * (§4 parity Gate A — the card used to recompute max(3, ceil(V/20)) inline,
+ * which diverged from the engine for non-trivial pours.)
+ */
+export function pourCrewRecommended(plan: PlannerOutput): number | null {
+  const tactVol = plan.pour_decision?.tact_volume_m3 ?? 0;
+  const total = plan.resources?.pour_crew_breakdown?.total;
+  if (tactVol <= 0 || total == null || total <= 0) return null;
+  return total;
 }
 
 /** Map work-day range [start, end] to calendar date string */

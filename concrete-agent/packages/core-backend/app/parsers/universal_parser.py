@@ -54,6 +54,9 @@ def parse_any(file_path: str) -> ParsedDocument:
     elif fmt == SourceFormat.XML_TSKP:
         return _stub_doc(fmt, file_path, "XML TSKP parser — use tskpParserService (Node.js)")
 
+    elif fmt == SourceFormat.XML_ASPE_XC4:
+        return _stub_doc(fmt, file_path, "AspeEsticon XC4 export (soupis prací) — use KROSParser directly")
+
     elif fmt == SourceFormat.IFC:
         return _stub_doc(fmt, file_path, "IFC parser — requires ifcopenshell")
 

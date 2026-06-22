@@ -3,8 +3,31 @@
 <!--
 Pattern numbering audit 2026-06-02 (RD Jáchymov DXF-takeoff prototype):
 Sequential 1..49 validated (no duplicates, no gaps).
-last_number: 49
-next_pattern: 50  ← use this for any new additions.
+last_number: 57
+next_pattern: 58  ← use this for any new additions.
+
+Added 2026-06-12 (SO-202 KV calibration week — codification batch, DOCS
+ONLY): Patterns 51–57. Implementation of 51–55 is deliberately DEFERRED
+to a single "physics validation rules" batch AFTER Part C, on top of the
+Part B post-extraction cross-check infrastructure (same seam); 56 at the
+crew/cost logic recon (Fáze 3); 57 is an ongoing provenance discipline.
+51 Pour-window feasibility hint (V ÷ finishing rate vs ~20–24 h limit;
+KV 16 h → 1 takt ✓, Žalmanov 32 h → 3 etapy ✓) · 52 Deck-thickness
+plausibility corridor (m³÷plocha vs L/35–L/50) · 53 Catalog DO-band ≠
+project grade (NotebookLM false alarm) · 54 TZ internal consistency
+cross-check (KV «5×20» vs «4×20») · 55 Mass-pour thermal protocol
+warning (CIRIA C660) · 56 Rotation economics (rotation ⇒ no §114 ZP
+overtime; night share ⇒ noční příplatek; Nh invariant) · 57 «Rule 605»
+provenance meta-pattern (a number without a source tag becomes truth by
+age).
+
+Added 2026-06-12 (SO-202 KV labor-norm calibration): Pattern 50
+(Front-capacity staffing — crew sized by the work front's capacity, not by
+volume/deadline; rate = front bottleneck (finishing / crane cycle / edge /
+access); time pressure ⇒ duration / rotation / second front, never crew
+inflation; Nh = crew(front) × duration. Source: Caltrans Deck Constr.
+Manual Table 1.1 + potvrzeno Alexander). Origin: first-pass SO-202 betonáž
+model drew 24 people on one finishing front (2.4× overestimate).
 
 Added 2026-06-02 (DXF-takeoff P0 prototype): Pattern 49 (DXF-First — parse
 vector structure before vision; complementary to Pattern 39 by source type:
@@ -2210,6 +2233,185 @@ Areas extracted from DXF reconcile with the manual obmer; vision used only where
 - Pattern 40 (Host-delegated vision + MCP gate) — the walk_drawings flow is the vision fallback for 49 (registered MCP tool: `validate_drawing_element`, module `walk_drawings.py`)
 - Pattern 45 (Výměry-First) — DXF auto-fills the výměry register (conf 1.0)
 - Pattern 47 (Fence-post counting) — block/label counts from DXF are authoritative over `length÷spacing`
+
+---
+
+## Pattern 50: Front-capacity staffing — crew sized by the work front, not by volume or deadline
+
+**Source:** SO-202 KV labor-norm calibration (2026-06-12) — Caltrans Bridge Deck Construction Manual (Oct 2015) Table 1.1 + bridge deck method statement; potvrzeno Alexander.
+
+### Problem
+When a pour (or any operation) is large or the deadline is tight, the naive model inflates the crew: "more m³ → more people", "2 pumps → 2 crews". This draws an army that physically cannot fit on the front — the SO-202 first-pass model put 24 people on one deck pour (12 per pump line × 2) and overestimated betonáž 2.4× (380.4 vs 156.6 Nh). People are a limited resource; the engine even warns about it (resource ceiling).
+
+### Principle
+A crew is sized by the **capacity of its work front**, never by volume or deadline:
+- The rate is set by the **front's bottleneck** — finishing operations / crane cycle / edge length / access — not by added headcount. (SO-202 deck: 40–45 m³/h FINISHING-governed; the 2 pumps merely feed the front and do not multiply the crew; pump operators are external, not in crew Nh.)
+- When time is short, the levers are **duration**, **crew rotation** (second shift, constant on-site headcount, Nh does not double) or a **second front** — never inflating the crew on one front.
+- **Nh = crew(front) × duration.**
+
+Reference crew for a bridge deck front (Caltrans Table 1.1): foreman 1 + rake 2 + machine operator 1 + finishers 2 + broom/cure 1 + vibrators 2 + bridge carpenter watching falsework 1 + truck tender 1 = 11 (+ 1 záloha per Alexander = 12).
+
+### Anti-pattern
+Multiplying the crew by the number of pumps/machines feeding one front, or back-solving headcount from a deadline ("we need it in X hours → Y people").
+
+### Invariant
+In labor projections, a confirmed front-crew model carries its provenance (`norm_source`) and a crew constant per front; volume changes the **hours**, rotation changes the **shifts** — neither changes the on-site headcount.
+
+### Related
+- Pattern 3 (Triangulation) — world references (Caltrans) beat numbers argued from memory
+- `Monolit-Planner/shared/src/calculators/labor-norms.ts` — reference implementation (`betonaz_crew_model`, domain header)
+
+---
+
+> **Patterns 51–57 — codified 2026-06-12, implementation DEFERRED.**
+> 51–55 are siblings of the Part B validation rules and will be implemented
+> as ONE "physics validation rules" batch AFTER Part C, on the Part B
+> post-extraction cross-check infrastructure (shared seam). 56 belongs to
+> the crew/cost logic recon (Fáze 3). 57 is an ongoing discipline. This
+> registry entry is the record — no code accompanies it.
+
+## Pattern 51: Pour-window feasibility — hint when one takt cannot physically fit
+
+**Source:** SO-202 KV (693 m³, 1 takt) + Žalmanov PDPS (1 349 m³, 3 etapy) — physics + both projektant decisions (2026-06-12).
+
+### Problem
+A single-takt pour of a large volume can be physically impossible to finish inside a continuous-pour window, but the extraction/plan happily carries "1 takt" without a sanity check — or, inversely, flags a legitimate single takt as suspicious.
+
+### Principle
+Continuous pour volume ÷ effective FINISHING-governed rate (Pattern 50) = pour window. Window > the practical continuous-pour limit (~20–24 h) ⇒ emit the **hint** «jednotaktová betonáž nepravděpodobná, očekávej etapy/pracovní spáry». A hint, not a gate — the projektant decides.
+
+Calibration on both real PDPS: KV 693 m³ → 16 h → 1 takt ✓ (no hint, correct); Žalmanov 1 349 m³ → 32 h → 3 etapy ✓ (hint fires, matches the projektant's split). The rule predicts both designers' choices.
+
+### Anti-pattern
+Hard-failing a plan on the window, or checking volume against pump capacity (pumps are not the bottleneck — Pattern 50).
+
+### Invariant
+The window check uses the finishing-governed rate, never nominal pump throughput; the output is advisory with both numbers quoted (window vs limit).
+
+### Related
+- Pattern 50 (Front-capacity staffing) — supplies the rate
+- Part B validation rules — implementation seam (post Part C)
+
+## Pattern 52: Deck-thickness plausibility corridor — gross-error trap on NK volume
+
+**Source:** SO-202 KV golden recalibration — odhad 605 m³ vs VV 693.35 m³ (2026-06-12).
+
+### Problem
+A wrong NK volume (lost multiplier, LM/PM swapped, a foreign position summed into NK) survives extraction because nothing relates volume to geometry.
+
+### Principle
+Reduced deck thickness = m³ ÷ plocha, checked against the max span corridor **~L/35–L/50** (dvoutrám, dodatečně předpjatý). Outside the corridor ⇒ flag for review with the computed thickness and the corridor bounds.
+
+### Anti-pattern
+Treating the corridor as a precision check — it is a GROSS-error trap only: the 605 odhad (−13 %) passed it; an order-of-magnitude or swapped-bridge error does not.
+
+### Invariant
+The corridor never blocks; it flags. Subtype-specific bounds (deskový/komora differ from dvoutrám) come from the existing `DECK_SUBTYPE_EQ_THICKNESS_M` family, not new constants.
+
+### Related
+- Pattern 57 (Rule 605) — the provenance failure this rule backstops
+- Engine `checkVolumeGeometry()` (v4.22) — the existing coarse sibling (0.3×/3× ratio); 52 is the finer span-relative corridor
+
+## Pattern 53: Catalog DO-band ≠ project grade — «Z BET DO C40/50» is a band, not a spec
+
+**Source:** NotebookLM false alarm on SO-202 (2026-06-12).
+
+### Problem
+OTSKP/ÚRS position names like «Z BET DO C40/50» state the catalog price band («do» = up to C40/50). A validator comparing the project grade (C35/45) to the band literal reports a phantom discrepancy.
+
+### Principle
+The grade in a DO-band catalog name is the band's UPPER bound. Project grade ≤ band bound ⇒ consistent, NOT a finding. Validation rules must parse the «DO» semantics before comparing grades.
+
+### Anti-pattern
+String-matching concrete classes between TZ and catalog position names without band semantics — generates false alarms that erode trust in real flags.
+
+### Invariant
+A grade-vs-catalog check may only flag when the project grade EXCEEDS the band bound (wrong price band) or the position has an exact-grade name (no «DO»).
+
+### Related
+- Pattern 3 (Triangulation no-winner) — a "discrepancy" needs source semantics first
+- Part B validation rules — implementation seam (post Part C)
+
+## Pattern 54: TZ internal consistency — repeated parameters must agree across sections
+
+**Source:** SO-202 KV TZ: §2.1 «15 + 5×20 + 15» vs §6.5.1 «4×20» (2026-06-12).
+
+### Problem
+Key parameters (rozpětí, délky, počty polí) appear in a TZ multiple times — and the sections can contradict each other. Extraction that reads ONE occurrence silently inherits whichever section it happened to parse.
+
+### Principle
+Parameters extracted more than once are cross-checked between sections AND against derived geometry (Σ spans vs bridge length). A contradiction ⇒ flag carrying **both quotes verbatim with their section anchors** — the reviewer sees the conflict, not a silent pick.
+
+### Anti-pattern
+First-match-wins extraction of a repeated parameter; or resolving the conflict silently by any heuristic.
+
+### Invariant
+A multi-occurrence parameter is either consistent (single value, multiple anchors) or flagged (all values, all anchors) — never silently single-sourced.
+
+### Related
+- Pattern 29 (Continuous source provenance) — anchors per occurrence
+- Part B validation rules — implementation seam (post Part C)
+
+## Pattern 55: Mass-pour thermal protocol — warning above the mass-concrete threshold
+
+**Source:** CIRIA C660 (early-age thermal crack control); SO-202 KV mega-pour review (2026-06-12).
+
+### Problem
+A continuous mass pour (deep sections / large m³) has early-age thermal risks (core–surface gradient cracking) that no current warning covers — the engine warns about pumps and continuity, not thermal control.
+
+### Principle
+Continuous mass above the threshold (deep sections / large volumes per CIRIA C660 criteria) ⇒ **warning** requiring a thermal protocol: core–surface gradient monitoring, mix measures (retarders / low-heat cement), and the matching ošetřování regime.
+
+### Anti-pattern
+Treating curing class (TKP 18) as covering thermal mass effects — třída ošetřování governs surface curing duration, not internal gradient control.
+
+### Invariant
+The warning cites the threshold criterion and the source norm. At implementation time, the CIRIA C660 document goes into the norms-bucket FIRST (provenance before rule — Pattern 57).
+
+### Related
+- Pattern 51 (Pour-window) — same mega-pour rule family
+- `docs/steering/domain.md` curing rules — the surface-curing sibling
+
+## Pattern 56: Rotation economics — rotation changes shifts, not Nh; night premium is a cost-side fact
+
+**Source:** SO-202 KV crew-model correction (Pattern 50) + §114/§116 ZP semantics (2026-06-12). Scope: Fáze 3 crew/cost recon.
+
+### Problem
+Crew rotation on long pours gets conflated with overtime: a 20 h pour modeled as one crew working 20 h generates phantom +25 % §114 ZP přesčas that pure rotation never incurs.
+
+### Principle
+Pure shift rotation ⇒ **zero overtime** — each worker works a normal shift, so the §114 ZP +25 % does not arise. What IS unavoidable on a >12 h pour is the **night share (22:00–06:00)** ⇒ noční příplatek applies on the COST side. **Nh are invariant to rotation** (constant headcount × duration — Pattern 50); only the cost decomposition changes.
+
+### Anti-pattern
+Billing a rotated pour as one crew × full duration with overtime multipliers; or doubling Nh because "two crews were involved".
+
+### Invariant
+Rotation affects the shift count and the night-hour share, never the Nh total. Verify against the existing v4.20 pour cost split at the crew/cost logic recon.
+
+### Related
+- Pattern 50 (Front-capacity staffing) — the Nh side of the same model
+- Engine v4.20 multi-shift pour cost path — the code to reconcile at recon
+
+## Pattern 57: «Rule 605» — a number without a source tag becomes truth by age
+
+**Source:** SO-202 KV: odhad 605 m³ lived in the golden as fact until the VV 422336 check exposed it (693.35 m³) — 2026-06-12.
+
+### Problem
+A number entered once without source status (an odhad, a placeholder, a heuristic output) survives sessions, gets copied into tests and docs, and hardens into "the known value" — its weakness invisible precisely because nothing marks it.
+
+### Principle
+Every number in an etalon/norm/golden carries its provenance tag: **[TZ §X / VV pos. / CN / norma / odhad]**. When a more authoritative source appears, it **visibly overrides** the weaker one (the override is recorded, not silently substituted). Authority order mirrors the confidence ladder: measured document (VV/TZ) > vendor CN > norma default > odhad.
+
+### Anti-pattern
+"It's been 605 in the golden for months, so it's correct." Age is not provenance.
+
+### Invariant
+A snapshot/norm value without a source tag is treated as `odhad` until tagged — and an odhad may never silently beat a tagged source. (Enacted in code via `LaborOperationProjection.norm_source` and the golden MD per-row provenance columns.)
+
+### Related
+- Pattern 46 (Weakest-link provenance) — the derived-quantity sibling
+- Pattern 29 (Continuous source provenance) — per-item source discipline
+- CLAUDE.md key rule «Confidence: never overwrite higher with lower» — same ladder, opposite direction guarded
 
 ---
 

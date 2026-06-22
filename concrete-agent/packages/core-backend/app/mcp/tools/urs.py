@@ -50,6 +50,16 @@ async def find_urs_code(
             - 'pozemní stavba, bytový dům, 1.PP'
             - 'výšková budova, 12 pater, ocelový skelet'
             - 'rekonstrukce, bourací práce'
+
+    Each result carries provenance fields (carrier-parity with find_otskp_code):
+    ``catalog="urs"``, ``catalog_version`` (honest null — ÚRS web/matcher does not
+    report a catalog version, so it is NEVER a constant — Fix 3 lesson), ``unit``,
+    ``unit_price_czk`` (honest null — ÚRS is licensed data, often priceless), and
+    ``match_kind`` ∈ {``item`` | ``group`` | ``raw_context`` | ``none``}. Both
+    search branches stamp ``match_kind`` on EVERY result so the catalog-binding
+    adapter derives a status-enum deterministically without sort-sniffing the
+    source. The status-enum itself lives in the adapter, NOT here ("tools stay
+    dumb"); per design §5.1 ÚRS is never ``exact``.
     """
     try:
         results = []
@@ -76,11 +86,13 @@ async def find_urs_code(
             "total_found": len(results),
             "query": description,
             "context": context,
+            # Catalog marker at the envelope level (parity with OTSKP provenance).
+            "catalog": "urs",
         }
 
     except Exception as e:
         logger.error(f"[MCP/URS] Error: {e}")
-        return {"error": str(e), "results": [], "total_found": 0}
+        return {"error": str(e), "results": [], "total_found": 0, "catalog": "urs"}
 
 
 async def _perplexity_urs_search(description: str, context: Optional[str]) -> list[dict]:
@@ -125,8 +137,17 @@ async def _perplexity_urs_search(description: str, context: Optional[str]) -> li
             codes.append({
                 "code": code,
                 "description": description,
+                # unit/price are NOT reported by the web-search branch — honest null.
+                "unit": None,
+                "unit_price_czk": None,
                 "confidence": 0.80,
                 "source": "perplexity_urs_search",
+                "catalog": "urs",
+                # URS web-search does NOT report a catalog version → honest null,
+                # never a constant (direct Fix 3 lesson — no hardcoded version).
+                "catalog_version": None,
+                # A concrete code was extracted → item-level match.
+                "match_kind": "item",
             })
 
         # If no codes extracted, return the raw text as context
@@ -134,8 +155,14 @@ async def _perplexity_urs_search(description: str, context: Optional[str]) -> li
             return [{
                 "code": "N/A",
                 "description": text[:500],
+                "unit": None,
+                "unit_price_czk": None,
                 "confidence": 0.5,
                 "source": "perplexity_urs_search",
+                "catalog": "urs",
+                "catalog_version": None,
+                # Raw prose, no code — the adapter maps this to not_verified.
+                "match_kind": "raw_context",
                 "note": "No specific code extracted — see description for context",
             }]
 
@@ -175,8 +202,15 @@ async def _urs_matcher_search(description: str) -> list[dict]:
                     "code": c.get("code", c.get("urs_code", "")),
                     "description": c.get("name", c.get("urs_name", "")),
                     "unit": c.get("unit", ""),
+                    # Matcher does not return a price — honest null (not 0).
+                    "unit_price_czk": c.get("unit_price_czk"),
                     "confidence": c.get("confidence", 0.5),
                     "source": "urs_matcher_service",
+                    "catalog": "urs",
+                    # Matcher reports no catalog version → honest null (Fix 3).
+                    "catalog_version": None,
+                    # Matcher candidates are concrete item codes → item-level.
+                    "match_kind": "item",
                 }
                 for c in candidates
             ]

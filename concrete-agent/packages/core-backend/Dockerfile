@@ -1,4 +1,8 @@
-FROM python:3.11-slim
+# Pinned to bookworm: prod's last good image (before the PR3 IFC/DWG work) was
+# built on Debian 12. The floating `python:3.11-slim` tag has since rolled to
+# trixie (13) — an unvalidated jump for the native deps below — so we pin to the
+# known-good bookworm to keep the build deterministic.
+FROM python:3.11-slim-bookworm
 
 # System deps:
 #   libpq-dev + gcc     → psycopg2 wheel build
@@ -16,6 +20,7 @@ FROM python:3.11-slim
 #                         "ODAFileConverter" on PATH). EULA acceptance is
 #                         build-time, not runtime — STAVAGENT_ClaudeCode_
 #                         Session_Mantra has the operator step list.
+# Required runtime/build deps — the image cannot run without these.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     gcc \
@@ -23,10 +28,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglu1-mesa \
     libxml2 \
     libxslt1.1 \
-    libredwg-tools \
     ca-certificates \
     curl \
     unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# OPTIONAL — libredwg-tools provides /usr/bin/dwg2dxf (DWG→DXF fallback B,
+# PR3 §3.1). It is NOT packaged in Debian bookworm/trixie `main`, so install it
+# BEST-EFFORT: a missing optional tool must never break the whole image (the bug
+# that froze prod — every build died here). Without it, fallback B is disabled;
+# fallback A (ODAFileConverter) still runs and DwgExtractor escalates
+# DWG_CONVERSION_FAILED if neither converter is present.
+RUN apt-get update \
+    && (apt-get install -y --no-install-recommends libredwg-tools \
+        || echo "WARNING: libredwg-tools unavailable in apt — DWG fallback B (dwg2dxf) disabled") \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

@@ -53,7 +53,7 @@ review summary). GET endpoints (read paths) остаются публичным�
 
 Verify через curl:
 ```bash
-curl -i https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/api/registry/projects
+curl -i https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/api/registry/projects
 ```
 
 Currently returns 200 + полный список 18+ projects с client names

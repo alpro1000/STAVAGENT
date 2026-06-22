@@ -232,7 +232,9 @@ function LaborEntryRows({
       </tr>
       <tr className="flat-tov flat-tov--detail">
         <td colSpan={8} style={{ paddingLeft: 32 }}>
-          {`${entry.count} lid${entry.count === 1 ? '' : entry.count < 5 ? 'é' : 'í'} × ${fmt(entry.hours, 1)}h × ${entry.hourlyRate} Kč/h`}
+          {/* Money = presence × rate (a shift is paid in full); the hours
+              column above shows canonical normohodiny (×0.8). */}
+          {`${entry.count} lid${entry.count === 1 ? '' : entry.count < 5 ? 'é' : 'í'} · ${fmt(entry.hours, 1)} h přítomnosti × ${entry.hourlyRate} Kč/h`}
         </td>
         <td className="flat-col--right flat-mono"></td>
         <td className="flat-col--right flat-mono"></td>

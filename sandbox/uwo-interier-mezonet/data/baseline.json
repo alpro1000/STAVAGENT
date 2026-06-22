@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "what": "Frozen regression baseline for the UWO interiér/PSV sandbox.",
+    "frozen_at": "2026-06-08",
+    "tolerance_pct": 15,
+    "note": "grand_orientacni is checked ±15 % (calculator philosophy — odhad orientační, ne přesná cifra). master_offer_total + delta are reference figures (the +27 % gap the master under-scoped)."
+  },
+  "grand_orientacni": 1435990,
+  "tolerance_pct": 15,
+  "master_offer_total": 1127350,
+  "delta_vs_master": 308640,
+  "delta_vs_master_pct": 27.4,
+  "by_status": { "candidate": 192150, "group_only": 782620, "not_verified": 461220, "exact": 0 },
+  "expected_gap_keys": [
+    "malba_steny", "hydroizolace_koupelna", "montaz_zp", "samonivelacni_sterka",
+    "malba_podhledy", "kotel_demontaz", "kotel_montaz", "spalinova_cesta",
+    "kotel_revize", "schodiste_ochrana", "odvoz_suti", "administrativa", "hodinove_prace"
+  ]
+}

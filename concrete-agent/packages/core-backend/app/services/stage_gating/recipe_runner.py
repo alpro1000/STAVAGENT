@@ -50,6 +50,27 @@ NUANCE_DECISIONS_FIELD = "nuance_decisions"
 # {action, chosen_source, chosen_value, reason}. It NEVER computes a number.
 Decider = Callable[[dict], dict]
 
+# Curated calculator-output subset carried onto a work-item (§2 interview:
+# resource quantities + schedule metrics; the full PlannerOutput goes to the
+# deliverable metadata, not duplicated per row). Warnings ride alongside in
+# `calc_warnings`. Keys absent from the engine output stay absent (honest-blank).
+_CALC_SUBSET_KEYS = ("total_days", "num_tacts", "resources")
+
+
+def _calc_subset(calc: dict, *, element_name: str) -> dict:
+    """Pick the curated, source-grounded subset of a PlannerOutput for a work-item.
+
+    A carried number is traceable to the calc/element it came from (`_source`),
+    consistent with the work-item `_source` provenance — the numeric chain becomes
+    as replayable as the work provenance. NEVER fabricates: a missing key is simply
+    absent, never defaulted to a number.
+    """
+    subset = {k: calc[k] for k in _CALC_SUBSET_KEYS if k in calc}
+    subset["_source"] = (
+        f"calculator:{element_name} ← {calc.get('source', 'monolit_planner_api')}"
+    )
+    return subset
+
 
 # ── project-state loader/saver (W3b contract: loader→(payload, path)) ────────
 def _default_loader(project_id: str):
@@ -113,27 +134,143 @@ def _resolve_nuance(
 
 
 # ── per-state recipe steps ───────────────────────────────────────────────────
-def _detect_step(ctx: StepContext, loader, saver) -> StepResult:
+def _document_analysis_step(ctx: StepContext, loader, saver) -> StepResult:
+    """DOCUMENT_ANALYSIS: detect + cache the object type, and — when documents are
+    supplied — extract TZ elements + parse the soupis, JOIN the soupis quantities
+    into elements[] (P1 `map_soupis_to_elements`), and cache the quantified list
+    plus a `quantification_summary`. WORK_ATOMIZATION consumes the quantified
+    elements; it falls back to `options['elements']` when no documents were given
+    (full back-compat with the pre-P2 contract).
+
+    Soupis↔TZ volume divergences are surfaced as INGEST findings with an explicit
+    `origin: "ingest:soupis_vs_geometry"`, never folded into the calculator's
+    `calc_warnings` — they reach the deliverable on the same warning surface but
+    keep their own identity (the P2 pin-A constraint).
+    """
     from app.mcp.tools.object_type_detector import detect_and_cache_object_type
 
-    obj = (ctx.options or {}).get("object") or {}
+    opts = ctx.options or {}
+    obj = opts.get("object") or {}
     so_code = obj.get("object_code")
-    if not so_code:
-        return StepResult(outputs={"object_code": None, "object_type": None})
 
-    with _tracer.start_as_current_span("recipe.tool.detect_object_type"):
-        otype = detect_and_cache_object_type(
-            project_id=str(ctx.session.project_id),
-            so_code=so_code,
-            object_name=obj.get("object_name", ""),
-            charakteristika=obj.get("charakteristika", ""),
-            loader=loader,
-            saver=saver,
+    object_type = None
+    tools_invoked: list[str] = []
+    if so_code:
+        with _tracer.start_as_current_span("recipe.tool.detect_object_type"):
+            object_type = detect_and_cache_object_type(
+                project_id=str(ctx.session.project_id),
+                so_code=so_code,
+                object_name=obj.get("object_name", ""),
+                charakteristika=obj.get("charakteristika", ""),
+                loader=loader,
+                saver=saver,
+            )
+        tools_invoked.append("detect_object_type")
+
+    outputs: dict[str, Any] = {"object_code": so_code, "object_type": object_type}
+
+    # Documents → quantified elements[] (the seam P1's join was built for).
+    documents = opts.get("documents") or {}
+    if documents:
+        quantified, summary, q_warnings, doc_tools = _quantify_from_documents(
+            documents, object_type
         )
-    return StepResult(
-        outputs={"object_code": so_code, "object_type": otype},
-        tools_invoked=["detect_object_type"],
+        tools_invoked.extend(doc_tools)
+        if quantified is not None:
+            outputs["elements"] = quantified
+            outputs["quantification_summary"] = summary
+            if q_warnings:
+                outputs["quantification_warnings"] = q_warnings
+
+    return StepResult(outputs=outputs, tools_invoked=tools_invoked)
+
+
+def _quantify_from_documents(documents: dict, object_type: Optional[str]):
+    """Extract TZ elements + parse the soupis, then JOIN the soupis quantities
+    into the element list. Returns
+    `(quantified_elements | None, summary, ingest_warnings, tools_invoked)`.
+
+    The classifier's deterministic sync core (`_classify`) is the join seam — no
+    LLM, reproducible. `None` quantified means no TZ text was supplied (nothing to
+    build an element list from); the caller then leaves `options['elements']` to
+    drive WORK_ATOMIZATION unchanged.
+    """
+    from app.mcp.tools.budget import parse_construction_budget
+    from app.mcp.tools.classifier import _classify
+    from app.mcp.tools.extract_tz_fields import extract_tz_fields
+    from app.services.stage_gating.soupis_quantity_join import map_soupis_to_elements
+
+    tools: list[str] = []
+    tz_text = documents.get("tz_text")
+    tz_b64 = documents.get("tz_file_base64")
+    if not tz_text and not tz_b64:
+        return None, None, None, tools
+
+    tz = _call_tool(
+        "extract_tz_fields",
+        extract_tz_fields(
+            text=tz_text, file_base64=tz_b64, filename=documents.get("tz_filename", "")
+        ),
     )
+    tools.append("extract_tz_fields")
+    if "error" in tz:
+        raise RuntimeError(f"extract_tz_fields failed: {tz['error']}")
+    tz_elements = tz.get("elements") or []
+    geometry = (tz.get("object") or {}).get("geometry")
+
+    parsed_budget: dict = {"items": []}
+    soupis_b64 = documents.get("soupis_file_base64")
+    if soupis_b64:
+        parsed_budget = _call_tool(
+            "parse_construction_budget",
+            parse_construction_budget(
+                file_base64=soupis_b64,
+                filename=documents.get("soupis_filename", "soupis.xlsx"),
+            ),
+        )
+        tools.append("parse_construction_budget")
+        if "error" in parsed_budget:
+            raise RuntimeError(f"parse_construction_budget failed: {parsed_budget['error']}")
+
+    quantified = map_soupis_to_elements(
+        parsed_budget, tz_elements, geometry,
+        classify=_classify, object_type=object_type,
+    )
+    summary, q_warnings = _summarize_quantification(quantified)
+    return quantified, summary, q_warnings, tools
+
+
+def _summarize_quantification(quantified: list):
+    """Counts by `quantity_status` + structured INGEST divergence warnings.
+
+    Each divergence warning carries an explicit `origin` so it never masquerades
+    as a calculator warning when it reaches the deliverable alongside
+    `calc_warnings` — shared surface, distinct identity.
+    """
+    counts = {"extracted": 0, "missing": 0, "ambiguous": 0}
+    divergences: list[dict] = []
+    q_warnings: list[dict] = []
+    for el in quantified:
+        st = el.get("quantity_status")
+        if st in counts:
+            counts[st] += 1
+        div = el.get("quantity_divergence")
+        if div:
+            name = el.get("name")
+            divergences.append({"element_name": name, **div})
+            prefix = "⛔ KRITICKÉ" if div.get("severity") == "critical" else "⚠️"
+            q_warnings.append({
+                "origin": "ingest:soupis_vs_geometry",
+                "severity": div.get("severity"),
+                "element_name": name,
+                "message": (
+                    f"{prefix}: {name} — soupis {div.get('soupis_m3')} m³ vs "
+                    f"geometrie ~{div.get('geometry_expected_m3')} m³ "
+                    f"(poměr {div.get('ratio')})"
+                ),
+            })
+    summary = {**counts, "divergent": len(divergences), "divergences": divergences}
+    return summary, q_warnings
 
 
 def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
@@ -142,9 +279,15 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
     from app.mcp.tools.classifier import classify_construction_element
 
     opts = ctx.options or {}
-    elements = [dict(e) for e in (opts.get("elements") or [])]
-
     da = ctx.session.partials.get(WorkflowState.DOCUMENT_ANALYSIS.value, {})
+
+    # Elements come from DOCUMENT_ANALYSIS (quantified by the soupis→element join)
+    # when documents were supplied; otherwise fall back to caller-supplied
+    # options['elements'] (full back-compat with the pre-P2 contract).
+    da_elements = da.get("elements")
+    source_elements = da_elements if da_elements is not None else (opts.get("elements") or [])
+    elements = [dict(e) for e in source_elements]
+
     object_type = da.get("object_type")
     so_code = da.get("object_code") or (opts.get("object") or {}).get("object_code")
 
@@ -159,7 +302,13 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
                 name=el["name"], object_code=el.get("object_code"), object_type=object_type
             ),
         )
-        classified.append({"name": el["name"], "element_type": c.get("element_type")})
+        classified.append({
+            "name": el["name"],
+            "element_type": c.get("element_type"),
+            # classification confidence is no longer dropped at the seam
+            "classification_confidence": c.get("confidence"),
+            "classification_source": c.get("classification_source"),
+        })
     if elements:
         tools_invoked.append("classify_construction_element")
 
@@ -197,10 +346,15 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
     items = bd.get("items", [])
     tools_invoked.append("create_work_breakdown")
 
-    # 4) calculate_concrete_works — enrich the deck with schedule
+    # 4) calculate_concrete_works — the engine's output is NO LONGER discarded.
+    #    Its curated subset + warnings are carried onto the calculated element's
+    #    work-items; the full PlannerOutput is kept in the step metadata
+    #    (replayable). Elements the engine does not compute stay honest-blank
+    #    (calc=None, calc_status="not_calculated") from the breakdown contract.
     deck_name = next((c["name"] for c in classified if c["element_type"] == "mostovkova_deska"), None)
     deck = next((e for e in elements if e.get("name") == deck_name), None) if deck_name else None
     calc_keys = []
+    calc_metadata: Optional[dict] = None
     if deck:
         calc = _call_tool(
             "calculate_concrete_works",
@@ -211,8 +365,33 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
                 is_prestressed=bool(deck.get("is_prestressed")),
             ),
         )
-        calc_keys = sorted(calc.keys())[:6]
         tools_invoked.append("calculate_concrete_works")
+        calc_keys = sorted(calc.keys())[:6]
+        if "error" in calc:
+            # Honest-blank: the engine failed (unavailable / invalid input). Do NOT
+            # invent numbers — items keep calc_status="not_calculated"; the failure
+            # is recorded in metadata so the gap is visible, not silent.
+            calc_metadata = {
+                "element_name": deck_name, "element_type": "mostovkova_deska",
+                "status": "error", "error": calc.get("error"), "warnings": [],
+            }
+        else:
+            subset = _calc_subset(calc, element_name=deck_name)
+            warnings = list(calc.get("warnings") or [])
+            for it in items:
+                if it.get("element_name") == deck_name:
+                    it["calc"] = subset
+                    it["calc_status"] = "computed"
+                    it["calc_warnings"] = warnings
+            # Full PlannerOutput → deliverable metadata (replayable), not per-row.
+            # Carries its own `_source` so the raw stash is provenance-grounded —
+            # a replay knows which element/engine produced it (AC3), same as the
+            # per-row calc subset.
+            calc_metadata = {
+                "element_name": deck_name, "element_type": "mostovkova_deska",
+                "status": "computed", "raw": calc, "warnings": warnings,
+                "_source": subset["_source"],
+            }
 
     outputs: dict[str, Any] = {
         "object_type": object_type,
@@ -221,6 +400,8 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
         "breakdown_total_items": bd.get("total_items"),
         "calculate_keys": calc_keys,
     }
+    if calc_metadata is not None:
+        outputs["calc_metadata"] = calc_metadata
     if decision is not None:
         outputs["nuance_decision"] = decision
 
@@ -231,13 +412,26 @@ def _atomize_step(ctx: StepContext, decider, loader, saver) -> StepResult:
 def _export_step(ctx: StepContext) -> StepResult:
     from app.mcp.tools.export import export_soupis
 
+    da = ctx.session.partials.get(WorkflowState.DOCUMENT_ANALYSIS.value, {})
     wa = ctx.session.partials.get(WorkflowState.WORK_ATOMIZATION.value, {})
     items = wa.get("breakdown_items") or []
+
+    # INGEST quantification provenance rides to the COMMITTED deliverable next to
+    # the calc metadata, with its own identity — `quantification_warnings` is
+    # NEVER folded into `calc_warnings` (pin-A: shared surface, distinct origin).
+    quant: dict[str, Any] = {}
+    if da.get("quantification_summary") is not None:
+        quant["quantification_summary"] = da["quantification_summary"]
+    if da.get("quantification_warnings"):
+        quant["quantification_warnings"] = da["quantification_warnings"]
+
     if not items:
         # No atomized work (e.g. a generic /orchestrate walk that carried no recipe
         # inputs) → there is no deliverable to render. Complete cleanly. This is an
         # empty precondition, NOT a tool failure, so it must not fail loud.
-        return StepResult(outputs={"deliverable": None, "row_count": 0, "exported": False})
+        return StepResult(
+            outputs={"deliverable": None, "row_count": 0, "exported": False, **quant}
+        )
     exp = _call_tool("export_soupis", export_soupis(items=items))
     if "error" in exp:
         # Real failure: export was given items and the tool errored → fail loud.
@@ -248,7 +442,11 @@ def _export_step(ctx: StepContext) -> StepResult:
             "row_count": exp.get("row_count"),
             "source_preserved": exp.get("source_preserved"),
             "file_base64": exp.get("file_base64"),
+            # carried calculator output reaches the COMMITTED deliverable metadata
+            "calc_summary": exp.get("calc_summary"),
+            "calc_warnings": exp.get("calc_warnings"),
             "exported": True,
+            **quant,
         },
         tools_invoked=["export_soupis"],
     )
@@ -273,7 +471,7 @@ def make_recipe_tool_runner(
 
     def _runner(ctx: StepContext) -> StepResult:
         if ctx.state == WorkflowState.DOCUMENT_ANALYSIS:
-            return _detect_step(ctx, loader, saver)
+            return _document_analysis_step(ctx, loader, saver)
         if ctx.state == WorkflowState.WORK_ATOMIZATION:
             return _atomize_step(ctx, decider, loader, saver)
         if ctx.state == WorkflowState.COMMITTED:

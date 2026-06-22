@@ -12,10 +12,13 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   planElement,
+  buildScheduleProjection,
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
 import { getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
+import { extractConstructionTechnology } from '@stavagent/monolit-shared';
+import { estimateElementVolume } from '@stavagent/monolit-shared';
 import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure, getMostRestrictive } from '@stavagent/monolit-shared';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
@@ -669,19 +672,23 @@ export default function useCalculator() {
       }
       return;
     }
-    // Horizontal foundation blocks: L × W × H
+    // Prismatic box: L × W × H — via the SHARED element-geometry rule
+    // (single source: the engine + MCP use the same estimateElementVolume).
     const L = parseFloat(form.length_m_input);
     const W = parseFloat(form.width_m_input);
     const H = parseFloat(form.height_m);
     if (L > 0 && W > 0 && H > 0) {
-      const v = Math.round(L * W * H * 100) / 100;
-      const fwArea = Math.round(2 * (L + W) * H * 10) / 10;
-      setForm(prev => {
-        if (Math.abs(v - prev.volume_m3) < 0.01 && prev.formwork_area_m2 === String(fwArea)) {
-          return prev;
-        }
-        return { ...prev, volume_m3: v, formwork_area_m2: String(fwArea) };
-      });
+      const geom = estimateElementVolume(form.element_type, { length_m: L, width_m: W, height_m: H });
+      if (geom.applicable && geom.volume_m3 != null) {
+        const v = geom.volume_m3;
+        const fwArea = geom.formwork_area_m2 ?? 0;
+        setForm(prev => {
+          if (Math.abs(v - prev.volume_m3) < 0.01 && prev.formwork_area_m2 === String(fwArea)) {
+            return prev;
+          }
+          return { ...prev, volume_m3: v, formwork_area_m2: String(fwArea) };
+        });
+      }
     }
   }, [
     form.volume_mode,
@@ -703,37 +710,12 @@ export default function useCalculator() {
     }
   }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Smart defaults: auto-fill exposure_class, curing_class, concrete_class
-  // when element_type changes AND the user hasn't explicitly set them.
-  // Only apply if the field is empty (= no user override yet).
-  const prevElementTypeRef = useRef(form.element_type);
-  useEffect(() => {
-    if (form.element_type === prevElementTypeRef.current) return;
-    prevElementTypeRef.current = form.element_type;
-    const defaults = getSmartDefaults(form.element_type);
-    setForm(prev => {
-      const updates: Partial<typeof prev> = {};
-      // Only fill empty fields — user overrides are preserved
-      // Task 2 (2026-04-20): auto-suggest full exposure_classes array when
-      // user hasn't picked any yet. The legacy singular stays in sync via
-      // the write-through set at save time (see handleCalculate path).
-      if (!prev.exposure_classes || prev.exposure_classes.length === 0) {
-        if (defaults.exposure_classes.length > 0) {
-          updates.exposure_classes = [...defaults.exposure_classes];
-          // Keep legacy singular mirrored so anyone still reading it
-          // (advisor prompt, docs facts) sees the most-restrictive class.
-          updates.exposure_class = defaults.exposure_class;
-        }
-      }
-      if (!prev.curing_class) updates.curing_class = defaults.curing_class;
-      // Concrete class: only override if still at the generic C30/37 default
-      if (prev.concrete_class === 'C30/37' && defaults.typical_concrete !== 'C30/37') {
-        updates.concrete_class = defaults.typical_concrete;
-      }
-      if (Object.keys(updates).length === 0) return prev;
-      return { ...prev, ...updates };
-    });
-  }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
+  // (Smart-defaults auto-fill is consolidated into the single effect above —
+  // see `smartDefaultsAppliedFor`. A second, near-identical effect used to live
+  // here filling the same exposure/curing/concrete fields on element_type
+  // change; because both only fill empty fields and the effect above runs
+  // first, it was a redundant no-op. Removed in Phase 5 Step 3 PR3.)
+
 
   // ── Document suggestions fetch (once on mount, when portal_project_id is known) ──
   useEffect(() => {
@@ -883,13 +865,22 @@ export default function useCalculator() {
         construction_technology: form.construction_technology || undefined,
         bridge_deck_subtype: form.bridge_deck_subtype || undefined,
       };
-      // Include computed results if available
+      // Include computed results if available — the advisor mirrors the
+      // orchestrator: it sees the full engine-resolved plan and supplements
+      // it (risks, norms, key points), never recomputes it.
       if (result) {
         calculatorContext.computed_results = {
-          total_days: result.schedule?.total_days,
-          curing_days: result.formwork?.curing_days,
-          prestress_days: result.prestress?.days,
-          num_tacts: result.pour_decision?.num_tacts,
+          total_days: result.schedule?.total_days ?? undefined,
+          curing_days: result.formwork?.curing_days ?? undefined,
+          prestress_days: result.prestress?.days ?? undefined,
+          num_tacts: result.pour_decision?.num_tacts ?? undefined,
+          pour_mode: result.pour_decision?.pour_mode ?? undefined,
+          pour_hours: result.pour_decision?.pour_hours_per_tact ?? undefined,
+          pumps_required: result.pour_decision?.pumps_required ?? undefined,
+          formwork_system: result.formwork?.system?.name ?? undefined,
+          warnings: Array.isArray(result.warnings) && result.warnings.length > 0
+            ? result.warnings.slice(0, 6)
+            : undefined,
         };
       }
       const res = await fetch(`${API_URL}/api/planner-advisor`, {
@@ -898,11 +889,11 @@ export default function useCalculator() {
         body: JSON.stringify({
           element_type: form.element_type,
           volume_m3: form.volume_m3,
-          has_dilatacni_spary: form.tact_mode === 'spary' ? form.has_dilatacni_spary : false,
+          has_dilatacni_spary: form.has_dilatation_joints,
           concrete_class: form.concrete_class,
           temperature_c: form.temperature_c,
           total_length_m: form.total_length_m,
-          spara_spacing_m: form.spara_spacing_m,
+          spara_spacing_m: form.dilatation_spacing_m ? Number(form.dilatation_spacing_m) : undefined,
           // Phase 2: enriched context
           calculator_context: calculatorContext,
           // Phase 3: TZ text excerpt (if pasted)
@@ -921,20 +912,33 @@ export default function useCalculator() {
             data.approach.text = 'AI asistent vrátil neplatnou odpověď. Zkuste znovu za chvíli.';
             data.approach.parsed = null;
           } else {
-            try {
-              // BUG 2: Improved JSON extraction — try greedy last-match first
-              const jsonMatch = text.match(/\{[\s\S]*\}/);
-              if (jsonMatch) {
-                const parsed = JSON.parse(jsonMatch[0]);
-                // Validate expected schema
-                if (parsed && typeof parsed === 'object' && (
-                  parsed.pour_mode || parsed.klicove_body || parsed.reasoning
-                )) {
-                  data.approach.parsed = parsed;
-                }
+            // JSON extraction: direct parse first (clean response), then the
+            // outermost {...} slice (response wrapped in prose/markdown).
+            const tryParse = (s: string): Record<string, unknown> | null => {
+              try {
+                const p = JSON.parse(s);
+                return p && typeof p === 'object' && !Array.isArray(p) ? p : null;
+              } catch { return null; }
+            };
+            let parsed = tryParse(text.trim());
+            if (!parsed) {
+              const first = text.indexOf('{');
+              const last = text.lastIndexOf('}');
+              if (first !== -1 && last > first) parsed = tryParse(text.slice(first, last + 1));
+            }
+            if (parsed && (parsed.pour_mode || parsed.klicove_body || parsed.reasoning)) {
+              // Advisor mirrors the orchestrator: engine-resolved values are
+              // authoritative. A contradicting AI recommendation becomes a
+              // visible note, never a silent override.
+              const engineTacts = result?.pour_decision?.num_tacts;
+              const aiTacts = Number(parsed.recommended_tacts);
+              if (engineTacts && Number.isFinite(aiTacts) && aiTacts > 0 && aiTacts !== engineTacts) {
+                parsed.recommended_tacts = engineTacts;
+                const note = `AI navrhovalo ${aiTacts} záběrů — engine spočítal ${engineTacts}, platí engine.`;
+                parsed.warnings = [note, ...(Array.isArray(parsed.warnings) ? parsed.warnings as string[] : [])];
               }
-            } catch {
-              // JSON parse failed — show text as-is (markdown), not raw JSON attempt
+              data.approach.parsed = parsed;
+            } else if (!parsed) {
               console.warn('AI Advisor: could not parse JSON from response, using text fallback');
             }
           }
@@ -947,8 +951,8 @@ export default function useCalculator() {
       setAdvisorLoading(false);
     }
   }, [form.element_type, form.volume_m3,
-      form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
-      form.total_length_m, form.spara_spacing_m,
+      form.has_dilatation_joints, form.concrete_class, form.temperature_c,
+      form.total_length_m, form.dilatation_spacing_m,
       form.exposure_class, form.curing_class, form.height_m, form.is_prestressed,
       form.span_m, form.num_spans, form.construction_technology, tzText, result]);
 
@@ -1137,6 +1141,19 @@ export default function useCalculator() {
       // Still useful for římsa formwork selection + prestress days
       input.total_length_m = form.total_length_m;
     }
+    // Phase 5 Step 2: forward box geometry + unify the element length into
+    // total_length_m so tacts derive from the element's REAL length (the
+    // geometry↔takty link). Engine-side derive is gated behind !volume, so the
+    // frontend (which sends a derived volume) sets total_length_m itself here.
+    {
+      const gl = parseFloat(form.length_m_input);
+      const gw = parseFloat(form.width_m_input);
+      if (gl > 0) {
+        input.length_m = gl;
+        if (gw > 0) input.width_m = gw;
+        if (!input.total_length_m || input.total_length_m <= 0) input.total_length_m = gl;
+      }
+    }
     // Manual záběry (non-uniform volumes) override both tact count and per-tact volume.
     // Bottleneck záběr (largest volume) drives schedule calculation.
     // NOTE: this path is kept (unchanged) and takes precedence over Block A
@@ -1258,8 +1275,43 @@ export default function useCalculator() {
         if (ch) input.pile_cap_height_m = ch;
       }
     }
+
+    // ── tz_facts wire (Part B/C live) ────────────────────────────────────
+    // Derive the documented construction technology + pour-stage count from
+    // the pasted TZ text and pass it as the SEPARATE comparison source for
+    // the validation rule. Deliberately does NOT touch form.construction_technology
+    // (the user's input side) — if the TZ fact overwrote the user's choice the
+    // two would always match and the contradiction flag could never fire.
+    if (tzText && tzText.trim()) {
+      const tech = extractConstructionTechnology(tzText);
+      if (tech && (tech.technology || tech.pour_stages_count !== undefined)) {
+        input.tz_facts = {
+          construction: {
+            ...(tech.technology ? { technology: tech.technology } : {}),
+            ...(tech.pour_stages_count !== undefined
+              ? { pour_stages_count: tech.pour_stages_count } : {}),
+            quote: tech.quote,
+            anchor: tech.anchor ?? 'TZ (extrahováno z textu)',
+          },
+        };
+      }
+    }
     return input;
   };
+
+  // tz_facts wire — prefill the "Technologie výstavby" radio from the TZ text
+  // ONLY when it is still empty (UX convenience). If the user already chose a
+  // technology by hand we leave it untouched, so a deliberate deviation from
+  // the TZ still surfaces the validation flag. Runs once per distinct tzText.
+  useEffect(() => {
+    if (!tzText || !tzText.trim()) return;
+    if (form.construction_technology) return; // never override a manual choice
+    const tech = extractConstructionTechnology(tzText);
+    if (tech?.technology) {
+      update('construction_technology', tech.technology as FormState['construction_technology']);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tzText]);
 
   // Auto-calculate on first render with defaults
   const firstRun = useMemo(() => {
@@ -1408,10 +1460,11 @@ export default function useCalculator() {
                       num_tacts: plan.pour_decision.num_tacts,
                       num_sets: form.num_sets,
                     },
-                    schedule_info: {
-                      total_days: plan.schedule.total_days,
-                      tact_count: plan.pour_decision.num_tacts,
-                    },
+                    // Full schedule projection: total + real phase intervals
+                    // with overlaps. FlatGantt + exporter read `phases`
+                    // (previously a dead branch) instead of re-deriving a
+                    // sequential estimate from position days.
+                    schedule_info: buildScheduleProjection(plan),
                   };
                   // Write to positions via Monolit backend (TOV split routing)
                   const bridgeId = positionContext.bridge_id || positionContext.project_id || '';

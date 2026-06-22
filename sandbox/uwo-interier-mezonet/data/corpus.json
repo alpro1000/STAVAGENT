@@ -1,0 +1,64 @@
+{
+  "_meta": {
+    "case": "Rekonstrukce mezonetu (2 podlaží) — privátní zakázka",
+    "source": "Realitní 3D půdorysy (M&M Reality) + scope majitele + cenová nabídka mistra (Cenova_nabidka_rekonstrukce_1.xlsx)",
+    "areas_disclaimer": "Výměry z 3D půdorysů jsou ORIENTAČNÍ (sreality 'Výměry jsou pouze orientační').",
+    "dph_note": "DPH NENÍ zašита v logice. Rozhodnutí: rekonstrukce bytu v ČR obvykle snížená sazba (12 %) — uplatnit jen po ověření podmínek (kolaudace/plocha). Flag, ne data."
+  },
+  "rooms": {
+    "prizemi": [
+      { "name": "předsíň", "m2": 4.5 },
+      { "name": "obytný prostor (druhý svět / dvojvýška)", "m2": 30.2 }
+    ],
+    "patro": [
+      { "name": "galerie", "m2": 16.0 },
+      { "name": "ložnice", "m2": 17.1 },
+      { "name": "koupelna + WC", "m2": 10.1 },
+      { "name": "obývací pokoj", "m2": 26.0 },
+      { "name": "kuchyně", "m2": 15.0 },
+      { "name": "ložnice", "m2": 25.0 },
+      { "name": "terasa (venkovní)", "m2": 32.0 }
+    ],
+    "celkem_prizemi_m2": 34.7,
+    "celkem_patro_m2": 141.2
+  },
+  "scope_sections": [
+    { "id": "S1", "label": "Stěny — sanace povrchů (sítka/lepidlo/štuk)", "keywords": ["stěny", "sítka", "perlinka", "lepidlo", "štuk", "omítka", "nátěr"], "quantity": { "m2": 345, "provenance": "from_soupis" } },
+    { "id": "S2", "label": "Koupelna + WC — kompletní renovace", "keywords": ["koupelna", "wc", "sanuzel", "obklad", "dlažba", "plitka", "vana", "sprcha", "demontáž"], "quantity": { "keramika_m2": 50, "provenance": "from_soupis" } },
+    { "id": "S3", "label": "Podlahy vinyl", "keywords": ["vinyl", "podlaha", "kuchyně demontáž"], "quantity": { "vinyl_m2": 84, "provenance": "derived_from_scope", "derivation": "17.1 ložnice + 25.0 ložnice + 26.0 obývák + 16.0 galerie = 84.1 (potvrzeno mistrem 84)" } },
+    { "id": "S4", "label": "Renovace parket", "keywords": ["parket", "broušení", "lak", "reštaurace", "renovace"], "quantity": { "m2": 50, "provenance": "from_soupis" } },
+    { "id": "S5", "label": "SDK podhledy", "keywords": ["sádrokarton", "sdk", "podhled", "strop", "potolok"], "quantity": { "m2": 96, "provenance": "derived_from_scope", "derivation": "stropy minus ~35 m² druhý svět (dvojvýška) — potvrzeno mistrem 96" } },
+    { "id": "S6", "label": "Elektroinstalace — výměna + revize", "keywords": ["elektrika", "elektroinstalace", "rozvody", "revize", "rozvaděč"], "quantity": { "byt_m2": 144, "provenance": "needs_input", "note": "komplet po bodech — přesné množství vyžaduje projekt" } },
+    { "id": "S7", "label": "Výměna plynového kotle", "keywords": ["kotel", "plynový", "topení", "vytápění"], "quantity": { "ks": 1, "provenance": "needs_input" } },
+    { "id": "S8", "label": "Okna a dveře — částečná reštaurace", "keywords": ["okna", "dveře", "zasklívací lišty", "tmel", "nátěr", "zamazky"], "quantity": { "komplet": 1, "provenance": "needs_input" } },
+    { "id": "S9", "label": "Schodiště — ochrana + renovace (skřípání)", "keywords": ["schodiště", "lestnice", "skřípání", "skrip", "ochrana", "zapečetit"], "quantity": { "komplet": 1, "provenance": "needs_input" } },
+    { "id": "S10", "label": "VRN — logistika, suť, administrativa, hodinové", "keywords": ["doprava", "odvoz", "suť", "likvidace", "administrativa", "koordinace", "hodinové"], "quantity": { "komplet": 1, "provenance": "needs_input" } }
+  ],
+  "master_baseline": {
+    "_source": "Cenova_nabidka_rekonstrukce_1.xlsx (mistr přes ChatGPT)",
+    "currency": "CZK",
+    "total_czk": 1127350,
+    "items": [
+      { "label": "Odstranění starých nátěrů stěn", "qty": 345, "unit": "m2", "rate": 70, "sum": 24150 },
+      { "label": "Perlinka + lepidlo", "qty": 345, "unit": "m2", "rate": 600, "sum": 207000 },
+      { "label": "Štukové omítky", "qty": 345, "unit": "m2", "rate": 280, "sum": 96600 },
+      { "label": "Demontáž koupelny a WC", "qty": 1, "unit": "komplet", "rate": 60000, "sum": 60000 },
+      { "label": "Vyrovnání stěn a podlah + rozvody vody", "qty": 1, "unit": "komplet", "rate": 25000, "sum": 25000 },
+      { "label": "Hydroizolace koupelny a WC", "qty": 1, "unit": "komplet", "rate": 0, "sum": 0, "_note": "BUDE UPŘESNĚNO — nezahrnuto v ceně" },
+      { "label": "Pokládka obkladů a dlažby", "qty": 50, "unit": "m2", "rate": 1350, "sum": 67500 },
+      { "label": "Demontáž podlahy v kuchyni", "qty": 15, "unit": "m2", "rate": 100, "sum": 1500 },
+      { "label": "Pokládka vinylové podlahy", "qty": 84, "unit": "m2", "rate": 1200, "sum": 100800 },
+      { "label": "Renovace parket", "qty": 50, "unit": "m2", "rate": 1300, "sum": 65000 },
+      { "label": "Renovace schodiště", "qty": 1, "unit": "komplet", "rate": 45000, "sum": 45000 },
+      { "label": "Sádrokartonové podhledy", "qty": 96, "unit": "m2", "rate": 1300, "sum": 124800 },
+      { "label": "Doprava materiálu", "qty": 1, "unit": "komplet", "rate": 40000, "sum": 40000 },
+      { "label": "Elektroinstalace + materiál + revize", "qty": 1, "unit": "komplet", "rate": 170000, "sum": 170000 },
+      { "label": "Oprava a renovace oken a dveří", "qty": 1, "unit": "komplet", "rate": 100000, "sum": 100000 }
+    ],
+    "known_self_reported_gaps": [
+      "hydroizolace neoceněna (bude upřesněno, ~15-25k)",
+      "hodinové práce ~50k (zapomenuto)",
+      "administrativa ~50k (zapomenuto)"
+    ]
+  }
+}

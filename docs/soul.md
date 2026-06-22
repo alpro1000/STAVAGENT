@@ -21,11 +21,14 @@
 
 ---
 
-## 2. Current state snapshot (19.05.2026)
+## 2. Current state snapshot (06.06.2026)
+
+> ⚠️ **Maintenance:** при каждом version bump обнови строку "в продакшне" ниже.
+> Детальный live state = root `CLAUDE.md` changelog + §9 Session log этого файла.
 
 ### 2.1 Production
 
-- **v4.24** в продакшне (PR #983 deployed)
+- **v4.34** в продакшне (детальный changelog — root `CLAUDE.md`; 1249 shared tests, 24 element types)
 - **Gate 1** PR #1058 merged (29.04.2026)
 - **Gate 2** PR #1064 merged (15 commits, branch `gate-2-element-classification`). Tests 1002 → 1036. Element types 22 → 23 (zaklady_oper added).
 - **MCP v1.0** live с биллингом
@@ -362,6 +365,1192 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 **Otevřené otázky:** deck tahá React z unpkg CDN za běhu (není 100% standalone — funguje v prohlížeči s internetem) — chce founder verzi bez externí závislosti? · screenshot-1 lze zaměnit za SO-202 whole-object plán.
 
 **Co dál:** founder zreviduje větev `claude/dreamy-ramanujan-ssIIr` a smerguje (PR zatím nevytvořen, dle zadání). Po deployi ověřit `/en/pitch` na produkci (deck iframe, Download-PDF, mailto, switch na mobilu).
+
+## 2026-06-19 — Session: Fáze 5 #6 — odhad plochy bednění (contact_area) z geometrie, factor 1.0 — MERGED (PR #1399), live-ověřeno (Test 1)
+
+**Spec (audit + advisor-review):** labor-projekce (norma skruž+bednění 3.1 Nh/m² KONTAKTNÍ + doporučení čety tesařů §4-B) klíčuje na `contact_area_m2`, který byl POUZE passthrough `formwork_contact_area_m2`. Na živém kalkulátoru pole pro contact-area NENÍ → norma + doporučení NIKDY nefíruly (jen v goldenech, co ji podávaly ručně, např. SO-202 1527,6). #6 = když není zadána, odvodit z engine plochy `formwork_area_m2` (dvoustranný box `2(L+Š)·výška`, už se derivuje) pro **prismatic + system-formwork** prvky; non-prismatic (mostovka/římsa/schodiště/nádrž/other) + no-formwork (pažnice/podzemní stěna/podkladní beton) zůstávají **honest-blank** (undefined).
+
+**Kalibrace 1.0 (DATA, ne teorie — advisor gate #2):** audit navrhoval one-sided factor 0.5; data ho ODMÍTLA. VP4 FORESTINA opěrná zeď: dokumentováno 547,4 m² (dřík oba líce 2·1,45·156,4=453,6 + patka hrany 93,8) vs box 2(L+W)·H=548,6 → **dvoustranná**. SO-250 = úhlová zárubní ŽB zeď (cantilever) → dvoustranná. Žihle element_breakdown «33,2 = 2×(8,30×2,0) oba líce». Demo-zdi se bední OBA líce → **factor 1.0, žádná mapa sidedness**. Jednostranné (gravitační u skály / tížná) = vzácné, NE v demo-rodinách → chytá se viditelným ODHAD-warningem + ručním zadáním, nikdy se nehádá.
+
+**Implementace (PR #1399, merge `05dce4c`, CI 16/16):** `planner-orchestrator.ts` — `contact_area_source: 'user'|'odhad'` na formwork-výstupu; odvození `contact_area_m2 = fwAreaTotal` když chybí + prismatic + system-formwork (pilota nedosáhne — pile-path early-return; podzemni_stena vyloučena); ℹ️ warning pojmenovává dvoustranný předpoklad (advisor #4). `labor-projection.ts` BEZE ZMĚNY (čte `contact_area_m2`). **Pronájem netknut → stejná plocha pro pronájem i labor → žádný rozpor (advisor #2 vyřešen tím, že factor=1.0).** Žádná circular-import / paralelní struktura.
+
+**Ověřeno (hermetic):** tsc shared clean; frontend aditivně clean (jen pre-existing baseUrl deprecation). **1337 shared testů** (1335→1337, gateb null-test split). Goldeny before→after: `labor-projection.gateb` null-test byl operne_zdi (prismatic)→null; #6 odvodí ODHAD→crew≠null → přepsán na ODHAD-cestu + 'user'-cestu + non-prismatic (deck) honest-blank-null. Nedotčeno (ověřeno): SO-202 (podává contact), PDPS canon-fallback (mostovka=non-prismatic, už honest-blank), project-planner (relativní asserce — obě strany se posunou spolu).
+
+**✅ ŽIVĚ OVĚŘENO (Test 1):** deploy auto-prošel na merge #1399 (kalkulátor-kiosk tahá shared TS na BUILD; Vercel main auto-deploy, žádný deploy-gate → #1399 live na prod kalkulator). Live-check Test 1 (Opěrné zdi 10×0,4×2,0) PROŠEL: ODHAD-warning se zobrazil, contact-area 41,6 m² = `2·(10+0,4)·2,0` = dvoustranný box → **factor 1.0 potvrzen na prod**, klasifikace 100 %. Široký efekt (canon→norma + ODHAD-warning na KAŽDÉM prismatic prvku) je tím u živých uživatelů.
+
+**Odmítnuto:** one-sided factor 0.5 (data vyvrátila); mapa `FORMWORK_SIDEDNESS` (žádná jednostranná rodina v provozu — spekulativní; až vznikne reálná → do `ELEMENT_CATALOG` vedle `recommended_formwork`, NE do element-geometry); UI-badge + MCP-proброс `contact_area_source` TEĎ (warning už viditelný, pole aditivní pod CI; MCP jen pokud demo-cesta pole reálně čte přes MCP — jinak make-work); SDD tři-dok (audit + advisor-odpovědi = spека).
+
+**Co dál:** deploy + live-check #6 ✅ HOTOVO (Test 1) → **#6 plně uzavřen**. Odblokován **Fix 3** (samostatná session) — jedna větev v letu, #6-followup se nezakládá jen kvůli zaměstnání (= druhá větev / make-work).
+
+## 2026-06-18 — Session: OTSKP work-row binding fix — single-source match_catalog + bundling-policy + tagger fixes + floor (SO-206)
+
+**Spec (interview, Full Approach B):** `create_work_breakdown(mode=work_with_catalog)` bindovalo GARBAGE kódy (SO-206 opěry/křídla/základy → zpomalovací prahy, ošetřování trávníků, nádrže, DEMONTÁŽE) přes naivní `otskp_catalog.search(work_description, limit=1)` — slash-label query + 2. matchovací cesta paralelní k `match_catalog`. Fix = oba root-causy: (1) single-source přes `match_catalog`/`find_otskp_code`; (2) čistá kanonická query (work-verb + element-noun, NE slash-label); honest None kde linie není. Doménová vidlice (Alexander, přípravář): OTSKP **vší­vá** bednění+odbednění+ošetřování do beton-položky → deterministic None s důvodem „zahrnuto v betonu dle OTSKP" (RULE conf 1.0, NE floor-„nenalezeno"); jen výztuž samostatně (333365). Catalog-aware policy (ÚRS/RTS = vše zvlášť), NE globální hardcode. Floor kalibrován na datech.
+
+**Audit (před kódem, 50 SO-206 stringů):** Hijack přežil ne kvůli `match_catalog` (dvouosá UWO gate UŽ existuje), ale kvůli TAGGERŮM: (a) genitiv „mostních opěr" → query-family `jine` (v4.34 genitive-suppression) → family-osa MRTVÁ (gate `query_ef==jine` → vždy projde); (b) `DEMONTÁŽE BETONOVÝCH ZÁKLADŮ` → work_type `beton` (substring „beton", `demontáž` chyběl v demolice-rule) → demolice přebila reálný základ-beton; (c) `PŘECHOD DESKY MOSTNÍCH OPĚR` → family `jine` → leak. Skruž skrytá pod `bedneni`.
+
+**Implementace:**
+- `catalog_matching.py` WORK_TYPE_RULES: + `osetrovani` (před `beton`), + `demontáž|demontov` → `demolice`, skruž oddělena z `bedneni` do vlastního `skruz` (NK falsework ≠ vší­vané bednění).
+- `breakdown.py` `_attach_catalog_codes` přepsán async: single-source přes `find_otskp_code`→`match_catalog` (NE naivní `.search`); `CATALOG_BUNDLING={otskp:{bedneni,osetrovani}}` → bundled work-type = deterministic None+reason; `_canonical_query` = work-verb + element-noun v gramatickém pádu dle work-type (beton→nominativ „mostní opěry"/„základy" = match katalogové nominativní tituly + oživí family-gate; výztuž→genitiv „mostních opěr"/„základů" = match „VÝZTUŽ <gen>"); opěry+křídla = JEDEN košík (`333xx MOSTNÍ OPĚRY A KŘÍDLA`) → stejná query; `OTSKP_CODE_BINDING_FLOOR=0.60` (kalibrováno SO 206 n=1, revize při růstu korpusu).
+
+**Ověřeno (SO-206, 50 řádků):** 30 bundled (bednění/odbednění/ošetřování → None „zahrnuto v betonu") + 20 bound, 0 junk. Bound: opěry/křídla beton→`33311 MOSTNÍ OPĚRY A KŘÍDLA`@0.74–0.82, výztuž→`333365 VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL`@0.79; základy beton→`27232 ZÁKLADY ZE ŽELEZOBETONU`@0.63, výztuž→`272364 VÝZTUŽ ZÁKLADŮ`@0.74. Floor gap 0.57│0.63 → 0.60 nerubí žádný správný bind. Testy: `test_catalog_matching` (+3 work-type cases) + `test_stage_gating_policy` (FakeCat floor-robust + nový `test_breakdown_otskp_bundles_formwork_and_curing`) + SO-250 goldeny + `create_work_breakdown` MCP-kontrakt (Tool-7 + AC19) → 63 passed. fastmcp/fastapi není lokálně (debian PyJWT konflikt) → plný MCP-compat v CI; změna aditivní (signatura beze změny, jen +pole `code_status`/`code_note`/`code_confidence`/`code_query`, `work_first` netknutý).
+
+**Odmítnuto:** Globální `bednění→None` hardcode (rozbil by ÚRS + skruž NK) → catalog-aware policy + `skruz` vlastní work-type. Kandidátský family-tagger fix pro přechod-desku (nominativní query + opěry=křídla košík to vyřešily bez sáhnutí do globálního `_classify` = bez W3/golden rizika). Floor-blank slabého základy-výztuž řádku (272364 reálně existuje → byl by skrytý retrieval-miss pod falešným honest-None) → vyřešeno noun-tuningem (genitiv).
+
+**Co dál:** ŽIVÝ check po deploy. Subtype refinement: beton bind padá na `33311 Z DÍLCŮ` (prefabrikát) místo `333313 ZE ŽELEZOBETONU` (monolit) — správná RODINA, špatná varianta (query neříká cast-in-place); follow-up = doplnit nature do beton-query. Single-source `_OTSKP_QUERY_NOUN` → migrovat na `otskp_query_noun_{nom,gen}` pole v `element_types.yaml`. Floor revize při růstu korpusu (n>1).
+
+## 2026-06-17 — Session: BUGS#5(3) — wall klasifikátor single-source (W3↔YAML) + gabion reject
+
+**Spec (interview, postupně):** Fix = **strukturální single-source** (ne minimální keyword-záplata) — W3 klasifikátor čte SDÍLENÝ `element_types.yaml` a matchuje STEJNÝM algoritmem jako TS engine → paritet Python↔TS by construction. Doménová vidlice (Alexander): `opěrná/zárubní/tížná zeď` = monolitický ŽB → `operne_zdi`; `gabionová zeď` = drátokoš, NENÍ beton → **explicit reject** (ne `jine`); gabion v `operne_zdi` = jistý chybný beton-výpočet, horší než `jine`. Výstupní label = **w3_name alias** (ne engine-jména) → MCP-kontrakt stabilní (calculator.py map/allowed-lists, goldeny).
+
+**Audit (před kódem):** Bug byl **W3-only** — `zárubní zeď`→`jine@0.3`, protože W3 `classifier.py` měl HARDCODED `KEYWORD_RULES` (regex) bez `zárub`, zatímco sdílený YAML `operne_zdi.include` `zarubn` UŽ měl (TS to četl, W3 ne = dvojí zdroj = přesně ten drift). `gabionová zeď`→`operna_zed@0.9` na OBOU runtimech + v YAML = živý false-positive beton. `tížn` chyběl v `operne_zdi.include` (jen context-vocab) → TS↔W3 paritní mezera. TS rejecty jdou přes early-exit/head-noun (reject-rodiny SKIPnuté z keyword-loopu, line 695), NE přes skóre.
+
+**Implementace:**
+- **YAML doktrína (jediný zdroj):** `operne_zdi.include` − `gabion`/`gabionov`, + `tizn`/`tížn`/`tizna zed` (`zarubn` zůstává); `gabion`/`dratokos` do `reject_materials` mirroru.
+- **W3 `classifier.py` přepsán:** hardcoded regex `KEYWORD_RULES` (first-match) → čte YAML + skóruje algoritmem enginu (`matchCount*10 + priority + bridge_boost`, signal-ladder 0.9/≤0.7+candidates, exclude honoring, bridge_remap, w3_name alias). Normalizer (head-noun ALGORITMUS) zůstává kód (TASK_2b). `gabion` = **early-exit** (jako TS shotcrete) → `is_concrete_element=False` + `reject_reason=gabion_non_concrete` (bezpečné i v kompozitu „gabionová opěrná zeď").
+- **TS `element-classifier.ts`:** přidán `gabion` reject early-exit (zrcadlo W3); regen kb (`gen:knowledge`) → `operne_zdi` bez gabion, s tížn; drift-guard čistý. `gabion` = early-exit reason na obou (jako shotcrete) — ŽÁDNÝ `gabionova_zed` type_core/keyword (čistá ontologie); jen W3-local `ELEMENT_TYPES['gabionova_zed']` pro reject-profil.
+
+**Konvergenční vedlejší efekt (přiznáno, NUTNÁ pozornost Alexandra při review):** skórer dá `základy` → `zaklady_piliru` (prio 10 > zakladovy_pas 9); normalizer kanonizuje VŠE `základ*` → „základy" → tedy generické základy → `zaklady_piliru` (rebar-hint 100) místo W3-coarse `zaklady` (80). Family-preserving (foundation), hint-level (kalkulátor přepočítává rebar z vlastní matice), **paritet s enginem** (TS čte týž YAML → stejný pick), předdokumentováno jako `zaklady→zaklady_piliru`. 3 goldeny (#66/#69/#69b) přepsány na `zaklady_piliru` (jádro #69 = `is_bridge_context=False` zachováno). NENÍ to wall-bug — vedlejší efekt konvergence; foundation-keyword retuning by sáhl do enginu + plné TS revalidace = samostatná osa, NEbundlováno.
+
+**Ověřeno:** W3 goldeny 17/17 (12 upravených + 5 nových: zárubní→operna_zed, tížn→operna_zed, gabion→reject, masonry→reject, opěrná stable). MCP-compat 4/4 classify asserce ověřeny přímo (fastmcp není lokálně → plný compat v CI; změna aditivní = optional pole). TS shared 1335/1335 (+4 nové) + W3-parity green + shared tsc 0. Regen `gen:knowledge:check` čistý.
+
+**Živá změna (VIDITELNÁ) — keyword-confidence 0.85 → 0.90:** přepsaný W3 přestal hardkódovat plochých `confidence: 0.85` pro KAŽDÝ keyword-zásah (starý `classifier.py:291`) a čte signal-ladder enginu, kde ČISTÝ keyword-zásah = **0.9** (`element-classifier.ts:980` `min(0.9, 0.6+score·0.04)`; ≤0.7 jen na genuine same-score tie). 0.85 byl **W3-only drift** = LLM/Perplexity tier (engine doku: 0.9 keyword > 0.85 Perplexity > 0.70 AI), NE deterministický keyword tier → engine vždy dával 0.9, jen W3 zaostával. Dopad: konzumenti `classify_construction_element.confidence` (recipe passthrough) + exportovaný sloupec **Důvěra** (`soupis_exporter.py:193`) ukážou pro keyword-řádky **90 % místo 85 %**. CI: golden `test_calc_provenance_passthrough.py::test_export_visible_columns_filled_and_source_preserved` pinoval starý 0.85 → aktualizován na 0.90 (`d5d8bf9`); counterfactual worktree-proof = ZELENÝ na čistém main (`52734b4`), ČERVENÝ na `40208ba` ⇒ způsobeno touto změnou, NE preexistující regrese; `test_mcp_golden_so250` 17/17 potvrzuje 0.9 jako systémovou pravdu.
+
+**Odmítnuto:** Drift-guarded dual (2 kopie + storož = pořád duplikace, kterou gejt ruší). Plná engine-jména delegace (mění výstupní slovník + 4 konzumenty = scope bez výhody → samostatný gejt = soul §9 end-state). Scoring reject-rodin na W3 (TS je SKIPuje → early-exit je paritní + bezpečnější). Normalizer context-vocab single-source (`_WALL_CONTENT` vs `wall_vocab` — nezpůsobil bug → samostatná osa).
+
+**Co dál:** ŽIVÝ check po deploy (zárubní/gabion na MCP `classify_construction_element` + kalkulátoru). Foundation `zaklady→zaklady_piliru` — Alexander rozhodne: OK (pier-foundation hint), nebo zúžit `zaklady_piliru.include` (vyřadit bare `zaklady`) = samostatný foundation gejt. Normalizer vocab single-source (follow-up). MCP classify-delegation (engine-jména) = budoucí gejt. Větev `claude/beautiful-ramanujan-g0guev` (reset na squash-merged main po Gate C #1388), force-with-lease push, BUGS#5(3) = nový PR.
+
+## 2026-06-16 — Session: Fáze 5 §4 parity — Gate A + Gate B (advisor = zrcadlo Core) — MERGED
+
+**Cíl §4:** jedno číslo — jeden zdroj; advisory nepočítá své mimo engine. Gaty PO JEDNOM, vlastní větev, STOP do merge (merge = Alexander).
+
+**Gate A — Betonáři: karta čte engine (PR #1384, merge `4d3ce41`).** Karta «Betonáři / záběr» přepočítávala osádku inline `max(3, ceil(tactVol/20))` místo enginu. Reálně se rozcházely — karta ukazovala ŠPATNĚ: operne_zdi 120 m³ a mostovka 664 m³ (1 čerpadlo) → engine **5** (2 ukládka + 2 vibrace + 1 finiš), inline **6**; stena 15 m³ (<20) → 3 v obou. Fix: nový helper `pourCrewRecommended(plan)` = `plan.resources.pour_crew_breakdown.total` (front-capacity z `computePourCrew`, řízení 0 → ZS/VRN); karta čte, inline pryč. BEZ engine-změny (pole už bylo v resources). Hermetic «karta = engine» (3 testy, real planElement). **Živá změna po deploy: karta ukáže 5 místo 6.**
+
+**Gate B — Tesaři: doporučení z enginu, ze stejné normy (PR #1385, merge `1647295`).** Doporučení tesařů bylo frontové pravidlo `0.6 Nh/m² × formwork_area` — vymyšlený duplikát nad reálnou normou enginu. Interview (Alexander): (1) přenést do enginu jako u výztuž; (2) brát REÁLNOU normu enginu, ne 0.6; (3) zobrazit «doporučeno vs zadáno» jako výztuž. Recon: engine UŽ počítá Nh opalubky z `skruz_bedneni_nh_per_m2_kontakt × contact_area` v `buildLaborProjection` (labor-projection.ts:285). Fix: `buildLaborProjection` vrací `formwork_recommended_crew` z TÉHOŽ `totalFwNh` přes rebar-pattern `max(2, min(8, ceil(Nh/(5×shift×K_UTIL))))` — **jedna norma → hodiny I osádka**. Bednění-karta ukazuje amber «Doporučeno N tesařů» (když ≠ crew_size_formwork), jako výztuž; frontové 0.6 odstraněno. Hermetic test (single-Nh + honest-blank).
+**KLÍČOVÉ zjištění (premisa upřesněna):** `contact_area_m2` je VOLITELNÝ vstup (`formwork_contact_area_m2`), NIKDY se neodvozuje. Doporučení (a reálná-norma Nh) fíruje JEN když je contact_area zadána; jinak engine počítá hodiny opalubky z rozvrhu (crew×shift×dny, crew-závislé) → `formwork_recommended_crew = null` (**honest-blank, žádné vymyšlené 0.6**). Premisa «engine už počítá Nh» platí jen s contact_area. Rozšíření pokrytí (default `contact_area ← formwork_area`) by posunulo labor-basis mnoha prvků → SAMOSTATNÉ rozhodnutí, NEbundlováno.
+
+**Gate C — caталог opalubky: RUNTIME = NE (rozhodnuto Variant 1, ZAtím NEzačato).** Ingest-skript čte baket `gs://stavagent-cenik-norms/` → generuje katalog-data V REPU → commit; advisor/engine NIKDY nečtou baket v rantajmu; goldeny hermetic; dif cen 2024→2025 se reviduje. Start AŽ po merge Gate B (teď splněno) — plná postavení u Alexandra; audit-before-code, STOP před merge.
+
+**Ověřeno (A+B):** shared 63/63 (goldeny KV/Žalmanov + SO-202/203 + labor-projection + one-element parita); frontend 9/9 (NumInput + pourcrew DOM testy); tsc 0.
+**Otevřené hvosty:** ŽIVÝ check kalkulator.stavagent.cz (height živě, betonáři 5 ne 6); resolve 2 Q-bot tredů na #1372 (false positives — rozebráno, nemergovat); backlog: Vercel path-filter na `Monolit-Planner/**` (CI hygiena). Odloženo (vlastní interview): multiplicity-redesign (dvojúrovňový model), katalog typů (Základ/Dřík opěry), Step 4 TZ persistence, Step 5 studio, wizardHint3 one-liner.
+
+
+## 2026-06-16 — Session: Fáze 5 #1 — NumInput live commit (height stale bug) — MERGED (PR #1372)
+
+**Větev:** `claude/numinput-live-commit-height-stale` → **smergováno do main** (PR #1372, merge-commit `88d7e8a`).
+
+**Phase A (kořen):** `NumInput` (sdílený číselný komponent) commitoval do rodiče JEN na blur — bufroval lokální `draft` a zapisoval `form.*` pouze v `handleBlur`. Dokud bylo pole ve fokusu, na obrazovce nové číslo, ale `form.height_m` drželo předchozí hodnotu → volume-derive, preview-formule i boční tlak četly STAROU výšku až do blur. Reprodukuje «pole 3,0, formule 5×0,75×1,75=6,56». **Samoléčí se na blur** → živý uživatel měl finální výsledek správný; «všechna čísla špatně» z agent-reportu = artefakt psaní bez blur. NE type-change-specific; PR3 nesouvisí.
+
+**Phase B (fix, Option A — Alexander):** `NumInput` teď commituje **živě na onChange** (parsované číslo do rodiče po každém znaku) → volume/preview/boční tlak se aktualizují při psaní. Clamp min/max + empty→fallback přesunuty na **blur** (partial input se nebije mid-type). Lokální `draft` zůstává pro zobrazený text (stabilní kurzor). Prázdný/nevalidní mezistav nepíše smetí (`type=number` posílá `''` pro nevalidní znaky → guard). Decimal-comma normalizace ponechána (inertní pro type=number, browser čárku blokuje sám).
+
+**První frontend test-runner:** vitest + jsdom + @testing-library/react (`vite.config.ts` test blok + `src/test/setup.ts` + `npm test`). `ui.numinput.test.tsx` — 6 DOM commit-timing testů. jest-dom matchers záměrně neimportovány (clash s touto verzí vitest; testy plain matchery).
+
+**Ověřeno:** 6/6 frontend testů; frontend tsc 0; shared goldeny (KV/Žalmanov validation-rules, SO-202/203) + one-element parita 37/37.
+
+**PENDING (po deploy):** ŽIVÁ kontrola na kalkulator.stavagent.cz — psát V u 3 prvků po sobě → objem každého se mění při psaní a je správný bez odchodu z pole. Manuální (AI nemá browser na deployed SPA).
+**Zjištění k §4-parity frontě (audit, samostatná fronta — NEopravováno):** karta Betonáři recountuje `max(3, ceil(V/20))` inline místo engine `pour_crew_breakdown`; tesař-doporučení je frontend `0.6 Nh/m²` (výztuž je engine `recommended_crew`); katalog bednění je hardcoded TS (2024 DOKA/PERI), GCS bucket `gs://stavagent-cenik-norms/` se na této cestě NEČTE.
+
+
+## 2026-06-15 — Session: Fáze 5 Step 3 PR1+PR2 (legacy/dead-field cleanup) — MERGED (PR #1363), čeká live-check
+
+**Větev:** `claude/phase5-steps1-2-handoff-p0og0u` → **smergováno do main jako jeden celek (PR #1363, merge-commit)** po uzavření gate (grep-proof + CI green). Step 1 #1353 + Step 2 #1357 už v main.
+
+**Pre-implementation interview (Step 3):** (1) **Hybrid** — truly-dead smazat fyzicky (grep-důkaz), half-wired redirect čtenáře/zapisovatele na live path PAK smazat; (2) degradace (soft-degradation class) → **samostatný Step 3.5**, ne teď; (3) **po jednom poli / malé skupině na PR** (review po PR, merge jako celek).
+**Granice čištění (upřesnil Alexander):** ne grep-«dosáhne motoru», ale «část systému 3 cenových režimů NEBO náhodný přišelec». `price_crane`/`price_pump` = přišelci (náklad patří do TOV); nosná cenová pole NEsahat.
+
+**PR1 — čistý dead-code:** smazány `price_crane_czk_shift` + `price_pump_czk_h` (přišelci, sbírány v sidebaru, nikdy v buildInput/advisoru) + `tact_volume_m3_override` (orphan FormState pole, 0 čtenářů/zapisovatelů; stejnojmenné `input.tact_volume_m3_override` z manual_zabery netknuto).
+
+**PR2 — orphan + entangled redirect + bugfix:**
+- smazán orphan `CalculatorWizard.tsx` (692 ř., 0 importérů — mrtvý paralelní wizard s vlastním tact_mode tab UI);
+- **advisor redirect na live dilataci**: `has_dilatacni_spary`/`spara_spacing_m` v payloadu teď z `has_dilatation_joints`/`dilatation_spacing_m` (backend klíče nezměněny → advisor-prompt/suggestFormwork/num_sets reasonují nad AKTUÁLNÍ daty, ne stale);
+- **FIX silent tact-loss**: WizardHints `onApplyRecommendedSystem` psal mrtvý `num_tacts_override` (buildInput ignoroval → ztráta) → teď mapuje doporučené N = TOTAL záběry na live model přes shared helper `tactsPerSectionForRecommendedTotal(N, sections)` = `tacts_per_section = ceil(N/sections)` (sekce>1) / `N` (1 sekce);
+- smazána FormState pole `tact_mode`/`has_dilatacni_spary`/`spara_spacing_m`/`num_tacts_override` + typ `TactMode` (0 code-refs, tsc-ověřeno); shared `PlannerInput.*` stejnojmenná pole (z manual_zabery) netknuta;
+- nový shared helper `calculators/tact-mapping.ts` + 5 testů (N invariant). shared **1322**, frontend tsc clean, CI green všechny kódové commity.
+
+**Přeřazeno (NEsmazáno — recon premisa «5 truly-dead» chybná pro 3/5; KEEP):** `rebar_norm_kg_m3` (živý dual-input → odvozuje `rebar_mass_kg`), `include_kridla`/`kridla_height_m` (renderují `kridlaFormwork` kartu). Nejsou přišelci.
+
+**§0 cen:** předchozí flag «Monolit-Planner/CLAUDE.md §0 neexistuje» **VYŘEŠEN** — §0 doplněn na main (entry níže), v merge sloučeno.
+
+**STATUS:** **MERGED (PR #1363) jako jeden celek.** **PR2 NENÍ done**, dokud neproběhne **live-check na kalkulator.stavagent.cz** (po Cloud Build/Vercel deploy): advisor reaguje na živou dilataci (ne stale); «apply recommended system» aplikuje takty jednou (žádný dvojí počet); sekce=3 → advisor doporučuje jako součet vs reálně aplikováno (overshoot do N = OK, jen poznamenat). **Live-check je manuální (interaktivní SPA) — dělá Alexander** (AI nemá browser na deployed app). PENDING stejného zaběhu: #1351 tz_facts flag ve Varování + Step 2 geometrie.
+**Dál:** **PR3** = low-risk cleanup (2 duplicitní smart-defaults efekty `useCalculator.ts:244-264` + `:712-738`; fyzický dedup duplicitních length-polí) — **samostatná větev, na review** → **multiplicity-redesign NE pod freeze, po 06-21, vlastní interview** → **Step 3.5** degradation. **Freeze** (Cemex demo 06-28) otevírá **06-21**.
+
+**Multiplicity-redesign — vstup ZAFIXOVÁN (Alexander 2026-06-15):** model je **DVOJÚROVŇOVÝ**, ne plochý list. `pozice (1 řádek smety, 1 souhrn) └ list elementů (typ+počet+geometrie→objem) └ záběry/takty elementu (max = bottleneck)`. Smeta vidí JEN souhrn pozice; rozpad žije uvnitř. Fronta: 1 pozice + **vrátit ruční výběr podtypu** (jak bývalo) + vnitřní «rozpad na elementy», do tabulky jde součet. MCP/agent: počítá element po elementu a sčítá (plná detailizace v MCP path; smeta per-element řádky nedrží). Klíč: UI dnes míchá DVĚ osy do bratrských kontrolů — (1) které elementy tvoří pozici, (2) jak se element lije po záběrech — proto `num_identical_elements` ⊥ `num_dilatation_sections` ⊥ `manual_zabery` nesedí (plochý zápis dvojúrovňové reality). Fundament: Step-1 project-carrier (list elementů v engine) obsluhuje OBA surface → redizajn = hlavně re-exprese na frontě + obnova ručního podtypu, ne nový engine. **PIN do interview:** dohledat KONKRÉTNÍ removed/refactored kontrol «ruční výběr podtypu jak bývalo» (přesná obnova, ne rekonstrukce naslepo).
+
+
+## 2026-06-15 — Session (krátká): zachycení cenové architektury (3 režimy) před Step 3
+
+Alexander z paměti rekonstruoval **architekturu cen kalkulátoru = TŘI režimy**, kterou
+recon-mapa NEVIDĚLA (záměr žije v polích UI, ne explicitně v kódu). Bez zápisu by Step 3
+mohl smazat cenové pole jako „mrtvý kód".
+
+**Tři režimy (slot „default + override + vypínač", NE prázdný slot):**
+1. sazby/mzdy předvyplněné (min. 100) + override → rychlá kalkulace s penězi;
+2. vlastní sazby → přesný výpočet pro firmu;
+3. zaškrtávátko „bez cen" → jen normohodiny + dny pronájmu (normogram zdrojů), peníze
+   se nepočítají. **MCP výstup = režim 3.** Firma s libovolnými sazbami obsloužena.
+
+**Důsledek pro Step 3 (legacy cleanup):** hranice čistky NENÍ „dojde do enginu/grep",
+ALE „součást systému tří režimů cen NEBO náhodný přišelec". NOSNÁ pole (sekce Ceny,
+cenová pole bednění, sazby/mzdy) = NEsahat. `price_crane_czk_shift`/`price_pump_czk_h`
+= přišelci (Alexander: patří do TOV-rozpadu) → smazat z kalkulátoru + založit do TOV.
+Zapsáno: `Monolit-Planner/CLAUDE.md §0` + handoff `docs/handoff/2026-06-14_phase5-step3-next-session.md`.
+
+**Pauza:** Step 1+2 v main (zelené). Step 3 (PR2 half-wired tact + mazání z boevého
+výpočtu = NEJrizikovější) čeká na novou session s čerstvou hlavou. Freeze 21., runway
+týden. Live check #1351 + Step 2 na webu = PENDING po deploy.
+
+
+## 2026-06-14 — Session (pokračování): Fáze 5 Step 1 + Step 2 (calculator one-element → projekt)
+
+**Smergováno do main (Alexander):**
+- **#1353 Step 1 — planProject() project-wrapper** (interview: Path A / nezávisle+suma /
+  nový vstup, planElement netknut). Projekt = list elementů, prožene každý NEZMĚNĚNÝM
+  planElement, agreguje objem/Nh/peníze/rozvrh (sekvenční suma, null=NEPOČÍTÁNO),
+  honest-blank (padlý element → elements_uncalculated, parciální suma). Paritní test
+  planProject([x]) ≡ planElement(x).
+- **#1357 Step 2 — geometrie↔takty, shared geom rule** (interview: rozšířit na všechny
+  prizmatické / honest-blank non-prismatic / geom v shared / additive). Nový
+  `element-geometry.ts` (estimateElementVolume L·W·H + 2(L+W)·H; honest-blank pro
+  deck/pile/cornice/stairs/tank/other). `planElement.deriveGeometryInput()` additive:
+  derive objem/plochu + unifikace length→total_length_m, **NO-OP při zadaném objemu**
+  (`if(hasVolume) return input;`) → paritu i goldeny nehýbe. PlannerInput.length_m/width_m.
+  MCP length_m passthrough (§4 parity). Frontend: shared fn jako jediný zdroj, blok D×Š×V
+  rozšířen ~7→všechny prizmatické + viditelný honest-blank. 1317 shared tests; goldeny
+  KV+Žalmanov+normy drží; parita drží; MCP compat 29/29.
+
+**Ověřeno na dotaz Alexandra:** mostovku Step 2 NEdělí na 6 taktů — je non-prismatic +
+vždy má objem z VV → deriveGeometryInput je no-op; num_tacts logika netknuta (KV golden
+1 takt, Žalmanov 3 takty drží). Amazon Q bot review (#1357) = HALUCINACE: tvrdil inverted
+`validationResult.success` (0 výskytů) + `eval()` v calculator.py (0 výskytů) — navržená
+oprava by soubor ROZBILA, NEaplikovat.
+
+**Backlog konsolidace (zadáno Alexandrem):** tři nálezy sloučeny do JEDNÉ třídy v
+CLAUDE.md — **engine soft-degradation na neúplném/nulovém povinném vstupu**: (a)
+podkladni_beton rebar=0 throw, (b) mostovka bez height → MULTIFLEX místo Top 50, (c)
+non-prismatic volume=0 crash po honest-blank warningu. Doménově porušení honest-blank na
+úrovni výpočtu → chybí povinný vstup ⇒ prvek NEPOČÍTÁNO + přeskočit v agregaci
+(planProject už umí), ne spadnout. Léčit jako třídu. Rozhodnutí Step 3 vs samostatný
+Step 3.5 padne na interview Step 3 — NEopravovat předtím.
+
+**Fáze 5 maršrut:** Step 1 ✅ · Step 2 ✅ · **Step 3 = legacy/dead-field cleanup
+(NEJrizikovější — mazání polí z boevého výpočtu + rozhodnutí o léčbě degradace) — NOVÁ
+SESSION, ne ocas maratonu** · Step 4 TZ persistence v project.json · Step 5 studio.
+
+**Otevřené hvosty (živé, po deploy):** LIVE check #1351 (tz_facts flag ve Varování) +
+Step 2 (geometrie→objem/takty) na kalkulator.stavagent.cz — PENDING, netvrdit hotové.
+
+Handoff pro Step 3: `docs/handoff/2026-06-14_phase5-step3-next-session.md`.
+
+
+
+## 2026-06-13 — Session: Živá napojení Part B/C + Faze 5 Step 1 (project-wrapper)
+
+**Smergováno do main (4 PR):**
+- **#1351 tz_facts wiring** — provod extraktoru do validation rule. Frontend
+  `buildInput` staví `tz_facts.construction` z `tzText` (auto), předvyplní
+  radio Technologie jen když prázdné (tz_facts oddělený kanál, nepřepisuje
+  vstup → flag fíruje). MCP `calculate_concrete_works` + 4 optional params
+  (tz_technology/tz_pour_stages/tz_quote/tz_anchor) → tz_facts. MCP compat
+  28/28. **Part B/C tím přestala být test-only — flag dojde do živé Varování
+  card i do Claude.ai/ChatGPT.** ⚠️ LIVE check na kalkulator.stavagent.cz po
+  deploy = PENDING (netvrdit hotové, dokud neproběhne na webu).
+- **#1352 recon-mapa polí** (docs-only) — rentgen kalkulátoru před Fází 5.
+  `docs/audits/calculator_field_map/2026-06-13_recon.md`. ROOT po kódu:
+  `planElement(input: PlannerInput)` = jeden element/volání; v PlannerInput
+  není pole elementů → agregace projektu strukturálně nemožná. + geometrie
+  ↔takty rozpojené (~7/23 typů má geom), 3 nekompatibilní mechanismy
+  množnosti, legacy tact-pole polu-zapojená, mrtvá pole (price_*, kridla).
+- **#1353 Faze 5 Step 1 — planProject() project-wrapper** (interview:
+  Path A / nezávisle+suma / nový vstup, planElement netknut). Nový
+  `shared/.../project-planner.ts`: `planProject(elements[])` prožene každý
+  element NEZMĚNĚNÝM `planElement`, agreguje objem/Nh (canon
+  buildLaborProjection)/peníze/rozvrh (sekvenční SUMA, null=NEPOČÍTÁNO),
+  honest-blank (padlý element izolován + počítán jako Nevypočtených N,
+  parciální suma). Paritní test: planProject([x]).elements[0].plan ≡
+  planElement(x). 1309 shared tests; goldens drží. Engine core byte-identical.
+
+**Faze 5 maršrut (5 kroků, každý PR + STOP gate, merge = Alexander):**
+Step 1 ✅ smergován. Step 2 = geometrie↔takty na úrovni elementu (interview
+příště: rozšířit geom pokrytí z ~7/23 nebo honest-blank na zbytku). Step 3
+legacy cleanup, Step 4 TZ persistence v project.json, Step 5 studio.
+
+**Otevřené hvosty:** LIVE check #1351 (po deploy); MULTIFLEX bez height +
+podkladni_beton rebar=0 throw (backlog, Step 3 je podebere); Patterns 51-55
+(samostatný batch, mimo Fázi 5).
+
+
+
+## 2026-06-13 — Session: tz_facts napojení (živá fíčura Part B/C, úzký PR)
+
+**Scope (potvrzeno Alexandrem):** úzký provod tz_facts — extraktor (hotový)
+→ tz_facts → planElement + MCP forward. JEN provod, ŽÁDNÉ jiné pole formuláře,
+ŽÁDNÁ agregace, ŽÁDNÉ nové pole. Recon-mapa polí = SAMOSTATNÉ další zadání.
+
+**Interview (3 otázky):** (1) tz_facts AUTO z textu TZ (bez kliků); (2) radio
+Technologie předvyplnit JEN když prázdné, tz_facts h
+hold ODDĚLENĚ jako zdroj
+srovnání (přepis radia = vstup vždy ≡ TZ → flag nikdy nefíruje, proto oddělený
+kanál); (3) MCP forward v tomto PR.
+
+**Hotovo:**
+- Frontend `useCalculator.buildInput`: z `tzText` zavolá
+  `extractConstructionTechnology`, postaví `input.tz_facts.construction`
+  (technology + pour_stages_count + quote + anchor), VŽDY předá do enginu.
+  NEpřepisuje `form.construction_technology` (vstupní strana). + effect:
+  předvyplní radio Technologie z TZ JEN když prázdné (ruční volbu netrhá →
+  vědomá odchylka stále fíruje flag).
+- MCP `calculate_concrete_works` + `_build_planner_payload`: nové optional
+  params `tz_technology` / `tz_pour_stages` / `tz_quote` / `tz_anchor` →
+  `payload.tz_facts.construction`. Flag teď funguje i pro Claude.ai/ChatGPT.
+- MCP compat test: vstup mss + 12 taktů vs TZ pevná skruž / 3 etapy → flag
+  (oba fasety), plán dál vzniká (ne gate). Replay fixture +1 → MCP compat
+  **28/28**. Frontend tsc + vite build clean; shared beze změny (1304).
+
+**Důsledek:** validation rule + Žalmanov flag teď DOJDOU do živé Varování
+card (frontend) i do MCP — fíčura Part B/C je v produkci AKTIVNÍ (dříve
+test-only). Live ověření na kalkulator.stavagent.cz po deploy zůstává
+PENDING (backlog) — netvrdím hotové, dokud neproběhne na webu.
+
+**Mimo scope (potvrzeno):** recon-mapa polí kalkulátoru (agregace elementů,
+vazba geometrie ↔ takty) = další samostatné zadání.
+
+
+
+## 2026-06-13 — Session: Part C (finál Fáze 1) — regex-extrakce technologie + Žalmanov golden (STOP gate)
+
+**Interview (před kódem, zodpovězeno Alexandrem):** Q1 zdroj-autorita = jako
+KV (soupis XC4 DI-009 = množství ÷2/most, TZ = technologie/materiál/geometrie,
+výkresy = rozměry); Q2 num_tacts pro 3 nestejné etapy 32/44.5/32 — stávající
+`tact_volumes[3]` STAČÍ (per-záběr v4.0), engine se netrhá, dokumentován
+známý dluh scheduleru (max(tact_volumes) bottleneck); Q3 multi-bridge =
+pravidlo etalonu §5i (golden modeluje 1 podobjekt, num_bridges nezadáno,
+VV÷2), engine se nemění.
+
+**Hotovo (deliverable A — code, testováno):** `extractConstructionTechnology()`
+v `tz-text-extractor.ts` — regex čte `construction_technology`
+(pevná skruž/MSS/letmá) + `pour_stages_count` z prózy TZ; sentence-level
+count guard + dopravní past („Most bude budován po etapách… dopravy" = NE
+takty) ošetřena dvojitě (doprava-guard + chybějící count token u „po etapách").
+Cílové fráze z obou digestů: Žalmanov §4.1.6 „ve třech etapách"→3, KV §7.2
+„v jednom taktu"→1, §6.11.3 „v jedné etapě"→1. `extractFromText` surfacuje
+oba jako ExtractedParams. +9 hermetic testů → **1303 shared tests** (1294→1303),
+tsc clean.
+
+**Hotovo (source-of-truth):** soupis DI-009 je úsekový (SO 101…491, ne
+per-SO!) — SO-202 vyčleněn přes pod-strom `<stavDil ~SO 202~N>`. Authoritative
+VV (oba mosty, ÷2/most): NK trámová předpjatá C40/50 **2697.941 m³ →
+1348.97/most** (potvrzuje odhad 1349 dočasné fixtury ✓); plošné založení
+ŽB C30/37 867.1 m³ (NE piloty — rozdíl od KV ✓); opěry+křídla 557.9; pilíře
+C40/50 361.4; římsy 266.3; přechodové desky 81.9; výztuž per položka. Golden
+MD draft `test-data/tz/SO-202_D6_OV_Z_Zalmanov_golden_test.md` (inputy s plným
+provenance, výstupy enginu PENDING).
+
+**End-to-end smoke (NEfixováno):** NK 3 takty [397.85, 553.26, 397.85],
+num_tacts=3, technologie=TZ → validation rule bez flagu (čisto). FINDING:
+bez height_m selektor vrací MULTIFLEX místo falsework Top 50 (engine/selektor,
+mimo scope — zaznamenáno).
+
+**STOP gate (čeká na Alexandra, NEmergováno):** NK subtype (dvoutrám/vícetrám),
+potvrzení tact_volumes 32/44.5/32 proti výkresu, NK exposure, dohledání lan
+Y1860, height_m NK. Po odpovědích → snímek VŠECH pozic + fix assertions +
+náhrada dočasné Žalmanov fixtury. Self-merge calc/golden zakázán.
+
+**Dodatek (2026-06-13, oprava záměny mostů + dořešení vstupů Žalmanov):**
+Alexander upozornil, že dřívější příčný řez (trám 2400 / š. 13650, „osou
+uložení") = **Žalmanov [výkres 202_17]**, kdežto řez trám 1100 / š. 10250
+(stěny KARLOVY VARY/PRAHA, „dvoutrámová … z dodatečně předpjatého betonu")
+= **KV**. KV-golden trám-výšku neobsahoval → dopsán provenance (trám 1100,
+koncový příčník 950, š. 10.25 `[výkres KV příčný řez NK]`), assertions
+nezměněny. Žalmanov vstupy dořešeny Z JEHO dokumentů (NEdědit z KV):
+✅ subtype dvoutrám, trám 2400 nad podporou, š. 13.65 `[výkres 202_17]`;
+✅ NK exposure **C35/45-XF2** (XF2+XD1+XC4) `[TZ §2]` — moje dřívější C40/50
+byl VV kód-pásmo „DO C40/50" (**Pattern 53** trap), reálná marka C35/45;
+✅ předpínací lana **41.42 t/most** `[VV 422373: 82.84 ÷2]` (nalezeno ve VV).
+Σ tact_volumes 1348.96 ≈ VV÷2 ✓; Pattern 52 sanity L/48.8 v koridoru ✓.
+**Otevřené (zdroj nečitelný textem, NEhádám):** profil výšky trámu
+(konstant/náběh → tact_volumes) + height_m nad terénem (→ výběr skruže).
+**2 enginové findings do backlogu:** mostovka bez height → MULTIFLEX místo
+Top 50; `podkladni_beton` rebar=0 → throw. Golden MD draft přepsán
+(provenance na každém vstupu). Stále NEmergováno, fixtura nenahrazena.
+
+**Dodatek 2 (2026-06-13, výkresy od Alexandra → Part C UZAVŘEN):** Alexander
+poslal výkresy NK (202_17 TvarNK, 202_18 Předpětí + KV D-01-02-01_18/19/20).
+Čteny VIZUÁLNĚ (Pattern 39). Oba PENDING vyřešeny Z VÝKRESŮ:
+✅ trám **konstantní 2400** (202_17: nad pilířem 2400 = v poli 2400) → vol ∝ délka;
+✅ height_m **10.6 m** (202_04: pilíř VPRAVO 10600; terén/dno ~664, soffit ~677
+→ ~13 m nad dnem) → engine vrací Top 50 falsework ✓.
+**KRITICKÁ korekce:** výkres 202_18 SCHÉMA PŘEDPĚTÍ ukazuje **takty betonáže
+43.25/44.25/23.0 m** (spáry ZA pilíři), což NEROVNÁ se rozpětím polí 32/44.5/32
+z task spec! tact_volumes přepočteny ∝ délka taktu × konstantní 2400 →
+**[527.99, 540.20, 280.78]**, Σ = 1348.97 = VV÷2 ✓. Výkres 202_18 navíc
+POTVRZUJE lana (1 most 41.42 t / 2 mosty 82.84) + NK beton 35/45-XF2 (materiály).
+Snímek VŠECH pozic živým enginem zafixován (NK Top 50/curing 9/186 d; spodní
+stavba Frami/TRIO/VARIO; flag NONE — vstup ≡ TZ). **Dočasná Žalmanov fixtura
+NAHRAZENA plným goldenem** v validation-rules.test.ts (3 etapy → clean;
+deviation 1 takt → flag; Σ tact_volumes kontrola). 1304 shared tests. KV golden
+trám 1100 dopsán jako provenance [výkres KV]. PR vytvořen — **merge = Alexander**.
+Findings (MULTIFLEX, podkladni rebar=0) v backlogu. **Part C hotov = Fáze 1 finál.**
+
+**Dodatek 3 (2026-06-13, lekce + honest frontend/MCP status):**
+- **Pattern 39 lekce pro budoucí goldeny:** zdroj «schéma předpětí 202_18»
+  (TAKT 43.25/44.25/23.0, spáry ZA pilíři v zóně malých momentů) se ukázal
+  SILNĚJŠÍ než text zadání («32+44.5+32» = rozpětí, ne takty). Vizuální
+  čtení výkresu chytlo tichou chybu distribuce, kterou by text neodhalil.
+  Alexander potvrdil. Trojitá shoda exposure/lana (TZ §2 + VV + 202_18) +
+  uzavření obou PENDING ZDROJEM, ne analogií. **Regola: u golden taktů/objemů
+  výkres (schéma předpětí / podélný řez) > text zadání > analogie sesterského
+  mostu.**
+- **HONEST status validation rule (Part B/C) v produkci:** ověřeno grepem —
+  `tz_facts` NENÍ napojen ve frontendu (`frontend/src` 0 výskytů) ANI
+  forwardován v MCP (`calculator.py` 0 výskytů). Frontend má pole
+  `construction_technology` (radio), ale NESTAVÍ `tz_facts` z extraktoru a
+  neposílá ho do `planElement`. Důsledek: validation rule + Žalmanov flag
+  jsou pokryty VÝHRADNĚ hermetic shared testy; v živém frontendu/MCP rule
+  MLČÍ (po dizajnu «no docs → silent»), tj. fíčura zatím v produkci NEAKTIVNÍ
+  dokud se `tz_facts` nenapojí. NEoznačeno jako hotové. Part C deliverable A
+  (regex extraktor) běží, ale jeho výstup (construction_technology +
+  pour_stages_count) zatím nikdo nemapuje do `tz_facts`.
+- **#1348 advisor/MCP polish:** žádná živá kontrola na kalkulator.stavagent.cz
+  po deploy — jen Jest 60 + MCP compat 27. Zůstává otevřený P0.
+
+
+## 2026-06-12 — Session: Part B — validation rule «vstup kalkulátoru vs technologie z TZ»
+
+**Rozhodnuto (interview Alexander před kódem):**
+- Q1 (nosič TZ-faktu): kanonické pole technologie v extraction NEEXISTUJE
+  (ověřeno: TS tz-text-extractor ani W3 extract_tz_fields technologii
+  neextrahují) → varianta «bez extraktoru»: additive `PlannerInput.tz_facts`
+  (typ `TzFacts` — technology / pour_stages_count / quote / anchor);
+  regex-extrakce technologie = Part C. Extraction kontrakt NEZMĚNĚN.
+- Q2 (povrch): flag = ⚠️ řádek do existujícího `plan.warnings[]` (renderuje
+  stávající banner bez frontend práce) + strukturní sibling
+  `plan.validation_flags?: ValidationFlag[]` zrcadlící pattern
+  `resource_violations`. Frontend render = Fáze 4, NE scope.
+- Q3 (registr): minimální seznam, ne framework —
+  `shared/src/calculators/validation-rules.ts`: `ValidationFlag` {rule_id,
+  severity warning|hint, message (1 řádek CZ s emoji prefixem), tz_value,
+  tz_quote, tz_anchor, input_value} + `ValidationRule` {rule_id, run(ctx)}
+  + `VALIDATION_RULES` list + `runValidationRules(ctx)`. Batch Patterns
+  51–55 po Part C jen pushne do seznamu.
+- Pravidlo `tz_construction_consistency` (generic, ne jen mosty): dva
+  fasety — technology mismatch + pour-stage-count mismatch (proti
+  engine-resolved `pour_decision.num_tacts`). Rozpor = VIDITELNÝ FLAG,
+  nikdy gate — doménová opora přímo v Žalmanov TZ §4.1.6: «Postup výstavby
+  může budoucí zhotovitel upravit dle svých možností a potřeb»; flag
+  jednou větou proговаривает důsledky (přepočet statiky stadií, u
+  předpjatých spojky kabelů, nový TePř). Shoda = ticho; neznámá
+  dokumentace = ticho (no guess). Wired v OBOU assembly paths
+  (main §8c + pile mirror).
+- **TZ facts digesty (addendum Alexandra):** verbatim formulace technologie
+  s kotvami (sekce + strana) extrahovány z obou TZ PDF a uloženy vedle PDF
+  jako vždy-čitelné md: `test-data/SO_202_D6_KV_OV/D-01-02-01_01_tz_facts.md`
+  (KV: §6.11.3 str. 32 «v jedné etapě na pevné skruži»; §7.2 str. 34
+  «betonáž NK na pevné skruži v jednom taktu») +
+  `test-data/SO_202_D6_OV_Z/202_01_TechnickaZprava_tz_facts.md` (Žalmanov:
+  §4.1.6 str. 11 «na pevné skruži ve třech etapách», směr O1→O4; §5.1
+  str. 15). Zdroj citací pro fixtury Part B + cílové fráze pro regex Part C.
+- Testy (hermetic, bez AI/network): 12 nových v `validation-rules.test.ts`
+  — unit registr (ticho bez faktů / bez fasetů / engine-auto vstup; mismatch
+  taktů s quote+anchor+oběma hodnotami; mismatch technologie; čistá shoda)
+  + KV engine-integrated (1 takt → čisto; 6 taktů → flag §7.2 v obou
+  površích, plán dál vzniká = flag není gate) + Žalmanov DOČASNÁ fixtura
+  (1 takt → flag §4.1.6; 3 etapy → čisto; Part C nahradí plným goldenem)
+  + negativ (bez tz_facts → pravidlo mlčí). **1294 shared tests** (1282
+  + 12), tsc shared + frontend clean.
+
+**Odmítnuto:**
+- Rozšíření tz-text-extractoru o regex technologie v Part B — fixtury
+  kryjí verified facts, extraktor patří Part C.
+- Blokace/gate při rozporu — proti doméně (zhotovitel smí stavět jinak).
+- Framework pro pravidla — seznam + jeden interface stačí.
+
+**Otevřené otázky:**
+- STOP gate Part B: schválení → PR. Merge = pouze Alexander.
+
+**Co dál:** po approve PR Part B → Part C (plný Žalmanov golden, regex
+extrakce technologie, náhrada dočasné fixtury).
+
+**Dodatek (stejný den, po merge PR #1347 — service polish round):**
+- **MCP `calculate_concrete_works` — 3 tiše ztracená pole opravena:** `width_m`,
+  `formwork_length_bm`, `cycle_length_bm` byly v signatuře + docstringu, ale
+  `_build_planner_payload` je zahazoval (regrese SSOT delegace #1304 vs
+  pre-SSOT lokální engine). Překlad na kanonická pole: width→`nk_width_m`
+  (mostovka) / `formwork_area_m2` odhad (V/tl. horizontal, V/š×2 vertical,
+  vzorec identický s pre-SSOT); length_bm→`formwork_area_m2` (bm systémy
+  konzumují area input jako množství v jednotce systému);
+  length+cycle→`num_tacts_override` (římsa, ceil(L/cyklus)). Replay fixture
+  přegenerována lokálním `planElement` (týž SSOT kód); římsa 156 bm / 26 →
+  6 záběrů asserted. MCP compat suite 25→27 testů, 27/27 green.
+- **AI advisor — hlavní seam bug:** frontend posílá obohacená pole UVNITŘ
+  `calculator_context`, backend je destrukturoval z TOP-LEVEL body → sekce
+  MOSTNÍ NK / PŘEDPĚTÍ / JIŽ SPOČÍTÁNO ENGINE nikdy nefiraly z reálného
+  frontendu. Fix: merge `{...calculator_context, ...req.body}` (top-level
+  vyhrává; staří volači beze změny). Advisor = zrcadlo orchestratoru:
+  computed_results rozšířeny (pour_mode, pour_hours_per_tact,
+  pumps_required, formwork system, top-6 warnings vč. validation flags),
+  prompt builder je vypisuje + nové pravidlo «nastav recommended_tacts a
+  pour_mode na STEJNÉ hodnoty»; frontend contradiction guard přepíše AI
+  takty na engine hodnotu + viditelná poznámka (nikdy tichý override).
+  Robustnější JSON extrakce (přímý parse → outermost-brace slice);
+  fallback render už nemrzačí čárky v prozě. Backend Jest 58→60.
+- Security review diffu: 0 nálezů (oba top kandidáty — body merge a LLM
+  JSON parse — trasovány end-to-end, žádný nový sink).
+
+
+
+## 2026-06-12 — Session: SO-202 KV kalibrace — potvrzené normy jako data (pokračování)
+
+**Rozhodnuto:**
+- Čtyři potvrzené normy z interview aplikovány jako **DATA se zdrojem**
+  `[normy potvrzené Alexander, 2026-06]` v novém modulu
+  `Monolit-Planner/shared/src/calculators/labor-norms.ts` (per konvence
+  tasku — ne konstanty ve formulích): armování **18 Nh/t** · předpětí
+  **35 Nh/t lan Y1860** · skruž+bednění **3.1 Nh/m² KONTAKTNÍ plochy** ·
+  betonáž **crew-model** (KOREKCE dle světových referencí, provenance
+  [Caltrans Deck Constr. Manual Table 1.1; method statement 40–45 m³/h
+  finishing-governed; potvrzeno Alexander]: JEDEN finiš-front, 2 čerpadla
+  ho krmí a NEnásobí četу; 12 os. on site = Caltrans T1.1 11 + 1 záloha,
+  strojníci čerpadel externí; tempo 40–45 m³/h finishing-governed →
+  16.3 h střed; rotace > 12 h druhou směnou 12 os., headcount konstantní
+  → Nh se nedubluje).
+- Projekce (`buildLaborProjection`) konzumuje normy s **canon-fallbackem**,
+  když báze chybí; nový field `LaborOperationProjection.norm_source` nese
+  provenance per operace. Betonáž crew-model gated na engine
+  `pumps_required ≥ 2` (mega-pour), žádný nový threshold.
+- Dva additive vstupy protaženy enginem (POUZE echo, harmonogram nedotčen):
+  `formwork_contact_area_m2` (SO-202: 1 527.6 [CN SAFE 26-027C]) +
+  `prestress_strand_mass_kg` (19 210 [VV 422373 ÷ 2]).
+- §5f-Nh přesnímkováno z živého enginu: armování 1 872.0 · předpětí 672.4 ·
+  betonáž 156.6 (0.23 Nh/m³ ✓ koridor 0.2–0.3) · skruž+bednění 4 735.5
+  (≈ 4 736 ✓) · ošetřování 36.0 → **CELKEM 7 472.5 Nh / 9 340.6 h /
+  10.78 Nh/m³** (koridor 8–12 ✓, očekávání ~10.8 trefeno). Fáze-check:
+  betonáž-fáze 1.6 d × 10 h = 16 h ≈ modelová zálivka 16.3 h — drží.
+  **Harmonogram nehnut: 77.5 d / curing 9 / prestress 13** (hermetic
+  assertion plan-s-normami ≡ plan-bez-norem).
+- Testy: +11 (hermetic per norma vč. fallbacků + schedule-invariant +
+  Caltrans-breakdown integrity, golden koridor §5f-Nh, legacy pilota canon)
+  → **1282 shared tests**, tsc shared + frontend clean.
+
+**Odmítnuto:**
+- Normy jako konstanty přímo ve formulích projekce — proti konvenci tasku;
+  data module s provenance per záznam.
+- Betonáž crew-model univerzálně (i 1-pump malé prvky) — 24 os. na patku je
+  nesmysl; gate = engine pumps_required ≥ pump_lines.
+- První interpretace «12/linku × 2 čerpadla = 24 os., tandem 30–40 m³/h»
+  — superseded světovými referencemi (Caltrans T1.1 + method statement):
+  čerpadla krmí JEDEN finiš-front a četу nenásobí; armádu kreslit nelze,
+  lidé jsou omezený zdroj. Betonáž byla nadhodnocena 2.4× (380.4 → 156.6).
+
+**Otevřené otázky:**
+- STOP gate B: schválení snapshotu → PR. (PR se nevytváří před approve.)
+
+**Co dál:** po approve PR; pak Part B/C golden recalibration dle plánu.
+
+## 2026-06-11 — Session: SO-202 KV kalibrace — ošetřování betonu = max(span, curing_days)
+
+**Rozhodnuto:**
+- STOP gate A nález z PR #1336 (§5f-Nh ⚠️) VYŘEŠEN rozhodnutím Alexandra:
+  `labor-projection.ts` počítá dny ošetřování jako **max(span fáze zrání ze
+  scheduleru, curing_days)** — scheduler-fáze zrání v tact_details má pro
+  PDPS 1 takt komprimovaný span 1.5 d, zatímco `curing_days` = 9 (třída 4
+  @15 °C); ošetřovatel je na stavbě po celou dobu zrání. SO-202 KV: 1.5 d /
+  6 Nh → **9 d / 36 Nh**; CELKEM §5f-Nh 3 576.6 → **3 606.6 Nh** (4 508.3 h
+  přítomnost, 5.20 Nh/m³). U multi-takt elementů kalendářní span legitimně
+  přesahuje curing_days — max() jej zachovává.
+- Golden MD §5f-Nh tabulka aktualizována na engine-snapshot (verified live
+  run), ⚠️ poznámka nahrazena ✅ resolved záznamem.
+- Testy: golden assertion v `golden-so202.test.ts` §5f-Nh (9 d → 36 Nh +
+  regression guard ≥36) + hermetic test v `labor-projection.test.ts`
+  (days ≥ curing_days, kánon formule). **1271 shared tests** (1269 + 2),
+  tsc clean.
+- Větev vedena od čerstvého main (#1336 verifikováno na main přes diff —
+  byte-identické, vč. STOP-gate commitů; Pattern 12 check OK). Stará větev
+  `claude/bold-hawking-v2e7b4` (orphan #1332) ne-force-pushnuta — merge main.
+
+**Odmítnuto:**
+- Báze dnů «vždy přesně curing_days» (ignorovat span) — u multi-takt
+  elementů by zahodila překrývající se kalendářní periodu > curing_days.
+- Oprava v `aggregateScheduleDays` (formulas.ts) — agg.zrani je korektní
+  calendar-span pro Gantt/Aplikovat; podhodnocení je specifikum projekce
+  ošetřovatele, fix patří do labor-projection (per §5f-Nh kandidát).
+
+**Otevřené otázky:**
+- Vnitřní dluh scheduleru (komprimovaný zrání-span 1.5 d v tact_details,
+  příbuzný 220.5/307.8 + wait⊂zrání overlap) — samostatný task, nezměněno.
+
+- Kodifikační batch (docs-only, samostatný PR): **Patterns 51–57** zapsány
+  do `docs/STAVAGENT_PATTERNS.md` + po řádku do CLAUDE.md backlogu.
+  Implementace 51–55 ODLOŽENA na jeden „physics validation rules" batch
+  PO Part C (na Part B post-extraction cross-check infra — společný seam);
+  56 při Fáze 3 crew/cost recon; 57 = průběžná provenance disciplína.
+  Zapsat pattern ≠ implementovat pravidlo — kodifikace hned dokud je
+  čerstvá, kód až na svou vrstvu konvejeru.
+
+**Co dál:** Part B/C golden recalibration dle plánu (Žalmanov multi-takt
+etalon → odstranění §5f-SYN syntetiky); po Part C physics-rules batch
+(Patterns 51–55).
+
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1b (embeddings infra + OTSKP 2026 ingestion)
+
+**Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`, code-only — ops na deploy):**
+- **Embedding model revize:** gecko@003 **RETIRED 2025-05-24** + repo má jen vertexai
+  (removed 2026-06-24, migrace na google-genai) → interim **text-multilingual-embedding-002
+  @768** (native, drop-in na current vertexai API, no new dep), gemini-embedding-001@768 =
+  post-migrace upgrade (stejný dim → žádné re-dimenzování pgvector). `EMBEDDING_MODEL/
+  EMBEDDING_DIM/OTSKP_CATALOG_VERSION/CATALOG_GCS_BUCKET` v config.py.
+- `vertex_embeddings.py` přepsán (sync, ADC, task_type, output_dimensionality, import-safe).
+- Alembic `2026_06_11_otskp_embeddings_pgvector` (head=orch_sg_pr3b_audit): `CREATE EXTENSION
+  vector` + `otskp_embeddings(... embedding vector(EMBEDDING_DIM))` HNSW cosine.
+- `app/services/catalog_embeddings.py`: pgvector provider (degrade-to-keyword on error) +
+  `register_embeddings_provider()` → wire do `catalog_matching._EMBEDDINGS_PROVIDER`.
+- `scripts/ingest_otskp_catalog.py`: GCS SFDI XML → otskp.db (+ `--index` pgvector). XML
+  necommitovat (žije v GCS). Pure `parse_otskp_xml` testovaný.
+- `tests/test_catalog_embeddings.py` (8 hermetic). **Celkem 27 hermetic green** (1a+1b).
+- otskp.py docstring: "17,904" + "(1.0 for database match)" → honest, version-stamped.
+
+**Data Store otázka (catalogs/ exclusion) — ANSWER:** norms bucket `stavagent-cenik-norms`
+je whole-bucket console-sync, žádný prefix-filter → `catalogs/` by znečistil RAG korpus.
+**Doporučení (v config): separátní bucket `gs://stavagent-catalogs`.** Fallback: gcsSource
+restrict na `B[3567]/` (console-only, fragile).
+
+**Odmítnuto / deferred:** live GCS upload + indexing (deploy) · learned-mappings Core table +
+human-confirm-0.99 (acceptance #11, Phase 3 s kiosk-migrací) · local ÚRS-2018 fallback
+0.60–0.65 + "ověřit proti aktuálnímu katalogu" UI flag (acceptance #12, Phase 3) · Phase 2
+docstring example-code fix.
+
+**Co dál:** CI potvrdit (MCP compat — lokálně chybí fastmcp — + goldeny SO250/SO202). STOP
+před merge (Alexander). Runbook: recon doc §8.4.
+
+
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 1a (deterministic chain + honest confidence)
+
+**Rozhodnuto / shipped (branch `claude/upbeat-dirac-krnyqi`):**
+- Nový `concrete-agent/.../app/services/catalog_matching.py` — Work-First chain:
+  work-type axis (`classify_work_type`) + element-family axis (reuse `_classify`) →
+  **UWO gate** (`passes_uwo_gate`) → **param prefilter** (concrete_class) → **honest
+  confidence** (keyword ≤0.9, embeddings 0.70–0.80, NIKDY 1.0 zde) → **pluggable
+  ranking seam** (`rank` + audit `input/output_codes`, replayable, deterministic
+  default) → carrier (candidates+confidence+provenance). Embeddings retrieve seam
+  `_EMBEDDINGS_PROVIDER` (module-global, monkeypatchovatelný — ne function param,
+  FastMCP CallableSchema pravidlo).
+- `find_otskp_code` fulltext větev přepojena přes chain; **hardcoded 1.0 na DB-hit
+  pryč**; exact code lookup zůstává 1.0 (verified DB row). Contract `results`/
+  `total_found`/fields zachován (compat-safe; compat test neasserovala 1.0).
+- `tests/test_catalog_matching.py` — **19 hermetic testů green** (AC 1,2,3,4,6,7 +
+  e2e přes find_otskp_code s fake katalogem). Fix: `predpinaci` pravidlo PŘED
+  `vyztuz` (předpínací výztuž = jiný OTSKP basket než B500).
+
+**Před-kód korekce (user):** gecko@003 **RETIRED 2025-05-24** → gemini-embedding-001
+@768 / pgvector cosine / `EMBEDDING_DIM` const (migrace AŽ po verifikaci modelu).
+Learned-mappings → Core, human-confirm 0.99 only (no AI auto-learn, acceptance #11).
+Local ÚRS ~39K → Core fallback nebo web-only do auditu (acceptance #12).
+
+**Odmítnuto / deferred:** Phase 1b (vertex_embeddings rewrite + pgvector Alembic
+migrace 768-dim + index 17 904 OTSKP + provider wire do seamu + learned-mappings
+table) = další commit na téže větvi. MCP compat suite lokálně neběží (chybí
+`fastmcp` — Debian PyJWT blokuje install) → potvrdit na CI.
+
+**Co dál:** Phase 1b infra za seamem → full pytest + verbatim CI log na HEAD fáze →
+STOP před merge. Phase 2: fix docstring example `113472111` (malformed 9-digit).
+
+
+## 2026-06-11 — Session: Classifier Kiosk Full Fix — Phase 0 recon (READ-ONLY)
+
+**Rozhodnuto (§2 pre-impl interview):**
+- Merge timing: **každou fázi po готовности CI** (ne post-Cemex hold), ale honor
+  freeze window — fáze musí landnout před ~21.06 nebo staging-only poté.
+- Vector index: **pgvector v Cloud SQL** (concrete-agent DB), reuse nepoužitý
+  `app/integrations/vertex_embeddings.py` (gecko@003, 768-dim).
+- Kiosk matching engine: **migrovat teď na Core/MCP** (Phase 3 dělá kiosk skutečně
+  tenkým — nahradí lokální matching stack voláními Core).
+- Dead subsystémy: **nechat subsystem 3** (už je Core-proxy = seam pro migraci),
+  **odstranit jen subsystem 4** (role-debate / 6-rolový orchestrator + conflictResolver).
+
+**Zjištěno (recon, 3 paralelní Explore agenti):**
+- §1.2 потврзено přesně: `find_otskp_code` (`app/mcp/tools/otskp.py`) = plochý substring
+  search + `confidence=1.0` hardcoded na každý DB-hit (l.186/~210); žádný UWO gate;
+  žádný param prefilter. `create_work_breakdown` už defaultuje `work_first` (Pattern 15).
+- NOVÉ: kiosk URS_MATCHER NENÍ tenký UI — má vlastní plný matching stack (lokální
+  SQLite ~39K ÚRS, 4-fázový LLM batch pipeline, otskpCatalogService, perplexityClient,
+  learned-mappings KB) + plný 6-rolový orchestrator (NE 3 role z tasku). Subsystem 3
+  už proxy do Core (`documentExtractionService.js`). DebugCollector v tomto kiosku
+  NEEXISTUJE → je to nová věc pro Phase 3.
+- Vertex: `vertex_embeddings.py` existuje ale je nepoužitý scaffolding. Žádný pgvector
+  dnes (PG15 + Alembic + Czech FTS). ⚠️ `textembedding-gecko@003` je legacy model —
+  ověřit lifecycle před Phase 1.
+
+**Odmítnuto / out of scope:** reranker model (P6, jen seam) · Vertex RAG · DACH
+adaptéry · calculator element-classifier (net-touch) · cross-user isolation (P0 jinde)
+· pricing/TOV/AI-quantities.
+
+**Otevřené otázky:** UI placement «разбивка» (samostatná záložka kiosku vs Registry/
+Portal) — neforcováno v interview, vyřešit v Phase 3 design proposalu. Ověřit validní
+náhradu schema-example kódu `113472111` (Phase 2). Ověřit gecko@003 lifecycle.
+
+**Co dál:** STOP gate. Čeká na go-ahead (Alexander) pro Phase 1 (Core: UWO gate +
+pgvector embeddings retrieve + param prefilter + pluggable ranking seam + honest
+confidence). Report: `docs/audits/classifier_kiosk_fullfix/2026-06-11_phase0_recon.md`.
+
+
+## 2026-06-11 — Session: GCP cost-аудит + пачка А (триггеры/Cloud Build) + пачка Б №3 (Redis retirement) — EXECUTED
+
+**Rozhodnuto:**
+- **Cost-аудит** (`docs/audits/cost_audit/2026-06-10_gcp_cost_audit.md`, PR #1331):
+  6.3k Kč/мес разложено до причин; адресуемо ~4.2k. H1 ✅ (Redis
+  `stavagent-mcp-rate-limit` BASIC 1GB = только DCR-limiter; VPC-коннектор
+  e2-micro min=2 — только ради Redis), H2 ✅ (E2_HIGHCPU_8 вне free tier +
+  live-триггеры без includedFiles: ~2 400 билдов/мес, ~80 % платные
+  guard-cancel'ы), H3 ✅ concrete min=1/6Gi (MinerU чист). Цель ~1.5–2.2k.
+- **Пачка А исполнена:** триггеры пересозданы с includedFiles (docs-пуш = 0
+  билдов; runbook #1332 + hotfixes #1335/#1338/#1339), все 6 cloudbuild-yaml
+  на default-пул (#1333, 2 500 free мин/мес). **Три инцидента за день, все
+  пойманы гейтами, ни один не повторился** — verified can/cannot-таблица в
+  `triggers_reimport_runbook.md`: `location` режется на import; update-через-
+  import мёртв; `beta export` = describe-мусор; legacy-SA создаётся, но убивает
+  каждый билд; без SA — INVALID_ARGUMENT на create (grandfather у старых);
+  канон = delete → import репо-yaml с user-managed **compute-SA**.
+- **Пачка Б №3 исполнена до конца (шаги 1–5):** DCR rate-limiter Redis → Postgres
+  atomic UPSERT (миграция 013, PR #1337; fail-closed сохранён, rollback-гигиена
+  shared-коннекта, 21+4 goldens verbatim в CI: 487 passed); monolit-кэш →
+  in-memory fallback. Smoke #1 и #2 зелёные (DCR-проба `400×10 → 429` на проде
+  ДО и ПОСЛЕ снятия env; боевые тулзы через claude.ai-коннектор; логи чистые).
+  Шаг 3: ревизия 00405-ls8 без REDIS_URL/коннектора; шаг 5: **Memorystore
+  `stavagent-mcp-rate-limit` + `stavagent-vpc-connector` СНЕСЕНЫ** →
+  **−1 349 Kč/мес**, класс багов «деплой снёс REDIS_URL» закрыт навсегда.
+  Гигиена: `_REDIS_URL`/`_VPC_CONNECTOR`-блоки выпилены из cloudbuild-concrete
+  (этим же PR).
+
+**Odmítnuto:**
+- Upstash как замена Memorystore — новый вендор в auth-пути против ethos.
+- Перебор update-пути import'а после двух INVALID_ARGUMENT — переключились на
+  проверенный CREATE-путь вместо третьего эксперимента.
+- Ужимать 6Gi/убирать keep-alive — не cost-драйверы (аудит §6).
+
+**Otevřené otázky:**
+- 🔐 **Ротация пароля `stavagent_portal`** — засветился в чат-логе сессии
+  11.06 (`gcloud sql users set-password` + 4 DSN-секрета + редеплой потребителей).
+- Пачка Б №4: concrete `min-instances` 1→0 (~1.0–1.3k Kč/мес) — **отложено
+  решением Александра 11.06 («оставим пока как есть»)**; если вернёмся —
+  gated-задача с замером cold-start.
+- Биллинг-верификация через ~3 суток: строки Memorystore/Compute Engine → 0,
+  Cloud Build ↓; SKU-разрез (аудит §7 п.6) — опционально.
+- Мёртвый Redis-код (`app/core/redis_client.py`, `session.py`, Celery-таски) —
+  hygiene-задача без приоритета; runbook §6 NB: redis-deps в requirements.txt
+  пока остаются (импорты живы в неиспользуемых модулях).
+
+**Co dál:** мониторинг первого триггерного concrete-билда после этого PR
+(WARN-строк больше нет по построению) → №4 по go → биллинг-чек.
+## 2026-06-11 — Session: Golden recalibration SO-202 KV — Part A (PDPS 1 takt + provenance)
+
+**Rozhodnuto:**
+- Golden §5f SO-202 KV překalibrován na PDPS: TZ §7.2 «betonáž NK na pevné skruži
+  v jednom taktu» / §6.11.3 «v jedné etapě». Vstup: 693.35 m³ (VV 422336: 1 386.700
+  oba mosty ÷ 2), C35/45 XF2 třída 4, dvoutram, 12 kabelů one_sided,
+  `working_joints_allowed: 'no'` (legitimní 1-takt páka kontraktu),
+  `rebar_mass_kg: 104000` (VV 422365 ÷ 2 — VV vyhrává nad engine heuristikou
+  100 kg/m³ pro předpjatou NK). Dřívější 605 m³ = odhad, superseded.
+- Engine snapshot (kandidátní goldens, fixace po STOP gate A): num_tacts=1,
+  4+1 čerpadel (MEGA zálivka ≥500 NEBLOKUJE — warnings + resource-ceiling ⛔),
+  curing 21 d (≥9 floor tř. 4), prestress 25 d (wait 21 + 2 + 2), skruž 46 d,
+  total 89.5 prac. d/most, Top 50 + Staxo 40.
+- Interview: starý 6-takt case = SYNTETIKA («NOT PDPS») do merge Žalmanov goldenu
+  (Part C); pak smazat. Permissions: test-data deny zúžen per-extension
+  (md/txt čitelné, PDF/XML/XLSX/JSON/images dál zavřené). Part A z čerstvého main
+  PO merge seam-fix #1334.
+- Provenance konvence v golden MD: každé číslo `[TZ §X]` / `[VV pos. N]` / `[odhad]`
+  (retrospektivně: §5a–5e objemy elementů označeny [odhad]).
+- Relabel (hodnoty NEZMĚNĚNY — synthetic probes, ne PDPS-pravda): engine.parity
+  (SSOT kotvy pro Python replay fixtures — změna hodnot = re-capture
+  concrete-agent fixtures), engine.test, planner-advisor, capture_ssot_fixtures,
+  labor-projection.test (multi-takt tvar záměrný — overlapy/zrání overlay
+  vyžadují >1 takt). MCP docstring calculator.py opraven: 605→693.35 + «1 tact
+  per span»→«jeden takt celé NK» (text-only, bez MCP compat dopadu).
+  TASK_Orchestrator_WorkOntology_SO202 čísla 605→693.35.
+- Engine nesoulad ZAZNAMENÁN, neřešen (exclusion): multi-bridge větev orchestrátoru
+  (`num_bridges:2`) dělí volume_m3 jako součet obou mostů, MCP docstring tvrdí
+  per-bridge vstup. Golden proto modeluje 1 most bez num_bridges.
+
+**Odmítnuto:** změna kontraktu kalkulátoru; re-capture Python fixtures (probe
+hodnoty stačí relabelovat); oprava volume-geometry warning heuristiky (očekávaný
+output, dvoutram eq-thickness — warning je v goldenů zachycen).
+
+**Otevřené otázky:** task uvádí «6 polí 15+5×20+15» — aritmeticky 7 hodnot/130 m;
+repo-doložené je 15+4×20+15 = 110 m ≈ NK 111.5 (použito). Confirm na STOP gate A.
+
+**STOP gate A rozhodnutí (Alexander, 2026-06-11) — aplikováno v témže PR (#1336):**
+- Rozpětí potvrzeno 15+4×20+15 (výkres 18 Tvar NK; TZ §2.1 «5×20» = překlep,
+  správně §6.5.1) — v goldenů zaznamenán vnitřní rozpor TZ.
+- «21 d pryč»: sezónní skruž floor ČSN 73 6244 se na PŘEDPJATOU mostovku
+  neaplikuje (gate odskružení = po napnutí, TZ §6.5.2; tržně CN SAFE 8 d).
+  Engine změna (orchestrator): `skruzSeasonalFloorApplies` guard + props
+  hold = curing + prestress pro předpjatou NK. Snapshot v2: curing 9 d,
+  prestress 13 d (wait 9+2+2), skruž post-pour 22 d, total 89.5 → 77.5 d.
+  Residuál (zaznamenán): wait⊂zrání sekvenčně (22 d vs PDPS-min ~11 / CN 8) —
+  scheduler debt, samostatně.
+- Nh-snímek (vlastní výkon, kánon ×0.8): celkem 3 576.6 Nh / 5.16 Nh/m³
+  (armování 892.8 / předpětí 520 / betonáž 51.2 / skruž+bednění 2 106.6 /
+  ošetřování 6 ⚠️). Nález: scheduler curing-fáze span 1.5 d vs curing_days 9
+  → ošetřování podhodnoceno; kandidát fix v labor-projection
+  (days=max(span,curing_days)) — čeká rozhodnutí, neměněno mlčky.
+- CN SAFE 26-027C (19.02.2026) ověřeno z PDF, zapsáno jako srovnávací
+  fixtura §5h: Meccano 1 527.6 m²/most (rozvinutá 13.7 m ≠ plocha NK
+  1 209.775 [TZ §2.1]), POLY 5 838.3 m³/most, harmonogram 114/97 d
+  (+10 rozebrání predmontáže), rekapitulace 15 608 460 Kč. Model = VŽDY
+  vlastní výkon; CN = externí cena pro srovnání, ne vstup enginu.
+- Semantika 2 mostů (PRINCIP, implementace Part C): SO202 = objekt, LM/PM =
+  podobjekty s plnou sadou elementů; VV ÷ 2; sekvenční harmonogram se
+  sdílenou sadou skruže — uzavírá num_bridges recon-nesoulad.
+
+**Co dál:** merge PR #1336 → Part B (TZ-consistency validation rule)
+→ Part C (Žalmanov golden, docs v test-data/SO_202_D6_OV_Z/).
+
+## 2026-06-10 — Session: Monolit seam-fix — единый источник сводки (čel-časy, harmonogram, KPI)
+
+**Rozhodnuto:**
+- Recon (tentýž den, STOP gate) potvrdil: kalkulátor (`CalculatorResult`) a sводná Monolit
+  (`FlatKPIPanel`/`FlatGantt`/`ElementBlock`/exporter) počítaly čas a člověkohodiny NEZÁVISLE
+  (326.7 d vs 622.8 d vs ~357 d; 7 862 / 14 092 / 14 952 h na SO-202 mostovce 605 m³).
+- Seam-fix (branch `claude/bold-hawking-v2e7b4`): nový shared modul
+  `shared/src/calculators/labor-projection.ts` — JEDINÝ zdroj: `buildScheduleProjection(plan)`
+  (total + reálné fáze s překryvy, tvar `schedule_info.phases` který mrtvá větev FlatGantt/exporter
+  už očekávala) + `buildLaborProjection(plan)` (kanonické normohodiny ×0.8 per operace, včetně
+  viditelné podstroky **ošetřování betonu** 1 os.×5 h/den; přítomnost = ÷0.8). `K_UTIL=0.8` canon.
+- Domain decisions (Alexander, fixní): normohodina = lidé×směna×0.8×dny (kánon, normy+termíny);
+  přítomnost = ÷0.8; **peníze VŽDY z přítomnosti** (směna 10 h placená celá); zrání = kalendářní
+  span/overlay, nikdy sekvenční sčítanec; KPI «Čas» = total enginu, bez harmonogramu →
+  `NEPOČÍTÁNO`; peněžní vzorec (KROS÷burn) NIKDY jako druhý "čas" — přesunut do **«Krytí mezd»**
+  (budget-months ÷ plan-months, semafor ≥1 zelená / <1 červená, oba vstupy v tooltip).
+- Writers: Aplikovat zapisuje plnou projekci (`useCalculator` → `buildScheduleProjection`;
+  `buildWorkDrafts` čte `buildLaborProjection` — TOV `normHours`=kánon, `hours`=přítomnost,
+  `totalCost`=přítomnost×sazba; `buildPileWorkDrafts` sloučen do projection-driven builderu).
+- Readers: FlatGantt fáze z projekce + roll-up = Σ element totals (zrání overlay
+  `--zrani` třída); FlatKPIPanel «Čas» z `schedule_total_days` (+ `Nevypočtených` badge,
+  mixed projekt = částečná suma — interview answer), «Krytí mezd» v Náklady kartě;
+  `calculateHeaderKPI` + `summarizeScheduleProjections` v shared/formulas; Celk.hod buňka
+  zobrazuje kánon z TOV; exporter.js «Doba realizace (harmonogram)» + «Krytí mezd» řádek
+  (interview: exporter v scope).
+- AC na SO-202: všechny tři view = **326.7 d** (bylo 622.8/357); jedno kanonické číslo
+  **14 681.6 Nh** / 18 352 h přítomnost (tři čísla zanikla); hermetic suite
+  `labor-projection.test.ts` 13 testů. **1262 shared** (1249+13) + 58 backend Jest + tsc + vite OK.
+
+**Odmítnuto:**
+- Přenos `planElement` do Core (samostatný budoucí krok). Oprava interního dluhu 220.5 vs 307.8 d
+  (Souhrn «Dní» nyní zobrazuje projection-days; engine sub-results nezměněny). Změna KROS/cen.
+
+**Otevřené otázky:**
+- Starý nerouted `KPIPanel.tsx`/`MainApp` stále ukazuje peněžní `estimated_months` jako čas —
+  mimo routing, mimo scope. `costs.total_labor_czk` zahrnuje props_labor a UI «Celkem práce»
+  přičítá propsLabor znovu (pre-existing, recon poznámka) — samostatný cleanup.
+
+**Co dál:** STOP gate — merge dělá Alexander po review PR.
+
+## 2026-06-10 — Session: Live-seal blockers (#1327) + ŽIVÁ PEČEŤ front-half PASSED
+
+**ŽIVÁ PEČEŤ — PASSED.** Po merge #1327 + deploy Alexander zopakoval runbook
+(`docs/specs/doc_to_quantified_elements/e2e_runbook.md`): **1 passed, 19.32 s**,
+proti deployed stacku (Cloud Run + Cloud SQL + Portal JWT + živý Monolit),
+reálný **SO-202 XML soupis** (`E_Soupis praci_XC4_DI-009.xml`) + TZ text,
+**BEZ caller-supplied `elements`**. P3-residual UZAVŘEN — front-half
+(dokumenty → join → quantified elements[] → kalkulace → deliverable) je
+zapečetěn end-to-end živě. Plán design → P1 #1321 → P2 #1322 → P3 #1323 →
+Gap A #1324 → blockers #1327 → pečeť: KOMPLET.
+
+**MERGED do main (#1327, 409d8f1c) — tři prod-defekty z PRVNÍ živé pečeti (+ čtvrtý latentní z reconu):**
+- **Part A (б-zero):** provisioning psaný pro PŘEDPOKLÁDANÉ vlastní UUID schéma users/projects
+  500koval proti reálné Portal-tabulce (id INTEGER, bez status) — `UndefinedColumn` →
+  `DatatypeMismatch`. Recon: provisioned řádky NIKDO nečte (existovaly jen kvůli FK
+  `orchestrator_sessions`), a orchestrátorové tabulky žádná migrace nevytvářela (jen CI fixture
+  přes create_all — 4. vrstva: `UndefinedTable` by byla další). Fix: migrace
+  `012_orchestrator_tables.sql` (sessions + audit + append-only trigger, **plain indexed UUID
+  user_id/project_id, ŽÁDNÉ FK** — konvence audit-tabulky); FK v ORM modelu odstraněny;
+  `ensure_user/project_provisioned` SMAZÁNY — **orchestrátor nikdy nezapisuje do Portal-owned
+  tabulek**. Izolace beze změny (app-level principal-vs-session compare).
+- **Part B:** deploy-config nese `JWT_SECRET=JWT_SECRET:latest` (byl manual-only, každý deploy
+  ho smetl → „JWT auth is not configured") + substituce `_REDIS_URL`/`_VPC_CONNECTOR`
+  (hodnoty plní Alexander v triggeru; empty-safe omission přes bash-step — žádný tichý
+  ''-overwrite). Ruční restore-ritual mrtvý.
+- **Part C:** `_CRITICAL_SCHEMA` rozšířeno o obě orchestrátorové tabulky — drift schématu =
+  `SchemaDriftError` na startu (Cloud Run drží předchozí revizi), ne 500 na živém requestu.
+- **Goldens** (`test_live_seal_portal_schema.py`, DB-gated, scratch schema): fixture replikuje
+  POZOROVANÝ prod-tvar (integer-id users BEZ status) — negativně ověřeno, že reprodukuje oba
+  prod-errory doslova. JWT submit+resume projde s **0 zápisy do users**; audit + append-only
+  trigger fungují; drift-check projde na 012 a hlasitě padá s názvem sloupce po jeho dropnutí.
+  Lokálně ověřeno proti reálnému PG16 (3/3 goldens + 8/8 pr3b endpoint testů); CI na finálním
+  HEAD `8662188f`: 483 passed.
+
+**Vestigiální ALTER (zaznamenat, nezapomenout):** `users.status` v prod DB `stavagent_portal` —
+ruční `ALTER TABLE users ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'active'`
+provedený 2026-06-10 během debuggingu první pečeti. Po б-zero ho orchestrátor **NEPOUŽÍVÁ**
+(žádné zápisy do Portal users) — sloupec je vestigiální a neškodný; tabulku vlastní Portal,
+případné odstranění je rozhodnutí Portal-strany, ne concrete-agenta.
+
+**Rozhodnuto:**
+- **б-zero** (interview): žádná principal-tabulka, žádné FK na Portal users/projects, provisioning
+  odstraněn — nic výsledek provisioning nečte, FK na integer-id Portal users není ani vyjádřitelný.
+- Deploy-env: JWT hned (secret-ref existuje), REDIS/VPC přes trigger-substituce (hodnoty nejsou v repu).
+- Drift-chování: fail-fast reuse existujícího mechanismu (SchemaDriftError → rollback revize).
+
+**Odmítnuto:** (а) adaptace provisioning na Portal-schéma (zápisy do ŽIVÉ Portal users tabulky na
+každý JWT request + UUID→integer mapping); (б-table) vlastní principal-tabulka (nikdo by ji nečetl).
+
+**Co dál:** Gap B — šum element-listu v `extract_tz_fields` (6 čistých bullets + ~31 prose-fragmentů
+na reálné TZ; geometry-path je čistá, nesahat). Pečeť prošla i s šumem (čisté bullets dostaly objemy),
+ale kvalita quantification se Gap B výrazně zvedne. Samostatná gated-úloha.
+
+## 2026-06-09 — Session: doc→quantified-elements front-half (P1+P2+P3 shipped) + scoped validation + Gap A
+
+**Rozhodnuto:**
+- Front-half "documents → quantified elements[]" zaveden po fázích (design-first → gated PRs):
+  **P1 #1321** pure soupis→element join (`soupis_quantity_join.py`) + TS-mirrored volume-geometry
+  cross-check (`volume_geometry.py`, pin B — parity-guard parsuje `element-classifier.ts`).
+  **P2 #1322** wiring do `DOCUMENT_ANALYSIS` (`recipe_runner._document_analysis_step` volá
+  `extract_tz_fields` + `parse_construction_budget` → join → cache `elements[]` +
+  `quantification_summary`; `_atomize_step` fallback na `options['elements']`); divergence jede do
+  deliverable jako **ingest** warning (`origin:"ingest:soupis_vs_geometry"`, NE v `calc_warnings`).
+  **P3 #1323** env-gated live e2e (`test_p3_live_e2e_orchestrate.py`, skip-by-default, NENÍ CI gate)
+  + runbook `docs/specs/doc_to_quantified_elements/e2e_runbook.md`.
+- **Scoped validace na reálném SO-202** (real parsers + P1 join, bez serveru) odhalila 2 upstream díry,
+  které offline goldeny (čisté fixtury) maskovaly. Join sám robustní (honest-blank, no fabrication,
+  čisté bullety dostaly reálné objemy Opěry→949.6 / Římsy→632.2).
+- **Gap A FIX (PR #1324, MERGED):** `parse_construction_budget` mis-routoval **XML soupis** do xlsx/zip-readeru
+  → `BadZipFile` → tichá 0. Fix: deterministický `_detect_file_kind` (content-sniff `PK`/`<?xml` +
+  extension fallback) **uvnitř tulu** → XML dispatch do existujícího `KROSParser` → normalizace přes
+  **sdílený `_normalize_items`** (žádný fork). **Honest-error** na neznámém formátu (ne tichá 0).
+  Golden na **reálném SO-202 XML** (corpus-gated): tul vrací 3373 pozic / 1217 m³; join na čistých
+  bulletech → reálné objemy. xlsx path beze změny; KROSParser nezměněn. CI na finálním HEAD `7a3bbdcc`: 480 passed / 3 skipped, 6/6 Gap-A testů PASSED (oba corpus-gated na reálném XML).
+
+**Odmítnuto:**
+- Dumpnout divergenci do `calc_warnings` (maskovalo by se jako calc — proto sibling `quantification_warnings`).
+- Měnit KROSParser / P1 join / xlsx-path (fungují); psát nový parsing (jen dispatch + reuse).
+
+**Otevřené otázky / residual:**
+- **Live e2e NIKDY neproběhl** proti živému stacku (Postgres+Monolit+JWT) — runbook napsán, neexekuován;
+  pečeť u Alexandra. Spuštěn dnes proti reálnému SO-202 by **selhal** kvůli Gap A/B.
+- **Gap B (TZ element-list noise):** `extract_tz_fields` vrací na reálném TZ 37 "elementů" (6 reálných
+  bulletů + 31 prózních fragmentů) → garbage match + ambiguity. **Další task, ne teď.** Geometrie čistá.
+
+**Co dál:**
+- Gap A merged → deployed live-invokace aktualizována na reálný XML soupis (env-var `STAGEGATING_E2E_SOUPIS_XLSX` přijímá XML path — jméno historické); pečeť dělá Alexander proti deployed stacku. Gap B (TZ element-list noise) — po pečeti.
+- Deferred (design §7): non-beton field mapping, non-monolit width, CATALOG_BINDING/PRICING, in-flow reconciler.
+
+## 2026-06-08 — Session: Calc-output + confidence passthrough to deliverable (gated, additive, PR #1319)
+
+**Rozhodnuto:**
+- Navazuje na pipeline-state recon (`docs/audits/pipeline_state_recon/2026-06-08…`),
+  který našel šev: recipe spustí kalkulátor, ale jeho `PlannerOutput` **zahodí**
+  (drží jen pár jmen klíčů) a na témže švu **dropne classification confidence**.
+  Hirurgická gated-taska, **additive**, kalkulátor (SSOT delegace do Monolitu)
+  **netknut**. Pre-implementation interview (AskUserQuestion) PŘED kódem — 5 bodů
+  odsouhlaseno + 3 doplňky uživatele (Q1/Q3/Q4) zapracovány.
+- **Work-item kontrakt (1× v `breakdown.py`):** stamp `classification_confidence`
+  + `classification_source` tam, kde klasifikace řídí item; **rezervované sloty**
+  `otskp_code`/`unit_price_czk`/`total_price_czk` = None (CATALOG_BINDING/PRICING
+  naplní stejné klíče později); `calc`=None + `calc_status="not_calculated"` +
+  `calc_warnings=[]` jako **explicitní honest-blank** (Q3 — stav, ne chybějící pole).
+- **recipe_runner `_atomize_step`:** kurátorovaný **calc subset** (resource
+  quantities + schedule metrics `total_days`/`num_tacts`/`resources`) + warnings se
+  přenese na work-items počítaného prvku (deck); plný provenance-tagged
+  `PlannerOutput` → `calc_metadata` v step metadatech (`_source` = `calculator:<el>
+  ← monolit_planner_api`, Q1/AC3 replay-grounded); engine error → honest-blank
+  (žádná vymyšlená čísla). Přenesené číslo nese `_source` (AC3) jako prácová provenance.
+- **export.py:** plní **existující viditelné** sloupce KROS soupisu `Důvěra` ←
+  classification confidence (reálný skalár) + `Zdroj` ← calc-status-aware label;
+  honest-blank řádek dostává explicitní **`NEPOČÍTÁNO`** marker (Q4 — vizuálně
+  odlišný, soupis nevypadá kompletní tam, kde se nepočítalo). Bohatší calc čísla +
+  agregované warnings → metadata odpovědi (`calc_summary`/`calc_warnings`), NE do
+  KROS sloupců. `_source` work→template + source_map + grounding-gate beze změny.
+- **Golden (hermetic, offline):** `test_calc_provenance_passthrough.py` mockuje
+  Monolit odpověď na delegačním švu (`monolit_delegate._http_post` → `fake_post`,
+  sentinel `total_days=1234`; neznámá cesta → `raise AssertionError`, tj. živá
+  služba by FAILnula, neskipla) — 8 testů. Wired do `test-mcp-compatibility.yml`.
+- **CI důkaz na finálním HEAD `ac01cdd2`** (MCP-Compatibility job 80175537633,
+  success): všech 8 passthrough goldenů **PASSED** (ne skip), registrace tulů
+  **nepoškozena** (`test_mcp_server_imports` + `test_all_tools_registered` +
+  `test_no_unexpected_tools` PASSED; zero-registration-diff vůči main), 2 flipnuté
+  policy-testy PASSED (+ zpevněn vacuous-pass). Souhrn `455 passed, 2 skipped`.
+- **Merged jako PR #1319 (squash → `a7df366f`)** — Pattern 12 orphan (obsah na main,
+  větvové commity orphaned). HEAD před mergem srovnán na CI-verified `ac01cdd2`
+  (drop docs-only §9 commitu z větve, ať se nemerguje neověřený HEAD; soul.md je
+  mimo CI-trigger-paths → §9 jde post-merge separátně, jako celou sezónu).
+
+**Odmítnuto:**
+- Změna kalkulátoru / jeho kontraktu / Monolit delegace (jen se přestal zahazovat výstup).
+- Front-půlka (dokumenty → elements) — příští taska. CATALOG_BINDING/PRICING zůstávají
+  no-op (jen rezervované sloty). Reconciler v potoku. Celý `PlannerOutput` na řádek
+  (kurátorovaný subset + plný v metadatech). Single composite confidence (separátní pole).
+
+**Otevřené otázky / Residual:**
+- Kalkulátor v recipe běží zatím **jen pro deck** (mostovkova_deska) — ostatní prvky
+  honest-blank. Rozšíření na víc prvků = navazující taska.
+- `Zdroj` label volí classification_source; doménově možná chtít čistší cz štítek
+  (kalkulátor/StavAgent) — drobnost, neřešeno.
+
+**Co dál:**
+- Front-half (extract → quantified elements feed) + propagace calc na víc prvků +
+  případně CATALOG_BINDING wiring. (Konverguje s UWO Catalog-Last status-enumem.)
+
+
+## 2026-06-08 — Session: UWO sandbox — Work-First na interiér/PSV ( remont mezonetu), runnable offline fixture
+**Rozhodnuto:** Groundwork + golden fixture pro UWO (navazuje na design spec). Samostatný zero-dep offline sandbox `sandbox/uwo-interier-mezonet/` (běží `node --test`, žádná síť/DB/AI). **Interview (4 odpovědi):** runnable harnes · šablony uvnitř testdata-projektu · baseline ±10–15 % · reálný ÚRS proba 1×. Reálný kejs: rekonstrukce mezonetu (3D půdorysy M&M + scope majitele + `Cenova_nabidka_rekonstrukce_1.xlsx` mistra, 1 127 350 Kč). 4-fázový pipeline (scope-router → Work-First decomposer → Catalog-Last adapter se status-enumem `exact|candidate|group_only|not_verified` → orientační cost). 10 sekcí → 33 work-atomů; koupelna = balík 7 atomů (nikdy 1 kód). **Jednorázový reálný proba** živého STAVAGENT MCP `find_urs_code` (privátní→ÚRS) zmražen v `data/catalog-findings.json`. Headline: UWO grand **1 435 990 Kč orientačně, +27,4 % vs mistr** — odhalené mezery: malba (stěny+podhledy), hydroizolace, montáž ZP, samonivelační stěrka, **celá výměna kotle**, ochrana schodiště, odvoz suti, administrativa, hodinové. 9/9 acceptance testů green.
+**Odmítnuto:** monolitní atomy na interiéru (router guard) · falešný „kód nalezen" (adapter vrací honest status) · catalog-first. Hypotéza „111 vs 784 family-mismatch" se NEpotvrdila (matcher vrátil správné 783); místo toho zmraženy REÁLNÉ false-plausible kódy (kotel „Podmínky použití", štuk „sloupů", perlinka „Příplatek") → sanity-flagy.
+**Otevřené otázky:** migrace sandbox šablon → production KB `technological_postupy/` (samostatná úloha); ÚRS find_urs nevrací jednotkové ceny (licencováno) → cost vrstva běží na master/rule-of-thumb sazbách; DPH 12 % flag (neověřeno).
+**Deliverable (HK212 styl):** korpus-projekt `test-data/rekonstrukce_mezonet_2026/` — atomizovaný seznam prací jako Excel `outputs/Vykaz_vymer_Mezonet_ATOMIC_WORKLIST.xlsx` (5 listů: Souhrn / Atomic_worklist / Decomposition_Map / GAPS_vs_mistr / Sanity_flagy), generovaný `tools/atomic_worklist_excel.py` z `outputs/atomic_decomposition_map.json` (= projekce sandbox pipeline přes `export-atomic-map.mjs`). HK212 sloupce (Poř./Kapitola/Atomic operace/MJ/Množství/Vzorec/URS kód kandidát/Status 4-tier/náklad/parent). xlsx gitignored (build artifact, vzor RD_Jachymov); zdroj JSON + generátor tracked. 33 ops, 7 dekompozic, 13 gaps, 6 sanity, 0 fabrikovaných kódů, 100 % traceability.
+**Co dál:** Production dekompozice ani catalog-search NEZMĚNĚNY (AC10). Gate 3 / SO202 Ingest netknuto. Žádný PR (no-PR-unless-asked). Implementace production UWO větve = po schválení design spec.
+
+## 2026-06-08 — Session: Universal Work Decomposer (UWO) — recon + design (DESIGN-FIRST, žádný kód)
+**Rozhodnuto:** Design-first task (Pattern 16 UWO). Výstup = `docs/specs/universal-work-decomposer/{requirements,design}.md`, status `review`. **Žádný kód**, žádná změna monolitu, SO202 Ingest netknutá. **Phase A recon** (4 read-only agenti): monolitní dekompozer `breakdown.py` už nese Pattern 15 kontrakt (`MODE_WORK_FIRST` vs `_WITH_CATALOG`), work-atomy = hardcoded `WORK_TEMPLATES` klíč=element_type, jen monolit; klasifikátor = čistý 24-typ structural-concrete typer, reject jen materiálový, **bez scope-routeru**; `find_otskp`/`find_urs` confidence bez status-enumu; **procurement routing UŽ existuje jako DATA** v `kb/urs_otskp_routing.yaml` (`getCatalogPriority`, privatni/verejna/design_build) ale nepřipojeno; KB `B5_tech_cards/technological_postupy/` má stub `zemni_prace_bourani/` = dům pro ne-betonné šablony. **Phase B interview (4 odpovědi):** interiér/PSV první větev · samostatný scope-router upstream · samostatný catalog-binding adapter · provenance-enum na atomu. **Phase C design:** 3-vrstvý pipeline (Scope-Router → Branch-Decomposer registr větví, monolit=1 větev → Catalog-Binding adapter se status-enumem `exact|candidate|group_only|not_verified`). Větev interiér/PSV rozpracována (renovace koupelny → balík atomů). Fázovaný plán F0–F4+; F3 poputně uzavírá zlepšení ÚRS-hledání (status-enum).
+**Odmítnuto:** catalog-first · LLM jako univerzální dekompozer (jen 0.70 fallback s flagem) · rozšíření klasifikátoru o scope (zvolen orthogonální router) · fork slovníků (reuse `element_types.yaml` + `urs_otskp_routing.yaml` + `WORK_TEMPLATES`).
+**Otevřené otázky:** keying ne-betonných šablon (navrženo `technological_postupy/<section>/` + `dictionaries.<section>`, k potvrzení); zda `interier_psv` slovník přes `gen-knowledge.mjs` nebo Python-only; jak `procurement_mode` vstupuje do volání.
+**Co dál:** **🛑 STOP — design na review.** Implementace (F0–F4) = samostatné úkoly po schválení. Žádný PR (no-PR-unless-asked).
+
+## 2026-06-08 — Session: SO202 Ingest Fix — Gate 1+2+3 (XC4 routing + TZ object-code + NK geometry z prózy)
+
+**Rozhodnuto:**
+- Tři sekvenční gaty navazující na recon (2026-06-05 níže), každý **gated/STOP** před mergem,
+  **minimální chirurgické additive** změny, **deterministicky** (bez sítě/DB/AI). Každý gate
+  spárován s golden testem: hermetic synthetic + **corpus-gated** reálný SO202 — oba běží v CI
+  (ne skip), s doloženým verbatim CI-logem že corpus testy PASSED na finálním HEAD. Branch per
+  gate (PR1/PR2/PR3), squash-merge.
+- **Gate 1 — XC4 routing** (PR #1311, squash `450158d`): AspeEsticon-XC4 soupis
+  (`E_Soupis praci_XC4_DI-009.xml`, 3373 `<polozka>`) byl `KROSParser`em poslán do
+  OTSKP-XC4 ceníkové větve → **0 položek**. Rozlišovač dává AspeEsticon (`<objekty>` +
+  `<zdroj>AspeEsticon`, lowercase `<polozka>`) vlastní identitu a routuje na dedikovaný
+  `xc4_parser` (**0 → 3373**). Soubor s `<objekty>` I `<CenoveSoustavy>` → soupis (priorita).
+  Reálný ceník (`<Polozka>` capital) beze změny (stále OTSKP-XC4); `_has_xc4_prices` nemá jiné
+  konzumenty.
+- **Gate 2 — TZ object-code** (PR #1314, squash `70afd18`): `extract_tz_fields` vracel cizí
+  `SO 101` (křížená dálnice, ref. v geologii + vnořeno v názvu) a prázdné name/charakteristika
+  → `detect_object_type` nepotvrdil most. Fix **reusuje deterministickou SO-logiku klasifikátoru**
+  (`extract_so_code(filename)` → `extract_section_ids(text)`), ne paralelní extraktor;
+  name/charakteristika přes celodokumentový scan explicitního labelu (colon-optional „Název
+  objektu", skip TOC dotted-leader řádků), trailing cizí `SO 101` z názvu odříznut. Oba vstupní
+  cesty (s/bez filename) → SO 202; poison-guard SO 250 zárubní zeď NEní most. (Amazon Q: 2×
+  `next()` bez defaultu v testech opraveno; produkční kód grepnut — čistý.)
+- **Gate 3 — NK geometry z prózy** (PR #1316, squash `69bfc4d`): po Gate 2 byla geometrie NK
+  0 % strukturovaná. Additive vrstva `_extract_geometry` v `extract_tz_fields` (segmenter +
+  MCP signatura NEtknuté): `num_spans` + uspořádaný `span_lengths_m` (+`spans_consistent`,
+  total), `nk_height_m`, `nk_width_m`, `cross_section_type`, `structural_system
+  {continuity,casting,prestress}`, per-field `_source` grounding, `needs_verify[]`. Česká
+  desetinná čárka, skloňování/předložky (root-regex), číslovky slovy („o **třech** polích").
+  **Existing-bridge poison** (TZ popisuje novou NK i bouraný prefab „Petra"): hodnota
+  klasifikována podle **nearest-preceding-marker** (popis, pod nímž stojí), ne symetrickým
+  oknem → bere nové `32,0+44,5+32,0`/`2,40`/`13,65`/dvoutrám místo starých `26,30+…`/`1,15`/
+  `12,64`. Honest-blank ladder (regex 1.0 / inferred count 0.7+flag / absent → None+`needs_verify`).
+- **Single-source (zámek):** `cross_section_type` čerpá z živého kalkulátorového `nk_subtype`
+  slovníku (`_NK_SUBTYPE_TO_ENGINE` klíče = input vocab) přes drift-guard test
+  `test_cross_section_values_are_in_live_calculator_vocab` (emitted ⊆ vocab; engine-internal
+  `dvoutram` se NEemituje, jen input form `dvoutramovy`). Žádný fork slovníku.
+- **CI důkaz na finálním HEAD `21a1585`** (MCP-Compatibility job 80160139957, success): všech
+  14 geometry testů + drift-guard + 2 corpus-gated **PASSED** (ne skip/error); `447 passed,
+  2 skipped` (2 skipy = nesouvisející DB-session testy). Po squashi ověřeno na `origin/main`
+  (`_extract_geometry` @463, call-site @629, test file, workflow trigger wired) — squash nic
+  nezahodil.
+
+**Odmítnuto:**
+- Síťový/MCP cross-check, OCR/vize výkresů, golden mimo SO202 korpus.
+- Paralelní SO-extraktor v Gate 2 (reuse klasifikátoru místo toho).
+- Symetrické negative-context okno v Gate 3 (křehké na kompaktní próze → nearest-preceding-marker).
+- Fork `nk_subtype` slovníku (drift-guard místo toho).
+- Předpětí/výstavbové fáze v geometrii (must-have only; odloženo).
+
+**Otevřené otázky / Residual (tracking, non-blocker):**
+- **nearest-preceding-marker** provalidován na SO202 + 5 hermetic fixtures — **přeověřit na
+  širším korpusu reálných mostních TZ** (jiné formulace „nová/stávající" markeru) později.
+- Geometrie zatím jen z prózy TZ; výkresy/DXF (přesné kóty, příčný řez) out of scope těchto gatů.
+
+**Co dál:**
+- SO202 ingest blokery #1 (XC4) + #2 (object_code) z reconu uzavřeny; geometry pole TZ
+  z reconu „Otevřené otázky" vyřešeno. Korpus `test-data/SO_202_D6_OV_Z/` ponechán jako
+  corpus-gated baseline.
+- Squash-merge orphans (Pattern 12): obsah Gate 1/2/3 na main, větvové commity orphaned;
+  recon větev (`d771a3f`) byla taková orphan (obsah na main přes #1310) — designated branch
+  `claude/funny-wright-JGSlV` resetnut na post-merge main pro tento §9 zápis.
+
+## 2026-06-06 — Session: Knowledge-architecture audit + governance remediation (Phase 0/1/2)
+**Rozhodnuto:** Audit governance/rules/memory vrstvy (odlišná osa od domain-KB `knowledge_audit/`). Report → `docs/audits/knowledge_architecture/2026-06-06_*.md`. Remediation v phasích: **P0** C1 (steering layout přepsán na skutečný monorepo — `structure.md` v2.0 + `tech.md`), C6 (Monolit dvojí CLAUDE → jeden canonical `CLAUDE.md`, stale Render verze do archivu), C5 (settings.json — rozlišeny user-global vs repo permissions). **P1** C2/C3/C4 (DB jména, MCP URL, AI-tier/kredity), C9 (soul §2 v4.24→v4.34), C10 (husky 34→61 testů), C7/C8 (concrete-agent patterns 40→49 + date), D1 (CALCULATOR_PHILOSOPHY ×3 → 1 canon domain.md §1 + stuby). **P2** archiv 14 dead SESSION_/WEEK_ logů, nový `docs/steering/context-index.md` (3-tier mapa), per-service CLAUDE stuby (portal/URS/registry/registry-backend/mineru).
+**Nálezy:** Domain-KB osa zdravá (kb/ codegen + drift-guard). Governance osa měla 11 rozporů (2 HIGH) — kořen: **chybí drift-check governance↔realita** (na rozdíl od `gen:knowledge:check`).
+**Odmítnuto:** Těžký context-router (anti-bloat). Merge stale Render obsahu do canonical (archivován místo toho).
+**Otevřené otázky:** effort "high vs max" (sjednoceno na high-default); fyzický přesun `docs/normy/`→KB B7 (gated, neřešeno).
+**Co dál:** **Phase 3 (po Cemex):** drift-guard governance↔realita + trigger update steering/soul §2 + rozhodnutí o SessionStart hooku. Formula testy 61/61 green. Žádný PR (no-PR-unless-asked).
+
+## 2026-06-05 — Session: SO202 corpus — Core Engine recon (RECON ONLY)
+
+**Rozhodnuto:**
+- Recon-only task — **žádný produkční fix, žádné golden testy.** Výstup:
+  `docs/audits/so202_corpus_recon/2026-06-05_recon.md` + reprodukovatelné skripty
+  v `_recon_scripts/` (`run_recon.py`, `cross_check.py`, + JSON). Korpus
+  `test-data/SO_202_D6_OV_Z/` (32 souborů: 30 PDF + AspeEsticon-XC4 soupis + marker).
+- Interview (uživatel): engine vrstva = **lokální parsery z repa** (ne živé MCP);
+  ground-truth = **deterministicky + označit mezeru** (bez OCR/vize na 28 výkresů).
+- Spuštěny REÁLNÉ Core Engine funkce: `document_classifier.classify_document_enhanced`,
+  `format_detector.detect_format`, `analyze_construction_document` (regex),
+  `extract_tz_fields`, `detect_object_type`, `PDFParser`, `KROSParser`, `xc4_parser`.
+
+**Nálezy (top, deskriptivní — pro navazující golden/fix task):**
+- 🔴 `KROSParser` vytáhne z AspeEsticon-XC4 soupisu (root `<XC4>`, **3373 `<polozka>`**)
+  **0 položek** — `_has_xc4_prices` natvrdo nastaví `OTSKP_XC4` a předběhne `ASPE_XC4`
+  větev; dedikovaný `xc4_parser` (umí 3373/3373) je nedosažitelný. `SourceFormat` enum
+  AspeEsticon vůbec nezná. → celý soupis SO 202 se v produkční cestě ztratí.
+- 🟠 `extract_tz_fields` na TZ i statice: špatný `object_code=SO 101` (≠ 202, chytá
+  referencovaný silniční SO), prázdné name/charakteristika → `detect_object_type=None`,
+  31/37 narativních false-positive „elementů". ALE 6 odrážkových prvků zváže třídu
+  správně (NK→C35/45).
+- 🟠 Klasifikátor: **23/28 výkresů mislabeled** (mostly `RO` @0.43) — sparse text razítka
+  + RO keyword bleed; bridge názvy (Tvar*/Vyztuz*/VPR/MZ…) minou VY filename pattern.
+  Pattern 39 (vision-first) empiricky potvrzen.
+- 🟡 Geometrie/technologie NK (3 pole, 32+44,5+32, v2,40, š13,65, dvoutrám, 22-lan,
+  PL2, 3 etapy skruže) je **100 % v textu TZ, ale 0 % strukturovaně zachycena** —
+  `analyze` regex dá jen materiály + plochý nepojmenovaný seznam kót; `extract_tz_fields`
+  jen `{element, concrete_class, volume_m3=None}`.
+- ⚠️ Soupis třída = katalogová mez **„DO C40/50"** u NK/dříků pilířů vs skutečná TZ
+  **C35/45**; objemy 6 betonových prvků **Δ 0,00 %** vs golden (přes `xc4` direct parse).
+
+**Odmítnuto:**
+- Živé MCP cross-check, OCR/vize výkresů, jakákoliv oprava parserů, jakýkoliv golden test
+  — vše out of scope (golden testy gated na revizi tohoto reconu).
+
+**Otevřené otázky:**
+- Pořadí fixů před golden testy: #1 (KROS XC4 routing) + #2 (extract_tz_fields object_code)
+  jsou pravděpodobně prerekvizity smysluplných soupis/TZ goldenů.
+- Geometry pole TZ — implementovat (Stage 2 / DXF / vision), nebo zafixovat „pominuto"
+  jako baseline golden?
+
+**Co dál:**
+- Revize reconu uživatelem → teprve pak navazující golden-test/fix task (gated).
+- Korpus `test-data/SO_202_D6_OV_Z/` ponechán jako referenční baseline.
+- Env pozn.: recon container potřeboval `pip install pdfplumber pydantic openpyxl lxml
+  sqlalchemy` + `--force-reinstall --no-deps cffi` (rozbitá systémová cryptography rust
+  binding blokovala pdfminer/pdfplumber import).
+
+
+## 2026-06-05 — Session: TASK_2b — Engine learns W3 element typing (Gates 0–5)
+
+**Rozhodnuto:**
+- Element-classification rule-**DATA** extracted to a single source of truth:
+  `concrete-agent/.../app/classifiers/element_rules/element_types.yaml` (ships in the
+  concrete-agent Docker image so the W3 Python classifier reads it natively). The TS
+  engine imports a committed generated artifact
+  `Monolit-Planner/shared/src/kb-generated/element-classification-rules.ts`. Reused the
+  EXISTING general generator `scripts/gen-knowledge.mjs` (one INTEGRATION entry +
+  `yamlAbs` override), NOT a parallel one. CI-blocking drift guard (`gen:knowledge:check`)
+  extended to the concrete-agent `element_rules/**` path.
+- Head-noun **ALGORITHM** ported into the engine as a pure pre-layer
+  (`element-name-normalizer.ts`), mirroring the W3 Python `element_name_normalizer.py`:
+  NK-beats-trám, context-`dřík` (bridge=pier / else wall), `základ` canonicalization,
+  obklad→reject, dřík/opěra genitive suppression. **Selective** port — W3's unconditional
+  `pilíř→pier` deliberately NOT ported (engine stays finer: building pilíř→sloup).
+- `ClassificationContext` gains optional `construction_context` (bridge|retaining_wall|
+  building), authoritative over `is_bridge` (back-compat additive).
+- Explicit **reject** (`is_concrete_element=false` + `reject_reason`) for stone masonry
+  cladding + special materials; `planElement` is the single authoritative site — zeroes
+  rebar + all costs, warns "NEJSOU směrodatné".
+- **Signal ladder**: OTSKP code = 1.0 (pinned); keyword ≤ 0.9 (conscious tier above
+  fuzzy/AI, below code); genuine same-specificity tie → ≤0.7 + `candidates[]`. Specificity
+  guard: a more-specific keyword win is not "ambiguous".
+- **dřík/opěra bug fixed once on BOTH runtimes** via the genitive-`opěr` qualifier (same
+  logic as the `základ`-guard); `telo oper` removed from the pier keyword list. Confident
+  abutment (0.9, no near-tie).
+- Parity asserted at **family level** (directed engine-fine → W3-coarse roll-up via
+  `w3_family`); fine grain guarded by the engine suite, not W3.
+- Engine 1249/1249 shared green; W3 19/19 SO-250 Python goldens green (CI MCP-Compatibility
+  #336 = first real pytest run of the fix); all 4 CI workflows green on `d3eb623`.
+
+**Odmítnuto:**
+- Parallel scoped generator (existing general one extended instead).
+- Porting W3's `pilíř→pier` rule (would make the engine less precise).
+- Name-based context derivation in 2b (only explicit signals).
+- Flagging "opěrná stěna" as ambiguous (specificity win, not a tie).
+
+**Otevřené otázky / Deferred (decomposition phase or follow-up):**
+- **MCP classify-delegation** — the MCP/Python side delegating typing to the engine
+  (mirrors Phase-2a calc convergence). Only after parity proven. The W3↔engine family
+  roll-up map is transitory until then.
+- **UI-display reject** — a dedicated pre-compute reject badge in the calculator
+  (frontend reads `is_concrete_element`). Today a reject shows as "Jiné" (not a confident
+  wrong type) + the post-compute `plan.warnings` surfaces it; richer display deferred.
+- **Rich reject handling** — simple-volume for prostý/podkladní beton + full structural
+  zeroing of formwork/schedule for rejects (only rebar+costs zeroed now).
+- **3-way `construction_context`** — retaining_wall vs building is currently inert (both
+  non-bridge → wall) and test-only; thread object_type from the backend parser when a rule
+  needs the distinction.
+- **sk/de dictionaries** — structure is in place (`dictionaries.<lang>`), only `cs` filled.
+
+**Convergence note — W3 Python goldens that FLIP at MCP-delegation:**
+When the MCP/Python side delegates typing to the engine (engine becomes canon), the
+following SO-250 goldens flip their LITERAL assertion because the engine vocabulary
+differs from W3's — but the **parity FAMILY is preserved in every case** (audited:
+ZERO family-level divergence, so delegation is family-safe). Delegation must either
+map engine→W3 vocab via `type_core[t].w3_name` / `w3_family`, OR update these literals:
+- `operna_zed` → engine `operne_zdi` (wall): `test_mcp_golden_so250.py` #63 (L56);
+  `test_mcp_golden_so250b.py` #74 (L154), #76 (L202).
+- `zaklady` → engine `zaklady_piliru` (foundation; granularity): `so250.py` #66 (L100),
+  #69 (L146), #69b (L157).
+- `zdivo_obklad` → engine reject (`element_type='other'` + `is_concrete_element=false`,
+  reject family): `so250.py` #65 (L85).
+NB: NO golden asserts a W3-specific BUG (e.g. a wrong type the engine corrects across
+families) — the audit found none; every W3 golden is family-consistent with the engine.
+
+**Co dál:** Gate 5 closeout (this entry). Next: MCP classify-delegation recon, or the
+PositionDecomposition / sub-elements UI phase.
+
+
+## 2026-06-04 — Session: SSOT MCP delegate Phase 2a + Docker deploy hotfix — SHIPPED, prod live
+
+**Smergeováno do main:**
+- **Phase 2a — `calculate_concrete_works` (MCP) DELEGUJE na canonical engine** (POST
+  `/api/calculate` → `planElement`). Forwarduje **PlannerOutput verbatim + `source:"monolit_planner_api"`**,
+  žádný divergentní Python přepočet. SSOT fix: mostovková deska `rebar_ratio_kg_m3` = **150**
+  (ne starých Python `180`). Squash **582d5ae** (PR #1304) — obsahuje i retry-fix **f045b29**.
+- **Retired divergentní Python calc** v `calculator.py`: `_lateral_pressure` / `_select_formwork`
+  / `_calculate_tacts` / `_estimate_days` / `CURING_DAYS_TABLE` / `EXPOSURE_MIN_CURING` /
+  `_try_monolit_api` + ELEMENT_TYPES-fallback. Zůstal jen read-only formwork-override warning.
+  `calculate_pump` netknutý.
+- **Seam `app/mcp/tools/monolit_delegate.py`** — jediné místo, kde MCP sahá na engine. Fail-mode:
+  200→verbatim · 4xx→`engine_invalid_input` (bez retry) · 5xx→`engine_error` (retry) ·
+  timeout/conn→`engine_unavailable` (retry). **NEZÁVISLÉ retry-budgety** per typ + hard ceiling
+  `_MAX_TOTAL_ATTEMPTS` (Amazon-Q nález f045b29: sdílený čítač kradl 5xx-retry). Nikdy tiché číslo.
+- **MCP-only typy** `zdivo_obklad`/`izolacni_stena`/`sachta`/`tunel_rampa` → `unsupported_element_type`
+  BEZ volání enginu. Soft-alias `deska→stropni_deska`, `operna_zed→operne_zdi`, `pricinik→rigel`,
+  `zaklady→zakladovy_pas`, `jine→other`.
+- **Testy:** `test_mcp_ssot_delegation.py` (verbatim + fail-mode + unsupported + retry-budget);
+  reconciled compat (6 calc) + golden-SO202 (8) + recipe na PlannerOutput shape přes
+  `conftest.calculate_replay` (offline replay z živého enginu). Jest `engine.parity.test.js` (18/18):
+  endpoint===planElement + rebar-150 + SO-202 domain. MCP-Compatibility CI zelená.
+- **Docker deploy hotfix — PR #1305, squash `f03cbfc`.** Diagnostikován **měsíční zásek deploye
+  concrete-agent**: `python:3.11-slim` (plovoucí tag) uvezl base na Debian **trixie**, a
+  `libredwg-tools` (přidaný v PR3) NENÍ v Debian stable `main` (ani bookworm, ani trixie) → každý
+  Cloud Build padal na `apt-get install` (exit 100) → Cloud Run držel starou pre-PR3 revizi. Fix:
+  pin **`python:3.11-slim-bookworm`** + `libredwg-tools` na **best-effort** (`|| echo WARNING`,
+  `&& rm` cleanup garantovaný, `apt-get update` zůstává must-succeed). 1 soubor, bez app-změn.
+  Amazon-Q návrh (přesun `rm` přes `;`) **odmítnut** — maskoval by selhání `apt-get update` →
+  silent-green; rebuttal + resolved na PR.
+- **Prod concrete-agent: `/mcp/health` tools 11 → 20**, delegující MCP **živý**. (Delegovaný cíl —
+  Monolit `/api/calculate` — živý od PR #1303.)
+
+**Hranice (NEDOTČENO):** `classifier.py` / `breakdown.py` / `advisor.py` zůstaly W3 — žádný diff.
+`classifier.py` na mainu má pořád `rebar_kg_m3: 180` (W3 ELEMENT_TYPES intaktní).
+
+**Odmítnuto (var. D — classify NEdelegován):** W3 SO-250 klasifikátor je **korektnější než engine** —
+vlastní type-vocabulary (`operna_zed` vs engine `operne_zdi`, prostý `zaklady`, MCP-only
+`zdivo_obklad`) + head-noun dizambiguace, kterou engine NEreprodukuje (sverочná tabulka: **7/9
+SO-250 goldenů by se rozbilo** — dřík stěny→driky_piliru, obklad→driky_piliru, základ→other).
+Delegace classify odložena do 2b.
+
+**Otevřené hvosty (→ samostatné session, NEztratit):**
+- **[2b] Engine se učí od W3** (task согласован, Фаза 0 recon): rule-driven klasifikátor, KB-YAML
+  s lang-dimenzí, head-noun jako algoritmus, golden-cyklus, + fix `dřík opěry` (teď oba paths →
+  `driky_piliru`, má být `opery_ulozne_prahy`). Až PO tom classify deleguje.
+- **breakdown C1** (množství z `/api/calculate`) + **advisor inline-retire** — až po classify-konsolidaci.
+- **mineru `Dockerfile`** na plovoucím `python:3.11-slim` (záměrně trixie — `libglib2.0-0t64`) →
+  zapinovat na **`python:3.11-slim-trixie`** (NE bookworm — rozbilo by t64). Determinismus.
+- **Guard-kroky deploye** (`cloudbuild-*.yaml`) dělají `exit 1` na skip → falešné `FAILURE` v Cloud
+  Build History. Přepsat na úspěšný skip. Kosmetika — **až po Cemex**.
+- **Smoke-галочка:** calculate v prodе → `rebar 150` + `source:"monolit_planner_api"`. Po konstrukci
+  už tak je; vizuálně potvrdit s API-klíčem.
+
+**Stav deploye f03cbfc:** merge #1305 (mění `concrete-agent/**`) **auto-spustil** `concrete-agent-deploy`
+na main. Build-status z песочnice nečitelný (bez gcloud/sítě) → **čeká na potvrzení** přes
+`gcloud builds list` (SHORT_SHA `f03cbfc` → SUCCESS). Silná evidence SUCCESS: identický Dockerfile už
+zelený na PR #1305 (`2c2eb5b`) + prod=tools:20.
 
 
 ## 2026-06-03 — Session: Resource Ceiling Phase 2 Group A — recon + dovedení odložené větve do PR #1300
@@ -1169,7 +2358,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - Rewrite CLAUDE.md from scratch (per task §7).
 - Cleanup historických changelog entries (per task §7).
 - Trim CLAUDE.md k 300-line limitu (separátní follow-up taska).
-- Update per-service CLAUDE.md souborů (`concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.MD`).
+- Update per-service CLAUDE.md souborů (`concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.md`).
 
 **Otevřené otázky:**
 - Žádné — všechny edits byly mechanické per task §3.

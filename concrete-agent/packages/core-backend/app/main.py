@@ -149,6 +149,34 @@ async def _run_startup() -> None:
             "(local dev without Postgres)"
         )
 
+    # Wire the catalog embeddings retrieve provider (recall) into the matching
+    # chain seam. Safe to call unconditionally: the provider degrades to
+    # keyword-only when otskp_embeddings is missing/empty, so it never breaks
+    # code lookup or keyword search. Recall activates once the catalog is
+    # indexed into pgvector (scripts/ingest_otskp_catalog.py --index).
+    try:
+        from app.services.catalog_embeddings import (
+            recall_health, register_embeddings_provider,
+        )
+        register_embeddings_provider()
+        # Self-test the WHOLE recall path (DB → embed → vector search) and log a
+        # single, greppable verdict. pgvector_provider degrades silently at query
+        # time (request logs), so without this the only startup signal is "callable
+        # assigned" — which hides an empty otskp_embeddings / wrong DSN / ADC fault.
+        h = recall_health()
+        if h["active"]:
+            logger.info(
+                "✅ Catalog recall ACTIVE — provider=pgvector model=%s loc=%s rows=%s dim=%s top_sim=%s",
+                h["model"], h["location"], h["rows"], h["dim"], h["top_similarity"],
+            )
+        else:
+            logger.warning(
+                "⚠️  Catalog recall INERT (keyword-only) — stage=%s loc=%s rows=%s error=%s",
+                h["stage"], h["location"], h["rows"], h["error"],
+            )
+    except Exception as e:  # noqa: BLE001 — recall is best-effort, never fatal
+        logger.warning("⚠️  Catalog embeddings provider not registered: %s", e)
+
     if _mcp_init_error is not None:
         logger.warning(f"⚠️  MCP server not available: {_mcp_init_error}")
 

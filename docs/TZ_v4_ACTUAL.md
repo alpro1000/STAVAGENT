@@ -42,12 +42,12 @@ STAVAGENT/
 | Сервис | URL | Статус |
 |--------|-----|--------|
 | Portal Frontend | https://www.stavagent.cz | ✅ |
-| Portal Backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | ✅ |
-| CORE (AI) | https://concrete-agent-1086027517695.europe-west3.run.app | ✅ |
-| Monolit Backend | https://monolit-planner-api-1086027517695.europe-west3.run.app | ✅ |
+| Portal Backend | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app | ✅ |
+| CORE (AI) | https://concrete-agent-3uxelthc4q-ey.a.run.app | ✅ |
+| Monolit Backend | https://monolit-planner-api-3uxelthc4q-ey.a.run.app | ✅ |
 | Monolit Frontend | https://monolit-planner-frontend.vercel.app | ✅ |
 | Registry TOV | https://stavagent-backend-ktwx.vercel.app | ✅ |
-| URS Matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app | ✅ |
+| URS Matcher | https://urs-matcher-service-3uxelthc4q-ey.a.run.app | ✅ |
 
 ---
 
@@ -228,7 +228,7 @@ rm -rf extracted_data/
 - Monolit adapter (backward compatible)
 - Registry TOV adapter
 
-**Документация:** `docs/WEEK_4_SUMMARY.md`
+**Документация:** `docs/archive/completed-sessions/WEEK_4_SUMMARY.md`
 
 ---
 
@@ -321,7 +321,7 @@ AI:
 | `SESSION_START.md` | Команды для новой сессии |
 | `NEXT_SESSION.md` | Детали последней сессии |
 | `docs/BUGFIX_2026_03_09.md` | Сегодняшние исправления |
-| `docs/WEEK_4_SUMMARY.md` | Unified Registry Foundation |
+| `docs/archive/completed-sessions/WEEK_4_SUMMARY.md` | Unified Registry Foundation |
 
 ---
 

@@ -88,7 +88,7 @@ User rozhodne (s confidence = 0.99 — human override)
 > **Princip "источник истины один".** Pokud v kódu kalkulátoru objevíš zahardcoded normu — to je **bug**, ne feature. Fix přesunutím do Core knowledge_base.
 
 ```
-concrete-agent/app/knowledge_base/
+concrete-agent/packages/core-backend/app/knowledge_base/
 ├── B0_sources/           # Original PDFs, scans
 ├── B1_otskp/             # OTSKP price catalog (17 904 položek)
 ├── B2_csn_en_206/        # ČSN EN 206 (concrete classes)

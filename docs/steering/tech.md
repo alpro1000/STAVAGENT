@@ -47,10 +47,10 @@
 
 | Kiosk | URL | Repo path | Status |
 |---|---|---|---|
-| Portal | `stavagent.cz` | `apps/portal` | beta |
-| Registr | `registry.stavagent.cz` | `apps/registry` | v4.24 produkce |
-| Kalkulátor | `kalkulator.stavagent.cz` | `apps/monolit-planner` | v4.24 produkce |
-| Klasifikátor | `klasifikator.stavagent.cz` | `apps/klasifikator` | produkce |
+| Portal | `stavagent.cz` | `stavagent-portal/` | beta |
+| Registr | `registry.stavagent.cz` | `rozpocet-registry/` (+ `rozpocet-registry-backend/`) | v4.24 produkce |
+| Kalkulátor | `kalkulator.stavagent.cz` | `Monolit-Planner/` (`shared/`+`backend/`+`frontend/`) | v4.24 produkce |
+| Klasifikátor | `klasifikator.stavagent.cz` | `URS_MATCHER_SERVICE/` | produkce |
 
 **Stack:**
 - TypeScript, React 19, Vite
@@ -67,12 +67,12 @@
 
 ### 3.1 Core Engine
 
-- **Repo:** `alpro1000/STAVAGENT` (root, `app/` dir)
+- **Repo path:** `concrete-agent/packages/core-backend/` (monorepo, **ne** root `app/`)
 - **Framework:** FastAPI (Python 3.11)
 - **Region:** `europe-west3` (Frankfurt — EU data residency)
-- **Deploy:** Cloud Build trigger `cloudbuild-portal.yaml` (branch `^main$`)
+- **Deploy:** Cloud Build trigger `cloudbuild-concrete.yaml` (branch `^main$`)
 - **Container:** Docker
-- **Knowledge base struktura:** `app/knowledge_base/B0_sources/`, `B1_otksp/`, ..., `B9_validation/` (viz `docs/steering/domain.md`)
+- **Knowledge base struktura:** `concrete-agent/packages/core-backend/app/knowledge_base/B0_sources/`, `B1_*/`, ..., `B13_*/` (viz `docs/steering/domain.md`)
 
 ### 3.2 MinerU OCR Service
 
@@ -97,15 +97,15 @@
 - **Cloud SQL PostgreSQL** (region `europe-west3`)
 - **DB names:**
   - `stavagent_portal` — auth, projekty, billing
-  - `stavagent_registry` — Registr workshop data
-  - `stavagent_calculator` — Kalkulátor sessions
+  - `rozpocet_registry` — Registr workshop data
+  - `monolit_planner` — Kalkulátor sessions
 - **Připojení:** Private VPC, Cloud SQL Proxy
 - **Backup:** automatic daily, retention 7 dní
 
 ### 4.2 Local (knowledge)
 
-- **OTSKP SQLite:** `app/knowledge_base/B1_otksp/otskp.db` (17 904 položek)
-- **URS local cache (P0 roadmap):** `catalogs/urs_local_cache.jsonl` — 6-8K stažených ÚRS položek, 10× speedup vs HTTP
+- **OTSKP SQLite:** `concrete-agent/packages/core-backend/app/knowledge_base/B1_*/otskp.db` (17 904 položek)
+- **URS local cache (P0 roadmap, zatím neexistuje):** plánovaný local cache 6-8K stažených ÚRS položek, 10× speedup vs HTTP
 
 ### 4.3 Co se **NEPOUŽÍVÁ**
 
@@ -130,8 +130,8 @@
 
 ### 5.2 Tier 2 — AWS Bedrock (fallback)
 
-- **Model:** Claude Sonnet 4
-- **Credit:** $1,000 (AWS Activate)
+- **Model:** **deployed** `anthropic.claude-3-haiku-20240307-v1:0` (Claude 3 Haiku) — dle `BEDROCK_MODEL_ID` v `cloudbuild-concrete.yaml`/`cloudbuild-urs.yaml` (production source of truth, `BEDROCK_ENABLED=true`). Katalog v `app/core/bedrock_client.py`: 3-haiku/sonnet/opus (us-east-1). ⚠️ code-level default se rozchází mezi kopiemi (`claude-3-5-haiku` vs `claude-haiku-4-5`) — deployed env přebíjí obě.
+- **Credit:** $20 + $84 Free Tier (Vertex/GCP credit $1 000 patří Tier 1, ne sem)
 - **Použití:** Když Vertex selže nebo potřeba větší kontext
 
 ### 5.3 Tier 3 — Perplexity (norms research)
@@ -152,11 +152,10 @@
 
 **Pravidlo:** Data s vyšším confidence **se nepřepisují** daty s nižším.
 
-### 5.5 Co se **NEPOUŽÍVÁ** v AI tier
+### 5.5 AI tier — co NENÍ primary
 
-- ❌ OpenAI GPT-4 (drahé, EU data residency horší)
 - ❌ Self-hosted LLM (provozní overhead nevybalancovaný benefitem)
-- ❌ Direct Anthropic API (jdeme přes Bedrock kvůli enterprise credits)
+- ⚠️ OpenAI a direct Anthropic/Claude API **nejsou primary** — vyhýbat se kde to jde (cena, EU data residency). **Ale**: v Core LLM chainu existují jako poslední fallback. Skutečný řetězec (root CLAUDE.md): **Vertex AI → Bedrock → Gemini API → Claude API → OpenAI**.
 
 ---
 
@@ -177,7 +176,7 @@
 
 ## 7. MCP Server (agentic interface)
 
-- **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp`
+- **URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp/` (trailing slash; gcloud `status.url` host, **verified live** 2026-06-06: `/mcp` 307→`/mcp/`, `/mcp/`→401 auth-gated). Project-number forma `…-1086027517695.europe-west3.run.app` je možný alias, ale gcloud-verified canonical je tato `.a.run.app` forma (`gcloud run services list --region europe-west3`).
 - **Verze:** v1.0 live
 - **Tools:** 9 (2 free + 7 paid 1-20 credits)
   - `find_otskp_code` (free)
@@ -284,22 +283,31 @@ Pokud v repu **různá konvence** — sjednotit podle většiny.
 
 ---
 
-## 13. Cloud Code settings
+## 13. Claude Code settings (dva různé soubory — neплést)
 
-`~/.claude/settings.json`:
+### 13.1 `~/.claude/settings.json` — user-global (NENÍ v repu, vlastní ho user)
+
+Effort + thinking + auto-compact:
 ```json
 {
   "effortLevel": "high",
   "env": {
     "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
-    "AUTO_COMPACT_WINDOW": "400000"
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "400000"
   }
 }
 ```
-
-- `effortLevel: "high"` (ne `"max"` — moc drahé pro velké repo)
+- `effortLevel: "high"` (default; `"max"` volitelně, ale dražší pro velké repo)
 - `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1`
-- `AUTO_COMPACT_WINDOW=400000`
+- `CLAUDE_CODE_AUTO_COMPACT_WINDOW=400000`
+> ⚠️ **Doporučené hodnoty**, ne garance — soubor nemusí existovat (ověřeno 2026-06-06: v Cloud Shell je `~/.claude/settings.json` prázdný a žádné `CLAUDE_CODE_*`/`EFFORT` env nejsou nastaveny). Klíče neověřeny proti aktuální Claude Code docs — pokud je harness ignoruje, ověř `/help` nebo SessionStart hook.
+
+### 13.2 `.claude/settings.json` — committed v repu
+
+Obsahuje **pouze `permissions`** (allow/deny) — žádný `effortLevel`/`env`:
+- **allow:** read-only GitHub MCP (PR/commits/code search)
+- **deny (ochrana kontextu před velkými data-soubory):** `test-data/**`, `*.dxf`/`*.dwg`/`*.db`/`*.mdb`, KB `*.json`/`*.xml` v `concrete-agent/.../knowledge_base/**`, `Monolit-Planner/2025_03 OTSKP.xml`, `docs/normy/**.pdf`, `URS_MATCHER_SERVICE/backend/data/**.csv`
+- Také zde: `.claude/skills/` (2 skills) + `.claude/agents/` (cross-user-isolation-reviewer)
 
 ---
 
@@ -329,3 +337,7 @@ Pokud v repu **různá konvence** — sjednotit podle většiny.
 | Date | Version | Notes |
 |---|---|---|
 | 19.05.2026 | 1.0 | Initial steering, synthesized from Project_Knowledge_Snapshot.md §3-4 + Master_Brief.md §1.4 + recent updates v userMemories |
+| 06.06.2026 | 1.1 | **C1 fix** (knowledge-architecture audit): §2 repo-path sloupec + §3.1 Core path/deploy + §3.1/§4.2 KB path opraveny z fiktivního `app/`+`apps/` na skutečný monorepo (`concrete-agent/packages/core-backend/…` + per-service složky). Core deploy trigger opraven `cloudbuild-portal.yaml`→`cloudbuild-concrete.yaml`. (DB jména §4.1, MCP URL §7, AI-tier kredity §5 → Phase 1.) |
+| 06.06.2026 | 1.2 | **C5 fix**: §13 přepsán — rozlišeny dva soubory: user-global `~/.claude/settings.json` (effort/env) vs committed `.claude/settings.json` (jen `permissions`). Env klíč sjednocen `AUTO_COMPACT_WINDOW`→`CLAUDE_CODE_AUTO_COMPACT_WINDOW` (shoda s root CLAUDE.md). |
+| 06.06.2026 | 1.3 | **C2/C4 fix** (Phase 1): §4.1 DB jména `stavagent_registry`→`rozpocet_registry`, `stavagent_calculator`→`monolit_planner`. §5.2 Bedrock — deployed `claude-3-haiku-20240307` (dle cloudbuild). §5.5 absolutní "NEPOUŽÍVÁ OpenAI/Anthropic" → "ne primary, deep fallback v Core chainu". |
+| 06.06.2026 | 1.4 | **C3 oprava** (gcloud verifikace): §7 MCP URL vrácena na `concrete-agent-3uxelthc4q-ey.a.run.app/mcp` (gcloud `status.url`, verified live) — předchozí "standardizace" na project-number formu byla chyba (verifikace proti realitě, ne proti jinému dokumentu). §13.1 doplněno, že `~/.claude/settings.json` je doporučení, ne garance (v Cloud Shell prázdný). |

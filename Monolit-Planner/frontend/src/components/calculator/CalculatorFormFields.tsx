@@ -9,7 +9,7 @@
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
 import type { CuringResult, SeasonMode, ConcreteClass, CementType } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure, getElementProfile, getRebarNormForDiameter } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure, getElementProfile, getRebarNormForDiameter, isPrismaticType } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge } from './ui';
 import { ExposureClassesPicker } from './ExposureClassesPicker';
 import { getMostRestrictive } from '@stavagent/monolit-shared';
@@ -190,12 +190,25 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 rectangular geometry and share the D/Š/V entry pattern. */}
             {(() => {
               const elemType = form.element_type;
-              // BUG 7: driky_piliru added — L×W×H for pier shaft, fw area = 2(L+W)×H
-              const geomTypes = [
-                'zaklady_piliru', 'zaklady_oper', 'zakladova_patka', 'zakladovy_pas',
-                'opery_ulozne_prahy', 'driky_piliru',
-              ];
-              if (!geomTypes.includes(elemType)) return null;
+              // Phase 5 Step 2: the L×W×H box derive applies to ALL prismatic
+              // types (isPrismaticType, shared element-geometry) — not just the
+              // original ~7 foundations. Non-prismatic types: pilota + mostovka
+              // have their OWN dedicated geometry blocks; the rest (rimsa,
+              // schodiste, nadrz, other) show a VISIBLE honest-blank note so the
+              // user knows why there is no D×Š×V input here.
+              if (!isPrismaticType(elemType)) {
+                if (elemType === 'pilota' || elemType === 'mostovkova_deska') return null;
+                return (
+                  <div style={{
+                    marginBottom: 10, padding: '6px 10px', fontSize: 12,
+                    color: 'var(--r0-slate-500, #64748b)',
+                    background: 'var(--r0-slate-50, #f8fafc)',
+                    border: '1px dashed var(--r0-slate-200, #e2e8f0)', borderRadius: 6,
+                  }}>
+                    Geometrie D×Š×V nepodporována pro tento typ — zadejte objem ručně.
+                  </div>
+                );
+              }
               return (
                 <div style={{
                   marginBottom: 10, padding: '8px 10px',
@@ -1306,25 +1319,11 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                       ? 'Pilota: bez tesařů (vrtací souprava + železáři)'
                       : `Celkem tesařů: ${form.num_formwork_crews * form.crew_size}`}
                   </div>
-                  {/* B2 (2026-04-16): formwork crew recommendation. Mirrors
-                      the existing rebar hint style so users see both trades
-                      side-by-side. ~0.6 Nhod/m² is the avg assembly norm
-                      across the DOKA/PERI catalog (Framax 0.55, Dokaflex
-                      0.72) — close enough for a sidebar rule of thumb.
-                      Not shown for pilota (no bednění). */}
-                  {!isPile && form.formwork_area_m2 && parseFloat(form.formwork_area_m2) > 0 && (() => {
-                    const area = parseFloat(form.formwork_area_m2);
-                    const shift = form.shift_h || 10;
-                    const targetDays = 2;
-                    const optimal = Math.max(2, Math.ceil((area * 0.6) / (targetDays * shift)));
-                    const current = form.num_formwork_crews * form.crew_size;
-                    const color = current >= optimal ? 'var(--r0-success-text, #059669)' : 'var(--r0-warn-text, #b45309)';
-                    return (
-                      <div style={{ fontSize: 10, color, marginTop: 2 }}>
-                        Doporučeno ~{optimal} tesařů pro {area.toFixed(0)} m² / {targetDays} dny (0,6 Nh/m²)
-                      </div>
-                    );
-                  })()}
+                  {/* §4 parity Gate B: the recommended tesaři crew moved to the
+                      engine (buildLaborProjection.formwork_recommended_crew —
+                      derived from skruz_bedneni_nh_per_m2_kontakt × contact area)
+                      and is shown in the Bednění result card, like výztuž. The
+                      old frontend 0.6 Nh/m² inline was a duplicate of that norm. */}
                 </div>
 
                 {/* Železáři (výztuž) */}

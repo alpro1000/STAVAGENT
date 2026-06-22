@@ -1,6 +1,7 @@
 name: MCP Compatibility Test
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -28,6 +29,20 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_export_soupis.py'
       - 'concrete-agent/packages/core-backend/tests/test_thin_hybrid_recipe.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_extract_tz_fields.py'
+      - 'concrete-agent/packages/core-backend/tests/test_xc4_routing_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_tz_geometry_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_calc_provenance_passthrough.py'
+      - 'concrete-agent/packages/core-backend/tests/test_soupis_quantity_join.py'
+      - 'concrete-agent/packages/core-backend/tests/test_volume_geometry_parity.py'
+      - 'concrete-agent/packages/core-backend/tests/test_p2_document_analysis_quantity.py'
+      - 'concrete-agent/packages/core-backend/tests/test_p3_live_e2e_orchestrate.py'
+      - 'concrete-agent/packages/core-backend/tests/test_gapa_xml_soupis_routing.py'
+      - 'concrete-agent/packages/core-backend/tests/test_live_seal_portal_schema.py'
+      # Pin B: the parity guard asserts the Python volume-geometry mirror equals
+      # the canonical TS engine. A change to the TS constants/bands must trigger
+      # this workflow so the guard runs — otherwise TS drift lands silently.
+      - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
   pull_request:
     paths:
       - 'concrete-agent/packages/core-backend/app/**'
@@ -55,6 +70,17 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_export_soupis.py'
       - 'concrete-agent/packages/core-backend/tests/test_thin_hybrid_recipe.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_golden_extract_tz_fields.py'
+      - 'concrete-agent/packages/core-backend/tests/test_xc4_routing_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_tz_object_code_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_tz_geometry_so202.py'
+      - 'concrete-agent/packages/core-backend/tests/test_calc_provenance_passthrough.py'
+      - 'concrete-agent/packages/core-backend/tests/test_soupis_quantity_join.py'
+      - 'concrete-agent/packages/core-backend/tests/test_volume_geometry_parity.py'
+      - 'concrete-agent/packages/core-backend/tests/test_p2_document_analysis_quantity.py'
+      - 'concrete-agent/packages/core-backend/tests/test_p3_live_e2e_orchestrate.py'
+      - 'concrete-agent/packages/core-backend/tests/test_gapa_xml_soupis_routing.py'
+      - 'concrete-agent/packages/core-backend/tests/test_live_seal_portal_schema.py'
+      - 'Monolit-Planner/shared/src/classifiers/element-classifier.ts'
 
 jobs:
   mcp-compatibility:
@@ -78,19 +104,11 @@ jobs:
           --health-interval=5s
           --health-timeout=5s
           --health-retries=10
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
 
     env:
       DATABASE_URL: postgresql://mcp_test:mcp_test@localhost:5432/mcp_test
-      REDIS_URL: redis://localhost:6379/0
+      # REDIS_URL removed 2026-06-11 — the DCR rate limiter is Postgres-backed
+      # (migration 013, cost-audit task 3); no test in this lane needs Redis.
 
     steps:
       - name: Checkout code
@@ -149,6 +167,7 @@ jobs:
             tests/test_mcp_dcr_endpoint.py \
             tests/test_mcp_middleware_bearer.py \
             tests/test_mcp_rate_limit.py \
+            tests/test_monolit_cache_fallback.py \
             tests/test_mcp_dcr_integration.py \
             tests/test_stage_gating_foundation.py \
             tests/test_stage_gating_policy.py \
@@ -164,4 +183,14 @@ jobs:
             tests/test_mcp_golden_export_soupis.py \
             tests/test_thin_hybrid_recipe.py \
             tests/test_mcp_golden_extract_tz_fields.py \
+            tests/test_xc4_routing_so202.py \
+            tests/test_tz_object_code_so202.py \
+            tests/test_tz_geometry_so202.py \
+            tests/test_calc_provenance_passthrough.py \
+            tests/test_soupis_quantity_join.py \
+            tests/test_volume_geometry_parity.py \
+            tests/test_p2_document_analysis_quantity.py \
+            tests/test_p3_live_e2e_orchestrate.py \
+            tests/test_gapa_xml_soupis_routing.py \
+            tests/test_live_seal_portal_schema.py \
             -v --tb=short

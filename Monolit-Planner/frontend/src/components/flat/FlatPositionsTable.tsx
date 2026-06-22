@@ -293,9 +293,12 @@ export default function FlatPositionsTable() {
     };
 
     // Recompute the position-row totals from the remaining labor entries.
-    // calculatePositionFields derives Celk.hod = crew_size × shift_hours × days,
-    // so we adjust `days` to keep that product equal to the new sum of normHours.
-    const newLaborH = remaining.reduce((s: number, e: { normHours: number }) => s + (e.normHours || 0), 0);
+    // calculatePositionFields derives labor_hours = crew_size × shift_hours ×
+    // days (PRESENCE — the paid hours), so we adjust `days` to keep that
+    // product equal to the new sum of presence hours. Legacy entries without
+    // a distinct `hours` field fall back to normHours.
+    const newLaborH = remaining.reduce(
+      (s: number, e: { hours?: number; normHours?: number }) => s + (e.hours ?? e.normHours ?? 0), 0);
     const denom = (pos.crew_size || 1) * (pos.shift_hours || 1);
     const newDays = denom > 0 ? Math.max(0, Math.round((newLaborH / denom) * 10) / 10) : 0;
 
@@ -758,6 +761,22 @@ function WorkRow({
   const shiftOverridden = pos.shift_hours !== PROJECT_DEFAULTS.shift;
   const isZrani = pos.subtype === 'zrání';
 
+  // Canonical normohodiny from the calculator projection (TOV entries written
+  // by Aplikovat: normHours = ×0.8 canon, hours = presence). Celk.hod shows
+  // the canon; money below stays on presence (labor_hours × wage).
+  const rowTov = (() => {
+    if (!pos.metadata) return null;
+    try {
+      const meta = typeof pos.metadata === 'string' ? JSON.parse(pos.metadata) : pos.metadata;
+      const labor: Array<{ normHours?: number; hours?: number }> | undefined = meta?.tov_entries?.labor;
+      if (!labor?.length) return null;
+      return {
+        norm: labor.reduce((s, e) => s + (e.normHours || 0), 0),
+        presence: labor.reduce((s, e) => s + (e.hours || 0), 0),
+      };
+    } catch { return null; }
+  })();
+
   return (
     <>
     <tr
@@ -829,13 +848,19 @@ function WorkRow({
         />
       </td>
 
-      {/* Celk.hod — calculated, not editable */}
+      {/* Celk.hod — calculated, not editable. With a calculator projection
+          the cell shows the canonical normohodiny (×0.8); legacy rows keep
+          crew × shift × days (presence). */}
       <td className="flat-col--right flat-col--hide-mobile flat-cell--calc">
         <span className="flat-mono flat-tooltip">
-          {fmt(pos.labor_hours)}
-          {pos.labor_hours ? (
+          {rowTov ? fmt(rowTov.norm) : fmt(pos.labor_hours)}
+          {rowTov ? (
             <span className="flat-tooltip__content">
-              {pos.crew_size} × {pos.shift_hours}h × {pos.days}d = {fmt(pos.labor_hours)} Nhod
+              Normohodiny (×0,8) z kalkulátoru = {fmt(rowTov.norm)} Nhod · přítomnost {fmt(rowTov.presence)} h
+            </span>
+          ) : pos.labor_hours ? (
+            <span className="flat-tooltip__content">
+              {pos.crew_size} × {pos.shift_hours}h × {pos.days}d = {fmt(pos.labor_hours)} hod přítomnosti
             </span>
           ) : null}
         </span>
@@ -847,7 +872,7 @@ function WorkRow({
           {fmt(pos.cost_czk)}
           {pos.cost_czk ? (
             <span className="flat-tooltip__content">
-              {fmt(pos.labor_hours)} × {fmt(pos.wage_czk_ph)} Kč/h = {fmt(pos.cost_czk)} Kč
+              {fmt(pos.labor_hours)} h přítomnosti × {fmt(pos.wage_czk_ph)} Kč/h = {fmt(pos.cost_czk)} Kč
             </span>
           ) : null}
         </span>

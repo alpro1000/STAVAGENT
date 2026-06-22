@@ -1,5 +1,10 @@
 # STAVAGENT — что я знаю о проекте
 
+> **⚠️ Dated snapshot (2026-05-07) — SUPERSEDED.** Canonical current context žije v
+> [`docs/steering/`](steering/) (tech/structure/domain/product/conventions) + [`docs/soul.md`](soul.md).
+> `docs/steering/tech.md §15` uvádí, že steering byl *synthesized z tohoto snapshotu*. Tady needituj —
+> drž jako historický záznam stavu k 2026-05-07. (knowledge-architecture audit, D3.)
+
 **Версия снимка:** 1.0
 **Дата:** 2026-05-07
 **Источник:** CLAUDE.md v4.27.0 (2026-05-03) + чтение кода на ветке `claude/competitive-audit-stavagent-hfgwP`
@@ -531,7 +536,7 @@ Cut projected GCP burn ~$70–90/mo:
 - **Architecture overview:** `docs/ARCHITECTURE.md`
 - **Calculator philosophy (mandatory read):** `docs/CALCULATOR_PHILOSOPHY.md`
 - **Recent competitive audit:** `docs/competitive/STAVAGENT_vs_Alice_Audit_2026_05.md` (v1.0 от 2026-05-07)
-- **Recent session handoffs:** `docs/SESSION_HANDOFF_2026_04_29.md`, `SYNC_AUDIT_2026_04_29.md`
+- **Recent session handoffs:** `docs/archive/completed-sessions/SESSION_HANDOFF_2026_04_29.md`, `docs/SYNC_AUDIT_2026_04_29.md`
 
 ---
 

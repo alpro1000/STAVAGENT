@@ -2,14 +2,14 @@
 
 > Guidelines for Claude Code (claude.ai/code) when working with this repository
 
-**Version:** 2.5.0
-**Last updated:** 2026-03-26
+**Version:** 2.5.1
+**Last updated:** 2026-06-06 (content naposledy věcně rozšířen 2026-05-29; header date opraven — knowledge-architecture audit C8)
 
 ---
 
 ## ⚡ QUICK REFERENCE (READ THIS FIRST!)
 
-### 🎯 Current Status (2025-11-20)
+### 🎯 Current Status (aktuální live state → root `CLAUDE.md` changelog v4.34; níže historický 2025-11-20 baseline)
 - **Phase:** 4 - Backend Infrastructure + Integration ✅ COMPLETE
 - **Sprint:** Week 1 (Nov 6-13) - ✅ 100% COMPLETE
 - **Current:** Week 2 - Production Deployment (Nov 19-23)
@@ -22,7 +22,7 @@
   - @stavagent/core-frontend (React/Vite, 34 files, 3,186 LOC)
   - @stavagent/core-shared (TypeScript types, 50+ interfaces)
 - **Production:**
-  - Backend: https://concrete-agent-1086027517695.europe-west3.run.app (pending Nov 19 deployment)
+  - Backend: https://concrete-agent-3uxelthc4q-ey.a.run.app (pending Nov 19 deployment)
   - Frontend: https://www.stavagent.cz
 
 ---
@@ -156,8 +156,9 @@ is negligible compared to a silent-drift ship.
 ## Pattern library — universal patterns + pilot-local case studies
 
 This codebase implements universal patterns from the master registry
-[`docs/STAVAGENT_PATTERNS.md`](../docs/STAVAGENT_PATTERNS.md) (40
-patterns sequential as of 2026-05-29).
+[`docs/STAVAGENT_PATTERNS.md`](../docs/STAVAGENT_PATTERNS.md) (**49**
+patterns sequential as of 2026-06-02 — viz `last_number` v hlavičce registru;
+root CLAUDE.md changelog cituje historický počet 36 z v4.33).
 
 ### Critical mandatory rules (promoted to CLAUDE.md status)
 

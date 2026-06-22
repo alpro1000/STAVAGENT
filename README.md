@@ -28,15 +28,15 @@ Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil c
 
 | Service | Role | URL |
 |---|---|---|
-| `concrete-agent` | Core API + MCP Server (Python, FastAPI) | https://concrete-agent-1086027517695.europe-west3.run.app |
-| `stavagent-portal` backend | Auth, billing, project management | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
+| `concrete-agent` | Core API + MCP Server (Python, FastAPI) | https://concrete-agent-3uxelthc4q-ey.a.run.app |
+| `stavagent-portal` backend | Auth, billing, project management | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
 | `stavagent-portal` frontend | Landing + user dashboard | https://www.stavagent.cz |
-| `Monolit-Planner` API | Kalkulátor betonáže backend | https://monolit-planner-api-1086027517695.europe-west3.run.app |
+| `Monolit-Planner` API | Kalkulátor betonáže backend | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
 | `Monolit-Planner` frontend | Kalkulátor betonáže — UI (Detail prvku + Plán objektu) | https://kalkulator.stavagent.cz |
 | `URS_MATCHER_SERVICE` | Klasifikátor stavebních prací (AI classifier kiosk) | https://klasifikator.stavagent.cz |
-| `rozpocet-registry-backend` | Registr — backend (BOQ + TOV storage) | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
+| `rozpocet-registry-backend` | Registr — backend (BOQ + TOV storage) | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
 | `rozpocet-registry` frontend | Registr — UI (skupiny + TOV + multi-supplier kalkulátory) | https://registry.stavagent.cz |
-| MCP Server | 9 tools, mounted on `concrete-agent` | `https://concrete-agent-1086027517695.europe-west3.run.app/mcp` |
+| MCP Server | 9 tools, mounted on `concrete-agent` | `https://concrete-agent-3uxelthc4q-ey.a.run.app/mcp` |
 
 All backends run on Google Cloud Run (`europe-west3`) with independent per-service CI/CD via Cloud Build. Cloud SQL PostgreSQL 15 is the single shared database host (three logical databases). Frontends deploy to Vercel.
 

@@ -24,12 +24,13 @@
 
 import {
   findLinkedPositions,
+  buildLaborProjection,
   type PlannerOutput,
   type TOVLaborEntry,
   type TOVMaterialEntry,
   type TOVEntries,
   type WorkType,
-  type StructuralElementType,
+  type LaborOperationProjection,
 } from '@stavagent/monolit-shared';
 import { aggregateScheduleDays } from '@stavagent/monolit-shared';
 import type { FormState } from './types';
@@ -135,172 +136,129 @@ export function findTargetPosition(
 
 // ─── buildWorkDrafts ────────────────────────────────────────────────────────
 
-const K_UTIL = 0.8;        // time utilization factor
-const CURING_SHIFT_H = 5;  // ošetřovatel — 3× kropení / den
 const CURING_WAGE = 320;
 const PRESTRESS_WAGE = 550;
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
-/**
- * Elements that don't use system formwork at all. For these we skip the
- * bednění / odbednění drafts entirely regardless of what the orchestrator
- * returned (it always runs on "Tradiční tesařské" as a placeholder).
- *   - pilota, mikropilota → pažnice / tremie pipe, not panels
- *   - podzemni_stena      → guide walls + bentonite slurry
- *   - prumyslova_podlaha  → flat slab poured straight onto subbase
- */
-const NO_FORMWORK: ReadonlySet<StructuralElementType> = new Set<StructuralElementType>([
-  'pilota',
-  'podzemni_stena',
-]);
+// NO_FORMWORK lives in shared labor-projection.ts (single source) — the
+// projection already skips bednění / odbednění operations for pilota and
+// podzemni_stena, so drafts built from it never contain them.
 
-/** Should we emit a draft for this work type given the element? */
-function shouldEmit(workType: WorkType, elementType: StructuralElementType): boolean {
-  if (NO_FORMWORK.has(elementType)) {
-    if (workType === 'bednění_zřízení' || workType === 'bednění_odstranění' || workType === 'bednění') return false;
-  }
-  return true;
+/**
+ * Per-operation TOV identity: profession label/code + note + which wage and
+ * WorkType the operation routes to. Hours semantics come from the shared
+ * projection: normHours = canonical (×0.8), hours = presence (paid),
+ * totalCost = presence × rate (a 10h shift is paid in full).
+ */
+interface OpIdentity {
+  workType: WorkType;
+  profession: string;
+  professionCode: string;
+  wage: (plan: PlannerOutput) => number;
+  note?: (plan: PlannerOutput) => string | undefined;
+}
+
+const OP_IDENTITY: Record<string, OpIdentity> = {
+  beton: {
+    workType: 'beton', profession: 'Betonář', professionCode: 'BET',
+    wage: p => p.resources.wage_pour_czk_h,
+  },
+  bedneni_montaz: {
+    workType: 'bednění_zřízení', profession: 'Tesař/Bednář', professionCode: 'TES',
+    wage: p => p.resources.wage_formwork_czk_h, note: () => 'montáž bednění',
+  },
+  bedneni_demontaz: {
+    workType: 'bednění_odstranění', profession: 'Tesař/Bednář', professionCode: 'TES',
+    wage: p => p.resources.wage_formwork_czk_h, note: () => 'demontáž bednění',
+  },
+  vyztuz: {
+    workType: 'výztuž', profession: 'Železář', professionCode: 'ZEL',
+    wage: p => p.resources.wage_rebar_czk_h,
+  },
+  osetrovani: {
+    workType: 'zrání', profession: 'Ošetřovatel betonu', professionCode: 'OSE',
+    wage: () => CURING_WAGE, note: () => 'ošetřování betonu — kropení, zakrytí fólií',
+  },
+  predpeti: {
+    workType: 'předpětí', profession: 'Specialista předpětí', professionCode: 'PRE',
+    wage: () => PRESTRESS_WAGE,
+  },
+  podpery: {
+    workType: 'podpěry', profession: 'Tesař (podpěry)', professionCode: 'POD',
+    wage: p => p.resources.wage_formwork_czk_h, note: () => 'podpěrná konstr. — montáž + demontáž',
+  },
+  // Pile path (plan.pile)
+  vrtani: {
+    workType: 'vrtání', profession: 'Obsluha vrtné soupravy', professionCode: 'VRT',
+    wage: p => p.resources.wage_formwork_czk_h,
+    note: p => p.pile ? `vrtání ${p.pile.count}× Ø${p.pile.diameter_mm} (${p.pile.casing_method.toUpperCase()})` : undefined,
+  },
+  armokose: {
+    workType: 'výztuž', profession: 'Železář (armokoše)', professionCode: 'ARM',
+    wage: p => p.resources.wage_rebar_czk_h,
+    note: p => p.pile ? `armokoše ${Math.round(p.pile.rebar_total_kg)} kg, osazení jeřábem` : undefined,
+  },
+  uprava_hlavy: {
+    workType: 'úprava_hlavy', profession: 'Dělník (úprava hlav)', professionCode: 'UPR',
+    wage: p => p.resources.wage_formwork_czk_h,
+    note: p => p.pile ? `odbourání 0.5–1.0 m nekvalitního betonu, ${p.pile.count} hlav` : undefined,
+  },
+  hlavice: {
+    workType: 'beton', profession: 'Hlavice piloty (ŽB cyklus)', professionCode: 'HLA',
+    wage: p => p.resources.wage_formwork_czk_h,
+    note: () => 'hlavice — bednění + výztuž + betonáž + zrání',
+  },
+};
+
+/** Pile betonáž has a different profession/note than the standard pour. */
+const PILE_BETON_IDENTITY: OpIdentity = {
+  workType: 'beton', profession: 'Betonář (kontraktor)', professionCode: 'BET',
+  wage: p => p.resources.wage_pour_czk_h,
+  note: p => p.pile?.casing_method === 'cfa'
+    ? 'betonáž současně s vytahováním šneku'
+    : 'kontraktorová roura, S4/SCC',
+};
+
+function draftFromOperation(
+  op: LaborOperationProjection,
+  identity: OpIdentity,
+  plan: PlannerOutput,
+  id: number,
+): WorkDraft {
+  const wage = identity.wage(plan);
+  const note = identity.note?.(plan);
+  return {
+    workType: identity.workType, days: op.days, crew: op.crew, wage,
+    entry: {
+      id: `tov-${id}`, profession: identity.profession, professionCode: identity.professionCode,
+      count: op.crew,
+      // hours = presence (paid), normHours = canonical normohodiny (×0.8)
+      hours: op.presence_hours, normHours: op.norm_hours,
+      hourlyRate: wage, totalCost: Math.round(op.presence_hours * wage),
+      ...(note ? { note } : {}),
+      source: 'calculator',
+    },
+  };
 }
 
 /**
- * Build all 7 work entries from a calculator plan. Entries with zero hours
- * are skipped (auto-create rule: don't materialize empty rows). Work types
- * that don't apply to the element (e.g. bednění for pilota) are filtered
- * via NO_FORMWORK / shouldEmit().
+ * Build all work entries from a calculator plan. The canonical breakdown
+ * (operations, days, norm/presence hours) comes from the shared
+ * buildLaborProjection — the SAME numbers the calculator summary displays.
+ * Entries with zero hours never appear (the projection skips them).
  */
 export function buildWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraft[] {
-  // 2026-04-15: piles take a completely different work-type breakdown
-  // (drilling rig, armokoše osazení, kontraktor betonáž, úprava hlavy,
-  // optional hlavice). Route through buildPileWorkDrafts which reads
-  // plan.pile and produces the right entries — the standard 7-work-type
-  // builder below would either skip everything or label things wrong.
-  if (plan.element.type === 'pilota' && (plan as any).pile) {
-    return buildPileWorkDrafts(plan, _form);
-  }
-
+  const projection = buildLaborProjection(plan);
+  const isPile = plan.element.type === 'pilota' && !!(plan as any).pile;
   const drafts: WorkDraft[] = [];
   let id = 1;
-  const elementType = plan.element.type;
 
-  const tacts = plan.schedule.tact_details || [];
-  const numTacts = plan.pour_decision.num_tacts || 1;
-  const agg = aggregateScheduleDays(tacts, {
-    numTacts,
-    assemblyDaysPerTact: plan.formwork.assembly_days,
-    rebarDaysPerTact: plan.rebar.duration_days,
-    concreteDaysPerTact: 1,
-    curingDays: plan.formwork.curing_days,
-    strippingDaysPerTact: plan.formwork.disassembly_days,
-    prestressDaysPerTact: plan.prestress?.days,
-  });
-
-  const shift = plan.resources.shift_h;
-  const fwCrew = plan.resources.crew_size_formwork;
-  const fwWage = plan.resources.wage_formwork_czk_h;
-  const rbCrew = plan.resources.crew_size_rebar;
-  const rbWage = plan.resources.wage_rebar_czk_h;
-  const pourCrew = plan.resources.crew_size_formwork;
-  const pourWage = plan.resources.wage_pour_czk_h;
-
-  // 1. Betonář (always non-zero if there's a pour)
-  if (agg.beton > 0) {
-    const h = round1(pourCrew * shift * K_UTIL * agg.beton);
-    drafts.push({
-      workType: 'beton', days: agg.beton, crew: pourCrew, wage: pourWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Betonář', professionCode: 'BET',
-        count: pourCrew, hours: h, normHours: h,
-        hourlyRate: pourWage, totalCost: Math.round(h * pourWage),
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 2. Tesař — montáž bednění (skip for piles / diaphragm walls)
-  if (agg.bedneni > 0 && shouldEmit('bednění_zřízení', elementType)) {
-    const h = round1(fwCrew * shift * K_UTIL * agg.bedneni);
-    drafts.push({
-      workType: 'bednění_zřízení', days: agg.bedneni, crew: fwCrew, wage: fwWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Tesař/Bednář', professionCode: 'TES',
-        count: fwCrew, hours: h, normHours: h,
-        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
-        note: 'montáž bednění', source: 'calculator',
-      },
-    });
-  }
-
-  // 3. Tesař — demontáž bednění (skip for piles / diaphragm walls)
-  if (agg.odbedneni > 0 && shouldEmit('bednění_odstranění', elementType)) {
-    const h = round1(fwCrew * shift * K_UTIL * agg.odbedneni);
-    drafts.push({
-      workType: 'bednění_odstranění', days: agg.odbedneni, crew: fwCrew, wage: fwWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Tesař/Bednář', professionCode: 'TES',
-        count: fwCrew, hours: h, normHours: h,
-        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
-        note: 'demontáž bednění', source: 'calculator',
-      },
-    });
-  }
-
-  // 4. Železář
-  if (agg.vyztuž > 0) {
-    const h = round1(rbCrew * shift * K_UTIL * agg.vyztuž);
-    drafts.push({
-      workType: 'výztuž', days: agg.vyztuž, crew: rbCrew, wage: rbWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Železář', professionCode: 'ZEL',
-        count: rbCrew, hours: h, normHours: h,
-        hourlyRate: rbWage, totalCost: Math.round(h * rbWage),
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 5. Ošetřovatel betonu (zrání)
-  if (agg.zrani > 0) {
-    const h = round1(1 * CURING_SHIFT_H * agg.zrani);
-    drafts.push({
-      workType: 'zrání', days: agg.zrani, crew: 1, wage: CURING_WAGE,
-      entry: {
-        id: `tov-${id++}`, profession: 'Ošetřovatel betonu', professionCode: 'OSE',
-        count: 1, hours: h, normHours: h,
-        hourlyRate: CURING_WAGE, totalCost: Math.round(h * CURING_WAGE),
-        note: 'zrání — kropení, zakrytí fólií', source: 'calculator',
-      },
-    });
-  }
-
-  // 6. Specialista předpětí
-  if (plan.prestress && (agg.predpeti > 0 || plan.prestress.days > 0)) {
-    const prDays = agg.predpeti || round1(plan.prestress.days * numTacts);
-    const prCrew = plan.prestress.crew_size || 5;
-    const h = round1(prCrew * shift * K_UTIL * prDays);
-    drafts.push({
-      workType: 'předpětí', days: prDays, crew: prCrew, wage: PRESTRESS_WAGE,
-      entry: {
-        id: `tov-${id++}`, profession: 'Specialista předpětí', professionCode: 'PRE',
-        count: prCrew, hours: h, normHours: h,
-        hourlyRate: PRESTRESS_WAGE, totalCost: Math.round(h * PRESTRESS_WAGE),
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 7. Podpěry / skruž (only if props were calculated)
-  if (plan.props?.needed && plan.props.labor_hours > 0) {
-    const propsDays = round1(plan.props.assembly_days + plan.props.disassembly_days);
-    const h = round1(plan.props.labor_hours);
-    drafts.push({
-      workType: 'podpěry', days: propsDays, crew: fwCrew, wage: fwWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Tesař (podpěry)', professionCode: 'POD',
-        count: fwCrew, hours: h, normHours: h,
-        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
-        note: 'podpěrná konstr. — montáž + demontáž', source: 'calculator',
-      },
-    });
+  for (const op of projection.operations) {
+    const identity = isPile && op.key === 'beton'
+      ? PILE_BETON_IDENTITY
+      : OP_IDENTITY[op.key];
+    if (!identity) continue;
+    drafts.push(draftFromOperation(op, identity, plan, id++));
   }
 
   return drafts;
@@ -348,125 +306,6 @@ export function addDraftToBucket(
     wage: draft.wage,
     entries: [draft.entry],
   });
-}
-
-// ─── PILE: pile-specific work draft builder (2026-04-15) ───────────────────
-
-/**
- * buildPileWorkDrafts — bored-pile sub-position split.
- *
- * Replaces the standard 7-work-type builder for elements with
- * plan.element.type === 'pilota'. Reads plan.pile (PileResult) to drive
- * the day counts; pile labor rates are inlined here so the call site
- * does not need to know about the pile cost structure.
- *
- * Sub-positions emitted:
- *   1. Vrtání           — drilling rig + 2-person crew × drilling_days
- *   2. Armokoše         — rebar cage manufacture + crane placement (železáři)
- *   3. Betonáž piloty   — kontraktor / CFA pour during drilling (betonáři)
- *   4. Úprava hlavy     — head adjustment (2-person crew × head_adjustment_days)
- *   5. Hlavice          — optional ŽB cap (only when pile.pile_cap_days != null)
- *
- * NO bednění / odbednění drafts (already covered by NO_FORMWORK gating in
- * buildWorkDrafts but irrelevant here — we never reach the standard path).
- */
-function buildPileWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraft[] {
-  const drafts: WorkDraft[] = [];
-  let id = 1;
-
-  const pile: any = (plan as any).pile;
-  if (!pile) return drafts; // defensive — buildWorkDrafts gates on this already
-
-  const shift = plan.resources.shift_h;
-  const fwWage = plan.resources.wage_formwork_czk_h; // tesaři/obsluha
-  const rbWage = plan.resources.wage_rebar_czk_h;    // železáři (armokoše)
-  const pourWage = plan.resources.wage_pour_czk_h;   // betonáři (kontraktor)
-
-  // 1. Vrtání — 2 obsluha vrtné soupravy
-  if (pile.drilling_days > 0) {
-    const crew = 2;
-    const h = round1(crew * shift * K_UTIL * pile.drilling_days);
-    drafts.push({
-      workType: 'vrtání', days: pile.drilling_days, crew, wage: fwWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Obsluha vrtné soupravy', professionCode: 'VRT',
-        count: crew, hours: h, normHours: h,
-        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
-        note: `vrtání ${pile.count}× Ø${pile.diameter_mm} (${pile.casing_method.toUpperCase()})`,
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 2. Armokoše — železáři + jeřáb (1 day per N piles, capped at drilling window)
-  // Armokoše are pre-fabricated; placement runs in parallel with drilling so
-  // the day count = drilling_days (rate-limited by the rig, not by the cage crew).
-  if (pile.rebar_total_kg > 0) {
-    const crew = 2;
-    const h = round1(crew * shift * K_UTIL * pile.drilling_days);
-    drafts.push({
-      workType: 'výztuž', days: pile.drilling_days, crew, wage: rbWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Železář (armokoše)', professionCode: 'ARM',
-        count: crew, hours: h, normHours: h,
-        hourlyRate: rbWage, totalCost: Math.round(h * rbWage),
-        note: `armokoše ${Math.round(pile.rebar_total_kg)} kg, osazení jeřábem`,
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 3. Betonáž piloty — kontraktor / CFA, 2 betonáři × drilling_days
-  if (pile.drilling_days > 0) {
-    const crew = 2;
-    const h = round1(crew * shift * K_UTIL * pile.drilling_days);
-    drafts.push({
-      workType: 'beton', days: pile.drilling_days, crew, wage: pourWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Betonář (kontraktor)', professionCode: 'BET',
-        count: crew, hours: h, normHours: h,
-        hourlyRate: pourWage, totalCost: Math.round(h * pourWage),
-        note: pile.casing_method === 'cfa'
-          ? 'betonáž současně s vytahováním šneku'
-          : 'kontraktorová roura, S4/SCC',
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 4. Úprava hlavy — 2 dělníci × head_adjustment_days
-  if (pile.head_adjustment_days > 0) {
-    const crew = 2;
-    const h = round1(crew * shift * K_UTIL * pile.head_adjustment_days);
-    drafts.push({
-      workType: 'úprava_hlavy', days: pile.head_adjustment_days, crew, wage: fwWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Dělník (úprava hlav)', professionCode: 'UPR',
-        count: crew, hours: h, normHours: h,
-        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
-        note: `odbourání 0.5–1.0 m nekvalitního betonu, ${pile.count} hlav`,
-        source: 'calculator',
-      },
-    });
-  }
-
-  // 5. Hlavice (pile cap) — optional ŽB cap as a single combined draft
-  if (pile.pile_cap_days != null && pile.pile_cap_days > 0) {
-    const crew = 4;
-    const h = round1(crew * shift * K_UTIL * pile.pile_cap_days);
-    drafts.push({
-      workType: 'beton', days: pile.pile_cap_days, crew, wage: fwWage,
-      entry: {
-        id: `tov-${id++}`, profession: 'Hlavice piloty (ŽB cyklus)', professionCode: 'HLA',
-        count: crew, hours: h, normHours: h,
-        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
-        note: 'hlavice — bednění + výztuž + betonáž + zrání',
-        source: 'calculator',
-      },
-    });
-  }
-
-  return drafts;
 }
 
 // ─── applyPlanToPositions ───────────────────────────────────────────────────

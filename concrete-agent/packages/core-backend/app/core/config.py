@@ -116,6 +116,40 @@ class Settings(BaseSettings):
     )
 
     # ==========================================
+    # CATALOG EMBEDDINGS (pgvector retrieve — Phase 1 catalog matching)
+    # ==========================================
+    EMBEDDING_MODEL: str = Field(
+        default="text-multilingual-embedding-002",
+        description=(
+            "Vertex AI text embedding model. gecko@003 RETIRED 2025-05-24; "
+            "multilingual-002 is native 768-dim, multilingual, drop-in on the "
+            "current vertexai SDK. gemini-embedding-001 @ output_dimensionality=768 "
+            "is the post-google-genai-migration upgrade — SAME 768 dim, so the "
+            "pgvector column never needs re-dimensioning."
+        ),
+    )
+    EMBEDDING_DIM: int = Field(
+        default=768,
+        description="pgvector column dimension — MUST match EMBEDDING_MODEL output."
+    )
+    EMBEDDING_LOCATION: str = Field(
+        default="us-central1",
+        description="Vertex AI region for embeddings (model availability)."
+    )
+    OTSKP_CATALOG_VERSION: str = Field(
+        default="OTSKP 2026",
+        description="Provenance label for the loaded OTSKP catalog version."
+    )
+    CATALOG_GCS_BUCKET: str = Field(
+        default="stavagent-catalogs",
+        description=(
+            "Separate GCS bucket for catalog XML ingestion. Kept OUT of the norms "
+            "Data Store bucket (stavagent-cenik-norms) so catalog XML does not "
+            "pollute the RAG norms corpus (whole-bucket console sync, no prefix filter)."
+        ),
+    )
+
+    # ==========================================
     # LIVE KNOWLEDGE BASE (Perplexity)
     # ==========================================
     ALLOW_WEB_SEARCH: bool = Field(

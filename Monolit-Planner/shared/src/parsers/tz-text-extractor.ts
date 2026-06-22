@@ -434,6 +434,130 @@ function smetaLinesToParams(
  * @param options optional — element_type hint for field mapping
  * @returns       ExtractedParam[] sorted by confidence (highest first)
  */
+// ─── Construction-technology extraction (Part C, 2026-06-13) ────────────────
+
+export interface ConstructionTechnologyResult {
+  /** Pour technology read from the TZ prose. */
+  technology?: 'fixed_scaffolding' | 'mss' | 'cantilever';
+  /** Number of NK pour stages/takty (1 = v jednom taktu, 3 = ve třech etapách). */
+  pour_stages_count?: number;
+  /** Verbatim sentence that produced the strongest signal. */
+  quote: string;
+  /** Best-effort section anchor (nearest preceding §N.N heading); the
+   *  authoritative quote+page anchor lives in the hand-curated *_tz_facts.md
+   *  digests — page numbers are not reliable in plain pdftotext flow. */
+  anchor?: string;
+  /** 1.0 when both technology + a counted stage phrase matched in one
+   *  sentence; 0.9 when only one facet matched. */
+  confidence: number;
+}
+
+/** Normalized Czech count token (locative/genitive, diacritics stripped by
+ *  `norm()`) → integer, for "v jednom taktu" / "ve třech etapách" style phrases. */
+const _STAGE_WORD_TO_COUNT: Record<string, number> = {
+  jednom: 1, jedne: 1,
+  dvou: 2, dve: 2, dva: 2,
+  trech: 3, tri: 3,
+  ctyrech: 4, ctyr: 4,
+  peti: 5, pet: 5,
+  sesti: 6, sest: 6,
+  sedmi: 7, sedm: 7,
+};
+
+/** Counted stage phrase: a number (digit or Czech word) immediately before
+ *  a "takt…" or "etap…" word. Word-alternation is fixed so a generic `\w+`
+ *  can't over-match. */
+const _STAGE_COUNT_RE =
+  /\b(\d{1,2}|jednom|jedne|dvou|dve|dva|trech|tri|ctyrech|ctyr|peti|pet|sesti|sest|sedmi|sedm)\s+(takt\w*|etap\w*)/;
+
+/**
+ * Extract pour technology + stage count from TZ prose (Part C — closes
+ * "the engine reads technology from the TZ itself" instead of receiving it
+ * as a parameter). Deterministic, no AI.
+ *
+ * Target phrases (verbatim from the *_tz_facts.md digests):
+ *   - Žalmanov §4.1.6: "…na pevné skruži ve třech etapách" → fixed_scaffolding, 3
+ *   - KV §7.2:         "…na pevné skruži v jednom taktu"   → fixed_scaffolding, 1
+ *   - KV §6.11.3:      "…v jedné etapě na pevné skruži"    → fixed_scaffolding, 1
+ *
+ * Trap (must NOT be counted as pour stages): KV §7.2
+ *   "Most bude budován po etapách ve vazbě na převádění dopravy." — these are
+ *   TRAFFIC/road stages, not pour takty. Guarded two ways: (a) a sentence
+ *   mentioning `doprav` is rejected for the count, and (b) "po etapách" has
+ *   no count token before "etapách" so it yields nothing anyway.
+ */
+export function extractConstructionTechnology(
+  text: string,
+): ConstructionTechnologyResult | null {
+  const normFull = norm(text);
+
+  // ── Technology facet (whole-text scan; most specific wins) ──
+  let technology: ConstructionTechnologyResult['technology'];
+  let techQuote = '';
+  if (/letm\w*\s+beton/.test(normFull)) {
+    technology = 'cantilever';
+  } else if (/(vysuvn|posuvn)\w*\s+skruz|\bmss\b/.test(normFull)) {
+    technology = 'mss';
+  } else if (/pevn\w*\s+skruz/.test(normFull)) {
+    technology = 'fixed_scaffolding';
+  }
+
+  // ── Stage-count facet (sentence-level; trap-guarded) ──
+  // Split on sentence terminators + newlines; keep original for the quote.
+  const sentences = text.split(/(?<=[.!?])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
+  let pourStagesCount: number | undefined;
+  let stageQuote = '';
+  for (const sentence of sentences) {
+    const ns = norm(sentence);
+    // Must be about the NK pour, not roadworks.
+    const aboutPour = /skruz|betonaz|beton\w*\s+nosn|nosn\w*\s+konstrukc/.test(ns);
+    if (!aboutPour) continue;
+    if (/doprav/.test(ns)) continue; // traffic-stage trap
+    const cm = _STAGE_COUNT_RE.exec(ns);
+    if (!cm) continue;
+    const token = cm[1];
+    const count = /^\d+$/.test(token) ? parseInt(token, 10) : _STAGE_WORD_TO_COUNT[token];
+    if (count && count > 0 && count <= 20) {
+      pourStagesCount = count;
+      stageQuote = sentence;
+      break;
+    }
+  }
+
+  if (!technology && pourStagesCount === undefined) return null;
+
+  // Prefer the counted-stage sentence as the quote (it carries both facets
+  // most often, e.g. "…na pevné skruži ve třech etapách"); else the first
+  // sentence naming the technology.
+  let quote = stageQuote;
+  if (!quote && technology) {
+    const techStem = technology === 'cantilever' ? /letm\w*\s+beton/
+      : technology === 'mss' ? /(vysuvn|posuvn)\w*\s+skruz|\bmss\b/
+      : /pevn\w*\s+skruz/;
+    quote = sentences.find((s) => techStem.test(norm(s))) ?? '';
+  }
+
+  // Best-effort anchor: nearest preceding §N.N(.N) heading in the original.
+  let anchor: string | undefined;
+  if (quote) {
+    const idx = text.indexOf(quote);
+    if (idx > 0) {
+      const before = text.slice(0, idx);
+      const heads = [...before.matchAll(/(?:^|\n)\s*§?\s*(\d+(?:\.\d+){0,3})\.?\s/g)];
+      if (heads.length > 0) anchor = `TZ §${heads[heads.length - 1][1]}`;
+    }
+  }
+
+  const bothFacets = technology !== undefined && pourStagesCount !== undefined;
+  return {
+    technology,
+    pour_stages_count: pourStagesCount,
+    quote: quote.slice(0, 300),
+    anchor,
+    confidence: bothFacets ? 1.0 : 0.9,
+  };
+}
+
 export function extractFromText(
   text: string,
   options: ExtractOptions = {},
@@ -1147,6 +1271,34 @@ export function extractFromText(
     results.push({
       name: 'bridge_deck_subtype', value: 'dvoutram', label_cs: 'Podtyp: dvoutrám',
       confidence: 1.0, source: 'keyword', matched_text: 'dvoutrám',
+    });
+  }
+
+  // ─── Construction technology + pour stage count (Part C) ─────────────────
+  // Closes "the engine reads technology from the TZ itself": surfaces
+  // construction_technology + pour_stages_count as extracted params (same
+  // checkbox flow as the other fields), so the validation rule can be fed
+  // tz_facts derived from prose instead of a hand-passed parameter.
+  const techResult = extractConstructionTechnology(text);
+  if (techResult?.technology) {
+    const labels: Record<string, string> = {
+      fixed_scaffolding: 'pevná skruž', mss: 'výsuvná skruž (MSS)', cantilever: 'letmá betonáž',
+    };
+    results.push({
+      name: 'construction_technology', value: techResult.technology,
+      label_cs: `Technologie: ${labels[techResult.technology]}`,
+      confidence: drawingMode ? 0.85 : techResult.confidence,
+      source: drawingMode ? 'drawing' : 'regex',
+      matched_text: techResult.quote,
+    });
+  }
+  if (techResult?.pour_stages_count !== undefined) {
+    results.push({
+      name: 'pour_stages_count', value: techResult.pour_stages_count,
+      label_cs: `Počet taktů/etap betonáže NK: ${techResult.pour_stages_count}`,
+      confidence: drawingMode ? 0.85 : techResult.confidence,
+      source: drawingMode ? 'drawing' : 'regex',
+      matched_text: techResult.quote,
     });
   }
 

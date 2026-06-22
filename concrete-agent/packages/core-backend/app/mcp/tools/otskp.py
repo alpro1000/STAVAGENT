@@ -14,10 +14,29 @@ import re
 from pathlib import Path
 from typing import Optional
 
+from app.services.catalog_matching import match_catalog, retrieve_candidates
+
 logger = logging.getLogger(__name__)
 
 # Lazy-loaded singleton
 _catalog = None
+
+
+def _resolve_catalog_version(row_version: Optional[str]) -> str:
+    """Real per-row catalog_version → settings fallback (Fix 3 / WP2).
+
+    The `source` field is now data-driven: it reflects the row's stamped
+    `catalog_version` when present, falling back to the configured
+    OTSKP_CATALOG_VERSION on a legacy DB / XML row that carries none. NEVER a
+    hardcoded date literal.
+    """
+    if row_version:
+        return row_version
+    try:
+        from app.core.config import settings
+        return settings.OTSKP_CATALOG_VERSION
+    except Exception:  # pragma: no cover - config import is defensive
+        return ""
 
 
 def _get_catalog():
@@ -53,6 +72,14 @@ class _InMemoryOTSKP:
 
     def __init__(self, xml_path: Path):
         self.items: dict = {}
+        # WP2: derive the version from config — NEVER hardcode a new date literal.
+        # This rarely-used XML fallback has no per-row version, so the whole
+        # catalog carries the configured OTSKP_CATALOG_VERSION.
+        try:
+            from app.core.config import settings
+            self.catalog_version = settings.OTSKP_CATALOG_VERSION
+        except Exception:  # pragma: no cover - config import is defensive
+            self.catalog_version = None
         self._load(xml_path)
 
     def _load(self, xml_path: Path):
@@ -92,6 +119,7 @@ class _InMemoryOTSKP:
                 "mj": mj_m.group(1).strip() if mj_m else "",
                 "cena": float(cena_m.group(1)) if cena_m else 0.0,
                 "spec": spec_m.group(1).strip() if spec_m else "",
+                "catalog_version": self.catalog_version,
             }
 
         logger.info(f"[MCP/OTSKP] Loaded {len(self.items)} items from XML")
@@ -118,8 +146,9 @@ class _InMemoryOTSKP:
             score = matched / len(words)
             scored.append((score, item))
 
-        # Sort by score descending, then by price ascending for ties
-        scored.sort(key=lambda x: (-x[0], x[1].get("cena", 0)))
+        # Sort by score descending, then by code ascending for ties (WP1: price
+        # is NEVER a ranking signal — it was the old tie-break, now removed).
+        scored.sort(key=lambda x: (-x[0], str(x[1].get("code", ""))))
         return [_DictItem(item) for _, item in scored[:limit]]
 
 
@@ -131,6 +160,7 @@ class _DictItem:
         self.mj = d["mj"]
         self.cena = d["cena"]
         self.spec = d.get("spec", "")
+        self.catalog_version = d.get("catalog_version")
 
 
 async def find_otskp_code(
@@ -140,13 +170,15 @@ async def find_otskp_code(
 ) -> dict:
     """Find OTSKP catalog codes for Czech transport/engineering structures.
 
-    Database of 17,904 verified items from the Czech OTSKP pricing system
-    (cenová soustava OTSKP pro dopravní a inženýrské stavby).
-    AI models do NOT know these 9-digit codes — this tool searches the
-    real database with text matching and returns exact prices.
+    Searches the loaded OTSKP catalog (Czech pricing system for transport and
+    engineering structures; the catalog version is stamped in result provenance).
+    AI models do NOT know these codes — this tool searches the real database
+    and returns the catalogue's exact prices.
 
-    Each result includes: 9-digit code, Czech description, unit (m³, m², t, ks),
-    unit price in CZK, and confidence (1.0 for database match).
+    Each result includes: code, Czech description, unit (m³, m², t, ks), unit
+    price in CZK, and an HONEST confidence — exact code lookup = 1.0; a text
+    search is gated by work-type + explicit parameters and ranked, so a bare
+    keyword hit is capped below 1.0 (never a hardcoded 1.0 on any DB match).
 
     FREE tool (0 credits). Use for bridges, roads, tunnels, railways.
     For building construction, use find_urs_code instead.
@@ -184,7 +216,11 @@ async def find_otskp_code(
                         "unit": item.mj,
                         "unit_price_czk": item.cena,
                         "confidence": 1.0,
-                        "source": "OTSKP 1/2025",
+                        # Data-driven provenance (Fix 3): the row's real
+                        # catalog_version, settings fallback when absent.
+                        "source": _resolve_catalog_version(
+                            getattr(item, "catalog_version", None)
+                        ),
                     }],
                     "total_found": 1,
                     "query": query,
@@ -198,22 +234,58 @@ async def find_otskp_code(
                 "note": f"Code '{code}' not found in OTSKP database",
             }
 
-        # Fulltext search
-        results = catalog.search(query, limit=max_results)
+        # Fulltext search → deterministic Work-First chain.
+        # Recall: search by the whole query AND by each significant token, dedup
+        # by code (the SQLite LIKE path matches whole phrases only, so a token
+        # sweep is what actually surfaces candidates).
+        def keyword_search_fn(q: str) -> list[dict]:
+            by_code: dict[str, dict] = {}
+            terms = [q] + [w for w in re.split(r"\s+", q) if len(w) >= 3]
+            for term in terms:
+                for r in catalog.search(term, limit=max_results * 4):
+                    by_code.setdefault(r.code, {
+                        "code": r.code,
+                        "description": r.nazev,
+                        "unit": r.mj,
+                        "unit_price_czk": r.cena,
+                        "catalog_version": getattr(r, "catalog_version", None),
+                        "source": "keyword",
+                    })
+            return list(by_code.values())
+
+        raw = retrieve_candidates(query, keyword_search_fn, limit=max_results * 4)
+        carrier = match_catalog(query, raw)
+        ranked = carrier["candidates"][:max_results]
         return {
             "results": [
                 {
-                    "code": r.code,
-                    "description": r.nazev,
-                    "unit": r.mj,
-                    "unit_price_czk": r.cena,
-                    "confidence": 1.0,
-                    "source": "OTSKP 1/2025",
+                    "code": c["code"],
+                    "description": c["description"],
+                    "unit": c.get("unit", ""),
+                    "unit_price_czk": c.get("unit_price_czk", 0.0),
+                    # Honest confidence from the chain (NOT a hardcoded 1.0 on a
+                    # bare DB hit). 1.0 is reserved for the exact code-lookup
+                    # branch above; keyword caps at 0.9, embeddings at ~0.70–0.80.
+                    "confidence": c["confidence"],
+                    # Data-driven provenance (Fix 3): the candidate's real
+                    # catalog_version, settings fallback when absent. Mixed
+                    # 2025/2026 output here is EXPECTED (Fix 4's signal).
+                    "source": _resolve_catalog_version(c.get("catalog_version")),
+                    "work_type": c["work_type"],
+                    "element_family": c["element_family"],
+                    "provenance": c["provenance"],
                 }
-                for r in results
+                for c in ranked
             ],
-            "total_found": len(results),
+            "total_found": len(ranked),
             "query": query,
+            "query_work_type": carrier["query_work_type"],
+            "query_element_family": carrier["query_element_family"],
+            # Self-explains why embeddings did/didn't make the shortlist:
+            # retrieved.embeddings==0 → provider returned nothing; kept.embeddings==0
+            # with dropped.*>0 → retrieved but filtered (which axis).
+            "retrieve_summary": carrier["retrieve_summary"],
+            "ranking_audit": carrier["ranking_audit"],
         }
 
     except Exception as e:

@@ -30,6 +30,9 @@ import type { ConcreteClass, CementType, ElementType, Season, ConstructionType, 
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { ResourceCeiling, CeilingViolation, EngineeringDemand } from './resource-ceiling.js';
 import { applyResourceCeilingDefaults, checkCeilingFeasibility } from './resource-ceiling.js';
+import type { TzFacts, ValidationFlag } from './validation-rules.js';
+import { runValidationRules } from './validation-rules.js';
+import { estimateElementVolume, isPrismaticType } from './element-geometry.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -67,10 +70,23 @@ export interface PlannerInput {
   volume_m3: number;
   /** Formwork area per tact (m²). If not given, estimated from volume, height, and element geometry */
   formwork_area_m2?: number;
+  /** KONTAKTNÍ (rozvinutá) plocha bednění (m²) — differs from formwork_area_m2
+   *  (půdorys) for skruž decks (SO-202: 1 527.6 vs 1 209.78). Labor-projection
+   *  only (skruž+bednění Nh/m² norm); does NOT affect the schedule. */
+  formwork_contact_area_m2?: number;
   /** Height from ground/floor to underside of element (m). Used for props calculation.
    *  For mostovkova_deska: this is the prop height (terén → spodek desky), typ. 4–20 m.
    *  For the deck cross-section thickness, use deck_thickness_m (separate field). */
   height_m?: number;
+  /** Phase 5 Step 2: element box length (m). When volume_m3 is omitted and
+   *  length_m × width_m × height_m are all set for a PRISMATIC type, the engine
+   *  derives volume_m3 = L·W·H + formwork_area_m2 = 2(L+W)·H (shared
+   *  element-geometry). length_m also feeds total_length_m (geometry↔takty
+   *  unification) when total_length_m is absent. Non-prismatic types
+   *  (mostovka/pilota/rimsa/…) ignore this and keep their own quantity source. */
+  length_m?: number;
+  /** Phase 5 Step 2: element box width (m). See length_m. */
+  width_m?: number;
   /**
    * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Optional override.
    * When omitted and span_m × nk_width_m are set, auto-derived as volume_m3 / (span_m × nk_width_m).
@@ -258,6 +274,9 @@ export interface PlannerInput {
   prestress_cables_count?: number;
   /** Tensioning method: one-sided (~6/day) or both-sides (~10/day). Default both. */
   prestress_tensioning?: 'one_sided' | 'both_sides';
+  /** Mass of prestressing strands (kg), e.g. from VV. Labor-projection only
+   *  (předpětí Nh/t norm); does NOT affect the schedule. */
+  prestress_strand_mass_kg?: number;
 
   // --- Bridge deck subtype ---
   /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
@@ -272,6 +291,10 @@ export interface PlannerInput {
   nk_width_m?: number;
   /** Construction technology override. Auto-recommended if not given. */
   construction_technology?: 'fixed_scaffolding' | 'mss' | 'cantilever';
+  /** Facts known from the project documents (TZ) with quote anchors —
+   *  consumed ONLY by validation rules (input-vs-documentation cross-check).
+   *  Never affects the schedule or any engine computation. */
+  tz_facts?: TzFacts;
   /** MSS tact duration override (days per span). Auto from deck subtype if not given. */
   mss_tact_days?: number;
   /** MSS mobilization cost override (Kč). */
@@ -392,6 +415,14 @@ export interface PlannerOutput {
     strategies: ReturnType<typeof calculateStrategiesDetailed>;
     /** Shape correction applied (1.0 if none) */
     shape_correction: number;
+    /** Contact area (m²) used as the labor-projection (skruž+bednění Nh) basis.
+     *  Either the supplied input or, when absent, a §6 ODHAD from the two-sided
+     *  box geometry (see contact_area_source). */
+    contact_area_m2?: number;
+    /** Provenance of contact_area_m2: 'user' = supplied input; 'odhad' = derived
+     *  from formwork_area_m2 (two-sided box, factor 1.0). Undefined = honest-blank
+     *  (non-prismatic / no system formwork → no derivation). */
+    contact_area_source?: 'user' | 'odhad';
   };
 
   // --- Obrátkovost (repetitive elements) ---
@@ -508,6 +539,8 @@ export interface PlannerOutput {
     days: number;
     crew_size: number;
     skruz_total_days: number;  // curing + prestress
+    /** Echo of input strand mass (kg) — labor-projection norm basis only */
+    strand_mass_kg?: number;
   };
 
   // --- Resource ceiling (Phase 1 plumbing) ----------------------------------
@@ -529,6 +562,10 @@ export interface PlannerOutput {
    * `warnings[]` (textuální paralelní fronta pro UI banner).
    */
   resource_violations: CeilingViolation[];
+  /** Input-vs-documentation cross-check flags (validation-rules registry).
+   *  Structured sibling of the ⚠️ lines pushed into warnings[] — same
+   *  pattern as resource_violations. Visible flag, never a gate. */
+  validation_flags?: ValidationFlag[];
 
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
@@ -817,9 +854,50 @@ export function computePourCrewByPumps(n_pump: number): PourCrewBreakdown {
  * console.log(plan.costs.total_labor_czk);    // 385,000
  * console.log(plan.pour_decision.num_tacts);  // 5
  */
+/**
+ * Phase 5 Step 2 — derive volume/area/length from box geometry (additive).
+ * Returns `input` UNCHANGED when volume_m3 is already supplied (parity +
+ * goldens) or when dims/type don't qualify. Only fills fields that are absent,
+ * so an explicit formwork_area_m2 / total_length_m is never overwritten.
+ */
+function deriveGeometryInput(
+  input: PlannerInput,
+  warnings: string[],
+  log: string[],
+): PlannerInput {
+  const hasVolume = typeof input.volume_m3 === 'number' && input.volume_m3 > 0;
+  if (hasVolume) return input;                 // explicit volume wins — parity
+  const type = input.element_type;
+  if (!type) return input;                     // pre-classification: need a known type
+  if (!input.length_m || !input.width_m || !input.height_m) return input; // dims incomplete
+  const geom = estimateElementVolume(type, {
+    length_m: input.length_m, width_m: input.width_m, height_m: input.height_m,
+  });
+  if (!geom.applicable) {
+    // honest-blank — VISIBLE, never a fabricated box volume.
+    if (geom.reason) warnings.push(`ℹ️ ${geom.reason}`);
+    return input;
+  }
+  if (geom.volume_m3 == null) return input;
+  const next: PlannerInput = { ...input, volume_m3: geom.volume_m3 };
+  if (next.formwork_area_m2 == null) next.formwork_area_m2 = geom.formwork_area_m2;
+  if (next.total_length_m == null) next.total_length_m = input.length_m; // geometry↔takty
+  log.push(
+    `Geometrie: V=${geom.volume_m3} m³, bednění=${geom.formwork_area_m2} m² ` +
+    `z ${input.length_m}×${input.width_m}×${input.height_m} m; total_length_m=${next.total_length_m}`,
+  );
+  return next;
+}
+
 export function planElement(input: PlannerInput): PlannerOutput {
   const log: string[] = [];
   const warnings: string[] = [];
+
+  // Phase 5 Step 2: geometry → volume/area/length derivation (additive, shared).
+  // No-op when volume_m3 is supplied (one-element parity + goldens unchanged);
+  // otherwise derives V/area from box dims for prismatic types and unifies the
+  // geometry length into total_length_m so tacts read the element's real length.
+  input = deriveGeometryInput(input, warnings, log);
 
   // Resource Ceiling Phase 1 (audit R1) — resolve effective ceiling at entry.
   // User input (confidence 0.99) WINS over B4 KB defaults (0.85). For elements
@@ -865,6 +943,21 @@ export function planElement(input: PlannerInput): PlannerOutput {
     }
   } else {
     throw new Error('Either element_name or element_type must be provided');
+  }
+
+  // ─── 1·reject. Not a concrete structural element (TASK_2b Gate 3) ──────────
+  // A reject (stone masonry cladding, shotcrete, insulation, grouting, road
+  // surface …) must not silently receive a fabricated rebar/formwork plan. Flag
+  // it and zero the concrete-only quantities so the pipeline runs without
+  // crashing or inventing reinforcement. Rich per-material handling (simple
+  // volume) is the decomposition phase, not here.
+  const isReject = profile.is_concrete_element === false;
+  if (isReject) {
+    warnings.push(
+      `⚠️ "${input.element_name ?? profile.element_type}" není betonový konstrukční prvek` +
+        `${profile.reject_reason ? ` (${profile.reject_reason})` : ''} — vyztužení (0 kg) i náklady vynulovány. ` +
+        `Objem, bednění a harmonogram NEJSOU směrodatné (dopočteno přes fallback 'other'); ověřte ručně.`,
+    );
   }
 
   const elementType = profile.element_type;
@@ -1598,13 +1691,24 @@ export function planElement(input: PlannerInput): PlannerOutput {
     elementType === 'schodiste' ? 'schodiste' :
     null;
 
+  // PDPS recalibration (2026-06-11, STOP gate A decision): for a PRESTRESSED
+  // bridge deck the seasonal skruž table does NOT gate odskružení — the gate
+  // is prestress completion (TZ §6.5.2: napínání ≥ 7 dní od betonáže při
+  // fcm ≥ 33 MPa; odskružení až PO napnutí). The seasonal ČSN 73 6244 hold
+  // applies to non-prestressed decks where the concrete alone must carry.
+  // Props hold for the prestressed deck = curing + prestress (see §7a0).
+  const skruzSeasonalFloorApplies = !(isPrestressed && elementType === 'mostovkova_deska');
+  if (!skruzSeasonalFloorApplies && profile.needs_supports) {
+    log.push(`Skruž: sezónní minimum (ČSN 73 6244) NEAPLIKOVÁNO — předpjatá NK, ` +
+      `odskružení až po napnutí kabelů (TZ §6.5.2); skruž drží zrání + předpětí.`);
+  }
   const skruzTableLookup = skruzConstructionType ? PROPS_MIN_DAYS[skruzConstructionType]?.[seasonForCuring] : undefined;
-  if (profile.needs_supports && skruzConstructionType && skruzTableLookup === undefined) {
+  if (skruzSeasonalFloorApplies && profile.needs_supports && skruzConstructionType && skruzTableLookup === undefined) {
     const fallbackDays = elementType === 'mostovkova_deska' ? 21 : 14;
     log.push(`WARN: PROPS_MIN_DAYS['${skruzConstructionType}']['${seasonForCuring}'] not found — using fallback ${fallbackDays}d.`);
     warnings.push(`Skruž: sezónní tabulka PROPS_MIN_DAYS neobsahuje hodnotu pro "${seasonForCuring}" — použito ${fallbackDays} dní.`);
   }
-  const skruzMinDays = profile.needs_supports && skruzConstructionType
+  const skruzMinDays = skruzSeasonalFloorApplies && profile.needs_supports && skruzConstructionType
     ? (skruzTableLookup ?? (elementType === 'mostovkova_deska' ? 21 : 14))
     : 0;
   if (skruzMinDays > 0) {
@@ -1680,7 +1784,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       ? (pourDecision.tact_volume_m3 * 100) // B500B: 100 kg/m³ for prestressed NK
       : undefined;
 
-  const rebarResult = calculateRebarLite({
+  const rebarComputed = calculateRebarLite({
     element_type: elementType,
     volume_m3: pourDecision.tact_volume_m3,
     mass_kg: rebarMassOverride,
@@ -1690,6 +1794,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
     k,
     wage_czk_h: wageRebar,
   });
+  // Reject (not a concrete element): zero the reinforcement quantities so the
+  // plan carries no fabricated rebar/labor/cost (the engine estimates from the
+  // 'other' fallback ratio otherwise). Graceful — shape preserved, numbers nulled.
+  const rebarResult: RebarLiteResult = isReject
+    ? {
+        ...rebarComputed,
+        mass_kg: 0, mass_t: 0, mass_range_kg: [0, 0],
+        labor_hours: 0, duration_days: 0, cost_labor: 0,
+        optimistic_days: 0, most_likely_days: 0, pessimistic_days: 0,
+      }
+    : rebarComputed;
 
   // Prestressing tendons Y1860 — separate calculation (not included in rebarResult)
   let prestressRebarInfo: { mass_kg_per_tact: number; mass_t_total: number; cost_czk_per_kg: number } | undefined;
@@ -1965,7 +2080,12 @@ export function planElement(input: PlannerInput): PlannerOutput {
       element_type: elementType,
       height_m: input.height_m,
       formwork_area_m2: fwAreaTotal,
-      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
+      // Prestressed deck: skruž holds until cables are stressed + grouted
+      // (TZ §6.5.2 — odskružení po napnutí), i.e. curing + prestress.
+      // Non-prestressed: seasonal ČSN 73 6244 minimum (skruzMinDays) or curing.
+      hold_days: (isPrestressed && elementType === 'mostovkova_deska')
+        ? curingDays + prestressDays
+        : (skruzMinDays > 0 ? skruzMinDays : curingDays),
       crew_size: crew,
       shift_h: shift,
       k,
@@ -2387,9 +2507,48 @@ export function planElement(input: PlannerInput): PlannerOutput {
     }
   }
 
+  // ─── 8c. Validation rules — input vs documentation (Part B) ───────────
+  // Visible flag, never a gate: the zhotovitel may deviate from the PD,
+  // but the deviation must be a conscious decision (see validation-rules.ts).
+  const validationFlags = runValidationRules({
+    tz_facts: input.tz_facts,
+    construction_technology: input.construction_technology,
+    num_tacts: pourDecision.num_tacts,
+  });
+  for (const f of validationFlags) {
+    warnings.push(f.message);
+  }
+
+  // ─── §6: contact-area ODHAD ───────────────────────────────────────────
+  // The labor projection (skruž+bednění Nh norm + tesaři crew rec) keys on the
+  // kontaktní plocha bednění. When it isn't supplied, derive it from the engine
+  // formwork area (fwAreaTotal = two-sided box 2(L+Š)·výška) for prismatic,
+  // system-formwork elements — factor 1.0: VP4/SO-250 úhlové ŽB zdi are formed
+  // two-sided (oba líce), so box ≈ documented area (547.4 ≈ 548.6 on VP4).
+  // Non-prismatic (deck/cornice/stairs/tank) + no-formwork (pažnice/guide walls,
+  // podkladní beton) stay honest-blank (undefined) — never a fabricated area.
+  // (pilota never reaches here — the bored-pile path early-returns above.)
+  const noSystemFormwork = elementType === 'podzemni_stena';
+  const derivesContactArea =
+    input.formwork_contact_area_m2 == null &&
+    isPrismaticType(elementType) &&
+    profile.needs_formwork !== false &&
+    !noSystemFormwork &&
+    fwAreaTotal > 0;
+  const contactAreaM2 = input.formwork_contact_area_m2 ?? (derivesContactArea ? fwAreaTotal : undefined);
+  const contactAreaSource: 'user' | 'odhad' | undefined =
+    input.formwork_contact_area_m2 != null ? 'user' : (derivesContactArea ? 'odhad' : undefined);
+  if (derivesContactArea) {
+    warnings.push(
+      `ℹ️ Plocha bednění ODHAD z geometrie (2·(L+Š)·výška = dvoustranné bednění, ` +
+      `oba líce, ${Math.round(fwAreaTotal * 10) / 10} m²) — pro jednostranné bednění ` +
+      `(zárubní zeď u skály / tížná zeď) nebo přesnost zadejte kontaktní plochu.`,
+    );
+  }
+
   // ─── 9. Assemble Output ───────────────────────────────────────────────
 
-  return {
+  const plannerOutput: PlannerOutput = {
     element: {
       type: elementType,
       label_cs: profile.label_cs,
@@ -2406,6 +2565,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
       three_phase: threePhase,
       strategies: strategiesWithRebar,
       shape_correction: shapeCorrection,
+      contact_area_m2: contactAreaM2,
+      contact_area_source: contactAreaSource,
     },
     obratkovost: obratkovostResult,
     rebar: rebarResult,
@@ -2436,6 +2597,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
         days: prestressDays,
         crew_size: 5,
         skruz_total_days: skruzTotalDays,
+        strand_mass_kg: input.prestress_strand_mass_kg,
       },
     } : {}),
     props: propsResult,
@@ -2491,12 +2653,26 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings,
     decision_log: [...log, ...pourDecision.decision_log],
     // Resource Ceiling Phase 1 plumbing (Foundation B).
+    validation_flags: validationFlags.length > 0 ? validationFlags : undefined,
     // Engine integration (populating resource_violations from
     // checkCeilingFeasibility against pour-decision / pour-task / scheduler
     // demand) ships in Foundation C.
     resource_ceiling: effectiveResourceCeiling,
     resource_violations: resourceViolations,
   };
+
+  // Reject (Gate 3 robustness): planElement is the single authoritative site for
+  // a reject's outputs. Rebar is already zeroed above; here we also null every
+  // fabricated COST so a non-concrete element never ships a price. Objem/bednění/
+  // harmonogram keep their (fallback-'other') shape but the warning above marks
+  // them non-authoritative. Full structural zeroing is a decomposition concern.
+  if (isReject) {
+    const zeroedCosts = Object.fromEntries(
+      Object.entries(plannerOutput.costs).map(([key, value]) => [key, typeof value === 'number' ? 0 : value]),
+    ) as PlannerOutput['costs'];
+    return { ...plannerOutput, costs: zeroedCosts };
+  }
+  return plannerOutput;
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -2830,6 +3006,18 @@ function runPilePath(
   // formwork. Use a flat split that the result card knows how to render.
   const totalLaborCZK = pile.costs.total_labor_czk + rebarResult.cost_labor;
 
+  // Validation rules — input vs documentation (Part B); pile-path mirror
+  // of orchestrator §8c. Generic: fires only when tz_facts carry a
+  // documented value that the input contradicts.
+  const pileValidationFlags = runValidationRules({
+    tz_facts: input.tz_facts,
+    construction_technology: input.construction_technology,
+    num_tacts: pourDecision.num_tacts,
+  });
+  for (const f of pileValidationFlags) {
+    warnings.push(f.message);
+  }
+
   // ── 8. Final return ───────────────────────────────────────────────────
   return {
     element: {
@@ -2906,6 +3094,7 @@ function runPilePath(
     // commonly hits num_cranes (armokoš transport) — Foundation C check.
     resource_ceiling: applyResourceCeilingDefaults('pilota', input.resource_ceiling),
     resource_violations: [],
+    validation_flags: pileValidationFlags.length > 0 ? pileValidationFlags : undefined,
   };
 }
 

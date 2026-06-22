@@ -1,9 +1,18 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  // First frontend test runner (2026-06-15): jsdom + Testing Library, so
+  // DOM commit-timing (e.g. NumInput onChange vs onBlur) can be covered.
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/test/setup.ts'],
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

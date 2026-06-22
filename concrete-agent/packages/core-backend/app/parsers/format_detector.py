@@ -67,16 +67,28 @@ def _detect_xlsx_subtype(file_path: str) -> SourceFormat:
 
 
 def _detect_xml_subtype(file_path: str) -> SourceFormat:
-    """Detect XML subtype by root tag."""
-    try:
-        import xml.etree.ElementTree as ET
-        # Read only first few KB to detect root tag
-        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-            head = f.read(2000)
+    """Detect XML subtype by root tag / source marker.
 
-        if '<XC4' in head or '<xc4' in head:
+    Three XML families can all carry an ``<XC4>`` root and must stay distinct:
+      - AspeEsticon XC4 export (soupis prací): ``<zdroj>AspeEsticon</zdroj>`` +
+        ``<objekty>``/``<polozka>`` work items → ``XML_ASPE_XC4``.
+      - KROS OTSKP price-list XC4: ``<CenoveSoustavy>`` price nodes → ``XML_OTSKP``.
+      - KROS TSKP classification: ``<BuildingInformation>``/``<Classification>``
+        → ``XML_TSKP``.
+    """
+    try:
+        # Read the first few KB — enough for the root tag + <zdroj> marker.
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            head = f.read(4000)
+        head_lower = head.lower()
+
+        if '<xc4' in head_lower:
+            # AspeEsticon export ships a <zdroj>AspeEsticon</zdroj> marker and
+            # <objekty>/<polozka> work items; a genuine price-list has neither.
+            if 'aspeesticon' in head_lower or '<objekty' in head_lower:
+                return SourceFormat.XML_ASPE_XC4
             return SourceFormat.XML_OTSKP
-        if '<BuildingInformation' in head or '<Classification' in head:
+        if '<buildinginformation' in head_lower or '<classification' in head_lower:
             return SourceFormat.XML_TSKP
     except Exception as e:
         logger.warning(f"XML detection failed: {e}")

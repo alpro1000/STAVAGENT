@@ -249,6 +249,52 @@ export function calculateEstimatedWeeks(
 }
 
 /**
+ * Roll up persisted schedule projections (metadata.schedule_info.total_days,
+ * written by the calculator's Aplikovat) across elements of a project.
+ *
+ * Element granularity = part_name with a beton position (same grouping the
+ * Gantt uses). Parts are laid sequentially, so the project schedule total is
+ * the SUM of element totals; phases inside an element already overlap inside
+ * its total_days.
+ *
+ * Returns total = null when NO element carries a projection — readers must
+ * show an honest blank (NEPOČÍTÁNO), not a money-derived estimate.
+ */
+export function summarizeScheduleProjections(positions: Position[]): {
+  schedule_total_days: number | null;
+  schedule_elements_calculated: number;
+  schedule_elements_uncalculated: number;
+} {
+  const betonByPart = new Map<string, Position>();
+  for (const p of positions) {
+    if (p.subtype === 'beton' && !betonByPart.has(p.part_name)) {
+      betonByPart.set(p.part_name, p);
+    }
+  }
+
+  let total = 0;
+  let calculated = 0;
+  let uncalculated = 0;
+  for (const beton of betonByPart.values()) {
+    const meta = beton.metadata;
+    const parsed = typeof meta === 'string' ? safeParseMeta(meta) : (meta as Record<string, any> | undefined);
+    const totalDays = parsed?.schedule_info?.total_days;
+    if (typeof totalDays === 'number' && totalDays > 0) {
+      total += totalDays;
+      calculated += 1;
+    } else {
+      uncalculated += 1;
+    }
+  }
+
+  return {
+    schedule_total_days: calculated > 0 ? Math.round(total * 10) / 10 : null,
+    schedule_elements_calculated: calculated,
+    schedule_elements_uncalculated: uncalculated,
+  };
+}
+
+/**
  * Calculate complete Header KPI for a bridge
  */
 export function calculateHeaderKPI(
@@ -296,6 +342,16 @@ export function calculateHeaderKPI(
     days_per_month_mode
   );
 
+  // Schedule projection roll-up (seam fix 2026-06). KPI "Čas" reads the real
+  // schedule; the money formula above stays only as the Krytí mezd numerator.
+  const scheduleSummary = summarizeScheduleProjections(positions);
+  const schedule_months = scheduleSummary.schedule_total_days != null
+    ? scheduleSummary.schedule_total_days / days_per_month_mode
+    : null;
+  const wage_coverage_ratio = schedule_months && schedule_months > 0 && estimated_months > 0
+    ? Math.round((estimated_months / schedule_months) * 100) / 100
+    : null;
+
   return {
     span_length_m: bridgeParams.span_length_m,
     deck_width_m: bridgeParams.deck_width_m,
@@ -311,7 +367,9 @@ export function calculateHeaderKPI(
     avg_wage_czk_ph,
     avg_shift_hours,
     days_per_month: days_per_month_mode,
-    rho_t_per_m3
+    rho_t_per_m3,
+    ...scheduleSummary,
+    wage_coverage_ratio
   };
 }
 
