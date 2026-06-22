@@ -57,11 +57,15 @@
 
 **Что отсюда НЕ достать (честно):** точные тоталы 17904 vs 17940 и поле версии — MCP-поверхность не отдаёт метаданные каталога. `retrieve_summary` показал только per-query (keyword retrieved 137/kept 59, embeddings 26/kept 24) и что **в топ-8 не попала ни одна keyword-строка — все из embeddings**. → По факту чаще *показываются* цены из 2026-индекса, а *штампуются* 2025-м.
 
-**Хвост (нужен SQL в Claude Code, egress отсюда закрыт):**
-- `SELECT extversion FROM pg_extension WHERE extname='vector';` — версия pgvector.
-- Точный count строк в keyword-store vs embeddings-store + их version-поле → подтвердить дельту 36 и какой именно раскол.
+**✅ T4 ЗАМЕРЕНО ЖИВЬЁМ (2026-06-22, Cloud SQL `stavagent_portal` DB):**
+- **pgvector = 0.8.1** → ≥0.7.0, **halfvec(3072) для T6 готов из коробки**, `ALTER EXTENSION` НЕ нужен.
+- **embeddings-store** (`otskp_embeddings`) = **17 940 строк, ВСЕ `catalog_version='OTSKP 2026'`** — внутри раскола НЕТ, один чистый 2026.
+- **keyword-store** (SQLite `otskp.db`) = **17 904 / 2025** (из `otskp_engine.py:5`; SQLite в образе, не live-count).
+- **Дельта = 36** (17 940 − 17 904). **Раскол МЕЖДУ сторами**, не внутри: embeddings 2026 vs keyword 2025.
 
-**Решение:** Fix 4 = **OTSKP-only** ребейк (URS версию вообще не репортит — см. §5). Естественно **связать ребейк с Фазой 3 миграции** (один re-embed на 17 940 = сразу 2026), чтобы не гонять дважды.
+**Решение (подтверждено фактами):** Fix 4 = **ребейк keyword-store `otskp.db` → 2026/17940**, связать с Фазой 3 миграции (один проход = сразу 2026). Live primary-retrieve уже = embeddings/17940/OTSKP 2026 (top-8 идут оттуда) — лендинг с 17 940 фактически верен; отстаёт только keyword-store.
+
+**Канон-синк (после ребейка):** числа 17 904 в `tech.md` / `product.md` / `domain.md` / корневой `CLAUDE.md` / MCP-инструкция → 17 940 одним проходом. NB: docstring `find_urs_code` про «17 904 seed» относится к OTSKP-seed URS-matcher'а (2025) — НЕ путать с ÚRS-каталогом (39 000+); правится вместе с ребейком, не раньше.
 
 ---
 

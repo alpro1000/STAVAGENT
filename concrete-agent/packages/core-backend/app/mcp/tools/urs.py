@@ -24,7 +24,7 @@ async def find_urs_code(
 
     Searches the ÚRS/RTS pricing system (39,000+ items) via two methods:
     1. Perplexity web search on urs.cz / podminky.urs.cz / cenova-soustava.cz
-    2. URS Matcher Service (4-phase matching with 17,940 seed items)
+    2. URS Matcher Service (4-phase matching with 17,904 seed items)
 
     AI models do NOT reliably know ÚRS codes — this tool searches the real
     catalog. ÚRS codes have format xxx-xx-xxxx (e.g. 273-32-1111).
