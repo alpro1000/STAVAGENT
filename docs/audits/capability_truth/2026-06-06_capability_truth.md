@@ -84,7 +84,7 @@ Also note: README §3.2/§3.4 describes the analyzer as "PDF-to-structured-data 
 |---|---|---|---|---|
 | Element types | **24** | 22 | 23 | **24** — SOURCE-VERIFIED (`pour-decision.ts` union = 24 real + `other`). README/product.md stale. Safe to fix; **held pending explicit go** (no edit this pass). |
 | MCP tools | (module-level) | 9 | 9 (UI/MCP/API) | **Ambiguous — DO NOT advertise a number yet.** 20 live-exposed includes ~5 introspection/operational probes (`uep_get_job`, `uep_get_dwg_conversion_status`, `uep_list_supported_formats`, `uep_get_coverage_matrix`, `uep_get_reconciliation_rules`) — not user-facing tools. compat-test asserts 11. True user-facing **work-tool** count = separate deliberate decision (derive exactly from `server.py`). **No number changed this pass.** |
-| Test count | (not cited) | — | 1036 / 921 | **1249 is an AUDIT figure — do NOT stamp on trust.** Re-run `Monolit-Planner/shared` (`npm test`) to confirm the live number before writing it anywhere. **Held pending live run + go.** |
+| Test count | (not cited) | — | 1036 / 921 | **1249 — LIVE-VERIFIED 2026-06-06** (`Monolit-Planner/shared`, `vitest run`: 30 files, 1249 passed, 5.24s). Safe to write; **held pending your go** (no edit this pass). |
 | Analyzer impl | "v přípravě" (honest) | "MinerU + Gemini" | — | regex + pdfplumber (MCP tool); cross-doc = BETA |
 
 ---
@@ -108,3 +108,42 @@ Also note: README §3.2/§3.4 describes the analyzer as "PDF-to-structured-data 
 - Golden tests: `Monolit-Planner/shared/src/calculators/golden-*.test.ts`
 - Credit pricing: `stavagent-portal/backend/src/db/migrations/add-credit-system.sql:48-64`
 - Live landing copy: `stavagent-portal/frontend/src/pages/LandingPage.tsx`, `LandingPageEn.tsx`, `index.html:9-27`
+
+---
+
+## 9. Captured findings 2026-06-06 — test count + full MCP tool list
+
+### 9.1 Shared test suite — LIVE-VERIFIED
+- **Command:** `cd Monolit-Planner/shared && npm test` (`vitest run`).
+- **Result:** **1249 tests passed across 30 files**, 5.24 s, 2026-06-06. Zero failures.
+- The CLAUDE.md figure (1249) is correct and now live-verified — not stamped on trust.
+
+### 9.2 Full MCP tool set — RAW LIST (no curated number stamped)
+**Source:** `app/mcp/server.py` — 20 functions registered via `mcp.tool()`, matching `_REGISTERED_TOOL_NAMES` (`server.py:184-203`) exactly. Total registered = **20**.
+
+Classification below is the auditor's read of **work (user-facing capability)** vs **introspection/operational (status/config/result accessors an agent uses to drive the pipeline, not a deliverable in themselves)**. **The final user-facing count is the founder's decision — this is the raw list + a suggested split, not a stamped number.**
+
+| # | Tool | server.py | Classification | Why |
+|---|---|---|---|---|
+| 1 | `find_otskp_code` | :38 | WORK | OTSKP catalog search |
+| 2 | `find_urs_code` | :45 | WORK | ÚRS catalog search |
+| 3 | `classify_construction_element` | :52 | WORK | element classification |
+| 4 | `calculate_concrete_works` | :59 | WORK | concrete calculator |
+| 5 | `calculate_pump` | :66 | WORK | pump calculator |
+| 6 | `parse_construction_budget` | :73 | WORK | budget/soupis parse |
+| 7 | `analyze_construction_document` | :80 | WORK | document analysis |
+| 8 | `create_work_breakdown` | :87 | WORK | work breakdown |
+| 9 | `get_construction_advisor` | :94 | WORK | advisor |
+| 10 | `search_czech_construction_norms` | :101 | WORK | norms lookup (web-grounded) |
+| 11 | `uep_run_extraction` | :108 | WORK | runs the UEP extraction pipeline |
+| 12 | `detect_object_type` | :132 | WORK | object-type classification |
+| 13 | `export_soupis` | :139 | WORK | exports the soupis deliverable |
+| 14 | `extract_tz_fields` | :146 | WORK | TZ field extraction |
+| 15 | `validate_drawing_element` | :154 | WORK (borderline) | validation stage in document→export state machine; produces a result but is a pipeline step |
+| 16 | `uep_get_job` | :121 | INTROSPECTION | polls UEP job status |
+| 17 | `uep_list_supported_formats` | :122 | INTROSPECTION | lists wired formats |
+| 18 | `uep_get_coverage_matrix` | :123 | INTROSPECTION | reads a Phase-2 result artifact |
+| 19 | `uep_get_reconciliation_rules` | :124 | INTROSPECTION | reads reconciliation config |
+| 20 | `uep_get_dwg_conversion_status` | :125 | INTROSPECTION | probes runtime for DWG converter binary (the §4 prod-probe tool) |
+
+**Suggested split (auditor):** 15 work · 5 introspection. **Borderline:** `validate_drawing_element` (counted as work; could be a pipeline-internal step). **Do not advertise "20"** — it includes the 5 introspection probes. Old docs say "9"; the compat-test asserts 11. The founder decides the final user-facing number from this raw list — no number written into marketing/README this pass.
