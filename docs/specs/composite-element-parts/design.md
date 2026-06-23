@@ -1,0 +1,184 @@
+# Složený prvek z částí (opěra/pilíř) — Design
+
+> **Spec ID:** `composite-element-parts`
+> **Datum:** 2026-06-23
+> **Status:** draft
+> **Owner:** Alexander Prokopov / Claude Code session
+> **Prerequisites:** `requirements.md` approved
+
+---
+
+## 1. Přehled řešení
+
+Složený prvek (opěra) se modeluje jako **dvouúrovňová hierarchie**: rodičovská položka (opěra = jeden smětní řádek) **nad** seznamem částí (dřík, úložný práh, závěrná zídka, křídla), kde každá část je běžný jednoprvkový vstup s vlastním bedněním, takty a geometrií. **Domov hierarchie = stávající tabulka pozic projektu** (varianta „b"), protože ta už je „seznam řádků, který se sčítá" — nestavíme druhý takový seznam (kánon: bez parallel structures). Výpočet jede přes **stávající jednoprvkovou cestu po jedné části** + **stávající projektový agregátor** sečte části do rodiče. Když chybí rozměry částí, objem se rozdělí podle **typových podílů z dat** s viditelným ODHAD a provenance. Stejná výpočetní cesta slouží frontendu i MCP — liší se jen úplnost vstupu, ne tvar.
+
+---
+
+## 2. Architectural fit
+
+### 2.1 Které služby jsou dotčené
+
+| Služba | Role v tomto designu |
+|---|---|
+| **Monolit-Planner** | Hlavní. Tabulka pozic dostává úroveň „část" nad druhy práce; kalkulátor počítá jednu část a vkládá pod rodiče; sdílená výpočetní/agregační vrstva dostává „rozklad složeného prvku na části" + „uzavření objemu na 100 %". |
+| **concrete-agent** | MCP wrapper výpočtu betonáže forwarduje **seznam částí** do téže výpočetní cesty (žádná vlastní logika rozkladu). |
+| stavagent-portal | Beze změny (přebírá svinutou položku jako dnes). |
+| URS_MATCHER_SERVICE | Beze změny. |
+| rozpocet-registry | Beze změny. |
+
+### 2.2 Vztah ke stávajícím subsystémům
+
+- **Projektový agregátor** (Fáze 5, sčítá více prvků do projektového součtu, one-element parita) — **přebírá se beze změny** jako sčítač částí do rodiče.
+- **Jednoprvkový výpočet** — **netknutý**; část = jeden běžný vstup.
+- **Tabulka pozic projektu** — dnes seskupuje řádky podle **druhu práce** (betonáž / bednění / zrání / odbednění). Přidává se úroveň **„část"** mezi položkou a druhy práce. *(Kapacita rollupu = Phase A recon.)*
+- **Odpojený příznak „křídla"** + **tři mechanismy množnosti** (kopie téhož ⊥ dilatační úseky ⊥ ruční záběry) — **mizí**, nahrazeny seznamem částí (přítomnost křídel = existence řádku části „křídla"; takty = na každé části).
+
+### 2.3 Tier strategy (determinismus / LLM)
+
+- **Deterministický layer:** veškerý rozklad i sčítání. Typové podíly = data; přesné rozměry bijí podíl; uzavření na 100 % je aritmetika. **LLM se výpočtu částí NEúčastní.**
+- **LLM fallback:** žádný v tomto designu. (Návrh složení z TZ-textu zůstává na stávajícím extraktoru/poradci — mimo tuto spec.)
+- **Confidence scoring:** per část `původ rozdělení` ∈ {ruční/přesné, odhad z typového podílu}; přesné > data > odhad (ladder z `domain.md`).
+
+---
+
+## 3. Data flow
+
+```
+Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
+  → ROZKLAD: doplnit chybějící části z typových podílů,
+             uzavřít součet na celkový objem (celek − přesné = zbytek mezi odhady),
+             označit ODHAD + provenance per část
+  → VÝPOČET po částech (stávající jednoprvková cesta, beze změny)
+  → AGREGACE (stávající projektový agregátor) → rodičovský součet
+  → Tabulka pozic (rodič + řádky částí) ; KPI projektu počítá rodiče jednou
+  → EXPORT: rodič se svine do jedné smětní položky
+```
+
+### 3.1 Klíčové datové struktury (koncepčně, bez jmen)
+
+- **Složený vstup:** identita rodiče (smětní kód/název) + seznam částí + volitelně celkový objem pro rozkladový fallback.
+- **Část:** typ prvku + buď přesné rozměry/objem, **nebo** prázdno (objem se dopočte z podílu) + nesený **původ rozdělení** + **odhad-příznak**.
+- **Rodičovský výstup:** svinutý součet + dostupný rozpad po částech (jako agregátorův seznam prvků + souhrn).
+
+### 3.2 Persistence
+
+- Části žijí jako **řádky pod rodičem** v tabulce pozic; u každé části se ukládá **původ rozdělení** (ruční/odhad) a **odhad-příznak**.
+- **Migrace:** pouze pokud tabulka pozic neunese úroveň „část" nad druhy práce (rozhodne Phase A recon). Pokud ano → samostatný reverzibilní migrační gate; pokud stačí stávající seskupení → bez migrace.
+- **Cache:** beze změny.
+
+---
+
+## 4. API contracts
+
+> High-level. Bez jmen cest.
+
+### 4.1 Nové endpointy
+- Žádné nové. Reuse **stávající společné výpočetní cesty** (sdílí ji frontend i MCP).
+
+### 4.2 Změny existujících endpointů
+- Společná výpočetní cesta se učí přijmout **seznam částí** vedle jednoprvkového vstupu. **Zpětná kompatibilita povinná:** jednoprvkový vstup musí dál vracet dnešní výsledek (AC 3.10).
+
+### 4.3 MCP wrapper
+- MCP nástroj výpočtu betonáže (delegovaný na stávající výpočetní cestu) přidá možnost poslat **seznam částí** a forwardovat ho beze změny logiky. **MCP compatibility check povinný** (`tests/test_mcp_compatibility.py`).
+
+---
+
+## 5. Decisions & trade-offs
+
+### 5.1 Domov seznamu částí = tabulka pozic (varianta „b")
+- **Volba:** části jako řádky pod rodičem v tabulce pozic; úroveň „část" nad druhy práce.
+- **Alternativy:** (a) nový seznam uvnitř kalkulátoru.
+- **Důvod:** tabulka pozic už **je** „seznam, který se sčítá"; existující šev kalkulátor→pozice se přebírá; **kánon zakazuje druhou paralelní strukturu**.
+- **Trade-off:** tabulka se musí naučit úroveň „část" + rollup přes ni (a možná zásah do KPI — viz open).
+
+### 5.2 Chybějící rozměry → typové podíly z dat (ne z hlavy)
+- **Volba:** rozdělit objem podle podílů pocházejících z reálných projektů; ODHAD badge; provenance; **přesné bije odhad**; smíšený součet se uzavírá na 100 %.
+- **Alternativy:** ptát se uživatele na rozdělení pokaždé; nebo skrytě hádat 4 části.
+- **Důvod:** poctivý default + ochrana proti tichému vranju ve smětě (stejná třída jako DWG/Monte-Carlo/katalog-čísla).
+- **Trade-off:** vyžaduje **kalibraci podílů z dat předem**; bez dat raději méně částí.
+
+### 5.3 Jedna výpočetní cesta pro MCP i frontend
+- **Volba:** složený výpočet žije ve sdílené vrstvě za společnou cestou; obě plochy posílají části tamtéž.
+- **Alternativy:** MCP počítá části sám.
+- **Důvod:** **parita konstrukcí** — plochy se liší jen úplností, ne tvarem; MCP už výpočet na tu cestu deleguje.
+- **Trade-off:** sdílená cesta musí znát tvar „seznam částí".
+
+### 5.4 Inkrementální rollout — MCP-po-částech PŘED frontend-seznamem
+- **Volba:** nejdřív sdílená vrstva + MCP forwarduje části (frontend zatím posílá jednu část = dnešek); pak dvouúrovňový seznam ve frontendu.
+- **Alternativy:** velký bang naráz.
+- **Důvod:** **odrizikování „velkého gateu"**; parita drží na každém kroku.
+- **Trade-off:** frontend dočasně jednoprvkový.
+
+---
+
+## 6. Failure modes
+
+| Komponenta | Failure | Behavior | Recovery |
+|---|---|---|---|
+| Rodič | Chybí i celkový objem | **Honest-blank** — nepočítat, označit „nelze" | Doplnit objem |
+| Rozklad | Σ zadaných částí ≠ celkový objem | **Viditelné varování**, neopravovat potichu | Uživatel srovná |
+| Část | Neznámý typ / engine ji neumí | **Honest-blank na té části**, ostatní jedou, rodič dílčí | Označit nepočítané |
+| Rollup tabulky | Neunese úroveň „část" | (recon-dependent) samostatný gate na KPI/rollup | Phase A rozhodne |
+| Typové podíly | Sada dat chybí | **Méně částí / fallback „nedetailizováno"** — nevymýšlet procenta | Kalibrace dat |
+
+---
+
+## 7. Security & privacy
+
+- **Auth/Authorization:** beze změny; ale data jsou **owned** (pozice projektu) → **cross-user isolation** se nesmí porušit přidáním úrovně „část". Review per `docs/security/isolation_model.md` (sub-agent `cross-user-isolation-reviewer`) u všech dotčených cest čtoucích/píšících pozice.
+- **PII/GDPR:** žádné nové PII.
+- **Audit trail:** původ rozdělení (ruční/odhad) + odhad-příznak per část = auditní stopa.
+
+---
+
+## 8. Performance & scaling
+
+- **Load:** N částí na položku (typicky 2–4) = N jednoprvkových výpočtů + agregace; zanedbatelné.
+- **Latency:** lineární v počtu částí; bez nového LLM volání.
+- **Cost:** žádný LLM delta.
+- **Cold start:** beze změny.
+
+---
+
+## 9. Testing strategy
+
+- **Unit:** rozklad (přesné/odhad/smíšený, uzavření na 100 %, provenance, ODHAD-příznak); fallback „části nejsou".
+- **Integration:** sdílená cesta přijme seznam částí; frontend i MCP přes ni dostanou shodný tvar.
+- **Golden tests:** stávající KV/Žalmanov/normy **drží beze změny** (one-element parita); **nové goldeny** — opěra full (části s rozměry), partial-split (dřík přesný + křídla odhad, uzavření na 100 %), no-parts fallback, export-svinutí do jednoho řádku.
+- **MCP compatibility check: Yes** — composite mění **výpočetní cestu wrapped MCP toolem** → `tests/test_mcp_compatibility.py` musí projít; nový golden přidat do **explicitního allow-listu** workflow (jinak v CI neběží — lekce kánonu).
+
+---
+
+## 10. Rollout plan
+
+- [ ] Feature flag pro dvouúrovňový vstup (umožní vypnout, rollback bez revertu).
+- [ ] Fáze 1: sdílená vrstva + MCP-po-částech (frontend beze změny).
+- [ ] Fáze 2: dvouúrovňový seznam ve frontendu + odchod příznaku křídla + sjednocení množnosti.
+- [ ] **Živá kontrola na kalkulator.stavagent.cz po deploy** — netvrdit hotové bez prohlídky na webu (kánon).
+- [ ] Sign-off do soul.md §9.
+
+---
+
+## 11. Open design questions
+
+- [ ] **Rollup tabulky pozic** — unese úroveň „část" nad druhy práce, nebo zásah do KPI-panelu? → **Phase A recon, první bod.**
+- [ ] **Fallback „části nejsou"** — default (a) „nedetailizováno" vs (b) rozklad z výchozích podílů.
+- [ ] **Zdroj typových podílů** — která data, jaké hodnoty (kalibrace VP4/SO-250/Žihle).
+- [ ] Sdílí se „úložný práh" jako samostatná část, nebo splývá s dříkem? (per reálná směta — recon/Alexander).
+
+---
+
+## 12. References
+
+- Requirements: `docs/specs/composite-element-parts/requirements.md`
+- Steering: `tech.md` (tier), `domain.md` §1 (calculator philosophy, ODHAD), `conventions.md` (no parallel structures)
+- Recon: `docs/audits/calculator_field_map/2026-06-13_recon.md`
+- Kánon: `docs/handoff/STAVAGENT_CANON_Phase5.md §3`
+
+---
+
+## 13. Versioning
+
+| Date | Version | Changes |
+|---|---|---|
+| 2026-06-23 | 0.1 | Initial design — varianta „b" + ODHAD ochrany + inkrementální rollout |
