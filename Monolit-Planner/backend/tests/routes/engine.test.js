@@ -11,10 +11,10 @@
  * `norm()` = JSON round-trip of the direct call, so it matches what HTTP/json
  * serialization produces (drops `undefined`, same number precision).
  */
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect, afterEach } from '@jest/globals';
 import express from 'express';
 import request from 'supertest';
-import { planElement, classifyElement } from '@stavagent/monolit-shared';
+import { planElement, classifyElement, planComposite } from '@stavagent/monolit-shared';
 import engineRouter from '../../src/routes/engine.js';
 
 const app = express();
@@ -100,6 +100,40 @@ describe('POST /api/calculate — thin delegate to planElement', () => {
     expect(res.status).toBe(500);
     expect(res.body).toEqual({ error: 'engine_error' });
     expect(res.body.detail).toBeUndefined();
+  });
+});
+
+describe('POST /api/calculate — composite parts (Fáze 5 #7), feature-flagged', () => {
+  const PARENT = {
+    element_type: 'opery_ulozne_prahy', volume_m3: 100, height_m: 3,
+    concrete_class: 'C30/37', exposure_class: 'XF1', has_dilatacni_spary: false,
+  };
+  const PARTS = [
+    { element_type: 'driky_piliru', volume_m3: 60, part_label: 'dřík', height_m: 3, concrete_class: 'C30/37', exposure_class: 'XF1', has_dilatacni_spary: false },
+    { element_type: 'kridla_opery', part_label: 'křídla', height_m: 3, concrete_class: 'C30/37', exposure_class: 'XF1', has_dilatacni_spary: false },
+  ];
+
+  afterEach(() => { delete process.env.ENABLE_COMPOSITE_PARTS; });
+
+  test('flag ON: endpoint === direct planComposite (parent container + parts)', async () => {
+    process.env.ENABLE_COMPOSITE_PARTS = 'true';
+    const body = { ...PARENT, parts: PARTS };
+    const { parts, parent_label, ...parent } = body;
+    const direct = norm(planComposite({ parent, parts, parent_label }));
+    const res = await request(app).post('/api/calculate').send(body);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(direct);
+    expect(res.body.is_detailed).toBe(true);
+    expect(res.body.parts).toHaveLength(2);
+  });
+
+  test('flag OFF (default): parts ignored → byte-identical single-element (backward-compat)', async () => {
+    const body = { ...PARENT, parts: PARTS };
+    const direct = norm(planElement(body)); // engine ignores the unknown `parts` field
+    const res = await request(app).post('/api/calculate').send(body);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(direct);
+    expect(res.body.parts).toBeUndefined();
   });
 });
 
