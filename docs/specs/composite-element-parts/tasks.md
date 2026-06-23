@@ -18,12 +18,12 @@ Co už je rozhodnuto (design session 2026-06-23): varianta **„b"** (části = 
 
 **Navíc rozhodnuto 2026-06-23:** fallback „části nejsou" = **(a)** „nedetailizováno" (rozklad jen na explicitní akci uživatele); **úložný práh = samostatná část** (často vlastní takt); šablona opěry finalizována (dřík + úložný práh + závěrná zídka + křídla).
 
-Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0 (po reconu) — **už jen 3** (Q2/Q4 rozhodnuty):
-1. Unese rollup tabulky pozic úroveň „část", nebo sahat do KPI-panelu? **+ sčítá rollup po listech (částech) NEBO po rodičích — jak zabránit dvojímu započtení rodič+části?** *(recon-answerable)*
-2. ~~Fallback~~ — **ROZHODNUTO: (a)** „nedetailizováno" default (Alexander 2026-06-23).
-3. Zdroj typových podílů (VP4/SO-250/Žihle — které hodnoty)? *(data — Alexander/kalibrace; placeholder neblokuje)*
-4. ~~Úložný práh~~ — **ROZHODNUTO: samostatná část** (často vlastní takt) (Alexander 2026-06-23).
-5. Sada částí opěry jako data — kde žije single-source (sdílí se s onтологií typů prvků)? *(recon-answerable)*
+**Gate 0 ratifikováno 2026-06-23** (recon `docs/audits/calculator_field_map/2026-06-23_composite-parts-recon.md` + AskUserQuestion) — všechny interview-body uzavřeny:
+1. ~~Rollup / dvojí započtení~~ → **rodič = čistý kontejner bez vlastních work-řádků, práce na listech**; flat-sum KPI sčítá listy, rodič 0 ⇒ double-count vyloučen, **BEZ KPI-surgery**. „Část" = grouping úroveň v tabulce (Gate 4).
+2. ~~Fallback~~ → **(a)** „nedetailizováno".
+3. ~~Zdroj podílů~~ → **odložit** (placeholder; kalibrace VP4/SO-250/Žihle = data-swap, neblokuje Gate 2–5).
+4. ~~Úložný práh~~ → **samostatná část** (často vlastní takt).
+5. ~~Single-source částí~~ → **aditivní blok v `element_rules` yaml + gen pipeline** (drift-guard), žádná parallel structure.
 
 ---
 
@@ -178,9 +178,9 @@ Fáze 1 (Gate 2+3) může jít na main před Fází 2 (Gate 4+5) — parita drž
 
 ## 9. Open task questions
 
-- [ ] Rollup tabulky + **dvojí započtení rodič+části** (Gate 0 resolves) — určuje, zda M1 migrace existuje.
+- [x] ~~Rollup / dvojí započtení~~ — **VYŘEŠENO: rodič-kontejner, práce na listech, BEZ KPI-surgery** (Gate 0). M1 migrace jen pokud perzistence pozic neunese parent-ref / střední grouping — detail Gate 4.
 - [x] ~~Fallback default~~ — **ROZHODNUTO: (a)** (Alexander 2026-06-23).
-- [ ] Zdroj typových podílů — Alexander/kalibrace (**placeholder do té doby, neblokuje**).
+- [x] ~~Zdroj typových podílů~~ — **odložit** (placeholder, neblokuje).
 
 ---
 

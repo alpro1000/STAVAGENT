@@ -130,8 +130,8 @@ Přípravář/rozpočtář potřebuje ocenit složený prvek (opěru) tak, jak j
 ## 6. Open questions
 
 - [x] **Fallback „části nejsou" — ROZHODNUTO: (a)** jedna položka + „nedetailizováno" jako default; rozklad podle podílů **jen na explicitní akci uživatele** (AC 3.9). *(Alexander, 2026-06-23.)*
-- [ ] **Odkud typové podíly** částí (která sada projektů, jaké hodnoty) — kalibrace z dat, ne z hlavy. *(Později — placeholder-podíly neblokují stavbu mechanismu.)*
-- [ ] **Unese stávající rollup tabulky pozic novou úroveň „část"** nad druhy práce, nebo to vyžaduje zásah do KPI-panelu? → **první bod Phase A recon, nehádat.**
+- [x] **Typové podíly — ROZHODNUTO: odložit** (placeholder-podíly; reálná kalibrace VP4/SO-250/Žihle = data-swap, neblokuje Gate 2–5). *(Alexander, 2026-06-23.)*
+- [x] **Rollup / dvojí započtení — VYŘEŠENO reconem + ratifikováno:** rodič = čistý kontejner bez vlastních work-řádků, práce na listech → flat-sum KPI sčítá listy, rodič 0 ⇒ double-count vyloučen, **BEZ zásahu do KPI-panelu**; „část" = grouping úroveň v tabulce (Gate 4). *(recon `2026-06-23_composite-parts-recon.md`.)*
 
 ---
 

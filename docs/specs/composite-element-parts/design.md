@@ -163,9 +163,9 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 
 ## 11. Open design questions
 
-- [ ] **Rollup tabulky pozic** — unese úroveň „část" nad druhy práce, nebo zásah do KPI-panelu? **+ ověřit, zda KPI-rollup sčítá po listech (částech) NEBO po rodičích, a jak zabránit dvojímu započtení rodič+části** při dvouúrovňové hierarchii. → **Phase A recon, první bod.**
-- [ ] **Single-source sady částí** — kde žije (vztah k ontologii typů prvků)? → Phase A recon.
-- [ ] **Zdroj typových podílů** — která data, jaké hodnoty (kalibrace VP4/SO-250/Žihle); **placeholder do té doby, neblokuje Gate 2–5.**
+- [x] ~~Rollup tabulky / dvojí započtení~~ — **VYŘEŠENO + ratifikováno:** rodič = čistý kontejner, práce na listech ⇒ flat-sum sčítá listy, rodič 0, double-count vyloučen, **BEZ KPI-surgery**; „část" = grouping v tabulce (Gate 4). (recon 2026-06-23)
+- [x] ~~Single-source sady částí~~ — **VYŘEŠENO + ratifikováno:** aditivní blok v `element_rules` yaml + gen pipeline (drift-guard), žádná parallel structure.
+- [x] ~~Zdroj typových podílů~~ — **ROZHODNUTO: odložit** (placeholder; kalibrace = data-swap, neblokuje Gate 2–5).
 - [x] ~~Fallback „části nejsou"~~ — **ROZHODNUTO: (a)** „nedetailizováno" default (Alexander 2026-06-23).
 - [x] ~~Úložný práh samostatná část?~~ — **ROZHODNUTO: samostatná část** (často vlastní takt) (Alexander 2026-06-23).
 
