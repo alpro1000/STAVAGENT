@@ -100,11 +100,15 @@ Přípravář/rozpočtář potřebuje ocenit složený prvek (opěru) tak, jak j
 > **When** se počítá jednoduchý (nesložený) prvek **then** systém **shall** vrátit stejný výsledek jako dnes.
 > **Důkaz:** goldeny (KV, Žalmanov, normy) drží; one-element parita s agregátorem.
 
+### 3.11 — Žádný tichý polo-stav v produkci
+> **If** je hotová jen MCP-Fáze 1 (frontend-Fáze 2 ne) **then** systém **shall** ponechat složený vstup **za feature-flagem mimo produkční výstup** — žádný tichý polo-stav.
+> **Důkaz:** s vypnutým flagem se složený vstup neobjeví v prod-výdeji; zapíná se až s hotovou Fází 2.
+
 ---
 
 ## 4. Doménová pravidla
 
-- **Opěra** (česká směta) = jedna položka; fyzicky = **dřík + úložný práh + závěrná zídka + křídla**. **Základ NENÍ součást** — je to samostatná sousední položka (vlastní typy základů); platí napříč zeměmi.
+- **Opěra** (česká směta) = jedna položka; fyzicky = **dřík + úložný práh + závěrná zídka + křídla** (šablona finalizována 2026-06-23). **Úložný práh = samostatná část** (často vlastní takt), ne součást dříku. **Základ NENÍ součást** — je to samostatná sousední položka (vlastní typy základů); platí napříč zeměmi.
 - **Confidence ladder** (`domain.md`): ruční/přesné > data-s-podílem > odhad. **Přesné vždy bije odhad.**
 - **ODHAD viditelný, nikdy se netváří jako fakt** — stejná třída disciplíny jako badge odvozené plochy bednění / počtu z TZ / a jako DWG/Monte-Carlo poctivost. **Provenance** na každém rozdělení objemu (ruční vs odhad z typového podílu).
 - **Typové podíly částí = DATA se zdrojem** (kalibrace z reálných projektů se známým rozkladem: VP4, SO-250, Žihle). Málo dat → **raději méně částí s poctivými podíly** než více částí s vymyšlenými procenty.
@@ -125,8 +129,8 @@ Přípravář/rozpočtář potřebuje ocenit složený prvek (opěru) tak, jak j
 
 ## 6. Open questions
 
-- [ ] **Fallback „části nejsou"** — default varianta **(a)** jedna položka + „nedetailizováno", nebo **(b)** rozklad podle výchozích podílů s ODHAD? *(Rozhoduje Alexander; doporučení = (a) nepředstírat.)*
-- [ ] **Odkud typové podíly** částí (která sada projektů, jaké hodnoty) — kalibrace z dat, ne z hlavy.
+- [x] **Fallback „části nejsou" — ROZHODNUTO: (a)** jedna položka + „nedetailizováno" jako default; rozklad podle podílů **jen na explicitní akci uživatele** (AC 3.9). *(Alexander, 2026-06-23.)*
+- [ ] **Odkud typové podíly** částí (která sada projektů, jaké hodnoty) — kalibrace z dat, ne z hlavy. *(Později — placeholder-podíly neblokují stavbu mechanismu.)*
 - [ ] **Unese stávající rollup tabulky pozic novou úroveň „část"** nad druhy práce, nebo to vyžaduje zásah do KPI-panelu? → **první bod Phase A recon, nehádat.**
 
 ---

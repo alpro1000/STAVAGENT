@@ -16,11 +16,13 @@
 
 Co už je rozhodnuto (design session 2026-06-23): varianta **„b"** (části = řádky pod rodičem v tabulce pozic); ODHAD ochrany (data-podíly + badge + provenance + přesné bije odhad + uzavření na 100 %); základ = samostatná položka; inkrementální rollout (MCP-po-částech před frontend-seznamem).
 
-Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0, podložené reconem:
-1. Unese rollup tabulky pozic úroveň „část", nebo sahat do KPI-panelu? *(recon-answerable)*
-2. Fallback „části nejsou": default (a) „nedetailizováno" vs (b) rozklad z podílů? *(product — Alexander)*
-3. Zdroj typových podílů (VP4/SO-250/Žihle — které hodnoty)? *(data — Alexander/kalibrace)*
-4. „Úložný práh" = samostatná část, nebo splývá s dříkem? *(domain — Alexander)*
+**Navíc rozhodnuto 2026-06-23:** fallback „části nejsou" = **(a)** „nedetailizováno" (rozklad jen na explicitní akci uživatele); **úložný práh = samostatná část** (často vlastní takt); šablona opěry finalizována (dřík + úložný práh + závěrná zídka + křídla).
+
+Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0 (po reconu) — **už jen 3** (Q2/Q4 rozhodnuty):
+1. Unese rollup tabulky pozic úroveň „část", nebo sahat do KPI-panelu? **+ sčítá rollup po listech (částech) NEBO po rodičích — jak zabránit dvojímu započtení rodič+části?** *(recon-answerable)*
+2. ~~Fallback~~ — **ROZHODNUTO: (a)** „nedetailizováno" default (Alexander 2026-06-23).
+3. Zdroj typových podílů (VP4/SO-250/Žihle — které hodnoty)? *(data — Alexander/kalibrace; placeholder neblokuje)*
+4. ~~Úložný práh~~ — **ROZHODNUTO: samostatná část** (často vlastní takt) (Alexander 2026-06-23).
 5. Sada částí opěry jako data — kde žije single-source (sdílí se s onтологií typů prvků)? *(recon-answerable)*
 
 ---
@@ -34,7 +36,7 @@ Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0, podložené 
 - **Cíl:** ověřit současný stav PŘED kódem; zodpovědět open questions fakty `file:line`.
 - **Acceptance criteria covered:** podklad pro všechny (zejména 3.2 rollup, 3.4 sdílená cesta).
 - **Effort:** S–M
-- **Oblasti:** jak tabulka pozic dnes **seskupuje a sčítá** (druhy práce) a zda unese úroveň „část" nad nimi + dopad na KPI-panel; kde by žil **single-source sady částí** (vztah k ontologii typů prvků); stav **odpojeného příznaku křídla** + tří mechanismů množnosti ve frontendu; potvrdit, že **MCP deleguje výpočet na tutéž sdílenou cestu**, kterou používá frontend; re-verify `2026-06-13_recon.md` (mohlo zastarat po Šazích 1–3).
+- **Oblasti:** jak tabulka pozic dnes **seskupuje a sčítá** (druhy práce) a zda unese úroveň „část" nad nimi + dopad na KPI-panel; **+ zda rollup sčítá po listech/rodičích a jak zabránit dvojímu započtení rodič+části**; kde by žil **single-source sady částí** (vztah k ontologii typů prvků); stav **odpojeného příznaku křídla** + tří mechanismů množnosti ve frontendu; potvrdit, že **MCP deleguje výpočet na tutéž sdílenou cestu**, kterou používá frontend; re-verify `2026-06-13_recon.md` (mohlo zastarat po Šazích 1–3).
 - **Output:** recon report (`file:line`) + odpovědi na interview §0.
 - **Commit:** `AUDIT: composite-element-parts — Phase A recon`
 - **STOP** — čekat na ratifikaci Alexandra. Kód se nezačíná.
@@ -48,8 +50,9 @@ Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0, podložené 
 
 ### 1.2 Gate 1: Design ratifikace (ADR, no code)
 
-- **Cíl:** zafixovat rozhodnutí z reconu (varianta „b", rollup-cesta, fallback default, zdroj podílů) jako ADR.
-- **Acceptance criteria covered:** rámec pro 3.1–3.10.
+- **Cíl:** zafixovat rozhodnutí z reconu (varianta „b", rollup-cesta, fallback (a), zdroj podílů) jako ADR.
+- **Scope:** Tento ADR je **scoped na composite-parts**; NEsouvisí s embedding-vidlice ADR (T6) — jsou nezávislé.
+- **Acceptance criteria covered:** rámec pro 3.1–3.11.
 - **Effort:** S
 - **Commit:** `DESIGN: composite-element-parts — ADR-NNN`
 
@@ -61,6 +64,7 @@ Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0, podložené 
 
 - **Cíl:** sdílená výpočetní cesta umí **seznam částí** → rozklad (přesné/odhad/smíšený, uzavření na 100 %, ODHAD + provenance) → výpočet po částech (reuse) → agregace (reuse) → rodičovský výstup. Jednoprvkový vstup **beze změny chování**.
 - **Acceptance criteria covered:** 3.1, 3.5, 3.6, 3.7, 3.8, 3.10.
+- **Pozn.:** rozklad se staví s **placeholder-podíly**; reálná kalibrace (VP4/SO-250/Žihle) je **data-swap, NEblokuje** Gate 2–5.
 - **Effort:** M–L
 - **Tests:** unit rozkladu (4 případy) + one-element parita.
 - **Commit:** `FEAT: composite-element-parts — shared composite decomposition`
@@ -111,7 +115,7 @@ Co se **musí potvrdit** (přes `AskUserQuestion`) na konci Gate 0, podložené 
 Gate 0 (recon, STOP) → Gate 1 (ADR) → Gate 2 (shared) → Gate 3 (MCP)        [Fáze 1]
                                                    ↘ Gate 4 → Gate 5         [Fáze 2, frontend]
 ```
-Fáze 1 (Gate 2+3) může jít na main před Fází 2 (Gate 4+5) — parita drží (frontend zatím jednoprvkový).
+Fáze 1 (Gate 2+3) může jít na main před Fází 2 (Gate 4+5) — parita drží (frontend zatím jednoprvkový). **ALE složený vstup je za feature-flagem a NEjde do prod-výdeje, dokud Fáze 2 není hotová** — žádný tichý polo-stav (AC 3.11).
 
 ---
 
@@ -174,9 +178,9 @@ Fáze 1 (Gate 2+3) může jít na main před Fází 2 (Gate 4+5) — parita drž
 
 ## 9. Open task questions
 
-- [ ] Rollup tabulky (Gate 0 resolves) — určuje, zda M1 migrace existuje.
-- [ ] Fallback default (a)/(b) — Alexander.
-- [ ] Zdroj typových podílů — Alexander/kalibrace.
+- [ ] Rollup tabulky + **dvojí započtení rodič+části** (Gate 0 resolves) — určuje, zda M1 migrace existuje.
+- [x] ~~Fallback default~~ — **ROZHODNUTO: (a)** (Alexander 2026-06-23).
+- [ ] Zdroj typových podílů — Alexander/kalibrace (**placeholder do té doby, neblokuje**).
 
 ---
 

@@ -95,7 +95,8 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 - **Volba:** rozdělit objem podle podílů pocházejících z reálných projektů; ODHAD badge; provenance; **přesné bije odhad**; smíšený součet se uzavírá na 100 %.
 - **Alternativy:** ptát se uživatele na rozdělení pokaždé; nebo skrytě hádat 4 části.
 - **Důvod:** poctivý default + ochrana proti tichému vranju ve smětě (stejná třída jako DWG/Monte-Carlo/katalog-čísla).
-- **Trade-off:** vyžaduje **kalibraci podílů z dat předem**; bez dat raději méně částí.
+- **Trade-off:** vyžaduje **kalibraci podílů z dat**; bez dat raději méně částí.
+- **Pozn.:** mechanismus rozkladu se staví s **placeholder-podíly**; reálná kalibrace (VP4/SO-250/Žihle) je **data-swap — NEblokuje** Gate 2–5.
 
 ### 5.3 Jedna výpočetní cesta pro MCP i frontend
 - **Volba:** složený výpočet žije ve sdílené vrstvě za společnou cestou; obě plochy posílají části tamtéž.
@@ -152,6 +153,7 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 ## 10. Rollout plan
 
 - [ ] Feature flag pro dvouúrovňový vstup (umožní vypnout, rollback bez revertu).
+- [ ] **Invariant: žádný tichý polo-stav** — MCP-Fáze 1 jde za feature-flagem; **složený vstup se NEdostane do prod-výdeje, dokud frontend-Fáze 2 není hotová** (AC 3.11).
 - [ ] Fáze 1: sdílená vrstva + MCP-po-částech (frontend beze změny).
 - [ ] Fáze 2: dvouúrovňový seznam ve frontendu + odchod příznaku křídla + sjednocení množnosti.
 - [ ] **Živá kontrola na kalkulator.stavagent.cz po deploy** — netvrdit hotové bez prohlídky na webu (kánon).
@@ -161,10 +163,11 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 
 ## 11. Open design questions
 
-- [ ] **Rollup tabulky pozic** — unese úroveň „část" nad druhy práce, nebo zásah do KPI-panelu? → **Phase A recon, první bod.**
-- [ ] **Fallback „části nejsou"** — default (a) „nedetailizováno" vs (b) rozklad z výchozích podílů.
-- [ ] **Zdroj typových podílů** — která data, jaké hodnoty (kalibrace VP4/SO-250/Žihle).
-- [ ] Sdílí se „úložný práh" jako samostatná část, nebo splývá s dříkem? (per reálná směta — recon/Alexander).
+- [ ] **Rollup tabulky pozic** — unese úroveň „část" nad druhy práce, nebo zásah do KPI-panelu? **+ ověřit, zda KPI-rollup sčítá po listech (částech) NEBO po rodičích, a jak zabránit dvojímu započtení rodič+části** při dvouúrovňové hierarchii. → **Phase A recon, první bod.**
+- [ ] **Single-source sady částí** — kde žije (vztah k ontologii typů prvků)? → Phase A recon.
+- [ ] **Zdroj typových podílů** — která data, jaké hodnoty (kalibrace VP4/SO-250/Žihle); **placeholder do té doby, neblokuje Gate 2–5.**
+- [x] ~~Fallback „části nejsou"~~ — **ROZHODNUTO: (a)** „nedetailizováno" default (Alexander 2026-06-23).
+- [x] ~~Úložný práh samostatná část?~~ — **ROZHODNUTO: samostatná část** (často vlastní takt) (Alexander 2026-06-23).
 
 ---
 
