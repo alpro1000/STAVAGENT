@@ -110,6 +110,16 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 - **Důvod:** **odrizikování „velkého gateu"**; parita drží na každém kroku.
 - **Trade-off:** frontend dočasně jednoprvkový.
 
+### 5.5 Rodič = čistý kontejner (práce na listech), NE KPI-surgery — **NOSNÉ rozhodnutí**
+
+- **Volba:** složená opěra je v tabulce **čistý rodič-kontejner bez vlastních work-řádků**; veškerá práce (betonáž/bednění/výztuž/…) žije na **listech (částech)**. Rodičovský součet = Σ listů (display roll-up).
+- **Alternativy:** rodič drží vlastní work-řádky + naučit flat-rollup přeskakovat rodiče-s-dětmi.
+- **Důvod:** KPI/rollup (`summarizeScheduleProjections`/`calculateHeaderKPI`; `planProject`) sčítá **ploše přes listové řádky** (beton jen z `subtype='beton'`, peníze ze všech, dny z projekcí). Když rodič nemá vlastní work-řádky a přispívá **0**, **double-count je vyloučen konstrukcí a KPI-panel se nemusí měnit**. Totéž nese **export-svinutí** (rodič = jedna smětní položka = Σ listů). Na tomto rozhodnutí závisí **rollup i export** — proto je nosné, ne implementační detail.
+- **Trade-off:** „část" je nová grouping úroveň v tabulce (Gate 4) mezi `part_name` a `subtype`; dnešní jedno-opěra (jeden `part_name` s work-řádky) se převede na rodič+části (work-řádky se přesunou na části, rodič ztrácí vlastní beton-řádek).
+- **Ratifikováno:** Alexander 2026-06-23 (Gate 0, recon `2026-06-23_composite-parts-recon.md`).
+
+> **Gate 1 = design-of-record:** sekce §5 (Decisions) + §11 (resolved) + recon-dok JSOU ratifikovaný design. Samostatný `ADR-NNN` se **NEzakládá** (duplikát = parallel structure, kánon proti). Gate 1 je tím uzavřen uvnitř `design.md`, bez separátního kroku.
+
 ---
 
 ## 6. Failure modes
