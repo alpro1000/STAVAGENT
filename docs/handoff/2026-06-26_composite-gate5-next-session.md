@@ -52,21 +52,35 @@ Stav FE-větve: **1349 shared testů ✓**, `vite build ✓`. **Prod INERTNÍ** 
 
 **Vstup-UX (ratifikováno „po doporučení", design.md Gate 5 input-note):** **ruční seznam částí** = rec. (a). Uživatel přidá/odebere části (dřík + úložný práh + závěrná zídka + křídla = šablona opěry), každá má vlastní rozměry/bednění/takty/beton. NE auto-extrakce (out of scope).
 
-**Řetěz dat (jeden směr):**
+**Řetěz dat (jeden směr) — POZOR: frontend počítá IN-PROCESS, NE přes HTTP:**
 ```
 kalkulátor composite-vstup (ruční seznam částí)
-   → engine planComposite(parts[])         [za flagem ENABLE_COMPOSITE_PARTS]
-   → applyPlanToPositions zapíše metadata.structural_part na každý leaf-řádek
-   → PositionsTable (Gate 4) už to renderuje jako sub-úroveň  ✓ hotovo
+   → planComposite(compositeInput)   [IN-PROCESS import z @stavagent/monolit-shared — NE POST /api/calculate]
+   → applyPlanToPositions píše metadata.structural_part na řádky každé části (smyčka přes parts)
+   → groupByStructuralPart → PositionsTable (Gate 4) renderuje sub-úroveň  ✓ hotovo
 ```
 
-**Konkrétní práce:**
-1. **Kalkulátor UI** (`Monolit-Planner/frontend/src/components/calculator/`) — composite-vstup: seznam částí (přidat/odebrat), reuse stávajícího formuláře pro jednu část. ODHAD badge viditelný na odhadnutých částech (AC 3.5/3.8).
-2. **Engine call** — composite-vstup posílá `parts[]` na `/api/calculate` (composite-větev už existuje za flagem `ENABLE_COMPOSITE_PARTS`, Gate 3a). Ověř, že flag-OFF = jednoprvkové chování beze změny.
-3. **`applyPlanToPositions.ts`** — píše `metadata.structural_part` na leaf-řádky (precedent: registry `classificationCodec` reused `sync_metadata`; tady additivní JSON-klíč, **bez migrace** — viz `design.md §5.6`).
-4. **Odchod berliček** — `include_kridla` flag + tři mechanismy množnosti pryč, **bez tiché ztráty dat** (AC). Composite detection recon: `docs/audits/.../2026-06-23_composite-parts-recon.md`.
+> **Klíčový recon-nález (2026-06-26, agent-ověřeno file:line):** frontend NEvolá `/api/calculate`. `runCalculation()` (`useCalculator.ts:963–981`) volá `planElement(input)` **synchronně in-process** (import z `@stavagent/monolit-shared`). Backend composite-větev (`engine.js:82–94`, za `ENABLE_COMPOSITE_PARTS`) slouží **jen MCP**. ⇒ Gate 5 přidá **in-process `planComposite` větev**, NE HTTP body-threading. (Toto opravuje dřívější verzi tohoto §, která chybně psala „posílá parts[] na /api/calculate".)
 
-**Tests (tasks.md §1.6 DoD):** část má vlastní bednění/takty/beton; přidání/odebrání části = složení opěry; **živá kontrola na kalkulator.stavagent.cz po deploy**.
+**Konkrétní práce (file:line ověřeno 2026-06-26):**
+
+1. **Kalkulátor composite-vstup** (`Monolit-Planner/frontend/src/components/calculator/`) — seznam částí `parts: PartFormState[]` (nový state v `useCalculator`) + tlačítko „Přidat díl" + odebrání. Šablona opěry (4 části): **dřík** (`driky_piliru`) · **úložný práh** (`opery_ulozne_prahy`) · **závěrná zídka** (`mostni_zavirne_zidky`) · **křídla** (`kridla_opery`) = klíče `PLACEHOLDER_PART_VOLUME_RATIOS`. Reuse: `FormState` + `update(key,value)`; UI-primitivy `Section/Field/Card/KPICard/NumInput/CollapsibleSection` (`ui.tsx`); `getSmartDefaults(element_type)` (`useCalculator.ts:244–265`) doplní prázdná pole části. ⚠️ Reuse *render* seznamu variant (`CalculatorResult.tsx:220–318`) jako UX-vzor, **NE *mechanismus* variant** (varianty = alternativní scénáře; části = současné komponenty — jiná sémantika).
+
+2. **Engine — in-process `planComposite`** (NE HTTP): v `runCalculation` (`useCalculator.ts:963–981`) přidat větev — je-li composite-režim (existuje seznam částí) → `planComposite(compositeInput)` (import z shared), jinak `planElement` jako dnes. Kontrakt (`shared/src/calculators/composite-planner.ts`): vstup `CompositeInput { parent: PlannerInput, parts?: CompositePartInput[], parent_label? }`; `CompositePartInput = Omit<PlannerInput,'volume_m3'> & { volume_m3?, part_label?, volume_ratio? }`; výstup `CompositeOutput { parts: CompositePartResult[], aggregate, is_detailed, volume_closed, warnings, total_volume_m3 }`. `CompositePartResult.volume_source ∈ {'exact','odhad_family_ratio'}` = **driver ODHAD-badge**. Uzavření na 100 % (AC 3.7) + `warnings` = engine **už řeší** (Gate 2). Frontend-flag = samotná existence nového UI (atomicky ve Fázi 2); env-flag frontendu netřeba (AC 3.11 splněn tím, že Fáze 1 frontend netkla).
+
+3. **`applyPlanToPositions` píše `metadata.structural_part`** — `applyPlanToPositions(ctx: ApplyContext)` (`applyPlanToPositions.ts:427`; `ApplyContext` `40–68`). `meta` objekt se staví na **`496–505`**, stringify na **`524` (POST) / `535` (PUT)**. Rozšířit `ApplyContext` o `structural_part?: string`; před stringify: `if (ctx.structural_part) meta.structural_part = ctx.structural_part` (aditivní klíč, bez migrace — `design.md §5.6`). Pro composite: **smyčka přes `CompositeOutput.parts`**, jeden `applyPlanToPositions` na část s `plan: part.plan` (`CompositePartResult extends ProjectElementResult` nese `.plan`) + `structural_part: part.part_label`. Pak Gate-4 `groupByStructuralPart` (`shared/src/positions/position-part-grouping.ts`, čte `row.metadata`→`structural_part`) renderuje sub-úroveň **automaticky** (`PositionsTable.tsx`, `19ebeed`) — tím se cesta uzavírá. Rodič = čistý kontejner (work-řádky jen na částech, rodič 0 ⇒ žádné dvojí započtení).
+
+4. **Odchod berliček (bez tiché ztráty dat):**
+   - `include_kridla`/`kridla_height_m` (display-only, do enginu NEjdou): decl `types.ts:185–186`, default `414–415`; checkbox+input `CalculatorSidebar.tsx:554–584`; auto-set `useCalculator.ts:176`+`196–201`; memo `kridlaFormwork` `268–274`; prop+render `CalculatorResult.tsx:~85`. Smazat vše → křídla = řádek části „křídla".
+   - Tři mechanismy množnosti (`2026-06-13_recon.md §2c+§3.3`): `num_identical_elements` (`buildInput` `useCalculator.ts:1189–1190`) ⊥ `num_dilatation_sections` (`1097/1107`, mutex-delete `1170`) ⊥ `manual_zabery` (sloučení do count+max `1161–1167`, ztrácí indiv. objemy) → sjednotit do seznamu částí.
+   - **Riziko:** legacy tact-pole „aktivně matou" (advisor čte `~912–916`, WizardHints píše `CalculatorSidebar.tsx:930`, `buildInput` ignoruje) — odstranit čistě, nerozbít advisor/wizard.
+   - 🚧 **SCOPE GUARD:** `price_crane_czk_shift`/`price_pump_czk_h` = **samostatný ticket** (root CLAUDE.md P1 „price_crane/pump → TOV-rozpad"), **NE Gate 5**. Nedotýkat. Nosná cenová pole (3 režimy, `Monolit-Planner/CLAUDE.md §0`) nedotýkat.
+
+**ODHAD-badge (AC 3.8):** reuse `SuggestionBadge` / oranžový `KPICard` (`ui.tsx`); existující badge variant `CalculatorResult.tsx:258–290`. Driver: `part.volume_source === 'odhad_family_ratio'`.
+
+**Otevřené rozhodnutí (ratifikovat na Gate-5 interview, NE teď):** **váha formuláře části.** (a) **KOMPAKTNÍ [doporučeno]** — část = typ + objem NEBO L×W×H + (volit.) override bednění; zbytek z `getSmartDefaults`. Sedí na ±10–15 % filozofii + Karpathy („50 řádků místo 200"). (b) PLNÁ — každá část reuse celý `CalculatorFormFields` (všechny vrstvy). Přesnější, ale těžké UI (N× formulář) + těžká stavba. Rozhodne příští session na svém gate-interview (SDD vzor: každý gate má své interview).
+
+**Tests (tasks.md §1.6 DoD):** část má vlastní bednění/takty/beton (AC 3.1); přidání/odebrání části = složení opěry; ODHAD-badge na odhad-částech (AC 3.8); Σ částí = celkový objem (AC 3.7, engine garantuje); export = jeden řádek (AC 3.3); `tsc`+`vite build` čisté; `cross-user-isolation-reviewer` na zápis pozic (design §7); **živá kontrola na kalkulator.stavagent.cz po deploy**.
 
 ---
 
@@ -75,8 +89,8 @@ kalkulátor composite-vstup (ruční seznam částí)
 - **Rodič = čistý kontejner**, work-řádky jen na listech → flat-sum KPI sčítá listy, rodič 0 ⇒ **double-count vyloučen BEZ KPI-surgery** (Gate 0).
 - **Completeness ladder:** přesné části se nechají; odhad rozdělí zbytek podle placeholder-podílů; poslední odhad pohltí zaokrouhlovací zbytek → **Σ == celkový objem přesně**; přesné bije odhad.
 - **`PLACEHOLDER_PART_VOLUME_RATIOS` NEkalibrované** (driky_piliru 0.45 / práh 0.10 / závěrná zídka 0.10 / křídla 0.35) — data-swap follow-up (VP4/SO-250/Žihle), neblokuje Gate 5.
-- **Feature-flag `ENABLE_COMPOSITE_PARTS` (backend env, OFF v prod)** — composite-cesta spí v prod, dokud Fáze 2 nehotová → **žádný tichý polo-stav** (AC 3.11). Jeden PR pro celou Fázi 2.
-- **Jedna výpočetní cesta:** `/api/calculate` na **Monolit-Planner** backendu (Cloud Run `monolit-planner-api-…europe-west3`), NE concrete-agent. MCP (concrete-agent) deleguje přes `MONOLIT_API_URL`.
+- **Feature-flag `ENABLE_COMPOSITE_PARTS` (backend env, OFF v prod) = MCP/backend cesta** — frontend ji NEpoužívá (počítá in-process). Frontend composite-režim je gate-nut **samotnou existencí nového UI** (atomicky ve Fázi 2 = jeden PR). Obě dohromady → **žádný tichý polo-stav** (AC 3.11).
+- **Výpočetní cesty:** frontend počítá **in-process** přes shared (`planElement` / nově `planComposite`), **NE přes HTTP**. MCP (concrete-agent) deleguje na `/api/calculate` (Monolit Cloud Run `monolit-planner-api-…europe-west3`) přes `MONOLIT_API_URL`. Obě sdílí **tutéž shared logiku** → parita konstrukcí.
 - **Goldeny drží bez re-snapshotu** (KV/Žalmanov/normy). Jednoprvkový vstup = beze změny chování.
 
 ---
