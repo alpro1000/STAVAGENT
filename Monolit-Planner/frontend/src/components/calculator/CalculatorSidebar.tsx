@@ -550,38 +550,10 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               </div>
           </div>
 
-          {/* ─── Opěry: composite křídla toggle ─── */}
-          {form.element_type === 'opery_ulozne_prahy' && (
-            <div style={{
-              maxHeight: 120, opacity: 1,
-              transition: 'max-height 0.3s ease, opacity 0.2s ease',
-              marginBottom: 12,
-            }}>
-              <Field label="Součástí jsou křídla">
-                <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={form.include_kridla}
-                    onChange={e => update('include_kridla', e.target.checked)}
-                  />
-                  <span style={{ fontSize: 12 }}>Zahrnout křídla opěr (samostatná sada bednění)</span>
-                </label>
-              </Field>
-              {form.include_kridla && (
-                <Field label="Výška křídel (m)">
-                  <input
-                    style={inputStyle}
-                    type="number"
-                    step="0.1"
-                    min="0.5"
-                    placeholder="Typicky 1.8–6.0 m"
-                    value={form.kridla_height_m}
-                    onChange={e => update('kridla_height_m', e.target.value)}
-                  />
-                </Field>
-              )}
-            </div>
-          )}
+          {/* Composite opěra parts (dřík + práh + zídka + křídla) live in the
+              CompositePartsPanel in the result column (Fáze 2 #7 Gate 5) —
+              the display-only "křídla" toggle was removed in favour of the
+              manual parts list. */}
 
           {/* ─── Římsa: length-based pour hint ─── */}
           {form.element_type === 'rimsa' && (

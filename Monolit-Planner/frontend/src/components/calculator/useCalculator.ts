@@ -12,11 +12,13 @@ import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   planElement,
+  planComposite,
   buildScheduleProjection,
   type PlannerInput,
   type PlannerOutput,
+  type CompositeOutput,
 } from '@stavagent/monolit-shared';
-import { getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
+import { getSuitableSystemsForElement, classifyElement } from '@stavagent/monolit-shared';
 import { extractConstructionTechnology } from '@stavagent/monolit-shared';
 import { estimateElementVolume } from '@stavagent/monolit-shared';
 import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure, getMostRestrictive } from '@stavagent/monolit-shared';
@@ -25,10 +27,11 @@ import type { StructuralElementType } from '@stavagent/monolit-shared';
 import type { ConcreteClass } from '@stavagent/monolit-shared';
 import { loadFromLS, LS_FORM_KEY, LS_SCENARIOS_KEY, LS_SCENARIO_SEQ_KEY, getSmartDefaults } from './helpers';
 import { loadTzBlob, saveTzText, appendTzHistory, clearTzBlob, type TzHistoryEntry } from './tzStorage';
-import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState, ScenarioSnapshot, SavedVariant } from './types';
+import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState, ScenarioSnapshot, SavedVariant, PartFormState } from './types';
 import { DEFAULT_FORM } from './types';
 import { plannerVariantsAPI } from '../../services/api';
-import { applyPlanToPositions } from './applyPlanToPositions';
+import { applyPlanToPositions, applyCompositeToPositions } from './applyPlanToPositions';
+import { buildPartInput, makePart, makeAbutmentTemplate } from './compositeParts';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
@@ -173,7 +176,6 @@ export default function useCalculator() {
       if (classified.is_prestressed_detected === true) f.is_prestressed = true;
       if (classified.concrete_class_detected) f.concrete_class = classified.concrete_class_detected as any;
       if (classified.bridge_deck_subtype_detected) f.bridge_deck_subtype = classified.bridge_deck_subtype_detected;
-      if (classified.has_kridla_detected) f.include_kridla = true;
     }
 
     if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
@@ -191,14 +193,6 @@ export default function useCalculator() {
       else if (/DESK/.test(pn)) f.bridge_deck_subtype = 'deskovy';
       // Auto-detect is_prestressed from part_name
       if (/PŘEDPJ|PŘEDPĚT|PŘEPJ|PREDPJ/.test(pn)) f.is_prestressed = true;
-    }
-
-    // Auto-detect composite opěry+křídla from part_name
-    if (positionContext.part_name) {
-      const pnUpper = positionContext.part_name.toUpperCase();
-      const hasOpery = /OPĚR|OPER/.test(pnUpper);
-      const hasKridla = /KŘÍDL|KRIDL|KŘÍDEL/.test(pnUpper);
-      if (hasOpery && hasKridla) f.include_kridla = true;
     }
 
     // Clear start_date in Monolit mode (ordinal days only)
@@ -233,6 +227,25 @@ export default function useCalculator() {
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // ── Composite parts (Fáze 2 #7 Gate 5) ──────────────────────────────────
+  // A composite element (opěra) is the parent (form = total volume + identity);
+  // `parts` is the manual list of its structural parts (dřík / práh / zídka /
+  // křídla). compositeActive = parts.length > 0 — the existence of the list IS
+  // the frontend gate (AC 3.11). Empty list = today's single-element behaviour.
+  const [parts, setParts] = useState<PartFormState[]>([]);
+  const compositeActive = parts.length > 0;
+  const addPart = useCallback((et: StructuralElementType, label?: string) => {
+    setParts(prev => [...prev, makePart(et, label || '')]);
+  }, []);
+  const removePart = useCallback((id: string) => {
+    setParts(prev => prev.filter(p => p.id !== id));
+  }, []);
+  const updatePart = useCallback((id: string, patch: Partial<PartFormState>) => {
+    setParts(prev => prev.map(p => (p.id === id ? { ...p, ...patch } : p)));
+  }, []);
+  const seedAbutmentParts = useCallback(() => { setParts(makeAbutmentTemplate()); }, []);
+  const clearParts = useCallback(() => { setParts([]); }, []);
+
   // BUG #11 fix (2026-05-14, audit Top-10 #8): wire getSmartDefaults() into
   // form state. The helper was imported and exported but no useEffect was
   // applying it on element_type change — so the curing class, exposure
@@ -263,15 +276,6 @@ export default function useCalculator() {
       is_prestressed: prev.is_prestressed || d.is_prestressed,
     }));
   }, [form.element_type]);
-
-  // Křídla: compute separate formwork recommendation when composite enabled
-  const kridlaFormwork = useMemo(() => {
-    if (!result || !form.include_kridla || !form.kridla_height_m) return null;
-    const kH = parseFloat(form.kridla_height_m);
-    if (!kH || kH <= 0) return null;
-    const fw = recommendFormwork('kridla_opery', kH);
-    return { system: fw, height_m: kH };
-  }, [result, form.include_kridla, form.kridla_height_m]);
 
   // D2 (2026-04-15): default Pokročilé OPEN in expert mode so the
   // Bednění (systém + výrobce + cena pronájmu) section is reachable
@@ -1299,6 +1303,29 @@ export default function useCalculator() {
     return input;
   };
 
+  // ── Composite plan (parent + parts) — IN-PROCESS via shared planComposite ──
+  // Mirrors runCalculation's planElement call, but for the composite path:
+  // the parent (current form) + the manual parts list go through the shared
+  // composite engine. NO HTTP — the frontend computes in-process (recon
+  // 2026-06-26). Recomputed reactively, like the single-element auto-calc.
+  const compositeResult = useMemo<CompositeOutput | null>(() => {
+    if (!compositeActive) return null;
+    if (!form.volume_m3 || form.volume_m3 <= 0) return null;
+    if (!form.element_type || form.element_type === 'other') return null;
+    try {
+      const parentInput = buildInput();
+      const partInputs = parts.map(p => buildPartInput(p, parentInput));
+      return planComposite({
+        parent: parentInput,
+        parts: partInputs,
+        parent_label: positionContext?.part_name || undefined,
+      });
+    } catch {
+      return null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [compositeActive, parts, form, tzText]);
+
   // tz_facts wire — prefill the "Technologie výstavby" radio from the TZ text
   // ONLY when it is still empty (UX convenience). If the user already chose a
   // technology by hand we leave it untouched, so a deliberate deviation from
@@ -1492,6 +1519,43 @@ export default function useCalculator() {
     };
   }, [positionContext, plan, form, setApplyStatus, queryClient, savedVariants]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Apply COMPOSITE to position — loops the parts into structural-part rows ──
+  const handleApplyComposite = useMemo(() => {
+    if (!positionContext) return undefined;
+    return async () => {
+      if (!compositeResult || !compositeResult.is_detailed) return;
+      setApplyStatus('saving');
+      try {
+        const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
+        if (positionContext.position_id && bridgeId) {
+          // Recompute the part inputs (same as compositeResult) so the apply
+          // path can read each part's resolved formwork area.
+          const parentInput = buildInput();
+          const partInputs = parts.map(p => buildPartInput(p, parentInput));
+          const res = await applyCompositeToPositions({
+            composite: compositeResult,
+            partInputs,
+            form,
+            positionContext,
+            bridgeId,
+            monolitDataMeta: { calculated_at: new Date().toISOString() },
+            apiUrl: API_URL,
+          });
+          if (!res.ok) throw new Error(res.error || 'Apply failed');
+        }
+        queryClient.invalidateQueries({ queryKey: ['positions'] });
+        queryClient.invalidateQueries({ queryKey: ['bridges'] });
+        queryClient.invalidateQueries({ queryKey: ['monolith-projects'] });
+        setApplyStatus('saved');
+        setTimeout(() => setApplyStatus('idle'), 3000);
+      } catch {
+        setApplyStatus('error');
+        setTimeout(() => setApplyStatus('idle'), 3000);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [positionContext, compositeResult, parts, form, queryClient]);
+
   return {
     // Position context
     positionContext,
@@ -1566,8 +1630,12 @@ export default function useCalculator() {
     // A2: gate — false until user has set both volume and a real element type
     canCalculate,
 
+    // Composite parts (Fáze 2 #7 Gate 5)
+    parts, compositeActive, compositeResult,
+    addPart, removePart, updatePart, seedAbutmentParts, clearParts,
+    handleApplyComposite,
+
     // Misc
-    kridlaFormwork,
     autoClassification: classificationHint,
     initialForm,
     update,

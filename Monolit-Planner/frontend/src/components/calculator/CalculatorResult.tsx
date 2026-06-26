@@ -82,7 +82,6 @@ export interface CalculatorResultProps {
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
   onSetAsPlan?: (id: string) => void;
-  kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
   calcStatus?: 'idle' | 'calculating';
   resultDirty?: boolean;
   /** Part C: Inline resource panel — requires form + update for editing */
@@ -92,7 +91,7 @@ export interface CalculatorResultProps {
 
 // ─── Component ─────────────────────────────────────────────────────────────
 
-export default function CalculatorResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, activeVariantId, activeVariantDirty, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty, form, updateForm }: CalculatorResultProps) {
+export default function CalculatorResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, activeVariantId, activeVariantDirty, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, calcStatus, resultDirty, form, updateForm }: CalculatorResultProps) {
   // A5 (2026-04-15): toggle for the side-by-side variant comparison view.
   const [compareVariants, setCompareVariants] = useState(false);
   const calendarInfo = useMemo(() => {
@@ -748,31 +747,6 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           </Card>
         );
       })()}
-
-      {/* Křídla formwork (composite opěry+křídla) */}
-      {kridlaFormwork && (
-        <Card title="Bednění křídel" icon="📦">
-          <div className="r0-grid-2">
-            <div>
-              <Row label="Systém" value={kridlaFormwork.system.name} bold />
-              <Row label="Výrobce" value={kridlaFormwork.system.manufacturer} />
-              <Row label="Výška křídel" value={`${kridlaFormwork.height_m} m`} />
-              <Row label="Pronájem" value={kridlaFormwork.system.rental_czk_m2_month > 0
-                ? `${formatNum(kridlaFormwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
-                : 'Bez pronájmu'} />
-            </div>
-            <div>
-              <Row label="Jeřáb" value={kridlaFormwork.system.needs_crane ? 'Nutný (panel > 150 kg)' : 'Nepotřebuje'} />
-              {kridlaFormwork.height_m > 1.2 && (
-                <Row label="Vzpěry" value="IB vzpěry nutné (h > 1.2 m)" />
-              )}
-              <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 8 }}>
-                Samostatná sada bednění — křídla se betonují jako oddělený záběr od dříku opěry.
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
 
       {/* Rebar */}
       <Card title="Výztuž" icon="🔩">
