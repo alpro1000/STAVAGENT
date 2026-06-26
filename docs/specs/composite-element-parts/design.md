@@ -120,6 +120,16 @@ Vstup (rodič + seznam částí: typ + [rozměry | nic]; + celkový objem)
 
 > **Gate 1 = design-of-record:** sekce §5 (Decisions) + §11 (resolved) + recon-dok JSOU ratifikovaný design. Samostatný `ADR-NNN` se **NEzakládá** (duplikát = parallel structure, kánon proti). Gate 1 je tím uzavřen uvnitř `design.md`, bez separátního kroku.
 
+### 5.6 Strukturní část = `metadata.structural_part` (Gate 4, BEZ migrace)
+
+- **Volba:** příslušnost řádku pozice ke strukturní části (dřík / úložný práh / závěrná zídka / křídla) se kóduje aditivním klíčem `structural_part` v existujícím flexibilním `Position.metadata` (JSON string). `part_name` zůstává = opěra (jedna smětní položka).
+- **Alternativy:** (a) nové DB pole + migrace; (b) konvence v `part_name` (stringly-typed).
+- **Důvod:** `metadata` už backend přijímá/vrací (`POST /api/positions`), `applyPlanToPositions` ho už zapisuje; aditivní klíč → **žádná migrace** (Gate 0: „M1 jen pokud perzistence neunese" → unese). Precedent: registry `classificationCodec` přebral `sync_metadata`. Export svine po `part_name` zdarma (opěra = jedna položka); KPI rollup beze změny (flat přes řádky); part-úroveň je jen **display** (shared `groupByStructuralPart`, helper `readStructuralPart` — malformed → null). Untagged řádky → flat jako dnes (back-compat).
+- **Trade-off:** méně first-class než sloupec; čte se přes JSON-parse.
+- **Ratifikováno:** Alexander 2026-06-26 (po Gate 4 reconu) — „pro čistotu a správnost".
+
+> **Gate 5 vstup (ratifikováno „po doporučení", revisit na Gate 5 pre-impl interview):** části se v kalkulátoru zadávají **ručním seznamem „přidat část"** (typ + opc. objem) — univerzální, bez nové data-závislosti, mirror principu „engine = generic aggregator". yaml-šablona opěry = pozdější convenience (pre-fill), NE blokuje Gate 5.
+
 ---
 
 ## 6. Failure modes
