@@ -369,7 +369,7 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 - `PLACEHOLDER_PART_VOLUME_RATIOS` NEkalibrované — data-swap follow-up (VP4/SO-250/Žihle); do té doby ODHAD-split hrubý.
 - Live MCP „flag ON" prohlídka potřebuje preview/local Monolit backend s flagem (prod flag OFF; `/api/calculate` = Monolit Cloud Run `monolit-planner-api-…`, NE concrete-agent; MCP `MONOLIT_API_URL` overridable).
 
-**Co dál:** **Fáze 2 (frontend, ROZPRACOVÁNO):** Gate 4 — tabulka pozic úroveň „část" nad druhy práce + rollup + export-svinutí; Gate 5 — kalkulátor vkládá části pod rodiče + odchod `include_kridla` flagu + tří mechanismů množnosti. Follow-up: pilíř jako 2. composite-typ; kalibrace podílů; auto-extrakce z výkresů.
+**Co dál:** **Fáze 2 (frontend) — Gate 4 HOTOVO** na FE-větvi `claude/composite-element-parts-fe-1dea1` (shared `groupByStructuralPart` `5ecd168` + UI `PositionsTable` part-sub-level `19ebeed` + `design.md §5.6` metadata-encoding `2c224a5`; **1349 shared testů ✓**, `vite build ✓`; **prod INERTNÍ** — `metadata.structural_part` zatím nikdo nepíše → vše renderuje flat = dnešek). **Gate 5 (nezačato, pokračuje na TÉŽE větvi — Fáze 2 = jeden PR, NEzakládat novou):** kalkulátor composite-vstup (**ruční seznam částí**, rec. (a)) → engine `parts[]` (za flagem `ENABLE_COMPOSITE_PARTS`) → `applyPlanToPositions` píše `metadata.structural_part` → odchod `include_kridla` + tří mechanismů množnosti. **Handoff:** `docs/handoff/2026-06-26_composite-gate5-next-session.md`. Follow-up: pilíř 2. composite-typ; kalibrace podílů; auto-extrakce.
 
 ## 2026-06-22 — Session: MCP task-queue T1–T5 + #1b + T4 Fix-4 diagnostics (Google-call prep ride-along)
 
