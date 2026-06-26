@@ -351,6 +351,26 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-26 — Session: Fáze 5 #7 — composite-element-parts Phase 1 (opěra z částí: shared + backend/MCP za flagem)
+
+**Topic:** Složený prvek (opěra = dřík + úložný práh + závěrná zídka + křídla = jedna smětní položka, ale výpočet po částech, každá svým bedněním/takty/betonem). SDD: recon → ratifikace gate-by-gate (AskUserQuestion) → implementace → user merge-gate. Spec `docs/specs/composite-element-parts/` + recon `docs/audits/calculator_field_map/2026-06-23_composite-parts-recon.md`.
+
+**Rozhodnuto (merged na main, PR #1412, merge-commit `e6761d1`):**
+- **Gate 0/1** — varianta „b": rodič = **čistý kontejner** (práce na listech, BEZ KPI-surgery → double-count vyloučen konstrukcí, flat-sum sčítá listy); parts single-source = `element_rules` yaml; volume-podíly odloženy (placeholder). Formální ADR ne — `design.md §5.5` = design-of-record (nosné rozhodnutí zapsáno s obhajobou).
+- **Gate 2** — `composite-planner.ts` `planComposite(parent + parts[])` (ČISTĚ ADITIVNÍ): přesné části kept; odhad-části dělí zbytek po placeholder-podílech (ODHAD `volume_source`), poslední pohltí reziduum → **Σ == total přesně** (AC 3.7); 0 částí → honest „nedetailizováno" (nikdy nevymýšlí části). `planElement`/`planProject`/`PlannerInput` netknuté → **1344 vitest** (1337 byte-identical, goldeny BEZ re-snapshot; +7 composite).
+- **Gate 3a** — backend `/api/calculate` přijme `parts[]` za flagem `ENABLE_COMPOSITE_PARTS` (OFF default) → `planComposite`; flag OFF / no parts = byte-identical single-element. **18/18 jest**.
+- **Gate 3b** — MCP `calculate_concrete_works` forwarduje `parts[]` VERBATIM do payloadu (forward-only, MCP nedekomponuje). Opc. param → tool-count beze změny (compat **29/29** v CI); nový golden `test_composite_parts_forward.py` přidán do allow-listu (push+PR+run). 2/2 hermetic lokálně.
+- CI #1412 **11/11 zelené** (incl. plný MCP-compat 29/29). Flag OFF → **prod beze změny**, dokud frontend (Fáze 2) neflipne — žádný tichý polo-stav.
+
+**Odmítnuto:**
+- Amazon Q bot „🛑 Logic Error" na `composite-planner.ts:177` (exact>total → estimate „silently" 0) — **chybný/false-positive**: warning fires (`překračuje`) + `volume_closed=false` (golden „exact parts exceed total"), a navržená editace `remainder>=0?remainder:0` = no-op vůči `Math.max(remainder,0)`. Reply na PR, kód netknut. (2. chybný Amazon Q po #1409 17904.)
+
+**Otevřené otázky / placeholder:**
+- `PLACEHOLDER_PART_VOLUME_RATIOS` NEkalibrované — data-swap follow-up (VP4/SO-250/Žihle); do té doby ODHAD-split hrubý.
+- Live MCP „flag ON" prohlídka potřebuje preview/local Monolit backend s flagem (prod flag OFF; `/api/calculate` = Monolit Cloud Run `monolit-planner-api-…`, NE concrete-agent; MCP `MONOLIT_API_URL` overridable).
+
+**Co dál:** **Fáze 2 (frontend, ROZPRACOVÁNO):** Gate 4 — tabulka pozic úroveň „část" nad druhy práce + rollup + export-svinutí; Gate 5 — kalkulátor vkládá části pod rodiče + odchod `include_kridla` flagu + tří mechanismů množnosti. Follow-up: pilíř jako 2. composite-typ; kalibrace podílů; auto-extrakce z výkresů.
+
 ## 2026-06-22 — Session: MCP task-queue T1–T5 + #1b + T4 Fix-4 diagnostics (Google-call prep ride-along)
 
 **Topic:** Disciplinovaná fronta MCP/Core úkolů (recon → gate → user-ratify → implement → independent venv test → review → merge). Příprava na call s Google inženýrem (Vertex AI → google-genai migrace) sloučena do `docs/handoff/GOOGLE_CALL_2026-06-19_FULL.md`. Merge-gate tiery zavedeny: features = user gate; triviální/docs = Claude self-merge ride-along.
