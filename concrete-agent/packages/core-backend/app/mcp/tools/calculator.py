@@ -203,6 +203,7 @@ def _build_planner_payload(
     tz_pour_stages: Optional[int] = None,
     tz_quote: Optional[str] = None,
     tz_anchor: Optional[str] = None,
+    parts: Optional[list] = None,
 ) -> dict:
     """Map MCP arguments → canonical engine PlannerInput.
 
@@ -304,6 +305,13 @@ def _build_planner_payload(
         if tz_pour_stages is not None:
             construction["pour_stages_count"] = int(tz_pour_stages)
         payload["tz_facts"] = {"construction": construction}
+    # ── Composite parts (Fáze 5 #7) — FORWARD-ONLY ───────────────────────────
+    # MCP does NOT decompose: when the caller supplies structural sub-parts, pass
+    # them through verbatim. The Monolit backend's planComposite (behind its
+    # ENABLE_COMPOSITE_PARTS flag) treats this element as a container and does the
+    # split + aggregation. No MCP-side logic.
+    if parts:
+        payload["parts"] = parts
     return payload
 
 
@@ -336,6 +344,7 @@ async def calculate_concrete_works(
     tz_pour_stages: Optional[int] = None,
     tz_quote: Optional[str] = None,
     tz_anchor: Optional[str] = None,
+    parts: Optional[list] = None,
 ) -> dict:
     """Calculate concrete works for a single RC structural element.
 
@@ -646,6 +655,7 @@ async def calculate_concrete_works(
             tz_pour_stages=tz_pour_stages,
             tz_quote=tz_quote,
             tz_anchor=tz_anchor,
+            parts=parts,
         )
 
         try:

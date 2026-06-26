@@ -15,7 +15,7 @@
  * (the engine functions are sync) and return the engine output verbatim.
  */
 import express from 'express';
-import { planElement, classifyElement } from '@stavagent/monolit-shared';
+import { planElement, classifyElement, planComposite } from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
@@ -70,6 +70,27 @@ router.post('/calculate', (req, res) => {
   }
   if (input.element_type != null && (typeof input.element_type !== 'string' || input.element_type.length > MAX_TYPE_LEN)) {
     return res.status(400).json({ error: `element_type must be a string up to ${MAX_TYPE_LEN} chars` });
+  }
+
+  // ── Composite-element path (Fáze 5 #7) — behind a feature flag ───────────────
+  // When ENABLE_COMPOSITE_PARTS is on AND the body carries a non-empty `parts`
+  // array, the parent is treated as a CONTAINER and the parts are computed +
+  // aggregated via the canonical engine (planComposite → planProject). The flag
+  // is OFF by default so the path never reaches prod output until the frontend
+  // (Gate 4/5) can render it — no silent half-state. With the flag off, or no
+  // parts, behaviour is byte-identical to the single-element path below.
+  if (
+    process.env.ENABLE_COMPOSITE_PARTS === 'true' &&
+    Array.isArray(input.parts) &&
+    input.parts.length > 0
+  ) {
+    try {
+      const { parts, parent_label, ...parent } = input;
+      return res.json(planComposite({ parent, parts, parent_label }));
+    } catch (err) {
+      console.error('[engine] /api/calculate (composite) failed:', err);
+      return res.status(500).json({ error: 'engine_error' });
+    }
   }
 
   try {
