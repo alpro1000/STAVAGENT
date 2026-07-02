@@ -160,7 +160,7 @@ const MODULES = [
     bullets: [
       'Single-element detail — 7 deterministic engines (formwork, reinforcement, pour decision, DIN 18218 lateral pressure, Saul maturity, RCPSP scheduler + PERT, pumping)',
       'Whole-object plan — table with pour stages, resources, Kč/m³',
-      '25 formwork systems (DOKA, PERI, ULMA, NOE, traditional), 24 element types, ČSN EN 13670 + TKP 18 + DIN 18218 compliant',
+      '30 formwork systems (DOKA, PERI, ULMA, NOE, traditional), 24 element types, ČSN EN 13670 + TKP 18 + DIN 18218 compliant',
     ],
     cta: 'Open Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
   },
@@ -218,7 +218,7 @@ const FAQ = [
   { q: 'What is TOV?', a: 'Technical-organizational breakdown (technologicko-organizační rozbor) — for each tender item a split into people / machinery / materials with quantities, prices and rates. In Registr you will find built-in calculators for concrete pump (multi-supplier), concrete delivery, and crane.' },
   { q: 'Can I choose the AI model?', a: 'Yes. Klasifikátor offers 19 models (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Extended mode additionally runs a multi-role validation with 5 expert roles.' },
   { q: 'Can I import the output back into my existing application?', a: 'Yes. The output is Excel (.xlsx) with codes, descriptions, units, quantities and prices. Hyperlinks back to the source file are preserved.' },
-  { q: 'Is my data safe?', a: 'Data is stored on EU servers (Google Cloud, Frankfurt). Each user sees only their own projects. Data is not shared with third parties.' },
+  { q: 'Is my data safe?', a: 'Data is stored on EU servers (Google Cloud, Frankfurt). Projects are tied to your user account. Data is not shared with third parties.' },
   { q: 'How much does it cost?', a: 'Open beta — 200 credits free at signup. No credit card, no commitments. During the beta you spend credits only on AI operations; deterministic calculations (regex, OTSKP, calculator) are within the free tier.' },
   { q: 'When will you start charging?', a: 'Paid plans launch in Q3 2026 via Lemon Squeezy (Merchant of Record — no VAT on you, no billing setup on your side). Until then, beta with 200 credits free.' },
 ];
@@ -226,7 +226,7 @@ const FAQ = [
 const STATS = [
   { num: '17 940', label: 'OTSKP 2026 items' },
   { num: '24', label: 'element types' },
-  { num: '25', label: 'formwork systems' },
+  { num: '30', label: 'formwork systems' },
   { num: '12+', label: 'documentation types' },
 ];
 
@@ -419,7 +419,7 @@ export default function LandingPageEn() {
           background: 'var(--data-surface)', fontSize: 13, fontWeight: 600,
           color: 'var(--text-secondary)',
         }}>
-          17&nbsp;904 items in the OTSKP database
+          17&nbsp;940 items in the OTSKP database
         </span>
       </div>
 

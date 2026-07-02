@@ -13,7 +13,7 @@ AI-powered construction cost estimation platform for Czech and Slovak markets. F
 Upload a 200-page *Technická zpráva* (TZ / technical specification) → get an actionable construction scenario in minutes instead of days:
 
 1. **OCR** extracts structured data from PDF drawings via MinerU
-2. **Deterministic classifier** tags 22 element types from OTSKP codes with confidence `1.0`
+2. **Deterministic classifier** tags 24 element types from OTSKP codes with confidence `1.0`
 3. **LLM** only handles ambiguous cases as fallback (confidence `0.7`)
 4. **Professional pricing catalog lookup** joins 17,904 OTSKP entries with commercial civil-construction catalogs
 5. **Calculator** produces pour schedules, formwork systems, rebar masses, and a work breakdown structure
@@ -57,7 +57,7 @@ All backends run on Google Cloud Run (`europe-west3`) with independent per-servi
 │ │ concrete-agent   │  │ stavagent-portal │                     │
 │ │ (core API,       │◀─│ (auth, billing,  │                     │
 │ │  MCP server,     │  │  dispatcher)     │                     │
-│ │  9 domain tools) │  └──────────────────┘                     │
+│ │  20 MCP tools)   │  └──────────────────┘                     │
 │ └────▲─────────────┘                                           │
 │      │ HTTP                                                    │
 │ ┌────┴─────────────┐  ┌──────────────────┐  ┌───────────────┐  │
@@ -100,7 +100,7 @@ Result: reproducible pricing that accountants and site managers can defend.
 
 ---
 
-## Built with Claude 4.7
+## Built with Claude
 
 STAVAGENT was designed with long-context and agentic models as first-class citizens, not a retrofit.
 
@@ -112,7 +112,7 @@ Mounted at `/mcp` on the `concrete-agent` Cloud Run service:
 |---|---|
 | `find_otskp_code` | 17,904 entries of the Czech transport infrastructure price catalog |
 | `find_urs_code` | Professional civil-construction pricing catalog lookup |
-| `classify_construction_element` | 22 element types (bridges × 11 + buildings × 11) |
+| `classify_construction_element` | 24 element types (13 bridge + 11 building) |
 | `calculate_concrete_works` | 7-engine calculator: pour, formwork, props, rebar, curing, schedule, cost |
 | `parse_construction_budget` | Excel/XML parser for Czech budget formats (KROS, rozpočet) |
 | `analyze_construction_document` | PDF-to-structured-data with MinerU + Gemini |
@@ -130,7 +130,7 @@ Technical drawings carry critical metadata (element codes, reinforcement specs, 
 
 ### Long context for TZ documents
 
-A typical *Technická zpráva* runs 100 – 300 pages with cross-references between drawings, calculation tables, and ČSN norms. Claude 4.7's 1M-token context lets STAVAGENT load an entire TZ + relevant ČSN sections + the full OTSKP catalog in one prompt — no RAG plumbing, no chunk-merge bugs.
+A typical *Technická zpráva* runs 100 – 300 pages with cross-references between drawings, calculation tables, and ČSN norms. Claude's long-context models let STAVAGENT load an entire TZ + relevant ČSN sections + large OTSKP slices in one prompt — no RAG plumbing, no chunk-merge bugs.
 
 ### Multi-provider AI with cost/accuracy routing
 
@@ -160,11 +160,11 @@ Provider selected per task based on cost and accuracy tradeoff. Same code path f
 STAVAGENT/
 ├── concrete-agent/         # Core API + MCP server (Python FastAPI)
 │   └── packages/
-│       ├── core-backend/     # 120 endpoints, 46 tests, 20 MCP tools (15 work + 5 ops)
+│       ├── core-backend/     # ~187 endpoints, 112 test files, 20 MCP tools (15 work + 5 ops)
 │       ├── core-frontend/    # React admin UI
 │       └── core-shared/      # TypeScript types
 ├── stavagent-portal/       # Auth + billing (Node.js + React)
-├── Monolit-Planner/        # Concrete calculator (132 endpoints, 893+ tests)
+├── Monolit-Planner/        # Concrete calculator (132 endpoints, ~1,300 shared tests)
 │   ├── shared/               # Calculation formulas (vitest)
 │   ├── backend/              # Express API
 │   └── frontend/             # React calculator UI
@@ -189,15 +189,15 @@ STAVAGENT/
 
 | Service | Endpoints | Test files | Test cases (approx.) |
 |---|---|---|---|
-| `concrete-agent` | 120 | 46 (pytest) | 87 core + MCP-compat suite |
-| `Monolit-Planner/shared` | — | 18 (vitest) | **893** formula tests |
-| `Monolit-Planner/backend` | 132 | — | Integration tests pending |
-| `URS_MATCHER_SERVICE` | 45 | 12 (jest) | 159 |
-| `stavagent-portal` | 80+ | 1 | — |
-| `rozpocet-registry` | 12 | 0 | — |
-| **Total** | **~390** | **83 files** | **1030+ cases** |
+| `concrete-agent` | ~187 | 112 (pytest) | incl. ~93-test MCP-compat suite |
+| `Monolit-Planner/shared` | — | 37 (vitest) | **~1,294** shared tests |
+| `Monolit-Planner/backend` | 132 | 9 (jest) | ~60+ |
+| `URS_MATCHER_SERVICE` | ~124 | 10 (jest) | ~232 |
+| `stavagent-portal` | ~156 | 4 | incl. isolation e2e |
+| `rozpocet-registry` | ~24 | 14 (vitest) | ~200 |
+| **Total** | **~620** | **~186 files** | **~1,900 cases** |
 
-The business-critical surface (pour formulas, formwork selection, rebar calculation) runs on every commit via Husky pre-commit hooks — the full 893-case formula suite takes ~470 ms.
+The business-critical surface (pour formulas, formwork selection, rebar calculation) runs on every commit via Husky pre-commit hooks — a fast 61-case formula suite takes ~470 ms; the full ~1,294-test shared suite runs in CI on every push.
 
 ---
 
@@ -225,7 +225,7 @@ cd backend && npm run dev      # API on :3001
 cd frontend && npm run dev     # UI on :5173
 
 # Test
-cd shared && npm test          # 893 formula tests
+cd shared && npm test          # ~1,294 shared tests
 cd backend && npm run test:all # Integration
 ```
 

@@ -1,6 +1,6 @@
 # Rozpočet Registry Backend
 
-Multi-user backend для Registry Rozpočtů с PostgreSQL на AWS RDS.
+Multi-user backend для Registry Rozpočtů с PostgreSQL на Google Cloud SQL.
 
 ## Quick Start
 
@@ -10,7 +10,7 @@ npm install
 ```
 
 ### 2. Setup Database
-Следуй инструкциям в [AWS_RDS_SETUP.md](./AWS_RDS_SETUP.md)
+Cloud SQL (managed via Cloud Build / gcloud)
 
 ### 3. Configure Environment
 ```bash
@@ -26,6 +26,7 @@ npm run dev
 ### 5. Test
 ```bash
 curl http://localhost:3002/health
+# (local dev only — production URL is the Cloud Run service, europe-west3)
 ```
 
 ## API Endpoints
@@ -50,12 +51,11 @@ curl http://localhost:3002/health
 
 ## Deployment
 
-### Render
-1. Connect GitHub repo
-2. Root Directory: `rozpocet-registry-backend`
-3. Build: `npm install`
-4. Start: `npm start`
-5. Add env var: `DATABASE_URL`
+### Cloud Run (europe-west3)
+1. Cloud Build deploys the `rozpocet-registry-backend` service
+2. Build: `npm install`
+3. Start: `npm start`
+4. Add env var (Secret Manager): `DATABASE_URL`
 
 ## Database Schema
 
@@ -63,11 +63,9 @@ See [schema.sql](./schema.sql)
 
 ## Cost
 
-- AWS RDS Free Tier: $0/month (12 months)
-- After Free Tier: ~$17/month
-- Render Free Tier: $0/month (sleeps after 15 min)
+- Google Cloud SQL (europe-west3)
 
 ## Support
 
-- AWS RDS Setup: [AWS_RDS_SETUP.md](./AWS_RDS_SETUP.md)
+- Database: Cloud SQL (managed via Cloud Build / gcloud)
 - Issues: https://github.com/alpro1000/STAVAGENT/issues

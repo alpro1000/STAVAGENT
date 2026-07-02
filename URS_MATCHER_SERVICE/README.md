@@ -239,7 +239,7 @@ docker-compose ps
 docker-compose logs -f backend
 ```
 
-### Запуск на удалённом сервере (Render / DigitalOcean / AWS)
+### Запуск в продакшене (Google Cloud Run)
 
 ```bash
 # 1. Скопировать проект на сервер
@@ -491,7 +491,7 @@ bash scripts/batch-process.sh input/*.xlsx
 
 ## 📜 Лицензия
 
-MIT (или выбрать другую для продакшена)
+Proprietary — contact info@stavagent.cz.
 
 ---
 

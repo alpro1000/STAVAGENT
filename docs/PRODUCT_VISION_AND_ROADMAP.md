@@ -1,5 +1,7 @@
 # Product Vision & Architecture Roadmap
 
+> ⚠️ **Historical roadmap (v1.0, 2026-03). Many `[ ]` items below have since shipped — see root `CLAUDE.md` changelog for current status.**
+
 **Version:** 1.0.0
 **Date:** 2026-03-06
 **Status:** Approved (product boundary fixed)
@@ -362,7 +364,7 @@ Output: P50 / P80 / P90 probabilities, deadline risk, sensitivity analysis
 - [ ] Breadcrumbs (Portal <- Kiosk back-navigation)
 - [ ] Template application workflow testing
 - [ ] Two-way sync Portal <-> Registry
-- [ ] Deploy Portal Backend (user action: Render)
+- [ ] Deploy Portal Backend (deploy: Cloud Run / Vercel)
 - [ ] Environment variables (PERPLEXITY_API_KEY, OPENAI_API_KEY)
 
 ---
