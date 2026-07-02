@@ -351,7 +351,31 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
-## 2026-06-26 — Session: Fáze 5 #7 — composite-element-parts Phase 1 (opěra z částí: shared + backend/MCP za flagem)
+## 2026-07-02 — Session: Full-repo audit + docs-truth pass (PR #1416 merged)
+
+**Topic:** Audit «idea vs reality» přes 6 paralelních read-only auditorů (Monolit, CORE, Portal, Registry+URS, docs-vs-code, infra/CI) → nálezy → docs-only oprava. Žádné code/engine změny.
+
+**Rozhodnuto:**
+- Docs-truth pass zmergován (PR #1416 → main `4823ba6`): landing CZ+EN (OTSKP sjednoceno 17 940; bednění 25→30; privacy FAQ změkčeno «projekty vázány na účet»), root README (22→24 typů, 9→20 MCP tools, 893→~1294 testů, Claude 4.7 claim zobecněn), CLAUDE.md v4.37.1→4.37.2 (Totals přepočteny CORE ~187ep/112 test/~96K LOC, tree +registry-backend/+kb/+triggers/, 3 stale TODO uzavřeny), 6 service READMEs + ARCHITECTURE + PRODUCT_VISION (Render/AWS RDS/Netlify → Cloud Run + Vercel + Cloud SQL; licence sjednocena Proprietary).
+- 3 TODO potvrzeny jako done-in-code: «Jen problémy» filtr (positions.js:150-151), tz_facts napojení (useCalculator.ts:1279 + calculator.py:292), price_crane/price_pump smazány z FormState.
+
+**Odmítnuto:** oprava kódu v tomto passu (security díry, dead code, soft-degradation) — jen zdokumentováno.
+
+**Otevřené otázky / Co dál (z auditu, NEopraveno — Sprint A):**
+- 🔴 SECURITY (blocker před public/demo): neautentizované routy — Portal `/api/pump/*`, `/api/parse-preview/import` (hardcoded owner_id=1), `/api/kb/research`; Monolit `positions.js`+`planner-variants.js` (bez auth); URS bez auth vůbec (+ anonym přepne globální LLM model); Registry `cleanup-empty` (maže cizí projekty za hardcoded secret). Fail-open na `SERVICE_API_KEY`/`JWT_SECRET`. Landing slibuje izolaci, kterou kód neplní.
+- 🟡 DEAD CODE: CORE ~1400 ř. (monolit_adapter.py «PRODUCTION LIVE» ale unmounted, nanonets, gemini stub, 2 unmounted route files); Monolit legacy-UI strom (MainApp→Header/Sidebar/KPIPanel/PositionsTable) + 6 komponent s 0 importéry; Registry `api/sync.ts`; URS `catalog-import.js`.
+- 🟠 Engine hard-throw místo `NEPOČÍTÁNO` (podkladni_beton rebar=0 apod.); CORE passporty v paměti (min-instances=0 → ztráta); ~45 bare except:pass; URS SQLite na efemerním Cloud Run.
+- Plný report v session artifacts (STAVAGENT_AUDIT_2026-07-01 + DOCS_RECHECK).
+
+
+
+## 2026-07-02 — Session: Full-repo audit (6 auditorů) + docs-truth pass (PR #1416)
+
+**Rozhodnuto:** (1) Docs-truth pass merged do main (#1416, 12 souborů, docs+texty only): landing CZ+EN OTSKP sjednoceno na 17 940, bednění 25→30, privacy FAQ zmírněno («projekty vázány na účet») do uzavření izolačních děr; root README 22→24 typů / 20 MCP tools / 61+~1294 testů místo „893/470 ms"; CLAUDE.md v4.37.2 — Totals přepočítány (CORE ~187 ep / 112 test files / ~96K LOC), tree +registry-backend +kb/, 3 mrtvé TODO zavřeny (Jen problémy, tz_facts wired, price_crane/pump smazány); Render/AWS/Netlify vyčištěno z 9 doc souborů, licence sjednocena na Proprietary, ARCHITECTURE+PRODUCT_VISION dostaly historical bannery. (2) Security/code nálezy auditů NEJSOU opraveny tímto passem — jen zdokumentovány.
+
+**Odmítnuto:** Přepis celých README (jen chirurgické opravy); mazání mrtvého kódu v tomto passu (docs-only scope).
+
+**Otevřené otázky / klíčové nálezy auditu (Sprint A kandidáti):** ⛔ neautentizované routy: Portal `/api/pump/*` + `/api/parse-preview/import` (hardcoded owner_id=1) + `/api/kb/research`; Monolit `positions.js` + `planner-variants.js` bez auth/portal_user_id; URS bez auth vůbec (anonym přepne globální LLM model); Registry `cleanup-empty` ma
 
 **Topic:** Složený prvek (opěra = dřík + úložný práh + závěrná zídka + křídla = jedna smětní položka, ale výpočet po částech, každá svým bedněním/takty/betonem). SDD: recon → ratifikace gate-by-gate (AskUserQuestion) → implementace → user merge-gate. Spec `docs/specs/composite-element-parts/` + recon `docs/audits/calculator_field_map/2026-06-23_composite-parts-recon.md`.
 
