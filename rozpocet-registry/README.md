@@ -80,9 +80,8 @@ Kompletní nástroj pro zpracování rozpočtů s pokročilými funkcemi:
 - Přepínání mezi projekty
 - Globální vyhledávání napříč projekty
 
-### 💾 Browser Storage
-- Vše uloženo v localStorage
-- Žádný server nebo databáze není potřeba
+### 💾 Storage
+- Syncs to `rozpocet-registry-backend` (Cloud SQL) with localStorage as offline cache
 - Data přežijí obnovení stránky
 - Přenositelnost - exportuj/importuj projekty
 
@@ -544,36 +543,7 @@ vercel --prod
 **Konfigurace:** Auto-detect Vite
 **URL:** `registry.stavagent.cz`
 
-### Netlify
-
-```bash
-# Install Netlify CLI
-npm install -g netlify-cli
-
-# Deploy
-netlify deploy
-
-# Production
-netlify deploy --prod
-```
-
-**Build settings:**
-- Build command: `npm run build`
-- Publish directory: `dist`
-
-**URL:** `rozpocet-registry.netlify.app`
-
-### GitHub Pages
-
-```bash
-# Build
-npm run build
-
-# Deploy dist/ to gh-pages branch
-npm run deploy
-```
-
-**URL:** `username.github.io/rozpocet-registry`
+Deployed on Vercel; see root `vercel.json`.
 
 ---
 
@@ -631,7 +601,7 @@ Registr Rozpočtů je **5. kiosk** v ekosystému STAVAGENT.
 
 ### Integrace
 
-Rozpočet Registry je **standalone kiosk** (browser-only, bez backendu).
+Rozpočet Registry syncs to `rozpocet-registry-backend` (Cloud SQL) with localStorage as offline cache.
 
 Budoucí integrace:
 - Import položek z Portal projektů
@@ -681,7 +651,7 @@ Budoucí integrace:
 ### Build
 
 ```
-dist/assets/index-[hash].js     244.16 kB │ gzip: 759.52 kB
+dist/assets/index-[hash].js     244.16 kB │ gzip: ~76 kB
 dist/assets/index-[hash].css    5.86 kB   │ gzip: 23.37 kB
 ✓ built in 5.54s
 ```

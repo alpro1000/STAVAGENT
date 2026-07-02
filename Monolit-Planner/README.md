@@ -1,6 +1,6 @@
 # Monolit-Planner: Monolith Calculator Kiosk
 
-**Status**: ✅ Production-Ready (Phase 4 Complete)
+**Status**: ✅ Production-Ready (Version 4.x — see root CLAUDE.md changelog)
 
 **Role in StavAgent**: Specialized calculator kiosk for monolithic concrete structure cost estimation. Converts diverse cost units into a unified metric (CZK/m³ of concrete).
 
@@ -59,7 +59,7 @@ npm run dev
 ### Access
 
 - **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3002
+- **Backend API**: http://localhost:3001
 - **Database** (SQLite by default): `./monolit.db`
 
 ---
@@ -146,7 +146,7 @@ npm run dev
 
 ---
 
-## 🎯 Version 2.0.0 - Phase 4 Complete (November 2025)
+## 🎯 Version 4.x (see root CLAUDE.md changelog)
 
 ### ✨ Major Features Added
 
@@ -257,8 +257,8 @@ npm run dev
 ### ⚠️ Known Issues & Limitations
 
 1. **Production OTSKP Import** (User Action Required)
-   - After deploying to Render, user must manually:
-     1. Set `OTSKP_IMPORT_TOKEN` environment variable in Render Dashboard
+   - After deploying to Cloud Run, user must manually:
+     1. Set `OTSKP_IMPORT_TOKEN` environment variable in the Cloud Run service config
      2. Execute `POST /api/otskp/import` with correct token header
    - Import script is development-only and doesn't run automatically on production startup
 
@@ -326,7 +326,6 @@ monolit-planner/
 │   │   └── constants.ts  # Defaults, colors
 │   └── package.json
 │
-├── render.yaml        # Render deployment config
 ├── DEPLOY.md          # Deployment guide
 └── README.md
 ```
@@ -336,7 +335,7 @@ monolit-planner/
 **Backend:**
 - Node.js 18+
 - Express.js
-- SQLite (better-sqlite3)
+- Cloud SQL PostgreSQL (prod); SQLite (better-sqlite3) for local dev
 - XLSX parser (xlsx)
 - Multer (file uploads)
 
@@ -592,15 +591,15 @@ where days_per_month = 30 or 22 (toggle)
 
 ---
 
-## 🚀 Deployment (Render)
+## 🚀 Deployment (Cloud Run + Vercel)
 
 See [DEPLOY.md](./DEPLOY.md) for detailed instructions.
 
 **Quick start:**
 
 1. Push to GitHub
-2. Connect Render to repository
-3. Render auto-detects `render.yaml`
+2. Cloud Build deploys via `cloudbuild-monolit.yaml`
+3. Backend → Cloud Run (europe-west3), frontend → Vercel
 4. Deploy both services automatically
 
 **URLs:**
@@ -670,7 +669,7 @@ POST /api/config
 
 ## 📄 License
 
-MIT License - see [LICENSE](./LICENSE) file
+Proprietary — contact info@stavagent.cz.
 
 ---
 
@@ -708,7 +707,7 @@ See [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) for detail
 - [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) - System overview (3 services)
 - [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) - Service API contracts
 - [`/docs/LOCAL_SETUP.md`](../../docs/LOCAL_SETUP.md) - Local development setup
-- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - Render deployment
+- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - deployment guide
 
 **Monolit-Planner Specific** (this service):
 - `docs/CALCULATOR.md` - Calculator logic and formulas (TODO)

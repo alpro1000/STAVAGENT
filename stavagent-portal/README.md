@@ -56,8 +56,6 @@ stavagent-portal/
 │   ├── ARCHITECTURE.md  # Backend + frontend architecture (TODO)
 │   ├── API_REFERENCE.md # API endpoints (TODO)
 │   └── INTEGRATION.md   # Portal integrations (TODO)
-│
-└── render.yaml          # Render.com deployment config
 ```
 
 ## Quick Start (Local Development)
@@ -241,7 +239,7 @@ npm run lint             # Run linter
 - [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) - System overview (3 services)
 - [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) - Service API contracts
 - [`/docs/LOCAL_SETUP.md`](../../docs/LOCAL_SETUP.md) - Local development setup
-- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - Render deployment
+- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - deployment guide
 
 **stavagent-portal Specific** (this service):
 - `docs/FEATURES.md` - User-facing features (TODO)
@@ -290,7 +288,7 @@ npm run lint             # Run linter
 
 ## 📝 Лицензия
 
-Private repository - все права защищены.
+Proprietary — contact info@stavagent.cz.
 
 ## 👥 Авторы
 

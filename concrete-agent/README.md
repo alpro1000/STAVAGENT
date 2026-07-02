@@ -359,7 +359,7 @@ For more help, see [GitHub Issues](https://github.com/alpro1000/concrete-agent/i
 - [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) - System overview (3 services)
 - [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) - Service API contracts
 - [`/docs/LOCAL_SETUP.md`](../../docs/LOCAL_SETUP.md) - Local development setup
-- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - Render deployment
+- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - deployment guide (Cloud Run)
 
 **concrete-agent Specific** (this service):
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - Detailed backend architecture (read this next)
@@ -400,7 +400,7 @@ See [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) for detail
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Proprietary — contact info@stavagent.cz.
 
 ## Support
 

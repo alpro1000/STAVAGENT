@@ -116,7 +116,7 @@ const MODULES = [
     bullets: [
       'Detail prvku — 7 výpočetních jader (bednění, výztuž, betonáž, zrání, harmonogram, PERT, čerpadla)',
       'Plán objektu — tabulka všech prvků s takty, zdroji a kalkulací Kč/m³',
-      '25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 24 typů prvků',
+      '30 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 24 typů prvků',
     ],
     cta: 'Otevřít Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
   },
@@ -176,7 +176,7 @@ const FAQ = [
   { q: 'Co je TOV?', a: 'Technologicko-organizační rozbor — pro každou položku v rozpočtu rozbor na lidé / stroje / materiály s počty, cenami a sazbami. V Registru najdete vestavěné kalkulátory čerpadla betonu (multi-supplier), dopravy betonu a jeřábu.' },
   { q: 'Můžu si zvolit AI model?', a: 'Ano. Klasifikátor nabízí 19 modelů na výběr (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Rozšířený režim navíc spustí multi-role validaci s 5 expertními rolemi.' },
   { q: 'Mohu výstup importovat zpět do své stávající aplikace?', a: 'Ano. Výstup je Excel (.xlsx) s kódy, popisy, MJ, množstvími a cenami. Hypertextové odkazy zpět na zdrojový soubor zachovány.' },
-  { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud, Frankfurt). Každý uživatel vidí pouze své projekty. Data nejsou sdílena s třetími stranami.' },
+  { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud, Frankfurt). Projekty jsou vázány na váš uživatelský účet. Data nejsou sdílena s třetími stranami.' },
   { q: 'Kolik to stojí?', a: 'Otevřená beta — 200 kreditů zdarma při registraci. Žádná kreditní karta, žádné závazky. V průběhu bety platíte kredity jen za AI operace, deterministické výpočty (regex, OTSKP, kalkulace) jsou v rámci free tieru.' },
   { q: 'Kdy začnete účtovat?', a: 'Placené plány spustíme v Q3 2026 přes Lemon Squeezy (Merchant of Record — žádné DPH na vás, žádné nastavení fakturace na vaší straně). Do té doby beta s 200 krediti zdarma.' },
 ];
@@ -184,7 +184,7 @@ const FAQ = [
 const STATS = [
   { num: '17 940', label: 'položek · OTSKP 2026' },
   { num: '24', label: 'typů prvků' },
-  { num: '25', label: 'systémů bednění' },
+  { num: '30', label: 'systémů bednění' },
   { num: '12+', label: 'typů dokumentace' },
 ];
 
@@ -357,7 +357,7 @@ export default function LandingPage() {
           background: 'var(--data-surface)', fontSize: 13, fontWeight: 600,
           color: 'var(--text-secondary)',
         }}>
-          17&nbsp;904 položek v databázi OTSKP
+          17&nbsp;940 položek v databázi OTSKP
         </span>
       </div>
 

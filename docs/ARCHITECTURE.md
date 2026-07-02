@@ -1,5 +1,7 @@
 # StavAgent System Architecture
 
+> ⚠️ **Historical snapshot (Nov 2025).** The system now runs 5–6 services on Google Cloud Run + Vercel. For current architecture see root `CLAUDE.md`.
+
 **Status**: Complete monorepo with 3 core services (as of November 2025)
 
 ---
@@ -287,7 +289,7 @@ GET /api/audit-results → concrete-agent: GET /workflow/a/results/:project_id
 - Unified tech stack for frontend + backend
 - Fast iteration on UI/business logic
 - Strong ecosystem for web applications
-- Easy deployment on Render and similar platforms
+- Deployed on Google Cloud Run + Vercel
 - Good support for real-time features (WebSocket ready)
 
 ---
@@ -310,7 +312,7 @@ GET /api/audit-results → concrete-agent: GET /workflow/a/results/:project_id
 
 ## Deployment Overview
 
-**Current Deployment**: Render.com (see `/docs/DEPLOYMENT.md`)
+**Current Deployment**: Google Cloud Run (europe-west3) + Vercel + Cloud SQL PostgreSQL
 
 **Services Deployed**:
 - `concrete-agent`: Python FastAPI service
@@ -329,7 +331,7 @@ GET /api/audit-results → concrete-agent: GET /workflow/a/results/:project_id
   - `ARCHITECTURE.md` - This file (system overview)
   - `STAVAGENT_CONTRACT.md` - API contracts between services
   - `LOCAL_SETUP.md` - Local development setup
-  - `DEPLOYMENT.md` - Render deployment guide
+  - `DEPLOYMENT.md` - deployment guide (Cloud Run + Vercel)
 
 - **concrete-agent** (`/concrete-agent/docs/`):
   - `README.md` - Service overview

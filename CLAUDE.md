@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.37.1
-**Last Updated:** 2026-06-12
+**Version:** 4.37.2
+**Last Updated:** 2026-07-02
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -44,6 +44,8 @@ steering vyhrává a skill se znovu distilluje. Viz
 > This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
 >
 > **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing twenty domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.37.2 (2026-07-02 — docs-truth pass, no engine/code changes):** Full-repo audit (6 parallel read-only auditors) reconciled docs vs reality; reports in session artifacts. Root README: 22→24 element types, "9 domain tools"→20 MCP tools, "893 formula tests / 470 ms" corrected (pre-commit fast set = 61 tests; full shared suite ~1,294 runs in CI), "Claude 4.7 / 1M-token" generalized to long-context claim, test-coverage table recounted. Landing CZ+EN: OTSKP unified to 17 940 (hero bar said 17 904 while 4 other spots said 17 940), formwork systems 25→30 (10 DOKA + 20 non-DOKA in kb/), privacy FAQ softened («každý uživatel vidí pouze své projekty» → «projekty jsou vázány na váš účet») until the isolation gaps found by the security audit are closed (unauthenticated routes: Portal /api/pump + parse-preview/import + kb-research; Monolit positions.js + planner-variants.js; URS no auth; Registry cleanup-empty). THIS CLAUDE.md: Totals recounted (CORE ~187 ep / 112 test files / ~96K LOC; Portal ~156 ep / 4 test files; URS ~124 live ep / ~232 tests; Registry ~24 ep / ~200 tests; Monolit frontend has 2 test files, not 0), Quick Reference tree +`rozpocet-registry-backend/` +`kb/`, 3 stale TODOs closed as done-in-code («Jen problémy» filter fixed at positions.js:150-151; tz_facts wired BOTH sides — frontend `useCalculator.ts:1279` + MCP `calculator.py:292`, only LIVE verification ticket remains; price_crane/price_pump deleted from FormState in Fáze 5 Step 3 — only the TOV re-home ticket remains). Service READMEs: Render/AWS-era deployment claims replaced with Cloud Run (europe-west3) + Vercel + Cloud SQL; license statements unified to Proprietary (MIT mentions removed — no LICENSE files existed); registry impossible gzip metric fixed; docs/ARCHITECTURE.md + docs/PRODUCT_VISION_AND_ROADMAP.md got historical-snapshot banners. Security/code findings from the audit are NOT fixed by this pass — tracked separately (Sprint A plan in audit report).
 >
 > **Changelog — v4.37.1 (2026-06-12 — MCP param forwarding + AI advisor seam fix):** MCP `calculate_concrete_works`: 3 documented-but-dropped params now translated to canonical engine fields — `width_m` → `nk_width_m` (deck) / `formwork_area_m2` estimate (pre-SSOT formula), `formwork_length_bm` → `formwork_area_m2` (bm-unit quantity), `+cycle_length_bm` → `num_tacts_override` (římsa ceil(L/cycle)); replay fixtures regenerated via local `planElement`, MCP compat 27/27. AI advisor seam: backend now merges frontend's `calculator_context` into the body (enriched prompt sections MOSTNÍ NK / PŘEDPĚTÍ / JIŽ SPOČÍTÁNO actually fire); advisor mirrors the orchestrator — computed_results enriched (pour_mode/pour_hours/pumps/formwork/top-6 warnings incl. validation flags), prompt instructs echoing engine tacts+mode, frontend contradiction guard overwrites AI tacts with engine value + visible note; robust JSON extraction; fallback render no longer mangles prose commas. Backend Jest 58→60. Security review of the diff: 0 findings.
 >
@@ -138,10 +140,13 @@ STAVAGENT/
 ├── stavagent-portal/      ← Portal/Dispatcher (Node.js/Express/React, port 3001)
 ├── Monolit-Planner/       ← Kiosk: Kalkulátor betonáže (Node.js/React, port 3001/5173)
 ├── URS_MATCHER_SERVICE/   ← Kiosk: Klasifikátor stavebních prací (Node.js, port 3001/3000)
-├── rozpocet-registry/     ← Kiosk: Registr (React/Vite + Vercel serverless, port 5173)
+├── rozpocet-registry/     ← Kiosk: Registr frontend (React/Vite + Vercel serverless, port 5173)
+├── rozpocet-registry-backend/ ← Registr backend (Node.js/Express, Cloud Run + Cloud SQL)
+├── kb/                    ← Canonical KB YAML (codegen input → shared/src/kb-generated/)
 ├── scripts/               ← Helper scripts (dangerous/ subdir for destructive ops)
 ├── docs/                  ← ARCHITECTURE.md, normy/, archive/
 ├── mineru_service/        ← MinerU PDF parser (Python FastAPI, Cloud Run europe-west1, port 8080)
+├── triggers/              ← Cloud Build triggers (path-filtered)
 └── .github/workflows/     ← CI/CD
 ```
 
@@ -195,7 +200,7 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. **120 endpoints**, **34 test files**, **~61K LOC**.
+Python FastAPI. **~187 endpoints**, **112 test files**, **~96K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 KB: 42 JSON files (~40MB), 21 prompt files, 23 SQL schemas.
 
@@ -209,7 +214,7 @@ KB: 42 JSON files (~40MB), 21 prompt files, 23 SQL schemas.
 - **Confidence** — regex=1.0, OTSKP DB=1.0, drawing_note=0.90, Perplexity=0.85, URS=0.80, AI=0.70
 
 ### 2. stavagent-portal (Dispatcher)
-Node.js/Express + React. **~80+ endpoints**, **20 pages**, **40+ components**.
+Node.js/Express + React. **~156 endpoints**, **26 pages**, **53 components**, **4 test files**.
 JWT auth (24h), 5 org roles, Stripe credits (fail-open), Data Pipeline admin, CORE proxy (300s timeout, headersTimeout=310s).
 Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Landing page v2.0** (`LandingPage.tsx`, 622 lines): 12 sections (Nav→Hero→Social proof→Pro koho→5 Modulů→Jak to funguje→Blok důvěry→Příklad→Technologie→Ceník→FAQ→Footer). H1: "Stavební rozpočty a dokumentace pod kontrolou". Credit pricing table (15 ops). FAQ accordion (8 Q&A).
@@ -218,11 +223,11 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 
 ### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
 Node.js/Express + React. **132 endpoints**, **1294 shared tests**, **~43K LOC**.
-Structure: `shared/` (1294 tests, ~30 files), `backend/` (Jest tests — env-isolated, not run via vitest workspace), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+Structure: `shared/` (1294 tests, 37 files), `backend/` (9 Jest test files — env-isolated, not run via vitest workspace), `frontend/` (2 test files: `ui.numinput.test.tsx` + `helpers.pourcrew.test.ts`). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
-- **Element Planner:** 23 types (12 bridge incl. `zaklady_oper` + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
+- **Element Planner:** 24 types (13 bridge incl. `zaklady_oper` + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
 - **Resource Ceiling (v4.29):** `resource-ceiling.ts` — `ResourceCeiling` union (workforce per-profession + formwork sets/falsework/props/MSS + pumps/backup/cranes + deadline/shifts/night), per-element relevance maps (22 of 24 typů), `applyResourceCeilingDefaults()` merge (user 0.99 > KB 0.85, total-only scaling), `checkCeilingFeasibility()` returns ⛔ KRITICKÉ `CeilingViolation[]` + recovery hints. KB single source of truth = `B4_production_benchmarks/default_ceilings/<element>.yaml` (Phase 1: operne_zdi + mostovkova_deska; Phase 2-7 fills zbytek). Engine integration v orchestrator §8b builds `EngineeringDemand` (MAX-of-phases pro total) → feasibility check → `PlannerOutput.resource_ceiling` + `resource_violations[]` + warnings.
 - **Element Subtypes:** beton, bednění, odbednění (Tesař), výztuž, zrání, podpěrná konstr., předpětí, jiné
 - **OTSKP Catalog:** 11 regex patterns → element_type (confidence=1.0), metadata extraction (concrete class, prestress, prefab)
@@ -279,11 +284,11 @@ Structure: `shared/` (1294 tests, ~30 files), `backend/` (Jest tests — env-iso
 - **Dual DB:** `monolith_projects` (listed via `/api/monolith-projects`, auth) + `bridges` (FK compat for `positions.bridge_id`); `bridgesAPI.getAll()` calls monolith-projects
 
 ### 4. Klasifikátor (URS_MATCHER_SERVICE repo, Kiosk)
-Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 tables**.
+Node.js/Express + SQLite. **~124 live endpoints**, **~232 tests**, **~10K LOC**, **12 tables**.
 4-phase matching, dual search (36 seed + 17,904 OTSKP + Perplexity), VZ Scraper, 9 LLM providers.
 
 ### 5. Registr (rozpocet-registry repo, Kiosk)
-React 19 + Vite + Vercel serverless. **12 endpoints**, **87 tests**, **~17K LOC**.
+React 19 + Vite + Vercel serverless (+ Node.js backend on Cloud Run). **~24 endpoints** (12 serverless + ~12 backend), **~200 tests**, **~34K LOC**.
 BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemini), TOV Modal, Formwork/Pump Calculators.
 - **Import:** Fuzzy auto-detect (header keywords + normalize), per-sheet dataStartRow detection (code+MJ heuristic), reimport with skupiny preservation
 - **Export:** "Vrátit do původního (ceny + skupiny)" — ZIP/XML patch, inline strings, autoFilter + sheetProtection patch. Per-sheet column mapping (each sheet reads own `config.columns.cenaJednotkova`).
@@ -303,12 +308,14 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 
 | Service | Endpoints | Tests | LOC |
 |---------|-----------|-------|-----|
-| concrete-agent | 120 | 34 files | ~61K |
-| stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 1294 | ~43K |
-| URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
-| rozpocet-registry | 12 | 200 | ~16K |
-| **TOTAL** | **~391** | **1425+** | **~152K** |
+| concrete-agent | ~187 | 112 files | ~96K |
+| stavagent-portal | ~156 | 4 files | ~26K |
+| Monolit-Planner | 132 | 1294 shared (+9 backend files, +2 frontend files) | ~43K |
+| URS_MATCHER_SERVICE | ~124 | ~232 | ~10K |
+| rozpocet-registry (+backend) | ~24 | ~200 | ~34K |
+| **TOTAL** | **~620** | **~1900 cases** | **~200K** |
+
+> Counts recounted 2026-07-02 (live grep). Endpoints = route decorators; some registered-but-unmounted (see audit). Prior table (v4.37.1) materially under-counted CORE.
 
 ---
 
@@ -511,7 +518,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Monolit white screen #310 | ErrorBoundary deployed on PositionsTable+KPIPanel; check `componentStack` in console |
 | FK/constraint "already exists" | Portal schema+migrations use `DO $ IF NOT EXISTS $` guards; never bare ALTER TABLE |
 | Monolit /healthcheck 404 | Returns 200 without KEEP_ALIVE_KEY; only 404 on wrong key |
-| "Jen problémy" shows wrong data | BUG: `include_rfi=false` filters OUT rfi rows; should filter IN (inverted logic in positions.js:150) |
+| "Jen problémy" shows wrong data | ✅ FIXED (2026-07): `positions.js:150-151` now filters IN `p.has_rfi`. (Historical: was inverted.) |
 | Monolit click no reaction | KPIPanel shows "Načítání KPI..." (not "Vyberte objekt") when bridge selected but API pending/failed |
 | Registry columns misaligned | `display:flex` on `<tr>`, `width: cell.column.getSize()` + `flexShrink:0` on each `<td>` |
 | Registry dropdown clipped | Must use `createPortal(…, document.body)` with `position:fixed`; scroll listener closes on scroll |
@@ -541,7 +548,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 
 **Cloud Build:** `cloudbuild-{concrete,monolit,portal,urs,registry,mineru}.yaml` + `triggers/*.yaml`
 Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `europe-west3`. MinerU: `europe-west1`.
-**GitHub Actions:** keep-alive, monolit-planner-ci, test-coverage, test-urs-matcher, **test-mcp-compatibility** (17 tests, triggers on concrete-agent/ changes), **rozpocet-registry-test** (200 vitest + `tsc -b && vite build`, triggers on rozpocet-registry/ changes).
+**GitHub Actions:** keep-alive, monolit-planner-ci, test-coverage, test-urs-matcher, **test-mcp-compatibility** (~93 tests, triggers on concrete-agent/ changes), **rozpocet-registry-test** (200 vitest + `tsc -b && vite build`, triggers on rozpocet-registry/ changes).
 
 ---
 
@@ -562,7 +569,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **P0: AI advisor prompt v2 live validation** — after deploy, verify SO-202 mostovka returns TKP18 §7.8.3 + curing class 4 + prestress 11d citations. Gemini `response_mime_type: application/json` not yet enabled in Core `/api/v1/multi-role/ask` — if JSON parse fails repeatedly, add force-JSON on provider side.
 - [ ] **P1: Lemon Squeezy webhook IDs** — set actual product_id mapping in `routes.py:PRODUCT_CREDITS`
 - [ ] **P1: Custom GPT in GPT Store** — create GPT with Actions from `/openapi.json`, verify domain
-- [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
+- [x] ~~**P1: Fix "Jen problémy" filter**~~ ✅ DONE — `positions.js:150-151` filters IN `p.has_rfi` (verified 2026-07-02).
 - [ ] **P1: Per-záběr engine refactor** — element-scheduler uses max(tact_volumes) as bottleneck, should schedule per-záběr independently
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
 - [ ] **P1: E2E test FORESTINA SO.01** — stropní deska 125.559 m³, ztracené bednění 1325 m², manual záběry 4x, Aplikovat → verify TOV
@@ -590,9 +597,9 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **P2: Landing page — visual QA + /register route + SEO subpages**
 - [ ] **P2: Element field visibility map** — full ELEMENT_FIELD_VISIBILITY config for 24 element types
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
-- [ ] **P1: tz_facts napojení (frontend extraktor → tz_facts → planElement + MCP forward)** — validation rule `tz_construction_consistency` (Part B/C) + regex extraktor `extractConstructionTechnology` HOTOVÉ a testované, ALE `tz_facts` NENÍ napojen: `frontend/src` 0 výskytů, MCP `calculator.py` neforwarduje. Rule v živém frontendu/MCP proto MLČÍ — fíčura v produkci neaktivní. Scope: (1) frontend mapuje extrahované `construction_technology` + `pour_stages_count` → `tz_facts.construction` → `planElement` input; (2) MCP `_build_planner_payload` forwarduje `tz_facts`; (3) MCP compat test. Po napojení → live check níže.
+- [x] ~~**P1: tz_facts napojení (frontend extraktor → tz_facts → planElement + MCP forward)**~~ ✅ WIRED (ověřeno 2026-07-02): frontend `useCalculator.ts:1279-1302` staví `input.tz_facts`; MCP `calculator.py:292-307` forwarduje `payload["tz_facts"]`. Zbývá jen **LIVE-proverka** níže (živý web).
 - [ ] **P1: LIVE-proverka frontu na kalkulator.stavagent.cz po deploy (PENDING)** — (a) Žalmanov-flag technologie se reálně zobrazí v Varování card (vyžaduje tz_facts napojení výše); (b) AI advisor zrcadlí engine (sekce JIŽ SPOČÍTÁNO firuje z reálného frontendu, contradiction guard přepíše takty) — polish #1348 ověřen jen Jest/MCP-compat, NE živě. Nepovažovat za hotové, dokud neproběhne na živém webu.
-- [ ] **P1: price_crane/price_pump → přesun do TOV-rozpadu** — `price_crane_czk_shift` + `price_pump_czk_h` jsou ve FormState, ale nejdou do `buildInput` (grep-mrtvé). Per Alexander NEJSOU součástí cenové architektury 3 režimů kalkulátoru (ta je NOSNÁ — viz `Monolit-Planner/CLAUDE.md §0`) — jsou to PŘIŠELCI na cizí vrstvě: pronájem jeřábu/čerpadla = nákladová položka TOV, ne kalkulátoru. Step 3 je smaže z kalkulátoru; tento ticket = založit je správně do TOV-rozpadu. ⚠️ Ostatní cenová pole (sekce Ceny, bednění, sazby) jsou NOSNÁ — NEmazat.
+- [ ] **P1: price_crane/price_pump → přesun do TOV-rozpadu** — ⚠️ UPDATE 2026-07-02: obě pole už **smazána z FormState** (Fáze 5 Step 3, 0 výskytů v `Monolit-Planner`). Zbývá jen TOV-strana: založit pronájem jeřábu/čerpadla jako nákladovou položku TOV-rozpadu. Per Alexander NEJSOU součástí cenové architektury 3 režimů kalkulátoru (ta je NOSNÁ — viz `Monolit-Planner/CLAUDE.md §0`) — jsou to PŘIŠELCI na cizí vrstvě: pronájem jeřábu/čerpadla = nákladová položka TOV, ne kalkulátoru. Step 3 je smaže z kalkulátoru; tento ticket = založit je správně do TOV-rozpadu. ⚠️ Ostatní cenová pole (sekce Ceny, bednění, sazby) jsou NOSNÁ — NEmazat.
 - [ ] **P2: Engine soft-degradation na neúplném/nulovém povinném vstupu (TŘÍDA, ne 3 separátní bugy)** — `planElement` nedegraduje měkce, když chybí povinný vstup; tři symptomy stejné příčiny: (a) `podkladni_beton` rebar=0 → `calculateRebar` throw `mass_t must be positive`; (b) `mostovkova_deska` bez `height_m` → selektor vrátí `MULTIFLEX` (pozemní stropní) místo falsework Top 50/Staxo; (c) non-prismatic + dims bez objemu → honest-blank warning se vypíše, ale pipeline pak spadne na volume 0 (scheduler throw). Doménově je to **porušení honest-blank na úrovni výpočtu**: chybí povinný vstup → prvek se má označit `NEPOČÍTÁNO` a v agregaci přeskočit (`planProject` už umí `elements_uncalculated`), NE spadnout. **Léčit jako třídu, ne po jednom.** Rozhodnutí, zda spadá do Fáze 5 Step 3 (legacy cleanup) nebo do samostatného **Step 3.5**, padne na interview Step 3 — NEopravovat předtím.
 - [ ] **P3: SAFE cenový katalog** — add SAFE as 3rd vendor alongside DOKA/PERI
 
