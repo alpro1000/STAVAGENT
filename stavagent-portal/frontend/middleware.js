@@ -17,10 +17,15 @@ export default async function middleware(request) {
 
   if (url.hostname === 'klasifikator.stavagent.cz') {
     const target = `${URS_BACKEND}${url.pathname}${url.search}`;
+    const hasBody = request.method !== 'GET' && request.method !== 'HEAD';
     return fetch(target, {
       method: request.method,
       headers: request.headers,
-      body: request.method !== 'GET' && request.method !== 'HEAD' ? request.body : undefined,
+      body: hasBody ? request.body : undefined,
+      // Edge runtime requires duplex when streaming a request body —
+      // without it every POST through this proxy throws
+      // MIDDLEWARE_INVOCATION_FAILED before reaching the URS backend.
+      ...(hasBody ? { duplex: 'half' } : {}),
     });
   }
 }
