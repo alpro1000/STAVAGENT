@@ -59,9 +59,13 @@ export default function PoradnaWidget() {
     setError(null);
 
     try {
+      const token = localStorage.getItem('auth_token');
       const res = await fetch(`${API_URL}/api/kb/research`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ question: q, save_to_kb: true }),
       });
 

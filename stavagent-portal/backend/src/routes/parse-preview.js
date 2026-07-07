@@ -6,7 +6,7 @@
  *
  * Useful for the "Parse Preview" modal in Portal:
  *   - User drags Excel → sees metadata, sheets, types, kiosk suggestions
- *   - No project required, no auth required
+ *   - No project required; Portal JWT required (mounted behind requireAuth)
  *
  * POST /api/parse-preview
  *   Body: multipart/form-data { file: Excel file }
@@ -189,6 +189,13 @@ router.post('/import', upload.single('file'), async (req, res) => {
     return res.status(503).json({ success: false, error: 'Database not available' });
   }
 
+  // Owner is decided at INSERT time from the verified JWT (isolation model
+  // invariant 1) — requireAuth on the mount guarantees req.user exists.
+  const ownerId = req.user?.userId;
+  if (!ownerId) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
+  }
+
   const filePath = req.file.path;
   let client;
 
@@ -208,8 +215,8 @@ router.post('/import', upload.single('file'), async (req, res) => {
 
     await client.query(
       `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-       VALUES ($1, $2, 'parsed_import', 1, NOW(), NOW())`,
-      [projectId, projectName]
+       VALUES ($1, $2, 'parsed_import', $3, NOW(), NOW())`,
+      [projectId, projectName, ownerId]
     );
 
     // 3. Create objects + positions from parsed sheets

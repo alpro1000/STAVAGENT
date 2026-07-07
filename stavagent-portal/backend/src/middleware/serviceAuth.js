@@ -11,20 +11,21 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { logger } from '../utils/logger.js';
-
-const SERVICE_API_KEY = process.env.SERVICE_API_KEY;
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
+import { SERVICE_API_KEY, JWT_SECRET } from '../config/secrets.js';
 
 /**
  * Middleware: require valid X-Service-Key header for kiosk-to-portal requests.
- * If SERVICE_API_KEY is not configured, logs a warning and allows the request
- * (graceful degradation for dev/migration period).
+ * Fail-closed: if SERVICE_API_KEY is not configured, requests are DENIED
+ * (503 — server misconfigured). In production the config module already
+ * fails startup when the key is missing, so this branch is dev-only.
  */
 export function requireServiceKey(req, res, next) {
-  // If no key configured, warn but allow (dev mode / migration)
   if (!SERVICE_API_KEY) {
-    logger.warn('[ServiceAuth] SERVICE_API_KEY not configured — allowing request (set it in production!)');
-    return next();
+    logger.error(`[ServiceAuth] SERVICE_API_KEY not configured — denying ${req.method} ${req.path}`);
+    return res.status(503).json({
+      error: 'Service Unavailable',
+      message: 'Service key authentication is not configured on this server'
+    });
   }
 
   const provided = req.headers['x-service-key'];
@@ -81,15 +82,11 @@ export function requireAuthOrServiceKey(req, res, next) {
     }
   }
 
-  // Try service key (kiosk)
-  if (!SERVICE_API_KEY) {
-    // No key configured — allow in dev (same as requireServiceKey behavior)
-    logger.warn('[AuthOrService] No SERVICE_API_KEY + no JWT — allowing (dev mode)');
-    return next();
-  }
-
+  // Try service key (kiosk). Fail-closed: when SERVICE_API_KEY is not
+  // configured, the service-key path is simply unavailable — the request
+  // falls through to the 401 below (JWT was already tried above).
   const provided = req.headers['x-service-key'];
-  if (provided) {
+  if (SERVICE_API_KEY && provided) {
     const providedBuffer = Buffer.from(provided, 'utf8');
     const expectedBuffer = Buffer.from(SERVICE_API_KEY, 'utf8');
     if (providedBuffer.length === expectedBuffer.length && crypto.timingSafeEqual(providedBuffer, expectedBuffer)) {

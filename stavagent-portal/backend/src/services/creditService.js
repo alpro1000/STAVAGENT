@@ -98,8 +98,12 @@ export async function canAfford(userId, operationKey) {
     };
   } catch (error) {
     logger.error('[CREDITS] Error checking canAfford:', error);
-    // Fail-open: allow on error
-    return { allowed: true, balance: 0, cost: 0, shortfall: 0, error: true };
+    // Fail-closed: deny on error — a broken credit check must not grant
+    // free access to credited operations (Sprint A decision, 2026-07)
+    return {
+      allowed: false, balance: 0, cost: 0, shortfall: 0, error: true,
+      reason: 'Nepodařilo se ověřit kredity. Zkuste to prosím znovu.',
+    };
   }
 }
 

@@ -288,7 +288,7 @@ router.post('/suppliers', async (req, res) => {
       JSON.stringify(surcharges || {}),
       hose_per_m_per_day || null,
       JSON.stringify(metadata || {}),
-      req.user?.id || null
+      req.user?.userId || null
     ]);
 
     res.status(201).json(supplier);
@@ -671,7 +671,7 @@ router.post('/calculations', async (req, res) => {
       model_id || null,
       JSON.stringify(input_params || {}),
       JSON.stringify(result || {}),
-      req.user?.id || null
+      req.user?.userId || null
     ]);
 
     res.status(201).json(calc);

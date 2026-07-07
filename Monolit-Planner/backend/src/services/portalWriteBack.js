@@ -69,9 +69,15 @@ export async function writeBackToPortal(positionInstanceId, payload) {
   const url = `${PORTAL_API}/api/positions/${positionInstanceId}/monolith`;
 
   try {
+    // Portal's /api/positions mount is fail-closed (requireAuthOrServiceKey)
+    // — server-to-server write-back authenticates with the shared service key.
+    const serviceKey = process.env.SERVICE_API_KEY;
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(serviceKey ? { 'X-Service-Key': serviceKey } : {})
+      },
       body: JSON.stringify({ payload }),
       signal: AbortSignal.timeout(WRITE_BACK_TIMEOUT)
     });

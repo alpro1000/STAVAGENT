@@ -4,6 +4,8 @@
  * Proxies requests to concrete-agent KB Research endpoint.
  * Allows Portal frontend to search Czech construction norms/pricing
  * without exposing the CORE URL directly.
+ * Mounted behind requireAuth — each research call burns Core LLM credits,
+ * so anonymous access is not allowed.
  *
  * POST /api/kb/research
  *   Body: { question, save_to_kb?, category? }
