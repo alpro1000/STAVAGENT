@@ -657,6 +657,13 @@ router.post('/calculations', async (req, res) => {
   const pool = safeGetPool();
   if (!pool) return res.status(503).json({ error: 'Database not available' });
 
+  // Defense in depth: the /api/pump mount runs requireAuth, but the owner
+  // checks below dereference req.user — guard in case the router is ever
+  // mounted without it.
+  if (!req.user?.userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   const { position_instance_id, project_id, supplier_id, model_id, input_params, result } = req.body;
 
   try {
@@ -686,7 +693,7 @@ router.post('/calculations', async (req, res) => {
       model_id || null,
       JSON.stringify(input_params || {}),
       JSON.stringify(result || {}),
-      req.user?.userId || null
+      req.user.userId
     ]);
 
     res.status(201).json(calc);
@@ -706,6 +713,11 @@ router.post('/calculations', async (req, res) => {
 router.get('/calculations/:positionId', async (req, res) => {
   const pool = safeGetPool();
   if (!pool) return res.status(503).json({ error: 'Database not available' });
+
+  // Defense in depth — see POST /calculations above.
+  if (!req.user?.userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   try {
     const { rows } = await pool.query(
