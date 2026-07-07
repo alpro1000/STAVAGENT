@@ -18,14 +18,25 @@ export default async function middleware(request) {
   if (url.hostname === 'klasifikator.stavagent.cz') {
     const target = `${URS_BACKEND}${url.pathname}${url.search}`;
     const hasBody = request.method !== 'GET' && request.method !== 'HEAD';
+
+    // POSTs through this proxy used to die with MIDDLEWARE_INVOCATION_FAILED
+    // ("TypeError: fetch failed"): forwarding request.headers verbatim sends
+    // connection-specific headers (host, content-length, connection) that
+    // conflict with the outbound fetch, and streaming request.body needs
+    // duplex support. Buffer the body (URS payloads are JSON/small files)
+    // and strip the per-connection headers instead.
+    const headers = new Headers(request.headers);
+    headers.delete('host');
+    headers.delete('content-length');
+    headers.delete('connection');
+    headers.delete('transfer-encoding');
+
+    const body = hasBody ? await request.arrayBuffer() : undefined;
+
     return fetch(target, {
       method: request.method,
-      headers: request.headers,
-      body: hasBody ? request.body : undefined,
-      // Edge runtime requires duplex when streaming a request body —
-      // without it every POST through this proxy throws
-      // MIDDLEWARE_INVOCATION_FAILED before reaching the URS backend.
-      ...(hasBody ? { duplex: 'half' } : {}),
+      headers,
+      body,
     });
   }
 }
