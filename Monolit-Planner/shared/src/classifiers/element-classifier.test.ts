@@ -225,9 +225,15 @@ describe('Element Classifier', () => {
       expect(system.name).toBe('VARIO GT 24');
     });
 
-    it('recommends MULTIFLEX for bridge deck (slab formwork, support towers handled by props)', () => {
+    it('recommends applicable falsework for bridge deck without height (Sprint B: allow-list respected)', () => {
+      // Pre-fix this returned MULTIFLEX — a building slab formwork_props
+      // system whose applicable_element_types EXCLUDES mostovkova_deska
+      // (v4.21). The no-height branch now walks recommended_formwork for the
+      // first APPLICABLE system → Top 50 (nosníková skruž).
       const system = recommendFormwork('mostovkova_deska');
-      expect(system.name).toBe('MULTIFLEX');
+      expect(system.name).toBe('Top 50');
+      expect(system.applicable_element_types === undefined
+        || system.applicable_element_types.includes('mostovkova_deska')).toBe(true);
     });
 
     it('recommends Frami for foundations', () => {
@@ -401,8 +407,9 @@ describe('Element Classifier', () => {
     it('applies difficulty factor to assembly norm', () => {
       const system = recommendFormwork('mostovkova_deska');
       const adjusted = getAdjustedAssemblyNorm('mostovkova_deska', system);
-      // mostovka difficulty = 1.2, MULTIFLEX base = 0.50
-      expect(adjusted.assembly_h_m2).toBeCloseTo(0.60, 2);
+      // mostovka difficulty = 1.2 applied on whatever system the selector
+      // picks (Top 50 since the Sprint B allow-list fix; was MULTIFLEX 0.50).
+      expect(adjusted.assembly_h_m2).toBeCloseTo(system.assembly_h_m2 * 1.2, 2);
       expect(adjusted.difficulty_factor).toBe(1.2);
     });
 

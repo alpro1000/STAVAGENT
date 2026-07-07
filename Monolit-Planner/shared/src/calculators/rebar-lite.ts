@@ -132,6 +132,34 @@ export function calculateRebarLite(input: RebarLiteInput): RebarLiteResult {
   const normLookup = getRebarNormForDiameter(input.element_type, input.rebar_diameter_mm);
   const norm_h_per_t = normLookup.norm_h_per_t;
 
+  // Zero reinforcement is a VALID state (prostý beton: podkladni_beton has
+  // rebar_ratio_kg_m3=0 by design; user may also pass rebar_mass_kg=0). The
+  // base calculator guards `mass_t > 0` for programmer error, so short-circuit
+  // here with an honest zero result instead of crashing the whole plan.
+  if (mass_kg <= 0) {
+    return {
+      mass_kg: 0,
+      mass_t: 0,
+      mass_source,
+      mass_range_kg: mass_range_kg ? [0, 0] : undefined,
+      norm_h_per_t,
+      norm_source: normLookup.source,
+      norm_category: normLookup.category,
+      norm_diameter_mm: normLookup.used_diameter_mm,
+      labor_hours: 0,
+      duration_days: 0,
+      cost_labor: 0,
+      optimistic_days: 0,
+      most_likely_days: 0,
+      pessimistic_days: 0,
+      crew_size: crew,
+      recommended_crew: 0,
+      element_type: input.element_type,
+      confidence: 1.0,
+      assumptions_log: `element=${input.element_type}, vol=${input.volume_m3}m³, bez výztuže (prostý beton / mass=0)`,
+    };
+  }
+
   // --- Base calculation ---
   const base: RebarCalculatorResult = calculateRebar({
     mass_t,

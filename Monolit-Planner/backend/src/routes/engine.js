@@ -49,9 +49,9 @@ router.post('/calculate', (req, res) => {
 
   // volume_m3: finite, >= 0, within a domain-sane ceiling. We deliberately allow
   // 0 (parity with the engine): pilota derives its volume from pile geometry and
-  // runs fine at volume_m3=0, while non-pilota types make the rebar engine throw
-  // ("mass_t must be positive") — that throw is surfaced as engine_error below,
-  // not pre-rejected, so the endpoint mirrors the engine exactly.
+  // runs fine at volume_m3=0, while non-pilota types now degrade softly — the
+  // engine raises a typed UncalculatedError (NEPOČÍTÁNO) which is surfaced as a
+  // structured 422 below, so the endpoint mirrors the engine exactly.
   if (
     typeof input.volume_m3 !== 'number' ||
     !Number.isFinite(input.volume_m3) ||
@@ -88,6 +88,14 @@ router.post('/calculate', (req, res) => {
       const { parts, parent_label, ...parent } = input;
       return res.json(planComposite({ parent, parts, parent_label }));
     } catch (err) {
+      if (err && err.uncalculated === true) {
+        return res.status(422).json({
+          error: 'uncalculated',
+          uncalculated: true,
+          reason_cs: err.reason_cs || err.message,
+          missing_fields: err.missing_fields || [],
+        });
+      }
       console.error('[engine] /api/calculate (composite) failed:', err);
       return res.status(500).json({ error: 'engine_error' });
     }
@@ -96,6 +104,18 @@ router.post('/calculate', (req, res) => {
   try {
     return res.json(planElement(input));
   } catch (err) {
+    // Soft degradation (Sprint B): a mandatory input is missing → the engine
+    // raises UncalculatedError (duck-typed marker, safe across bundles). This
+    // is an honest NEPOČÍTÁNO, not a server fault — return structured 422 so
+    // MCP/frontend can show the Czech reason instead of "engine_error".
+    if (err && err.uncalculated === true) {
+      return res.status(422).json({
+        error: 'uncalculated',
+        uncalculated: true,
+        reason_cs: err.reason_cs || err.message,
+        missing_fields: err.missing_fields || [],
+      });
+    }
     // Detail to server logs only (Phase 2 debugging); client gets a generic error.
     console.error('[engine] /api/calculate failed:', err);
     return res.status(500).json({ error: 'engine_error' });

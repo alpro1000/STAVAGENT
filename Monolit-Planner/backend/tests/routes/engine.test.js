@@ -84,8 +84,8 @@ describe('POST /api/calculate — thin delegate to planElement', () => {
   });
 
   // Lower-bound parity (probe-confirmed): volume_m3=0 is VALID for pilota (volume
-  // derives from pile geometry) → 200; for non-pilota the rebar engine throws
-  // ("mass_t must be positive") → surfaced as a generic 500 engine_error, NOT
+  // derives from pile geometry) → 200; for non-pilota the engine degrades softly
+  // (Sprint B): typed UncalculatedError → structured 422 NEPOČÍTÁNO, NOT
   // pre-rejected, so the endpoint mirrors the engine.
   test('volume_m3=0 with pilota → 200 (engine derives volume from geometry)', async () => {
     const input = { element_type: 'pilota', volume_m3: 0, has_dilatacni_spary: false };
@@ -95,11 +95,16 @@ describe('POST /api/calculate — thin delegate to planElement', () => {
     expect(res.body).toEqual(direct);
   });
 
-  test('volume_m3=0 with stena → 500 engine_error, no leaked detail', async () => {
+  test('volume_m3=0 with stena → 422 structured NEPOČÍTÁNO (soft degradation)', async () => {
     const res = await request(app).post('/api/calculate').send({ element_type: 'stena', volume_m3: 0, has_dilatacni_spary: false });
-    expect(res.status).toBe(500);
-    expect(res.body).toEqual({ error: 'engine_error' });
+    expect(res.status).toBe(422);
+    expect(res.body.error).toBe('uncalculated');
+    expect(res.body.uncalculated).toBe(true);
+    expect(res.body.reason_cs).toContain('objem betonu');
+    expect(res.body.missing_fields).toEqual(['volume_m3']);
+    // No stack / internal detail leaked
     expect(res.body.detail).toBeUndefined();
+    expect(res.body.stack).toBeUndefined();
   });
 });
 

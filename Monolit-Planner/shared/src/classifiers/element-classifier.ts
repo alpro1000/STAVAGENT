@@ -1072,8 +1072,22 @@ export function recommendFormwork(
     return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
   }
 
-  // No height → static recommendation (original behavior)
+  // No height → static recommendation, but NEVER a system whose allow-list
+  // excludes this element (Sprint B, audit symptom b: mostovkova_deska without
+  // height fell through to recommended_formwork[0] = MULTIFLEX — a building
+  // slab formwork_props system whose applicable_element_types excludes bridge
+  // decks). Walk the recommendation list for the first applicable entry, then
+  // fall back to the element's applicable pool.
   if (height_m == null || height_m <= 0) {
+    for (const systemName of profile.recommended_formwork) {
+      const sys = FORMWORK_SYSTEMS.find(s => s.name === systemName);
+      if (!sys) continue;
+      const applicable =
+        !sys.applicable_element_types || sys.applicable_element_types.includes(type);
+      if (applicable && sys.pour_role !== 'mss_integrated') return sys;
+    }
+    const { all: pool } = getSuitableSystemsForElement(type);
+    if (pool.length > 0) return pool[0];
     const systemName = profile.recommended_formwork[0];
     return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
   }

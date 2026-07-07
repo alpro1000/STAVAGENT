@@ -205,7 +205,10 @@ async def delegate(path: str, payload: dict) -> dict:
 
 def _err_text(body: Any) -> str:
     if isinstance(body, dict):
-        return str(body.get("error") or body.get("message") or body)
+        # reason_cs first: the engine's soft-degradation 422 (NEPOČÍTÁNO)
+        # carries the human-readable Czech reason there, while `error` is just
+        # the machine kind ("uncalculated").
+        return str(body.get("reason_cs") or body.get("error") or body.get("message") or body)
     return str(body)
 
 

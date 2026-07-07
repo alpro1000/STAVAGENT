@@ -889,6 +889,28 @@ function deriveGeometryInput(
   return next;
 }
 
+/**
+ * Soft-degradation signal (2026-07, audit Sprint B): a mandatory input is
+ * missing/zero and the element CANNOT be honestly computed. Domain rule
+ * (honest-blank at computation level): such an element is NEPOČÍTÁNO —
+ * skipped in aggregation (`planProject` already records it via
+ * `elements_uncalculated`), never a fabricated result and never a cryptic
+ * deep-pipeline crash ("mass_t must be positive" from the scheduler guts).
+ * API callers (backend /api/calculate, MCP) detect it via the
+ * `uncalculated === true` duck-type marker (instanceof is unreliable across
+ * package boundaries) and surface the Czech reason verbatim.
+ */
+export class UncalculatedError extends Error {
+  readonly uncalculated = true as const;
+  constructor(
+    public readonly reason_cs: string,
+    public readonly missing_fields: string[],
+  ) {
+    super(`NEPOČÍTÁNO — ${reason_cs}`);
+    this.name = 'UncalculatedError';
+  }
+}
+
 export function planElement(input: PlannerInput): PlannerOutput {
   const log: string[] = [];
   const warnings: string[] = [];
@@ -1007,6 +1029,24 @@ export function planElement(input: PlannerInput): PlannerOutput {
       crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour,
       temperature,
     });
+  }
+
+  // ─── 1c. Mandatory-input gate — soft degradation (2026-07, Sprint B) ────
+  // Volume is the universal critical field (REQUIRED_FIELDS marks it critical
+  // for every non-pilota type). Without it the pipeline used to run until a
+  // deep guard crashed (rebar "mass_t must be positive", concreting
+  // "volume_m3 must be positive"). deriveGeometryInput above already tried to
+  // derive it from L×W×H; if it is still not positive, the element is
+  // honestly NEPOČÍTÁNO. Pilota is exempt (branch above derives volume from
+  // pile geometry).
+  if (!(typeof input.volume_m3 === 'number' && Number.isFinite(input.volume_m3) && input.volume_m3 > 0)) {
+    const hasDims = !!(input.length_m && input.width_m && input.height_m);
+    throw new UncalculatedError(
+      hasDims
+        ? `chybí objem betonu (volume_m3) a z rozměrů ${input.length_m}×${input.width_m}×${input.height_m} m jej nelze pro tento typ prvku poctivě odvodit — zadejte objem ručně`
+        : 'chybí objem betonu (volume_m3) — bez něj nelze počítat záběry, harmonogram ani náklady',
+      ['volume_m3'],
+    );
   }
 
   // ─── 2. Lateral Pressure & Formwork System Selection ─────────────────
