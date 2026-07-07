@@ -19,6 +19,7 @@ export * from './constants-data/index.js';
 
 // Parsers — TZ text extraction (regex-based)
 export * from './parsers/tz-text-extractor.js';
+export * from './parsers/bridge-passport.js';
 
 // Monolith vs. non-monolith classifier (shared by FE filter, BE export, BE parser)
 export * from './monolith-classifier.js';

@@ -215,6 +215,16 @@ ELEMENT_TYPES = {
         "orientation": "vertical",
         "formwork": [],
     },
+    "podkladni_beton": {
+        # 2026-07-07 (SO-202 Žalmanov): prostý beton — rebar 0 by design;
+        # pre-fix these rolled up to "jine" (rebar 100 kg/m³ = fabricated).
+        "label_cs": "Podkladní beton",
+        "difficulty": 0.5,
+        "rebar_kg_m3": 0,
+        "rebar_range": [0, 0],
+        "orientation": "horizontal",
+        "formwork": ["Tradiční tesařské"],
+    },
     "jine": {
         "label_cs": "Jiné / nespecifikováno",
         "difficulty": 1.0,
@@ -431,7 +441,7 @@ async def classify_construction_element(
     object_code: Optional[str] = None,
     object_type: Optional[str] = None,
 ) -> dict:
-    """Classify a structural construction element into one of 22 types.
+    """Classify a structural construction element into one of 23 types.
 
     Input: element name from TZ documentation (Czech or English).
     Output: element_type code, Czech label, difficulty factor (0.7-1.5),

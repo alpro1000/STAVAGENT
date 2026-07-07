@@ -327,7 +327,7 @@ async def create_work_breakdown(
     """From a list of structural elements, create a complete bill of quantities
     (výkaz výměr / soupis prací) with OTSKP/ÚRS codes and prices.
 
-    Pipeline: element classification (22 types) → work decomposition (formwork
+    Pipeline: element classification (23 types) → work decomposition (formwork
     assembly+disassembly, rebar, concrete, curing, prestress...) → OTSKP/ÚRS
     code matching from the real database of 17,904 OTSKP + 39,000 ÚRS items.
 

@@ -203,6 +203,9 @@ def _build_planner_payload(
     tz_pour_stages: Optional[int] = None,
     tz_quote: Optional[str] = None,
     tz_anchor: Optional[str] = None,
+    rebar_mass_kg: Optional[float] = None,
+    prestress_strand_mass_kg: Optional[float] = None,
+    num_tacts_override: Optional[int] = None,
     parts: Optional[list] = None,
 ) -> dict:
     """Map MCP arguments → canonical engine PlannerInput.
@@ -242,6 +245,13 @@ def _build_planner_payload(
         "preferred_manufacturer": preferred_manufacturer,
         "formwork_system_name": formwork_system_name,
         "rental_czk_override": rental_czk_override,
+        # SO-202 Žalmanov E2E findings (2026-07-07): exact soupis quantities +
+        # documented pour staging were untranslatable via MCP — the engine
+        # estimated rebar from type ratios (−20 % on základy) and the TZ's
+        # «3 takty» could only FLAG, never compute. Straight passthroughs:
+        "rebar_mass_kg": rebar_mass_kg,
+        "prestress_strand_mass_kg": prestress_strand_mass_kg,
+        "num_tacts_override": num_tacts_override,
     }
     for key, value in optional.items():
         if value is not None:
@@ -281,13 +291,22 @@ def _build_planner_payload(
     spec = KNOWN_FORMWORK_SYSTEMS.get(formwork_system_name or "")
     is_bm = (spec or {}).get("unit") == "bm" or element_type == "rimsa"
     if formwork_length_bm and formwork_length_bm > 0 and is_bm:
-        # Engine consumes the area input as quantity in the system's unit;
-        # for bm systems that quantity IS the linear length.
-        payload["formwork_area_m2"] = float(formwork_length_bm)
-        if cycle_length_bm and cycle_length_bm > 0:
-            payload["num_tacts_override"] = max(
-                1, math.ceil(formwork_length_bm / cycle_length_bm)
-            )
+        # Engine consumes the area input as PER-TACT quantity in the system's
+        # unit; for bm systems that quantity is the záběr length, NOT the
+        # whole-bridge total. Pre-fix this passed the full length per tact —
+        # the engine's own sanity net flagged it (»16.4 m²/m³« on SO-202
+        # Žalmanov, 2026-07-07) and formwork labor/rental inflated ~9×.
+        tacts_from_cycle = (
+            max(1, math.ceil(formwork_length_bm / cycle_length_bm))
+            if cycle_length_bm and cycle_length_bm > 0
+            else None
+        )
+        effective_tacts = num_tacts_override or tacts_from_cycle
+        payload["formwork_area_m2"] = round(
+            float(formwork_length_bm) / (effective_tacts or 1), 2
+        )
+        if tacts_from_cycle and "num_tacts_override" not in payload:
+            payload["num_tacts_override"] = tacts_from_cycle
 
     # ── tz_facts (Part B/C validation rule input) ─────────────────────────
     # The documented construction technology / pour-stage count from the TZ.
@@ -344,6 +363,9 @@ async def calculate_concrete_works(
     tz_pour_stages: Optional[int] = None,
     tz_quote: Optional[str] = None,
     tz_anchor: Optional[str] = None,
+    rebar_mass_kg: Optional[float] = None,
+    prestress_strand_mass_kg: Optional[float] = None,
+    num_tacts_override: Optional[int] = None,
     parts: Optional[list] = None,
 ) -> dict:
     """Calculate concrete works for a single RC structural element.
@@ -580,6 +602,20 @@ async def calculate_concrete_works(
             (shown in the warning). Optional.
         tz_anchor: Section + page anchor of the quote, e.g. 'TZ §4.1.6, str. 11'.
             Optional.
+        rebar_mass_kg: Exact B500B reinforcement mass in kg for the WHOLE
+            element (soupis/VV tonnage, e.g. pos. 272365 «VÝZTUŽ ZÁKLADŮ»
+            129 877 kg). When provided the engine uses it verbatim instead of
+            estimating from the element-type ratio (estimates ran −15…−25 %
+            vs soupis on SO-202 Žalmanov). For num_bridges=2 pass the
+            PER-BRIDGE mass (like volume_m3).
+        prestress_strand_mass_kg: Y1860S7 strand mass in kg (per bridge, e.g.
+            pos. 42237 «VÝZTUŽ PŘEDPÍNACÍ» ÷ 2). Feeds the confirmed labor
+            norm 35 Nh/t (v4.36); echo-only for schedule.
+        num_tacts_override: Force the pour-tact count, e.g. to honor the TZ
+            («ve 3 taktech na skruži» → 3). The engine recomputes per-tact
+            volume + pour hours and emits mega-pour warnings honestly (crew
+            relief, backup pump) instead of splitting by pour window. Wins
+            over the cycle_length_bm-derived count.
     """
     try:
         # Stage-1 extract (extract_tz_fields) ships volume_m3=None — volumes are
@@ -655,6 +691,9 @@ async def calculate_concrete_works(
             tz_pour_stages=tz_pour_stages,
             tz_quote=tz_quote,
             tz_anchor=tz_anchor,
+            rebar_mass_kg=rebar_mass_kg,
+            prestress_strand_mass_kg=prestress_strand_mass_kg,
+            num_tacts_override=num_tacts_override,
             parts=parts,
         )
 

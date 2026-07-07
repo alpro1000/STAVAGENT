@@ -15,6 +15,8 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_mcp_middleware_bearer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_rate_limit.py'
       - 'concrete-agent/packages/core-backend/tests/test_passport_store.py'
+      - 'concrete-agent/packages/core-backend/tests/test_bridge_passport_schema.py'
+      - 'docs/specs/tz-passport-json/example_SO202_zalmanov.json'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_dcr_integration.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_foundation.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_policy.py'
@@ -58,6 +60,8 @@ on:
       - 'concrete-agent/packages/core-backend/tests/test_mcp_middleware_bearer.py'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_rate_limit.py'
       - 'concrete-agent/packages/core-backend/tests/test_passport_store.py'
+      - 'concrete-agent/packages/core-backend/tests/test_bridge_passport_schema.py'
+      - 'docs/specs/tz-passport-json/example_SO202_zalmanov.json'
       - 'concrete-agent/packages/core-backend/tests/test_mcp_dcr_integration.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_foundation.py'
       - 'concrete-agent/packages/core-backend/tests/test_stage_gating_policy.py'
@@ -172,6 +176,7 @@ jobs:
             tests/test_mcp_middleware_bearer.py \
             tests/test_mcp_rate_limit.py \
             tests/test_passport_store.py \
+            tests/test_bridge_passport_schema.py \
             tests/test_mcp_dcr_integration.py \
             tests/test_stage_gating_foundation.py \
             tests/test_stage_gating_policy.py \

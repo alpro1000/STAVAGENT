@@ -5,6 +5,83 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
+## mcp-e2e-zalmanov-findings (2026-07-07) — 5 tickets, all ✅ FIXED same day
+
+**Source:** live MCP E2E test on SO 202 (D6 Olšová Vrata–Žalmanov, most přes
+Lomnický potok): drawing 202/17 «Tvar NK» (vision) + soupis E_Soupis_skupiny_
+MOSTY_PHS.xlsx (99 items) → classify → calculate → Nh. Full run in chat log
+2026-07-07; canonical passport example saved to
+`docs/specs/tz-passport-json/example_SO202_zalmanov.json`.
+
+1. ✅ **MCP calculate lacked `rebar_mass_kg`** — soupis tonnages (469 t NK!)
+   untranslatable; engine ratio estimates ran −15…−25 % vs VV. FIXED:
+   passthrough param (+ `prestress_strand_mass_kg` for the 35 Nh/t norm) in
+   `app/mcp/tools/calculator.py`.
+2. ✅ **MCP calculate lacked `num_tacts_override`** — TZ's «ve 3 taktech na
+   skruži» could only FLAG (validation rule), never compute. FIXED: explicit
+   passthrough; wins over cycle_length_bm-derived count.
+3. ✅ **W3 classifier: «PODKLADNÍ A VÝPLŇOVÉ VRSTVY…» → `jine`** (rebar
+   100 kg/m³ fabricated for prostý beton). FIXED across the SSOT chain:
+   `element_types.yaml` w3_name jine→podkladni_beton + w3_family entry,
+   W3 `ELEMENT_TYPES["podkladni_beton"]` (rebar 0), kb-generated TS artifact
+   regenerated (drift check green).
+4. ✅ **Římsa bm→m² translation fed TOTAL length as PER-TACT area** (243 bm →
+   243 m²/tact → formwork labor/rental ~9× inflated; engine's own sanity net
+   flagged 16.4 m²/m³). FIXED: per-tact quantity = length ÷ tacts; replay
+   fixture 13 re-captured via local engine.
+5. ✅ **bridge-technology recommended an option its own feasibility map
+   rejected** (span 44.5 m > 40 → MSS while 3 pole < 4 → infeasible). FIXED:
+   feasibility guard — never recommend infeasible while a feasible option
+   exists; reason + ⚠️ warning explain the fallback (Žalmanov now → pevná
+   skruž se zesíleným projektem podpěr).
+
+**Remaining from the same test (NOT fixed here):** MCP tool description still
+says «22 types» in a few doc spots (now 23 with podkladni_beton) — cosmetic;
+live re-verification of fixes after deploy.
+
+## tz-passport-json — extraction pipeline «dokumentace → JSON → kalkulátor»
+
+**Severity:** P1 — product feature (Alexander's ask 2026-07-07)
+**STATUS UPDATE 2026-07-07 (later same day): interview RATIFIED, half A gate 1
+✅ SHIPPED.** Decisions: (1) Pydantic v Core = schema single-source
+(`app/models/bridge_passport.py`) + example validated in CI
+(`test_bridge_passport_schema.py`, wired into the MCP workflow); (2+3)
+deferred to B-interview; (4) TZ = calculation default, conflicts visible,
+OTSKP band ≠ grade conflict (Pattern 53); (5) per-SO passport, stavba =
+collection. Gate 1 = mapper `shared/src/parsers/bridge-passport.ts`
+(`mapPassportToPlannerInputs` + `planPassport`), 10 golden tests against
+`example_SO202_zalmanov.json` (deck 3 takty × 449.66 m³ bez validačního
+flagu; honest-ignore; NEPOČÍTÁNO bez quantities; genuine-conflict warning).
+Example extended with `quantities` section (soupis join, provenance per item).
+**Gate 2 (open):** consumer wiring — MCP tool `calculate_from_passport` (all
+counter files!) / Monolit backend route / UI import. **Half B (open):**
+extraction interview (questions 2+3 in requirements.md).
+**Spec seed:** `docs/specs/tz-passport-json/` (requirements draft + canonical
+example `example_SO202_zalmanov.json` — hand-built by Alexander from the SO 202
+TZ, validated against soupis + drawing in the 2026-07-07 E2E session).
+
+**Idea:** teach the system to extract a STRUCTURED BRIDGE PASSPORT (JSON) from
+project documentation (TZ + drawings + soupis) so the calculator consumes it
+directly. Two halves:
+1. **Consuming side (small, deterministic):** mapper passport-JSON →
+   `PlannerInput[]` (per-element: volumes from soupis/VV, concrete classes per
+   use from `materials_and_standards.concretes` — incl. full exposure strings
+   «C30/37-XF4+XD3+XC4», spans/width/subtype from `geometry` +
+   `structural_system`, tz_facts from `construction_process`, strand mass from
+   `post_tensioning`). Extends the existing `tz_facts` seam.
+2. **Extraction side (big, staged):** TZ text → passport via extend
+   `extract_tz_fields` (stage 1 text) + stage 2 drawings (UEP/vision) + stage 3
+   soupis quantities join. Provenance per field (Pattern 29), honest-blank for
+   missing (Pattern 26).
+
+**Interview needed before design:** schema governance (who owns the JSON
+shape), where extraction runs (CORE UEP vs MCP tool vs offline), LLM vs
+regex split per section, and how conflicts TZ↔soupis surface (E2E found two:
+pier C35/45 per TZ vs soupis band «DO C40/50» — Pattern 53; deck C35/45 vs
+band C40/50).
+
+---
+
 ## ✅ CLOSED (2026-05-31): cross-user-data-isolation
 
 **Severity:** was P0 — security + GDPR

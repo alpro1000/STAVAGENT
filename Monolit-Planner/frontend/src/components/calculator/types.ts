@@ -351,7 +351,13 @@ export const ELEMENT_TYPES: { value: StructuralElementType; label: string; group
   { value: 'podzemni_stena', label: 'Podzemní stěna (milánská)', group: 'Pozemní stavby' },
   { value: 'pilota', label: 'Pilota / mikropilota', group: 'Pozemní stavby' },
   { value: 'zaklady_piliru', label: 'Základy pilířů', group: 'Mostní prvky' },
+  // 2026-07-07 live-test finding: kridla_opery + zaklady_oper existovaly v
+  // enginu (24 typů), ale NE v tomto UI seznamu (22) — composite šablona
+  // opěry pak u «Křídla» zobrazovala první option («Základová deska»),
+  // protože <select> nemá odpovídající value. Typy nebyly vybratelné NIKDE.
+  { value: 'zaklady_oper', label: 'Základy opěr', group: 'Mostní prvky' },
   { value: 'driky_piliru', label: 'Dříky pilířů', group: 'Mostní prvky' },
+  { value: 'kridla_opery', label: 'Křídla opěry', group: 'Mostní prvky' },
   { value: 'operne_zdi', label: 'Opěrné zdi', group: 'Mostní prvky' },
   { value: 'mostovkova_deska', label: 'Mostovková deska', group: 'Mostní prvky' },
   { value: 'rimsa', label: 'Římsa', group: 'Mostní prvky' },
