@@ -660,6 +660,21 @@ router.post('/calculations', async (req, res) => {
   const { position_instance_id, project_id, supplier_id, model_id, input_params, result } = req.body;
 
   try {
+    // When linking to a position instance, the instance must belong to one
+    // of the caller's projects (isolation review LOW: write pollution)
+    if (position_instance_id) {
+      const { rows } = await pool.query(
+        `SELECT 1 FROM portal_positions pp
+         JOIN portal_objects po ON pp.object_id = po.object_id
+         JOIN portal_projects pr ON po.portal_project_id = pr.portal_project_id
+         WHERE pp.position_instance_id = $1 AND pr.owner_id = $2`,
+        [position_instance_id, req.user.userId]
+      );
+      if (rows.length === 0) {
+        return res.status(404).json({ error: 'Position instance not found' });
+      }
+    }
+
     const { rows: [calc] } = await pool.query(`
       INSERT INTO pump_calculations (position_instance_id, project_id, supplier_id, model_id, input_params, result, created_by)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
