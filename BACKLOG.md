@@ -5,45 +5,30 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
-## CRITICAL: cross-user-data-isolation
+## ✅ CLOSED (2026-05-31): cross-user-data-isolation
 
-**Severity:** P0 — security + GDPR
+**Severity:** was P0 — security + GDPR
 **Affects:** Monolit-Planner (Kalkulátor betonáže), Registr
 **Reporter:** Founder, observed 2026-05-12 post Landing v3 merge
 
-**Symptom:**
-After registering a fresh user account, that user has access to
-ALL projects in Monolit-Planner and Registr without per-user
-filtering. No tenant boundary visible.
+**Resolution (2026-05-31):** The reported symptom — a fresh user seeing ALL
+projects without per-user filtering — was fixed and shipped in 5 incremental
+commits (see `docs/soul.md` §9 entry 2026-05-31). Owner scoping
+(`portal_user_id` / `owner_id` WHERE-predicates) now covers the project-list
+and mutation endpoints in Portal, Monolit and Registry; cross-account access
+returns 403. Canonical model + route inventory:
+`docs/security/isolation_model.md`. Regression guard: isolation e2e tests +
+the `cross-user-isolation-reviewer` agent runs on every PR touching owned
+tables.
 
-**Suspected causes (to investigate):**
-1. Backend routes not filtering by user_id / org_id / owner
-2. Frontend not passing auth context to project list queries
-3. DB queries missing WHERE owner_id = $current_user
-4. Migration legacy data assigned to default owner_id=1, leaks
-
-**Not fixed in current PR (landing-quickfix-subtitle-cta) because:**
-- Requires careful authentication review
-- Needs authorization checks added per route
-- DB query audit required across all project endpoints
-- Test coverage essential before shipping
-
-**Dedicated PR scope when addressed:**
-1. Audit all GET endpoints returning project lists
-2. Verify WHERE clauses include current user filter
-3. Add integration tests: User A registers, creates project, User B
-   registers, User B sees zero projects
-4. Verify across all three kiosks: Portal, Kalkulátor, Registr
-5. Migration plan for any existing leaked data (assign to original
-   owner or quarantine)
-
-**Trigger:** Before any public marketing / Cemex CSC submission
-goes live referencing the SaaS product.
-
-**Estimated effort:** 8-16 hours including testing.
-
-**Risk if not fixed:** GDPR fine + trust collapse if any real user
-data is exposed cross-tenant.
+**Remaining related work (tracked separately, NOT this ticket):** the
+2026-07-01 full-repo audit found *unauthenticated* routes (a different class:
+no login required at all, vs. logged-in user seeing foreign data): Portal
+`/api/pump/*` + `/api/parse-preview/import` + `/api/kb/research`, Monolit
+`positions.js`/`planner-variants.js`, URS (no auth as a class), Registry
+`cleanup-empty` owner-scope + 2 unauthed endpoints. These are scoped as
+**Sprint A** in the audit report and remain the blocker before any public
+demo. Do not reopen this ticket for them.
 
 ## register-route-redirect
 
