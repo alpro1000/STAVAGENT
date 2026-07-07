@@ -939,6 +939,12 @@ function colLetterToNum(letters: string): number {
 /**
  * Add a string cell (inline string) to a row in sheet XML.
  * Uses t="inlineStr" to avoid modifying the shared strings table.
+ *
+ * If a cell already exists at that reference (e.g. two items resolving
+ * to the same source row, or the computed header row colliding with a
+ * data row), it is updated in place rather than appended as a duplicate
+ * sibling — two <c> elements with the same r="..." in one <row> is
+ * invalid OOXML and makes Excel refuse to open the file.
  */
 function addInlineStringCell(
   doc: Document,
@@ -946,11 +952,30 @@ function addInlineStringCell(
   colLetter: string,
   value: string
 ): boolean {
+  const cellRef = `${colLetter}${rowNum}`;
+
+  const existingCells = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'c');
+  for (let i = 0; i < existingCells.length; i++) {
+    if (existingCells[i].getAttribute('r') === cellRef) {
+      const cell = existingCells[i];
+      cell.setAttribute('t', 'inlineStr');
+      while (cell.firstChild) {
+        cell.removeChild(cell.firstChild);
+      }
+      const isElem = doc.createElementNS(SPREADSHEET_NS, 'is');
+      const tElem = doc.createElementNS(SPREADSHEET_NS, 't');
+      tElem.textContent = value;
+      isElem.appendChild(tElem);
+      cell.appendChild(isElem);
+      return true;
+    }
+  }
+
   const rows = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'row');
   for (let i = 0; i < rows.length; i++) {
     if (rows[i].getAttribute('r') === String(rowNum)) {
       const newCell = doc.createElementNS(SPREADSHEET_NS, 'c');
-      newCell.setAttribute('r', `${colLetter}${rowNum}`);
+      newCell.setAttribute('r', cellRef);
       newCell.setAttribute('t', 'inlineStr');
       const isElem = doc.createElementNS(SPREADSHEET_NS, 'is');
       const tElem = doc.createElementNS(SPREADSHEET_NS, 't');
@@ -962,6 +987,48 @@ function addInlineStringCell(
     }
   }
   return false;
+}
+
+/**
+ * Elements that the OOXML CT_Worksheet child sequence (ECMA-376 §18.3.1.99)
+ * requires to appear AFTER <autoFilter>. Used to find a schema-safe
+ * insertion point for a newly-added <autoFilter> — inserting right before
+ * the first of these that's present keeps it correctly ordered after
+ * <sheetCalcPr>/<sheetProtection>/<protectedRanges>/<scenarios> (which
+ * must precede it), whether or not those elements exist in this sheet.
+ */
+const ELEMENTS_AFTER_AUTOFILTER = [
+  'sortState', 'dataConsolidate', 'customSheetViews', 'mergeCells',
+  'phoneticPr', 'conditionalFormatting', 'dataValidations', 'hyperlinks',
+  'printOptions', 'pageMargins', 'pageSetup', 'headerFooter', 'rowBreaks',
+  'colBreaks', 'customProperties', 'cellWatches', 'ignoredErrors',
+  'smartTags', 'drawing', 'drawingHF', 'picture', 'oleObjects', 'controls',
+  'webPublishItems', 'tableParts', 'extLst',
+];
+
+/**
+ * Insert a new <autoFilter> element into worksheet XML at a schema-valid
+ * position. Naively inserting right after </sheetData> is only safe when
+ * no <sheetCalcPr>/<sheetProtection>/<protectedRanges>/<scenarios> element
+ * is present — on protected sheets (common for tender templates) that
+ * would place <autoFilter> before <sheetProtection>, an invalid element
+ * order that Excel reports as a corrupted file.
+ */
+function insertAutoFilterElement(xml: string, autoFilterRef: string): string {
+  const autoFilterTag = `<autoFilter ref="${autoFilterRef}"/>`;
+
+  for (const tag of ELEMENTS_AFTER_AUTOFILTER) {
+    const idx = xml.indexOf(`<${tag}`);
+    if (idx !== -1) {
+      return xml.slice(0, idx) + autoFilterTag + xml.slice(idx);
+    }
+  }
+
+  if (xml.includes('</worksheet>')) {
+    return xml.replace('</worksheet>', `${autoFilterTag}</worksheet>`);
+  }
+
+  return xml.replace('</sheetData>', `</sheetData>${autoFilterTag}`);
 }
 
 /**
@@ -1106,11 +1173,8 @@ export async function exportToOriginalFileWithSkupiny(
           `<autoFilter ref="${autoFilterRef}"`
         );
       } else {
-        // Insert autoFilter after </sheetData>
-        patchedXml = patchedXml.replace(
-          '</sheetData>',
-          `</sheetData><autoFilter ref="${autoFilterRef}"/>`
-        );
+        // Insert autoFilter at a schema-valid position (see insertAutoFilterElement)
+        patchedXml = insertAutoFilterElement(patchedXml, autoFilterRef);
       }
 
       // --- Patch B: allow autoFilter on protected sheets ---
