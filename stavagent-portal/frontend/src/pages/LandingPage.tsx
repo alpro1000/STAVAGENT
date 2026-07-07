@@ -242,7 +242,7 @@ const CASES = [
 ];
 
 // "Co StavAgent NEd\u011bl\u00e1" bullets jsou p\u0159evzat\u00e9 DOSLOVN\u011a z
-// docs/CALCULATOR_PHILOSOPHY.md \u00a72. Nep\u0159episovat \u2014 slou\u017e\u00ed jako z\u00e1vazn\u00e9
+// docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY) \u00a72. Nep\u0159episovat \u2014 slou\u017e\u00ed jako z\u00e1vazn\u00e9
 // pozicov\u00e1n\u00ed proti DOKA Software / PERI EngineeringPad a chr\u00e1n\u00ed p\u0159ed
 // nadproduk\u010dn\u00edm o\u010dek\u00e1v\u00e1n\u00edm (acceptance criteria typu "kalkul\u00e1tor mus\u00ed
 // vr\u00e1tit p\u0159esn\u011b N K\u010d" jsou anti-pattern, viz \u00a76.1 stejn\u00e9ho dokumentu).
@@ -265,7 +265,7 @@ const NEDELA = [
   },
 ];
 
-// Disclaimer text p\u0159evzat\u00fd DOSLOVN\u011a z docs/CALCULATOR_PHILOSOPHY.md \u00a75.1
+// Disclaimer text p\u0159evzat\u00fd DOSLOVN\u011a z docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY) \u00a75.1
 // \u2014 povinn\u00fd viditeln\u00fd text na lendingu (a v Kalkul\u00e1toru samotn\u00e9m).
 const CALCULATOR_DISCLAIMER = 'Tento kalkul\u00e1tor poskytuje orienta\u010dn\u00ed odhad pro p\u0159\u00edpravu rozpo\u010dtu s p\u0159esnost\u00ed typicky \u00b110\u201315 %. Fin\u00e1ln\u00ed detailn\u00ed n\u00e1vrh, statick\u00fd v\u00fdpo\u010det a p\u0159esnou specifikaci komponent\u016f prov\u00e1d\u00ed v\u017edy dodavatel opalubky (DOKA / PERI / ULMA / dal\u0161\u00ed) na z\u00e1klad\u011b konkr\u00e9tn\u00edch projektov\u00fdch podklad\u016f. Pro tendrovou f\u00e1zi a p\u0159edb\u011b\u017enou kalkulaci je tato p\u0159esnost dostate\u010dn\u00e1.';
 
@@ -618,7 +618,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Calculator disclaimer — canonical text z docs/CALCULATOR_PHILOSOPHY.md §5.1 */}
+        {/* Calculator disclaimer — canonical text z docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §5.1) */}
         <div style={{
           marginTop: 24, padding: '16px 20px',
           borderLeft: '4px solid var(--accent-orange)',

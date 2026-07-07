@@ -9,13 +9,13 @@
 
 ## ⚡ QUICK REFERENCE (READ THIS FIRST!)
 
-### 🎯 Current Status (aktuální live state → root `CLAUDE.md` changelog v4.34; níže historický 2025-11-20 baseline)
+### 🎯 Current Status (aktuální live state → root `CLAUDE.md` changelog, v4.38+ 2026-07; níže historický 2025-11-20 baseline — čísla 92 files/26.9K LOC jsou z listopadu 2025, dnes ~187 endpointů/112 test files/~96K LOC dle root Totals)
 - **Phase:** 4 - Backend Infrastructure + Integration ✅ COMPLETE
 - **Sprint:** Week 1 (Nov 6-13) - ✅ 100% COMPLETE
 - **Current:** Week 2 - Production Deployment (Nov 19-23)
 - **Status:**
   - Backend infrastructure: ✅ Ready (PostgreSQL, Redis, Celery)
-  - Monolit integration: ✅ PRODUCTION LIVE (Endpoint fixed Nov 20)
+  - Monolit integration: ⚠️ historický claim — `monolit_adapter` router nebyl nikdy mounted a byl SMAZÁN 2026-07 (audit Sprint D). Živý seam = `app/mcp/tools/monolit_delegate.py` → Monolit `/api/calculate` (opačný směr).
   - Monorepo refactoring: ✅ COMPLETE (Nov 18) - @stavagent/core-* packages
 - **Monorepo Structure:** ✅ COMPLETE
   - @stavagent/core-backend (FastAPI, 92 files, 26,926 LOC)

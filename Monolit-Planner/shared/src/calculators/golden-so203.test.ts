@@ -13,7 +13,7 @@
  * formwork system selection, prestress timing — covered in dedicated tests
  * (`element-scheduler.test.ts`, `planner-orchestrator.test.ts`).
  *
- * Per `docs/CALCULATOR_PHILOSOPHY.md` §3, numeric assertions use ±10–15 %
+ * Per `docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY)` §3, numeric assertions use ±10–15 %
  * tolerance. Resource Ceiling assertions are EXACT (deterministic match
  * between engine demand peak and ceiling cap).
  */

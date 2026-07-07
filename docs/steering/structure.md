@@ -30,7 +30,7 @@ STAVAGENT/
 │
 ├── stavagent-portal/             # Portal/Dispatcher (Node/Express + React) → www.stavagent.cz
 ├── Monolit-Planner/              # Kalkulátor betonáže → kalkulator.stavagent.cz
-│   ├── shared/src/               # 7-engine pipeline (calculators/, classifiers/, parsers/) + 1249 testů
+│   ├── shared/src/               # 7-engine pipeline (calculators/, classifiers/, parsers/) + 1366 testů (07-2026)
 │   │   └── kb-generated/         # GENEROVÁNO z kb/*.yaml přes scripts/gen-knowledge.mjs — needit ručně
 │   ├── backend/                  # Node/Express (SQLite dev / Postgres prod)
 │   └── frontend/                 # React + Vite (Vercel)

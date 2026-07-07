@@ -19,7 +19,7 @@
  * This fixture should remain stable across Phase 2 Gap #8 fix (regression
  * net for non-mostní pozemní elements).
  *
- * Per `docs/CALCULATOR_PHILOSOPHY.md` §3, numeric assertions use ±10–15 %
+ * Per `docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY)` §3, numeric assertions use ±10–15 %
  * tolerance.
  */
 

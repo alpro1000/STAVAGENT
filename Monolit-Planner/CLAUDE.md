@@ -1,5 +1,11 @@
 # 🏗️ CLAUDE.MD — AI Context Document
 
+> ⚠️ **Live-state pointer (2026-07-07):** канонический актуальный статус —
+> root [`../CLAUDE.md`](../CLAUDE.md) (§Services/3 + changelog; **1366 shared
+> tests**, PostgreSQL prod). Ниже местами историческое описание ранних версий
+> (v4.3.x, SQLite-эра) — сверяй с root перед использованием. `render.yaml`
+> удалён из репо 2026-07 (Render мёртв, deploy = Cloud Build → Cloud Run).
+
 **ВАЖНО: Этот файл — источник истины для AI-ассистента. Всегда обращайся к нему перед выполнением задач!**
 
 ---
@@ -24,7 +30,7 @@
 
 ```
 monolit-planner/
-├── backend/                          ← Node.js + Express + SQLite
+├── backend/                          ← Node.js + Express + PostgreSQL (prod) / SQLite (local dev)
 │   ├── src/
 │   │   ├── db/
 │   │   │   └── init.js              ← Database initialization
@@ -74,7 +80,6 @@ monolit-planner/
 │   │   └── constants.ts
 │   └── package.json
 │
-├── render.yaml                       ← Legacy deployment config (не используется)
 ├── CLAUDE.md                         ← 📄 AI Context Document (this file)
 ├── DEVELOPMENT_PLAN.md               ← 🚀 Strategic Development Plan (NEW!)
 │   (legacy lowercase `claude.md` — staré session logy v4.3.3/Render —
@@ -527,10 +532,9 @@ Frontend отображает таблицу
 
 ```
 monolit-planner/
-├── backend/          ← Node.js + Express + SQLite
+├── backend/          ← Node.js + Express + PostgreSQL (prod) / SQLite (dev)
 ├── frontend/         ← React + TypeScript + Vite
 ├── shared/           ← Общие типы и формулы
-├── render.yaml       ← Legacy конфиг (не используется)
 ├── DEPLOY.md         ← Инструкции
 ├── CLAUDE.md         ← ⭐ ЭТОТ ФАЙЛ (для AI)
 └── README.md         ← Пользовательская документация
@@ -539,7 +543,7 @@ monolit-planner/
 ### Backend Stack
 
 - **Node.js 18+** + Express.js
-- **SQLite** (better-sqlite3) — встроенная БД
+- **PostgreSQL 15** (Cloud SQL) в проде; SQLite (better-sqlite3) только для local dev
 - **XLSX** (xlsx) — парсинг Excel
 - **Multer** — загрузка файлов
 - **API:** REST (JSON)
@@ -690,9 +694,9 @@ CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
 VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 ```
 
-### Legacy: render.yaml
+### Legacy: Render
 
-`render.yaml` в корне Monolit-Planner — **устаревший файл** (Render больше не используется).
+Render не используется; `render.yaml` **удалён из репо 2026-07** (audit Sprint D).
 Production deploy через Cloud Build (`cloudbuild-monolit.yaml`).
 
 ### Автоматическая сборка shared пакета
