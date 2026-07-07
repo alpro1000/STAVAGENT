@@ -182,8 +182,6 @@ export interface FormState {
   deadline_days: string;
   is_prestressed: boolean;
   bridge_deck_subtype: string;
-  include_kridla: boolean;
-  kridla_height_m: string;
   span_m: string;
   num_spans: string;
   nk_width_m: string;
@@ -256,6 +254,34 @@ export interface FormState {
   pile_cap_length_m: string;
   pile_cap_width_m: string;
   pile_cap_height_m: string;
+}
+
+// ─── Composite part (Fáze 2 #7 Gate 5) ──────────────────────────────────────
+
+/**
+ * One structural part of a composite element (e.g. an opěra = dřík + úložný
+ * práh + závěrná zídka + křídla). Compact form (Gate 5 interview 2026-06-26,
+ * option (a)): a part is a TYPE + an OPTIONAL volume (or L×W×H) + an OPTIONAL
+ * formwork override. Everything else (exposure / curing / crews / wages /
+ * concrete) is inherited from the parent + getSmartDefaults(type). Matches the
+ * ±10–15 % calculator philosophy — no N× full form.
+ */
+export interface PartFormState {
+  /** Stable client-side id for list keys + edit routing. */
+  id: string;
+  element_type: StructuralElementType;
+  /** Human label = the structural_part tag written to position metadata. */
+  part_label: string;
+  /** Exact concrete volume (m³) as string. Empty → derived from parent total
+   *  by typical share in planComposite (→ ODHAD). */
+  volume_m3: string;
+  /** Compact geometry alternative — when all three set, volume is derived
+   *  (exact) via the shared estimateElementVolume. */
+  length_m: string;
+  width_m: string;
+  height_m: string;
+  /** Optional formwork system override; empty = engine recommendation. */
+  formwork_system_name: string;
 }
 
 // ─── Scenario Snapshot ──────────────────────────────────────────────────────
@@ -411,8 +437,6 @@ export const DEFAULT_FORM: FormState = {
   deadline_days: '',
   is_prestressed: false,
   bridge_deck_subtype: '',
-  include_kridla: false,
-  kridla_height_m: '',
   span_m: '',
   num_spans: '',
   nk_width_m: '',

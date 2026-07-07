@@ -351,6 +351,32 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-06-26 — Session: Fáze 5 #7 — composite-element-parts Fáze 2 Gate 5 (kalkulátor → vkládání částí + odchod berliček)
+
+**Topic:** Dokončení Fáze 2 na FE-větvi `claude/composite-element-parts-fe-1dea1` (Gate 4 už hotový: `5ecd168`/`19ebeed`/`2c224a5`). Gate 5 = kalkulátor počítá opěru po částech (in-process `planComposite`) a vkládá je pod rodiče jako řádky tagované `metadata.structural_part`; odpojený příznak křídla pryč. Spec `docs/specs/composite-element-parts/{requirements,design,tasks §1.6}` + handoff `docs/handoff/2026-06-26_composite-gate5-next-session.md`.
+
+**Interview (před kódem, 2 rozhodnutí):**
+- **Váha formuláře části → (a) KOMPAKTNÍ** — část = typ + (objem NEBO L×W×H) + voliteln. override bednění; zbytek z `getSmartDefaults` + zděděné firemní/prostředí nastavení rodiče. Sedí na ±10–15 % filozofii + Karpathy (NE N× plný formulář).
+- **Rozsah „tří mechanismů množnosti" → (a) SCOPED** — `num_identical_elements`/`num_dilatation_sections`/`manual_zabery` mají legitimní ne-composite užití (5 stejných pilířů, dilatace→šachové plánování, nerovnoměrné záběry) → ZACHOVÁNY. Composite seznam částí = nový způsob složení opěry. Smazán JEN `include_kridla`/`kridla_height_m` (display-only, do `buildInput` nešel). Recon-nález: WizardHints zápis `num_tacts_override` (CalculatorSidebar.tsx:926–940) byl UŽ dříve opraven na sections/tacts model; `num_tacts_override`/`tact_volume_m3_override` jsou engine-vstupy plněné z `manual_zabery` (drženo) → žádná další berlička k odstranění.
+
+**Rozhodnuto / hotovo:**
+- **In-process datová cesta** (NE HTTP): `compositeResult` memo v `useCalculator` volá shared `planComposite({parent, parts})` synchronně, zrcadlí `planElement` větev. Frontend composite-režim gate-nut samotnou existencí seznamu `parts` (AC 3.11).
+- **Nové soubory:** `compositeParts.ts` (`makePart`/`makeAbutmentTemplate` 4-part šablona opěry dřík+práh+zídka+křídla = klíče `PLACEHOLDER_PART_VOLUME_RATIOS`; `buildPartInput` dědí rodičovské firemní/prostředí pole, strip-uje geometrii/bridge/množnost, řeší objem explicit > geometrie > vynechán→ODHAD); `CompositePartsPanel.tsx` (kompaktní editor řádků + per-část výsledky m³/ODHAD-badge/taktů/dní/Kč + Σ + uzavření na 100 % + „Aplikovat části do pozice").
+- **`applyCompositeToPositions`** (`applyPlanToPositions.ts`): per-část work-řádky (beton/bednění/výztuž/zrání/…) pod TÝMŽ `part_name` (opěra = 1 smětní položka), tagované `metadata.structural_part = part.label` → Gate-4 `groupByStructuralPart` renderuje sub-úroveň. **První část REUSE rodičovský beton-řádek** (retag+re-qty na objem části), ostatní = nové siblingy → rodič = čistý kontejner, Σ beton = total → **bez dvojího započtení** (design §5.5). NEpoužívá `findLinkedPositions` (slučovalo by bednění všech částí do jednoho řádku). Pronájem bednění per-část jen když je známá plocha (geometrie/override); ODHAD části bez plochy nenese pronájem (honest, ne tiché 0). Forwarduje `portal_project_id`/`registry_project_id` jako single-element cesta (isolation parita).
+- **Odchod berliček:** `include_kridla`/`kridla_height_m` smazány z `FormState`+`DEFAULT_FORM`, auto-set (useCalculator), `kridlaFormwork` memo, render (CalculatorResult), checkbox (CalculatorSidebar), prop (PlannerPage). Křídla = nyní řádek části „Křídla".
+- **Testy:** +2 shared (`composite-planner.test.ts`: 4-part opěra šablona all-ODHAD → každá část vlastní plán/systém/takty + Σ==total; smíšený exact dřík + zbytek ODHAD). **1351 shared zelených** (1349→1351), `tsc` shared+frontend čistý, `vite build` čistý.
+
+**Odmítnuto / NEtknuto (SCOPE GUARD):**
+- `price_crane_czk_shift`/`price_pump_czk_h` — samostatný ticket (TOV-rozpad), root CLAUDE.md P1. Nedotčeno.
+- Nosná cenová pole (3 režimy, Monolit CLAUDE.md §0) — nedotčeno.
+- Tři mechanismy množnosti — ZACHOVÁNY (scoped rozhodnutí).
+
+**Otevřené otázky / Co dál:**
+- **Merge-gate = Alexander** (Fáze 2 = jeden PR Gate 4+Gate 5, merge-commit ne squash — Pattern 12).
+- **ŽIVÁ kontrola na kalkulator.stavagent.cz po deploy** (DoD): šablona opěry → 4 části → ODHAD badge → Aplikovat → sub-úroveň v tabulce pozic; rodič bez dvojího započtení.
+- Follow-up (mimo #7): pilíř jako 2. composite-typ; kalibrace `PLACEHOLDER_PART_VOLUME_RATIOS` z VP4/SO-250/Žihle; pronájem bednění per-část pro ODHAD části; auto-extrakce složení z výkresů.
+
+
 ## 2026-06-26 — Session: Fáze 5 #7 — composite-element-parts Phase 1 (opěra z částí: shared + backend/MCP za flagem)
 
 **Topic:** Složený prvek (opěra = dřík + úložný práh + závěrná zídka + křídla = jedna smětní položka, ale výpočet po částech, každá svým bedněním/takty/betonem). SDD: recon → ratifikace gate-by-gate (AskUserQuestion) → implementace → user merge-gate. Spec `docs/specs/composite-element-parts/` + recon `docs/audits/calculator_field_map/2026-06-23_composite-parts-recon.md`.

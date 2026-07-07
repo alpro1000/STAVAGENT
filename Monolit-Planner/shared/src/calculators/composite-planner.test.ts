@@ -134,6 +134,49 @@ describe('planComposite — exact parts exceed total', () => {
   });
 });
 
+describe('planComposite — opěra template (Gate 5: dřík + práh + zídka + křídla)', () => {
+  // Mirrors the frontend ABUTMENT_PART_TEMPLATE the Gate 5 panel seeds:
+  // four ODHAD parts whose types map 1:1 to PLACEHOLDER_PART_VOLUME_RATIOS.
+  const template = (): CompositePartInput[] => [
+    part('driky_piliru', undefined, 'Dřík'),
+    part('opery_ulozne_prahy', undefined, 'Úložný práh'),
+    part('mostni_zavirne_zidky', undefined, 'Závěrná zídka'),
+    part('kridla_opery', undefined, 'Křídla'),
+  ];
+
+  it('each part computes its own plan (bednění/takty/beton) and Σ == total', () => {
+    const total = 240;
+    const out = planComposite({ parent: parent(total), parts: template(), parent_label: 'OPĚRA OP1' });
+    expect(out.is_detailed).toBe(true);
+    expect(out.parts).toHaveLength(4);
+    // labels carry through (→ structural_part tags on apply)
+    expect(out.parts.map((p) => p.label)).toEqual(['Dřík', 'Úložný práh', 'Závěrná zídka', 'Křídla']);
+    // every part has its own engine plan with a formwork system + tact count
+    for (const p of out.parts) {
+      expect(p.plan).toBeDefined();
+      expect(p.plan!.formwork.system.name).toBeTruthy();
+      expect(p.plan!.pour_decision.num_tacts).toBeGreaterThanOrEqual(1);
+      expect(p.volume_source).toBe('odhad_family_ratio');
+    }
+    // 100 % closure, no m³ lost
+    const sum = out.parts.reduce((s, p) => s + p.volume_m3, 0);
+    expect(Math.abs(sum - total)).toBeLessThan(1e-9);
+    expect(out.volume_closed).toBe(true);
+  });
+
+  it('mixed: exact dřík keeps its volume, the rest share the remainder', () => {
+    const total = 200;
+    const parts = template();
+    parts[0].volume_m3 = 120; // dřík exact
+    const out = planComposite({ parent: parent(total), parts });
+    expect(out.parts[0].volume_source).toBe('exact');
+    expect(out.parts[0].volume_m3).toBe(120);
+    expect(out.parts.slice(1).every((p) => p.volume_source === 'odhad_family_ratio')).toBe(true);
+    const sum = out.parts.reduce((s, p) => s + p.volume_m3, 0);
+    expect(Math.abs(sum - total)).toBeLessThan(1e-9);
+  });
+});
+
 describe('planComposite — one-element parity (AC 3.10)', () => {
   it('parent-only composite ≡ planProject([parent]) (zero delta)', () => {
     const p = parent(45);

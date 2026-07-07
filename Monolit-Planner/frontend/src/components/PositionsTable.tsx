@@ -2,7 +2,7 @@
  * PositionsTable - Main table with editable fields
  */
 
-import { Component, useState, useMemo, useEffect, useRef } from 'react';
+import { Component, useState, useMemo, useEffect, useRef, Fragment } from 'react';
 import type { ReactNode } from 'react';
 import { Building2, FileText, Trash2, PlusCircle, ChevronDown, ChevronRight, Lock } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,7 +12,7 @@ import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
 import type { Position, Subtype, Unit } from '@stavagent/monolit-shared';
-import { SUBTYPE_LABELS, calculateElementTotalDays, sortPartsBySequence } from '@stavagent/monolit-shared';
+import { SUBTYPE_LABELS, calculateElementTotalDays, sortPartsBySequence, groupByStructuralPart } from '@stavagent/monolit-shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
@@ -660,9 +660,24 @@ function PositionsTableInner() {
                     </tr>
                     </thead>
                     <tbody>
-                      {partPositions.length > 0 ? (
-                        partPositions.map((position) => {
-                          // For beton rows, compute numSets from rental positions in same part
+                      {(() => {
+                        if (partPositions.length === 0) {
+                          return (
+                            <tr>
+                              <td colSpan={isLocked ? 16 : 15} style={{
+                                textAlign: 'center',
+                                padding: '20px',
+                                color: 'var(--text-secondary)',
+                                fontStyle: 'italic'
+                              }}>
+                                Zatím žádné řádky. Klikněte na „Přidat řádek" níže.
+                              </td>
+                            </tr>
+                          );
+                        }
+                        // One row → one PositionRow; partNumSets is computed from the FULL part
+                        // group (unchanged). Beton rows derive numSets from formwork-rental rows.
+                        const renderRow = (position: Position) => {
                           const partNumSets = position.subtype === 'beton'
                             ? Math.max(1, ...partPositions
                                 .filter(p => {
@@ -679,19 +694,32 @@ function PositionsTableInner() {
                           return (
                             <PositionRow key={position.id} position={position} isLocked={isLocked} partNumSets={partNumSets} />
                           );
-                        })
-                      ) : (
-                        <tr>
-                          <td colSpan={isLocked ? 16 : 15} style={{
-                            textAlign: 'center',
-                            padding: '20px',
-                            color: 'var(--text-secondary)',
-                            fontStyle: 'italic'
-                          }}>
-                            Zatím žádné řádky. Klikněte na „Přidat řádek" níže.
-                          </td>
-                        </tr>
-                      )}
+                        };
+                        // Fáze 5 #7 Phase 2 (Gate 4): structural-part sub-level for a composite opěra.
+                        // When rows carry metadata.structural_part, render a part sub-header + subtotal;
+                        // untagged rows render flat, exactly as before (back-compat).
+                        const grp = groupByStructuralPart(partPositions);
+                        if (!grp.has_parts) {
+                          return partPositions.map(renderRow);
+                        }
+                        return grp.subgroups.map((sg, gi) => (
+                          <Fragment key={sg.part_label ?? `__nopart_${gi}`}>
+                            {sg.part_label && (
+                              <tr className="part-subgroup-header">
+                                <td colSpan={isLocked ? 16 : 15} style={{
+                                  background: 'var(--medium-concrete, #E8E8E8)',
+                                  fontWeight: 600,
+                                  fontSize: '12px',
+                                  padding: '4px 12px'
+                                }}>
+                                  ↳ {sg.part_label} · {sg.concrete_m3.toFixed(1)} m³ · {Math.round(sg.kros_total_czk).toLocaleString('cs-CZ')} Kč
+                                </td>
+                              </tr>
+                            )}
+                            {sg.rows.map(renderRow)}
+                          </Fragment>
+                        ));
+                      })()}
                     </tbody>
                   </table>
                 </div>

@@ -12,6 +12,7 @@ import type { PlannerOutput } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import CalculatorResult from '../components/calculator/CalculatorResult';
 import CalculatorSidebar from '../components/calculator/CalculatorSidebar';
+import CompositePartsPanel from '../components/calculator/CompositePartsPanel';
 import HelpPanel from '../components/calculator/HelpPanel';
 import useCalculator from '../components/calculator/useCalculator';
 import { formatCZK, formatNum } from '../components/calculator/helpers';
@@ -170,8 +171,15 @@ export default function PlannerPage() {
     comparison, setComparison, showComparison, setShowComparison,
     scenarios, setScenarios, setScenarioSeq,
     handleCalculate, handleCompare, handleApplyToPosition,
-    kridlaFormwork, autoClassification, update,
+    autoClassification, update,
+    parts, compositeActive, compositeResult,
+    addPart, removePart, updatePart, seedAbutmentParts, clearParts,
+    handleApplyComposite,
   } = calc;
+
+  // Composite panel is offered for the opěra family (its template) or once the
+  // user has already started a parts list. Existence of the list = the gate.
+  const showCompositePanel = form.element_type === 'opery_ulozne_prahy' || compositeActive;
 
   return (
     <div className="r0-app">
@@ -410,6 +418,19 @@ export default function PlannerPage() {
 
         {/* RIGHT: Results */}
         <main className="r0-planner-main">
+          {showCompositePanel && (
+            <CompositePartsPanel
+              parts={parts}
+              compositeResult={compositeResult}
+              addPart={addPart}
+              removePart={removePart}
+              updatePart={updatePart}
+              seedAbutmentParts={seedAbutmentParts}
+              clearParts={clearParts}
+              onApplyComposite={handleApplyComposite}
+              applyStatus={applyStatus}
+            />
+          )}
           {plan ? (
             <CalculatorResult
               plan={plan}
@@ -426,7 +447,6 @@ export default function PlannerPage() {
               onLoadVariant={loadVariant}
               onRemoveVariant={removeVariant}
               onSetAsPlan={setAsPlan}
-              kridlaFormwork={kridlaFormwork}
               calcStatus={calcStatus}
               resultDirty={resultDirty}
               form={form}

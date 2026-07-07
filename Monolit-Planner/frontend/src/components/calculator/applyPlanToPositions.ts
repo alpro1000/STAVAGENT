@@ -25,12 +25,15 @@
 import {
   findLinkedPositions,
   buildLaborProjection,
+  buildScheduleProjection,
   type PlannerOutput,
   type TOVLaborEntry,
   type TOVMaterialEntry,
   type TOVEntries,
   type WorkType,
   type LaborOperationProjection,
+  type CompositeOutput,
+  type CompositePartInput,
 } from '@stavagent/monolit-shared';
 import { aggregateScheduleDays } from '@stavagent/monolit-shared';
 import type { FormState } from './types';
@@ -594,6 +597,194 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
     }
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : String(err) };
+  }
+
+  return { ok: true, positionsUpdated: createPayloads.length + updatePayloads.length };
+}
+
+// ─── applyCompositeToPositions (Fáze 2 #7 Gate 5) ────────────────────────────
+
+export interface CompositeApplyContext {
+  composite: CompositeOutput;
+  /** Resolved part inputs, 1:1 with composite.parts — carries per-part
+   *  formwork_area_m2 (the part output doesn't echo it). */
+  partInputs: CompositePartInput[];
+  form: FormState;
+  positionContext: ApplyContext['positionContext'];
+  bridgeId: string;
+  monolitDataMeta: Record<string, unknown>;
+  apiUrl: string;
+}
+
+/**
+ * Apply a COMPOSITE plan (parent + parts) to positions.
+ *
+ * Each structural part becomes its OWN set of work rows (beton / bednění /
+ * výztuž / zrání / předpětí / podpěry) under the SAME `part_name` (the opěra =
+ * one smeta line), tagged with `metadata.structural_part = part.label` so the
+ * Gate-4 `groupByStructuralPart` renders the part sub-level. The FIRST part's
+ * beton REUSES the parent's existing beton row (retagged + re-qty'd to the
+ * part volume); every other work row is a NEW sibling. Result: the parent is a
+ * pure container, Σ part beton volumes == parent total → no double-count
+ * (design §5.5), export still svine po `part_name` to one line.
+ *
+ * Deliberately does NOT reuse the single-element findLinkedPositions routing:
+ * that matches by work_type and would merge every part's bednění into ONE
+ * sibling. Composite needs one row per (part × work_type).
+ */
+export async function applyCompositeToPositions(ctx: CompositeApplyContext): Promise<ApplyResult> {
+  const { composite, partInputs, form, positionContext, bridgeId, monolitDataMeta, apiUrl } = ctx;
+  const mainId = positionContext.position_id;
+  if (!mainId) return { ok: false, error: 'Missing main position_id' };
+  if (!composite.is_detailed || composite.parts.length === 0) {
+    return { ok: false, error: 'Composite plan has no parts' };
+  }
+
+  const baseItemName = positionContext.part_name || composite.parent_label || 'Opěra';
+  const calculatedAt = (monolitDataMeta.calculated_at as string) || new Date().toISOString();
+
+  const createPayloads: Array<Record<string, unknown>> = [];
+  const updatePayloads: Array<Record<string, unknown>> = [];
+  let firstBetonUsed = false;
+
+  composite.parts.forEach((part, pIdx) => {
+    const partPlan = part.plan;
+    if (!partPlan) return;
+    const partLabel = part.label || `Část ${pIdx + 1}`;
+    const partFwArea = Number(partInputs[pIdx]?.formwork_area_m2) || 0;
+    const drafts = buildWorkDrafts(partPlan, form);
+
+    for (const draft of drafts) {
+      const isBeton = draft.workType === 'beton';
+
+      // Material rentals (formwork / props) ride on the part's beton row when
+      // the part's formwork area is known; ODHAD parts (no area) carry none.
+      const materials: TOVMaterialEntry[] = [];
+      if (isBeton && partFwArea > 0 && partPlan.costs.formwork_rental_czk > 0) {
+        const rentalDays = partPlan.schedule.total_days + 2;
+        materials.push({
+          id: `tov-mat-${pIdx}-fw`,
+          name: `Pronájem ${partPlan.formwork.system.name} (${partPlan.formwork.system.manufacturer})`,
+          quantity: partFwArea, unit: 'm²',
+          unitPrice: partPlan.formwork.system.rental_czk_m2_month,
+          totalCost: Math.round(partPlan.costs.formwork_rental_czk),
+          rentalMonths: Math.round((rentalDays / 30) * 10) / 10,
+          note: `${rentalDays} dní`,
+        });
+      }
+
+      const tov: TOVEntries = {
+        labor: [draft.entry], materials,
+        source: 'calculator', calculated_at: calculatedAt,
+      };
+      const meta: Record<string, unknown> = {
+        calculated_at: calculatedAt,
+        structural_part: partLabel,
+        tov_entries: tov,
+      };
+      if (isBeton) {
+        // The beton row carries the rich blob for this part (KPI / Gantt / TOV).
+        meta.costs = { ...partPlan.costs };
+        meta.resources = { ...partPlan.resources };
+        meta.formwork_info = {
+          system_name: partPlan.formwork.system.name,
+          manufacturer: partPlan.formwork.system.manufacturer,
+          formwork_area_m2: partFwArea,
+          num_tacts: partPlan.pour_decision.num_tacts,
+          num_sets: form.num_sets,
+          assembly_days: partPlan.formwork.assembly_days,
+          disassembly_days: partPlan.formwork.disassembly_days,
+          curing_days: partPlan.formwork.curing_days,
+        };
+        meta.schedule_info = buildScheduleProjection(partPlan);
+      }
+
+      if (isBeton && !firstBetonUsed) {
+        // Reuse the parent's existing beton row as the first part's beton row.
+        firstBetonUsed = true;
+        updatePayloads.push({
+          id: mainId,
+          item_name: `${baseItemName} · ${partLabel}`,
+          qty: part.volume_m3,
+          days: draft.days,
+          crew_size: draft.crew,
+          wage_czk_ph: draft.wage,
+          shift_hours: partPlan.resources.shift_h,
+          curing_days: Math.round(partPlan.formwork.curing_days),
+          metadata: JSON.stringify(meta),
+        });
+        continue;
+      }
+
+      // New sibling row for this part's work.
+      let subtype = 'beton';
+      let unit = 'm3';
+      let qty: number = part.volume_m3;
+      let itemName = `${baseItemName} · ${partLabel}`;
+      if (!isBeton) {
+        const tpl = templateForWorkType(draft.workType, partPlan, form, `${baseItemName} · ${partLabel}`);
+        if (!tpl) continue;
+        subtype = tpl.subtype;
+        unit = tpl.unit;
+        // Per-part bednění / podpěry quantity = THIS part's area, not the parent's.
+        qty = (subtype === 'bednění' || subtype === 'odbednění' || subtype === 'podpěrná konstr.')
+          ? partFwArea
+          : tpl.qty;
+        itemName = tpl.item_name;
+      }
+      createPayloads.push({
+        id: genPositionId(),
+        bridge_id: bridgeId,
+        part_name: baseItemName,
+        item_name: itemName,
+        subtype,
+        unit,
+        qty,
+        crew_size: draft.crew,
+        wage_czk_ph: draft.wage,
+        shift_hours: partPlan.resources.shift_h,
+        days: draft.days,
+        metadata: JSON.stringify(meta),
+      });
+    }
+  });
+
+  // POST new sibling rows (one round trip), then PUT the reused parent beton row.
+  if (createPayloads.length > 0) {
+    try {
+      const res = await fetch(`${apiUrl}/api/positions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bridge_id: bridgeId,
+          portal_project_id: positionContext.portal_project_id ?? null,
+          registry_project_id: positionContext.registry_project_id ?? null,
+          positions: createPayloads,
+        }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        return { ok: false, error: errData?.error || `POST HTTP ${res.status}` };
+      }
+    } catch (err) {
+      return { ok: false, error: err instanceof Error ? err.message : String(err) };
+    }
+  }
+
+  if (updatePayloads.length > 0) {
+    try {
+      const res = await fetch(`${apiUrl}/api/positions`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bridge_id: bridgeId, updates: updatePayloads }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        return { ok: false, error: errData?.error || `HTTP ${res.status}` };
+      }
+    } catch (err) {
+      return { ok: false, error: err instanceof Error ? err.message : String(err) };
+    }
   }
 
   return { ok: true, positionsUpdated: createPayloads.length + updatePayloads.length };
