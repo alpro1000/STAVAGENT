@@ -435,6 +435,9 @@ describe('Edge Cases', () => {
     expect(Array.isArray(result.matches)).toBe(true);
   });
 
+  // 90s explicit timeout: on CI (coverage instrumentation + shared runner +
+  // keyless LLM-fallback retries) this long-input path exceeds the global 30s
+  // testTimeout — observed twice on PR #1423 while passing locally in <5s.
   test('handles very long input text', async () => {
     const longText = 'betonová deska '.repeat(200);
     const result = await universalMatch({
@@ -450,7 +453,7 @@ describe('Edge Cases', () => {
 
     expect(result).toHaveProperty('query');
     expect(result.query.detected_language).toBeDefined();
-  });
+  }, 90000);
 
   test('handles special characters in text', async () => {
     const result = await universalMatch({
