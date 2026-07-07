@@ -201,6 +201,39 @@ export function recommendBridgeTechnology(input: BridgeTechnologyInput): Technol
       : `Výška ${clearance_height_m}m > 25m — pevná skruž neproveditelná, doporučena posuvná skruž.`;
   }
 
+  // Feasibility guard (2026-07-07, SO-202 Žalmanov E2E finding): the intent
+  // branches above may land on a technology their OWN feasibility map rejects
+  // (span 44.5 m > 40 → MSS, but 3 pole < 4 → mssFeasible=false). Never
+  // recommend an option flagged infeasible while a feasible one exists — fall
+  // back and say WHY the preferred one is out.
+  const feasibilityOf: Record<ConstructionTechnology, boolean> = {
+    fixed_scaffolding: fixedFeasible,
+    mss: mssFeasible,
+    cantilever: cantileverFeasible,
+  };
+  const infeasibleReasonOf: Record<ConstructionTechnology, string | undefined> = {
+    fixed_scaffolding: fixedInfeasibleReason,
+    mss: mssInfeasibleReason,
+    cantilever: cantileverInfeasibleReason,
+  };
+  if (!feasibilityOf[recommended]) {
+    const fallback = (['mss', 'fixed_scaffolding', 'cantilever'] as ConstructionTechnology[])
+      .find(t => t !== recommended && feasibilityOf[t]);
+    if (fallback) {
+      const labels: Record<ConstructionTechnology, string> = {
+        fixed_scaffolding: 'pevná skruž', mss: 'posuvná skruž (MSS)', cantilever: 'letmá betonáž',
+      };
+      reason = `${reason} ${labels[recommended]} zde však NENÍ proveditelná ` +
+        `(${infeasibleReasonOf[recommended] ?? 'mimo rozsah'}) — doporučena ${labels[fallback]}.`;
+      warnings.push(
+        `⚠️ Preferovaná technologie (${labels[recommended]}) není pro tuto geometrii proveditelná — ` +
+        `doporučení přepnuto na ${labels[fallback]}. U rozpětí > 40 m na pevné skruži počítejte se ` +
+        `zesíleným projektem podpěrné konstrukce (ČSN EN 12812).`
+      );
+      recommended = fallback;
+    }
+  }
+
   // Height warnings
   if (clearance_height_m > 20 && fixedFeasible) {
     warnings.push(

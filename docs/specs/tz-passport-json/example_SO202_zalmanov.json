@@ -1,0 +1,612 @@
+{
+  "_meta": {
+    "schema": "tz-bridge-passport",
+    "schema_version": "0.1-draft",
+    "source": "hand-built by Alexander from SO 202 TZ (D6 Olšová Vrata–Žalmanov, PDPS), 2026-07-07",
+    "validated_against": [
+      "drawing 202/17 Tvar NK (PDPS, poznámka 3: NK v 3 taktech na skruži)",
+      "E_Soupis__skupiny_MOSTY_PHS.xlsx sheet SO 202 (99 items, EstiCon)"
+    ],
+    "known_conflicts": [
+      "piers: TZ/passport C35/45-XF1+XD1+XC4 vs soupis 334326 'DO C40/50' — OTSKP DO-band, ne grade (Pattern 53)",
+      "deck: TZ/passport C35/45-XF2+XD1+XC4 vs soupis 422336 'DO C40/50' — dtto"
+    ]
+  },
+  "project": {
+    "name": "D6 Olšová Vrata - Žalmanov",
+    "stage": "PDPS",
+    "road_section": "SO 101",
+    "structure": {
+      "id": "SO 202",
+      "name": "Most na D6 přes Lomnický potok v km 1,600",
+      "location": {
+        "cadastral_area": "Horní Tašovice",
+        "municipality": "Horní Tašovice",
+        "region": "Karlovarský kraj",
+        "country": "CZ",
+        "coordinates_system": "S-JTSK",
+        "elevation_system": "B.p.v."
+      },
+      "stakeholders": {
+        "client": {
+          "name": "Ředitelství silnic a dálnic ČR",
+          "address": "Čerčanská 2023/12, 140 00 Praha 4-Krč",
+          "role": "investor_and_future_owner"
+        },
+        "supervising_authority": {
+          "name": "Ministerstvo dopravy ČR"
+        },
+        "road_administrator": {
+          "name": "ŘSD ČR, Správa Karlovy Vary",
+          "address": "Závodní 369/82, 360 06 Karlovy Vary"
+        },
+        "designer_main": {
+          "company": "PRAGOPROJEKT, a.s.",
+          "office": "Ateliér Karlovy Vary",
+          "responsible_engineer": "Ing. Pavel Šlapa",
+          "object_designer": "Ing. Martin Blatský"
+        },
+        "bridge_designer": {
+          "company": "PONTEX spol. s r.o.",
+          "address": "Na Hřebenech II 1718/10, 140 00 Praha 4"
+        }
+      }
+    }
+  },
+  "functional_purpose": {
+    "description": "Převedení dálnice D6 přes údolí Lomnického potoka a komunikaci III/00625 včetně polní cesty",
+    "road_category": "D25,5/130",
+    "crossing_objects": [
+      {
+        "type": "road",
+        "id": "SO 128",
+        "road_number": "III/00625",
+        "min_clearance": 4.65
+      },
+      {
+        "type": "watercourse",
+        "id": "SO 320",
+        "name": "Lomnický potok",
+        "typical_water_level_m": 664.7,
+        "Q100_level_m": 667.07
+      },
+      {
+        "type": "field_road",
+        "design_category": "P3",
+        "min_clearance": 4.35
+      }
+    ]
+  },
+  "geometry": {
+    "total_length_bridge_axis_m": 106.5,
+    "total_length_structure_m": 124.2,
+    "deck_length_m": 110.5,
+    "spans": [32.0, 44.5, 32.0],
+    "skew_angle_deg": 90.0,
+    "decks": [
+      {
+        "id": "right_deck",
+        "type": "separate_parallel_deck",
+        "free_width_m": 11.75,
+        "deck_width_m": 13.65,
+        "total_width_m": 14.6,
+        "walkway_width_m": 0.75,
+        "deck_height_over_terrain_m": {
+          "road_III_00625": 8.1,
+          "stream": 14.9,
+          "field_road": 9.9
+        }
+      },
+      {
+        "id": "left_deck",
+        "type": "separate_parallel_deck",
+        "free_width_m": 11.75,
+        "deck_width_m": 13.65,
+        "total_width_m": 14.6,
+        "walkway_width_m": 0.75,
+        "deck_height_over_terrain_m": {
+          "road_III_00625": 8.1,
+          "stream": 14.9,
+          "field_road": 9.9
+        }
+      }
+    ],
+    "total_cross_section_width_m": 29.9,
+    "deck_area_m2": 1508.325,
+    "alignment": {
+      "highway": {
+        "horizontal": {
+          "type": "transition_plus_tangent",
+          "transition_A": 612.37,
+          "transition_length_m": 150.0
+        },
+        "vertical": {
+          "type": "sag_curve",
+          "grades_percent": [-2.35, 2.31],
+          "radius_m": 8500.0
+        },
+        "longitudinal_slope_on_bridge_percent": {
+          "min": 1.62,
+          "max": 2.31
+        },
+        "cross_slope_percent": 2.5
+      },
+      "road_III_00625": {
+        "design_category": "MO2k 6,5/30",
+        "horizontal": {
+          "type": "transition_plus_curve",
+          "transition_A": 57.446,
+          "transition_length_m": 30.0,
+          "curve_radius_m": 110.0
+        },
+        "vertical": {
+          "type": "crest_curve",
+          "grades_percent": [-2.85, -7.52],
+          "radius_m": 1000.0
+        },
+        "cross_slope_percent": {
+          "from": 2.5,
+          "to": 4.0
+        }
+      },
+      "field_road": {
+        "design_category": "P3",
+        "vertical_grade_percent": -4.3,
+        "cross_slope_percent": 2.5
+      }
+    }
+  },
+  "structural_system": {
+    "type": "continuous_two_girder_post_tensioned_concrete",
+    "spans_count": 3,
+    "girder_count_per_deck": 2,
+    "constant_depth_m": 2.4,
+    "support_layout": {
+      "abutments": ["O1", "O4"],
+      "piers": ["P2", "P3"],
+      "crossing_angles_deg": {
+        "SO101_x_SO128": 56.37,
+        "SO101_x_stream": 56.46,
+        "SO101_x_field_road": 71.94
+      }
+    },
+    "loading": {
+      "standard": "ČSN EN 1991-2 ed.2",
+      "load_model_group": 1
+    }
+  },
+  "geotechnical": {
+    "formation": "Karlovarský pluton - two-mica granite",
+    "rock_classes": ["R2", "R3", "R4", "R5"],
+    "foundations": {
+      "type": "shallow_foundation_preferred",
+      "abutments": {
+        "left_deck": {
+          "type": "shallow_on_rock_cut",
+          "rock_classes": ["R2", "R3", "R4"]
+        },
+        "right_deck": {
+          "type": "shallow_with_partial_reuse_existing_footings",
+          "rock_classes": ["R2", "R3", "R4"]
+        }
+      },
+      "piers": {
+        "P2": {
+          "preferred": "shallow_on_R2_R3",
+          "alternative": "short_bored_piles_into_R3_or_R2"
+        },
+        "P3": {
+          "preferred": "shallow_on_R2_R3",
+          "alternative": "short_bored_piles_into_R3_or_R2"
+        }
+      },
+      "groundwater": {
+        "type": "shallow_quaternary_aquifer",
+        "depth_range_m": [0.2, 1.1],
+        "foundations_in_contact_with_groundwater": true
+      },
+      "aggressiveness": {
+        "class_concrete": "XA2",
+        "stray_current_protection_level": 4
+      }
+    }
+  },
+  "substructure": {
+    "abutments": {
+      "type": "low_earth_retaining_abutments",
+      "backfill_zones": {
+        "design_standard": "ČSN 73 6244",
+        "transition_slab": true,
+        "transition_wedge": true
+      }
+    },
+    "piers": {
+      "type": "twin_column_piers_on_common_footing"
+    },
+    "earthworks": {
+      "transition_zone": {
+        "layers": [
+          {
+            "zone": "transition_wedge",
+            "material_groups": ["GW", "GP", "G-F", "SW", "SP", "S-F"],
+            "relative_compaction": {
+              "D_min": 0.75,
+              "D_max": 0.85
+            }
+          },
+          {
+            "zone": "backfill_above_sealing_layer",
+            "material_groups": ["GW", "GP", "SW", "SP", "S-F"],
+            "relative_compaction": {
+              "D_min": 0.85,
+              "D_max": 0.9
+            }
+          }
+        ],
+        "layer_thickness_max_m": 0.3
+      },
+      "sealing_layer": {
+        "type": "geomembrane",
+        "min_tensile_strength_kN_per_m": 20,
+        "min_elongation_percent": 20,
+        "bedding_layers": [
+          {
+            "material": "sand_gravel",
+            "thickness_m": 0.15
+          },
+          {
+            "material": "sand_gravel",
+            "thickness_m": 0.15
+          }
+        ]
+      },
+      "waterproofing_back_of_abutments": {
+        "type": "bituminous_sheets_ALP_AIP",
+        "protection": "non_woven_geotextile_S2"
+      }
+    }
+  },
+  "superstructure": {
+    "deck": {
+      "type": "post_tensioned_concrete_two_girder",
+      "spans_m": [32.0, 44.5, 32.0],
+      "constant_depth_m": 2.4,
+      "width_per_deck_m": 13.65,
+      "material": {
+        "concrete_class": "C35/45-XF2+XD1+XC4",
+        "reinforcement": "B500B"
+      },
+      "post_tensioning": {
+        "system": "bonded_internal_tendons",
+        "tendon_type": "22_strand_Y1860S7",
+        "strand_area_mm2": 150,
+        "relaxation": "very_low",
+        "ducts": {
+          "type": "corrugated_plastic",
+          "protection_level": "PL2"
+        },
+        "grouting": {
+          "standards": ["EN 447:2008", "EN 446:2008", "TKP_18"],
+          "time_limits_days": {
+            "no_corrosion_protection": 14,
+            "with_conservation": 30
+          }
+        }
+      }
+    },
+    "bearings": {
+      "type": "pot_bearings",
+      "standards": ["ČSN EN 1337-7", "TKP 22", "TP 262"],
+      "support_conditions": {
+        "piers": "fixed",
+        "abutments": "one_free_all_directions_one_free_single_direction"
+      },
+      "bedding_mortar": {
+        "type": "polymer_mortar",
+        "thickness_range_m": [0.015, 0.03],
+        "min_compressive_strength_MPa": 50
+      },
+      "replacement_provision": "double_bearing_plates",
+      "sealing": "polyurethane_sealant"
+    },
+    "expansion_joints": {
+      "type": "surface_steel_joints",
+      "standards": ["TP 86", "TKP 23"],
+      "locations": [
+        {
+          "abutment": "O1",
+          "movement_longitudinal_mm": 45,
+          "movement_transverse_mm": 0
+        },
+        {
+          "abutment": "O4",
+          "movement_longitudinal_mm": 45,
+          "movement_transverse_mm": 0
+        }
+      ],
+      "requirements": {
+        "one_piece_installation": true,
+        "no_site_welding": true,
+        "allow_cable_ducts_passage": true
+      }
+    }
+  },
+  "pavement_and_waterproofing": {
+    "pavement_structure": [
+      {
+        "layer": "wearing_course",
+        "type": "SMA 11 S PMB 45/80-65",
+        "standard": "ČSN EN 13108-5",
+        "thickness_mm": 40,
+        "surface_sprinkle": {
+          "aggregate_fraction_mm": "2/4",
+          "application_rate_kg_per_m2": 1.5
+        }
+      },
+      {
+        "layer": "bond_coat",
+        "type": "PS-CP (C 60 BP 5)",
+        "standard": "ČSN 73 6129 / ČSN EN 13808",
+        "application_rate_kg_per_m2": 0.35
+      },
+      {
+        "layer": "protection_of_waterproofing",
+        "type": "MA 11 IV PMB 10/40-65",
+        "standard": "ČSN EN 13108-6",
+        "thickness_mm": 40
+      },
+      {
+        "layer": "waterproofing",
+        "type": "AIP_torch_on_membrane_on_sealing_layer",
+        "standard": "ČSN 73 6242",
+        "thickness_mm": 5
+      },
+      {
+        "layer": "sealing_layer_on_deck",
+        "standard": "ČSN 73 6242"
+      }
+    ],
+    "total_thickness_mm": 85,
+    "joint_sealing": {
+      "type": "asphaltic_sealant_N2",
+      "standard": "ČSN EN 14188-1",
+      "details_standard": "VL4 403.42"
+    },
+    "edge_drain_channel": {
+      "type": "mastic_asphalt",
+      "width_mm": 500,
+      "details_standard": "VL4 403.41"
+    },
+    "deck_drainage": {
+      "surface_drain": "to_edge_gutter_at_lower_outer_kerbs",
+      "gullies": {
+        "count": 7,
+        "spacing_m": 18
+      },
+      "downpipes": {
+        "material": "GRP",
+        "diameter_mm": [200, 250]
+      },
+      "connection": "to_highway_drainage_manhole_near_O1",
+      "waterproofing_drain": {
+        "ribs": "polymer_concrete_ribs_TKP18",
+        "drain_pipes": {
+          "material": "stainless_steel",
+          "steel_grade": "1.44x",
+          "outlet_to": "longitudinal_drain"
+        }
+      },
+      "back_of_abutments_drainage": "to_side_terrain_and_then_to_roadside_ditches"
+    }
+  },
+  "edges_barriers_and_walkways": {
+    "kerbs_and_parapets": {
+      "rims": {
+        "type": "cast_in_place_reinforced_concrete",
+        "outer_width_m": 1.95,
+        "inner_width_m": 0.9,
+        "anchorage": "adhesive_anchors_with_epoxy_in_cracked_concrete"
+      }
+    },
+    "barriers": {
+      "type": "bridge_safety_barriers",
+      "containment_level": "H3",
+      "standard": "TP 114",
+      "locations": ["outer_edges", "central_reservation_edges"]
+    },
+    "walkways": {
+      "emergency_sidewalks_width_m": 0.75,
+      "noise_barriers": {
+        "type": "transparent",
+        "height_m": 4.0,
+        "related_structures": ["SO 760", "SO 761"]
+      },
+      "central_mirror_space_cover": {
+        "type": "walkable_composite_gratings",
+        "above_abutments": "solid_composite_panels"
+      }
+    },
+    "inspection_walkway": {
+      "location": "under_inner_cantilever_of_right_bridge",
+      "use": "inspection_and_minor_maintenance_only",
+      "structure": "steel_grating_walkway_on_chemical_anchors"
+    },
+    "cable_ducts": {
+      "location": "inner_rims",
+      "ducts_config": "2x3 pcs 110/94 mm",
+      "requirements": {
+        "system": "PPK-KAB_double_wall_HDPE_rigid_corrugated_smooth_inside",
+        "calibration_test_required": true,
+        "documentation": "test_protocol_part_of_bridge_handover",
+        "duct_outlet_details_standard": "VL4 402.11"
+      }
+    }
+  },
+  "gabion_walls": {
+    "O1": {
+      "max_height_m": 3.75,
+      "length_m": 54.0,
+      "slope": "1:10",
+      "foundations": {
+        "underlayer_concrete_thickness_m": 0.15,
+        "drain_pipe_diameter_mm": 150,
+        "drain_backfill": "open_graded_concrete"
+      }
+    },
+    "O4": {
+      "max_height_m": 4.5,
+      "length_m": 12.0,
+      "slope": "vertical",
+      "foundations": {
+        "underlayer_concrete_thickness_m": 0.15
+      }
+    },
+    "basket": {
+      "mesh": {
+        "type": "welded_steel_mesh",
+        "wire_diameter_mm": 4.0,
+        "coating": "ZnAl_min_300_g_per_m2",
+        "mesh_size_mm": [100, 100],
+        "min_tensile_strength_kN_per_m": 40,
+        "corrosion_resistance_hours": 850
+      },
+      "geotextile": {
+        "type": "non_woven",
+        "min_mass_g_per_m2": 400,
+        "min_tensile_strength_kN": 2.5,
+        "min_permeability_m_per_s": 0.001
+      }
+    },
+    "fill": {
+      "min_compressive_strength_MPa": 60,
+      "max_water_absorption_percent": 1.5,
+      "min_density_kg_per_m3": 1600,
+      "rock_types": ["basalt", "granite", "tuff", "hard_limestone", "sandstone"],
+      "max_mass_loss_5cycles_percent": 9.0
+    }
+  },
+  "construction_process": {
+    "sequence_per_bridge": [
+      "provisional_diversion_of_Lomnický_potok",
+      "installation_of_retaining_structures_and_sheet_piles",
+      "earthworks_and_excavation",
+      "construction_of_foundations_and_substructure",
+      "erection_of_falsework/scaffolding",
+      "deck_concreting_and_post_tensioning_in_spans_from_O1_to_O4",
+      "deck_waterproofing_and_rims",
+      "backfilling_and_earthworks_behind_abutments_and_at_piers",
+      "pavement_and_bridge_equipment",
+      "works_under_and_around_bridge"
+    ],
+    "deck_pour_stages": 3,
+    "deck_pour_stages_source": "Výkres D.2 č. 17 Tvar NK, poznámka 3 (PDPS): NOSNÁ KONSTRUKCE BUDE VYBETONOVÁNA A PŘEDEPNUTA V 3 TAKTECH NA SKRUŽI",
+    "falsework_technology": "fixed_scaffolding",
+    "traffic_management": {
+      "phase_1": "build_left_bridge_while_existing_bridge_in_service",
+      "phase_2": "transfer_traffic_to_new_left_bridge",
+      "phase_3": "demolish_existing_bridge_6-049",
+      "phase_4": "build_new_right_bridge"
+    },
+    "demolition_old_bridge": {
+      "method": "heavy_demolition_to_impact_bed",
+      "impact_bed_thickness_m": 1.0,
+      "impact_bed_materials": ["recycled_material", "sand_gravel"],
+      "impact_zone_extension_m": 10.0,
+      "partial_foundations_reuse": true
+    },
+    "temporary_works": {
+      "retaining_structures": {
+        "type": "anchored_soldier_piles",
+        "anchors_stages": 3,
+        "anchor_types": [
+          "strand_ground_anchors",
+          "concrete_anchor_blocks",
+          "cast_in_bars"
+        ],
+        "embedment_in_rock_class": "R2",
+        "note": "all_temporary_works_to_be_detailed_in_RDS/VTD"
+      }
+    }
+  },
+  "survey_and_monitoring": {
+    "coordinate_system": "S-JTSK",
+    "height_system": "B.p.v.",
+    "control_network": {
+      "type": "local_micro_network",
+      "min_points": 5
+    },
+    "survey_phases": [
+      "substructure",
+      "superstructure",
+      "rims_and_barriers",
+      "pavement"
+    ],
+    "load_testing": {
+      "type": "static_load_test",
+      "spans": [
+        {
+          "deck": "right",
+          "span": 2
+        },
+        {
+          "deck": "left",
+          "span": 2
+        }
+      ]
+    }
+  },
+  "materials_and_standards": {
+    "concretes": [
+      {
+        "use": "foundations",
+        "class": "C30/37-XF1+XA2+XC2"
+      },
+      {
+        "use": "pier_shafts",
+        "class": "C35/45-XF1+XD1+XC4"
+      },
+      {
+        "use": "abutments",
+        "class": "C30/37-XF4+XD3+XC4"
+      },
+      {
+        "use": "abutment_seatings_and_wings",
+        "class": "C30/37-XF4+XD3+XC4"
+      },
+      {
+        "use": "superstructure_deck",
+        "class": "C35/45-XF2+XD1+XC4"
+      },
+      {
+        "use": "rims",
+        "class": "C30/37-XF4+XD3+XC4"
+      }
+    ],
+    "reinforcement": "B500B",
+    "post_tensioning": "Y1860S7 15.7mm",
+    "key_standards": [
+      "ČSN 73 6101",
+      "ČSN 73 6133",
+      "ČSN 73 6242",
+      "ČSN 73 6244",
+      "ČSN EN 1991-2",
+      "ČSN EN 206+A2",
+      "ČSN EN 1337-7",
+      "ČSN EN 13808",
+      "ČSN EN 14188-1",
+      "TP 86",
+      "TP 97",
+      "TP 107",
+      "TP 114",
+      "TP 124",
+      "TP 186",
+      "TKP 18",
+      "TKP 21",
+      "TKP 22",
+      "TKP 23",
+      "TKP 30",
+      "VL4_bridge_detail_sheets",
+      "PPK-KAB"
+    ]
+  }
+}

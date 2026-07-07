@@ -55,7 +55,11 @@ type_core:
   kridla_opery:         { orientation: vertical,   family: abutment,   w3_name: kridla_opery,       bridge_boost: true }
   mostni_zavirne_zidky: { orientation: vertical,   family: abutment,   w3_name: opery_ulozne_prahy, bridge_boost: true }
   prechodova_deska:     { orientation: horizontal, family: transition, w3_name: prechodova_deska,   bridge_boost: true }
-  podkladni_beton:      { orientation: horizontal, family: residual,   w3_name: jine }
+  # 2026-07-07 (SO-202 Žalmanov E2E finding): W3 dostává vlastní podkladni_beton
+  # — «PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU» se rolovalo do jine a MCP
+  # caller ztratil rebar=0 prostý-beton profil. Family zůstává residual
+  # (invariant type_core[t].family == w3_family[w3_name[t]] platí).
+  podkladni_beton:      { orientation: horizontal, family: residual,   w3_name: podkladni_beton }
   podlozkovy_blok:      { orientation: horizontal, family: residual,   w3_name: jine }
   # ─ building ─
   zakladova_deska:      { orientation: horizontal, family: foundation, w3_name: zakladova_deska, bridge_remap: zaklady_piliru }
@@ -100,6 +104,7 @@ w3_family:
   nadrz: tank
   pilota: pile
   zdivo_obklad: reject
+  podkladni_beton: residual
   jine: residual
 
 # ── bridge_remap — neutral type→type in real bridge context ─────────────────
