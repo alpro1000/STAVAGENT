@@ -5,6 +5,7 @@
 
 import express from 'express';
 import { logger } from '../../utils/logger.js';
+import { requireApiKey } from '../middleware/requireApiKey.js';
 import {
   getAllModels,
   getRuntimeModel,
@@ -64,11 +65,13 @@ router.get('/model', (req, res) => {
 
 /**
  * POST /api/settings/model
- * Set model for LLM processing
+ * Set model for LLM processing — GLOBAL runtime state, so this is
+ * admin-only (Sprint A: anonymous callers could switch the LLM for
+ * every user of the service).
  *
- * Body: { model: "deepseek-chat" }
+ * Body: { model: "deepseek-chat" }, Header: X-API-Key
  */
-router.post('/model', (req, res) => {
+router.post('/model', requireApiKey, (req, res) => {
   try {
     const { model } = req.body;
 
@@ -103,9 +106,9 @@ router.post('/model', (req, res) => {
 
 /**
  * POST /api/settings/model/reset
- * Reset model to default (from environment)
+ * Reset model to default (from environment) — admin-only, see above.
  */
-router.post('/model/reset', (req, res) => {
+router.post('/model/reset', requireApiKey, (req, res) => {
   try {
     const result = resetRuntimeModel();
 

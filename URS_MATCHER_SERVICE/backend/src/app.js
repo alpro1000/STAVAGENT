@@ -31,6 +31,7 @@ import workPackagesRouter from './api/routes/workPackages.js';
 import { errorHandler } from './api/middleware/errorHandler.js';
 import { requestLogger } from './api/middleware/requestLogger.js';
 import { performanceMonitoringMiddleware } from './api/middleware/performanceMonitoring.js';
+import { requireApiKeyIfEnabled } from './api/middleware/requireApiKey.js';
 
 // Services
 import { startCacheCleanupScheduler, stopCacheCleanupScheduler } from './services/cacheCleanupScheduler.js';
@@ -153,12 +154,15 @@ app.use(performanceMonitoringMiddleware);
 app.use('/health', healthRouter);
 app.use('/api/health', healthRouter);
 
-// API routes (match endpoints have stricter rate limits)
-app.use('/api/jobs', matchLimiter, jobsRouter);
+// API routes (match endpoints have stricter rate limits).
+// requireApiKeyIfEnabled: LLM-cost routes can be key-gated by setting
+// URS_REQUIRE_API_KEY=true (Sprint A; full auth model — API key vs
+// Portal JWT — is an open decision, see docs/handoff).
+app.use('/api/jobs', matchLimiter, requireApiKeyIfEnabled, jobsRouter);
 app.use('/api/urs-catalog', catalogRouter);
 app.use('/api/tridnik', tridnikRouter);
-app.use('/api/batch', matchLimiter, batchRouter);
-app.use('/api/pipeline', matchLimiter, pipelineRouter);
+app.use('/api/batch', matchLimiter, requireApiKeyIfEnabled, batchRouter);
+app.use('/api/pipeline', matchLimiter, requireApiKeyIfEnabled, pipelineRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/project-analysis', projectAnalysisRouter);
 app.use('/api/norms', normsRouter);
