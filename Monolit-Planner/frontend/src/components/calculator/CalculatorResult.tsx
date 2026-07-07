@@ -8,7 +8,7 @@
 
 import { useMemo, useState } from 'react';
 import { TriangleAlert, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
-import { addWorkDays, buildLaborProjection, type PlannerOutput } from '@stavagent/monolit-shared';
+import { addWorkDays, buildLaborProjection, structureWarnings, type PlannerOutput } from '@stavagent/monolit-shared';
 import PlannerGantt from '../PlannerGantt';
 import { exportPlanToXLSX } from '../../utils/exportPlanXLSX';
 import { Card, KPICard, Row, CollapsibleSection } from './ui';
@@ -576,14 +576,32 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         );
       })()}
 
-      {/* Warnings */}
-      {plan.warnings.length > 0 && (
-        <Card title="Varování" icon={<TriangleAlert size={16} className="inline" />} borderColor="var(--r0-orange)">
-          <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, color: 'var(--r0-warn-text)' }}>
-            {plan.warnings.map((w, i) => <li key={i} style={{ marginBottom: 4 }}>{w}</li>)}
-          </ul>
-        </Card>
-      )}
+      {/* Warnings — v4.22 Phase 2: severity palette (red ⛔ / orange ⚠️ / blue ℹ️) */}
+      {plan.warnings.length > 0 && (() => {
+        // Older saved variants predate warnings_structured — derive on the fly.
+        const structured = plan.warnings_structured ?? structureWarnings(plan.warnings);
+        const hasCritical = structured.some(w => w.severity === 'critical');
+        const SEVERITY_STYLE: Record<string, { color: string }> = {
+          critical: { color: 'var(--r0-red)' },
+          warning: { color: 'var(--r0-warn-text)' },
+          info: { color: 'var(--r0-info-text)' },
+        };
+        return (
+          <Card
+            title="Varování"
+            icon={<TriangleAlert size={16} className="inline" />}
+            borderColor={hasCritical ? 'var(--r0-red)' : 'var(--r0-orange)'}
+          >
+            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13 }}>
+              {structured.map((w, i) => (
+                <li key={i} style={{ marginBottom: 4, ...SEVERITY_STYLE[w.severity], fontWeight: w.severity === 'critical' ? 600 : 400 }}>
+                  {w.message}
+                </li>
+              ))}
+            </ul>
+          </Card>
+        );
+      })()}
 
       {/* Element + Pour */}
       <div className="r0-grid-2">

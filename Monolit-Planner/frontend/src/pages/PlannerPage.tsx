@@ -402,6 +402,9 @@ export default function PlannerPage() {
           autoClassification={autoClassification}
           handleCalculate={handleCalculate} handleCompare={handleCompare}
           canCalculate={calc.canCalculate}
+          criticalGateActive={calc.criticalGateActive}
+          criticalWarnings={calc.criticalWarnings}
+          overrideCriticalGate={calc.overrideCriticalGate}
           fetchAdvisor={calc.fetchAdvisor}
           update={update}
           tzText={calc.tzText} setTzText={calc.setTzText}
