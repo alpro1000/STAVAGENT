@@ -180,6 +180,11 @@ export interface FormState {
   start_date: string;
   num_bridges: number;
   deadline_days: string;
+  /** Resource Ceiling UI (v4.29 Phase 1 UI, 2026-07): company limits. Empty =
+   *  KB defaults per element type; filled = user ceiling (confidence 0.99). */
+  ceiling_workers_total: string;
+  ceiling_num_pumps: string;
+  ceiling_num_cranes: string;
   is_prestressed: boolean;
   bridge_deck_subtype: string;
   span_m: string;
@@ -435,6 +440,9 @@ export const DEFAULT_FORM: FormState = {
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
   deadline_days: '',
+  ceiling_workers_total: '',
+  ceiling_num_pumps: '',
+  ceiling_num_cranes: '',
   is_prestressed: false,
   bridge_deck_subtype: '',
   span_m: '',

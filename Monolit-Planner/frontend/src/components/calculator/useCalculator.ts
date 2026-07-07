@@ -1145,6 +1145,27 @@ export default function useCalculator() {
       enable_monte_carlo: form.enable_monte_carlo,
       ...(form.deadline_days ? { deadline_days: Number(form.deadline_days) } : {}),
     };
+    // Resource Ceiling (v4.29 Phase 1 UI): only filled fields become a user
+    // ceiling (confidence 0.99 — wins over KB defaults). Empty = KB default.
+    {
+      const workersTotal = parseInt(form.ceiling_workers_total, 10);
+      const numPumps = parseInt(form.ceiling_num_pumps, 10);
+      const numCranes = parseInt(form.ceiling_num_cranes, 10);
+      const workforce = Number.isFinite(workersTotal) && workersTotal > 0
+        ? { num_workers_total: workersTotal } : undefined;
+      const equipment = (Number.isFinite(numPumps) && numPumps >= 0) || (Number.isFinite(numCranes) && numCranes >= 0)
+        ? {
+            ...(Number.isFinite(numPumps) && numPumps >= 0 ? { num_pumps: numPumps } : {}),
+            ...(Number.isFinite(numCranes) && numCranes >= 0 ? { num_cranes: numCranes } : {}),
+          }
+        : undefined;
+      if (workforce || equipment) {
+        input.resource_ceiling = {
+          ...(workforce ? { workforce } : {}),
+          ...(equipment ? { equipment } : {}),
+        };
+      }
+    }
     input.element_type = form.element_type;
     if (form.formwork_area_m2) input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
     if (form.rebar_mass_kg) input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
