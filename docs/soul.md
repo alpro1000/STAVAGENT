@@ -358,6 +358,12 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 ## 9. Session log
 
 
+## 2026-07-07 (5) — Session CLOSE: handoff pro příští relaci (Sprint A připraven file:line)
+
+**Rozhodnuto:** Relace uzavřena. Vše z dneška v main (PR #1423 + #1426, tip daba05f). Handoff snapshot `docs/handoff/2026-07-07_next-session-sprint-a.md` — kompletní zadání příští relace: **Priorita 1 = Sprint A (security)** s file:line mapou (A1 Portal pump/parse-preview/kb-research, A2 Monolit positions/planner-variants ownership, A3 URS settings/model, A4 Registry cleanup-empty owner-scope + 2 routy, A5 fail-open Portal, A6 hygiena .env + Secret Manager TODO) — všechny STILL OPEN k 2026-07-07 (ověřeno agentem). Priorita 2 = tz-passport B-interview + gate 2 consumer wiring. Priorita 3 = warnings 5-7, Resource Ceiling per-profession, URS PG, api-access.
+**Otevřené otázky:** Sprint A start (Alexander DAL pokyn — začít příští relací); URS auth API-key vs Portal-JWT; fail-open→closed rozhodnutí (SERVICE_API_KEY/JWT_SECRET povinné při startu).
+**Co dál:** příští relace = Sprint A per handoff; každá owned-table změna → cross-user-isolation-reviewer PŘED pushem; vlastní PR.
+
 ## 2026-07-07 (4) — Session: live-test composite panelu — 2 UI fixy (typy + normy)
 
 **Rozhodnuto:** (1) `ELEMENT_TYPES` v `types.ts` neměl `kridla_opery` ani `zaklady_oper` (22 z 24) — composite šablona opěry pak u «Křídla» ZOBRAZOVALA «Základová deska» (React select bez matching option ukazuje první položku; engine přitom počítal správný typ). Oba typy doplněny — poprvé vybratelné i v hlavním dropdownu. (2) «Výrobní normy (methvin.co)» panel liл surový JSON — v4.18 quick-fix jen nahradil [object Object] za JSON.stringify. Nový humanized renderer: mapa-objektů (`systemy`) → řádek per systém, skaláry «k: v · …», stringy zkráceny na 140 znaků.
