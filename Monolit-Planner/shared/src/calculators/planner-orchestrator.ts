@@ -865,16 +865,8 @@ export function computePourCrew(
   };
 }
 
-/**
- * @deprecated Use {@link computePourCrew} — this wrapper exists only so
- *   external callers importing the v4.20 name keep compiling. It forwards
- *   to the v4.24 volume+element-aware formula with a large-pour default
- *   (volume=100, element_type='other') that matches the old "+řízení-free"
- *   numbers for pump counts ≥2. For new code, pass volume + element_type.
- */
-export function computePourCrewByPumps(n_pump: number): PourCrewBreakdown {
-  return computePourCrew(100, n_pump, 'other');
-}
+// computePourCrewByPumps (v4.20 deprecated wrapper) removed 2026-07 (audit
+// Sprint D): zero production callers monorepo-wide — use computePourCrew.
 
 // ─── Main Orchestrator ──────────────────────────────────────────────────────
 

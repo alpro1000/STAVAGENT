@@ -1,23 +1,12 @@
 """
 Integration adapters for external systems.
 
-Provides bridges between Concrete-Agent and other applications:
-- Monolit-Planner: XLSX parsing, position enrichment, audit
-- Custom integrations: Add your own adapters here
+Live modules (imported directly, not via this barrel):
+- vertex_search: Vertex AI Search client (document_search_router, routes_vertex)
+- vertex_embeddings: Vertex AI embeddings (catalog_embeddings)
+
+Removed 2026-07 (audit Sprint D): monolit_adapter (613 L HTTP router that was
+never mounted — Monolit delegation goes the other way, via
+app/mcp/tools/monolit_delegate.py → Monolit /api/calculate) and the legacy
+gemini_client stub (the live client is app/core/gemini_client.py).
 """
-
-from app.integrations.monolit_adapter import (
-    MonolitAdapter,
-    MonolitEnrichmentRequest,
-    MonolitEnrichmentResponse,
-    ConcreteAgentClient,
-    router as monolit_router,
-)
-
-__all__ = [
-    "MonolitAdapter",
-    "MonolitEnrichmentRequest",
-    "MonolitEnrichmentResponse",
-    "ConcreteAgentClient",
-    "monolit_router",
-]

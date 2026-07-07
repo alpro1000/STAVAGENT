@@ -5,7 +5,7 @@
  * rebar → pour task → scheduling → costs.
  */
 import { describe, it, expect } from 'vitest';
-import { planElement, computePourCrew, computePourCrewByPumps } from './planner-orchestrator.js';
+import { planElement, computePourCrew } from './planner-orchestrator.js';
 import type { PlannerInput } from './planner-orchestrator.js';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -1074,14 +1074,8 @@ describe('Planner Orchestrator', () => {
     });
   });
 
-  // Legacy wrapper still exported — forwards to new formula with
-  // volume=100, element='other' default.
-  describe('computePourCrewByPumps (deprecated wrapper)', () => {
-    it('forwards to computePourCrew with large-pour default', () => {
-      expect(computePourCrewByPumps(1).total)
-        .toBe(computePourCrew(100, 1, 'other').total);
-    });
-  });
+  // computePourCrewByPumps (deprecated v4.20 wrapper) removed 2026-07 —
+  // zero production callers; computePourCrew is the only API.
 
   describe('planElement — pour crew derived from pumps (Bug 1 v2)', () => {
     it('exposes pour_crew_breakdown on resources', () => {
