@@ -17,15 +17,34 @@ export default async function middleware(request) {
 
   if (url.hostname === 'klasifikator.stavagent.cz') {
     const target = `${URS_BACKEND}${url.pathname}${url.search}`;
-    const hasBody = request.method !== 'GET' && request.method !== 'HEAD';
+    const hasBody = !['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(request.method);
+
+    // POSTs through this proxy used to die with MIDDLEWARE_INVOCATION_FAILED
+    // ("TypeError: fetch failed"): forwarding request.headers verbatim sends
+    // connection-specific headers (host, content-length, connection) that
+    // conflict with the outbound fetch, and streaming request.body needs
+    // duplex support. Buffer the body (URS payloads are JSON/small files)
+    // and strip the per-connection headers instead.
+    const headers = new Headers(request.headers);
+    headers.delete('host');
+    headers.delete('content-length');
+    headers.delete('connection');
+    headers.delete('transfer-encoding');
+
+    // Cap buffered bodies (CWE-400) — Vercel's own request limits sit lower,
+    // this is an explicit guard so the proxy never relies on them implicitly.
+    const MAX_BODY_SIZE = 10 * 1024 * 1024; // 10 MB
+    const contentLength = parseInt(request.headers.get('content-length') || '0', 10);
+    if (hasBody && contentLength > MAX_BODY_SIZE) {
+      return new Response('Payload too large', { status: 413 });
+    }
+
+    const body = hasBody ? await request.arrayBuffer() : undefined;
+
     return fetch(target, {
       method: request.method,
-      headers: request.headers,
-      body: hasBody ? request.body : undefined,
-      // Edge runtime requires duplex when streaming a request body —
-      // without it every POST through this proxy throws
-      // MIDDLEWARE_INVOCATION_FAILED before reaching the URS backend.
-      ...(hasBody ? { duplex: 'half' } : {}),
+      headers,
+      body,
     });
   }
 }
