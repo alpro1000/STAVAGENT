@@ -140,16 +140,24 @@ app.get('/', (req, res) => {
 
 // ============ CLEANUP ============
 
-// DELETE /api/registry/cleanup-empty — remove empty/duplicate projects (no sheets or no items)
-// Protected by a simple secret query param to prevent accidental calls
+// DELETE /api/registry/cleanup-empty — remove the CALLER'S empty projects
+// (no items). Sprint A: secret moved from a hardcoded literal to the
+// REGISTRY_CLEANUP_SECRET env var (fail-closed when unset), and the
+// SELECT/DELETE are owner-scoped — the old version deleted empty
+// projects of EVERY owner.
 app.delete('/api/registry/cleanup-empty', requireAuth, requireDB, async (req, res) => {
   try {
-    const secret = req.query.secret;
-    if (secret !== 'cleanup2026') {
-      return res.status(403).json({ success: false, error: 'Invalid secret. Use ?secret=cleanup2026' });
+    const configuredSecret = process.env.REGISTRY_CLEANUP_SECRET;
+    if (!configuredSecret) {
+      return res.status(503).json({ success: false, error: 'Cleanup secret not configured on this server' });
+    }
+    if (req.query.secret !== configuredSecret) {
+      return res.status(403).json({ success: false, error: 'Invalid secret' });
     }
 
-    // Find projects with zero items (empty projects)
+    const ownerId = req.user.userId;
+
+    // Find the caller's projects with zero items (empty projects)
     const emptyProjects = await pool.query(`
       SELECT p.project_id, p.project_name,
         (SELECT COUNT(*) FROM registry_sheets WHERE project_id = p.project_id) as sheets_count,
@@ -157,11 +165,12 @@ app.delete('/api/registry/cleanup-empty', requireAuth, requireDB, async (req, re
          JOIN registry_sheets s ON i.sheet_id = s.sheet_id
          WHERE s.project_id = p.project_id) as items_count
       FROM registry_projects p
-      HAVING (SELECT COUNT(*) FROM registry_items i
-              JOIN registry_sheets s ON i.sheet_id = s.sheet_id
-              WHERE s.project_id = p.project_id) = 0
+      WHERE p.owner_id = $1
+        AND (SELECT COUNT(*) FROM registry_items i
+             JOIN registry_sheets s ON i.sheet_id = s.sheet_id
+             WHERE s.project_id = p.project_id) = 0
       ORDER BY p.created_at
-    `);
+    `, [ownerId]);
 
     if (req.query.dry_run === 'true') {
       return res.json({
@@ -177,13 +186,13 @@ app.delete('/api/registry/cleanup-empty', requireAuth, requireDB, async (req, re
       });
     }
 
-    // Delete empty projects (CASCADE will remove sheets too)
+    // Delete empty projects (CASCADE will remove sheets too) — owner-scoped
     const ids = emptyProjects.rows.map(p => p.project_id);
     let deleted = 0;
     if (ids.length > 0) {
       const result = await pool.query(
-        'DELETE FROM registry_projects WHERE project_id = ANY($1)',
-        [ids]
+        'DELETE FROM registry_projects WHERE project_id = ANY($1) AND owner_id = $2',
+        [ids, ownerId]
       );
       deleted = result.rowCount;
     }
@@ -742,7 +751,7 @@ const FORMWORK_PRICES = {
   'STAXO100': { base: 12.0, heights: { 2.7: 1.0, 3.0: 1.1 } }
 };
 
-app.post('/api/formwork-rental/calculate', (req, res) => {
+app.post('/api/formwork-rental/calculate', requireAuth, (req, res) => {
   try {
     const { area_m2, system, height, rental_days } = req.body;
 
@@ -782,7 +791,7 @@ app.post('/api/formwork-rental/calculate', (req, res) => {
 
 // ============ EXCEL EXPORT WITH PUMP DATA ============
 
-app.post('/api/registry/export/excel-with-pump', async (req, res) => {
+app.post('/api/registry/export/excel-with-pump', requireAuth, async (req, res) => {
   try {
     const { items, pumpRental, projectName } = req.body;
 
