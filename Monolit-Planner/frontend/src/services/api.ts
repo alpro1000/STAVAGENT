@@ -59,6 +59,17 @@ const api = axios.create({
   }
 });
 
+/**
+ * Authorization header for raw fetch() calls that bypass this axios client.
+ * Backend positions/planner-variants routes enforce bridge ownership —
+ * without the Bearer token those calls run anonymous and get 401/403
+ * on owned projects.
+ */
+export function authHeader(): Record<string, string> {
+  const token = localStorage.getItem('auth_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 // Add JWT token to all requests
 api.interceptors.request.use(request => {
   const token = localStorage.getItem('auth_token');

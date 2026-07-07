@@ -159,6 +159,16 @@ async function proxyRequest(req, res, prefix, subPath) {
   // Credit check for AI operations (POST only — GET is free)
   const operationKey = CREDIT_MAP[prefix];
   const userId = req.user?.userId;
+  if (operationKey && req.method === 'POST' && !userId) {
+    // Fail-closed: credited AI operations require a logged-in user —
+    // anonymous callers would otherwise consume LLM budget for free
+    return res.status(401).json({
+      success: false,
+      error: 'Authentication required',
+      message: 'Pro AI operace je nutné přihlášení.',
+      operation: operationKey,
+    });
+  }
   if (operationKey && userId && req.method === 'POST') {
     const creditCheck = await canAfford(userId, operationKey);
     if (!creditCheck.allowed) {
@@ -206,9 +216,13 @@ async function proxyRequest(req, res, prefix, subPath) {
 
     const coreResponse = await fetch(targetUrl, fetchOpts);
 
-    // Deduct credits after successful CORE response (2xx)
+    // Deduct credits after successful CORE response (2xx).
+    // Still async (don't add latency), but failures are logged — a silent
+    // .catch(()=>{}) hid every broken deduction from Cloud Logging.
     if (operationKey && userId && coreResponse.ok) {
-      deductCredits(userId, operationKey).catch(() => {});
+      deductCredits(userId, operationKey).catch(err =>
+        console.error(`[CoreProxy] Credit deduction FAILED (user=${userId}, op=${operationKey}):`, err?.message)
+      );
     }
 
     await sendCoreResponse(coreResponse, res);

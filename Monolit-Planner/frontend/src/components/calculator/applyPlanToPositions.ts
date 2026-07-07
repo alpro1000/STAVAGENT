@@ -36,6 +36,7 @@ import {
   type CompositePartInput,
 } from '@stavagent/monolit-shared';
 import { aggregateScheduleDays } from '@stavagent/monolit-shared';
+import { authHeader } from '../../services/api';
 import type { FormState } from './types';
 
 // ─── Public types ───────────────────────────────────────────────────────────
@@ -438,7 +439,9 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
   // 2. Fetch all positions to enable linked-search + name fallback
   let allPositions: Array<{ id: string; otskp_code?: string; item_name?: string; part_name?: string; subtype: string; unit: string; qty: number; bridge_id?: string }> = [];
   try {
-    const posRes = await fetch(`${apiUrl}/api/positions?bridge_id=${bridgeId}`);
+    const posRes = await fetch(`${apiUrl}/api/positions?bridge_id=${bridgeId}`, {
+      headers: { ...authHeader() },
+    });
     if (posRes.ok) allPositions = (await posRes.json()).positions || [];
   } catch { /* offline-tolerant */ }
 
@@ -561,7 +564,7 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
     try {
       const res = await fetch(`${apiUrl}/api/positions`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
         body: JSON.stringify({
           bridge_id: bridgeId,
           // Phase 11: forward cross-kiosk project identity so the backend
@@ -588,7 +591,7 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
   try {
     const res = await fetch(`${apiUrl}/api/positions`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
       body: JSON.stringify({ bridge_id: bridgeId, updates: updatePayloads }),
     });
     if (!res.ok) {
@@ -754,7 +757,7 @@ export async function applyCompositeToPositions(ctx: CompositeApplyContext): Pro
     try {
       const res = await fetch(`${apiUrl}/api/positions`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
         body: JSON.stringify({
           bridge_id: bridgeId,
           portal_project_id: positionContext.portal_project_id ?? null,
@@ -775,7 +778,7 @@ export async function applyCompositeToPositions(ctx: CompositeApplyContext): Pro
     try {
       const res = await fetch(`${apiUrl}/api/positions`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeader() },
         body: JSON.stringify({ bridge_id: bridgeId, updates: updatePayloads }),
       });
       if (!res.ok) {

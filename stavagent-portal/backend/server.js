@@ -53,7 +53,7 @@ import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 // Middleware
 import { requireAuth, optionalAuth } from './src/middleware/auth.js';
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter, connectionTestLimiter, coreAiLimiter } from './src/middleware/rateLimiter.js';
-import { requireServiceKey, requireAuthOrServiceKey } from './src/middleware/serviceAuth.js';
+import { requireAuthOrServiceKey } from './src/middleware/serviceAuth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -241,17 +241,22 @@ app.use('/api/portal-documents', requireAuthOrServiceKey, portalDocumentsRoutes)
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 
-// Integration routes (Monolit ↔ Registry sync) - service key required
-app.use('/api/integration', requireServiceKey, integrationRoutes);
+// Integration routes (Monolit ↔ Registry sync) — JWT (browser kiosk frontends)
+// OR X-Service-Key (kiosk backends). Router-level requireAuth still enforces
+// JWT on owner-stamping routes. Was requireServiceKey, which only worked for
+// browser callers because the missing key made the gate fail-open.
+app.use('/api/integration', requireAuthOrServiceKey, integrationRoutes);
 
-// Position Instances API (PositionInstance Architecture v1.0) - service key required
-app.use('/api/positions', requireServiceKey, positionInstancesRoutes);
+// Position Instances API (PositionInstance Architecture v1.0) — JWT (Portal
+// frontend, Registry dovWriteBack) OR X-Service-Key (Monolit portalWriteBack)
+app.use('/api/positions', requireAuthOrServiceKey, positionInstancesRoutes);
 
-// KB Research proxy — no auth required (question is public)
-app.use('/api/kb/research', kbResearchRoutes);
+// KB Research proxy — requireAuth: anonymous calls would burn Core LLM credits
+app.use('/api/kb/research', requireAuth, kbResearchRoutes);
 
-// Parse Preview — no auth required, no DB storage (temp file only)
-app.use('/api/parse-preview', uploadLimiter, parsePreviewRoutes);
+// Parse Preview — requireAuth: /import creates owned portal_projects rows,
+// preview endpoints parse arbitrary uploads (CPU) — both Portal-frontend-only
+app.use('/api/parse-preview', requireAuth, uploadLimiter, parsePreviewRoutes);
 
 // CORE proxy — forwards all /api/core/* to concrete-agent with server-side timeouts
 // optionalAuth: populates req.user if JWT present (for credit deduction), allows anonymous (session-only)
@@ -268,7 +273,9 @@ app.use('/api/orgs', orgsRoutes);
 app.use('/api/connections', connectionsRoutes);
 
 // Unified Pump Calculator — suppliers, models, calculate, compare (Phase 9)
-app.use('/api/pump', pumpRoutes);
+// requireAuth: shared catalog is mutable via POST/PUT/DELETE — Portal frontend
+// attaches JWT via axios interceptor; no kiosk callers exist
+app.use('/api/pump', requireAuth, pumpRoutes);
 
 // Credits — pay-as-you-go billing (balance, prices, history, admin)
 app.use('/api/credits', creditsRoutes);

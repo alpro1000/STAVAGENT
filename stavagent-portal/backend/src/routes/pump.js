@@ -288,7 +288,7 @@ router.post('/suppliers', async (req, res) => {
       JSON.stringify(surcharges || {}),
       hose_per_m_per_day || null,
       JSON.stringify(metadata || {}),
-      req.user?.id || null
+      req.user?.userId || null
     ]);
 
     res.status(201).json(supplier);
@@ -657,9 +657,31 @@ router.post('/calculations', async (req, res) => {
   const pool = safeGetPool();
   if (!pool) return res.status(503).json({ error: 'Database not available' });
 
+  // Defense in depth: the /api/pump mount runs requireAuth, but the owner
+  // checks below dereference req.user — guard in case the router is ever
+  // mounted without it.
+  if (!req.user?.userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   const { position_instance_id, project_id, supplier_id, model_id, input_params, result } = req.body;
 
   try {
+    // When linking to a position instance, the instance must belong to one
+    // of the caller's projects (isolation review LOW: write pollution)
+    if (position_instance_id) {
+      const { rows } = await pool.query(
+        `SELECT 1 FROM portal_positions pp
+         JOIN portal_objects po ON pp.object_id = po.object_id
+         JOIN portal_projects pr ON po.portal_project_id = pr.portal_project_id
+         WHERE pp.position_instance_id = $1 AND pr.owner_id = $2`,
+        [position_instance_id, req.user.userId]
+      );
+      if (rows.length === 0) {
+        return res.status(404).json({ error: 'Position instance not found' });
+      }
+    }
+
     const { rows: [calc] } = await pool.query(`
       INSERT INTO pump_calculations (position_instance_id, project_id, supplier_id, model_id, input_params, result, created_by)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -671,7 +693,7 @@ router.post('/calculations', async (req, res) => {
       model_id || null,
       JSON.stringify(input_params || {}),
       JSON.stringify(result || {}),
-      req.user?.id || null
+      req.user.userId
     ]);
 
     res.status(201).json(calc);
@@ -683,15 +705,36 @@ router.post('/calculations', async (req, res) => {
 
 /**
  * GET /api/pump/calculations/:positionId — Get saved calculations for position
+ *
+ * Owner-scoped (Sprint A isolation review): a calculation is visible only
+ * when its position instance belongs to one of the caller's projects, OR
+ * the caller created it (covers calculations saved without a position link).
  */
 router.get('/calculations/:positionId', async (req, res) => {
   const pool = safeGetPool();
   if (!pool) return res.status(503).json({ error: 'Database not available' });
 
+  // Defense in depth — see POST /calculations above.
+  if (!req.user?.userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM pump_calculations WHERE position_instance_id = $1 ORDER BY created_at DESC',
-      [req.params.positionId]
+      `SELECT pc.* FROM pump_calculations pc
+       WHERE pc.position_instance_id = $1
+         AND (
+           pc.created_by = $2
+           OR EXISTS (
+             SELECT 1 FROM portal_positions pp
+             JOIN portal_objects po ON pp.object_id = po.object_id
+             JOIN portal_projects pr ON po.portal_project_id = pr.portal_project_id
+             WHERE pp.position_instance_id = pc.position_instance_id
+               AND pr.owner_id = $2
+           )
+         )
+       ORDER BY pc.created_at DESC`,
+      [req.params.positionId, req.user.userId]
     );
     res.json(rows);
   } catch (error) {

@@ -6,8 +6,8 @@
 
 import jwt from 'jsonwebtoken';
 import { logger } from '../utils/logger.js';
+import { JWT_SECRET } from '../config/secrets.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
 const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
 
 /**

@@ -436,8 +436,10 @@ router.post('/:fileId/analyze', async (req, res) => {
 
     console.log(`[PortalFiles] Analysis complete. Project ID: ${coreProjectId}`);
 
-    // Deduct credits after successful analysis
-    deductCredits(userId, 'document_analyze', `Analýza souboru ${file.file_name}`).catch(() => {});
+    // Deduct credits after successful analysis (failures logged, not swallowed)
+    deductCredits(userId, 'document_analyze', `Analýza souboru ${file.file_name}`).catch(err =>
+      console.error(`[PortalFiles] Credit deduction FAILED (user=${userId}, op=document_analyze):`, err?.message)
+    );
 
     res.json({
       success: true,

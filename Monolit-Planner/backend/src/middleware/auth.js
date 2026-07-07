@@ -12,6 +12,13 @@
 import jwt from 'jsonwebtoken';
 import { logger } from '../utils/logger.js';
 
+// Fail-closed (Sprint A): in production a missing JWT_SECRET would mean
+// verifying tokens against a publicly-known dev string — anyone could
+// forge an owner identity. Refuse to start instead.
+const IS_PRODUCTION = process.env.NODE_ENV === 'production' || !!process.env.K_SERVICE;
+if (IS_PRODUCTION && !process.env.JWT_SECRET) {
+  throw new Error('[Auth] JWT_SECRET must be set in production (same value as Portal).');
+}
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
 
 /**
