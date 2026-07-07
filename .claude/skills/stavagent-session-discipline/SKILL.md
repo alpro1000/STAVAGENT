@@ -64,9 +64,13 @@ discussion без artifacts.
 
 ---
 
-### 3. Post-session — verify next-session.md handoff
+### 3. Post-session — verify handoff snapshot
 
-**Действие:** В корне репо должен быть `next-session.md` с:
+**Каноничное место (2026-07-07, аудит-фикс): `docs/handoff/YYYY-MM-DD_{topic}.md`**
+— per `docs/steering/structure.md`. Корневой `next-session.md` — только
+указатель, session-state туда НЕ писать (двойная точка входа = рассинхрон).
+
+**Действие:** В `docs/handoff/` должен быть snapshot текущей сессии с:
 - Current branch + commit
 - Что сделано в этой session
 - Что не закончено (in-progress files)
@@ -74,8 +78,8 @@ discussion без artifacts.
 - Open questions for user
 
 **Если забыл:**
-> Update next-session.md with current state, in-progress work,
-> blockers, and next session priorities.
+> Write docs/handoff/YYYY-MM-DD_{topic}.md with current state,
+> in-progress work, blockers, and next session priorities.
 
 ---
 
@@ -173,7 +177,7 @@ Project Knowledge.
 **В critical windows:** только `claude/staging-*` branches,
 no production deploys.
 
-**Action когда window активен:** Add prominent note в `next-session.md`:
+**Action когда window активен:** Add prominent note в актуальním handoff (`docs/handoff/…`):
 
 ```markdown
 🚨 PRODUCTION FREEZE ACTIVE — Cemex CSC pre-demo window
@@ -198,7 +202,7 @@ Until 2026-06-28. No merges to main. Staging only.
 ```
 [ ] Claude Code упомянул мантру в первых 5 tool calls?
 [ ] docs/soul.md §9 обновлён? (если session существенная)
-[ ] next-session.md обновлён?
+[ ] docs/handoff/ snapshot написан? (root next-session.md = pointer only)
 [ ] Branch имеет claude/ prefix?
 [ ] Steering docs обновлены? (если architectural decision)
 [ ] Production freeze window соблюдён?

@@ -5,62 +5,73 @@ items deferred from in-flight PRs that need their own focused work.
 
 ---
 
-## CRITICAL: cross-user-data-isolation
+## ✅ CLOSED (2026-05-31): cross-user-data-isolation
 
-**Severity:** P0 — security + GDPR
+**Severity:** was P0 — security + GDPR
 **Affects:** Monolit-Planner (Kalkulátor betonáže), Registr
 **Reporter:** Founder, observed 2026-05-12 post Landing v3 merge
 
-**Symptom:**
-After registering a fresh user account, that user has access to
-ALL projects in Monolit-Planner and Registr without per-user
-filtering. No tenant boundary visible.
+**Resolution (2026-05-31):** The reported symptom — a fresh user seeing ALL
+projects without per-user filtering — was fixed and shipped in 5 incremental
+commits (see `docs/soul.md` §9 entry 2026-05-31). Owner scoping
+(`portal_user_id` / `owner_id` WHERE-predicates) now covers the project-list
+and mutation endpoints in Portal, Monolit and Registry; cross-account access
+returns 403. Canonical model + route inventory:
+`docs/security/isolation_model.md`. Regression guard: isolation e2e tests +
+the `cross-user-isolation-reviewer` agent runs on every PR touching owned
+tables.
 
-**Suspected causes (to investigate):**
-1. Backend routes not filtering by user_id / org_id / owner
-2. Frontend not passing auth context to project list queries
-3. DB queries missing WHERE owner_id = $current_user
-4. Migration legacy data assigned to default owner_id=1, leaks
+**Remaining related work (tracked separately, NOT this ticket):** the
+2026-07-01 full-repo audit found *unauthenticated* routes (a different class:
+no login required at all, vs. logged-in user seeing foreign data): Portal
+`/api/pump/*` + `/api/parse-preview/import` + `/api/kb/research`, Monolit
+`positions.js`/`planner-variants.js`, URS (no auth as a class), Registry
+`cleanup-empty` owner-scope + 2 unauthed endpoints. These are scoped as
+**Sprint A** in the audit report and remain the blocker before any public
+demo. Do not reopen this ticket for them.
 
-**Not fixed in current PR (landing-quickfix-subtitle-cta) because:**
-- Requires careful authentication review
-- Needs authorization checks added per route
-- DB query audit required across all project endpoints
-- Test coverage essential before shipping
+## urs-sqlite-to-postgres
 
-**Dedicated PR scope when addressed:**
-1. Audit all GET endpoints returning project lists
-2. Verify WHERE clauses include current user filter
-3. Add integration tests: User A registers, creates project, User B
-   registers, User B sees zero projects
-4. Verify across all three kiosks: Portal, Kalkulátor, Registr
-5. Migration plan for any existing leaked data (assign to original
-   owner or quarantine)
-
-**Trigger:** Before any public marketing / Cemex CSC submission
-goes live referencing the SaaS product.
-
-**Estimated effort:** 8-16 hours including testing.
-
-**Risk if not fixed:** GDPR fine + trust collapse if any real user
-data is exposed cross-tenant.
-
-## register-route-redirect
-
-**Severity:** P2 — minor UX, workaround in place
+**Severity:** P1 — data loss on every Cloud Run restart
+**Affects:** URS_MATCHER_SERVICE (Klasifikátor)
+**Source:** 2026-07-01 audit, Sprint B item 6; assessed 2026-07-07
 
 **Symptom:**
-Direct navigation to /register redirects unauthenticated users to /.
+`backend/src/db/init.js` opens SQLite on the container filesystem
+(`file:./data/urs_matcher.db`). Cloud Run's filesystem is ephemeral —
+batch_jobs, work packages and caches vanish on every restart/deploy.
+Catalog data (17 940 OTSKP codes) survives because it re-seeds at boot.
 
-**Current workaround (applied):**
-LandingPage.tsx goCta() routes unauthenticated users to /login.
-Login page has working "Nemáte účet? Zaregistrujte se" link to
-functional registration form.
+**Why not fixed inline (2026-07-07):** 18 backend files touch the DB
+(sqlite3 driver API), 12 tables in init.js, ~232 tests assume SQLite,
+and the fix needs infra provisioning that cannot be done from the repo:
+a new `urs_matcher` database on the `stavagent-db` Cloud SQL instance +
+DSN secret in Secret Manager + cloudbuild env wiring. A blind partial
+rewrite risks breaking a working service for zero durability gain.
 
-**Future fix scope:**
-1. Investigate why /register redirects (likely auth guard logic 
-   inversion or missing route in App.tsx)
-2. Fix the route directly
-3. Optionally restore goCta to /register for cleaner UX
+**Dedicated PR scope:**
+1. Provision `urs_matcher` DB on stavagent-db (manual, gcloud) + secret
+2. Introduce a thin query adapter (sqlite3 vs pg) OR migrate to `pg`
+   directly; port 12 CREATE TABLEs (AUTOINCREMENT→SERIAL, datetime fns)
+3. Keep SQLite as the local-dev default via DATABASE_URL switch
+4. Migrate/accept loss of current ephemeral data (it dies on restart
+   anyway — nothing durable to migrate)
+5. Green: full URS test suite + one live batch job surviving a restart
 
-**Trigger:** Optional. Current /login flow is functional.
+**Estimated effort:** 2-3 days including test port.
+
+## ✅ CLOSED (2026-07-07): register-route-redirect
+
+**Severity:** was P2 — but it silently killed the org-invite flow for new
+users (OrgInvitePage sent them to /register → catch-all → /).
+
+**Root cause:** `/register` was simply never declared in App.tsx routes —
+the `*` catch-all swallowed it. Additionally LoginPage ignored the
+`?redirect=` param, so even the /login half of the invite flow dropped the
+invite token after authentication.
+
+**Fix (2026-07-07, audit Sprint C):** `/register` route renders LoginPage
+with `initialMode="register"`; LoginPage honors `?redirect=` on successful
+login and on the already-authenticated early return (internal paths only —
+leading `/`, not `//` — no open redirect). Invite flow now round-trips:
+invite link → register/login → back to `/org/accept-invite?token=…`.

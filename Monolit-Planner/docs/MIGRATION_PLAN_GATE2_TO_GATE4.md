@@ -2,7 +2,7 @@
 
 **Status:** Active plan as of Gate 1 audit closeout (2026-04-29)
 **Reference audit:** `Monolit-Planner/docs/AUDIT_Podpera_Terminologie.md`
-**Reference philosophy:** `docs/CALCULATOR_PHILOSOPHY.md`
+**Reference philosophy:** `docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY)`
 **Reference canonical:** `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md` + Section 9
 **Deprecation deadline:** 2026-07-29 (3 měsíce od Gate 1 closeout)
 
@@ -259,7 +259,7 @@ Po merge audit PR vytvořit GitHub issue:
   - Reference na audit Section H (external interfaces) + this migration plan Phase 7
   - Checklist míst kde existují deprecation aliases (vyplněno průběžně v Phase 6 implementation — Gate 4 work doplňuje konkrétní file:line items do checklistu)
   - Blocker dependency: public MCP launch nesmí proběhnout dokud cleanup task není closed
-  - Reference na canonical sources: `docs/CALCULATOR_PHILOSOPHY.md` §7.3 + `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md`
+  - Reference na canonical sources: `docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY)` §7.3 + `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md`
 
 **Blocker owner:** Project owner (user) — PR merge do `main` pro MCP public launch vyžaduje manual sign-off na closed cleanup issue. Bez sign-off PR zůstává v review state, ne auto-merged. Tento manuální gate zabraňuje cleanup driftu do „nice-to-have" zóny.
 

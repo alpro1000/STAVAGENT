@@ -24,6 +24,7 @@ from fastapi.responses import JSONResponse
 
 from app.services.document_processor import DocumentProcessor, process_document
 from app.services.brief_summarizer import BriefDocumentSummarizer
+from app.services import passport_store
 from app.models.passport_schema import (
     ProjectPassport,
     PassportGenerationRequest,
@@ -34,8 +35,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/passport", tags=["Project Passport"])
 
-# In-memory storage for passports (TODO: Replace with database)
-_passport_storage: Dict[str, ProjectPassport] = {}
+# Storage: disk-backed store (Sprint B) — memory is only a read cache.
+# The old module-level dict silently lost every passport on Cloud Run cold
+# start (min-instances=0); see app/services/passport_store.py.
 
 
 # ============================================================================
@@ -200,9 +202,9 @@ async def generate_passport(
         )
 
         if response.success and response.passport:
-            # Store passport in memory
+            # Persist passport (memory + disk — survives cold start)
             passport_id = response.passport.passport_id
-            _passport_storage[passport_id] = response.passport
+            passport_store.save(response.passport)
 
             logger.info(f"Passport generated: {passport_id}, time: {response.processing_time_ms}ms")
 
@@ -529,9 +531,8 @@ async def generate_passport_from_path(
         )
 
         if response.success and response.passport:
-            # Store passport
-            passport_id = response.passport.passport_id
-            _passport_storage[passport_id] = response.passport
+            # Persist passport (memory + disk — survives cold start)
+            passport_store.save(response.passport)
 
         return response
 
@@ -550,13 +551,14 @@ async def get_passport(passport_id: str):
     curl "http://localhost:8000/api/v1/passport/passport_abc123"
     ```
     """
-    if passport_id not in _passport_storage:
+    passport = passport_store.get(passport_id)
+    if passport is None:
         raise HTTPException(
             status_code=404,
             detail=f"Passport not found: {passport_id}"
         )
 
-    return _passport_storage[passport_id]
+    return passport
 
 
 @router.get("/list/all")
@@ -569,8 +571,9 @@ async def list_passports():
     curl "http://localhost:8000/api/v1/passport/list/all"
     ```
     """
+    stored = passport_store.list_all()
     return {
-        "total": len(_passport_storage),
+        "total": len(stored),
         "passports": [
             {
                 "passport_id": p.passport_id,
@@ -578,7 +581,7 @@ async def list_passports():
                 "generated_at": p.generated_at.isoformat(),
                 "source_documents": p.source_documents
             }
-            for p in _passport_storage.values()
+            for p in stored
         ]
     }
 
@@ -593,13 +596,11 @@ async def delete_passport(passport_id: str):
     curl -X DELETE "http://localhost:8000/api/v1/passport/passport_abc123"
     ```
     """
-    if passport_id not in _passport_storage:
+    if not passport_store.delete(passport_id):
         raise HTTPException(
             status_code=404,
             detail=f"Passport not found: {passport_id}"
         )
-
-    del _passport_storage[passport_id]
 
     return {"message": f"Passport {passport_id} deleted"}
 
@@ -624,7 +625,9 @@ async def health_check():
 
     return {
         "status": "healthy",
-        "passports_in_memory": len(_passport_storage),
+        # Key name kept for consumer compat; value now counts the durable
+        # store (disk + memory), not just this process's memory.
+        "passports_in_memory": passport_store.count(),
         "layers": {
             "layer1_parser": "available",
             "layer2_regex": "available",
@@ -643,13 +646,12 @@ async def export_passport_json(passport_id: str):
     """
     Export passport as JSON.
     """
-    if passport_id not in _passport_storage:
+    passport = passport_store.get(passport_id)
+    if passport is None:
         raise HTTPException(
             status_code=404,
             detail=f"Passport not found: {passport_id}"
         )
-
-    passport = _passport_storage[passport_id]
 
     return JSONResponse(
         content=passport.model_dump(mode='json'),
@@ -664,13 +666,12 @@ async def get_passport_summary(passport_id: str):
     """
     Get compact summary of passport (key facts only).
     """
-    if passport_id not in _passport_storage:
+    passport = passport_store.get(passport_id)
+    if passport is None:
         raise HTTPException(
             status_code=404,
             detail=f"Passport not found: {passport_id}"
         )
-
-    passport = _passport_storage[passport_id]
 
     # Build summary
     summary = {

@@ -21,14 +21,14 @@
 
 ---
 
-## 2. Current state snapshot (06.06.2026)
+## 2. Current state snapshot (07.07.2026)
 
 > ⚠️ **Maintenance:** при каждом version bump обнови строку "в продакшне" ниже.
 > Детальный live state = root `CLAUDE.md` changelog + §9 Session log этого файла.
 
 ### 2.1 Production
 
-- **v4.34** в продакшне (детальный changelog — root `CLAUDE.md`; 1249 shared tests, 24 element types)
+- **v4.38** в продакшне (детальный changelog — root `CLAUDE.md`; **1366 shared tests**, 24 element types)
 - **Gate 1** PR #1058 merged (29.04.2026)
 - **Gate 2** PR #1064 merged (15 commits, branch `gate-2-element-classification`). Tests 1002 → 1036. Element types 22 → 23 (zaklady_oper added).
 - **MCP v1.0** live с биллингом
@@ -37,8 +37,15 @@
 
 ### 2.2 Active critical work
 
-- **P0 BLOCKER před Cemex demo:** Cross-user data isolation. Nový users vidí všechny projekty v Monolit-Planner a Registru. Potential GDPR exposure. Musí se vyřešit před jakýmkoliv public marketing nebo Cemex demo.
-- **Cemex CSC 2026 submission deadline:** 28.06.2026 — primary competition target
+- **P0 BLOCKER před public/demo: Sprint A (neautentizované routy).** Původní
+  cross-user symptom (nový user vidí cizí projekty) je **vyřešen 31.05**
+  (§9 entry, `docs/security/isolation_model.md`, isolation e2e + reviewer
+  agent). Zbývá JINÁ třída z auditu 2026-07-01: routy úplně bez auth —
+  Portal `/api/pump/*` + `/api/parse-preview/import` (owner_id=1) +
+  `/api/kb/research`; Monolit `positions.js`/`planner-variants.js`; URS bez
+  auth jako třída + anonymní přepínání LLM; Registry `cleanup-empty`
+  owner-scope + 2 routy; 5× fail-open vzorů v Portalu. Plán = Sprint A
+  v audit-reportu (2026-07-01). Bez toho žádný public marketing/demo.
 - **Realistic pitch day target:** Helsinki 16-19.11.2026
 
 ### 2.3 Active freelance
@@ -350,6 +357,13 @@ Split na sub-tasks <170 řádků nebo by gate (Gate 0 scan-only → Gate 1 forma
 
 ## 9. Session log
 
+
+## 2026-07-07 — Session: audit-verify + Sprint B/C/D execution (Sprint A odloženo na founder's go)
+
+**Rozhodnuto:** (1) Composite #7 Fáze 2 merged do main (PR #1422, merge-commit `a114180`, worktree-verified). (2) Audit 2026-07-01 re-verifikován 4 paralelními read-only agenty proti aktuálnímu main — verdikt: Sprint A nezačat (jen Registry `cleanup-empty` +requireAuth), mrtvý kód nesmazán, docs-truth ~30 %; 2 korekce auditu: `kiosk-links.js` je ŽIVÝ (KioskLinksPanel v CorePanel), Registry double-scroll UŽ opraven v kódu. (3) Fantomní P0 v BACKLOG.md uzavřen (symptom fixed 31.05; neautentizované routy = jiná třída = Sprint A). (4) Sprint B: soft-degradation TŘÍDA vyřešena (`UncalculatedError` NEPOČÍTÁNO + rebar=0 honest zero + selektor allow-list) — founder's direct order supersedoval Step-3-interview gate z TODO; CORE pasporty na disk (`passport_store.py`); URS SQLite→PG = vlastní BACKLOG ticket (infra). (5) Sprint C: warnings_structured Phase 2 (severity + palette + AC3 gate «Pokračovat přesto»), Resource Ceiling UI (stropy firmy + violations karta), Portal `/register` + `?redirect=` (invite flow). (6) Sprint D: dead-code sweep importer-verified (CORE monolit_adapter 613 L «PRODUCTION LIVE» byl fake + 4 moduly + strays; Monolit legacy UI strom + clutter; URS catalog-import route; AWS-éra Registry-backend), docs-truth (version triangle v4.38/1366, handoff single-point = docs/handoff/ + root pointer, CALCULATOR_PHILOSOPHY repointy, Monolit+concrete-agent CLAUDE.md pravda).
+**Odmítnuto:** api-access page (blokováno Lemon Squeezy manual TODOs — nešít stránku na nezapojený billing); slepý URS PG rewrite (18 souborů + provisioning mimo repo); mazání `api/sync.ts` (Vercel-convention — nejdřív Vercel logs) a `classifyRows` (živý import path).
+**Otevřené otázky:** Sprint A start — čeká na explicitní pokyn Alexandra («а последним когда я скажу»); LIVE-DoD composite #7 na kalkulator.stavagent.cz po deployi.
+**Co dál:** Sprint A (auth sweep dle audit-reportu §6.1-3) na povel; zbytky lístků: warnings Phase 2 items 5-7 (MSS-9/MSS-10/golden runner), Resource Ceiling per-profession forma, URS PG ticket, api-access po LS konfiguraci. Testy: shared 1294→**1366**, backend Jest 62, URS 232/232, CORE pytest store+delegation green.
 
 ## 2026-06-26 — Session: Fáze 5 #7 — composite-element-parts Fáze 2 Gate 5 (kalkulátor → vkládání částí + odchod berliček)
 

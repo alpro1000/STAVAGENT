@@ -14,7 +14,7 @@
  * default ceiling already aligned with engine demand peak per Phase 1
  * Foundation C learnings.
  *
- * Per `docs/CALCULATOR_PHILOSOPHY.md` §3, numeric assertions use ±10–15 %
+ * Per `docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY)` §3, numeric assertions use ±10–15 %
  * tolerance. Resource Ceiling assertions are EXACT (deterministic match
  * between engine demand peak and ceiling cap).
  */
@@ -168,17 +168,15 @@ describe('Golden — Phase 2 Group A: zakladova_patka', () => {
 });
 
 describe('Golden — Phase 2 Group A: podkladni_beton', () => {
-  // Prostý beton C12/15 X0 — bez výztuže. `rebar_mass_kg: 1` je workaround
-  // pro existing orchestrator gap: `calculateRebarLite` throws on mass_t=0
-  // (rebar_ratio_kg_m3=0 v ElementProfile vede k 0 estimated). Orchestrator
-  // by měl mít explicit gate na podkladni_beton path. Tracked v TODO §
-  // "Resource Ceiling Phase 2 follow-ups" pro Phase 3 cleanup.
+  // Prostý beton C12/15 X0 — bez výztuže. rebar=0 je legitimní vstup
+  // (rebar_ratio_kg_m3=0 v ElementProfile by design); od Sprint B (2026-07)
+  // `calculateRebarLite` vrací poctivou nulu místo throw, takže dřívější
+  // `rebar_mass_kg: 1` workaround je pryč.
   const input: PlannerInput = {
     element_type: 'podkladni_beton',
     volume_m3: 30,
     height_m: 0.15,          // thin lean concrete
     concrete_class: 'C12/15',
-    rebar_mass_kg: 1,        // workaround — engine demand still produces num_carpenters=4 etc.
   };
 
   it('Scenario 1: default ceiling → feasible (4 lidí, bez bednění, s pumpou)', () => {
@@ -188,6 +186,10 @@ describe('Golden — Phase 2 Group A: podkladni_beton', () => {
     expect(plan.resource_ceiling.formwork).toBeUndefined();
     expect(plan.resource_ceiling.equipment?.num_pumps).toBe(1);
     expectKbDefault(plan);
+    // Sprint B soft-degradation: prostý beton computes with honest zero rebar
+    expect(plan.rebar.mass_kg).toBe(0);
+    expect(plan.rebar.duration_days).toBe(0);
+    expect(plan.rebar.cost_labor).toBe(0);
   });
 
   it('Scenario 2: strop 2 lidí + 0 čerpadel → INFEASIBLE on workers and pump', () => {

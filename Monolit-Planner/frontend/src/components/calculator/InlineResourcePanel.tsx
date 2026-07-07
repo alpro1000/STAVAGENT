@@ -172,6 +172,53 @@ export default function InlineResourcePanel({ form, update, calcStatus, resultDi
             </div>
           </div>
 
+          {/* ─── Stropy zdrojů (Resource Ceiling, v4.29 Phase 1 UI) ───
+               Empty = KB default per element type (conf 0.85). Filled = the
+               company's hard limit (conf 0.99) — answers "u nás je fixně 12
+               lidí, jak to spočítáš?". Violations render in the result. */}
+          <div>
+            <div style={sectionHeaderStyle}>Stropy zdrojů (firma)</div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+              gap: 12,
+            }}>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Lidí celkem (max)</label>
+                <input
+                  type="text"
+                  placeholder="— (KB výchozí)"
+                  value={form.ceiling_workers_total}
+                  onChange={e => update('ceiling_workers_total', e.target.value)}
+                  style={selectStyle}
+                  title="Tvrdý strop pracovníků na prvku. Prázdné = typické zdroje pro daný typ elementu."
+                />
+              </div>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Čerpadla (max)</label>
+                <input
+                  type="text"
+                  placeholder="— (KB výchozí)"
+                  value={form.ceiling_num_pumps}
+                  onChange={e => update('ceiling_num_pumps', e.target.value)}
+                  style={selectStyle}
+                  title="Kolik čerpadel má firma k dispozici. Překročení = ⛔ konflikt s návrhem řešení."
+                />
+              </div>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Jeřáby (max)</label>
+                <input
+                  type="text"
+                  placeholder="— (KB výchozí)"
+                  value={form.ceiling_num_cranes}
+                  onChange={e => update('ceiling_num_cranes', e.target.value)}
+                  style={selectStyle}
+                  title="Kolik jeřábů má firma k dispozici na prvku."
+                />
+              </div>
+            </div>
+          </div>
+
           {/* ─── Parametry výpočtu — everything else ─── */}
           <div>
             <div style={sectionHeaderStyle}>Parametry výpočtu</div>

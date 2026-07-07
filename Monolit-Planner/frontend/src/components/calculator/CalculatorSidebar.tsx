@@ -104,6 +104,11 @@ export interface CalculatorSidebarProps {
   fetchAdvisor: () => void;
   /** A2: false until volume_m3 > 0 and element_type is set */
   canCalculate: boolean;
+  /** v4.22 Phase 2 (AC3): true while the preview carries ⛔ KRITICKÉ warnings
+   *  the user has not consciously overridden. */
+  criticalGateActive: boolean;
+  criticalWarnings: string[];
+  overrideCriticalGate: () => void;
 
   // Form update helper
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
@@ -135,6 +140,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     comparison, setComparison, showComparison, setShowComparison,
     positionContext, isMonolitMode, isTzContextLocked, lockedFieldSet, autoClassification,
     handleCalculate, handleCompare, fetchAdvisor, canCalculate,
+    criticalGateActive, criticalWarnings, overrideCriticalGate,
     update, tzText, setTzText,
     tzPositionId, tzLastAppliedAt, tzHistory, appendTzHistoryCb, clearTz,
     normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
@@ -1006,15 +1012,19 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
       <>
       <button
         onClick={handleCalculate}
-        disabled={!canCalculate}
-        title={!canCalculate ? 'Vyplňte typ elementu a objem betonu' : undefined}
+        disabled={!canCalculate || criticalGateActive}
+        title={
+          !canCalculate ? 'Vyplňte typ elementu a objem betonu'
+          : criticalGateActive ? 'Náhled obsahuje ⛔ KRITICKÁ varování — potvrďte „Pokračovat přesto" níže'
+          : undefined
+        }
         style={{
           width: '100%', padding: '12px', marginTop: 8,
-          background: canCalculate ? 'var(--r0-orange)' : 'var(--r0-slate-200)',
-          color: canCalculate ? 'white' : 'var(--r0-slate-400)',
+          background: (canCalculate && !criticalGateActive) ? 'var(--r0-orange)' : 'var(--r0-slate-200)',
+          color: (canCalculate && !criticalGateActive) ? 'white' : 'var(--r0-slate-400)',
           border: 'none',
           borderRadius: 6, fontSize: 15, fontWeight: 700,
-          cursor: canCalculate ? 'pointer' : 'not-allowed',
+          cursor: (canCalculate && !criticalGateActive) ? 'pointer' : 'not-allowed',
           fontFamily: 'inherit',
         }}
       >
@@ -1026,6 +1036,31 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           textAlign: 'center', fontStyle: 'italic',
         }}>
           Zadejte typ elementu a objem betonu
+        </div>
+      )}
+      {/* v4.22 Phase 2 (AC3): critical-warning gate + conscious override */}
+      {canCalculate && criticalGateActive && (
+        <div style={{
+          marginTop: 8, padding: '8px 10px', fontSize: 12,
+          background: '#FEF2F2', border: '1px solid var(--r0-red)',
+          borderRadius: 6, color: 'var(--r0-red)',
+        }}>
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>
+            ⛔ Náhled obsahuje {criticalWarnings.length}× KRITICKÉ varování
+          </div>
+          <div style={{ marginBottom: 6, color: '#7F1D1D' }}>
+            {criticalWarnings[0]}
+          </div>
+          <button
+            onClick={overrideCriticalGate}
+            style={{
+              background: 'none', border: 'none', padding: 0,
+              color: 'var(--r0-red)', textDecoration: 'underline',
+              fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+            }}
+          >
+            Pokračovat přesto
+          </button>
         </div>
       )}
       </>

@@ -993,8 +993,11 @@ async def _parse_pdf_async(
                 with pdfplumber.open(file_path) as pdf:
                     for page in pdf.pages[:30]:
                         text += (page.extract_text() or "") + "\n"
-            except Exception:
-                pass
+            except Exception as e:
+                # Silent pass made "PDF has no text layer" indistinguishable
+                # from "extraction crashed" — the summary then shipped on an
+                # empty string. Exactly the silent-drift class Phase 0a bans.
+                logger.warning(f"[Documents] pdfplumber text extract failed for {filename}, summary built without text: {e}")
 
             summary = generate_summary_from_tz(filename, doc_type, text or "")
 

@@ -603,9 +603,53 @@ export interface PlannerOutput {
 
   // --- Warnings ---
   warnings: string[];
+  /**
+   * v4.22 Phase 2 (shipped 2026-07): severity-parsed mirror of `warnings`.
+   * Derived from the ⛔ (critical) / ⚠️ (warning) / ℹ️ (info) emoji-prefix
+   * convention via `structureWarnings()` at output assembly. `warnings`
+   * stays the legacy string[] surface — same messages, same order.
+   */
+  warnings_structured: StructuredWarning[];
 
   // --- Traceability ---
   decision_log: string[];
+}
+
+// ─── Structured warnings (v4.22 Phase 2) ────────────────────────────────────
+
+export type WarningSeverity = 'critical' | 'warning' | 'info';
+
+export interface StructuredWarning {
+  severity: WarningSeverity;
+  /** Original message, emoji prefix included (UI may strip it). */
+  message: string;
+}
+
+/**
+ * Classify legacy emoji-prefixed messages into severities. Convention
+ * (v4.22): ⛔ = critical (KRITICKÉ), ⚠️ = warning, ℹ️ = info; the pre-v4.22
+ * 🚨 prefix (v4.19 D1) also reads as critical. Unprefixed messages default
+ * to 'warning' — the historical rendering treated everything as orange.
+ */
+export function structureWarnings(warnings: string[]): StructuredWarning[] {
+  const firstAt = (message: string, marker: string): number => {
+    const i = message.indexOf(marker);
+    return i === -1 ? Number.POSITIVE_INFINITY : i;
+  };
+  return warnings.map((message) => {
+    // A message can mention several emojis (e.g. a ⚠️ text quoting an ℹ️
+    // hint) — the EARLIEST marker is the prefix and decides the severity.
+    const critical = Math.min(firstAt(message, '⛔'), firstAt(message, '🚨'));
+    const warning = firstAt(message, '⚠️');
+    const info = firstAt(message, 'ℹ️');
+    const min = Math.min(critical, warning, info);
+    const severity: WarningSeverity =
+      min === Number.POSITIVE_INFINITY ? 'warning'
+      : min === critical ? 'critical'
+      : min === warning ? 'warning'
+      : 'info';
+    return { severity, message };
+  });
 }
 
 // ─── Deadline Check ─────────────────────────────────────────────────────────
@@ -821,16 +865,8 @@ export function computePourCrew(
   };
 }
 
-/**
- * @deprecated Use {@link computePourCrew} — this wrapper exists only so
- *   external callers importing the v4.20 name keep compiling. It forwards
- *   to the v4.24 volume+element-aware formula with a large-pour default
- *   (volume=100, element_type='other') that matches the old "+řízení-free"
- *   numbers for pump counts ≥2. For new code, pass volume + element_type.
- */
-export function computePourCrewByPumps(n_pump: number): PourCrewBreakdown {
-  return computePourCrew(100, n_pump, 'other');
-}
+// computePourCrewByPumps (v4.20 deprecated wrapper) removed 2026-07 (audit
+// Sprint D): zero production callers monorepo-wide — use computePourCrew.
 
 // ─── Main Orchestrator ──────────────────────────────────────────────────────
 
@@ -887,6 +923,28 @@ function deriveGeometryInput(
     `z ${input.length_m}×${input.width_m}×${input.height_m} m; total_length_m=${next.total_length_m}`,
   );
   return next;
+}
+
+/**
+ * Soft-degradation signal (2026-07, audit Sprint B): a mandatory input is
+ * missing/zero and the element CANNOT be honestly computed. Domain rule
+ * (honest-blank at computation level): such an element is NEPOČÍTÁNO —
+ * skipped in aggregation (`planProject` already records it via
+ * `elements_uncalculated`), never a fabricated result and never a cryptic
+ * deep-pipeline crash ("mass_t must be positive" from the scheduler guts).
+ * API callers (backend /api/calculate, MCP) detect it via the
+ * `uncalculated === true` duck-type marker (instanceof is unreliable across
+ * package boundaries) and surface the Czech reason verbatim.
+ */
+export class UncalculatedError extends Error {
+  readonly uncalculated = true as const;
+  constructor(
+    public readonly reason_cs: string,
+    public readonly missing_fields: string[],
+  ) {
+    super(`NEPOČÍTÁNO — ${reason_cs}`);
+    this.name = 'UncalculatedError';
+  }
 }
 
 export function planElement(input: PlannerInput): PlannerOutput {
@@ -1007,6 +1065,24 @@ export function planElement(input: PlannerInput): PlannerOutput {
       crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour,
       temperature,
     });
+  }
+
+  // ─── 1c. Mandatory-input gate — soft degradation (2026-07, Sprint B) ────
+  // Volume is the universal critical field (REQUIRED_FIELDS marks it critical
+  // for every non-pilota type). Without it the pipeline used to run until a
+  // deep guard crashed (rebar "mass_t must be positive", concreting
+  // "volume_m3 must be positive"). deriveGeometryInput above already tried to
+  // derive it from L×W×H; if it is still not positive, the element is
+  // honestly NEPOČÍTÁNO. Pilota is exempt (branch above derives volume from
+  // pile geometry).
+  if (!(typeof input.volume_m3 === 'number' && Number.isFinite(input.volume_m3) && input.volume_m3 > 0)) {
+    const hasDims = !!(input.length_m && input.width_m && input.height_m);
+    throw new UncalculatedError(
+      hasDims
+        ? `chybí objem betonu (volume_m3) a z rozměrů ${input.length_m}×${input.width_m}×${input.height_m} m jej nelze pro tento typ prvku poctivě odvodit — zadejte objem ručně`
+        : 'chybí objem betonu (volume_m3) — bez něj nelze počítat záběry, harmonogram ani náklady',
+      ['volume_m3'],
+    );
   }
 
   // ─── 2. Lateral Pressure & Formwork System Selection ─────────────────
@@ -2651,6 +2727,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       rentalRate,
     }),
     warnings,
+    warnings_structured: structureWarnings(warnings),
     decision_log: [...log, ...pourDecision.decision_log],
     // Resource Ceiling Phase 1 plumbing (Foundation B).
     validation_flags: validationFlags.length > 0 ? validationFlags : undefined,
@@ -3087,6 +3164,7 @@ function runPilePath(
         `(ČSN 73 1002, ${input.concrete_class || 'C25/30'}, ${temperature}°C)`,
     },
     warnings,
+    warnings_structured: structureWarnings(warnings),
     decision_log: log,
     // Resource Ceiling Phase 1 plumbing (Foundation B) — pile path mirror.
     // Pile relevance has num_carpenters=false, num_vibrators=false,

@@ -13,7 +13,7 @@
  *
  * Canonical sources (per Gate 5 / Gate 10 mandate):
  *   - "What StavAgent does NOT do" bullets — translation of
- *     docs/CALCULATOR_PHILOSOPHY.md §2 (one-to-one, no paraphrase).
+ *     docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §2) (one-to-one, no paraphrase).
  *   - Calculator disclaimer — translation of §5.1 verbatim.
  *   - Value line — translation of §7.2.
  *
@@ -283,7 +283,7 @@ const CASES = [
 ];
 
 // "What StavAgent does NOT do" — translation of
-// docs/CALCULATOR_PHILOSOPHY.md §2 (one-to-one, no paraphrase). Same role on
+// docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §2) (one-to-one, no paraphrase). Same role on
 // the page as the Gate 5 CZ block. DO NOT REWORD.
 const NEDELA = [
   {
@@ -304,7 +304,7 @@ const NEDELA = [
   },
 ];
 
-// Translation of CALCULATOR_PHILOSOPHY.md §5.1 — the mandatory disclaimer.
+// Translation of docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §5.1) — the mandatory disclaimer.
 const CALCULATOR_DISCLAIMER = 'This calculator provides an approximate estimate for budget preparation with typical accuracy ±10–15%. The final detailed design, structural calculation and exact component specification are always performed by the formwork supplier (DOKA / PERI / ULMA / others) based on specific project documentation. For the tender phase and preliminary calculation, this accuracy is sufficient.';
 
 // Translation of §7.2 value line — "approximate but very accurate" framing.
@@ -667,7 +667,7 @@ export default function LandingPageEn() {
           ))}
         </div>
 
-        {/* Calculator disclaimer — translation of CALCULATOR_PHILOSOPHY.md §5.1 */}
+        {/* Calculator disclaimer — translation of docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §5.1) */}
         <div style={{
           marginTop: 24, padding: '16px 20px',
           borderLeft: '4px solid var(--accent-orange)',

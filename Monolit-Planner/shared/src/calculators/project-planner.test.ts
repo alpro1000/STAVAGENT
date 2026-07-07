@@ -75,14 +75,15 @@ describe('planProject — aggregation across multiple elements', () => {
 });
 
 describe('planProject — honest-blank on a failing element', () => {
-  it('isolates a throwing element, keeps the rest, counts Nevypočtených', () => {
-    // podkladni_beton with rebar=0 throws in calculateRebar (known finding) —
-    // a perfect honest-blank case: it must NOT void the whole project.
+  it('isolates a failing element, keeps the rest, counts Nevypočtených', () => {
+    // Sprint B note: podkladni_beton with rebar=0 (the previous BAD fixture)
+    // no longer throws — zero rebar is a valid prostý-beton state. The
+    // honest-blank case is now a mandatory-input gap: volume_m3=0 raises a
+    // typed UncalculatedError; it must NOT void the whole project.
     const BAD: PlannerInput = {
-      element_type: 'podkladni_beton',
-      volume_m3: 6,
+      element_type: 'stena',
+      volume_m3: 0,
       concrete_class: 'C25/30',
-      has_dilatacni_spary: false,
       temperature_c: 15,
     };
     const proj = planProject([WALL, BAD]);
@@ -93,8 +94,8 @@ describe('planProject — honest-blank on a failing element', () => {
     expect(proj.aggregate.total_concrete_m3).toBeCloseTo(30, 2);
     expect(proj.aggregate.schedule_total_days).not.toBeNull();
     const bad = proj.elements.find(e => !e.ok)!;
-    expect(bad.error).toBeTruthy();
-    expect(bad.label).toBe('podkladni_beton');
+    expect(bad.error).toContain('NEPOČÍTÁNO');
+    expect(bad.label).toBe('stena');
   });
 
   it('empty project → schedule null (honest NEPOČÍTÁNO, not 0)', () => {

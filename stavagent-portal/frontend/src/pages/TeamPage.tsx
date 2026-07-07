@@ -14,7 +14,7 @@
  *     the v4.1 founder narrative spec (Gate 10 task).
  *   - EN counterparts: spec-provided translations.
  *   - "What StavAgent does" section: lifted VERBATIM from
- *     docs/CALCULATOR_PHILOSOPHY.md §1 (4-item list + 'velkými mazy' line),
+ *     docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §1) (4-item list + 'velkými mazy' line),
  *     §6.3 ('technologicky správné výsledky'), §7.2 (value line). EN
  *     mirrors the CZ phrasing one-to-one — preserves meaning, no
  *     paraphrase as required by Gate 5 / Gate 10 mandate.
@@ -73,7 +73,7 @@ const CONTENT: Record<Locale, Content> = {
     quote:
       'Při tendrování mostních konstrukcí je výpočet monolitu kritická cesta. Všechno ostatní běží paralelně nebo navazuje. Když monolit spočítáš správně — máš celý harmonogram. Když špatně — promáchneš rozpočet i termíny.',
     whatHeading: 'Co StavAgent dělá',
-    // Verbatim z docs/CALCULATOR_PHILOSOPHY.md §1.
+    // Verbatim z docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §1.)
     whatBullets: [
       'Rychle se zorientovat v projektu — jaký typ bednění, jaká podpěrná konstrukce, kolik měsíců pronájem.',
       'Odhadnout náklady s přesností ±10–15 % pro tendrový rozpočet a předběžnou kalkulaci.',
@@ -126,7 +126,7 @@ const CONTENT: Record<Locale, Content> = {
     quote:
       'When tendering bridge structures, the monolithic concrete calculation IS the critical path. Everything else runs in parallel or follows. Get the concrete right and you have the schedule. Get it wrong and you’ve underbid the tender and overcommitted the timeline.',
     whatHeading: 'What StavAgent does',
-    // Translation of CALCULATOR_PHILOSOPHY.md §1 (canonical CZ preserved
+    // Translation of docs/steering/domain.md §1 (pův. CALCULATOR_PHILOSOPHY §1) (canonical CZ preserved
     // one-to-one — no paraphrase, only language adaptation).
     whatBullets: [
       'Get oriented in a project fast — which formwork type, which support structure, how many months of rental.',
@@ -356,7 +356,7 @@ export default function TeamPage({ locale }: TeamPageProps) {
         </blockquote>
       </section>
 
-      {/* ── 3. WHAT STAVAGENT DOES: lifted from CALCULATOR_PHILOSOPHY.md ── */}
+      {/* ── 3. WHAT STAVAGENT DOES: lifted from docs/steering/domain.md §1 (ex-CALCULATOR_PHILOSOPHY) ── */}
       <section style={sectionStyle('900px')}>
         <h2 style={h2Style}>{t.whatHeading}</h2>
 

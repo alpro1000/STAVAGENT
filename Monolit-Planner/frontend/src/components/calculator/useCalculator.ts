@@ -14,6 +14,7 @@ import {
   planElement,
   planComposite,
   buildScheduleProjection,
+  structureWarnings,
   type PlannerInput,
   type PlannerOutput,
   type CompositeOutput,
@@ -1016,6 +1017,22 @@ export default function useCalculator() {
   // element type) must be satisfied or the result would be garbage.
   const canCalculate = form.volume_m3 > 0 && form.element_type && form.element_type !== 'other';
 
+  // v4.22 Phase 2 (AC3): ⛔ KRITICKÉ warnings in the preview gate the explicit
+  // "Vypočítat plán" button until the user consciously clicks "Pokračovat
+  // přesto". The preview itself still renders (honest visibility) — the gate
+  // stops the user from proceeding as if the input were fine (SO-207 class:
+  // V=605 m³ entered for a 4 000 m³ estakáda).
+  const [criticalOverride, setCriticalOverride] = useState(false);
+  const criticalWarnings = useMemo(() => {
+    if (!result) return [] as string[];
+    const structured = result.warnings_structured ?? structureWarnings(result.warnings);
+    return structured.filter(w => w.severity === 'critical').map(w => w.message);
+  }, [result]);
+  const criticalGateActive = criticalWarnings.length > 0 && !criticalOverride;
+  const overrideCriticalGate = useCallback(() => setCriticalOverride(true), []);
+  // New element context → the override no longer applies.
+  useEffect(() => { setCriticalOverride(false); }, [form.element_type]);
+
   // Auto-calculate on form change with 1.5s debounce (v4.1: pure preview, no save).
   useEffect(() => {
     if (skipNextAutoCalcRef.current) {
@@ -1128,6 +1145,27 @@ export default function useCalculator() {
       enable_monte_carlo: form.enable_monte_carlo,
       ...(form.deadline_days ? { deadline_days: Number(form.deadline_days) } : {}),
     };
+    // Resource Ceiling (v4.29 Phase 1 UI): only filled fields become a user
+    // ceiling (confidence 0.99 — wins over KB defaults). Empty = KB default.
+    {
+      const workersTotal = parseInt(form.ceiling_workers_total, 10);
+      const numPumps = parseInt(form.ceiling_num_pumps, 10);
+      const numCranes = parseInt(form.ceiling_num_cranes, 10);
+      const workforce = Number.isFinite(workersTotal) && workersTotal > 0
+        ? { num_workers_total: workersTotal } : undefined;
+      const equipment = (Number.isFinite(numPumps) && numPumps >= 0) || (Number.isFinite(numCranes) && numCranes >= 0)
+        ? {
+            ...(Number.isFinite(numPumps) && numPumps >= 0 ? { num_pumps: numPumps } : {}),
+            ...(Number.isFinite(numCranes) && numCranes >= 0 ? { num_cranes: numCranes } : {}),
+          }
+        : undefined;
+      if (workforce || equipment) {
+        input.resource_ceiling = {
+          ...(workforce ? { workforce } : {}),
+          ...(equipment ? { equipment } : {}),
+        };
+      }
+    }
     input.element_type = form.element_type;
     if (form.formwork_area_m2) input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
     if (form.rebar_mass_kg) input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
@@ -1629,6 +1667,8 @@ export default function useCalculator() {
     handleApplyToPosition,
     // A2: gate — false until user has set both volume and a real element type
     canCalculate,
+    // v4.22 Phase 2 (AC3): ⛔ critical-warning gate + conscious override
+    criticalGateActive, criticalWarnings, overrideCriticalGate,
 
     // Composite parts (Fáze 2 #7 Gate 5)
     parts, compositeActive, compositeResult,
