@@ -84,6 +84,9 @@ function App() {
             <Routes>
               {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
+              {/* /register: same page, registration mode — restores the
+                  OrgInvitePage invite flow (used to fall into the catch-all). */}
+              <Route path="/register" element={<LoginPage initialMode="register" />} />
               <Route path="/verify" element={<VerifyEmailPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />

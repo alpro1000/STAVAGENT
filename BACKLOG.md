@@ -60,22 +60,18 @@ rewrite risks breaking a working service for zero durability gain.
 
 **Estimated effort:** 2-3 days including test port.
 
-## register-route-redirect
+## ✅ CLOSED (2026-07-07): register-route-redirect
 
-**Severity:** P2 — minor UX, workaround in place
+**Severity:** was P2 — but it silently killed the org-invite flow for new
+users (OrgInvitePage sent them to /register → catch-all → /).
 
-**Symptom:**
-Direct navigation to /register redirects unauthenticated users to /.
+**Root cause:** `/register` was simply never declared in App.tsx routes —
+the `*` catch-all swallowed it. Additionally LoginPage ignored the
+`?redirect=` param, so even the /login half of the invite flow dropped the
+invite token after authentication.
 
-**Current workaround (applied):**
-LandingPage.tsx goCta() routes unauthenticated users to /login.
-Login page has working "Nemáte účet? Zaregistrujte se" link to
-functional registration form.
-
-**Future fix scope:**
-1. Investigate why /register redirects (likely auth guard logic 
-   inversion or missing route in App.tsx)
-2. Fix the route directly
-3. Optionally restore goCta to /register for cleaner UX
-
-**Trigger:** Optional. Current /login flow is functional.
+**Fix (2026-07-07, audit Sprint C):** `/register` route renders LoginPage
+with `initialMode="register"`; LoginPage honors `?redirect=` on successful
+login and on the already-authenticated early return (internal paths only —
+leading `/`, not `//` — no open redirect). Invite flow now round-trips:
+invite link → register/login → back to `/org/accept-invite?token=…`.

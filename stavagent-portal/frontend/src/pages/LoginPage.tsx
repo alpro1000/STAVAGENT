@@ -5,14 +5,29 @@
 
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { authAPI } from '../services/api';
 
-export default function LoginPage() {
+interface LoginPageProps {
+  /** '/register' route renders the same page opened in registration mode. */
+  initialMode?: 'login' | 'register';
+}
+
+export default function LoginPage({ initialMode = 'login' }: LoginPageProps) {
   const { login, register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const [isLoginMode, setIsLoginMode] = useState(true);
+  // Invite flow (OrgInvitePage): /login?redirect=/org/accept-invite?token=…
+  // Internal paths only — reject external/protocol-relative to avoid an open
+  // redirect ('//evil.com' parses as scheme-relative).
+  const redirectParam = searchParams.get('redirect');
+  const postAuthTarget =
+    redirectParam && redirectParam.startsWith('/') && !redirectParam.startsWith('//')
+      ? redirectParam
+      : '/portal';
+
+  const [isLoginMode, setIsLoginMode] = useState(initialMode !== 'register');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -24,9 +39,9 @@ export default function LoginPage() {
   const [resendLoading, setResendLoading] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated (honors ?redirect= for invite flow)
   if (isAuthenticated) {
-    navigate('/portal');
+    navigate(postAuthTarget);
     return null;
   }
 
@@ -41,7 +56,7 @@ export default function LoginPage() {
     try {
       if (isLoginMode) {
         await login(email, password);
-        navigate('/portal');
+        navigate(postAuthTarget);
       } else {
         if (!name.trim()) {
           setError('Jméno je povinné');
