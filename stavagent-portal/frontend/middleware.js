@@ -17,7 +17,7 @@ export default async function middleware(request) {
 
   if (url.hostname === 'klasifikator.stavagent.cz') {
     const target = `${URS_BACKEND}${url.pathname}${url.search}`;
-    const hasBody = request.method !== 'GET' && request.method !== 'HEAD';
+    const hasBody = !['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(request.method);
 
     // POSTs through this proxy used to die with MIDDLEWARE_INVOCATION_FAILED
     // ("TypeError: fetch failed"): forwarding request.headers verbatim sends
@@ -30,6 +30,14 @@ export default async function middleware(request) {
     headers.delete('content-length');
     headers.delete('connection');
     headers.delete('transfer-encoding');
+
+    // Cap buffered bodies (CWE-400) — Vercel's own request limits sit lower,
+    // this is an explicit guard so the proxy never relies on them implicitly.
+    const MAX_BODY_SIZE = 10 * 1024 * 1024; // 10 MB
+    const contentLength = parseInt(request.headers.get('content-length') || '0', 10);
+    if (hasBody && contentLength > MAX_BODY_SIZE) {
+      return new Response('Payload too large', { status: 413 });
+    }
 
     const body = hasBody ? await request.arrayBuffer() : undefined;
 
